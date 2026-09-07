@@ -101,3 +101,19 @@ async def refresh(payload: RefreshRequest, db: AsyncSession = Depends(get_db)) -
 @router.get("/me", response_model=UserRead)
 async def read_current_user(current_user: User = Depends(get_current_user)) -> User:
     return current_user
+
+
+@router.delete("/me/account", status_code=status.HTTP_200_OK)
+async def delete_account(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Soft-delete: deactivates the account. Permanent deletion in 30 days (GDPR)."""
+    current_user.is_active = False
+    await db.commit()
+    return {
+        "message": (
+            "Cuenta marcada para eliminación. "
+            "Se borrará permanentemente en 30 días."
+        )
+    }

@@ -11,12 +11,23 @@ import { ProfileScreen } from './pages/ProfileScreen';
 import { PlacementScreen } from './pages/PlacementScreen';
 import { TracksScreen } from './pages/TracksScreen';
 import { AuthScreen } from './pages/AuthScreen';
+import { DeleteAccountScreen } from './pages/DeleteAccountScreen';
 import { Toast } from './components/common/Toast';
 import './styles/global.css';
+
+// URL-based routing for standalone pages (no React Router needed)
+if (window.location.pathname === '/delete-account') {
+  document.title = 'Eliminar cuenta — Whetzy';
+}
 
 type AuthState = 'checking' | 'unauthed' | 'authed';
 
 function App() {
+  // Standalone pages routed by URL path
+  if (window.location.pathname === '/delete-account') {
+    return <DeleteAccountScreen />;
+  }
+
   const currentScreen = useAppStore((s) => s.currentScreen);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const [authState, setAuthState] = useState<AuthState>(() =>
