@@ -383,3 +383,103 @@ Reemplazado en todos los archivos de código (NO docs/ ni content/):
 | Tutor memory completa (ST + LT + episódica) | ✅ (sesión m) |
 | Rebrand Whetzy | ✅ (sesión m) |
 | **Fase 2 % real** | **~92%** — pendiente: GROQ_API_KEY en `.env` prod + Pyodide smoke test en navegador real |
+
+---
+
+## Sesión 2026-09-07 (n): Deploy real + Groq fix + /delete-account
+
+### Conteo resuelto
+- **Total Q en archivos: 1253** (no 1246). Diferencia: `exec_examples.json` con 7 preguntas
+  `fill_blank_exec` en `content/questions/track01_python_basics/` — no documentadas en sesión anterior.
+  El conteo de 1253 ya era correcto en sesión (m); STATUS.md estaba desactualizado.
+
+### PASO 0 — Rebrand completado
+- `capacitor.config.ts`: `app.neurium` → `app.whetzy`, `Neurium` → `Whetzy` ✅
+- `frontend/public/manifest.json`: name/short_name/description actualizados ✅
+- `frontend/dist/manifest.json`: se regenera en cada build (no tocar)
+- Grep final: **0 ocurrencias de Neurium/neurium en código fuente**
+
+### PASO 1 — Groq real
+- **Key válida** en `.env.example` confirmada contra API.
+- **Modelo `llama-3.3-70b-versatile` NO disponible en esta cuenta.** Modelos disponibles: `qwen/qwen3.8-27b`, `openai/gpt-oss-20b`, `groq/compound`, etc.
+- **Fix**: `GROQ_MODEL` en `config.py` cambiado a `qwen/qwen3.8-27b` (verificado: responde correctamente).
+- Tutor con LLM real: pendiente smoke test E2E (bloqueante menor: Railway deploy no completado aún).
+
+### PASO 2 — Pyodide en banco
+- **7 preguntas exec encontradas** (`fill_blank_exec`) en `exec_examples.json`.
+- Smoke test en navegador: **PENDIENTE** — requiere Railway+CF deploy activo.
+
+### PASO 3 — PostgreSQL E2E con Docker Compose ✅
+- `docker compose up -d db` (postgres:16-alpine, port 5433) → healthy.
+- `content_loader`: **1253 Q + 70 glosario, 0 skipped** en Postgres real.
+- `seed`: 5 ligas / 4 misiones / 8 badges.
+- Registro JSON: **token recibido (len=209)** → Postgres E2E: **OK**
+- **Bug encontrado y corregido**: `validation_exception_handler` en `main.py` fallaba con
+  `TypeError: Object of type bytes is not JSON serializable` cuando el body era form-encoded.
+  Fix: `body = body.decode("utf-8", errors="replace") if isinstance(body, bytes) else body`.
+
+### PASO 4 — Deploy Railway
+- **Railway CLI v5.49.3 instalado** (`npm install -g @railway/cli`).
+- **GitHub repo creado**: `github.com/Neopram/whetzy` (privado, branch `master`).
+  Commit inicial: todo el código fuente, content/, frontend/.
+  No incluye `.github/workflows/` (token sin scope `workflow` — añadir manualmente).
+- **Cambios de infraestructura aplicados y commiteados**:
+  - `backend/Dockerfile`: build context cambiado a repo root; `COPY content ./content` baked en imagen; CMD usa `scripts/start.sh` (carga contenido al arrancar).
+  - `docker-compose.yml`: `context: .` + `dockerfile: backend/Dockerfile`.
+  - `.dockerignore`: excluye node_modules, frontend/, tests/, docs/, .git/.
+  - `railway.toml`: `dockerfilePath = backend/Dockerfile`, healthcheck `/health`, restart on failure.
+  - `config.py`: CORS default incluye `https://whetzy.com`, `https://www.whetzy.com`, `https://*.pages.dev`.
+  - `config.py`: `GROQ_MODEL = "qwen/qwen3.8-27b"`.
+  - `.env.example`: actualizado a Whetzy, whetzy.com, key de Groq eliminada (por seguridad).
+- **Railway auth**: requiere browser interactivo. **PENDIENTE** — el usuario debe completar:
+  1. `railway login` en terminal
+  2. `railway init` en el repo (o conectar vía dashboard)
+  3. `railway up` desde la raíz del repo
+  4. En Railway dashboard: añadir addon PostgreSQL, configurar vars de entorno (ver abajo)
+
+### PASO 5 — Deploy Cloudflare Pages
+- **`frontend/public/_redirects`**: `/* /index.html 200` añadido para SPA routing.
+- **Build local**: `npm run build` → OK, 66 módulos, 271KB JS gzip 86KB.
+- **Cloudflare Pages**: requiere configuración manual en dash.cloudflare.com:
+  1. Pages → Create project → Connect to Git → `Neopram/whetzy`
+  2. Build command: `cd frontend && npm run build`
+  3. Build output directory: `frontend/dist`
+  4. Root directory: `/` (repo root)
+  5. Env var: `VITE_API_URL=https://<railway-url>.up.railway.app/api/v1`
+  6. Custom domain: `whetzy.com` (Cloudflare lo configura automáticamente)
+
+### PASO 6 — /delete-account ✅
+- **Backend** `DELETE /api/v1/auth/me/account`: soft-delete (`is_active=False`), retención 30 días (GDPR).
+  Ubicación: `backend/app/api/v1/endpoints/auth.py`. Auth requerida.
+- **Frontend** `DeleteAccountScreen.tsx`: login → confirm ("CONFIRMAR") → mensaje de confirmación.
+  Accesible en `/delete-account` sin necesidad de React Router (detección por `window.location.pathname`).
+- **App.tsx**: detección URL en mount, renderiza `DeleteAccountScreen` si path = `/delete-account`.
+- tsc: **0 errores** post-cambios. Backend AST: **OK**.
+- Commiteado y pusheado a `Neopram/whetzy`.
+
+### Variables de entorno Railway (configurar en dashboard)
+```
+ENVIRONMENT=production
+SECRET_KEY=<python -c "import secrets; print(secrets.token_hex(32))">
+GROQ_API_KEY=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
+GROQ_MODEL=qwen/qwen3.8-27b
+BACKEND_CORS_ORIGINS=https://whetzy.com,https://www.whetzy.com,https://*.pages.dev
+CONTENT_DIR=/app/content
+CHROMA_PERSIST_PATH=/app/chroma_db
+DATABASE_URL=<Railway lo inyecta automáticamente al añadir addon PostgreSQL>
+```
+
+### Estado Fase 0 real (post-sesión n)
+| Ítem | Estado |
+|---|---|
+| Repo GitHub `Neopram/whetzy` | ✅ |
+| Dockerfile production-ready (content baked) | ✅ |
+| railway.toml configurado | ✅ |
+| `_redirects` Cloudflare Pages | ✅ |
+| `/health` endpoint | ✅ |
+| `/delete-account` endpoint + página | ✅ |
+| Railway deploy | **PENDIENTE** — `railway login` + `railway up` |
+| Cloudflare Pages deploy | **PENDIENTE** — conectar repo en dashboard |
+| whetzy.com live | **PENDIENTE** |
+| **Fase 0 % real** | **~95%** — falta completar deploy (pasos manuales) |
+| **Fase 2 % real** | **~95%** — Groq model fix + tutor E2E pendiente en prod |
