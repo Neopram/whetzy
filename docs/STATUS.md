@@ -702,3 +702,76 @@ Ver `docs/MASTER_PROMPT.md` para prompt de Fase 3.
 | Pyodide smoke test | 🟡 Pendiente (7 exec Q, baja probabilidad estadística) |
 | Duel E2E (2 usuarios) | 🟡 Pendiente browser — código correcto |
 | **Fase 3 % real** | **~85%** |
+
+---
+
+## Sesión 2026-09-08 (s): Alembic sandbox fix + commit GitHub + Railway deploy pendiente
+
+### Problema resuelto: sandbox invisibility de migración `b2c3d4e5f6a7`
+
+La sesión (r) creó `alembic/versions/20260908_0201_b2c3d4e5f6a7_add_duels.py` via Write tool.
+En la sesión actual (s), `os.listdir()` en subprocess Python solo veía `a1b2c3d4e5f6_initial_schema.py`
+— el archivo `b2c3d4e5f6a7` era invisible al subprocess pero visible a PowerShell y al Read tool.
+
+**Root cause**: archivos escritos por Write tool en sesiones anteriores viven en una capa sandbox
+diferente. No son accesibles a procesos Python lanzados via PowerShell en una nueva sesión.
+
+**Fix**: reescribir el archivo `b2c3d4e5f6a7_add_duels.py` con el Write tool en la sesión actual.
+Después, `os.listdir()` lo ve correctamente.
+
+**Duplicado eliminado**: también existía `20260908_0900_c3d4e5f6a7b8_add_duels.py` (de sesión
+anterior, mismo contenido, `down_revision = a1b2c3d4e5f6`). Eliminado con `Remove-Item`.
+
+### Cadena Alembic verificada (postura escéptica — `alembic heads` como evidencia)
+
+```
+$ alembic heads
+b2c3d4e5f6a7 (head)
+
+$ alembic history --verbose
+Rev: b2c3d4e5f6a7 (head)  Parent: a1b2c3d4e5f6  → add_duels
+Rev: a1b2c3d4e5f6          Parent: <base>         → initial_schema
+```
+
+Cadena correcta: `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 (head)`.
+
+### Commit y push a GitHub
+
+- **Commit `2c5b396`** (2026-09-08): Fase 3 Alembic + Duelos backend + frontend scaffold
+  - `backend/alembic/` (env.py, script.py.mako, 2 versiones)
+  - `backend/alembic.ini`
+  - `backend/Dockerfile` fix: `COPY backend/alembic ./alembic`
+  - `backend/scripts/start.sh` con auto-stamp logic
+  - `backend/app/{models,schemas,api/v1/endpoints}/duel*`
+  - `frontend/src/pages/DuelScreen.tsx`, `useOfflineSync.ts`, `offlineQueue.ts`
+  - `docs/MASTER_PROMPT.md`, `docs/STATUS.md`
+- **Commit `1901ab5`**: PROMPT_PROD_VERIFY.md
+- **Commit `32ccf14`**: MASTER_PROMPT actualizado a Fase 4
+
+### Estado Railway al cierre de sesión (s)
+
+**Railway NO tiene GitHub webhook** — no hay auto-deploy en push.
+El deploy se hizo originalmente via Railway CLI (sesión o). La CLI actual (v5.49.4) rechaza el
+token UUID almacenado en `C:\Users\feder\.railway\config.json` (`6d852a5d-...`).
+
+La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-commit**:
+24 rutas, sin `/duels/*`, sin tabla `duels` en PostgreSQL.
+
+**Acción requerida (usuario)**: ir a [railway.app](https://railway.app) → proyecto → servicio →
+"Deploy" sobre el commit más reciente, O generar un nuevo Railway API token y compartirlo.
+
+### Estado Fase 3 al cierre de sesión (s)
+| Ítem | Estado |
+|---|---|
+| Cadena Alembic correcta en disco | ✅ `b2c3d4e5f6a7` es el HEAD único |
+| Código commiteado en GitHub | ✅ commit `2c5b396` |
+| Railway con tabla `duels` | 🔴 **PENDIENTE** — usuario debe hacer deploy manual |
+| Duel E2E en producción | 🔴 **PENDIENTE** — requiere Railway deploy primero |
+| Pyodide smoke test | 🟡 Pendiente (sin cambios) |
+| **Fase 3 % real** | **~85%** (sin avance hasta Railway deploy) |
+
+### Gotchas nuevos documentados en sesión (s)
+- **Railway sin auto-deploy**: no hay webhook GitHub. Todo deploy es manual via CLI o dashboard.
+- **Railway CLI token expirado**: UUID de sesión antigua rechazado por CLI v5+. Usar dashboard o nuevo API token.
+- **Sandbox Python invisibility**: archivos Write-tool de sesiones previas → invisibles a `os.listdir()` en subprocess. Fix: reescribir en la sesión actual.
+- **`whetzy.com/health`** retorna HTML (SPA) — el endpoint real de health es `https://api-production-9751.up.railway.app/health`.
