@@ -1,4 +1,4 @@
-# Prompt: Fase 3 — Gamificación extendida + PWA offline
+# Prompt: Fase 4 — DKT + Churn + Pyodide E2E + Duel E2E
 
 > Sesión nueva. Lee este prompt completo antes de ejecutar cualquier comando.
 > Postura: escéptica. STATUS.md puede estar desactualizado — la fuente de verdad
@@ -7,21 +7,22 @@
 
 ---
 
-## CONTEXTO — estado verificado al cierre de sesión (q)
+## CONTEXTO — estado verificado al cierre de sesión (r)
 
 URLs en producción (todas verificadas con HTTP real el 2026-09-08):
 - **Backend Railway**: `https://api-production-9751.up.railway.app`
 - **Frontend CF Pages**: `https://whetzy.pages.dev`
 - **Dominio**: `whetzy.com` — LIVE ✅ (IPs 104.21.84.249 / 172.67.199.229, title "Whetzy")
 
-### Estado de fases verificado (HTTP real, no STATUS.md)
+### Estado de fases verificado al cierre de sesión (r)
 
 | Fase | % | Estado |
 |------|---|--------|
-| 0 | **100%** | ✅ CERRADA — backend + Pages + whetzy.com live |
+| 0 | **100%** | ✅ CERRADA |
 | 1 | **100%** | ✅ CERRADA — 1253 Q, 70 glosario, currículo gated BKT |
-| 2 | **98%** | Groq E2E `provider=groq` ✅; Pyodide no browser-tested (7/1253 exec Q, motor no las seleccionó) |
-| 3 | **45%** | Gamificación real (ligas/badges/misiones/XP); falta multiplayer, offline, Lottie |
+| 2 | **98%** | Groq E2E `provider=groq` ✅; Pyodide no browser-tested |
+| 3 | **85%** | Duelos backend ✅ + DuelScreen ✅ + Lottie ✅ + offline badge ✅; Duel E2E browser + Pyodide smoke test pendientes |
+| 4 | **8%** | Solo motor base (FSRS/Elo/BKT/bandit) |
 
 ### Notas de gotcha (no las redescubras)
 
@@ -29,222 +30,166 @@ URLs en producción (todas verificadas con HTTP real el 2026-09-08):
 |---|---|
 | Backend prod | `https://api-production-9751.up.railway.app` — PostgreSQL real |
 | GROQ_MODEL | `qwen/qwen3.8-27b` — `llama-3.3-70b-versatile` NO disponible |
-| Quiz start response | `{session_id, mode, question: {id, ...}, reviews_due}` — el question_id está en `.question.id`, no en `.id` top-level |
-| Quiz answer | Requiere `question_id`, `session_id`, `selected_index`, `response_time_ms` |
-| Glosario | `GET /glossary/track01` — track_id = string `"track01"` |
-| ChromaDB / sentence-transformers | Eliminados (OOM Railway free tier). RAG retorna `[]`. Groq llama igual, sin contexto RAG. |
-| Alembic | **BLOQUEANTE CRÍTICO**: prod usa `create_all`. Antes de cualquier cambio de schema, inicializar Alembic. |
-| Pyodide | 7 preguntas exec en banco (exec_examples.json, track01). Motor BKT/Elo las selecciona raramente. |
+| Quiz start response | `.question.id` — no `.id` top-level |
+| Quiz answer | `{session_id, question_id, selected_index, response_time_ms}` |
+| DB local | `postgresql+asyncpg://neurium:neurium_dev@localhost:5433/neurium` (Docker via WSL) |
+| Alembic | ✅ INICIALIZADO: `backend/alembic/` con 2 revisions (a1b2c3d4e5f6 → b2c3d4e5f6a7). `start.sh` auto-stamp seguro en prod. |
+| Duelos schema | Tabla `duels` creada por migration `b2c3d4e5f6a7`. start.sh → alembic upgrade head en cada deploy. |
+| ChromaDB/sentence-transformers | Eliminados (OOM Railway free tier). RAG retorna `[]`. |
+| Pyodide | 7 preguntas exec en banco (`exec_examples.json`, track01). Motor BKT/Elo rara vez las selecciona (0.6%). |
+| Lottie | `@lottiefiles/react-lottie-player` instalado. correct/incorrect/streak.json en `frontend/public/lottie/`. |
 
 ---
 
-## BLOQUEANTE TÉCNICO ANTES DE EMPEZAR: Alembic
-
-El backend usa `create_all` para inicializar schema en producción. Esto es bloqueante para Fase 3 porque añadirás columnas nuevas (duelos, sync offline).
-
-### PASO 0 — Alembic init + primera migration
+## PASO 0 — Verificación de estado antes de empezar (OBLIGATORIO)
 
 ```bash
-cd python/learning-engine/backend
-pip install alembic  # probablemente ya instalado en requirements.txt
+# 1. Health check backend prod
+curl -s https://api-production-9751.up.railway.app/health
+
+# 2. Railway ha redesplegado con el nuevo start.sh (Alembic)
+# El log debe mostrar: "[start] alembic upgrade head..." sin errores
+# Verifica en Railway dashboard → Deployments → logs del último deploy
+
+# 3. tsc sin errores locales
+cd python/learning-engine/frontend && npx tsc --noEmit
+
+# 4. backend AST OK
+cd python/learning-engine/backend && python -c "import app.main"
 ```
 
-Verifica que `alembic` está en `requirements.txt`. Si no:
-```bash
-echo "alembic" >> requirements.txt
-```
-
-Inicializa Alembic:
-```bash
-alembic init alembic
-```
-
-Edita `alembic/env.py`:
-- Importa los modelos: `from app.models import user, gamification, session, content`
-- Set `target_metadata = Base.metadata` (Base de `app.core.database`)
-- Set `sqlalchemy.url` desde `config.DATABASE_URL` (o usa la variable de entorno)
-
-Genera la primera migration desde el schema actual:
-```bash
-alembic revision --autogenerate -m "initial_schema"
-alembic upgrade head  # en local con SQLite primero
-```
-
-Prueba en Postgres local:
-```bash
-# En docker-compose: postgres en puerto 5433
-DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5433/whetzy" alembic upgrade head
-```
-
-**Criterio**: `alembic upgrade head` sin errores en Postgres local. Sube el cambio a GitHub. Railway se redeploya — verifica `/health` 200 tras redeploy.
+Criterio de continuación: health 200 + tsc 0 errores + AST OK. Si hay errores, arrégralos antes de continuar.
 
 ---
 
-## FASE 3 — Gamificación extendida + PWA offline
+## PASO 1 — Pyodide smoke test (pendiente desde Fase 2)
 
-### PASO 1 — Duelos (multiplayer 1v1 asíncrono)
+La forma más barata de verificarlo es forzar una pregunta exec via API directamente:
 
-**Spec mínimo shippable:**
-- Un usuario reta a otro por username.
-- Ambos responden el mismo quiz de 5 preguntas (mismas Q, orden aleatorio por sesión).
-- Cuando ambos terminen: ganador = más respuestas correctas (desempate: tiempo total).
-- Notificación en home: "¡Tienes un duelo pendiente!" / "¡Ganaste el duelo contra X!"
-
-**Backend** (nuevo endpoint batch en `backend/app/api/v1/endpoints/`):
-```
-POST /api/v1/duels/challenge   {opponent_username: str} → duel_id
-GET  /api/v1/duels/my          → lista de duelos activos/finalizados
-POST /api/v1/duels/{id}/answer {question_id, selected_index, response_time_ms} → feedback parcial
-GET  /api/v1/duels/{id}/result → resultado final (solo disponible si ambos completaron)
-```
-
-**Schema** (nueva tabla, Alembic migration requerida):
-```python
-class Duel(Base):
-    id: UUID (PK)
-    challenger_id: FK User
-    opponent_id: FK User
-    skill_id: str
-    question_ids: JSON (lista de 5 Q IDs)
-    challenger_answers: JSON | None
-    opponent_answers: JSON | None
-    challenger_completed_at: datetime | None
-    opponent_completed_at: datetime | None
-    winner_id: FK User | None
-    status: enum("pending", "in_progress", "completed")
-    created_at: datetime
-```
-
-**Frontend** (`DuelScreen.tsx`):
-- Tab en bottom-nav (ícono ⚔️).
-- Lista de duelos + botón "Retar a alguien".
-- Quiz de duelo = QuizScreen adaptado (sin adaptación BKT, mismas Q fijas).
-- Pantalla de resultado: avatar ganador, XP ganado (+50 si ganas, +10 si pierdes).
-
-**Criterio P1**: `POST /duel/challenge` → 201, `GET /duel/{id}/result` → ganador correcto tras simular dos respuestas distintas.
-
----
-
-### PASO 2 — PWA offline (Service Worker + IndexedDB sync)
-
-**Spec mínimo shippable:**
-- El usuario puede hacer quiz sin conexión.
-- Las respuestas se guardan en IndexedDB local.
-- Al reconectar, se envían al backend (sync background).
-- Indicador visual en TopBar: "Sin conexión — sincronizando..." / "Sincronizado ✅".
-
-**Service Worker** (`frontend/public/sw.js` — ya existe, ampliar):
-- Cache-first para assets estáticos (JS, CSS, fonts).
-- Network-first con fallback cache para `/api/v1/quiz/start` y `/api/v1/quiz/answer`.
-- Background sync API (`SyncManager`) para respuestas offline.
-
-**IndexedDB** (`frontend/src/services/offlineQueue.ts`):
-```typescript
-interface PendingAnswer {
-  id: string;            // UUID local
-  questionId: string;
-  sessionId: string;
-  selectedIndex: number;
-  responseTimeMs: number;
-  timestamp: number;
-}
-```
-
-**Sync logic** (`frontend/src/hooks/useOfflineSync.ts`):
-- `navigator.onLine` listener → al reconectar, `POST /quiz/answer` batch.
-- `BackgroundSync` API si disponible (Chrome).
-
-**Criterio P2**: desconectar red (DevTools → offline) → responder una pregunta → reconectar → verificar en backend que la respuesta llegó.
-
----
-
-### PASO 3 — Animaciones Lottie
-
-**Spec mínimo**: feedback inmediato en QuizScreen con Lottie.
-
-Instalar en frontend:
 ```bash
-cd frontend && npm install @lottiefiles/react-lottie-player
+# Registra un usuario de test
+TOKEN=$(curl -s -X POST https://api-production-9751.up.railway.app/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"pyodide_test@whetzy.dev","username":"pyodide_test","display_name":"Pyodide Test","password":"Test1234!","language":"es"}' \
+  | python -c "import sys,json; d=json.load(sys.stdin); print(d.get('access_token','ERR'))")
+
+# Inicia quiz forzando skill con exec questions
+curl -s -X POST https://api-production-9751.up.railway.app/api/v1/quiz/start \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"mode":"study","skill_id":"sk010101_exec"}'
 ```
 
-Animaciones a añadir:
-- Respuesta correcta: checkmark verde (✅) — `public/lottie/correct.json`
-- Respuesta incorrecta: X roja (❌) — `public/lottie/incorrect.json`
-- Racha ×3: fuego (🔥) — `public/lottie/streak.json`
-- Subida de liga: confetti — `public/lottie/league-up.json`
+Si el motor no sirve exec Qs via API, verifica en browser local (localhost:5199):
+1. Registra usuario → ESTUDIAR AHORA → responde 10+ preguntas de track01
+2. Monitorea F12 → Network → busca `quiz/start` con `type: "fill_blank_exec"`
+3. Si aparece: verifica que el input de código se renderiza sin error de consola
 
-Usar animaciones de Lottie Files (licencia libre, por ejemplo de `lottiefiles.com/featured`).
-
-Integrar en `QuizScreen.tsx`:
-```tsx
-import { Player } from '@lottiefiles/react-lottie-player';
-
-// Tras recibir feedback:
-{feedback.is_correct && <Player src="/lottie/correct.json" autoplay loop={false} style={{width: 120}} />}
-```
-
-**Criterio P3**: animación visible en browser al responder correcto/incorrecto.
+**Criterio P-pyodide**: pregunta `fill_blank_exec` aparece en browser + F12 Console limpia.
 
 ---
 
-### PASO 4 — Pyodide smoke test (pendiente desde Fase 2)
+## PASO 2 — Duel E2E en browser (pendiente de sesión r)
 
-Para forzar una pregunta exec sin esperar al motor aleatorio:
+El backend de duelos está completo. Falta verificar el flujo completo con 2 usuarios:
 
-**Backend** — endpoint temporal de debug (solo en ENVIRONMENT=development):
-```python
-# quiz.py: añadir opción de forzar tipo
-POST /api/v1/quiz/start {"skill_id": "sk010101", "force_type": "fill_blank_exec"}
-```
+1. En localhost:5199, regístrate como `user_a` (ya lo tienes de sesión r: `testuser01`)
+2. Registra `user_b` (segundo browser/incógnito)
+3. Desde `user_a`: tab ⚔️ → "Retar" → username `user_b` → confirmar
+4. Verifica: `POST /duels/challenge` → 201, `duel_id` en respuesta
+5. En `user_b`: tab ⚔️ → aparece el duelo → responde las 5 preguntas
+6. En `user_a`: responde las 5 preguntas
+7. `GET /duels/{duel_id}/result` → `status: "completed"`, `winner_id` correcto
 
-O alternativamente: abre `whetzy.pages.dev` en browser real, regístrate, responde 20-30 preguntas en track01 skills básicas hasta que el motor presente una exec.
+**Criterio P-duel**: flujo completo challenge→answer→result verificado en browser.
 
-**Criterio P4**: una pregunta `fill_blank_exec` ejecutada en browser real sin error de consola (F12 → Console limpia).
+---
+
+## PASO 3 — DKT (Deep Knowledge Tracing) — núcleo de Fase 4
+
+El motor actual usa BKT (Hidden Markov). DKT reemplaza/complementa con una LSTM que aprende
+secuencias de interacciones.
+
+### Spec mínimo (Python puro, sin entrenamiento en tiempo real)
+
+**Modelo preentrenado** (`backend/app/services/engine/dkt.py`):
+- LSTM simple (PyTorch/sklearn) preentrenada offline sobre datos sintéticos.
+- Input: secuencia `[(skill_id, correct)]` por usuario.
+- Output: `p_correct[skill_id]` para el siguiente ítem.
+- Fallback limpio a BKT si PyTorch no disponible.
+
+**Integración**:
+- `UserSkillState` mantiene un campo JSON `dkt_hidden_state` (estado oculto serializado).
+- En `quiz.py` → `submit_answer`: actualizar DKT state + BKT (híbrido).
+- Usar `p_correct` de DKT como señal adicional en selección de skill (promedio con BKT `p_known`).
+
+**Sin entrenamiento real** (fuera de scope ahora):
+- Usa pesos iniciales (Xavier uniform) o pesos aleatorios fijos.
+- El objetivo es tener la arquitectura lista para reemplazar pesos cuando haya datos reales.
+- Criterio: no crash, `p_correct` en [0, 1], fallback a BKT si falla.
+
+**Criterio P-dkt**: `POST /quiz/answer` devuelve campo `dkt_p_correct: float | null` en la respuesta. Valor en [0, 1].
+
+---
+
+## PASO 4 — Churn predictor
+
+### Spec mínimo (regresión logística sin ML externo)
+
+**Features** (calculables desde la DB sin joins complejos):
+- `days_since_last_active`: días desde `user.last_active`.
+- `sessions_last_7d`: conteo de `StudySession` en los últimos 7 días.
+- `avg_accuracy_last_10`: accuracy promedio de las últimas 10 respuestas.
+- `streak_current`: racha actual.
+
+**Modelo** (`backend/app/services/ml/churn.py`):
+- Regresión logística con coeficientes fijos (heurística validada, no entrenada).
+- `churn_risk: float` (0 = safe, 1 = at risk).
+- Si `churn_risk > 0.7`: flag al dashboard.
+
+**Dashboard** (`GET /api/v1/progress/dashboard`):
+- Añadir campo `churn_risk: float | null` (null si no hay suficientes datos).
+- **Schema change → Alembic migration requerida** si añades columna a `users`.
+  Alternativa: calcular en runtime sin columna nueva.
+
+**Criterio P-churn**: `GET /progress/dashboard` devuelve `churn_risk` en [0, 1].
 
 ---
 
 ## PASO 5 — Actualiza STATUS.md
 
-Formato para sesión (r):
+Formato para sesión (s):
 ```markdown
-## Sesión 2026-09-08 (r): Fase 3 — [lo que se haya completado]
+## Sesión 2026-09-08 (s): Fase 4 — DKT + Churn + Pyodide E2E + Duel E2E
 
-### Alembic
-- Init + primera migration: [OK / pendiente]
-- Upgrade head en Postgres local: [OK / error]
-- Railway redeploy: [OK / pendiente]
+### PASO 0 — Verificación estado
+...
 
-### Duelos
-- Backend endpoints: [OK / parcial / no]
-- Schema migration: [OK / pendiente]
-- Frontend DuelScreen: [OK / parcial / no]
-- E2E: [OK / no]
+### Pyodide smoke test
+...
 
-### PWA Offline
-- Service Worker ampliado: [OK / no]
-- IndexedDB queue: [OK / no]
-- Sync al reconectar: [OK / no]
+### Duel E2E
+...
 
-### Lottie
-- Animaciones integradas: [OK / no]
+### DKT
+...
 
-### Pyodide
-- Smoke test browser: [verificado / no — razón]
+### Churn
+...
 
-### Fase 3 % real: [%]
+### Fase 4 % real: [%]
 ```
 
 ---
 
 ## ENTREGABLE FINAL DE ESTA SESIÓN
 
-1. **Alembic funcional**: `alembic upgrade head` en Postgres sin errores ✅ / pendiente
-2. **Duelos MVP**: challenge + answer + result E2E ✅ / parcial
-3. **PWA offline**: quiz offline → sync al reconectar ✅ / parcial
-4. **Lottie**: animación en QuizScreen ✅ / no
-5. **Pyodide**: smoke test en browser ✅ / no verificado
-6. **STATUS.md actualizado** con sesión (r) y % real de Fase 3
-7. **Prompt para Fase 4** al cierre
+1. **Pyodide**: pregunta `fill_blank_exec` en browser sin error de consola ✅ / no verificado
+2. **Duel E2E**: challenge → answer × 2 usuarios → result correcto ✅ / parcial
+3. **DKT arquitectura**: `dkt_p_correct` en `/quiz/answer` response ✅ / no
+4. **Churn predictor**: `churn_risk` en `/progress/dashboard` ✅ / no
+5. **STATUS.md actualizado** con sesión (s) y % real
+6. **Prompt para Fase 5** al cierre
 
 ---
 
@@ -253,5 +198,6 @@ Formato para sesión (r):
 - Verifica en el orden más barato: curl → browser → logs
 - Nunca declares "verificado" sin haber visto la salida del comando
 - Si algo no lo comprobaste: escribe "no verificado — [razón]"
-- Alembic PRIMERO — ningún cambio de schema sin migration
+- Alembic PRIMERO para cualquier cambio de schema
 - Model routing: Sonnet para todo. No Opus.
+- `start.sh` ya tiene auto-stamp + alembic upgrade head — no romperlo
