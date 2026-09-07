@@ -413,3 +413,82 @@ export const gamification = {
     return request<UserBadgeWithDetail[]>('/badges');
   },
 };
+
+export interface DuelChallengeRequest {
+  opponent_username: string;
+  skill_id?: string;
+}
+
+export interface DuelChallengeResponse {
+  duel_id: string;
+  skill_id: string;
+  questions: QuestionPublic[];
+  opponent_username: string;
+}
+
+export interface DuelAnswerRequest {
+  question_id: string;
+  selected_index: number;
+  response_time_ms: number;
+}
+
+export interface DuelAnswerResponse {
+  duel_id: string;
+  answers_so_far: number;
+  completed: boolean;
+  opponent_completed: boolean;
+}
+
+export interface DuelPlayerResult {
+  user_id: string;
+  username: string;
+  display_name: string;
+  avatar_emoji: string;
+  correct: number;
+  total_time_ms: number;
+}
+
+export interface DuelResultResponse {
+  duel_id: string;
+  status: string;
+  skill_id: string;
+  challenger: DuelPlayerResult;
+  opponent: DuelPlayerResult;
+  winner_id: string | null;
+  is_draw: boolean;
+  created_at: string;
+}
+
+export interface DuelSummary {
+  duel_id: string;
+  status: string;
+  skill_id: string;
+  opponent_username: string;
+  opponent_avatar: string;
+  your_correct: number | null;
+  opponent_correct: number | null;
+  winner_id: string | null;
+  is_your_turn: boolean;
+  created_at: string;
+}
+
+export const duels = {
+  async challenge(payload: DuelChallengeRequest) {
+    return request<DuelChallengeResponse>('/duels/challenge', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+  async my() {
+    return request<DuelSummary[]>('/duels/my');
+  },
+  async answer(duelId: string, payload: DuelAnswerRequest) {
+    return request<DuelAnswerResponse>(`/duels/${duelId}/answer`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+  async result(duelId: string) {
+    return request<DuelResultResponse>(`/duels/${duelId}/result`);
+  },
+};

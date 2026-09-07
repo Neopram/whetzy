@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
 import { quiz as quizApi, tutor as tutorApi, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
 import { ProgressBar } from '../components/common/ProgressBar';
@@ -43,6 +44,7 @@ export function QuizScreen() {
   const [submitting, setSubmitting] = useState(false);
   const [tutorText, setTutorText] = useState<string | null>(null);
   const [tutorLoading, setTutorLoading] = useState(false);
+  const [lottieSrc, setLottieSrc] = useState<string | null>(null);
 
   // Exec-type state
   const [userInput, setUserInput] = useState('');
@@ -119,6 +121,8 @@ export function QuizScreen() {
         setFeedback(res);
         setCombo(res.combo);
         setXpEarned((x) => x + res.xp_earned);
+        setLottieSrc(res.combo >= 3 ? '/lottie/streak.json' : res.correct ? '/lottie/correct.json' : '/lottie/incorrect.json');
+        setTimeout(() => setLottieSrc(null), 1400);
         if (res.correct) {
           showToast(`+${res.xp_earned} XP${res.combo >= 3 ? ` · combo ${res.combo}🔥` : ''}`, 'success');
         } else {
@@ -461,6 +465,16 @@ export function QuizScreen() {
                   : `▶ ${L.runToVerify}`}
             </button>
           )}
+        </div>
+      )}
+
+      {lottieSrc && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          pointerEvents: 'none', zIndex: 999,
+        }}>
+          <Player src={lottieSrc} autoplay loop={false} style={{ width: 160, height: 160 }} />
         </div>
       )}
 
