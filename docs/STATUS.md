@@ -19,9 +19,9 @@ no el spec maximalista completo.
 
 | Fase | Área | % | Estado |
 |------|------|---|--------|
-| 0 | Rebrand + Auth + Wire + Deploy-ready | **90%** | ✅ Real y verificado |
+| 0 | Rebrand + Auth + Wire + Deploy-ready | **100%** | ✅ Backend+Pages+whetzy.com live — CERRADA (re-verificado sesión q) |
 | 1 | Contenido bilingüe + glosarios + currículo gated | **100%** | ✅ Tracks 01-07 completos + glosario bilingüe (70 términos) + currículo gated (BKT) — verificado |
-| 2 | Tutor AI (Groq) + RAG | **85%** | 🟡 Groq wired + ChromaDB RAG; GROQ_API_KEY pendiente de configurar |
+| 2 | Tutor AI (Groq) + RAG | **98%** | ✅ Groq E2E verificado en prod (`provider=groq`); Pyodide no browser-tested |
 | 3 | Gamificación + multiplayer + offline + animaciones | **45%** | 🟡 Gamificación real; multiplayer/offline no |
 | 4 | DKT + churn + MLOps | **8%** | 🔴 Solo el motor base (FSRS/Elo/BKT/bandit) |
 | 5 | Pipeline multi-agente + analytics | **3%** | 🔴 No construido |
@@ -483,3 +483,135 @@ DATABASE_URL=<Railway lo inyecta automáticamente al añadir addon PostgreSQL>
 | whetzy.com live | **PENDIENTE** |
 | **Fase 0 % real** | **~95%** — falta completar deploy (pasos manuales) |
 | **Fase 2 % real** | **~95%** — Groq model fix + tutor E2E pendiente en prod |
+
+---
+
+## Sesión 2026-09-08 (o): Deploy completo en producción
+
+### URLs en producción
+- Backend: `https://api-production-9751.up.railway.app` (Railway)
+- Frontend: `https://whetzy.pages.dev` (Cloudflare Pages)
+- Dominio: `whetzy.com` — registrado en Cloudflare, DNS propagando al cierre de sesión
+
+### Lo hecho en sesión (o)
+- **PostgreSQL crash-loop resuelto**: volumen Railway en `/var/lib/postgresql/data` (`8ed9741b`).
+- **ChromaDB y sentence-transformers eliminados** (OOM en Railway free tier) — RAG degrada limpiamente a `[]`.
+- **`content_loader`**: 1253 Q + 70 glosario cargados en Postgres prod.
+- **Gamification seed**: 5 ligas, 4 misiones, 8 badges.
+- **Railway deploy activo**: Service api `fb2dbcaa`, PostgreSQL `99a15fa3`, Project `45292163`.
+  Constructor: RAILPACK (pero `start.sh` detectado y ejecutado).
+- **CF Pages deploy** vía `wrangler pages deploy frontend/dist`. VITE_API_URL bakeado.
+- **`/health` 200**, registration, login, home, placement quiz — E2E verificado en browser.
+- **Custom domain `whetzy.com`**: añadido en CF Pages, DNS propagando.
+- **CORS configurado**: `["https://whetzy.com","https://www.whetzy.com","https://whetzy.pages.dev"]`.
+- **Bug fix**: `validation_exception_handler` bytes→str decode. `railway.toml` con `builder=DOCKERFILE`.
+
+### Estado Fase 0 al cierre de sesión (o)
+| Ítem | Estado |
+|---|---|
+| Backend Railway live | ✅ `/health` 200 |
+| Frontend CF Pages live | ✅ `whetzy.pages.dev` |
+| whetzy.com custom domain | 🟡 Añadido en CF Pages, DNS propagando |
+| **Fase 0 % real** | **~97%** — solo falta DNS `whetzy.com` |
+
+---
+
+## Sesión 2026-09-08 (p): Verificación en producción — cierre Fase 0 y Fase 2
+
+### PASO 0 — DNS whetzy.com
+- `Resolve-DnsName whetzy.com -Type A`: **sin A record** (solo SOA). DNS aún no propagado.
+- `https://whetzy.com`: HTTP **000** (connection refused).
+- **Conclusión**: DNS pendiente. Todos los pasos restantes ejecutados contra `whetzy.pages.dev`.
+- **Acción requerida (usuario)**: entrar a Cloudflare Dashboard → DNS → verificar que existe un CNAME `whetzy.com → whetzy.pages.dev`. Si no existe, crearlo manualmente (proxied).
+
+### PASO 1 — Health + Contenido + Auth (evidencia HTTP real)
+
+| Check | Resultado |
+|---|---|
+| `GET /health` | `{"status":"healthy"}` ✅ |
+| `GET /api/v1/glossary/track01` | **10 términos** (Variable, Mutability, Duck typing…) ✅ |
+| `POST /api/v1/auth/register` | HTTP **201**, token JWT recibido ✅ |
+| `POST /api/v1/quiz/start` sk010401 | `q010401005` type=`code_output` difficulty=`hard` ✅ |
+| `POST /api/v1/quiz/answer` (incorrect) | `correct=false`, `xp_earned=3`, explanation ES+EN, `source="Fluent Python 2e (Ramalho)"` ✅ |
+
+**Nota**: el endpoint `/api/v1/auth/register` requiere JSON con `email`, `username` (sin @, regex `^[a-zA-Z0-9_.-]+$`) y `display_name` — difiere del formato form-urlencoded documentado en el prompt anterior.
+
+### PASO 2 — Groq E2E en producción (CRÍTICO — verificado por primera vez)
+
+```
+POST /api/v1/tutor/explain {"question_id":"q010401005"}
+→ {"explanation":"Imprime `[1, 2, 3, 4]`.\n\nLa línea `b = a` no crea una copia...","provider":"groq","grounded":true,"times_missed":1}
+```
+
+- **`provider: groq`** ✅ — LLM real, no fallback
+- **Explanation**: 198 chars, contenido correcto sobre aliasing de listas
+- **`grounded: true`** ✅
+- **`times_missed: 1`** ✅ — memoria episódica funcionando en prod
+- **Modelo en uso**: `qwen/qwen3.8-27b` (configurado en Railway)
+
+### PASO 3 — Pyodide smoke test
+- **Exec questions en banco prod**: ✅ confirmado (`rglob("*.json")` incluye `exec_examples.json`, 7 preguntas `fill_blank_exec`)
+- **Motor de selección**: no presentó ninguna pregunta exec en esta sesión (7/1253 = 0.6% — baja probabilidad con usuario nuevo en modo BKT/Elo)
+- **Verificación en browser**: **no verificado** — requiere browser real con sesión activa larga para recibir pregunta exec
+- **Estado honesto**: Pyodide implementado correctamente (WebWorker + `usePyodide.ts` + `QuizScreen.tsx`), exec Q en DB, no verificado en browser en esta sesión
+
+### PASO 4 — Title / Frontend
+- `https://whetzy.pages.dev`: HTTP **200** ✅
+- `<title>`: **Whetzy** ✅ (no "Neurium", no "Vite App")
+
+### Deuda técnica — BLOQUEANTE antes de Fase 3
+
+**Alembic migrations**: el backend usa `create_all` para inicializar el schema en producción.
+- Seguro en el estado actual (0 usuarios reales, primer deploy).
+- **Bloqueante cuando** añadas columnas en Fase 3+ (e.g. campos de gamificación extendida, duelos).
+- **Acción requerida antes de Fase 3**: migrar a Alembic con `alembic init` + primera migration desde schema actual.
+
+### Estado final verificado (sesión p)
+
+| Fase | Área | % real | Evidencia |
+|------|------|--------|-----------|
+| **0** | Rebrand + Auth + Wire + Deploy | **100%** | ✅ CERRADA — whetzy.com 200, title "Whetzy", IPs Cloudflare |
+| **1** | Contenido bilingüe + glosarios + currículo | **100%** | ✅ Cerrado sesión k |
+| **2** | Tutor AI (Groq) + RAG | **98%** | `provider=groq` verificado en prod; Pyodide no browser-tested |
+
+### Criterio para Fase 0 = 100%
+**CUMPLIDO** — `whetzy.com` → 104.21.84.249 / 172.67.199.229 (Cloudflare IPs), HTTP 200, title "Whetzy". CNAME `@` + `www` → `whetzy.pages.dev` (proxied) añadidos manualmente en CF Dashboard.
+
+### Criterio para Fase 2 = 100%
+Pyodide: abrir `whetzy.pages.dev` en browser real → recibir pregunta `fill_blank_exec` → ejecutar → output correcto sin error de consola.
+(Puede requerir varias sesiones de quiz para que el motor seleccione una de las 7 exec Q.)
+
+---
+
+## Sesión 2026-09-08 (q): Re-verificación en producción — confirmación estado
+
+### Re-verificación HTTP real (postura escéptica — no confiamos en STATUS.md previo)
+
+| Check | Resultado | Evidencia |
+|---|---|---|
+| `Resolve-DnsName whetzy.com -Type A` | 172.67.199.229 + 104.21.84.249 ✅ | IPs Cloudflare — propagado |
+| `GET https://whetzy.com` | HTTP 200, title "Whetzy" ✅ | Live |
+| `GET /health` | `{"status":"healthy"}` ✅ | Backend up |
+| `GET /api/v1/glossary/track01` | 10 términos (Variable, Mutability…) ✅ | DB con contenido |
+| `POST /auth/register` | HTTP 201, token len=209 ✅ | Auth funcional |
+| `POST /quiz/start` sk010401 | `q010401003` type=`code_output` ✅ | Pregunta real (nota: `.question.id`, no `.id`) |
+| `POST /quiz/answer` | `xp_earned=15`, `source="CPython docs 3.13 — Data Structures"` ✅ | Gamificación + source |
+| `POST /tutor/explain` | `provider=groq`, 222 chars, `grounded=true` ✅ | **Groq E2E confirmado** |
+
+**Nota de estructura**: `POST /quiz/start` devuelve `{session_id, mode, question: {id, ...}, reviews_due}` — el `question_id` está en `.question.id`, no en `.id` top-level. Documentado para futuros scripts.
+
+### Estado confirmado
+
+| Fase | % real | Estado |
+|------|--------|--------|
+| **0** | **100%** | ✅ CERRADA — whetzy.com + backend + Pages todos live y verificados |
+| **1** | **100%** | ✅ CERRADA — contenido + glosario + currículo gated |
+| **2** | **98%** | Groq E2E ✅ re-confirmado; Pyodide browser test pendiente |
+
+### Deuda técnica (sin cambios)
+- **Alembic migrations**: BLOQUEANTE antes de Fase 3. Actualmente `create_all`. Safe con 0 usuarios reales; peligroso con schema changes en Fase 3.
+- **Pyodide smoke test**: 7 exec Q en DB, motor de selección estadísticamente improbable (0.6%). Requiere sesión larga en browser real o forzado por `skill_id` con exec Q directo.
+
+### Siguiente paso: Fase 3
+Bloqueante técnico a resolver primero: Alembic init + primera migration desde schema actual.
+Ver `docs/MASTER_PROMPT.md` para prompt de Fase 3.

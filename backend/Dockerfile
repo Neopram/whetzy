@@ -38,7 +38,7 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels -r requirements.t
     && rm -rf /wheels
 
 COPY backend/app ./app
-COPY backend/migrations ./migrations
+COPY backend/alembic ./alembic
 COPY backend/scripts ./scripts
 COPY backend/alembic.ini ./alembic.ini
 

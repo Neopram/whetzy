@@ -10,6 +10,7 @@ import { LeagueScreen } from './pages/LeagueScreen';
 import { ProfileScreen } from './pages/ProfileScreen';
 import { PlacementScreen } from './pages/PlacementScreen';
 import { TracksScreen } from './pages/TracksScreen';
+import { DuelScreen } from './pages/DuelScreen';
 import { AuthScreen } from './pages/AuthScreen';
 import { DeleteAccountScreen } from './pages/DeleteAccountScreen';
 import { Toast } from './components/common/Toast';
@@ -70,6 +71,7 @@ function App() {
       case 'league': return <LeagueScreen />;
       case 'profile': return <ProfileScreen />;
       case 'placement': return <PlacementScreen />;
+      case 'duels': return <DuelScreen />;
       default: return <HomeScreen />;
     }
   };

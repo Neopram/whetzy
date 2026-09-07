@@ -3,6 +3,15 @@ import styles from './BottomNav.module.css';
 
 const NAV_ITEMS = [
   {
+    id: 'duels' as const,
+    label: 'Duelos',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+        <path d="M6.5 2h11L21 6l-9 16L3 6l3.5-4zm1.25 2L5 7.5l7 12.5 7-12.5L16.25 4H7.75zm4.75 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+      </svg>
+    ),
+  },
+  {
     id: 'home' as const,
     label: 'Inicio',
     icon: (
@@ -67,7 +76,7 @@ export function BottomNav() {
     if (id === 'quiz') {
       startQuiz('study', 10);
     } else {
-      setScreen(id);
+      setScreen(id as Parameters<typeof setScreen>[0]);
     }
   };
 

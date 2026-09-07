@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { auth, logout as apiLogout, type UserRead } from '../services/api';
 
 type Language = 'es' | 'en';
-type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks';
+type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks' | 'duels';
 type LeagueTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
 interface UserProfile {
