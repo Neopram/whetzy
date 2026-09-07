@@ -21,11 +21,11 @@ python-multipart==0.0.20
 # Caching / rate limiting
 redis==5.2.1
 
-# AI tutor (Groq) + RAG
+# AI tutor (Groq)
 groq==0.13.1
 httpx==0.28.1
-chromadb>=1.3.0
-sentence-transformers>=3.0.0
+# chromadb and sentence-transformers omitted: too heavy for Railway free tier (torch ~2GB RAM)
+# RAG degrades gracefully to [] when these are absent — app still serves /health and all endpoints
 
 # Testing
 pytest==8.3.4
