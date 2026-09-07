@@ -1,0 +1,884 @@
+{
+  "questions": [
+    {
+      "id": "q040101001",
+      "skill_id": "sk040101",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué comando de Git mueve cambios del directorio de trabajo al área de staging (index)?",
+      "question_en": "Which Git command moves changes from the working directory to the staging area (index)?",
+      "options_es": [
+        "git commit",
+        "git add",
+        "git push",
+        "git stage"
+      ],
+      "options_en": [
+        "git commit",
+        "git add",
+        "git push",
+        "git stage"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`git add <archivo>` prepara los cambios para el próximo commit, moviéndolos al área de staging. `git commit` los guarda permanentemente en el historial, y `git push` sube commits a un repositorio remoto.",
+      "explanation_en": "`git add <file>` stages changes for the next commit, moving them into the staging area. `git commit` permanently records them into history, and `git push` uploads commits to a remote repository.",
+      "expected_time_ms": 12000,
+      "tags": [
+        "git",
+        "basics"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 2 Fundamentos de Git"
+    },
+    {
+      "id": "q040101002",
+      "skill_id": "sk040101",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "`git commit` sube automáticamente los cambios al repositorio remoto (por ejemplo, a GitHub).",
+      "question_en": "`git commit` automatically pushes changes to the remote repository (e.g. GitHub).",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`git commit` solo guarda una instantánea en el historial LOCAL del repositorio. Para enviar esos commits a un remoto es necesario ejecutar `git push` de forma explícita.",
+      "explanation_en": "`git commit` only saves a snapshot to the repository's LOCAL history. To send those commits to a remote, you must explicitly run `git push`.",
+      "expected_time_ms": 12000,
+      "tags": [
+        "git",
+        "commit",
+        "remote"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 2 Fundamentos de Git"
+    },
+    {
+      "id": "q040101003",
+      "skill_id": "sk040101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué comando muestra el historial de commits de forma condensada, una línea por commit?",
+      "question_en": "Which command shows commit history condensed to one line per commit?",
+      "options_es": [
+        "git log --oneline",
+        "git status",
+        "git show",
+        "git diff"
+      ],
+      "options_en": [
+        "git log --oneline",
+        "git status",
+        "git show",
+        "git diff"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`git log --oneline` muestra cada commit en una sola línea con su hash abreviado y mensaje, ideal para revisar el historial rápidamente. `git status` muestra el estado actual, no el historial, y `git diff` muestra diferencias de contenido.",
+      "explanation_en": "`git log --oneline` shows each commit on a single line with its abbreviated hash and message, ideal for quickly reviewing history. `git status` shows the current state, not history, and `git diff` shows content differences.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "log"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 2 Fundamentos de Git"
+    },
+    {
+      "id": "q040101004",
+      "skill_id": "sk040101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué archivo se usa para indicarle a Git qué archivos o carpetas debe ignorar y no rastrear?",
+      "question_en": "Which file tells Git which files or folders to ignore and not track?",
+      "options_es": [
+        ".gitconfig",
+        ".gitignore",
+        ".gitattributes",
+        "ignore.txt"
+      ],
+      "options_en": [
+        ".gitconfig",
+        ".gitignore",
+        ".gitattributes",
+        "ignore.txt"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El archivo `.gitignore`, en la raíz del repositorio (o en subcarpetas), define patrones de archivos/carpetas que Git debe ignorar, como `node_modules/`, `*.pyc` o `.env`, evitando que se rastreen accidentalmente.",
+      "explanation_en": "The `.gitignore` file, at the repository root (or in subfolders), defines patterns of files/folders Git should ignore, such as `node_modules/`, `*.pyc`, or `.env`, preventing them from being accidentally tracked.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "gitignore"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 2 Fundamentos de Git"
+    },
+    {
+      "id": "q040101005",
+      "skill_id": "sk040101",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué comando de Git deshace `git add` para un archivo, devolviéndolo del área de staging al directorio de trabajo sin perder los cambios? (Git moderno, una palabra tras 'git')",
+      "question_en": "Which Git command undoes `git add` for a file, moving it from staging back to the working directory without losing changes? (modern Git, one word after 'git')",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "restore",
+      "correct_answer_en": "restore",
+      "explanation_es": "`git restore --staged <archivo>` (Git 2.23+) quita el archivo del staging manteniendo los cambios en el directorio de trabajo. El comando clásico equivalente era `git reset HEAD <archivo>`, que sigue funcionando pero es menos explícito.",
+      "explanation_en": "`git restore --staged <file>` (Git 2.23+) removes the file from staging while keeping the changes in the working directory. The classic equivalent was `git reset HEAD <file>`, which still works but is less explicit.",
+      "expected_time_ms": 30000,
+      "tags": [
+        "git",
+        "restore",
+        "staging"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 2 Fundamentos de Git"
+    },
+    {
+      "id": "q040101006",
+      "skill_id": "sk040101",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "`git status` puede modificar archivos del directorio de trabajo.",
+      "question_en": "`git status` can modify files in the working directory.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`git status` es una operación de solo lectura: simplemente compara el directorio de trabajo, el área de staging y el último commit, e informa las diferencias. Nunca modifica archivos ni el historial.",
+      "explanation_en": "`git status` is a read-only operation: it simply compares the working directory, the staging area, and the last commit, and reports the differences. It never modifies files or history.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "status"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 2 Fundamentos de Git"
+    },
+    {
+      "id": "q040102001",
+      "skill_id": "sk040102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué comando crea una nueva rama y cambia a ella en un solo paso?",
+      "question_en": "Which command creates a new branch and switches to it in a single step?",
+      "options_es": [
+        "git branch nueva-rama",
+        "git checkout -b nueva-rama",
+        "git merge nueva-rama",
+        "git switch nueva-rama"
+      ],
+      "options_en": [
+        "git branch new-branch",
+        "git checkout -b new-branch",
+        "git merge new-branch",
+        "git switch new-branch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`git checkout -b nueva-rama` crea la rama y cambia a ella inmediatamente. `git branch nueva-rama` solo la crea sin cambiar; el equivalente moderno de `checkout -b` es `git switch -c nueva-rama`.",
+      "explanation_en": "`git checkout -b new-branch` creates the branch and switches to it immediately. `git branch new-branch` only creates it without switching; the modern equivalent of `checkout -b` is `git switch -c new-branch`.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "branching"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3 Ramificaciones en Git"
+    },
+    {
+      "id": "q040102002",
+      "skill_id": "sk040102",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué es un 'fast-forward merge'?",
+      "question_en": "What is a 'fast-forward merge'?",
+      "options_es": [
+        "Un merge que combina automáticamente conflictos sin intervención humana",
+        "Cuando la rama destino no tiene commits nuevos propios, así que Git simplemente mueve el puntero de la rama hacia adelante, sin crear un commit de merge",
+        "Un tipo de rebase interactivo acelerado",
+        "Un merge que se ejecuta en segundo plano"
+      ],
+      "options_en": [
+        "A merge that automatically resolves conflicts without human intervention",
+        "When the target branch has no new commits of its own, so Git simply moves the branch pointer forward, without creating a merge commit",
+        "A sped-up interactive rebase",
+        "A merge that runs in the background"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Si la rama sobre la que haces merge no ha divergido (no tiene commits propios desde que se creó la otra rama), Git puede simplemente 'avanzar' su puntero hasta el último commit de la otra rama, sin necesidad de crear un commit de merge dedicado.",
+      "explanation_en": "If the branch you're merging into hasn't diverged (it has no commits of its own since the other branch was created), Git can simply 'fast-forward' its pointer to the other branch's latest commit, without needing to create a dedicated merge commit.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "git",
+        "merge",
+        "fast-forward"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3 Ramificaciones en Git"
+    },
+    {
+      "id": "q040102003",
+      "skill_id": "sk040102",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué comando elimina de forma segura una rama local ya fusionada?",
+      "question_en": "Which command safely deletes an already-merged local branch?",
+      "options_es": [
+        "git branch -D rama",
+        "git branch -d rama",
+        "git rm rama",
+        "git delete rama"
+      ],
+      "options_en": [
+        "git branch -D branch",
+        "git branch -d branch",
+        "git rm branch",
+        "git delete branch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`git branch -d` (minúscula) es la eliminación 'segura': Git se niega a borrar la rama si contiene commits que no se han fusionado en ningún otro lugar, evitando pérdida de trabajo. `-D` (mayúscula) fuerza el borrado sin esa comprobación.",
+      "explanation_en": "`git branch -d` (lowercase) is the 'safe' delete: Git refuses to delete the branch if it contains commits not merged anywhere else, preventing lost work. `-D` (uppercase) forces deletion without that check.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "git",
+        "branching",
+        "delete"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3 Ramificaciones en Git"
+    },
+    {
+      "id": "q040102004",
+      "skill_id": "sk040102",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Crear una rama en Git (`git branch`) copia físicamente todos los archivos del proyecto en una carpeta nueva.",
+      "question_en": "Creating a branch in Git (`git branch`) physically copies all project files into a new folder.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una rama en Git es simplemente un puntero ligero (un archivo con un hash de 40 caracteres) que apunta a un commit específico. Crear una rama es una operación casi instantánea y no duplica archivos ni el historial.",
+      "explanation_en": "A Git branch is simply a lightweight pointer (a file holding a 40-character hash) pointing to a specific commit. Creating a branch is a near-instant operation and does not duplicate files or history.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "git",
+        "branching",
+        "internals"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3 Ramificaciones en Git"
+    },
+    {
+      "id": "q040103001",
+      "skill_id": "sk040103",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia principal entre `git merge` y `git rebase`?",
+      "question_en": "What is the main difference between `git merge` and `git rebase`?",
+      "options_es": [
+        "`merge` reescribe el historial de commits; `rebase` nunca lo hace",
+        "`merge` combina ramas creando un nuevo commit de fusión que preserva ambos historiales; `rebase` reaplica los commits de una rama sobre otra, generando un historial lineal (y nuevos hashes de commit)",
+        "Son exactamente lo mismo con distinto nombre",
+        "`rebase` solo funciona en ramas remotas"
+      ],
+      "options_en": [
+        "`merge` rewrites commit history; `rebase` never does",
+        "`merge` combines branches by creating a new merge commit that preserves both histories; `rebase` replays one branch's commits onto another, producing a linear history (with new commit hashes)",
+        "They are exactly the same thing with a different name",
+        "`rebase` only works on remote branches"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`merge` preserva la historia real, incluyendo la bifurcación, mediante un commit de fusión con dos padres. `rebase` reescribe el historial: toma los commits de una rama y los vuelve a aplicar, uno por uno, sobre la punta de otra, produciendo commits nuevos (con hashes distintos) y una línea de tiempo recta.",
+      "explanation_en": "`merge` preserves the actual history, including the fork, via a merge commit with two parents. `rebase` rewrites history: it takes one branch's commits and replays them, one by one, on top of another branch's tip, producing new commits (with different hashes) and a straight timeline.",
+      "expected_time_ms": 30000,
+      "tags": [
+        "git",
+        "rebase",
+        "merge"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.6 Reorganizar el trabajo (Rebasing)"
+    },
+    {
+      "id": "q040103002",
+      "skill_id": "sk040103",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Es una buena práctica hacer `git rebase` en una rama pública que otros compañeros ya han descargado y sobre la que están trabajando.",
+      "question_en": "It is good practice to `git rebase` a public branch that teammates have already pulled and are working on.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Rebasar reescribe los hashes de los commits. Si otros ya basaron su trabajo en los commits originales, el rebase provoca divergencia e historiales duplicados o conflictos dolorosos al sincronizar. La regla de oro es: nunca rebasar ramas compartidas/públicas, solo ramas locales o de feature no compartidas.",
+      "explanation_en": "Rebasing rewrites commit hashes. If others have already based their work on the original commits, the rebase causes divergence and duplicated history or painful conflicts when syncing. The golden rule is: never rebase shared/public branches, only local or unshared feature branches.",
+      "expected_time_ms": 30000,
+      "tags": [
+        "git",
+        "rebase",
+        "best-practice"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.6 Reorganizar el trabajo (Rebasing)"
+    },
+    {
+      "id": "q040103003",
+      "skill_id": "sk040103",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué hace `git rebase -i HEAD~3`?",
+      "question_en": "What does `git rebase -i HEAD~3` do?",
+      "options_es": [
+        "Elimina los últimos 3 commits sin preguntar",
+        "Abre un rebase interactivo sobre los últimos 3 commits, permitiendo reordenarlos, combinarlos (squash), editarlos o eliminarlos",
+        "Crea 3 ramas nuevas automáticamente",
+        "Sincroniza los últimos 3 commits con el remoto"
+      ],
+      "options_en": [
+        "Deletes the last 3 commits without asking",
+        "Opens an interactive rebase over the last 3 commits, allowing you to reorder, squash, edit, or drop them",
+        "Automatically creates 3 new branches",
+        "Syncs the last 3 commits with the remote"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El rebase interactivo abre un editor con una lista de los últimos 3 commits y acciones posibles (`pick`, `squash`, `edit`, `drop`, `reword`), permitiendo limpiar el historial local antes de compartirlo, por ejemplo combinando commits pequeños de 'WIP' en uno solo.",
+      "explanation_en": "Interactive rebase opens an editor listing the last 3 commits along with possible actions (`pick`, `squash`, `edit`, `drop`, `reword`), letting you clean up local history before sharing it, e.g. squashing small 'WIP' commits into one.",
+      "expected_time_ms": 30000,
+      "tags": [
+        "git",
+        "rebase",
+        "interactive"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.6 Reorganizar el trabajo (Rebasing)"
+    },
+    {
+      "id": "q040104001",
+      "skill_id": "sk040104",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Al aparecer un conflicto de merge en un archivo, ¿qué marcadores usa Git para delimitar las versiones en conflicto?",
+      "question_en": "When a merge conflict appears in a file, which markers does Git use to delimit the conflicting versions?",
+      "options_es": [
+        "<<< CONFLICT >>> ... <<< END >>>",
+        "<<<<<<< / ======= / >>>>>>>",
+        "### START ### / ### END ###",
+        "[[[ / ||| / ]]]"
+      ],
+      "options_en": [
+        "<<< CONFLICT >>> ... <<< END >>>",
+        "<<<<<<< / ======= / >>>>>>>",
+        "### START ### / ### END ###",
+        "[[[ / ||| / ]]]"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Git marca los conflictos con `<<<<<<< HEAD` (inicio de tu versión), `=======` (separador) y `>>>>>>> rama` (fin de la versión entrante). El desarrollador debe editar el archivo para dejar el contenido deseado y eliminar los marcadores antes de continuar.",
+      "explanation_en": "Git marks conflicts with `<<<<<<< HEAD` (start of your version), `=======` (separator), and `>>>>>>> branch` (end of the incoming version). The developer must edit the file to leave the desired content and remove the markers before continuing.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "git",
+        "conflicts",
+        "merge"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Conflictos de fusión"
+    },
+    {
+      "id": "q040104002",
+      "skill_id": "sk040104",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Después de resolver manualmente los conflictos de un merge editando el archivo, ¿qué dos comandos debes ejecutar para completar el proceso?",
+      "question_en": "After manually resolving merge conflicts by editing the file, which two commands must you run to complete the process?",
+      "options_es": [
+        "git add <archivo> y git commit",
+        "git push y git pull",
+        "git reset y git checkout",
+        "git stash y git stash pop"
+      ],
+      "options_en": [
+        "git add <file> and git commit",
+        "git push and git pull",
+        "git reset and git checkout",
+        "git stash and git stash pop"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Tras editar el archivo y eliminar los marcadores de conflicto, `git add <archivo>` marca el conflicto como resuelto para ese archivo, y `git commit` (sin necesitar `-m` si ya hay un mensaje predefinido) finaliza el merge creando el commit de fusión.",
+      "explanation_en": "After editing the file and removing the conflict markers, `git add <file>` marks the conflict as resolved for that file, and `git commit` (no `-m` needed since a default message is pre-filled) finalizes the merge by creating the merge commit.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "git",
+        "conflicts",
+        "resolution"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Conflictos de fusión"
+    },
+    {
+      "id": "q040104003",
+      "skill_id": "sk040104",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Si un merge sale mal y quieres cancelarlo por completo, volviendo al estado anterior al intento, ¿qué comando usas?",
+      "question_en": "If a merge goes wrong and you want to abort it entirely, returning to the state before the attempt, which command do you use?",
+      "options_es": [
+        "git merge --abort",
+        "git reset --hard HEAD~1",
+        "git checkout .",
+        "git branch -D"
+      ],
+      "options_en": [
+        "git merge --abort",
+        "git reset --hard HEAD~1",
+        "git checkout .",
+        "git branch -D"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`git merge --abort` está diseñado específicamente para cancelar un merge en curso con conflictos, restaurando el estado exacto de antes de iniciar el merge. `git reset --hard HEAD~1` es más peligroso y genérico, pensado para deshacer commits, no merges a medias.",
+      "explanation_en": "`git merge --abort` is specifically designed to cancel an in-progress merge with conflicts, restoring the exact state from before the merge started. `git reset --hard HEAD~1` is more dangerous and generic, meant for undoing commits, not half-finished merges.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "git",
+        "conflicts",
+        "abort"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Conflictos de fusión"
+    },
+    {
+      "id": "q040105001",
+      "skill_id": "sk040105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En el modelo 'trunk-based development', ¿cómo suelen trabajar los desarrolladores?",
+      "question_en": "In the 'trunk-based development' model, how do developers typically work?",
+      "options_es": [
+        "Cada feature vive en su propia rama durante meses antes de fusionarse",
+        "Todos integran cambios frecuentemente (varias veces al día) en una única rama principal, usando ramas de vida muy corta y feature flags para trabajo incompleto",
+        "Nunca se usan ramas, todo se hace directamente commiteando binarios",
+        "Se requiere una rama 'release' separada por cada cliente"
+      ],
+      "options_en": [
+        "Each feature lives in its own branch for months before merging",
+        "Everyone integrates changes frequently (multiple times a day) into a single main branch, using very short-lived branches and feature flags for incomplete work",
+        "Branches are never used; everything is committed directly as binaries",
+        "A separate 'release' branch is required per customer"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Trunk-based development prioriza integración continua: ramas de corta duración (horas o un par de días) que se fusionan rápido al 'trunk' (main), usando feature flags para ocultar funcionalidad incompleta en producción, minimizando conflictos de merge grandes.",
+      "explanation_en": "Trunk-based development prioritizes continuous integration: short-lived branches (hours or a couple of days) that merge quickly into the 'trunk' (main), using feature flags to hide incomplete functionality in production, minimizing large merge conflicts.",
+      "expected_time_ms": 28000,
+      "tags": [
+        "git",
+        "workflows",
+        "trunk-based"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.4 Flujos de trabajo ramificados"
+    },
+    {
+      "id": "q040105002",
+      "skill_id": "sk040105",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En Git Flow clásico, ¿cuál es el propósito de la rama `develop`?",
+      "question_en": "In classic Git Flow, what is the purpose of the `develop` branch?",
+      "options_es": [
+        "Es la rama de producción estable",
+        "Integra el trabajo de todas las ramas de feature; representa el estado 'próximo release' antes de pasar a producción",
+        "Solo se usa para hotfixes urgentes",
+        "Es una rama temporal que se borra después de cada commit"
+      ],
+      "options_en": [
+        "It is the stable production branch",
+        "It integrates work from all feature branches; it represents the 'next release' state before going to production",
+        "It's only used for urgent hotfixes",
+        "It's a temporary branch deleted after every commit"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En Git Flow, `main`/`master` refleja el código en producción, mientras que `develop` es donde se integran las features terminadas, sirviendo de base para las ramas `release/*` que preparan el siguiente lanzamiento.",
+      "explanation_en": "In Git Flow, `main`/`master` reflects production code, while `develop` is where finished features get integrated, serving as the base for `release/*` branches that prepare the next launch.",
+      "expected_time_ms": 30000,
+      "tags": [
+        "git",
+        "workflows",
+        "gitflow"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.4 Flujos de trabajo ramificados"
+    },
+    {
+      "id": "q040105003",
+      "skill_id": "sk040105",
+      "type": "true_false",
+      "difficulty_tier": "expert",
+      "question_es": "Trunk-based development es generalmente más compatible con la práctica de integración continua (CI) que Git Flow con ramas de feature de larga duración.",
+      "question_en": "Trunk-based development is generally more compatible with continuous integration (CI) practice than Git Flow with long-lived feature branches.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La integración continua se basa en fusionar cambios pequeños y frecuentes para detectar problemas de integración pronto. Las ramas de feature de larga duración retrasan esa integración, acumulando divergencia y aumentando el riesgo de conflictos grandes, lo opuesto al espíritu de CI.",
+      "explanation_en": "Continuous integration relies on merging small, frequent changes to catch integration problems early. Long-lived feature branches delay that integration, accumulating divergence and increasing the risk of large conflicts, the opposite of CI's spirit.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "git",
+        "workflows",
+        "ci"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.4 Flujos de trabajo ramificados"
+    },
+    {
+      "id": "q040101007",
+      "skill_id": "sk040101",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué hace exactamente `git commit --amend` respecto al último commit?",
+      "question_en": "What exactly does `git commit --amend` do to the last commit?",
+      "options_es": [
+        "Añade un commit nuevo encima, dejando el anterior intacto",
+        "Reemplaza el último commit por uno nuevo que incluye los cambios actualmente en staging y/o un mensaje editado, generando un hash distinto",
+        "Combina los dos últimos commits en uno solo automáticamente",
+        "Elimina el último commit sin dejar rastro"
+      ],
+      "options_en": [
+        "Adds a new commit on top, leaving the previous one untouched",
+        "Replaces the last commit with a new one that includes the currently staged changes and/or an edited message, producing a different hash",
+        "Automatically combines the last two commits into one",
+        "Deletes the last commit without a trace"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`--amend` no 'edita' el commit anterior en el sitio: crea un commit completamente nuevo que sustituye al anterior (con un hash distinto), incorporando cualquier cambio adicional en staging y/o el mensaje editado. Por eso, como con `rebase`, no debe usarse sobre commits ya compartidos/publicados.",
+      "explanation_en": "`--amend` doesn't 'edit' the previous commit in place: it creates a brand-new commit that replaces the old one (with a different hash), incorporating any additional staged changes and/or the edited message. That's why, like `rebase`, it shouldn't be used on commits that have already been shared/pushed.",
+      "expected_time_ms": 30000,
+      "tags": [
+        "git",
+        "amend",
+        "advanced"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 2 Fundamentos de Git"
+    },
+    {
+      "id": "q040102005",
+      "skill_id": "sk040102",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué comando de Git muestra todas las ramas locales y remotas conocidas por tu repositorio? (una palabra tras 'git branch')",
+      "question_en": "Which Git flag shows all local and remote branches known to your repository? (one flag after 'git branch')",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "-a",
+      "correct_answer_en": "-a",
+      "explanation_es": "`git branch -a` (de 'all') lista tanto las ramas locales como las ramas de seguimiento remoto (como `remotes/origin/feature-x`), útil para ver qué ramas existen en el remoto aunque no las tengas descargadas localmente.",
+      "explanation_en": "`git branch -a` (for 'all') lists both local branches and remote-tracking branches (like `remotes/origin/feature-x`), useful for seeing what branches exist on the remote even if you haven't checked them out locally.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "git",
+        "branching",
+        "remote"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3 Ramificaciones en Git"
+    },
+    {
+      "id": "q040103004",
+      "skill_id": "sk040103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Estando en una rama `feature`, ¿qué hace `git rebase main`?",
+      "question_en": "While on a `feature` branch, what does `git rebase main` do?",
+      "options_es": [
+        "Fusiona `feature` dentro de `main`",
+        "Reaplica los commits de `feature` encima de la punta actual de `main`, como si `feature` hubiera empezado desde ahí",
+        "Elimina la rama `main`",
+        "Sincroniza `main` con el remoto"
+      ],
+      "options_en": [
+        "Merges `feature` into `main`",
+        "Replays `feature`'s commits on top of `main`'s current tip, as if `feature` had started from there",
+        "Deletes the `main` branch",
+        "Syncs `main` with the remote"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`git rebase main` (desde `feature`) mueve la base de `feature` para que parezca que se creó desde el commit más reciente de `main`, reaplicando uno por uno los commits exclusivos de `feature`. Es útil para mantener una rama de feature actualizada sin un commit de merge intermedio.",
+      "explanation_en": "`git rebase main` (from `feature`) moves `feature`'s base so it looks like it was created from `main`'s latest commit, replaying `feature`'s unique commits one by one. It's useful for keeping a feature branch up to date without an intermediate merge commit.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "git",
+        "rebase"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.6 Reorganizar el trabajo (Rebasing)"
+    },
+    {
+      "id": "q040103005",
+      "skill_id": "sk040103",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`git rebase` crea un commit de fusión (merge commit) con dos padres, igual que `git merge`.",
+      "question_en": "`git rebase` creates a merge commit with two parents, just like `git merge`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`rebase` produce un historial lineal: cada commit reaplicado tiene un único padre, igual que un commit normal. Los commits de fusión con dos padres son exclusivos de `git merge` (cuando no es fast-forward).",
+      "explanation_en": "`rebase` produces linear history: each replayed commit has a single parent, just like a regular commit. Merge commits with two parents are exclusive to `git merge` (when it's not a fast-forward).",
+      "expected_time_ms": 20000,
+      "tags": [
+        "git",
+        "rebase",
+        "merge"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.6 Reorganizar el trabajo (Rebasing)"
+    },
+    {
+      "id": "q040103006",
+      "skill_id": "sk040103",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Durante un `git rebase` aparece un conflicto en un commit intermedio. Después de editar el archivo y hacer `git add`, ¿qué comando continúa el proceso?",
+      "question_en": "During a `git rebase`, a conflict appears in an intermediate commit. After editing the file and running `git add`, which command continues the process?",
+      "options_es": [
+        "git rebase --continue",
+        "git commit",
+        "git rebase --resume",
+        "git merge --continue"
+      ],
+      "options_en": [
+        "git rebase --continue",
+        "git commit",
+        "git rebase --resume",
+        "git merge --continue"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`git rebase --continue` le indica a Git que el conflicto del commit actual ya está resuelto y en staging, y que debe seguir reaplicando el resto de commits pendientes. No se usa `git commit` manualmente porque el rebase gestiona los commits internamente.",
+      "explanation_en": "`git rebase --continue` tells Git that the current commit's conflict has been resolved and staged, and that it should keep replaying the remaining pending commits. You don't manually run `git commit` because the rebase manages commits internally.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "git",
+        "rebase",
+        "conflicts"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.6 Reorganizar el trabajo (Rebasing)"
+    },
+    {
+      "id": "q040104004",
+      "skill_id": "sk040104",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué comando muestra las diferencias exactas de línea entre el directorio de trabajo y el último commit, útil para inspeccionar un conflicto?",
+      "question_en": "Which command shows the exact line-by-line differences between the working directory and the last commit, useful for inspecting a conflict?",
+      "options_es": [
+        "git diff",
+        "git log",
+        "git blame",
+        "git tag"
+      ],
+      "options_en": [
+        "git diff",
+        "git log",
+        "git blame",
+        "git tag"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`git diff` muestra las diferencias línea a línea (formato unificado) entre versiones de archivos; sin argumentos, compara el directorio de trabajo con el área de staging, ayudando a entender exactamente qué cambió durante un conflicto.",
+      "explanation_en": "`git diff` shows line-by-line differences (unified format) between file versions; with no arguments, it compares the working directory with the staging area, helping you understand exactly what changed during a conflict.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "diff",
+        "conflicts"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Conflictos de fusión"
+    },
+    {
+      "id": "q040104005",
+      "skill_id": "sk040104",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Durante un merge con conflictos sin resolver, ¿qué mensaje típico muestra `git status` para un archivo en conflicto?",
+      "question_en": "During a merge with unresolved conflicts, what typical message does `git status` show for a conflicted file?",
+      "options_es": [
+        "\"both modified\" (o \"ambos modificaron\") bajo 'Unmerged paths'",
+        "\"file deleted\"",
+        "\"nothing to commit\"",
+        "\"up to date\""
+      ],
+      "options_en": [
+        "\"both modified\" under 'Unmerged paths'",
+        "\"file deleted\"",
+        "\"nothing to commit\"",
+        "\"up to date\""
+      ],
+      "correct_index": 0,
+      "explanation_es": "Git agrupa los archivos con conflicto bajo una sección 'Unmerged paths' e indica la causa, típicamente `both modified` (ambas ramas cambiaron el mismo archivo), pero también puede mostrar `both added`, `deleted by us`, etc.",
+      "explanation_en": "Git groups conflicted files under an 'Unmerged paths' section and indicates the cause, typically `both modified` (both branches changed the same file), but it can also show `both added`, `deleted by us`, etc.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "git",
+        "status",
+        "conflicts"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Conflictos de fusión"
+    },
+    {
+      "id": "q040104006",
+      "skill_id": "sk040104",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Durante un conflicto de merge, ¿qué hace `git checkout --theirs <archivo>`?",
+      "question_en": "During a merge conflict, what does `git checkout --theirs <file>` do?",
+      "options_es": [
+        "Descarta el conflicto y mantiene tu versión actual",
+        "Reemplaza el archivo por la versión que viene de la rama que se está fusionando (la entrante), descartando la tuya",
+        "Elimina el archivo del repositorio",
+        "Crea una copia de ambas versiones con nombres distintos"
+      ],
+      "options_en": [
+        "Discards the conflict and keeps your current version",
+        "Replaces the file with the version coming from the branch being merged in (the incoming one), discarding yours",
+        "Deletes the file from the repository",
+        "Creates a copy of both versions with different names"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`--theirs` toma la versión del archivo tal como está en la rama que se está fusionando, descartando tus cambios locales para ese archivo. El opuesto, `--ours`, mantiene tu versión y descarta la entrante. Sigue siendo necesario `git add` después para marcar la resolución.",
+      "explanation_en": "`--theirs` takes the file's version as it exists on the branch being merged in, discarding your local changes to that file. The opposite, `--ours`, keeps your version and discards the incoming one. You still need `git add` afterward to mark the resolution.",
+      "expected_time_ms": 28000,
+      "tags": [
+        "git",
+        "conflicts",
+        "ours-theirs"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Conflictos de fusión"
+    },
+    {
+      "id": "q040105004",
+      "skill_id": "sk040105",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es un 'pull request' (o 'merge request' en GitLab)?",
+      "question_en": "What is a 'pull request' (or 'merge request' in GitLab)?",
+      "options_es": [
+        "Un comando de Git para descargar cambios",
+        "Una solicitud, en la plataforma (GitHub/GitLab), para fusionar los cambios de una rama en otra, que habilita revisión de código y discusión antes de integrar",
+        "Un tipo de commit especial",
+        "Un archivo de configuración del repositorio"
+      ],
+      "options_en": [
+        "A Git command to download changes",
+        "A request, on the hosting platform (GitHub/GitLab), to merge one branch's changes into another, enabling code review and discussion before integrating",
+        "A special kind of commit",
+        "A repository configuration file"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un pull request no es un comando de Git en sí, sino una funcionalidad de la plataforma de hospedaje que envuelve un merge propuesto con revisión de código, comentarios, checks de CI y aprobaciones, formalizando el flujo de integración de cambios en equipo.",
+      "explanation_en": "A pull request is not a Git command itself, but a hosting-platform feature that wraps a proposed merge with code review, comments, CI checks, and approvals, formalizing the team's change-integration workflow.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "git",
+        "workflows",
+        "pull-request"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.4 Flujos de trabajo ramificados"
+    },
+    {
+      "id": "q040105005",
+      "skill_id": "sk040105",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En la mayoría de los flujos de trabajo profesionales, se considera buena práctica exigir al menos una revisión de código (code review) aprobada antes de fusionar una rama de feature a la rama principal.",
+      "question_en": "In most professional workflows, it is considered good practice to require at least one approved code review before merging a feature branch into the main branch.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Exigir revisión de código antes del merge (a menudo forzado mediante 'branch protection rules') detecta errores, mejora la calidad y comparte conocimiento del código entre el equipo, siendo un pilar de flujos de trabajo colaborativos maduros como GitHub Flow o trunk-based con PRs cortos.",
+      "explanation_en": "Requiring code review before merging (often enforced via 'branch protection rules') catches bugs, improves quality, and spreads code knowledge across the team, and is a pillar of mature collaborative workflows like GitHub Flow or trunk-based development with short-lived PRs.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "git",
+        "workflows",
+        "code-review"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.4 Flujos de trabajo ramificados"
+    },
+    {
+      "id": "q040102006",
+      "skill_id": "sk040102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué comando (introducido en Git 2.23 para simplificar `checkout`) se usa para cambiar a una rama existente llamada `develop`?",
+      "question_en": "Which command (introduced in Git 2.23 to simplify `checkout`) is used to switch to an existing branch named `develop`?",
+      "options_es": [
+        "git switch develop",
+        "git move develop",
+        "git goto develop",
+        "git jump develop"
+      ],
+      "options_en": [
+        "git switch develop",
+        "git move develop",
+        "git goto develop",
+        "git jump develop"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`git switch` se introdujo para separar la responsabilidad de cambiar de rama (antes sobrecargada en `git checkout`, que también restaura archivos). `git switch develop` cambia el directorio de trabajo a la rama `develop`; `git switch -c nueva` la crea y cambia a ella.",
+      "explanation_en": "`git switch` was introduced to separate the responsibility of changing branches (previously overloaded onto `git checkout`, which also restores files). `git switch develop` switches the working directory to the `develop` branch; `git switch -c new` creates and switches to a new one.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "branching",
+        "switch"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3 Ramificaciones en Git"
+    },
+    {
+      "id": "q040105006",
+      "skill_id": "sk040105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En el flujo de trabajo 'GitHub Flow', ¿cuál es la regla central sobre la rama principal (main)?",
+      "question_en": "In the 'GitHub Flow' workflow, what is the central rule about the main branch?",
+      "options_es": [
+        "main es una rama experimental donde se rompe el código libremente",
+        "main siempre debe estar en un estado desplegable; todo trabajo nuevo se hace en ramas de feature de vida corta que se fusionan vía pull request tras revisión",
+        "Nunca se debe hacer commit a main bajo ninguna circunstancia",
+        "main solo se usa para almacenar la documentación"
+      ],
+      "options_en": [
+        "main is an experimental branch where code is broken freely",
+        "main must always be in a deployable state; all new work happens on short-lived feature branches merged via pull request after review",
+        "You must never commit to main under any circumstances",
+        "main is only used to store documentation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "GitHub Flow es un flujo ligero: la rama main siempre debe estar lista para desplegar, y cada cambio se desarrolla en una rama de feature descriptiva que se integra mediante pull request (con revisión y checks de CI). Es más simple que Git Flow y encaja bien con despliegue continuo.",
+      "explanation_en": "GitHub Flow is a lightweight workflow: the main branch must always be deployable, and each change is developed on a descriptively named feature branch integrated via pull request (with review and CI checks). It's simpler than Git Flow and fits continuous deployment well.",
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.4 Flujos de trabajo ramificados",
+      "expected_time_ms": 24000,
+      "tags": [
+        "git",
+        "workflows",
+        "github-flow"
+      ]
+    }
+  ]
+}

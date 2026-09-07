@@ -1,0 +1,580 @@
+{
+  "questions": [
+    {
+      "id": "q070201001",
+      "skill_id": "sk070201",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es RAG (Retrieval-Augmented Generation)?",
+      "question_en": "What is RAG (Retrieval-Augmented Generation)?",
+      "options_es": [
+        "Una técnica para entrenar un LLM desde cero con datos privados",
+        "Una técnica que recupera documentos relevantes de una base de conocimiento y los inserta en el contexto del prompt antes de que el LLM genere la respuesta",
+        "Un algoritmo de compresión de modelos",
+        "Un tipo de función de activación para redes neuronales"
+      ],
+      "options_en": [
+        "A technique to train an LLM from scratch on private data",
+        "A technique that retrieves relevant documents from a knowledge base and inserts them into the prompt context before the LLM generates its answer",
+        "A model-compression algorithm",
+        "A type of activation function for neural networks"
+      ],
+      "correct_index": 1,
+      "explanation_es": "RAG combina un componente de recuperación (retrieval) con uno de generación: ante una consulta, primero se buscan fragmentos relevantes en una base de conocimiento externa y luego se pasan al LLM como contexto, permitiendo respuestas fundamentadas en datos actuales o privados sin reentrenar el modelo.",
+      "explanation_en": "RAG combines a retrieval component with a generation component: given a query, it first searches an external knowledge base for relevant passages and then passes them to the LLM as context, enabling answers grounded in current or private data without retraining the model.",
+      "source": "Lewis et al., 'Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks' (NeurIPS 2020)",
+      "expected_time_ms": 20000,
+      "tags": ["rag", "fundamentals"]
+    },
+    {
+      "id": "q070201002",
+      "skill_id": "sk070201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es una ventaja clave de RAG frente a hacer fine-tuning del modelo con el mismo conocimiento?",
+      "question_en": "What is a key advantage of RAG over fine-tuning the model with the same knowledge?",
+      "options_es": [
+        "RAG siempre produce respuestas más creativas",
+        "La base de conocimiento puede actualizarse (añadir/quitar documentos) sin reentrenar el modelo, y las respuestas pueden citar sus fuentes",
+        "RAG hace que el modelo sea más pequeño en disco",
+        "RAG elimina la necesidad de un LLM"
+      ],
+      "options_en": [
+        "RAG always produces more creative answers",
+        "The knowledge base can be updated (add/remove documents) without retraining the model, and answers can cite their sources",
+        "RAG makes the model smaller on disk",
+        "RAG removes the need for an LLM"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El conocimiento en RAG vive fuera de los pesos del modelo, en un índice consultable. Actualizarlo es tan simple como modificar la base de datos, sin el costo ni el riesgo de reentrenar. Además, al saber qué documentos se recuperaron, el sistema puede citar fuentes, algo difícil con conocimiento 'horneado' en los pesos por fine-tuning.",
+      "explanation_en": "In RAG the knowledge lives outside the model's weights, in a queryable index. Updating it is as simple as modifying the database, without the cost or risk of retraining. Also, because the system knows which documents were retrieved, it can cite sources, which is hard with knowledge 'baked' into weights by fine-tuning.",
+      "source": "Lewis et al., 'Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks' (NeurIPS 2020), Sec. 1",
+      "expected_time_ms": 28000,
+      "tags": ["rag", "fine-tuning", "trade-offs"]
+    },
+    {
+      "id": "q070201003",
+      "skill_id": "sk070201",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Usar RAG elimina por completo la posibilidad de que el modelo alucine (invente información).",
+      "question_en": "Using RAG completely eliminates the possibility of the model hallucinating (making up information).",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "RAG reduce las alucinaciones al fundamentar la respuesta en documentos recuperados, pero no las elimina: el modelo puede ignorar o malinterpretar el contexto, combinar mal la información, o el retriever puede devolver pasajes irrelevantes o contradictorios. La calidad final depende tanto de la recuperación como de la generación.",
+      "explanation_en": "RAG reduces hallucinations by grounding the answer in retrieved documents, but does not eliminate them: the model can ignore or misinterpret the context, combine information poorly, or the retriever may return irrelevant or contradictory passages. Final quality depends on both retrieval and generation.",
+      "source": "Gao et al., 'Retrieval-Augmented Generation for Large Language Models: A Survey' (2023), Sec. on limitations",
+      "expected_time_ms": 22000,
+      "tags": ["rag", "hallucination"]
+    },
+    {
+      "id": "q070201004",
+      "skill_id": "sk070201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un pipeline RAG típico consta de dos fases principales. ¿Cuáles son?",
+      "question_en": "A typical RAG pipeline has two main phases. What are they?",
+      "options_es": [
+        "Tokenización y detokenización",
+        "Indexación/recuperación (encontrar los fragmentos relevantes) y generación (el LLM produce la respuesta usando esos fragmentos como contexto)",
+        "Entrenamiento y validación",
+        "Compilación y despliegue"
+      ],
+      "options_en": [
+        "Tokenization and detokenization",
+        "Indexing/retrieval (finding the relevant chunks) and generation (the LLM produces the answer using those chunks as context)",
+        "Training and validation",
+        "Compilation and deployment"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En la fase de recuperación se transforma la consulta (por ejemplo en un embedding) y se buscan los fragmentos más relevantes en el índice; en la fase de generación esos fragmentos se insertan en el prompt junto con la consulta para que el LLM redacte una respuesta fundamentada. Suele existir una etapa previa offline de indexación (chunking + embedding + almacenamiento).",
+      "explanation_en": "In the retrieval phase the query is transformed (e.g. into an embedding) and the most relevant chunks are searched in the index; in the generation phase those chunks are inserted into the prompt alongside the query so the LLM writes a grounded answer. There is usually a prior offline indexing stage (chunking + embedding + storage).",
+      "source": "Gao et al., 'Retrieval-Augmented Generation for Large Language Models: A Survey' (2023), Sec. 2 (Naive RAG)",
+      "expected_time_ms": 28000,
+      "tags": ["rag", "pipeline", "architecture"]
+    },
+    {
+      "id": "q070201005",
+      "skill_id": "sk070201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Si el componente de recuperación devuelve pasajes irrelevantes o incorrectos, ¿qué suele ocurrir con la respuesta final del LLM?",
+      "question_en": "If the retrieval component returns irrelevant or incorrect passages, what typically happens to the LLM's final answer?",
+      "options_es": [
+        "El LLM siempre detecta y corrige automáticamente los pasajes malos",
+        "La respuesta tiende a degradarse ('garbage in, garbage out'): el modelo puede fundamentar su respuesta en información errónea o no encontrar la respuesta correcta",
+        "El pipeline se detiene con un error fatal",
+        "La respuesta mejora, porque más contexto siempre ayuda"
+      ],
+      "options_en": [
+        "The LLM always automatically detects and corrects the bad passages",
+        "The answer tends to degrade ('garbage in, garbage out'): the model may ground its answer in wrong information or fail to find the correct answer",
+        "The pipeline halts with a fatal error",
+        "The answer improves, because more context always helps"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La calidad de un sistema RAG está limitada por su recuperación: si los pasajes correctos no llegan al contexto, el modelo no puede fundamentar la respuesta en ellos. Por eso métricas de recuperación (recall, precisión) y técnicas como re-ranking son tan importantes: mejorar el generador no compensa una recuperación deficiente.",
+      "explanation_en": "A RAG system's quality is bounded by its retrieval: if the correct passages never reach the context, the model cannot ground its answer in them. That's why retrieval metrics (recall, precision) and techniques like re-ranking matter so much: improving the generator does not compensate for poor retrieval.",
+      "source": "Gao et al., 'Retrieval-Augmented Generation for Large Language Models: A Survey' (2023), Sec. 3 (Retrieval)",
+      "expected_time_ms": 30000,
+      "tags": ["rag", "retrieval-quality"]
+    },
+    {
+      "id": "q070201006",
+      "skill_id": "sk070201",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cuál es una ventaja de RAG frente a simplemente meter todo el corpus en un prompt de contexto muy largo (long-context stuffing)?",
+      "question_en": "What is an advantage of RAG over simply stuffing an entire corpus into a very long context prompt (long-context stuffing)?",
+      "options_es": [
+        "RAG no tiene ninguna ventaja; meter todo el corpus siempre es mejor",
+        "RAG escala a corpus enormes (millones de documentos) recuperando solo lo relevante, reduce costo y latencia por token, y mitiga la degradación de atención sobre contextos muy largos ('lost in the middle')",
+        "RAG permite usar modelos sin ventana de contexto",
+        "RAG evita por completo la necesidad de embeddings"
+      ],
+      "options_en": [
+        "RAG has no advantage; stuffing the whole corpus is always better",
+        "RAG scales to huge corpora (millions of documents) by retrieving only what's relevant, cuts per-token cost and latency, and mitigates attention degradation over very long contexts ('lost in the middle')",
+        "RAG lets you use models with no context window",
+        "RAG completely avoids the need for embeddings"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Aunque las ventanas de contexto crecen, siguen siendo finitas y caras: cada token de contexto cuesta cómputo y dinero, y los modelos pierden precisión al localizar información enterrada en contextos larguísimos ('lost in the middle'). RAG selecciona solo los fragmentos relevantes, escalando a corpus que jamás cabrían en un prompt y manteniendo el contexto enfocado.",
+      "explanation_en": "Even as context windows grow, they remain finite and expensive: every context token costs compute and money, and models lose accuracy locating information buried in very long contexts ('lost in the middle'). RAG selects only the relevant chunks, scaling to corpora that would never fit in a prompt while keeping the context focused.",
+      "source": "Liu et al., 'Lost in the Middle: How Language Models Use Long Contexts' (TACL 2024); Gao et al. (2023)",
+      "expected_time_ms": 38000,
+      "tags": ["rag", "long-context", "advanced"]
+    },
+    {
+      "id": "q070202001",
+      "skill_id": "sk070202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "En el contexto de RAG, ¿qué es un 'embedding'?",
+      "question_en": "In the context of RAG, what is an 'embedding'?",
+      "options_es": [
+        "Una copia comprimida del documento original",
+        "Un vector denso de números reales que representa el significado semántico de un texto, de forma que textos con significado similar quedan cerca en el espacio vectorial",
+        "El identificador único de un documento en la base de datos",
+        "Una etiqueta de categoría asignada manualmente"
+      ],
+      "options_en": [
+        "A compressed copy of the original document",
+        "A dense vector of real numbers representing the semantic meaning of a text, so that texts with similar meaning end up close in vector space",
+        "The unique identifier of a document in the database",
+        "A manually assigned category label"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un embedding es un vector (por ejemplo de 384, 768 o 1536 dimensiones) producido por un modelo que mapea texto a un espacio vectorial donde la proximidad geométrica refleja similitud semántica. Es la base de la recuperación semántica: se embebe la consulta y se buscan los documentos cuyos embeddings estén más cerca.",
+      "explanation_en": "An embedding is a vector (e.g. of 384, 768, or 1536 dimensions) produced by a model that maps text to a vector space where geometric proximity reflects semantic similarity. It is the basis of semantic retrieval: embed the query and search for documents whose embeddings are closest.",
+      "source": "Reimers & Gurevych, 'Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks' (EMNLP 2019)",
+      "expected_time_ms": 20000,
+      "tags": ["embeddings", "vector-space"]
+    },
+    {
+      "id": "q070202002",
+      "skill_id": "sk070202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué métrica se usa comúnmente para medir la similitud entre dos embeddings de texto?",
+      "question_en": "Which metric is commonly used to measure similarity between two text embeddings?",
+      "options_es": [
+        "El número de caracteres en común",
+        "La similitud del coseno (cosine similarity), que mide el ángulo entre los dos vectores",
+        "La diferencia de longitud entre los textos",
+        "El código hash MD5 de cada texto"
+      ],
+      "options_en": [
+        "The number of characters in common",
+        "Cosine similarity, which measures the angle between the two vectors",
+        "The length difference between the texts",
+        "The MD5 hash code of each text"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La similitud del coseno mide el coseno del ángulo entre dos vectores (1 = misma dirección, 0 = ortogonales, -1 = opuestos), ignorando su magnitud. Es la métrica más habitual para embeddings porque captura similitud semántica direccional; también se usan el producto punto y la distancia euclídea (L2).",
+      "explanation_en": "Cosine similarity measures the cosine of the angle between two vectors (1 = same direction, 0 = orthogonal, -1 = opposite), ignoring their magnitude. It is the most common metric for embeddings because it captures directional semantic similarity; dot product and Euclidean (L2) distance are also used.",
+      "source": "Reimers & Gurevych, 'Sentence-BERT' (EMNLP 2019); scikit-learn docs — cosine_similarity",
+      "expected_time_ms": 25000,
+      "tags": ["embeddings", "cosine-similarity"]
+    },
+    {
+      "id": "q070202003",
+      "skill_id": "sk070202",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Dos frases con significados muy parecidos pero sin palabras en común (por ejemplo, 'el coche es veloz' y 'el automóvil corre mucho') deberían tener embeddings cercanos en el espacio vectorial.",
+      "question_en": "Two sentences with very similar meanings but no words in common (e.g., 'the car is fast' and 'the automobile moves quickly') should have close embeddings in vector space.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Esa es justamente la ventaja de la recuperación semántica sobre la léxica: los embeddings capturan significado, no coincidencia de palabras. Sinónimos y paráfrasis producen vectores cercanos, permitiendo encontrar documentos relevantes aunque no compartan el vocabulario exacto de la consulta, algo que la búsqueda por palabras clave (como BM25) no logra por sí sola.",
+      "explanation_en": "That is precisely the advantage of semantic over lexical retrieval: embeddings capture meaning, not word overlap. Synonyms and paraphrases produce nearby vectors, allowing relevant documents to be found even when they don't share the query's exact vocabulary, something keyword search (like BM25) cannot do on its own.",
+      "source": "Karpukhin et al., 'Dense Passage Retrieval for Open-Domain Question Answering' (EMNLP 2020)",
+      "expected_time_ms": 22000,
+      "tags": ["embeddings", "semantic-search"]
+    },
+    {
+      "id": "q070202004",
+      "skill_id": "sk070202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la función principal de una base de datos vectorial (vector database) en un sistema RAG?",
+      "question_en": "What is the primary function of a vector database in a RAG system?",
+      "options_es": [
+        "Almacenar los pesos del LLM",
+        "Almacenar embeddings y realizar búsquedas de vecinos más cercanos (nearest neighbor) de forma eficiente sobre millones de vectores",
+        "Compilar el código del pipeline",
+        "Generar los embeddings a partir del texto"
+      ],
+      "options_en": [
+        "Store the LLM's weights",
+        "Store embeddings and efficiently perform nearest-neighbor searches over millions of vectors",
+        "Compile the pipeline code",
+        "Generate the embeddings from text"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una base de datos vectorial (por ejemplo FAISS, Pinecone, Qdrant, pgvector) indexa embeddings y responde eficientemente a la pregunta '¿qué vectores almacenados son más parecidos a este vector de consulta?'. Los embeddings los produce un modelo aparte; la base vectorial se especializa en el almacenamiento y la búsqueda de similitud a escala.",
+      "explanation_en": "A vector database (e.g. FAISS, Pinecone, Qdrant, pgvector) indexes embeddings and efficiently answers 'which stored vectors are most similar to this query vector?'. The embeddings are produced by a separate model; the vector DB specializes in storage and similarity search at scale.",
+      "source": "Johnson, Douze & Jégou, 'Billion-scale similarity search with GPUs' (FAISS, IEEE Big Data 2019)",
+      "expected_time_ms": 28000,
+      "tags": ["embeddings", "vector-database"]
+    },
+    {
+      "id": "q070202005",
+      "skill_id": "sk070202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Para buscar los vecinos más cercanos entre millones de vectores sin comparar contra todos uno a uno, las bases vectoriales usan índices ANN. ¿Qué es un algoritmo ANN como HNSW?",
+      "question_en": "To find nearest neighbors among millions of vectors without comparing against every one, vector databases use ANN indexes. What is an ANN algorithm like HNSW?",
+      "options_es": [
+        "Un algoritmo de ordenamiento de listas como quicksort",
+        "Un algoritmo de búsqueda de vecinos más cercanos aproximada (Approximate Nearest Neighbor) que sacrifica algo de exactitud por velocidad, usando un grafo navegable de mundo pequeño en capas",
+        "Un optimizador de descenso de gradiente",
+        "Un método de tokenización de subpalabras"
+      ],
+      "options_en": [
+        "A list-sorting algorithm like quicksort",
+        "An Approximate Nearest Neighbor search algorithm that trades some exactness for speed, using a hierarchical navigable small-world graph",
+        "A gradient-descent optimizer",
+        "A subword tokenization method"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La búsqueda exacta de vecinos (comparar la consulta con todos los vectores) es O(n) por consulta y no escala. Los algoritmos ANN como HNSW construyen estructuras (grafos jerárquicos navegables) que encuentran vecinos muy probables en tiempo aproximadamente logarítmico, aceptando una pequeña probabilidad de omitir el vecino exacto a cambio de una enorme ganancia de velocidad.",
+      "explanation_en": "Exact nearest-neighbor search (comparing the query against every vector) is O(n) per query and doesn't scale. ANN algorithms like HNSW build structures (hierarchical navigable graphs) that find highly likely neighbors in roughly logarithmic time, accepting a small chance of missing the exact neighbor in exchange for a huge speed gain.",
+      "source": "Malkov & Yashunin, 'Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs' (IEEE TPAMI 2018)",
+      "expected_time_ms": 32000,
+      "tags": ["embeddings", "ann", "hnsw"]
+    },
+    {
+      "id": "q070202006",
+      "skill_id": "sk070202",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Si dos vectores de embedding están normalizados a norma L2 unitaria, su producto punto (dot product) es exactamente igual a su similitud del ___. (una palabra)",
+      "question_en": "If two embedding vectors are normalized to unit L2 norm, their dot product is exactly equal to their ___ similarity. (one word)",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "coseno",
+      "correct_answer_en": "cosine",
+      "explanation_es": "La similitud del coseno es (a·b)/(‖a‖‖b‖). Si ambos vectores tienen norma 1, el denominador es 1 y la fórmula se reduce al producto punto a·b. Por eso muchas bases vectoriales normalizan los embeddings al indexarlos: así pueden usar el producto punto (más rápido) obteniendo el mismo ranking que la similitud del coseno.",
+      "explanation_en": "Cosine similarity is (a·b)/(‖a‖‖b‖). If both vectors have norm 1, the denominator is 1 and the formula reduces to the dot product a·b. That's why many vector databases normalize embeddings at indexing time: they can then use the (faster) dot product and get the same ranking as cosine similarity.",
+      "source": "Reimers & Gurevych, 'Sentence-BERT' (EMNLP 2019); standard linear algebra of cosine similarity",
+      "expected_time_ms": 35000,
+      "tags": ["embeddings", "cosine-similarity", "advanced"]
+    },
+    {
+      "id": "q070203001",
+      "skill_id": "sk070203",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Por qué se dividen los documentos en fragmentos ('chunks') antes de indexarlos en un sistema RAG?",
+      "question_en": "Why are documents split into 'chunks' before being indexed in a RAG system?",
+      "options_es": [
+        "Para reducir el tamaño total del disco duro",
+        "Para que cada fragmento quepa en los límites de los modelos y para recuperar solo las porciones relevantes de un documento, en lugar de documentos enteros",
+        "Porque los LLMs no pueden leer texto de más de una frase",
+        "Para traducir los documentos automáticamente"
+      ],
+      "options_en": [
+        "To reduce total disk size",
+        "So each fragment fits within model limits and so only the relevant portions of a document are retrieved, rather than whole documents",
+        "Because LLMs cannot read text longer than one sentence",
+        "To automatically translate the documents"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El chunking divide documentos largos en piezas manejables. Esto sirve para dos cosas: (1) respetar los límites de tokens del modelo de embeddings y del contexto del LLM, y (2) aumentar la precisión de la recuperación, devolviendo solo el párrafo relevante en lugar de un documento de 50 páginas que diluiría la señal.",
+      "explanation_en": "Chunking splits long documents into manageable pieces. This serves two purposes: (1) respecting the token limits of the embedding model and the LLM context, and (2) increasing retrieval precision by returning only the relevant paragraph instead of a 50-page document that would dilute the signal.",
+      "source": "Gao et al., 'Retrieval-Augmented Generation for Large Language Models: A Survey' (2023), Sec. on chunking",
+      "expected_time_ms": 22000,
+      "tags": ["chunking", "fundamentals"]
+    },
+    {
+      "id": "q070203002",
+      "skill_id": "sk070203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué es el 'solapamiento' (overlap) entre chunks y para qué sirve?",
+      "question_en": "What is 'overlap' between chunks and what is it for?",
+      "options_es": [
+        "Duplicar todos los documentos para tener copias de seguridad",
+        "Hacer que fragmentos consecutivos compartan una porción de texto en sus bordes, para no cortar ideas a la mitad y preservar el contexto que cruza los límites del chunk",
+        "Solapar los embeddings para reducir su dimensión",
+        "Un error que hay que evitar siempre"
+      ],
+      "options_en": [
+        "Duplicating all documents to keep backups",
+        "Making consecutive fragments share a portion of text at their edges, so ideas aren't cut in half and context crossing chunk boundaries is preserved",
+        "Overlapping embeddings to reduce their dimension",
+        "A bug that should always be avoided"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Sin solapamiento, una frase o idea relevante puede quedar partida justo en el límite entre dos chunks, perdiéndose en ambos. Un solapamiento (por ejemplo, 50-100 tokens compartidos entre chunks contiguos) asegura que el contexto de frontera aparezca completo en al menos un fragmento, mejorando la probabilidad de recuperar la información correcta.",
+      "explanation_en": "Without overlap, a relevant sentence or idea can be split right at the boundary between two chunks and lost in both. An overlap (e.g. 50-100 tokens shared between adjacent chunks) ensures boundary context appears intact in at least one fragment, improving the chance of retrieving the correct information.",
+      "source": "LangChain / LlamaIndex documentation — text splitters and chunk_overlap",
+      "expected_time_ms": 26000,
+      "tags": ["chunking", "overlap"]
+    },
+    {
+      "id": "q070203003",
+      "skill_id": "sk070203",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Usar chunks lo más grandes posible siempre mejora la calidad de un sistema RAG.",
+      "question_en": "Using the largest possible chunks always improves the quality of a RAG system.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Hay un equilibrio (trade-off): chunks demasiado grandes diluyen la relevancia (un embedding de un texto largo 'promedia' muchos temas, reduciendo la precisión de la búsqueda) y consumen más contexto y costo; chunks demasiado pequeños pierden contexto necesario para entender el fragmento. El tamaño óptimo depende del contenido y suele ajustarse empíricamente.",
+      "explanation_en": "There is a trade-off: chunks that are too large dilute relevance (an embedding of a long text 'averages' many topics, reducing search precision) and consume more context and cost; chunks that are too small lose context needed to understand the fragment. The optimal size depends on the content and is usually tuned empirically.",
+      "source": "Gao et al. (2023); Anthropic — Contextual Retrieval (2024)",
+      "expected_time_ms": 22000,
+      "tags": ["chunking", "trade-offs"]
+    },
+    {
+      "id": "q070203004",
+      "skill_id": "sk070203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿En qué se diferencia el 'chunking semántico' del 'chunking de tamaño fijo'?",
+      "question_en": "How does 'semantic chunking' differ from 'fixed-size chunking'?",
+      "options_es": [
+        "El chunking semántico corta cada N caracteres exactos; el de tamaño fijo corta por frases",
+        "El chunking semántico divide el texto en los límites naturales de significado (párrafos, secciones, cambios de tema), mientras que el de tamaño fijo corta cada N tokens/caracteres sin importar el contenido",
+        "Son idénticos en la práctica",
+        "El chunking semántico solo funciona con imágenes"
+      ],
+      "options_en": [
+        "Semantic chunking cuts every exact N characters; fixed-size cuts by sentences",
+        "Semantic chunking splits text at natural meaning boundaries (paragraphs, sections, topic shifts), while fixed-size cuts every N tokens/characters regardless of content",
+        "They are identical in practice",
+        "Semantic chunking only works with images"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El chunking de tamaño fijo es simple pero puede partir ideas coherentes arbitrariamente. El chunking semántico intenta respetar la estructura del contenido (encabezados, párrafos, o incluso similitud entre frases consecutivas) para que cada chunk sea una unidad de significado autocontenida, lo que suele producir embeddings más 'limpios' y una recuperación más precisa.",
+      "explanation_en": "Fixed-size chunking is simple but can split coherent ideas arbitrarily. Semantic chunking tries to respect the content's structure (headings, paragraphs, or even similarity between consecutive sentences) so each chunk is a self-contained unit of meaning, which tends to produce 'cleaner' embeddings and more precise retrieval.",
+      "source": "Gao et al., 'Retrieval-Augmented Generation for Large Language Models: A Survey' (2023)",
+      "expected_time_ms": 30000,
+      "tags": ["chunking", "semantic-chunking"]
+    },
+    {
+      "id": "q070203005",
+      "skill_id": "sk070203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un chunk demasiado pequeño (por ejemplo, una sola frase aislada) puede recuperarse por su similitud pero resultar inútil para el LLM. ¿Por qué?",
+      "question_en": "A chunk that is too small (e.g., a single isolated sentence) may be retrieved by similarity but turn out useless to the LLM. Why?",
+      "options_es": [
+        "Porque los chunks pequeños no se pueden embeber",
+        "Porque puede carecer del contexto circundante necesario para interpretarlo (por ejemplo, un pronombre sin su antecedente, o una cifra sin la unidad o el sujeto al que se refiere)",
+        "Porque los LLMs ignoran cualquier texto de menos de 100 palabras",
+        "Porque siempre provoca un error de la API"
+      ],
+      "options_en": [
+        "Because small chunks cannot be embedded",
+        "Because it may lack the surrounding context needed to interpret it (e.g. a pronoun without its antecedent, or a figure without the unit or subject it refers to)",
+        "Because LLMs ignore any text under 100 words",
+        "Because it always triggers an API error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un fragmento aislado como 'Aumentó un 12% ese año' es semánticamente pobre sin saber qué aumentó, respecto a qué y en qué año. Chunks muy pequeños pueden coincidir con la consulta pero no aportar información accionable. De ahí técnicas como el solapamiento, incluir metadatos, o el 'contextual retrieval' que añade contexto explicativo a cada chunk.",
+      "explanation_en": "An isolated fragment like 'It rose 12% that year' is semantically poor without knowing what rose, relative to what, and in which year. Very small chunks may match the query yet provide no actionable information. Hence techniques like overlap, including metadata, or 'contextual retrieval' that adds explanatory context to each chunk.",
+      "source": "Anthropic — 'Introducing Contextual Retrieval' (2024)",
+      "expected_time_ms": 30000,
+      "tags": ["chunking", "context"]
+    },
+    {
+      "id": "q070203006",
+      "skill_id": "sk070203",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "La técnica de 'contextual retrieval' de Anthropic mejora la recuperación anteponiendo a cada chunk un breve texto de contexto generado por un LLM. ¿Qué problema resuelve principalmente?",
+      "question_en": "Anthropic's 'contextual retrieval' technique improves retrieval by prepending to each chunk a short LLM-generated context text. What problem does it primarily solve?",
+      "options_es": [
+        "Reduce el costo de almacenamiento a la mitad",
+        "Que los chunks aislados pierden el contexto del documento del que provienen, lo que degrada tanto la búsqueda semántica como la léxica; el contexto añadido los hace autoexplicativos y más recuperables",
+        "Elimina la necesidad de una base de datos vectorial",
+        "Convierte el modelo en decoder-only"
+      ],
+      "options_en": [
+        "It halves storage cost",
+        "That isolated chunks lose the context of the document they came from, degrading both semantic and lexical search; the added context makes them self-explanatory and more retrievable",
+        "It removes the need for a vector database",
+        "It turns the model into decoder-only"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Al dividir un documento, cada chunk pierde referencias globales ('la empresa', 'ese trimestre'). Contextual retrieval usa un LLM para anteponer a cada chunk una frase que sitúa el fragmento dentro del documento (por ejemplo, 'Este fragmento es del informe Q2 2023 de ACME sobre ingresos'), mejorando notablemente la tasa de recuperación tanto en embeddings como en BM25.",
+      "explanation_en": "When a document is split, each chunk loses global references ('the company', 'that quarter'). Contextual retrieval uses an LLM to prepend to each chunk a sentence situating it within the document (e.g. 'This chunk is from ACME's Q2 2023 revenue report'), substantially improving retrieval rates in both embeddings and BM25.",
+      "source": "Anthropic — 'Introducing Contextual Retrieval' (2024)",
+      "expected_time_ms": 38000,
+      "tags": ["chunking", "contextual-retrieval", "advanced"]
+    },
+    {
+      "id": "q070204001",
+      "skill_id": "sk070204",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es el 're-ranking' en un pipeline de recuperación?",
+      "question_en": "What is 're-ranking' in a retrieval pipeline?",
+      "options_es": [
+        "Volver a entrenar el modelo de embeddings",
+        "Una segunda etapa que reordena los candidatos recuperados inicialmente usando un modelo más preciso (aunque más costoso) para poner los más relevantes arriba",
+        "Borrar los documentos menos usados de la base de datos",
+        "Traducir los resultados a otro idioma"
+      ],
+      "options_en": [
+        "Retraining the embedding model",
+        "A second stage that reorders the initially retrieved candidates using a more precise (though more expensive) model to put the most relevant ones on top",
+        "Deleting the least-used documents from the database",
+        "Translating the results into another language"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El re-ranking es una arquitectura en dos etapas: primero un recuperador rápido (embeddings o BM25) trae, digamos, los 50 candidatos más prometedores; luego un modelo más preciso pero más lento (típicamente un cross-encoder) reevalúa esos 50 y los reordena, devolviendo los 5 mejores al LLM. Así se combina velocidad a escala con precisión final.",
+      "explanation_en": "Re-ranking is a two-stage architecture: first a fast retriever (embeddings or BM25) brings, say, the top 50 promising candidates; then a more precise but slower model (typically a cross-encoder) re-scores those 50 and reorders them, returning the best 5 to the LLM. This combines scale-friendly speed with final precision.",
+      "source": "Nogueira & Cho, 'Passage Re-ranking with BERT' (2019)",
+      "expected_time_ms": 22000,
+      "tags": ["re-ranking", "retrieval"]
+    },
+    {
+      "id": "q070204002",
+      "skill_id": "sk070204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia clave entre un 'bi-encoder' y un 'cross-encoder' en recuperación?",
+      "question_en": "What is the key difference between a 'bi-encoder' and a 'cross-encoder' in retrieval?",
+      "options_es": [
+        "No hay ninguna diferencia real",
+        "El bi-encoder codifica consulta y documento por separado (embeddings precomputables, rápido, escalable); el cross-encoder procesa el par consulta-documento juntos (más preciso pero costoso, no precomputable)",
+        "El cross-encoder solo funciona con imágenes",
+        "El bi-encoder siempre es más preciso que el cross-encoder"
+      ],
+      "options_en": [
+        "There is no real difference",
+        "The bi-encoder encodes query and document separately (precomputable embeddings, fast, scalable); the cross-encoder processes the query-document pair together (more accurate but expensive, not precomputable)",
+        "The cross-encoder only works with images",
+        "The bi-encoder is always more accurate than the cross-encoder"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El bi-encoder genera un embedding independiente para la consulta y para cada documento, permitiendo precomputar e indexar los de los documentos y buscar por similitud a escala. El cross-encoder mete consulta y documento juntos en el modelo y produce una puntuación de relevancia directa: mucho más preciso, pero inviable para comparar contra millones porque no se puede precomputar. Por eso el cross-encoder se usa en el re-ranking de unos pocos candidatos.",
+      "explanation_en": "The bi-encoder generates an independent embedding for the query and for each document, allowing the document ones to be precomputed and indexed and searched by similarity at scale. The cross-encoder feeds query and document together into the model and produces a direct relevance score: far more accurate, but infeasible to compare against millions because it can't be precomputed. Hence the cross-encoder is used to re-rank a few candidates.",
+      "source": "Reimers & Gurevych, 'Sentence-BERT' (EMNLP 2019); Nogueira & Cho (2019)",
+      "expected_time_ms": 32000,
+      "tags": ["re-ranking", "cross-encoder", "bi-encoder"]
+    },
+    {
+      "id": "q070204003",
+      "skill_id": "sk070204",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "La 'recuperación híbrida' (hybrid retrieval) combina la búsqueda densa (semántica, por embeddings) con la búsqueda dispersa (léxica, por palabras clave como BM25).",
+      "question_en": "'Hybrid retrieval' combines dense search (semantic, by embeddings) with sparse search (lexical, by keywords such as BM25).",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "La recuperación híbrida ejecuta ambos tipos de búsqueda y fusiona sus resultados. La densa capta similitud semántica (sinónimos, paráfrasis) pero puede fallar con términos exactos, nombres propios o códigos; la dispersa (BM25) sobresale en coincidencia léxica exacta pero ignora el significado. Juntas cubren las debilidades mutuas.",
+      "explanation_en": "Hybrid retrieval runs both types of search and fuses their results. Dense captures semantic similarity (synonyms, paraphrases) but can miss exact terms, proper nouns, or codes; sparse (BM25) excels at exact lexical matching but ignores meaning. Together they cover each other's weaknesses.",
+      "source": "Gao et al. (2023); Robertson & Zaragoza, 'The Probabilistic Relevance Framework: BM25 and Beyond' (2009)",
+      "expected_time_ms": 22000,
+      "tags": ["hybrid-retrieval", "bm25"]
+    },
+    {
+      "id": "q070204004",
+      "skill_id": "sk070204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es BM25?",
+      "question_en": "What is BM25?",
+      "options_es": [
+        "Un modelo de embeddings de última generación",
+        "Una función de ranking léxica (dispersa) basada en frecuencia de términos y frecuencia inversa de documento (TF-IDF mejorada), excelente para coincidencias exactas de palabras clave",
+        "Una arquitectura de red neuronal convolucional",
+        "Un algoritmo de compresión de vectores"
+      ],
+      "options_en": [
+        "A state-of-the-art embedding model",
+        "A lexical (sparse) ranking function based on term frequency and inverse document frequency (an improved TF-IDF), excellent for exact keyword matches",
+        "A convolutional neural network architecture",
+        "A vector compression algorithm"
+      ],
+      "correct_index": 1,
+      "explanation_es": "BM25 (Best Matching 25) es un algoritmo clásico de recuperación de información que puntúa documentos según cuántas veces aparecen los términos de la consulta (TF), ponderados por cuán raros son en la colección (IDF), con saturación de frecuencia y normalización por longitud. No entiende semántica, pero es rápido, robusto e imbatible en coincidencias léxicas exactas (SKUs, nombres, términos técnicos).",
+      "explanation_en": "BM25 (Best Matching 25) is a classic information-retrieval algorithm that scores documents by how often the query terms appear (TF), weighted by how rare they are in the collection (IDF), with frequency saturation and length normalization. It doesn't understand semantics, but it's fast, robust, and unbeatable at exact lexical matches (SKUs, names, technical terms).",
+      "source": "Robertson & Zaragoza, 'The Probabilistic Relevance Framework: BM25 and Beyond' (Foundations and Trends in IR, 2009)",
+      "expected_time_ms": 30000,
+      "tags": ["bm25", "sparse-retrieval"]
+    },
+    {
+      "id": "q070204005",
+      "skill_id": "sk070204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué la recuperación híbrida suele superar a la búsqueda puramente densa (por embeddings) en muchos casos reales?",
+      "question_en": "Why does hybrid retrieval often outperform purely dense (embedding) search in many real-world cases?",
+      "options_es": [
+        "Porque los embeddings son siempre inútiles",
+        "Porque la búsqueda densa puede fallar con términos exactos, siglas, códigos de producto o palabras raras fuera de su distribución de entrenamiento, casos donde BM25 (léxico) acierta; combinarlos captura tanto significado como coincidencia exacta",
+        "Porque la búsqueda híbrida no usa ningún modelo",
+        "Porque BM25 entiende mejor la semántica que los embeddings"
+      ],
+      "options_en": [
+        "Because embeddings are always useless",
+        "Because dense search can fail on exact terms, acronyms, product codes, or rare words outside its training distribution, cases where BM25 (lexical) succeeds; combining them captures both meaning and exact matching",
+        "Because hybrid search uses no model at all",
+        "Because BM25 understands semantics better than embeddings"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los embeddings generalizan significado pero pueden 'no ver' un identificador exacto como 'ERR_0x8F' o un apellido poco común, especialmente si no aparecieron en su entrenamiento. BM25 encuentra esas coincidencias literales con precisión. La recuperación híbrida fusiona ambas señales (a menudo con Reciprocal Rank Fusion), logrando mayor cobertura que cualquiera por separado.",
+      "explanation_en": "Embeddings generalize meaning but can 'fail to see' an exact identifier like 'ERR_0x8F' or an uncommon surname, especially if it didn't appear in their training. BM25 finds those literal matches precisely. Hybrid retrieval fuses both signals (often via Reciprocal Rank Fusion), achieving higher coverage than either alone.",
+      "source": "Gao et al. (2023); Robertson & Zaragoza (2009)",
+      "expected_time_ms": 32000,
+      "tags": ["hybrid-retrieval", "dense-vs-sparse"]
+    },
+    {
+      "id": "q070204006",
+      "skill_id": "sk070204",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Reciprocal Rank Fusion (RRF) es un método común para combinar los resultados de búsqueda densa y dispersa. ¿Cómo funciona esencialmente?",
+      "question_en": "Reciprocal Rank Fusion (RRF) is a common method to combine dense and sparse search results. How does it essentially work?",
+      "options_es": [
+        "Promedia las puntuaciones brutas de ambos sistemas directamente",
+        "Asigna a cada documento una puntuación combinada sumando 1/(k + rango) de cada lista donde aparece, usando solo la posición (rango) y no las puntuaciones crudas, lo que evita tener que normalizar escalas distintas",
+        "Descarta la lista dispersa y usa solo la densa",
+        "Entrena una red neuronal para fusionar los resultados"
+      ],
+      "options_en": [
+        "It directly averages the raw scores from both systems",
+        "It assigns each document a combined score by summing 1/(k + rank) from each list it appears in, using only the position (rank) and not raw scores, which avoids having to normalize different scales",
+        "It discards the sparse list and uses only the dense one",
+        "It trains a neural network to fuse the results"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El problema de fusionar es que las puntuaciones de similitud del coseno y las de BM25 viven en escalas incomparables. RRF elude esto usando solo el rango: para cada documento suma 1/(k + rango_i) sobre las listas donde aparece (k es una constante, típicamente 60). Documentos bien posicionados en varias listas obtienen la puntuación combinada más alta, sin necesidad de normalizar puntuaciones.",
+      "explanation_en": "The problem with fusing is that cosine-similarity scores and BM25 scores live on incomparable scales. RRF sidesteps this by using rank only: for each document it sums 1/(k + rank_i) over the lists it appears in (k is a constant, typically 60). Documents ranked highly in multiple lists get the highest combined score, with no need to normalize scores.",
+      "source": "Cormack, Clarke & Büttcher, 'Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods' (SIGIR 2009)",
+      "expected_time_ms": 40000,
+      "tags": ["hybrid-retrieval", "rrf", "advanced"]
+    }
+  ]
+}

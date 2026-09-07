@@ -1,0 +1,849 @@
+{
+  "questions": [
+    {
+      "id": "q060101001",
+      "skill_id": "sk060101",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es el producto punto (dot product) de dos vectores?",
+      "question_en": "What is the dot product of two vectors?",
+      "options_es": [
+        "Un nuevo vector perpendicular a ambos",
+        "La suma de los productos de sus componentes correspondientes, dando como resultado un escalar",
+        "La multiplicación elemento a elemento, dando otro vector",
+        "La distancia entre los dos vectores"
+      ],
+      "options_en": [
+        "A new vector perpendicular to both",
+        "The sum of the products of their corresponding components, resulting in a scalar",
+        "Element-wise multiplication, resulting in another vector",
+        "The distance between the two vectors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El producto punto de `a=(a1,...,an)` y `b=(b1,...,bn)` es `a·b = a1*b1 + a2*b2 + ... + an*bn`, un número escalar. Es la base de operaciones fundamentales en ML como la similitud coseno y las capas lineales de una red neuronal.",
+      "explanation_en": "The dot product of `a=(a1,...,an)` and `b=(b1,...,bn)` is `a·b = a1*b1 + a2*b2 + ... + an*bn`, a scalar number. It underlies fundamental ML operations such as cosine similarity and the linear layers of a neural network.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "expected_time_ms": 18000,
+      "tags": [
+        "linear-algebra",
+        "vectors"
+      ]
+    },
+    {
+      "id": "q060101002",
+      "skill_id": "sk060101",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Dado `a = [1, 2, 3]` y `b = [4, 5, 6]`, ¿cuál es el producto punto `a · b`?",
+      "question_en": "Given `a = [1, 2, 3]` and `b = [4, 5, 6]`, what is the dot product `a · b`?",
+      "options_es": [
+        "32",
+        "21",
+        "[4, 10, 18]",
+        "15"
+      ],
+      "options_en": [
+        "32",
+        "21",
+        "[4, 10, 18]",
+        "15"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`a · b = (1*4) + (2*5) + (3*6) = 4 + 10 + 18 = 32`. El vector `[4, 10, 18]` sería el producto elemento a elemento (Hadamard), no el producto punto, que suma esos términos.",
+      "explanation_en": "`a · b = (1*4) + (2*5) + (3*6) = 4 + 10 + 18 = 32`. The vector `[4, 10, 18]` would be the element-wise (Hadamard) product, not the dot product, which sums those terms.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "expected_time_ms": 22000,
+      "tags": [
+        "linear-algebra",
+        "dot-product"
+      ]
+    },
+    {
+      "id": "q060101003",
+      "skill_id": "sk060101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Para multiplicar dos matrices `A` (de forma m×n) y `B` (de forma p×q), ¿qué condición se debe cumplir?",
+      "question_en": "To multiply two matrices `A` (shape m×n) and `B` (shape p×q), what condition must hold?",
+      "options_es": [
+        "m debe ser igual a p",
+        "n debe ser igual a p (el número de columnas de A debe igualar al número de filas de B)",
+        "m*n debe ser igual a p*q",
+        "No hay ninguna condición, siempre se pueden multiplicar"
+      ],
+      "options_en": [
+        "m must equal p",
+        "n must equal p (the number of columns of A must equal the number of rows of B)",
+        "m*n must equal p*q",
+        "There is no condition; they can always be multiplied"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El producto `AB` solo está definido si el número de columnas de `A` (`n`) coincide con el número de filas de `B` (`p`). El resultado tiene forma `m×q`. Esta regla es crucial al diseñar capas de redes neuronales donde las dimensiones deben encajar.",
+      "explanation_en": "The product `AB` is only defined if the number of columns of `A` (`n`) matches the number of rows of `B` (`p`). The result has shape `m×q`. This rule is crucial when designing neural network layers where dimensions must align.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "expected_time_ms": 25000,
+      "tags": [
+        "linear-algebra",
+        "matrices"
+      ]
+    },
+    {
+      "id": "q060101004",
+      "skill_id": "sk060101",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "La multiplicación de matrices es conmutativa en general, es decir, `AB = BA` para cualquier par de matrices compatibles.",
+      "question_en": "Matrix multiplication is generally commutative, i.e. `AB = BA` for any pair of compatible matrices.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La multiplicación matricial NO es conmutativa en general: `AB` y `BA` pueden diferir, incluso pueden no estar ambas definidas si las dimensiones no lo permiten. Esto es una diferencia clave respecto a la multiplicación de números reales.",
+      "explanation_en": "Matrix multiplication is NOT commutative in general: `AB` and `BA` can differ, and both might not even be defined if the dimensions don't allow it. This is a key difference from multiplying real numbers.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "expected_time_ms": 20000,
+      "tags": [
+        "linear-algebra",
+        "matrices",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q060101005",
+      "skill_id": "sk060101",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "En el contexto de PCA (análisis de componentes principales), ¿qué representan los autovectores (eigenvectors) de la matriz de covarianza?",
+      "question_en": "In the context of PCA (principal component analysis), what do the eigenvectors of the covariance matrix represent?",
+      "options_es": [
+        "Los valores atípicos (outliers) del conjunto de datos",
+        "Las direcciones de máxima varianza de los datos; sus autovalores (eigenvalues) asociados indican cuánta varianza explica cada dirección",
+        "Los centroides de los clusters de datos",
+        "Los coeficientes de una regresión lineal"
+      ],
+      "options_en": [
+        "The outliers of the dataset",
+        "The directions of maximum variance in the data; their associated eigenvalues indicate how much variance each direction explains",
+        "The centroids of data clusters",
+        "The coefficients of a linear regression"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PCA calcula los autovectores de la matriz de covarianza de los datos; cada autovector define una nueva dirección (componente principal) ortogonal a las demás, y su autovalor correspondiente mide cuánta varianza de los datos originales captura esa dirección. Ordenando por autovalor descendente se eligen las componentes más informativas.",
+      "explanation_en": "PCA computes the eigenvectors of the data's covariance matrix; each eigenvector defines a new direction (principal component) orthogonal to the others, and its corresponding eigenvalue measures how much of the original data's variance that direction captures. Sorting by descending eigenvalue selects the most informative components.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2.12: Example — Principal Components Analysis",
+      "expected_time_ms": 40000,
+      "tags": [
+        "linear-algebra",
+        "eigenvectors",
+        "pca"
+      ]
+    },
+    {
+      "id": "q060102001",
+      "skill_id": "sk060102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué mide la derivada de una función en un punto?",
+      "question_en": "What does the derivative of a function measure at a point?",
+      "options_es": [
+        "El valor de la función en ese punto",
+        "La tasa instantánea de cambio (la pendiente de la recta tangente) de la función en ese punto",
+        "El área bajo la curva hasta ese punto",
+        "El valor máximo de la función"
+      ],
+      "options_en": [
+        "The value of the function at that point",
+        "The instantaneous rate of change (the slope of the tangent line) of the function at that point",
+        "The area under the curve up to that point",
+        "The maximum value of the function"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La derivada `f'(x)` indica cuánto y en qué dirección cambia `f` cuando `x` cambia infinitesimalmente. En ML, las derivadas (gradientes) indican cómo ajustar los parámetros de un modelo para reducir el error.",
+      "explanation_en": "The derivative `f'(x)` indicates how much and in which direction `f` changes when `x` changes infinitesimally. In ML, derivatives (gradients) indicate how to adjust a model's parameters to reduce error.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation",
+      "expected_time_ms": 18000,
+      "tags": [
+        "calculus",
+        "derivatives"
+      ]
+    },
+    {
+      "id": "q060102002",
+      "skill_id": "sk060102",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la derivada de `f(x) = x^2` respecto a `x`?",
+      "question_en": "What is the derivative of `f(x) = x^2` with respect to `x`?",
+      "options_es": [
+        "x",
+        "2x",
+        "x^2",
+        "2"
+      ],
+      "options_en": [
+        "x",
+        "2x",
+        "x^2",
+        "2"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Aplicando la regla de la potencia (`d/dx x^n = n*x^(n-1)`) con `n=2`: `d/dx x^2 = 2*x^(2-1) = 2x`.",
+      "explanation_en": "Applying the power rule (`d/dx x^n = n*x^(n-1)`) with `n=2`: `d/dx x^2 = 2*x^(2-1) = 2x`.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation",
+      "expected_time_ms": 20000,
+      "tags": [
+        "calculus",
+        "derivatives",
+        "power-rule"
+      ]
+    },
+    {
+      "id": "q060102003",
+      "skill_id": "sk060102",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En el entrenamiento de redes neuronales, ¿qué regla de derivación es la base del algoritmo de backpropagation?",
+      "question_en": "In neural network training, which differentiation rule underlies the backpropagation algorithm?",
+      "options_es": [
+        "La regla del producto",
+        "La regla de la cadena (chain rule)",
+        "La regla de la potencia",
+        "El teorema fundamental del cálculo"
+      ],
+      "options_en": [
+        "The product rule",
+        "The chain rule",
+        "The power rule",
+        "The fundamental theorem of calculus"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Backpropagation aplica la regla de la cadena repetidamente para calcular cómo el error final depende de cada peso, propagando el gradiente 'hacia atrás' capa por capa: `d(pérdida)/d(peso_capa1) = d(pérdida)/d(salida) * d(salida)/d(capa2) * d(capa2)/d(peso_capa1)`.",
+      "explanation_en": "Backpropagation repeatedly applies the chain rule to compute how the final error depends on each weight, propagating the gradient 'backward' layer by layer: `d(loss)/d(weight_layer1) = d(loss)/d(output) * d(output)/d(layer2) * d(layer2)/d(weight_layer1)`.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5: Back-Propagation",
+      "expected_time_ms": 25000,
+      "tags": [
+        "calculus",
+        "chain-rule",
+        "backpropagation"
+      ]
+    },
+    {
+      "id": "q060102004",
+      "skill_id": "sk060102",
+      "type": "true_false",
+      "difficulty_tier": "expert",
+      "question_es": "El gradiente de una función de varias variables es un vector que apunta en la dirección de mayor crecimiento de la función en un punto.",
+      "question_en": "The gradient of a multivariable function is a vector that points in the direction of steepest increase of the function at a point.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El gradiente `∇f` contiene las derivadas parciales respecto a cada variable y apunta hacia donde `f` crece más rápido. Por eso el descenso de gradiente se mueve en la dirección OPUESTA al gradiente (`-∇f`), para minimizar una función de pérdida.",
+      "explanation_en": "The gradient `∇f` contains the partial derivatives with respect to each variable and points toward where `f` increases fastest. That's why gradient descent moves in the OPPOSITE direction of the gradient (`-∇f`), to minimize a loss function.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation",
+      "expected_time_ms": 30000,
+      "tags": [
+        "calculus",
+        "gradient"
+      ]
+    },
+    {
+      "id": "q060103001",
+      "skill_id": "sk060103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Si lanzas una moneda justa, ¿cuál es la probabilidad de obtener cara?",
+      "question_en": "If you flip a fair coin, what is the probability of getting heads?",
+      "options_es": [
+        "0",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "options_en": [
+        "0",
+        "0.25",
+        "0.5",
+        "1"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una moneda justa tiene dos resultados igualmente probables (cara o cruz), así que `P(cara) = 1/2 = 0.5`.",
+      "explanation_en": "A fair coin has two equally likely outcomes (heads or tails), so `P(heads) = 1/2 = 0.5`.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 3: Probability and Information Theory",
+      "expected_time_ms": 12000,
+      "tags": [
+        "probability",
+        "basics"
+      ]
+    },
+    {
+      "id": "q060103002",
+      "skill_id": "sk060103",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia entre probabilidad conjunta P(A, B) y probabilidad condicional P(A|B)?",
+      "question_en": "What is the difference between joint probability P(A, B) and conditional probability P(A|B)?",
+      "options_es": [
+        "Son exactamente lo mismo",
+        "P(A, B) es la probabilidad de que ambos eventos ocurran; P(A|B) es la probabilidad de A dado que B ya ocurrió",
+        "P(A, B) solo aplica a eventos independientes",
+        "P(A|B) siempre es mayor que P(A, B)"
+      ],
+      "options_en": [
+        "They are exactly the same",
+        "P(A, B) is the probability that both events happen; P(A|B) is the probability of A given that B has already occurred",
+        "P(A, B) only applies to independent events",
+        "P(A|B) is always greater than P(A, B)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Se relacionan mediante `P(A, B) = P(A|B) * P(B)`. La conjunta mide la ocurrencia simultánea de ambos eventos, mientras que la condicional actualiza la probabilidad de `A` al saber que `B` ya sucedió.",
+      "explanation_en": "They relate via `P(A, B) = P(A|B) * P(B)`. The joint probability measures both events happening simultaneously, while the conditional probability updates the probability of `A` given the knowledge that `B` already occurred.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 3: Probability and Information Theory",
+      "expected_time_ms": 28000,
+      "tags": [
+        "probability",
+        "conditional",
+        "joint"
+      ]
+    },
+    {
+      "id": "q060103003",
+      "skill_id": "sk060103",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué teorema permite calcular P(A|B) a partir de P(B|A), P(A) y P(B), y es la base de los clasificadores probabilísticos como Naive Bayes?",
+      "question_en": "Which theorem allows computing P(A|B) from P(B|A), P(A), and P(B), and underlies probabilistic classifiers like Naive Bayes?",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "Teorema de Bayes",
+      "correct_answer_en": "Bayes' theorem",
+      "explanation_es": "El teorema de Bayes establece `P(A|B) = P(B|A) * P(A) / P(B)`. Permite 'invertir' probabilidades condicionales, actualizando una creencia previa (`P(A)`, el prior) con nueva evidencia (`B`) para obtener el posterior `P(A|B)`.",
+      "explanation_en": "Bayes' theorem states `P(A|B) = P(B|A) * P(A) / P(B)`. It allows 'inverting' conditional probabilities, updating a prior belief (`P(A)`, the prior) with new evidence (`B`) to obtain the posterior `P(A|B)`.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 3: Probability and Information Theory",
+      "expected_time_ms": 30000,
+      "tags": [
+        "probability",
+        "bayes"
+      ]
+    },
+    {
+      "id": "q060103004",
+      "skill_id": "sk060103",
+      "type": "true_false",
+      "difficulty_tier": "expert",
+      "question_es": "Si dos eventos A y B son independientes, entonces `P(A|B) = P(A)`.",
+      "question_en": "If two events A and B are independent, then `P(A|B) = P(A)`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La independencia estadística se define precisamente así: conocer que ocurrió `B` no cambia la probabilidad de `A`. Formalmente, `A` y `B` son independientes si y solo si `P(A ∩ B) = P(A) * P(B)`, lo que implica `P(A|B) = P(A)` (asumiendo `P(B) > 0`).",
+      "explanation_en": "Statistical independence is defined exactly this way: knowing that `B` occurred doesn't change the probability of `A`. Formally, `A` and `B` are independent if and only if `P(A ∩ B) = P(A) * P(B)`, which implies `P(A|B) = P(A)` (assuming `P(B) > 0`).",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 3: Probability and Information Theory",
+      "expected_time_ms": 30000,
+      "tags": [
+        "probability",
+        "independence"
+      ]
+    },
+    {
+      "id": "q060104001",
+      "skill_id": "sk060104",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la media (promedio) del conjunto de datos `[2, 4, 6, 8]`?",
+      "question_en": "What is the mean (average) of the dataset `[2, 4, 6, 8]`?",
+      "options_es": [
+        "4",
+        "5",
+        "6",
+        "20"
+      ],
+      "options_en": [
+        "4",
+        "5",
+        "6",
+        "20"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La media es la suma de los valores dividida entre la cantidad de valores: `(2+4+6+8)/4 = 20/4 = 5`.",
+      "explanation_en": "The mean is the sum of the values divided by the count of values: `(2+4+6+8)/4 = 20/4 = 5`.",
+      "source": "Wasserman, All of Statistics (2004), Ch. 3: Expectation (mean)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "statistics",
+        "mean"
+      ]
+    },
+    {
+      "id": "q060104002",
+      "skill_id": "sk060104",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué mide la desviación estándar de un conjunto de datos?",
+      "question_en": "What does the standard deviation of a dataset measure?",
+      "options_es": [
+        "El valor central (mediana) de los datos",
+        "La dispersión típica de los datos respecto a la media",
+        "El valor más frecuente",
+        "El rango entre el mínimo y el máximo"
+      ],
+      "options_en": [
+        "The central value (median) of the data",
+        "The typical spread of the data around the mean",
+        "The most frequent value",
+        "The range between the minimum and maximum"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La desviación estándar es la raíz cuadrada de la varianza y cuantifica cuánto se alejan típicamente los valores individuales de la media. Una desviación estándar baja indica datos agrupados cerca de la media; una alta indica mayor dispersión.",
+      "explanation_en": "Standard deviation is the square root of the variance and quantifies how much individual values typically deviate from the mean. A low standard deviation indicates data clustered near the mean; a high one indicates greater spread.",
+      "source": "Wasserman, All of Statistics (2004), Ch. 3: Variance and standard deviation",
+      "expected_time_ms": 22000,
+      "tags": [
+        "statistics",
+        "standard-deviation"
+      ]
+    },
+    {
+      "id": "q060104003",
+      "skill_id": "sk060104",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué se prefiere la mediana sobre la media para describir el 'salario típico' en un conjunto de datos con salarios muy asimétricos (unos pocos valores extremadamente altos)?",
+      "question_en": "Why is the median preferred over the mean to describe a 'typical salary' in a dataset with highly skewed salaries (a few extremely high values)?",
+      "options_es": [
+        "La mediana siempre es matemáticamente mayor que la media",
+        "La media es muy sensible a valores atípicos (outliers) y se desplaza hacia ellos; la mediana, al ser el valor central, es robusta a esos extremos",
+        "La mediana es más fácil de calcular con muchos datos",
+        "No hay ninguna diferencia práctica entre ambas"
+      ],
+      "options_en": [
+        "The median is always mathematically greater than the mean",
+        "The mean is very sensitive to outliers and gets pulled toward them; the median, being the middle value, is robust to those extremes",
+        "The median is easier to compute with large amounts of data",
+        "There is no practical difference between the two"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Unos pocos salarios extremadamente altos inflan la media (la suma total se reparte entre todos), dando una impresión engañosa del salario 'típico'. La mediana solo depende del orden de los valores, no de su magnitud, por lo que no se ve afectada por esos extremos.",
+      "explanation_en": "A few extremely high salaries inflate the mean (the total sum is spread across everyone), giving a misleading impression of the 'typical' salary. The median only depends on the ordering of values, not their magnitude, so it isn't affected by those extremes.",
+      "source": "Wasserman, All of Statistics (2004), Ch. 3: Descriptive statistics (robustness of the median)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "statistics",
+        "median",
+        "outliers"
+      ]
+    },
+    {
+      "id": "q060104004",
+      "skill_id": "sk060104",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "En estadística inferencial, ¿qué representa un p-value de 0.03 en una prueba de hipótesis con un umbral (alfa) de 0.05?",
+      "question_en": "In inferential statistics, what does a p-value of 0.03 mean in a hypothesis test with a threshold (alpha) of 0.05?",
+      "options_es": [
+        "Hay un 3% de probabilidad de que la hipótesis nula sea verdadera",
+        "Asumiendo que la hipótesis nula es cierta, la probabilidad de observar un resultado tan extremo (o más) como el obtenido es del 3%; como 0.03 < 0.05, se rechaza la hipótesis nula",
+        "El efecto observado es 3 veces más fuerte que el esperado",
+        "La muestra tiene un 97% de precisión"
+      ],
+      "options_en": [
+        "There is a 3% probability that the null hypothesis is true",
+        "Assuming the null hypothesis is true, the probability of observing a result as extreme (or more) as the one obtained is 3%; since 0.03 < 0.05, the null hypothesis is rejected",
+        "The observed effect is 3 times stronger than expected",
+        "The sample has 97% accuracy"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El p-value NO es la probabilidad de que la hipótesis nula sea cierta (un error común); es la probabilidad, bajo el supuesto de que la nula es cierta, de obtener evidencia igual o más extrema que la observada. Al ser menor que el umbral alfa, se considera evidencia suficiente para rechazar la hipótesis nula.",
+      "explanation_en": "The p-value is NOT the probability that the null hypothesis is true (a common misconception); it is the probability, under the assumption that the null is true, of obtaining evidence as extreme or more extreme than what was observed. Since it is below the alpha threshold, it is considered sufficient evidence to reject the null hypothesis.",
+      "source": "Wasserman, All of Statistics (2004), Ch. 10: Hypothesis Testing and p-values",
+      "expected_time_ms": 40000,
+      "tags": [
+        "statistics",
+        "hypothesis-testing",
+        "p-value"
+      ]
+    },
+    {
+      "id": "q060105001",
+      "skill_id": "sk060105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la idea central del algoritmo de descenso de gradiente (gradient descent)?",
+      "question_en": "What is the core idea of the gradient descent algorithm?",
+      "options_es": [
+        "Probar todas las combinaciones posibles de parámetros exhaustivamente",
+        "Actualizar los parámetros iterativamente en la dirección opuesta al gradiente de la función de pérdida, dando pasos proporcionales a una tasa de aprendizaje, hasta acercarse a un mínimo",
+        "Ordenar los datos de menor a mayor antes de entrenar",
+        "Eliminar los parámetros con menor valor absoluto"
+      ],
+      "options_en": [
+        "Exhaustively trying every possible combination of parameters",
+        "Iteratively updating the parameters in the direction opposite to the loss function's gradient, taking steps proportional to a learning rate, until approaching a minimum",
+        "Sorting the data from smallest to largest before training",
+        "Removing the parameters with the smallest absolute value"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La regla de actualización es `θ = θ - η * ∇L(θ)`, donde `η` (eta) es la tasa de aprendizaje y `∇L(θ)` es el gradiente de la pérdida respecto a los parámetros. Como el gradiente apunta hacia el mayor crecimiento, moverse en su dirección opuesta reduce la pérdida.",
+      "explanation_en": "The update rule is `θ = θ - η * ∇L(θ)`, where `η` (eta) is the learning rate and `∇L(θ)` is the gradient of the loss with respect to the parameters. Since the gradient points toward the steepest increase, moving in the opposite direction reduces the loss.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
+      "expected_time_ms": 28000,
+      "tags": [
+        "optimization",
+        "gradient-descent"
+      ]
+    },
+    {
+      "id": "q060105002",
+      "skill_id": "sk060105",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué ocurre si la tasa de aprendizaje (learning rate) en descenso de gradiente es demasiado alta?",
+      "question_en": "What happens if the learning rate in gradient descent is too high?",
+      "options_es": [
+        "El entrenamiento converge más rápido y de forma más estable",
+        "Los pasos de actualización pueden ser tan grandes que 'sobrepasen' el mínimo repetidamente, causando oscilación o divergencia en lugar de convergencia",
+        "El modelo tarda muchísimo más en entrenar sin ningún riesgo",
+        "No tiene ningún efecto sobre el entrenamiento"
+      ],
+      "options_en": [
+        "Training converges faster and more stably",
+        "Update steps can be so large that they repeatedly 'overshoot' the minimum, causing oscillation or divergence instead of convergence",
+        "The model just takes much longer to train with no risk",
+        "It has no effect on training at all"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una tasa de aprendizaje muy alta hace que cada paso sea demasiado grande, saltando de un lado a otro del mínimo (o incluso alejándose cada vez más, divergiendo). Una tasa demasiado baja, en cambio, converge de forma muy lenta. Encontrar un valor adecuado (o usar tasas adaptativas como Adam) es crucial.",
+      "explanation_en": "A very high learning rate makes each step too large, bouncing back and forth across the minimum (or even moving further away each time, diverging). A rate that's too low, conversely, converges very slowly. Finding a suitable value (or using adaptive rates like Adam) is crucial.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
+      "expected_time_ms": 28000,
+      "tags": [
+        "optimization",
+        "learning-rate",
+        "gradient-descent"
+      ]
+    },
+    {
+      "id": "q060105003",
+      "skill_id": "sk060105",
+      "type": "true_false",
+      "difficulty_tier": "expert",
+      "question_es": "El descenso de gradiente estocástico (SGD) actualiza los parámetros usando el gradiente calculado sobre todo el conjunto de datos en cada paso, igual que el descenso de gradiente por lotes (batch).",
+      "question_en": "Stochastic gradient descent (SGD) updates parameters using the gradient computed over the entire dataset at each step, just like batch gradient descent.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "SGD actualiza los parámetros usando el gradiente de UN SOLO ejemplo (o un mini-lote pequeño) a la vez, no el conjunto de datos completo. Esto lo hace mucho más rápido por iteración, aunque el gradiente estimado es más ruidoso; el batch gradient descent sí usa todo el dataset en cada paso.",
+      "explanation_en": "SGD updates parameters using the gradient of a SINGLE example (or a small mini-batch) at a time, not the full dataset. This makes it much faster per iteration, though the estimated gradient is noisier; batch gradient descent does use the entire dataset at each step.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
+      "expected_time_ms": 30000,
+      "tags": [
+        "optimization",
+        "sgd",
+        "gradient-descent"
+      ]
+    },
+    {
+      "id": "q060101006",
+      "skill_id": "sk060101",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la norma (magnitud) euclidiana del vector `[3, 4]`?",
+      "question_en": "What is the Euclidean norm (magnitude) of the vector `[3, 4]`?",
+      "options_es": [
+        "7",
+        "5",
+        "12",
+        "25"
+      ],
+      "options_en": [
+        "7",
+        "5",
+        "12",
+        "25"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La norma euclidiana (L2) es `sqrt(sum(componente^2))`: `sqrt(3^2 + 4^2) = sqrt(9 + 16) = sqrt(25) = 5`. Es el conocido triángulo 3-4-5.",
+      "explanation_en": "The Euclidean (L2) norm is `sqrt(sum(component^2))`: `sqrt(3^2 + 4^2) = sqrt(9 + 16) = sqrt(25) = 5`. This is the well-known 3-4-5 triangle.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
+      "expected_time_ms": 22000,
+      "tags": [
+        "linear-algebra",
+        "norm"
+      ]
+    },
+    {
+      "id": "q060102005",
+      "skill_id": "sk060102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la derivada de una función constante `f(x) = 5`?",
+      "question_en": "What is the derivative of a constant function `f(x) = 5`?",
+      "options_es": [
+        "5",
+        "0",
+        "1",
+        "x"
+      ],
+      "options_en": [
+        "5",
+        "0",
+        "1",
+        "x"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una función constante no cambia en absoluto cuando `x` varía, así que su tasa de cambio (la derivada) es siempre `0`, independientemente del valor de `x`.",
+      "explanation_en": "A constant function doesn't change at all as `x` varies, so its rate of change (the derivative) is always `0`, regardless of the value of `x`.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation",
+      "expected_time_ms": 12000,
+      "tags": [
+        "calculus",
+        "derivatives"
+      ]
+    },
+    {
+      "id": "q060103005",
+      "skill_id": "sk060103",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En una distribución normal (gaussiana) estándar, ¿qué porcentaje aproximado de los datos cae dentro de una desviación estándar de la media?",
+      "question_en": "In a standard normal (Gaussian) distribution, approximately what percentage of the data falls within one standard deviation of the mean?",
+      "options_es": [
+        "50%",
+        "68%",
+        "95%",
+        "99.7%"
+      ],
+      "options_en": [
+        "50%",
+        "68%",
+        "95%",
+        "99.7%"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La 'regla empírica' (68-95-99.7) establece que aproximadamente el 68% de los datos cae dentro de ±1 desviación estándar, el 95% dentro de ±2, y el 99.7% dentro de ±3, para una distribución normal.",
+      "explanation_en": "The 'empirical rule' (68-95-99.7) states that approximately 68% of the data falls within ±1 standard deviation, 95% within ±2, and 99.7% within ±3, for a normal distribution.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 3: Probability and Information Theory",
+      "expected_time_ms": 22000,
+      "tags": [
+        "probability",
+        "normal-distribution"
+      ]
+    },
+    {
+      "id": "q060104005",
+      "skill_id": "sk060104",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama la medida estadística que indica el grado y dirección de relación lineal entre dos variables, con valores entre -1 y 1?",
+      "question_en": "What is the name of the statistical measure that indicates the degree and direction of linear relationship between two variables, with values between -1 and 1?",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "correlación",
+      "correct_answer_en": "correlation",
+      "explanation_es": "El coeficiente de correlación (de Pearson, el más común) mide la relación lineal entre dos variables: `1` indica correlación positiva perfecta, `-1` correlación negativa perfecta, y `0` ausencia de relación lineal. Importante: correlación no implica causalidad.",
+      "explanation_en": "The correlation coefficient (Pearson's, the most common) measures the linear relationship between two variables: `1` indicates perfect positive correlation, `-1` perfect negative correlation, and `0` no linear relationship. Important: correlation does not imply causation.",
+      "source": "Wasserman, All of Statistics (2004), Ch. 3: Covariance and Correlation",
+      "expected_time_ms": 22000,
+      "tags": [
+        "statistics",
+        "correlation"
+      ]
+    },
+    {
+      "id": "q060102006",
+      "skill_id": "sk060102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es una derivada parcial?",
+      "question_en": "What is a partial derivative?",
+      "options_es": [
+        "La derivada de una función respecto a una sola variable, manteniendo las demás variables constantes",
+        "Una derivada calculada solo en la mitad del dominio de la función",
+        "El promedio de varias derivadas",
+        "Una derivada aproximada, no exacta"
+      ],
+      "options_en": [
+        "The derivative of a function with respect to a single variable, holding the other variables constant",
+        "A derivative calculated only over half the function's domain",
+        "The average of several derivatives",
+        "An approximate, not exact, derivative"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Para una función de varias variables, como `f(x, y)`, la derivada parcial `∂f/∂x` mide cómo cambia `f` al variar solo `x`, tratando `y` como una constante. Las derivadas parciales de todas las variables forman el vector gradiente.",
+      "explanation_en": "For a function of several variables, like `f(x, y)`, the partial derivative `∂f/∂x` measures how `f` changes when only `x` varies, treating `y` as a constant. The partial derivatives with respect to all variables form the gradient vector.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation",
+      "expected_time_ms": 18000,
+      "tags": [
+        "calculus",
+        "partial-derivatives"
+      ]
+    },
+    {
+      "id": "q060103006",
+      "skill_id": "sk060103",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Si dos eventos A y B son mutuamente excluyentes (no pueden ocurrir a la vez), ¿cómo se calcula P(A o B)?",
+      "question_en": "If two events A and B are mutually exclusive (they cannot both happen), how is P(A or B) computed?",
+      "options_es": [
+        "P(A) * P(B)",
+        "P(A) + P(B)",
+        "P(A) - P(B)",
+        "P(A) / P(B)"
+      ],
+      "options_en": [
+        "P(A) * P(B)",
+        "P(A) + P(B)",
+        "P(A) - P(B)",
+        "P(A) / P(B)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Como A y B nunca ocurren simultáneamente (`P(A ∩ B) = 0`), la regla general `P(A o B) = P(A) + P(B) - P(A ∩ B)` se simplifica a `P(A) + P(B)`. Por ejemplo, al lanzar un dado, P(sale 1 o sale 2) = 1/6 + 1/6 = 2/6.",
+      "explanation_en": "Since A and B never occur simultaneously (`P(A ∩ B) = 0`), the general rule `P(A or B) = P(A) + P(B) - P(A ∩ B)` simplifies to `P(A) + P(B)`. For example, when rolling a die, P(rolling a 1 or a 2) = 1/6 + 1/6 = 2/6.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 3: Probability and Information Theory",
+      "expected_time_ms": 25000,
+      "tags": [
+        "probability",
+        "mutually-exclusive"
+      ]
+    },
+    {
+      "id": "q060104006",
+      "skill_id": "sk060104",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es la 'moda' en un conjunto de datos?",
+      "question_en": "What is the 'mode' of a dataset?",
+      "options_es": [
+        "El valor promedio",
+        "El valor que aparece con mayor frecuencia",
+        "El valor central al ordenar los datos",
+        "La diferencia entre el máximo y el mínimo"
+      ],
+      "options_en": [
+        "The average value",
+        "The value that appears most frequently",
+        "The middle value when the data is sorted",
+        "The difference between the maximum and minimum"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La moda es el valor (o valores, si hay empate) más frecuente en el conjunto de datos. Es especialmente útil para datos categóricos, donde la media y la mediana no siempre tienen sentido (por ejemplo, el color más común de un conjunto de autos).",
+      "explanation_en": "The mode is the value (or values, in case of a tie) that occurs most frequently in the dataset. It is especially useful for categorical data, where the mean and median don't always make sense (e.g., the most common color in a set of cars).",
+      "source": "Wasserman, All of Statistics (2004), Ch. 3: Descriptive statistics (mode)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "statistics",
+        "mode"
+      ]
+    },
+    {
+      "id": "q060105004",
+      "skill_id": "sk060105",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es una función de pérdida (loss function) en Machine Learning?",
+      "question_en": "What is a loss function in Machine Learning?",
+      "options_es": [
+        "Una función que mide qué tan lejos están las predicciones del modelo de los valores reales; el objetivo del entrenamiento es minimizarla",
+        "El porcentaje de datos perdidos durante el preprocesamiento",
+        "Una función que siempre devuelve cero cuando el modelo funciona bien",
+        "El tiempo que tarda el modelo en hacer una predicción"
+      ],
+      "options_en": [
+        "A function that measures how far the model's predictions are from the actual values; the goal of training is to minimize it",
+        "The percentage of data lost during preprocessing",
+        "A function that always returns zero when the model performs well",
+        "The time it takes the model to make a prediction"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La función de pérdida (por ejemplo, error cuadrático medio para regresión, o entropía cruzada para clasificación) cuantifica el error del modelo en un ejemplo o lote. El proceso de entrenamiento ajusta los parámetros para minimizar esta función usando descenso de gradiente.",
+      "explanation_en": "The loss function (e.g., mean squared error for regression, or cross-entropy for classification) quantifies the model's error on an example or batch. The training process adjusts parameters to minimize this function using gradient descent.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
+      "expected_time_ms": 18000,
+      "tags": [
+        "optimization",
+        "loss-function"
+      ]
+    },
+    {
+      "id": "q060105005",
+      "skill_id": "sk060105",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué propósito tiene el término de 'momentum' (momento) en variantes del descenso de gradiente como SGD con momentum?",
+      "question_en": "What is the purpose of the 'momentum' term in gradient descent variants like SGD with momentum?",
+      "options_es": [
+        "Aumentar el número de parámetros del modelo",
+        "Acumular una media móvil de gradientes pasados para suavizar la trayectoria de actualización, acelerando la convergencia y reduciendo oscilaciones en superficies de pérdida con curvatura irregular",
+        "Reducir el tamaño del conjunto de datos de entrenamiento",
+        "Eliminar la necesidad de una tasa de aprendizaje"
+      ],
+      "options_en": [
+        "Increasing the number of model parameters",
+        "Accumulating a moving average of past gradients to smooth the update trajectory, speeding up convergence and reducing oscillation on loss surfaces with uneven curvature",
+        "Reducing the size of the training dataset",
+        "Removing the need for a learning rate"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Momentum añade una fracción de la actualización anterior al paso actual (similar a un objeto físico con inercia), lo que ayuda a atravesar zonas planas (mesetas) más rápido y a amortiguar oscilaciones en valles estrechos, acelerando la convergencia respecto al SGD puro.",
+      "explanation_en": "Momentum adds a fraction of the previous update to the current step (similar to a physical object with inertia), which helps traverse flat regions (plateaus) faster and dampens oscillation in narrow valleys, speeding up convergence relative to plain SGD.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
+      "expected_time_ms": 30000,
+      "tags": [
+        "optimization",
+        "momentum",
+        "gradient-descent"
+      ]
+    },
+    {
+      "id": "q060105006",
+      "skill_id": "sk060105",
+      "type": "true_false",
+      "difficulty_tier": "expert",
+      "question_es": "Para una función de pérdida convexa, el descenso de gradiente (con una tasa de aprendizaje adecuada) está garantizado a converger al mínimo global.",
+      "question_en": "For a convex loss function, gradient descent (with an appropriate learning rate) is guaranteed to converge to the global minimum.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una función convexa tiene un único mínimo global (no hay mínimos locales que la trampeen); con una tasa de aprendizaje apropiada, el descenso de gradiente converge a ese mínimo global. Esto contrasta con las superficies de pérdida no convexas de las redes neuronales profundas, donde solo se garantiza converger a un mínimo local (o punto de silla).",
+      "explanation_en": "A convex function has a single global minimum (no local minima to get trapped in); with an appropriate learning rate, gradient descent converges to that global minimum. This contrasts with the non-convex loss surfaces of deep neural networks, where convergence is only guaranteed to a local minimum (or saddle point).",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
+      "expected_time_ms": 32000,
+      "tags": [
+        "optimization",
+        "convexity",
+        "gradient-descent"
+      ]
+    }
+  ]
+}

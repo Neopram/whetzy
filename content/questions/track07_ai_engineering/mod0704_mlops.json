@@ -1,0 +1,580 @@
+{
+  "questions": [
+    {
+      "id": "q070401001",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Por qué en ML es necesario versionar los datos y los modelos, y no solo el código?",
+      "question_en": "Why in ML is it necessary to version data and models, not just code?",
+      "options_es": [
+        "Porque el código no importa en ML",
+        "Porque el resultado de un modelo depende de la combinación de código, datos e hiperparámetros; para reproducir un experimento hay que poder recuperar exactamente esa misma combinación",
+        "Porque los datos ocupan menos espacio que el código",
+        "Porque los modelos no cambian nunca"
+      ],
+      "options_en": [
+        "Because code doesn't matter in ML",
+        "Because a model's result depends on the combination of code, data, and hyperparameters; to reproduce an experiment you must be able to recover exactly that same combination",
+        "Because data takes less space than code",
+        "Because models never change"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En software tradicional el mismo código produce el mismo resultado; en ML no basta con el código: el mismo script entrenado sobre datos distintos, o con distintos hiperparámetros o semilla aleatoria, produce un modelo diferente. Para reproducir y auditar un experimento hay que versionar los tres elementos: código, datos y configuración/modelo resultante.",
+      "explanation_en": "In traditional software the same code produces the same result; in ML the code alone isn't enough: the same script trained on different data, or with different hyperparameters or random seed, produces a different model. To reproduce and audit an experiment you must version all three: code, data, and configuration/resulting model.",
+      "source": "Sculley et al., 'Hidden Technical Debt in Machine Learning Systems' (NeurIPS 2015)",
+      "expected_time_ms": 24000,
+      "tags": ["mlops", "versioning", "reproducibility"]
+    },
+    {
+      "id": "q070401002",
+      "skill_id": "sk070401",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Versionar únicamente el código con Git es suficiente para garantizar la reproducibilidad completa de un experimento de machine learning.",
+      "question_en": "Versioning only the code with Git is enough to guarantee full reproducibility of a machine learning experiment.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Git versiona el código, pero un experimento de ML también depende del dataset exacto (que puede cambiar), los hiperparámetros, la semilla aleatoria y el entorno de dependencias. Sin fijar y versionar todo eso, ejecutar el mismo código puede dar un modelo distinto. Por eso existen herramientas como DVC (para datos) y MLflow (para experimentos y modelos) que complementan a Git.",
+      "explanation_en": "Git versions the code, but an ML experiment also depends on the exact dataset (which can change), the hyperparameters, the random seed, and the dependency environment. Without pinning and versioning all of that, running the same code can yield a different model. That's why tools like DVC (for data) and MLflow (for experiments and models) complement Git.",
+      "source": "Kreuzberger, Kühl & Hirschl, 'Machine Learning Operations (MLOps): Overview, Definition, and Architecture' (IEEE Access 2023)",
+      "expected_time_ms": 22000,
+      "tags": ["mlops", "versioning", "git"]
+    },
+    {
+      "id": "q070401003",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué función cumple una herramienta como DVC (Data Version Control) o MLflow en un flujo de MLOps?",
+      "question_en": "What role does a tool like DVC (Data Version Control) or MLflow serve in an MLOps workflow?",
+      "options_es": [
+        "Reemplazar por completo al LLM",
+        "Rastrear versiones de datasets, artefactos de modelo, métricas e hiperparámetros de cada experimento, para poder reproducir y comparar ejecuciones concretas",
+        "Compilar el modelo a código máquina",
+        "Servir como base de datos vectorial para RAG"
+      ],
+      "options_en": [
+        "Completely replace the LLM",
+        "Track versions of datasets, model artifacts, metrics, and hyperparameters for each experiment, so specific runs can be reproduced and compared",
+        "Compile the model to machine code",
+        "Serve as a vector database for RAG"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Estas herramientas registran, para cada ejecución de entrenamiento, qué versión de datos y código se usó, qué hiperparámetros, qué métricas se obtuvieron y dónde quedó el modelo resultante. Así se puede reproducir un experimento exacto, comparar ejecuciones y saber qué combinación produjo el mejor modelo, algo inviable a mano cuando hay cientos de experimentos.",
+      "explanation_en": "These tools record, for each training run, which version of data and code was used, which hyperparameters, what metrics were obtained, and where the resulting model was stored. This lets you reproduce an exact experiment, compare runs, and know which combination produced the best model, something infeasible by hand across hundreds of experiments.",
+      "source": "MLflow documentation — Tracking and Model Registry; DVC documentation",
+      "expected_time_ms": 26000,
+      "tags": ["mlops", "versioning", "tooling"]
+    },
+    {
+      "id": "q070401004",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es un 'model registry' (registro de modelos)?",
+      "question_en": "What is a 'model registry'?",
+      "options_es": [
+        "Un archivo de texto con los nombres de los modelos",
+        "Un almacén centralizado de modelos versionados que gestiona su ciclo de vida (por ejemplo, etapas staging/producción), su linaje (qué datos/código lo produjeron) y sus metadatos",
+        "El registro de Windows donde se instala el modelo",
+        "Una lista de usuarios autorizados"
+      ],
+      "options_en": [
+        "A text file listing the model names",
+        "A centralized store of versioned models that manages their lifecycle (e.g. staging/production stages), lineage (what data/code produced them), and metadata",
+        "The Windows registry where the model is installed",
+        "A list of authorized users"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un model registry es el punto central donde se registran las versiones de los modelos listos para usar. Permite promover un modelo entre etapas (staging → producción), consultar qué experimento y qué datos lo generaron (linaje), guardar métricas y firmas de entrada/salida, y hacer rollback a una versión anterior si la nueva falla en producción.",
+      "explanation_en": "A model registry is the central point where usable model versions are registered. It lets you promote a model across stages (staging → production), look up which experiment and data generated it (lineage), store metrics and input/output signatures, and roll back to a previous version if the new one fails in production.",
+      "source": "MLflow documentation — Model Registry",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "model-registry"]
+    },
+    {
+      "id": "q070401005",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué versionar datasets grandes o binarios de modelo directamente dentro de un repositorio Git es una mala práctica?",
+      "question_en": "Why is versioning large datasets or model binaries directly inside a Git repository a bad practice?",
+      "options_es": [
+        "Git no permite archivos de más de 1 KB",
+        "Git está diseñado para diferencias de texto; los archivos binarios grandes inflan el historial del repositorio, lo hacen lento y no se pueden 'diferenciar' de forma útil. Se usan almacenes de artefactos con punteros (como DVC o Git LFS)",
+        "Porque los datasets no deben versionarse nunca",
+        "Porque Git borra automáticamente los archivos grandes"
+      ],
+      "options_en": [
+        "Git doesn't allow files larger than 1 KB",
+        "Git is designed for text diffs; large binary files bloat the repository history, make it slow, and can't be usefully 'diffed'. Artifact stores with pointers (like DVC or Git LFS) are used instead",
+        "Because datasets should never be versioned",
+        "Because Git automatically deletes large files"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Git guarda todo el historial: cada versión de un dataset de varios GB se acumula, haciendo el repositorio enorme y lento de clonar. Además, Git no puede mostrar diferencias significativas de binarios. La solución es guardar los datos/modelos en un almacén externo (S3, GCS) y versionar en Git solo un pequeño 'puntero' (hash) que los referencia, que es justo lo que hacen DVC y Git LFS.",
+      "explanation_en": "Git keeps the full history: every version of a multi-GB dataset accumulates, making the repository huge and slow to clone. Also, Git can't show meaningful diffs of binaries. The solution is to store the data/models in an external store (S3, GCS) and version in Git only a small 'pointer' (hash) that references them, which is exactly what DVC and Git LFS do.",
+      "source": "DVC documentation — How it works; Git LFS documentation",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "versioning", "git-lfs", "dvc"]
+    },
+    {
+      "id": "q070401006",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Para reproducir exactamente el mismo modelo entrenado hace seis meses, ¿qué conjunto de elementos necesitas haber versionado?",
+      "question_en": "To reproduce exactly the same model trained six months ago, what set of elements do you need to have versioned?",
+      "options_es": [
+        "Solo el archivo del modelo final",
+        "La versión exacta de los datos de entrenamiento, el código, los hiperparámetros, la semilla aleatoria y el entorno de dependencias (versiones de librerías); si falta cualquiera, el resultado puede diferir",
+        "Solo el nombre del dataset",
+        "Solo la métrica de precisión obtenida"
+      ],
+      "options_en": [
+        "Only the final model file",
+        "The exact version of the training data, the code, the hyperparameters, the random seed, and the dependency environment (library versions); if any is missing, the result may differ",
+        "Only the dataset name",
+        "Only the accuracy metric obtained"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La reproducibilidad completa exige congelar toda la cadena: los datos exactos (mismas filas, mismo preprocesamiento), el código, la configuración (hiperparámetros), la semilla aleatoria que controla la inicialización y el barajado, y el entorno (versiones de Python y librerías, que pueden cambiar el comportamiento numérico). Omitir cualquiera de estos introduce una fuente de variación no controlada.",
+      "explanation_en": "Full reproducibility requires freezing the whole chain: the exact data (same rows, same preprocessing), the code, the configuration (hyperparameters), the random seed controlling initialization and shuffling, and the environment (Python and library versions, which can change numerical behavior). Omitting any of these introduces an uncontrolled source of variation.",
+      "source": "Kreuzberger et al. (IEEE Access 2023); Sculley et al. (NeurIPS 2015)",
+      "expected_time_ms": 36000,
+      "tags": ["mlops", "reproducibility", "advanced"]
+    },
+    {
+      "id": "q070402001",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es un 'pipeline de entrenamiento' en MLOps?",
+      "question_en": "What is a 'training pipeline' in MLOps?",
+      "options_es": [
+        "Una tubería física de refrigeración de las GPU",
+        "Una secuencia automatizada de pasos (ingesta de datos → preprocesamiento → entrenamiento → evaluación → registro del modelo) que produce un modelo de forma reproducible",
+        "Un tipo de red neuronal",
+        "El proceso manual de copiar y pegar código en un notebook"
+      ],
+      "options_en": [
+        "A physical GPU cooling pipe",
+        "An automated sequence of steps (data ingestion → preprocessing → training → evaluation → model registration) that produces a model reproducibly",
+        "A type of neural network",
+        "The manual process of copy-pasting code into a notebook"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un pipeline de entrenamiento encadena y automatiza las etapas que van de los datos crudos al modelo listo para registrar: ingesta, validación y limpieza de datos, generación de features, entrenamiento, evaluación contra un conjunto de prueba y, si cumple el umbral, registro del modelo. Automatizarlo lo hace repetible, auditable y menos propenso a errores manuales.",
+      "explanation_en": "A training pipeline chains and automates the stages from raw data to a model ready to register: ingestion, data validation and cleaning, feature generation, training, evaluation against a test set, and, if it meets the threshold, model registration. Automating it makes it repeatable, auditable, and less prone to manual errors.",
+      "source": "Google Cloud — 'MLOps: Continuous delivery and automation pipelines in machine learning'",
+      "expected_time_ms": 22000,
+      "tags": ["mlops", "training-pipeline"]
+    },
+    {
+      "id": "q070402002",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es una ventaja de un pipeline de entrenamiento automatizado frente a entrenar manualmente en un notebook?",
+      "question_en": "What is an advantage of an automated training pipeline over training manually in a notebook?",
+      "options_es": [
+        "Siempre produce un modelo con 100% de precisión",
+        "Es reproducible y repetible: se puede reentrenar de forma consistente (por ejemplo, ante nuevos datos) sin depender de pasos manuales frágiles ni del estado oculto de un notebook",
+        "Elimina la necesidad de datos",
+        "Hace innecesaria la evaluación del modelo"
+      ],
+      "options_en": [
+        "It always produces a model with 100% accuracy",
+        "It is reproducible and repeatable: you can retrain consistently (e.g. on new data) without relying on fragile manual steps or a notebook's hidden state",
+        "It eliminates the need for data",
+        "It makes model evaluation unnecessary"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los notebooks son excelentes para explorar, pero frágiles para producción: dependen del orden de ejecución de las celdas, acumulan estado oculto y son difíciles de re-ejecutar de forma idéntica. Un pipeline automatizado codifica los pasos de forma determinista y orquestada, permitiendo reentrenar bajo demanda o de forma programada con garantía de consistencia.",
+      "explanation_en": "Notebooks are great for exploration but fragile for production: they depend on cell execution order, accumulate hidden state, and are hard to re-run identically. An automated pipeline encodes the steps deterministically and orchestrated, enabling on-demand or scheduled retraining with a guarantee of consistency.",
+      "source": "Sculley et al. (NeurIPS 2015); Google Cloud MLOps guide",
+      "expected_time_ms": 26000,
+      "tags": ["mlops", "training-pipeline", "reproducibility"]
+    },
+    {
+      "id": "q070402003",
+      "skill_id": "sk070402",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "El 'training-serving skew' es la discrepancia entre cómo se calculan las features durante el entrenamiento y cómo se calculan al servir predicciones en producción, y puede degradar el rendimiento del modelo.",
+      "question_en": "'Training-serving skew' is the discrepancy between how features are computed during training and how they are computed when serving predictions in production, and it can degrade model performance.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "El training-serving skew ocurre cuando el pipeline de features de entrenamiento y el de producción difieren (distinto código, distintas fuentes, distinto orden de operaciones). El modelo, entrenado con features calculadas de una forma, recibe en producción features ligeramente distintas, lo que degrada su precisión de forma difícil de diagnosticar. Los feature stores ayudan a evitarlo compartiendo la misma lógica.",
+      "explanation_en": "Training-serving skew occurs when the training feature pipeline and the production one differ (different code, different sources, different order of operations). The model, trained on features computed one way, receives slightly different features in production, degrading its accuracy in a way that is hard to diagnose. Feature stores help avoid it by sharing the same logic.",
+      "source": "Zinkevich, 'Rules of Machine Learning: Best Practices for ML Engineering' (Google); Sculley et al. (2015)",
+      "expected_time_ms": 24000,
+      "tags": ["mlops", "training-serving-skew"]
+    },
+    {
+      "id": "q070402004",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es un 'feature store' (almacén de features)?",
+      "question_en": "What is a 'feature store'?",
+      "options_es": [
+        "Una tienda online para comprar modelos preentrenados",
+        "Un repositorio centralizado de features curadas y versionadas, reutilizables tanto en entrenamiento como en servicio, que ayuda a garantizar consistencia y evitar el training-serving skew",
+        "El disco duro donde se guarda el sistema operativo",
+        "Un tipo de función de pérdida"
+      ],
+      "options_en": [
+        "An online shop to buy pretrained models",
+        "A centralized repository of curated, versioned features reusable in both training and serving, which helps ensure consistency and avoid training-serving skew",
+        "The hard drive where the operating system is stored",
+        "A type of loss function"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un feature store centraliza la definición y el cálculo de las features para que un mismo feature (por ejemplo, 'gasto medio del cliente en 30 días') se compute con la misma lógica en entrenamiento y en producción. Aporta reutilización entre equipos/modelos, versionado, y consistencia online/offline, reduciendo duplicación y el riesgo de skew.",
+      "explanation_en": "A feature store centralizes the definition and computation of features so the same feature (e.g. 'customer's 30-day average spend') is computed with the same logic in training and production. It brings reuse across teams/models, versioning, and online/offline consistency, reducing duplication and skew risk.",
+      "source": "Kreuzberger et al. (IEEE Access 2023); feature-store literature (e.g. Feast documentation)",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "feature-store"]
+    },
+    {
+      "id": "q070402005",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es la 'continuous training' (CT), un concepto propio de MLOps que no existe en el CI/CD tradicional de software?",
+      "question_en": "What is 'continuous training' (CT), a concept specific to MLOps that doesn't exist in traditional software CI/CD?",
+      "options_es": [
+        "Entrenar a los ingenieros continuamente en cursos",
+        "La automatización del reentrenamiento del modelo (disparado por nuevos datos, un calendario o la detección de drift) para mantenerlo actualizado sin intervención manual",
+        "Ejecutar los tests unitarios en cada commit",
+        "Compilar el código continuamente"
+      ],
+      "options_en": [
+        "Continuously training the engineers with courses",
+        "Automating model retraining (triggered by new data, a schedule, or drift detection) to keep it up to date without manual intervention",
+        "Running unit tests on every commit",
+        "Continuously compiling the code"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El CI/CD tradicional cubre integración y despliegue continuos de código. MLOps añade la 'continuous training': como los modelos se degradan cuando el mundo cambia (drift), se automatiza su reentrenamiento periódico o disparado por señales, evaluándolo y desplegándolo si supera al modelo en producción. Es una pieza que no tiene equivalente en el desarrollo de software convencional.",
+      "explanation_en": "Traditional CI/CD covers continuous integration and deployment of code. MLOps adds 'continuous training': because models degrade as the world changes (drift), their retraining is automated periodically or triggered by signals, evaluating it and deploying it if it beats the production model. It's a piece with no equivalent in conventional software development.",
+      "source": "Google Cloud — 'MLOps: Continuous delivery and automation pipelines in machine learning' (CI/CD/CT)",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "continuous-training"]
+    },
+    {
+      "id": "q070402006",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Herramientas de orquestación como Apache Airflow o Kubeflow Pipelines modelan los pipelines como un DAG. ¿Qué ventaja principal aporta representar el pipeline como un grafo acíclico dirigido (DAG)?",
+      "question_en": "Orchestration tools like Apache Airflow or Kubeflow Pipelines model pipelines as a DAG. What is the main advantage of representing the pipeline as a directed acyclic graph (DAG)?",
+      "options_es": [
+        "Que el pipeline puede tener ciclos infinitos",
+        "Que las dependencias entre pasos quedan explícitas: el orquestador sabe qué tareas pueden correr en paralelo, en qué orden ejecutar, cómo reintentar pasos fallidos y reanudar desde el punto de fallo sin rehacer todo",
+        "Que elimina la necesidad de datos de entrada",
+        "Que garantiza precisión del 100% en el modelo"
+      ],
+      "options_en": [
+        "That the pipeline can have infinite cycles",
+        "That dependencies between steps are explicit: the orchestrator knows which tasks can run in parallel, in what order to execute, how to retry failed steps, and resume from the failure point without redoing everything",
+        "That it removes the need for input data",
+        "That it guarantees 100% model accuracy"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un DAG define nodos (tareas) y aristas (dependencias) sin ciclos. Esto permite al orquestador determinar el orden correcto de ejecución, paralelizar ramas independientes, reintentar automáticamente tareas fallidas y reanudar desde el paso que falló en lugar de repetir todo el pipeline. La ausencia de ciclos garantiza que el grafo de dependencias tenga un orden topológico válido.",
+      "explanation_en": "A DAG defines nodes (tasks) and edges (dependencies) with no cycles. This lets the orchestrator determine the correct execution order, parallelize independent branches, automatically retry failed tasks, and resume from the failed step instead of repeating the whole pipeline. The absence of cycles guarantees the dependency graph has a valid topological ordering.",
+      "source": "Apache Airflow documentation — DAGs; Kubeflow Pipelines documentation",
+      "expected_time_ms": 38000,
+      "tags": ["mlops", "orchestration", "dag", "advanced"]
+    },
+    {
+      "id": "q070403001",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "En MLOps, ¿qué significa 'desplegar' (deploy) un modelo?",
+      "question_en": "In MLOps, what does it mean to 'deploy' a model?",
+      "options_es": [
+        "Borrar el modelo del disco",
+        "Poner el modelo entrenado a disposición para servir predicciones a usuarios o sistemas (por ejemplo, tras una API, en procesos batch, o en el dispositivo/edge)",
+        "Entrenar el modelo por primera vez",
+        "Escribir la documentación del modelo"
+      ],
+      "options_en": [
+        "Deleting the model from disk",
+        "Making the trained model available to serve predictions to users or systems (e.g. behind an API, in batch processes, or on the device/edge)",
+        "Training the model for the first time",
+        "Writing the model's documentation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Desplegar es el paso que convierte un modelo entrenado (un artefacto en un registro) en un servicio útil: exponerlo tras una API REST/gRPC para inferencia en tiempo real, integrarlo en un job batch que puntúa millones de registros, o empaquetarlo para correr en un dispositivo. Sin despliegue, un buen modelo no genera valor.",
+      "explanation_en": "Deploying is the step that turns a trained model (an artifact in a registry) into a useful service: exposing it behind a REST/gRPC API for real-time inference, integrating it into a batch job that scores millions of records, or packaging it to run on a device. Without deployment, a good model produces no value.",
+      "source": "Paleyes et al., 'Challenges in Deploying Machine Learning: a Survey of Case Studies' (ACM Computing Surveys 2022)",
+      "expected_time_ms": 22000,
+      "tags": ["mlops", "deployment"]
+    },
+    {
+      "id": "q070403002",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia entre inferencia 'batch' (por lotes) e inferencia 'online' (en tiempo real)?",
+      "question_en": "What is the difference between 'batch' inference and 'online' (real-time) inference?",
+      "options_es": [
+        "No hay diferencia práctica",
+        "La inferencia batch puntúa grandes conjuntos de datos de forma periódica (por ejemplo, todas las noches), mientras que la online responde a peticiones individuales con baja latencia, en el momento",
+        "La batch es siempre más lenta de programar pero ilegal",
+        "La online no necesita un modelo entrenado"
+      ],
+      "options_en": [
+        "There is no practical difference",
+        "Batch inference scores large sets of data periodically (e.g. every night), while online serves individual requests with low latency, on the spot",
+        "Batch is always slower to schedule but illegal",
+        "Online needs no trained model"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En inferencia batch, se agrupan muchos ejemplos y se puntúan juntos de forma programada (por ejemplo, calcular el riesgo de churn de todos los clientes cada noche), optimizando el throughput. En inferencia online, el modelo se expone como servicio y responde a cada petición al instante, con requisitos estrictos de latencia (por ejemplo, recomendar un producto mientras el usuario navega).",
+      "explanation_en": "In batch inference, many examples are grouped and scored together on a schedule (e.g. computing every customer's churn risk each night), optimizing throughput. In online inference, the model is exposed as a service and responds to each request instantly, with strict latency requirements (e.g. recommending a product while the user browses).",
+      "source": "Paleyes et al. (ACM Computing Surveys 2022); Google Cloud MLOps guide",
+      "expected_time_ms": 26000,
+      "tags": ["mlops", "deployment", "batch-vs-online"]
+    },
+    {
+      "id": "q070403003",
+      "skill_id": "sk070403",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Si un modelo obtiene excelentes métricas en el conjunto de prueba offline, está garantizado que funcionará igual de bien en producción.",
+      "question_en": "If a model gets excellent metrics on the offline test set, it is guaranteed to perform equally well in production.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "No hay tal garantía. En producción pueden aparecer datos distintos de los de prueba (drift), training-serving skew, casos límite no representados en el test, latencia o restricciones de recursos, y bucles de realimentación donde las predicciones del modelo alteran los datos futuros. Por eso el despliegue se acompaña de estrategias progresivas (canary, shadow) y monitoreo continuo.",
+      "explanation_en": "There is no such guarantee. In production you can face data different from the test set (drift), training-serving skew, edge cases not represented in the test, latency or resource constraints, and feedback loops where the model's predictions alter future data. That's why deployment is paired with gradual strategies (canary, shadow) and continuous monitoring.",
+      "source": "Paleyes et al., 'Challenges in Deploying Machine Learning' (ACM Computing Surveys 2022)",
+      "expected_time_ms": 24000,
+      "tags": ["mlops", "deployment", "offline-online-gap"]
+    },
+    {
+      "id": "q070403004",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿En qué consiste un 'shadow deployment' (despliegue en sombra) de un modelo?",
+      "question_en": "What does a 'shadow deployment' of a model consist of?",
+      "options_es": [
+        "Desplegar el modelo solo de noche",
+        "Ejecutar el modelo nuevo en paralelo al de producción sobre el tráfico real, registrando sus predicciones para compararlas, pero sin que esas predicciones se usen ni afecten a los usuarios",
+        "Ocultar el modelo a los reguladores",
+        "Desplegar el modelo en un servidor sin conexión"
+      ],
+      "options_en": [
+        "Deploying the model only at night",
+        "Running the new model in parallel with the production one on real traffic, logging its predictions for comparison, but without those predictions being used or affecting users",
+        "Hiding the model from regulators",
+        "Deploying the model on an offline server"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En un shadow deployment, el modelo candidato recibe el mismo tráfico real que el modelo en producción y genera predicciones que se registran, pero no se sirven a los usuarios (sigue mandando el modelo actual). Así se evalúa el comportamiento del candidato con datos reales sin ningún riesgo para la experiencia del usuario, antes de decidir promoverlo.",
+      "explanation_en": "In a shadow deployment, the candidate model receives the same real traffic as the production model and produces predictions that are logged but not served to users (the current model still governs). This evaluates the candidate's behavior on real data with zero risk to the user experience, before deciding to promote it.",
+      "source": "Paleyes et al. (2022); MLOps deployment-strategy literature",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "shadow-deployment"]
+    },
+    {
+      "id": "q070403005",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué caracteriza a un 'canary deployment' (despliegue canario)?",
+      "question_en": "What characterizes a 'canary deployment'?",
+      "options_es": [
+        "Desplegar el modelo a todos los usuarios de golpe",
+        "Enrutar gradualmente una pequeña fracción del tráfico (por ejemplo, 5%) al modelo nuevo, monitorear métricas, y aumentar progresivamente si todo va bien o revertir si algo falla",
+        "Usar un pájaro para probar el modelo",
+        "Desplegar el modelo únicamente en entornos de prueba"
+      ],
+      "options_en": [
+        "Deploying the model to all users at once",
+        "Gradually routing a small fraction of traffic (e.g. 5%) to the new model, monitoring metrics, and ramping up progressively if all goes well or rolling back if something fails",
+        "Using a bird to test the model",
+        "Deploying the model only in test environments"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El canary deployment limita el riesgo exponiendo el modelo nuevo a una pequeña porción de usuarios reales primero. Se vigilan métricas operativas y de negocio; si el canario se comporta bien, se incrementa gradualmente su cuota de tráfico hasta el 100%; si aparecen problemas, se revierte afectando solo a esa pequeña fracción. El nombre alude a los canarios usados para detectar peligros en las minas.",
+      "explanation_en": "Canary deployment limits risk by exposing the new model to a small portion of real users first. Operational and business metrics are watched; if the canary behaves well, its traffic share is gradually increased to 100%; if problems appear, it's rolled back affecting only that small fraction. The name alludes to canaries used to detect hazards in mines.",
+      "source": "MLOps / DevOps deployment-strategy literature; Google Cloud MLOps guide",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "canary-deployment"]
+    },
+    {
+      "id": "q070403006",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cuál es la diferencia conceptual entre un 'A/B test' y un 'canary deployment', aunque ambos dividan el tráfico?",
+      "question_en": "What is the conceptual difference between an 'A/B test' and a 'canary deployment', even though both split traffic?",
+      "options_es": [
+        "Son exactamente lo mismo",
+        "El A/B test busca medir estadísticamente qué variante es mejor según una métrica de negocio (es un experimento); el canary busca principalmente mitigar el riesgo de un despliegue, aumentando el tráfico solo si el nuevo modelo no rompe nada",
+        "El A/B test no usa ningún modelo",
+        "El canary siempre dura exactamente 24 horas"
+      ],
+      "options_en": [
+        "They are exactly the same",
+        "An A/B test aims to statistically measure which variant is better on a business metric (it's an experiment); a canary aims primarily to mitigate deployment risk, increasing traffic only if the new model doesn't break anything",
+        "An A/B test uses no model",
+        "A canary always lasts exactly 24 hours"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Aunque técnicamente ambos enrutan porciones de tráfico a versiones distintas, su intención difiere. El A/B test es un experimento controlado con hipótesis y significancia estadística para decidir cuál variante maximiza una métrica de negocio. El canary es una técnica de despliegue seguro: su objetivo es detectar fallos pronto y limitar el radio de impacto, no necesariamente medir con rigor estadístico cuál es 'mejor'.",
+      "explanation_en": "Although both technically route portions of traffic to different versions, their intent differs. The A/B test is a controlled experiment with a hypothesis and statistical significance to decide which variant maximizes a business metric. The canary is a safe-deployment technique: its goal is to catch failures early and limit the blast radius, not necessarily to measure rigorously which is 'better'.",
+      "source": "MLOps / experimentation literature; Google Cloud MLOps guide",
+      "expected_time_ms": 38000,
+      "tags": ["mlops", "ab-test", "canary", "advanced"]
+    },
+    {
+      "id": "q070404001",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Por qué es necesario monitorear los modelos de ML una vez desplegados en producción?",
+      "question_en": "Why is it necessary to monitor ML models once deployed in production?",
+      "options_es": [
+        "No es necesario; una vez desplegado, un modelo funciona igual para siempre",
+        "Porque su rendimiento puede degradarse con el tiempo (por cambios en los datos o en el mundo) y hay que detectar problemas operativos y de calidad antes de que afecten al negocio",
+        "Solo para gastar más presupuesto",
+        "Porque los modelos se borran solos cada semana"
+      ],
+      "options_en": [
+        "It isn't; once deployed, a model works the same forever",
+        "Because its performance can degrade over time (due to changes in the data or the world) and operational and quality problems must be detected before they harm the business",
+        "Only to spend more budget",
+        "Because models delete themselves every week"
+      ],
+      "correct_index": 1,
+      "explanation_es": "A diferencia del software determinista, un modelo de ML puede empeorar aunque su código no cambie, porque el mundo que modela cambia (los patrones de fraude evolucionan, los gustos cambian). El monitoreo detecta esa degradación, además de problemas operativos (latencia, errores) y de datos (entradas anómalas), permitiendo actuar (reentrenar, revertir) antes de que el impacto sea grave.",
+      "explanation_en": "Unlike deterministic software, an ML model can get worse even if its code doesn't change, because the world it models changes (fraud patterns evolve, tastes shift). Monitoring detects that degradation, plus operational problems (latency, errors) and data problems (anomalous inputs), enabling action (retrain, roll back) before the impact is severe.",
+      "source": "Paleyes et al. (2022); Sculley et al. (2015)",
+      "expected_time_ms": 22000,
+      "tags": ["mlops", "monitoring"]
+    },
+    {
+      "id": "q070404002",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia entre 'data drift' (deriva de datos) y 'concept drift' (deriva de concepto)?",
+      "question_en": "What is the difference between 'data drift' and 'concept drift'?",
+      "options_es": [
+        "Son términos idénticos",
+        "El data drift es un cambio en la distribución de las entradas (P(X)); el concept drift es un cambio en la relación entre las entradas y el objetivo (P(y|X)), es decir, cambia lo que hay que predecir para las mismas entradas",
+        "El data drift solo ocurre en imágenes y el concept drift solo en texto",
+        "El concept drift mejora siempre el modelo"
+      ],
+      "options_en": [
+        "They are identical terms",
+        "Data drift is a change in the distribution of inputs (P(X)); concept drift is a change in the relationship between inputs and target (P(y|X)), i.e. what should be predicted for the same inputs changes",
+        "Data drift only happens in images and concept drift only in text",
+        "Concept drift always improves the model"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En el data drift cambia la distribución de las features de entrada (por ejemplo, llegan clientes de una región nueva), aunque la regla subyacente siga igual. En el concept drift cambia la propia relación que el modelo aprendió (por ejemplo, tras una crisis económica, el mismo perfil de cliente ahora tiene otro riesgo de impago). Ambos degradan el modelo, pero requieren diagnósticos distintos.",
+      "explanation_en": "In data drift the distribution of input features changes (e.g. customers from a new region arrive), even if the underlying rule stays the same. In concept drift the very relationship the model learned changes (e.g. after an economic crisis, the same customer profile now has a different default risk). Both degrade the model but require different diagnoses.",
+      "source": "Gama et al., 'A Survey on Concept Drift Adaptation' (ACM Computing Surveys 2014)",
+      "expected_time_ms": 28000,
+      "tags": ["mlops", "monitoring", "drift"]
+    },
+    {
+      "id": "q070404003",
+      "skill_id": "sk070404",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "El rendimiento de un modelo en producción puede degradarse silenciosamente aunque ni su código ni su infraestructura hayan cambiado en absoluto.",
+      "question_en": "A model's production performance can silently degrade even though neither its code nor its infrastructure has changed at all.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Esta es una de las diferencias fundamentales del ML respecto al software tradicional: el modelo es estático, pero el mundo del que provienen los datos no lo es. Cambios en el comportamiento de los usuarios, estacionalidad, nuevos productos o eventos externos alteran las distribuciones (drift), degradando la precisión sin que nadie haya tocado el sistema. De ahí la necesidad de monitoreo y reentrenamiento.",
+      "explanation_en": "This is one of ML's fundamental differences from traditional software: the model is static, but the world the data comes from is not. Changes in user behavior, seasonality, new products, or external events alter the distributions (drift), degrading accuracy without anyone touching the system. Hence the need for monitoring and retraining.",
+      "source": "Sculley et al. (NeurIPS 2015); Gama et al. (2014)",
+      "expected_time_ms": 22000,
+      "tags": ["mlops", "monitoring", "silent-degradation"]
+    },
+    {
+      "id": "q070404004",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un desafío para monitorear la precisión (accuracy) real de un modelo en producción es que a menudo no se dispone de las etiquetas verdaderas de inmediato. ¿Qué se suele monitorear entonces como señal temprana (proxy)?",
+      "question_en": "A challenge in monitoring a model's real accuracy in production is that the true labels are often not available immediately. What is typically monitored instead as an early signal (proxy)?",
+      "options_es": [
+        "Nada; simplemente se espera meses a tener las etiquetas",
+        "Señales indirectas como la deriva en la distribución de las entradas (data drift), la distribución de las predicciones, la confianza del modelo o tasas de valores anómalos, que pueden anticipar una caída de rendimiento antes de conocer las etiquetas",
+        "El color del logotipo de la aplicación",
+        "El número de líneas de código del modelo"
+      ],
+      "options_en": [
+        "Nothing; you just wait months for the labels",
+        "Indirect signals such as input-distribution drift (data drift), the prediction distribution, model confidence, or anomaly rates, which can anticipate a performance drop before the labels are known",
+        "The color of the app's logo",
+        "The number of lines of code in the model"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En muchos problemas la etiqueta real llega con retraso (por ejemplo, saber si un préstamo se impagó puede tardar meses) o nunca. Como no se puede calcular la accuracy en tiempo real, se monitorean proxies: cambios en la distribución de features de entrada, cambios en la distribución de las predicciones del modelo, caída de la confianza media o aumento de entradas fuera de rango. Estas señales alertan de posible degradación antes de disponer de la verdad.",
+      "explanation_en": "In many problems the true label arrives with delay (e.g. knowing whether a loan defaulted can take months) or never. Since accuracy can't be computed in real time, proxies are monitored: shifts in the input-feature distribution, shifts in the model's prediction distribution, drops in average confidence, or rises in out-of-range inputs. These signals warn of possible degradation before ground truth is available.",
+      "source": "Paleyes et al. (2022); Gama et al. (2014)",
+      "expected_time_ms": 34000,
+      "tags": ["mlops", "monitoring", "delayed-labels"]
+    },
+    {
+      "id": "q070404005",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un buen sistema de monitoreo de un modelo en producción debería vigilar varias capas. ¿Cuáles?",
+      "question_en": "A good production model-monitoring system should watch several layers. Which ones?",
+      "options_es": [
+        "Solo la precisión del modelo",
+        "Métricas operativas (latencia, errores, throughput), métricas del modelo (drift de datos y predicciones, calidad cuando hay etiquetas) y métricas de negocio (el impacto real en el objetivo, como conversión o fraude detectado)",
+        "Únicamente el uso de CPU del servidor",
+        "Solo el número de peticiones por segundo"
+      ],
+      "options_en": [
+        "Only the model's accuracy",
+        "Operational metrics (latency, errors, throughput), model metrics (data and prediction drift, quality when labels exist), and business metrics (the real impact on the objective, such as conversion or fraud caught)",
+        "Only the server's CPU usage",
+        "Only the number of requests per second"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El monitoreo eficaz es multicapa: la capa operativa asegura que el servicio esté sano (latencia, errores, disponibilidad); la capa del modelo detecta drift y degradación de calidad; y la capa de negocio comprueba que el modelo sigue aportando valor real (por ejemplo, que el modelo de recomendación sigue elevando la conversión). Vigilar solo una capa deja puntos ciegos.",
+      "explanation_en": "Effective monitoring is multi-layered: the operational layer ensures the service is healthy (latency, errors, availability); the model layer detects drift and quality degradation; and the business layer checks the model still delivers real value (e.g. the recommender still lifts conversion). Watching only one layer leaves blind spots.",
+      "source": "Kreuzberger et al. (IEEE Access 2023); Paleyes et al. (2022)",
+      "expected_time_ms": 32000,
+      "tags": ["mlops", "monitoring", "layers"]
+    },
+    {
+      "id": "q070404006",
+      "skill_id": "sk070404",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "El fenómeno por el cual la relación estadística entre las entradas y la variable objetivo cambia con el tiempo, invalidando lo que el modelo aprendió, se llama 'concept ___'. (una palabra, en inglés)",
+      "question_en": "The phenomenon in which the statistical relationship between the inputs and the target variable changes over time, invalidating what the model learned, is called 'concept ___'. (one word)",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "drift",
+      "correct_answer_en": "drift",
+      "explanation_es": "El 'concept drift' es el cambio en P(y|X): la función que relaciona entradas y salida ya no es la misma que cuando se entrenó el modelo. Un ejemplo clásico es la detección de spam: los spammers cambian sus tácticas, así que correos que antes no eran spam ahora sí lo son (o viceversa), obligando a reentrenar el modelo para mantener su eficacia.",
+      "explanation_en": "'Concept drift' is the change in P(y|X): the function relating inputs to output is no longer the same as when the model was trained. A classic example is spam detection: spammers change their tactics, so emails that weren't spam before now are (or vice versa), forcing a retrain to keep the model effective.",
+      "source": "Gama et al., 'A Survey on Concept Drift Adaptation' (ACM Computing Surveys 2014)",
+      "expected_time_ms": 32000,
+      "tags": ["mlops", "monitoring", "concept-drift", "advanced"]
+    }
+  ]
+}

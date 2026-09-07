@@ -1,0 +1,85 @@
+{
+  "track_id": "track07",
+  "terms": [
+    {
+      "id": "gl07_01",
+      "term_es": "Transformer",
+      "term_en": "Transformer",
+      "definition_es": "Arquitectura de red neuronal basada por completo en mecanismos de atención (sin recurrencia), que procesa la secuencia en paralelo. Es la base de los LLM modernos.",
+      "definition_en": "A neural-network architecture built entirely on attention mechanisms (no recurrence) that processes the sequence in parallel. It is the foundation of modern LLMs.",
+      "source": "Vaswani et al. — Attention Is All You Need (2017)"
+    },
+    {
+      "id": "gl07_02",
+      "term_es": "Token y tokenización",
+      "term_en": "Token and tokenization",
+      "definition_es": "Un token es la unidad mínima que procesa un LLM (subpalabra, no palabra completa). La tokenización con BPE fragmenta el texto en tokens; el coste y los límites del modelo se miden en tokens.",
+      "definition_en": "A token is the smallest unit an LLM processes (a subword, not a whole word). BPE tokenization splits text into tokens; model cost and limits are measured in tokens.",
+      "source": "Sennrich et al. — Neural Machine Translation of Rare Words with Subword Units (BPE, 2016)"
+    },
+    {
+      "id": "gl07_03",
+      "term_es": "RAG (generación aumentada por recuperación)",
+      "term_en": "RAG (Retrieval-Augmented Generation)",
+      "definition_es": "Técnica que recupera documentos relevantes y los inyecta en el prompt para fundamentar la respuesta del LLM. Reduce alucinaciones pero no las elimina, y depende de la calidad de la recuperación.",
+      "definition_en": "A technique that retrieves relevant documents and injects them into the prompt to ground the LLM's answer. It reduces hallucinations but does not eliminate them, and depends on retrieval quality.",
+      "source": "Lewis et al. — Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (2020)"
+    },
+    {
+      "id": "gl07_04",
+      "term_es": "Embedding",
+      "term_en": "Embedding",
+      "definition_es": "Representación vectorial densa de texto en la que la cercanía (p. ej. similitud coseno) refleja similitud semántica. Es la base de la búsqueda vectorial y del retrieval en RAG.",
+      "definition_en": "A dense vector representation of text in which closeness (e.g. cosine similarity) reflects semantic similarity. It underpins vector search and retrieval in RAG.",
+      "source": "Reimers & Gurevych — Sentence-BERT (2019)"
+    },
+    {
+      "id": "gl07_05",
+      "term_es": "Chain-of-Thought (cadena de pensamiento)",
+      "term_en": "Chain-of-Thought",
+      "definition_es": "Técnica de prompting que pide al modelo razonar paso a paso antes de responder, mejorando tareas de razonamiento. Self-consistency muestrea varias cadenas y vota la respuesta mayoritaria.",
+      "definition_en": "A prompting technique that asks the model to reason step by step before answering, improving reasoning tasks. Self-consistency samples several chains and votes for the majority answer.",
+      "source": "Wei et al. — Chain-of-Thought Prompting (2022); Wang et al. — Self-Consistency (2022)"
+    },
+    {
+      "id": "gl07_06",
+      "term_es": "Function calling / uso de herramientas",
+      "term_en": "Function calling / tool use",
+      "definition_es": "Capacidad del LLM de emitir una llamada estructurada a una herramienta según un esquema. El modelo no ejecuta la función: propone la llamada y la aplicación la ejecuta con mínimo privilegio y validación.",
+      "definition_en": "The LLM's ability to emit a structured call to a tool according to a schema. The model does not run the function: it proposes the call and the application executes it with least privilege and validation.",
+      "source": "Anthropic — Tool use documentation; Model Context Protocol (MCP)"
+    },
+    {
+      "id": "gl07_07",
+      "term_es": "ReAct",
+      "term_en": "ReAct",
+      "definition_es": "Patrón de agente que alterna Razonamiento (thought), Acción (tool) y Observación (resultado) en un bucle, fundamentando cada paso en evidencia real en lugar de razonar en el vacío.",
+      "definition_en": "An agent pattern that interleaves Reasoning (thought), Action (tool) and Observation (result) in a loop, grounding each step in real evidence rather than reasoning in a vacuum.",
+      "source": "Yao et al. — ReAct: Synergizing Reasoning and Acting in Language Models (2022)"
+    },
+    {
+      "id": "gl07_08",
+      "term_es": "RLHF",
+      "term_en": "RLHF",
+      "definition_es": "Reinforcement Learning from Human Feedback: ajustar un LLM con un modelo de recompensa entrenado sobre preferencias humanas. Riesgo de «reward hacking»: optimizar la métrica sin cumplir la intención.",
+      "definition_en": "Reinforcement Learning from Human Feedback: fine-tuning an LLM with a reward model trained on human preferences. It risks “reward hacking”: optimizing the metric without meeting the intent.",
+      "source": "Ouyang et al. — InstructGPT / Training LMs to follow instructions with human feedback (2022)"
+    },
+    {
+      "id": "gl07_09",
+      "term_es": "Deriva de datos / de concepto",
+      "term_en": "Data drift / concept drift",
+      "definition_es": "La deriva de datos es un cambio en la distribución de las entradas; la deriva de concepto es un cambio en la relación entrada→salida. Ambas degradan modelos en producción de forma silenciosa.",
+      "definition_en": "Data drift is a change in the input distribution; concept drift is a change in the input→output relationship. Both silently degrade models in production.",
+      "source": "Gama et al. — A survey on concept drift adaptation (2014)"
+    },
+    {
+      "id": "gl07_10",
+      "term_es": "LLM-as-judge",
+      "term_en": "LLM-as-judge",
+      "definition_es": "Usar un LLM para evaluar salidas (propias o de otro modelo). Es escalable pero tiene sesgos (posición, verbosidad); mitigarlos intercambiando el orden y prefiriendo comparación pareada.",
+      "definition_en": "Using an LLM to evaluate outputs (its own or another model's). It is scalable but biased (position, verbosity); mitigate by swapping order and preferring pairwise comparison.",
+      "source": "Zheng et al. — Judging LLM-as-a-Judge with MT-Bench (2023)"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "track_id": "track05",
+  "terms": [
+    {
+      "id": "gl05_01",
+      "term_es": "Microservicio",
+      "term_en": "Microservice",
+      "definition_es": "Servicio pequeño, desplegable de forma independiente y organizado en torno a una capacidad de negocio, con su propia base de datos (database-per-service). Evitar compartir la BD entre servicios.",
+      "definition_en": "A small, independently deployable service organized around a business capability, with its own database (database-per-service). Avoid sharing a database across services.",
+      "source": "Sam Newman — Building Microservices 2e"
+    },
+    {
+      "id": "gl05_02",
+      "term_es": "Saga",
+      "term_en": "Saga",
+      "definition_es": "Patrón para transacciones distribuidas: una secuencia de transacciones locales coordinadas por eventos o por un orquestador, con transacciones de compensación en lugar de un rollback global.",
+      "definition_en": "A pattern for distributed transactions: a sequence of local transactions coordinated by events or an orchestrator, using compensating transactions instead of a global rollback.",
+      "source": "Chris Richardson — Microservices Patterns, ch. 4"
+    },
+    {
+      "id": "gl05_03",
+      "term_es": "Teorema CAP",
+      "term_en": "CAP theorem",
+      "definition_es": "Ante una partición de red (P), un sistema distribuido debe elegir entre Consistencia (C) y Disponibilidad (A). No es «elige 2 de 3»: sin partición se puede tener C y A a la vez.",
+      "definition_en": "Under a network partition (P), a distributed system must choose between Consistency (C) and Availability (A). It is not “pick 2 of 3”: with no partition you can have both C and A.",
+      "source": "Gilbert & Lynch (2002); Kleppmann — DDIA, ch. 9"
+    },
+    {
+      "id": "gl05_04",
+      "term_es": "Event sourcing",
+      "term_en": "Event sourcing",
+      "definition_es": "Persistir el estado como una secuencia inmutable de eventos en lugar del estado actual; el estado se deriva reproduciéndolos. Suele combinarse con CQRS y proyecciones de lectura.",
+      "definition_en": "Persisting state as an immutable sequence of events rather than the current state; state is derived by replaying them. Often paired with CQRS and read projections.",
+      "source": "Martin Fowler — martinfowler.com (Event Sourcing, CQRS)"
+    },
+    {
+      "id": "gl05_05",
+      "term_es": "CQRS",
+      "term_en": "CQRS",
+      "definition_es": "Command Query Responsibility Segregation: separar el modelo de escritura (comandos) del de lectura (consultas), pudiendo optimizar y escalar cada uno por separado.",
+      "definition_en": "Command Query Responsibility Segregation: separating the write model (commands) from the read model (queries), so each can be optimized and scaled independently.",
+      "source": "Greg Young; Martin Fowler — martinfowler.com (CQRS)"
+    },
+    {
+      "id": "gl05_06",
+      "term_es": "Cache-aside",
+      "term_en": "Cache-aside",
+      "definition_es": "Estrategia en que la aplicación consulta primero la caché; si falla (miss), lee de la BD y puebla la caché. Requiere una política de invalidación/TTL para evitar datos obsoletos.",
+      "definition_en": "A strategy where the application checks the cache first; on a miss it reads the DB and populates the cache. It needs an invalidation/TTL policy to avoid stale data.",
+      "source": "Redis documentation — Caching patterns; AWS caching guidance"
+    },
+    {
+      "id": "gl05_07",
+      "term_es": "Circuit breaker",
+      "term_en": "Circuit breaker",
+      "definition_es": "Patrón de resiliencia que «abre el circuito» tras detectar fallos repetidos en una dependencia, dejando de llamarla temporalmente para no propagar la caída y permitir su recuperación.",
+      "definition_en": "A resilience pattern that “opens the circuit” after detecting repeated failures in a dependency, temporarily stopping calls to it to avoid cascading failure and allow recovery.",
+      "source": "Michael Nygard — Release It! 2e; Martin Fowler — CircuitBreaker"
+    },
+    {
+      "id": "gl05_08",
+      "term_es": "Bounded context (DDD)",
+      "term_en": "Bounded context (DDD)",
+      "definition_es": "Frontera explícita dentro de la cual un modelo de dominio y su lenguaje ubicuo son consistentes. Cada contexto tiene su propio significado de los términos; se relacionan mediante un context map.",
+      "definition_en": "An explicit boundary within which a domain model and its ubiquitous language are consistent. Each context has its own meaning for terms; they relate through a context map.",
+      "source": "Eric Evans — Domain-Driven Design; Vaughn Vernon — Implementing DDD"
+    },
+    {
+      "id": "gl05_09",
+      "term_es": "Consistencia eventual",
+      "term_en": "Eventual consistency",
+      "definition_es": "Modelo en que las réplicas convergen al mismo valor si cesan las escrituras, pero pueden divergir temporalmente. Es el precio habitual por alta disponibilidad y baja latencia (BASE).",
+      "definition_en": "A model where replicas converge to the same value if writes stop, but may temporarily diverge. It is the usual price for high availability and low latency (BASE).",
+      "source": "Kleppmann — DDIA, ch. 5; Werner Vogels — Eventually Consistent"
+    },
+    {
+      "id": "gl05_10",
+      "term_es": "SLO y presupuesto de error",
+      "term_en": "SLO and error budget",
+      "definition_es": "Un SLO es un objetivo de fiabilidad (p. ej. 99,9 % de éxito); el presupuesto de error es el complemento (0,1 %) que se puede «gastar» en fallos o despliegues antes de frenar cambios.",
+      "definition_en": "An SLO is a reliability target (e.g. 99.9% success); the error budget is its complement (0.1%) that can be “spent” on failures or releases before change is frozen.",
+      "source": "Google — Site Reliability Engineering (The SRE Book), ch. 3–4"
+    }
+  ]
+}

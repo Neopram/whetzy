@@ -1,0 +1,580 @@
+{
+  "questions": [
+    {
+      "id": "q070301001",
+      "skill_id": "sk070301",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué distingue a un 'agente de IA' basado en un LLM de un chatbot simple de una sola respuesta?",
+      "question_en": "What distinguishes an LLM-based 'AI agent' from a simple single-response chatbot?",
+      "options_es": [
+        "El agente usa un modelo más grande obligatoriamente",
+        "El agente puede planificar y ejecutar acciones (usando herramientas) de forma iterativa en un bucle hasta alcanzar un objetivo, no solo generar una respuesta de texto",
+        "El agente no necesita ningún LLM",
+        "El agente solo funciona en inglés"
+      ],
+      "options_en": [
+        "The agent must use a larger model",
+        "The agent can plan and execute actions (using tools) iteratively in a loop until it reaches a goal, not just generate a text response",
+        "The agent needs no LLM at all",
+        "The agent only works in English"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un chatbot responde una vez a partir de su entrada. Un agente usa el LLM como 'motor de razonamiento' dentro de un bucle: decide qué hacer, invoca herramientas, observa los resultados y ajusta su plan, repitiendo hasta completar la tarea. Esa capacidad de actuar sobre el entorno y encadenar pasos es lo que lo convierte en agente.",
+      "explanation_en": "A chatbot responds once from its input. An agent uses the LLM as a 'reasoning engine' inside a loop: it decides what to do, invokes tools, observes the results, and adjusts its plan, repeating until the task is complete. That ability to act on the environment and chain steps is what makes it an agent.",
+      "source": "Anthropic — 'Building effective agents' (2024)",
+      "expected_time_ms": 22000,
+      "tags": ["agents", "fundamentals"]
+    },
+    {
+      "id": "q070301002",
+      "skill_id": "sk070301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuáles son los componentes típicos de un agente de IA?",
+      "question_en": "What are the typical components of an AI agent?",
+      "options_es": [
+        "Solo un LLM, nada más",
+        "Un LLM como motor de razonamiento, un conjunto de herramientas (tools) que puede invocar, algún tipo de memoria/estado, y un bucle de orquestación que coordina todo",
+        "Una base de datos SQL y un servidor web únicamente",
+        "Un compilador y un depurador"
+      ],
+      "options_en": [
+        "Only an LLM, nothing else",
+        "An LLM as reasoning engine, a set of tools it can invoke, some form of memory/state, and an orchestration loop that coordinates everything",
+        "Only a SQL database and a web server",
+        "A compiler and a debugger"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un agente combina: (1) el LLM que decide y razona; (2) herramientas que le dan capacidades (buscar en la web, ejecutar código, consultar una API); (3) memoria para conservar contexto entre pasos; y (4) un bucle de control que ejecuta las acciones, recoge observaciones y vuelve a llamar al modelo. Todo orquestado hacia un objetivo.",
+      "explanation_en": "An agent combines: (1) the LLM that decides and reasons; (2) tools that give it capabilities (web search, code execution, API queries); (3) memory to keep context across steps; and (4) a control loop that runs actions, gathers observations, and calls the model again. All orchestrated toward a goal.",
+      "source": "Anthropic — 'Building effective agents' (2024)",
+      "expected_time_ms": 28000,
+      "tags": ["agents", "architecture"]
+    },
+    {
+      "id": "q070301003",
+      "skill_id": "sk070301",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Para cualquier tarea, un agente autónomo complejo siempre es preferible a un flujo de trabajo (workflow) fijo con pasos predefinidos.",
+      "question_en": "For any task, a complex autonomous agent is always preferable to a fixed workflow with predefined steps.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "La recomendación práctica (por ejemplo, de Anthropic) es usar la solución más simple que funcione. Cuando los pasos son predecibles, un workflow fijo (cadena de prompts, enrutamiento) es más fiable, barato y fácil de depurar. Los agentes autónomos con bucles abiertos aportan flexibilidad para tareas variables o abiertas, pero a cambio de mayor costo, latencia e imprevisibilidad.",
+      "explanation_en": "The practical recommendation (e.g. from Anthropic) is to use the simplest solution that works. When steps are predictable, a fixed workflow (prompt chaining, routing) is more reliable, cheaper, and easier to debug. Autonomous agents with open loops add flexibility for variable or open-ended tasks, but at the cost of higher cost, latency, and unpredictability.",
+      "source": "Anthropic — 'Building effective agents' (2024), Workflows vs. agents",
+      "expected_time_ms": 24000,
+      "tags": ["agents", "workflows", "design"]
+    },
+    {
+      "id": "q070301004",
+      "skill_id": "sk070301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál describe mejor el 'bucle del agente' (agent loop)?",
+      "question_en": "Which best describes the 'agent loop'?",
+      "options_es": [
+        "Entrenar el modelo repetidamente hasta converger",
+        "Un ciclo de: el LLM razona y decide una acción → se ejecuta la acción/herramienta → se observa el resultado → se realimenta al LLM → se repite hasta cumplir el objetivo o alcanzar un límite",
+        "Un bucle for que recorre una lista de documentos",
+        "El proceso de tokenizar la entrada del usuario"
+      ],
+      "options_en": [
+        "Training the model repeatedly until convergence",
+        "A cycle of: the LLM reasons and decides an action → the action/tool runs → the result is observed → it is fed back to the LLM → repeat until the goal is met or a limit is reached",
+        "A for loop iterating over a list of documents",
+        "The process of tokenizing the user input"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El bucle del agente es la mecánica central: el modelo produce una acción (por ejemplo, llamar a una herramienta), el sistema la ejecuta y devuelve la observación al modelo, que decide el siguiente paso. El bucle continúa hasta que el modelo declara la tarea terminada o se alcanza un límite de seguridad (número de pasos, presupuesto, tiempo).",
+      "explanation_en": "The agent loop is the core mechanic: the model produces an action (e.g. calling a tool), the system executes it and returns the observation to the model, which decides the next step. The loop continues until the model declares the task done or a safety limit is reached (step count, budget, time).",
+      "source": "Anthropic — 'Building effective agents' (2024); Yao et al., 'ReAct' (ICLR 2023)",
+      "expected_time_ms": 30000,
+      "tags": ["agents", "agent-loop"]
+    },
+    {
+      "id": "q070301005",
+      "skill_id": "sk070301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué es importante poner límites (guardrails) como un número máximo de pasos o un presupuesto de tokens en un agente autónomo?",
+      "question_en": "Why is it important to put guardrails such as a maximum number of steps or a token budget on an autonomous agent?",
+      "options_es": [
+        "Solo por motivos estéticos",
+        "Porque un agente puede quedar atrapado en bucles improductivos, acumular errores paso a paso, o disparar el costo y la latencia; los límites evitan que 'se descontrole' sin supervisión",
+        "Porque los agentes no pueden usar herramientas sin límites",
+        "Porque el LLM se apaga solo tras 3 pasos siempre"
+      ],
+      "options_en": [
+        "Only for aesthetic reasons",
+        "Because an agent can get stuck in unproductive loops, compound errors step by step, or blow up cost and latency; limits prevent it from 'running away' unsupervised",
+        "Because agents cannot use tools without limits",
+        "Because the LLM always shuts down after 3 steps"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los agentes autónomos son poderosos pero frágiles: un error temprano puede propagarse, pueden entrar en ciclos repitiendo la misma acción fallida, y cada paso cuesta tokens y tiempo. Guardrails como límite de iteraciones, presupuesto de tokens, timeouts y validación humana antes de acciones irreversibles son esenciales para operarlos de forma segura y predecible.",
+      "explanation_en": "Autonomous agents are powerful but fragile: an early error can propagate, they can loop repeating the same failing action, and each step costs tokens and time. Guardrails like iteration limits, token budgets, timeouts, and human validation before irreversible actions are essential to run them safely and predictably.",
+      "source": "Anthropic — 'Building effective agents' (2024), on reliability and guardrails",
+      "expected_time_ms": 30000,
+      "tags": ["agents", "guardrails", "safety"]
+    },
+    {
+      "id": "q070301006",
+      "skill_id": "sk070301",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "En un agente, ¿qué diferencia hay entre la 'memoria de trabajo' (contexto de la conversación actual) y la 'memoria a largo plazo'?",
+      "question_en": "In an agent, what is the difference between 'working memory' (current conversation context) and 'long-term memory'?",
+      "options_es": [
+        "Son exactamente lo mismo",
+        "La memoria de trabajo es el contexto inmediato dentro de la ventana del LLM (limitado y efímero); la memoria a largo plazo persiste información entre sesiones en un almacén externo (por ejemplo, una base vectorial) que se recupera cuando es relevante",
+        "La memoria a largo plazo son los pesos del modelo, que el agente modifica en tiempo real",
+        "La memoria de trabajo se guarda en disco permanentemente"
+      ],
+      "options_en": [
+        "They are exactly the same",
+        "Working memory is the immediate context within the LLM window (limited and ephemeral); long-term memory persists information across sessions in an external store (e.g. a vector database) that is retrieved when relevant",
+        "Long-term memory is the model's weights, which the agent modifies in real time",
+        "Working memory is saved to disk permanently"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La memoria de trabajo vive en la ventana de contexto: es rica pero limitada y se pierde al cerrar la sesión o al desbordarse. La memoria a largo plazo guarda hechos, resúmenes o experiencias en un almacén externo (a menudo con embeddings) del que el agente recupera lo relevante en futuras sesiones, superando el límite de contexto y dando continuidad. El LLM no reescribe sus pesos en ejecución.",
+      "explanation_en": "Working memory lives in the context window: rich but limited, lost when the session ends or overflows. Long-term memory stores facts, summaries, or experiences in an external store (often with embeddings) from which the agent retrieves what's relevant in future sessions, overcoming the context limit and giving continuity. The LLM does not rewrite its weights at runtime.",
+      "source": "Anthropic — 'Building effective agents' (2024); general agent-memory architecture",
+      "expected_time_ms": 38000,
+      "tags": ["agents", "memory", "advanced"]
+    },
+    {
+      "id": "q070302001",
+      "skill_id": "sk070302",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es 'function calling' (llamada a funciones) o 'tool use' en un LLM?",
+      "question_en": "What is 'function calling' or 'tool use' in an LLM?",
+      "options_es": [
+        "El proceso interno de multiplicar matrices en la red",
+        "La capacidad del modelo de emitir una solicitud estructurada (por ejemplo, en JSON) para invocar una función/herramienta externa con ciertos argumentos, en lugar de responder solo con texto",
+        "Llamar por teléfono al proveedor del modelo",
+        "Un tipo especial de tokenización"
+      ],
+      "options_en": [
+        "The internal process of multiplying matrices in the network",
+        "The model's ability to emit a structured request (e.g. in JSON) to invoke an external function/tool with certain arguments, instead of responding with only text",
+        "Phoning the model provider",
+        "A special type of tokenization"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Function calling permite al LLM decidir que, para cumplir la petición, necesita ejecutar una herramienta (buscar el clima, consultar una base de datos, hacer un cálculo). El modelo produce una salida estructurada indicando qué función llamar y con qué argumentos; es la aplicación quien realmente ejecuta la función.",
+      "explanation_en": "Function calling lets the LLM decide that, to fulfill the request, it needs to run a tool (look up the weather, query a database, do a calculation). The model produces structured output stating which function to call and with what arguments; it is the application that actually executes the function.",
+      "source": "OpenAI — Function calling guide; Anthropic — Tool use documentation",
+      "expected_time_ms": 22000,
+      "tags": ["tool-use", "function-calling"]
+    },
+    {
+      "id": "q070302002",
+      "skill_id": "sk070302",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Cuando un LLM hace 'function calling', el propio modelo ejecuta directamente la función y accede a internet o a la base de datos por sí mismo.",
+      "question_en": "When an LLM does 'function calling', the model itself directly executes the function and accesses the internet or database on its own.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Es un malentendido común. El modelo solo genera una descripción estructurada de la llamada (nombre de la función y argumentos). Es el código de la aplicación (el 'anfitrión') quien ejecuta realmente la función, obtiene el resultado y se lo devuelve al modelo como una nueva observación. El LLM no tiene acceso directo a sistemas externos.",
+      "explanation_en": "This is a common misconception. The model only generates a structured description of the call (function name and arguments). It is the application code (the 'host') that actually executes the function, gets the result, and returns it to the model as a new observation. The LLM has no direct access to external systems.",
+      "source": "OpenAI — Function calling guide; Anthropic — Tool use documentation",
+      "expected_time_ms": 22000,
+      "tags": ["tool-use", "execution"]
+    },
+    {
+      "id": "q070302003",
+      "skill_id": "sk070302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por qué es importante escribir buenas descripciones y esquemas (schemas) para las herramientas que se ofrecen a un agente?",
+      "question_en": "Why is it important to write good descriptions and schemas for the tools offered to an agent?",
+      "options_es": [
+        "No importa; el modelo adivina qué hace cada herramienta por su nombre",
+        "Porque el modelo decide qué herramienta usar y cómo rellenar sus argumentos basándose en esas descripciones y esquemas; si son ambiguos o incompletos, elegirá mal o generará argumentos inválidos",
+        "Solo importan para la documentación humana, no afectan al modelo",
+        "Porque acortan el tiempo de entrenamiento"
+      ],
+      "options_en": [
+        "It doesn't matter; the model guesses what each tool does from its name",
+        "Because the model decides which tool to use and how to fill its arguments based on those descriptions and schemas; if they are ambiguous or incomplete, it will choose poorly or generate invalid arguments",
+        "They only matter for human documentation, not the model",
+        "Because they shorten training time"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las descripciones de herramientas son parte del prompt: el modelo las lee para entender cuándo y cómo usar cada una. Una descripción clara de qué hace la herramienta, cuándo usarla y un esquema preciso de sus parámetros (tipos, obligatorios/opcionales, formatos) mejoran drásticamente la fiabilidad de la selección y de los argumentos generados. Es 'prompt engineering' aplicado a las herramientas.",
+      "explanation_en": "Tool descriptions are part of the prompt: the model reads them to understand when and how to use each one. A clear description of what the tool does, when to use it, and a precise schema of its parameters (types, required/optional, formats) dramatically improves the reliability of selection and generated arguments. It is 'prompt engineering' applied to tools.",
+      "source": "Anthropic — Tool use documentation (writing tool descriptions)",
+      "expected_time_ms": 28000,
+      "tags": ["tool-use", "schema", "prompt-engineering"]
+    },
+    {
+      "id": "q070302004",
+      "skill_id": "sk070302",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "En un flujo de tool use, tras el modelo pedir llamar a `get_weather(city='Madrid')` y la aplicación ejecutar la función, ¿qué ocurre normalmente después?",
+      "question_en": "In a tool-use flow, after the model requests calling `get_weather(city='Madrid')` and the application runs the function, what typically happens next?",
+      "options_es": [
+        "La conversación termina inmediatamente",
+        "El resultado de la función (por ejemplo, '18°C, soleado') se añade a la conversación como una observación, y el modelo continúa para producir su respuesta final usando ese dato",
+        "El modelo se reentrena con el nuevo dato",
+        "El resultado se descarta y el modelo responde sin él"
+      ],
+      "options_en": [
+        "The conversation ends immediately",
+        "The function's result (e.g. '18°C, sunny') is added to the conversation as an observation, and the model continues to produce its final answer using that data",
+        "The model retrains with the new data",
+        "The result is discarded and the model answers without it"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El ciclo es: el modelo solicita la herramienta → la app ejecuta y captura el resultado → el resultado se devuelve al modelo (como un mensaje de rol 'tool'/'observación') → el modelo lo integra y decide si responde al usuario o llama a otra herramienta. Este intercambio puede repetirse varias veces dentro de un mismo turno.",
+      "explanation_en": "The cycle is: the model requests the tool → the app executes and captures the result → the result is returned to the model (as a 'tool'/'observation' role message) → the model integrates it and decides whether to answer the user or call another tool. This exchange can repeat several times within a single turn.",
+      "source": "OpenAI — Function calling guide; Anthropic — Tool use documentation",
+      "expected_time_ms": 26000,
+      "tags": ["tool-use", "flow"]
+    },
+    {
+      "id": "q070302005",
+      "skill_id": "sk070302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué debe la aplicación validar los argumentos que el modelo genera para una herramienta y aplicar el principio de menor privilegio?",
+      "question_en": "Why should the application validate the arguments the model generates for a tool and apply the principle of least privilege?",
+      "options_es": [
+        "No hace falta; el modelo nunca se equivoca en los argumentos",
+        "Porque el modelo puede producir argumentos incorrectos o peligrosos (por alucinación o por prompt injection en el contenido que procesa); validar y restringir las capacidades de cada herramienta limita el daño potencial",
+        "Porque validar acelera la inferencia del modelo",
+        "Porque el principio de menor privilegio solo aplica a bases de datos SQL"
+      ],
+      "options_en": [
+        "There's no need; the model never gets arguments wrong",
+        "Because the model can produce incorrect or dangerous arguments (via hallucination or via prompt injection in the content it processes); validating and restricting each tool's capabilities limits the potential damage",
+        "Because validating speeds up model inference",
+        "Because least privilege only applies to SQL databases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un agente que puede ejecutar acciones es una superficie de ataque: contenido malicioso recuperado (prompt injection) puede inducir al modelo a llamar herramientas con argumentos dañinos (borrar datos, enviar dinero, exfiltrar información). Validar argumentos, exigir confirmación humana para acciones irreversibles y dar a cada herramienta solo los permisos mínimos necesarios son defensas esenciales.",
+      "explanation_en": "An agent that can execute actions is an attack surface: malicious retrieved content (prompt injection) can induce the model to call tools with harmful arguments (delete data, send money, exfiltrate information). Validating arguments, requiring human confirmation for irreversible actions, and giving each tool only the minimum permissions needed are essential defenses.",
+      "source": "OWASP Top 10 for LLM Applications — LLM06/LLM08 (excessive agency, insecure tool use)",
+      "expected_time_ms": 32000,
+      "tags": ["tool-use", "security", "least-privilege"]
+    },
+    {
+      "id": "q070302006",
+      "skill_id": "sk070302",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "El estándar abierto propuesto por Anthropic para conectar LLMs con herramientas y fuentes de datos externas de forma uniforme se llama Model ___ Protocol (MCP). (una palabra, en inglés)",
+      "question_en": "The open standard proposed by Anthropic to connect LLMs to external tools and data sources in a uniform way is called the Model ___ Protocol (MCP). (one word)",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "Context",
+      "correct_answer_en": "Context",
+      "explanation_es": "El Model Context Protocol (MCP) es un estándar abierto (introducido por Anthropic en 2024) que define una forma común para que las aplicaciones de IA se conecten a herramientas, fuentes de datos y servicios externos, a modo de 'puerto USB-C' para el contexto de los modelos. Evita tener que escribir integraciones a medida para cada combinación de modelo y herramienta.",
+      "explanation_en": "The Model Context Protocol (MCP) is an open standard (introduced by Anthropic in 2024) that defines a common way for AI applications to connect to external tools, data sources, and services, acting like a 'USB-C port' for model context. It avoids having to write bespoke integrations for every model-tool combination.",
+      "source": "Anthropic — 'Introducing the Model Context Protocol' (2024)",
+      "expected_time_ms": 35000,
+      "tags": ["tool-use", "mcp", "advanced"]
+    },
+    {
+      "id": "q070303001",
+      "skill_id": "sk070303",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué significan las siglas 'ReAct' como patrón de razonamiento en agentes?",
+      "question_en": "What does 'ReAct' stand for as a reasoning pattern in agents?",
+      "options_es": [
+        "Reactive Actions",
+        "Reasoning + Acting (razonar y actuar de forma intercalada)",
+        "Recursive Activation",
+        "Real-time Action"
+      ],
+      "options_en": [
+        "Reactive Actions",
+        "Reasoning + Acting (interleaving reasoning and acting)",
+        "Recursive Activation",
+        "Real-time Action"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ReAct combina 'Reasoning' (razonamiento, al estilo chain-of-thought) con 'Acting' (acciones sobre herramientas o el entorno). El modelo alterna entre pensar en voz alta sobre qué hacer y ejecutar acciones cuyos resultados observa, usando esas observaciones para guiar el razonamiento siguiente.",
+      "explanation_en": "ReAct combines 'Reasoning' (chain-of-thought-style thinking) with 'Acting' (actions on tools or the environment). The model alternates between thinking out loud about what to do and taking actions whose results it observes, using those observations to guide the next reasoning step.",
+      "source": "Yao et al., 'ReAct: Synergizing Reasoning and Acting in Language Models' (ICLR 2023)",
+      "expected_time_ms": 18000,
+      "tags": ["react", "reasoning"]
+    },
+    {
+      "id": "q070303002",
+      "skill_id": "sk070303",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué secuencia de pasos caracteriza al patrón ReAct?",
+      "question_en": "Which sequence of steps characterizes the ReAct pattern?",
+      "options_es": [
+        "Compilar → Enlazar → Ejecutar",
+        "Pensamiento (Thought) → Acción (Action) → Observación (Observation), repetido en ciclo hasta llegar a la respuesta",
+        "Entrenar → Validar → Desplegar",
+        "Tokenizar → Embeber → Generar"
+      ],
+      "options_en": [
+        "Compile → Link → Run",
+        "Thought → Action → Observation, repeated in a cycle until reaching the answer",
+        "Train → Validate → Deploy",
+        "Tokenize → Embed → Generate"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En ReAct el modelo genera trazas intercaladas: un 'Thought' donde razona qué necesita, una 'Action' que ejecuta (por ejemplo, buscar algo), y una 'Observation' con el resultado. Ese resultado alimenta el siguiente Thought. El ciclo continúa hasta que el modelo tiene lo necesario para dar la respuesta final.",
+      "explanation_en": "In ReAct the model generates interleaved traces: a 'Thought' where it reasons about what it needs, an 'Action' it executes (e.g. searching for something), and an 'Observation' with the result. That result feeds the next Thought. The cycle continues until the model has what it needs to give the final answer.",
+      "source": "Yao et al., 'ReAct' (ICLR 2023), Sec. 2",
+      "expected_time_ms": 24000,
+      "tags": ["react", "thought-action-observation"]
+    },
+    {
+      "id": "q070303003",
+      "skill_id": "sk070303",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una ventaja de ReAct sobre el chain-of-thought puro es que puede consultar fuentes externas (herramientas) para fundamentar su razonamiento en hechos actualizados, reduciendo alucinaciones.",
+      "question_en": "An advantage of ReAct over pure chain-of-thought is that it can query external sources (tools) to ground its reasoning in up-to-date facts, reducing hallucinations.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "El chain-of-thought razona solo con el conocimiento interno del modelo, que puede estar desactualizado o ser incorrecto. ReAct intercala acciones que traen información externa real (una búsqueda, una consulta a una API), permitiendo al modelo verificar y corregir su razonamiento con hechos, lo que reduce alucinaciones y mejora tareas que requieren datos actuales.",
+      "explanation_en": "Chain-of-thought reasons only with the model's internal knowledge, which may be outdated or wrong. ReAct interleaves actions that fetch real external information (a search, an API query), letting the model verify and correct its reasoning with facts, which reduces hallucinations and helps tasks requiring current data.",
+      "source": "Yao et al., 'ReAct' (ICLR 2023)",
+      "expected_time_ms": 22000,
+      "tags": ["react", "grounding", "hallucination"]
+    },
+    {
+      "id": "q070303004",
+      "skill_id": "sk070303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿En qué consiste el patrón 'Reflexion' (auto-reflexión) en agentes?",
+      "question_en": "What does the 'Reflexion' (self-reflection) pattern in agents consist of?",
+      "options_es": [
+        "El modelo se apaga cuando falla",
+        "El agente reflexiona sobre sus intentos fallidos, genera una crítica verbal de qué salió mal y la guarda en memoria para mejorar sus siguientes intentos de la tarea",
+        "Un espejo virtual que duplica al agente",
+        "Reducir la temperatura a cero automáticamente"
+      ],
+      "options_en": [
+        "The model shuts down when it fails",
+        "The agent reflects on its failed attempts, generates a verbal critique of what went wrong, and stores it in memory to improve its subsequent attempts at the task",
+        "A virtual mirror that duplicates the agent",
+        "Automatically lowering the temperature to zero"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Reflexion añade un bucle de auto-mejora: tras un intento fallido, el agente produce una reflexión en lenguaje natural sobre las causas del fallo y la incorpora a su memoria/contexto para el siguiente intento. En lugar de actualizar pesos, aprende 'verbalmente' de sus errores dentro de la misma tarea, mejorando en reintentos sucesivos.",
+      "explanation_en": "Reflexion adds a self-improvement loop: after a failed attempt, the agent produces a natural-language reflection on the causes of failure and incorporates it into its memory/context for the next attempt. Instead of updating weights, it learns 'verbally' from its mistakes within the same task, improving over successive retries.",
+      "source": "Shinn et al., 'Reflexion: Language Agents with Verbal Reinforcement Learning' (NeurIPS 2023)",
+      "expected_time_ms": 30000,
+      "tags": ["react", "reflexion", "self-improvement"]
+    },
+    {
+      "id": "q070303005",
+      "skill_id": "sk070303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la diferencia entre el enfoque 'ReAct' (intercalar razonamiento y acción paso a paso) y 'Plan-and-Execute'?",
+      "question_en": "What is the difference between the 'ReAct' approach (interleaving reasoning and action step by step) and 'Plan-and-Execute'?",
+      "options_es": [
+        "Son sinónimos",
+        "Plan-and-Execute genera primero un plan completo de varios pasos y luego lo ejecuta (replanificando si hace falta), mientras que ReAct decide cada acción justo a justo tras observar el resultado de la anterior",
+        "ReAct no usa herramientas y Plan-and-Execute sí",
+        "Plan-and-Execute solo funciona con un único paso"
+      ],
+      "options_en": [
+        "They are synonyms",
+        "Plan-and-Execute first generates a complete multi-step plan and then executes it (replanning if needed), whereas ReAct decides each action just-in-time after observing the previous one's result",
+        "ReAct uses no tools and Plan-and-Execute does",
+        "Plan-and-Execute only works with a single step"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ReAct es reactivo y granular: piensa, actúa, observa y vuelve a pensar, adaptándose paso a paso, pero puede perder de vista el objetivo global en tareas largas. Plan-and-Execute separa la planificación de la ejecución: crea un plan por adelantado y lo sigue, lo que da coherencia global y ahorra llamadas de razonamiento, a costa de rigidez si el plan resulta erróneo (por eso suele incluir replanificación).",
+      "explanation_en": "ReAct is reactive and granular: it thinks, acts, observes, and thinks again, adapting step by step, but can lose sight of the global goal on long tasks. Plan-and-Execute separates planning from execution: it creates a plan up front and follows it, giving global coherence and saving reasoning calls, at the cost of rigidity if the plan turns out wrong (hence it usually includes replanning).",
+      "source": "Yao et al., 'ReAct' (ICLR 2023); Wang et al., 'Plan-and-Solve Prompting' (ACL 2023)",
+      "expected_time_ms": 34000,
+      "tags": ["react", "plan-and-execute", "advanced"]
+    },
+    {
+      "id": "q070303006",
+      "skill_id": "sk070303",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "En un agente ReAct, si una 'Action' devuelve una 'Observation' con un error (por ejemplo, una API que responde 404), ¿qué comportamiento deseable debería exhibir un agente robusto?",
+      "question_en": "In a ReAct agent, if an 'Action' returns an 'Observation' with an error (e.g. an API responding 404), what desirable behavior should a robust agent exhibit?",
+      "options_es": [
+        "Ignorar el error y afirmar que la acción tuvo éxito",
+        "Incorporar el error como observación, razonar sobre la causa y adaptar su siguiente acción (reintentar con otros parámetros, usar otra herramienta o pedir aclaración), en lugar de repetir ciegamente la misma acción fallida",
+        "Detenerse permanentemente sin explicación",
+        "Alucinar un resultado plausible para el error"
+      ],
+      "options_en": [
+        "Ignore the error and claim the action succeeded",
+        "Incorporate the error as an observation, reason about its cause, and adapt its next action (retry with different parameters, use another tool, or ask for clarification), rather than blindly repeating the same failed action",
+        "Halt permanently without explanation",
+        "Hallucinate a plausible result for the error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fortaleza de ReAct es el bucle observación→razonamiento: un error es información útil. Un agente robusto lee el mensaje de error, razona sobre qué falló y ajusta su estrategia. Un antipatrón frecuente es que el modelo entre en bucle repitiendo la acción fallida idéntica, o peor, que alucine un resultado exitoso; por eso importan los guardrails y una buena realimentación del error al contexto.",
+      "explanation_en": "ReAct's strength is the observation→reasoning loop: an error is useful information. A robust agent reads the error message, reasons about what failed, and adjusts its strategy. A common antipattern is the model looping on the identical failed action, or worse, hallucinating a successful result; hence guardrails and good error feedback into the context matter.",
+      "source": "Yao et al., 'ReAct' (ICLR 2023); Shinn et al., 'Reflexion' (NeurIPS 2023)",
+      "expected_time_ms": 38000,
+      "tags": ["react", "error-handling", "advanced"]
+    },
+    {
+      "id": "q070304001",
+      "skill_id": "sk070304",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es un sistema 'multi-agente'?",
+      "question_en": "What is a 'multi-agent' system?",
+      "options_es": [
+        "Un solo LLM respondiendo muy rápido",
+        "Un sistema donde varios agentes de IA (a menudo especializados) colaboran, se comunican o se coordinan para resolver una tarea más grande",
+        "Un modelo entrenado en varios idiomas",
+        "Un servidor con muchas GPUs"
+      ],
+      "options_en": [
+        "A single LLM responding very fast",
+        "A system where several AI agents (often specialized) collaborate, communicate, or coordinate to solve a larger task",
+        "A model trained on many languages",
+        "A server with many GPUs"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En un sistema multi-agente, en lugar de un único agente monolítico, varios agentes con roles o especialidades distintos (por ejemplo, un planificador, un investigador, un crítico, un ejecutor) trabajan juntos. Pueden coordinarse jerárquicamente (un orquestador delega) o de forma más horizontal (conversando entre ellos).",
+      "explanation_en": "In a multi-agent system, instead of a single monolithic agent, several agents with distinct roles or specialties (e.g. a planner, a researcher, a critic, an executor) work together. They can coordinate hierarchically (an orchestrator delegates) or more horizontally (conversing among themselves).",
+      "source": "Wu et al., 'AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation' (2023)",
+      "expected_time_ms": 20000,
+      "tags": ["multi-agent", "fundamentals"]
+    },
+    {
+      "id": "q070304002",
+      "skill_id": "sk070304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué describe el patrón 'orquestador-trabajadores' (orchestrator-workers) en sistemas multi-agente?",
+      "question_en": "What does the 'orchestrator-workers' pattern describe in multi-agent systems?",
+      "options_es": [
+        "Todos los agentes hacen exactamente lo mismo en paralelo",
+        "Un agente principal (orquestador) descompone la tarea y delega subtareas a agentes trabajadores especializados, y luego integra sus resultados",
+        "Los agentes votan democráticamente cada token",
+        "Un único agente que se renombra a sí mismo en cada paso"
+      ],
+      "options_en": [
+        "All agents do exactly the same thing in parallel",
+        "A lead agent (orchestrator) breaks down the task and delegates subtasks to specialized worker agents, then integrates their results",
+        "Agents democratically vote on each token",
+        "A single agent that renames itself each step"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En el patrón orquestador-trabajadores, un agente coordinador analiza la tarea, la divide en subtareas y las asigna dinámicamente a agentes trabajadores (posiblemente en paralelo), cada uno con su propio contexto enfocado. Después, el orquestador recopila y sintetiza los resultados. Es útil cuando la tarea se beneficia de descomposición y especialización.",
+      "explanation_en": "In the orchestrator-workers pattern, a coordinator agent analyzes the task, splits it into subtasks, and dynamically assigns them to worker agents (possibly in parallel), each with its own focused context. The orchestrator then gathers and synthesizes the results. It's useful when the task benefits from decomposition and specialization.",
+      "source": "Anthropic — 'Building effective agents' (2024), orchestrator-workers pattern",
+      "expected_time_ms": 26000,
+      "tags": ["multi-agent", "orchestrator-workers"]
+    },
+    {
+      "id": "q070304003",
+      "skill_id": "sk070304",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un sistema multi-agente siempre resuelve las tareas mejor y más barato que un solo agente bien diseñado.",
+      "question_en": "A multi-agent system always solves tasks better and more cheaply than a single well-designed agent.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Los sistemas multi-agente añaden costo (cada agente consume tokens, a menudo multiplicando el gasto varias veces), latencia y complejidad de coordinación (comunicación, estado compartido, propagación de errores). Solo compensan cuando la tarea realmente se beneficia de paralelismo o especialización; para muchos problemas, un único agente o incluso un workflow simple es más eficiente y fiable.",
+      "explanation_en": "Multi-agent systems add cost (each agent consumes tokens, often multiplying spend several-fold), latency, and coordination complexity (communication, shared state, error propagation). They only pay off when the task genuinely benefits from parallelism or specialization; for many problems a single agent or even a simple workflow is more efficient and reliable.",
+      "source": "Anthropic — 'Building effective agents' (2024); Anthropic — 'How we built our multi-agent research system' (2025)",
+      "expected_time_ms": 24000,
+      "tags": ["multi-agent", "trade-offs"]
+    },
+    {
+      "id": "q070304004",
+      "skill_id": "sk070304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es un beneficio real de usar varios agentes especializados en lugar de uno solo con todas las herramientas?",
+      "question_en": "What is a genuine benefit of using several specialized agents instead of a single one with all the tools?",
+      "options_es": [
+        "Reduce siempre el costo total de tokens",
+        "Separación de responsabilidades: cada agente mantiene un contexto más pequeño y enfocado (menos herramientas e instrucciones), lo que reduce la confusión del modelo y permite paralelizar subtareas independientes",
+        "Elimina la necesidad de un LLM",
+        "Garantiza que nunca habrá errores"
+      ],
+      "options_en": [
+        "It always reduces total token cost",
+        "Separation of concerns: each agent keeps a smaller, more focused context (fewer tools and instructions), which reduces model confusion and allows independent subtasks to be parallelized",
+        "It removes the need for an LLM",
+        "It guarantees there will never be errors"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cargar un único agente con decenas de herramientas e instrucciones puede saturar su contexto y degradar su capacidad de elegir bien. Dividir en agentes especializados da a cada uno un contexto enfocado y manejable, y permite que subtareas independientes (por ejemplo, investigar tres temas distintos) corran en paralelo. El costo es más comunicación y coordinación entre agentes.",
+      "explanation_en": "Loading a single agent with dozens of tools and instructions can overload its context and degrade its ability to choose well. Splitting into specialized agents gives each a focused, manageable context, and lets independent subtasks (e.g. researching three distinct topics) run in parallel. The cost is more inter-agent communication and coordination.",
+      "source": "Anthropic — 'How we built our multi-agent research system' (2025)",
+      "expected_time_ms": 32000,
+      "tags": ["multi-agent", "specialization"]
+    },
+    {
+      "id": "q070304005",
+      "skill_id": "sk070304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es un desafío característico de los sistemas multi-agente?",
+      "question_en": "What is a characteristic challenge of multi-agent systems?",
+      "options_es": [
+        "Que son imposibles de construir con LLMs actuales",
+        "La propagación de errores y la coordinación: un fallo o malentendido de un agente puede contaminar a los demás, y mantener un estado compartido coherente y una comunicación eficaz entre agentes es difícil",
+        "Que solo pueden usar una herramienta en total",
+        "Que no consumen tokens"
+      ],
+      "options_en": [
+        "That they are impossible to build with current LLMs",
+        "Error propagation and coordination: one agent's failure or misunderstanding can contaminate the others, and maintaining a coherent shared state and effective communication between agents is hard",
+        "That they can only use one tool in total",
+        "That they consume no tokens"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En sistemas multi-agente, un error de un agente (una observación mal interpretada, un resultado incorrecto) puede propagarse aguas abajo y ser amplificado por otros agentes. Además, coordinar quién hace qué, compartir contexto sin duplicarlo en exceso, y evitar que los agentes trabajen con información contradictoria son problemas de ingeniería no triviales que aumentan con el número de agentes.",
+      "explanation_en": "In multi-agent systems, one agent's error (a misread observation, a wrong result) can propagate downstream and be amplified by other agents. Also, coordinating who does what, sharing context without over-duplicating it, and preventing agents from working with contradictory information are non-trivial engineering problems that grow with the number of agents.",
+      "source": "Anthropic — 'How we built our multi-agent research system' (2025)",
+      "expected_time_ms": 30000,
+      "tags": ["multi-agent", "coordination", "error-propagation"]
+    },
+    {
+      "id": "q070304006",
+      "skill_id": "sk070304",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Según la experiencia de Anthropic construyendo un sistema de investigación multi-agente, ¿en qué tipo de tareas destaca la arquitectura multi-agente y cuál es su principal contrapartida?",
+      "question_en": "Based on Anthropic's experience building a multi-agent research system, on what kind of tasks does the multi-agent architecture excel, and what is its main downside?",
+      "options_es": [
+        "Destaca en tareas secuenciales estrictas; su contrapartida es que es demasiado barata",
+        "Destaca en tareas de 'búsqueda en amplitud' paralelizables (explorar muchas direcciones a la vez, como investigación abierta); su principal contrapartida es que consume muchos más tokens (multiplica el costo) que un agente único",
+        "Destaca en tareas de un solo paso; su contrapartida es que no usa herramientas",
+        "Destaca solo en traducción; su contrapartida es la lentitud de red"
+      ],
+      "options_en": [
+        "It excels at strictly sequential tasks; its downside is being too cheap",
+        "It excels at parallelizable 'breadth-first' tasks (exploring many directions at once, like open-ended research); its main downside is consuming far more tokens (multiplying cost) than a single agent",
+        "It excels at single-step tasks; its downside is not using tools",
+        "It excels only at translation; its downside is network latency"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Anthropic reportó que la arquitectura multi-agente brilla cuando la tarea se puede descomponer en exploraciones paralelas e independientes (por ejemplo, investigar simultáneamente múltiples aspectos de una pregunta amplia), donde varios subagentes trabajando a la vez superan a uno solo. La contrapartida clave es económica: los sistemas multi-agente pueden consumir muchas veces más tokens, por lo que solo se justifican cuando el valor de la tarea compensa ese gasto.",
+      "explanation_en": "Anthropic reported that the multi-agent architecture shines when the task can be decomposed into parallel, independent explorations (e.g. researching multiple facets of a broad question simultaneously), where several subagents working at once beat a single one. The key downside is economic: multi-agent systems can consume many times more tokens, so they are only justified when the task's value outweighs that spend.",
+      "source": "Anthropic — 'How we built our multi-agent research system' (2025)",
+      "expected_time_ms": 40000,
+      "tags": ["multi-agent", "breadth-first", "cost", "advanced"]
+    }
+  ]
+}

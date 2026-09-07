@@ -1,0 +1,848 @@
+{
+  "questions": [
+    {
+      "id": "q010101001",
+      "skill_id": "sk010101",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál de los siguientes es un nombre de variable válido en Python?",
+      "question_en": "Which of the following is a valid variable name in Python?",
+      "options_es": [
+        "2var",
+        "my-var",
+        "class",
+        "_my_var"
+      ],
+      "options_en": [
+        "2var",
+        "my-var",
+        "class",
+        "_my_var"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un identificador no puede empezar con un dígito ('2var'), no puede contener guiones ('my-var', el guion se interpreta como resta) y no puede ser una palabra reservada ('class'). '_my_var' es válido: puede empezar con guion bajo y contener letras, números y guiones bajos.",
+      "explanation_en": "An identifier cannot start with a digit ('2var'), cannot contain hyphens ('my-var', the hyphen is parsed as subtraction), and cannot be a reserved keyword ('class'). '_my_var' is valid: it can start with an underscore and contain letters, digits, and underscores.",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "variables",
+        "syntax"
+      ]
+    },
+    {
+      "id": "q010101002",
+      "skill_id": "sk010101",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "En Python debes declarar el tipo de una variable antes de asignarle un valor.",
+      "question_en": "In Python you must declare a variable's type before assigning it a value.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Python es de tipado dinámico: el tipo se infiere en tiempo de ejecución a partir del valor asignado. Simplemente escribes `x = 5` y Python determina que `x` es un `int`, sin necesidad de declarar `int x` como en lenguajes de tipado estático.",
+      "explanation_en": "Python is dynamically typed: the type is inferred at runtime from the assigned value. You simply write `x = 5` and Python determines that `x` is an `int`, with no need to declare `int x` as in statically typed languages.",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "expected_time_ms": 12000,
+      "tags": [
+        "variables",
+        "typing"
+      ]
+    },
+    {
+      "id": "q010101003",
+      "skill_id": "sk010101",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nx = 5\ny = x\nx = 10\nprint(y)\n```",
+      "question_en": "What does the following code print?\n```python\nx = 5\ny = x\nx = 10\nprint(y)\n```",
+      "options_es": [
+        "5",
+        "10",
+        "Error",
+        "None"
+      ],
+      "options_en": [
+        "5",
+        "10",
+        "Error",
+        "None"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`y = x` hace que `y` apunte al mismo objeto entero `5` al que apunta `x` en ese momento. Como los enteros son inmutables, reasignar `x = 10` simplemente hace que `x` apunte a un objeto distinto (`10`); `y` sigue enlazada al `5` original.",
+      "explanation_en": "`y = x` makes `y` point to the same integer object `5` that `x` points to at that moment. Since integers are immutable, reassigning `x = 10` just makes `x` point to a different object (`10`); `y` remains bound to the original `5`.",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "variables",
+        "references",
+        "immutability"
+      ]
+    },
+    {
+      "id": "q010101004",
+      "skill_id": "sk010101",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\na, b = 1, 2\na, b = b, a\nprint(a, b)\n```",
+      "question_en": "What does the following code print?\n```python\na, b = 1, 2\na, b = b, a\nprint(a, b)\n```",
+      "options_es": [
+        "1 2",
+        "2 1",
+        "Error",
+        "1 1"
+      ],
+      "options_en": [
+        "1 2",
+        "2 1",
+        "Error",
+        "1 1"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`a, b = b, a` es el idioma clásico de Python para intercambiar valores. El lado derecho se evalúa por completo primero, construyendo la tupla `(2, 1)` con los valores originales, y luego se desempaqueta en `a` y `b`, dejando `a=2, b=1`.",
+      "explanation_en": "`a, b = b, a` is the classic Python idiom for swapping values. The right-hand side is fully evaluated first, building the tuple `(2, 1)` from the original values, then it is unpacked into `a` and `b`, leaving `a=2, b=1`.",
+      "source": "CPython docs 3.13 — The Python Language Reference: Execution model (naming and binding)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "variables",
+        "unpacking",
+        "tuples"
+      ]
+    },
+    {
+      "id": "q010101005",
+      "skill_id": "sk010101",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Completa el código para comprobar si `x` no está enlazada a ningún valor: `if x ___ None:`",
+      "question_en": "Complete the code to check whether `x` is bound to no value: `if x ___ None:`",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "is",
+      "correct_answer_en": "is",
+      "explanation_es": "Se recomienda usar el operador `is` (identidad) en lugar de `==` para comparar con `None`, porque `None` es un singleton único en memoria y `is` evita depender de un posible `__eq__` sobrecargado en la clase de `x`.",
+      "explanation_en": "It is recommended to use the `is` operator (identity) instead of `==` when comparing with `None`, because `None` is a unique singleton in memory and `is` avoids relying on a possibly overridden `__eq__` on `x`'s class.",
+      "source": "PEP 8 — Programming Recommendations (comparisons to None use 'is'/'is not')",
+      "expected_time_ms": 30000,
+      "tags": [
+        "variables",
+        "none",
+        "identity"
+      ]
+    },
+    {
+      "id": "q010101006",
+      "skill_id": "sk010101",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cuál de las siguientes afirmaciones sobre la asignación de variables en Python es VERDADERA?",
+      "question_en": "Which of the following statements about variable assignment in Python is TRUE?",
+      "options_es": [
+        "Las variables son contenedores que almacenan el valor directamente",
+        "Las variables son nombres enlazados a objetos; la asignación enlaza un nombre a un objeto sin copiarlo",
+        "Las variables deben ser inmutables una vez asignadas",
+        "Asignar un nuevo valor a una variable modifica el objeto original en su lugar"
+      ],
+      "options_en": [
+        "Variables are containers that store the value directly",
+        "Variables are names bound to objects; assignment binds a name to an object without copying it",
+        "Variables must be immutable once assigned",
+        "Assigning a new value to a variable modifies the original object in place"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Python usa un modelo de 'nombres y objetos': una variable es solo una referencia (etiqueta) hacia un objeto en memoria. `x = valor` crea o reutiliza un objeto y enlaza el nombre `x` a él; no hay copia implícita ni una 'caja' fija que contenga el valor, a diferencia de lenguajes con variables de tipo valor.",
+      "explanation_en": "Python uses a 'names and objects' model: a variable is just a reference (label) pointing to an object in memory. `x = value` creates or reuses an object and binds the name `x` to it; there is no implicit copy or fixed 'box' holding the value, unlike languages with value-type variables.",
+      "source": "CPython docs 3.13 — The Python Language Reference: Data model (objects, values, and names)",
+      "expected_time_ms": 40000,
+      "tags": [
+        "variables",
+        "object-model",
+        "references"
+      ]
+    },
+    {
+      "id": "q010102001",
+      "skill_id": "sk010102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es el tipo del valor `3.14` en Python?",
+      "question_en": "What is the type of the value `3.14` in Python?",
+      "options_es": [
+        "int",
+        "float",
+        "str",
+        "complex"
+      ],
+      "options_en": [
+        "int",
+        "float",
+        "str",
+        "complex"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cualquier número escrito con punto decimal es del tipo `float` en Python, incluso si su parte decimal es cero (por ejemplo `3.0` también es `float`).",
+      "explanation_en": "Any number written with a decimal point is of type `float` in Python, even if its decimal part is zero (for example `3.0` is also a `float`).",
+      "source": "CPython docs 3.13 — Built-in Types: Numeric Types (int, float, complex)",
+      "expected_time_ms": 12000,
+      "tags": [
+        "numeric-types",
+        "float"
+      ]
+    },
+    {
+      "id": "q010102002",
+      "skill_id": "sk010102",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "En Python 3, el operador `/` siempre devuelve un `float`, incluso al dividir dos enteros de forma exacta (por ejemplo `10 / 2`).",
+      "question_en": "In Python 3, the `/` operator always returns a `float`, even when dividing two integers evenly (e.g. `10 / 2`).",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En Python 3, `/` es la división 'verdadera' (true division) y siempre produce un `float` (`10 / 2` da `5.0`). Para obtener un resultado entero truncado se usa el operador de división entera `//`.",
+      "explanation_en": "In Python 3, `/` is 'true division' and always produces a `float` (`10 / 2` gives `5.0`). To get a truncated integer result, use the floor division operator `//`.",
+      "source": "CPython docs 3.13 — Built-in Types: Numeric Types (int, float, complex)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "numeric-types",
+        "division"
+      ]
+    },
+    {
+      "id": "q010102003",
+      "skill_id": "sk010102",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime `print(7 // 2)`?",
+      "question_en": "What does `print(7 // 2)` print?",
+      "options_es": [
+        "3.5",
+        "3",
+        "4",
+        "Error"
+      ],
+      "options_en": [
+        "3.5",
+        "3",
+        "4",
+        "Error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`//` es la división entera: divide y redondea hacia abajo (hacia menos infinito). `7 / 2 = 3.5`, y redondeando hacia abajo se obtiene `3`.",
+      "explanation_en": "`//` is floor division: it divides and rounds down (toward negative infinity). `7 / 2 = 3.5`, and rounding down gives `3`.",
+      "source": "CPython docs 3.13 — Built-in Types: Numeric Types (int, float, complex)",
+      "expected_time_ms": 18000,
+      "tags": [
+        "numeric-types",
+        "floor-division"
+      ]
+    },
+    {
+      "id": "q010102004",
+      "skill_id": "sk010102",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime `print(-7 // 2)`?",
+      "question_en": "What does `print(-7 // 2)` print?",
+      "options_es": [
+        "-3",
+        "-4",
+        "-3.5",
+        "3"
+      ],
+      "options_en": [
+        "-3",
+        "-4",
+        "-3.5",
+        "3"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La división entera en Python redondea siempre hacia menos infinito (piso), no hacia cero. `-7 / 2 = -3.5`, y redondeando hacia el piso (el entero menor o igual) se obtiene `-4`, no `-3`.",
+      "explanation_en": "Floor division in Python always rounds toward negative infinity, not toward zero. `-7 / 2 = -3.5`, and flooring it (the largest integer less than or equal to the value) gives `-4`, not `-3`.",
+      "source": "CPython docs 3.13 — Built-in Types: Numeric Types (int, float, complex)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "numeric-types",
+        "floor-division",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010102005",
+      "skill_id": "sk010102",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es el resultado de evaluar `0.1 + 0.2 == 0.3` en Python?",
+      "question_en": "What is the result of evaluating `0.1 + 0.2 == 0.3` in Python?",
+      "options_es": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los `float` se representan en binario de precisión finita (IEEE 754), por lo que `0.1 + 0.2` produce en realidad `0.30000000000000004`, que no es exactamente igual a `0.3`. Para comparar flotantes con tolerancia se usa `math.isclose()`.",
+      "explanation_en": "Floats are represented in finite-precision binary (IEEE 754), so `0.1 + 0.2` actually produces `0.30000000000000004`, which is not exactly equal to `0.3`. To compare floats with tolerance, use `math.isclose()`.",
+      "source": "CPython docs 3.13 — Tutorial Appendix: Floating-Point Arithmetic: Issues and Limitations (IEEE 754)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "numeric-types",
+        "floating-point",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010102006",
+      "skill_id": "sk010102",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué función incorporada convierte el string `'42'` en el entero `42`?",
+      "question_en": "Which built-in function converts the string `'42'` into the integer `42`?",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "int",
+      "correct_answer_en": "int",
+      "explanation_es": "`int('42')` invoca al constructor de la clase `int`, que sabe interpretar strings que representan números enteros y devuelve `42`. Si el string no representa un entero válido (por ejemplo `'4.5'` o `'abc'`), lanza `ValueError`.",
+      "explanation_en": "`int('42')` calls the `int` class constructor, which knows how to parse strings representing whole numbers and returns `42`. If the string does not represent a valid integer (e.g. `'4.5'` or `'abc'`), it raises `ValueError`.",
+      "source": "CPython docs 3.13 — Built-in Functions: int()",
+      "expected_time_ms": 18000,
+      "tags": [
+        "numeric-types",
+        "casting"
+      ]
+    },
+    {
+      "id": "q010103001",
+      "skill_id": "sk010103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál de las siguientes expresiones crea un string en Python?",
+      "question_en": "Which of the following expressions creates a string in Python?",
+      "options_es": [
+        "'hello'",
+        "[hello]",
+        "(hello)",
+        "{hello}"
+      ],
+      "options_en": [
+        "'hello'",
+        "[hello]",
+        "(hello)",
+        "{hello}"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El texto encerrado entre comillas simples o dobles es un `str`. Corchetes crean listas, paréntesis (con una expresión) no crean strings, y llaves crean diccionarios o sets; además `hello` sin comillas se interpretaría como un identificador, no como texto.",
+      "explanation_en": "Text enclosed in single or double quotes is a `str`. Square brackets create lists, parentheses (around an expression) don't create strings, and curly braces create dicts or sets; also, `hello` without quotes would be parsed as an identifier, not text.",
+      "source": "CPython docs 3.13 — Built-in Types: Text Sequence Type (str)",
+      "expected_time_ms": 12000,
+      "tags": [
+        "strings",
+        "syntax"
+      ]
+    },
+    {
+      "id": "q010103002",
+      "skill_id": "sk010103",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Los strings en Python son mutables: se pueden cambiar caracteres individuales en el mismo objeto.",
+      "question_en": "Strings in Python are mutable: individual characters can be changed in place.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los strings son inmutables: `s[0] = 'X'` lanza `TypeError`. Para 'modificar' un string hay que crear uno nuevo, por ejemplo con slicing, concatenación o métodos como `.replace()`.",
+      "explanation_en": "Strings are immutable: `s[0] = 'X'` raises `TypeError`. To 'modify' a string you must create a new one, for example via slicing, concatenation, or methods like `.replace()`.",
+      "source": "CPython docs 3.13 — Built-in Types: Text Sequence Type (str)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "strings",
+        "immutability"
+      ]
+    },
+    {
+      "id": "q010103003",
+      "skill_id": "sk010103",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ns = \"Hello\"\nprint(s[1:4])\n```",
+      "question_en": "What does the following code print?\n```python\ns = \"Hello\"\nprint(s[1:4])\n```",
+      "options_es": [
+        "ell",
+        "Hell",
+        "ello",
+        "Hello"
+      ],
+      "options_en": [
+        "ell",
+        "Hell",
+        "ello",
+        "Hello"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El slicing `s[1:4]` toma los caracteres desde el índice 1 (inclusive) hasta el índice 4 (exclusivo): índices 1, 2 y 3, que corresponden a 'e', 'l', 'l', formando `'ell'`.",
+      "explanation_en": "Slicing `s[1:4]` takes characters from index 1 (inclusive) up to index 4 (exclusive): indices 1, 2, and 3, corresponding to 'e', 'l', 'l', forming `'ell'`.",
+      "source": "CPython docs 3.13 — Built-in Types: Text Sequence Type (str)",
+      "expected_time_ms": 22000,
+      "tags": [
+        "strings",
+        "slicing"
+      ]
+    },
+    {
+      "id": "q010103004",
+      "skill_id": "sk010103",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué método de string elimina los espacios en blanco al principio y al final?",
+      "question_en": "Which string method removes leading and trailing whitespace?",
+      "options_es": [
+        "strip()",
+        "trim()",
+        "clean()",
+        "remove()"
+      ],
+      "options_en": [
+        "strip()",
+        "trim()",
+        "clean()",
+        "remove()"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`str.strip()` elimina los espacios (y otros caracteres si se especifican) del inicio y del final del string. `trim()` es el nombre usado en otros lenguajes como JavaScript, no existe en Python.",
+      "explanation_en": "`str.strip()` removes whitespace (and other characters if specified) from the start and end of the string. `trim()` is the name used in other languages like JavaScript; it does not exist in Python.",
+      "source": "CPython docs 3.13 — Built-in Types: Text Sequence Type (str)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "strings",
+        "methods"
+      ]
+    },
+    {
+      "id": "q010103005",
+      "skill_id": "sk010103",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nprint(\"Py\" + \"thon\" * 2)\n```",
+      "question_en": "What does the following code print?\n```python\nprint(\"Py\" + \"thon\" * 2)\n```",
+      "options_es": [
+        "Pythonthon",
+        "PythonPython",
+        "PyPythonthon",
+        "Error"
+      ],
+      "options_en": [
+        "Pythonthon",
+        "PythonPython",
+        "PyPythonthon",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El operador `*` tiene mayor precedencia que `+`, así que primero se evalúa `\"thon\" * 2`, dando `\"thonthon\"`. Luego `\"Py\" + \"thonthon\"` concatena y produce `\"Pythonthon\"`.",
+      "explanation_en": "The `*` operator has higher precedence than `+`, so `\"thon\" * 2` is evaluated first, giving `\"thonthon\"`. Then `\"Py\" + \"thonthon\"` concatenates to produce `\"Pythonthon\"`.",
+      "source": "CPython docs 3.13 — Built-in Types: Text Sequence Type (str)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "strings",
+        "operator-precedence"
+      ]
+    },
+    {
+      "id": "q010103006",
+      "skill_id": "sk010103",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Completa el f-string para que imprima `3.14` a partir de `pi = 3.14159265`: `f'{pi:___}'`",
+      "question_en": "Complete the f-string so it prints `3.14` from `pi = 3.14159265`: `f'{pi:___}'`",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": ".2f",
+      "correct_answer_en": ".2f",
+      "explanation_es": "El especificador de formato `.2f` indica un número de punto fijo (`f`) con 2 dígitos decimales, redondeando el valor. `f'{pi:.2f}'` con `pi = 3.14159265` produce `'3.14'`.",
+      "explanation_en": "The format spec `.2f` indicates fixed-point notation (`f`) with 2 decimal digits, rounding the value. `f'{pi:.2f}'` with `pi = 3.14159265` produces `'3.14'`.",
+      "source": "PEP 498 — Literal String Interpolation; CPython docs 3.13 — Format Specification Mini-Language",
+      "expected_time_ms": 35000,
+      "tags": [
+        "strings",
+        "f-strings",
+        "formatting"
+      ]
+    },
+    {
+      "id": "q010104001",
+      "skill_id": "sk010104",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es el valor booleano del string vacío `\"\"`?",
+      "question_en": "What is the boolean value of the empty string `\"\"`?",
+      "options_es": [
+        "True",
+        "False",
+        "None",
+        "Lanza un error"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "None",
+        "Raises an error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`bool(\"\")` es `False`. En Python, las secuencias y colecciones vacías (`\"\"`, `[]`, `{}`, `()`, `set()`) se consideran 'falsy'; cualquier string no vacío es 'truthy'.",
+      "explanation_en": "`bool(\"\")` is `False`. In Python, empty sequences and collections (`\"\"`, `[]`, `{}`, `()`, `set()`) are considered falsy; any non-empty string is truthy.",
+      "source": "CPython docs 3.13 — Built-in Types: Truth Value Testing / Boolean Values",
+      "expected_time_ms": 15000,
+      "tags": [
+        "booleans",
+        "truthiness"
+      ]
+    },
+    {
+      "id": "q010104002",
+      "skill_id": "sk010104",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "`None` y `False` son el mismo valor en Python.",
+      "question_en": "`None` and `False` are the same value in Python.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Son objetos distintos: `None` representa la ausencia de valor (el tipo `NoneType`), mientras que `False` es un valor booleano concreto. `None == False` evalúa a `False`, aunque ambos sean 'falsy' en un contexto booleano.",
+      "explanation_en": "They are distinct objects: `None` represents the absence of a value (type `NoneType`), while `False` is a concrete boolean value. `None == False` evaluates to `False`, even though both are falsy in a boolean context.",
+      "source": "CPython docs 3.13 — Built-in Types: Truth Value Testing / Boolean Values",
+      "expected_time_ms": 15000,
+      "tags": [
+        "booleans",
+        "none"
+      ]
+    },
+    {
+      "id": "q010104003",
+      "skill_id": "sk010104",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime `print(bool([]))`?",
+      "question_en": "What does `print(bool([]))` print?",
+      "options_es": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una lista vacía es 'falsy'; `bool([])` es `False`. Una lista con al menos un elemento, incluso `[0]` o `[False]`, sería 'truthy' porque lo que importa es si la lista está vacía, no el valor de sus elementos.",
+      "explanation_en": "An empty list is falsy; `bool([])` is `False`. A list with at least one element, even `[0]` or `[False]`, would be truthy because what matters is whether the list is empty, not the value of its elements.",
+      "source": "CPython docs 3.13 — Built-in Types: Truth Value Testing / Boolean Values",
+      "expected_time_ms": 18000,
+      "tags": [
+        "booleans",
+        "truthiness",
+        "lists"
+      ]
+    },
+    {
+      "id": "q010104004",
+      "skill_id": "sk010104",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué operador se recomienda usar para comparar una variable con `None` (por ejemplo `if x __ None`)?",
+      "question_en": "Which operator is recommended for comparing a variable with `None` (e.g. `if x __ None`)?",
+      "options_es": [
+        "is",
+        "==",
+        "equals",
+        "in"
+      ],
+      "options_en": [
+        "is",
+        "==",
+        "equals",
+        "in"
+      ],
+      "correct_index": 0,
+      "explanation_es": "PEP 8 recomienda `is None` / `is not None` en lugar de `== None`, porque `None` es un singleton único: `is` compara identidad de objeto de forma rápida y no depende de un `__eq__` personalizado que otra clase pudiera sobrecargar.",
+      "explanation_en": "PEP 8 recommends `is None` / `is not None` instead of `== None`, because `None` is a unique singleton: `is` compares object identity directly and doesn't depend on a custom `__eq__` that some other class might override.",
+      "source": "PEP 8 — Programming Recommendations (comparisons to None use 'is'/'is not')",
+      "expected_time_ms": 18000,
+      "tags": [
+        "booleans",
+        "none",
+        "best-practice"
+      ]
+    },
+    {
+      "id": "q010104005",
+      "skill_id": "sk010104",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime `print(1 == True)`?",
+      "question_en": "What does `print(1 == True)` print?",
+      "options_es": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En Python, `bool` es una subclase de `int`: `True` equivale numéricamente a `1` y `False` a `0`. Por eso `1 == True` da `True`, e incluso `True + True` da `2`.",
+      "explanation_en": "In Python, `bool` is a subclass of `int`: `True` is numerically equivalent to `1` and `False` to `0`. That's why `1 == True` gives `True`, and even `True + True` gives `2`.",
+      "source": "PEP 285 — Adding a bool type (bool is a subclass of int)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "booleans",
+        "gotcha",
+        "int-subclass"
+      ]
+    },
+    {
+      "id": "q010104006",
+      "skill_id": "sk010104",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime `print(None == False)`?",
+      "question_en": "What does `print(None == False)` print?",
+      "options_es": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "correct_index": 1,
+      "explanation_es": "A diferencia de `bool`, `NoneType` no es una subclase de `int` ni se compara por igualdad con `False`. `None` solo es igual a sí mismo, por lo que `None == False` da `False`, aunque ambos actúen como 'falsy' en un `if`.",
+      "explanation_en": "Unlike `bool`, `NoneType` is not a subclass of `int` and is not equal to `False`. `None` is only equal to itself, so `None == False` gives `False`, even though both act as falsy inside an `if`.",
+      "source": "CPython docs 3.13 — Built-in Types: Truth Value Testing / Boolean Values",
+      "expected_time_ms": 32000,
+      "tags": [
+        "booleans",
+        "none",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010105001",
+      "skill_id": "sk010105",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué ocurre al ejecutar `int(\"3.5\")`?",
+      "question_en": "What happens when you run `int(\"3.5\")`?",
+      "options_es": [
+        "Devuelve 3",
+        "Devuelve 3.5",
+        "Lanza ValueError",
+        "Lanza TypeError"
+      ],
+      "options_en": [
+        "Returns 3",
+        "Returns 3.5",
+        "Raises ValueError",
+        "Raises TypeError"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`int()` no puede interpretar directamente un string con punto decimal; lanza `ValueError: invalid literal for int() with base 10: '3.5'`. Para lograrlo hay que convertir primero a `float` y luego a `int`: `int(float(\"3.5\"))`.",
+      "explanation_en": "`int()` cannot directly parse a string containing a decimal point; it raises `ValueError: invalid literal for int() with base 10: '3.5'`. To achieve this you must convert to `float` first and then to `int`: `int(float(\"3.5\"))`.",
+      "source": "CPython docs 3.13 — Built-in Functions (int, float, str, bool)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "casting",
+        "errors"
+      ]
+    },
+    {
+      "id": "q010105002",
+      "skill_id": "sk010105",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué imprime `print(float(\"10\"))`?",
+      "question_en": "What does `print(float(\"10\"))` print?",
+      "options_es": [
+        "10.0",
+        "10",
+        "'10'",
+        "Error"
+      ],
+      "options_en": [
+        "10.0",
+        "10",
+        "'10'",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`float(\"10\")` interpreta el string como un número y devuelve el `float` `10.0`. Al imprimirlo se muestra `10.0`, con el punto decimal explícito.",
+      "explanation_en": "`float(\"10\")` parses the string as a number and returns the `float` `10.0`. When printed, it displays as `10.0`, with the explicit decimal point.",
+      "source": "CPython docs 3.13 — Built-in Functions (int, float, str, bool)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "casting",
+        "float"
+      ]
+    },
+    {
+      "id": "q010105003",
+      "skill_id": "sk010105",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime `print(int(3.99))`?",
+      "question_en": "What does `print(int(3.99))` print?",
+      "options_es": [
+        "4",
+        "3",
+        "3.99",
+        "Error"
+      ],
+      "options_en": [
+        "4",
+        "3",
+        "3.99",
+        "Error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`int()` sobre un `float` trunca hacia cero, no redondea. `int(3.99)` descarta la parte decimal y devuelve `3`. Para redondear correctamente se debe usar `round(3.99)`, que daría `4`.",
+      "explanation_en": "`int()` on a `float` truncates toward zero, it does not round. `int(3.99)` discards the decimal part and returns `3`. To round properly, use `round(3.99)`, which would give `4`.",
+      "source": "CPython docs 3.13 — Built-in Functions (int, float, str, bool)",
+      "expected_time_ms": 22000,
+      "tags": [
+        "casting",
+        "truncation",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010105004",
+      "skill_id": "sk010105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál de las siguientes opciones convierte correctamente el entero `42` en un string?",
+      "question_en": "Which of the following correctly converts the integer `42` to a string?",
+      "options_es": [
+        "str(42)",
+        "string(42)",
+        "42.str()",
+        "toString(42)"
+      ],
+      "options_en": [
+        "str(42)",
+        "string(42)",
+        "42.str()",
+        "toString(42)"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`str()` es la función/constructor incorporado que convierte cualquier objeto en su representación de string. `string()`, `42.str()` y `toString(42)` no son sintaxis válida de Python.",
+      "explanation_en": "`str()` is the built-in function/constructor that converts any object into its string representation. `string()`, `42.str()`, and `toString(42)` are not valid Python syntax.",
+      "source": "CPython docs 3.13 — Built-in Functions (int, float, str, bool)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "casting",
+        "str"
+      ]
+    },
+    {
+      "id": "q010105005",
+      "skill_id": "sk010105",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime `print(bool(\"False\"))`?",
+      "question_en": "What does `print(bool(\"False\"))` print?",
+      "options_es": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "Error",
+        "None"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`bool()` sobre un string solo depende de si el string está vacío o no; el contenido no importa. `\"False\"` es un string no vacío (tiene 5 caracteres), por lo que es 'truthy' y `bool(\"False\")` da `True`.",
+      "explanation_en": "`bool()` on a string only depends on whether the string is empty or not; its content doesn't matter. `\"False\"` is a non-empty string (5 characters), so it is truthy and `bool(\"False\")` gives `True`.",
+      "source": "CPython docs 3.13 — Built-in Functions (int, float, str, bool)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "casting",
+        "truthiness",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010105006",
+      "skill_id": "sk010105",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nprint(''.join(['a', 'b', 'c']))\n```",
+      "question_en": "What does the following code print?\n```python\nprint(''.join(['a', 'b', 'c']))\n```",
+      "options_es": [
+        "abc",
+        "a b c",
+        "['a', 'b', 'c']",
+        "Error"
+      ],
+      "options_en": [
+        "abc",
+        "a b c",
+        "['a', 'b', 'c']",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`str.join(iterable)` concatena los elementos del iterable usando el string sobre el que se llama como separador. Aquí el separador es una cadena vacía `''`, así que los elementos `'a'`, `'b'`, `'c'` se unen sin espacios, dando `'abc'`.",
+      "explanation_en": "`str.join(iterable)` concatenates the elements of the iterable using the string it's called on as the separator. Here the separator is an empty string `''`, so the elements `'a'`, `'b'`, `'c'` are joined with no spaces, giving `'abc'`.",
+      "source": "CPython docs 3.13 — Built-in Types: str.join()",
+      "expected_time_ms": 35000,
+      "tags": [
+        "casting",
+        "join",
+        "strings"
+      ]
+    }
+  ]
+}

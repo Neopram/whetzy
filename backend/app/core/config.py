@@ -1,0 +1,87 @@
+"""Application settings loaded from environment variables / .env file.
+
+All values ship with sensible local-development defaults so the app can be
+run out of the box with `uvicorn app.main:app --reload`, while still being
+fully configurable in staging/production via environment variables.
+"""
+
+from __future__ import annotations
+
+from functools import lru_cache
+from typing import Any
+
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=True,
+        extra="ignore",
+    )
+
+    # --- General ---------------------------------------------------------
+    APP_NAME: str = "Whetzy"
+    ENVIRONMENT: str = "development"  # development | staging | production
+    DEBUG: bool = True
+    API_V1_PREFIX: str = "/api/v1"
+
+    # --- Database (PostgreSQL, async via asyncpg) -------------------------
+    DATABASE_URL: str = (
+        "postgresql+asyncpg://postgres:postgres@localhost:5432/learning_engine"
+    )
+    DATABASE_ECHO: bool = False
+    DATABASE_POOL_SIZE: int = 10
+    DATABASE_MAX_OVERFLOW: int = 20
+
+    # --- Redis (caching, rate limiting, bandit state, etc.) ---------------
+    REDIS_URL: str = "redis://localhost:6379/0"
+
+    # --- Auth / JWT --------------------------------------------------------
+    SECRET_KEY: str = "insecure-dev-secret-key-change-me-in-production-0123456789"
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 30
+
+    # --- CORS ---------------------------------------------------------------
+    BACKEND_CORS_ORIGINS: list[str] = Field(
+        default_factory=lambda: [
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:5173",
+            "https://whetzy.com",
+            "https://www.whetzy.com",
+            "https://*.pages.dev",
+        ]
+    )
+
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
+    @classmethod
+    def _assemble_cors_origins(cls, v: Any) -> Any:
+        if isinstance(v, str) and not v.startswith("["):
+            return [origin.strip() for origin in v.split(",") if origin.strip()]
+        return v
+
+    # --- AI Tutor (Groq) -----------------------------------------------------
+    GROQ_API_KEY: str | None = None
+    GROQ_MODEL: str = "qwen/qwen3.8-27b"
+    GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
+
+    # --- RAG (ChromaDB) -------------------------------------------------------
+    # Empty → auto-resolved to backend/chroma_db/ relative to rag.py location.
+    CHROMA_PERSIST_PATH: str = ""
+
+    # --- Gamification tuning -------------------------------------------------
+    MASTERY_THRESHOLD: float = 0.95
+    DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
+
+
+settings = get_settings()

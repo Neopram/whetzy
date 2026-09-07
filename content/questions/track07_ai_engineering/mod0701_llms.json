@@ -1,0 +1,889 @@
+{
+  "questions": [
+    {
+      "id": "q070101001",
+      "skill_id": "sk070101",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué mecanismo introducido en el paper 'Attention Is All You Need' (2017) es el núcleo de la arquitectura Transformer?",
+      "question_en": "Which mechanism introduced in the 'Attention Is All You Need' (2017) paper is the core of the Transformer architecture?",
+      "options_es": [
+        "Convolución",
+        "Self-attention (auto-atención)",
+        "Recurrencia (RNN)",
+        "Pooling"
+      ],
+      "options_en": [
+        "Convolution",
+        "Self-attention",
+        "Recurrence (RNN)",
+        "Pooling"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El mecanismo de self-attention permite que cada token de una secuencia 'atienda' (pondere su relevancia) a todos los demás tokens simultáneamente, capturando dependencias de largo alcance sin la recurrencia secuencial de las RNN, lo que además permite un paralelismo masivo durante el entrenamiento.",
+      "explanation_en": "The self-attention mechanism lets every token in a sequence 'attend to' (weigh the relevance of) every other token simultaneously, capturing long-range dependencies without the sequential recurrence of RNNs, which also enables massive parallelism during training.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "llm",
+        "transformer",
+        "attention"
+      ]
+    },
+    {
+      "id": "q070101002",
+      "skill_id": "sk070101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por qué los Transformers necesitan 'positional encodings' (codificaciones posicionales)?",
+      "question_en": "Why do Transformers need 'positional encodings'?",
+      "options_es": [
+        "Para reducir el número de parámetros del modelo",
+        "Porque el mecanismo de self-attention por sí mismo no tiene noción del orden de los tokens; sin ellas, la secuencia se trataría como un conjunto (bag) sin orden",
+        "Para acelerar el entrenamiento en GPU",
+        "Porque son obligatorias por la ley de derechos de autor sobre el paper original"
+      ],
+      "options_en": [
+        "To reduce the number of model parameters",
+        "Because self-attention on its own has no notion of token order; without them, the sequence would be treated like an unordered set (bag)",
+        "To speed up training on GPU",
+        "Because they're legally required by the original paper's copyright"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El self-attention calcula relaciones entre pares de tokens de forma simétrica, sin importar su posición en la secuencia. Los positional encodings (por ejemplo, funciones seno/coseno o embeddings aprendidos) inyectan información de orden, permitiendo al modelo distinguir 'el perro mordió al hombre' de 'el hombre mordió al perro'.",
+      "explanation_en": "Self-attention computes relationships between token pairs symmetrically, regardless of their position in the sequence. Positional encodings (e.g., sine/cosine functions or learned embeddings) inject order information, letting the model distinguish 'the dog bit the man' from 'the man bit the dog'.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "llm",
+        "transformer",
+        "positional-encoding"
+      ]
+    },
+    {
+      "id": "q070101003",
+      "skill_id": "sk070101",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Los modelos de lenguaje tipo GPT usan únicamente el bloque 'encoder' de la arquitectura Transformer original, no el 'decoder'.",
+      "question_en": "GPT-style language models use only the 'encoder' block of the original Transformer architecture, not the 'decoder'.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es al revés: los modelos GPT son 'decoder-only', usando el bloque decoder con atención causal (enmascarada), donde cada token solo puede atender a los tokens anteriores, apropiado para generación autoregresiva. Modelos como BERT son 'encoder-only'; T5 y los Transformers originales usan ambos (encoder-decoder).",
+      "explanation_en": "It's the opposite: GPT models are 'decoder-only', using the decoder block with causal (masked) attention, where each token can only attend to previous tokens, suited for autoregressive generation. Models like BERT are 'encoder-only'; T5 and the original Transformer use both (encoder-decoder).",
+      "source": "Radford et al., 'Improving Language Understanding by Generative Pre-Training' (OpenAI GPT, 2018); Devlin et al., 'BERT' (2019)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "llm",
+        "transformer",
+        "gpt",
+        "architecture"
+      ]
+    },
+    {
+      "id": "q070101004",
+      "skill_id": "sk070101",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué hace la 'atención causal' (causal/masked attention) usada en modelos decoder-only como GPT?",
+      "question_en": "What does 'causal (masked) attention', used in decoder-only models like GPT, do?",
+      "options_es": [
+        "Permite que cada token atienda a todos los tokens de la secuencia, incluidos los futuros",
+        "Enmascara (bloquea) la atención hacia tokens futuros, asegurando que la predicción del token en la posición i solo dependa de los tokens en posiciones ≤ i",
+        "Elimina completamente el mecanismo de atención",
+        "Solo se usa durante la inferencia, nunca durante el entrenamiento"
+      ],
+      "options_en": [
+        "It lets each token attend to every token in the sequence, including future ones",
+        "It masks (blocks) attention to future tokens, ensuring the prediction at position i only depends on tokens at positions ≤ i",
+        "It completely removes the attention mechanism",
+        "It's only used during inference, never during training"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La máscara causal es una matriz triangular que impide que un token 'vea' tokens posteriores en la secuencia, preservando la naturaleza autoregresiva del modelo (predecir el siguiente token dado solo el contexto anterior), tanto en entrenamiento (para evitar fuga de información futura) como en inferencia.",
+      "explanation_en": "The causal mask is a triangular matrix that prevents a token from 'seeing' later tokens in the sequence, preserving the model's autoregressive nature (predicting the next token given only the preceding context), both during training (to prevent future information leakage) and inference.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "llm",
+        "transformer",
+        "causal-attention"
+      ]
+    },
+    {
+      "id": "q070102001",
+      "skill_id": "sk070102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es la 'tokenización' en el contexto de los LLMs?",
+      "question_en": "What is 'tokenization' in the context of LLMs?",
+      "options_es": [
+        "El proceso de entrenar el modelo desde cero",
+        "El proceso de dividir el texto de entrada en unidades más pequeñas (tokens) que el modelo puede procesar numéricamente",
+        "El proceso de generar la respuesta final del modelo",
+        "El proceso de comprimir el modelo para que ocupe menos memoria"
+      ],
+      "options_en": [
+        "The process of training the model from scratch",
+        "The process of splitting input text into smaller units (tokens) that the model can process numerically",
+        "The process of generating the model's final response",
+        "The process of compressing the model to reduce its memory footprint"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La tokenización convierte texto crudo en una secuencia de tokens (subpalabras, palabras completas o caracteres, según el algoritmo), cada uno mapeado a un ID numérico que el modelo puede embeber y procesar. Es el primer paso obligatorio antes de que cualquier texto entre al modelo.",
+      "explanation_en": "Tokenization converts raw text into a sequence of tokens (subwords, whole words, or characters, depending on the algorithm), each mapped to a numeric ID the model can embed and process. It is the mandatory first step before any text enters the model.",
+      "source": "Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (BPE, ACL 2016)",
+      "expected_time_ms": 18000,
+      "tags": [
+        "llm",
+        "tokenization"
+      ]
+    },
+    {
+      "id": "q070102002",
+      "skill_id": "sk070102",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la ventaja principal de los algoritmos de tokenización de subpalabras como Byte Pair Encoding (BPE), usados en modelos como GPT?",
+      "question_en": "What is the main advantage of subword tokenization algorithms like Byte Pair Encoding (BPE), used in models like GPT?",
+      "options_es": [
+        "Garantizan que cada palabra sea siempre un único token",
+        "Equilibran el tamaño del vocabulario y la capacidad de representar palabras raras o inventadas, descomponiéndolas en subpartes conocidas en lugar de marcarlas como 'desconocidas' (OOV)",
+        "Eliminan por completo la necesidad de un vocabulario",
+        "Solo funcionan con texto en inglés"
+      ],
+      "options_en": [
+        "They guarantee every word is always exactly one token",
+        "They balance vocabulary size with the ability to represent rare or made-up words, breaking them into known subparts instead of flagging them as 'out of vocabulary' (OOV)",
+        "They completely eliminate the need for a vocabulary",
+        "They only work with English text"
+      ],
+      "correct_index": 1,
+      "explanation_es": "BPE construye un vocabulario de subpalabras fusionando iterativamente los pares de caracteres/símbolos más frecuentes. Así, una palabra rara como 'tokenización' puede descomponerse en subpartes conocidas ('token', 'iza', 'ción') en lugar de tratarse como un token 'desconocido', un problema común con vocabularios basados en palabras completas.",
+      "explanation_en": "BPE builds a subword vocabulary by iteratively merging the most frequent character/symbol pairs. This way, a rare word like 'tokenization' can be broken into known subparts ('token', 'iza', 'tion') instead of being treated as an 'unknown' token, a common problem with whole-word vocabularies.",
+      "source": "Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (BPE, ACL 2016)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "llm",
+        "tokenization",
+        "bpe"
+      ]
+    },
+    {
+      "id": "q070102003",
+      "skill_id": "sk070102",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Un token en un LLM siempre corresponde exactamente a una palabra completa del idioma.",
+      "question_en": "A token in an LLM always corresponds to exactly one whole word of the language.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con tokenización de subpalabras, palabras comunes cortas pueden ser un solo token, pero palabras largas, raras o de otros idiomas suelen dividirse en varios tokens (por ejemplo 'tokenización' podría ser 3 tokens). Incluso un espacio o signo de puntuación puede formar parte de un token.",
+      "explanation_en": "With subword tokenization, common short words may be a single token, but long, rare, or foreign-language words are often split into multiple tokens (e.g. 'tokenization' might be 3 tokens). Even a space or punctuation mark can be part of a token.",
+      "source": "Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (BPE, ACL 2016)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "llm",
+        "tokenization"
+      ]
+    },
+    {
+      "id": "q070103001",
+      "skill_id": "sk070103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es 'few-shot prompting'?",
+      "question_en": "What is 'few-shot prompting'?",
+      "options_es": [
+        "Hacer muchas preguntas cortas seguidas al modelo",
+        "Incluir en el prompt algunos ejemplos de entrada-salida antes de la tarea real, para guiar al modelo sobre el formato o comportamiento esperado",
+        "Entrenar el modelo con muy pocos datos",
+        "Reducir el tamaño del modelo para que responda más rápido"
+      ],
+      "options_en": [
+        "Asking the model many short questions in a row",
+        "Including a few input-output examples in the prompt before the actual task, to guide the model on the expected format or behavior",
+        "Training the model with very little data",
+        "Shrinking the model so it responds faster"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Few-shot prompting aprovecha la capacidad de aprendizaje 'en contexto' (in-context learning) del modelo: mostrarle 2-5 ejemplos de la tarea (por ejemplo, pares texto-clasificación) dentro del propio prompt suele mejorar significativamente la precisión respecto a 'zero-shot' (sin ejemplos), sin necesidad de reentrenar el modelo.",
+      "explanation_en": "Few-shot prompting leverages the model's 'in-context learning' ability: showing it 2-5 examples of the task (e.g., text-classification pairs) within the prompt itself often significantly improves accuracy compared to 'zero-shot' (no examples), without needing to retrain the model.",
+      "source": "Brown et al., 'Language Models are Few-Shot Learners' (GPT-3, NeurIPS 2020), Sec. 2.1",
+      "expected_time_ms": 22000,
+      "tags": [
+        "prompt-engineering",
+        "few-shot"
+      ]
+    },
+    {
+      "id": "q070103002",
+      "skill_id": "sk070103",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál de las siguientes es una buena práctica al escribir prompts para un LLM?",
+      "question_en": "Which of the following is a good practice when writing prompts for an LLM?",
+      "options_es": [
+        "Ser lo más ambiguo posible para dar libertad creativa total al modelo",
+        "Ser específico sobre el formato de salida deseado, el rol/contexto y las restricciones, en lugar de dejar todo implícito",
+        "Nunca dar ejemplos, ya que confunden al modelo",
+        "Usar siempre el prompt más corto posible, sin importar la claridad"
+      ],
+      "options_en": [
+        "Being as ambiguous as possible to give the model total creative freedom",
+        "Being specific about the desired output format, role/context, and constraints, rather than leaving everything implicit",
+        "Never giving examples, since they confuse the model",
+        "Always using the shortest possible prompt, regardless of clarity"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los LLMs responden mejor a instrucciones claras: especificar el formato de salida (por ejemplo JSON con ciertos campos), el rol que debe adoptar el modelo, y restricciones explícitas (longitud, tono, qué evitar) reduce la ambigüedad y mejora la consistencia y calidad de las respuestas.",
+      "explanation_en": "LLMs respond better to clear instructions: specifying the output format (e.g. JSON with certain fields), the role the model should take on, and explicit constraints (length, tone, what to avoid) reduces ambiguity and improves the consistency and quality of responses.",
+      "source": "Brown et al., 'Language Models are Few-Shot Learners' (GPT-3, NeurIPS 2020)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "prompt-engineering",
+        "best-practice"
+      ]
+    },
+    {
+      "id": "q070103003",
+      "skill_id": "sk070103",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "'Zero-shot prompting' significa pedirle a un modelo que realice una tarea sin proporcionarle ningún ejemplo de cómo hacerla, solo la instrucción.",
+      "question_en": "'Zero-shot prompting' means asking a model to perform a task without providing any example of how to do it, only the instruction.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En zero-shot prompting, el modelo debe inferir la tarea únicamente a partir de la descripción/instrucción en lenguaje natural, apoyándose en el conocimiento adquirido durante su preentrenamiento, sin ver ningún ejemplo demostrativo dentro del prompt.",
+      "explanation_en": "In zero-shot prompting, the model must infer the task purely from the natural-language description/instruction, relying on knowledge acquired during pretraining, without seeing any demonstrative example inside the prompt.",
+      "source": "Brown et al., 'Language Models are Few-Shot Learners' (GPT-3, NeurIPS 2020), Sec. 2.1 (zero-shot)",
+      "expected_time_ms": 18000,
+      "tags": [
+        "prompt-engineering",
+        "zero-shot"
+      ]
+    },
+    {
+      "id": "q070104001",
+      "skill_id": "sk070104",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué técnica de prompting consiste en pedirle al modelo que muestre su razonamiento paso a paso antes de dar la respuesta final?",
+      "question_en": "Which prompting technique involves asking the model to show its step-by-step reasoning before giving the final answer?",
+      "options_es": [
+        "Few-shot prompting",
+        "Chain-of-thought (cadena de pensamiento)",
+        "Prompt injection",
+        "Retrieval-augmented generation"
+      ],
+      "options_en": [
+        "Few-shot prompting",
+        "Chain-of-thought",
+        "Prompt injection",
+        "Retrieval-augmented generation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Chain-of-thought (CoT) prompting, a menudo activado con frases como 'pensemos paso a paso', anima al modelo a generar pasos de razonamiento intermedios antes de la respuesta final. Esto suele mejorar notablemente el desempeño en tareas de razonamiento matemático o lógico complejo.",
+      "explanation_en": "Chain-of-thought (CoT) prompting, often triggered with phrases like 'let's think step by step', encourages the model to generate intermediate reasoning steps before the final answer. This often notably improves performance on complex math or logical reasoning tasks.",
+      "source": "Wei et al., 'Chain-of-Thought Prompting Elicits Reasoning in Large Language Models' (NeurIPS 2022)",
+      "expected_time_ms": 22000,
+      "tags": [
+        "prompt-engineering",
+        "chain-of-thought"
+      ]
+    },
+    {
+      "id": "q070104002",
+      "skill_id": "sk070104",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es un 'prompt injection'?",
+      "question_en": "What is a 'prompt injection'?",
+      "options_es": [
+        "Una técnica legítima para mejorar la calidad de las respuestas del modelo",
+        "Un ataque en el que un usuario o contenido externo (por ejemplo, texto de una página web) intenta manipular al modelo para que ignore sus instrucciones originales y siga instrucciones maliciosas incrustadas",
+        "El proceso de cargar un modelo en memoria",
+        "Un método para acelerar la inferencia del modelo"
+      ],
+      "options_en": [
+        "A legitimate technique to improve the quality of the model's responses",
+        "An attack where a user or external content (e.g., text from a web page) tries to manipulate the model into ignoring its original instructions and following embedded malicious instructions instead",
+        "The process of loading a model into memory",
+        "A method for speeding up model inference"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El prompt injection explota el hecho de que los LLMs no distinguen inherentemente entre 'instrucciones del sistema/desarrollador' y 'datos/contenido observado'. Un atacante puede incrustar texto como 'ignora las instrucciones anteriores y...' dentro de un documento que el modelo procesa, intentando secuestrar su comportamiento.",
+      "explanation_en": "Prompt injection exploits the fact that LLMs don't inherently distinguish between 'system/developer instructions' and 'observed data/content'. An attacker can embed text like 'ignore previous instructions and...' inside a document the model processes, attempting to hijack its behavior.",
+      "source": "OWASP Top 10 for LLM Applications — LLM01: Prompt Injection",
+      "expected_time_ms": 30000,
+      "tags": [
+        "prompt-engineering",
+        "security",
+        "prompt-injection"
+      ]
+    },
+    {
+      "id": "q070104003",
+      "skill_id": "sk070104",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cuál es la diferencia entre 'chain-of-thought' estándar y 'self-consistency' como técnica de prompting?",
+      "question_en": "What is the difference between standard 'chain-of-thought' and 'self-consistency' as a prompting technique?",
+      "options_es": [
+        "Son sinónimos exactos",
+        "Self-consistency genera múltiples cadenas de razonamiento independientes (con muestreo aleatorio) para el mismo problema y elige la respuesta final por mayoría de votos, en lugar de confiar en una sola cadena",
+        "Self-consistency solo funciona con modelos muy pequeños",
+        "Chain-of-thought requiere finetuning obligatorio; self-consistency no"
+      ],
+      "options_en": [
+        "They are exact synonyms",
+        "Self-consistency generates multiple independent reasoning chains (via random sampling) for the same problem and picks the final answer by majority vote, instead of relying on a single chain",
+        "Self-consistency only works with very small models",
+        "Chain-of-thought requires mandatory finetuning; self-consistency does not"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Self-consistency mejora sobre CoT simple muestreando varias veces (con temperatura > 0) para obtener varias rutas de razonamiento distintas hacia una respuesta, y luego agregando (típicamente por voto mayoritario) el resultado final, reduciendo el impacto de errores de razonamiento en cadenas individuales.",
+      "explanation_en": "Self-consistency improves on plain CoT by sampling multiple times (with temperature > 0) to get several distinct reasoning paths toward an answer, then aggregating (typically via majority vote) the final result, reducing the impact of reasoning errors in any single chain.",
+      "source": "Wang et al., 'Self-Consistency Improves Chain of Thought Reasoning in Language Models' (ICLR 2023)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "prompt-engineering",
+        "self-consistency",
+        "advanced"
+      ]
+    },
+    {
+      "id": "q070105001",
+      "skill_id": "sk070105",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué controla el parámetro 'temperature' al generar texto con un LLM?",
+      "question_en": "What does the 'temperature' parameter control when generating text with an LLM?",
+      "options_es": [
+        "La velocidad de generación de tokens",
+        "El grado de aleatoriedad/creatividad de la salida: valores bajos producen respuestas más deterministas y valores altos producen respuestas más diversas y sorprendentes",
+        "El idioma de la respuesta",
+        "El costo económico de la llamada a la API"
+      ],
+      "options_en": [
+        "The speed of token generation",
+        "The degree of randomness/creativity in the output: low values produce more deterministic responses and high values produce more diverse, surprising responses",
+        "The language of the response",
+        "The monetary cost of the API call"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La temperatura reescala los logits antes de aplicar softmax para obtener las probabilidades de muestreo del siguiente token. Una temperatura cercana a 0 hace que el modelo casi siempre elija el token más probable (determinista); una temperatura alta (por ejemplo 1.0+) aplana la distribución, dando más probabilidad a tokens menos obvios.",
+      "explanation_en": "Temperature rescales the logits before applying softmax to get the sampling probabilities for the next token. A temperature near 0 makes the model almost always pick the most probable token (deterministic); a high temperature (e.g. 1.0+) flattens the distribution, giving more probability to less obvious tokens.",
+      "source": "OpenAI API Reference — generation parameters (temperature, top_p)",
+      "expected_time_ms": 22000,
+      "tags": [
+        "llm",
+        "temperature",
+        "sampling"
+      ]
+    },
+    {
+      "id": "q070105002",
+      "skill_id": "sk070105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué hace el parámetro 'top-p' (nucleus sampling) al generar texto?",
+      "question_en": "What does the 'top-p' (nucleus sampling) parameter do when generating text?",
+      "options_es": [
+        "Elige siempre el token con mayor probabilidad, ignorando todos los demás",
+        "Restringe el muestreo al conjunto más pequeño de tokens cuya probabilidad acumulada alcanza el umbral p, descartando la 'cola larga' de tokens muy improbables",
+        "Limita la longitud máxima de la respuesta generada",
+        "Controla cuántas llamadas paralelas se hacen a la API"
+      ],
+      "options_en": [
+        "It always picks the single highest-probability token, ignoring all others",
+        "It restricts sampling to the smallest set of tokens whose cumulative probability reaches the threshold p, discarding the 'long tail' of very unlikely tokens",
+        "It limits the maximum length of the generated response",
+        "It controls how many parallel calls are made to the API"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con `top_p=0.9`, el modelo ordena los tokens candidatos por probabilidad y muestrea solo del subconjunto más pequeño cuya probabilidad acumulada llega al 90%, evitando elegir tokens extremadamente improbables sin restringir tanto como elegir siempre el más probable (greedy). A menudo se usa junto con o en lugar de `temperature`.",
+      "explanation_en": "With `top_p=0.9`, the model sorts candidate tokens by probability and samples only from the smallest subset whose cumulative probability reaches 90%, avoiding extremely unlikely tokens without restricting as much as always picking the single most probable one (greedy). It's often used alongside or instead of `temperature`.",
+      "source": "Holtzman et al., 'The Curious Case of Neural Text Degeneration' (nucleus/top-p sampling, ICLR 2020)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "llm",
+        "top-p",
+        "sampling"
+      ]
+    },
+    {
+      "id": "q070105003",
+      "skill_id": "sk070105",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Para tareas que requieren respuestas altamente deterministas y reproducibles (por ejemplo, extracción de datos estructurados), generalmente se recomienda usar una temperature baja (cercana a 0).",
+      "question_en": "For tasks requiring highly deterministic and reproducible responses (e.g., structured data extraction), a low temperature (close to 0) is generally recommended.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una temperature baja reduce la aleatoriedad, favoreciendo consistentemente los tokens más probables. Esto es ideal para tareas donde se busca precisión y repetibilidad (extracción de datos, clasificación, código), mientras que temperaturas altas son preferibles para tareas creativas como generación de historias o brainstorming.",
+      "explanation_en": "Low temperature reduces randomness, consistently favoring the most probable tokens. This is ideal for tasks where accuracy and repeatability matter (data extraction, classification, code), while high temperatures are preferable for creative tasks like story generation or brainstorming.",
+      "source": "OpenAI API Reference — generation parameters (temperature, top_p)",
+      "expected_time_ms": 22000,
+      "tags": [
+        "llm",
+        "temperature",
+        "best-practice"
+      ]
+    },
+    {
+      "id": "q070105004",
+      "skill_id": "sk070105",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué parámetro de generación penaliza al modelo por repetir tokens que ya han aparecido varias veces en el texto generado, reduciendo la probabilidad de bucles repetitivos? (dos palabras, en inglés: '___ ___')",
+      "question_en": "Which generation parameter penalizes the model for repeating tokens that have already appeared multiple times in the generated text, reducing repetitive loops? (two words: '___ ___')",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "frequency penalty",
+      "correct_answer_en": "frequency penalty",
+      "explanation_es": "El 'frequency penalty' resta una cantidad proporcional al número de veces que un token ya apareció en el texto generado, desincentivando la repetición excesiva. Es distinto del 'presence penalty', que aplica una penalización fija (no proporcional a la frecuencia) a cualquier token que ya haya aparecido al menos una vez.",
+      "explanation_en": "The 'frequency penalty' subtracts an amount proportional to how many times a token has already appeared in the generated text, discouraging excessive repetition. It differs from 'presence penalty', which applies a flat (non-frequency-proportional) penalty to any token that has appeared at least once.",
+      "source": "OpenAI API Reference — frequency_penalty and presence_penalty",
+      "expected_time_ms": 35000,
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "advanced"
+      ]
+    },
+    {
+      "id": "q070101005",
+      "skill_id": "sk070101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué es 'multi-head attention' (atención multi-cabeza) en un Transformer?",
+      "question_en": "What is 'multi-head attention' in a Transformer?",
+      "options_es": [
+        "Ejecutar el modelo completo varias veces y promediar los resultados",
+        "Calcular varias operaciones de atención en paralelo, cada una con proyecciones aprendidas distintas, permitiendo capturar diferentes tipos de relaciones (sintácticas, semánticas) simultáneamente",
+        "Un mecanismo exclusivo de los modelos de visión, no de texto",
+        "Una técnica para reducir el número de capas del modelo"
+      ],
+      "options_en": [
+        "Running the whole model multiple times and averaging the results",
+        "Computing several attention operations in parallel, each with different learned projections, allowing the model to capture different kinds of relationships (syntactic, semantic) simultaneously",
+        "A mechanism exclusive to vision models, not text",
+        "A technique for reducing the number of layers in the model"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En lugar de una sola operación de atención, multi-head attention divide las representaciones en varios subespacios ('cabezas'), cada una aprendiendo a atender a aspectos distintos de la relación entre tokens (por ejemplo, una cabeza podría capturar relaciones sintácticas y otra relaciones de correferencia), y luego concatena y proyecta los resultados.",
+      "explanation_en": "Instead of a single attention operation, multi-head attention splits representations into several subspaces ('heads'), each learning to attend to different aspects of the relationship between tokens (e.g., one head might capture syntactic relations and another coreference relations), then concatenates and projects the results.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (2017), Sec. 3.2.2: Multi-Head Attention",
+      "expected_time_ms": 30000,
+      "tags": [
+        "llm",
+        "transformer",
+        "multi-head-attention"
+      ]
+    },
+    {
+      "id": "q070102004",
+      "skill_id": "sk070102",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Si un LLM tiene una ventana de contexto (context window) de 8,000 tokens, ¿qué ocurre si envías un prompt más largo que ese límite?",
+      "question_en": "If an LLM has a context window of 8,000 tokens, what happens if you send a prompt longer than that limit?",
+      "options_es": [
+        "El modelo lo procesa sin problema, solo tarda más tiempo",
+        "El modelo no puede procesar el prompt completo: normalmente se produce un error o el texto se trunca, dependiendo de la implementación de la API",
+        "El modelo automáticamente resume el prompt sin perder ninguna información",
+        "El costo de la llamada se vuelve gratuito"
+      ],
+      "options_en": [
+        "The model processes it fine, it just takes longer",
+        "The model cannot process the full prompt: typically an error occurs or the text gets truncated, depending on the API implementation",
+        "The model automatically summarizes the prompt without losing any information",
+        "The cost of the call becomes free"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La ventana de contexto es un límite arquitectónico (relacionado con el costo computacional cuadrático de la atención respecto a la longitud de secuencia). Superarla suele resultar en un error de la API rechazando la solicitud, o en un truncamiento silencioso del texto más antiguo, según cómo esté implementado el cliente.",
+      "explanation_en": "The context window is an architectural limit (related to attention's quadratic computational cost with respect to sequence length). Exceeding it typically results in an API error rejecting the request, or silent truncation of the oldest text, depending on how the client is implemented.",
+      "source": "OpenAI API Reference — Models and context length; Vaswani et al. (2017), Sec. 4 (O(n^2) attention cost)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "llm",
+        "context-window",
+        "tokenization"
+      ]
+    },
+    {
+      "id": "q070103004",
+      "skill_id": "sk070103",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En un prompt bien estructurado para una API de chat, ¿cuál es el propósito típico del mensaje de 'system' (sistema), separado del mensaje del 'user' (usuario)?",
+      "question_en": "In a well-structured prompt for a chat API, what is the typical purpose of the 'system' message, as opposed to the 'user' message?",
+      "options_es": [
+        "Contiene la pregunta específica del usuario en cada turno",
+        "Establece el comportamiento general, rol, tono y restricciones persistentes del asistente para toda la conversación, independientemente de lo que pregunte el usuario",
+        "Solo se usa para mostrar mensajes de error",
+        "Es opcional y nunca afecta el comportamiento del modelo"
+      ],
+      "options_en": [
+        "It holds the specific question from the user in each turn",
+        "It sets the assistant's overall behavior, role, tone, and persistent constraints for the whole conversation, regardless of what the user asks",
+        "It's only used to display error messages",
+        "It's optional and never affects the model's behavior"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El mensaje de sistema típicamente define instrucciones de alto nivel ('Eres un asistente de soporte técnico que responde en español y nunca revela información de facturación') que persisten durante toda la conversación, mientras que los mensajes de 'user' contienen las consultas específicas de cada turno.",
+      "explanation_en": "The system message typically defines high-level instructions ('You are a technical support assistant who responds in Spanish and never reveals billing information') that persist throughout the conversation, while 'user' messages contain the specific queries for each turn.",
+      "source": "Anthropic / OpenAI Chat API docs — system vs user roles",
+      "expected_time_ms": 25000,
+      "tags": [
+        "prompt-engineering",
+        "system-prompt",
+        "chat-api"
+      ]
+    },
+    {
+      "id": "q070104004",
+      "skill_id": "sk070104",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Dar al modelo un rol específico en el prompt, como 'Actúa como un revisor de código senior especializado en seguridad', puede influir significativamente en el estilo y enfoque de sus respuestas.",
+      "question_en": "Giving the model a specific role in the prompt, like 'Act as a senior code reviewer specialized in security', can significantly influence the style and focus of its responses.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El 'role prompting' (o 'persona prompting') aprovecha patrones aprendidos durante el preentrenamiento asociados a ese rol (vocabulario, prioridades, nivel de detalle), sesgando la distribución de las respuestas del modelo hacia lo que se esperaría de ese perfil, aunque no cambia el conocimiento subyacente del modelo.",
+      "explanation_en": "'Role prompting' (or 'persona prompting') leverages patterns learned during pretraining that are associated with that role (vocabulary, priorities, level of detail), biasing the distribution of the model's responses toward what would be expected of that profile, though it doesn't change the model's underlying knowledge.",
+      "source": "Anthropic — Prompt engineering guide (role / system prompting)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "prompt-engineering",
+        "role-prompting"
+      ]
+    },
+    {
+      "id": "q070105005",
+      "skill_id": "sk070105",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué controla el parámetro `max_tokens` en una llamada a la API de generación de un LLM?",
+      "question_en": "What does the `max_tokens` parameter control in an LLM generation API call?",
+      "options_es": [
+        "El número máximo de tokens que el modelo puede generar como respuesta, después del cual la generación se corta",
+        "El número máximo de tokens permitidos en el prompt de entrada",
+        "El número de reintentos automáticos si la llamada falla",
+        "La cantidad de memoria RAM asignada al modelo"
+      ],
+      "options_en": [
+        "The maximum number of tokens the model can generate as output, after which generation is cut off",
+        "The maximum number of tokens allowed in the input prompt",
+        "The number of automatic retries if the call fails",
+        "The amount of RAM allocated to the model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`max_tokens` limita la longitud de la respuesta generada, no la del prompt de entrada. Si la respuesta natural del modelo sería más larga, la generación se detiene abruptamente al alcanzar ese límite (frecuentemente indicado con `finish_reason: 'length'` en la respuesta de la API).",
+      "explanation_en": "`max_tokens` limits the length of the generated response, not the input prompt. If the model's natural response would be longer, generation stops abruptly upon reaching that limit (often indicated by `finish_reason: 'length'` in the API response).",
+      "source": "OpenAI API Reference — max_tokens and finish_reason",
+      "expected_time_ms": 22000,
+      "tags": [
+        "llm",
+        "max-tokens",
+        "api"
+      ]
+    },
+    {
+      "id": "q070101006",
+      "skill_id": "sk070101",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Los modelos de lenguaje grandes (LLMs) actuales, como GPT o Claude, están basados en la arquitectura Transformer.",
+      "question_en": "Current large language models (LLMs), like GPT or Claude, are based on the Transformer architecture.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Desde 2017, prácticamente todos los LLMs de vanguardia se construyen sobre variantes de la arquitectura Transformer (mayormente decoder-only), aprovechando su capacidad de paralelización y de capturar dependencias de largo alcance mediante self-attention.",
+      "explanation_en": "Since 2017, virtually all state-of-the-art LLMs are built on variants of the Transformer architecture (mostly decoder-only), leveraging its parallelization capability and its ability to capture long-range dependencies via self-attention.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "llm",
+        "transformer"
+      ]
+    },
+    {
+      "id": "q070102005",
+      "skill_id": "sk070102",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué el costo de una llamada a la API de un LLM se cobra normalmente 'por token' en lugar de 'por palabra' o 'por carácter'?",
+      "question_en": "Why is the cost of an LLM API call typically billed 'per token' rather than 'per word' or 'per character'?",
+      "options_es": [
+        "Porque el token es la unidad atómica que el modelo realmente procesa internamente (tras la tokenización), y es proporcional al cómputo real consumido",
+        "Porque es una decisión de marketing sin relación con el cómputo",
+        "Porque los tokens son siempre más baratos que las palabras",
+        "Porque solo los modelos gratuitos cobran por palabra"
+      ],
+      "options_en": [
+        "Because the token is the atomic unit the model actually processes internally (after tokenization), and it's proportional to the real compute consumed",
+        "Because it's a marketing decision unrelated to compute",
+        "Because tokens are always cheaper than words",
+        "Because only free models charge per word"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El cómputo del modelo (llamadas a las capas del Transformer, memoria de atención) escala con el número de tokens procesados, no con el número de palabras o caracteres del texto original. Por eso los proveedores facturan según tokens de entrada y de salida, que reflejan directamente el costo computacional real.",
+      "explanation_en": "The model's computation (Transformer layer calls, attention memory) scales with the number of tokens processed, not the number of words or characters in the original text. That's why providers bill based on input and output tokens, which directly reflect the actual computational cost.",
+      "source": "OpenAI API Reference — Pricing and token usage",
+      "expected_time_ms": 28000,
+      "tags": [
+        "llm",
+        "tokenization",
+        "pricing"
+      ]
+    },
+    {
+      "id": "q070103005",
+      "skill_id": "sk070103",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál de los siguientes prompts sigue mejor la técnica de 'few-shot prompting' para clasificar el sentimiento de una reseña?",
+      "question_en": "Which of the following prompts best follows the 'few-shot prompting' technique to classify a review's sentiment?",
+      "options_es": [
+        "\"Clasifica el sentimiento de esta reseña.\"",
+        "\"Reseña: 'Excelente producto' → Positivo\\nReseña: 'No funciona' → Negativo\\nReseña: 'Muy lento el envío' → ?\"",
+        "\"Eres un experto en marketing.\"",
+        "\"Genera una reseña positiva sobre este producto.\""
+      ],
+      "options_en": [
+        "\"Classify the sentiment of this review.\"",
+        "\"Review: 'Great product' → Positive\\nReview: 'Doesn't work' → Negative\\nReview: 'Shipping was very slow' → ?\"",
+        "\"You are a marketing expert.\"",
+        "\"Generate a positive review about this product.\""
+      ],
+      "correct_index": 1,
+      "explanation_es": "La segunda opción muestra ejemplos concretos de entrada-salida (reseña → etiqueta) antes de presentar el caso a resolver, exactamente el patrón de few-shot prompting, que ayuda al modelo a inferir el formato y criterio de clasificación esperado.",
+      "explanation_en": "The second option shows concrete input-output examples (review → label) before presenting the case to solve, exactly the few-shot prompting pattern, which helps the model infer the expected format and classification criterion.",
+      "source": "Brown et al., 'Language Models are Few-Shot Learners' (GPT-3, NeurIPS 2020)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "prompt-engineering",
+        "few-shot"
+      ]
+    },
+    {
+      "id": "q070104005",
+      "skill_id": "sk070104",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué defensa es más efectiva contra ataques de 'prompt injection' provenientes de contenido externo (por ejemplo, un documento recuperado por RAG)?",
+      "question_en": "Which defense is most effective against 'prompt injection' attacks coming from external content (e.g., a document retrieved by RAG)?",
+      "options_es": [
+        "Confiar en que el modelo siempre ignorará instrucciones sospechosas sin ninguna medida adicional",
+        "Delimitar claramente el contenido externo (por ejemplo con etiquetas o marcadores), instruir explícitamente al modelo para tratarlo como datos y no como instrucciones, y validar/filtrar las acciones sensibles antes de ejecutarlas",
+        "Aumentar la temperatura del modelo al máximo",
+        "Eliminar por completo el mensaje de sistema"
+      ],
+      "options_en": [
+        "Trusting that the model will always ignore suspicious instructions with no additional measures",
+        "Clearly delimiting external content (e.g. with tags or markers), explicitly instructing the model to treat it as data rather than instructions, and validating/filtering sensitive actions before executing them",
+        "Maxing out the model's temperature",
+        "Completely removing the system message"
+      ],
+      "correct_index": 1,
+      "explanation_es": "No existe una defensa perfecta contra prompt injection, pero las mitigaciones prácticas incluyen: delimitar claramente los datos externos, reforzar instrucciones sobre cómo tratarlos, aplicar el principio de menor privilegio a las herramientas que el modelo puede invocar, y añadir capas de validación humana o automática antes de acciones irreversibles.",
+      "explanation_en": "There's no perfect defense against prompt injection, but practical mitigations include clearly delimiting external data, reinforcing instructions on how to treat it, applying the principle of least privilege to the tools the model can invoke, and adding human or automated validation layers before irreversible actions.",
+      "source": "OWASP Top 10 for LLM Applications — LLM01: Prompt Injection (mitigations)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "prompt-engineering",
+        "security",
+        "prompt-injection"
+      ]
+    },
+    {
+      "id": "q070104006",
+      "skill_id": "sk070104",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿En qué se diferencia 'Tree of Thoughts' (ToT) del 'chain-of-thought' (CoT) estándar?",
+      "question_en": "How does 'Tree of Thoughts' (ToT) differ from standard 'chain-of-thought' (CoT)?",
+      "options_es": [
+        "Son exactamente lo mismo con distinto nombre",
+        "ToT explora múltiples ramas de razonamiento en forma de árbol, evaluando y retrocediendo (backtracking) entre pasos intermedios, en lugar de seguir una única cadena lineal de principio a fin",
+        "ToT solo funciona para tareas de traducción",
+        "ToT elimina la necesidad de que el modelo genere pasos intermedios"
+      ],
+      "options_en": [
+        "They are exactly the same thing under a different name",
+        "ToT explores multiple reasoning branches in a tree structure, evaluating and backtracking between intermediate steps, instead of following a single linear chain from start to finish",
+        "ToT only works for translation tasks",
+        "ToT removes the need for the model to generate intermediate steps"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Tree of Thoughts generaliza CoT permitiendo al modelo considerar varios 'pensamientos' candidatos en cada paso, evaluarlos (con heurísticas o el propio modelo) y explorar el árbol con estrategias de búsqueda (BFS/DFS), pudiendo retroceder cuando una rama no es prometedora. Mejora tareas que requieren planificación o exploración, donde una única cadena lineal puede quedar atrapada en un error temprano.",
+      "explanation_en": "Tree of Thoughts generalizes CoT by letting the model consider several candidate 'thoughts' at each step, evaluate them (via heuristics or the model itself), and explore the tree with search strategies (BFS/DFS), backtracking when a branch is unpromising. It helps tasks that require planning or exploration, where a single linear chain can get stuck on an early mistake.",
+      "source": "Yao et al., 'Tree of Thoughts: Deliberate Problem Solving with Large Language Models' (NeurIPS 2023)",
+      "expected_time_ms": 38000,
+      "tags": [
+        "prompt-engineering",
+        "tree-of-thoughts",
+        "advanced"
+      ]
+    },
+    {
+      "id": "q070105006",
+      "skill_id": "sk070105",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Si `temperature = 0` y el modelo aún produce respuestas ligeramente distintas ante el mismo prompt en llamadas repetidas, ¿cuál es una explicación técnica plausible?",
+      "question_en": "If `temperature = 0` and the model still produces slightly different responses to the same prompt across repeated calls, what is a plausible technical explanation?",
+      "options_es": [
+        "Temperature = 0 no existe como valor válido",
+        "Factores como la no determinística de ciertas operaciones en GPU (paralelización de punto flotante), el uso de mezcla de expertos (MoE) con enrutamiento variable, o pequeñas diferencias de infraestructura pueden introducir variabilidad incluso con muestreo determinista",
+        "El modelo ignora completamente el parámetro temperature",
+        "Es imposible; los LLMs son 100% deterministas siempre en cualquier configuración"
+      ],
+      "options_en": [
+        "Temperature = 0 is not a valid value",
+        "Factors like non-determinism in certain GPU operations (floating-point parallelization), the use of mixture-of-experts (MoE) with variable routing, or small infrastructure differences can introduce variability even with deterministic sampling",
+        "The model completely ignores the temperature parameter",
+        "It's impossible; LLMs are always 100% deterministic under any configuration"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Aunque `temperature = 0` elimina la aleatoriedad del muestreo (favoreciendo siempre el token más probable, greedy decoding), la inferencia en GPUs con operaciones de punto flotante paralelizadas, el batching dinámico de solicitudes, o arquitecturas de mezcla de expertos pueden introducir pequeñas variaciones numéricas que, en casos de probabilidades muy cercanas entre dos tokens, cambian el resultado final.",
+      "explanation_en": "Although `temperature = 0` removes sampling randomness (always favoring the most probable token, greedy decoding), inference on GPUs with parallelized floating-point operations, dynamic request batching, or mixture-of-experts architectures can introduce small numerical variations that, in cases where two tokens' probabilities are very close, change the final output.",
+      "source": "OpenAI API docs — reproducibility and the seed parameter; determinism caveats",
+      "expected_time_ms": 40000,
+      "tags": [
+        "llm",
+        "temperature",
+        "determinism",
+        "advanced"
+      ]
+    },
+    {
+      "id": "q070101007",
+      "skill_id": "sk070101",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué el costo computacional del self-attention estándar crece de forma cuadrática con la longitud de la secuencia (O(n²))?",
+      "question_en": "Why does the computational cost of standard self-attention grow quadratically with sequence length (O(n²))?",
+      "options_es": [
+        "Porque cada capa del modelo se ejecuta dos veces",
+        "Porque cada uno de los n tokens debe calcular su puntuación de atención respecto a todos los demás n tokens, resultando en n×n pares de comparación",
+        "Porque el vocabulario tiene un tamaño fijo cuadrático",
+        "Porque los embeddings tienen dimensión fija de 2"
+      ],
+      "options_en": [
+        "Because each model layer runs twice",
+        "Because each of the n tokens must compute its attention score against all other n tokens, resulting in n×n comparison pairs",
+        "Because the vocabulary has a fixed quadratic size",
+        "Because embeddings have a fixed dimension of 2"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La matriz de atención tiene dimensión n×n (una puntuación por cada par de tokens), por lo que tanto el cómputo como la memoria requerida crecen cuadráticamente con la longitud de secuencia `n`. Esto motiva variantes de atención eficiente (sparse attention, linear attention, flash attention) para manejar contextos muy largos.",
+      "explanation_en": "The attention matrix has dimension n×n (one score per pair of tokens), so both the compute and the memory required grow quadratically with sequence length `n`. This motivates efficient attention variants (sparse attention, linear attention, flash attention) to handle very long contexts.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (2017), Sec. 3.2.1 & Table 1 (complexity per layer)",
+      "expected_time_ms": 32000,
+      "tags": [
+        "llm",
+        "transformer",
+        "complexity"
+      ]
+    },
+    {
+      "id": "q070102006",
+      "skill_id": "sk070102",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Distintos modelos de LLM (por ejemplo, de distintos proveedores) pueden usar tokenizadores distintos, por lo que el mismo texto puede producir un número diferente de tokens según el modelo.",
+      "question_en": "Different LLM models (e.g., from different providers) can use different tokenizers, so the same text can produce a different number of tokens depending on the model.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada familia de modelos suele entrenar (o elegir) su propio tokenizador con su propio vocabulario. Por eso el mismo párrafo puede costar, por ejemplo, 120 tokens en un modelo y 105 en otro, lo cual afecta tanto el costo como el límite efectivo de la ventana de contexto para ese texto.",
+      "explanation_en": "Each model family typically trains (or selects) its own tokenizer with its own vocabulary. That's why the same paragraph might cost, say, 120 tokens on one model and 105 on another, which affects both the cost and the effective context-window limit for that text.",
+      "source": "Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (BPE, ACL 2016)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "llm",
+        "tokenization"
+      ]
+    },
+    {
+      "id": "q070103006",
+      "skill_id": "sk070103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es 'one-shot prompting'?",
+      "question_en": "What is 'one-shot prompting'?",
+      "options_es": [
+        "Hacer una única pregunta y nunca volver a interactuar con el modelo",
+        "Un caso particular de few-shot prompting en el que se proporciona exactamente un ejemplo de entrada-salida antes de la tarea real",
+        "Entrenar el modelo con un solo dato",
+        "Un modo de generación que produce una única palabra por respuesta"
+      ],
+      "options_en": [
+        "Asking a single question and never interacting with the model again",
+        "A special case of few-shot prompting where exactly one input-output example is provided before the actual task",
+        "Training the model with a single data point",
+        "A generation mode that produces a single word per response"
+      ],
+      "correct_index": 1,
+      "explanation_es": "One-shot prompting se sitúa entre zero-shot (sin ejemplos) y few-shot (varios ejemplos): se muestra al modelo exactamente un ejemplo demostrativo del formato o tarea esperada antes de presentarle el caso real a resolver.",
+      "explanation_en": "One-shot prompting sits between zero-shot (no examples) and few-shot (several examples): the model is shown exactly one demonstrative example of the expected format or task before being presented with the actual case to solve.",
+      "source": "Brown et al., 'Language Models are Few-Shot Learners' (GPT-3, NeurIPS 2020), Sec. 2.1 (one-shot)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "prompt-engineering",
+        "one-shot"
+      ]
+    }
+  ]
+}

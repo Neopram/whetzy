@@ -1,0 +1,85 @@
+{
+  "track_id": "track02",
+  "terms": [
+    {
+      "id": "gl02_01",
+      "term_es": "Decorador",
+      "term_en": "Decorator",
+      "definition_es": "Función que recibe otra función (o clase) y devuelve una versión modificada, aplicada con la sintaxis `@deco`. `@deco` envuelve; `@deco()` primero llama a la fábrica de decoradores y aplica lo que retorna.",
+      "definition_en": "A callable that takes another function (or class) and returns a modified version, applied with the `@deco` syntax. `@deco` wraps directly; `@deco()` first calls the decorator factory and applies whatever it returns.",
+      "source": "PEP 318 — Decorators for Functions and Methods; Fluent Python 2e, ch. 9"
+    },
+    {
+      "id": "gl02_02",
+      "term_es": "Closure (clausura)",
+      "term_en": "Closure",
+      "definition_es": "Función anidada que recuerda variables del ámbito que la encierra aunque este ya haya terminado. En bucles cuidado con el «late binding»: la variable se lee al invocar, no al definir.",
+      "definition_en": "A nested function that remembers variables from its enclosing scope even after that scope has finished. In loops beware “late binding”: the variable is read when called, not when defined.",
+      "source": "CPython docs 3.13 — Glossary (“closure”); Fluent Python 2e, ch. 9"
+    },
+    {
+      "id": "gl02_03",
+      "term_es": "MRO (orden de resolución de métodos)",
+      "term_en": "MRO (Method Resolution Order)",
+      "definition_es": "Orden lineal en que Python busca un atributo en una jerarquía de herencia, calculado con el algoritmo C3. `super()` sigue el MRO, no la clase padre directa, lo que hace cooperativa la herencia múltiple.",
+      "definition_en": "The linear order in which Python looks up an attribute across an inheritance hierarchy, computed with the C3 algorithm. `super()` follows the MRO rather than the direct parent, making multiple inheritance cooperative.",
+      "source": "CPython docs 3.13 — The Python Standard Library § type.__mro__; “The Python 2.3 MRO”"
+    },
+    {
+      "id": "gl02_04",
+      "term_es": "Iterador vs iterable",
+      "term_en": "Iterator vs iterable",
+      "definition_es": "Un iterable produce un iterador con `iter()`; un iterador entrega elementos con `__next__()` y se agota una sola vez. Todo iterador es iterable, pero no al revés.",
+      "definition_en": "An iterable produces an iterator via `iter()`; an iterator yields items with `__next__()` and is exhausted exactly once. Every iterator is iterable, but not vice versa.",
+      "source": "CPython docs 3.13 — Glossary (“iterator”, “iterable”)"
+    },
+    {
+      "id": "gl02_05",
+      "term_es": "Generador",
+      "term_en": "Generator",
+      "definition_es": "Función con `yield` que produce valores perezosamente y mantiene su estado entre suspensiones. `send()` inyecta un valor y `yield from` delega en otro iterable o subgenerador.",
+      "definition_en": "A function containing `yield` that produces values lazily and keeps its state between suspensions. `send()` injects a value and `yield from` delegates to another iterable or subgenerator.",
+      "source": "PEP 255 — Simple Generators; PEP 342; PEP 380 — Syntax for Delegating to a Subgenerator"
+    },
+    {
+      "id": "gl02_06",
+      "term_es": "Contrato __eq__ / __hash__",
+      "term_en": "__eq__ / __hash__ contract",
+      "definition_es": "Si dos objetos son iguales deben tener el mismo hash. Definir `__eq__` sin `__hash__` vuelve la clase no hasheable (no usable en sets ni claves de dict), salvo que se redefina `__hash__`.",
+      "definition_en": "If two objects are equal they must have the same hash. Defining `__eq__` without `__hash__` makes the class unhashable (not usable in sets or as dict keys) unless `__hash__` is redefined.",
+      "source": "CPython docs 3.13 — Data model § object.__hash__"
+    },
+    {
+      "id": "gl02_07",
+      "term_es": "Gestor de contexto",
+      "term_en": "Context manager",
+      "definition_es": "Objeto que implementa `__enter__`/`__exit__` para gestionar recursos con `with`, garantizando la liberación aunque haya excepciones. `contextlib.contextmanager` lo crea desde un generador.",
+      "definition_en": "An object implementing `__enter__`/`__exit__` to manage resources with `with`, guaranteeing release even on exceptions. `contextlib.contextmanager` builds one from a generator.",
+      "source": "PEP 343 — The “with” Statement; CPython docs 3.13 — contextlib"
+    },
+    {
+      "id": "gl02_08",
+      "term_es": "Programación funcional (map/filter/reduce)",
+      "term_en": "Functional programming (map/filter/reduce)",
+      "definition_es": "Estilo basado en funciones puras y de orden superior. `map` transforma, `filter` selecciona y `functools.reduce` acumula; en Python suele preferirse la comprensión equivalente por legibilidad.",
+      "definition_en": "A style built on pure, higher-order functions. `map` transforms, `filter` selects and `functools.reduce` accumulates; in Python the equivalent comprehension is usually preferred for readability.",
+      "source": "CPython docs 3.13 — Functional Programming HOWTO; PEP 8"
+    },
+    {
+      "id": "gl02_09",
+      "term_es": "Fixture (pytest)",
+      "term_en": "Fixture (pytest)",
+      "definition_es": "Función marcada con `@pytest.fixture` que prepara y (opcionalmente vía `yield`) limpia el estado o las dependencias que un test necesita. Se inyecta por nombre de parámetro y tiene ámbito configurable.",
+      "definition_en": "A function marked with `@pytest.fixture` that sets up and (optionally via `yield`) tears down the state or dependencies a test needs. It is injected by parameter name and has a configurable scope.",
+      "source": "pytest documentation — Fixtures reference"
+    },
+    {
+      "id": "gl02_10",
+      "term_es": "Mock",
+      "term_en": "Mock",
+      "definition_es": "Objeto de prueba que sustituye una dependencia y registra cómo se le llama. `unittest.mock.Mock` acepta cualquier atributo silenciosamente; `autospec`/`spec` evita falsos verdes por firmas incorrectas.",
+      "definition_en": "A test double that replaces a dependency and records how it is called. `unittest.mock.Mock` accepts any attribute silently; `autospec`/`spec` prevents false passes caused by wrong signatures.",
+      "source": "CPython docs 3.13 — unittest.mock"
+    }
+  ]
+}

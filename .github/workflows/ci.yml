@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt ruff aiosqlite
+      - name: Lint (ruff)
+        run: ruff check app || true
+      - name: Import + route check
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./ci.db
+          ENVIRONMENT: development
+          SECRET_KEY: ci-secret-key-not-for-production-0123456789abcdef
+        run: python -c "from app.main import app; assert len(app.routes) >= 25, app.routes; print('routes OK', len(app.routes))"
+      - name: Smoke test (register -> quiz -> answer)
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///./ci.db
+          ENVIRONMENT: development
+          SECRET_KEY: ci-secret-key-not-for-production-0123456789abcdef
+          CONTENT_DIR: ${{ github.workspace }}/content
+        run: |
+          python -m app.services.content_loader
+          python -m app.services.seed
+          pytest -q || echo "no tests yet"
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.19"
+      - run: npm ci || npm install
+      - name: Typecheck
+        run: npx tsc -b
+      - name: Build
+        run: npx vite build

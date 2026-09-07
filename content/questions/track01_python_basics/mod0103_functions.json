@@ -1,0 +1,1057 @@
+{
+  "questions": [
+    {
+      "id": "q010301001",
+      "skill_id": "sk010301",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la palabra clave correcta para definir una función en Python?",
+      "question_en": "What is the correct keyword to define a function in Python?",
+      "options_es": [
+        "function",
+        "def",
+        "func",
+        "define"
+      ],
+      "options_en": [
+        "function",
+        "def",
+        "func",
+        "define"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las funciones en Python se definen con la palabra clave `def`, seguida del nombre, paréntesis con los parámetros y dos puntos, por ejemplo: `def saludar():`.",
+      "explanation_en": "Functions in Python are defined with the `def` keyword, followed by the name, parentheses with parameters, and a colon, e.g. `def greet():`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8: Defining Functions; Compound statements: function definitions",
+      "expected_time_ms": 10000,
+      "tags": [
+        "functions",
+        "syntax"
+      ]
+    },
+    {
+      "id": "q010301002",
+      "skill_id": "sk010301",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef saludar():\n    print(\"Hola\")\n\nsaludar()\n```",
+      "question_en": "What does the following code print?\n```python\ndef greet():\n    print(\"Hello\")\n\ngreet()\n```",
+      "options_es": [
+        "Hola",
+        "saludar",
+        "None",
+        "No imprime nada"
+      ],
+      "options_en": [
+        "Hello",
+        "greet",
+        "None",
+        "It prints nothing"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Al llamar a `saludar()` con paréntesis, se ejecuta el cuerpo de la función, que contiene `print(\"Hola\")`, imprimiendo `Hola`.",
+      "explanation_en": "Calling `greet()` with parentheses executes the function body, which contains `print(\"Hello\")`, printing `Hello`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8: Defining Functions; Compound statements: function definitions",
+      "expected_time_ms": 12000,
+      "tags": [
+        "functions",
+        "calling"
+      ]
+    },
+    {
+      "id": "q010301003",
+      "skill_id": "sk010301",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Si una función en Python no tiene una sentencia `return` explícita, automáticamente devuelve `None`.",
+      "question_en": "If a Python function has no explicit `return` statement, it automatically returns `None`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Toda función en Python devuelve algo. Si el flujo de control llega al final del cuerpo sin encontrar un `return`, o si se ejecuta un `return` sin valor, la función devuelve `None` implícitamente.",
+      "explanation_en": "Every Python function returns something. If control flow reaches the end of the body without hitting a `return`, or a bare `return` is executed, the function implicitly returns `None`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8: Defining Functions; Compound statements: function definitions",
+      "expected_time_ms": 18000,
+      "tags": [
+        "functions",
+        "return",
+        "none"
+      ]
+    },
+    {
+      "id": "q010301004",
+      "skill_id": "sk010301",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef suma(a, b):\n    a + b\n\nresultado = suma(2, 3)\nprint(resultado)\n```",
+      "question_en": "What does the following code print?\n```python\ndef add(a, b):\n    a + b\n\nresult = add(2, 3)\nprint(result)\n```",
+      "options_es": [
+        "5",
+        "None",
+        "Error",
+        "2 3"
+      ],
+      "options_en": [
+        "5",
+        "None",
+        "Error",
+        "2 3"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La expresión `a + b` se calcula pero nunca se devuelve porque falta la palabra clave `return`. Como no hay `return`, la función devuelve `None` implícitamente, y eso es lo que se imprime.",
+      "explanation_en": "The expression `a + b` is computed but never returned because the `return` keyword is missing. Since there is no `return`, the function implicitly returns `None`, and that is what gets printed.",
+      "source": "CPython docs 3.13 — Tutorial §4.8: Defining Functions; Compound statements: function definitions",
+      "expected_time_ms": 22000,
+      "tags": [
+        "functions",
+        "return",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010302001",
+      "skill_id": "sk010302",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef potencia(base, exponente=2):\n    return base ** exponente\n\nprint(potencia(3))\n```",
+      "question_en": "What does the following code print?\n```python\ndef power(base, exponent=2):\n    return base ** exponent\n\nprint(power(3))\n```",
+      "options_es": [
+        "9",
+        "6",
+        "Error",
+        "3"
+      ],
+      "options_en": [
+        "9",
+        "6",
+        "Error",
+        "3"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`exponente=2` es un parámetro con valor por defecto. Al llamar `potencia(3)` sin segundo argumento, se usa el valor por defecto `2`, calculando `3 ** 2 = 9`.",
+      "explanation_en": "`exponent=2` is a parameter with a default value. Calling `power(3)` without a second argument uses the default `2`, computing `3 ** 2 = 9`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.1: Default Argument Values / Keyword Arguments",
+      "expected_time_ms": 18000,
+      "tags": [
+        "functions",
+        "default-arguments"
+      ]
+    },
+    {
+      "id": "q010302002",
+      "skill_id": "sk010302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál de las siguientes llamadas usa correctamente argumentos con nombre (keyword arguments)?\n```python\ndef crear_usuario(nombre, edad, activo=True):\n    ...\n```",
+      "question_en": "Which of the following calls correctly uses keyword arguments?\n```python\ndef create_user(name, age, active=True):\n    ...\n```",
+      "options_es": [
+        "crear_usuario(nombre=\"Ana\", 30, activo=False)",
+        "crear_usuario(edad=30, nombre=\"Ana\", activo=False)",
+        "crear_usuario(30, nombre=\"Ana\")",
+        "crear_usuario(nombre=\"Ana\" 30 activo=False)"
+      ],
+      "options_en": [
+        "create_user(name=\"Ana\", 30, active=False)",
+        "create_user(age=30, name=\"Ana\", active=False)",
+        "create_user(30, name=\"Ana\")",
+        "create_user(name=\"Ana\" 30 active=False)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los argumentos con nombre pueden pasarse en cualquier orden porque se identifican por su nombre, no por posición. La opción B es válida. La opción A es inválida porque un argumento posicional no puede ir después de uno con nombre; la C mezcla un posicional después de intentar usar keyword, y la D tiene un error de sintaxis (falta la coma).",
+      "explanation_en": "Keyword arguments can be passed in any order since they're identified by name, not position. Option B is valid. Option A is invalid because a positional argument can't follow a keyword argument; option C mixes a positional argument incorrectly, and option D has a syntax error (missing comma).",
+      "source": "CPython docs 3.13 — Tutorial §4.8.1: Default Argument Values / Keyword Arguments",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functions",
+        "keyword-arguments"
+      ]
+    },
+    {
+      "id": "q010302003",
+      "skill_id": "sk010302",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef agregar(item, lista=[]):\n    lista.append(item)\n    return lista\n\nprint(agregar(1))\nprint(agregar(2))\n```",
+      "question_en": "What does the following code print?\n```python\ndef add_item(item, lst=[]):\n    lst.append(item)\n    return lst\n\nprint(add_item(1))\nprint(add_item(2))\n```",
+      "options_es": [
+        "[1]\\n[2]",
+        "[1]\\n[1, 2]",
+        "[1, 2]\\n[1, 2]",
+        "Error"
+      ],
+      "options_en": [
+        "[1]\\n[2]",
+        "[1]\\n[1, 2]",
+        "[1, 2]\\n[1, 2]",
+        "Error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Este es el famoso 'gotcha' del argumento mutable por defecto: la lista por defecto se crea UNA sola vez, cuando se define la función, y se reutiliza en todas las llamadas que no pasen `lista` explícitamente. La primera llamada añade `1` a esa lista compartida (`[1]`); la segunda añade `2` a la MISMA lista (`[1, 2]`).",
+      "explanation_en": "This is the famous mutable default argument 'gotcha': the default list is created ONCE, when the function is defined, and reused across all calls that don't pass `lst` explicitly. The first call appends `1` to that shared list (`[1]`); the second appends `2` to the SAME list (`[1, 2]`).",
+      "source": "CPython docs 3.13 — Tutorial §4.8.1: Default Argument Values (warning: mutable defaults evaluated once)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "functions",
+        "mutable-default",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010302004",
+      "skill_id": "sk010302",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cuál es la forma correcta de evitar el problema de los argumentos por defecto mutables mostrado en `def agregar(item, lista=[])`?",
+      "question_en": "What is the correct way to avoid the mutable default argument problem shown in `def add_item(item, lst=[])`?",
+      "options_es": [
+        "Usar `lista=list()` en vez de `lista=[]`, el resultado es el mismo problema",
+        "Usar `lista=None` por defecto y crear la lista dentro del cuerpo si `lista is None`",
+        "Declarar la lista como `global` dentro de la función",
+        "No se puede evitar; es una limitación del lenguaje sin solución"
+      ],
+      "options_en": [
+        "Use `lst=list()` instead of `lst=[]`; that has the exact same problem",
+        "Default to `lst=None` and create the list inside the body if `lst is None`",
+        "Declare the list as `global` inside the function",
+        "It cannot be avoided; it's an unsolvable language limitation"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El patrón idiomático es usar un valor por defecto inmutable como `None` (evaluado una sola vez sin problema, porque `None` es inmutable) y, dentro de la función, comprobar `if lista is None: lista = []`, creando una lista nueva en cada llamada que no proporcione una explícitamente.",
+      "explanation_en": "The idiomatic pattern is to use an immutable default like `None` (evaluated once with no issue, since `None` is immutable) and, inside the function, check `if lst is None: lst = []`, creating a fresh list on every call that doesn't provide one explicitly.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.1: Default Argument Values (warning: mutable defaults evaluated once)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functions",
+        "mutable-default",
+        "best-practice"
+      ]
+    },
+    {
+      "id": "q010303001",
+      "skill_id": "sk010303",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué representa `*args` en la definición de una función?",
+      "question_en": "What does `*args` represent in a function definition?",
+      "options_es": [
+        "Un número fijo de tres argumentos",
+        "Un número variable de argumentos posicionales, recibidos como una tupla",
+        "Un diccionario de argumentos con nombre",
+        "Un argumento obligatorio llamado 'args'"
+      ],
+      "options_en": [
+        "A fixed number of three arguments",
+        "A variable number of positional arguments, received as a tuple",
+        "A dictionary of keyword arguments",
+        "A required argument literally named 'args'"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`*args` empaqueta cualquier cantidad de argumentos posicionales adicionales en una tupla llamada `args` (el nombre es solo convención; lo importante es el `*`). Permite llamar a la función con un número variable de argumentos.",
+      "explanation_en": "`*args` packs any number of extra positional arguments into a tuple named `args` (the name is just convention; the `*` is what matters). It allows calling the function with a variable number of arguments.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.2-4.8.3: Arbitrary Argument Lists / Unpacking Argument Lists",
+      "expected_time_ms": 18000,
+      "tags": [
+        "functions",
+        "args",
+        "kwargs"
+      ]
+    },
+    {
+      "id": "q010303002",
+      "skill_id": "sk010303",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef info(**kwargs):\n    for clave, valor in kwargs.items():\n        print(clave, valor)\n\ninfo(nombre=\"Ana\", edad=30)\n```",
+      "question_en": "What does the following code print?\n```python\ndef info(**kwargs):\n    for key, value in kwargs.items():\n        print(key, value)\n\ninfo(name=\"Ana\", age=30)\n```",
+      "options_es": [
+        "nombre Ana\\nedad 30",
+        "{'nombre': 'Ana', 'edad': 30}",
+        "Ana 30",
+        "Error"
+      ],
+      "options_en": [
+        "name Ana\\nage 30",
+        "{'name': 'Ana', 'age': 30}",
+        "Ana 30",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`**kwargs` empaqueta los argumentos con nombre en un diccionario. `kwargs.items()` produce pares clave-valor, que el bucle `for` imprime uno por línea: `nombre Ana` y `edad 30` (el orden coincide con el de la llamada, ya que los dicts de Python 3.7+ preservan el orden de inserción).",
+      "explanation_en": "`**kwargs` packs keyword arguments into a dictionary. `kwargs.items()` yields key-value pairs, which the `for` loop prints one per line: `name Ana` and `age 30` (the order matches the call, since Python 3.7+ dicts preserve insertion order).",
+      "source": "CPython docs 3.13 — Tutorial §4.8.2-4.8.3: Arbitrary Argument Lists / Unpacking Argument Lists",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functions",
+        "kwargs",
+        "dictionaries"
+      ]
+    },
+    {
+      "id": "q010303003",
+      "skill_id": "sk010303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es el orden correcto de parámetros al definir una función que combina todos los tipos?",
+      "question_en": "What is the correct parameter order when defining a function that combines all parameter kinds?",
+      "options_es": [
+        "def f(**kwargs, *args, posicional, nombrado=valor):",
+        "def f(posicional, nombrado=valor, *args, **kwargs):",
+        "def f(*args, posicional, **kwargs, nombrado=valor):",
+        "El orden no importa en Python"
+      ],
+      "options_en": [
+        "def f(**kwargs, *args, positional, named=value):",
+        "def f(positional, named=value, *args, **kwargs):",
+        "def f(*args, positional, **kwargs, named=value):",
+        "The order doesn't matter in Python"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El orden obligatorio es: parámetros posicionales normales, luego parámetros con valor por defecto, luego `*args` (resto de posicionales), y finalmente `**kwargs` (resto de nombrados) al final. Cualquier otro orden produce `SyntaxError`.",
+      "explanation_en": "The mandatory order is: regular positional parameters, then parameters with default values, then `*args` (remaining positionals), and finally `**kwargs` (remaining keywords) at the end. Any other order raises a `SyntaxError`.",
+      "source": "CPython docs 3.13 — The Python Language Reference: Function definitions (parameter order)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functions",
+        "args",
+        "kwargs",
+        "syntax"
+      ]
+    },
+    {
+      "id": "q010303004",
+      "skill_id": "sk010303",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef f(a, *args, **kwargs):\n    print(a, args, kwargs)\n\nf(1, 2, 3, x=4, y=5)\n```",
+      "question_en": "What does the following code print?\n```python\ndef f(a, *args, **kwargs):\n    print(a, args, kwargs)\n\nf(1, 2, 3, x=4, y=5)\n```",
+      "options_es": [
+        "1 (2, 3) {'x': 4, 'y': 5}",
+        "1 [2, 3] {'x': 4, 'y': 5}",
+        "1 2 3 4 5",
+        "Error"
+      ],
+      "options_en": [
+        "1 (2, 3) {'x': 4, 'y': 5}",
+        "1 [2, 3] {'x': 4, 'y': 5}",
+        "1 2 3 4 5",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`a` recibe el primer posicional (`1`). Los posicionales restantes (`2, 3`) se empaquetan como TUPLA en `args`, es decir `(2, 3)` (no lista). Los argumentos con nombre (`x=4, y=5`) se empaquetan como diccionario en `kwargs`.",
+      "explanation_en": "`a` receives the first positional (`1`). The remaining positionals (`2, 3`) are packed as a TUPLE in `args`, i.e. `(2, 3)` (not a list). The keyword arguments (`x=4, y=5`) are packed as a dictionary in `kwargs`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.2-4.8.3: Arbitrary Argument Lists / Unpacking Argument Lists",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functions",
+        "args",
+        "kwargs"
+      ]
+    },
+    {
+      "id": "q010304001",
+      "skill_id": "sk010304",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nx = 10\n\ndef modificar():\n    x = 20\n    print(x)\n\nmodificar()\nprint(x)\n```",
+      "question_en": "What does the following code print?\n```python\nx = 10\n\ndef modify():\n    x = 20\n    print(x)\n\nmodify()\nprint(x)\n```",
+      "options_es": [
+        "20\\n20",
+        "20\\n10",
+        "10\\n10",
+        "Error"
+      ],
+      "options_en": [
+        "20\\n20",
+        "20\\n10",
+        "10\\n10",
+        "Error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Dentro de `modificar()`, `x = 20` crea una nueva variable LOCAL `x` que sombrea (shadow) a la global; no la modifica. `print(x)` dentro imprime `20` (la local). Fuera de la función, la `x` global sigue valiendo `10`.",
+      "explanation_en": "Inside `modify()`, `x = 20` creates a new LOCAL variable `x` that shadows the global one; it does not modify it. The `print(x)` inside prints `20` (the local one). Outside the function, the global `x` is still `10`.",
+      "source": "CPython docs 3.13 — Tutorial §9.2: Python Scopes and Namespaces",
+      "expected_time_ms": 28000,
+      "tags": [
+        "functions",
+        "scope",
+        "local-global"
+      ]
+    },
+    {
+      "id": "q010304002",
+      "skill_id": "sk010304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué palabra clave permite que una función modifique una variable global en lugar de crear una local?",
+      "question_en": "Which keyword lets a function modify a global variable instead of creating a local one?",
+      "options_es": [
+        "global",
+        "nonlocal",
+        "static",
+        "extern"
+      ],
+      "options_en": [
+        "global",
+        "nonlocal",
+        "static",
+        "extern"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`global nombre_variable` dentro de una función le indica a Python que las asignaciones a esa variable deben afectar al ámbito global, no crear una nueva variable local. `nonlocal` se usa en cambio para modificar variables del ámbito envolvente (no global) en funciones anidadas.",
+      "explanation_en": "`global variable_name` inside a function tells Python that assignments to that variable should affect the global scope, not create a new local variable. `nonlocal`, by contrast, is used to modify a variable from an enclosing (non-global) scope in nested functions.",
+      "source": "CPython docs 3.13 — Simple statements: the global statement",
+      "expected_time_ms": 20000,
+      "tags": [
+        "functions",
+        "scope",
+        "global"
+      ]
+    },
+    {
+      "id": "q010304003",
+      "skill_id": "sk010304",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ncontador = 0\n\ndef incrementar():\n    global contador\n    contador += 1\n\nincrementar()\nincrementar()\nprint(contador)\n```",
+      "question_en": "What does the following code print?\n```python\ncounter = 0\n\ndef increment():\n    global counter\n    counter += 1\n\nincrement()\nincrement()\nprint(counter)\n```",
+      "options_es": [
+        "0",
+        "1",
+        "2",
+        "Error"
+      ],
+      "options_en": [
+        "0",
+        "1",
+        "2",
+        "Error"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Gracias a `global contador`, cada llamada a `incrementar()` modifica la variable global real, no una copia local. Tras dos llamadas, `contador` pasa de `0` a `1` y luego a `2`.",
+      "explanation_en": "Thanks to `global counter`, each call to `increment()` modifies the actual global variable, not a local copy. After two calls, `counter` goes from `0` to `1` and then to `2`.",
+      "source": "CPython docs 3.13 — Simple statements: the global statement",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functions",
+        "scope",
+        "global"
+      ]
+    },
+    {
+      "id": "q010305001",
+      "skill_id": "sk010305",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ncuadrado = lambda x: x ** 2\nprint(cuadrado(5))\n```",
+      "question_en": "What does the following code print?\n```python\nsquare = lambda x: x ** 2\nprint(square(5))\n```",
+      "options_es": [
+        "25",
+        "10",
+        "<function>",
+        "Error"
+      ],
+      "options_en": [
+        "25",
+        "10",
+        "<function>",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una `lambda` es una función anónima de una sola expresión. `lambda x: x ** 2` define una función que eleva al cuadrado su argumento; al llamarla con `5`, devuelve `25`.",
+      "explanation_en": "A `lambda` is a single-expression anonymous function. `lambda x: x ** 2` defines a function that squares its argument; calling it with `5` returns `25`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.6: Lambda Expressions",
+      "expected_time_ms": 20000,
+      "tags": [
+        "functions",
+        "lambda"
+      ]
+    },
+    {
+      "id": "q010305002",
+      "skill_id": "sk010305",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una función `lambda` puede contener múltiples sentencias separadas por saltos de línea, igual que una función normal definida con `def`.",
+      "question_en": "A `lambda` function can contain multiple statements separated by newlines, just like a regular function defined with `def`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una `lambda` está restringida a una única expresión (no sentencias como `if` con bloques, bucles o múltiples líneas). Puede usar un condicional ternario como expresión, pero no sentencias completas de control de flujo.",
+      "explanation_en": "A `lambda` is restricted to a single expression (not statements like block `if`s, loops, or multiple lines). It can use a ternary conditional expression, but not full control-flow statements.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.6: Lambda Expressions",
+      "expected_time_ms": 18000,
+      "tags": [
+        "functions",
+        "lambda",
+        "limitations"
+      ]
+    },
+    {
+      "id": "q010305003",
+      "skill_id": "sk010305",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es un caso de uso típico de las funciones `lambda`?",
+      "question_en": "What is a typical use case for `lambda` functions?",
+      "options_es": [
+        "Definir la lógica principal y compleja de una aplicación",
+        "Como función clave (key) corta y desechable en `sorted()`, `map()` o `filter()`",
+        "Reemplazar completamente todas las funciones `def` del código",
+        "Definir clases de forma abreviada"
+      ],
+      "options_en": [
+        "Defining the main, complex logic of an application",
+        "As a short, throwaway key function in `sorted()`, `map()`, or `filter()`",
+        "Completely replacing all `def` functions in the code",
+        "Defining classes in shorthand form"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las lambdas brillan como funciones pequeñas y de un solo uso, por ejemplo `sorted(personas, key=lambda p: p.edad)`. Para lógica compleja o reutilizable, `def` con un nombre descriptivo es más legible y mantenible.",
+      "explanation_en": "Lambdas shine as small, one-off functions, e.g. `sorted(people, key=lambda p: p.age)`. For complex or reusable logic, a `def` with a descriptive name is more readable and maintainable.",
+      "source": "CPython docs 3.13 — Sorting Techniques HOW TO (key functions)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functions",
+        "lambda",
+        "best-practice"
+      ]
+    },
+    {
+      "id": "q010305004",
+      "skill_id": "sk010305",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nnumeros = [5, 2, 8, 1]\nordenados = sorted(numeros, key=lambda x: -x)\nprint(ordenados)\n```",
+      "question_en": "What does the following code print?\n```python\nnumbers = [5, 2, 8, 1]\nsorted_nums = sorted(numbers, key=lambda x: -x)\nprint(sorted_nums)\n```",
+      "options_es": [
+        "[8, 5, 2, 1]",
+        "[1, 2, 5, 8]",
+        "[-8, -5, -2, -1]",
+        "Error"
+      ],
+      "options_en": [
+        "[8, 5, 2, 1]",
+        "[1, 2, 5, 8]",
+        "[-8, -5, -2, -1]",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`key=lambda x: -x` hace que `sorted()` ordene según el negativo de cada número, lo que invierte el orden natural ascendente y produce un orden descendente: `[8, 5, 2, 1]`. La lista original no se modifica; se devuelve una nueva lista ordenada.",
+      "explanation_en": "`key=lambda x: -x` makes `sorted()` order by the negative of each number, which flips the natural ascending order into descending order: `[8, 5, 2, 1]`. The original list is unchanged; a new sorted list is returned.",
+      "source": "CPython docs 3.13 — Sorting Techniques HOW TO (key functions)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functions",
+        "lambda",
+        "sorted"
+      ]
+    },
+    {
+      "id": "q010306001",
+      "skill_id": "sk010306",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué es un 'caso base' (base case) en una función recursiva?",
+      "question_en": "What is a 'base case' in a recursive function?",
+      "options_es": [
+        "La primera vez que se llama a la función",
+        "La condición que detiene la recursión, devolviendo un resultado sin más llamadas recursivas",
+        "Un caso de prueba unitario para la función",
+        "El valor por defecto del primer parámetro"
+      ],
+      "options_en": [
+        "The first time the function is called",
+        "The condition that stops the recursion, returning a result without further recursive calls",
+        "A unit test case for the function",
+        "The default value of the first parameter"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El caso base es la condición terminal que evita que la recursión continúe indefinidamente. Sin un caso base correcto, la función se llamaría a sí misma para siempre, provocando un `RecursionError` por desbordamiento de pila.",
+      "explanation_en": "The base case is the terminating condition that keeps recursion from continuing forever. Without a correct base case, the function would call itself indefinitely, causing a `RecursionError` from stack overflow.",
+      "source": "CPython docs 3.13 — Tutorial: recursion; sys.setrecursionlimit()",
+      "expected_time_ms": 20000,
+      "tags": [
+        "functions",
+        "recursion"
+      ]
+    },
+    {
+      "id": "q010306002",
+      "skill_id": "sk010306",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(4))\n```",
+      "question_en": "What does the following code print?\n```python\ndef factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(4))\n```",
+      "options_es": [
+        "24",
+        "10",
+        "4",
+        "Error"
+      ],
+      "options_en": [
+        "24",
+        "10",
+        "4",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`factorial(4) = 4 * factorial(3) = 4 * 3 * factorial(2) = 4 * 3 * 2 * factorial(1) = 4 * 3 * 2 * 1 = 24`. El caso base `n <= 1` devuelve `1` y detiene la cadena de llamadas recursivas.",
+      "explanation_en": "`factorial(4) = 4 * factorial(3) = 4 * 3 * factorial(2) = 4 * 3 * 2 * factorial(1) = 4 * 3 * 2 * 1 = 24`. The base case `n <= 1` returns `1` and stops the chain of recursive calls.",
+      "source": "CPython docs 3.13 — Tutorial: recursion; sys.setrecursionlimit()",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functions",
+        "recursion",
+        "factorial"
+      ]
+    },
+    {
+      "id": "q010306003",
+      "skill_id": "sk010306",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Python optimiza automáticamente la recursión de cola (tail-call optimization), por lo que la recursión profunda nunca causa un error de desbordamiento de pila.",
+      "question_en": "Python automatically optimizes tail-call recursion, so deep recursion never causes a stack overflow error.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "CPython NO implementa optimización de recursión de cola. Cada llamada recursiva consume un nuevo marco de pila, y superar el límite (por defecto ~1000 llamadas, ajustable con `sys.setrecursionlimit()`) provoca `RecursionError`. Para recursiones profundas suele preferirse una versión iterativa.",
+      "explanation_en": "CPython does NOT implement tail-call optimization. Each recursive call consumes a new stack frame, and exceeding the limit (default ~1000 calls, adjustable via `sys.setrecursionlimit()`) raises `RecursionError`. For deep recursion, an iterative version is usually preferred.",
+      "source": "CPython docs 3.13 — sys.setrecursionlimit() (CPython has no tail-call optimization)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "functions",
+        "recursion",
+        "cpython"
+      ]
+    },
+    {
+      "id": "q010306004",
+      "skill_id": "sk010306",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué excepción lanza Python cuando una función recursiva excede la profundidad máxima de recursión permitida?",
+      "question_en": "What exception does Python raise when a recursive function exceeds the maximum allowed recursion depth?",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "RecursionError",
+      "correct_answer_en": "RecursionError",
+      "explanation_es": "Al superarse el límite de profundidad de recursión (configurable con `sys.setrecursionlimit()`), Python lanza `RecursionError: maximum recursion depth exceeded`, una subclase de `RuntimeError`, para evitar que el intérprete agote la pila del sistema.",
+      "explanation_en": "When the recursion depth limit is exceeded (configurable via `sys.setrecursionlimit()`), Python raises `RecursionError: maximum recursion depth exceeded`, a subclass of `RuntimeError`, to keep the interpreter from exhausting the system stack.",
+      "source": "CPython docs 3.13 — Built-in Exceptions: RecursionError",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functions",
+        "recursion",
+        "exceptions"
+      ]
+    },
+    {
+      "id": "q010306005",
+      "skill_id": "sk010306",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(6))\n```",
+      "question_en": "What does the following code print?\n```python\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\n\nprint(fib(6))\n```",
+      "options_es": [
+        "8",
+        "5",
+        "13",
+        "6"
+      ],
+      "options_en": [
+        "8",
+        "5",
+        "13",
+        "6"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La secuencia de Fibonacci es `fib(0)=0, fib(1)=1, fib(2)=1, fib(3)=2, fib(4)=3, fib(5)=5, fib(6)=8`. Esta implementación recursiva directa recalcula muchos subproblemas repetidamente, siendo exponencial en tiempo; en la práctica se optimiza con memoización.",
+      "explanation_en": "The Fibonacci sequence is `fib(0)=0, fib(1)=1, fib(2)=1, fib(3)=2, fib(4)=3, fib(5)=5, fib(6)=8`. This direct recursive implementation recomputes many subproblems repeatedly, making it exponential in time; in practice it's optimized with memoization.",
+      "source": "CPython docs 3.13 — Tutorial: recursion; sys.setrecursionlimit()",
+      "expected_time_ms": 35000,
+      "tags": [
+        "functions",
+        "recursion",
+        "fibonacci"
+      ]
+    },
+    {
+      "id": "q010301005",
+      "skill_id": "sk010301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef f(x):\n    if x > 0:\n        return \"positivo\"\n    elif x < 0:\n        return \"negativo\"\n\nprint(f(0))\n```",
+      "question_en": "What does the following code print?\n```python\ndef f(x):\n    if x > 0:\n        return \"positive\"\n    elif x < 0:\n        return \"negative\"\n\nprint(f(0))\n```",
+      "options_es": [
+        "None",
+        "positivo",
+        "0",
+        "Error"
+      ],
+      "options_en": [
+        "None",
+        "positive",
+        "0",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con `x=0`, ninguna de las dos condiciones (`x > 0`, `x < 0`) es verdadera y no hay `else`, así que la función llega al final del cuerpo sin ejecutar ningún `return` explícito, devolviendo `None` implícitamente.",
+      "explanation_en": "With `x=0`, neither condition (`x > 0`, `x < 0`) is true and there's no `else`, so the function reaches the end of its body without hitting an explicit `return`, implicitly returning `None`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8: Defining Functions; Compound statements: function definitions",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functions",
+        "return",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010302005",
+      "skill_id": "sk010302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En la firma `def conectar(host, puerto=5432, *, timeout=30):`, ¿qué indica el `*` solo (sin nombre)?",
+      "question_en": "In the signature `def connect(host, port=5432, *, timeout=30):`, what does the lone `*` (with no name) indicate?",
+      "options_es": [
+        "Que la función acepta argumentos infinitos",
+        "Que todos los parámetros posteriores (`timeout`) deben pasarse obligatoriamente como argumentos con nombre",
+        "Que `timeout` es opcional y puede omitirse siempre",
+        "Un error de sintaxis"
+      ],
+      "options_en": [
+        "That the function accepts infinite arguments",
+        "That all parameters after it (`timeout`) must be passed as keyword-only arguments",
+        "That `timeout` is optional and can always be omitted",
+        "A syntax error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un `*` solitario en la firma de una función marca el inicio de los parámetros 'solo por nombre' (keyword-only): todo lo que venga después debe pasarse explícitamente como `nombre=valor`, no posicionalmente. Esto mejora la claridad en llamadas con muchos parámetros.",
+      "explanation_en": "A lone `*` in a function signature marks the start of keyword-only parameters: everything after it must be passed explicitly as `name=value`, not positionally. This improves clarity in calls with many parameters.",
+      "source": "PEP 3102 — Keyword-Only Arguments; CPython docs 3.13 — Tutorial §4.8.3",
+      "expected_time_ms": 28000,
+      "tags": [
+        "functions",
+        "keyword-only",
+        "advanced"
+      ]
+    },
+    {
+      "id": "q010301006",
+      "skill_id": "sk010301",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef dividir(a, b):\n    return a // b, a % b\n\ncociente, resto = dividir(17, 5)\nprint(cociente, resto)\n```",
+      "question_en": "What does the following code print?\n```python\ndef divide(a, b):\n    return a // b, a % b\n\nquotient, remainder = divide(17, 5)\nprint(quotient, remainder)\n```",
+      "options_es": [
+        "3 2",
+        "3.4 0",
+        "17 5",
+        "Error"
+      ],
+      "options_en": [
+        "3 2",
+        "3.4 0",
+        "17 5",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`return a // b, a % b` en realidad devuelve una tupla `(3, 2)`, ya que `17 // 5 = 3` y `17 % 5 = 2`. Esa tupla se desempaqueta directamente en `cociente` y `resto`, un patrón muy común para 'devolver múltiples valores' desde una función.",
+      "explanation_en": "`return a // b, a % b` actually returns a tuple `(3, 2)`, since `17 // 5 = 3` and `17 % 5 = 2`. That tuple is unpacked directly into `quotient` and `remainder`, a very common pattern for 'returning multiple values' from a function.",
+      "source": "CPython docs 3.13 — Tutorial §4.8: Defining Functions; Compound statements: function definitions",
+      "expected_time_ms": 20000,
+      "tags": [
+        "functions",
+        "return",
+        "tuples"
+      ]
+    },
+    {
+      "id": "q010303005",
+      "skill_id": "sk010303",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef sumar(a, b, c):\n    return a + b + c\n\nvalores = [1, 2, 3]\nprint(sumar(*valores))\n```",
+      "question_en": "What does the following code print?\n```python\ndef add(a, b, c):\n    return a + b + c\n\nvalues = [1, 2, 3]\nprint(add(*values))\n```",
+      "options_es": [
+        "6",
+        "[1, 2, 3]",
+        "Error",
+        "123"
+      ],
+      "options_en": [
+        "6",
+        "[1, 2, 3]",
+        "Error",
+        "123"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El `*` al llamar a una función 'desempaqueta' un iterable en argumentos posicionales separados. `sumar(*valores)` equivale a `sumar(1, 2, 3)`, devolviendo `1 + 2 + 3 = 6`.",
+      "explanation_en": "The `*` at a call site 'unpacks' an iterable into separate positional arguments. `add(*values)` is equivalent to `add(1, 2, 3)`, returning `1 + 2 + 3 = 6`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.4: Unpacking Argument Lists",
+      "expected_time_ms": 22000,
+      "tags": [
+        "functions",
+        "unpacking",
+        "args"
+      ]
+    },
+    {
+      "id": "q010304004",
+      "skill_id": "sk010304",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef exterior():\n    x = 1\n    def interior():\n        nonlocal x\n        x += 1\n    interior()\n    return x\n\nprint(exterior())\n```",
+      "question_en": "What does the following code print?\n```python\ndef outer():\n    x = 1\n    def inner():\n        nonlocal x\n        x += 1\n    inner()\n    return x\n\nprint(outer())\n```",
+      "options_es": [
+        "2",
+        "1",
+        "Error",
+        "None"
+      ],
+      "options_en": [
+        "2",
+        "1",
+        "Error",
+        "None"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`nonlocal x` indica que `x` dentro de `interior()` se refiere a la `x` del ámbito envolvente (`exterior()`), no a una nueva variable local. `interior()` incrementa esa `x` compartida de `1` a `2`, y `exterior()` devuelve ese valor actualizado.",
+      "explanation_en": "`nonlocal x` tells Python that `x` inside `inner()` refers to the `x` from the enclosing scope (`outer()`), not a new local variable. `inner()` increments that shared `x` from `1` to `2`, and `outer()` returns the updated value.",
+      "source": "PEP 3104 — Access to Names in Outer Scopes; CPython docs 3.13 — the nonlocal statement",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functions",
+        "scope",
+        "nonlocal",
+        "closures"
+      ]
+    },
+    {
+      "id": "q010305005",
+      "skill_id": "sk010305",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Una función `lambda` se puede asignar a una variable y luego llamarse como cualquier otra función.",
+      "question_en": "A `lambda` function can be assigned to a variable and then called like any other function.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`doble = lambda x: x * 2` crea un objeto función anónima y lo enlaza al nombre `doble`; a partir de ahí `doble(5)` funciona igual que llamar a cualquier función definida con `def`, aunque PEP 8 recomienda usar `def` cuando se le asigna un nombre.",
+      "explanation_en": "`double = lambda x: x * 2` creates an anonymous function object and binds it to the name `double`; from then on `double(5)` works just like calling any function defined with `def`, though PEP 8 recommends using `def` once you're assigning it a name.",
+      "source": "PEP 8 — Programming Recommendations (do not assign a lambda to a name; use def)",
+      "expected_time_ms": 15000,
+      "tags": [
+        "functions",
+        "lambda"
+      ]
+    },
+    {
+      "id": "q010302006",
+      "skill_id": "sk010302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En la firma `def dividir(a, b, /):`, ¿qué indica la barra `/` al final de los parámetros?",
+      "question_en": "In the signature `def divide(a, b, /):`, what does the slash `/` at the end of the parameters indicate?",
+      "options_es": [
+        "Que la función devuelve el resultado de una división",
+        "Que `a` y `b` son parámetros solo-posicionales: deben pasarse por posición y no pueden usarse como argumentos con nombre (`a=...`)",
+        "Que `a` y `b` son opcionales y pueden omitirse",
+        "Un error de sintaxis"
+      ],
+      "options_en": [
+        "That the function returns the result of a division",
+        "That `a` and `b` are positional-only parameters: they must be passed by position and cannot be used as keyword arguments (`a=...`)",
+        "That `a` and `b` are optional and can be omitted",
+        "A syntax error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La barra `/` en la firma marca el final de los parámetros solo-posicionales (positional-only, PEP 570): todo lo que esté antes de `/` debe pasarse por posición, nunca por nombre. Así `dividir(10, 2)` es válido, pero `dividir(a=10, b=2)` lanza `TypeError`. Es el complemento del `*`, que marca los parámetros solo-por-nombre (keyword-only).",
+      "explanation_en": "The slash `/` in a signature marks the end of positional-only parameters (PEP 570): everything before `/` must be passed by position, never by name. So `divide(10, 2)` is valid, but `divide(a=10, b=2)` raises `TypeError`. It's the counterpart of `*`, which marks keyword-only parameters.",
+      "source": "PEP 570 — Python Positional-Only Parameters; CPython docs 3.13 — Tutorial §4.8.3",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functions",
+        "positional-only",
+        "advanced"
+      ]
+    },
+    {
+      "id": "q010303006",
+      "skill_id": "sk010303",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef saludar(saludo, nombre):\n    return f\"{saludo}, {nombre}!\"\n\ndatos = {\"saludo\": \"Hola\", \"nombre\": \"Ana\"}\nprint(saludar(**datos))\n```",
+      "question_en": "What does the following code print?\n```python\ndef greet(greeting, name):\n    return f\"{greeting}, {name}!\"\n\ndata = {\"greeting\": \"Hello\", \"name\": \"Ana\"}\nprint(greet(**data))\n```",
+      "options_es": [
+        "Hola, Ana!",
+        "{'saludo': 'Hola', 'nombre': 'Ana'}",
+        "saludo, nombre!",
+        "Error"
+      ],
+      "options_en": [
+        "Hello, Ana!",
+        "{'greeting': 'Hello', 'name': 'Ana'}",
+        "greeting, name!",
+        "Error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El operador `**` en la llamada 'desempaqueta' un diccionario en argumentos con nombre: `saludar(**datos)` equivale a `saludar(saludo=\"Hola\", nombre=\"Ana\")`. Las claves del diccionario deben coincidir con los nombres de los parámetros. El resultado es `\"Hola, Ana!\"`.",
+      "explanation_en": "The `**` operator at a call site 'unpacks' a dictionary into keyword arguments: `greet(**data)` is equivalent to `greet(greeting=\"Hello\", name=\"Ana\")`. The dict keys must match the parameter names. The result is `\"Hello, Ana!\"`.",
+      "source": "CPython docs 3.13 — Tutorial §4.8.5: Unpacking Argument Lists (** for dictionaries)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functions",
+        "kwargs",
+        "unpacking"
+      ]
+    },
+    {
+      "id": "q010304005",
+      "skill_id": "sk010304",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué ocurre al ejecutar el siguiente código?\n```python\nx = 10\n\ndef f():\n    print(x)\n    x = 20\n\nf()\n```",
+      "question_en": "What happens when you run the following code?\n```python\nx = 10\n\ndef f():\n    print(x)\n    x = 20\n\nf()\n```",
+      "options_es": [
+        "Imprime 10",
+        "Imprime 20",
+        "Lanza UnboundLocalError",
+        "Imprime None"
+      ],
+      "options_en": [
+        "Prints 10",
+        "Prints 20",
+        "Raises UnboundLocalError",
+        "Prints None"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Como `x` se asigna en algún punto del cuerpo de `f` (`x = 20`), Python la trata como variable LOCAL en TODA la función, incluida la línea `print(x)` anterior. Al intentar leerla antes de asignarla, lanza `UnboundLocalError: local variable 'x' referenced before assignment`. La `x` global (`10`) queda oculta por la local; para leer la global habría que declarar `global x`.",
+      "explanation_en": "Because `x` is assigned somewhere in `f`'s body (`x = 20`), Python treats it as a LOCAL variable throughout the WHOLE function, including the earlier `print(x)` line. Trying to read it before it's assigned raises `UnboundLocalError: local variable 'x' referenced before assignment`. The global `x` (`10`) is shadowed by the local one; to read the global you'd declare `global x`.",
+      "source": "CPython docs 3.13 — Tutorial §9.2: Python Scopes and Namespaces (assignment makes a name local for the whole scope)",
+      "expected_time_ms": 38000,
+      "tags": [
+        "functions",
+        "scope",
+        "unboundlocalerror",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q010304006",
+      "skill_id": "sk010304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿En qué orden resuelve Python la búsqueda del nombre de una variable (regla LEGB)?",
+      "question_en": "In what order does Python resolve a variable name lookup (the LEGB rule)?",
+      "options_es": [
+        "Global, Enclosing, Local, Built-in",
+        "Local, Enclosing, Global, Built-in",
+        "Built-in, Global, Enclosing, Local",
+        "El orden es aleatorio y depende del intérprete"
+      ],
+      "options_en": [
+        "Global, Enclosing, Local, Built-in",
+        "Local, Enclosing, Global, Built-in",
+        "Built-in, Global, Enclosing, Local",
+        "The order is random and depends on the interpreter"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Python busca un nombre en este orden: Local (dentro de la función actual), Enclosing (funciones envolventes, para closures), Global (nivel de módulo) y Built-in (nombres incorporados como `len` o `print`). Es la regla 'LEGB'. La búsqueda se detiene en el primer ámbito donde encuentra el nombre; si no está en ninguno, lanza `NameError`.",
+      "explanation_en": "Python looks up a name in this order: Local (inside the current function), Enclosing (surrounding functions, for closures), Global (module level), and Built-in (built-in names like `len` or `print`). This is the 'LEGB' rule. The search stops at the first scope where the name is found; if it's in none, it raises `NameError`.",
+      "source": "CPython docs 3.13 — Tutorial §9.2: Python Scopes and Namespaces (LEGB)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "functions",
+        "scope",
+        "legb"
+      ]
+    },
+    {
+      "id": "q010305006",
+      "skill_id": "sk010305",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nresult = list(map(lambda x: x + 10, [1, 2, 3]))\nprint(result)\n```",
+      "question_en": "What does the following code print?\n```python\nresult = list(map(lambda x: x + 10, [1, 2, 3]))\nprint(result)\n```",
+      "options_es": [
+        "[11, 12, 13]",
+        "[10, 20, 30]",
+        "[1, 2, 3]",
+        "[10, 11, 12, 13]"
+      ],
+      "options_en": [
+        "[11, 12, 13]",
+        "[10, 20, 30]",
+        "[1, 2, 3]",
+        "[10, 11, 12, 13]"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`map(func, iterable)` aplica la función a cada elemento. La lambda `lambda x: x + 10` suma 10 a cada valor: 1→11, 2→12, 3→13. `map` devuelve un iterador perezoso, por lo que se envuelve en `list()` para materializar la lista `[11, 12, 13]`.",
+      "explanation_en": "`map(func, iterable)` applies the function to each element. The lambda `lambda x: x + 10` adds 10 to each value: 1→11, 2→12, 3→13. `map` returns a lazy iterator, so it's wrapped in `list()` to materialize the list `[11, 12, 13]`.",
+      "source": "CPython docs 3.13 — Built-in Functions: map(); Tutorial §4.8.6: Lambda Expressions",
+      "expected_time_ms": 22000,
+      "tags": [
+        "functions",
+        "lambda",
+        "map"
+      ]
+    },
+    {
+      "id": "q010306006",
+      "skill_id": "sk010306",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "La implementación recursiva ingenua de Fibonacci recalcula los mismos subproblemas una y otra vez (tiempo exponencial). ¿Cuál es la forma estándar de hacerla eficiente SIN cambiar el algoritmo recursivo?",
+      "question_en": "The naive recursive Fibonacci implementation recomputes the same subproblems over and over (exponential time). What is the standard way to make it efficient WITHOUT changing the recursive algorithm?",
+      "options_es": [
+        "Aumentar el límite de recursión con `sys.setrecursionlimit()`",
+        "Decorar la función con `@functools.lru_cache` (o `@cache`) para memoizar y reutilizar los resultados ya calculados",
+        "Declarar las variables internas como `global`",
+        "Convertir la función en una expresión `lambda`"
+      ],
+      "options_en": [
+        "Increase the recursion limit with `sys.setrecursionlimit()`",
+        "Decorate the function with `@functools.lru_cache` (or `@cache`) to memoize and reuse already-computed results",
+        "Declare the internal variables as `global`",
+        "Convert the function into a `lambda` expression"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La memoización guarda en caché el resultado de cada `fib(n)` la primera vez que se calcula, de modo que las llamadas repetidas se resuelven de forma instantánea. `functools.lru_cache` (o `functools.cache` desde Python 3.9) lo hace de forma transparente con un decorador, reduciendo la complejidad de exponencial a lineal sin tocar el cuerpo recursivo. Subir el límite de recursión no arregla la ineficiencia (solo pospone el `RecursionError`).",
+      "explanation_en": "Memoization caches the result of each `fib(n)` the first time it's computed, so repeated calls resolve instantly. `functools.lru_cache` (or `functools.cache` since Python 3.9) does this transparently via a decorator, cutting complexity from exponential to linear without touching the recursive body. Raising the recursion limit doesn't fix the inefficiency (it only postpones the `RecursionError`).",
+      "source": "CPython docs 3.13 — functools.lru_cache / functools.cache",
+      "expected_time_ms": 38000,
+      "tags": [
+        "functions",
+        "recursion",
+        "memoization",
+        "lru_cache"
+      ]
+    }
+  ]
+}

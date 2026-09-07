@@ -1,0 +1,522 @@
+{
+  "questions": [
+    {
+      "id": "q040201001",
+      "skill_id": "sk040201",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué representa la 'S' en los principios SOLID?",
+      "question_en": "What does the 'S' in the SOLID principles stand for?",
+      "options_es": ["Principio de Segregación", "Principio de Responsabilidad Única (Single Responsibility)", "Principio de Sustitución", "Principio de Simplicidad"],
+      "options_en": ["Segregation Principle", "Single Responsibility Principle", "Substitution Principle", "Simplicity Principle"],
+      "correct_index": 1,
+      "explanation_es": "La 'S' es el Principio de Responsabilidad Única (SRP): una clase debe tener una sola razón para cambiar, es decir, una única responsabilidad bien definida. La segregación corresponde a la 'I' (interfaces) y la sustitución a la 'L' (Liskov).",
+      "explanation_en": "The 'S' is the Single Responsibility Principle (SRP): a class should have only one reason to change, i.e. a single, well-defined responsibility. Segregation corresponds to the 'I' (interfaces) and substitution to the 'L' (Liskov).",
+      "source": "Clean Architecture (Robert C. Martin) — Cap. 7 SRP",
+      "expected_time_ms": 15000,
+      "tags": ["solid", "srp"]
+    },
+    {
+      "id": "q040201002",
+      "skill_id": "sk040201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "El Principio Abierto/Cerrado (Open/Closed) establece que una entidad de software debe estar:",
+      "question_en": "The Open/Closed Principle states that a software entity should be:",
+      "options_es": [
+        "Abierta a modificación pero cerrada a extensión",
+        "Abierta a extensión pero cerrada a modificación",
+        "Cerrada tanto a extensión como a modificación",
+        "Siempre marcada como final/sellada"
+      ],
+      "options_en": [
+        "Open to modification but closed to extension",
+        "Open to extension but closed to modification",
+        "Closed to both extension and modification",
+        "Always marked final/sealed"
+      ],
+      "correct_index": 1,
+      "explanation_es": "OCP dice que debes poder añadir comportamiento nuevo (extensión), típicamente mediante herencia, composición o polimorfismo, sin tener que editar el código existente y ya probado (modificación). Así se reduce el riesgo de romper lo que ya funciona.",
+      "explanation_en": "OCP says you should be able to add new behavior (extension), typically via inheritance, composition, or polymorphism, without editing existing, already-tested code (modification). This reduces the risk of breaking what already works.",
+      "source": "Clean Architecture (Robert C. Martin) — Cap. 8 OCP",
+      "expected_time_ms": 22000,
+      "tags": ["solid", "ocp"]
+    },
+    {
+      "id": "q040201003",
+      "skill_id": "sk040201",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "El Principio de Sustitución de Liskov (LSP) implica que un objeto de una subclase debe poder reemplazar a uno de su superclase sin alterar la corrección del programa.",
+      "question_en": "The Liskov Substitution Principle (LSP) implies that an object of a subclass must be replaceable for one of its superclass without altering the correctness of the program.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "LSP exige que los subtipos sean sustituibles por sus tipos base: la subclase no debe fortalecer precondiciones ni debilitar postcondiciones, ni lanzar excepciones inesperadas. El ejemplo clásico de violación es el 'cuadrado que hereda de rectángulo' cuando cambiar el ancho también cambia el alto.",
+      "explanation_en": "LSP requires subtypes to be substitutable for their base types: the subclass must not strengthen preconditions, weaken postconditions, or throw unexpected exceptions. The classic violation is the 'square inheriting from rectangle' when changing width also changes height.",
+      "source": "Clean Architecture (Robert C. Martin) — Cap. 9 LSP",
+      "expected_time_ms": 25000,
+      "tags": ["solid", "lsp"]
+    },
+    {
+      "id": "q040201004",
+      "skill_id": "sk040201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "El Principio de Inversión de Dependencias (DIP) recomienda que los módulos de alto nivel:",
+      "question_en": "The Dependency Inversion Principle (DIP) recommends that high-level modules:",
+      "options_es": [
+        "Dependan directamente de los módulos de bajo nivel para máxima eficiencia",
+        "No dependan de módulos de bajo nivel; ambos deben depender de abstracciones (interfaces)",
+        "Se fusionen con los módulos de bajo nivel en una sola clase",
+        "Nunca usen interfaces ni clases abstractas"
+      ],
+      "options_en": [
+        "Depend directly on low-level modules for maximum efficiency",
+        "Not depend on low-level modules; both should depend on abstractions (interfaces)",
+        "Be merged with low-level modules into a single class",
+        "Never use interfaces or abstract classes"
+      ],
+      "correct_index": 1,
+      "explanation_es": "DIP invierte la dirección de dependencia tradicional: en lugar de que la lógica de negocio dependa de detalles concretos (una BD específica, por ejemplo), ambos dependen de una abstracción. En Python esto se logra con `Protocol` o clases base abstractas (ABC), facilitando el testeo con dobles.",
+      "explanation_en": "DIP inverts the traditional dependency direction: instead of business logic depending on concrete details (a specific DB, say), both depend on an abstraction. In Python this is achieved with `Protocol` or abstract base classes (ABC), making testing with test doubles easier.",
+      "source": "Clean Architecture (Robert C. Martin) — Cap. 11 DIP",
+      "expected_time_ms": 28000,
+      "tags": ["solid", "dip"]
+    },
+    {
+      "id": "q040201005",
+      "skill_id": "sk040201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una clase `Reporte` que genera datos, los formatea en HTML y además los envía por email, viola sobre todo:",
+      "question_en": "A `Report` class that generates data, formats it into HTML, and also emails it violates primarily:",
+      "options_es": [
+        "El Principio de Inversión de Dependencias (DIP)",
+        "El Principio de Responsabilidad Única (SRP)",
+        "El Principio de Segregación de Interfaces (ISP)",
+        "Ningún principio; es un buen diseño cohesivo"
+      ],
+      "options_en": [
+        "The Dependency Inversion Principle (DIP)",
+        "The Single Responsibility Principle (SRP)",
+        "The Interface Segregation Principle (ISP)",
+        "No principle; it's good cohesive design"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La clase tiene tres razones distintas para cambiar (lógica de datos, formato de presentación y mecanismo de envío), cada una controlada por actores diferentes. Eso es una violación clásica del SRP; la solución es separar en clases/colaboradores especializados.",
+      "explanation_en": "The class has three distinct reasons to change (data logic, presentation format, and delivery mechanism), each driven by different actors. That's a classic SRP violation; the fix is to split into specialized classes/collaborators.",
+      "source": "Clean Code (Robert C. Martin) — Cap. 10 Classes",
+      "expected_time_ms": 26000,
+      "tags": ["solid", "srp", "cohesion"]
+    },
+    {
+      "id": "q040201006",
+      "skill_id": "sk040201",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "El principio SOLID que dice 'los clientes no deberían verse forzados a depender de interfaces que no usan' es el Principio de _____ de Interfaces. (una palabra)",
+      "question_en": "The SOLID principle stating 'clients should not be forced to depend on interfaces they do not use' is the Interface _____ Principle. (one word)",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "Segregación",
+      "correct_answer_en": "Segregation",
+      "explanation_es": "El Principio de Segregación de Interfaces (ISP) favorece muchas interfaces pequeñas y específicas en vez de una interfaz 'gorda' de propósito general, evitando que las clases implementen métodos irrelevantes para ellas. En Python, `Protocol` permite definir interfaces estructurales mínimas.",
+      "explanation_en": "The Interface Segregation Principle (ISP) favors many small, specific interfaces over one 'fat' general-purpose interface, preventing classes from implementing methods irrelevant to them. In Python, `Protocol` lets you define minimal structural interfaces.",
+      "source": "Clean Architecture (Robert C. Martin) — Cap. 10 ISP",
+      "expected_time_ms": 30000,
+      "tags": ["solid", "isp"]
+    },
+    {
+      "id": "q040202001",
+      "skill_id": "sk040202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿A qué categoría pertenecen los patrones Singleton, Factory Method y Builder?",
+      "question_en": "Which category do the Singleton, Factory Method, and Builder patterns belong to?",
+      "options_es": ["Patrones estructurales", "Patrones de comportamiento", "Patrones creacionales", "Patrones de concurrencia"],
+      "options_en": ["Structural patterns", "Behavioral patterns", "Creational patterns", "Concurrency patterns"],
+      "correct_index": 2,
+      "explanation_es": "Los patrones creacionales abstraen el proceso de instanciación de objetos. La clasificación clásica del 'Gang of Four' los divide en creacionales (crear objetos), estructurales (componer objetos) y de comportamiento (comunicación entre objetos).",
+      "explanation_en": "Creational patterns abstract the object instantiation process. The classic 'Gang of Four' taxonomy divides patterns into creational (creating objects), structural (composing objects), and behavioral (communication between objects).",
+      "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) — Introducción",
+      "expected_time_ms": 15000,
+      "tags": ["patterns", "creational"]
+    },
+    {
+      "id": "q040202002",
+      "skill_id": "sk040202",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En Python, un módulo importado ya se comporta como un singleton natural, porque el intérprete lo cachea en `sys.modules` y reutiliza la misma instancia en importaciones posteriores.",
+      "question_en": "In Python, an imported module already behaves like a natural singleton, because the interpreter caches it in `sys.modules` and reuses the same instance on later imports.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Python importa cada módulo una sola vez y guarda el objeto módulo en `sys.modules`; los `import` siguientes devuelven esa misma instancia. Por eso, colocar estado a nivel de módulo es el modismo pythónico habitual en lugar de implementar la clase Singleton clásica del GoF.",
+      "explanation_en": "Python imports each module only once and stores the module object in `sys.modules`; subsequent `import`s return that same instance. That's why placing state at module level is the common Pythonic idiom rather than implementing the classic GoF Singleton class.",
+      "source": "Python docs 3.13 — The import system (sys.modules)",
+      "expected_time_ms": 25000,
+      "tags": ["patterns", "singleton", "python"]
+    },
+    {
+      "id": "q040202003",
+      "skill_id": "sk040202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es el propósito principal del patrón Factory Method?",
+      "question_en": "What is the primary purpose of the Factory Method pattern?",
+      "options_es": [
+        "Garantizar que solo exista una instancia de una clase",
+        "Definir una interfaz para crear un objeto, delegando en las subclases la decisión de qué clase concreta instanciar",
+        "Copiar objetos existentes en lugar de crearlos desde cero",
+        "Adaptar la interfaz de una clase a otra esperada por el cliente"
+      ],
+      "options_en": [
+        "Guarantee that only one instance of a class exists",
+        "Define an interface for creating an object, letting subclasses decide which concrete class to instantiate",
+        "Copy existing objects instead of creating them from scratch",
+        "Adapt one class's interface to another expected by the client"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Factory Method desacopla el código cliente de las clases concretas: el cliente pide un objeto a través de un método fábrica y las subclases determinan el tipo real. La opción de copiar objetos describe Prototype, y adaptar interfaces describe Adapter.",
+      "explanation_en": "Factory Method decouples client code from concrete classes: the client requests an object through a factory method and subclasses determine the actual type. Copying objects describes Prototype, and adapting interfaces describes Adapter.",
+      "source": "Design Patterns (GoF) — Factory Method",
+      "expected_time_ms": 24000,
+      "tags": ["patterns", "factory"]
+    },
+    {
+      "id": "q040202004",
+      "skill_id": "sk040202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuándo aporta más valor el patrón Builder frente a un constructor con muchos parámetros?",
+      "question_en": "When does the Builder pattern add the most value over a constructor with many parameters?",
+      "options_es": [
+        "Cuando el objeto no tiene atributos",
+        "Cuando la construcción es compleja, con muchos parámetros opcionales o pasos, y quieres evitar constructores telescópicos ilegibles",
+        "Cuando solo puede existir una instancia",
+        "Cuando necesitas convertir una interfaz en otra"
+      ],
+      "options_en": [
+        "When the object has no attributes",
+        "When construction is complex, with many optional parameters or steps, and you want to avoid unreadable telescoping constructors",
+        "When only one instance may exist",
+        "When you need to convert one interface into another"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Builder separa la construcción de un objeto complejo de su representación, permitiendo construirlo paso a paso con una API fluida y legible. En Python, muchos casos que en Java requerirían Builder se resuelven con argumentos con nombre y valores por defecto, o con `dataclasses`.",
+      "explanation_en": "Builder separates the construction of a complex object from its representation, letting you build it step by step with a fluent, readable API. In Python, many cases that would require Builder in Java are solved with keyword arguments and defaults, or with `dataclasses`.",
+      "source": "Design Patterns (GoF) — Builder",
+      "expected_time_ms": 28000,
+      "tags": ["patterns", "builder"]
+    },
+    {
+      "id": "q040202005",
+      "skill_id": "sk040202",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "El patrón Singleton es universalmente considerado una buena práctica y no tiene inconvenientes conocidos.",
+      "question_en": "The Singleton pattern is universally considered a good practice and has no known drawbacks.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Singleton es a menudo criticado como un anti-patrón: introduce estado global oculto, dificulta el testeo unitario (no se puede sustituir fácilmente por un doble), crea acoplamiento fuerte y puede provocar problemas en entornos concurrentes. Muchos lo evitan a favor de inyección de dependencias.",
+      "explanation_en": "Singleton is often criticized as an anti-pattern: it introduces hidden global state, hinders unit testing (it can't easily be swapped for a test double), creates tight coupling, and can cause problems in concurrent environments. Many avoid it in favor of dependency injection.",
+      "source": "Design Patterns (GoF) — Singleton (crítica moderna)",
+      "expected_time_ms": 25000,
+      "tags": ["patterns", "singleton", "anti-pattern"]
+    },
+    {
+      "id": "q040202006",
+      "skill_id": "sk040202",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "En Python, para implementar un Singleton sobrescribiendo la creación de instancias, ¿qué método especial se sobrescribe habitualmente?",
+      "question_en": "In Python, to implement a Singleton by overriding instance creation, which special method is typically overridden?",
+      "options_es": ["__init__", "__new__", "__call__", "__init_subclass__"],
+      "options_en": ["__init__", "__new__", "__call__", "__init_subclass__"],
+      "correct_index": 1,
+      "explanation_es": "`__new__` es el método responsable de crear y devolver la instancia (antes de `__init__`, que solo la inicializa). Sobrescribiéndolo para devolver siempre la misma instancia cacheada se logra el comportamiento Singleton. Alternativamente, se usa una metaclase que controle `__call__`.",
+      "explanation_en": "`__new__` is the method responsible for creating and returning the instance (before `__init__`, which only initializes it). Overriding it to always return the same cached instance achieves Singleton behavior. Alternatively, a metaclass that controls `__call__` is used.",
+      "source": "Python docs 3.13 — object.__new__ / data model",
+      "expected_time_ms": 30000,
+      "tags": ["patterns", "singleton", "dunder"]
+    },
+    {
+      "id": "q040203001",
+      "skill_id": "sk040203",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "El patrón Adapter (Adaptador) sirve principalmente para:",
+      "question_en": "The Adapter pattern is used primarily to:",
+      "options_es": [
+        "Notificar a múltiples objetos cuando cambia el estado de otro",
+        "Permitir que dos interfaces incompatibles trabajen juntas envolviendo una con otra",
+        "Crear familias de objetos relacionados",
+        "Añadir responsabilidades a un objeto dinámicamente"
+      ],
+      "options_en": [
+        "Notify multiple objects when another's state changes",
+        "Let two incompatible interfaces work together by wrapping one with another",
+        "Create families of related objects",
+        "Add responsibilities to an object dynamically"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Adapter es un patrón estructural: convierte la interfaz de una clase en otra que el cliente espera, actuando como traductor. Notificar a observadores es Observer, y añadir responsabilidades dinámicamente es Decorator.",
+      "explanation_en": "Adapter is a structural pattern: it converts one class's interface into another that the client expects, acting as a translator. Notifying observers is Observer, and adding responsibilities dynamically is Decorator.",
+      "source": "Design Patterns (GoF) — Adapter",
+      "expected_time_ms": 18000,
+      "tags": ["patterns", "structural", "adapter"]
+    },
+    {
+      "id": "q040203002",
+      "skill_id": "sk040203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En el patrón Observer, ¿cuál es la relación entre el 'sujeto' (subject) y los 'observadores' (observers)?",
+      "question_en": "In the Observer pattern, what is the relationship between the 'subject' and the 'observers'?",
+      "options_es": [
+        "El sujeto notifica automáticamente a todos los observadores registrados cuando cambia su estado",
+        "Los observadores modifican directamente el estado interno del sujeto",
+        "Cada observador crea una nueva instancia del sujeto",
+        "El sujeto y los observadores deben ser la misma clase"
+      ],
+      "options_en": [
+        "The subject automatically notifies all registered observers when its state changes",
+        "Observers directly modify the subject's internal state",
+        "Each observer creates a new instance of the subject",
+        "The subject and observers must be the same class"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Observer define una dependencia uno-a-muchos: cuando el sujeto cambia, notifica a todos sus suscriptores para que se actualicen, sin que el sujeto conozca sus tipos concretos. Es la base de los sistemas de eventos y de la reactividad en UIs.",
+      "explanation_en": "Observer defines a one-to-many dependency: when the subject changes, it notifies all its subscribers to update, without the subject knowing their concrete types. It's the basis of event systems and UI reactivity.",
+      "source": "Design Patterns (GoF) — Observer",
+      "expected_time_ms": 24000,
+      "tags": ["patterns", "behavioral", "observer"]
+    },
+    {
+      "id": "q040203003",
+      "skill_id": "sk040203",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "El patrón Strategy permite seleccionar un algoritmo en tiempo de ejecución encapsulando cada algoritmo como un objeto intercambiable.",
+      "question_en": "The Strategy pattern lets you select an algorithm at runtime by encapsulating each algorithm as an interchangeable object.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Strategy define una familia de algoritmos, encapsula cada uno y los hace intercambiables. El cliente puede cambiar de estrategia sin modificar su código. En Python, como las funciones son objetos de primera clase, a menudo basta con pasar una función como estrategia.",
+      "explanation_en": "Strategy defines a family of algorithms, encapsulates each one, and makes them interchangeable. The client can switch strategies without modifying its code. In Python, since functions are first-class objects, passing a function as the strategy is often enough.",
+      "source": "Design Patterns (GoF) — Strategy",
+      "expected_time_ms": 22000,
+      "tags": ["patterns", "behavioral", "strategy"]
+    },
+    {
+      "id": "q040203004",
+      "skill_id": "sk040203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la diferencia clave entre el patrón Decorator y la simple herencia para añadir comportamiento?",
+      "question_en": "What is the key difference between the Decorator pattern and plain inheritance for adding behavior?",
+      "options_es": [
+        "Decorator solo funciona con funciones, no con clases",
+        "Decorator añade responsabilidades dinámicamente en tiempo de ejecución envolviendo objetos, mientras la herencia las fija estáticamente en tiempo de compilación",
+        "La herencia es siempre más flexible que Decorator",
+        "No hay diferencia; son sinónimos"
+      ],
+      "options_en": [
+        "Decorator only works with functions, not classes",
+        "Decorator adds responsibilities dynamically at runtime by wrapping objects, whereas inheritance fixes them statically at definition time",
+        "Inheritance is always more flexible than Decorator",
+        "There is no difference; they are synonyms"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Decorator envuelve un objeto en otro que comparte su interfaz, permitiendo combinar responsabilidades en tiempo de ejecución (envolver múltiples veces) sin una explosión de subclases. La herencia establece el comportamiento de forma estática. Ojo: el decorador GoF no es lo mismo que el decorador de sintaxis `@` de Python, aunque comparten la idea de envolver.",
+      "explanation_en": "Decorator wraps an object in another sharing its interface, allowing responsibilities to be combined at runtime (wrapping multiple times) without a subclass explosion. Inheritance sets behavior statically. Note: the GoF Decorator is not the same as Python's `@` decorator syntax, though they share the wrapping idea.",
+      "source": "Design Patterns (GoF) — Decorator",
+      "expected_time_ms": 28000,
+      "tags": ["patterns", "structural", "decorator"]
+    },
+    {
+      "id": "q040203005",
+      "skill_id": "sk040203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "El patrón Facade (Fachada) se usa cuando quieres:",
+      "question_en": "The Facade pattern is used when you want to:",
+      "options_es": [
+        "Proporcionar una interfaz simplificada y unificada a un subsistema complejo con muchas clases",
+        "Garantizar una única instancia global",
+        "Recorrer los elementos de una colección sin exponer su estructura",
+        "Deshacer y rehacer operaciones"
+      ],
+      "options_en": [
+        "Provide a simplified, unified interface to a complex subsystem with many classes",
+        "Guarantee a single global instance",
+        "Traverse the elements of a collection without exposing its structure",
+        "Undo and redo operations"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Facade ofrece un punto de entrada de alto nivel que oculta la complejidad de un subsistema, reduciendo el acoplamiento del cliente con las clases internas. Recorrer colecciones es Iterator y deshacer/rehacer es Command/Memento.",
+      "explanation_en": "Facade offers a high-level entry point that hides a subsystem's complexity, reducing the client's coupling to internal classes. Traversing collections is Iterator, and undo/redo is Command/Memento.",
+      "source": "Design Patterns (GoF) — Facade",
+      "expected_time_ms": 26000,
+      "tags": ["patterns", "structural", "facade"]
+    },
+    {
+      "id": "q040203006",
+      "skill_id": "sk040203",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "El patrón de comportamiento que encapsula una petición como un objeto, permitiendo parametrizar, encolar y deshacer operaciones, se llama patrón _____. (una palabra en inglés)",
+      "question_en": "The behavioral pattern that encapsulates a request as an object, allowing you to parameterize, queue, and undo operations, is called the _____ pattern. (one word)",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "Command",
+      "correct_answer_en": "Command",
+      "explanation_es": "El patrón Command convierte una petición en un objeto autónomo que contiene toda la información para ejecutarla. Esto habilita colas de tareas, registros de operaciones (logs) y funcionalidad de deshacer/rehacer, ya que cada comando sabe cómo ejecutarse y, opcionalmente, revertirse.",
+      "explanation_en": "The Command pattern turns a request into a standalone object holding all the information needed to perform it. This enables task queues, operation logs, and undo/redo functionality, since each command knows how to execute and, optionally, reverse itself.",
+      "source": "Design Patterns (GoF) — Command",
+      "expected_time_ms": 30000,
+      "tags": ["patterns", "behavioral", "command"]
+    },
+    {
+      "id": "q040204001",
+      "skill_id": "sk040204",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es la refactorización (refactoring) según la definición de Martin Fowler?",
+      "question_en": "What is refactoring, per Martin Fowler's definition?",
+      "options_es": [
+        "Reescribir el programa desde cero en otro lenguaje",
+        "Cambiar la estructura interna del código sin alterar su comportamiento externo observable",
+        "Añadir nuevas funcionalidades al software",
+        "Corregir errores reportados por los usuarios"
+      ],
+      "options_en": [
+        "Rewriting the program from scratch in another language",
+        "Changing the internal structure of code without altering its observable external behavior",
+        "Adding new features to the software",
+        "Fixing bugs reported by users"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Refactorizar es mejorar el diseño interno (legibilidad, mantenibilidad) preservando el comportamiento externo. Es distinto de añadir funcionalidad o arreglar bugs: son actividades separadas que conviene no mezclar en el mismo commit para mantener control.",
+      "explanation_en": "Refactoring is improving internal design (readability, maintainability) while preserving external behavior. It's distinct from adding features or fixing bugs: separate activities best kept out of the same commit to stay in control.",
+      "source": "Refactoring 2e (Martin Fowler) — Cap. 1",
+      "expected_time_ms": 18000,
+      "tags": ["refactoring", "definition"]
+    },
+    {
+      "id": "q040204002",
+      "skill_id": "sk040204",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Tener una batería de pruebas automatizadas fiable es un prerrequisito importante para refactorizar con confianza.",
+      "question_en": "Having a reliable suite of automated tests is an important prerequisite for refactoring with confidence.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Como la refactorización no debe cambiar el comportamiento, necesitas una red de seguridad que lo verifique: las pruebas automatizadas detectan si un cambio estructural rompió algo. Fowler insiste en refactorizar en pasos pequeños ejecutando los tests con frecuencia.",
+      "explanation_en": "Since refactoring must not change behavior, you need a safety net that verifies it: automated tests detect whether a structural change broke something. Fowler stresses refactoring in small steps, running tests frequently.",
+      "source": "Refactoring 2e (Martin Fowler) — Cap. 4 Building Tests",
+      "expected_time_ms": 20000,
+      "tags": ["refactoring", "tests"]
+    },
+    {
+      "id": "q040204003",
+      "skill_id": "sk040204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Un 'code smell' (mal olor de código) es:",
+      "question_en": "A 'code smell' is:",
+      "options_es": [
+        "Un error de sintaxis que impide compilar",
+        "Un síntoma superficial en el código que suele indicar un problema de diseño más profundo",
+        "Una excepción lanzada en tiempo de ejecución",
+        "Una advertencia del linter sobre estilo de nombres"
+      ],
+      "options_en": [
+        "A syntax error that prevents compilation",
+        "A surface-level symptom in the code that often points to a deeper design problem",
+        "An exception thrown at runtime",
+        "A linter warning about naming style"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un code smell (como métodos muy largos, clases enormes, código duplicado o listas largas de parámetros) no es un bug, sino una pista de que algo podría mejorarse mediante refactorización. No siempre exige acción, pero invita a investigar.",
+      "explanation_en": "A code smell (like very long methods, huge classes, duplicated code, or long parameter lists) is not a bug, but a hint that something might be improvable through refactoring. It doesn't always demand action but invites investigation.",
+      "source": "Refactoring 2e (Fowler) — Cap. 3 Bad Smells in Code",
+      "expected_time_ms": 22000,
+      "tags": ["refactoring", "code-smell"]
+    },
+    {
+      "id": "q040204004",
+      "skill_id": "sk040204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "La refactorización 'Extraer Método' (Extract Method / Extract Function) consiste en:",
+      "question_en": "The 'Extract Method' (Extract Function) refactoring consists of:",
+      "options_es": [
+        "Eliminar un método que nadie usa",
+        "Tomar un fragmento de código y convertirlo en su propio método con un nombre que explique su intención",
+        "Convertir un método en una variable global",
+        "Fusionar dos clases en una sola"
+      ],
+      "options_en": [
+        "Deleting a method nobody uses",
+        "Taking a fragment of code and turning it into its own method with a name that explains its intent",
+        "Converting a method into a global variable",
+        "Merging two classes into one"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Extraer Función/Método es la refactorización más común: se aísla un bloque cohesivo de código en una función con nombre descriptivo. Mejora la legibilidad (el nombre documenta la intención), reduce duplicación y facilita el testeo de esa lógica de forma aislada.",
+      "explanation_en": "Extract Function/Method is the most common refactoring: a cohesive block of code is isolated into a function with a descriptive name. It improves readability (the name documents the intent), reduces duplication, and makes that logic easier to test in isolation.",
+      "source": "Refactoring 2e (Fowler) — Extract Function",
+      "expected_time_ms": 26000,
+      "tags": ["refactoring", "extract-method"]
+    },
+    {
+      "id": "q040204005",
+      "skill_id": "sk040204",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Según el principio DRY (Don't Repeat Yourself), toda duplicación textual de código debe eliminarse de inmediato sin excepción.",
+      "question_en": "According to the DRY (Don't Repeat Yourself) principle, all textual code duplication must be removed immediately without exception.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "DRY trata de no duplicar 'conocimiento' o decisiones de negocio, no de eliminar cualquier coincidencia textual. Abstraer prematuramente dos fragmentos que solo parecen iguales pero cambian por razones distintas crea acoplamiento dañino (el 'WET' o falso DRY). A veces un poco de duplicación es preferible a una abstracción equivocada.",
+      "explanation_en": "DRY is about not duplicating 'knowledge' or business decisions, not about removing every textual match. Prematurely abstracting two fragments that merely look alike but change for different reasons creates harmful coupling (the 'wrong abstraction'). Sometimes a little duplication is preferable to a wrong abstraction.",
+      "source": "The Pragmatic Programmer 2e (Hunt & Thomas) — DRY",
+      "expected_time_ms": 28000,
+      "tags": ["refactoring", "dry"]
+    },
+    {
+      "id": "q040204006",
+      "skill_id": "sk040204",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué describe mejor la deuda técnica (technical debt)?",
+      "question_en": "What best describes technical debt?",
+      "options_es": [
+        "El dinero que cuesta contratar programadores",
+        "El coste futuro implícito de retrabajo causado por elegir una solución rápida/fácil ahora en lugar de un enfoque mejor pero más lento",
+        "Errores que solo aparecen en producción",
+        "El tiempo que tarda en compilar un proyecto grande"
+      ],
+      "options_en": [
+        "The money it costs to hire programmers",
+        "The implied future cost of rework caused by choosing a quick/easy solution now instead of a better but slower approach",
+        "Bugs that only appear in production",
+        "The time it takes to compile a large project"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La metáfora de la deuda técnica (acuñada por Ward Cunningham) captura que los atajos de diseño acumulan 'intereses': cada cambio futuro cuesta más. Puede ser una decisión estratégica válida si se paga a tiempo (refactorizando), pero ignorarla ralentiza el desarrollo progresivamente.",
+      "explanation_en": "The technical-debt metaphor (coined by Ward Cunningham) captures that design shortcuts accrue 'interest': each future change costs more. It can be a valid strategic decision if paid down in time (by refactoring), but ignoring it progressively slows development.",
+      "source": "Refactoring 2e (Fowler) — deuda técnica / Ward Cunningham",
+      "expected_time_ms": 30000,
+      "tags": ["refactoring", "technical-debt"]
+    }
+  ]
+}

@@ -1,0 +1,500 @@
+"""Orchestrates a study/review session: question selection, answer grading,
+and persistence of BKT/Elo/FSRS state updates.
+
+FSRS and Elo state are tracked at *skill* granularity (see
+`UserSkillState`), while item-level (per-question) difficulty is
+continuously recalibrated on `Question.elo_rating` via the same two-sided
+Elo update. This keeps the scheduling state small (one row per user per
+skill) while still letting individual questions carry their own calibrated
+difficulty.
+"""
+
+from __future__ import annotations
+
+import random
+import uuid
+from datetime import date, datetime, timedelta, timezone
+
+from fastapi import HTTPException, status
+from sqlalchemy import func, or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+
+from app.models.content import Module, Question, Skill, Track
+from app.models.session import Response, StudySession
+from app.models.user import User, UserSkillState
+from app.schemas.content import QuestionPublic
+from app.schemas.session import (
+    QuizAnswerRequest,
+    QuizAnswerResponse,
+    QuizEndRequest,
+    QuizEndResponse,
+    QuizStartRequest,
+    QuizStartResponse,
+)
+from app.services.engine.bkt import BKTModel, SkillState
+from app.services.engine.elo import EloEntity, EloRating
+from app.services.engine.fsrs import Card, FSRSScheduler
+from app.services.gamification.service import apply_quiz_event, get_or_create_current_entry
+
+bkt = BKTModel()
+elo = EloRating()
+fsrs = FSRSScheduler()
+
+TARGET_SUCCESS_PROBABILITY = 0.75
+CANDIDATE_POOL_SIZE = 5
+
+# Question types graded by client-side Pyodide execution.
+# selected_index=1 → correct, selected_index=0 → incorrect.
+_EXEC_TYPES = frozenset({"fill_blank_exec", "fix_bug"})
+
+
+def _now() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def _ensure_aware(dt: datetime | None) -> datetime | None:
+    """Normalize a datetime read back from the DB to tz-aware UTC.
+
+    Postgres (asyncpg) always returns aware datetimes for `timestamptz`
+    columns, but SQLite (used in local tooling/tests) returns naive ones —
+    without this, `FSRSScheduler.review` would raise when subtracting a
+    naive `last_review` from an aware `now`.
+    """
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+async def _get_or_create_skill_state(
+    db: AsyncSession, user_id: uuid.UUID, skill_id: str
+) -> UserSkillState:
+    result = await db.execute(
+        select(UserSkillState).where(
+            UserSkillState.user_id == user_id, UserSkillState.skill_id == skill_id
+        )
+    )
+    state = result.scalar_one_or_none()
+    if state is None:
+        state = UserSkillState(user_id=user_id, skill_id=skill_id)
+        db.add(state)
+        await db.flush()
+    return state
+
+
+async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Module) -> bool:
+    """A module is unlocked if it is the first in its track, or the
+    previous module's average mastery clears its unlock threshold."""
+    if module.order <= 0:
+        return True
+
+    prev_result = await db.execute(
+        select(Module).where(Module.track_id == module.track_id, Module.order == module.order - 1)
+    )
+    prev_module = prev_result.scalar_one_or_none()
+    if prev_module is None:
+        return True
+
+    skills_result = await db.execute(select(Skill.id).where(Skill.module_id == prev_module.id))
+    prev_skill_ids = [row[0] for row in skills_result.all()]
+    if not prev_skill_ids:
+        return True
+
+    states_result = await db.execute(
+        select(UserSkillState.p_known).where(
+            UserSkillState.user_id == user_id,
+            UserSkillState.skill_id.in_(prev_skill_ids),
+        )
+    )
+    p_known_values = [row[0] for row in states_result.all()]
+    if not p_known_values:
+        return False
+
+    # Skills never attempted count as 0 mastery.
+    padded = p_known_values + [0.0] * (len(prev_skill_ids) - len(p_known_values))
+    avg_mastery = sum(padded) / len(padded)
+    return avg_mastery >= prev_module.min_mastery_to_unlock
+
+
+async def _candidate_skill_ids(
+    db: AsyncSession,
+    user: User,
+    mode: str,
+    track_id: str | None,
+    skill_id: str | None,
+) -> list[str]:
+    if skill_id:
+        return [skill_id]
+
+    now = _now()
+
+    if mode == "review":
+        query = select(UserSkillState.skill_id).where(
+            UserSkillState.user_id == user.id,
+            UserSkillState.fsrs_due.is_not(None),
+            UserSkillState.fsrs_due <= now,
+        )
+        if track_id:
+            query = query.join(Skill, Skill.id == UserSkillState.skill_id).join(
+                Module, Module.id == Skill.module_id
+            ).where(Module.track_id == track_id)
+        result = await db.execute(query)
+        due = [row[0] for row in result.all()]
+        if due:
+            return due
+        # fall through to study-mode selection if nothing is due
+
+    modules_query = select(Module).options(selectinload(Module.skills))
+    if track_id:
+        modules_query = modules_query.where(Module.track_id == track_id)
+    modules_result = await db.execute(modules_query.order_by(Module.track_id, Module.order))
+    modules = modules_result.scalars().all()
+
+    unlocked_skill_ids: list[str] = []
+    for module in modules:
+        if await _is_module_unlocked(db, user.id, module):
+            unlocked_skill_ids.extend(s.id for s in module.skills)
+
+    if not unlocked_skill_ids:
+        return []
+
+    states_result = await db.execute(
+        select(UserSkillState.skill_id, UserSkillState.p_known).where(
+            UserSkillState.user_id == user.id,
+            UserSkillState.skill_id.in_(unlocked_skill_ids),
+        )
+    )
+    mastery_by_skill = {row[0]: row[1] for row in states_result.all()}
+
+    not_mastered = [
+        sid for sid in unlocked_skill_ids if mastery_by_skill.get(sid, 0.0) < 0.95
+    ]
+    return not_mastered or unlocked_skill_ids
+
+
+def _weighted_choice(items: list[str], weights: list[float]) -> str:
+    total = sum(weights)
+    if total <= 0:
+        return random.choice(items)
+    r = random.random() * total
+    cumulative = 0.0
+    for item, weight in zip(items, weights):
+        cumulative += weight
+        if r <= cumulative:
+            return item
+    return items[-1]
+
+
+async def _select_skill(
+    db: AsyncSession, user: User, candidate_skill_ids: list[str]
+) -> str | None:
+    if not candidate_skill_ids:
+        return None
+    if len(candidate_skill_ids) == 1:
+        return candidate_skill_ids[0]
+
+    states_result = await db.execute(
+        select(UserSkillState.skill_id, UserSkillState.p_known).where(
+            UserSkillState.user_id == user.id,
+            UserSkillState.skill_id.in_(candidate_skill_ids),
+        )
+    )
+    mastery_by_skill = {row[0]: row[1] for row in states_result.all()}
+
+    weights = [1.1 - mastery_by_skill.get(sid, 0.1) for sid in candidate_skill_ids]
+    return _weighted_choice(candidate_skill_ids, weights)
+
+
+async def _select_question(
+    db: AsyncSession,
+    user: User,
+    skill_id: str,
+    exclude_question_ids: set[str] | None = None,
+) -> Question | None:
+    # Serve index-graded (mcq/true_false/code_output) and exec-graded
+    # (fill_blank_exec/fix_bug) questions; skip legacy fill_blank which has no
+    # correct_index and no correct_answer field.
+    query = select(Question).where(
+        Question.skill_id == skill_id,
+        or_(
+            Question.correct_index.is_not(None),
+            Question.type.in_(list(_EXEC_TYPES)),
+        ),
+    )
+    if exclude_question_ids:
+        query = query.where(Question.id.not_in(exclude_question_ids))
+    result = await db.execute(query)
+    questions = result.scalars().all()
+    if not questions:
+        return None
+
+    state = await _get_or_create_skill_state(db, user.id, skill_id)
+    user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
+
+    scored = []
+    for q in questions:
+        item_entity = EloEntity(rating=q.elo_rating, interactions=30)
+        p = elo.expected_score(user_entity.rating, item_entity.rating)
+        scored.append((q, abs(p - TARGET_SUCCESS_PROBABILITY)))
+
+    scored.sort(key=lambda x: x[1])
+    top_n = scored[:CANDIDATE_POOL_SIZE]
+    return random.choice(top_n)[0]
+
+
+async def _to_question_public(question: Question) -> QuestionPublic:
+    return QuestionPublic.model_validate(question)
+
+
+async def count_due_reviews(db: AsyncSession, user: User) -> int:
+    now = _now()
+    result = await db.execute(
+        select(func.count(UserSkillState.id)).where(
+            UserSkillState.user_id == user.id,
+            UserSkillState.fsrs_due.is_not(None),
+            UserSkillState.fsrs_due <= now,
+        )
+    )
+    return int(result.scalar_one() or 0)
+
+
+async def start_session(
+    db: AsyncSession, user: User, req: QuizStartRequest
+) -> QuizStartResponse:
+    session = StudySession(user_id=user.id, mode=req.mode)
+    db.add(session)
+    await db.flush()
+
+    candidate_skill_ids = await _candidate_skill_ids(db, user, req.mode, req.track_id, req.skill_id)
+    skill_id = await _select_skill(db, user, candidate_skill_ids)
+
+    question_public = None
+    if skill_id:
+        question = await _select_question(db, user, skill_id)
+        if question:
+            question_public = await _to_question_public(question)
+
+    reviews_due = await count_due_reviews(db, user)
+    await db.commit()
+
+    return QuizStartResponse(
+        session_id=session.id,
+        mode=session.mode,
+        question=question_public,
+        reviews_due=reviews_due,
+    )
+
+
+def _grade_from_response(correct: bool, response_time_ms: int, expected_time_ms: int) -> int:
+    """Map an answer outcome to an FSRS grade (1=Again .. 4=Easy)."""
+    if not correct:
+        return 1
+    expected = max(1, expected_time_ms)
+    ratio = response_time_ms / expected
+    if ratio < 0.3:
+        return 4  # fast + correct => easy
+    if ratio < 1.0:
+        return 3  # within expected time => good
+    return 2  # slow but correct => hard
+
+
+def _calculate_xp(correct: bool, combo: int, grade: int) -> int:
+    if not correct:
+        return 3
+    base = 10
+    if combo >= 15:
+        multiplier = 5
+    elif combo >= 7:
+        multiplier = 3
+    elif combo >= 3:
+        multiplier = 2
+    else:
+        multiplier = 1
+    bonus = 5 if grade == 4 else 0
+    return base * multiplier + bonus
+
+
+def _level_from_xp(total_xp: int) -> int:
+    return max(1, total_xp // 500 + 1)
+
+
+def _update_streak(user: User, now: datetime) -> None:
+    today = now.date()
+    if user.last_active is None:
+        user.current_streak = 1
+    else:
+        last_day = user.last_active.date()
+        if last_day == today:
+            pass  # already counted today
+        elif last_day == today - timedelta(days=1):
+            user.current_streak += 1
+        elif user.streak_freeze_available > 0 and last_day == today - timedelta(days=2):
+            user.streak_freeze_available -= 1
+            user.current_streak += 1
+        else:
+            user.current_streak = 1
+    user.max_streak = max(user.max_streak, user.current_streak)
+    user.last_active = now
+
+
+async def _current_combo(db: AsyncSession, session_id: uuid.UUID) -> int:
+    result = await db.execute(
+        select(Response.correct)
+        .where(Response.session_id == session_id)
+        .order_by(Response.created_at.desc())
+    )
+    combo = 0
+    for (correct,) in result.all():
+        if correct:
+            combo += 1
+        else:
+            break
+    return combo
+
+
+async def submit_answer(
+    db: AsyncSession, user: User, req: QuizAnswerRequest
+) -> QuizAnswerResponse:
+    session_result = await db.execute(
+        select(StudySession).where(StudySession.id == req.session_id, StudySession.user_id == user.id)
+    )
+    session = session_result.scalar_one_or_none()
+    if session is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Session not found")
+    if session.ended_at is not None:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Session already ended")
+
+    question_result = await db.execute(select(Question).where(Question.id == req.question_id))
+    question = question_result.scalar_one_or_none()
+    if question is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Question not found")
+
+    if question.type in _EXEC_TYPES:
+        # Client ran Pyodide: selected_index=1 → correct, 0 → incorrect.
+        correct = req.selected_index == 1
+    else:
+        correct = req.selected_index is not None and req.selected_index == question.correct_index
+    now = _now()
+
+    state = await _get_or_create_skill_state(db, user.id, question.skill_id)
+
+    # --- Elo: two-sided update between user's per-skill ability and item difficulty ---
+    user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
+    item_entity = EloEntity(rating=question.elo_rating, interactions=30)
+    user_entity, item_entity, _expected = elo.update(user_entity, item_entity, correct)
+    state.elo_rating = user_entity.rating
+    question.elo_rating = item_entity.rating
+
+    # --- BKT: skill mastery update ---
+    bkt_state = SkillState(
+        skill_id=question.skill_id,
+        p_known=state.p_known,
+        attempts=state.attempts,
+        correct=state.correct_count,
+    )
+    bkt.update(bkt_state, correct)
+    state.p_known = bkt_state.p_known
+    state.attempts = bkt_state.attempts
+    state.correct_count = bkt_state.correct
+
+    # --- FSRS: skill-level spaced-repetition scheduling ---
+    grade = _grade_from_response(correct, req.response_time_ms, question.expected_time_ms)
+    card = Card(
+        stability=state.fsrs_stability,
+        difficulty=state.fsrs_difficulty,
+        reps=max(0, bkt_state.attempts - 1),
+        due=_ensure_aware(state.fsrs_due),
+        last_review=_ensure_aware(state.updated_at),
+        state="new" if bkt_state.attempts <= 1 else "review",
+    )
+    card, _log = fsrs.review(card, grade, now)
+    state.fsrs_stability = card.stability
+    state.fsrs_difficulty = card.difficulty
+    state.fsrs_due = card.due
+
+    # --- Persist the raw response event ---
+    response = Response(
+        session_id=session.id,
+        question_id=question.id,
+        correct=correct,
+        grade=grade,
+        response_time_ms=req.response_time_ms,
+    )
+    db.add(response)
+    await db.flush()
+
+    combo = await _current_combo(db, session.id)
+    xp = _calculate_xp(correct, combo, grade)
+
+    session.questions_answered += 1
+    if correct:
+        session.correct_count += 1
+    session.max_combo = max(session.max_combo, combo)
+    session.xp_earned += xp
+
+    user.total_xp += xp
+    user.level = _level_from_xp(user.total_xp)
+    _update_streak(user, now)
+
+    league_entry = await get_or_create_current_entry(db, user)
+    if league_entry is not None:
+        league_entry.xp_earned += xp
+
+    # Pick the next question, avoiding an immediate repeat of the same item.
+    candidate_skill_ids = await _candidate_skill_ids(db, user, session.mode, None, None)
+    next_skill_id = await _select_skill(db, user, candidate_skill_ids) or question.skill_id
+    next_question = await _select_question(
+        db, user, next_skill_id, exclude_question_ids={question.id}
+    )
+    next_question_public = await _to_question_public(next_question) if next_question else None
+
+    session_accuracy = session.correct_count / max(1, session.questions_answered)
+
+    await apply_quiz_event(db, user, correct, xp, combo)
+    await db.commit()
+
+    return QuizAnswerResponse(
+        correct=correct,
+        correct_index=question.correct_index,
+        explanation_es=question.explanation_es,
+        explanation_en=question.explanation_en,
+        source=question.source,
+        grade=grade,
+        xp_earned=xp,
+        combo=combo,
+        user_elo=state.elo_rating,
+        next_review=state.fsrs_due.isoformat() if state.fsrs_due else None,
+        skill_mastery={question.skill_id: state.p_known},
+        session_accuracy=round(session_accuracy, 4),
+        next_question=next_question_public,
+    )
+
+
+async def end_session(db: AsyncSession, user: User, req: QuizEndRequest) -> QuizEndResponse:
+    result = await db.execute(
+        select(StudySession).where(StudySession.id == req.session_id, StudySession.user_id == user.id)
+    )
+    session = result.scalar_one_or_none()
+    if session is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Session not found")
+
+    now = _now()
+    if session.ended_at is None:
+        session.ended_at = now
+        await db.commit()
+
+    duration = int(
+        (_ensure_aware(session.ended_at) - _ensure_aware(session.started_at)).total_seconds()
+    )
+    accuracy = session.correct_count / max(1, session.questions_answered)
+
+    return QuizEndResponse(
+        total_questions=session.questions_answered,
+        correct=session.correct_count,
+        accuracy=round(accuracy, 4),
+        max_combo=session.max_combo,
+        xp_earned=session.xp_earned,
+        duration_seconds=duration,
+    )

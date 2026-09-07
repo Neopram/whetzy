@@ -1,0 +1,216 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  min-height: 100dvh;
+}
+
+/* ===== Intro ===== */
+.intro,
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: var(--le-space-xl);
+  text-align: center;
+  gap: var(--le-space-md);
+}
+
+.introIcon,
+.resultIcon {
+  font-size: 4rem;
+}
+
+.introTitle,
+.resultTitle {
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+}
+
+.introDesc,
+.resultDesc {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.introFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-sm);
+  margin: var(--le-space-md) 0;
+}
+
+.introFeature {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+  font-size: var(--le-fs-sm);
+  color: var(--le-text);
+  font-weight: var(--le-fw-bold);
+}
+
+.startBtn {
+  width: 100%;
+  max-width: 300px;
+  padding: var(--le-space-md);
+  background: var(--le-purple);
+  color: #fff;
+  border: none;
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-black);
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform var(--le-transition-base);
+}
+
+.startBtn:active {
+  transform: scale(0.97);
+}
+
+.skipBtn {
+  background: none;
+  border: none;
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  cursor: pointer;
+  padding: var(--le-space-sm);
+}
+
+/* ===== Header ===== */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: var(--le-space-sm);
+}
+
+.headerLabel {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text-secondary);
+  text-align: center;
+}
+
+/* ===== Ability Indicator ===== */
+.abilityIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+}
+
+.abilityLabel {
+  font-size: 11px;
+  font-weight: var(--le-fw-black);
+  color: var(--le-text-muted);
+  white-space: nowrap;
+}
+
+.abilityBar {
+  flex: 1;
+  height: 6px;
+  background: var(--le-border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.abilityFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--le-green) 0%, var(--le-purple) 100%);
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ===== Question ===== */
+.questionCard {
+  background: var(--le-surface);
+  border: 2px solid var(--le-border);
+  border-radius: var(--le-radius-lg);
+  padding: var(--le-space-lg);
+}
+
+.questionText {
+  font-size: var(--le-fs-lg);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+  line-height: 1.4;
+}
+
+.codeBlock {
+  margin-top: var(--le-space-md);
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: var(--le-space-md);
+  border-radius: var(--le-radius-md);
+  font-family: 'Fira Code', monospace;
+  font-size: var(--le-fs-sm);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ===== Options ===== */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-sm);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  background: var(--le-surface);
+  border: 2px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+  transition: border-color var(--le-transition-base), background var(--le-transition-base);
+}
+
+.optLetter {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--le-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text-secondary);
+  flex-shrink: 0;
+}
+
+.option.correct {
+  border-color: var(--le-green);
+  background: var(--le-green-light);
+}
+
+.option.wrong {
+  border-color: var(--le-red);
+  background: var(--le-red-light);
+}
+
+/* ===== Result ===== */
+.resultPct {
+  font-size: var(--le-fs-lg);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text-secondary);
+}
+
+.resultBar {
+  width: 100%;
+  max-width: 300px;
+}

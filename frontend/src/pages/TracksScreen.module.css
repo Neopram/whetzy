@@ -1,0 +1,266 @@
+.screen {
+  padding: 16px 16px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.title {
+  font-size: var(--le-fs-2xl);
+  font-weight: 900;
+  color: var(--le-text);
+}
+
+.subtitle {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  margin-top: -8px;
+}
+
+/* Track selector */
+.trackRow {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.trackRow::-webkit-scrollbar { display: none; }
+
+.trackChip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--le-radius-full);
+  background: var(--le-bg-elevated);
+  border: 2px solid var(--le-border);
+  color: var(--le-text-secondary);
+  font-weight: 700;
+  font-size: var(--le-fs-sm);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.trackChipActive {
+  background: var(--le-brand-light);
+  border-color: var(--le-brand);
+  color: var(--le-brand-dark);
+}
+.trackChipIcon { font-size: 1rem; }
+
+/* View toggle */
+.viewToggle {
+  display: flex;
+  gap: 6px;
+  background: var(--le-border-light);
+  padding: 4px;
+  border-radius: var(--le-radius-md);
+}
+.viewBtn {
+  flex: 1;
+  padding: 8px;
+  border-radius: var(--le-radius-sm);
+  font-weight: 800;
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  transition: all 0.15s ease;
+}
+.viewBtnActive {
+  background: var(--le-bg-elevated);
+  color: var(--le-brand-dark);
+  box-shadow: var(--le-shadow-sm);
+}
+
+.muted {
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-sm);
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* Curriculum overview */
+.overviewCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.overviewText {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.overviewIcon { font-size: 2rem; }
+.overviewName { font-weight: 800; font-size: var(--le-fs-md); color: var(--le-text); }
+.overviewMeta { font-size: var(--le-fs-sm); color: var(--le-text-secondary); }
+
+/* Module spine */
+.spine {
+  display: flex;
+  flex-direction: column;
+}
+.moduleWrap {
+  display: flex;
+  flex-direction: column;
+}
+.connector {
+  width: 3px;
+  height: 16px;
+  margin-left: 34px;
+  background: var(--le-border);
+  border-radius: 2px;
+}
+.connectorMet { background: var(--le-green); }
+
+.module { padding: 0; overflow: hidden; }
+.moduleLocked { opacity: 0.7; }
+
+.moduleHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+}
+.moduleBadge {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--le-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+.moduleInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.moduleName {
+  font-weight: 800;
+  font-size: var(--le-fs-base);
+  color: var(--le-text);
+}
+.moduleSub {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-secondary);
+}
+.chevron { color: var(--le-text-muted); font-size: 0.9rem; }
+
+.moduleBar { padding: 0 14px 12px; }
+
+.skills {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 14px 14px;
+  border-top: 1px solid var(--le-border-light);
+}
+.moduleDesc {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  padding: 8px 0;
+}
+.skill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.skillDot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--le-radius-full);
+}
+.skillName {
+  flex: 1;
+  font-size: var(--le-fs-sm);
+  color: var(--le-text);
+}
+.skillPct {
+  font-size: var(--le-fs-xs);
+  font-weight: 800;
+  color: var(--le-brand-dark);
+}
+.lockNote {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-muted);
+  padding-top: 4px;
+}
+.practiceBtn {
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: var(--le-radius-md);
+  background: var(--le-brand);
+  color: var(--le-text-inverse);
+  font-weight: 800;
+  font-size: var(--le-fs-sm);
+  box-shadow: var(--le-shadow-btn);
+  transition: transform 0.1s ease;
+}
+.practiceBtn:active { transform: translateY(2px); box-shadow: var(--le-shadow-btn-active); }
+
+.footnote {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-muted);
+  line-height: 1.5;
+  padding: 8px 4px 0;
+}
+
+/* Glossary */
+.search {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--le-radius-md);
+  border: 2px solid var(--le-border);
+  background: var(--le-bg-elevated);
+  color: var(--le-text);
+  font-size: var(--le-fs-base);
+}
+.search:focus { border-color: var(--le-brand); outline: none; }
+
+.terms {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.term {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.termHead {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.termName {
+  font-weight: 800;
+  font-size: var(--le-fs-md);
+  color: var(--le-text);
+}
+.termAlt {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-muted);
+  font-style: italic;
+}
+.termDef {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  line-height: 1.55;
+}
+.termSource {
+  font-size: var(--le-fs-xs);
+  color: var(--le-brand-dark);
+  background: var(--le-brand-light);
+  padding: 4px 8px;
+  border-radius: var(--le-radius-sm);
+  align-self: flex-start;
+  font-weight: 600;
+}

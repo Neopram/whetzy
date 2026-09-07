@@ -1,0 +1,85 @@
+{
+  "track_id": "track04",
+  "terms": [
+    {
+      "id": "gl04_01",
+      "term_es": "SOLID",
+      "term_en": "SOLID",
+      "definition_es": "Cinco principios de diseño orientado a objetos: Responsabilidad Única, Abierto/Cerrado, Sustitución de Liskov, Segregación de Interfaces e Inversión de Dependencias. Buscan código cohesivo y poco acoplado.",
+      "definition_en": "Five object-oriented design principles: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation and Dependency Inversion. They aim for cohesive, loosely coupled code.",
+      "source": "Robert C. Martin — Clean Architecture / Agile Software Development"
+    },
+    {
+      "id": "gl04_02",
+      "term_es": "Idempotencia (HTTP)",
+      "term_en": "Idempotency (HTTP)",
+      "definition_es": "Propiedad por la que repetir la misma petición produce el mismo efecto en el servidor que hacerla una vez. GET, PUT y DELETE son idempotentes; POST, en general, no.",
+      "definition_en": "The property whereby repeating the same request has the same effect on the server as making it once. GET, PUT and DELETE are idempotent; POST generally is not.",
+      "source": "RFC 9110 — HTTP Semantics §9.2.2 (Idempotent Methods)"
+    },
+    {
+      "id": "gl04_03",
+      "term_es": "REST",
+      "term_en": "REST",
+      "definition_es": "Estilo arquitectónico para APIs basado en recursos identificados por URI, manipulados con métodos HTTP uniformes y representaciones (JSON, etc.), sin estado de sesión en el servidor.",
+      "definition_en": "An architectural style for APIs based on resources identified by URI, manipulated through uniform HTTP methods and representations (JSON, etc.), with no server-side session state.",
+      "source": "Roy T. Fielding — Architectural Styles and the Design of Network-based Software Architectures (dissertation, ch. 5)"
+    },
+    {
+      "id": "gl04_04",
+      "term_es": "Normalización (bases de datos)",
+      "term_en": "Normalization (databases)",
+      "definition_es": "Proceso de estructurar tablas para eliminar redundancia y anomalías de actualización. La 3FN exige que cada atributo no clave dependa de la clave, de toda la clave y de nada más que la clave.",
+      "definition_en": "The process of structuring tables to remove redundancy and update anomalies. 3NF requires every non-key attribute to depend on the key, the whole key, and nothing but the key.",
+      "source": "C. J. Date — An Introduction to Database Systems; PostgreSQL 16 documentation"
+    },
+    {
+      "id": "gl04_05",
+      "term_es": "ACID",
+      "term_en": "ACID",
+      "definition_es": "Garantías de las transacciones: Atomicidad (todo o nada), Consistencia (invariantes preservadas), Aislamiento (transacciones concurrentes no se interfieren) y Durabilidad (lo confirmado persiste).",
+      "definition_en": "Transaction guarantees: Atomicity (all or nothing), Consistency (invariants preserved), Isolation (concurrent transactions don't interfere) and Durability (committed data persists).",
+      "source": "Kleppmann — Designing Data-Intensive Applications, ch. 7"
+    },
+    {
+      "id": "gl04_06",
+      "term_es": "Problema N+1",
+      "term_en": "N+1 query problem",
+      "definition_es": "Patrón de ineficiencia en ORMs: una consulta trae N filas y luego se lanza una consulta adicional por cada fila para cargar relaciones. Se resuelve con carga anticipada (`join`/`selectinload`).",
+      "definition_en": "An ORM inefficiency pattern: one query fetches N rows, then an extra query fires per row to load relations. It is fixed with eager loading (`join`/`selectinload`).",
+      "source": "SQLAlchemy 2.0 documentation — Relationship Loading Techniques"
+    },
+    {
+      "id": "gl04_07",
+      "term_es": "JWT (JSON Web Token)",
+      "term_en": "JWT (JSON Web Token)",
+      "definition_es": "Token firmado (header.payload.signature) que transporta claims. El payload es legible (no cifrado), así que no debe llevar secretos; hay que rechazar `alg: none` y validar siempre la firma.",
+      "definition_en": "A signed token (header.payload.signature) carrying claims. The payload is readable (not encrypted), so it must not hold secrets; reject `alg: none` and always verify the signature.",
+      "source": "RFC 7519 — JSON Web Token; OWASP JWT Cheat Sheet"
+    },
+    {
+      "id": "gl04_08",
+      "term_es": "Hashing de contraseñas (Argon2/bcrypt)",
+      "term_en": "Password hashing (Argon2/bcrypt)",
+      "definition_es": "Guardar contraseñas mediante funciones lentas y con sal, diseñadas para resistir fuerza bruta. Argon2id y bcrypt son memory-hard/costosas a propósito; nunca usar hashes rápidos (MD5/SHA-256) a secas.",
+      "definition_en": "Storing passwords via slow, salted functions designed to resist brute force. Argon2id and bcrypt are deliberately memory-hard/costly; never use plain fast hashes (MD5/SHA-256).",
+      "source": "RFC 9106 — Argon2; OWASP Password Storage Cheat Sheet"
+    },
+    {
+      "id": "gl04_09",
+      "term_es": "Imagen vs contenedor (Docker)",
+      "term_en": "Image vs container (Docker)",
+      "definition_es": "Una imagen es una plantilla inmutable en capas; un contenedor es una instancia en ejecución de esa imagen con una capa de escritura efímera. Compilar en multi-stage y correr como usuario no-root.",
+      "definition_en": "An image is an immutable, layered template; a container is a running instance of that image with an ephemeral writable layer. Build with multi-stage and run as a non-root user.",
+      "source": "Docker documentation — Images, Containers, Multi-stage builds"
+    },
+    {
+      "id": "gl04_10",
+      "term_es": "CI/CD",
+      "term_en": "CI/CD",
+      "definition_es": "Integración Continua (mezclar y probar cambios pequeños a menudo) y Entrega/Despliegue Continuos (automatizar el paso a producción). La pirámide de tests y los feature flags reducen el riesgo de cada despliegue.",
+      "definition_en": "Continuous Integration (merging and testing small changes often) and Continuous Delivery/Deployment (automating the path to production). The test pyramid and feature flags reduce each deploy's risk.",
+      "source": "Humble & Farley — Continuous Delivery; GitHub Actions documentation"
+    }
+  ]
+}

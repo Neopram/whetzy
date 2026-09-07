@@ -1,0 +1,85 @@
+{
+  "track_id": "track06",
+  "terms": [
+    {
+      "id": "gl06_01",
+      "term_es": "Sobreajuste (overfitting)",
+      "term_en": "Overfitting",
+      "definition_es": "Cuando un modelo memoriza el ruido del conjunto de entrenamiento y generaliza mal a datos nuevos: error de entrenamiento bajo pero error de validación alto. Se mitiga con regularización, más datos o early stopping.",
+      "definition_en": "When a model memorizes the noise in the training set and generalizes poorly to new data: low training error but high validation error. Mitigated with regularization, more data or early stopping.",
+      "source": "Goodfellow, Bengio & Courville — Deep Learning, ch. 5"
+    },
+    {
+      "id": "gl06_02",
+      "term_es": "Compromiso sesgo-varianza",
+      "term_en": "Bias-variance tradeoff",
+      "definition_es": "Descomposición del error de generalización: el sesgo alto (subajuste) simplifica en exceso; la varianza alta (sobreajuste) es demasiado sensible a los datos. El objetivo es equilibrarlos.",
+      "definition_en": "A decomposition of generalization error: high bias (underfitting) oversimplifies; high variance (overfitting) is too sensitive to the data. The goal is to balance the two.",
+      "source": "Hastie, Tibshirani & Friedman — The Elements of Statistical Learning, ch. 2/7"
+    },
+    {
+      "id": "gl06_03",
+      "term_es": "Fuga de datos (data leakage)",
+      "term_en": "Data leakage",
+      "definition_es": "Cuando información del conjunto de prueba se filtra al entrenamiento (p. ej. escalar antes de dividir train/test), inflando artificialmente el rendimiento. Todo preprocesado debe ajustarse solo con train.",
+      "definition_en": "When information from the test set leaks into training (e.g. scaling before the train/test split), artificially inflating performance. All preprocessing must be fit on the training set only.",
+      "source": "Géron — Hands-On Machine Learning 2e, ch. 2"
+    },
+    {
+      "id": "gl06_04",
+      "term_es": "Validación cruzada (k-fold)",
+      "term_en": "Cross-validation (k-fold)",
+      "definition_es": "Técnica que divide los datos en k pliegues y entrena/valida k veces rotando el pliegue de validación, promediando el resultado. Para series temporales se usa TimeSeriesSplit (no barajar).",
+      "definition_en": "A technique that splits data into k folds and trains/validates k times, rotating the validation fold and averaging the result. For time series use TimeSeriesSplit (no shuffling).",
+      "source": "scikit-learn User Guide — Cross-validation"
+    },
+    {
+      "id": "gl06_05",
+      "term_es": "Precisión, exhaustividad y F1",
+      "term_en": "Precision, recall and F1",
+      "definition_es": "Precisión = aciertos entre los predichos positivos; exhaustividad (recall) = aciertos entre los positivos reales; F1 = su media armónica. Con clases desbalanceadas, la accuracy engaña.",
+      "definition_en": "Precision = correct among predicted positives; recall = correct among actual positives; F1 = their harmonic mean. With imbalanced classes, accuracy is misleading.",
+      "source": "scikit-learn User Guide — Classification metrics; Bishop — PRML"
+    },
+    {
+      "id": "gl06_06",
+      "term_es": "Regularización (L1/L2)",
+      "term_en": "Regularization (L1/L2)",
+      "definition_es": "Penalización añadida a la función de pérdida para reducir la complejidad del modelo. L2 (Ridge) encoge los pesos; L1 (Lasso) los lleva a cero, haciendo selección de características.",
+      "definition_en": "A penalty added to the loss function to reduce model complexity. L2 (Ridge) shrinks weights; L1 (Lasso) drives them to zero, performing feature selection.",
+      "source": "Goodfellow et al. — Deep Learning, ch. 7; Hastie et al. — ESL"
+    },
+    {
+      "id": "gl06_07",
+      "term_es": "Descenso de gradiente",
+      "term_en": "Gradient descent",
+      "definition_es": "Algoritmo de optimización que actualiza los parámetros en dirección opuesta al gradiente de la pérdida, escalado por la tasa de aprendizaje. Variantes: batch, estocástico (SGD), mini-batch y Adam.",
+      "definition_en": "An optimization algorithm that updates parameters in the direction opposite the loss gradient, scaled by the learning rate. Variants: batch, stochastic (SGD), mini-batch and Adam.",
+      "source": "Goodfellow et al. — Deep Learning, ch. 4/8; Kingma & Ba — Adam"
+    },
+    {
+      "id": "gl06_08",
+      "term_es": "Retropropagación (backprop)",
+      "term_en": "Backpropagation",
+      "definition_es": "Algoritmo que calcula el gradiente de la pérdida respecto a cada peso aplicando la regla de la cadena hacia atrás por la red, para luego actualizar los pesos con descenso de gradiente.",
+      "definition_en": "An algorithm that computes the gradient of the loss with respect to each weight by applying the chain rule backward through the network, then updates the weights via gradient descent.",
+      "source": "Rumelhart, Hinton & Williams (1986); Goodfellow et al. — Deep Learning, ch. 6"
+    },
+    {
+      "id": "gl06_09",
+      "term_es": "Gradiente evanescente",
+      "term_en": "Vanishing gradient",
+      "definition_es": "Problema en redes profundas o recurrentes donde los gradientes se hacen minúsculos al propagarse, frenando el aprendizaje de capas iniciales. ReLU, normalización y LSTM/GRU lo mitigan.",
+      "definition_en": "A problem in deep or recurrent networks where gradients shrink to near zero as they propagate, stalling learning in early layers. ReLU, normalization and LSTM/GRU mitigate it.",
+      "source": "Hochreiter & Schmidhuber — LSTM (1997); Goodfellow et al. — Deep Learning, ch. 10"
+    },
+    {
+      "id": "gl06_10",
+      "term_es": "Análisis de componentes principales (PCA)",
+      "term_en": "Principal Component Analysis (PCA)",
+      "definition_es": "Técnica de reducción de dimensionalidad que proyecta los datos sobre las direcciones de máxima varianza (componentes principales). Requiere estandarizar las variables antes de aplicarla.",
+      "definition_en": "A dimensionality-reduction technique that projects data onto the directions of maximum variance (principal components). It requires standardizing the features beforehand.",
+      "source": "Bishop — Pattern Recognition and Machine Learning, ch. 12"
+    }
+  ]
+}

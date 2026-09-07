@@ -1,0 +1,85 @@
+{
+  "track_id": "track03",
+  "terms": [
+    {
+      "id": "gl03_01",
+      "term_es": "GIL (Global Interpreter Lock)",
+      "term_en": "GIL (Global Interpreter Lock)",
+      "definition_es": "Cerrojo de CPython que permite ejecutar bytecode de Python en un solo hilo a la vez. Protege el conteo de referencias, pero impide el paralelismo real de CPU con hilos; PEP 703 propone hacerlo opcional.",
+      "definition_en": "A CPython lock that allows only one thread to execute Python bytecode at a time. It protects reference counting but prevents true CPU parallelism with threads; PEP 703 proposes making it optional.",
+      "source": "CPython docs 3.13 — Glossary (“global interpreter lock”); PEP 703"
+    },
+    {
+      "id": "gl03_02",
+      "term_es": "async / await",
+      "term_en": "async / await",
+      "definition_es": "Sintaxis de concurrencia cooperativa: una función `async def` es una corrutina y `await` cede el control al event loop en un punto de suspensión. Es concurrencia de un solo hilo, no paralelismo.",
+      "definition_en": "Cooperative-concurrency syntax: an `async def` function is a coroutine and `await` yields control to the event loop at a suspension point. It is single-threaded concurrency, not parallelism.",
+      "source": "PEP 492 — Coroutines with async and await syntax; CPython docs 3.13 — asyncio"
+    },
+    {
+      "id": "gl03_03",
+      "term_es": "Event loop",
+      "term_en": "Event loop",
+      "definition_es": "Núcleo de asyncio que planifica y ejecuta tareas y callbacks en un solo hilo. Una llamada bloqueante (p. ej. `time.sleep`) congela todo el loop; hay que usar equivalentes `await`-ables.",
+      "definition_en": "The core of asyncio that schedules and runs tasks and callbacks on a single thread. A blocking call (e.g. `time.sleep`) freezes the whole loop; use awaitable equivalents instead.",
+      "source": "CPython docs 3.13 — asyncio § Event Loop"
+    },
+    {
+      "id": "gl03_04",
+      "term_es": "Metaclase",
+      "term_en": "Metaclass",
+      "definition_es": "La clase de una clase: controla cómo se crea una clase. `type` es la metaclase por defecto; para muchos casos `__init_subclass__` es una alternativa más simple que una metaclase custom.",
+      "definition_en": "The class of a class: it controls how a class is created. `type` is the default metaclass; for many cases `__init_subclass__` is a simpler alternative to a custom metaclass.",
+      "source": "CPython docs 3.13 — Data model § Metaclasses; PEP 487"
+    },
+    {
+      "id": "gl03_05",
+      "term_es": "Descriptor",
+      "term_en": "Descriptor",
+      "definition_es": "Objeto que define `__get__`/`__set__`/`__delete__` y gobierna el acceso a un atributo de otra clase. Sustenta `property`, `classmethod`, `staticmethod` y los campos de los ORMs.",
+      "definition_en": "An object defining `__get__`/`__set__`/`__delete__` that governs access to an attribute of another class. It underpins `property`, `classmethod`, `staticmethod` and ORM fields.",
+      "source": "CPython docs 3.13 — Descriptor HowTo Guide; Data model § Implementing Descriptors"
+    },
+    {
+      "id": "gl03_06",
+      "term_es": "Type hint",
+      "term_en": "Type hint",
+      "definition_es": "Anotación de tipo (`x: int`) que no se verifica en tiempo de ejecución sino con herramientas estáticas como mypy. Desde PEP 695 hay sintaxis nativa para genéricos y alias de tipo.",
+      "definition_en": "A type annotation (`x: int`) that is not checked at run time but by static tools such as mypy. Since PEP 695 there is native syntax for generics and type aliases.",
+      "source": "PEP 484 — Type Hints; PEP 695 — Type Parameter Syntax"
+    },
+    {
+      "id": "gl03_07",
+      "term_es": "Protocol (subtipado estructural)",
+      "term_en": "Protocol (structural subtyping)",
+      "definition_es": "Interfaz basada en la forma: una clase satisface un `Protocol` si tiene los métodos requeridos, sin heredar de él. Es el «duck typing» comprobado estáticamente.",
+      "definition_en": "A shape-based interface: a class satisfies a `Protocol` if it has the required methods, without inheriting from it. It is “duck typing” checked statically.",
+      "source": "PEP 544 — Protocols: Structural subtyping"
+    },
+    {
+      "id": "gl03_08",
+      "term_es": "multiprocessing vs threading",
+      "term_en": "multiprocessing vs threading",
+      "definition_es": "`threading` comparte memoria pero está limitado por el GIL para trabajo de CPU; `multiprocessing` usa procesos separados con memoria propia (los datos se envían por `pickle`) y logra paralelismo real de CPU.",
+      "definition_en": "`threading` shares memory but is GIL-bound for CPU work; `multiprocessing` uses separate processes with their own memory (data is sent via `pickle`) and achieves true CPU parallelism.",
+      "source": "CPython docs 3.13 — multiprocessing; threading"
+    },
+    {
+      "id": "gl03_09",
+      "term_es": "Recolección de basura (GC)",
+      "term_en": "Garbage collection (GC)",
+      "definition_es": "CPython libera memoria principalmente por conteo de referencias; un recolector generacional cíclico adicional detecta y libera ciclos de referencias que el conteo por sí solo no puede.",
+      "definition_en": "CPython frees memory chiefly by reference counting; an additional generational cyclic collector detects and frees reference cycles that counting alone cannot.",
+      "source": "CPython docs 3.13 — gc; Data model § object lifecycle"
+    },
+    {
+      "id": "gl03_10",
+      "term_es": "Complejidad Big-O",
+      "term_en": "Big-O complexity",
+      "definition_es": "Notación del crecimiento asintótico del coste de un algoritmo. En CPython, indexar una lista es O(1) pero `list.insert(0, x)` es O(n); concatenar strings en bucle es O(n²) — usar `deque`, `join` o `collections`.",
+      "definition_en": "Notation for the asymptotic growth of an algorithm's cost. In CPython, indexing a list is O(1) but `list.insert(0, x)` is O(n); string concatenation in a loop is O(n²) — use `deque`, `join` or `collections`.",
+      "source": "CPython docs 3.13 — TimeComplexity wiki; collections"
+    }
+  ]
+}

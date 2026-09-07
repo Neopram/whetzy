@@ -1,0 +1,185 @@
+"""Content loader: ingests the curriculum (tracks.json) and every question
+bank file under content/questions/** into the database.
+
+Idempotent: re-running upserts tracks/modules/skills/questions by primary key,
+so it is safe to run on every deploy or manually via `python -m app.services.content_loader`.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import json
+import os
+from pathlib import Path
+
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.db import AsyncSessionLocal, init_db
+from app.models.content import GlossaryTerm, Module, Question, Skill, Track
+
+
+def _content_root() -> Path:
+    # Override with CONTENT_DIR (e.g. /app/content in Docker); else infer
+    # from the repo layout: backend/app/services/content_loader.py -> repo/content.
+    env_dir = os.getenv("CONTENT_DIR")
+    if env_dir:
+        return Path(env_dir)
+    return Path(__file__).resolve().parents[3] / "content"
+
+
+async def _upsert_track(db: AsyncSession, data: dict) -> None:
+    track = await db.get(Track, data["id"])
+    if track is None:
+        track = Track(id=data["id"])
+        db.add(track)
+    track.name_es = data["name_es"]
+    track.name_en = data["name_en"]
+    track.order = data.get("order", 0)
+    track.icon = data.get("icon", "📘")
+    track.color = data.get("color", "#1CB0F6")
+
+    for m_order, m in enumerate(data.get("modules", []), start=1):
+        module = await db.get(Module, m["id"])
+        if module is None:
+            module = Module(id=m["id"], track_id=track.id)
+            db.add(module)
+        module.track_id = track.id
+        module.name_es = m["name_es"]
+        module.name_en = m["name_en"]
+        module.order = m.get("order", m_order)
+        module.description_es = m.get("description_es", "")
+        module.description_en = m.get("description_en", "")
+        module.min_mastery_to_unlock = m.get("min_mastery_to_unlock", 0.7)
+
+        for s_order, s in enumerate(m.get("skills", []), start=1):
+            skill = await db.get(Skill, s["id"])
+            if skill is None:
+                skill = Skill(id=s["id"], module_id=module.id)
+                db.add(skill)
+            skill.module_id = module.id
+            skill.name_es = s["name_es"]
+            skill.name_en = s["name_en"]
+            skill.order = s.get("order", s_order)
+
+
+async def _upsert_question(db: AsyncSession, q: dict) -> bool:
+    """Returns True if the question was ingested, False if skipped (unknown skill)."""
+    skill = await db.get(Skill, q["skill_id"])
+    if skill is None:
+        return False
+
+    question = await db.get(Question, q["id"])
+    if question is None:
+        question = Question(id=q["id"], skill_id=q["skill_id"])
+        db.add(question)
+    question.skill_id = q["skill_id"]
+    question.type = q.get("type", "mcq")
+    question.difficulty_tier = q.get("difficulty_tier", "medium")
+    question.question_es = q["question_es"]
+    question.question_en = q["question_en"]
+    question.options_es = q.get("options_es")
+    question.options_en = q.get("options_en")
+    question.correct_index = q.get("correct_index")
+    question.correct_answer_es = q.get("correct_answer_es")
+    question.correct_answer_en = q.get("correct_answer_en")
+    question.explanation_es = q.get("explanation_es", "")
+    question.explanation_en = q.get("explanation_en", "")
+    question.source = q.get("source")
+    question.expected_time_ms = q.get("expected_time_ms", 15000)
+    if "difficulty" in q:  # IRT difficulty (-3..3) -> seed Elo rating
+        question.elo_rating = 1500.0 + float(q["difficulty"]) * 120.0
+    if "discrimination" in q:
+        question.discrimination = float(q["discrimination"])
+    if "guessing" in q:
+        question.guessing = float(q["guessing"])
+    return True
+
+
+async def _upsert_glossary_term(db: AsyncSession, t: dict, order: int) -> bool:
+    """Returns True if ingested, False if skipped (unknown track)."""
+    track = await db.get(Track, t["track_id"])
+    if track is None:
+        return False
+
+    term = await db.get(GlossaryTerm, t["id"])
+    if term is None:
+        term = GlossaryTerm(id=t["id"], track_id=t["track_id"])
+        db.add(term)
+    term.track_id = t["track_id"]
+    term.term_es = t["term_es"]
+    term.term_en = t["term_en"]
+    term.definition_es = t["definition_es"]
+    term.definition_en = t["definition_en"]
+    term.source = t.get("source")
+    term.order = t.get("order", order)
+    return True
+
+
+async def load_content(db: AsyncSession) -> dict:
+    root = _content_root()
+    stats = {"tracks": 0, "questions": 0, "skipped": 0, "files": 0, "glossary": 0}
+
+    # 1) Curriculum
+    tracks_file = root / "curriculum" / "tracks.json"
+    curriculum = json.loads(tracks_file.read_text(encoding="utf-8"))
+    for track_data in curriculum.get("tracks", []):
+        await _upsert_track(db, track_data)
+        stats["tracks"] += 1
+    await db.flush()
+
+    # 2) Question banks
+    questions_dir = root / "questions"
+    for qfile in sorted(questions_dir.rglob("*.json")):
+        payload = json.loads(qfile.read_text(encoding="utf-8"))
+        items = payload.get("questions", payload if isinstance(payload, list) else [])
+        stats["files"] += 1
+        for q in items:
+            ok = await _upsert_question(db, q)
+            stats["questions" if ok else "skipped"] += 1
+
+    # 3) Glossary (bilingual domain terms per track). Optional dir.
+    glossary_dir = root / "glossary"
+    if glossary_dir.is_dir():
+        for gfile in sorted(glossary_dir.glob("*.json")):
+            payload = json.loads(gfile.read_text(encoding="utf-8"))
+            terms = payload.get("terms", payload if isinstance(payload, list) else [])
+            file_track_id = payload.get("track_id")
+            stats["files"] += 1
+            for order, t in enumerate(terms, start=1):
+                # track_id may be declared once at file level or per term.
+                t = {**t, "track_id": t.get("track_id", file_track_id)}
+                ok = await _upsert_glossary_term(db, t, order)
+                if ok:
+                    stats["glossary"] += 1
+                else:
+                    stats["skipped"] += 1
+        await db.flush()
+
+    # 4) Denormalized question count per track (explicit join — async has no lazy load)
+    await db.flush()
+    counts = await db.execute(
+        select(Module.track_id, func.count(Question.id))
+        .select_from(Question)
+        .join(Skill, Question.skill_id == Skill.id)
+        .join(Module, Skill.module_id == Module.id)
+        .group_by(Module.track_id)
+    )
+    count_by_track = {track_id: n for track_id, n in counts.all()}
+    tracks = (await db.execute(select(Track))).scalars().all()
+    for track in tracks:
+        track.total_questions = count_by_track.get(track.id, 0)
+
+    await db.commit()
+    return stats
+
+
+async def main() -> None:
+    await init_db()
+    async with AsyncSessionLocal() as db:
+        stats = await load_content(db)
+    print(f"Content loaded: {stats}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
