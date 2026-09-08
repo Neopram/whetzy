@@ -8,6 +8,10 @@ export default defineConfig({
     pool: 'threads',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
+    // e2e/*.spec.ts are Playwright tests (test.describe/test from
+    // @playwright/test, a different runner) — vitest's default glob would
+    // otherwise pick them up and fail on the unfamiliar test.describe() call.
+    exclude: ['**/node_modules/**', '**/e2e/**'],
     coverage: {
       provider: 'v8',
       include: ['src/hooks/**', 'src/services/**'],
