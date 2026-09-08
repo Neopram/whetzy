@@ -41,6 +41,7 @@ class UserRead(UserBase):
     last_active: datetime | None = None
     created_at: datetime
     is_premium: bool
+    email_verified: bool = False
 
 
 class Token(BaseModel):

@@ -22,6 +22,7 @@ from app.core.security import (
     verify_password,
     verify_token,
 )
+from app.models.email_verification import EmailVerificationToken
 from app.models.password_reset import PasswordResetToken
 from app.models.user import User
 from app.schemas.user import RefreshRequest, Token, UserCreate, UserRead
@@ -55,10 +56,27 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> T
         hashed_password=get_password_hash(payload.password),
         display_name=payload.display_name,
         language=payload.language,
+        email_verified=False,
     )
     db.add(user)
     await db.commit()
     await db.refresh(user)
+
+    # Fire-and-forget email verification.
+    raw_token = secrets.token_urlsafe(32)
+    token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
+    evt = EmailVerificationToken(
+        user_id=user.id,
+        token_hash=token_hash,
+        expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
+    )
+    db.add(evt)
+    await db.commit()
+    from app.services import email as email_svc
+    email_svc.send_email_verification(
+        to=user.email, name=user.display_name, token=raw_token, lang=user.language
+    )
+    email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
 
     return Token(
         access_token=create_access_token(user.id),
@@ -131,6 +149,76 @@ async def delete_account(
             "Se borrará permanentemente en 30 días."
         )
     }
+
+
+@router.post("/verify-email", status_code=status.HTTP_200_OK)
+async def verify_email(
+    payload: ResetPasswordRequest,  # reuse {token} field
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Consume an email verification link (single-use, 24h TTL)."""
+    token_hash = hashlib.sha256(payload.token.encode()).hexdigest()
+    result = await db.execute(
+        select(EmailVerificationToken).where(EmailVerificationToken.token_hash == token_hash)
+    )
+    evt = result.scalar_one_or_none()
+    now = datetime.now(timezone.utc)
+    if evt is None or evt.used or evt.expires_at.replace(tzinfo=timezone.utc) < now:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired verification link",
+        )
+
+    result2 = await db.execute(select(User).where(User.id == evt.user_id))
+    user = result2.scalar_one_or_none()
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid token")
+
+    user.email_verified = True
+    evt.used = True
+    await db.commit()
+    return {"message": "Email verified. You now have full access."}
+
+
+class ResendVerificationRequest(BaseModel):
+    email: str
+
+
+@router.post("/resend-verification", status_code=status.HTTP_200_OK)
+async def resend_verification(
+    payload: ResendVerificationRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Resend the email verification link (rate limited: max 1 pending token per user)."""
+    result = await db.execute(select(User).where(User.email == payload.email))
+    user = result.scalar_one_or_none()
+
+    if user and user.is_active and not user.email_verified:
+        # Invalidate any existing unused tokens.
+        existing = await db.execute(
+            select(EmailVerificationToken).where(
+                EmailVerificationToken.user_id == user.id,
+                EmailVerificationToken.used == False,  # noqa: E712
+            )
+        )
+        for tok in existing.scalars().all():
+            tok.used = True
+
+        raw_token = secrets.token_urlsafe(32)
+        token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
+        evt = EmailVerificationToken(
+            user_id=user.id,
+            token_hash=token_hash,
+            expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
+        )
+        db.add(evt)
+        await db.commit()
+        from app.services import email as email_svc
+        email_svc.send_email_verification(
+            to=user.email, name=user.display_name, token=raw_token, lang=user.language
+        )
+
+    return {"message": "If that email is registered and unverified, a new link has been sent."}
 
 
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
