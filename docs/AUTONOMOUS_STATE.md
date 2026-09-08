@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ 4.5 ✅ P.9 ✅ DONE; 271 tests; Phase 4 67%→83%
+> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ P.9 ✅ 4.5 ✅ 5.4 ✅ DONE; 276 tests; Phase 4 83%, Phase 5 3%→20%
 
 ---
 
@@ -50,7 +50,7 @@
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
 | 3 | Gamificación + duelos + offline + Lottie | 92% | Duel E2E prod ✅; Pyodide pendiente |
 | 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
-| 5 | Pipeline multi-agente + analytics | 3% | No construido |
+| 5 | Pipeline multi-agente + analytics | 20% | 5.4 analytics schema+funnel ✅; sin agente autor/QA, sin duplicados, sin dashboard |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
@@ -115,7 +115,7 @@
 | 5.1 | 3 | Agente autor de contenido: genera Q desde fuente con cita | TODO | Genera 10 Q válidas de un doc fuente; schema válido, source poblado |
 | 5.2 | 3 | Agente QA de contenido: valida distractores, dificultad, cita | TODO | Detecta ≥90% de Q sembradas con defectos conocidos |
 | 5.3 | 4 | Detección de duplicados por embeddings | TODO | Detecta paráfrasis en el banco actual; reporte de candidatos |
-| 5.4 | 3 | Esquema de eventos de analytics + ingesta | TODO | Eventos tipados; funnel registro→primer quiz→D1→D7 consultable |
+| 5.4 | 3 | Esquema de eventos de analytics + ingesta | DONE | AnalyticsEvent table + migration i9j0k1l2m3n4; track(db, event_type, user_id, properties); events: user_registered (auth.register) + first_quiz_answer (quiz.submit, questions_answered==0); GET /analytics/funnel (X-Admin-Key) → registrations+first_quiz+d1+d7+rates; 5 integration tests; 276/276 tests; mypy strict ✅; commit 3fbaf31 |
 | 5.5 | 4 | Dashboard de analytics (admin) | TODO | Retención, engagement, dominio por skill, embudo |
 
 ### 6 — Observabilidad + límites de servicio
