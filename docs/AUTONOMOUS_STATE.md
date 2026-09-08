@@ -73,7 +73,7 @@
 | Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | TODO | `mypy app --strict` 0 errores; `tsc --noEmit --strict` 0 errores |
 | Q.8 | 2 | Lint zero-warnings: ruff + eslint | TODO | `ruff check` y `eslint` sin warnings. Reglas en CI |
 | Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y componentes críticos | TODO | ≥70% en `src/hooks/` y `src/services/`. QuizScreen, DuelScreen con render tests |
-| Q.10 | 3 | CI real: workflow en `master` (hoy apunta a `main`, nunca corre) | TODO | GH Actions verde en push: lint + mypy + pytest + tsc + vitest + build |
+| Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | TODO | GH Actions verde en push con todos los pasos; sin `\|\| true` |
 
 ### 2 — Cierre Fase 2
 
@@ -159,6 +159,39 @@
 | 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | TODO | Flujos principales navegables con lector de pantalla |
 | 9.8 | 4 | Sitio de marketing + pricing | TODO | Landing con propuesta de valor, pricing, CTA a checkout |
 
+### Dependencias
+
+No arrancar la tarea de la izquierda sin las de la derecha en `DONE`:
+
+| Tarea | Requiere |
+|---|---|
+| Q.2, Q.3, Q.4, Q.9 | Q.1 |
+| Q.7, Q.8 | Q.5 |
+| Q.10 | Q.1, Q.7, Q.8 |
+| 2.1, 3.1, 3.2 | 8.1 |
+| 4.2, 4.3, 4.4 | 4.1 |
+| 4.6 | 4.2, 4.3 |
+| 5.2 | 5.1 |
+| 5.5 | 5.4 |
+| 6.2, 6.3, 6.4 | 6.1 |
+| 7.3 | 7.2 |
+| 7.6 | 7.5 |
+| 9.3, 9.5, 9.6, 9.7 | 7.5 |
+| 9.8 | 7.2 |
+
+### Grupos paralelos
+
+Archivos disjuntos garantizados. Pueden correr como workers simultáneos
+(máx. 3). Si una tarea no aparece aquí, va en serie.
+
+| Grupo | Tareas | Disjunción |
+|---|---|---|
+| G1 | Q.2 ‖ Q.4 ‖ Q.5 | `tests/unit/engine/` ‖ `tests/unit/gamification/` ‖ solo lectura + reporte |
+| G2 | Q.3a (auth, quiz) ‖ Q.3b (progress, glossary, placement) ‖ Q.3c (duels, tutor) | un archivo de test por endpoint |
+| G3 | 6.1 ‖ 6.5 ‖ 6.6 | `core/logging.py` ‖ `api/health.py` ‖ `core/ratelimit.py` |
+| G4 | 4.1 ‖ 5.4 ‖ 7.1 | `app/ml/` ‖ `app/analytics/` ‖ informe + fixes puntuales |
+| G5 | 9.1 ‖ 9.4 ‖ 7.4 | `design-tokens.css` + componentes ‖ `legal/` + páginas ‖ `i18n/` |
+
 ---
 
 ## 3. Cola HUMAN-BLOCKED
@@ -172,6 +205,8 @@
 | H.3 | Google Play Console | — | Cuenta ($25 único) |
 | H.4 | Stripe cuenta live | Integración en test-mode | Activar cuenta, claves live |
 | H.5 | Submisión a stores | Assets + checklists | Subir builds y responder review |
+| H.6 | Cadena de sesiones | Auto-programación vía scheduled task al cierre de cada sesión | Mantener la app Claude abierta; borrar el task activo para detener la cadena |
+| H.7 | Rutina remota (opcional) | `RemoteTrigger` disponible; falta repo conectado | Conectar `Neopram/whetzy` en claude.ai → la siguiente sesión migra la cadena a la nube |
 
 ---
 
@@ -195,3 +230,16 @@
 | 2 | 2026-09-07 | Groq + qwen3.8-27b | Gratis, latencia baja | OpenAI (coste), Llama-3.3-70b (no disponible) |
 | 3 | 2026-09-08 | Alembic con auto-stamp en `start.sh` | DB de prod preexistente sin `alembic_version` | Recrear DB (pierde usuarios) |
 | 4 | 2026-09-08 | DKT con torch opcional + fallback EWA | Railway free tier puede no soportar torch | torch obligatorio (riesgo OOM) |
+| 5 | 2026-09-08 | Orquestación por ledger + auto-programación de sesiones (scheduled task local, one-shot +6h) | Un prompt monolítico degrada la atención; el estado debe vivir fuera del contexto. One-shot en vez de cron: cada sesión decide si hay trabajo antes de programar la siguiente, y la cadena se corta sola sin presupuesto | Cron ciego (quema presupuesto sin mirar el ledger); un solo prompt gigante |
+| 6 | 2026-09-08 | Workers paralelos sin worktree por defecto, sobre grupos de archivos disjuntos | Evita el coste de merge; la disjunción la garantiza el ledger. Worktree solo para refactors amplios | Worktree siempre (merge en cada tarea) |
+
+---
+
+## 6. Cadena de sesiones
+
+> Una fila por sesión programada. La sesión que la crea la anota; la que la
+> consume la marca.
+
+| taskId | Programada para | Creada por | Estado |
+|---|---|---|---|
+| _(pendiente de la primera programación)_ | | | |
