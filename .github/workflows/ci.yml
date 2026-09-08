@@ -106,6 +106,21 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: whetzy
+          POSTGRES_PASSWORD: whetzy
+          POSTGRES_DB: whetzy_e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
 
@@ -136,7 +151,7 @@ jobs:
       - name: Run DB migrations for E2E
         working-directory: backend
         env:
-          DATABASE_URL: "sqlite+aiosqlite:///./e2e-test.db"
+          DATABASE_URL: "postgresql+asyncpg://whetzy:whetzy@localhost:5432/whetzy_e2e"
           ENVIRONMENT: test
           SECRET_KEY: e2e-test-secret-for-ci
           GROQ_API_KEY: ""
@@ -146,7 +161,7 @@ jobs:
         working-directory: e2e
         env:
           CI: "true"
-          DATABASE_URL: "sqlite+aiosqlite:///./e2e-test.db"
+          DATABASE_URL: "postgresql+asyncpg://whetzy:whetzy@localhost:5432/whetzy_e2e"
           ENVIRONMENT: test
           SECRET_KEY: e2e-test-secret-for-ci
           GROQ_API_KEY: ""

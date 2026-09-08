@@ -7,10 +7,10 @@ const BACKEND_URL = 'http://localhost:8000';
 
 const E2E_ENV: NodeJS.ProcessEnv = {
   ...process.env,
-  DATABASE_URL: 'sqlite+aiosqlite:///./e2e-test.db',
-  ENVIRONMENT: 'test',
-  SECRET_KEY: 'e2e-test-secret',
-  GROQ_API_KEY: '',
+  DATABASE_URL: process.env.DATABASE_URL ?? 'postgresql+asyncpg://whetzy:whetzy@localhost:5432/whetzy_e2e',
+  ENVIRONMENT: process.env.ENVIRONMENT ?? 'test',
+  SECRET_KEY: process.env.SECRET_KEY ?? 'e2e-local-secret',
+  GROQ_API_KEY: process.env.GROQ_API_KEY ?? '',
 };
 
 /** Poll /health/ready until the backend responds 200 (webServer config should
