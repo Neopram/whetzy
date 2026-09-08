@@ -2,13 +2,10 @@
 
 from __future__ import annotations
 
-import uuid
 from datetime import date, timedelta
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
-
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.session import Response, StudySession
 from app.models.user import User, UserBadge, UserSkillState

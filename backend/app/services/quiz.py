@@ -13,14 +13,14 @@ from __future__ import annotations
 
 import random
 import uuid
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.content import Module, Question, Skill, Track
+from app.models.content import Module, Question, Skill
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
 from app.schemas.content import QuestionPublic

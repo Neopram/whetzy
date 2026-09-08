@@ -17,8 +17,7 @@ if TYPE_CHECKING:
     pass
 
 try:
-    import torch
-    import torch.nn as nn
+    import torch  # noqa: F401 — availability flag; used in _DKT.__init__
 
     _TORCH_AVAILABLE = True
 except ImportError:

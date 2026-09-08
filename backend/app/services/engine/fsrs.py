@@ -10,7 +10,7 @@ Grades: 1=Again, 2=Hard, 3=Good, 4=Easy
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Optional
 
