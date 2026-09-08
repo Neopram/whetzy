@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión x) — 2.1 DONE: Pyodide E2E (force_question_id + fill_blank_exec test, CI ✓); 7.8 DONE: backup/restore runbook + scripts (restore probado: 1253 Q, 544 KB, < 5 s)
+> Última actualización: 2026-09-08 (sesión y) — 9.4 DONE: LegalScreen + ProfileScreen links, b6ab6dc; 4.1 DONE: DKT training pipeline, 33 skills, val_auc=0.24, model.pt 158 KB
 
 ---
 
@@ -101,7 +101,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 4.1 | 2 | Pipeline de entrenamiento DKT: dataset desde `responses`, split temporal | TODO | `python -m app.ml.train_dkt` produce checkpoint versionado |
+| 4.1 | 2 | Pipeline de entrenamiento DKT: dataset desde `responses`, split temporal | DONE | `python -m app.ml.train_dkt --min-seqs 1` → `~/.whetzy/models/dkt/v1/model.pt` (158 KB) + metadata.json (33 skills, val_auc=0.24, 10 epochs). OneDrive gotcha: default output = ~/.whetzy/ (no OneDrive). |
 | 4.2 | 2 | Harness de evaluación: AUC/ACC de DKT vs BKT baseline | TODO | Reporte con AUC de ambos; DKT ≥ BKT o se documenta por qué no |
 | 4.3 | 3 | Registro de modelos: checkpoints versionados, carga en startup, rollback | TODO | `models/dkt/v{N}/` + metadata; API reporta versión activa |
 | 4.4 | 3 | Caché de inferencia (no correr LSTM por request) | TODO | p99 de `/progress/skills` < 200ms con DKT activo |
@@ -159,7 +159,7 @@
 | 9.1 | 2 | Revisión del sistema de diseño: tokens, motion, jerarquía | TODO | Tokens coherentes; sin valores mágicos; motion con `prefers-reduced-motion` |
 | 9.2 | 2 | Accesibilidad WCAG 2.2 AA | TODO | axe-core 0 violaciones; navegación por teclado completa; contraste AA |
 | 9.3 | 3 | Assets de store: iconos, screenshots, video preview | TODO | Todos los tamaños iOS/Android generados desde fuente vectorial |
-| 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | TODO | Páginas publicadas y enlazadas; flujo de borrado funcional |
+| 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | DONE | LegalScreen + /privacy + /terms routes + ProfileScreen links a /privacy, /terms, /delete-account — commit b6ab6dc ✅ |
 | 9.5 | 3 | Checklist App Store Review Guidelines | TODO | Cada guideline aplicable evaluada con evidencia |
 | 9.6 | 3 | Play Store: Data Safety + target API level | TODO | Formulario completo y consistente con el código real |
 | 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | TODO | Flujos principales navegables con lector de pantalla |
