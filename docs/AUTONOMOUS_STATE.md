@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ P.9 ✅ 4.5 ✅ 5.4 ✅ 7.2 ✅ 7.3 ✅ 3.3 ✅ DONE; 310 tests; Phase 3 92%→96%, Phase 7 55%
+> Última actualización: 2026-09-08 (sesión ad) — 4.5 ✅ 5.4 ✅ 7.2 ✅ 7.3 ✅ 3.3 ✅ P.13 ✅ DONE; 318 tests; P 85%→92%
 
 ---
 
@@ -56,7 +56,7 @@
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
-| P | Producto — huecos que impiden vender | 85% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado DONE; sin banco 1.5k, recordatorios |
+| P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
 
 ---
@@ -184,7 +184,7 @@
 | P.10 | 3 | Modo oscuro (claro sigue por defecto) | DONE | Tokens duales ✅ (design-tokens.css: :root light + @media prefers-color-scheme dark + [data-theme="dark"]); toggle en ajustes ✅ (ProfileScreen.tsx L86-91: role="switch" aria-checked); respeta prefers-color-scheme ✅ (getStoredTheme() checks matchMedia on first load); contraste AA ✅ (heredado de 9.2 DONE); tsc 0 errores |
 | P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | DONE | CI: pip-audit --fail-on HIGH + npm audit --audit-level=high; real pytest |
 | P.12 | 2 | Rendimiento DB: índices, N+1, `EXPLAIN` en las queries calientes | DONE | 8 índices compuestos (migration e5f6a7b8c9d0): skill_elo, session_correct, user_date, etc. |
-| P.13 | 3 | Recordatorios de racha sin culpa (push web + email opcional) | TODO | Configurable; texto neutro; opt-out en un toque; nunca más de uno al día |
+| P.13 | 3 | Recordatorios de racha sin culpa (push web + email opcional) | DONE | User.push_streak_enabled+last_streak_reminder_at; migration l2m3n4o5p6q7; PATCH /push/preferences (opt-out 1 tap); POST /push/streak-reminder (admin, 1/day, skip 0-streak/disabled/already-reminded); ProfileScreen toggle (push.supported gate); neutral copy ES+EN; 8 tests; 318/318 tests; tsc 0 err; commit 74cd3dc |
 
 ### 10 — Marketplace de certificaciones (estratégico, tras la 9)
 
