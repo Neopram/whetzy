@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión af) — 7.4 ✅ DONE; 10 screens i18next; tsc 0 err; commit 8f99ad9
+> Última actualización: 2026-09-08 (sesión af) — 7.4 ✅ 3.2 ✅ DONE; offline sync wired + E2E; commit 181d857
 
 ---
 
@@ -48,7 +48,7 @@
 | 0 | Rebrand + Auth + Deploy | 100% | ✅ CERRADA |
 | 1 | Contenido bilingüe + glosario + currículo | 100% | ✅ CERRADA |
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
-| 3 | Gamificación + duelos + offline + Lottie | 96% | Duel E2E prod ✅; push notifs ✅; Pyodide/offline E2E pendiente |
+| 3 | Gamificación + duelos + offline + Lottie | 99% | Duel E2E prod ✅; push notifs ✅; offline sync E2E ✅; solo Duel E2E multi-user pendiente (UI stub) |
 | 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
 | 5 | Pipeline multi-agente + analytics | 60% | 5.1 author agent ✅; 5.2 QA agent ✅; 5.4 analytics ✅; sin duplicados, sin dashboard |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
@@ -94,7 +94,7 @@
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 3.1 | 2 | Duel E2E en browser (2 usuarios, Playwright) | TODO | Reto → ambos responden → resultado con ganador, verificado en UI. Bloqueador real: `joinDuel` en DuelScreen.tsx es un stub (toast "próximamente") — el oponente no puede responder desde el navegador todavía. Hay que construir esa pantalla antes de que este test tenga sentido |
-| 3.2 | 3 | Offline sync E2E: responder offline → volver online → sync verificado | TODO | Playwright con `context.setOffline(true)`; respuesta persiste y sincroniza |
+| 3.2 | 3 | Offline sync E2E: responder offline → volver online → sync verificado | DONE | QuizScreen enqueues on TypeError/offline (IDB), synthetic feedback to advance; offline.spec.ts 3rd test: IDB queued → online → IDB drained; tsc 0 err; commit 181d857 |
 | 3.3 | 3 | Notificaciones de duelo (push web) | DONE | pywebpush+VAPID; PushSubscription model+migration k1l2m3n4o5p6; GET /push/vapid-key+POST /push/subscribe+DELETE /push/subscribe; push_service.send_to_user (410 Gone cleanup); challenge fires to opponent; sw.js: push event→showNotification, notificationclick→focus; usePushNotifications.ts hook; 8 integration tests; 310/310 tests; tsc 0 err; commit 2e64107 |
 
 ### 4 — DKT + Churn + MLOps
