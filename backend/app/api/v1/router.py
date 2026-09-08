@@ -15,6 +15,7 @@ from app.api.v1.endpoints import (
     ml,
     placement,
     progress,
+    push,
     quiz,
     reports,
     social,
@@ -37,3 +38,4 @@ api_router.include_router(ml.router, prefix="/ml", tags=["ml"])
 api_router.include_router(content.router, prefix="/content", tags=["content"])
 api_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
 api_router.include_router(billing.router, prefix="/billing", tags=["billing"])
+api_router.include_router(push.router, prefix="/push", tags=["push"])

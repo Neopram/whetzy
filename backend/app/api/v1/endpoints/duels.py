@@ -157,6 +157,19 @@ async def challenge(
     await db.commit()
     await db.refresh(duel)
 
+    # Fire push notification to opponent (best-effort — don't fail the response)
+    from app.services import push_service as _push
+    try:
+        await _push.send_to_user(
+            db,
+            opponent.id,
+            title="⚔️ You've been challenged!",
+            body=f"{current_user.display_name} challenged you to a duel.",
+            tag="duel-challenge",
+        )
+    except Exception:
+        pass  # non-fatal
+
     return DuelChallengeResponse(
         duel_id=str(duel.id),
         skill_id=skill_id,

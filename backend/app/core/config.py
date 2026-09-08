@@ -113,6 +113,17 @@ class Settings(BaseSettings):
     # Requests must supply X-Admin-Key: <this value>. Empty = endpoint disabled.
     CONTENT_ADMIN_KEY: str = ""
 
+    # --- Web Push / VAPID (3.3) ----------------------------------------------
+    # Generate with: python -m py_vapid --gen
+    # Set VAPID_EMAIL to your contact address (required by browser push services).
+    VAPID_PRIVATE_KEY: str = ""   # base64url-encoded DER EC private key
+    VAPID_PUBLIC_KEY: str = ""    # base64url-encoded uncompressed public key point
+    VAPID_EMAIL: str = "mailto:hello@whetzy.com"
+
+    # --- Streak reminder (P.13) -----------------------------------------------
+    # Max push reminders per user per day (enforced client-side; limit at backend too).
+    STREAK_REMINDER_MAX_PER_DAY: int = 1
+
     # --- Stripe (7.2) -------------------------------------------------------
     STRIPE_SECRET_KEY: str = ""         # sk_test_... or sk_live_...
     STRIPE_WEBHOOK_SECRET: str = ""     # whsec_...

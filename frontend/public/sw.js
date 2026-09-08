@@ -58,6 +58,41 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
+// ── Web Push: show notification ───────────────────────────────────────────────
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+  let payload;
+  try {
+    payload = event.data.json();
+  } catch {
+    payload = { title: 'Whetzy', body: event.data.text(), tag: 'whetzy' };
+  }
+  const { title = 'Whetzy', body = '', tag = 'whetzy', ...rest } = payload;
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body,
+      tag,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-72.png',
+      data: rest,
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: 'window', includeUncontrolled: true })
+      .then((clientList) => {
+        for (const client of clientList) {
+          if ('focus' in client) return client.focus();
+        }
+        return self.clients.openWindow('/');
+      }),
+  );
+});
+
 // ── Background Sync: flush offline answers ────────────────────────────────────
 self.addEventListener('sync', (event) => {
   if (event.tag === OFFLINE_ANSWER_TAG) {

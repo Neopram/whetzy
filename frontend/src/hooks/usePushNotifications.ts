@@ -1,0 +1,146 @@
+/**
+ * Web Push subscription management (3.3).
+ *
+ * Registers the current user for Web Push via VAPID.  The hook:
+ *   1. Fetches the VAPID public key from the backend.
+ *   2. Calls Notification.requestPermission() if not yet granted.
+ *   3. Subscribes via PushManager and POSTs the subscription to /push/subscribe.
+ *   4. On unsubscribe, calls DELETE /push/subscribe and removes the local sub.
+ *
+ * Usage:
+ *   const { supported, permission, subscribe, unsubscribe } = usePushNotifications();
+ */
+
+import { useCallback, useEffect, useState } from 'react';
+
+const API_BASE = '/api/v1/push';
+const ACCESS_KEY = 'whetzy_access_token';
+
+function getToken(): string | null {
+  try {
+    return localStorage.getItem(ACCESS_KEY);
+  } catch {
+    return null;
+  }
+}
+
+async function fetchVapidKey(): Promise<string | null> {
+  try {
+    const r = await fetch(`${API_BASE}/vapid-key`);
+    if (!r.ok) return null;
+    const { vapid_public_key } = await r.json();
+    return vapid_public_key as string;
+  } catch {
+    return null;
+  }
+}
+
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(base64);
+  return Uint8Array.from([...raw].map((c) => c.charCodeAt(0)));
+}
+
+async function postSubscription(
+  sub: PushSubscription,
+  token: string,
+): Promise<void> {
+  const { endpoint, keys } = sub.toJSON() as {
+    endpoint: string;
+    keys: { p256dh: string; auth: string };
+  };
+  await fetch(`${API_BASE}/subscribe`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ endpoint, keys }),
+  });
+}
+
+async function deleteSubscription(endpoint: string, token: string): Promise<void> {
+  await fetch(`${API_BASE}/subscribe`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ endpoint }),
+  });
+}
+
+export interface PushState {
+  supported: boolean;
+  permission: NotificationPermission | 'unsupported';
+  subscribed: boolean;
+  subscribe: () => Promise<boolean>;
+  unsubscribe: () => Promise<void>;
+}
+
+export function usePushNotifications(): PushState {
+  const token = getToken();
+
+  const supported =
+    typeof window !== 'undefined' &&
+    'serviceWorker' in navigator &&
+    'PushManager' in window &&
+    'Notification' in window;
+
+  const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>(
+    supported ? Notification.permission : 'unsupported',
+  );
+  const [subscribed, setSubscribed] = useState(false);
+
+  // Check initial subscription state
+  useEffect(() => {
+    if (!supported) return;
+    navigator.serviceWorker.ready
+      .then((reg) => reg.pushManager.getSubscription())
+      .then((sub) => setSubscribed(sub !== null))
+      .catch(() => undefined);
+  }, [supported]);
+
+  const subscribe = useCallback(async (): Promise<boolean> => {
+    if (!supported || !token) return false;
+    const vapidKey = await fetchVapidKey();
+    if (!vapidKey) return false;
+
+    let perm = Notification.permission;
+    if (perm === 'default') {
+      perm = await Notification.requestPermission();
+      setPermission(perm);
+    }
+    if (perm !== 'granted') return false;
+
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidKey),
+      });
+      await postSubscription(sub, token);
+      setSubscribed(true);
+      return true;
+    } catch {
+      return false;
+    }
+  }, [supported, token]);
+
+  const unsubscribe = useCallback(async (): Promise<void> => {
+    if (!supported || !token) return;
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.getSubscription();
+      if (!sub) return;
+      await deleteSubscription(sub.endpoint, token);
+      await sub.unsubscribe();
+      setSubscribed(false);
+    } catch {
+      /* ignore */
+    }
+  }, [supported, token]);
+
+  return { supported, permission, subscribed, subscribe, unsubscribe };
+}
