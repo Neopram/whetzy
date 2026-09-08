@@ -32,19 +32,19 @@ async def test_explain_requires_auth(client: AsyncClient) -> None:
 
 async def test_explain_missing_question_id(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
 ) -> None:
     """Omitting required ``question_id`` → 422 Unprocessable Entity."""
-    resp = await client.post(f"{BASE}/explain", json={}, headers=auth_headers)
+    resp = await client.post(f"{BASE}/explain", json={}, headers=plus_auth_headers)
     assert resp.status_code == 422
 
 
 async def test_explain_no_body(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
 ) -> None:
     """Sending no body at all → 422."""
-    resp = await client.post(f"{BASE}/explain", headers=auth_headers)
+    resp = await client.post(f"{BASE}/explain", headers=plus_auth_headers)
     assert resp.status_code == 422
 
 
@@ -53,13 +53,13 @@ async def test_explain_no_body(
 
 async def test_explain_unknown_question_returns_200(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
 ) -> None:
     """Unknown question_id: tutor returns empty explanation gracefully, not 500."""
     resp = await client.post(
         f"{BASE}/explain",
         json={"question_id": "nonexistent_question_id"},
-        headers=auth_headers,
+        headers=plus_auth_headers,
     )
     assert resp.status_code == 200
     data = resp.json()
@@ -73,14 +73,14 @@ async def test_explain_unknown_question_returns_200(
 
 async def test_explain_known_question_returns_grounded_answer(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
     content_seed: dict,
 ) -> None:
     """With a seeded question, NullProvider returns the canonical explanation."""
     resp = await client.post(
         f"{BASE}/explain",
         json={"question_id": content_seed["question_id"]},
-        headers=auth_headers,
+        headers=plus_auth_headers,
     )
     assert resp.status_code == 200, resp.text
     data = resp.json()
@@ -94,7 +94,7 @@ async def test_explain_known_question_returns_grounded_answer(
 
 async def test_explain_with_conversation_history(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
     content_seed: dict,
 ) -> None:
     """Passing prior conversation turns must not crash the endpoint."""
@@ -107,7 +107,7 @@ async def test_explain_with_conversation_history(
                 {"role": "assistant", "content": "Sure, let me explain."},
             ],
         },
-        headers=auth_headers,
+        headers=plus_auth_headers,
     )
     assert resp.status_code == 200, resp.text
     data = resp.json()
@@ -116,42 +116,42 @@ async def test_explain_with_conversation_history(
 
 async def test_explain_conversation_history_none_accepted(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
     content_seed: dict,
 ) -> None:
     """Explicitly passing null for conversation_history is valid (it's optional)."""
     resp = await client.post(
         f"{BASE}/explain",
         json={"question_id": content_seed["question_id"], "conversation_history": None},
-        headers=auth_headers,
+        headers=plus_auth_headers,
     )
     assert resp.status_code == 200, resp.text
 
 
 async def test_explain_does_not_return_500_without_api_key(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
     content_seed: dict,
 ) -> None:
     """Regression guard: endpoint must never return 500 when GROQ_API_KEY is empty."""
     resp = await client.post(
         f"{BASE}/explain",
         json={"question_id": content_seed["question_id"]},
-        headers=auth_headers,
+        headers=plus_auth_headers,
     )
     assert resp.status_code != 500
 
 
 async def test_explain_response_schema(
     client: AsyncClient,
-    auth_headers: dict,
+    plus_auth_headers: dict,
     content_seed: dict,
 ) -> None:
     """Response must include all fields defined in ExplainResponse."""
     resp = await client.post(
         f"{BASE}/explain",
         json={"question_id": content_seed["question_id"]},
-        headers=auth_headers,
+        headers=plus_auth_headers,
     )
     assert resp.status_code == 200
     data = resp.json()

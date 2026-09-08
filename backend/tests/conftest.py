@@ -103,6 +103,31 @@ def auth_headers(user: User) -> dict[str, str]:
     return {"Authorization": f"Bearer {token}"}
 
 
+@pytest_asyncio.fixture
+async def plus_user(db_session: AsyncSession) -> User:
+    u = User(
+        id=uuid.uuid4(),
+        email=f"plus-{uuid.uuid4().hex[:8]}@whetzy.test",
+        username=f"plus{uuid.uuid4().hex[:6]}",
+        hashed_password=get_password_hash("Passw0rd!"),
+        display_name="Plus User",
+        language="es",
+        is_premium=True,
+        subscription_status="active",
+        subscription_tier="plus",
+    )
+    db_session.add(u)
+    await db_session.commit()
+    await db_session.refresh(u)
+    return u
+
+
+@pytest.fixture
+def plus_auth_headers(plus_user: User) -> dict[str, str]:
+    token = create_access_token(plus_user.id)
+    return {"Authorization": f"Bearer {token}"}
+
+
 # ── Minimal content seed: Track → Module → Skill → Question ──────────────────
 
 

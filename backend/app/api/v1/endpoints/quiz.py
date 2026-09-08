@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
+from app.core.entitlements import user_meets_tier
 from app.core.security import get_current_user
 from app.models.user import User
 from app.schemas.session import (
@@ -28,6 +29,11 @@ async def start_quiz(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> QuizStartResponse:
+    if payload.mode in ("exam", "review") and not user_meets_tier(current_user, "plus"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"{payload.mode.capitalize()} mode requires a Plus subscription.",
+        )
     return await quiz_service.start_session(db, current_user, payload)
 
 
