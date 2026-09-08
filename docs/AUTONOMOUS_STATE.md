@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión v) — Q.7+Q.8+Q.9+Q.10 DONE; CI ✓ verde (backend 2m05s + frontend 35s); 229 back + 39 front tests; fase Q cerrada
+> Última actualización: 2026-09-08 (sesión w) — 8.1 DONE: Playwright E2E (auth/quiz/duelo/offline) verde en CI; 2 bugs reales arreglados en el camino (duels con preguntas fill_blank huérfanas; DB local desincronizada); 230 back tests, 39 front, 6 E2E
 
 ---
 
@@ -53,10 +53,10 @@
 | 5 | Pipeline multi-agente + analytics | 3% | No construido |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
-| 8 | Garantía E2E + informe competitivo | 20% | Sin Playwright, sin load test |
+| 8 | Garantía E2E + informe competitivo | 30% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); sin load test, sin presupuesto de perf, sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 0% | No iniciado |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
-| P | Producto — huecos que impiden vender | 0% | Sin reset de contraseña, sin email, sin onboarding, sin reportar pregunta |
+| P | Producto — huecos que impiden vender | 62% | Email+reset+verificación+ajustes+reportes+export+deps+DB DONE; sin onboarding, banco 1.5k, versionado, modo oscuro, recordatorios |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
 
 ---
@@ -93,7 +93,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 3.1 | 2 | Duel E2E en browser (2 usuarios, Playwright) | TODO | Reto → ambos responden → resultado con ganador, verificado en UI |
+| 3.1 | 2 | Duel E2E en browser (2 usuarios, Playwright) | TODO | Reto → ambos responden → resultado con ganador, verificado en UI. Bloqueador real: `joinDuel` en DuelScreen.tsx es un stub (toast "próximamente") — el oponente no puede responder desde el navegador todavía. Hay que construir esa pantalla antes de que este test tenga sentido |
 | 3.2 | 3 | Offline sync E2E: responder offline → volver online → sync verificado | TODO | Playwright con `context.setOffline(true)`; respuesta persiste y sincroniza |
 | 3.3 | 3 | Notificaciones de duelo (push web) | TODO | Web Push registrado; reto genera notificación |
 
@@ -147,7 +147,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 8.1 | 1 | Suite Playwright: auth, quiz, duelo, offline, pago | DOING | Verde en CI headless; screenshots en fallo. Nota: "pago" no tiene UI aún (7.2 Stripe = TODO) — se cubre auth/quiz/duelo/offline; pago se añade cuando 7.2 exista |
+| 8.1 | 1 | Suite Playwright: auth, quiz, duelo, offline, pago | DONE | CI job `e2e` ✓ verde (~2m30s): 6/6 tests (auth×3, quiz, duelo, offline). "pago" diferido a cuando 7.2 (Stripe) exista — anotado, no silenciado. 2 bugs reales encontrados y arreglados: duels.py dejaba pasar preguntas `fill_blank` legacy (sin opciones/correct_index, 150/1253) a un duelo, dejando al jugador sin botones; DB local desincronizada 3 migraciones (recreada). `AUTH_RATE_LIMIT` ahora configurable (era 12/min fijo, insuficiente para la suite) |
 | 8.2 | 3 | Load test (k6): 100 usuarios concurrentes | TODO | p95 < 500ms, 0 errores 5xx |
 | 8.3 | 3 | Presupuesto de performance | TODO | LCP < 2.5s, TTI < 3.5s, bundle < 300KB gzip |
 | 8.4 | 4 | Teardown competitivo vs Duolingo/Brilliant/DataCamp | TODO | Informe con gaps concretos y acciones |
@@ -266,6 +266,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | t | 2026-09-08 | 141 (82 engine + 50 gamif + 9 core) | engine ≥96%, gamif 100% | — | F401 limpio | — | — | Q.1,Q.2,Q.4,Q.5,6.1,6.5,6.6 | 0,1 |
 | u | 2026-09-08 | 229 (141 prev + 88 integración) | — | — | F401 limpio | 0 err (63 files) | — | Q.3,Q.6,Q.7(back),6.2,6.3,6.4,P.1,P.2,P.3,P.5,P.6,P.7,P.11,P.12 | 0,1 |
 | v | 2026-09-08 | 229 back + 39 front | ≥60% cov | 87.6% stmts | F401 limpio | 0 err | 0 err (strict) | Q.7(front),Q.8,Q.9,Q.10 | 0,1,Q |
+| w | 2026-09-08 | 230 back + 39 front + 6 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.1 | 0,1,Q |
 
 ---
 
