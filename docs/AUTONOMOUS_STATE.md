@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ P.9 ✅ 4.5 ✅ 5.4 ✅ DONE; 276 tests; Phase 4 83%, Phase 5 3%→20%
+> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ P.9 ✅ 4.5 ✅ 5.4 ✅ 7.2 ✅ 7.3 ✅ DONE; 302 tests; Phase 7 30%→55%
 
 ---
 
@@ -52,7 +52,7 @@
 | 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
 | 5 | Pipeline multi-agente + analytics | 20% | 5.4 analytics schema+funnel ✅; sin agente autor/QA, sin duplicados, sin dashboard |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
-| 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
+| 7 | Commerce + i18n + nativo + IaC + seguridad | 55% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; sin i18n/nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
@@ -135,8 +135,8 @@
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 7.1 | 2 | Auditoría de seguridad ASVS L2 + fixes | DONE | 6 HIGH findings fixed: timing-safe login (ASVS V2.2), jwt_version token revocation on pwd change (V3.3, migration g7h8i9j0k1l2), XFF spoofing → TRUST_PROXY_HEADERS=False default (V11.2), body stripped from 422 (V7.1), reports IDOR scoped to own user (V4.2), DEBUG=False default (V14.4). 233 tests ✅ mypy strict ✅ |
-| 7.2 | 2 | Stripe: checkout + webhook + estado de suscripción | TODO | Test-mode E2E: checkout → webhook → entitlement activo |
-| 7.3 | 2 | Entitlements: gating free/plus/pro | TODO | Feature gates server-side; cliente no puede saltárselos |
+| 7.2 | 2 | Stripe: checkout + webhook + estado de suscripción | DONE | stripe_customer_id/subscription_id/status/tier/expires_at on User; migration j0k1l2m3n4o5; POST /billing/checkout (checkout URL) + POST /billing/webhook (checkout.completed/sub.updated/deleted) + GET /billing/subscription; 10 integration tests (mocked stripe); 286/286 tests; mypy 0 err; commit a010d98 |
+| 7.3 | 2 | Entitlements: gating free/plus/pro | DONE | app/core/entitlements.py: user_meets_tier + require_tier dep; free<plus<pro hierarchy; is_premium=True w/o tier → plus (backward compat); quiz exam/review → plus; tutor/explain → plus; 16 tests (9 unit + 7 integration); conftest: plus_user+plus_auth_headers; 302/302 tests; commit 37acb87 |
 | 7.4 | 3 | i18next completo ES/EN | TODO | 0 strings hardcodeados; cambio de idioma en caliente |
 | 7.5 | 3 | Shell nativo Capacitor (iOS + Android) | TODO | Builds locales corren; deep links; safe areas |
 | 7.6 | 4 | RevenueCat IAP nativo | TODO | Sandbox purchase E2E en ambas plataformas |
