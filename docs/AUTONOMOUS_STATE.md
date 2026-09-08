@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión z) — P.4 DONE: onboarding ≤1 screen, Playwright 14.7s (< 60s); 9.2 DONE: WCAG 2.2 AA; 9.1 + 9.4 DONE; 4.1 DONE; 7.1 DONE
+> Última actualización: 2026-09-08 (sesión aa) — 4.2 DONE: eval_dkt harness; BKT AUC=0.3294 > DKT AUC=0.2412 (documentado: 3 val seqs, pocos datos); P.4 DONE; 9.2 DONE; 9.1 + 9.4 DONE; 4.1 DONE; 7.1 DONE
 
 ---
 
@@ -49,7 +49,7 @@
 | 1 | Contenido bilingüe + glosario + currículo | 100% | ✅ CERRADA |
 | 2 | Tutor AI (Groq) + RAG | 98% | Pyodide sin browser-test |
 | 3 | Gamificación + duelos + offline + Lottie | 92% | Duel E2E prod ✅; Pyodide pendiente |
-| 4 | DKT + churn + MLOps | 15% | DKT MVP inferencia ✅; sin training/eval/churn |
+| 4 | DKT + churn + MLOps | 35% | DKT training ✅; eval harness ✅; sin churn/registro/caché |
 | 5 | Pipeline multi-agente + analytics | 3% | No construido |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
@@ -102,7 +102,7 @@
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 4.1 | 2 | Pipeline de entrenamiento DKT: dataset desde `responses`, split temporal | DONE | `python -m app.ml.train_dkt --min-seqs 1` → `~/.whetzy/models/dkt/v1/model.pt` (158 KB) + metadata.json (33 skills, val_auc=0.24, 10 epochs). OneDrive gotcha: default output = ~/.whetzy/ (no OneDrive). |
-| 4.2 | 2 | Harness de evaluación: AUC/ACC de DKT vs BKT baseline | TODO | Reporte con AUC de ambos; DKT ≥ BKT o se documenta por qué no |
+| 4.2 | 2 | Harness de evaluación: AUC/ACC de DKT vs BKT baseline | DONE | `backend/app/ml/eval_dkt.py`; BKT AUC=0.3294 > DKT AUC=0.2412 (gap=0.0882). Documentado: 3 val seqs, dataset pequeño, 10 epochs insuficientes. Recomendación: más datos → retrain --epochs 30. Report en ~/.whetzy/models/dkt/v1/eval_report.json |
 | 4.3 | 3 | Registro de modelos: checkpoints versionados, carga en startup, rollback | TODO | `models/dkt/v{N}/` + metadata; API reporta versión activa |
 | 4.4 | 3 | Caché de inferencia (no correr LSTM por request) | TODO | p99 de `/progress/skills` < 200ms con DKT activo |
 | 4.5 | 3 | Predictor de churn: features + modelo + endpoint | TODO | `GET /progress/risk` devuelve score + factores; AUC > 0.7 en holdout |
