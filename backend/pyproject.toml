@@ -1,0 +1,11 @@
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = [
+    "B008",   # FastAPI's `Depends(...)` as a default argument is the idiomatic pattern.
+    "DTZ003", # `datetime.utcnow()` is this codebase's established naive-UTC convention;
+    "DTZ011", # `date.today()` likewise — converting a handful of call sites to
+              # timezone-aware datetimes would desync them from the rest of the app
+              # (models, other services) that still compare against naive values.
+]
