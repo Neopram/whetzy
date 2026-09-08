@@ -1,5 +1,29 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { loginUser } from './helpers';
+
+const IDB_NAME = 'whetzy_offline';
+const IDB_STORE = 'pending_answers';
+
+async function idbPendingCount(page: Page): Promise<number> {
+  return page.evaluate(
+    ({ name, store }: { name: string; store: string }) =>
+      new Promise<number>((resolve) => {
+        const req = indexedDB.open(name, 1);
+        req.onsuccess = () => {
+          try {
+            const tx = req.result.transaction(store, 'readonly');
+            const c = tx.objectStore(store).count();
+            c.onsuccess = () => resolve(c.result as number);
+            c.onerror = () => resolve(0);
+          } catch {
+            resolve(0);
+          }
+        };
+        req.onerror = () => resolve(0);
+      }),
+    { name: IDB_NAME, store: IDB_STORE },
+  );
+}
 
 test.describe('Offline behaviour', () => {
   test.beforeEach(async ({ page }) => {
@@ -10,29 +34,37 @@ test.describe('Offline behaviour', () => {
     page,
     context,
   }) => {
-    // Start a quiz so we have a live session
     await page.getByRole('button', { name: /empezar a aprender/i }).click();
 
     const options = page.getByRole('button').filter({ hasText: /^[A-D]/ });
     await expect(options.first()).toBeVisible({ timeout: 20_000 });
 
-    // Disconnect the network — navigator.onLine becomes false, "offline" event fires
     await context.setOffline(true);
-
-    // TopBar renders "Sin conexión" when !isOnline (useOfflineSync hook)
     await expect(page.getByText(/sin conexión/i)).toBeVisible({ timeout: 5_000 });
 
-    // Attempt to answer while offline — submitAnswer() will throw a network error,
-    // but the offline indicator should remain visible in the TopBar
     await options.first().click();
     await expect(page.getByText(/sin conexión/i)).toBeVisible();
 
-    // Restore the network before the test ends to avoid polluting later tests
     await context.setOffline(false);
   });
 
   test('go back online → offline indicator disappears', async ({ page, context }) => {
-    // Start quiz so the TopBar is rendered (it is hidden on the auth screen)
+    await page.getByRole('button', { name: /empezar a aprender/i }).click();
+
+    const options = page.getByRole('button').filter({ hasText: /^[A-D]/ });
+    await expect(options.first()).toBeVisible({ timeout: 20_000 });
+
+    await context.setOffline(true);
+    await expect(page.getByText(/sin conexión/i)).toBeVisible({ timeout: 5_000 });
+
+    await context.setOffline(false);
+    await expect(page.getByText(/sin conexión/i)).not.toBeVisible({ timeout: 5_000 });
+  });
+
+  test('offline answer is queued in IDB and flushed when back online', async ({
+    page,
+    context,
+  }) => {
     await page.getByRole('button', { name: /empezar a aprender/i }).click();
 
     const options = page.getByRole('button').filter({ hasText: /^[A-D]/ });
@@ -42,8 +74,40 @@ test.describe('Offline behaviour', () => {
     await context.setOffline(true);
     await expect(page.getByText(/sin conexión/i)).toBeVisible({ timeout: 5_000 });
 
-    // Come back online — the "offline" div unmounts when isOnline becomes true
+    // IDB should start empty
+    expect(await idbPendingCount(page)).toBe(0);
+
+    // Answer while offline — enqueue() should fire
+    await options.first().click();
+
+    // The quiz shows a synthetic feedback panel (offline toast + feedback to advance)
+    await expect(page.getByText(/guardado|saved offline/i)).toBeVisible({ timeout: 5_000 });
+
+    // Verify IDB has the queued answer
+    expect(await idbPendingCount(page)).toBeGreaterThan(0);
+
+    // Come back online — useOfflineSync fires flush() on the 'online' event
     await context.setOffline(false);
-    await expect(page.getByText(/sin conexión/i)).not.toBeVisible({ timeout: 5_000 });
+
+    // Wait for IDB to drain (flush posts to backend then clears the store)
+    await page.waitForFunction(
+      ({ name, store }: { name: string; store: string }) =>
+        new Promise<boolean>((resolve) => {
+          const req = indexedDB.open(name, 1);
+          req.onsuccess = () => {
+            try {
+              const tx = req.result.transaction(store, 'readonly');
+              const c = tx.objectStore(store).count();
+              c.onsuccess = () => resolve((c.result as number) === 0);
+              c.onerror = () => resolve(false);
+            } catch {
+              resolve(false);
+            }
+          };
+          req.onerror = () => resolve(false);
+        }),
+      { name: IDB_NAME, store: IDB_STORE },
+      { timeout: 15_000 },
+    );
   });
 });

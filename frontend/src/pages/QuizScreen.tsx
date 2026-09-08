@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
 import { quiz as quizApi, tutor as tutorApi, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
+import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { usePyodide } from '../hooks/usePyodide';
@@ -130,12 +131,40 @@ export function QuizScreen() {
           showToast(t('quiz.incorrect'), 'error');
         }
       } catch (e) {
-        showToast(e instanceof Error ? e.message : 'Error', 'error');
+        const isNetworkError = !navigator.onLine || (e instanceof TypeError);
+        if (isNetworkError && sessionId && question) {
+          await enqueue({
+            id: `${sessionId}_${question.id}_${Date.now()}`,
+            sessionId,
+            questionId: question.id,
+            selectedIndex,
+            responseTimeMs: rt,
+            timestamp: Date.now(),
+          });
+          setFeedback({
+            correct: false,
+            correct_index: null,
+            explanation_es: '(guardado sin conexión)',
+            explanation_en: '(saved offline)',
+            source: null,
+            grade: 0,
+            xp_earned: 0,
+            combo,
+            user_elo: 0,
+            next_review: null,
+            skill_mastery: {},
+            session_accuracy: 0,
+            next_question: null,
+          });
+          showToast(t('quiz.savedOffline'), 'info');
+        } else {
+          showToast(e instanceof Error ? e.message : 'Error', 'error');
+        }
       } finally {
         setSubmitting(false);
       }
     },
-    [sessionId, question, feedback, submitting, t]
+    [sessionId, question, feedback, submitting, t, combo]
   );
 
   // ── MCQ answer handler ─────────────────────────────────────────────────
