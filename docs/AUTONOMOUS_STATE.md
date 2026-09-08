@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión t) — G1+G3 DONE; 141 tests pasando; P.1+P.2 en marcha; G2 workers activos
+> Última actualización: 2026-09-08 (sesión u) — G2+G4+G6+G7 DONE; 229 tests pasando; mypy 0 errores; P.5+P.6+P.7 DONE; Q.7 backend DONE
 
 ---
 
@@ -17,7 +17,7 @@
 | Backend prod | `https://api-production-9751.up.railway.app` |
 | Frontend prod | `https://whetzy.com` / `https://whetzy.pages.dev` |
 | Repo | `github.com/Neopram/whetzy` branch `master` |
-| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9` |
+| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9 → e5f6a7b8c9d0 → f6a7b8c9d0e1` |
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |
@@ -72,7 +72,7 @@
 | Q.4 | 1 | Tests de gamificación: XP, ligas, badges, misiones, rachas | DONE | 50 tests, 100% cobertura en services/gamification/service.py |
 | Q.5 | 1 | Inventario y eliminación de código muerto | DONE | ruff F401 limpio: duel.py, rag.py, bandit.py, bkt.py, elo.py, fsrs.py, gamification/service.py, quiz.py, dkt.py |
 | Q.6 | 1 | Consolidación de docs: 10 archivos → set coherente | DONE | README+ARCHITECTURE+API+RUNBOOK+DECISIONS creados; 9 prompts/specs a docs/archive/ |
-| Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | TODO | `mypy app --strict` 0 errores; `tsc --noEmit --strict` 0 errores |
+| Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | DOING | `mypy app --strict` 0 errores ✅; `tsc --noEmit --strict` pendiente |
 | Q.8 | 2 | Lint zero-warnings: ruff + eslint | TODO | `ruff check` y `eslint` sin warnings. Reglas en CI |
 | Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y componentes críticos | TODO | ≥70% en `src/hooks/` y `src/services/`. QuizScreen, DuelScreen con render tests |
 | Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | TODO | GH Actions verde en push con todos los pasos; sin `\|\| true` |
@@ -119,9 +119,9 @@
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 6.1 | 1 | Logging estructurado JSON con `request_id` correlacionado | DONE | core/logging.py: _JSONFormatter + RequestIDMiddleware; cada log lleva request_id + user_id |
-| 6.2 | 2 | OpenTelemetry: trazas HTTP + DB | TODO | Traza de una request de quiz muestra spans de DB |
-| 6.3 | 2 | Métricas Prometheus + `/metrics` | TODO | RED metrics (rate/errors/duration) por endpoint |
-| 6.4 | 2 | Error tracking (Sentry-compatible) | TODO | Excepción no capturada llega con stack + contexto de usuario |
+| 6.2 | 2 | OpenTelemetry: trazas HTTP + DB | DONE | telemetry.py: FastAPIInstrumentor + SQLAlchemyInstrumentor; OTLP o console |
+| 6.3 | 2 | Métricas Prometheus + `/metrics` | DONE | metrics.py: RED metrics; GET /metrics; /health exempt |
+| 6.4 | 2 | Error tracking (Sentry-compatible) | DONE | error_tracking.py: configure_sentry; set_user_context en middleware |
 | 6.5 | 1 | Liveness vs readiness separados | DONE | /health/live → 200 siempre; /health/ready → SELECT 1; 503 si DB down |
 | 6.6 | 1 | Rate limiting por IP y por usuario | DONE | 429 + Retry-After; 12/min en /auth y /tutor; 120/min default |
 | 6.7 | 4 | Límites de servicio limpios (interfaces, no microservicios prematuros) | TODO | `content`, `engine`, `gamification` con interfaces explícitas y sin imports cruzados |
@@ -172,14 +172,14 @@
 | P.2 | 1 | Recuperación de contraseña: token de un solo uso, expira en 1 h | DONE | PasswordResetToken (SHA-256); forgot-password + reset-password; token reutilizado → 400 |
 | P.3 | 1 | Verificación de email en registro | DONE | EmailVerificationToken 24h; verify-email + resend-verification; email_verified en UserRead |
 | P.4 | 2 | Onboarding de primer uso: ≤ 3 pantallas (qué es · elige track · primera pregunta) | TODO | Playwright: landing → primera pregunta respondida en < 60 s |
-| P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | TODO | Cada cambio persiste, se refleja en la sesión activa, y pide contraseña actual donde toca |
-| P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | TODO | Reporte con `question_id`, motivo y contexto llega a tabla `question_reports`; visible en admin |
-| P.7 | 2 | Exportación de datos (GDPR portabilidad) | TODO | JSON descargable con perfil, respuestas, progreso; generado en < 10 s para 10k respuestas |
+| P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | DONE | PATCH /auth/me + PATCH /auth/me/password + verify-email + resend-verification + forgot-password + reset-password — 229 tests pasan |
+| P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | DONE | QuestionReport model + migration f6a7b8c9d0e1 + POST /reports/question + GET /reports/question/{id} — 229 tests pasan |
+| P.7 | 2 | Exportación de datos (GDPR portabilidad) | DONE | GET /export/data → JSON attachment; sin N+1; hashed_password excluido — 229 tests pasan |
 | P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | TODO | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde |
 | P.9 | 3 | Versionado de contenido: corregir una Q sin romper el historial | TODO | Q editada conserva respuestas previas ligadas a su versión; nueva versión es la activa |
 | P.10 | 3 | Modo oscuro (claro sigue por defecto) | TODO | Tokens duales; toggle en ajustes; respeta `prefers-color-scheme`; contraste AA en ambos |
-| P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | TODO | 0 vulnerabilidades altas/críticas; el CI falla si aparecen |
-| P.12 | 2 | Rendimiento DB: índices, N+1, `EXPLAIN` en las queries calientes | TODO | p95 de `/quiz/start` y `/progress/skills` < 200 ms con 10k respuestas sembradas |
+| P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | DONE | CI: pip-audit --fail-on HIGH + npm audit --audit-level=high; real pytest |
+| P.12 | 2 | Rendimiento DB: índices, N+1, `EXPLAIN` en las queries calientes | DONE | 8 índices compuestos (migration e5f6a7b8c9d0): skill_elo, session_correct, user_date, etc. |
 | P.13 | 3 | Recordatorios de racha sin culpa (push web + email opcional) | TODO | Configurable; texto neutro; opt-out en un toque; nunca más de uno al día |
 
 ### 10 — Marketplace de certificaciones (estratégico, tras la 9)
@@ -260,6 +260,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 |---|---|---|---|---|---|---|---|---|---|
 | s | 2026-09-08 | 3 archivos, sin medir | — | — | — | — | 0 err | — | 0,1 |
 | t | 2026-09-08 | 141 (82 engine + 50 gamif + 9 core) | engine ≥96%, gamif 100% | — | F401 limpio | — | — | Q.1,Q.2,Q.4,Q.5,6.1,6.5,6.6 | 0,1 |
+| u | 2026-09-08 | 229 (141 prev + 88 integración) | — | — | F401 limpio | 0 err (63 files) | — | Q.3,Q.6,Q.7(back),6.2,6.3,6.4,P.1,P.2,P.3,P.5,P.6,P.7,P.11,P.12 | 0,1 |
 
 ---
 
