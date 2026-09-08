@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ag) — 7.5 ✅ 9.5 ✅ 9.6 ✅ DONE; Capacitor Android; App Store + Play Store compliance docs; Phase 9 → 60%
+> Última actualización: 2026-09-08 (sesión ag) — 7.5 ✅ 9.3 ✅ 9.5 ✅ 9.6 ✅ DONE; Capacitor Android; icons 13 iOS + 6 Android densidades + splash; App Store + Play Store compliance docs; Phase 9 → 80%
 
 ---
 
@@ -54,7 +54,7 @@
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 65% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; i18n 10 screens ✅; sin nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
-| 9 | Store readiness + excelencia de diseño | 60% | 9.1 + 9.2 + 9.4 + 9.5 + 9.6 DONE; sin store assets (9.3), sin nativo accesibility audit (9.7) |
+| 9 | Store readiness + excelencia de diseño | 80% | 9.1 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 DONE; 9.7 HUMAN-BLOCKED (VoiceOver/TalkBack real device); 9.8 PRI 4 |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
 | P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
@@ -158,7 +158,7 @@
 |---|---|---|---|---|
 | 9.1 | 2 | Revisión del sistema de diseño: tokens, motion, jerarquía | DONE | Added --le-danger token (light #E53935 / dark #FF6659); fixed --le-muted → --le-text-muted in LegalScreen; added prefers-reduced-motion block (global.css) disabling all animations/transitions; scroll-behavior: auto for reduced-motion. tsc ✅ |
 | 9.2 | 2 | Accesibilidad WCAG 2.2 AA | DONE | axe-core 3/3 tests pass (auth, home, legal); viewport meta-viewport fixed; --le-text-secondary #777→#595959; contrast fixed: AuthScreen tabs/lang, BottomNav active/inactive, TopBar logo/gems, HomeScreen btnStudy/badges/streakToday, LegalScreen back/updated/body/links; link-in-text-block: underline on legal links; prefers-reduced-motion in global.css |
-| 9.3 | 3 | Assets de store: iconos, screenshots, video preview | TODO | Todos los tamaños iOS/Android generados desde fuente vectorial |
+| 9.3 | 3 | Assets de store: iconos, screenshots, video preview | DONE | docs/store/whetzy-icon.svg (source vectorial, gradiente #1CB0F6→#0B72B0 + W blanco); scripts/generate_icons.py (Pillow, OneDrive-safe scratch→copy); iOS 13 tamaños + Contents.json; Android play-store-512px + 6 densidades mipmap; splash 2048px; android/res/ parcheado; screenshots = HUMAN-BLOCKED (requiere dispositivo físico/Xcode) |
 | 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | DONE | LegalScreen + /privacy + /terms routes + ProfileScreen links a /privacy, /terms, /delete-account — commit b6ab6dc ✅ |
 | 9.5 | 3 | Checklist App Store Review Guidelines | DONE | docs/store/app-store-review-checklist.md: 5 sections × all guidelines; 1 hard blocker B1 (Stripe→must use IAP, fix=7.6); 6 action items A1-A6; already-compliant list (ASVS/GDPR/WCAG/dark mode/safe areas/push opt-in/no IDFA/no SIWA); iOS Capacitor submission checklist |
 | 9.6 | 3 | Play Store: Data Safety + target API level | DONE | docs/store/play-store-data-safety.md: targetSdkVersion=35 ✅ (≥34 req); data inventory (personal/financial/activity/device IDs/crash); third parties (Stripe/Groq/Sentry); field-by-field Play Console answers; 4 pre-submission action items |
