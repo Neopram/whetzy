@@ -488,6 +488,9 @@ export const duels = {
       body: JSON.stringify(payload),
     });
   },
+  async join(duelId: string) {
+    return request<DuelChallengeResponse>(`/duels/${duelId}/join`);
+  },
   async result(duelId: string) {
     return request<DuelResultResponse>(`/duels/${duelId}/result`);
   },

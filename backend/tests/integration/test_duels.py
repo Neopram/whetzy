@@ -3,6 +3,7 @@
 Routes under test:
   POST /api/v1/duels/challenge
   GET  /api/v1/duels/my
+  GET  /api/v1/duels/{duel_id}/join
   POST /api/v1/duels/{duel_id}/answer
   GET  /api/v1/duels/{duel_id}/result
 
@@ -514,3 +515,85 @@ async def test_full_duel_flow(
     assert data["winner_id"] is not None
     # challenger_id should be winner
     assert data["winner_id"] == data["challenger"]["user_id"]
+
+
+# ── GET /{id}/join ────────────────────────────────────────────────────────────
+
+
+async def test_join_requires_auth(client: AsyncClient, duel_seed: dict, auth_headers: dict) -> None:
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    duel_id = challenge.json()["duel_id"]
+    resp = await client.get(f"{BASE}/{duel_id}/join")
+    assert resp.status_code == 401
+
+
+async def test_join_only_opponent_can_join(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """The challenger calling /join on their own duel gets 403."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    duel_id = challenge.json()["duel_id"]
+    resp = await client.get(f"{BASE}/{duel_id}/join", headers=auth_headers)
+    assert resp.status_code == 403
+
+
+async def test_join_returns_questions(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """Opponent calling /join gets the same 5 questions the challenger received."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert challenge.status_code == 201
+    duel_id = challenge.json()["duel_id"]
+    challenge_q_ids = {q["id"] for q in challenge.json()["questions"]}
+
+    resp = await client.get(f"{BASE}/{duel_id}/join", headers=opponent_headers)
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert data["duel_id"] == duel_id
+    assert data["skill_id"] == _SKILL_ID
+    assert len(data["questions"]) == _DUEL_Q_COUNT
+    join_q_ids = {q["id"] for q in data["questions"]}
+    assert join_q_ids == challenge_q_ids
+
+
+async def test_join_after_completion_is_conflict(
+    client: AsyncClient,
+    auth_headers: dict,
+    opponent_headers: dict,
+    duel_seed: dict,
+) -> None:
+    """Once the opponent has answered all questions, /join returns 409."""
+    challenge = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    duel_id = challenge.json()["duel_id"]
+    question_ids = [q["id"] for q in challenge.json()["questions"]]
+
+    for q_id in question_ids:
+        await client.post(
+            f"{BASE}/{duel_id}/answer",
+            json={"question_id": q_id, "selected_index": 0, "response_time_ms": 500},
+            headers=opponent_headers,
+        )
+
+    resp = await client.get(f"{BASE}/{duel_id}/join", headers=opponent_headers)
+    assert resp.status_code == 409

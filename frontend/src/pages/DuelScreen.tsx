@@ -68,8 +68,18 @@ export function DuelScreen() {
   };
 
   // ── Playing: join existing duel ───────────────────────────────────────────
-  const joinDuel = (_duel: DuelSummary) => {
-    showToast(t('duel.joinComingSoon'), 'success');
+  const joinDuel = async (duel: DuelSummary) => {
+    try {
+      const res = await duelsApi.join(duel.duel_id);
+      setActiveDuel(res);
+      setQIndex(0);
+      setSelected(null);
+      setAnswered([]);
+      setPlayingDuelId(res.duel_id);
+      setView('playing');
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : 'Error', 'error');
+    }
   };
 
   // ── Answer ────────────────────────────────────────────────────────────────
@@ -224,7 +234,7 @@ export function DuelScreen() {
               key={duel.duel_id}
               duel={duel}
               currentUserId={currentUser.id}
-              onPlay={duel.is_your_turn ? () => joinDuel(duel) : undefined}
+              onPlay={duel.is_your_turn ? () => { void joinDuel(duel); } : undefined}
             />
           ))}
         </div>

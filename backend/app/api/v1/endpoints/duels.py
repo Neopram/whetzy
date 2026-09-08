@@ -230,6 +230,41 @@ async def my_duels(
     return summaries
 
 
+# ── GET /{id}/join ───────────────────────────────────────────────────────────
+
+@router.get("/{duel_id}/join", response_model=DuelChallengeResponse)
+async def join_duel(
+    duel_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> DuelChallengeResponse:
+    """Return the duel questions for the opponent so they can play their side."""
+    duel = await _get_duel_or_404(db, duel_id, current_user)
+    if duel.opponent_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Only the opponent can join a duel")
+    if duel.opponent_completed_at is not None:
+        raise HTTPException(status_code=409, detail="You already completed this duel")
+    if duel.status == "completed":
+        raise HTTPException(status_code=409, detail="This duel is already completed")
+
+    questions: list[Question] = []
+    for qid in duel.question_ids:
+        q_result = await db.execute(select(Question).where(Question.id == qid))
+        q = q_result.scalar_one_or_none()
+        if q is not None:
+            questions.append(q)
+
+    c_result = await db.execute(select(User).where(User.id == duel.challenger_id))
+    challenger = c_result.scalar_one()
+
+    return DuelChallengeResponse(
+        duel_id=str(duel.id),
+        skill_id=duel.skill_id,
+        questions=[QuestionPublic.model_validate(q) for q in questions],
+        opponent_username=challenger.username,
+    )
+
+
 # ── POST /{id}/answer ────────────────────────────────────────────────────────
 
 @router.post("/{duel_id}/answer", response_model=DuelAnswerResponse)

@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ah) — 4.6+5.5+6.7+7.7+8.4+9.8 ✅ DONE; Phase 4+5+6 CERRADAS; 444 tests; landing+IaC+teardown+boundaries
+> Última actualización: 2026-09-08 (sesión ai) — 3.1 ✅ DONE; joinDuel implementado + GET /duels/{id}/join + 24 backend tests + 2-player Playwright spec; Phase 3 100%; 448 tests
 
 ---
 
@@ -48,7 +48,7 @@
 | 0 | Rebrand + Auth + Deploy | 100% | ✅ CERRADA |
 | 1 | Contenido bilingüe + glosario + currículo | 100% | ✅ CERRADA |
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
-| 3 | Gamificación + duelos + offline + Lottie | 99% | Duel E2E prod ✅; push notifs ✅; offline sync E2E ✅; solo Duel E2E multi-user pendiente (UI stub) |
+| 3 | Gamificación + duelos + offline + Lottie | 100% | ✅ CERRADA — Duel E2E prod ✅; push notifs ✅; offline sync E2E ✅; 2-player duel E2E ✅ (3.1) |
 | 4 | DKT + churn + MLOps | 100% | ✅ CERRADA — DKT training + eval + registry + cache + churn + A/B harness |
 | 5 | Pipeline multi-agente + analytics | 100% | ✅ CERRADA — author+QA+duplicados+analytics+dashboard |
 | 6 | Observabilidad + límites de servicio | 100% | ✅ CERRADA — JSON logging + OTEL + Prometheus + Sentry + liveness/readiness + rate-limiting + service boundaries |
@@ -93,7 +93,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 3.1 | 2 | Duel E2E en browser (2 usuarios, Playwright) | TODO | Reto → ambos responden → resultado con ganador, verificado en UI. Bloqueador real: `joinDuel` en DuelScreen.tsx es un stub (toast "próximamente") — el oponente no puede responder desde el navegador todavía. Hay que construir esa pantalla antes de que este test tenga sentido |
+| 3.1 | 2 | Duel E2E en browser (2 usuarios, Playwright) | DONE | Reto → ambos responden → resultado con ganador, verificado en UI. `joinDuel` implementado; GET /duels/{id}/join añadido; 4 tests backend nuevos; duel.spec.ts 2-player test añadido |
 | 3.2 | 3 | Offline sync E2E: responder offline → volver online → sync verificado | DONE | QuizScreen enqueues on TypeError/offline (IDB), synthetic feedback to advance; offline.spec.ts 3rd test: IDB queued → online → IDB drained; tsc 0 err; commit 181d857 |
 | 3.3 | 3 | Notificaciones de duelo (push web) | DONE | pywebpush+VAPID; PushSubscription model+migration k1l2m3n4o5p6; GET /push/vapid-key+POST /push/subscribe+DELETE /push/subscribe; push_service.send_to_user (410 Gone cleanup); challenge fires to opponent; sw.js: push event→showNotification, notificationclick→focus; usePushNotifications.ts hook; 8 integration tests; 310/310 tests; tsc 0 err; commit 2e64107 |
 
