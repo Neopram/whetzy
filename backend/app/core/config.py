@@ -113,6 +113,14 @@ class Settings(BaseSettings):
     # Requests must supply X-Admin-Key: <this value>. Empty = endpoint disabled.
     CONTENT_ADMIN_KEY: str = ""
 
+    # --- Stripe (7.2) -------------------------------------------------------
+    STRIPE_SECRET_KEY: str = ""         # sk_test_... or sk_live_...
+    STRIPE_WEBHOOK_SECRET: str = ""     # whsec_...
+    STRIPE_PRICE_PLUS: str = ""         # price_... for the Plus plan
+    STRIPE_PRICE_PRO: str = ""          # price_... for the Pro plan
+    STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
+    STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
+
     # --- Gamification tuning -------------------------------------------------
     MASTERY_THRESHOLD: float = 0.95
     DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7

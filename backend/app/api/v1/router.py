@@ -7,6 +7,7 @@ from fastapi import APIRouter
 from app.api.v1.endpoints import (
     analytics,
     auth,
+    billing,
     content,
     duels,
     export,
@@ -35,3 +36,4 @@ api_router.include_router(export.router, prefix="/export", tags=["export"])
 api_router.include_router(ml.router, prefix="/ml", tags=["ml"])
 api_router.include_router(content.router, prefix="/content", tags=["content"])
 api_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
+api_router.include_router(billing.router, prefix="/billing", tags=["billing"])

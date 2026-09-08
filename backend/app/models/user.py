@@ -50,6 +50,13 @@ class User(Base):
     # Incremented on password change/reset to invalidate existing tokens (ASVS V3.3).
     jwt_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
+    # Stripe subscription (7.2)
+    stripe_customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True, index=True)
+    stripe_subscription_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True)
+    subscription_status: Mapped[str | None] = mapped_column(String(32), nullable=True)  # active|canceled|past_due|trialing
+    subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro
+    subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
     skill_states: Mapped[list[UserSkillState]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
