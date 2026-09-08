@@ -77,9 +77,18 @@ async def _pick_skill(db: AsyncSession, challenger: User, skill_id: str | None) 
 
 
 async def _pick_questions(db: AsyncSession, skill_id: str) -> list[Question]:
+    # Duels have no code-execution UI, so exec-graded types are out (as
+    # before) — but legacy `fill_blank` questions also have no options and no
+    # correct_index (see quiz.py's _select_question for the same exclusion),
+    # so `type.notin_(_EXEC_TYPES)` alone let them through with nothing to
+    # click and no way to score the answer. Require a real correct_index too.
     result = await db.execute(
         select(Question)
-        .where(Question.skill_id == skill_id, Question.type.notin_(list(_EXEC_TYPES)))
+        .where(
+            Question.skill_id == skill_id,
+            Question.type.notin_(list(_EXEC_TYPES)),
+            Question.correct_index.is_not(None),
+        )
         .order_by(Question.elo_rating)
     )
     questions = result.scalars().all()

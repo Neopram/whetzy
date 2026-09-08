@@ -181,6 +181,48 @@ async def test_challenge_returns_question_objects(
         assert "type" in q
 
 
+async def test_challenge_never_picks_legacy_fill_blank(
+    client: AsyncClient,
+    auth_headers: dict,
+    duel_seed: dict,
+    db_session: AsyncSession,
+) -> None:
+    """Regression: legacy `fill_blank` questions have no options and no
+    correct_index (see quiz.py's _select_question comment) — DuelScreen has
+    no UI to answer them and the backend has no way to score them. Found via
+    Playwright E2E (8.1): a duel drew one and the player got stuck on
+    "Pregunta 5 de 5" with zero buttons to click and no way to finish.
+    """
+    db_session.add(
+        Question(
+            id="duel_q_legacy_fill_blank",
+            skill_id=_SKILL_ID,
+            type="fill_blank",
+            difficulty_tier="easy",
+            question_es="Legacy fill-blank: ___",
+            question_en="Legacy fill-blank: ___",
+            options_es=None,
+            options_en=None,
+            correct_index=None,
+            explanation_es="n/a",
+            explanation_en="n/a",
+            source="test",
+            elo_rating=1200.0,
+        )
+    )
+    await db_session.commit()
+
+    resp = await client.post(
+        f"{BASE}/challenge",
+        json={"opponent_username": duel_seed["opponent"].username, "skill_id": _SKILL_ID},
+        headers=auth_headers,
+    )
+    assert resp.status_code == 201, resp.text
+    picked_ids = {q["id"] for q in resp.json()["questions"]}
+    assert "duel_q_legacy_fill_blank" not in picked_ids
+    assert picked_ids == set(duel_seed["question_ids"])
+
+
 async def test_challenge_self_fails(
     client: AsyncClient,
     auth_headers: dict,

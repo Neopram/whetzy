@@ -76,7 +76,11 @@ if settings.METRICS_ENABLED:
 
 # ASVS 5.0 (L2): per-IP anti-automation + hardened security response headers.
 app.add_middleware(RequestIDMiddleware)
-app.add_middleware(RateLimitMiddleware)
+app.add_middleware(
+    RateLimitMiddleware,
+    default_limit=settings.DEFAULT_RATE_LIMIT,
+    auth_limit=settings.AUTH_RATE_LIMIT,
+)
 app.add_middleware(
     SecurityHeadersMiddleware,
     enable_hsts=settings.ENVIRONMENT != "development",

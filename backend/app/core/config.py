@@ -45,6 +45,14 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
 
+    # --- Rate limiting -------------------------------------------------------
+    # /auth and /tutor get a stricter budget than the rest of the API (see
+    # RateLimitMiddleware). 12/min is right for production traffic but too
+    # tight for an E2E suite that registers a fresh user per test — override
+    # via env var for local/CI E2E runs, never in production.
+    AUTH_RATE_LIMIT: int = 12
+    DEFAULT_RATE_LIMIT: int = 120
+
     # --- CORS ---------------------------------------------------------------
     BACKEND_CORS_ORIGINS: list[str] = Field(
         default_factory=lambda: [
