@@ -156,7 +156,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 9.1 | 2 | Revisión del sistema de diseño: tokens, motion, jerarquía | TODO | Tokens coherentes; sin valores mágicos; motion con `prefers-reduced-motion` |
+| 9.1 | 2 | Revisión del sistema de diseño: tokens, motion, jerarquía | DONE | Added --le-danger token (light #E53935 / dark #FF6659); fixed --le-muted → --le-text-muted in LegalScreen; added prefers-reduced-motion block (global.css) disabling all animations/transitions; scroll-behavior: auto for reduced-motion. tsc ✅ |
 | 9.2 | 2 | Accesibilidad WCAG 2.2 AA | TODO | axe-core 0 violaciones; navegación por teclado completa; contraste AA |
 | 9.3 | 3 | Assets de store: iconos, screenshots, video preview | TODO | Todos los tamaños iOS/Android generados desde fuente vectorial |
 | 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | DONE | LegalScreen + /privacy + /terms routes + ProfileScreen links a /privacy, /terms, /delete-account — commit b6ab6dc ✅ |
