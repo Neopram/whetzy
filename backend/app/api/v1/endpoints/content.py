@@ -1,8 +1,9 @@
-"""Content administration endpoints (question editing, versioning)."""
+"""Content administration endpoints (question editing, versioning, AI generation)."""
 
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
+from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,6 +11,7 @@ from app.core.config import settings
 from app.core.db import get_db
 from app.models.content import Question
 from app.schemas.content import QuestionPatch
+from app.services import content_agent
 
 router = APIRouter()
 
@@ -55,3 +57,74 @@ async def patch_question(
         "content_version": row.content_version,
         "updated_fields": list(changed.keys()),
     }
+
+
+class GenerateRequest(BaseModel):
+    skill_id: str
+    source_text: str = Field(min_length=50, max_length=20000)
+    source_citation: str = Field(min_length=5, max_length=500)
+    n: int = Field(default=10, ge=1, le=20)
+
+
+class GeneratedQuestionOut(BaseModel):
+    id: str
+    question_es: str
+    question_en: str
+    options_es: list[str]
+    options_en: list[str]
+    correct_index: int
+    explanation_es: str
+    explanation_en: str
+    difficulty_tier: str
+    source: str | None
+
+
+@router.post(
+    "/generate",
+    status_code=201,
+    response_model=list[GeneratedQuestionOut],
+    dependencies=[Depends(_require_admin_key)],
+)
+async def generate_questions(
+    payload: GenerateRequest,
+    db: AsyncSession = Depends(get_db),
+) -> list[GeneratedQuestionOut]:
+    """Generate MCQ questions from a source document using the AI author agent.
+
+    Requires X-Admin-Key. Returns the inserted questions (may be fewer than
+    *n* if some outputs fail validation). Returns 503 if no LLM is configured.
+    """
+    try:
+        questions = await content_agent.generate_questions(
+            db,
+            skill_id=payload.skill_id,
+            source_text=payload.source_text,
+            source_citation=payload.source_citation,
+            n=payload.n,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="LLM error") from exc
+
+    if not questions:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="LLM not configured or returned no valid questions",
+        )
+
+    return [
+        GeneratedQuestionOut(
+            id=q.id,
+            question_es=q.question_es,
+            question_en=q.question_en,
+            options_es=q.options_es or [],
+            options_en=q.options_en or [],
+            correct_index=q.correct_index or 0,
+            explanation_es=q.explanation_es,
+            explanation_en=q.explanation_en,
+            difficulty_tier=q.difficulty_tier,
+            source=q.source,
+        )
+        for q in questions
+    ]
