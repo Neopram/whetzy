@@ -93,6 +93,14 @@ export function ProfileScreen() {
       </Card>
 
       <button className={styles.signOut} onClick={signOut}>{L.signOut}</button>
+
+      <div className={styles.legalLinks}>
+        <a href="/privacy" className={styles.legalLink}>{L.privacy}</a>
+        <span className={styles.legalSep}>·</span>
+        <a href="/terms" className={styles.legalLink}>{L.terms}</a>
+        <span className={styles.legalSep}>·</span>
+        <a href="/delete-account" className={styles.deleteLink}>{L.deleteAccount}</a>
+      </div>
     </div>
   );
 }
@@ -101,9 +109,11 @@ const TEXT = {
   es: { level: 'Nivel', nextLevel: 'faltan', streak: 'Racha', best: 'Mejor', totalXp: 'XP Total',
     proDesc: 'Ilimitado, tutor AI, sin anuncios', month: 'mes', badges: 'Logros', loading: 'Cargando…',
     noBadges: 'Aún no tienes logros. ¡Empieza a estudiar!', settings: 'Ajustes', langLabel: 'Idioma',
-    darkMode: 'Modo oscuro', signOut: 'Cerrar sesión' },
+    darkMode: 'Modo oscuro', signOut: 'Cerrar sesión',
+    privacy: 'Privacidad', terms: 'Términos', deleteAccount: 'Eliminar cuenta' },
   en: { level: 'Level', nextLevel: 'to go', streak: 'Streak', best: 'Best', totalXp: 'Total XP',
     proDesc: 'Unlimited, AI tutor, no ads', month: 'mo', badges: 'Achievements', loading: 'Loading…',
     noBadges: 'No achievements yet. Start studying!', settings: 'Settings', langLabel: 'Language',
-    darkMode: 'Dark mode', signOut: 'Sign out' },
+    darkMode: 'Dark mode', signOut: 'Sign out',
+    privacy: 'Privacy', terms: 'Terms', deleteAccount: 'Delete account' },
 } as const;

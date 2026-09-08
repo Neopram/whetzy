@@ -13,21 +13,24 @@ import { TracksScreen } from './pages/TracksScreen';
 import { DuelScreen } from './pages/DuelScreen';
 import { AuthScreen } from './pages/AuthScreen';
 import { DeleteAccountScreen } from './pages/DeleteAccountScreen';
+import { LegalScreen } from './pages/LegalScreen';
 import { Toast } from './components/common/Toast';
 import './styles/global.css';
 
 // URL-based routing for standalone pages (no React Router needed)
-if (window.location.pathname === '/delete-account') {
-  document.title = 'Eliminar cuenta — Whetzy';
-}
+const _path = window.location.pathname;
+if (_path === '/delete-account') document.title = 'Eliminar cuenta — Whetzy';
+if (_path === '/privacy') document.title = 'Privacidad — Whetzy';
+if (_path === '/terms') document.title = 'Términos — Whetzy';
 
 type AuthState = 'checking' | 'unauthed' | 'authed';
 
 function App() {
   // Standalone pages routed by URL path
-  if (window.location.pathname === '/delete-account') {
-    return <DeleteAccountScreen />;
-  }
+  const path = window.location.pathname;
+  if (path === '/delete-account') return <DeleteAccountScreen />;
+  if (path === '/privacy') return <LegalScreen doc="privacy" />;
+  if (path === '/terms') return <LegalScreen doc="terms" />;
 
   const currentScreen = useAppStore((s) => s.currentScreen);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
