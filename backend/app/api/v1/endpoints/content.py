@@ -11,7 +11,7 @@ from app.core.config import settings
 from app.core.db import get_db
 from app.models.content import Question
 from app.schemas.content import QuestionPatch
-from app.services import content_agent
+from app.services import content_agent, content_qa
 
 router = APIRouter()
 
@@ -127,4 +127,96 @@ async def generate_questions(
             source=q.source,
         )
         for q in questions
+    ]
+
+
+# ── QA endpoints ──────────────────────────────────────────────────────────────
+
+
+class IssueOut(BaseModel):
+    severity: str
+    code: str
+    message: str
+
+
+class QAResultOut(BaseModel):
+    question_id: str
+    passed: bool
+    score: float
+    llm_checked: bool
+    issues: list[IssueOut]
+
+
+class QASingleRequest(BaseModel):
+    question_id: str
+    source_text: str | None = None
+
+
+class QABatchRequest(BaseModel):
+    question_ids: list[str] = Field(min_length=1, max_length=50)
+    source_text: str | None = None
+
+
+@router.post(
+    "/qa",
+    status_code=200,
+    response_model=QAResultOut,
+    dependencies=[Depends(_require_admin_key)],
+)
+async def qa_single(
+    payload: QASingleRequest,
+    db: AsyncSession = Depends(get_db),
+) -> QAResultOut:
+    """Run QA checks on a single question by ID."""
+    try:
+        result = await content_qa.qa_question_by_id(db, payload.question_id, payload.source_text)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+
+    return QAResultOut(
+        question_id=result.question_id,
+        passed=result.passed,
+        score=result.score,
+        llm_checked=result.llm_checked,
+        issues=[IssueOut(severity=i.severity.value, code=i.code, message=i.message)
+                for i in result.issues],
+    )
+
+
+@router.post(
+    "/qa/batch",
+    status_code=200,
+    response_model=list[QAResultOut],
+    dependencies=[Depends(_require_admin_key)],
+)
+async def qa_batch(
+    payload: QABatchRequest,
+    db: AsyncSession = Depends(get_db),
+) -> list[QAResultOut]:
+    """Run QA checks on up to 50 questions by ID."""
+    from sqlalchemy import select
+
+    rows = (await db.scalars(
+        select(Question).where(Question.id.in_(payload.question_ids))
+    )).all()
+
+    found_ids = {r.id for r in rows}
+    missing = [qid for qid in payload.question_ids if qid not in found_ids]
+    if missing:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Questions not found: {missing}",
+        )
+
+    results = await content_qa.qa_questions(list(rows), payload.source_text)
+    return [
+        QAResultOut(
+            question_id=r.question_id,
+            passed=r.passed,
+            score=r.score,
+            llm_checked=r.llm_checked,
+            issues=[IssueOut(severity=i.severity.value, code=i.code, message=i.message)
+                    for i in r.issues],
+        )
+        for r in results
     ]
