@@ -1,13 +1,18 @@
-"""Web Push subscription management (3.3).
+"""Web Push subscription management (3.3) and streak reminders (P.13).
 
-POST /push/subscribe   — store a PushSubscription for the current user
-DELETE /push/subscribe — remove a subscription by endpoint
-GET  /push/vapid-key   — return the VAPID public key (used by frontend to subscribe)
+GET  /push/vapid-key          — VAPID public key (for frontend subscribe)
+POST /push/subscribe          — register subscription (auth required)
+DELETE /push/subscribe        — remove subscription (auth required)
+PATCH /push/preferences       — toggle push_streak_enabled (auth required)
+POST /push/streak-reminder    — fire reminder to at-risk users (admin key)
 """
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+import logging
+from datetime import UTC, datetime, timedelta
+
+from fastapi import APIRouter, Depends, Header, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,8 +22,15 @@ from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.push_subscription import PushSubscription
 from app.models.user import User
+from app.services import push_service
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
+
+
+def _require_admin(x_admin_key: str | None = Header(None, alias="X-Admin-Key")) -> None:
+    if not settings.CONTENT_ADMIN_KEY or x_admin_key != settings.CONTENT_ADMIN_KEY:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin key required")
 
 
 class SubscriptionKeys(BaseModel):
@@ -94,3 +106,67 @@ async def unsubscribe(
     await db.commit()
     removed = result.rowcount > 0
     return {"unsubscribed": removed}
+
+
+class PushPreferencesRequest(BaseModel):
+    streak_enabled: bool
+
+
+@router.patch("/preferences", status_code=status.HTTP_200_OK)
+async def update_preferences(
+    body: PushPreferencesRequest,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> dict:
+    """Toggle push_streak_enabled for the current user (opt-out in one tap)."""
+    user.push_streak_enabled = body.streak_enabled
+    await db.commit()
+    return {"push_streak_enabled": user.push_streak_enabled}
+
+
+@router.post("/streak-reminder", status_code=status.HTTP_200_OK)
+async def send_streak_reminders(
+    db: AsyncSession = Depends(get_db),
+    _admin: None = Depends(_require_admin),
+) -> dict:
+    """Fire streak-at-risk push notifications to eligible users.
+
+    Eligible = streak > 0, push_streak_enabled=True, no study today,
+    not already reminded today. Max STREAK_REMINDER_MAX_PER_DAY per user.
+    Returns counts of notified users and total notifications sent.
+    """
+    now = datetime.now(UTC)
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    # Users with active streaks who haven't studied today
+    result = await db.scalars(
+        select(User).where(
+            User.current_streak > 0,
+            User.push_streak_enabled.is_(True),
+            (User.last_active < today_start) | User.last_active.is_(None),
+            (User.last_streak_reminder_at < today_start)
+            | User.last_streak_reminder_at.is_(None),
+        )
+    )
+    candidates = result.all()
+
+    notified_users = 0
+    total_sent = 0
+
+    for candidate in candidates:
+        sent = await push_service.send_to_user(
+            db,
+            candidate.id,
+            title="🔥 Keep your streak alive!",
+            body=f"You have a {candidate.current_streak}-day streak — study something today!",
+            tag="streak-reminder",
+        )
+        if sent > 0:
+            candidate.last_streak_reminder_at = now
+            notified_users += 1
+            total_sent += sent
+
+    if notified_users:
+        await db.commit()
+
+    return {"notified_users": notified_users, "notifications_sent": total_sent}

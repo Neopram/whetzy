@@ -3,6 +3,7 @@ import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
+import { usePushNotifications } from '../hooks/usePushNotifications';
 import { gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import styles from './ProfileScreen.module.css';
@@ -18,6 +19,24 @@ export function ProfileScreen() {
 
   const badges = useApi(() => gamification.badges(), []);
   const earnedIds = new Set((badges.data ?? []).map((b) => b.badge.id));
+  const push = usePushNotifications();
+  const [streakPushOn, setStreakPushOn] = useState(true);
+
+  async function handleStreakPushToggle() {
+    const next = !streakPushOn;
+    setStreakPushOn(next);
+    if (next) {
+      await push.subscribe();
+    }
+    // Persist preference on backend (best-effort, no error shown)
+    try {
+      await fetch('/api/v1/push/preferences', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('whetzy_access_token') ?? ''}` },
+        body: JSON.stringify({ streak_enabled: next }),
+      });
+    } catch { /* ignore */ }
+  }
 
   // All badge definitions come from earned + a static catalog fallback for locked display.
   const allBadges = badges.data ?? [];
@@ -89,6 +108,19 @@ export function ProfileScreen() {
               <span className={styles.toggleThumb} />
             </button>
           </div>
+          {push.supported && (
+            <div className={styles.setting}>
+              <span className={styles.settingLabel}>{L.streakReminders}</span>
+              <button
+                className={`${styles.toggle} ${streakPushOn ? styles.toggleOn : ''}`}
+                onClick={handleStreakPushToggle}
+                role="switch"
+                aria-checked={streakPushOn}
+              >
+                <span className={styles.toggleThumb} />
+              </button>
+            </div>
+          )}
         </div>
       </Card>
 
@@ -109,11 +141,11 @@ const TEXT = {
   es: { level: 'Nivel', nextLevel: 'faltan', streak: 'Racha', best: 'Mejor', totalXp: 'XP Total',
     proDesc: 'Ilimitado, tutor AI, sin anuncios', month: 'mes', badges: 'Logros', loading: 'Cargando…',
     noBadges: 'Aún no tienes logros. ¡Empieza a estudiar!', settings: 'Ajustes', langLabel: 'Idioma',
-    darkMode: 'Modo oscuro', signOut: 'Cerrar sesión',
+    darkMode: 'Modo oscuro', streakReminders: 'Recordatorios de racha', signOut: 'Cerrar sesión',
     privacy: 'Privacidad', terms: 'Términos', deleteAccount: 'Eliminar cuenta' },
   en: { level: 'Level', nextLevel: 'to go', streak: 'Streak', best: 'Best', totalXp: 'Total XP',
     proDesc: 'Unlimited, AI tutor, no ads', month: 'mo', badges: 'Achievements', loading: 'Loading…',
     noBadges: 'No achievements yet. Start studying!', settings: 'Settings', langLabel: 'Language',
-    darkMode: 'Dark mode', signOut: 'Sign out',
+    darkMode: 'Dark mode', streakReminders: 'Streak reminders', signOut: 'Sign out',
     privacy: 'Privacy', terms: 'Terms', deleteAccount: 'Delete account' },
 } as const;

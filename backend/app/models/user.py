@@ -50,6 +50,10 @@ class User(Base):
     # Incremented on password change/reset to invalidate existing tokens (ASVS V3.3).
     jwt_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
+    # Push notification preferences (P.13)
+    push_streak_enabled: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    last_streak_reminder_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
     # Stripe subscription (7.2)
     stripe_customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True, index=True)
     stripe_subscription_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True)
