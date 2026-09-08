@@ -122,6 +122,8 @@ class _Registry:
         self._metadata = meta
         self._checkpoint_dir = ckpt
         logger.info("Registry: loaded DKT v%d (%d skills, hidden=%d)", version, n_skills, hidden)
+        from app.services.dkt import dkt_cache_clear
+        dkt_cache_clear()
 
     async def load(self, version: int | None = None) -> None:
         """Load a checkpoint (default: latest).  No-op if torch unavailable."""

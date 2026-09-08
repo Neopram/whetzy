@@ -7,10 +7,17 @@ torch is intentionally excluded (too large for free tier).
 Interface: `predict(history) -> dict[skill_id, float]`
   history: list of {"skill_id": str, "correct": bool} ordered chronologically
   returns: P(correct on next question) per skill in [0, 1]
+
+Predictions are cached for _CACHE_TTL seconds keyed by content hash.  The
+LSTM forward pass itself is < 10 ms, but caching eliminates repeated work on
+the same screen (multiple fetches within one session have identical history).
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
+import time
 from typing import Any
 
 try:
@@ -19,6 +26,48 @@ try:
     _TORCH_AVAILABLE = True
 except ImportError:
     _TORCH_AVAILABLE = False
+
+# ── Prediction cache ──────────────────────────────────────────────────────────
+
+_CACHE_TTL = 60.0  # seconds
+_CACHE_MAX = 512   # max entries before eviction
+_cache: dict[str, tuple[float, dict[str, float]]] = {}  # key → (expires_at, result)
+
+
+def _cache_key(history: list[dict[str, Any]], skill_index: dict[str, int]) -> str:
+    payload = json.dumps(
+        {"h": [(r["skill_id"], r["correct"]) for r in history], "s": sorted(skill_index.items())},
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
+def _cache_get(key: str) -> dict[str, float] | None:
+    entry = _cache.get(key)
+    if entry is None:
+        return None
+    expires_at, result = entry
+    if time.monotonic() > expires_at:
+        del _cache[key]
+        return None
+    return result
+
+
+def _cache_set(key: str, result: dict[str, float]) -> None:
+    if len(_cache) >= _CACHE_MAX:
+        now = time.monotonic()
+        expired = [k for k, (exp, _) in _cache.items() if exp < now]
+        for k in expired:
+            del _cache[k]
+        if len(_cache) >= _CACHE_MAX:
+            oldest = min(_cache, key=lambda k: _cache[k][0])
+            del _cache[oldest]
+    _cache[key] = (time.monotonic() + _CACHE_TTL, result)
+
+
+def dkt_cache_clear() -> None:
+    """Clear all cached predictions (used in tests and after model rollback)."""
+    _cache.clear()
 
 
 # ── LSTM model (only instantiated when torch is present) ─────────────────────
@@ -87,12 +136,25 @@ def predict(
                 seen.append(sid)
         skill_index = {sid: i for i, sid in enumerate(seen)}
 
+    cached = _cache_get(_cache_key(history, skill_index))
+    if cached is not None:
+        return cached
+
+    key = _cache_key(history, skill_index)
+    result = _predict_uncached(history, skill_index)
+    _cache_set(key, result)
+    return result
+
+
+def _predict_uncached(
+    history: list[dict[str, Any]],
+    skill_index: dict[str, int],
+) -> dict[str, float]:
+    """Compute DKT prediction without cache lookup (called by predict())."""
     n_skills = len(skill_index)
     index_to_skill = {v: k for k, v in skill_index.items()}
 
     if _TORCH_AVAILABLE and n_skills >= 2:
-        # Prefer the registry-loaded model (trained checkpoint); fall back to
-        # a freshly initialised (untrained) net when the registry isn't ready yet.
         from app.ml.registry import registry as _reg
 
         reg_model = _reg.get_model()
@@ -106,7 +168,6 @@ def predict(
         if reg_model is not None:
             last = reg_model.predict(indices)
             return {index_to_skill[i]: round(last[i], 4) for i in range(min(n_skills, len(last)))}
-        # Registry not yet loaded — use an untrained model (uniform prior)
         model = _DKT(n_skills=n_skills)
         seq_out = model.predict_sequence(indices)
         last = seq_out[-1]
