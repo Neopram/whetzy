@@ -35,7 +35,7 @@ class Arm:
 
 
 class ThompsonBandit:
-    def __init__(self):
+    def __init__(self) -> None:
         self.arms: dict[str, Arm] = {}
 
     def add_arm(self, arm_id: str, prior_alpha: float = 1.0, prior_beta: float = 1.0) -> Arm:
@@ -51,7 +51,7 @@ class ThompsonBandit:
             return None
 
         samples = {arm_id: arm.sample() for arm_id, arm in pool.items()}
-        return max(samples, key=samples.get)
+        return max(samples, key=lambda k: samples[k])
 
     def select_top_n(
         self, n: int, eligible_ids: Optional[list[str]] = None,

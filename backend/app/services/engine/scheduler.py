@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 
 from .fsrs import FSRSScheduler, Card
 from .elo import EloRating, EloEntity
@@ -49,9 +49,9 @@ class SessionState:
     combo: int = 0
     max_combo: int = 0
     xp_earned: int = 0
-    recent_accuracy: list[bool] = None
+    recent_accuracy: list[bool] | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.recent_accuracy is None:
             self.recent_accuracy = []
 
@@ -170,7 +170,7 @@ class AdaptiveScheduler:
         response_time_ms: int,
         session: SessionState,
         now: Optional[datetime] = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         now = now or datetime.utcnow()
         grade = self._correctness_to_grade(correct, response_time_ms)
 
@@ -257,7 +257,7 @@ class AdaptiveScheduler:
         bonus = {4: 5, 3: 0, 2: 0, 1: 0}.get(grade, 0)
         return base * multiplier + bonus
 
-    def get_session_summary(self, session: SessionState) -> dict:
+    def get_session_summary(self, session: SessionState) -> dict[str, Any]:
         return {
             "total_questions": session.questions_answered,
             "correct": session.correct_count,

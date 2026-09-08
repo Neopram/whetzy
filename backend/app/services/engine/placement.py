@@ -13,7 +13,7 @@ from __future__ import annotations
 import math
 import random
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Any, Optional
 
 
 @dataclass
@@ -33,7 +33,7 @@ class PlacementState:
     ability_se: float = 1.0  # standard error
     responses: list[tuple[str, bool]] = field(default_factory=list)
     administered_ids: set[str] = field(default_factory=set)
-    skill_estimates: dict[str, float] = field(default_factory=dict)
+    skill_estimates: dict[str, dict[str, int]] = field(default_factory=dict)
 
 
 class PlacementEngine:
@@ -176,7 +176,7 @@ class PlacementEngine:
 
         return (total_correct / total_questions) >= self.skip_threshold
 
-    def get_placement_result(self, state: PlacementState) -> dict:
+    def get_placement_result(self, state: PlacementState) -> dict[str, Any]:
         total = len(state.responses)
         correct = sum(1 for _, c in state.responses if c)
 

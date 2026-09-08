@@ -5,6 +5,7 @@ from __future__ import annotations
 import random
 import uuid
 from datetime import datetime, timezone
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import or_, select
@@ -45,7 +46,7 @@ def _count_correct(answers: list[dict[str, object]] | None) -> int:
 def _total_time(answers: list[dict[str, object]] | None) -> int:
     if not answers:
         return 0
-    return sum(int(a.get("response_time_ms", 0)) for a in answers)
+    return sum(int(a.get("response_time_ms", 0)) for a in answers)  # type: ignore[call-overload]
 
 
 async def _load_user_by_username(db: AsyncSession, username: str) -> User:
@@ -72,7 +73,7 @@ async def _pick_skill(db: AsyncSession, challenger: User, skill_id: str | None) 
             status_code=422,
             detail="You haven't studied any skill yet. Complete at least one quiz before challenging.",
         )
-    return random.choice(skill_ids)
+    return random.choice(skill_ids)  # type: ignore[no-any-return]
 
 
 async def _pick_questions(db: AsyncSession, skill_id: str) -> list[Question]:
@@ -230,7 +231,7 @@ async def answer_duel(
     if payload.question_id not in duel.question_ids:
         raise HTTPException(status_code=422, detail="question_id is not part of this duel")
 
-    my_answers: list = list(duel.challenger_answers or []) if is_challenger else list(duel.opponent_answers or [])
+    my_answers: list[dict[str, Any]] = list(duel.challenger_answers or []) if is_challenger else list(duel.opponent_answers or [])
     answered_ids = {a["question_id"] for a in my_answers}
     if payload.question_id in answered_ids:
         raise HTTPException(status_code=409, detail="Already answered this question in the duel")

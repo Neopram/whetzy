@@ -71,7 +71,7 @@ class FSRSScheduler:
             return 0.0
         w20 = self.w[20] if abs(self.w[20]) > 1e-9 else 1.0
         factor = pow(0.9, -1.0 / w20) - 1.0
-        return pow(1.0 + factor * elapsed_days / stability, -w20)
+        return pow(1.0 + factor * elapsed_days / stability, -w20)  # type: ignore[no-any-return]
 
     def initial_stability(self, grade: int) -> float:
         return max(0.01, self.w[grade - 1])
@@ -93,7 +93,7 @@ class FSRSScheduler:
     ) -> float:
         hard_penalty = self.w[15] if grade == 2 else 1.0
         easy_bonus = self.w[16] if grade == 4 else 1.0
-        return s * (
+        return s * (  # type: ignore[no-any-return]
             1.0
             + math.exp(self.w[8])
             * (11.0 - d)
@@ -112,7 +112,7 @@ class FSRSScheduler:
             * (pow(s + 1.0, self.w[13]) - 1.0)
             * math.exp(self.w[14] * (1.0 - r))
         )
-        return min(new_s, s)
+        return min(new_s, s)  # type: ignore[no-any-return]
 
     def next_interval(self, stability: float) -> int:
         w20 = self.w[20] if abs(self.w[20]) > 1e-9 else 1.0
@@ -122,7 +122,7 @@ class FSRSScheduler:
         interval = (stability / factor) * (
             pow(self.desired_retention, -1.0 / w20) - 1.0
         )
-        return max(1, round(interval))
+        return max(1, round(interval))  # type: ignore[no-any-return]
 
     def review(
         self, card: Card, grade: int, now: Optional[datetime] = None,
