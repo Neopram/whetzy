@@ -14,6 +14,7 @@ import { DuelScreen } from './pages/DuelScreen';
 import { AuthScreen } from './pages/AuthScreen';
 import { DeleteAccountScreen } from './pages/DeleteAccountScreen';
 import { LegalScreen } from './pages/LegalScreen';
+import { OnboardingScreen } from './pages/OnboardingScreen';
 import { Toast } from './components/common/Toast';
 import './styles/global.css';
 
@@ -24,6 +25,14 @@ if (_path === '/privacy') document.title = 'Privacidad — Whetzy';
 if (_path === '/terms') document.title = 'Términos — Whetzy';
 
 type AuthState = 'checking' | 'unauthed' | 'authed';
+
+function needsOnboarding(userId: string): boolean {
+  try {
+    return !localStorage.getItem(`whetzy_onboarded_${userId}`);
+  } catch {
+    return false;
+  }
+}
 
 function App() {
   // Standalone pages routed by URL path
@@ -37,18 +46,23 @@ function App() {
   const [authState, setAuthState] = useState<AuthState>(() =>
     isAuthenticated() ? 'checking' : 'unauthed'
   );
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     if (authState !== 'checking') return;
     hydrateFromApi()
-      .then(() => setAuthState('authed'))
+      .then(() => {
+        const userId = useAppStore.getState().user.id;
+        setShowOnboarding(needsOnboarding(userId));
+        setAuthState('authed');
+      })
       .catch(() => {
         logout();
         setAuthState('unauthed');
       });
   }, [authState, hydrateFromApi]);
 
-  async function handleAuthed() {
+  function handleAuthed() {
     setAuthState('checking');
   }
 
@@ -63,6 +77,15 @@ function App() {
 
   if (authState === 'checking') {
     return <BootSplash />;
+  }
+
+  if (showOnboarding) {
+    return (
+      <>
+        <OnboardingScreen onDone={() => setShowOnboarding(false)} />
+        <Toast />
+      </>
+    );
   }
 
   const renderScreen = () => {

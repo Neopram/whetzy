@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión z) — 9.2 DONE: WCAG 2.2 AA (axe-core 3/3 pass); 9.1 DONE: design tokens; 9.4 DONE: legal; 4.1 DONE: DKT; 7.1 DONE: ASVS L2
+> Última actualización: 2026-09-08 (sesión z) — P.4 DONE: onboarding ≤1 screen, Playwright 14.7s (< 60s); 9.2 DONE: WCAG 2.2 AA; 9.1 + 9.4 DONE; 4.1 DONE; 7.1 DONE
 
 ---
 
@@ -56,7 +56,7 @@
 | 8 | Garantía E2E + informe competitivo | 30% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); sin load test, sin presupuesto de perf, sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
-| P | Producto — huecos que impiden vender | 62% | Email+reset+verificación+ajustes+reportes+export+deps+DB DONE; sin onboarding, banco 1.5k, versionado, modo oscuro, recordatorios |
+| P | Producto — huecos que impiden vender | 69% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding DONE; sin banco 1.5k, versionado, modo oscuro, recordatorios |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
 
 ---
@@ -175,7 +175,7 @@
 | P.1 | 1 | Email transaccional: proveedor + plantillas ES/EN (bienvenida, verificación, reset) | DONE | SMTP+Resend+log; templates ES+EN; fallback siempre logueado |
 | P.2 | 1 | Recuperación de contraseña: token de un solo uso, expira en 1 h | DONE | PasswordResetToken (SHA-256); forgot-password + reset-password; token reutilizado → 400 |
 | P.3 | 1 | Verificación de email en registro | DONE | EmailVerificationToken 24h; verify-email + resend-verification; email_verified en UserRead |
-| P.4 | 2 | Onboarding de primer uso: ≤ 3 pantallas (qué es · elige track · primera pregunta) | TODO | Playwright: landing → primera pregunta respondida en < 60 s |
+| P.4 | 2 | Onboarding de primer uso: ≤ 3 pantallas (qué es · elige track · primera pregunta) | DONE | OnboardingScreen.tsx (1 pantalla): logo + headline + 3 feature cards + CTA → startQuiz. Playwright 2/2 pass (14.7s, < 60s ✓). localStorage whetzy_onboarded_{id} skips on return. tsc ✅ |
 | P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | DONE | PATCH /auth/me + PATCH /auth/me/password + verify-email + resend-verification + forgot-password + reset-password — 229 tests pasan |
 | P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | DONE | QuestionReport model + migration f6a7b8c9d0e1 + POST /reports/question + GET /reports/question/{id} — 229 tests pasan |
 | P.7 | 2 | Exportación de datos (GDPR portabilidad) | DONE | GET /export/data → JSON attachment; sin N+1; hashed_password excluido — 229 tests pasan |
