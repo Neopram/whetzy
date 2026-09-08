@@ -11,46 +11,78 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    env:
+      DATABASE_URL: sqlite+aiosqlite:///:memory:
+      ENVIRONMENT: test
+      SECRET_KEY: ci-secret-key-not-for-production-0123456789abcdef
+      GROQ_API_KEY: ""
+      COVERAGE_FILE: /tmp/.coverage_whetzy
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt ruff aiosqlite
+          pip install -r requirements.txt pip-audit pytest-cov
+
+      - name: Dependency audit (pip-audit)
+        # Fails the build on HIGH or CRITICAL vulnerabilities.
+        # Add --ignore-vuln PYSEC-<id> for known-safe transitive issues only.
+        run: pip-audit --strict --vulnerability-service pypi --fail-on HIGH
+
       - name: Lint (ruff)
-        run: ruff check app || true
-      - name: Import + route check
-        env:
-          DATABASE_URL: sqlite+aiosqlite:///./ci.db
-          ENVIRONMENT: development
-          SECRET_KEY: ci-secret-key-not-for-production-0123456789abcdef
-        run: python -c "from app.main import app; assert len(app.routes) >= 25, app.routes; print('routes OK', len(app.routes))"
-      - name: Smoke test (register -> quiz -> answer)
-        env:
-          DATABASE_URL: sqlite+aiosqlite:///./ci.db
-          ENVIRONMENT: development
-          SECRET_KEY: ci-secret-key-not-for-production-0123456789abcdef
-          CONTENT_DIR: ${{ github.workspace }}/content
+        run: ruff check app
+
+      - name: Tests
         run: |
-          python -m app.services.content_loader
-          python -m app.services.seed
-          pytest -q || echo "no tests yet"
+          python -m pytest tests/ \
+            --tb=short \
+            -q \
+            --cov=app \
+            --cov-report=term-missing \
+            --cov-fail-under=60
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: /tmp/.coverage_whetzy
 
   frontend:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: "20.19"
-      - run: npm ci || npm install
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Dependency audit (npm audit)
+        # --audit-level=high fails on HIGH or CRITICAL vulns.
+        run: npm audit --audit-level=high
+
       - name: Typecheck
-        run: npx tsc -b
+        run: npx tsc -b --noEmit
+
+      - name: Lint (eslint)
+        run: npx eslint src --max-warnings=0 || true
+
       - name: Build
         run: npx vite build
