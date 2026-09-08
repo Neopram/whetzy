@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.core.security import (
+    _DUMMY_HASH,
     create_access_token,
     create_refresh_token,
     get_current_user,
@@ -90,8 +91,8 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> T
     email_svc.send_welcome(to=user.email, name=user.display_name, lang=user.language)
 
     return Token(
-        access_token=create_access_token(user.id),
-        refresh_token=create_refresh_token(user.id),
+        access_token=create_access_token(user.id, jwt_version=user.jwt_version),
+        refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
     )
 
 
@@ -104,7 +105,11 @@ async def login(
     result = await db.execute(select(User).where(User.email == form_data.username))
     user = result.scalar_one_or_none()
 
-    if user is None or not verify_password(form_data.password, user.hashed_password):
+    # Always call verify_password to prevent timing-based user enumeration (ASVS V2.2).
+    hash_to_check = user.hashed_password if user is not None else _DUMMY_HASH
+    password_ok = verify_password(form_data.password, hash_to_check)
+
+    if user is None or not password_ok:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -114,8 +119,8 @@ async def login(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user")
 
     return Token(
-        access_token=create_access_token(user.id),
-        refresh_token=create_refresh_token(user.id),
+        access_token=create_access_token(user.id, jwt_version=user.jwt_version),
+        refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
     )
 
 
@@ -136,8 +141,8 @@ async def refresh(payload: RefreshRequest, db: AsyncSession = Depends(get_db)) -
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
 
     return Token(
-        access_token=create_access_token(user.id),
-        refresh_token=create_refresh_token(user.id),
+        access_token=create_access_token(user.id, jwt_version=user.jwt_version),
+        refresh_token=create_refresh_token(user.id, jwt_version=user.jwt_version),
     )
 
 
@@ -193,6 +198,8 @@ async def change_password(
             detail="Current password is incorrect",
         )
     current_user.hashed_password = get_password_hash(payload.new_password)
+    # Invalidate all existing tokens by bumping the version (ASVS V3.3).
+    current_user.jwt_version = current_user.jwt_version + 1
     await db.commit()
     return {"message": "Password changed successfully. Please log in again with your new password."}
 
@@ -334,6 +341,8 @@ async def reset_password(
         )
 
     user.hashed_password = get_password_hash(payload.new_password)
+    # Invalidate all existing tokens (ASVS V3.3).
+    user.jwt_version = user.jwt_version + 1
     prt.used = True
     await db.commit()
 

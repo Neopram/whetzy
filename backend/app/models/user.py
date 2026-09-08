@@ -47,6 +47,8 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     email_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     language: Mapped[str] = mapped_column(String(2), default="es", nullable=False)
+    # Incremented on password change/reset to invalidate existing tokens (ASVS V3.3).
+    jwt_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
     skill_states: Mapped[list[UserSkillState]] = relationship(
         back_populates="user", cascade="all, delete-orphan"

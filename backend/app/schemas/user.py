@@ -55,6 +55,7 @@ class TokenPayload(BaseModel):
     type: str | None = None
     exp: int | None = None
     iat: int | None = None
+    jvs: int | None = None  # jwt_version for revocation (ASVS V3.3)
 
 
 class RefreshRequest(BaseModel):

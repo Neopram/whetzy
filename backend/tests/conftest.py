@@ -16,6 +16,8 @@ os.environ.setdefault("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
 os.environ.setdefault("ENVIRONMENT", "test")
 os.environ.setdefault("SECRET_KEY", "test-secret-key-00000000000000000001")
 os.environ.setdefault("GROQ_API_KEY", "")
+os.environ.setdefault("AUTH_RATE_LIMIT", "200")
+os.environ.setdefault("DEFAULT_RATE_LIMIT", "2000")
 # ──────────────────────────────────────────────────────────────────────────────
 
 import uuid

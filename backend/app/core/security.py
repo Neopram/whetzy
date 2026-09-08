@@ -22,6 +22,9 @@ from app.schemas.user import TokenPayload
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+# Dummy hash for constant-time comparison when no user is found (ASVS V2.2 timing attack).
+_DUMMY_HASH = pwd_context.hash("dummy-password-for-timing-safety")
+
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_PREFIX}/auth/login", auto_error=False
 )
@@ -47,6 +50,7 @@ def _create_token(
     subject: str | uuid.UUID,
     token_type: TokenType,
     expires_delta: timedelta,
+    jwt_version: int = 1,
 ) -> str:
     now = datetime.now(UTC)
     to_encode: dict[str, Any] = {
@@ -54,22 +58,27 @@ def _create_token(
         "type": token_type,
         "iat": int(now.timestamp()),
         "exp": now + expires_delta,
+        "jvs": jwt_version,  # version counter for revocation (ASVS V3.3)
     }
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM)  # type: ignore[no-any-return]
 
 
 def create_access_token(
-    subject: str | uuid.UUID, expires_delta: timedelta | None = None
+    subject: str | uuid.UUID,
+    expires_delta: timedelta | None = None,
+    jwt_version: int = 1,
 ) -> str:
     delta = expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    return _create_token(subject, "access", delta)
+    return _create_token(subject, "access", delta, jwt_version)
 
 
 def create_refresh_token(
-    subject: str | uuid.UUID, expires_delta: timedelta | None = None
+    subject: str | uuid.UUID,
+    expires_delta: timedelta | None = None,
+    jwt_version: int = 1,
 ) -> str:
     delta = expires_delta or timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
-    return _create_token(subject, "refresh", delta)
+    return _create_token(subject, "refresh", delta, jwt_version)
 
 
 # --------------------------------------------------------------------------
@@ -129,6 +138,14 @@ async def get_current_user(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Inactive user",
+        )
+    # Reject tokens issued before a password change/reset (ASVS V3.3).
+    token_jvs = getattr(token_data, "jvs", None)
+    if token_jvs is not None and int(token_jvs) != user.jwt_version:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has been revoked",
+            headers={"WWW-Authenticate": "Bearer"},
         )
     return user
 

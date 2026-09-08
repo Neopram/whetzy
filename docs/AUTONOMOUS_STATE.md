@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión y) — 9.4 DONE: LegalScreen + ProfileScreen links, b6ab6dc; 4.1 DONE: DKT training pipeline, 33 skills, val_auc=0.24, model.pt 158 KB
+> Última actualización: 2026-09-08 (sesión y) — 9.4 DONE: legal pages; 4.1 DONE: DKT training pipeline; 7.1 DONE: ASVS L2 audit (6 HIGH fixes: timing, jwt_version, XFF, 422 body, IDOR, DEBUG)
 
 ---
 
@@ -134,7 +134,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 7.1 | 2 | Auditoría de seguridad ASVS L2 + fixes | TODO | Checklist ASVS L2 completo; todo hallazgo alto/crítico corregido |
+| 7.1 | 2 | Auditoría de seguridad ASVS L2 + fixes | DONE | 6 HIGH findings fixed: timing-safe login (ASVS V2.2), jwt_version token revocation on pwd change (V3.3, migration g7h8i9j0k1l2), XFF spoofing → TRUST_PROXY_HEADERS=False default (V11.2), body stripped from 422 (V7.1), reports IDOR scoped to own user (V4.2), DEBUG=False default (V14.4). 233 tests ✅ mypy strict ✅ |
 | 7.2 | 2 | Stripe: checkout + webhook + estado de suscripción | TODO | Test-mode E2E: checkout → webhook → entitlement activo |
 | 7.3 | 2 | Entitlements: gating free/plus/pro | TODO | Feature gates server-side; cliente no puede saltárselos |
 | 7.4 | 3 | i18next completo ES/EN | TODO | 0 strings hardcodeados; cambio de idioma en caliente |

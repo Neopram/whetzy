@@ -17,6 +17,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
+from app.core.config import settings
+
 # ASVS V14.4: security headers. CSP is API-appropriate (no inline content served).
 _SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff",
@@ -66,10 +68,13 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self._hits: dict[str, list[float]] = defaultdict(list)
 
     def _client_key(self, request: Request) -> str:
-        # Honor a single proxy hop; fall back to the socket peer.
-        fwd = request.headers.get("x-forwarded-for")
-        ip = fwd.split(",")[0].strip() if fwd else (request.client.host if request.client else "unknown")
-        return ip
+        # Only trust X-Forwarded-For when TRUST_PROXY_HEADERS=true (ASVS V11.2).
+        # Default: use socket peer to prevent IP spoofing via forged headers.
+        if settings.TRUST_PROXY_HEADERS:
+            fwd = request.headers.get("x-forwarded-for")
+            if fwd:
+                return fwd.split(",")[0].strip()
+        return request.client.host if request.client else "unknown"
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         path = request.url.path

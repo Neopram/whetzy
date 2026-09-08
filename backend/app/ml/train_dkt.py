@@ -87,7 +87,7 @@ def _load_sequences(db_url: str) -> tuple[list[list[tuple[int, bool]]], list[str
 # ── 3. Dataset ───────────────────────────────────────────────────────────────
 
 if _TORCH_AVAILABLE:
-    class _DKTDataset(Dataset):  # type: ignore[misc]
+    class _DKTDataset(Dataset):  # type: ignore[type-arg]
         """Yields (input_seq, target_seq) pairs for DKT training.
 
         Encoding: skill_idx * 2 + (1 if correct else 0)
@@ -129,7 +129,7 @@ if _TORCH_AVAILABLE:
             mask[i, :L]    = True
         return inp_pad, sk_pad, co_pad, mask  # type: ignore[return-value]
 
-    class _Net(nn.Module):  # type: ignore[misc]
+    class _Net(nn.Module):
         def __init__(self, n_skills: int, hidden: int) -> None:
             super().__init__()
             self.embed = nn.Embedding(n_skills * 2, hidden)

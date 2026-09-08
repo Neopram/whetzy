@@ -93,16 +93,20 @@ async def report_question(
 @router.get(
     "/question/{question_id}",
     response_model=list[ReportItem],
-    summary="List reports for a question (admin visibility)",
+    summary="List own reports for a question",
 )
 async def list_question_reports(
     question_id: str,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[ReportItem]:
+    # Scoped to the requesting user's own reports (ASVS V4.2 — no IDOR).
     result = await db.execute(
         select(QuestionReport)
-        .where(QuestionReport.question_id == question_id)
+        .where(
+            QuestionReport.question_id == question_id,
+            QuestionReport.user_id == current_user.id,
+        )
         .order_by(QuestionReport.created_at.desc())
     )
     reports = result.scalars().all()

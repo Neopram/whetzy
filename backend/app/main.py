@@ -91,12 +91,10 @@ app.add_middleware(
 async def validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    body = exc.body
-    if isinstance(body, bytes):
-        body = body.decode("utf-8", errors="replace")
+    # Never echo the request body — it may contain passwords or PII (ASVS V7.1).
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={"detail": exc.errors(), "body": body},
+        content={"detail": exc.errors()},
     )
 
 

@@ -25,8 +25,13 @@ class Settings(BaseSettings):
     # --- General ---------------------------------------------------------
     APP_NAME: str = "Whetzy"
     ENVIRONMENT: str = "development"  # development | staging | production
-    DEBUG: bool = True
+    # False by default — set DEBUG=true in .env for local development only.
+    # Keeps /docs and /redoc hidden in production (ASVS V14.4).
+    DEBUG: bool = False
     API_V1_PREFIX: str = "/api/v1"
+    # When True, trust the leftmost IP in X-Forwarded-For for rate limiting.
+    # Only enable behind a known reverse proxy (ASVS V11.2).
+    TRUST_PROXY_HEADERS: bool = False
 
     # --- Database (PostgreSQL, async via asyncpg) -------------------------
     DATABASE_URL: str = (
