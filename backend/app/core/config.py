@@ -74,6 +74,18 @@ class Settings(BaseSettings):
     # Empty → auto-resolved to backend/chroma_db/ relative to rag.py location.
     CHROMA_PERSIST_PATH: str = ""
 
+    # --- Email (transaccional) -----------------------------------------------
+    EMAIL_PROVIDER: str = "smtp"  # smtp | resend | log (fallback/dev)
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_USE_TLS: bool = True
+    RESEND_API_KEY: str = ""
+    EMAIL_FROM_ADDRESS: str = "noreply@whetzy.com"
+    EMAIL_FROM_NAME: str = "Whetzy"
+    FRONTEND_BASE_URL: str = "https://whetzy.com"
+
     # --- Gamification tuning -------------------------------------------------
     MASTERY_THRESHOLD: float = 0.95
     DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7

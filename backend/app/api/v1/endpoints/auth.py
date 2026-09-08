@@ -1,11 +1,15 @@
-"""Authentication endpoints: register, login, refresh, current user."""
+"""Authentication endpoints: register, login, refresh, current user, password reset."""
 
 from __future__ import annotations
 
+import hashlib
+import secrets
 import uuid
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel, EmailStr
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,10 +22,20 @@ from app.core.security import (
     verify_password,
     verify_token,
 )
+from app.models.password_reset import PasswordResetToken
 from app.models.user import User
 from app.schemas.user import RefreshRequest, Token, UserCreate, UserRead
 
 router = APIRouter()
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
 
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
@@ -117,3 +131,76 @@ async def delete_account(
             "Se borrará permanentemente en 30 días."
         )
     }
+
+
+@router.post("/forgot-password", status_code=status.HTTP_200_OK)
+async def forgot_password(
+    payload: ForgotPasswordRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Request a password reset. Always returns 200 to prevent user enumeration."""
+    result = await db.execute(select(User).where(User.email == payload.email))
+    user = result.scalar_one_or_none()
+
+    if user and user.is_active:
+        raw_token = secrets.token_urlsafe(32)
+        token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
+        expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
+
+        prt = PasswordResetToken(
+            user_id=user.id,
+            token_hash=token_hash,
+            expires_at=expires_at,
+        )
+        db.add(prt)
+        await db.commit()
+
+        from app.services import email as email_svc
+        email_svc.send_password_reset(
+            to=user.email,
+            name=user.display_name,
+            token=raw_token,
+            lang=user.language,
+        )
+
+    return {"message": "If that email is registered, a reset link has been sent."}
+
+
+@router.post("/reset-password", status_code=status.HTTP_200_OK)
+async def reset_password(
+    payload: ResetPasswordRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Consume a password-reset token (single-use, expires in 1h) and set a new password."""
+    if len(payload.new_password) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Password must be at least 8 characters",
+        )
+
+    token_hash = hashlib.sha256(payload.token.encode()).hexdigest()
+    result = await db.execute(
+        select(PasswordResetToken).where(PasswordResetToken.token_hash == token_hash)
+    )
+    prt = result.scalar_one_or_none()
+
+    now = datetime.now(timezone.utc)
+    if prt is None or prt.used or prt.expires_at.replace(tzinfo=timezone.utc) < now:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token",
+        )
+
+    result2 = await db.execute(select(User).where(User.id == prt.user_id))
+    user = result2.scalar_one_or_none()
+    if user is None or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token",
+        )
+
+    user.hashed_password = get_password_hash(payload.new_password)
+    prt.used = True
+    await db.commit()
+
+    return {"message": "Password updated. You can now log in with your new password."}

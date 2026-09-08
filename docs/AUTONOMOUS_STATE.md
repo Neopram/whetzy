@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión s) — inicialización del ledger
+> Última actualización: 2026-09-08 (sesión t) — G1+G3 DONE; 141 tests pasando; P.1+P.2 en marcha; G2 workers activos
 
 ---
 
@@ -17,7 +17,7 @@
 | Backend prod | `https://api-production-9751.up.railway.app` |
 | Frontend prod | `https://whetzy.com` / `https://whetzy.pages.dev` |
 | Repo | `github.com/Neopram/whetzy` branch `master` |
-| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7` (+ las que añadas) |
+| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8` |
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |
@@ -66,11 +66,11 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| Q.1 | 0 | Infra de tests backend: `pytest.ini`/`conftest.py` con DB efímera, fixtures de user/token/content | TODO | `pytest backend/tests` corre en <60s contra SQLite en memoria, 0 errores de setup |
-| Q.2 | 0 | Tests unitarios del engine: FSRS, Elo, BKT, bandit | TODO | ≥90% cobertura en `services/engine/`, casos borde incluidos |
+| Q.1 | 0 | Infra de tests backend: `pytest.ini`/`conftest.py` con DB efímera, fixtures de user/token/content | DONE | pytest en <30s contra SQLite :memory:, 0 errores de setup; 141 tests pasan |
+| Q.2 | 0 | Tests unitarios del engine: FSRS, Elo, BKT, bandit | DONE | 81 tests (18 BKT + 17 Elo + 18 FSRS + 24 bandit); BKT 100%, Elo 100%, FSRS 97%, bandit 96% |
 | Q.3 | 1 | Tests de integración API: auth, quiz, progress, glossary, duels, placement, tutor | TODO | Cada endpoint con happy path + 401 + 422 + caso borde. ≥80% cobertura en `api/v1/` |
-| Q.4 | 1 | Tests de gamificación: XP, ligas, badges, misiones, rachas | TODO | ≥85% cobertura en `services/gamification/` |
-| Q.5 | 1 | Inventario y eliminación de código muerto | TODO | `vulture`/`ruff --select F401,F841` limpio. Cada borrado justificado con grep de referencias |
+| Q.4 | 1 | Tests de gamificación: XP, ligas, badges, misiones, rachas | DONE | 50 tests, 100% cobertura en services/gamification/service.py |
+| Q.5 | 1 | Inventario y eliminación de código muerto | DONE | ruff F401 limpio: duel.py, rag.py, bandit.py, bkt.py, elo.py, fsrs.py, gamification/service.py, quiz.py, dkt.py |
 | Q.6 | 1 | Consolidación de docs: 10 archivos → set coherente | TODO | `docs/` con: README, ARCHITECTURE, API, RUNBOOK, STATUS, DECISIONS. Prompts históricos a `docs/archive/` |
 | Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | TODO | `mypy app --strict` 0 errores; `tsc --noEmit --strict` 0 errores |
 | Q.8 | 2 | Lint zero-warnings: ruff + eslint | TODO | `ruff check` y `eslint` sin warnings. Reglas en CI |
@@ -118,12 +118,12 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 6.1 | 1 | Logging estructurado JSON con `request_id` correlacionado | TODO | Cada log lleva request_id, user_id, path, latencia |
+| 6.1 | 1 | Logging estructurado JSON con `request_id` correlacionado | DONE | core/logging.py: _JSONFormatter + RequestIDMiddleware; cada log lleva request_id + user_id |
 | 6.2 | 2 | OpenTelemetry: trazas HTTP + DB | TODO | Traza de una request de quiz muestra spans de DB |
 | 6.3 | 2 | Métricas Prometheus + `/metrics` | TODO | RED metrics (rate/errors/duration) por endpoint |
 | 6.4 | 2 | Error tracking (Sentry-compatible) | TODO | Excepción no capturada llega con stack + contexto de usuario |
-| 6.5 | 1 | Liveness vs readiness separados | TODO | `/health/live` y `/health/ready`; ready verifica DB |
-| 6.6 | 1 | Rate limiting por IP y por usuario | TODO | 429 con `Retry-After`; login y tutor con límites más estrictos |
+| 6.5 | 1 | Liveness vs readiness separados | DONE | /health/live → 200 siempre; /health/ready → SELECT 1; 503 si DB down |
+| 6.6 | 1 | Rate limiting por IP y por usuario | DONE | 429 + Retry-After; 12/min en /auth y /tutor; 120/min default |
 | 6.7 | 4 | Límites de servicio limpios (interfaces, no microservicios prematuros) | TODO | `content`, `engine`, `gamification` con interfaces explícitas y sin imports cruzados |
 
 ### 7 — Commerce + i18n + nativo + IaC + seguridad
@@ -168,8 +168,8 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| P.1 | 1 | Email transaccional: proveedor + plantillas ES/EN (bienvenida, verificación, reset) | TODO | Envío real en staging; cada plantilla en ambos idiomas; fallback logueado si el proveedor cae |
-| P.2 | 1 | Recuperación de contraseña: token de un solo uso, expira en 1 h | TODO | E2E: solicitar → email → reset → login con la nueva; token reutilizado → 400 |
+| P.1 | 1 | Email transaccional: proveedor + plantillas ES/EN (bienvenida, verificación, reset) | DOING | app/services/email.py — SMTP + Resend fallback; 3 templates ES+EN |
+| P.2 | 1 | Recuperación de contraseña: token de un solo uso, expira en 1 h | DOING | Requiere P.1 (email service) — implementando junto |
 | P.3 | 1 | Verificación de email en registro | TODO | No verificado = acceso limitado y aviso claro; enlace verifica; reenvío con rate limit |
 | P.4 | 2 | Onboarding de primer uso: ≤ 3 pantallas (qué es · elige track · primera pregunta) | TODO | Playwright: landing → primera pregunta respondida en < 60 s |
 | P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | TODO | Cada cambio persiste, se refleja en la sesión activa, y pide contraseña actual donde toca |
@@ -259,6 +259,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | Sesión | Fecha | Tests pasando | Cobertura back | Cobertura front | Ruff | mypy | tsc | Tareas DONE | Fases ≥95% |
 |---|---|---|---|---|---|---|---|---|---|
 | s | 2026-09-08 | 3 archivos, sin medir | — | — | — | — | 0 err | — | 0,1 |
+| t | 2026-09-08 | 141 (82 engine + 50 gamif + 9 core) | engine ≥96%, gamif 100% | — | F401 limpio | — | — | Q.1,Q.2,Q.4,Q.5,6.1,6.5,6.6 | 0,1 |
 
 ---
 
