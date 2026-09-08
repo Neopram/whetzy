@@ -20,7 +20,7 @@ export function StatsScreen() {
   const L = TEXT[lang];
 
   const totalQuestions = dash.data?.total_questions_answered ?? 0;
-  const accuracy = Math.round((dash.data?.overall_accuracy ?? 0) * 100);
+  const _accuracy = Math.round((dash.data?.overall_accuracy ?? 0) * 100);
   const avgMastery = dash.data && dash.data.tracks.length
     ? Math.round((dash.data.tracks.reduce((s, t) => s + t.average_mastery, 0) / dash.data.tracks.length) * 100)
     : 0;

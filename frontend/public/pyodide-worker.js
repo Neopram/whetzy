@@ -43,7 +43,7 @@ self.addEventListener('message', ({ data }) => {
     pyodide.runPython(code);
     output = pyodide.runPython('_nbuf.getvalue()');
   } catch (err) {
-    try { output = pyodide.runPython('_nbuf.getvalue()'); } catch (_) { /* nothing captured yet */ }
+    try { output = pyodide.runPython('_nbuf.getvalue()'); } catch { /* nothing captured yet */ }
     // Surface only the last meaningful line (strip Pyodide's internal traceback prefix).
     const lines = String(err).split('\n').filter(Boolean);
     error = lines[lines.length - 1] || String(err);
@@ -53,7 +53,7 @@ self.addEventListener('message', ({ data }) => {
         '__import__("sys").stdout = __import__("sys").__stdout__\n' +
         '__import__("sys").stderr = __import__("sys").__stderr__'
       );
-    } catch (_) { /* ignore cleanup errors */ }
+    } catch { /* ignore cleanup errors */ }
   }
 
   self.postMessage({ type: 'result', id, output, error, timedOut: false });

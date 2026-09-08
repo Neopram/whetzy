@@ -54,7 +54,7 @@ export function DuelScreen() {
   const [activeDuel, setActiveDuel] = useState<DuelChallengeResponse | null>(null);
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
-  const [answered, setAnswered] = useState<boolean[]>([]);
+  const [_answered, setAnswered] = useState<boolean[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [playingDuelId, setPlayingDuelId] = useState<string | null>(null);
   const questionStart = useState(() => Date.now())[0];
@@ -98,7 +98,7 @@ export function DuelScreen() {
   };
 
   // ── Playing: join existing duel ───────────────────────────────────────────
-  const joinDuel = (duel: DuelSummary) => {
+  const joinDuel = (_duel: DuelSummary) => {
     // We don't have the questions client-side yet — re-challenge same duel
     // For opponents: show a simplified quiz. In full impl, load questions via GET /duels/{id}/questions.
     // For now: show instructions to go play via challenge flow or note it's waiting
@@ -286,7 +286,7 @@ function DuelCard({
 }) {
   const isWinner = duel.winner_id === currentUserId;
   const isDraw = duel.status === 'completed' && !duel.winner_id;
-  const isLoser = duel.status === 'completed' && !isDraw && !isWinner;
+  const _isLoser = duel.status === 'completed' && !isDraw && !isWinner;
 
   const statusLabel =
     duel.status === 'pending' ? t.status_pending

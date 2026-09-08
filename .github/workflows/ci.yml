@@ -30,7 +30,7 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pip-audit pytest-cov
+          pip install -r requirements.txt pip-audit pytest-cov mypy
 
       - name: Dependency audit (pip-audit)
         # Fails the build on HIGH or CRITICAL vulnerabilities.
@@ -39,6 +39,9 @@ jobs:
 
       - name: Lint (ruff)
         run: ruff check app
+
+      - name: Type check (mypy)
+        run: mypy app --strict --ignore-missing-imports
 
       - name: Tests
         run: |
@@ -81,8 +84,8 @@ jobs:
       - name: Typecheck
         run: npx tsc -b --noEmit
 
-      - name: Lint (eslint)
-        run: npx eslint src --max-warnings=0 || true
+      - name: Lint (oxlint)
+        run: npx oxlint src --deny-warnings
 
       - name: Build
         run: npx vite build
