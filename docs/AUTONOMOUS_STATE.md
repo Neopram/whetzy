@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ah) — 4.6 ✅ DONE; A/B harness BKT vs DKT; Phase 4 → 100% CERRADA; 405 tests
+> Última actualización: 2026-09-08 (sesión ah) — 4.6 ✅ 5.5 ✅ 6.7 ✅ DONE; A/B+dashboard+boundaries; Phase 4+5+6 → 100% CERRADAS; 444 tests
 
 ---
 
@@ -50,8 +50,8 @@
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
 | 3 | Gamificación + duelos + offline + Lottie | 99% | Duel E2E prod ✅; push notifs ✅; offline sync E2E ✅; solo Duel E2E multi-user pendiente (UI stub) |
 | 4 | DKT + churn + MLOps | 100% | ✅ CERRADA — DKT training + eval + registry + cache + churn + A/B harness |
-| 5 | Pipeline multi-agente + analytics | 80% | 5.1 author agent ✅; 5.2 QA agent ✅; 5.3 duplicados ✅; 5.4 analytics ✅; sin dashboard (5.5 PRI 4) |
-| 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
+| 5 | Pipeline multi-agente + analytics | 100% | ✅ CERRADA — author+QA+duplicados+analytics+dashboard |
+| 6 | Observabilidad + límites de servicio | 100% | ✅ CERRADA — JSON logging + OTEL + Prometheus + Sentry + liveness/readiness + rate-limiting + service boundaries |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 65% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; i18n 10 screens ✅; sin nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 80% | 9.1 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 DONE; 9.7 HUMAN-BLOCKED (VoiceOver/TalkBack real device); 9.8 PRI 4 |
@@ -116,7 +116,7 @@
 | 5.2 | 3 | Agente QA de contenido: valida distractores, dificultad, cita | DONE | content_qa.py: structural checks (opt count, correct_index, duplicates, placeholders, short stems, source, explanation, tier) + LLM pass; POST /content/qa + /qa/batch (admin key); 35 tests (27 unit + 8 integration); detection rate 100% >= 90% criterion; 370/370 tests; mypy 0 err; commit ba0acf1 |
 | 5.3 | 4 | Detección de duplicados por embeddings | DONE | app/services/duplicate_detector.py: sentence-transformers all-MiniLM-L6-v2; cosine_pairs() O(N²) upper-triangle; async find_duplicates(db, skill_id?, threshold=0.85, max_pairs=200); POST /content/duplicates (admin key); 20 tests (15 unit + 5 integration) 390/390 pass; mypy strict 0 err |
 | 5.4 | 3 | Esquema de eventos de analytics + ingesta | DONE | AnalyticsEvent table + migration i9j0k1l2m3n4; track(db, event_type, user_id, properties); events: user_registered (auth.register) + first_quiz_answer (quiz.submit, questions_answered==0); GET /analytics/funnel (X-Admin-Key) → registrations+first_quiz+d1+d7+rates; 5 integration tests; 276/276 tests; mypy strict ✅; commit 3fbaf31 |
-| 5.5 | 4 | Dashboard de analytics (admin) | TODO | Retención, engagement, dominio por skill, embudo |
+| 5.5 | 4 | Dashboard de analytics (admin) | DONE | GET /analytics/dashboard: funnel+retention+engagement+skill_mastery; 9 integration tests; commit 0d9b4a4 |
 
 ### 6 — Observabilidad + límites de servicio
 
@@ -128,7 +128,7 @@
 | 6.4 | 2 | Error tracking (Sentry-compatible) | DONE | error_tracking.py: configure_sentry; set_user_context en middleware |
 | 6.5 | 1 | Liveness vs readiness separados | DONE | /health/live → 200 siempre; /health/ready → SELECT 1; 503 si DB down |
 | 6.6 | 1 | Rate limiting por IP y por usuario | DONE | 429 + Retry-After; 12/min en /auth y /tutor; 120/min default |
-| 6.7 | 4 | Límites de servicio limpios (interfaces, no microservicios prematuros) | TODO | `content`, `engine`, `gamification` con interfaces explícitas y sin imports cruzados |
+| 6.7 | 4 | Límites de servicio limpios (interfaces, no microservicios prematuros) | DONE | engine+gamification __all__ completos; quiz/placement usan pkg imports; 30 boundary tests; commit 06307fd |
 
 ### 7 — Commerce + i18n + nativo + IaC + seguridad
 
