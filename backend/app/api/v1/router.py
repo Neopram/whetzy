@@ -9,6 +9,7 @@ from app.api.v1.endpoints import (
     duels,
     export,
     glossary,
+    ml,
     placement,
     progress,
     quiz,
@@ -29,3 +30,4 @@ api_router.include_router(social.router, tags=["social"])
 api_router.include_router(duels.router, prefix="/duels", tags=["duels"])
 api_router.include_router(reports.router, prefix="/reports", tags=["reports"])
 api_router.include_router(export.router, prefix="/export", tags=["export"])
+api_router.include_router(ml.router, prefix="/ml", tags=["ml"])

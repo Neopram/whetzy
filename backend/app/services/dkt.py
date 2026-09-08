@@ -91,8 +91,11 @@ def predict(
     index_to_skill = {v: k for k, v in skill_index.items()}
 
     if _TORCH_AVAILABLE and n_skills >= 2:
-        model = _DKT(n_skills=n_skills)
-        # Encode as skill_idx * 2 + correct (standard DKT encoding)
+        # Prefer the registry-loaded model (trained checkpoint); fall back to
+        # a freshly initialised (untrained) net when the registry isn't ready yet.
+        from app.ml.registry import registry as _reg
+
+        reg_model = _reg.get_model()
         indices = [
             skill_index[r["skill_id"]] * 2 + (1 if r["correct"] else 0)
             for r in history
@@ -100,9 +103,13 @@ def predict(
         ]
         if not indices:
             return _heuristic_predict(history, skill_index)
+        if reg_model is not None:
+            last = reg_model.predict(indices)
+            return {index_to_skill[i]: round(last[i], 4) for i in range(min(n_skills, len(last)))}
+        # Registry not yet loaded — use an untrained model (uniform prior)
+        model = _DKT(n_skills=n_skills)
         seq_out = model.predict_sequence(indices)
-        # Use last time-step output as prediction
-        last = seq_out[-1]  # list of n_skills floats
+        last = seq_out[-1]
         return {index_to_skill[i]: round(last[i], 4) for i in range(n_skills)}
 
     return _heuristic_predict(history, skill_index)

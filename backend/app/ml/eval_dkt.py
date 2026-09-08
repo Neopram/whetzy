@@ -139,7 +139,7 @@ def _dkt_eval(
     if not _TORCH_AVAILABLE:
         raise RuntimeError("torch not available")
 
-    from app.ml.train_dkt import _Net  # type: ignore[attr-defined]
+    from app.ml.train_dkt import _Net
 
     meta_path = ckpt_dir / "metadata.json"
     if not meta_path.exists():

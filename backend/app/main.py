@@ -42,10 +42,13 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         logger.info("Development mode: ensured all tables exist")
 
     from app.core.db import AsyncSessionLocal
+    from app.ml.registry import registry
     from app.services.ai import rag
 
     asyncio.create_task(rag.build_bg(AsyncSessionLocal))
     logger.info("RAG: background index build scheduled")
+    asyncio.create_task(registry.load())
+    logger.info("DKT registry: background model load scheduled")
 
     yield
     logger.info("Shutting down %s", settings.APP_NAME)
