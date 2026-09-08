@@ -9,7 +9,7 @@ from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -37,6 +37,17 @@ class ForgotPasswordRequest(BaseModel):
 class ResetPasswordRequest(BaseModel):
     token: str
     new_password: str
+
+
+class UpdateProfileRequest(BaseModel):
+    display_name: str | None = Field(default=None, min_length=1, max_length=100)
+    avatar_emoji: str | None = Field(default=None, max_length=16)
+    language: str | None = Field(default=None, pattern="^(es|en)$")
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str = Field(min_length=8, max_length=128)
 
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
@@ -149,6 +160,41 @@ async def delete_account(
             "Se borrará permanentemente en 30 días."
         )
     }
+
+
+@router.patch("/me", response_model=UserRead, status_code=status.HTTP_200_OK)
+async def update_profile(
+    payload: UpdateProfileRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> User:
+    """Update editable profile fields. Only provided fields are changed."""
+    if payload.display_name is not None:
+        current_user.display_name = payload.display_name
+    if payload.avatar_emoji is not None:
+        current_user.avatar_emoji = payload.avatar_emoji
+    if payload.language is not None:
+        current_user.language = payload.language
+    await db.commit()
+    await db.refresh(current_user)
+    return current_user
+
+
+@router.patch("/me/password", status_code=status.HTTP_200_OK)
+async def change_password(
+    payload: ChangePasswordRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Change password — requires current password for confirmation."""
+    if not verify_password(payload.current_password, current_user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Current password is incorrect",
+        )
+    current_user.hashed_password = get_password_hash(payload.new_password)
+    await db.commit()
+    return {"message": "Password changed successfully. Please log in again with your new password."}
 
 
 @router.post("/verify-email", status_code=status.HTTP_200_OK)
