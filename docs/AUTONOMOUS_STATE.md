@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión af) — 7.4 ✅ 3.2 ✅ DONE; offline sync wired + E2E; commit 181d857
+> Última actualización: 2026-09-08 (sesión ag) — 7.5 ✅ 9.5 ✅ 9.6 ✅ DONE; Capacitor Android; App Store + Play Store compliance docs; Phase 9 → 60%
 
 ---
 
@@ -54,7 +54,7 @@
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 65% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; i18n 10 screens ✅; sin nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
-| 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
+| 9 | Store readiness + excelencia de diseño | 60% | 9.1 + 9.2 + 9.4 + 9.5 + 9.6 DONE; sin store assets (9.3), sin nativo accesibility audit (9.7) |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
 | P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
@@ -138,7 +138,7 @@
 | 7.2 | 2 | Stripe: checkout + webhook + estado de suscripción | DONE | stripe_customer_id/subscription_id/status/tier/expires_at on User; migration j0k1l2m3n4o5; POST /billing/checkout (checkout URL) + POST /billing/webhook (checkout.completed/sub.updated/deleted) + GET /billing/subscription; 10 integration tests (mocked stripe); 286/286 tests; mypy 0 err; commit a010d98 |
 | 7.3 | 2 | Entitlements: gating free/plus/pro | DONE | app/core/entitlements.py: user_meets_tier + require_tier dep; free<plus<pro hierarchy; is_premium=True w/o tier → plus (backward compat); quiz exam/review → plus; tutor/explain → plus; 16 tests (9 unit + 7 integration); conftest: plus_user+plus_auth_headers; 302/302 tests; commit 37acb87 |
 | 7.4 | 3 | i18next completo ES/EN | DONE | i18n.ts + react-i18next; 10 screens migradas (Auth/Onboarding/Home/League/Tracks/Stats/Profile/Quiz/Duel/Placement); 0 TEXT/L dicts; duel+placement+quiz-exec keys added; tsc 0 err; commit 8f99ad9 |
-| 7.5 | 3 | Shell nativo Capacitor (iOS + Android) | TODO | Builds locales corren; deep links; safe areas |
+| 7.5 | 3 | Shell nativo Capacitor (iOS + Android) | DONE | @capacitor/{core,cli,android,splash-screen,status-bar,keyboard,push-notifications} installed; android/ project generated + synced; deep links (https://whetzy.com + whetzy://); safe areas (env insets on TopBar/Toast/.app-content/BottomNav); iOS config in capacitor.config.ts — npx cap add ios needs Mac/Xcode (HUMAN-BLOCKED); tsc 0 err; commit b35a949 |
 | 7.6 | 4 | RevenueCat IAP nativo | TODO | Sandbox purchase E2E en ambas plataformas |
 | 7.7 | 4 | IaC: Terraform para Railway + Cloudflare | TODO | `terraform plan` limpio; infra reproducible |
 | 7.8 | 2 | Runbook de backup/restore de DB | DONE | scripts/db_backup.sh + db_restore.sh + db_restore_test.sh; runbook en docs/; restore probado: 1253 Q ✅ users ✅ tracks ✅ skills ✅ — 544 KB, < 5 s |
@@ -160,8 +160,8 @@
 | 9.2 | 2 | Accesibilidad WCAG 2.2 AA | DONE | axe-core 3/3 tests pass (auth, home, legal); viewport meta-viewport fixed; --le-text-secondary #777→#595959; contrast fixed: AuthScreen tabs/lang, BottomNav active/inactive, TopBar logo/gems, HomeScreen btnStudy/badges/streakToday, LegalScreen back/updated/body/links; link-in-text-block: underline on legal links; prefers-reduced-motion in global.css |
 | 9.3 | 3 | Assets de store: iconos, screenshots, video preview | TODO | Todos los tamaños iOS/Android generados desde fuente vectorial |
 | 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | DONE | LegalScreen + /privacy + /terms routes + ProfileScreen links a /privacy, /terms, /delete-account — commit b6ab6dc ✅ |
-| 9.5 | 3 | Checklist App Store Review Guidelines | TODO | Cada guideline aplicable evaluada con evidencia |
-| 9.6 | 3 | Play Store: Data Safety + target API level | TODO | Formulario completo y consistente con el código real |
+| 9.5 | 3 | Checklist App Store Review Guidelines | DONE | docs/store/app-store-review-checklist.md: 5 sections × all guidelines; 1 hard blocker B1 (Stripe→must use IAP, fix=7.6); 6 action items A1-A6; already-compliant list (ASVS/GDPR/WCAG/dark mode/safe areas/push opt-in/no IDFA/no SIWA); iOS Capacitor submission checklist |
+| 9.6 | 3 | Play Store: Data Safety + target API level | DONE | docs/store/play-store-data-safety.md: targetSdkVersion=35 ✅ (≥34 req); data inventory (personal/financial/activity/device IDs/crash); third parties (Stripe/Groq/Sentry); field-by-field Play Console answers; 4 pre-submission action items |
 | 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | TODO | Flujos principales navegables con lector de pantalla |
 | 9.8 | 4 | Sitio de marketing + pricing | TODO | Landing con propuesta de valor, pricing, CTA a checkout |
 
