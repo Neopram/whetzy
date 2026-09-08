@@ -27,7 +27,7 @@ from app.schemas.placement import (
     PlacementResultResponse,
     PlacementStartResponse,
 )
-from app.services.engine.placement import IRTItem, PlacementEngine, PlacementState
+from app.services.engine import IRTItem, PlacementEngine, PlacementState
 
 ELO_TO_LOGIT_SCALE = 400.0 / 2.302585093  # 400 / ln(10), matches Elo<->IRT equivalence
 

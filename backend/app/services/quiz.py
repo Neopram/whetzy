@@ -38,13 +38,8 @@ from app.schemas.session import (
 )
 import app.services.dkt as _dkt
 from app.services.ab_harness import get_cohort
-from app.services.engine.bkt import BKTModel, SkillState
-from app.services.engine.elo import EloEntity, EloRating
-from app.services.engine.fsrs import Card, FSRSScheduler
-from app.services.gamification.service import (
-    apply_quiz_event,
-    get_or_create_current_entry,
-)
+from app.services.engine import BKTModel, Card, EloEntity, EloRating, FSRSScheduler, SkillState
+from app.services.gamification import apply_quiz_event, get_or_create_current_entry
 
 bkt = BKTModel()
 elo = EloRating()
