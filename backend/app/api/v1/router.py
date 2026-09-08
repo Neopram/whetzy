@@ -5,6 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
+    analytics,
     auth,
     content,
     duels,
@@ -33,3 +34,4 @@ api_router.include_router(reports.router, prefix="/reports", tags=["reports"])
 api_router.include_router(export.router, prefix="/export", tags=["export"])
 api_router.include_router(ml.router, prefix="/ml", tags=["ml"])
 api_router.include_router(content.router, prefix="/content", tags=["content"])
+api_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])

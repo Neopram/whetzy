@@ -83,6 +83,8 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> T
         expires_at=datetime.now(UTC) + timedelta(hours=24),
     )
     db.add(evt)
+    from app.services.analytics import track as analytics_track
+    await analytics_track(db, "user_registered", user_id=user.id)
     await db.commit()
     from app.services import email as email_svc
     email_svc.send_email_verification(

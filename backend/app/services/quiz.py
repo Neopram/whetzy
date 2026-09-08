@@ -457,6 +457,11 @@ async def submit_answer(
     combo = await _current_combo(db, session.id)
     xp = _calculate_xp(correct, combo, grade)
 
+    # Fire first_quiz_answer event on the user's very first answer ever.
+    if session.questions_answered == 0:
+        from app.services.analytics import track as _analytics_track  # local import to avoid cycles
+        await _analytics_track(db, "first_quiz_answer", user_id=user.id)
+
     session.questions_answered += 1
     if correct:
         session.correct_count += 1
