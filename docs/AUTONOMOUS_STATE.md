@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ag) — 7.5 ✅ 9.3 ✅ 9.5 ✅ 9.6 ✅ 5.3 ✅ DONE; icons + store docs + duplicate detection; Phase 9 → 80%; Phase 5 → 80%; 390 tests
+> Última actualización: 2026-09-08 (sesión ah) — 4.6 ✅ DONE; A/B harness BKT vs DKT; Phase 4 → 100% CERRADA; 405 tests
 
 ---
 
@@ -49,7 +49,7 @@
 | 1 | Contenido bilingüe + glosario + currículo | 100% | ✅ CERRADA |
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
 | 3 | Gamificación + duelos + offline + Lottie | 99% | Duel E2E prod ✅; push notifs ✅; offline sync E2E ✅; solo Duel E2E multi-user pendiente (UI stub) |
-| 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
+| 4 | DKT + churn + MLOps | 100% | ✅ CERRADA — DKT training + eval + registry + cache + churn + A/B harness |
 | 5 | Pipeline multi-agente + analytics | 80% | 5.1 author agent ✅; 5.2 QA agent ✅; 5.3 duplicados ✅; 5.4 analytics ✅; sin dashboard (5.5 PRI 4) |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 65% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; i18n 10 screens ✅; sin nativo/K8s |
@@ -106,7 +106,7 @@
 | 4.3 | 3 | Registro de modelos: checkpoints versionados, carga en startup, rollback | DONE | `app/ml/registry.py` singleton; lifespan loads latest at startup; `GET /ml/version` → {version, metadata, available_versions}; `POST /ml/rollback?version=N`; dkt.py uses registry model; 8 unit tests pass; mypy strict ✅ |
 | 4.4 | 3 | Caché de inferencia (no correr LSTM por request) | DONE | SHA-256 TTL-60s cache in dkt.py; cache_key(history+skill_index); _predict_uncached() extracted; dkt_cache_clear() called on registry.load(); 10 unit tests pass (0.26s) incl. < 1ms cache-hit latency test; mypy strict ✅ |
 | 4.5 | 3 | Predictor de churn: features + modelo + endpoint | DONE | Logistic scorer: 0.5*log1p(days_inactive) - 0.15*streak - 0.4*sessions_7d + 0.3*inaccuracy - 1.5; GET /api/v1/progress/risk → {score,factors,days_inactive,streak,sessions_7d,accuracy}; 10 unit tests AUC=0.91 > 0.70 ✅; 271/271 tests; mypy strict ✅; commit 2a77aa1 |
-| 4.6 | 4 | Harness A/B: selección BKT vs DKT por cohorte | TODO | Flag por usuario; métricas comparables por cohorte |
+| 4.6 | 4 | Harness A/B: selección BKT vs DKT por cohorte | DONE | DKT_AB_RATIO setting; get_cohort() SHA-256 deterministic; _select_skill() DKT branch; GET /ml/ab-stats; 15 tests; commit 7899f41 |
 
 ### 5 — Pipeline multi-agente + analytics
 
