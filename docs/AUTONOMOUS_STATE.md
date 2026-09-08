@@ -52,6 +52,8 @@
 | 8 | Garantía E2E + informe competitivo | 20% | Sin Playwright, sin load test |
 | 9 | Store readiness + excelencia de diseño | 0% | No iniciado |
 | Q | Piso de calidad (transversal) | 12% | 3 test files de ~50 necesarios |
+| P | Producto — huecos que impiden vender | 0% | Sin reset de contraseña, sin email, sin onboarding, sin reportar pregunta |
+| 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
 
 ---
 
@@ -159,6 +161,36 @@
 | 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | TODO | Flujos principales navegables con lector de pantalla |
 | 9.8 | 4 | Sitio de marketing + pricing | TODO | Landing con propuesta de valor, pricing, CTA a checkout |
 
+### P — Producto: lo que un dueño no perdona (PRI 1-3)
+
+> Sin esto no se puede vender. Un usuario que olvida su contraseña y no puede
+> recuperarla es un usuario perdido y una reseña de una estrella.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| P.1 | 1 | Email transaccional: proveedor + plantillas ES/EN (bienvenida, verificación, reset) | TODO | Envío real en staging; cada plantilla en ambos idiomas; fallback logueado si el proveedor cae |
+| P.2 | 1 | Recuperación de contraseña: token de un solo uso, expira en 1 h | TODO | E2E: solicitar → email → reset → login con la nueva; token reutilizado → 400 |
+| P.3 | 1 | Verificación de email en registro | TODO | No verificado = acceso limitado y aviso claro; enlace verifica; reenvío con rate limit |
+| P.4 | 2 | Onboarding de primer uso: ≤ 3 pantallas (qué es · elige track · primera pregunta) | TODO | Playwright: landing → primera pregunta respondida en < 60 s |
+| P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | TODO | Cada cambio persiste, se refleja en la sesión activa, y pide contraseña actual donde toca |
+| P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | TODO | Reporte con `question_id`, motivo y contexto llega a tabla `question_reports`; visible en admin |
+| P.7 | 2 | Exportación de datos (GDPR portabilidad) | TODO | JSON descargable con perfil, respuestas, progreso; generado en < 10 s para 10k respuestas |
+| P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | TODO | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde |
+| P.9 | 3 | Versionado de contenido: corregir una Q sin romper el historial | TODO | Q editada conserva respuestas previas ligadas a su versión; nueva versión es la activa |
+| P.10 | 3 | Modo oscuro (claro sigue por defecto) | TODO | Tokens duales; toggle en ajustes; respeta `prefers-color-scheme`; contraste AA en ambos |
+| P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | TODO | 0 vulnerabilidades altas/críticas; el CI falla si aparecen |
+| P.12 | 2 | Rendimiento DB: índices, N+1, `EXPLAIN` en las queries calientes | TODO | p95 de `/quiz/start` y `/progress/skills` < 200 ms con 10k respuestas sembradas |
+| P.13 | 3 | Recordatorios de racha sin culpa (push web + email opcional) | TODO | Configurable; texto neutro; opt-out en un toque; nunca más de uno al día |
+
+### 10 — Marketplace de certificaciones (estratégico, tras la 9)
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 10.1 | 5 | Modelo de datos para tracks de certificación (dominios, pesos, simulacro) | TODO | Schema + migración Alembic; un track de cert convive con los 7 existentes |
+| 10.2 | 5 | Contenido AWS Cloud Practitioner: ≥ 300 Q con fuente oficial | TODO | Cargado, QA 5.2 en verde, cobertura de los 4 dominios del examen según pesos oficiales |
+| 10.3 | 5 | Simulacro cronometrado con informe por dominio | TODO | E2E: 65 Q en 90 min, informe con % por dominio y predicción de aprobado |
+| 10.4 | 6 | Catálogo y compra por certificación | TODO | Producto Stripe por cert; entitlement por cert; test-mode E2E |
+
 ### Dependencias
 
 No arrancar la tarea de la izquierda sin las de la derecha en `DONE`:
@@ -178,6 +210,14 @@ No arrancar la tarea de la izquierda sin las de la derecha en `DONE`:
 | 7.6 | 7.5 |
 | 9.3, 9.5, 9.6, 9.7 | 7.5 |
 | 9.8 | 7.2 |
+| P.2, P.3 | P.1 |
+| P.5 | P.2 |
+| P.8 | 5.1, 5.2 |
+| P.9 | P.6 |
+| P.13 | 3.3 |
+| 10.2 | 10.1, 5.1, 5.2 |
+| 10.3 | 10.2 |
+| 10.4 | 10.3, 7.2, 7.3 |
 
 ### Grupos paralelos
 
@@ -191,6 +231,8 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | G3 | 6.1 ‖ 6.5 ‖ 6.6 | `core/logging.py` ‖ `api/health.py` ‖ `core/ratelimit.py` |
 | G4 | 4.1 ‖ 5.4 ‖ 7.1 | `app/ml/` ‖ `app/analytics/` ‖ informe + fixes puntuales |
 | G5 | 9.1 ‖ 9.4 ‖ 7.4 | `design-tokens.css` + componentes ‖ `legal/` + páginas ‖ `i18n/` |
+| G6 | P.5 ‖ P.6 ‖ P.7 | `endpoints/account.py` + `SettingsScreen` ‖ `endpoints/reports.py` + botón en `QuizScreen` ‖ `endpoints/export.py` |
+| G7 | P.11 ‖ P.12 | `.github/workflows/` ‖ `alembic/versions/` + queries |
 
 ---
 
