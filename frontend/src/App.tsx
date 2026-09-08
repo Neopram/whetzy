@@ -16,6 +16,7 @@ import { AuthScreen } from './pages/AuthScreen';
 import { DeleteAccountScreen } from './pages/DeleteAccountScreen';
 import { LegalScreen } from './pages/LegalScreen';
 import { OnboardingScreen } from './pages/OnboardingScreen';
+import { LandingScreen } from './pages/LandingScreen';
 import { Toast } from './components/common/Toast';
 import './styles/global.css';
 
@@ -24,6 +25,7 @@ const _path = window.location.pathname;
 if (_path === '/delete-account') document.title = 'Eliminar cuenta — Whetzy';
 if (_path === '/privacy') document.title = 'Privacidad — Whetzy';
 if (_path === '/terms') document.title = 'Términos — Whetzy';
+if (_path === '/landing') document.title = 'Whetzy — Aprende lo que importa';
 
 type AuthState = 'checking' | 'unauthed' | 'authed';
 
@@ -41,6 +43,7 @@ function App() {
   if (path === '/delete-account') return <DeleteAccountScreen />;
   if (path === '/privacy') return <LegalScreen doc="privacy" />;
   if (path === '/terms') return <LegalScreen doc="terms" />;
+  if (path === '/landing') return <LandingScreen />;
 
   const currentScreen = useAppStore((s) => s.currentScreen);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);

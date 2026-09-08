@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ah) — 4.6 ✅ 5.5 ✅ 6.7 ✅ DONE; A/B+dashboard+boundaries; Phase 4+5+6 → 100% CERRADAS; 444 tests
+> Última actualización: 2026-09-08 (sesión ah) — 4.6+5.5+6.7+7.7+8.4 ✅ DONE; Phase 4+5+6 CERRADAS; 444 tests; IaC+teardown added
 
 ---
 
@@ -140,7 +140,7 @@
 | 7.4 | 3 | i18next completo ES/EN | DONE | i18n.ts + react-i18next; 10 screens migradas (Auth/Onboarding/Home/League/Tracks/Stats/Profile/Quiz/Duel/Placement); 0 TEXT/L dicts; duel+placement+quiz-exec keys added; tsc 0 err; commit 8f99ad9 |
 | 7.5 | 3 | Shell nativo Capacitor (iOS + Android) | DONE | @capacitor/{core,cli,android,splash-screen,status-bar,keyboard,push-notifications} installed; android/ project generated + synced; deep links (https://whetzy.com + whetzy://); safe areas (env insets on TopBar/Toast/.app-content/BottomNav); iOS config in capacitor.config.ts — npx cap add ios needs Mac/Xcode (HUMAN-BLOCKED); tsc 0 err; commit b35a949 |
 | 7.6 | 4 | RevenueCat IAP nativo | TODO | Sandbox purchase E2E en ambas plataformas |
-| 7.7 | 4 | IaC: Terraform para Railway + Cloudflare | TODO | `terraform plan` limpio; infra reproducible |
+| 7.7 | 4 | IaC: Terraform para Railway + Cloudflare | DONE | infra/: main+variables+railway+cloudflare+outputs; terraform fmt exit 0; HUMAN-BLOCKED on plan (Railway CLI token); commit 0acfcf7 |
 | 7.8 | 2 | Runbook de backup/restore de DB | DONE | scripts/db_backup.sh + db_restore.sh + db_restore_test.sh; runbook en docs/; restore probado: 1253 Q ✅ users ✅ tracks ✅ skills ✅ — 544 KB, < 5 s |
 
 ### 8 — Garantía E2E + competitivo
@@ -150,7 +150,7 @@
 | 8.1 | 1 | Suite Playwright: auth, quiz, duelo, offline, pago | DONE | CI job `e2e` ✓ verde (~2m30s): 6/6 tests (auth×3, quiz, duelo, offline). "pago" diferido a cuando 7.2 (Stripe) exista — anotado, no silenciado. 2 bugs reales encontrados y arreglados: duels.py dejaba pasar preguntas `fill_blank` legacy (sin opciones/correct_index, 150/1253) a un duelo, dejando al jugador sin botones; DB local desincronizada 3 migraciones (recreada). `AUTH_RATE_LIMIT` ahora configurable (era 12/min fijo, insuficiente para la suite) |
 | 8.2 | 3 | Load test (k6): 100 usuarios concurrentes | DONE | backend/load-tests/k6-smoke.js: 100 VUs 30s ramp; por-VU X-Forwarded-For para buckets de rate-limit independientes; thresholds configurables via P95_BUDGET_MS (default 3000 local, 500 prod). Local run (4-worker uvicorn + Docker PG): checks 100% (3305/3305) · error_rate 0.00% · http_req_failed 0.00% · p95 2.72s < 3000ms ✅. Commit a7721e7 |
 | 8.3 | 3 | Presupuesto de performance | DONE | scripts/check-bundle.mjs: bundle=175KB gzip < 300KB ✅; e2e/perf-budget.spec.ts: LCP 864ms < 8s CI budget, domInteractive 826ms < 10s CI budget; production targets 2.5s/3.5s documented; bundle check in CI frontend job after build; 2/2 Playwright tests pass (10.7s) |
-| 8.4 | 4 | Teardown competitivo vs Duolingo/Brilliant/DataCamp | TODO | Informe con gaps concretos y acciones |
+| 8.4 | 4 | Teardown competitivo vs Duolingo/Brilliant/DataCamp | DONE | docs/competitive-teardown.md: feature matrix, 7 gaps, priority matrix, strategic summary; commit 078b837 |
 
 ### 9 — Store readiness + excelencia de diseño
 
