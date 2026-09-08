@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ P.9 ✅ 4.5 ✅ 5.4 ✅ 7.2 ✅ 7.3 ✅ DONE; 302 tests; Phase 7 30%→55%
+> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ P.9 ✅ 4.5 ✅ 5.4 ✅ 7.2 ✅ 7.3 ✅ 3.3 ✅ DONE; 310 tests; Phase 3 92%→96%, Phase 7 55%
 
 ---
 
@@ -48,7 +48,7 @@
 | 0 | Rebrand + Auth + Deploy | 100% | ✅ CERRADA |
 | 1 | Contenido bilingüe + glosario + currículo | 100% | ✅ CERRADA |
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
-| 3 | Gamificación + duelos + offline + Lottie | 92% | Duel E2E prod ✅; Pyodide pendiente |
+| 3 | Gamificación + duelos + offline + Lottie | 96% | Duel E2E prod ✅; push notifs ✅; Pyodide/offline E2E pendiente |
 | 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
 | 5 | Pipeline multi-agente + analytics | 20% | 5.4 analytics schema+funnel ✅; sin agente autor/QA, sin duplicados, sin dashboard |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
@@ -95,7 +95,7 @@
 |---|---|---|---|---|
 | 3.1 | 2 | Duel E2E en browser (2 usuarios, Playwright) | TODO | Reto → ambos responden → resultado con ganador, verificado en UI. Bloqueador real: `joinDuel` en DuelScreen.tsx es un stub (toast "próximamente") — el oponente no puede responder desde el navegador todavía. Hay que construir esa pantalla antes de que este test tenga sentido |
 | 3.2 | 3 | Offline sync E2E: responder offline → volver online → sync verificado | TODO | Playwright con `context.setOffline(true)`; respuesta persiste y sincroniza |
-| 3.3 | 3 | Notificaciones de duelo (push web) | TODO | Web Push registrado; reto genera notificación |
+| 3.3 | 3 | Notificaciones de duelo (push web) | DONE | pywebpush+VAPID; PushSubscription model+migration k1l2m3n4o5p6; GET /push/vapid-key+POST /push/subscribe+DELETE /push/subscribe; push_service.send_to_user (410 Gone cleanup); challenge fires to opponent; sw.js: push event→showNotification, notificationclick→focus; usePushNotifications.ts hook; 8 integration tests; 310/310 tests; tsc 0 err; commit 2e64107 |
 
 ### 4 — DKT + Churn + MLOps
 
@@ -269,6 +269,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | w | 2026-09-08 | 230 back + 39 front + 6 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.1 | 0,1,Q |
 | ab | 2026-09-08 | 241 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | P.10,4.4,2.3,8.3 | 0,1,Q |
 | ac | 2026-09-08 | 261 back | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.2 (k6), P.9 (content versioning) | 0,1,Q |
+| ad | 2026-09-08 | 310 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 4.5(churn),5.4(analytics),7.2(Stripe),7.3(entitlements),3.3(push),P.9(content versioning) | 0,1,Q |
 
 ---
 
