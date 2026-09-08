@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ac) — 8.2 DONE: k6 smoke test 100 VUs 0 errores 0 5xx p95=2.72s<3000ms local; script parametrizable (P95_BUDGET_MS=500 en prod); commit a7721e7
+> Última actualización: 2026-09-08 (sesión ac) — 8.2 DONE: k6 100 VUs 0err p95<3s; P.9 DONE: content versioning (content_version en questions + question_version en responses + PATCH /content/questions/{id} + migración h8i9j0k1l2m3 + 7 tests); 261 tests pasan; commit 2978c67
 
 ---
 
@@ -56,7 +56,7 @@
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
-| P | Producto — huecos que impiden vender | 77% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro DONE; sin banco 1.5k, versionado, recordatorios |
+| P | Producto — huecos que impiden vender | 85% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado DONE; sin banco 1.5k, recordatorios |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
 
 ---
@@ -180,7 +180,7 @@
 | P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | DONE | QuestionReport model + migration f6a7b8c9d0e1 + POST /reports/question + GET /reports/question/{id} — 229 tests pasan |
 | P.7 | 2 | Exportación de datos (GDPR portabilidad) | DONE | GET /export/data → JSON attachment; sin N+1; hashed_password excluido — 229 tests pasan |
 | P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | TODO | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde |
-| P.9 | 3 | Versionado de contenido: corregir una Q sin romper el historial | TODO | Q editada conserva respuestas previas ligadas a su versión; nueva versión es la activa |
+| P.9 | 3 | Versionado de contenido: corregir una Q sin romper el historial | DONE | Question.content_version (INT default 1) + Response.question_version stamps version at answer time; PATCH /api/v1/content/questions/{id} bumps version (X-Admin-Key auth, CONTENT_ADMIN_KEY env var); migration h8i9j0k1l2m3; 7 tests (auth guard, bump, no-bump on empty, response version before/after edit); 261/261 tests; mypy strict 0 err; commit 2978c67 |
 | P.10 | 3 | Modo oscuro (claro sigue por defecto) | DONE | Tokens duales ✅ (design-tokens.css: :root light + @media prefers-color-scheme dark + [data-theme="dark"]); toggle en ajustes ✅ (ProfileScreen.tsx L86-91: role="switch" aria-checked); respeta prefers-color-scheme ✅ (getStoredTheme() checks matchMedia on first load); contraste AA ✅ (heredado de 9.2 DONE); tsc 0 errores |
 | P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | DONE | CI: pip-audit --fail-on HIGH + npm audit --audit-level=high; real pytest |
 | P.12 | 2 | Rendimiento DB: índices, N+1, `EXPLAIN` en las queries calientes | DONE | 8 índices compuestos (migration e5f6a7b8c9d0): skill_elo, session_correct, user_date, etc. |
@@ -268,7 +268,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | v | 2026-09-08 | 229 back + 39 front | ≥60% cov | 87.6% stmts | F401 limpio | 0 err | 0 err (strict) | Q.7(front),Q.8,Q.9,Q.10 | 0,1,Q |
 | w | 2026-09-08 | 230 back + 39 front + 6 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.1 | 0,1,Q |
 | ab | 2026-09-08 | 241 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | P.10,4.4,2.3,8.3 | 0,1,Q |
-| ac | 2026-09-08 | same | same | same | limpio | 0 err | 0 err | 8.2 (k6 100VU 0err p95<3s) | 0,1,Q |
+| ac | 2026-09-08 | 261 back | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.2 (k6), P.9 (content versioning) | 0,1,Q |
 
 ---
 
