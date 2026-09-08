@@ -10,7 +10,7 @@ Question selection targets P(correct) ≈ 0.75 (Zone of Proximal Development).
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Optional
 
@@ -49,11 +49,10 @@ class SessionState:
     combo: int = 0
     max_combo: int = 0
     xp_earned: int = 0
-    recent_accuracy: list[bool] | None = None
+    recent_accuracy: list[bool] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        if self.recent_accuracy is None:
-            self.recent_accuracy = []
+        pass
 
     @property
     def accuracy(self) -> float:

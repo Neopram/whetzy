@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 from datetime import date, datetime
+from typing import Any
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
@@ -34,7 +35,7 @@ def _serialize(value: object) -> object:
     return value
 
 
-def _row_to_dict(row: object) -> dict:
+def _row_to_dict(row: object) -> dict[str, object]:
     """Serialize a mapped SQLAlchemy instance to a plain dict."""
     data = {}
     mapper = type(row).__mapper__  # type: ignore[attr-defined]

@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncGenerator
+from typing import Any
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -22,7 +23,7 @@ class Base(DeclarativeBase):
     pass
 
 
-_engine_kwargs: dict = {
+_engine_kwargs: dict[str, Any] = {
     "echo": settings.DATABASE_ECHO,
     "pool_pre_ping": True,
 }

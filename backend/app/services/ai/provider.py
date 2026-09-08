@@ -83,7 +83,7 @@ class GroqProvider:
             )
             resp.raise_for_status()
             data = resp.json()
-            return data["choices"][0]["message"]["content"].strip()
+            return data["choices"][0]["message"]["content"].strip()  # type: ignore[no-any-return]
 
 
 def _extract_grounding(user_prompt: str) -> str:

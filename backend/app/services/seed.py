@@ -8,13 +8,14 @@ after `load_content` on deploy.
 from __future__ import annotations
 
 import asyncio
+from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import AsyncSessionLocal, init_db
 from app.models.gamification import Badge, League, Mission
 
-LEAGUES = [
+LEAGUES: list[dict[str, Any]] = [
     {"id": "bronze", "name": "Bronce", "tier": "bronze", "min_xp": 0},
     {"id": "silver", "name": "Plata", "tier": "silver", "min_xp": 500},
     {"id": "gold", "name": "Oro", "tier": "gold", "min_xp": 2000},
@@ -25,7 +26,7 @@ LEAGUES = [
 # Mission `type` MUST be one of the values apply_quiz_event handles:
 # questions_answered | correct_answers | xp_earned | perfect_combo.
 # The service picks the first 3 by id, so ids are prefixed to control the mix.
-MISSIONS = [
+MISSIONS: list[dict[str, Any]] = [
     {"id": "m1_questions", "type": "questions_answered", "target_value": 10, "xp_reward": 30,
      "name_es": "Responde 10 preguntas", "name_en": "Answer 10 questions"},
     {"id": "m2_correct", "type": "correct_answers", "target_value": 8, "xp_reward": 25,
@@ -36,7 +37,7 @@ MISSIONS = [
      "name_es": "Gana 100 XP", "name_en": "Earn 100 XP"},
 ]
 
-BADGES = [
+BADGES: list[dict[str, Any]] = [
     {"id": "streak_7", "name_es": "Racha de 7", "name_en": "7-day Streak", "icon": "🔥",
      "description_es": "Estudia 7 días seguidos", "description_en": "Study 7 days in a row",
      "criteria_type": "streak", "criteria_value": 7},
@@ -64,31 +65,31 @@ BADGES = [
 ]
 
 
-async def seed_gamification(db: AsyncSession) -> dict:
+async def seed_gamification(db: AsyncSession) -> dict[str, Any]:
     for data in LEAGUES:
-        obj = await db.get(League, data["id"])
-        if obj is None:
-            obj = League(id=data["id"])
-            db.add(obj)
-        obj.name, obj.tier, obj.min_xp = data["name"], data["tier"], data["min_xp"]
+        league = await db.get(League, data["id"])
+        if league is None:
+            league = League(id=data["id"])
+            db.add(league)
+        league.name, league.tier, league.min_xp = data["name"], data["tier"], data["min_xp"]
 
     for data in MISSIONS:
-        obj = await db.get(Mission, data["id"])
-        if obj is None:
-            obj = Mission(id=data["id"])
-            db.add(obj)
+        mission = await db.get(Mission, data["id"])
+        if mission is None:
+            mission = Mission(id=data["id"])
+            db.add(mission)
         for k, v in data.items():
             if k != "id":
-                setattr(obj, k, v)
+                setattr(mission, k, v)
 
     for data in BADGES:
-        obj = await db.get(Badge, data["id"])
-        if obj is None:
-            obj = Badge(id=data["id"])  # type: ignore[assignment]
-            db.add(obj)
+        badge = await db.get(Badge, data["id"])
+        if badge is None:
+            badge = Badge(id=data["id"])
+            db.add(badge)
         for k, v in data.items():
             if k != "id":
-                setattr(obj, k, v)
+                setattr(badge, k, v)
 
     await db.commit()
     return {"leagues": len(LEAGUES), "missions": len(MISSIONS), "badges": len(BADGES)}

@@ -110,7 +110,7 @@ class RAGIndex:
 
         g_ids: list[str] = []
         g_docs: list[str] = []
-        g_metas: list[dict] = []
+        g_metas: list[dict[str, str]] = []
         for g_id, t_es, t_en, d_es, d_en, track_id in grows:
             text = f"{t_es} ({t_en}): {d_es}\n{d_en}".strip()
             g_ids.append(f"g_{g_id}")

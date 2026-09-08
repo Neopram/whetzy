@@ -109,8 +109,8 @@ class Question(Base):
 
     question_es: Mapped[str] = mapped_column(Text, nullable=False)
     question_en: Mapped[str] = mapped_column(Text, nullable=False)
-    options_es: Mapped[list | None] = mapped_column(JSON, nullable=True)
-    options_en: Mapped[list | None] = mapped_column(JSON, nullable=True)
+    options_es: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
+    options_en: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
     # For mcq/true_false/code_output: index into options. NULL for fill_blank,
     # which instead carries the accepted free-text answer in correct_answer_*.
     correct_index: Mapped[int | None] = mapped_column(Integer, nullable=True)

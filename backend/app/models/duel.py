@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import DateTime, ForeignKey, JSON, String
 from sqlalchemy.orm import Mapped, mapped_column
@@ -26,10 +27,10 @@ class Duel(Base):
     )
     skill_id: Mapped[str] = mapped_column(String(64), nullable=False)
     # JSON list of 5 question IDs (strings)
-    question_ids: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    question_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
     # JSON list of {question_id, selected_index, response_time_ms, correct}
-    challenger_answers: Mapped[list | None] = mapped_column(JSON, nullable=True)
-    opponent_answers: Mapped[list | None] = mapped_column(JSON, nullable=True)
+    challenger_answers: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    opponent_answers: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
 
     challenger_completed_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
