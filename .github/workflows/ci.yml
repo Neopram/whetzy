@@ -140,6 +140,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
