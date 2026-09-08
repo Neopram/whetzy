@@ -6,6 +6,7 @@ from datetime import date, timedelta
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.session import Response, StudySession
 from app.models.user import User, UserBadge, UserSkillState
@@ -263,9 +264,7 @@ async def apply_quiz_event(
     for um, mission in rows:
         if um.completed:
             continue
-        if mission.type == "questions_answered":
-            um.progress += 1
-        elif mission.type == "correct_answers" and correct:
+        if mission.type == "questions_answered" or mission.type == "correct_answers" and correct:
             um.progress += 1
         elif mission.type == "xp_earned":
             um.progress += xp_earned

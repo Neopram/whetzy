@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,7 +12,6 @@ from app.core.config import settings
 from app.models.content import Module, Question, Skill, Track
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
-from app.services import dkt as dkt_service
 from app.schemas.progress import (
     CurriculumModule,
     CurriculumResponse,
@@ -22,13 +21,14 @@ from app.schemas.progress import (
     SkillMasteryDetail,
     TrackMastery,
 )
+from app.services import dkt as dkt_service
 from app.services.quiz import count_due_reviews
 
 MASTERY_THRESHOLD = settings.MASTERY_THRESHOLD
 
 
 def _now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 async def get_dashboard(db: AsyncSession, user: User) -> DashboardResponse:

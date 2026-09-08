@@ -4,7 +4,18 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import auth, duels, export, glossary, placement, progress, quiz, reports, social, tutor
+from app.api.v1.endpoints import (
+    auth,
+    duels,
+    export,
+    glossary,
+    placement,
+    progress,
+    quiz,
+    reports,
+    social,
+    tutor,
+)
 
 api_router = APIRouter()
 

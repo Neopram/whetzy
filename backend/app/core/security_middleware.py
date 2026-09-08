@@ -74,7 +74,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         path = request.url.path
         # Health/docs are exempt.
-        if path in ("/health", "/") or path.startswith("/docs") or path.startswith("/redoc"):
+        if path in ("/health", "/") or path.startswith(("/docs", "/redoc")):
             return await call_next(request)
 
         is_auth = path.startswith("/api/v1/auth")

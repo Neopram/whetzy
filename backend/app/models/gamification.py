@@ -21,7 +21,7 @@ class League(Base):
     tier: Mapped[str] = mapped_column(String(20), nullable=False)
     min_xp: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
-    entries: Mapped[list["LeagueEntry"]] = relationship(
+    entries: Mapped[list[LeagueEntry]] = relationship(
         back_populates="league", cascade="all, delete-orphan"
     )
 
@@ -45,7 +45,7 @@ class LeagueEntry(Base):
     xp_earned: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
-    league: Mapped["League"] = relationship(back_populates="entries")
+    league: Mapped[League] = relationship(back_populates="entries")
 
 
 class Badge(Base):

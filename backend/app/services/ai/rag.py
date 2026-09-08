@@ -51,7 +51,9 @@ class RAGIndex:
         Path(persist_path).mkdir(parents=True, exist_ok=True)
         client = chromadb.PersistentClient(path=persist_path)
         if embedding_function is None:
-            from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
+            from chromadb.utils.embedding_functions import (
+                SentenceTransformerEmbeddingFunction,
+            )
 
             embedding_function = SentenceTransformerEmbeddingFunction(model_name=_EMBED_MODEL)
         self._col = client.get_or_create_collection(

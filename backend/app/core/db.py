@@ -20,7 +20,6 @@ from app.core.config import settings
 class Base(DeclarativeBase):
     """Shared declarative base for all ORM models."""
 
-    pass
 
 
 _engine_kwargs: dict[str, Any] = {

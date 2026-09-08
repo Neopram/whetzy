@@ -7,9 +7,9 @@ from app.services.gamification.service import (
 )
 
 __all__ = [
-    "get_or_create_current_entry",
     "get_league_history",
-    "get_user_badges",
+    "get_or_create_current_entry",
     "get_today_missions",
+    "get_user_badges",
     "week_start_of",
 ]

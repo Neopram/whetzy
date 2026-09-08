@@ -11,13 +11,10 @@ Interface: `predict(history) -> dict[skill_id, float]`
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    pass
+from typing import Any
 
 try:
-    import torch  # noqa: F401 — availability flag; used in _DKT.__init__
+    import torch
 
     _TORCH_AVAILABLE = True
 except ImportError:
@@ -26,12 +23,12 @@ except ImportError:
 
 # ── LSTM model (only instantiated when torch is present) ─────────────────────
 
-class _DKT(object):
+class _DKT:
     """Minimal 1-layer LSTM DKT model."""
 
     def __init__(self, n_skills: int, hidden: int = 64) -> None:
-        import torch.nn as nn
         import torch
+        from torch import nn
 
         self.n_skills = n_skills
         self.hidden = hidden
@@ -43,7 +40,7 @@ class _DKT(object):
                 self.lstm = nn.LSTM(hidden, hidden, batch_first=True)
                 self.out = nn.Linear(hidden, n_skills)
 
-            def forward(self, x: "torch.Tensor") -> "torch.Tensor":
+            def forward(self, x: torch.Tensor) -> torch.Tensor:
                 e = self.embed(x)
                 h, _ = self.lstm(e)
                 return torch.sigmoid(self.out(h))

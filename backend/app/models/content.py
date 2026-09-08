@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from sqlalchemy import Float, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy import JSON, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
@@ -21,10 +21,10 @@ class Track(Base):
     color: Mapped[str] = mapped_column(String(16), default="#6366F1", nullable=False)
     total_questions: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
-    modules: Mapped[list["Module"]] = relationship(
+    modules: Mapped[list[Module]] = relationship(
         back_populates="track", cascade="all, delete-orphan", order_by="Module.order"
     )
-    glossary_terms: Mapped[list["GlossaryTerm"]] = relationship(
+    glossary_terms: Mapped[list[GlossaryTerm]] = relationship(
         back_populates="track", cascade="all, delete-orphan", order_by="GlossaryTerm.order"
     )
 
@@ -46,8 +46,8 @@ class Module(Base):
     description_en: Mapped[str] = mapped_column(Text, default="", nullable=False)
     min_mastery_to_unlock: Mapped[float] = mapped_column(Float, default=0.7, nullable=False)
 
-    track: Mapped["Track"] = relationship(back_populates="modules")
-    skills: Mapped[list["Skill"]] = relationship(
+    track: Mapped[Track] = relationship(back_populates="modules")
+    skills: Mapped[list[Skill]] = relationship(
         back_populates="module", cascade="all, delete-orphan", order_by="Skill.order"
     )
 
@@ -65,8 +65,8 @@ class Skill(Base):
     name_en: Mapped[str] = mapped_column(String(150), nullable=False)
     order: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
-    module: Mapped["Module"] = relationship(back_populates="skills")
-    questions: Mapped[list["Question"]] = relationship(
+    module: Mapped[Module] = relationship(back_populates="skills")
+    questions: Mapped[list[Question]] = relationship(
         back_populates="skill", cascade="all, delete-orphan"
     )
 
@@ -91,7 +91,7 @@ class GlossaryTerm(Base):
     source: Mapped[str | None] = mapped_column(Text, nullable=True)
     order: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
-    track: Mapped["Track"] = relationship(back_populates="glossary_terms")
+    track: Mapped[Track] = relationship(back_populates="glossary_terms")
 
 
 class Question(Base):
@@ -127,4 +127,4 @@ class Question(Base):
     guessing: Mapped[float] = mapped_column(Float, default=0.2, nullable=False)
     expected_time_ms: Mapped[int] = mapped_column(Integer, default=15000, nullable=False)
 
-    skill: Mapped["Skill"] = relationship(back_populates="questions")
+    skill: Mapped[Skill] = relationship(back_populates="questions")

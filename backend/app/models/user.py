@@ -5,7 +5,15 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -40,10 +48,10 @@ class User(Base):
     email_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     language: Mapped[str] = mapped_column(String(2), default="es", nullable=False)
 
-    skill_states: Mapped[list["UserSkillState"]] = relationship(
+    skill_states: Mapped[list[UserSkillState]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
-    badges: Mapped[list["UserBadge"]] = relationship(
+    badges: Mapped[list[UserBadge]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
 
@@ -78,7 +86,7 @@ class UserSkillState(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    user: Mapped["User"] = relationship(back_populates="skill_states")
+    user: Mapped[User] = relationship(back_populates="skill_states")
 
     def __repr__(self) -> str:  # pragma: no cover
         return f"<UserSkillState user={self.user_id} skill={self.skill_id} p={self.p_known:.2f}>"
@@ -99,4 +107,4 @@ class UserBadge(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
-    user: Mapped["User"] = relationship(back_populates="badges")
+    user: Mapped[User] = relationship(back_populates="badges")

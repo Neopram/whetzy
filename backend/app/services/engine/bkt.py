@@ -13,7 +13,6 @@ increases toward 1.0 as the student demonstrates knowledge.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -33,7 +32,7 @@ class SkillState:
 
 
 class BKTModel:
-    def __init__(self, default_params: Optional[SkillParams] = None):
+    def __init__(self, default_params: SkillParams | None = None):
         self.default_params = default_params or SkillParams()
         self.skill_params: dict[str, SkillParams] = {}
 

@@ -37,7 +37,7 @@ def configure_sentry(
         return
 
     try:
-        import sentry_sdk  # noqa: PLC0415
+        import sentry_sdk
 
         if traces_sample_rate is None:
             traces_sample_rate = 0.0 if environment in ("development", "test") else 0.1
@@ -54,7 +54,7 @@ def configure_sentry(
             environment,
             traces_sample_rate,
         )
-    except Exception:  # noqa: BLE001
+    except Exception:
         logger.warning("Sentry initialisation failed; error tracking disabled", exc_info=True)
 
 
@@ -68,8 +68,8 @@ def set_user_context(user_id: str, email: str | None = None) -> None:
         return
 
     try:
-        import sentry_sdk  # noqa: PLC0415
+        import sentry_sdk
 
         sentry_sdk.set_user({"id": user_id, **({"email": email} if email else {})})
-    except Exception:  # noqa: BLE001
-        pass
+    except Exception:
+        logger.debug("Sentry set_user_context failed", exc_info=True)

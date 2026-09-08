@@ -5,7 +5,7 @@ and the `get_current_user` FastAPI dependency.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any, Literal
 
 from fastapi import Depends, HTTPException, status
@@ -48,7 +48,7 @@ def _create_token(
     token_type: TokenType,
     expires_delta: timedelta,
 ) -> str:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     to_encode: dict[str, Any] = {
         "sub": str(subject),
         "type": token_type,

@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import random
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from fastapi import HTTPException, status
 from sqlalchemy import func, or_, select
@@ -35,7 +35,10 @@ from app.schemas.session import (
 from app.services.engine.bkt import BKTModel, SkillState
 from app.services.engine.elo import EloEntity, EloRating
 from app.services.engine.fsrs import Card, FSRSScheduler
-from app.services.gamification.service import apply_quiz_event, get_or_create_current_entry
+from app.services.gamification.service import (
+    apply_quiz_event,
+    get_or_create_current_entry,
+)
 
 bkt = BKTModel()
 elo = EloRating()
@@ -50,7 +53,7 @@ _EXEC_TYPES = frozenset({"fill_blank_exec", "fix_bug"})
 
 
 def _now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def _ensure_aware(dt: datetime | None) -> datetime | None:
@@ -64,7 +67,7 @@ def _ensure_aware(dt: datetime | None) -> datetime | None:
     if dt is None:
         return None
     if dt.tzinfo is None:
-        return dt.replace(tzinfo=timezone.utc)
+        return dt.replace(tzinfo=UTC)
     return dt
 
 

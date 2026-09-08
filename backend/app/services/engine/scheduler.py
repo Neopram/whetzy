@@ -12,12 +12,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
-from .fsrs import FSRSScheduler, Card
-from .elo import EloRating, EloEntity
+from .bandit import NewVsReviewBandit, ThompsonBandit
 from .bkt import BKTModel, SkillState
-from .bandit import ThompsonBandit, NewVsReviewBandit
+from .elo import EloEntity, EloRating
+from .fsrs import Card, FSRSScheduler
 
 
 @dataclass
@@ -71,9 +71,9 @@ class SessionState:
 class AdaptiveScheduler:
     def __init__(
         self,
-        fsrs: Optional[FSRSScheduler] = None,
-        elo: Optional[EloRating] = None,
-        bkt: Optional[BKTModel] = None,
+        fsrs: FSRSScheduler | None = None,
+        elo: EloRating | None = None,
+        bkt: BKTModel | None = None,
     ):
         self.fsrs = fsrs or FSRSScheduler()
         self.elo = elo or EloRating()
@@ -88,8 +88,8 @@ class AdaptiveScheduler:
         candidates: list[QuestionCandidate],
         session: SessionState,
         config: SessionConfig,
-        now: Optional[datetime] = None,
-    ) -> Optional[QuestionCandidate]:
+        now: datetime | None = None,
+    ) -> QuestionCandidate | None:
         now = now or datetime.utcnow()
 
         if not candidates:
@@ -168,12 +168,12 @@ class AdaptiveScheduler:
         correct: bool,
         response_time_ms: int,
         session: SessionState,
-        now: Optional[datetime] = None,
+        now: datetime | None = None,
     ) -> dict[str, Any]:
         now = now or datetime.utcnow()
         grade = self._correctness_to_grade(correct, response_time_ms)
 
-        user_elo, question.elo_entity, expected = self.elo.update(
+        user_elo, question.elo_entity, _expected = self.elo.update(
             user_elo, question.elo_entity, correct,
         )
 
@@ -182,7 +182,7 @@ class AdaptiveScheduler:
                 skill_states[sid] = self.bkt.init_state(sid)
             self.bkt.update(skill_states[sid], correct)
 
-        card, log = self.fsrs.review(question.fsrs_card, grade, now)
+        card, _log = self.fsrs.review(question.fsrs_card, grade, now)
         question.fsrs_card = card
 
         reward = self.question_bandit.arms.get(question.question_id)

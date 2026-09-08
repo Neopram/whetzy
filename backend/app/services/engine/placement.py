@@ -13,7 +13,7 @@ from __future__ import annotations
 import math
 import random
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 
 @dataclass
@@ -65,7 +65,7 @@ class PlacementEngine:
         p = 1.0 / (1.0 + math.exp(-item.discrimination * (theta - item.difficulty)))
         return item.discrimination ** 2 * p * (1.0 - p)
 
-    def select_next_item(self, state: PlacementState) -> Optional[IRTItem]:
+    def select_next_item(self, state: PlacementState) -> IRTItem | None:
         """BanditCAT-style item selection with Thompson Sampling."""
         available = [
             item for item in self.item_list

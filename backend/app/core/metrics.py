@@ -50,7 +50,7 @@ _SKIP_PREFIXES = ("/metrics", "/health")
 
 
 def _should_skip(path: str) -> bool:
-    return any(path == p or path.startswith(p + "/") or path.startswith(p + "?")
+    return any(path == p or path.startswith((p + "/", p + "?"))
                for p in _SKIP_PREFIXES)
 
 

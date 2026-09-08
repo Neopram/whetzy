@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import json
 from datetime import date, datetime
-from typing import Any
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
@@ -18,7 +17,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.question_report import QuestionReport
-from app.models.session import Response as QuizResponse, StudySession
+from app.models.session import Response as QuizResponse
+from app.models.session import StudySession
 from app.models.user import User, UserBadge, UserSkillState
 
 router = APIRouter()

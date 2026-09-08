@@ -12,8 +12,6 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Optional
-
 
 DEFAULTS: list[float] = [
     0.40255, 1.18385, 3.173, 15.69105,      # w0-w3: initial stability per grade
@@ -35,8 +33,8 @@ class Card:
     reps: int = 0
     lapses: int = 0
     state: str = "new"  # new | learning | review | relearning
-    due: Optional[datetime] = None
-    last_review: Optional[datetime] = None
+    due: datetime | None = None
+    last_review: datetime | None = None
 
 
 @dataclass
@@ -54,7 +52,7 @@ class ReviewLog:
 class FSRSScheduler:
     def __init__(
         self,
-        params: Optional[list[float]] = None,
+        params: list[float] | None = None,
         desired_retention: float = 0.9,
     ):
         self.w = list(params or DEFAULTS)
@@ -125,7 +123,7 @@ class FSRSScheduler:
         return max(1, round(interval))  # type: ignore[no-any-return]
 
     def review(
-        self, card: Card, grade: int, now: Optional[datetime] = None,
+        self, card: Card, grade: int, now: datetime | None = None,
     ) -> tuple[Card, ReviewLog]:
         now = now or datetime.utcnow()
         elapsed = 0
@@ -176,7 +174,7 @@ class FSRSScheduler:
         return card, log
 
     def cards_due(
-        self, cards: list[Card], now: Optional[datetime] = None,
+        self, cards: list[Card], now: datetime | None = None,
     ) -> list[Card]:
         now = now or datetime.utcnow()
         return [c for c in cards if c.due and c.due <= now]

@@ -31,7 +31,7 @@ class StudySession(Base):
     max_combo: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     mode: Mapped[str] = mapped_column(String(20), default="study", nullable=False)
 
-    responses: Mapped[list["Response"]] = relationship(
+    responses: Mapped[list[Response]] = relationship(
         back_populates="session", cascade="all, delete-orphan", order_by="Response.created_at"
     )
 
@@ -57,4 +57,4 @@ class Response(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
-    session: Mapped["StudySession"] = relationship(back_populates="responses")
+    session: Mapped[StudySession] = relationship(back_populates="responses")

@@ -127,8 +127,8 @@ def _send_smtp(to: str, subject: str, html: str) -> None:
 
 
 def _send_resend(to: str, subject: str, html: str) -> None:
-    import urllib.request
     import json as _json
+    import urllib.request
 
     from app.core.config import settings
 

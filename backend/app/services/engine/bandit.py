@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -43,7 +42,7 @@ class ThompsonBandit:
         self.arms[arm_id] = arm
         return arm
 
-    def select(self, eligible_ids: Optional[list[str]] = None) -> Optional[str]:
+    def select(self, eligible_ids: list[str] | None = None) -> str | None:
         pool = self.arms
         if eligible_ids is not None:
             pool = {k: v for k, v in self.arms.items() if k in eligible_ids}
@@ -54,7 +53,7 @@ class ThompsonBandit:
         return max(samples, key=lambda k: samples[k])
 
     def select_top_n(
-        self, n: int, eligible_ids: Optional[list[str]] = None,
+        self, n: int, eligible_ids: list[str] | None = None,
     ) -> list[str]:
         pool = self.arms
         if eligible_ids is not None:

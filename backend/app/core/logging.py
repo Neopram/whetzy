@@ -26,7 +26,6 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-
 # ── Context var shared across the current async task tree ─────────────────────
 
 _request_id_var: ContextVar[str] = ContextVar("request_id", default="-")
@@ -95,17 +94,20 @@ class RequestIDMiddleware(BaseHTTPMiddleware):
         uid = _user_id_var.get()
         if uid and uid != "-":
             try:
-                from app.core.error_tracking import set_user_context  # noqa: PLC0415
+                from app.core.error_tracking import set_user_context
                 set_user_context(uid)
-            except Exception:  # noqa: BLE001
-                pass
+            except Exception:
+                logging.getLogger("whetzy.access").debug(
+                    "set_user_context failed", exc_info=True,
+                )
 
         response.headers["X-Request-ID"] = req_id
         logging.getLogger("whetzy.access").info(
-            "%s %s %s",
+            "%s %s %s %sms",
             request.method,
             request.url.path,
             response.status_code,
+            latency_ms,
             extra={},
         )
 

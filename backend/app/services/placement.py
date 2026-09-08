@@ -10,7 +10,7 @@ horizontally scalable (no in-memory session affinity required).
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import HTTPException, status
 from sqlalchemy import select
@@ -33,7 +33,7 @@ ELO_TO_LOGIT_SCALE = 400.0 / 2.302585093  # 400 / ln(10), matches Elo<->IRT equi
 
 
 def _now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def _elo_to_irt_difficulty(elo_rating: float) -> float:

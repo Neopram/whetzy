@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import secrets
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -79,7 +79,7 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> T
     evt = EmailVerificationToken(
         user_id=user.id,
         token_hash=token_hash,
-        expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
+        expires_at=datetime.now(UTC) + timedelta(hours=24),
     )
     db.add(evt)
     await db.commit()
@@ -208,8 +208,8 @@ async def verify_email(
         select(EmailVerificationToken).where(EmailVerificationToken.token_hash == token_hash)
     )
     evt = result.scalar_one_or_none()
-    now = datetime.now(timezone.utc)
-    if evt is None or evt.used or evt.expires_at.replace(tzinfo=timezone.utc) < now:
+    now = datetime.now(UTC)
+    if evt is None or evt.used or evt.expires_at.replace(tzinfo=UTC) < now:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid or expired verification link",
@@ -244,7 +244,7 @@ async def resend_verification(
         existing = await db.execute(
             select(EmailVerificationToken).where(
                 EmailVerificationToken.user_id == user.id,
-                EmailVerificationToken.used == False,  # noqa: E712
+                EmailVerificationToken.used == False,
             )
         )
         for tok in existing.scalars().all():
@@ -255,7 +255,7 @@ async def resend_verification(
         evt = EmailVerificationToken(
             user_id=user.id,
             token_hash=token_hash,
-            expires_at=datetime.now(timezone.utc) + timedelta(hours=24),
+            expires_at=datetime.now(UTC) + timedelta(hours=24),
         )
         db.add(evt)
         await db.commit()
@@ -279,7 +279,7 @@ async def forgot_password(
     if user and user.is_active:
         raw_token = secrets.token_urlsafe(32)
         token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
-        expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
+        expires_at = datetime.now(UTC) + timedelta(hours=1)
 
         prt = PasswordResetToken(
             user_id=user.id,
@@ -318,8 +318,8 @@ async def reset_password(
     )
     prt = result.scalar_one_or_none()
 
-    now = datetime.now(timezone.utc)
-    if prt is None or prt.used or prt.expires_at.replace(tzinfo=timezone.utc) < now:
+    now = datetime.now(UTC)
+    if prt is None or prt.used or prt.expires_at.replace(tzinfo=UTC) < now:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid or expired reset token",
