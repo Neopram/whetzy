@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión aa) — 4.2 DONE: eval_dkt harness; BKT AUC=0.3294 > DKT AUC=0.2412 (documentado: 3 val seqs, pocos datos); P.4 DONE; 9.2 DONE; 9.1 + 9.4 DONE; 4.1 DONE; 7.1 DONE
+> Última actualización: 2026-09-08 (sesión aa) — 2.2 DONE: Pyodide sandbox (import bloqueado + timeout 5s, 2/2 Playwright); 4.2 DONE: eval_dkt harness; P.4 DONE; 9.2 DONE
 
 ---
 
@@ -47,7 +47,7 @@
 |---|---|---|---|
 | 0 | Rebrand + Auth + Deploy | 100% | ✅ CERRADA |
 | 1 | Contenido bilingüe + glosario + currículo | 100% | ✅ CERRADA |
-| 2 | Tutor AI (Groq) + RAG | 98% | Pyodide sin browser-test |
+| 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
 | 3 | Gamificación + duelos + offline + Lottie | 92% | Duel E2E prod ✅; Pyodide pendiente |
 | 4 | DKT + churn + MLOps | 35% | DKT training ✅; eval harness ✅; sin churn/registro/caché |
 | 5 | Pipeline multi-agente + analytics | 3% | No construido |
@@ -86,7 +86,7 @@
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 2.1 | 2 | Pyodide E2E determinista: endpoint dev que fuerza pregunta `exec` | DONE | force_question_id en QuizStartRequest (403 en prod); pyodide.spec.ts: route intercept → fill_blank_exec q010101ex001 → '42' → ✅ output+explanation; CI ✓ (backend+e2e+frontend) |
-| 2.2 | 3 | Sandbox hardening Pyodide: timeout, memoria, imports bloqueados | TODO | Test: `while True: pass` termina en 5s; `import os` bloqueado |
+| 2.2 | 3 | Sandbox hardening Pyodide: timeout, memoria, imports bloqueados | DONE | `builtins.__import__` factory guard blocks os/subprocess/socket/…; COOP+COEP credentialless → SharedArrayBuffer → SAB interrupt after 5 s (timedOut:true); Playwright 2/2 pass (27.7s): import os → ImportError, while True:pass → timedOut=true. vite.config + public/_headers set headers |
 | 2.3 | 3 | `exec_correct` server-side (hoy viene del cliente = explotable) | TODO | Servidor valida output; cliente no puede falsear corrección |
 
 ### 3 — Cierre Fase 3

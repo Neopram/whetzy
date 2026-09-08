@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pyodide Sandbox Test Harness</title>
+</head>
+<body>
+<pre id="status">loading</pre>
+<pre id="result-import-os"></pre>
+<pre id="result-timeout"></pre>
+<script>
+  // Mirrors usePyodide.ts: terminate the worker after TIMEOUT_MS if it doesn't respond.
+  const TIMEOUT_MS = 7000;
+
+  let worker = null;
+  let killTimer = null;
+
+  function makeWorker() {
+    const w = new Worker('/pyodide-worker.js');
+    w.addEventListener('message', handleMessage);
+    w.addEventListener('error', (e) => {
+      document.getElementById('status').textContent = 'workerError: ' + String(e.message);
+    });
+    return w;
+  }
+
+  function handleMessage({ data }) {
+    if (data.type === 'loadError') {
+      document.getElementById('status').textContent = 'loadError: ' + data.message;
+      return;
+    }
+
+    if (data.type === 'ready') {
+      document.getElementById('status').textContent = 'ready';
+      // Test 1: blocked import
+      worker.postMessage({ type: 'run', id: 'import-os', code: 'import os\nprint(os.getcwd())' });
+      return;
+    }
+
+    if (data.type === 'result') {
+      if (killTimer) { clearTimeout(killTimer); killTimer = null; }
+
+      const el = document.getElementById('result-' + data.id);
+      if (el) {
+        el.textContent = JSON.stringify({ error: data.error, output: data.output, timedOut: data.timedOut });
+      }
+
+      if (data.id === 'import-os') {
+        // Test 2: timeout — kill the worker if no response in TIMEOUT_MS.
+        killTimer = setTimeout(() => {
+          killTimer = null;
+          worker.terminate();
+          document.getElementById('result-timeout').textContent = JSON.stringify({
+            error: 'TimeoutError: code execution exceeded 5 seconds',
+            output: '',
+            timedOut: true,
+          });
+        }, TIMEOUT_MS);
+        worker.postMessage({ type: 'run', id: 'timeout', code: 'while True: pass' });
+      }
+    }
+  }
+
+  worker = makeWorker();
+</script>
+</body>
+</html>
