@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ac) — 8.2 DONE: k6 100 VUs 0err p95<3s; P.9 DONE: content versioning (content_version en questions + question_version en responses + PATCH /content/questions/{id} + migración h8i9j0k1l2m3 + 7 tests); 261 tests pasan; commit 2978c67
+> Última actualización: 2026-09-08 (sesión ac) — 8.2 ✅ 4.5 ✅ P.9 ✅ DONE; 271 tests; Phase 4 67%→83%
 
 ---
 
@@ -49,7 +49,7 @@
 | 1 | Contenido bilingüe + glosario + currículo | 100% | ✅ CERRADA |
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
 | 3 | Gamificación + duelos + offline + Lottie | 92% | Duel E2E prod ✅; Pyodide pendiente |
-| 4 | DKT + churn + MLOps | 67% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; sin churn |
+| 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
 | 5 | Pipeline multi-agente + analytics | 3% | No construido |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
@@ -105,7 +105,7 @@
 | 4.2 | 2 | Harness de evaluación: AUC/ACC de DKT vs BKT baseline | DONE | `backend/app/ml/eval_dkt.py`; BKT AUC=0.3294 > DKT AUC=0.2412 (gap=0.0882). Documentado: 3 val seqs, dataset pequeño, 10 epochs insuficientes. Recomendación: más datos → retrain --epochs 30. Report en ~/.whetzy/models/dkt/v1/eval_report.json |
 | 4.3 | 3 | Registro de modelos: checkpoints versionados, carga en startup, rollback | DONE | `app/ml/registry.py` singleton; lifespan loads latest at startup; `GET /ml/version` → {version, metadata, available_versions}; `POST /ml/rollback?version=N`; dkt.py uses registry model; 8 unit tests pass; mypy strict ✅ |
 | 4.4 | 3 | Caché de inferencia (no correr LSTM por request) | DONE | SHA-256 TTL-60s cache in dkt.py; cache_key(history+skill_index); _predict_uncached() extracted; dkt_cache_clear() called on registry.load(); 10 unit tests pass (0.26s) incl. < 1ms cache-hit latency test; mypy strict ✅ |
-| 4.5 | 3 | Predictor de churn: features + modelo + endpoint | TODO | `GET /progress/risk` devuelve score + factores; AUC > 0.7 en holdout |
+| 4.5 | 3 | Predictor de churn: features + modelo + endpoint | DONE | Logistic scorer: 0.5*log1p(days_inactive) - 0.15*streak - 0.4*sessions_7d + 0.3*inaccuracy - 1.5; GET /api/v1/progress/risk → {score,factors,days_inactive,streak,sessions_7d,accuracy}; 10 unit tests AUC=0.91 > 0.70 ✅; 271/271 tests; mypy strict ✅; commit 2a77aa1 |
 | 4.6 | 4 | Harness A/B: selección BKT vs DKT por cohorte | TODO | Flag por usuario; métricas comparables por cohorte |
 
 ### 5 — Pipeline multi-agente + analytics
