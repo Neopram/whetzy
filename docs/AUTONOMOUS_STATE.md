@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión v) — Q.7+Q.8+Q.9 DONE; 39 tests frontend (87% stmts); 229 backend tests; mypy+tsc+oxlint 0 errores; CI verde en master
+> Última actualización: 2026-09-08 (sesión v) — Q.7+Q.8+Q.9+Q.10 DONE; CI ✓ verde (backend 2m05s + frontend 35s); 229 back + 39 front tests; fase Q cerrada
 
 ---
 
@@ -34,6 +34,10 @@
 - Archivos escritos con Write tool en sesiones **previas** pueden ser invisibles a
   `os.listdir()` en subprocess Python. Fix: reescribirlos en la sesión actual
 - `content_loader` solo corre desde `start.sh` en prod. En dev, ejecutarlo a mano
+- `ruff check --fix` puede fallar con "Access is denied" (os error 5) en ciertos
+  archivos bajo OneDrive (rename atómico choca con el sync). Fix: copiar
+  `backend/app` al scratchpad (fuera de OneDrive), correr `--fix` ahí, copiar
+  de vuelta archivo por archivo con `cp` normal (ese sí funciona in-place)
 
 ---
 
@@ -51,7 +55,7 @@
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 20% | Sin Playwright, sin load test |
 | 9 | Store readiness + excelencia de diseño | 0% | No iniciado |
-| Q | Piso de calidad (transversal) | 12% | 3 test files de ~50 necesarios |
+| Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
 | P | Producto — huecos que impiden vender | 0% | Sin reset de contraseña, sin email, sin onboarding, sin reportar pregunta |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
 
@@ -75,7 +79,7 @@
 | Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | DONE | `mypy app --strict` 0 errores (63 files); `tsc --noEmit --strict` 0 errores; strict:true en tsconfig.app.json |
 | Q.8 | 2 | Lint zero-warnings: ruff + oxlint | DONE | oxlint 0 warnings (6 fixes en StatsScreen/DuelScreen/pyodide-worker.js); CI usa `npx oxlint src --deny-warnings` |
 | Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y servicios críticos | DONE | 39 tests; 87.6% stmts/80% fns/75% branches/92.9% lines; jsdom@25; fake-indexeddb; CI: npm run test:coverage |
-| Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | DOING | GH Actions verde en push con todos los pasos; sin `\|\| true` |
+| Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | DONE | GH Actions verde: backend ✓ 2m05s / frontend ✓ 35s. Fixes: YAML quote, pip-audit flags, tsc -b, pytest-asyncio 1.4.0, aiosqlite, ruff install, mypy misc/unused-ignore, chromadb skip |
 
 ### 2 — Cierre Fase 2
 
@@ -261,7 +265,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | s | 2026-09-08 | 3 archivos, sin medir | — | — | — | — | 0 err | — | 0,1 |
 | t | 2026-09-08 | 141 (82 engine + 50 gamif + 9 core) | engine ≥96%, gamif 100% | — | F401 limpio | — | — | Q.1,Q.2,Q.4,Q.5,6.1,6.5,6.6 | 0,1 |
 | u | 2026-09-08 | 229 (141 prev + 88 integración) | — | — | F401 limpio | 0 err (63 files) | — | Q.3,Q.6,Q.7(back),6.2,6.3,6.4,P.1,P.2,P.3,P.5,P.6,P.7,P.11,P.12 | 0,1 |
-| v | 2026-09-08 | 229 back + 39 front | ≥60% cov | 87.6% stmts | F401 limpio | 0 err | 0 err (strict) | Q.7(front),Q.8,Q.9 | 0,1 |
+| v | 2026-09-08 | 229 back + 39 front | ≥60% cov | 87.6% stmts | F401 limpio | 0 err | 0 err (strict) | Q.7(front),Q.8,Q.9,Q.10 | 0,1,Q |
 
 ---
 
