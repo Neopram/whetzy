@@ -16,10 +16,10 @@ describe('api — extra coverage', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('quiz.end returns summary', async () => {
-    vi.stubGlobal('fetch', makeOk({ total: 10, correct: 7, xp_earned: 50 }));
+    vi.stubGlobal('fetch', makeOk({ total_questions: 10, correct: 7, accuracy: 0.7, max_combo: 3, xp_earned: 50, duration_seconds: 60 }));
     const { quiz } = await import('../services/api');
     const res = await quiz.end('sess1');
-    expect((res as { total: number }).total).toBe(10);
+    expect(res.total_questions).toBe(10);
   });
 
   it('quiz.reviewDue returns array', async () => {

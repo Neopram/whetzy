@@ -286,7 +286,6 @@ function DuelCard({
 }) {
   const isWinner = duel.winner_id === currentUserId;
   const isDraw = duel.status === 'completed' && !duel.winner_id;
-  const _isLoser = duel.status === 'completed' && !isDraw && !isWinner;
 
   const statusLabel =
     duel.status === 'pending' ? t.status_pending
