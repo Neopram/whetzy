@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ag) — 7.5 ✅ 9.3 ✅ 9.5 ✅ 9.6 ✅ DONE; Capacitor Android; icons 13 iOS + 6 Android densidades + splash; App Store + Play Store compliance docs; Phase 9 → 80%
+> Última actualización: 2026-09-08 (sesión ag) — 7.5 ✅ 9.3 ✅ 9.5 ✅ 9.6 ✅ 5.3 ✅ DONE; icons + store docs + duplicate detection; Phase 9 → 80%; Phase 5 → 80%; 390 tests
 
 ---
 
@@ -50,7 +50,7 @@
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
 | 3 | Gamificación + duelos + offline + Lottie | 99% | Duel E2E prod ✅; push notifs ✅; offline sync E2E ✅; solo Duel E2E multi-user pendiente (UI stub) |
 | 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
-| 5 | Pipeline multi-agente + analytics | 60% | 5.1 author agent ✅; 5.2 QA agent ✅; 5.4 analytics ✅; sin duplicados, sin dashboard |
+| 5 | Pipeline multi-agente + analytics | 80% | 5.1 author agent ✅; 5.2 QA agent ✅; 5.3 duplicados ✅; 5.4 analytics ✅; sin dashboard (5.5 PRI 4) |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 65% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; i18n 10 screens ✅; sin nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
@@ -114,7 +114,7 @@
 |---|---|---|---|---|
 | 5.1 | 3 | Agente autor de contenido: genera Q desde fuente con cita | DONE | content_agent.py: JSON extraction, _GeneratedQ validation, NullProvider guard, partial failures; POST /content/generate (201/503/422); 17 tests (9 unit + 8 integration); 335/335 tests; mypy 0 err; commit b6188d3 |
 | 5.2 | 3 | Agente QA de contenido: valida distractores, dificultad, cita | DONE | content_qa.py: structural checks (opt count, correct_index, duplicates, placeholders, short stems, source, explanation, tier) + LLM pass; POST /content/qa + /qa/batch (admin key); 35 tests (27 unit + 8 integration); detection rate 100% >= 90% criterion; 370/370 tests; mypy 0 err; commit ba0acf1 |
-| 5.3 | 4 | Detección de duplicados por embeddings | TODO | Detecta paráfrasis en el banco actual; reporte de candidatos |
+| 5.3 | 4 | Detección de duplicados por embeddings | DONE | app/services/duplicate_detector.py: sentence-transformers all-MiniLM-L6-v2; cosine_pairs() O(N²) upper-triangle; async find_duplicates(db, skill_id?, threshold=0.85, max_pairs=200); POST /content/duplicates (admin key); 20 tests (15 unit + 5 integration) 390/390 pass; mypy strict 0 err |
 | 5.4 | 3 | Esquema de eventos de analytics + ingesta | DONE | AnalyticsEvent table + migration i9j0k1l2m3n4; track(db, event_type, user_id, properties); events: user_registered (auth.register) + first_quiz_answer (quiz.submit, questions_answered==0); GET /analytics/funnel (X-Admin-Key) → registrations+first_quiz+d1+d7+rates; 5 integration tests; 276/276 tests; mypy strict ✅; commit 3fbaf31 |
 | 5.5 | 4 | Dashboard de analytics (admin) | TODO | Retención, engagement, dominio por skill, embudo |
 

@@ -20,8 +20,12 @@ import logging
 import re
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import TYPE_CHECKING
 
 from app.models.content import Question
+
+if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 logger = logging.getLogger(__name__)
 
@@ -297,7 +301,7 @@ async def qa_questions(
 
 
 async def qa_question_by_id(
-    db,
+    db: "AsyncSession",
     question_id: str,
     source_text: str | None = None,
 ) -> QAResult:
