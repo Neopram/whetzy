@@ -4,7 +4,7 @@ import { loginUser } from './helpers';
 test.describe('Authentication', () => {
   test('register new user → home screen → nav visible', async ({ page }) => {
     const ts = Date.now();
-    const email = `e2e-reg-${ts}@whetzy.test`;
+    const email = `e2e-reg-${ts}@example.com`;
     const username = `reguser${ts}`;
 
     await page.goto('/');

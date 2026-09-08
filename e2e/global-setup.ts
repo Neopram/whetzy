@@ -47,7 +47,7 @@ function seedContent(): void {
 /** Create a shared test user and expose credentials via process.env. */
 async function registerTestUser(): Promise<void> {
   const ts = Date.now();
-  const email = `e2e-${ts}@whetzy.test`;
+  const email = `e2e-${ts}@example.com`;
   const username = `e2euser${ts}`;
   const password = 'E2ETest!2024';
 
