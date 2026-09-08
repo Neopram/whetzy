@@ -77,7 +77,7 @@ export function HomeScreen() {
         <div className={styles.cardHeader}>
           <h2 className={styles.cardTitle}>{L.missions}</h2>
           {missions.data && (
-            <span className={styles.badge} style={{ background: 'var(--le-orange-light)', color: 'var(--le-orange)' }}>
+            <span className={styles.badge} style={{ background: 'var(--le-orange-light)', color: 'var(--le-text)' }}>
               {missions.data.filter((m) => m.completed).length}/{missions.data.length}
             </span>
           )}
@@ -103,7 +103,7 @@ export function HomeScreen() {
       <Card>
         <div className={styles.cardHeader}>
           <h2 className={styles.cardTitle}>{L.yourStreak}: {streak} {L.days} 🔥</h2>
-          <span className={styles.badge} style={{ background: 'var(--le-green-light)', color: 'var(--le-green)' }}>
+          <span className={styles.badge} style={{ background: 'var(--le-green-light)', color: 'var(--le-text)' }}>
             {L.best}: {dash.data?.max_streak ?? user.maxStreak}
           </span>
         </div>

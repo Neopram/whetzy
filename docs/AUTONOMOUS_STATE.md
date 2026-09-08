@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión y) — 9.4 DONE: legal pages; 4.1 DONE: DKT training pipeline; 7.1 DONE: ASVS L2 audit (6 HIGH fixes: timing, jwt_version, XFF, 422 body, IDOR, DEBUG)
+> Última actualización: 2026-09-08 (sesión z) — 9.2 DONE: WCAG 2.2 AA (axe-core 3/3 pass); 9.1 DONE: design tokens; 9.4 DONE: legal; 4.1 DONE: DKT; 7.1 DONE: ASVS L2
 
 ---
 
@@ -17,7 +17,7 @@
 | Backend prod | `https://api-production-9751.up.railway.app` |
 | Frontend prod | `https://whetzy.com` / `https://whetzy.pages.dev` |
 | Repo | `github.com/Neopram/whetzy` branch `master` |
-| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9 → e5f6a7b8c9d0 → f6a7b8c9d0e1` |
+| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9 → e5f6a7b8c9d0 → f6a7b8c9d0e1 → g7h8i9j0k1l2` |
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |
@@ -54,7 +54,7 @@
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 30% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); sin load test, sin presupuesto de perf, sin informe competitivo |
-| 9 | Store readiness + excelencia de diseño | 0% | No iniciado |
+| 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
 | P | Producto — huecos que impiden vender | 62% | Email+reset+verificación+ajustes+reportes+export+deps+DB DONE; sin onboarding, banco 1.5k, versionado, modo oscuro, recordatorios |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
@@ -157,7 +157,7 @@
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 9.1 | 2 | Revisión del sistema de diseño: tokens, motion, jerarquía | DONE | Added --le-danger token (light #E53935 / dark #FF6659); fixed --le-muted → --le-text-muted in LegalScreen; added prefers-reduced-motion block (global.css) disabling all animations/transitions; scroll-behavior: auto for reduced-motion. tsc ✅ |
-| 9.2 | 2 | Accesibilidad WCAG 2.2 AA | TODO | axe-core 0 violaciones; navegación por teclado completa; contraste AA |
+| 9.2 | 2 | Accesibilidad WCAG 2.2 AA | DONE | axe-core 3/3 tests pass (auth, home, legal); viewport meta-viewport fixed; --le-text-secondary #777→#595959; contrast fixed: AuthScreen tabs/lang, BottomNav active/inactive, TopBar logo/gems, HomeScreen btnStudy/badges/streakToday, LegalScreen back/updated/body/links; link-in-text-block: underline on legal links; prefers-reduced-motion in global.css |
 | 9.3 | 3 | Assets de store: iconos, screenshots, video preview | TODO | Todos los tamaños iOS/Android generados desde fuente vectorial |
 | 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | DONE | LegalScreen + /privacy + /terms routes + ProfileScreen links a /privacy, /terms, /delete-account — commit b6ab6dc ✅ |
 | 9.5 | 3 | Checklist App Store Review Guidelines | TODO | Cada guideline aplicable evaluada con evidencia |
