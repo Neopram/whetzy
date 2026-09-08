@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
-# Build context: repo root (not backend/).
-# docker-compose: context: .  dockerfile: backend/Dockerfile
-# Railway:        railway.toml sets rootDirectory / dockerfilePath
+# Build context: repo root. Must live AT the repo root so Railway auto-detects a
+# Docker build instead of falling back to Railpack (which cannot build this app).
+# docker-compose: context: .  dockerfile: Dockerfile
 
 # ---- Builder stage: compile wheels for all dependencies ----------------
 FROM python:3.12-slim AS builder
