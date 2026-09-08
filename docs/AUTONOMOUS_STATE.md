@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ad) — 4.5 ✅ 5.4 ✅ 7.2 ✅ 7.3 ✅ 3.3 ✅ P.13 ✅ DONE; 318 tests; P 85%→92%
+> Última actualización: 2026-09-08 (sesión af) — 7.4 ✅ DONE; 10 screens i18next; tsc 0 err; commit 8f99ad9
 
 ---
 
@@ -50,9 +50,9 @@
 | 2 | Tutor AI (Groq) + RAG | 100% | ✅ CERRADA |
 | 3 | Gamificación + duelos + offline + Lottie | 96% | Duel E2E prod ✅; push notifs ✅; Pyodide/offline E2E pendiente |
 | 4 | DKT + churn + MLOps | 83% | DKT training ✅; eval harness ✅; model registry ✅; inference cache ✅; churn scorer ✅; sin A/B |
-| 5 | Pipeline multi-agente + analytics | 20% | 5.4 analytics schema+funnel ✅; sin agente autor/QA, sin duplicados, sin dashboard |
+| 5 | Pipeline multi-agente + analytics | 60% | 5.1 author agent ✅; 5.2 QA agent ✅; 5.4 analytics ✅; sin duplicados, sin dashboard |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
-| 7 | Commerce + i18n + nativo + IaC + seguridad | 55% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; sin i18n/nativo/K8s |
+| 7 | Commerce + i18n + nativo + IaC + seguridad | 65% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; i18n 10 screens ✅; sin nativo/K8s |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
@@ -112,8 +112,8 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 5.1 | 3 | Agente autor de contenido: genera Q desde fuente con cita | TODO | Genera 10 Q válidas de un doc fuente; schema válido, source poblado |
-| 5.2 | 3 | Agente QA de contenido: valida distractores, dificultad, cita | TODO | Detecta ≥90% de Q sembradas con defectos conocidos |
+| 5.1 | 3 | Agente autor de contenido: genera Q desde fuente con cita | DONE | content_agent.py: JSON extraction, _GeneratedQ validation, NullProvider guard, partial failures; POST /content/generate (201/503/422); 17 tests (9 unit + 8 integration); 335/335 tests; mypy 0 err; commit b6188d3 |
+| 5.2 | 3 | Agente QA de contenido: valida distractores, dificultad, cita | DONE | content_qa.py: structural checks (opt count, correct_index, duplicates, placeholders, short stems, source, explanation, tier) + LLM pass; POST /content/qa + /qa/batch (admin key); 35 tests (27 unit + 8 integration); detection rate 100% >= 90% criterion; 370/370 tests; mypy 0 err; commit ba0acf1 |
 | 5.3 | 4 | Detección de duplicados por embeddings | TODO | Detecta paráfrasis en el banco actual; reporte de candidatos |
 | 5.4 | 3 | Esquema de eventos de analytics + ingesta | DONE | AnalyticsEvent table + migration i9j0k1l2m3n4; track(db, event_type, user_id, properties); events: user_registered (auth.register) + first_quiz_answer (quiz.submit, questions_answered==0); GET /analytics/funnel (X-Admin-Key) → registrations+first_quiz+d1+d7+rates; 5 integration tests; 276/276 tests; mypy strict ✅; commit 3fbaf31 |
 | 5.5 | 4 | Dashboard de analytics (admin) | TODO | Retención, engagement, dominio por skill, embudo |
@@ -137,7 +137,7 @@
 | 7.1 | 2 | Auditoría de seguridad ASVS L2 + fixes | DONE | 6 HIGH findings fixed: timing-safe login (ASVS V2.2), jwt_version token revocation on pwd change (V3.3, migration g7h8i9j0k1l2), XFF spoofing → TRUST_PROXY_HEADERS=False default (V11.2), body stripped from 422 (V7.1), reports IDOR scoped to own user (V4.2), DEBUG=False default (V14.4). 233 tests ✅ mypy strict ✅ |
 | 7.2 | 2 | Stripe: checkout + webhook + estado de suscripción | DONE | stripe_customer_id/subscription_id/status/tier/expires_at on User; migration j0k1l2m3n4o5; POST /billing/checkout (checkout URL) + POST /billing/webhook (checkout.completed/sub.updated/deleted) + GET /billing/subscription; 10 integration tests (mocked stripe); 286/286 tests; mypy 0 err; commit a010d98 |
 | 7.3 | 2 | Entitlements: gating free/plus/pro | DONE | app/core/entitlements.py: user_meets_tier + require_tier dep; free<plus<pro hierarchy; is_premium=True w/o tier → plus (backward compat); quiz exam/review → plus; tutor/explain → plus; 16 tests (9 unit + 7 integration); conftest: plus_user+plus_auth_headers; 302/302 tests; commit 37acb87 |
-| 7.4 | 3 | i18next completo ES/EN | TODO | 0 strings hardcodeados; cambio de idioma en caliente |
+| 7.4 | 3 | i18next completo ES/EN | DONE | i18n.ts + react-i18next; 10 screens migradas (Auth/Onboarding/Home/League/Tracks/Stats/Profile/Quiz/Duel/Placement); 0 TEXT/L dicts; duel+placement+quiz-exec keys added; tsc 0 err; commit 8f99ad9 |
 | 7.5 | 3 | Shell nativo Capacitor (iOS + Android) | TODO | Builds locales corren; deep links; safe areas |
 | 7.6 | 4 | RevenueCat IAP nativo | TODO | Sandbox purchase E2E en ambas plataformas |
 | 7.7 | 4 | IaC: Terraform para Railway + Cloudflare | TODO | `terraform plan` limpio; infra reproducible |
