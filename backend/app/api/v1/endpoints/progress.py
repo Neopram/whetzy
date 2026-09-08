@@ -15,6 +15,7 @@ from app.schemas.progress import (
     SkillMasteryDetail,
 )
 from app.services import progress as progress_service
+from app.services.churn import ChurnRiskResult, compute_risk
 
 router = APIRouter()
 
@@ -53,3 +54,12 @@ async def predictions(
     db: AsyncSession = Depends(get_db),
 ) -> PredictionResponse:
     return await progress_service.get_predictions(db, current_user, track_id)
+
+
+@router.get("/risk", response_model=ChurnRiskResult)
+async def churn_risk(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> ChurnRiskResult:
+    """Return churn-risk score (0–1) and contributing factors for the current user."""
+    return await compute_risk(db, current_user)
