@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,7 +29,7 @@ _COLLECTION_NAME = "whetzy_content"
 _EMBED_MODEL = "all-MiniLM-L6-v2"
 _BATCH_SIZE = 256
 
-_index: RAGIndex | None = None  # type: ignore[name-defined]  # forward ref resolved below
+_index: RAGIndex | None = None  # forward ref resolved below
 
 
 def _chroma_path() -> str:
@@ -44,7 +45,7 @@ def _chroma_path() -> str:
 class RAGIndex:
     """Thin wrapper around a ChromaDB collection with a lazy-build flag."""
 
-    def __init__(self, persist_path: str, embedding_function=None) -> None:
+    def __init__(self, persist_path: str, embedding_function: Any = None) -> None:
         import chromadb
 
         Path(persist_path).mkdir(parents=True, exist_ok=True)
@@ -78,7 +79,7 @@ class RAGIndex:
 
         ids: list[str] = []
         docs: list[str] = []
-        metas: list[dict] = []
+        metas: list[dict[str, Any]] = []
         for q_id, expl_es, expl_en, skill_id in rows:
             text = " ".join(filter(None, [expl_es, expl_en])).strip()
             if not text:
@@ -91,7 +92,7 @@ class RAGIndex:
             self._col.upsert(
                 ids=ids[i : i + _BATCH_SIZE],
                 documents=docs[i : i + _BATCH_SIZE],
-                metadatas=metas[i : i + _BATCH_SIZE],
+                metadatas=metas[i : i + _BATCH_SIZE],  # type: ignore[arg-type]
             )
         logger.info("RAG: indexed %d question explanations", len(ids))
 
@@ -117,7 +118,7 @@ class RAGIndex:
             g_metas.append({"type": "glossary", "track_id": track_id or ""})
 
         if g_ids:
-            self._col.upsert(ids=g_ids, documents=g_docs, metadatas=g_metas)
+            self._col.upsert(ids=g_ids, documents=g_docs, metadatas=g_metas)  # type: ignore[arg-type]
         logger.info("RAG: indexed %d glossary terms", len(g_ids))
 
         self._built = True
@@ -139,7 +140,7 @@ class RAGIndex:
             return []
 
 
-async def build_bg(session_factory) -> None:
+async def build_bg(session_factory: Any) -> None:
     """Coroutine to be scheduled with asyncio.create_task() during lifespan."""
     global _index
     try:

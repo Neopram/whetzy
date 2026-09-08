@@ -162,7 +162,7 @@ async def _ensure_today_missions(db: AsyncSession, user: User) -> list[tuple[Use
     )
     rows = result.all()
     if rows:
-        return list(rows)
+        return list(rows)  # type: ignore[arg-type]
 
     templates_result = await db.execute(
         select(Mission).order_by(Mission.id).limit(DEFAULT_DAILY_MISSION_COUNT)
@@ -188,7 +188,7 @@ async def _ensure_today_missions(db: AsyncSession, user: User) -> list[tuple[Use
         .join(Mission, Mission.id == UserMission.mission_id)
         .where(UserMission.user_id == user.id, UserMission.date == today)
     )
-    return list(result.all())
+    return list(result.all())  # type: ignore[arg-type]
 
 
 async def get_today_missions(db: AsyncSession, user: User) -> list[UserMissionRead]:

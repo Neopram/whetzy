@@ -115,7 +115,7 @@ async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Modu
     # Skills never attempted count as 0 mastery.
     padded = p_known_values + [0.0] * (len(prev_skill_ids) - len(p_known_values))
     avg_mastery = sum(padded) / len(padded)
-    return avg_mastery >= prev_module.min_mastery_to_unlock
+    return bool(avg_mastery >= prev_module.min_mastery_to_unlock)
 
 
 async def _candidate_skill_ids(
@@ -486,7 +486,7 @@ async def end_session(db: AsyncSession, user: User, req: QuizEndRequest) -> Quiz
         await db.commit()
 
     duration = int(
-        (_ensure_aware(session.ended_at) - _ensure_aware(session.started_at)).total_seconds()
+        (_ensure_aware(session.ended_at) - _ensure_aware(session.started_at)).total_seconds()  # type: ignore[operator]
     )
     accuracy = session.correct_count / max(1, session.questions_answered)
 

@@ -17,6 +17,7 @@ and three memory layers:
 from __future__ import annotations
 
 import uuid
+from typing import Any
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -81,8 +82,8 @@ async def explain_question(
     db: AsyncSession,
     user: User,
     question_id: str,
-    conversation_history: list[dict] | None = None,
-) -> dict:
+    conversation_history: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     question = (
         await db.execute(select(Question).where(Question.id == question_id))
     ).scalar_one_or_none()

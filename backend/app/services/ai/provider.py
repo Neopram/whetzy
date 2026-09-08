@@ -8,7 +8,7 @@ content-grounded fallback so the tutor endpoint always responds.
 
 from __future__ import annotations
 
-from typing import Protocol
+from typing import Any, Protocol
 
 from app.core.config import settings
 
@@ -22,7 +22,7 @@ class LLMProvider(Protocol):
         user: str,
         *,
         max_tokens: int = 600,
-        history: list[dict] | None = None,
+        history: list[dict[str, Any]] | None = None,
     ) -> str: ...
 
 
@@ -38,7 +38,7 @@ class NullProvider:
         user: str,
         *,
         max_tokens: int = 600,
-        history: list[dict] | None = None,
+        history: list[dict[str, Any]] | None = None,
     ) -> str:
         return (
             "💡 " + _extract_grounding(user)
@@ -61,11 +61,11 @@ class GroqProvider:
         user: str,
         *,
         max_tokens: int = 600,
-        history: list[dict] | None = None,
+        history: list[dict[str, Any]] | None = None,
     ) -> str:
         import httpx
 
-        messages: list[dict] = [{"role": "system", "content": system}]
+        messages: list[dict[str, Any]] = [{"role": "system", "content": system}]
         if history:
             messages.extend(history)
         messages.append({"role": "user", "content": user})

@@ -10,6 +10,7 @@ cardinality explosion from liveness / readiness probes.
 from __future__ import annotations
 
 import time
+from collections.abc import Awaitable, Callable
 
 from prometheus_client import (
     CONTENT_TYPE_LATEST,
@@ -59,7 +60,7 @@ def _should_skip(path: str) -> bool:
 class MetricsMiddleware(BaseHTTPMiddleware):
     """Record RED metrics for every instrumented HTTP request."""
 
-    async def dispatch(self, request: Request, call_next) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         path = request.url.path
         method = request.method
 

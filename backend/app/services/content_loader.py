@@ -11,6 +11,7 @@ import asyncio
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,7 +29,7 @@ def _content_root() -> Path:
     return Path(__file__).resolve().parents[3] / "content"
 
 
-async def _upsert_track(db: AsyncSession, data: dict) -> None:
+async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
     track = await db.get(Track, data["id"])
     if track is None:
         track = Track(id=data["id"])
@@ -63,7 +64,7 @@ async def _upsert_track(db: AsyncSession, data: dict) -> None:
             skill.order = s.get("order", s_order)
 
 
-async def _upsert_question(db: AsyncSession, q: dict) -> bool:
+async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:
     """Returns True if the question was ingested, False if skipped (unknown skill)."""
     skill = await db.get(Skill, q["skill_id"])
     if skill is None:
@@ -96,7 +97,7 @@ async def _upsert_question(db: AsyncSession, q: dict) -> bool:
     return True
 
 
-async def _upsert_glossary_term(db: AsyncSession, t: dict, order: int) -> bool:
+async def _upsert_glossary_term(db: AsyncSession, t: dict[str, Any], order: int) -> bool:
     """Returns True if ingested, False if skipped (unknown track)."""
     track = await db.get(Track, t["track_id"])
     if track is None:
@@ -116,7 +117,7 @@ async def _upsert_glossary_term(db: AsyncSession, t: dict, order: int) -> bool:
     return True
 
 
-async def load_content(db: AsyncSession) -> dict:
+async def load_content(db: AsyncSession) -> dict[str, Any]:
     root = _content_root()
     stats = {"tracks": 0, "questions": 0, "skipped": 0, "files": 0, "glossary": 0}
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,7 +20,7 @@ class ExplainRequest(BaseModel):
     question_id: str
     # Short-term memory: prior turns from the current tutoring session.
     # Each entry must have "role" ("user"|"assistant") and "content".
-    conversation_history: list[dict] | None = None
+    conversation_history: list[dict[str, Any]] | None = None
 
 
 class ExplainResponse(BaseModel):

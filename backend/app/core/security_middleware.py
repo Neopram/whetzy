@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import time
 from collections import defaultdict
+from collections.abc import Awaitable, Callable
+from typing import Any
 
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
@@ -30,11 +32,11 @@ _SECURITY_HEADERS = {
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, enable_hsts: bool = False) -> None:
+    def __init__(self, app: Any, enable_hsts: bool = False) -> None:
         super().__init__(app)
         self._enable_hsts = enable_hsts
 
-    async def dispatch(self, request: Request, call_next) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         response = await call_next(request)
         for key, value in _SECURITY_HEADERS.items():
             response.headers.setdefault(key, value)
@@ -52,7 +54,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
     def __init__(
         self,
-        app,
+        app: Any,
         default_limit: int = 120,
         auth_limit: int = 12,
         window_seconds: int = 60,
@@ -69,7 +71,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         ip = fwd.split(",")[0].strip() if fwd else (request.client.host if request.client else "unknown")
         return ip
 
-    async def dispatch(self, request: Request, call_next) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         path = request.url.path
         # Health/docs are exempt.
         if path in ("/health", "/") or path.startswith("/docs") or path.startswith("/redoc"):

@@ -11,7 +11,7 @@ Interface: `predict(history) -> dict[skill_id, float]`
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     pass
@@ -56,7 +56,7 @@ class _DKT(object):
         with torch.no_grad():
             x = torch.tensor([indices], dtype=torch.long)  # (1, T)
             out = self.net(x)  # (1, T, n_skills)
-            return out[0].tolist()
+            return out[0].tolist()  # type: ignore[no-any-return]
 
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -65,7 +65,7 @@ _ALPHA = 0.3  # EWA decay for the heuristic fallback
 
 
 def predict(
-    history: list[dict],
+    history: list[dict[str, Any]],
     skill_index: dict[str, int] | None = None,
 ) -> dict[str, float]:
     """Return P(correct) per skill given answer history.
@@ -112,7 +112,7 @@ def predict(
 
 
 def _heuristic_predict(
-    history: list[dict],
+    history: list[dict[str, Any]],
     skill_index: dict[str, int],
 ) -> dict[str, float]:
     """Exponential-weighted moving average fallback (no torch required)."""

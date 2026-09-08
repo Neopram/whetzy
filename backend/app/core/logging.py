@@ -18,7 +18,9 @@ import json
 import logging
 import time
 import uuid
+from collections.abc import Awaitable, Callable
 from contextvars import ContextVar
+from typing import Any
 
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
@@ -44,7 +46,7 @@ def set_user_id(uid: str) -> None:
 
 class _JSONFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
-        payload: dict = {
+        payload: dict[str, Any] = {
             "ts": self.formatTime(record, "%Y-%m-%dT%H:%M:%S"),
             "level": record.levelname,
             "logger": record.name,
@@ -80,7 +82,7 @@ class RequestIDMiddleware(BaseHTTPMiddleware):
     generated. It is set in the response header so callers can correlate logs.
     """
 
-    async def dispatch(self, request: Request, call_next) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         req_id = request.headers.get("x-request-id") or str(uuid.uuid4())
         token_rid = _request_id_var.set(req_id)
         token_uid = _user_id_var.set("-")

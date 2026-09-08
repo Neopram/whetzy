@@ -66,8 +66,8 @@ class QuestionRead(BaseModel):
     difficulty_tier: str
     question_es: str
     question_en: str
-    options_es: list | None = None
-    options_en: list | None = None
+    options_es: list[str] | None = None
+    options_en: list[str] | None = None
     correct_index: int
     explanation_es: str
     explanation_en: str
@@ -93,8 +93,8 @@ class QuestionPublic(BaseModel):
     difficulty_tier: str
     question_es: str
     question_en: str
-    options_es: list | None = None
-    options_en: list | None = None
+    options_es: list[str] | None = None
+    options_en: list[str] | None = None
     correct_answer_es: str | None = None
     correct_answer_en: str | None = None
     expected_time_ms: int

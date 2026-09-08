@@ -51,10 +51,10 @@ def configure_telemetry(service_name: str, otlp_endpoint: str) -> None:
                 "falling back to ConsoleSpanExporter."
             )
             from opentelemetry.sdk.trace.export import ConsoleSpanExporter
-            exporter = ConsoleSpanExporter()
+            exporter = ConsoleSpanExporter()  # type: ignore[assignment]
     else:
         from opentelemetry.sdk.trace.export import ConsoleSpanExporter
-        exporter = ConsoleSpanExporter()
+        exporter = ConsoleSpanExporter()  # type: ignore[assignment]
         logger.info("OTel: ConsoleSpanExporter (dev mode — set OTEL_EXPORTER_OTLP_ENDPOINT to export)")
 
     provider.add_span_processor(BatchSpanProcessor(exporter))

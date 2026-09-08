@@ -84,7 +84,7 @@ async def seed_gamification(db: AsyncSession) -> dict:
     for data in BADGES:
         obj = await db.get(Badge, data["id"])
         if obj is None:
-            obj = Badge(id=data["id"])
+            obj = Badge(id=data["id"])  # type: ignore[assignment]
             db.add(obj)
         for k, v in data.items():
             if k != "id":
