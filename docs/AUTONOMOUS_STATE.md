@@ -205,8 +205,8 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | H.3 | Google Play Console | — | Cuenta ($25 único) |
 | H.4 | Stripe cuenta live | Integración en test-mode | Activar cuenta, claves live |
 | H.5 | Submisión a stores | Assets + checklists | Subir builds y responder review |
-| H.6 | Cadena de sesiones | Auto-programación vía scheduled task al cierre de cada sesión | Mantener la app Claude abierta; borrar el task activo para detener la cadena |
-| H.7 | Rutina remota (opcional) | `RemoteTrigger` disponible; falta repo conectado | Conectar `Neopram/whetzy` en claude.ai → la siguiente sesión migra la cadena a la nube |
+| H.6 | Cadena de sesiones | Task recurrente `whetzy-orch-*` cada 6 h; modelo y permisos en `~/.claude/settings.json`; se auto-borra al agotar el backlog | Nada, salvo tener la app Claude abierta. Pausar: deshabilitar el task en "Scheduled". Quitar la dependencia de la app → H.7 |
+| H.7 | Rutina remota — única forma de no depender de la app abierta | `RemoteTrigger` responde 200. Schema sondeado: `session_request.worker` (obligatorio) o `job_config` forma "ccr". El preflight del servidor falla sin repo conectado y entorno | **Una vez:** en claude.ai conectar `Neopram/whetzy` y crear un entorno. La siguiente sesión detecta ambos, cierra el schema con 1-2 creates, migra la cadena y borra el task local |
 
 ---
 
@@ -232,6 +232,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | 4 | 2026-09-08 | DKT con torch opcional + fallback EWA | Railway free tier puede no soportar torch | torch obligatorio (riesgo OOM) |
 | 5 | 2026-09-08 | Orquestación por ledger + auto-programación de sesiones (scheduled task local, one-shot +6h) | Un prompt monolítico degrada la atención; el estado debe vivir fuera del contexto. One-shot en vez de cron: cada sesión decide si hay trabajo antes de programar la siguiente, y la cadena se corta sola sin presupuesto | Cron ciego (quema presupuesto sin mirar el ledger); un solo prompt gigante |
 | 6 | 2026-09-08 | Workers paralelos sin worktree por defecto, sobre grupos de archivos disjuntos | Evita el coste de merge; la disjunción la garantiza el ledger. Worktree solo para refactors amplios | Worktree siempre (merge en cada tarea) |
+| 7 | 2026-09-08 | Continuidad por task recurrente (cron 6 h) que el propio orquestador convierte en su pre-flight y borra al terminar; modelo y permisos en settings de usuario | Una cadena one-shot muere si un corte por límite llega antes de programar la siguiente. El cron reintenta solo: sin trabajo sale en segundos, sin presupuesto no arranca y no gasta. Settings de usuario aplican en cualquier cwd, que el task no controla | Cadena one-shot (frágil); bypass a nivel proyecto (no aplica si el task arranca fuera del cwd) |
 
 ---
 
@@ -242,4 +243,4 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 
 | taskId | Programada para | Creada por | Estado |
 |---|---|---|---|
-| _(pendiente de la primera programación)_ | | | |
+| whetzy-orch-20260911-0730 | 2026-09-11 07:30 one-shot → cron `23 */6 * * *` en su primer pre-flight | sesión s | ARMADO |
