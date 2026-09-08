@@ -94,7 +94,7 @@ class RAGIndex:
             self._col.upsert(
                 ids=ids[i : i + _BATCH_SIZE],
                 documents=docs[i : i + _BATCH_SIZE],
-                metadatas=metas[i : i + _BATCH_SIZE],  # type: ignore[arg-type]
+                metadatas=metas[i : i + _BATCH_SIZE],  # type: ignore[arg-type,unused-ignore]
             )
         logger.info("RAG: indexed %d question explanations", len(ids))
 
@@ -120,7 +120,7 @@ class RAGIndex:
             g_metas.append({"type": "glossary", "track_id": track_id or ""})
 
         if g_ids:
-            self._col.upsert(ids=g_ids, documents=g_docs, metadatas=g_metas)  # type: ignore[arg-type]
+            self._col.upsert(ids=g_ids, documents=g_docs, metadatas=g_metas)  # type: ignore[arg-type,unused-ignore]
         logger.info("RAG: indexed %d glossary terms", len(g_ids))
 
         self._built = True

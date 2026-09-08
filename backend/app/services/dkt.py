@@ -33,7 +33,7 @@ class _DKT:
         self.n_skills = n_skills
         self.hidden = hidden
 
-        class _Net(nn.Module):
+        class _Net(nn.Module):  # type: ignore[misc]
             def __init__(self, n_skills: int, hidden: int) -> None:
                 super().__init__()
                 self.embed = nn.Embedding(n_skills * 2, hidden)
