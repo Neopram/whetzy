@@ -9,7 +9,9 @@ export function getStoredTheme(): Theme {
   } catch {
     /* storage unavailable */
   }
-  // Whetzy ships in LIGHT mode by default.
+  if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
   return 'light';
 }
 
