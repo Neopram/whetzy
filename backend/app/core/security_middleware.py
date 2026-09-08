@@ -76,8 +76,10 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
 
         is_auth = path.startswith("/api/v1/auth")
-        limit = self._auth_limit if is_auth else self._default_limit
-        key = f"{self._client_key(request)}:{'auth' if is_auth else 'api'}"
+        is_tutor = path.startswith("/api/v1/tutor")
+        limit = self._auth_limit if (is_auth or is_tutor) else self._default_limit
+        key_suffix = "auth" if is_auth else "tutor" if is_tutor else "api"
+        key = f"{self._client_key(request)}:{key_suffix}"
 
         now = time.monotonic()
         window_start = now - self._window
