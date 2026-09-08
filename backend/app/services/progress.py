@@ -9,9 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.config import settings
-from app.models.content import Module, Skill, Track
-from app.models.session import StudySession
+from app.models.content import Module, Question, Skill, Track
+from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
+from app.services import dkt as dkt_service
 from app.schemas.progress import (
     CurriculumModule,
     CurriculumResponse,
@@ -114,6 +115,22 @@ async def get_skill_breakdown(
         )
         states_by_skill = {s.skill_id: s for s in states_result.scalars().all()}
 
+    # Build response history for DKT (last 200 responses, chronological)
+    history_result = await db.execute(
+        select(Question.skill_id, Response.correct)
+        .join(Response, Response.question_id == Question.id)
+        .join(StudySession, StudySession.id == Response.session_id)
+        .where(StudySession.user_id == user.id)
+        .order_by(Response.created_at)
+        .limit(200)
+    )
+    dkt_history = [
+        {"skill_id": row[0], "correct": row[1]}
+        for row in history_result.all()
+    ]
+    skill_index = {s.id: i for i, s in enumerate(skills)}
+    dkt_probs = dkt_service.predict(dkt_history, skill_index) if dkt_history else {}
+
     breakdown: list[SkillMasteryDetail] = []
     for skill in skills:
         state = states_by_skill.get(skill.id)
@@ -133,6 +150,7 @@ async def get_skill_breakdown(
                 accuracy=round(correct_count / attempts, 4) if attempts else 0.0,
                 mastered=p_known >= MASTERY_THRESHOLD,
                 fsrs_due=state.fsrs_due if state else None,
+                dkt_probability=dkt_probs.get(skill.id),
             )
         )
     return breakdown

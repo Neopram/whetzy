@@ -44,6 +44,7 @@ class SkillMasteryDetail(BaseModel):
     accuracy: float
     mastered: bool
     fsrs_due: datetime | None = None
+    dkt_probability: float | None = None
 
 
 class CurriculumSkill(BaseModel):

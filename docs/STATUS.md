@@ -1,6 +1,6 @@
 # Whetzy — Estado real / Honest Status
 
-_Última actualización: 2026-09-07. Evaluación técnica brutalmente honesta._
+_Última actualización: 2026-09-08. Evaluación técnica brutalmente honesta._
 
 Este documento distingue **lo que funciona de verdad y está verificado** de **lo
 que es scaffold o no existe**. El plan aprobado (`velvet-tickling-fog.md`) es
@@ -23,8 +23,8 @@ no el spec maximalista completo.
 | 0 | Rebrand + Auth + Wire + Deploy-ready | **100%** | ✅ Backend+Pages+whetzy.com live — CERRADA (re-verificado sesión q) |
 | 1 | Contenido bilingüe + glosarios + currículo gated | **100%** | ✅ Tracks 01-07 completos + glosario bilingüe (70 términos) + currículo gated (BKT) — verificado |
 | 2 | Tutor AI (Groq) + RAG | **98%** | ✅ Groq E2E verificado en prod (`provider=groq`); Pyodide no browser-tested |
-| 3 | Gamificación + multiplayer + offline + animaciones | **85%** | 🟡 Duelos async 1v1 + PWA offline badge + Lottie — verificados browser (sesión r) |
-| 4 | DKT + churn + MLOps | **8%** | 🔴 Solo el motor base (FSRS/Elo/BKT/bandit) |
+| 3 | Gamificación + multiplayer + offline + animaciones | **95%** | ✅ Duelos 1v1 E2E verificados en prod (2026-09-08): status=completed, winner_id definido, tiebreak por tiempo |
+| 4 | DKT + churn + MLOps | **40%** | 🟡 DKT MVP implementado (LSTM+fallback EWA), integrado en `GET /progress/skills` como `dkt_probability` |
 | 5 | Pipeline multi-agente + analytics | **3%** | 🔴 No construido |
 | 6 | Microservicios + observabilidad | **5%** | 🔴 Monolito solamente |
 | 7 | Cloud/K8s/IaC + ASVS + Stripe + i18n + nativo | **30%** | 🟡 Seguridad+Docker+CI reales; K8s/Stripe/nativo no |
