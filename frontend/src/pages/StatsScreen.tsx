@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
@@ -17,11 +18,11 @@ export function StatsScreen() {
   const lang = user.language;
   const dash = useApi(() => progressApi.dashboard(), []);
   const skills = useApi(() => progressApi.skills(), []);
-  const L = TEXT[lang];
+  const { t } = useTranslation();
 
   const totalQuestions = dash.data?.total_questions_answered ?? 0;
   const avgMastery = dash.data && dash.data.tracks.length
-    ? Math.round((dash.data.tracks.reduce((s, t) => s + t.average_mastery, 0) / dash.data.tracks.length) * 100)
+    ? Math.round((dash.data.tracks.reduce((s, tr) => s + tr.average_mastery, 0) / dash.data.tracks.length) * 100)
     : 0;
 
   const attemptedSkills = (skills.data ?? []).filter((s) => s.attempts > 0)
@@ -29,36 +30,36 @@ export function StatsScreen() {
 
   return (
     <div className={styles.screen}>
-      <h1 className={styles.title}>{L.title}</h1>
+      <h1 className={styles.title}>{t('stats.title')}</h1>
 
       <div className={styles.overview}>
         <div className={styles.overviewCard} style={{ background: 'linear-gradient(135deg, var(--le-brand-2), var(--le-brand-dark))' }}>
           <span className={styles.overviewVal}>{(dash.data?.total_xp ?? user.totalXp).toLocaleString()}</span>
-          <span className={styles.overviewLabel}>{L.totalXp}</span>
+          <span className={styles.overviewLabel}>{t('stats.totalXp')}</span>
         </div>
         <div className={styles.overviewCard} style={{ background: 'linear-gradient(135deg, #7EE0FF, #1CB0F6)' }}>
           <span className={styles.overviewVal}>{totalQuestions}</span>
-          <span className={styles.overviewLabel}>{L.questions}</span>
+          <span className={styles.overviewLabel}>{t('stats.questions')}</span>
         </div>
         <div className={styles.overviewCard} style={{ background: 'linear-gradient(135deg, var(--le-green-light), var(--le-green))' }}>
           <span className={styles.overviewVal}>{avgMastery}%</span>
-          <span className={styles.overviewLabel}>{L.mastery}</span>
+          <span className={styles.overviewLabel}>{t('stats.mastery')}</span>
         </div>
       </div>
 
       {/* Track mastery */}
       <Card>
-        <h2 className={styles.cardTitle}>{L.byTrack}</h2>
-        {dash.loading && <p className={styles.muted}>{L.loading}</p>}
+        <h2 className={styles.cardTitle}>{t('stats.byTrack')}</h2>
+        {dash.loading && <p className={styles.muted}>{t('stats.loading')}</p>}
         <div className={styles.skills}>
-          {dash.data?.tracks.map((t) => (
-            <div key={t.track_id} className={styles.skill}>
+          {dash.data?.tracks.map((tr) => (
+            <div key={tr.track_id} className={styles.skill}>
               <div className={styles.skillHeader}>
-                <span className={styles.skillName}>{t.icon} {lang === 'es' ? t.name_es : t.name_en}</span>
-                <span className={styles.skillPct} style={{ color: masteryColor(t.average_mastery) }}>{Math.round(t.average_mastery * 100)}%</span>
+                <span className={styles.skillName}>{tr.icon} {lang === 'es' ? tr.name_es : tr.name_en}</span>
+                <span className={styles.skillPct} style={{ color: masteryColor(tr.average_mastery) }}>{Math.round(tr.average_mastery * 100)}%</span>
               </div>
-              <ProgressBar value={t.average_mastery * 100} max={100} color={masteryColor(t.average_mastery)} height={8} />
-              <span className={styles.skillMeta}>{t.skills_mastered}/{t.total_skills} {L.skillsMastered}</span>
+              <ProgressBar value={tr.average_mastery * 100} max={100} color={masteryColor(tr.average_mastery)} height={8} />
+              <span className={styles.skillMeta}>{tr.skills_mastered}/{tr.total_skills} {t('stats.skillsMastered')}</span>
             </div>
           ))}
         </div>
@@ -66,9 +67,9 @@ export function StatsScreen() {
 
       {/* Skill breakdown */}
       <Card>
-        <h2 className={styles.cardTitle}>{L.bySkill}</h2>
-        {skills.loading && <p className={styles.muted}>{L.loading}</p>}
-        {!skills.loading && attemptedSkills.length === 0 && <p className={styles.muted}>{L.noData}</p>}
+        <h2 className={styles.cardTitle}>{t('stats.bySkill')}</h2>
+        {skills.loading && <p className={styles.muted}>{t('stats.loading')}</p>}
+        {!skills.loading && attemptedSkills.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
         <div className={styles.skills}>
           {attemptedSkills.slice(0, 12).map((s) => (
             <div key={s.skill_id} className={styles.skill}>
@@ -85,12 +86,3 @@ export function StatsScreen() {
     </div>
   );
 }
-
-const TEXT = {
-  es: { title: 'Estadísticas', totalXp: 'XP Total', questions: 'Preguntas', mastery: 'Dominio',
-    byTrack: 'Dominio por track', bySkill: 'Dominio por habilidad', skillsMastered: 'dominadas',
-    loading: 'Cargando…', noData: 'Responde preguntas para ver tu progreso aquí.' },
-  en: { title: 'Statistics', totalXp: 'Total XP', questions: 'Questions', mastery: 'Mastery',
-    byTrack: 'Mastery by track', bySkill: 'Mastery by skill', skillsMastered: 'mastered',
-    loading: 'Loading…', noData: 'Answer questions to see your progress here.' },
-} as const;

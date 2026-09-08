@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
@@ -35,25 +36,25 @@ export function TracksScreen() {
   const startQuiz = useAppStore((s) => s.startQuiz);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
-  const L = TEXT[lang];
+  const { t } = useTranslation();
 
   return (
     <div className={styles.screen}>
-      <h1 className={styles.title}>{L.title}</h1>
-      <p className={styles.subtitle}>{L.subtitle}</p>
+      <h1 className={styles.title}>{t('tracks.title')}</h1>
+      <p className={styles.subtitle}>{t('tracks.subtitle')}</p>
 
       {/* Track selector */}
-      <div className={styles.trackRow} role="tablist" aria-label={L.title}>
-        {TRACKS.map((t) => (
+      <div className={styles.trackRow} role="tablist" aria-label={t('tracks.title')}>
+        {TRACKS.map((tr) => (
           <button
-            key={t.id}
+            key={tr.id}
             role="tab"
-            aria-selected={track === t.id}
-            className={`${styles.trackChip} ${track === t.id ? styles.trackChipActive : ''}`}
-            onClick={() => setTrack(t.id)}
+            aria-selected={track === tr.id}
+            className={`${styles.trackChip} ${track === tr.id ? styles.trackChipActive : ''}`}
+            onClick={() => setTrack(tr.id)}
           >
-            <span className={styles.trackChipIcon}>{t.icon}</span>
-            <span>{lang === 'es' ? t.name_es : t.name_en}</span>
+            <span className={styles.trackChipIcon}>{tr.icon}</span>
+            <span>{lang === 'es' ? tr.name_es : tr.name_en}</span>
           </button>
         ))}
       </div>
@@ -63,11 +64,11 @@ export function TracksScreen() {
         <button
           className={`${styles.viewBtn} ${view === 'curriculum' ? styles.viewBtnActive : ''}`}
           onClick={() => setView('curriculum')}
-        >{L.curriculum}</button>
+        >{t('tracks.curriculum')}</button>
         <button
           className={`${styles.viewBtn} ${view === 'glossary' ? styles.viewBtnActive : ''}`}
           onClick={() => setView('glossary')}
-        >{L.glossary}</button>
+        >{t('tracks.glossary')}</button>
       </div>
 
       {view === 'curriculum'
@@ -84,12 +85,12 @@ function CurriculumView({
   lang: 'es' | 'en';
   startQuiz: (mode: 'study', total: number, opts?: { trackId?: string; skillId?: string }) => void;
 }) {
-  const L = TEXT[lang];
+  const { t } = useTranslation();
   const cur = useApi(() => progressApi.curriculum(track), [track]);
   const [openModule, setOpenModule] = useState<string | null>(null);
 
-  if (cur.loading) return <p className={styles.muted}>{L.loading}</p>;
-  if (cur.error || !cur.data) return <p className={styles.muted}>{cur.error ?? L.loading}</p>;
+  if (cur.loading) return <p className={styles.muted}>{t('tracks.loading')}</p>;
+  if (cur.error || !cur.data) return <p className={styles.muted}>{cur.error ?? t('tracks.loading')}</p>;
 
   const modules = cur.data.modules;
   const threshold = cur.data.mastery_threshold;
@@ -102,7 +103,7 @@ function CurriculumView({
           <span className={styles.overviewIcon}>{cur.data.icon}</span>
           <div>
             <p className={styles.overviewName}>{lang === 'es' ? cur.data.name_es : cur.data.name_en}</p>
-            <p className={styles.overviewMeta}>{completed}/{modules.length} {L.modulesDone}</p>
+            <p className={styles.overviewMeta}>{completed}/{modules.length} {t('tracks.modulesDone')}</p>
           </div>
         </div>
         <ProgressBar value={completed} max={modules.length} color="var(--le-green)" height={10} />
@@ -135,8 +136,8 @@ function CurriculumView({
                     <span className={styles.moduleName}>{lang === 'es' ? m.name_es : m.name_en}</span>
                     <span className={styles.moduleSub}>
                       {locked
-                        ? `${L.lockedUntil} ${prereq ? (lang === 'es' ? prereq.name_es : prereq.name_en) : ''} · ${Math.round(m.min_mastery_to_unlock * 100)}%`
-                        : `${m.skills.length} ${L.skills} · ${Math.round(m.average_mastery * 100)}% ${L.mastery}`}
+                        ? `${t('tracks.lockedUntil')} ${prereq ? (lang === 'es' ? prereq.name_es : prereq.name_en) : ''} · ${Math.round(m.min_mastery_to_unlock * 100)}%`
+                        : `${m.skills.length} ${t('tracks.skills')} · ${Math.round(m.average_mastery * 100)}% ${t('tracks.mastery')}`}
                     </span>
                   </span>
                   <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
@@ -170,13 +171,13 @@ function CurriculumView({
                       </div>
                     ))}
                     {locked ? (
-                      <p className={styles.lockNote}>🔒 {L.lockNote}</p>
+                      <p className={styles.lockNote}>🔒 {t('tracks.lockNote')}</p>
                     ) : (
                       <button
                         className={styles.practiceBtn}
                         onClick={() => startQuiz('study', 10, { trackId: track })}
                       >
-                        {m.status === 'completed' ? L.reinforce : L.practice}
+                        {m.status === 'completed' ? t('tracks.reinforce') : t('tracks.practice')}
                       </button>
                     )}
                   </div>
@@ -186,33 +187,31 @@ function CurriculumView({
           );
         })}
       </div>
-      <p className={styles.footnote}>{L.thresholdNote.replace('{n}', String(Math.round(threshold * 100)))}</p>
+      <p className={styles.footnote}>{t('tracks.thresholdNote', { n: Math.round(threshold * 100) })}</p>
     </>
   );
 }
 
 function GlossaryView({ track, lang }: { track: string; lang: 'es' | 'en' }) {
-  const L = TEXT[lang];
+  const { t } = useTranslation();
   const gloss = useApi(() => glossaryApi.forTrack(track), [track]);
   const [q, setQ] = useState('');
 
-  // Clear the filter when switching tracks so a stale query doesn't hide
-  // the new track's terms behind an empty "no results" state.
   useEffect(() => { setQ(''); }, [track]);
 
   const terms = useMemo(() => {
     const data = gloss.data ?? [];
     const needle = q.trim().toLowerCase();
     if (!needle) return data;
-    return data.filter((t) =>
-      t.term_es.toLowerCase().includes(needle) ||
-      t.term_en.toLowerCase().includes(needle) ||
-      t.definition_es.toLowerCase().includes(needle) ||
-      t.definition_en.toLowerCase().includes(needle)
+    return data.filter((term) =>
+      term.term_es.toLowerCase().includes(needle) ||
+      term.term_en.toLowerCase().includes(needle) ||
+      term.definition_es.toLowerCase().includes(needle) ||
+      term.definition_en.toLowerCase().includes(needle)
     );
   }, [gloss.data, q]);
 
-  if (gloss.loading) return <p className={styles.muted}>{L.loading}</p>;
+  if (gloss.loading) return <p className={styles.muted}>{t('tracks.loading')}</p>;
   if (gloss.error) return <p className={styles.muted}>{gloss.error}</p>;
 
   return (
@@ -220,19 +219,19 @@ function GlossaryView({ track, lang }: { track: string; lang: 'es' | 'en' }) {
       <input
         className={styles.search}
         type="search"
-        placeholder={L.searchTerms}
+        placeholder={t('tracks.searchTerms')}
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        aria-label={L.searchTerms}
+        aria-label={t('tracks.searchTerms')}
       />
-      {terms.length === 0 && <p className={styles.muted}>{L.noTerms}</p>}
+      {terms.length === 0 && <p className={styles.muted}>{t('tracks.noTerms')}</p>}
       <div className={styles.terms}>
-        {terms.map((t) => {
-          const primary = lang === 'es' ? t.term_es : t.term_en;
-          const secondary = lang === 'es' ? t.term_en : t.term_es;
-          const def = lang === 'es' ? t.definition_es : t.definition_en;
+        {terms.map((term) => {
+          const primary = lang === 'es' ? term.term_es : term.term_en;
+          const secondary = lang === 'es' ? term.term_en : term.term_es;
+          const def = lang === 'es' ? term.definition_es : term.definition_en;
           return (
-            <Card key={t.id} className={styles.term}>
+            <Card key={term.id} className={styles.term}>
               <div className={styles.termHead}>
                 <span className={styles.termName}>{primary}</span>
                 {secondary && secondary !== primary && (
@@ -240,7 +239,7 @@ function GlossaryView({ track, lang }: { track: string; lang: 'es' | 'en' }) {
                 )}
               </div>
               <p className={styles.termDef}>{def}</p>
-              {t.source && <span className={styles.termSource}>📖 {t.source}</span>}
+              {term.source && <span className={styles.termSource}>📖 {term.source}</span>}
             </Card>
           );
         })}
@@ -248,40 +247,3 @@ function GlossaryView({ track, lang }: { track: string; lang: 'es' | 'en' }) {
     </>
   );
 }
-
-const TEXT = {
-  es: {
-    title: 'Rutas de aprendizaje',
-    subtitle: 'Currículo desbloqueable por dominio y glosario por track.',
-    curriculum: 'Currículo',
-    glossary: 'Glosario',
-    loading: 'Cargando…',
-    modulesDone: 'módulos completados',
-    skills: 'habilidades',
-    mastery: 'dominio',
-    lockedUntil: 'Se desbloquea al dominar',
-    lockNote: 'Domina el módulo anterior para desbloquear este.',
-    practice: 'Practicar',
-    reinforce: 'Reforzar',
-    thresholdNote: 'Una habilidad se marca dominada al {n}% de probabilidad de conocimiento (BKT). Un módulo desbloquea el siguiente al superar su umbral de dominio.',
-    searchTerms: 'Buscar término…',
-    noTerms: 'Sin resultados.',
-  },
-  en: {
-    title: 'Learning paths',
-    subtitle: 'Mastery-gated curriculum and a per-track glossary.',
-    curriculum: 'Curriculum',
-    glossary: 'Glossary',
-    loading: 'Loading…',
-    modulesDone: 'modules completed',
-    skills: 'skills',
-    mastery: 'mastery',
-    lockedUntil: 'Unlocks once you master',
-    lockNote: 'Master the previous module to unlock this one.',
-    practice: 'Practice',
-    reinforce: 'Reinforce',
-    thresholdNote: 'A skill is marked mastered at {n}% known-probability (BKT). A module unlocks the next once it clears its mastery threshold.',
-    searchTerms: 'Search term…',
-    noTerms: 'No results.',
-  },
-} as const;

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
 import { quiz as quizApi, tutor as tutorApi, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
@@ -29,6 +30,7 @@ export function QuizScreen() {
   const setScreen = useAppStore((s) => s.setScreen);
   const resetQuiz = useAppStore((s) => s.resetQuiz);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
+  const { t } = useTranslation();
 
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [question, setQuestion] = useState<QuestionPublic | null>(null);
@@ -51,7 +53,6 @@ export function QuizScreen() {
   const [runResult, setRunResult] = useState<{ output: string; error: string | null; timedOut: boolean } | null>(null);
   const [execAttempts, setExecAttempts] = useState(0);
   const [runLoading, setRunLoading] = useState(false);
-  // For code_output: show actual Pyodide output after MCQ answer
   const [verifyOutput, setVerifyOutput] = useState<string | null>(null);
   const [verifyLoading, setVerifyLoading] = useState(false);
 
@@ -72,7 +73,7 @@ export function QuizScreen() {
         setQuestion(res.question);
         questionStart.current = Date.now();
         setLoading(false);
-        if (!res.question) setError(t(language).noQuestions);
+        if (!res.question) setError(t('quiz.noQuestions'));
       })
       .catch((e) => {
         if (cancelled) return;
@@ -80,7 +81,7 @@ export function QuizScreen() {
         setLoading(false);
       });
     return () => { cancelled = true; };
-  }, [mode, trackId, skillId, language]);
+  }, [mode, trackId, skillId, t]);
 
   // ── Reset exec state when question changes ─────────────────────────────
   useEffect(() => {
@@ -110,7 +111,7 @@ export function QuizScreen() {
     setTimer(30);
   }, [question?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Core answer submission (shared by MCQ and exec paths) ──────────────
+  // ── Core answer submission ─────────────────────────────────────────────
   const submitAnswer = useCallback(
     async (selectedIndex: number | null) => {
       if (!sessionId || !question || feedback || submitting) return;
@@ -126,7 +127,7 @@ export function QuizScreen() {
         if (res.correct) {
           showToast(`+${res.xp_earned} XP${res.combo >= 3 ? ` · combo ${res.combo}🔥` : ''}`, 'success');
         } else {
-          showToast(t(language).incorrect, 'error');
+          showToast(t('quiz.incorrect'), 'error');
         }
       } catch (e) {
         showToast(e instanceof Error ? e.message : 'Error', 'error');
@@ -134,7 +135,7 @@ export function QuizScreen() {
         setSubmitting(false);
       }
     },
-    [sessionId, question, feedback, submitting, language]
+    [sessionId, question, feedback, submitting, t]
   );
 
   // ── MCQ answer handler ─────────────────────────────────────────────────
@@ -226,25 +227,24 @@ export function QuizScreen() {
     setTutorLoading(true);
     try {
       const res = await tutorApi.explain(question.id);
-      setTutorText(res.explanation || t(language).tutorEmpty);
+      setTutorText(res.explanation || t('quiz.tutorEmpty'));
     } catch {
-      setTutorText(t(language).tutorError);
+      setTutorText(t('quiz.tutorError'));
     } finally {
       setTutorLoading(false);
     }
-  }, [question, tutorLoading, language]);
+  }, [question, tutorLoading, t]);
 
   // ── Early returns ──────────────────────────────────────────────────────
   if (loading) return <QuizLoader />;
   if (error) return <QuizError message={error} onClose={handleClose} />;
-  if (summary) return <SessionSummary summary={summary} onClose={handleClose} language={language} />;
-  if (!question) return <QuizError message={t(language).noQuestions} onClose={handleClose} />;
+  if (summary) return <SessionSummary summary={summary} onClose={handleClose} />;
+  if (!question) return <QuizError message={t('quiz.noQuestions')} onClose={handleClose} />;
 
   const qText = language === 'es' ? question.question_es : question.question_en;
   const options = (language === 'es' ? question.options_es : question.options_en) ?? [];
   const { prose, code } = parseQuestion(qText);
   const answered = feedback !== null;
-  const L = t(language);
 
   const diffColor =
     question.difficulty_tier === 'hard' || question.difficulty_tier === 'expert'
@@ -256,7 +256,7 @@ export function QuizScreen() {
   // ── Shared header + stats bar ──────────────────────────────────────────
   const header = (
     <div className={styles.header}>
-      <button className={styles.closeBtn} onClick={handleClose} aria-label={L.close}>
+      <button className={styles.closeBtn} onClick={handleClose} aria-label={t('quiz.close')}>
         <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
         </svg>
@@ -280,14 +280,14 @@ export function QuizScreen() {
       </div>
       <div className={styles.xpBadge}>⚡ {xpEarned} XP</div>
       <div className={styles.diffBadge} style={{ color: diffColor, borderColor: diffColor }}>
-        {L.diff[question.difficulty_tier]}
+        {t(`quiz.diff.${question.difficulty_tier}`)}
       </div>
     </div>
   );
 
   const questionCard = (
     <div className={styles.questionCard}>
-      <span className={styles.topic}>{L.mode[mode] ?? mode}</span>
+      <span className={styles.topic}>{t(`quiz.mode.${mode}`) ?? mode}</span>
       <h2 className={styles.questionText}>{prose}</h2>
       {code && !isExecType && <pre className={styles.codeBlock}><code>{code}</code></pre>}
     </div>
@@ -296,28 +296,28 @@ export function QuizScreen() {
   const feedbackPanel = answered && feedback && (
     <div className={styles.explanation}>
       <div className={styles.explanationHeader}>
-        {feedback.correct ? `🎯 ${L.correct}` : `💡 ${L.explanation}`}
+        {feedback.correct ? `🎯 ${t('quiz.correct')}` : `💡 ${t('quiz.explanation')}`}
       </div>
       <p className={styles.explanationText}>
         {language === 'es' ? feedback.explanation_es : feedback.explanation_en}
       </p>
       {feedback.source && (
-        <p className={styles.sourceBadge}>📚 {L.source}: {feedback.source}</p>
+        <p className={styles.sourceBadge}>📚 {t('quiz.source')}: {feedback.source}</p>
       )}
 
       {tutorText ? (
         <div className={styles.tutorBox}>
-          <span className={styles.tutorLabel}>🧠 {L.tutor}</span>
+          <span className={styles.tutorLabel}>🧠 {t('quiz.tutor')}</span>
           <p className={styles.tutorText}>{tutorText}</p>
         </div>
       ) : (
         <button className={styles.btnTutor} onClick={handleTutor} disabled={tutorLoading}>
-          {tutorLoading ? L.tutorLoading : `🧠 ${L.explainThis}`}
+          {tutorLoading ? t('quiz.tutorLoading') : `🧠 ${t('quiz.explainThis')}`}
         </button>
       )}
 
       <button className={styles.btnNext} onClick={handleNext}>
-        {index + 1 >= TARGET_QUESTIONS || !feedback.next_question ? L.seeResults : L.next}
+        {index + 1 >= TARGET_QUESTIONS || !feedback.next_question ? t('quiz.seeResults') : t('quiz.next')}
       </button>
     </div>
   );
@@ -337,9 +337,9 @@ export function QuizScreen() {
 
     const engineLabel =
       pyodideStatus === 'loading'
-        ? '⚙ Cargando motor Python…'
+        ? `⚙ ${t('quiz.engineLoading')}`
         : pyodideStatus === 'error'
-          ? '⚠ Motor no disponible'
+          ? `⚠ ${t('quiz.engineError')}`
           : null;
 
     return (
@@ -348,17 +348,16 @@ export function QuizScreen() {
         {statsBar}
         {questionCard}
 
-        {/* Code editor area */}
         <div className={styles.execArea}>
           {question.type === 'fill_blank_exec' && code && (
             <>
               <pre className={styles.codeBlock}>
-                <code>{code.replace('___', `[${L.yourAnswer}]`)}</code>
+                <code>{code.replace('___', `[${t('quiz.yourAnswer')}]`)}</code>
               </pre>
               <input
                 className={styles.blankInput}
                 type="text"
-                placeholder={L.fillBlankPlaceholder}
+                placeholder={t('quiz.fillBlankPlaceholder')}
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 disabled={answered}
@@ -385,26 +384,32 @@ export function QuizScreen() {
               disabled={runLoading || answered || pyodideStatus !== 'ready'}
             >
               {runLoading
-                ? '⏳ Ejecutando…'
-                : engineLabel ?? `▶ ${L.runCode}${execAttempts > 0 ? ` (${attemptsLeft} ${L.attemptsLeft})` : ''}`}
+                ? `⏳ ${t('quiz.executing')}`
+                : engineLabel ?? `▶ ${t('quiz.runCode')}${execAttempts > 0 ? ` (${attemptsLeft} ${t('quiz.attemptsLeft')})` : ''}`}
             </button>
           )}
 
           {runResult && (
             <div className={`${styles.outputBox} ${lastCorrect ? styles.outputCorrect : styles.outputWrong}`}>
               <span className={styles.outputLabel}>
-                {lastCorrect ? `✅ ${L.outputCorrect}` : runResult.timedOut ? `⏱ ${L.timeout}` : runResult.error ? `❌ ${L.outputError}` : `❌ ${L.outputWrong}`}
+                {lastCorrect
+                  ? `✅ ${t('quiz.outputCorrect')}`
+                  : runResult.timedOut
+                    ? `⏱ ${t('quiz.timeout')}`
+                    : runResult.error
+                      ? `❌ ${t('quiz.outputError')}`
+                      : `❌ ${t('quiz.outputWrong')}`}
               </span>
               <pre className={styles.outputPre}>
                 {runResult.timedOut
-                  ? L.timeoutMsg
+                  ? t('quiz.timeoutMsg')
                   : runResult.error
                     ? runResult.error
-                    : runResult.output || '(sin salida)'}
+                    : runResult.output || t('quiz.noOutput')}
               </pre>
               {!lastCorrect && !runResult.timedOut && !runResult.error && expected && (
                 <p className={styles.expectedHint}>
-                  {L.expected}: <code>{expected}</code>
+                  {t('quiz.expected')}: <code>{expected}</code>
                 </p>
               )}
             </div>
@@ -444,12 +449,11 @@ export function QuizScreen() {
         })}
       </div>
 
-      {/* code_output: "run it yourself" verification button after answering */}
       {answered && question.type === 'code_output' && code && (
         <div className={styles.verifyArea}>
           {verifyOutput != null ? (
             <div className={styles.outputBox}>
-              <span className={styles.outputLabel}>▶ {L.actualOutput}</span>
+              <span className={styles.outputLabel}>▶ {t('quiz.actualOutput')}</span>
               <pre className={styles.outputPre}>{verifyOutput}</pre>
             </div>
           ) : (
@@ -459,10 +463,10 @@ export function QuizScreen() {
               disabled={verifyLoading || pyodideStatus !== 'ready'}
             >
               {verifyLoading
-                ? '⏳ Ejecutando…'
+                ? `⏳ ${t('quiz.executing')}`
                 : pyodideStatus === 'loading'
-                  ? '⚙ Cargando motor…'
-                  : `▶ ${L.runToVerify}`}
+                  ? `⚙ ${t('quiz.engineLoading')}`
+                  : `▶ ${t('quiz.runToVerify')}`}
             </button>
           )}
         </div>
@@ -486,102 +490,52 @@ export function QuizScreen() {
 // ── Sub-components ─────────────────────────────────────────────────────────
 
 function QuizLoader() {
+  const { t } = useTranslation();
   return (
     <div className={styles.summary}>
       <div className={styles.summaryGrade} style={{ borderColor: 'var(--le-brand)', color: 'var(--le-brand)', animation: 'pulse 1.2s ease-in-out infinite' }}>◐</div>
-      <p className={styles.summaryAccuracy}>Cargando…</p>
+      <p className={styles.summaryAccuracy}>{t('loading')}</p>
     </div>
   );
 }
 
 function QuizError({ message, onClose }: { message: string; onClose: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className={styles.summary}>
       <span style={{ fontSize: '3rem' }}>🤔</span>
-      <h1 className={styles.summaryTitle}>Sin preguntas disponibles</h1>
+      <h1 className={styles.summaryTitle}>{t('quiz.noQuestionsAvail')}</h1>
       <p className={styles.summaryAccuracy}>{message}</p>
-      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: 'var(--le-space-xl)' }}>VOLVER</button>
+      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: 'var(--le-space-xl)' }}>{t('back')}</button>
     </div>
   );
 }
 
-function SessionSummary({ summary, onClose, language }: { summary: QuizEndResponse; onClose: () => void; language: 'es' | 'en' }) {
+function SessionSummary({ summary, onClose }: { summary: QuizEndResponse; onClose: () => void }) {
+  const { t } = useTranslation();
   const accuracy = Math.round(summary.accuracy * 100);
   const grade = accuracy >= 90 ? 'S' : accuracy >= 80 ? 'A' : accuracy >= 70 ? 'B' : accuracy >= 60 ? 'C' : 'F';
   const gradeColor = grade === 'S' ? 'var(--le-gold)' : grade === 'A' ? 'var(--le-green)' : grade === 'B' ? 'var(--le-brand)' : grade === 'C' ? 'var(--le-orange)' : 'var(--le-red)';
-  const L = t(language);
   return (
     <div className={styles.summary}>
       <div className={styles.summaryGrade} style={{ color: gradeColor, borderColor: gradeColor }}>{grade}</div>
-      <h1 className={styles.summaryTitle}>{accuracy >= 80 ? L.excellent : accuracy >= 60 ? L.goodJob : L.keepGoing}</h1>
-      <p className={styles.summaryAccuracy}>{accuracy}% {L.accuracyLabel}</p>
+      <h1 className={styles.summaryTitle}>{accuracy >= 80 ? t('quiz.excellent') : accuracy >= 60 ? t('quiz.goodJob') : t('quiz.keepGoing')}</h1>
+      <p className={styles.summaryAccuracy}>{accuracy}% {t('quiz.accuracyLabel')}</p>
       <div className={styles.summaryStats}>
         <div className={styles.summaryStat}>
           <span className={styles.summaryStatVal}>{summary.correct}/{summary.total_questions}</span>
-          <span className={styles.summaryStatLabel}>{L.correctLabel}</span>
+          <span className={styles.summaryStatLabel}>{t('quiz.correctLabel')}</span>
         </div>
         <div className={styles.summaryStat}>
           <span className={styles.summaryStatVal}>🔥 {summary.max_combo}</span>
-          <span className={styles.summaryStatLabel}>{L.maxCombo}</span>
+          <span className={styles.summaryStatLabel}>{t('quiz.maxCombo')}</span>
         </div>
         <div className={styles.summaryStat}>
           <span className={styles.summaryStatVal}>⚡ {summary.xp_earned}</span>
-          <span className={styles.summaryStatLabel}>{L.xpEarned}</span>
+          <span className={styles.summaryStatLabel}>{t('quiz.xpEarned')}</span>
         </div>
       </div>
-      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: 'var(--le-space-xl)' }}>{L.continue}</button>
+      <button className={styles.btnStudy} onClick={onClose} style={{ marginTop: 'var(--le-space-xl)' }}>{t('quiz.continue')}</button>
     </div>
   );
-}
-
-// ── i18n ───────────────────────────────────────────────────────────────────
-
-function t(lang: 'es' | 'en') {
-  const es = {
-    close: 'Cerrar', incorrect: 'Incorrecto', correct: '¡Correcto!', explanation: 'Explicación',
-    next: 'SIGUIENTE', seeResults: 'VER RESULTADOS', noQuestions: 'No hay preguntas para este modo todavía.',
-    excellent: '¡Excelente!', goodJob: '¡Buen trabajo!', keepGoing: '¡Sigue practicando!',
-    accuracyLabel: 'de precisión', correctLabel: 'Correctas', maxCombo: 'Max Combo', xpEarned: 'XP Ganados', continue: 'CONTINUAR',
-    explainThis: 'Explícame esto', tutor: 'Tutor Whetzy', tutorLoading: 'Pensando…', source: 'Fuente',
-    tutorEmpty: 'No pude generar una explicación esta vez.', tutorError: 'El tutor no está disponible ahora.',
-    diff: { easy: 'Fácil', medium: 'Media', hard: 'Difícil', expert: 'Experto' } as Record<string, string>,
-    mode: { study: 'Estudio', review: 'Repaso', placement: 'Nivelación', exam: 'Examen' } as Record<string, string>,
-    // Exec types
-    runCode: 'Ejecutar código',
-    attemptsLeft: 'intentos restantes',
-    yourAnswer: 'tu respuesta',
-    fillBlankPlaceholder: 'Escribe tu respuesta aquí…',
-    outputCorrect: '¡Correcto! Salida esperada',
-    outputWrong: 'Salida incorrecta',
-    outputError: 'Error de ejecución',
-    timeout: 'Tiempo agotado',
-    timeoutMsg: 'El código tardó más de 5 segundos.',
-    expected: 'Esperado',
-    actualOutput: 'Salida real',
-    runToVerify: 'Ejecutar para verificar',
-  };
-  const en: typeof es = {
-    close: 'Close', incorrect: 'Incorrect', correct: 'Correct!', explanation: 'Explanation',
-    next: 'NEXT', seeResults: 'SEE RESULTS', noQuestions: 'No questions for this mode yet.',
-    excellent: 'Excellent!', goodJob: 'Good job!', keepGoing: 'Keep practicing!',
-    accuracyLabel: 'accuracy', correctLabel: 'Correct', maxCombo: 'Max Combo', xpEarned: 'XP Earned', continue: 'CONTINUE',
-    explainThis: 'Explain this', tutor: 'Whetzy Tutor', tutorLoading: 'Thinking…', source: 'Source',
-    tutorEmpty: "I couldn't generate an explanation this time.", tutorError: 'The tutor is unavailable right now.',
-    diff: { easy: 'Easy', medium: 'Medium', hard: 'Hard', expert: 'Expert' } as Record<string, string>,
-    mode: { study: 'Study', review: 'Review', placement: 'Placement', exam: 'Exam' } as Record<string, string>,
-    // Exec types
-    runCode: 'Run code',
-    attemptsLeft: 'attempts left',
-    yourAnswer: 'your answer',
-    fillBlankPlaceholder: 'Type your answer here…',
-    outputCorrect: 'Correct! Expected output',
-    outputWrong: 'Wrong output',
-    outputError: 'Runtime error',
-    timeout: 'Timed out',
-    timeoutMsg: 'Code took more than 5 seconds.',
-    expected: 'Expected',
-    actualOutput: 'Actual output',
-    runToVerify: 'Run to verify',
-  };
-  return lang === 'es' ? es : en;
 }

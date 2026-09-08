@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
@@ -15,7 +16,7 @@ export function ProfileScreen() {
   const updateUser = useAppStore((s) => s.updateUser);
   const signOut = useAppStore((s) => s.signOut);
   const [theme, setTheme] = useState<Theme>(getStoredTheme());
-  const L = TEXT[language];
+  const { t, i18n: i18nInst } = useTranslation();
 
   const badges = useApi(() => gamification.badges(), []);
   const earnedIds = new Set((badges.data ?? []).map((b) => b.badge.id));
@@ -28,7 +29,6 @@ export function ProfileScreen() {
     if (next) {
       await push.subscribe();
     }
-    // Persist preference on backend (best-effort, no error shown)
     try {
       await fetch('/api/v1/push/preferences', {
         method: 'PATCH',
@@ -38,7 +38,12 @@ export function ProfileScreen() {
     } catch { /* ignore */ }
   }
 
-  // All badge definitions come from earned + a static catalog fallback for locked display.
+  function handleLangChange(lang: 'es' | 'en') {
+    setLanguage(lang);
+    updateUser({ language: lang });
+    void i18nInst.changeLanguage(lang);
+  }
+
   const allBadges = badges.data ?? [];
 
   return (
@@ -48,18 +53,18 @@ export function ProfileScreen() {
         <h1 className={styles.name}>{user.displayName}</h1>
         <p className={styles.username}>@{user.username}</p>
         <div className={styles.levelWrap}>
-          <span className={styles.levelBadge}>{L.level} {user.level}</span>
+          <span className={styles.levelBadge}>{t('profile.level')} {user.level}</span>
           <div className={styles.xpBar}>
             <ProgressBar value={user.totalXp % 500} max={500} color="var(--le-brand)" height={8} />
-            <span className={styles.xpText}>{user.totalXp.toLocaleString()} XP · {L.nextLevel} {500 - (user.totalXp % 500)} XP</span>
+            <span className={styles.xpText}>{user.totalXp.toLocaleString()} XP · {t('profile.nextLevel')} {500 - (user.totalXp % 500)} XP</span>
           </div>
         </div>
       </div>
 
       <div className={styles.statsRow}>
-        <div className={styles.statBox}><span className={styles.statVal}>{user.currentStreak}</span><span className={styles.statLabel}>{L.streak}</span></div>
-        <div className={styles.statBox}><span className={styles.statVal}>{user.maxStreak}</span><span className={styles.statLabel}>{L.best}</span></div>
-        <div className={styles.statBox}><span className={styles.statVal}>{user.totalXp.toLocaleString()}</span><span className={styles.statLabel}>{L.totalXp}</span></div>
+        <div className={styles.statBox}><span className={styles.statVal}>{user.currentStreak}</span><span className={styles.statLabel}>{t('profile.streak')}</span></div>
+        <div className={styles.statBox}><span className={styles.statVal}>{user.maxStreak}</span><span className={styles.statLabel}>{t('profile.best')}</span></div>
+        <div className={styles.statBox}><span className={styles.statVal}>{user.totalXp.toLocaleString()}</span><span className={styles.statLabel}>{t('profile.totalXp')}</span></div>
       </div>
 
       {!user.isPremium && (
@@ -68,20 +73,20 @@ export function ProfileScreen() {
             <span className={styles.proIcon}>👑</span>
             <div>
               <h3 className={styles.proTitle}>Whetzy Pro</h3>
-              <p className={styles.proDesc}>{L.proDesc}</p>
+              <p className={styles.proDesc}>{t('profile.proDesc')}</p>
             </div>
           </div>
-          <button className={styles.proBtn}>$9.99/{L.month}</button>
+          <button className={styles.proBtn}>$9.99/{t('profile.month')}</button>
         </Card>
       )}
 
       <Card>
         <div className={styles.cardHeader}>
-          <h2 className={styles.cardTitle}>{L.badges}</h2>
+          <h2 className={styles.cardTitle}>{t('profile.badges')}</h2>
           <span className={styles.badgeCount}>{earnedIds.size}</span>
         </div>
-        {badges.loading && <p className={styles.muted}>{L.loading}</p>}
-        {!badges.loading && allBadges.length === 0 && <p className={styles.muted}>{L.noBadges}</p>}
+        {badges.loading && <p className={styles.muted}>{t('profile.loading')}</p>}
+        {!badges.loading && allBadges.length === 0 && <p className={styles.muted}>{t('profile.noBadges')}</p>}
         <div className={styles.achievements}>
           {allBadges.map((b) => (
             <div key={b.badge.id} className={styles.achievement}>
@@ -93,24 +98,24 @@ export function ProfileScreen() {
       </Card>
 
       <Card>
-        <h2 className={styles.cardTitle}>{L.settings}</h2>
+        <h2 className={styles.cardTitle}>{t('profile.settings')}</h2>
         <div className={styles.settings}>
           <div className={styles.setting}>
-            <span className={styles.settingLabel}>{L.langLabel}</span>
+            <span className={styles.settingLabel}>{t('profile.langLabel')}</span>
             <div className={styles.langToggle}>
-              <button className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`} onClick={() => { setLanguage('es'); updateUser({ language: 'es' }); }}>ES</button>
-              <button className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`} onClick={() => { setLanguage('en'); updateUser({ language: 'en' }); }}>EN</button>
+              <button className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`} onClick={() => handleLangChange('es')}>ES</button>
+              <button className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`} onClick={() => handleLangChange('en')}>EN</button>
             </div>
           </div>
           <div className={styles.setting}>
-            <span className={styles.settingLabel}>{L.darkMode}</span>
+            <span className={styles.settingLabel}>{t('profile.darkMode')}</span>
             <button className={`${styles.toggle} ${theme === 'dark' ? styles.toggleOn : ''}`} onClick={() => setTheme(toggleTheme())} role="switch" aria-checked={theme === 'dark'}>
               <span className={styles.toggleThumb} />
             </button>
           </div>
           {push.supported && (
             <div className={styles.setting}>
-              <span className={styles.settingLabel}>{L.streakReminders}</span>
+              <span className={styles.settingLabel}>{t('profile.streakReminders')}</span>
               <button
                 className={`${styles.toggle} ${streakPushOn ? styles.toggleOn : ''}`}
                 onClick={handleStreakPushToggle}
@@ -124,28 +129,15 @@ export function ProfileScreen() {
         </div>
       </Card>
 
-      <button className={styles.signOut} onClick={signOut}>{L.signOut}</button>
+      <button className={styles.signOut} onClick={signOut}>{t('profile.signOut')}</button>
 
       <div className={styles.legalLinks}>
-        <a href="/privacy" className={styles.legalLink}>{L.privacy}</a>
+        <a href="/privacy" className={styles.legalLink}>{t('profile.privacy')}</a>
         <span className={styles.legalSep}>·</span>
-        <a href="/terms" className={styles.legalLink}>{L.terms}</a>
+        <a href="/terms" className={styles.legalLink}>{t('profile.terms')}</a>
         <span className={styles.legalSep}>·</span>
-        <a href="/delete-account" className={styles.deleteLink}>{L.deleteAccount}</a>
+        <a href="/delete-account" className={styles.deleteLink}>{t('profile.deleteAccount')}</a>
       </div>
     </div>
   );
 }
-
-const TEXT = {
-  es: { level: 'Nivel', nextLevel: 'faltan', streak: 'Racha', best: 'Mejor', totalXp: 'XP Total',
-    proDesc: 'Ilimitado, tutor AI, sin anuncios', month: 'mes', badges: 'Logros', loading: 'Cargando…',
-    noBadges: 'Aún no tienes logros. ¡Empieza a estudiar!', settings: 'Ajustes', langLabel: 'Idioma',
-    darkMode: 'Modo oscuro', streakReminders: 'Recordatorios de racha', signOut: 'Cerrar sesión',
-    privacy: 'Privacidad', terms: 'Términos', deleteAccount: 'Eliminar cuenta' },
-  en: { level: 'Level', nextLevel: 'to go', streak: 'Streak', best: 'Best', totalXp: 'Total XP',
-    proDesc: 'Unlimited, AI tutor, no ads', month: 'mo', badges: 'Achievements', loading: 'Loading…',
-    noBadges: 'No achievements yet. Start studying!', settings: 'Settings', langLabel: 'Language',
-    darkMode: 'Dark mode', streakReminders: 'Streak reminders', signOut: 'Sign out',
-    privacy: 'Privacy', terms: 'Terms', deleteAccount: 'Delete account' },
-} as const;

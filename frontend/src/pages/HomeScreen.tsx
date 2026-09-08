@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { Card } from '../components/common/Card';
@@ -15,44 +16,44 @@ export function HomeScreen() {
   const user = useAppStore((s) => s.user);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const lang = user.language;
+  const { t } = useTranslation();
 
   const dash = useApi(() => progressApi.dashboard(), []);
   const missions = useApi(() => gamification.missions(), []);
 
   const overallMastery = dash.data
     ? Math.round(
-        (dash.data.tracks.reduce((sum, t) => sum + t.average_mastery, 0) /
+        (dash.data.tracks.reduce((sum, tr) => sum + tr.average_mastery, 0) /
           Math.max(1, dash.data.tracks.length)) * 100
       )
     : 0;
   const reviewsDue = dash.data?.reviews_due ?? 0;
   const streak = dash.data?.current_streak ?? user.currentStreak;
 
-  const L = TEXT[lang];
   const topTrack = dash.data?.tracks.slice().sort((a, b) => a.average_mastery - b.average_mastery)[0];
 
   return (
     <div className={styles.screen}>
       {/* Hero */}
       <div className={styles.hero}>
-        <p className={styles.heroGreeting}>{L.greeting} {getTimeOfDay(lang)}, {user.displayName.split(' ')[0]}</p>
-        <h1 className={styles.heroTitle}>{L.ready}</h1>
+        <p className={styles.heroGreeting}>{t('home.greeting')} {getTimeOfDay(lang)}, {user.displayName.split(' ')[0]}</p>
+        <h1 className={styles.heroTitle}>{t('home.ready')}</h1>
         <div className={styles.heroStats}>
           <div className={styles.heroStat}>
             <span className={styles.heroStatVal}>{user.level}</span>
-            <span className={styles.heroStatLabel}>{L.level}</span>
+            <span className={styles.heroStatLabel}>{t('home.level')}</span>
           </div>
           <div className={styles.heroStat}>
             <span className={styles.heroStatVal}>{overallMastery}%</span>
-            <span className={styles.heroStatLabel}>{L.mastery}</span>
+            <span className={styles.heroStatLabel}>{t('home.mastery')}</span>
           </div>
           <div className={styles.heroStat}>
             <span className={styles.heroStatVal}>{streak}</span>
-            <span className={styles.heroStatLabel}>{L.streak}</span>
+            <span className={styles.heroStatLabel}>{t('home.streak')}</span>
           </div>
         </div>
         <button className={styles.btnStudy} onClick={() => startQuiz('study', 10)}>
-          {L.studyNow}
+          {t('home.studyNow')}
         </button>
         <div className={styles.heroCircle1} />
         <div className={styles.heroCircle2} />
@@ -63,10 +64,10 @@ export function HomeScreen() {
         <Card className={styles.prediction}>
           <span className={styles.predictionIcon}>🧠</span>
           <div>
-            <p className={styles.predictionTitle}>{L.prediction}</p>
+            <p className={styles.predictionTitle}>{t('home.prediction')}</p>
             <p className={styles.predictionText}>
-              {L.predText1} <strong>{lang === 'es' ? topTrack.name_es : topTrack.name_en}</strong>{' '}
-              {L.predText2} <strong>{topTrack.skills_mastered}/{topTrack.total_skills}</strong> {L.predText3}
+              {t('home.predText1')} <strong>{lang === 'es' ? topTrack.name_es : topTrack.name_en}</strong>{' '}
+              {t('home.predText2')} <strong>{topTrack.skills_mastered}/{topTrack.total_skills}</strong> {t('home.predText3')}
             </p>
           </div>
         </Card>
@@ -75,14 +76,14 @@ export function HomeScreen() {
       {/* Missions */}
       <Card>
         <div className={styles.cardHeader}>
-          <h2 className={styles.cardTitle}>{L.missions}</h2>
+          <h2 className={styles.cardTitle}>{t('home.missions')}</h2>
           {missions.data && (
             <span className={styles.badge} style={{ background: 'var(--le-orange-light)', color: 'var(--le-text)' }}>
               {missions.data.filter((m) => m.completed).length}/{missions.data.length}
             </span>
           )}
         </div>
-        {missions.loading && <p className={styles.muted}>{L.loading}</p>}
+        {missions.loading && <p className={styles.muted}>{t('home.loading')}</p>}
         {missions.data?.map((m) => (
           <div key={m.mission.id} className={styles.mission}>
             <div className={styles.missionIcon} style={{ background: m.completed ? 'var(--le-green-light)' : 'var(--le-brand-light)' }}>
@@ -93,7 +94,7 @@ export function HomeScreen() {
               <ProgressBar value={m.progress} max={m.mission.target_value} color={m.completed ? 'var(--le-green)' : 'var(--le-brand)'} height={10} />
             </div>
             <span className={styles.missionXp} style={{ color: m.completed ? 'var(--le-green)' : 'var(--le-brand-dark)' }}>
-              {m.completed ? L.done : `+${m.mission.xp_reward} XP`}
+              {m.completed ? t('home.done') : `+${m.mission.xp_reward} XP`}
             </span>
           </div>
         ))}
@@ -102,9 +103,9 @@ export function HomeScreen() {
       {/* Streak */}
       <Card>
         <div className={styles.cardHeader}>
-          <h2 className={styles.cardTitle}>{L.yourStreak}: {streak} {L.days} 🔥</h2>
+          <h2 className={styles.cardTitle}>{t('home.yourStreak')}: {streak} {t('home.days')} 🔥</h2>
           <span className={styles.badge} style={{ background: 'var(--le-green-light)', color: 'var(--le-text)' }}>
-            {L.best}: {dash.data?.max_streak ?? user.maxStreak}
+            {t('home.best')}: {dash.data?.max_streak ?? user.maxStreak}
           </span>
         </div>
         <StreakCalendar streak={streak} />
@@ -115,10 +116,10 @@ export function HomeScreen() {
         <Card className={styles.reviewCard}>
           <span style={{ fontSize: '2rem' }}>⏰</span>
           <div style={{ flex: 1 }}>
-            <p className={styles.missionTitle}>{reviewsDue} {L.reviewsPending}</p>
+            <p className={styles.missionTitle}>{reviewsDue} {t('home.reviewsPending')}</p>
             <p style={{ fontSize: 'var(--le-fs-xs)', color: 'var(--le-text-secondary)' }}>~{Math.max(1, Math.round(reviewsDue * 1.5))} min</p>
           </div>
-          <button className={styles.btnReview} onClick={() => startQuiz('review', reviewsDue)}>{L.review}</button>
+          <button className={styles.btnReview} onClick={() => startQuiz('review', reviewsDue)}>{t('home.review')}</button>
         </Card>
       )}
     </div>
@@ -126,6 +127,7 @@ export function HomeScreen() {
 }
 
 function StreakCalendar({ streak }: { streak: number }) {
+  const { t } = useTranslation();
   const days = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
   const TOTAL = 28;
   const todayIdx = 27;
@@ -138,23 +140,8 @@ function StreakCalendar({ streak }: { streak: number }) {
         let cls = styles.streakDay;
         if (isToday) cls += ` ${styles.today}`;
         else if (active) cls += ` ${styles.active}`;
-        return <div key={i} className={cls}>{isToday ? 'Hoy' : ''}</div>;
+        return <div key={i} className={cls}>{isToday ? t('home.today') : ''}</div>;
       })}
     </div>
   );
 }
-
-const TEXT = {
-  es: {
-    greeting: 'Buenos', ready: '¿Listo para aprender?', level: 'NIVEL', mastery: 'DOMINIO', streak: 'RACHA',
-    studyNow: 'ESTUDIAR AHORA', prediction: 'Progreso del sistema', predText1: 'Tu track más próximo es',
-    predText2: '— dominas', predText3: 'habilidades', missions: 'Misiones del día', loading: 'Cargando…',
-    done: '¡Completada!', yourStreak: 'Tu racha', days: 'días', best: 'Mejor', reviewsPending: 'repasos pendientes', review: 'Repasar',
-  },
-  en: {
-    greeting: 'Good', ready: 'Ready to learn?', level: 'LEVEL', mastery: 'MASTERY', streak: 'STREAK',
-    studyNow: 'STUDY NOW', prediction: 'System progress', predText1: 'Your nearest track is',
-    predText2: '— you master', predText3: 'skills', missions: 'Daily missions', loading: 'Loading…',
-    done: 'Done!', yourStreak: 'Your streak', days: 'days', best: 'Best', reviewsPending: 'reviews pending', review: 'Review',
-  },
-} as const;

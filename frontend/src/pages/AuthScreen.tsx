@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { auth, type RegisterPayload } from '../services/api';
 import styles from './AuthScreen.module.css';
 
@@ -18,7 +19,12 @@ export function AuthScreen({ onAuthed }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const t = TEXT[language];
+  const { t, i18n: i18nInst } = useTranslation();
+
+  function handleLangChange(lang: 'es' | 'en') {
+    setLanguage(lang);
+    void i18nInst.changeLanguage(lang);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -26,11 +32,11 @@ export function AuthScreen({ onAuthed }: Props) {
 
     // Client-side validation mirrors the backend schema constraints.
     if (mode === 'register') {
-      if (displayName.trim().length < 1) return setError(t.errName);
-      if (!/^[a-zA-Z0-9_.-]{3,50}$/.test(username)) return setError(t.errUsername);
+      if (displayName.trim().length < 1) return setError(t('auth.errName'));
+      if (!/^[a-zA-Z0-9_.-]{3,50}$/.test(username)) return setError(t('auth.errUsername'));
     }
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return setError(t.errEmail);
-    if (password.length < 8) return setError(t.errPassword);
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return setError(t('auth.errEmail'));
+    if (password.length < 8) return setError(t('auth.errPassword'));
 
     setLoading(true);
     try {
@@ -48,7 +54,7 @@ export function AuthScreen({ onAuthed }: Props) {
       }
       onAuthed();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t.errGeneric);
+      setError(err instanceof Error ? err.message : t('auth.errGeneric'));
     } finally {
       setLoading(false);
     }
@@ -67,7 +73,7 @@ export function AuthScreen({ onAuthed }: Props) {
           </svg>
         </div>
         <h1 className={styles.brandName}>Whetzy</h1>
-        <p className={styles.tagline}>{t.tagline}</p>
+        <p className={styles.tagline}>{t('auth.tagline')}</p>
       </div>
 
       <div className={styles.tabs}>
@@ -76,14 +82,14 @@ export function AuthScreen({ onAuthed }: Props) {
           onClick={() => { setMode('register'); setError(null); }}
           type="button"
         >
-          {t.register}
+          {t('auth.register')}
         </button>
         <button
           className={`${styles.tab} ${mode === 'login' ? styles.tabActive : ''}`}
           onClick={() => { setMode('login'); setError(null); }}
           type="button"
         >
-          {t.login}
+          {t('auth.login')}
         </button>
       </div>
 
@@ -91,22 +97,22 @@ export function AuthScreen({ onAuthed }: Props) {
         {mode === 'register' && (
           <>
             <label className={styles.field}>
-              <span className={styles.label}>{t.nameLabel}</span>
+              <span className={styles.label}>{t('auth.nameLabel')}</span>
               <input
                 className={styles.input}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                placeholder={t.namePlaceholder}
+                placeholder={t('auth.namePlaceholder')}
                 autoComplete="name"
               />
             </label>
             <label className={styles.field}>
-              <span className={styles.label}>{t.usernameLabel}</span>
+              <span className={styles.label}>{t('auth.usernameLabel')}</span>
               <input
                 className={styles.input}
                 value={username}
                 onChange={(e) => setUsername(e.target.value.toLowerCase())}
-                placeholder={t.usernamePlaceholder}
+                placeholder={t('auth.usernamePlaceholder')}
                 autoComplete="username"
               />
             </label>
@@ -114,7 +120,7 @@ export function AuthScreen({ onAuthed }: Props) {
         )}
 
         <label className={styles.field}>
-          <span className={styles.label}>{t.emailLabel}</span>
+          <span className={styles.label}>{t('auth.emailLabel')}</span>
           <input
             className={styles.input}
             type="email"
@@ -127,32 +133,32 @@ export function AuthScreen({ onAuthed }: Props) {
         </label>
 
         <label className={styles.field}>
-          <span className={styles.label}>{t.passwordLabel}</span>
+          <span className={styles.label}>{t('auth.passwordLabel')}</span>
           <input
             className={styles.input}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder={t.passwordPlaceholder}
+            placeholder={t('auth.passwordPlaceholder')}
             autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
           />
         </label>
 
         {mode === 'register' && (
           <div className={styles.field}>
-            <span className={styles.label}>{t.langLabel}</span>
+            <span className={styles.label}>{t('auth.langLabel')}</span>
             <div className={styles.langToggle}>
               <button
                 type="button"
                 className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`}
-                onClick={() => setLanguage('es')}
+                onClick={() => handleLangChange('es')}
               >
                 Español
               </button>
               <button
                 type="button"
                 className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`}
-                onClick={() => setLanguage('en')}
+                onClick={() => handleLangChange('en')}
               >
                 English
               </button>
@@ -163,58 +169,12 @@ export function AuthScreen({ onAuthed }: Props) {
         {error && <p className={styles.error}>⚠️ {error}</p>}
 
         <button className={styles.submit} type="submit" disabled={loading}>
-          {loading ? t.loading : mode === 'register' ? t.registerCta : t.loginCta}
+          {loading ? t('auth.loading') : mode === 'register' ? t('auth.registerCta') : t('auth.loginCta')}
         </button>
       </form>
 
-      <p className={styles.legal}>{t.legal}</p>
+      <p className={styles.legal}>{t('auth.legal')}</p>
     </div>
   );
 }
 
-const TEXT = {
-  es: {
-    tagline: 'El motor que te aprende mientras aprendes',
-    register: 'Crear cuenta',
-    login: 'Iniciar sesión',
-    nameLabel: 'Nombre',
-    namePlaceholder: 'Cómo te llamamos',
-    usernameLabel: 'Usuario',
-    usernamePlaceholder: 'tu_usuario',
-    emailLabel: 'Correo electrónico',
-    passwordLabel: 'Contraseña',
-    passwordPlaceholder: 'Mínimo 8 caracteres',
-    langLabel: 'Idioma',
-    registerCta: 'EMPEZAR A APRENDER',
-    loginCta: 'ENTRAR',
-    loading: 'Un momento…',
-    legal: 'Al continuar aceptas los Términos y la Política de Privacidad.',
-    errName: 'Ingresa tu nombre',
-    errUsername: 'Usuario: 3-50 caracteres (letras, números, _ . -)',
-    errEmail: 'Correo electrónico inválido',
-    errPassword: 'La contraseña debe tener al menos 8 caracteres',
-    errGeneric: 'Algo salió mal. Intenta de nuevo.',
-  },
-  en: {
-    tagline: 'The engine that learns you while you learn',
-    register: 'Sign up',
-    login: 'Log in',
-    nameLabel: 'Name',
-    namePlaceholder: 'What we call you',
-    usernameLabel: 'Username',
-    usernamePlaceholder: 'your_username',
-    emailLabel: 'Email',
-    passwordLabel: 'Password',
-    passwordPlaceholder: 'At least 8 characters',
-    langLabel: 'Language',
-    registerCta: 'START LEARNING',
-    loginCta: 'LOG IN',
-    loading: 'One moment…',
-    legal: 'By continuing you accept the Terms and Privacy Policy.',
-    errName: 'Enter your name',
-    errUsername: 'Username: 3-50 chars (letters, numbers, _ . -)',
-    errEmail: 'Invalid email address',
-    errPassword: 'Password must be at least 8 characters',
-    errGeneric: 'Something went wrong. Try again.',
-  },
-} as const;

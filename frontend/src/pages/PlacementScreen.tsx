@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
 import styles from './PlacementScreen.module.css';
@@ -26,6 +27,7 @@ const PLACEMENT_POOL: PlacementQuestion[] = [
 
 export function PlacementScreen() {
   const setScreen = useAppStore((s) => s.setScreen);
+  const { t } = useTranslation();
   const [phase, setPhase] = useState<'intro' | 'testing' | 'result'>('intro');
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -43,7 +45,7 @@ export function PlacementScreen() {
       setAnswered(true);
       const isCorrect = index === question.correctIndex;
       if (isCorrect) setCorrect((c) => c + 1);
-      setTotal((t) => t + 1);
+      setTotal((tot) => tot + 1);
 
       const newAbility = ability + (isCorrect ? 0.05 : -0.03);
       setAbility(Math.max(0, Math.min(1, newAbility)));
@@ -65,30 +67,27 @@ export function PlacementScreen() {
     return (
       <div className={styles.intro}>
         <span className={styles.introIcon}>🎓</span>
-        <h1 className={styles.introTitle}>Examen de Colocacion</h1>
-        <p className={styles.introDesc}>
-          Evaluaremos tu nivel actual de Python con preguntas adaptativas.
-          Las preguntas se ajustan automaticamente a tu nivel.
-        </p>
+        <h1 className={styles.introTitle}>{t('placement.title')}</h1>
+        <p className={styles.introDesc}>{t('placement.introDesc')}</p>
         <div className={styles.introFeatures}>
           <div className={styles.introFeature}>
             <span>🧠</span>
-            <span>Algoritmo adaptativo (BanditCAT)</span>
+            <span>{t('placement.algorithm')}</span>
           </div>
           <div className={styles.introFeature}>
             <span>⏱️</span>
-            <span>~15 minutos estimados</span>
+            <span>{t('placement.timeEst')}</span>
           </div>
           <div className={styles.introFeature}>
             <span>🎯</span>
-            <span>70% para saltar modulos</span>
+            <span>{t('placement.skipModules')}</span>
           </div>
         </div>
         <button className={styles.startBtn} onClick={() => setPhase('testing')}>
-          COMENZAR EXAMEN
+          {t('placement.start')}
         </button>
         <button className={styles.skipBtn} onClick={() => setScreen('home')}>
-          Volver al inicio
+          {t('placement.skip')}
         </button>
       </div>
     );
@@ -104,18 +103,16 @@ export function PlacementScreen() {
         <span className={styles.resultIcon}>
           {pct >= 70 ? '🏆' : pct >= 50 ? '💪' : '📚'}
         </span>
-        <h1 className={styles.resultTitle}>Nivel: {level}</h1>
-        <p className={styles.resultPct}>{pct}% de precision ({correct}/{total})</p>
+        <h1 className={styles.resultTitle}>{t('placement.levelResult', { level })}</h1>
+        <p className={styles.resultPct}>{t('placement.pctAccuracy', { pct, correct, total })}</p>
         <div className={styles.resultBar}>
           <ProgressBar value={pct} max={100} color="var(--le-green)" height={16} showLabel />
         </div>
         <p className={styles.resultDesc}>
-          {pct >= 70
-            ? 'Puedes saltar los modulos basicos e ir directo a contenido avanzado.'
-            : 'Hemos personalizado tu ruta de aprendizaje basado en tus resultados.'}
+          {pct >= 70 ? t('placement.descHigh') : t('placement.descLow')}
         </p>
         <button className={styles.startBtn} onClick={() => setScreen('home')}>
-          COMENZAR A APRENDER
+          {t('placement.startLearning')}
         </button>
       </div>
     );
@@ -125,11 +122,11 @@ export function PlacementScreen() {
     <div className={styles.screen}>
       <div className={styles.header}>
         <ProgressBar value={qIndex + 1} max={PLACEMENT_POOL.length} color="var(--le-purple)" height={8} />
-        <span className={styles.headerLabel}>Pregunta {qIndex + 1} de {PLACEMENT_POOL.length}</span>
+        <span className={styles.headerLabel}>{t('placement.questionOf', { n: qIndex + 1, total: PLACEMENT_POOL.length })}</span>
       </div>
 
       <div className={styles.abilityIndicator}>
-        <span className={styles.abilityLabel}>Nivel estimado</span>
+        <span className={styles.abilityLabel}>{t('placement.estimatedLevel')}</span>
         <div className={styles.abilityBar}>
           <div className={styles.abilityFill} style={{ width: `${ability * 100}%` }} />
         </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import i18n from './i18n';
 import { useAppStore } from './stores/useAppStore';
 import { isAuthenticated, logout } from './services/api';
 import { TopBar } from './components/layout/TopBar';
@@ -43,6 +44,11 @@ function App() {
 
   const currentScreen = useAppStore((s) => s.currentScreen);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
+  const userLanguage = useAppStore((s) => s.user.language);
+
+  useEffect(() => {
+    void i18n.changeLanguage(userLanguage);
+  }, [userLanguage]);
   const [authState, setAuthState] = useState<AuthState>(() =>
     isAuthenticated() ? 'checking' : 'unauthed'
   );

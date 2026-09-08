@@ -1,45 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { duels as duelsApi, type DuelSummary, type DuelChallengeResponse, type QuestionPublic } from '../services/api';
 import { showToast } from '../components/common/Toast';
 
 type View = 'list' | 'challenge-modal' | 'playing' | 'result';
 
-const L = {
-  es: {
-    title: 'Duelos',
-    myDuels: 'Mis duelos',
-    challenge: 'Retar',
-    noDuels: 'Sin duelos activos. ¡Reta a alguien!',
-    yourTurn: 'Tu turno',
-    waiting: 'Esperando...',
-    won: '¡Ganaste!',
-    lost: 'Perdiste',
-    draw: 'Empate',
-    vs: 'vs',
-    challengeTitle: 'Nuevo Duelo',
-    opponentPlaceholder: 'Nombre de usuario',
-    skillOptional: 'Skill ID (opcional)',
-    send: 'Retar',
-    cancel: 'Cancelar',
-    q: 'Pregunta',
-    of: 'de',
-    correct: 'Correcto',
-    wrong: 'Incorrecto',
-    next: 'Siguiente',
-    finish: 'Finalizar',
-    xpWon: '+50 XP ¡Ganaste!',
-    xpLost: '+10 XP Buen intento',
-    status_pending: 'Pendiente',
-    status_in_progress: 'En juego',
-    status_completed: 'Completado',
-  },
-};
-
 export function DuelScreen() {
   const language = useAppStore((s) => s.user.language);
   const currentUser = useAppStore((s) => s.user);
-  const t = L.es;
+  const { t } = useTranslation();
 
   const [view, setView] = useState<View>('list');
   const [myDuels, setMyDuels] = useState<DuelSummary[]>([]);
@@ -89,7 +59,7 @@ export function DuelScreen() {
       setAnswered([]);
       setPlayingDuelId(res.duel_id);
       setView('playing');
-      showToast(`¡Duelo enviado a ${res.opponent_username}!`, 'success');
+      showToast(t('duel.challengeSent', { username: res.opponent_username }), 'success');
     } catch (e) {
       showToast(e instanceof Error ? e.message : 'Error', 'error');
     } finally {
@@ -99,10 +69,7 @@ export function DuelScreen() {
 
   // ── Playing: join existing duel ───────────────────────────────────────────
   const joinDuel = (_duel: DuelSummary) => {
-    // We don't have the questions client-side yet — re-challenge same duel
-    // For opponents: show a simplified quiz. In full impl, load questions via GET /duels/{id}/questions.
-    // For now: show instructions to go play via challenge flow or note it's waiting
-    showToast('Funcionalidad de unirte a un duelo activo — próximamente', 'success');
+    showToast(t('duel.joinComingSoon'), 'success');
   };
 
   // ── Answer ────────────────────────────────────────────────────────────────
@@ -131,7 +98,6 @@ export function DuelScreen() {
       setQIndex((i) => i + 1);
       setSelected(null);
     } else {
-      // Duel quiz complete
       setView('result');
       fetchDuels();
     }
@@ -142,10 +108,10 @@ export function DuelScreen() {
     return (
       <div style={styles.container}>
         <div style={styles.modal}>
-          <h2 style={styles.modalTitle}>{t.challengeTitle}</h2>
+          <h2 style={styles.modalTitle}>{t('duel.challengeTitle')}</h2>
           <input
             style={styles.input}
-            placeholder={t.opponentPlaceholder}
+            placeholder={t('duel.opponentPlaceholder')}
             value={opponent}
             onChange={(e) => setOpponent(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleChallenge()}
@@ -153,18 +119,18 @@ export function DuelScreen() {
           />
           <input
             style={styles.input}
-            placeholder={t.skillOptional}
+            placeholder={t('duel.skillOptional')}
             value={skillId}
             onChange={(e) => setSkillId(e.target.value)}
           />
           <div style={styles.row}>
-            <button style={styles.btnSecondary} onClick={() => setView('list')}>{t.cancel}</button>
+            <button style={styles.btnSecondary} onClick={() => setView('list')}>{t('duel.cancel')}</button>
             <button
               style={{...styles.btnPrimary, opacity: challenging ? 0.6 : 1}}
               onClick={handleChallenge}
               disabled={challenging || !opponent.trim()}
             >
-              {challenging ? '...' : t.send}
+              {challenging ? '...' : t('duel.send')}
             </button>
           </div>
         </div>
@@ -182,7 +148,7 @@ export function DuelScreen() {
       <div style={styles.container}>
         <div style={styles.header}>
           <span style={styles.meta}>⚔️ vs {activeDuel.opponent_username}</span>
-          <span style={styles.meta}>{t.q} {qIndex + 1} {t.of} {activeDuel.questions.length}</span>
+          <span style={styles.meta}>{t('duel.q')} {qIndex + 1} {t('duel.of')} {activeDuel.questions.length}</span>
         </div>
 
         <div style={styles.progressBar}>
@@ -212,11 +178,8 @@ export function DuelScreen() {
         </div>
 
         {selected !== null && (
-          <button
-            style={styles.btnPrimary}
-            onClick={handleNext}
-          >
-            {isLast ? t.finish : t.next}
+          <button style={styles.btnPrimary} onClick={handleNext}>
+            {isLast ? t('duel.finish') : t('duel.next')}
           </button>
         )}
       </div>
@@ -227,13 +190,11 @@ export function DuelScreen() {
     return (
       <div style={{...styles.container, justifyContent: 'center', textAlign: 'center', gap: 20}}>
         <div style={{fontSize: 72}}>⚔️</div>
-        <h2 style={{color: 'var(--le-text)', fontSize: 22, fontWeight: 800}}>¡Duelo completado!</h2>
-        <p style={{color: 'var(--le-text-muted)', fontSize: 14}}>
-          Cuando tu oponente termine, verás el resultado en la lista.
-        </p>
-        <p style={{color: 'var(--le-brand)', fontWeight: 700}}>+10 XP por participar</p>
+        <h2 style={{color: 'var(--le-text)', fontSize: 22, fontWeight: 800}}>{t('duel.completed')}</h2>
+        <p style={{color: 'var(--le-text-muted)', fontSize: 14}}>{t('duel.waitingResult')}</p>
+        <p style={{color: 'var(--le-brand)', fontWeight: 700}}>{t('duel.participationXp')}</p>
         <button style={styles.btnPrimary} onClick={() => { setView('list'); fetchDuels(); }}>
-          Ver mis duelos
+          {t('duel.viewMyDuels')}
         </button>
       </div>
     );
@@ -243,18 +204,18 @@ export function DuelScreen() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>{t.title}</h1>
+        <h1 style={styles.title}>{t('duel.title')}</h1>
         <button style={styles.btnPrimary} onClick={() => setView('challenge-modal')}>
-          ⚔️ {t.challenge}
+          ⚔️ {t('duel.challenge')}
         </button>
       </div>
 
       {loading ? (
-        <div style={{color: 'var(--le-text-muted)', padding: 32, textAlign: 'center'}}>Cargando...</div>
+        <div style={{color: 'var(--le-text-muted)', padding: 32, textAlign: 'center'}}>{t('duel.loading')}</div>
       ) : myDuels.length === 0 ? (
         <div style={styles.empty}>
           <div style={{fontSize: 48}}>⚔️</div>
-          <p style={{color: 'var(--le-text-muted)', marginTop: 12}}>{t.noDuels}</p>
+          <p style={{color: 'var(--le-text-muted)', marginTop: 12}}>{t('duel.noDuels')}</p>
         </div>
       ) : (
         <div style={styles.list}>
@@ -263,7 +224,6 @@ export function DuelScreen() {
               key={duel.duel_id}
               duel={duel}
               currentUserId={currentUser.id}
-              t={t}
               onPlay={duel.is_your_turn ? () => joinDuel(duel) : undefined}
             />
           ))}
@@ -276,21 +236,20 @@ export function DuelScreen() {
 function DuelCard({
   duel,
   currentUserId,
-  t,
   onPlay,
 }: {
   duel: DuelSummary;
   currentUserId: string;
-  t: typeof L.es;
   onPlay?: () => void;
 }) {
+  const { t } = useTranslation();
   const isWinner = duel.winner_id === currentUserId;
   const isDraw = duel.status === 'completed' && !duel.winner_id;
 
   const statusLabel =
-    duel.status === 'pending' ? t.status_pending
-    : duel.status === 'in_progress' ? t.status_in_progress
-    : t.status_completed;
+    duel.status === 'pending' ? t('duel.status_pending')
+    : duel.status === 'in_progress' ? t('duel.status_in_progress')
+    : t('duel.status_completed');
 
   return (
     <div style={styles.card}>
@@ -311,15 +270,15 @@ function DuelCard({
             fontWeight: 800, fontSize: 13,
             color: isDraw ? 'var(--le-orange)' : isWinner ? 'var(--le-green)' : 'var(--le-red)',
           }}>
-            {isDraw ? t.draw : isWinner ? t.won : t.lost}
+            {isDraw ? t('duel.draw') : isWinner ? t('duel.won') : t('duel.lost')}
             {!isDraw && duel.your_correct !== null && ` (${duel.your_correct}/5)`}
           </span>
         ) : duel.is_your_turn ? (
           <button style={{...styles.btnPrimary, padding: '6px 14px', fontSize: 13}} onClick={onPlay}>
-            Jugar
+            {t('duel.play')}
           </button>
         ) : (
-          <span style={{color: 'var(--le-text-muted)', fontSize: 12}}>{t.waiting}</span>
+          <span style={{color: 'var(--le-text-muted)', fontSize: 12}}>{t('duel.waiting')}</span>
         )}
       </div>
     </div>
