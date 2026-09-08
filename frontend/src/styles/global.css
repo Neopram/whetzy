@@ -68,12 +68,27 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   flex-direction: column;
 }
 
+/* ── Native safe areas (Capacitor / PWA on notched phones) ────────────────
+   env(safe-area-inset-*) is zero on devices without a notch/home-indicator.
+   viewport-fit=cover must be in the meta viewport for this to take effect.   */
+:root {
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+}
+
+/* Bottom nav and fixed footers must clear the home indicator */
+.safe-bottom { padding-bottom: var(--safe-bottom); }
+/* Top bars must clear the status bar / Dynamic Island */
+.safe-top    { padding-top: var(--safe-top); }
+
 .app-content {
   flex: 1;
   max-width: var(--le-max-width);
   width: 100%;
   margin: 0 auto;
-  padding-top: var(--le-topbar-height);
+  padding-top: calc(var(--le-topbar-height) + env(safe-area-inset-top, 0px));
 }
 
 /* Utility classes */

@@ -4,10 +4,12 @@
   left: 0;
   right: 0;
   z-index: var(--le-z-sticky);
-  height: var(--le-topbar-height);
+  height: calc(var(--le-topbar-height) + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: calc(var(--le-space-md) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--le-space-md) + env(safe-area-inset-right, 0px));
   background: var(--le-surface);
   border-bottom: 2px solid var(--le-border);
-  padding: 0 var(--le-space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
