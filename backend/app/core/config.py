@@ -108,6 +108,11 @@ class Settings(BaseSettings):
     SENTRY_DSN: str = ""  # empty = disabled
     SENTRY_TRACES_SAMPLE_RATE: float = 0.1
 
+    # --- Content admin -------------------------------------------------------
+    # Set a non-empty value to enable PATCH /questions/{id} (content versioning).
+    # Requests must supply X-Admin-Key: <this value>. Empty = endpoint disabled.
+    CONTENT_ADMIN_KEY: str = ""
+
     # --- Gamification tuning -------------------------------------------------
     MASTERY_THRESHOLD: float = 0.95
     DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7

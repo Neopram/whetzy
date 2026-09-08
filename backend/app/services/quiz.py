@@ -449,6 +449,7 @@ async def submit_answer(
         correct=correct,
         grade=grade,
         response_time_ms=req.response_time_ms,
+        question_version=question.content_version,
     )
     db.add(response)
     await db.flush()

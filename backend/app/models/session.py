@@ -57,4 +57,8 @@ class Response(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
+    # Which content_version of the question was active when this response was
+    # recorded. Lets analytics distinguish answers to v1 from answers to v2.
+    question_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+
     session: Mapped[StudySession] = relationship(back_populates="responses")

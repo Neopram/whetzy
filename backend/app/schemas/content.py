@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TrackRead(BaseModel):
@@ -75,6 +75,26 @@ class QuestionRead(BaseModel):
     discrimination: float
     guessing: float
     expected_time_ms: int
+
+
+class QuestionPatch(BaseModel):
+    """Partial update for a question's content fields.
+
+    All fields are optional — only supplied fields are written.
+    Submitting this payload always bumps `content_version` on the question.
+    """
+
+    question_es: str | None = Field(default=None, min_length=1)
+    question_en: str | None = Field(default=None, min_length=1)
+    options_es: list[str] | None = None
+    options_en: list[str] | None = None
+    correct_index: int | None = None
+    correct_answer_es: str | None = None
+    correct_answer_en: str | None = None
+    explanation_es: str | None = None
+    explanation_en: str | None = None
+    source: str | None = None
+    difficulty_tier: str | None = None
 
 
 class QuestionPublic(BaseModel):

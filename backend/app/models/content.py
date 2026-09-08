@@ -126,5 +126,9 @@ class Question(Base):
     discrimination: Mapped[float] = mapped_column(Float, default=1.0, nullable=False)
     guessing: Mapped[float] = mapped_column(Float, default=0.2, nullable=False)
     expected_time_ms: Mapped[int] = mapped_column(Integer, default=15000, nullable=False)
+    # Bumped by 1 each time the question text/options/answer are edited.
+    # Responses carry the version that was active at answer time, preserving
+    # historical accuracy even after corrections.
+    content_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
     skill: Mapped[Skill] = relationship(back_populates="questions")

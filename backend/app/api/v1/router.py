@@ -6,6 +6,7 @@ from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
     auth,
+    content,
     duels,
     export,
     glossary,
@@ -31,3 +32,4 @@ api_router.include_router(duels.router, prefix="/duels", tags=["duels"])
 api_router.include_router(reports.router, prefix="/reports", tags=["reports"])
 api_router.include_router(export.router, prefix="/export", tags=["export"])
 api_router.include_router(ml.router, prefix="/ml", tags=["ml"])
+api_router.include_router(content.router, prefix="/content", tags=["content"])

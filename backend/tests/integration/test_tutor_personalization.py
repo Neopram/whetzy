@@ -74,7 +74,8 @@ async def db_session():
                         correct INTEGER,
                         grade INTEGER DEFAULT 0,
                         response_time_ms INTEGER DEFAULT 0,
-                        created_at TEXT
+                        created_at TEXT,
+                        question_version INTEGER DEFAULT 1
                     )
                 """)),
             )
