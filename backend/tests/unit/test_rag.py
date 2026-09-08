@@ -9,6 +9,10 @@ from __future__ import annotations
 import hashlib
 import uuid
 
+import pytest
+
+chromadb = pytest.importorskip("chromadb", reason="chromadb not installed — RAG tests skipped")
+
 
 class FakeEF:
     """Deterministic 384-dim embedding function for tests (no model needed).
