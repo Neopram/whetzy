@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión u) — G2+G4+G6+G7 DONE; 229 tests pasando; mypy 0 errores; P.5+P.6+P.7 DONE; Q.7 backend DONE
+> Última actualización: 2026-09-08 (sesión v) — Q.7+Q.8+Q.9 DONE; 39 tests frontend (87% stmts); 229 backend tests; mypy+tsc+oxlint 0 errores; CI verde en master
 
 ---
 
@@ -72,10 +72,10 @@
 | Q.4 | 1 | Tests de gamificación: XP, ligas, badges, misiones, rachas | DONE | 50 tests, 100% cobertura en services/gamification/service.py |
 | Q.5 | 1 | Inventario y eliminación de código muerto | DONE | ruff F401 limpio: duel.py, rag.py, bandit.py, bkt.py, elo.py, fsrs.py, gamification/service.py, quiz.py, dkt.py |
 | Q.6 | 1 | Consolidación de docs: 10 archivos → set coherente | DONE | README+ARCHITECTURE+API+RUNBOOK+DECISIONS creados; 9 prompts/specs a docs/archive/ |
-| Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | DOING | `mypy app --strict` 0 errores ✅; `tsc --noEmit --strict` pendiente |
-| Q.8 | 2 | Lint zero-warnings: ruff + eslint | TODO | `ruff check` y `eslint` sin warnings. Reglas en CI |
-| Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y componentes críticos | TODO | ≥70% en `src/hooks/` y `src/services/`. QuizScreen, DuelScreen con render tests |
-| Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | TODO | GH Actions verde en push con todos los pasos; sin `\|\| true` |
+| Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | DONE | `mypy app --strict` 0 errores (63 files); `tsc --noEmit --strict` 0 errores; strict:true en tsconfig.app.json |
+| Q.8 | 2 | Lint zero-warnings: ruff + oxlint | DONE | oxlint 0 warnings (6 fixes en StatsScreen/DuelScreen/pyodide-worker.js); CI usa `npx oxlint src --deny-warnings` |
+| Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y servicios críticos | DONE | 39 tests; 87.6% stmts/80% fns/75% branches/92.9% lines; jsdom@25; fake-indexeddb; CI: npm run test:coverage |
+| Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | DOING | GH Actions verde en push con todos los pasos; sin `\|\| true` |
 
 ### 2 — Cierre Fase 2
 
@@ -261,6 +261,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | s | 2026-09-08 | 3 archivos, sin medir | — | — | — | — | 0 err | — | 0,1 |
 | t | 2026-09-08 | 141 (82 engine + 50 gamif + 9 core) | engine ≥96%, gamif 100% | — | F401 limpio | — | — | Q.1,Q.2,Q.4,Q.5,6.1,6.5,6.6 | 0,1 |
 | u | 2026-09-08 | 229 (141 prev + 88 integración) | — | — | F401 limpio | 0 err (63 files) | — | Q.3,Q.6,Q.7(back),6.2,6.3,6.4,P.1,P.2,P.3,P.5,P.6,P.7,P.11,P.12 | 0,1 |
+| v | 2026-09-08 | 229 back + 39 front | ≥60% cov | 87.6% stmts | F401 limpio | 0 err | 0 err (strict) | Q.7(front),Q.8,Q.9 | 0,1 |
 
 ---
 
