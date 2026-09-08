@@ -33,11 +33,11 @@ TokenType = Literal["access", "refresh"]
 # Password hashing
 # --------------------------------------------------------------------------
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    return pwd_context.hash(password)  # type: ignore[return-value]
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    return pwd_context.verify(plain_password, hashed_password)  # type: ignore[return-value]
 
 
 # --------------------------------------------------------------------------
@@ -55,7 +55,7 @@ def _create_token(
         "iat": int(now.timestamp()),
         "exp": now + expires_delta,
     }
-    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM)  # type: ignore[return-value]
 
 
 def create_access_token(

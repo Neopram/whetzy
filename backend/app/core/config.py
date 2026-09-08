@@ -86,6 +86,15 @@ class Settings(BaseSettings):
     EMAIL_FROM_NAME: str = "Whetzy"
     FRONTEND_BASE_URL: str = "https://whetzy.com"
 
+    # --- OpenTelemetry -------------------------------------------------------
+    OTEL_SERVICE_NAME: str = "whetzy-backend"
+    OTEL_EXPORTER_OTLP_ENDPOINT: str = ""  # empty = console exporter (dev)
+
+    # --- Observability -------------------------------------------------------
+    METRICS_ENABLED: bool = True
+    SENTRY_DSN: str = ""  # empty = disabled
+    SENTRY_TRACES_SAMPLE_RATE: float = 0.1
+
     # --- Gamification tuning -------------------------------------------------
     MASTERY_THRESHOLD: float = 0.95
     DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7

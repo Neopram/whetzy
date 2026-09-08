@@ -36,16 +36,16 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _count_correct(answers: list | None) -> int:
+def _count_correct(answers: list[dict[str, object]] | None) -> int:
     if not answers:
         return 0
     return sum(1 for a in answers if a.get("correct"))
 
 
-def _total_time(answers: list | None) -> int:
+def _total_time(answers: list[dict[str, object]] | None) -> int:
     if not answers:
         return 0
-    return sum(a.get("response_time_ms", 0) for a in answers)
+    return sum(int(a.get("response_time_ms", 0)) for a in answers)
 
 
 async def _load_user_by_username(db: AsyncSession, username: str) -> User:

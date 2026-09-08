@@ -16,10 +16,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.v1.router import api_router
 from app.core.config import settings
 from app.core.db import close_db, get_db, init_db
+from app.core.error_tracking import configure_sentry
 from app.core.logging import RequestIDMiddleware, configure_logging
+from app.core.metrics import MetricsMiddleware, metrics_endpoint
 from app.core.security_middleware import RateLimitMiddleware, SecurityHeadersMiddleware
+from app.core.telemetry import configure_telemetry
 
 configure_logging(level=logging.DEBUG if settings.DEBUG else logging.INFO)
+configure_telemetry(settings.OTEL_SERVICE_NAME, settings.OTEL_EXPORTER_OTLP_ENDPOINT)
+configure_sentry(
+    dsn=settings.SENTRY_DSN,
+    environment=settings.ENVIRONMENT,
+    traces_sample_rate=settings.SENTRY_TRACES_SAMPLE_RATE,
+)
 logger = logging.getLogger("whetzy")
 
 
@@ -60,6 +69,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Prometheus RED metrics (outermost so it captures total latency).
+if settings.METRICS_ENABLED:
+    app.add_middleware(MetricsMiddleware)
 
 # ASVS 5.0 (L2): per-IP anti-automation + hardened security response headers.
 app.add_middleware(RequestIDMiddleware)
@@ -111,5 +124,7 @@ async def health_ready(db: AsyncSession = Depends(get_db)) -> dict[str, str]:
         ) from exc
     return {"status": "ready"}
 
+
+app.add_route("/metrics", metrics_endpoint, include_in_schema=False)
 
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)

@@ -89,6 +89,15 @@ class RequestIDMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         latency_ms = round((time.monotonic() - start) * 1000)
 
+        # Propagate authenticated user to Sentry (no-op when Sentry is absent).
+        uid = _user_id_var.get()
+        if uid and uid != "-":
+            try:
+                from app.core.error_tracking import set_user_context  # noqa: PLC0415
+                set_user_context(uid)
+            except Exception:  # noqa: BLE001
+                pass
+
         response.headers["X-Request-ID"] = req_id
         logging.getLogger("whetzy.access").info(
             "%s %s %s",
