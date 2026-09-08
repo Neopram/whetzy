@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ab) — 4.4 DONE: DKT inference cache (SHA-256 TTL dict, 10 tests); P.10 DONE: dark mode; 4.3 DONE: model registry; 2.2 DONE: Pyodide sandbox
+> Última actualización: 2026-09-08 (sesión ab) — 2.3 DONE: exec_output server-side grading; 4.4 DONE: DKT inference cache; P.10 DONE: dark mode; 4.3 DONE: model registry
 
 ---
 
@@ -87,7 +87,7 @@
 |---|---|---|---|---|
 | 2.1 | 2 | Pyodide E2E determinista: endpoint dev que fuerza pregunta `exec` | DONE | force_question_id en QuizStartRequest (403 en prod); pyodide.spec.ts: route intercept → fill_blank_exec q010101ex001 → '42' → ✅ output+explanation; CI ✓ (backend+e2e+frontend) |
 | 2.2 | 3 | Sandbox hardening Pyodide: timeout, memoria, imports bloqueados | DONE | `builtins.__import__` factory guard blocks os/subprocess/socket/…; COOP+COEP credentialless → SharedArrayBuffer → SAB interrupt after 5 s (timedOut:true); Playwright 2/2 pass (27.7s): import os → ImportError, while True:pass → timedOut=true. vite.config + public/_headers set headers |
-| 2.3 | 3 | `exec_correct` server-side (hoy viene del cliente = explotable) | TODO | Servidor valida output; cliente no puede falsear corrección |
+| 2.3 | 3 | `exec_correct` server-side (hoy viene del cliente = explotable) | DONE | QuizAnswerRequest.exec_output added; quiz.py validates exec_output.strip()==correct_answer_es.strip() when both present; fallback to selected_index (legacy) with logger.warning; 3 new tests: correct exec→true, wrong output with selected_index=1→false, trailing newline stripped; 17/17 quiz tests pass; mypy strict ✅ |
 
 ### 3 — Cierre Fase 3
 

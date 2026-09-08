@@ -267,3 +267,93 @@ async def test_quiz_end_no_auth_returns_401(client, auth_headers, content_seed):
         headers=_h(),  # no auth
     )
     assert r.status_code == 401
+
+
+# ── exec_output server-side validation (2.3) ──────────────────────────────────
+
+
+async def _start_exec_quiz(client, auth_headers: dict, db_session) -> tuple[str, str]:
+    """Seed an exec question and start a session on it."""
+    from app.models.content import Module, Question, Skill, Track
+
+    track = Track(id="track_exec23", name_es="T", name_en="T", order=99, icon="x", color="#000", total_questions=1)
+    mod = Module(id="m_exec23", track_id="track_exec23", name_es="M", name_en="M", order=1, description_es="", description_en="")
+    skill = Skill(id="sk_exec23", module_id="m_exec23", name_es="S", name_en="S", order=1)
+    question = Question(
+        id="q_exec23",
+        skill_id="sk_exec23",
+        type="fill_blank_exec",
+        difficulty_tier="easy",
+        question_es="```\nprint(2 + 2)\n```",
+        question_en="```\nprint(2 + 2)\n```",
+        correct_answer_es="4",
+        correct_answer_en="4",
+        explanation_es="2 + 2 = 4.",
+        explanation_en="2 + 2 = 4.",
+        source="test",
+        elo_rating=1200.0,
+    )
+    db_session.add_all([track, mod, skill, question])
+    await db_session.commit()
+
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"force_question_id": "q_exec23"},
+        headers=_h(auth_headers),
+    )
+    data = r.json()
+    return data["session_id"], data["question"]["id"]
+
+
+async def test_exec_output_correct_is_graded_correct(client, auth_headers, db_session):
+    session_id, question_id = await _start_exec_quiz(client, auth_headers, db_session)
+
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": question_id,
+            "exec_output": "4",
+            "response_time_ms": 1500,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert r.json()["correct"] is True
+
+
+async def test_exec_output_wrong_cannot_be_falsified(client, auth_headers, db_session):
+    session_id, question_id = await _start_exec_quiz(client, auth_headers, db_session)
+
+    # Client sends the right selected_index=1 but the wrong exec_output.
+    # Server should use exec_output and mark as incorrect.
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": question_id,
+            "selected_index": 1,
+            "exec_output": "99",
+            "response_time_ms": 1500,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert r.json()["correct"] is False
+
+
+async def test_exec_output_with_whitespace_is_accepted(client, auth_headers, db_session):
+    session_id, question_id = await _start_exec_quiz(client, auth_headers, db_session)
+
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": question_id,
+            "exec_output": "4\n",  # trailing newline from print()
+            "response_time_ms": 800,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert r.json()["correct"] is True

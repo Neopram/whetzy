@@ -55,6 +55,10 @@ class QuizAnswerRequest(BaseModel):
     question_id: str
     selected_index: int | None = None
     response_time_ms: int = Field(ge=0)
+    # For exec-type questions (fill_blank_exec, fix_bug): the actual stdout
+    # produced by the client's Pyodide run.  Server validates against the stored
+    # correct_answer to prevent the client from falsifying correctness.
+    exec_output: str | None = None
 
 
 class QuizAnswerResponse(BaseModel):

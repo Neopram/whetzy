@@ -11,9 +11,12 @@ difficulty.
 
 from __future__ import annotations
 
+import logging
 import random
 import uuid
 from datetime import UTC, datetime, timedelta
+
+logger = logging.getLogger("whetzy.quiz")
 
 from fastapi import HTTPException, status
 from sqlalchemy import func, or_, select
@@ -387,8 +390,18 @@ async def submit_answer(
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Question not found")
 
     if question.type in _EXEC_TYPES:
-        # Client ran Pyodide: selected_index=1 → correct, 0 → incorrect.
-        correct = req.selected_index == 1
+        expected = question.correct_answer_es
+        if expected is not None and req.exec_output is not None:
+            correct = req.exec_output.strip() == expected.strip()
+        else:
+            # Legacy path: exec_output not provided (old client) or expected
+            # answer not stored — trust selected_index as before.
+            if expected is not None and req.exec_output is None:
+                logger.warning(
+                    "exec question %s answered without exec_output — falling back to selected_index",
+                    question.id,
+                )
+            correct = req.selected_index == 1
     else:
         correct = req.selected_index is not None and req.selected_index == question.correct_index
     now = _now()
