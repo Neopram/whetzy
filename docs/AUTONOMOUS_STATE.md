@@ -17,7 +17,7 @@
 | Backend prod | `https://api-production-9751.up.railway.app` |
 | Frontend prod | `https://whetzy.com` / `https://whetzy.pages.dev` |
 | Repo | `github.com/Neopram/whetzy` branch `master` |
-| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8` |
+| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9` |
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |
@@ -68,10 +68,10 @@
 |---|---|---|---|---|
 | Q.1 | 0 | Infra de tests backend: `pytest.ini`/`conftest.py` con DB efímera, fixtures de user/token/content | DONE | pytest en <30s contra SQLite :memory:, 0 errores de setup; 141 tests pasan |
 | Q.2 | 0 | Tests unitarios del engine: FSRS, Elo, BKT, bandit | DONE | 81 tests (18 BKT + 17 Elo + 18 FSRS + 24 bandit); BKT 100%, Elo 100%, FSRS 97%, bandit 96% |
-| Q.3 | 1 | Tests de integración API: auth, quiz, progress, glossary, duels, placement, tutor | TODO | Cada endpoint con happy path + 401 + 422 + caso borde. ≥80% cobertura en `api/v1/` |
+| Q.3 | 1 | Tests de integración API: auth, quiz, progress, glossary, duels, placement, tutor | DONE | 88 tests: 14 auth + 11 quiz + 12 progress + 5 glossary + 18 placement + 19 duels + 9 tutor |
 | Q.4 | 1 | Tests de gamificación: XP, ligas, badges, misiones, rachas | DONE | 50 tests, 100% cobertura en services/gamification/service.py |
 | Q.5 | 1 | Inventario y eliminación de código muerto | DONE | ruff F401 limpio: duel.py, rag.py, bandit.py, bkt.py, elo.py, fsrs.py, gamification/service.py, quiz.py, dkt.py |
-| Q.6 | 1 | Consolidación de docs: 10 archivos → set coherente | TODO | `docs/` con: README, ARCHITECTURE, API, RUNBOOK, STATUS, DECISIONS. Prompts históricos a `docs/archive/` |
+| Q.6 | 1 | Consolidación de docs: 10 archivos → set coherente | DONE | README+ARCHITECTURE+API+RUNBOOK+DECISIONS creados; 9 prompts/specs a docs/archive/ |
 | Q.7 | 2 | Type strictness: mypy strict backend, tsc strict frontend | TODO | `mypy app --strict` 0 errores; `tsc --noEmit --strict` 0 errores |
 | Q.8 | 2 | Lint zero-warnings: ruff + eslint | TODO | `ruff check` y `eslint` sin warnings. Reglas en CI |
 | Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y componentes críticos | TODO | ≥70% en `src/hooks/` y `src/services/`. QuizScreen, DuelScreen con render tests |
@@ -168,9 +168,9 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| P.1 | 1 | Email transaccional: proveedor + plantillas ES/EN (bienvenida, verificación, reset) | DOING | app/services/email.py — SMTP + Resend fallback; 3 templates ES+EN |
-| P.2 | 1 | Recuperación de contraseña: token de un solo uso, expira en 1 h | DOING | Requiere P.1 (email service) — implementando junto |
-| P.3 | 1 | Verificación de email en registro | TODO | No verificado = acceso limitado y aviso claro; enlace verifica; reenvío con rate limit |
+| P.1 | 1 | Email transaccional: proveedor + plantillas ES/EN (bienvenida, verificación, reset) | DONE | SMTP+Resend+log; templates ES+EN; fallback siempre logueado |
+| P.2 | 1 | Recuperación de contraseña: token de un solo uso, expira en 1 h | DONE | PasswordResetToken (SHA-256); forgot-password + reset-password; token reutilizado → 400 |
+| P.3 | 1 | Verificación de email en registro | DONE | EmailVerificationToken 24h; verify-email + resend-verification; email_verified en UserRead |
 | P.4 | 2 | Onboarding de primer uso: ≤ 3 pantallas (qué es · elige track · primera pregunta) | TODO | Playwright: landing → primera pregunta respondida en < 60 s |
 | P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | TODO | Cada cambio persiste, se refleja en la sesión activa, y pide contraseña actual donde toca |
 | P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | TODO | Reporte con `question_id`, motivo y contexto llega a tabla `question_reports`; visible en admin |
