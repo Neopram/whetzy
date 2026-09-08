@@ -9,3 +9,12 @@ ignore = [
               # timezone-aware datetimes would desync them from the rest of the app
               # (models, other services) that still compare against naive values.
 ]
+
+# dkt.py/rag.py degrade to a heuristic when torch/chromadb aren't installed
+# (Railway free tier, and CI — both intentionally omit them; see requirements.txt).
+# Their `# type: ignore[...]` comments are only "used" when the real libraries
+# are present (as in local dev), so a strict environment without them would
+# otherwise flag every comment as unused-ignore.
+[[tool.mypy.overrides]]
+module = ["app.services.dkt", "app.services.ai.rag"]
+warn_unused_ignores = false
