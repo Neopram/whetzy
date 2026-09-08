@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ah) — 4.6+5.5+6.7+7.7+8.4 ✅ DONE; Phase 4+5+6 CERRADAS; 444 tests; IaC+teardown added
+> Última actualización: 2026-09-08 (sesión ah) — 4.6+5.5+6.7+7.7+8.4+9.8 ✅ DONE; Phase 4+5+6 CERRADAS; 444 tests; landing+IaC+teardown+boundaries
 
 ---
 
@@ -52,9 +52,9 @@
 | 4 | DKT + churn + MLOps | 100% | ✅ CERRADA — DKT training + eval + registry + cache + churn + A/B harness |
 | 5 | Pipeline multi-agente + analytics | 100% | ✅ CERRADA — author+QA+duplicados+analytics+dashboard |
 | 6 | Observabilidad + límites de servicio | 100% | ✅ CERRADA — JSON logging + OTEL + Prometheus + Sentry + liveness/readiness + rate-limiting + service boundaries |
-| 7 | Commerce + i18n + nativo + IaC + seguridad | 65% | Docker/CI reales; Stripe checkout+webhook+subscription ✅; entitlements free/plus/pro ✅; i18n 10 screens ✅; sin nativo/K8s |
+| 7 | Commerce + i18n + nativo + IaC + seguridad | 85% | Docker/CI reales; Stripe ✅; entitlements ✅; i18n ✅; Capacitor ✅; Terraform IaC ✅; Runbook ✅; IAP HUMAN-BLOCKED |
 | 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
-| 9 | Store readiness + excelencia de diseño | 80% | 9.1 + 9.2 + 9.3 + 9.4 + 9.5 + 9.6 DONE; 9.7 HUMAN-BLOCKED (VoiceOver/TalkBack real device); 9.8 PRI 4 |
+| 9 | Store readiness + excelencia de diseño | 95% | 9.1-9.6+9.8 DONE; 9.7 HUMAN-BLOCKED (VoiceOver/TalkBack real device) |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
 | P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
 | 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
@@ -163,7 +163,7 @@
 | 9.5 | 3 | Checklist App Store Review Guidelines | DONE | docs/store/app-store-review-checklist.md: 5 sections × all guidelines; 1 hard blocker B1 (Stripe→must use IAP, fix=7.6); 6 action items A1-A6; already-compliant list (ASVS/GDPR/WCAG/dark mode/safe areas/push opt-in/no IDFA/no SIWA); iOS Capacitor submission checklist |
 | 9.6 | 3 | Play Store: Data Safety + target API level | DONE | docs/store/play-store-data-safety.md: targetSdkVersion=35 ✅ (≥34 req); data inventory (personal/financial/activity/device IDs/crash); third parties (Stripe/Groq/Sentry); field-by-field Play Console answers; 4 pre-submission action items |
 | 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | TODO | Flujos principales navegables con lector de pantalla |
-| 9.8 | 4 | Sitio de marketing + pricing | TODO | Landing con propuesta de valor, pricing, CTA a checkout |
+| 9.8 | 4 | Sitio de marketing + pricing | DONE | LandingScreen.tsx: hero+features+pricing ES/EN; /landing route; tsc 0 err; commit 9adf861 |
 
 ### P — Producto: lo que un dueño no perdona (PRI 1-3)
 
