@@ -36,6 +36,8 @@ from app.schemas.session import (
     QuizStartRequest,
     QuizStartResponse,
 )
+import app.services.dkt as _dkt
+from app.services.ab_harness import get_cohort
 from app.services.engine.bkt import BKTModel, SkillState
 from app.services.engine.elo import EloEntity, EloRating
 from app.services.engine.fsrs import Card, FSRSScheduler
@@ -201,6 +203,25 @@ async def _select_skill(
         return None
     if len(candidate_skill_ids) == 1:
         return candidate_skill_ids[0]
+
+    # A/B experiment (4.6): DKT cohort uses deep knowledge tracing predictions
+    if get_cohort(user.id) == "dkt":
+        history_result = await db.execute(
+            select(Question.skill_id, Response.correct)
+            .select_from(Response)
+            .join(Question, Response.question_id == Question.id)
+            .join(StudySession, Response.session_id == StudySession.id)
+            .where(StudySession.user_id == user.id)
+            .order_by(Response.created_at.desc())
+            .limit(100)
+        )
+        history_rows = history_result.all()
+        if history_rows:
+            history = [{"skill_id": r[0], "correct": bool(r[1])} for r in reversed(history_rows)]
+            predictions = _dkt.predict(history)
+            if predictions:
+                weights = [1.1 - predictions.get(sid, 0.5) for sid in candidate_skill_ids]
+                return _weighted_choice(candidate_skill_ids, weights)
 
     states_result = await db.execute(
         select(UserSkillState.skill_id, UserSkillState.p_known).where(

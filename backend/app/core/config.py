@@ -132,6 +132,11 @@ class Settings(BaseSettings):
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
 
+    # --- A/B experiments -----------------------------------------------------
+    # Fraction of users assigned to the DKT skill-selection cohort (0.0–1.0).
+    # Assignment is deterministic: hash(user_id) % 1000 < DKT_AB_RATIO * 1000.
+    DKT_AB_RATIO: float = 0.5
+
     # --- Gamification tuning -------------------------------------------------
     MASTERY_THRESHOLD: float = 0.95
     DEFAULT_MODULE_UNLOCK_MASTERY: float = 0.7
