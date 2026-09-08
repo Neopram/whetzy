@@ -49,6 +49,65 @@ async def test_quiz_start_with_skill_id_returns_question(client, auth_headers, c
     assert data["question"]["id"] == content_seed["question_id"]
 
 
+async def test_quiz_start_force_question_id_serves_that_question(client, auth_headers, db_session):
+    """Dev/E2E override (2.1): serves an exact question, bypassing skill
+    selection entirely — used to deterministically reach exec-type questions
+    in Playwright without depending on which one the adaptive picker draws.
+    """
+    from app.models.content import Module, Question, Skill, Track
+
+    track = Track(id="track_force01", name_es="T", name_en="T", order=1, icon="x", color="#000", total_questions=1)
+    mod = Module(id="m_force01", track_id="track_force01", name_es="M", name_en="M", order=1, description_es="", description_en="")
+    skill = Skill(id="sk_force01", module_id="m_force01", name_es="S", name_en="S", order=1)
+    question = Question(
+        id="q_force_exec01",
+        skill_id="sk_force01",
+        type="fill_blank_exec",
+        difficulty_tier="easy",
+        question_es="```\nx = ___\nprint(x + 1)\n```",
+        question_en="```\nx = ___\nprint(x + 1)\n```",
+        correct_answer_es="2",
+        correct_answer_en="2",
+        explanation_es="1 + 1 = 2.",
+        explanation_en="1 + 1 = 2.",
+        source="test",
+        elo_rating=1200.0,
+    )
+    db_session.add_all([track, mod, skill, question])
+    await db_session.commit()
+
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"force_question_id": "q_force_exec01"},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200, r.text
+    data = r.json()
+    assert data["question"]["id"] == "q_force_exec01"
+    assert data["question"]["type"] == "fill_blank_exec"
+
+
+async def test_quiz_start_force_question_id_rejected_in_production(client, auth_headers, content_seed, monkeypatch):
+    from app.core import config as config_module
+
+    monkeypatch.setattr(config_module.settings, "ENVIRONMENT", "production")
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"force_question_id": content_seed["question_id"]},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 403
+
+
+async def test_quiz_start_force_question_id_404_for_unknown_id(client, auth_headers):
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"force_question_id": "does-not-exist"},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 404
+
+
 async def test_quiz_start_returns_session_id(client, auth_headers, content_seed):
     r = await client.post(
         f"{QUIZ}/start",

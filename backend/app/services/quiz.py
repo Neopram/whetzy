@@ -20,6 +20,7 @@ from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.core.config import settings
 from app.models.content import Module, Question, Skill
 from app.models.session import Response, StudySession
 from app.models.user import User, UserSkillState
@@ -270,14 +271,25 @@ async def start_session(
     db.add(session)
     await db.flush()
 
-    candidate_skill_ids = await _candidate_skill_ids(db, user, req.mode, req.track_id, req.skill_id)
-    skill_id = await _select_skill(db, user, candidate_skill_ids)
-
     question_public = None
-    if skill_id:
-        question = await _select_question(db, user, skill_id)
-        if question:
-            question_public = await _to_question_public(question)
+    if req.force_question_id is not None:
+        if settings.ENVIRONMENT == "production":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="force_question_id is a dev/E2E-only override",
+            )
+        result = await db.execute(select(Question).where(Question.id == req.force_question_id))
+        question = result.scalar_one_or_none()
+        if question is None:
+            raise HTTPException(status_code=404, detail=f"Unknown question_id '{req.force_question_id}'")
+        question_public = await _to_question_public(question)
+    else:
+        candidate_skill_ids = await _candidate_skill_ids(db, user, req.mode, req.track_id, req.skill_id)
+        skill_id = await _select_skill(db, user, candidate_skill_ids)
+        if skill_id:
+            question = await _select_question(db, user, skill_id)
+            if question:
+                question_public = await _to_question_public(question)
 
     reviews_due = await count_due_reviews(db, user)
     await db.commit()

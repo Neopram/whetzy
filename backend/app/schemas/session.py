@@ -38,6 +38,9 @@ class QuizStartRequest(BaseModel):
     track_id: str | None = None
     skill_id: str | None = None
     mode: str = Field(default="study", pattern="^(study|review|placement|exam)$")
+    # Dev/E2E only: serve this exact question instead of running selection.
+    # Rejected outside ENVIRONMENT != "production" (see quiz.py start_session).
+    force_question_id: str | None = None
 
 
 class QuizStartResponse(BaseModel):
