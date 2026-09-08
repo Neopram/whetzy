@@ -147,7 +147,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 8.1 | 1 | Suite Playwright: auth, quiz, duelo, offline, pago | TODO | Verde en CI headless; screenshots en fallo |
+| 8.1 | 1 | Suite Playwright: auth, quiz, duelo, offline, pago | DOING | Verde en CI headless; screenshots en fallo. Nota: "pago" no tiene UI aún (7.2 Stripe = TODO) — se cubre auth/quiz/duelo/offline; pago se añade cuando 7.2 exista |
 | 8.2 | 3 | Load test (k6): 100 usuarios concurrentes | TODO | p95 < 500ms, 0 errores 5xx |
 | 8.3 | 3 | Presupuesto de performance | TODO | LCP < 2.5s, TTI < 3.5s, bundle < 300KB gzip |
 | 8.4 | 4 | Teardown competitivo vs Duolingo/Brilliant/DataCamp | TODO | Informe con gaps concretos y acciones |
