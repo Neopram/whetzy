@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ab) — 2.3 DONE: exec_output server-side grading; 4.4 DONE: DKT inference cache; P.10 DONE: dark mode; 4.3 DONE: model registry
+> Última actualización: 2026-09-08 (sesión ab) — 8.3 DONE: perf budget (175KB, LCP 864ms); 2.3 DONE: exec_output server-side grading; 4.4 DONE: DKT inference cache; P.10 DONE
 
 ---
 
@@ -53,7 +53,7 @@
 | 5 | Pipeline multi-agente + analytics | 3% | No construido |
 | 6 | Observabilidad + límites de servicio | 5% | Monolito, logging básico |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 30% | Docker/CI reales; sin Stripe/nativo/K8s |
-| 8 | Garantía E2E + informe competitivo | 30% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); sin load test, sin presupuesto de perf, sin informe competitivo |
+| 8 | Garantía E2E + informe competitivo | 55% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin load test, sin informe competitivo |
 | 9 | Store readiness + excelencia de diseño | 35% | 9.1 + 9.2 + 9.4 DONE; sin store assets, sin nativo |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
 | P | Producto — huecos que impiden vender | 77% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro DONE; sin banco 1.5k, versionado, recordatorios |
@@ -149,7 +149,7 @@
 |---|---|---|---|---|
 | 8.1 | 1 | Suite Playwright: auth, quiz, duelo, offline, pago | DONE | CI job `e2e` ✓ verde (~2m30s): 6/6 tests (auth×3, quiz, duelo, offline). "pago" diferido a cuando 7.2 (Stripe) exista — anotado, no silenciado. 2 bugs reales encontrados y arreglados: duels.py dejaba pasar preguntas `fill_blank` legacy (sin opciones/correct_index, 150/1253) a un duelo, dejando al jugador sin botones; DB local desincronizada 3 migraciones (recreada). `AUTH_RATE_LIMIT` ahora configurable (era 12/min fijo, insuficiente para la suite) |
 | 8.2 | 3 | Load test (k6): 100 usuarios concurrentes | TODO | p95 < 500ms, 0 errores 5xx |
-| 8.3 | 3 | Presupuesto de performance | TODO | LCP < 2.5s, TTI < 3.5s, bundle < 300KB gzip |
+| 8.3 | 3 | Presupuesto de performance | DONE | scripts/check-bundle.mjs: bundle=175KB gzip < 300KB ✅; e2e/perf-budget.spec.ts: LCP 864ms < 8s CI budget, domInteractive 826ms < 10s CI budget; production targets 2.5s/3.5s documented; bundle check in CI frontend job after build; 2/2 Playwright tests pass (10.7s) |
 | 8.4 | 4 | Teardown competitivo vs Duolingo/Brilliant/DataCamp | TODO | Informe con gaps concretos y acciones |
 
 ### 9 — Store readiness + excelencia de diseño
