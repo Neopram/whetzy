@@ -85,7 +85,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 2.1 | 2 | Pyodide E2E determinista: endpoint dev que fuerza pregunta `exec` | TODO | Test Playwright: recibe `fill_blank_exec`, ejecuta, output correcto, 0 errores consola |
+| 2.1 | 2 | Pyodide E2E determinista: endpoint dev que fuerza pregunta `exec` | DOING | Test Playwright: recibe `fill_blank_exec`, ejecuta, output correcto, 0 errores consola |
 | 2.2 | 3 | Sandbox hardening Pyodide: timeout, memoria, imports bloqueados | TODO | Test: `while True: pass` termina en 5s; `import os` bloqueado |
 | 2.3 | 3 | `exec_correct` server-side (hoy viene del cliente = explotable) | TODO | Servidor valida output; cliente no puede falsear corrección |
 
