@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión w) — 8.1 DONE: Playwright E2E (auth/quiz/duelo/offline) verde en CI; 2 bugs reales arreglados en el camino (duels con preguntas fill_blank huérfanas; DB local desincronizada); 230 back tests, 39 front, 6 E2E
+> Última actualización: 2026-09-08 (sesión x) — 2.1 DONE: Pyodide E2E (force_question_id + fill_blank_exec test, CI ✓); 7.8 DONE: backup/restore runbook + scripts (restore probado: 1253 Q, 544 KB, < 5 s)
 
 ---
 
@@ -85,7 +85,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 2.1 | 2 | Pyodide E2E determinista: endpoint dev que fuerza pregunta `exec` | DOING | Test Playwright: recibe `fill_blank_exec`, ejecuta, output correcto, 0 errores consola |
+| 2.1 | 2 | Pyodide E2E determinista: endpoint dev que fuerza pregunta `exec` | DONE | force_question_id en QuizStartRequest (403 en prod); pyodide.spec.ts: route intercept → fill_blank_exec q010101ex001 → '42' → ✅ output+explanation; CI ✓ (backend+e2e+frontend) |
 | 2.2 | 3 | Sandbox hardening Pyodide: timeout, memoria, imports bloqueados | TODO | Test: `while True: pass` termina en 5s; `import os` bloqueado |
 | 2.3 | 3 | `exec_correct` server-side (hoy viene del cliente = explotable) | TODO | Servidor valida output; cliente no puede falsear corrección |
 
@@ -141,7 +141,7 @@
 | 7.5 | 3 | Shell nativo Capacitor (iOS + Android) | TODO | Builds locales corren; deep links; safe areas |
 | 7.6 | 4 | RevenueCat IAP nativo | TODO | Sandbox purchase E2E en ambas plataformas |
 | 7.7 | 4 | IaC: Terraform para Railway + Cloudflare | TODO | `terraform plan` limpio; infra reproducible |
-| 7.8 | 2 | Runbook de backup/restore de DB | TODO | Restore probado en DB efímera desde backup real |
+| 7.8 | 2 | Runbook de backup/restore de DB | DONE | scripts/db_backup.sh + db_restore.sh + db_restore_test.sh; runbook en docs/; restore probado: 1253 Q ✅ users ✅ tracks ✅ skills ✅ — 544 KB, < 5 s |
 
 ### 8 — Garantía E2E + competitivo
 
