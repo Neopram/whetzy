@@ -33,9 +33,9 @@ jobs:
           pip install -r requirements.txt pip-audit pytest-cov mypy
 
       - name: Dependency audit (pip-audit)
-        # Fails the build on HIGH or CRITICAL vulnerabilities.
+        # Fails the build if any known vulnerability is found.
         # Add --ignore-vuln PYSEC-<id> for known-safe transitive issues only.
-        run: pip-audit --strict --vulnerability-service pypi --fail-on HIGH
+        run: pip-audit --progress-spinner off
 
       - name: Lint (ruff)
         run: ruff check app
