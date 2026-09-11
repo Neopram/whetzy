@@ -54,8 +54,8 @@ async def get_ab_stats(
         "bkt": {"users": 0, "sessions": 0, "questions": 0, "correct": 0},
         "dkt": {"users": 0, "sessions": 0, "questions": 0, "correct": 0},
     }
-    for cohort in totals:
-        totals[cohort]["users"] = sum(1 for c in cohort_map.values() if c == cohort)
+    for cohort, cohort_totals in totals.items():
+        cohort_totals["users"] = sum(1 for c in cohort_map.values() if c == cohort)
 
     for row in sess_rows.all():
         cohort = cohort_map.get(str(row.user_id), "bkt")

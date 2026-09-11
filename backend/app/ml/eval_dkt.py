@@ -20,9 +20,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -189,8 +190,8 @@ def _find_latest_checkpoint(base_dir: Path) -> Path | None:
 # ── Report ────────────────────────────────────────────────────────────────────
 
 def _print_row(label: str, auc: float, acc: float) -> None:
-    auc_s = f"{auc:.4f}" if auc == auc else "  N/A "
-    acc_s = f"{acc:.4f}" if acc == acc else "  N/A "
+    auc_s = f"{auc:.4f}" if not math.isnan(auc) else "  N/A "
+    acc_s = f"{acc:.4f}" if not math.isnan(acc) else "  N/A "
     print(f"  {label:<8}  AUC={auc_s}  ACC={acc_s}")
 
 
@@ -276,13 +277,13 @@ def main() -> None:
                 dkt_auc = _auc(dkt_pred, dkt_true)
                 dkt_acc = _acc(dkt_pred, dkt_true)
                 _print_row("DKT", dkt_auc, dkt_acc)
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001 — best-effort DKT eval, report N/A on any failure
                 dkt_note = f"DKT eval failed: {exc}"
                 print(f"[eval_dkt] WARNING: {dkt_note}")
 
     # ── Comparison note ───────────────────────────────────────────────────────
     comparison = "N/A"
-    if dkt_auc == dkt_auc and bkt_auc == bkt_auc:
+    if not math.isnan(dkt_auc) and not math.isnan(bkt_auc):
         if dkt_auc >= bkt_auc:
             comparison = f"DKT ≥ BKT (+{dkt_auc - bkt_auc:.4f})"
         else:
@@ -304,19 +305,19 @@ def main() -> None:
 
     # ── Save report ───────────────────────────────────────────────────────────
     report: dict[str, Any] = {
-        "evaluated_at": datetime.now(timezone.utc).isoformat(),
+        "evaluated_at": datetime.now(UTC).isoformat(),
         "n_sequences_total": len(sequences),
         "n_sequences_val":   len(val_seqs),
         "n_skills":          len(skill_ids),
         "bkt": {
-            "auc": round(bkt_auc, 4) if bkt_auc == bkt_auc else None,
-            "acc": round(bkt_acc, 4) if bkt_acc == bkt_acc else None,
+            "auc": round(bkt_auc, 4) if not math.isnan(bkt_auc) else None,
+            "acc": round(bkt_acc, 4) if not math.isnan(bkt_acc) else None,
             "n_predictions": len(bkt_pred),
         },
         "dkt": {
             "checkpoint": str(ckpt_dir) if ckpt_dir else None,
-            "auc": round(dkt_auc, 4) if dkt_auc == dkt_auc else None,
-            "acc": round(dkt_acc, 4) if dkt_acc == dkt_acc else None,
+            "auc": round(dkt_auc, 4) if not math.isnan(dkt_auc) else None,
+            "acc": round(dkt_acc, 4) if not math.isnan(dkt_acc) else None,
         },
         "comparison": comparison,
         "note": dkt_note or None,

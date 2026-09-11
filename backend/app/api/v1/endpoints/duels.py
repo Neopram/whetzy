@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import random
 import uuid
 from datetime import UTC, datetime
@@ -27,6 +28,7 @@ from app.schemas.duel import (
     DuelSummary,
 )
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 _EXEC_TYPES = frozenset({"fill_blank_exec", "fix_bug"})
@@ -167,8 +169,8 @@ async def challenge(
             body=f"{current_user.display_name} challenged you to a duel.",
             tag="duel-challenge",
         )
-    except Exception:
-        pass  # non-fatal
+    except Exception as exc:  # noqa: BLE001 — push delivery is best-effort, must not fail the challenge
+        logger.warning("Duel challenge push notification failed: %s", exc)
 
     return DuelChallengeResponse(
         duel_id=str(duel.id),

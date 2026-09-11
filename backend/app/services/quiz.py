@@ -23,6 +23,7 @@ from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+import app.services.dkt as _dkt
 from app.core.config import settings
 from app.models.content import Module, Question, Skill
 from app.models.session import Response, StudySession
@@ -36,9 +37,15 @@ from app.schemas.session import (
     QuizStartRequest,
     QuizStartResponse,
 )
-import app.services.dkt as _dkt
 from app.services.ab_harness import get_cohort
-from app.services.engine import BKTModel, Card, EloEntity, EloRating, FSRSScheduler, SkillState
+from app.services.engine import (
+    BKTModel,
+    Card,
+    EloEntity,
+    EloRating,
+    FSRSScheduler,
+    SkillState,
+)
 from app.services.gamification import apply_quiz_event, get_or_create_current_entry
 
 bkt = BKTModel()
@@ -475,7 +482,9 @@ async def submit_answer(
 
     # Fire first_quiz_answer event on the user's very first answer ever.
     if session.questions_answered == 0:
-        from app.services.analytics import track as _analytics_track  # local import to avoid cycles
+        from app.services.analytics import (
+            track as _analytics_track,  # local import to avoid cycles
+        )
         await _analytics_track(db, "first_quiz_answer", user_id=user.id)
 
     session.questions_answered += 1

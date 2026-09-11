@@ -219,7 +219,7 @@ async def _llm_check(q: Question, source_text: str | None) -> list[Issue]:
             raw = re.sub(r"^```[a-z]*\n?", "", raw)
             raw = re.sub(r"\n?```$", "", raw.strip())
         result = json.loads(raw)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 — LLM call + JSON parse, degrade gracefully to no LLM issues
         logger.warning("content_qa: LLM check failed: %s", exc)
         return []
 
@@ -286,7 +286,7 @@ async def qa_question(q: Question, source_text: str | None = None) -> QAResult:
         passed=passed,
         score=_score(all_issues),
         issues=all_issues,
-        llm_checked=llm_ran and bool(llm_issues or True),  # True if attempt was made
+        llm_checked=llm_ran,
     )
 
 
@@ -301,7 +301,7 @@ async def qa_questions(
 
 
 async def qa_question_by_id(
-    db: "AsyncSession",
+    db: AsyncSession,
     question_id: str,
     source_text: str | None = None,
 ) -> QAResult:

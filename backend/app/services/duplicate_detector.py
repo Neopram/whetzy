@@ -50,7 +50,9 @@ DEFAULT_MAX_PAIRS = 200
 def _load_model(model_name: str = DEFAULT_MODEL) -> Any:
     """Load and cache the SentenceTransformer model (expensive — do once)."""
     try:
-        from sentence_transformers import SentenceTransformer  # type: ignore[import-untyped,unused-ignore]
+        from sentence_transformers import (
+            SentenceTransformer,  # type: ignore[import-untyped,unused-ignore]
+        )
         logger.info("Loading sentence-transformer model: %s", model_name)
         return SentenceTransformer(model_name)
     except ImportError:
@@ -138,7 +140,7 @@ class DuplicatePair:
 
 
 async def find_duplicates(
-    db: "AsyncSession",
+    db: AsyncSession,
     *,
     skill_id: str | None = None,
     threshold: float = DEFAULT_THRESHOLD,

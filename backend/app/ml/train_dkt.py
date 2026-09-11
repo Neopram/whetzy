@@ -19,10 +19,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sys
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -30,7 +31,7 @@ from typing import Any
 
 try:
     import torch
-    import torch.nn as nn
+    from torch import nn
     from torch.utils.data import DataLoader, Dataset
     _TORCH_AVAILABLE = True
 except ImportError:
@@ -194,7 +195,7 @@ def _train(
 
 
 def _compute_auc(
-    net: "_Net",
+    net: _Net,
     sequences: list[list[tuple[int, bool]]],
     n_skills: int,
 ) -> float:
@@ -275,8 +276,8 @@ def _save_checkpoint(
         "n_skills": len(skill_ids),
         "hidden": hidden,
         "epochs": epochs,
-        "val_auc": round(val_auc, 4) if val_auc == val_auc else None,
-        "trained_at": datetime.now(timezone.utc).isoformat(),
+        "val_auc": round(val_auc, 4) if not math.isnan(val_auc) else None,
+        "trained_at": datetime.now(UTC).isoformat(),
         "skill_ids": skill_ids,
         "db_url": safe_url,
         "run_id": str(uuid.uuid4()),
@@ -314,7 +315,7 @@ def main() -> None:
             print("ERROR: DATABASE_URL not set. Use --db or set the env var.", file=sys.stderr)
             sys.exit(2)
 
-    print(f"[train_dkt] Loading sequences from DB …")
+    print("[train_dkt] Loading sequences from DB …")
     sequences, skill_ids = _load_sequences(db_url)
 
     if len(sequences) < args.min_seqs:
@@ -345,7 +346,11 @@ def main() -> None:
         state_dict, skill_ids, args.hidden, args.epochs, val_auc, models_dir, db_url
     )
     print(f"[train_dkt] Checkpoint saved → {ckpt_dir}")
-    print(f"[train_dkt] val_auc={val_auc:.4f}" if val_auc == val_auc else "[train_dkt] val_auc=N/A (no val split)")
+    print(
+        f"[train_dkt] val_auc={val_auc:.4f}"
+        if not math.isnan(val_auc)
+        else "[train_dkt] val_auc=N/A (no val split)"
+    )
 
 
 if __name__ == "__main__":

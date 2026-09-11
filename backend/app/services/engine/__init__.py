@@ -11,11 +11,11 @@ __all__ = [
     "Card",
     "EloEntity",
     "EloRating",
-    "ReviewLog",
     "FSRSScheduler",
     "IRTItem",
     "PlacementEngine",
     "PlacementState",
+    "ReviewLog",
     "SkillState",
     "ThompsonBandit",
 ]
