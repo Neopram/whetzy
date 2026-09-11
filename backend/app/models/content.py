@@ -9,7 +9,12 @@ from app.core.db import Base
 
 
 class Track(Base):
-    """A top-level learning path, e.g. 'Python Basics' or 'AI Engineering'."""
+    """A top-level learning path, e.g. 'Python Basics' or 'AI Engineering'.
+
+    A certification track (`is_certification=True`) is the same Track row
+    shape as the 7 core tracks — it just carries extra exam-blueprint fields
+    (provider, question count, duration, passing score) and groups its
+    skills into `Domain`s with official exam weights."""
 
     __tablename__ = "tracks"
 
@@ -21,11 +26,23 @@ class Track(Base):
     color: Mapped[str] = mapped_column(String(16), default="#6366F1", nullable=False)
     total_questions: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
+    is_certification: Mapped[bool] = mapped_column(default=False, nullable=False)
+    cert_provider: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    # Practice-exam blueprint (simulacro): number of questions, time limit,
+    # and passing threshold as published by the certifying body. NULL for
+    # non-certification tracks.
+    exam_question_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    exam_duration_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    passing_score_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+
     modules: Mapped[list[Module]] = relationship(
         back_populates="track", cascade="all, delete-orphan", order_by="Module.order"
     )
     glossary_terms: Mapped[list[GlossaryTerm]] = relationship(
         back_populates="track", cascade="all, delete-orphan", order_by="GlossaryTerm.order"
+    )
+    domains: Mapped[list[Domain]] = relationship(
+        back_populates="track", cascade="all, delete-orphan", order_by="Domain.order"
     )
 
 
@@ -64,11 +81,40 @@ class Skill(Base):
     name_es: Mapped[str] = mapped_column(String(150), nullable=False)
     name_en: Mapped[str] = mapped_column(String(150), nullable=False)
     order: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    # Exam domain this skill counts towards, for certification tracks only.
+    # NULL for the 7 core tracks and for cert skills not yet mapped.
+    domain_id: Mapped[str | None] = mapped_column(
+        ForeignKey("domains.id", ondelete="SET NULL"), nullable=True, index=True
+    )
 
     module: Mapped[Module] = relationship(back_populates="skills")
+    domain: Mapped[Domain | None] = relationship(back_populates="skills")
     questions: Mapped[list[Question]] = relationship(
         back_populates="skill", cascade="all, delete-orphan"
     )
+
+
+class Domain(Base):
+    """An official exam domain within a certification track, e.g. AWS Cloud
+    Practitioner's 'Cloud Concepts' or 'Security and Compliance'.
+
+    `weight_pct` mirrors the certifying body's published exam blueprint
+    (weights across a track's domains sum to 100) and drives the per-domain
+    coverage check (10.2) and the per-domain simulacro report (10.3)."""
+
+    __tablename__ = "domains"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    track_id: Mapped[str] = mapped_column(
+        ForeignKey("tracks.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    name_es: Mapped[str] = mapped_column(String(150), nullable=False)
+    name_en: Mapped[str] = mapped_column(String(150), nullable=False)
+    weight_pct: Mapped[float] = mapped_column(Float, nullable=False)
+    order: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+
+    track: Mapped[Track] = relationship(back_populates="domains")
+    skills: Mapped[list[Skill]] = relationship(back_populates="domain")
 
 
 class GlossaryTerm(Base):

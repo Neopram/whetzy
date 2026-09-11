@@ -5,7 +5,7 @@ mapped class is registered on `Base.metadata`.
 
 from app.core.db import Base
 from app.models.analytics import AnalyticsEvent
-from app.models.content import GlossaryTerm, Module, Question, Skill, Track
+from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
 from app.models.duel import Duel
 from app.models.email_verification import EmailVerificationToken
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
@@ -19,6 +19,7 @@ __all__ = [
     "AnalyticsEvent",
     "Badge",
     "Base",
+    "Domain",
     "Duel",
     "EmailVerificationToken",
     "GlossaryTerm",
