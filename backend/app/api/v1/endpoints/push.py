@@ -10,7 +10,8 @@ POST /push/streak-reminder    — fire reminder to at-risk users (admin key)
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from pydantic import BaseModel
@@ -48,7 +49,7 @@ class PushUnsubscribeRequest(BaseModel):
 
 
 @router.get("/vapid-key")
-async def get_vapid_key() -> dict:
+async def get_vapid_key() -> dict[str, Any]:
     """Return the VAPID public key so the frontend can subscribe."""
     if not settings.VAPID_PUBLIC_KEY:
         raise HTTPException(
@@ -63,7 +64,7 @@ async def subscribe(
     body: PushSubscribeRequest,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
-) -> dict:
+) -> dict[str, Any]:
     """Register a browser push subscription for the current user."""
     existing = (
         await db.scalars(
@@ -95,7 +96,7 @@ async def unsubscribe(
     body: PushUnsubscribeRequest,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
-) -> dict:
+) -> dict[str, Any]:
     """Remove a push subscription for the current user."""
     result = await db.execute(
         delete(PushSubscription).where(
@@ -117,7 +118,7 @@ async def update_preferences(
     body: PushPreferencesRequest,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
-) -> dict:
+) -> dict[str, Any]:
     """Toggle push_streak_enabled for the current user (opt-out in one tap)."""
     user.push_streak_enabled = body.streak_enabled
     await db.commit()
@@ -128,7 +129,7 @@ async def update_preferences(
 async def send_streak_reminders(
     db: AsyncSession = Depends(get_db),
     _admin: None = Depends(_require_admin),
-) -> dict:
+) -> dict[str, Any]:
     """Fire streak-at-risk push notifications to eligible users.
 
     Eligible = streak > 0, push_streak_enabled=True, no study today,

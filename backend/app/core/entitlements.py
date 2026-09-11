@@ -16,6 +16,8 @@ Or call ``user_meets_tier`` directly in endpoint bodies for conditional gating
 
 from __future__ import annotations
 
+from collections.abc import Awaitable, Callable
+
 from fastapi import Depends, HTTPException, status
 
 from app.core.security import get_current_user
@@ -45,7 +47,7 @@ def user_meets_tier(user: User, minimum: str) -> bool:
     return _TIER_RANK.get(effective_tier, 0) >= _TIER_RANK.get(minimum, 0)
 
 
-def require_tier(minimum: str):
+def require_tier(minimum: str) -> Callable[[User], Awaitable[None]]:
     """FastAPI dependency factory — raises 403 if the user is below *minimum*."""
 
     async def _check(user: User = Depends(get_current_user)) -> None:

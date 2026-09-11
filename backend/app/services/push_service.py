@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import logging
+from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,12 +21,13 @@ from app.models.push_subscription import PushSubscription
 logger = logging.getLogger(__name__)
 
 try:
-    from pywebpush import WebPushException, webpush as _webpush
+    from pywebpush import WebPushException
+    from pywebpush import webpush as _webpush
 
     webpush = _webpush
     WebPushEx = WebPushException
 except ImportError:
-    webpush = None  # type: ignore[assignment]
+    webpush = None
     WebPushEx = Exception
 
 
@@ -38,7 +40,7 @@ async def send_to_user(
     user_id: object,
     title: str,
     body: str,
-    data: dict | None = None,
+    data: dict[str, Any] | None = None,
     *,
     tag: str | None = None,
 ) -> int:
@@ -67,7 +69,7 @@ async def send_to_user(
 
     for sub in subs:
         try:
-            webpush(  # type: ignore[operator]
+            webpush(
                 subscription_info={
                     "endpoint": sub.endpoint,
                     "keys": {"p256dh": sub.p256dh, "auth": sub.auth},

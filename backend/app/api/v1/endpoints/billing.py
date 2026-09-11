@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from pydantic import BaseModel
@@ -59,7 +60,7 @@ async def stripe_webhook(
     request: Request,
     db: AsyncSession = Depends(get_db),
     stripe_signature: str | None = Header(None, alias="stripe-signature"),
-) -> dict:
+) -> dict[str, Any]:
     """Receive and process Stripe webhook events.
 
     Stripe calls this endpoint directly; authentication is by signature

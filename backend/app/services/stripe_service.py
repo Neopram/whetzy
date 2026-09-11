@@ -15,7 +15,8 @@ Design decisions:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Any
 
 import stripe as _stripe
 
@@ -67,10 +68,10 @@ def create_checkout_session(user: User, price_id: str) -> str:
     )
     # Persist customer_id even before checkout completes; idempotent on retry
     user.stripe_customer_id = customer_id
-    return session["url"]
+    return str(session["url"])
 
 
-def verify_webhook(payload: bytes, sig_header: str) -> dict:
+def verify_webhook(payload: bytes, sig_header: str) -> dict[str, Any]:
     """Parse and verify a Stripe webhook event.
 
     Raises ``stripe.error.SignatureVerificationError`` on bad signature.
@@ -79,11 +80,13 @@ def verify_webhook(payload: bytes, sig_header: str) -> dict:
     if not settings.STRIPE_WEBHOOK_SECRET:
         raise RuntimeError("Stripe webhook secret not configured: set STRIPE_WEBHOOK_SECRET")
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    event = stripe.Webhook.construct_event(payload, sig_header, settings.STRIPE_WEBHOOK_SECRET)
+    event = stripe.Webhook.construct_event(  # type: ignore[no-untyped-call]
+        payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+    )
     return dict(event)
 
 
-def apply_subscription_event(user: User, event: dict) -> None:
+def apply_subscription_event(user: User, event: dict[str, Any]) -> None:
     """Update *user* subscription state from a Stripe webhook event (in-place).
 
     Handles:
@@ -92,7 +95,7 @@ def apply_subscription_event(user: User, event: dict) -> None:
     - ``customer.subscription.deleted``→ cancel subscription
     """
     event_type: str = event["type"]
-    data_object: dict = event["data"]["object"]
+    data_object: dict[str, Any] = event["data"]["object"]
 
     if event_type == "checkout.session.completed":
         sub_id: str = data_object.get("subscription", "")
@@ -111,7 +114,7 @@ def apply_subscription_event(user: User, event: dict) -> None:
         user.stripe_subscription_id = data_object.get("id") or user.stripe_subscription_id
 
 
-def _set_subscription(user: User, sub: dict) -> None:
+def _set_subscription(user: User, sub: dict[str, Any]) -> None:
     tier_map = _price_map()
     user.stripe_subscription_id = sub["id"]
     user.subscription_status = sub["status"]
@@ -125,4 +128,4 @@ def _set_subscription(user: User, sub: dict) -> None:
     # current_period_end is a Unix timestamp
     period_end = sub.get("current_period_end")
     if period_end:
-        user.subscription_expires_at = datetime.fromtimestamp(int(period_end), tz=timezone.utc)
+        user.subscription_expires_at = datetime.fromtimestamp(int(period_end), tz=UTC)
