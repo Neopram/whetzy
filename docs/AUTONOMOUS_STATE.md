@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-11 (sesión aj) — auditoría + launch readiness console; Phase 8 corregida a 100% (8.4 ya era DONE); 451 tests collected; tsc 0 err; backend prod CAÍDO (H.1)
+> Última actualización: 2026-09-11 (sesión ak) — 10.1 DONE (certification track schema); mypy strict regresión detectada (Q.11, 19 err/6 archivos); P.8+9.7 pasan de TODO a BLOCKED con razón (GROQ_API_KEY / dispositivo físico); Alembic HEAD invariant corregido (era g7h8i9j0k1l2 desde P.9, real m3n4o5p6q7r8); backend prod sigue CAÍDO (H.1 vigente)
 
 ---
 
@@ -17,7 +17,7 @@
 | Backend prod | `https://api-production-9751.up.railway.app` |
 | Frontend prod | `https://whetzy.com` / `https://whetzy.pages.dev` |
 | Repo | `github.com/Neopram/whetzy` branch `master` |
-| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9 → e5f6a7b8c9d0 → f6a7b8c9d0e1 → g7h8i9j0k1l2` |
+| Alembic HEAD | cadena `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9 → e5f6a7b8c9d0 → f6a7b8c9d0e1 → g7h8i9j0k1l2 → h8i9j0k1l2m3 → i9j0k1l2m3n4 → j0k1l2m3n4o5 → k1l2m3n4o5p6 → l2m3n4o5p6q7 → m3n4o5p6q7r8` (esta tabla estaba desactualizada desde P.9 — 6 migraciones DONE nunca se reflejaron aquí) |
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |
@@ -55,9 +55,9 @@
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 85% | Docker/CI reales; Stripe ✅; entitlements ✅; i18n ✅; Capacitor ✅; Terraform IaC ✅; Runbook ✅; IAP HUMAN-BLOCKED |
 | 8 | Garantía E2E + informe competitivo | 100% | ✅ CERRADA — 8.1 Playwright ✓; 8.2 k6 ✓ (100 VUs p95<3s); 8.3 perf budget ✓ (175KB LCP 864ms); 8.4 teardown competitivo ✓ (docs/competitive-teardown.md) |
 | 9 | Store readiness + excelencia de diseño | 95% | 9.1-9.6+9.8 DONE; 9.7 HUMAN-BLOCKED (VoiceOver/TalkBack real device) |
-| Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
+| Q | Piso de calidad (transversal) | 95% | Q.1-Q.10 DONE pero mypy strict tiene una regresión no detectada hasta ahora (Q.11, 19 errores en 6 archivos) — no se puede llamar CERRADA mientras eso sea cierto |
 | P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
-| 10 | Marketplace de certificaciones | 0% | Dirección estratégica cerrada; arranca tras la 9 |
+| 10 | Marketplace de certificaciones | 15% | 10.1 DONE (schema); 10.2-10.4 requieren GROQ_API_KEY (P.8-style) y/o cuentas Stripe live — arrancados solo lo que no dependía de la 9 ni de secretos |
 
 ---
 
@@ -80,6 +80,7 @@
 | Q.8 | 2 | Lint zero-warnings: ruff + oxlint | DONE | oxlint 0 warnings (6 fixes en StatsScreen/DuelScreen/pyodide-worker.js); CI usa `npx oxlint src --deny-warnings` |
 | Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y servicios críticos | DONE | 39 tests; 87.6% stmts/80% fns/75% branches/92.9% lines; jsdom@25; fake-indexeddb; CI: npm run test:coverage |
 | Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | DONE | GH Actions verde: backend ✓ 2m05s / frontend ✓ 35s. Fixes: YAML quote, pip-audit flags, tsc -b, pytest-asyncio 1.4.0, aiosqlite, ruff install, mypy misc/unused-ignore, chromadb skip |
+| Q.11 | 2 | Regresión: `mypy app --strict` ya no está en 0 errores (ledger lo daba por CERRADO en Q.7) | TODO | 19 errores en 6 archivos hoy (`endpoints/billing.py`, `endpoints/push.py`, `core/entitlements.py`, `core/security.py`, `services/push_service.py`, `services/stripe_service.py`), mayoría `[type-arg]` "Missing type parameters for generic type dict". `mypy app --strict` → 0 errores otra vez. Detectado en sesión ak corriendo mypy tras 10.1 (content.py/models limpios, no relacionado a este cambio) |
 
 ### 2 — Cierre Fase 2
 
@@ -162,7 +163,7 @@
 | 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | DONE | LegalScreen + /privacy + /terms routes + ProfileScreen links a /privacy, /terms, /delete-account — commit b6ab6dc ✅ |
 | 9.5 | 3 | Checklist App Store Review Guidelines | DONE | docs/store/app-store-review-checklist.md: 5 sections × all guidelines; 1 hard blocker B1 (Stripe→must use IAP, fix=7.6); 6 action items A1-A6; already-compliant list (ASVS/GDPR/WCAG/dark mode/safe areas/push opt-in/no IDFA/no SIWA); iOS Capacitor submission checklist |
 | 9.6 | 3 | Play Store: Data Safety + target API level | DONE | docs/store/play-store-data-safety.md: targetSdkVersion=35 ✅ (≥34 req); data inventory (personal/financial/activity/device IDs/crash); third parties (Stripe/Groq/Sentry); field-by-field Play Console answers; 4 pre-submission action items |
-| 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | TODO | Flujos principales navegables con lector de pantalla |
+| 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | BLOCKED | Flujos principales navegables con lector de pantalla — requiere dispositivo físico iOS/Android o Xcode/Android Studio con lector de pantalla real; ninguno disponible en este entorno. Sin evidencia ejecutable posible aquí → no HUMAN-BLOCKED (no hay acción de cuenta/pago que preparar), simplemente BLOCKED hasta correr en un entorno con el dispositivo |
 | 9.8 | 4 | Sitio de marketing + pricing | DONE | LandingScreen.tsx: hero+features+pricing ES/EN; /landing route; tsc 0 err; commit 9adf861 |
 
 ### P — Producto: lo que un dueño no perdona (PRI 1-3)
@@ -179,7 +180,7 @@
 | P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | DONE | PATCH /auth/me + PATCH /auth/me/password + verify-email + resend-verification + forgot-password + reset-password — 229 tests pasan |
 | P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | DONE | QuestionReport model + migration f6a7b8c9d0e1 + POST /reports/question + GET /reports/question/{id} — 229 tests pasan |
 | P.7 | 2 | Exportación de datos (GDPR portabilidad) | DONE | GET /export/data → JSON attachment; sin N+1; hashed_password excluido — 229 tests pasan |
-| P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | TODO | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde |
+| P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | BLOCKED | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde — `GROQ_API_KEY` no está en `backend/.env` ni en ningún `.env*` local; `content_agent.py` cae a `NullProvider` sin ella (5.1). Generar contenido a mano sin LLM+cita violaría la línea roja de contenido nativo con fuente. Necesita que el humano añada la key (no es "rotar/exponer un secreto" que yo ya tenga — es que no tengo ninguna) |
 | P.9 | 3 | Versionado de contenido: corregir una Q sin romper el historial | DONE | Question.content_version (INT default 1) + Response.question_version stamps version at answer time; PATCH /api/v1/content/questions/{id} bumps version (X-Admin-Key auth, CONTENT_ADMIN_KEY env var); migration h8i9j0k1l2m3; 7 tests (auth guard, bump, no-bump on empty, response version before/after edit); 261/261 tests; mypy strict 0 err; commit 2978c67 |
 | P.10 | 3 | Modo oscuro (claro sigue por defecto) | DONE | Tokens duales ✅ (design-tokens.css: :root light + @media prefers-color-scheme dark + [data-theme="dark"]); toggle en ajustes ✅ (ProfileScreen.tsx L86-91: role="switch" aria-checked); respeta prefers-color-scheme ✅ (getStoredTheme() checks matchMedia on first load); contraste AA ✅ (heredado de 9.2 DONE); tsc 0 errores |
 | P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | DONE | CI: pip-audit --fail-on HIGH + npm audit --audit-level=high; real pytest |
@@ -190,7 +191,7 @@
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 10.1 | 5 | Modelo de datos para tracks de certificación (dominios, pesos, simulacro) | TODO | Schema + migración Alembic; un track de cert convive con los 7 existentes |
+| 10.1 | 5 | Modelo de datos para tracks de certificación (dominios, pesos, simulacro) | DONE | `Domain` model (track_id, name_es/en, weight_pct, order) + `Track.is_certification/cert_provider/exam_question_count/exam_duration_minutes/passing_score_pct` + `Skill.domain_id` — reutiliza Track→Module→Skill→Question, no jerarquía nueva; migration m3n4o5p6q7r8 aplicada+downgrade+re-aplicada limpia contra Postgres local, `\d domains`/`\d tracks` verificado; 4 tests nuevos, 451/451 tests; ruff limpio; commit 84ac758 |
 | 10.2 | 5 | Contenido AWS Cloud Practitioner: ≥ 300 Q con fuente oficial | TODO | Cargado, QA 5.2 en verde, cobertura de los 4 dominios del examen según pesos oficiales |
 | 10.3 | 5 | Simulacro cronometrado con informe por dominio | TODO | E2E: 65 Q en 90 min, informe con % por dominio y predicción de aprobado |
 | 10.4 | 6 | Catálogo y compra por certificación | TODO | Producto Stripe por cert; entitlement por cert; test-mode E2E |
@@ -253,6 +254,8 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | H.5 | Submisión a stores | Assets + checklists | Subir builds y responder review |
 | H.6 | Cadena de sesiones | Task recurrente `whetzy-orch-*` cada 6 h; modelo y permisos en `~/.claude/settings.json`; se auto-borra al agotar el backlog | Nada, salvo tener la app Claude abierta. Pausar: deshabilitar el task en "Scheduled". Quitar la dependencia de la app → H.7 |
 | H.7 | Rutina remota — única forma de no depender de la app abierta | `RemoteTrigger` responde 200. Schema sondeado: `session_request.worker` (obligatorio) o `job_config` forma "ccr". El preflight del servidor falla sin repo conectado y entorno | **Una vez:** en claude.ai conectar `Neopram/whetzy` y crear un entorno. La siguiente sesión detecta ambos, cierra el schema con 1-2 creates, migra la cadena y borra el task local |
+| H.8 | `GROQ_API_KEY` ausente localmente | Verificado: no está en `backend/.env` ni en ningún `.env*` del repo. Bloquea P.8 (banco 1.500+ Q) y 10.2 (contenido AWS) — ambos dependen de `content_agent.py`, que cae a `NullProvider` sin ella | Añadir `GROQ_API_KEY=<key>` a `backend/.env` (clave de https://console.groq.com, gratis). Una vez ahí, la siguiente sesión retoma P.8/10.2 automáticamente |
+| H.9 | Dispositivo físico o emulador con lector de pantalla real para 9.7 | Audit automático de ARIA/roles/foco ya cubierto por axe-core (9.2) — falta la navegación real con VoiceOver (iOS) o TalkBack (Android) | Correr la app en un iPhone (VoiceOver) o Android (TalkBack) y navegar auth→quiz→duelo→ajustes; anotar cualquier trampa de foco o label faltante |
 
 ---
 
@@ -271,6 +274,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | ac | 2026-09-08 | 261 back | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.2 (k6), P.9 (content versioning) | 0,1,Q |
 | ad | 2026-09-08 | 310 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 4.5(churn),5.4(analytics),7.2(Stripe),7.3(entitlements),3.3(push),P.9(content versioning) | 0,1,Q |
 | aj | 2026-09-11 | 451 back (exit 0) + 0 err tsc | ≥60% cov | 87.6% stmts | — | 0 err | 0 err | Phase 8 corregida a 100%; launch console publicada; backend prod CAÍDO (H.1 vigente) | 0,1,2,3,4,5,6,Q,8 |
+| ak | 2026-09-11 | 451 back (exit 0, +3 vs aj: certification schema tests) | sin medir | sin medir | limpio (archivos nuevos/tocados) | **19 err (6 archivos) — regresión, Q.11** | sin correr | 10.1 (certification track schema); H.1 confirmado vigente; Q.11 (mypy regression) y H.8/H.9 añadidos al backlog | 0,1,2,3,4,5,6,Q(mypy roto),8 |
 
 ---
 
@@ -287,6 +291,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | 5 | 2026-09-08 | Orquestación por ledger + auto-programación de sesiones (scheduled task local, one-shot +6h) | Un prompt monolítico degrada la atención; el estado debe vivir fuera del contexto. One-shot en vez de cron: cada sesión decide si hay trabajo antes de programar la siguiente, y la cadena se corta sola sin presupuesto | Cron ciego (quema presupuesto sin mirar el ledger); un solo prompt gigante |
 | 6 | 2026-09-08 | Workers paralelos sin worktree por defecto, sobre grupos de archivos disjuntos | Evita el coste de merge; la disjunción la garantiza el ledger. Worktree solo para refactors amplios | Worktree siempre (merge en cada tarea) |
 | 7 | 2026-09-08 | Continuidad por task recurrente (cron 6 h) que el propio orquestador convierte en su pre-flight y borra al terminar; modelo y permisos en settings de usuario | Una cadena one-shot muere si un corte por límite llega antes de programar la siguiente. El cron reintenta solo: sin trabajo sale en segundos, sin presupuesto no arranca y no gasta. Settings de usuario aplican en cualquier cwd, que el task no controla | Cadena one-shot (frágil); bypass a nivel proyecto (no aplica si el task arranca fuera del cwd) |
+| 8 | 2026-09-11 | Empezar 10.1 (schema de tracks de certificación) sin esperar a que la fase 9 cierre, pese a "Fase 10 arranca tras la 9" | Todo el backlog `TODO` de PRI menor (7.6, 9.7, P.8) está bloqueado por recursos que no tengo: dispositivo físico, cuentas de store, `GROQ_API_KEY`. 10.1 es puro schema, reversible con `git revert`, sin secretos ni dispositivos. Esperar de brazos cruzados desperdicia la sesión; el gate de fase 9 protege contra vender un producto a medio construir, no contra preparar el modelo de datos | Esperar sin hacer nada hasta que 9.7 se desbloquee (desperdicia sesiones autónomas); reabrir la decisión de orden de fases (no — sigue cerrada, solo adelanté trabajo de bajo riesgo) |
 
 ---
 
