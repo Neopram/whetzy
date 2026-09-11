@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-11 (sesión ak) — 10.1 DONE (certification track schema); mypy strict regresión detectada (Q.11, 19 err/6 archivos); P.8+9.7 pasan de TODO a BLOCKED con razón (GROQ_API_KEY / dispositivo físico); Alembic HEAD invariant corregido (era g7h8i9j0k1l2 desde P.9, real m3n4o5p6q7r8); backend prod sigue CAÍDO (H.1 vigente)
+> Última actualización: 2026-09-11 (sesión ak) — 10.1 DONE (certification track schema); Q.11 DONE (mypy strict regression, 16 err/5 archivos → 0); P.8+9.7 pasan de TODO a BLOCKED con razón (GROQ_API_KEY / dispositivo físico); Alembic HEAD invariant corregido (era g7h8i9j0k1l2 desde P.9, real m3n4o5p6q7r8); backend prod sigue CAÍDO (H.1 vigente)
 
 ---
 
@@ -55,7 +55,7 @@
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 85% | Docker/CI reales; Stripe ✅; entitlements ✅; i18n ✅; Capacitor ✅; Terraform IaC ✅; Runbook ✅; IAP HUMAN-BLOCKED |
 | 8 | Garantía E2E + informe competitivo | 100% | ✅ CERRADA — 8.1 Playwright ✓; 8.2 k6 ✓ (100 VUs p95<3s); 8.3 perf budget ✓ (175KB LCP 864ms); 8.4 teardown competitivo ✓ (docs/competitive-teardown.md) |
 | 9 | Store readiness + excelencia de diseño | 95% | 9.1-9.6+9.8 DONE; 9.7 HUMAN-BLOCKED (VoiceOver/TalkBack real device) |
-| Q | Piso de calidad (transversal) | 95% | Q.1-Q.10 DONE pero mypy strict tiene una regresión no detectada hasta ahora (Q.11, 19 errores en 6 archivos) — no se puede llamar CERRADA mientras eso sea cierto |
+| Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict (con el flag real de CI) + tsc strict + oxlint 0w + vitest 87% + CI ✓; Q.11 (regresión mypy) cerrada en sesión ak |
 | P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
 | 10 | Marketplace de certificaciones | 15% | 10.1 DONE (schema); 10.2-10.4 requieren GROQ_API_KEY (P.8-style) y/o cuentas Stripe live — arrancados solo lo que no dependía de la 9 ni de secretos |
 
@@ -80,7 +80,7 @@
 | Q.8 | 2 | Lint zero-warnings: ruff + oxlint | DONE | oxlint 0 warnings (6 fixes en StatsScreen/DuelScreen/pyodide-worker.js); CI usa `npx oxlint src --deny-warnings` |
 | Q.9 | 2 | Tests frontend: vitest + testing-library para hooks y servicios críticos | DONE | 39 tests; 87.6% stmts/80% fns/75% branches/92.9% lines; jsdom@25; fake-indexeddb; CI: npm run test:coverage |
 | Q.10 | 3 | CI real: lint + mypy + pytest + tsc + vitest + build (branch ya corregido a `master` en sesión s) | DONE | GH Actions verde: backend ✓ 2m05s / frontend ✓ 35s. Fixes: YAML quote, pip-audit flags, tsc -b, pytest-asyncio 1.4.0, aiosqlite, ruff install, mypy misc/unused-ignore, chromadb skip |
-| Q.11 | 2 | Regresión: `mypy app --strict` ya no está en 0 errores (ledger lo daba por CERRADO en Q.7) | TODO | 19 errores en 6 archivos hoy (`endpoints/billing.py`, `endpoints/push.py`, `core/entitlements.py`, `core/security.py`, `services/push_service.py`, `services/stripe_service.py`), mayoría `[type-arg]` "Missing type parameters for generic type dict". `mypy app --strict` → 0 errores otra vez. Detectado en sesión ak corriendo mypy tras 10.1 (content.py/models limpios, no relacionado a este cambio) |
+| Q.11 | 2 | Regresión: `mypy app --strict` ya no está en 0 errores (ledger lo daba por CERRADO en Q.7) | DONE | 16 errores reales en 5 archivos con el comando exacto de CI (`mypy app --strict --ignore-missing-imports`): `dict`→`dict[str,Any]` (stripe_service×4, push_service×1, push.py×5, billing.py×1), `str(session["url"])` en vez de retornar Any, `type:ignore[no-untyped-call]` en `stripe.Webhook.construct_event`, 2 `type:ignore` ya no usados removidos, `require_tier()` con retorno `Callable[[User],Awaitable[None]]` explícito. +3 ruff (import sin usar, orden, UP017). `mypy --strict --ignore-missing-imports` 0 err (83 files); ruff limpio; 451/451 tests; commit f38ba5a |
 
 ### 2 — Cierre Fase 2
 
@@ -274,7 +274,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | ac | 2026-09-08 | 261 back | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.2 (k6), P.9 (content versioning) | 0,1,Q |
 | ad | 2026-09-08 | 310 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 4.5(churn),5.4(analytics),7.2(Stripe),7.3(entitlements),3.3(push),P.9(content versioning) | 0,1,Q |
 | aj | 2026-09-11 | 451 back (exit 0) + 0 err tsc | ≥60% cov | 87.6% stmts | — | 0 err | 0 err | Phase 8 corregida a 100%; launch console publicada; backend prod CAÍDO (H.1 vigente) | 0,1,2,3,4,5,6,Q,8 |
-| ak | 2026-09-11 | 451 back (exit 0, +3 vs aj: certification schema tests) | sin medir | sin medir | limpio (archivos nuevos/tocados) | **19 err (6 archivos) — regresión, Q.11** | sin correr | 10.1 (certification track schema); H.1 confirmado vigente; Q.11 (mypy regression) y H.8/H.9 añadidos al backlog | 0,1,2,3,4,5,6,Q(mypy roto),8 |
+| ak | 2026-09-11 | 451 back (exit 0) | sin medir | sin medir | limpio | 0 err (16→0, Q.11 fijado) | sin correr | 10.1 (certification track schema); Q.11 (mypy strict regression, 16 err/5 archivos → 0); H.1 confirmado vigente; H.8/H.9 añadidos al backlog | 0,1,2,3,4,5,6,Q,8 |
 
 ---
 
