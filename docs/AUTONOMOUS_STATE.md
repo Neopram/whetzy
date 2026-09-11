@@ -140,7 +140,7 @@
 | 7.3 | 2 | Entitlements: gating free/plus/pro | DONE | app/core/entitlements.py: user_meets_tier + require_tier dep; free<plus<pro hierarchy; is_premium=True w/o tier → plus (backward compat); quiz exam/review → plus; tutor/explain → plus; 16 tests (9 unit + 7 integration); conftest: plus_user+plus_auth_headers; 302/302 tests; commit 37acb87 |
 | 7.4 | 3 | i18next completo ES/EN | DONE | i18n.ts + react-i18next; 10 screens migradas (Auth/Onboarding/Home/League/Tracks/Stats/Profile/Quiz/Duel/Placement); 0 TEXT/L dicts; duel+placement+quiz-exec keys added; tsc 0 err; commit 8f99ad9 |
 | 7.5 | 3 | Shell nativo Capacitor (iOS + Android) | DONE | @capacitor/{core,cli,android,splash-screen,status-bar,keyboard,push-notifications} installed; android/ project generated + synced; deep links (https://whetzy.com + whetzy://); safe areas (env insets on TopBar/Toast/.app-content/BottomNav); iOS config in capacitor.config.ts — npx cap add ios needs Mac/Xcode (HUMAN-BLOCKED); tsc 0 err; commit b35a949 |
-| 7.6 | 4 | RevenueCat IAP nativo | TODO | Sandbox purchase E2E en ambas plataformas |
+| 7.6 | 4 | RevenueCat IAP nativo | HUMAN-BLOCKED | Sandbox purchase E2E en ambas plataformas — requiere Apple Developer Program (H.2) + Google Play Console (H.3), ninguna existe todavía |
 | 7.7 | 4 | IaC: Terraform para Railway + Cloudflare | DONE | infra/: main+variables+railway+cloudflare+outputs; terraform fmt exit 0; HUMAN-BLOCKED on plan (Railway CLI token); commit 0acfcf7 |
 | 7.8 | 2 | Runbook de backup/restore de DB | DONE | scripts/db_backup.sh + db_restore.sh + db_restore_test.sh; runbook en docs/; restore probado: 1253 Q ✅ users ✅ tracks ✅ skills ✅ — 544 KB, < 5 s |
 
@@ -163,7 +163,7 @@
 | 9.4 | 2 | Legal: privacidad, ToS, borrado de datos (GDPR/CCPA) | DONE | LegalScreen + /privacy + /terms routes + ProfileScreen links a /privacy, /terms, /delete-account — commit b6ab6dc ✅ |
 | 9.5 | 3 | Checklist App Store Review Guidelines | DONE | docs/store/app-store-review-checklist.md: 5 sections × all guidelines; 1 hard blocker B1 (Stripe→must use IAP, fix=7.6); 6 action items A1-A6; already-compliant list (ASVS/GDPR/WCAG/dark mode/safe areas/push opt-in/no IDFA/no SIWA); iOS Capacitor submission checklist |
 | 9.6 | 3 | Play Store: Data Safety + target API level | DONE | docs/store/play-store-data-safety.md: targetSdkVersion=35 ✅ (≥34 req); data inventory (personal/financial/activity/device IDs/crash); third parties (Stripe/Groq/Sentry); field-by-field Play Console answers; 4 pre-submission action items |
-| 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | BLOCKED | Flujos principales navegables con lector de pantalla — requiere dispositivo físico iOS/Android o Xcode/Android Studio con lector de pantalla real; ninguno disponible en este entorno. Sin evidencia ejecutable posible aquí → no HUMAN-BLOCKED (no hay acción de cuenta/pago que preparar), simplemente BLOCKED hasta correr en un entorno con el dispositivo |
+| 9.7 | 3 | Audit de accesibilidad nativa (VoiceOver/TalkBack) | HUMAN-BLOCKED | Flujos principales navegables con lector de pantalla — requiere dispositivo físico iOS/Android o Xcode/Android Studio con lector de pantalla real (H.9); ninguno disponible en este entorno |
 | 9.8 | 4 | Sitio de marketing + pricing | DONE | LandingScreen.tsx: hero+features+pricing ES/EN; /landing route; tsc 0 err; commit 9adf861 |
 
 ### P — Producto: lo que un dueño no perdona (PRI 1-3)
@@ -180,7 +180,7 @@
 | P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | DONE | PATCH /auth/me + PATCH /auth/me/password + verify-email + resend-verification + forgot-password + reset-password — 229 tests pasan |
 | P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | DONE | QuestionReport model + migration f6a7b8c9d0e1 + POST /reports/question + GET /reports/question/{id} — 229 tests pasan |
 | P.7 | 2 | Exportación de datos (GDPR portabilidad) | DONE | GET /export/data → JSON attachment; sin N+1; hashed_password excluido — 229 tests pasan |
-| P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | BLOCKED | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde — `GROQ_API_KEY` no está en `backend/.env` ni en ningún `.env*` local; `content_agent.py` cae a `NullProvider` sin ella (5.1). Generar contenido a mano sin LLM+cita violaría la línea roja de contenido nativo con fuente. Necesita que el humano añada la key (no es "rotar/exponer un secreto" que yo ya tenga — es que no tengo ninguna) |
+| P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | HUMAN-BLOCKED | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde — `GROQ_API_KEY` no está en `backend/.env` ni en ningún `.env*` local (H.8); `content_agent.py` cae a `NullProvider` sin ella (5.1). Generar contenido a mano sin LLM+cita violaría la línea roja de contenido nativo con fuente |
 | P.9 | 3 | Versionado de contenido: corregir una Q sin romper el historial | DONE | Question.content_version (INT default 1) + Response.question_version stamps version at answer time; PATCH /api/v1/content/questions/{id} bumps version (X-Admin-Key auth, CONTENT_ADMIN_KEY env var); migration h8i9j0k1l2m3; 7 tests (auth guard, bump, no-bump on empty, response version before/after edit); 261/261 tests; mypy strict 0 err; commit 2978c67 |
 | P.10 | 3 | Modo oscuro (claro sigue por defecto) | DONE | Tokens duales ✅ (design-tokens.css: :root light + @media prefers-color-scheme dark + [data-theme="dark"]); toggle en ajustes ✅ (ProfileScreen.tsx L86-91: role="switch" aria-checked); respeta prefers-color-scheme ✅ (getStoredTheme() checks matchMedia on first load); contraste AA ✅ (heredado de 9.2 DONE); tsc 0 errores |
 | P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | DONE | CI: pip-audit --fail-on HIGH + npm audit --audit-level=high; real pytest |
@@ -192,9 +192,9 @@
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 10.1 | 5 | Modelo de datos para tracks de certificación (dominios, pesos, simulacro) | DONE | `Domain` model (track_id, name_es/en, weight_pct, order) + `Track.is_certification/cert_provider/exam_question_count/exam_duration_minutes/passing_score_pct` + `Skill.domain_id` — reutiliza Track→Module→Skill→Question, no jerarquía nueva; migration m3n4o5p6q7r8 aplicada+downgrade+re-aplicada limpia contra Postgres local, `\d domains`/`\d tracks` verificado; 4 tests nuevos, 451/451 tests; ruff limpio; commit 84ac758 |
-| 10.2 | 5 | Contenido AWS Cloud Practitioner: ≥ 300 Q con fuente oficial | TODO | Cargado, QA 5.2 en verde, cobertura de los 4 dominios del examen según pesos oficiales |
-| 10.3 | 5 | Simulacro cronometrado con informe por dominio | TODO | E2E: 65 Q en 90 min, informe con % por dominio y predicción de aprobado |
-| 10.4 | 6 | Catálogo y compra por certificación | TODO | Producto Stripe por cert; entitlement por cert; test-mode E2E |
+| 10.2 | 5 | Contenido AWS Cloud Practitioner: ≥ 300 Q con fuente oficial | HUMAN-BLOCKED | Cargado, QA 5.2 en verde, cobertura de los 4 dominios del examen según pesos oficiales — mismo bloqueo que P.8: sin `GROQ_API_KEY` (H.8) no hay generación real con cita |
+| 10.3 | 5 | Simulacro cronometrado con informe por dominio | HUMAN-BLOCKED | E2E: 65 Q en 90 min, informe con % por dominio y predicción de aprobado — depende de 10.2 (HUMAN-BLOCKED en H.8) |
+| 10.4 | 6 | Catálogo y compra por certificación | HUMAN-BLOCKED | Producto Stripe por cert; entitlement por cert; test-mode E2E — depende de 10.3 (HUMAN-BLOCKED en cascada) |
 
 ### Dependencias
 
