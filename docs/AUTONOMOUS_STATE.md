@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-08 (sesión ai) — 3.1 ✅ DONE; joinDuel implementado + GET /duels/{id}/join + 24 backend tests + 2-player Playwright spec; Phase 3 100%; 448 tests
+> Última actualización: 2026-09-11 (sesión aj) — auditoría + launch readiness console; Phase 8 corregida a 100% (8.4 ya era DONE); 451 tests collected; tsc 0 err; backend prod CAÍDO (H.1)
 
 ---
 
@@ -53,7 +53,7 @@
 | 5 | Pipeline multi-agente + analytics | 100% | ✅ CERRADA — author+QA+duplicados+analytics+dashboard |
 | 6 | Observabilidad + límites de servicio | 100% | ✅ CERRADA — JSON logging + OTEL + Prometheus + Sentry + liveness/readiness + rate-limiting + service boundaries |
 | 7 | Commerce + i18n + nativo + IaC + seguridad | 85% | Docker/CI reales; Stripe ✅; entitlements ✅; i18n ✅; Capacitor ✅; Terraform IaC ✅; Runbook ✅; IAP HUMAN-BLOCKED |
-| 8 | Garantía E2E + informe competitivo | 75% | 8.1 Playwright ✓ (auth/quiz/duelo/offline); 8.2 k6 ✓ (100 VUs 0 errores p95<3s local); 8.3 perf budget ✓ (bundle 175KB, LCP 864ms); sin informe competitivo |
+| 8 | Garantía E2E + informe competitivo | 100% | ✅ CERRADA — 8.1 Playwright ✓; 8.2 k6 ✓ (100 VUs p95<3s); 8.3 perf budget ✓ (175KB LCP 864ms); 8.4 teardown competitivo ✓ (docs/competitive-teardown.md) |
 | 9 | Store readiness + excelencia de diseño | 95% | 9.1-9.6+9.8 DONE; 9.7 HUMAN-BLOCKED (VoiceOver/TalkBack real device) |
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict + tsc strict + oxlint 0w + vitest 87% + CI ✓ |
 | P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
@@ -246,7 +246,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 
 | ID | Bloqueo | Qué preparó el agente | Qué debe hacer el humano |
 |---|---|---|---|
-| H.1 | Railway deploy manual | Código en `master`, `start.sh` con auto-stamp | railway.app → servicio → Deploy del último commit |
+| H.1 | **PRI 0 — Backend prod CAÍDO por completo.** `GET /health` en `https://api-production-9751.up.railway.app` devuelve `404 {"message":"Application not found"}` con header `x-railway-fallback: true` — esto no es "código desactualizado", es que Railway no tiene ningún deployment activo detrás del dominio (servicio parado/eliminado, o dominio desvinculado). Detectado en pre-flight de sesión ai (2026-09-11 16:34 UTC). `whetzy.com` (frontend) sí responde 200, pero cualquier llamada a la API real falla — el producto está roto para todo usuario real ahora mismo. Deploy a Railway requiere acción humana por contrato de autonomía; no puedo ejecutarlo | Código en `master` listo (`start.sh` con auto-stamp). Entrar a railway.app → verificar que el servicio backend existe y está corriendo; si fue eliminado o pausado, recrearlo/reactivarlo y desplegar el último commit (`8b933d9`); si el dominio se desvinculó, reasociar `api-production-9751.up.railway.app` al servicio |
 | H.2 | Apple Developer Program | — | Cuenta ($99/año) + certificados |
 | H.3 | Google Play Console | — | Cuenta ($25 único) |
 | H.4 | Stripe cuenta live | Integración en test-mode | Activar cuenta, claves live |
@@ -270,6 +270,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | ab | 2026-09-08 | 241 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | P.10,4.4,2.3,8.3 | 0,1,Q |
 | ac | 2026-09-08 | 261 back | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.2 (k6), P.9 (content versioning) | 0,1,Q |
 | ad | 2026-09-08 | 310 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 4.5(churn),5.4(analytics),7.2(Stripe),7.3(entitlements),3.3(push),P.9(content versioning) | 0,1,Q |
+| aj | 2026-09-11 | 451 back (exit 0) + 0 err tsc | ≥60% cov | 87.6% stmts | — | 0 err | 0 err | Phase 8 corregida a 100%; launch console publicada; backend prod CAÍDO (H.1 vigente) | 0,1,2,3,4,5,6,Q,8 |
 
 ---
 
