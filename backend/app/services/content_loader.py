@@ -133,7 +133,7 @@ async def load_content(db: AsyncSession) -> dict[str, Any]:
     questions_dir = root / "questions"
     for qfile in sorted(questions_dir.rglob("*.json")):
         payload = json.loads(qfile.read_text(encoding="utf-8"))
-        items = payload.get("questions", payload if isinstance(payload, list) else [])
+        items = payload if isinstance(payload, list) else payload.get("questions", [])
         stats["files"] += 1
         for q in items:
             ok = await _upsert_question(db, q)
@@ -144,8 +144,9 @@ async def load_content(db: AsyncSession) -> dict[str, Any]:
     if glossary_dir.is_dir():
         for gfile in sorted(glossary_dir.glob("*.json")):
             payload = json.loads(gfile.read_text(encoding="utf-8"))
-            terms = payload.get("terms", payload if isinstance(payload, list) else [])
-            file_track_id = payload.get("track_id")
+            is_list = isinstance(payload, list)
+            terms = payload if is_list else payload.get("terms", [])
+            file_track_id = None if is_list else payload.get("track_id")
             stats["files"] += 1
             for order, t in enumerate(terms, start=1):
                 # track_id may be declared once at file level or per term.
