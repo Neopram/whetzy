@@ -58,6 +58,7 @@
 | Q | Piso de calidad (transversal) | 100% | ✅ CERRADA — mypy strict (con el flag real de CI) + tsc strict + oxlint 0w + vitest 87% + CI ✓; Q.11 (regresión mypy) cerrada en sesión ak |
 | P | Producto — huecos que impiden vender | 92% | Email+reset+verificación+ajustes+reportes+export+deps+DB+onboarding+modo oscuro+versionado+streak reminders DONE; sin banco 1.5k |
 | 10 | Marketplace de certificaciones | 15% | 10.1 DONE (schema); 10.2-10.4 requieren GROQ_API_KEY (P.8-style) y/o cuentas Stripe live — arrancados solo lo que no dependía de la 9 ni de secretos |
+| 11 | Superioridad medible — cerrar las brechas honestas | 0% | Score competitivo honesto **30/100** (2026-09-12) → meta **≥ 60 con evidencia**. 11.1–11.9: RAG real en prod, tutor visible, benchmark KT público, ratio exec ≥15 %, cobertura 80 %, TTFQ < 60 s en prod, SEO, cohorte beta, k6 prod |
 
 ---
 
@@ -180,7 +181,7 @@
 | P.5 | 2 | Ajustes de cuenta: email, contraseña, idioma, notificaciones | DONE | PATCH /auth/me + PATCH /auth/me/password + verify-email + resend-verification + forgot-password + reset-password — 229 tests pasan |
 | P.6 | 2 | Reportar pregunta defectuosa desde el quiz, un toque | DONE | QuestionReport model + migration f6a7b8c9d0e1 + POST /reports/question + GET /reports/question/{id} — 229 tests pasan |
 | P.7 | 2 | Exportación de datos (GDPR portabilidad) | DONE | GET /export/data → JSON attachment; sin N+1; hashed_password excluido — 229 tests pasan |
-| P.8 | 3 | Banco a 1.500+ preguntas usando 5.1 + 5.2 | HUMAN-BLOCKED | ≥ 1.500 Q en DB, 100 % con `source`, toda skill ≥ 6 Q, QA 5.2 en verde — `GROQ_API_KEY` no está en `backend/.env` ni en ningún `.env*` local (H.8); `content_agent.py` cae a `NullProvider` sin ella (5.1). Generar contenido a mano sin LLM+cita violaría la línea roja de contenido nativo con fuente |
+| P.8 | 3 | Banco a 1.500+ preguntas (autoría directa en `content/questions/*.json` como en sesiones b–j, o pipeline 5.1 si `GROQ_API_KEY` aparece) | TODO | ≥ 1.500 Q en DB, 100 % con `source` canónico, toda skill ≥ 6 Q, `validate_content.py` 0 errores, QA estructural 5.2 (`/content/qa/batch` sin LLM) en verde, `content_loader` 0 skipped. Reabierto por decisión #9: la línea roja es "nativo ES/EN + fuente", no "generado por Groq"; H.8 sigue abierto solo para el camino 5.1 |
 | P.9 | 3 | Versionado de contenido: corregir una Q sin romper el historial | DONE | Question.content_version (INT default 1) + Response.question_version stamps version at answer time; PATCH /api/v1/content/questions/{id} bumps version (X-Admin-Key auth, CONTENT_ADMIN_KEY env var); migration h8i9j0k1l2m3; 7 tests (auth guard, bump, no-bump on empty, response version before/after edit); 261/261 tests; mypy strict 0 err; commit 2978c67 |
 | P.10 | 3 | Modo oscuro (claro sigue por defecto) | DONE | Tokens duales ✅ (design-tokens.css: :root light + @media prefers-color-scheme dark + [data-theme="dark"]); toggle en ajustes ✅ (ProfileScreen.tsx L86-91: role="switch" aria-checked); respeta prefers-color-scheme ✅ (getStoredTheme() checks matchMedia on first load); contraste AA ✅ (heredado de 9.2 DONE); tsc 0 errores |
 | P.11 | 2 | Auditoría de dependencias en CI: `pip-audit` + `npm audit` | DONE | CI: pip-audit --fail-on HIGH + npm audit --audit-level=high; real pytest |
@@ -195,6 +196,26 @@
 | 10.2 | 5 | Contenido AWS Cloud Practitioner: ≥ 300 Q con fuente oficial | HUMAN-BLOCKED | Cargado, QA 5.2 en verde, cobertura de los 4 dominios del examen según pesos oficiales — mismo bloqueo que P.8: sin `GROQ_API_KEY` (H.8) no hay generación real con cita |
 | 10.3 | 5 | Simulacro cronometrado con informe por dominio | HUMAN-BLOCKED | E2E: 65 Q en 90 min, informe con % por dominio y predicción de aprobado — depende de 10.2 (HUMAN-BLOCKED en H.8) |
 | 10.4 | 6 | Catálogo y compra por certificación | HUMAN-BLOCKED | Producto Stripe por cert; entitlement por cert; test-mode E2E — depende de 10.3 (HUMAN-BLOCKED en cascada) |
+
+### 11 — Superioridad medible (cerrar las brechas honestas)
+
+> Origen: re-evaluación competitiva del 2026-09-12 (`docs/competitive-teardown.md` §6).
+> El scorecard anterior daba 77/100 comparando *inventario de código* contra
+> *productos en mercado*. El honesto da ≈30. Cada tarea aquí convierte una
+> "capacidad" en una "ventaja" **solo si su criterio se cumple con evidencia**.
+> Ninguna se marca DONE por existir; se marca DONE por medir.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 11.1 | 1 | Tutor grounded **de verdad en prod**: RAG ligero sin torch/chroma (BM25 sobre explicaciones + glosario) | TODO | `rank-bm25` (puro Python); índice construido en lifespan desde DB en < 2 s; self-retrieval: para ≥ 95 % de las 1.253 Q, `retrieve(pregunta)` devuelve su propia explicación en top-3; `grounded` = "hay fragmento con `source`" (nunca `True` fijo); RSS +< 30 MB medido; unit + integration tests; funciona en Railway free tier |
+| 11.2 | 1 | Tutor **visible**: botón «¿Por qué? / Why?» inline bajo cada feedback del quiz (GAP-5) | TODO | Botón en `QuizScreen` en todos los tipos de pregunta; free ve el botón y un upsell claro (sin paywall engañoso — línea roja 7); Plus recibe explicación < 3 s con badge de fuente; Playwright test; ES+EN; axe 0 violations |
+| 11.3 | 2 | **Evidencia del motor**: benchmark BKT vs DKT en dataset público de knowledge tracing | TODO | `app/ml/benchmark_kt.py` sobre `synthetic-5` (Piech 2015, repo público) y ASSISTments 2009 si descargable; split temporal; **DKT AUC ≥ 0,70 y > BKT** en synthetic-5 (paper: DKT 0,75 / BKT 0,62); `docs/ml/kt-benchmark.json` commiteado con números; si no se alcanza, se documenta el gap — no se maquilla |
+| 11.4 | 2 | Ratio de preguntas **ejecutables** (`fill_blank_exec`/`fix_bug`) de 0,6 % a ≥ 15 % en tracks 01–03 | TODO | ≥ 90 Q exec nuevas, nativas ES/EN, con `source`; test en CI que **ejecuta el código de referencia en CPython** y compara `stdout` con `correct_answer_es` — 100 % coinciden; `validate_content.py` 0 err; Pyodide E2E (2.1) sigue verde |
+| 11.5 | 2 | Cobertura backend **medida** ≥ 80 % (hoy "≥60 %" es estimación) | TODO | `pytest --cov=app --cov-report=term-missing` pegado; ≥ 80 % líneas; módulos < 60 % listados y cubiertos; CI `--cov-fail-under=80` |
+| 11.6 | 3 | Tiempo hasta primera pregunta **< 60 s contra prod** con 4G simulado | BLOCKED (H.1) | Playwright con CDP `Network.emulateNetworkConditions` (4G: 4 Mbps / 150 ms); registro → primera pregunta < 60 s; LCP < 2,5 s; números pegados desde `whetzy.com` |
+| 11.7 | 3 | Adquisición orgánica: SEO del landing | TODO | Lighthouse SEO ≥ 95 y Performance ≥ 90 en `/landing`; `sitemap.xml` + `robots.txt`; `hreflang` es/en; OG/Twitter cards con imagen; título y descripción por idioma |
+| 11.8 | 3 | **Prueba de aprendizaje real**: cohorte beta ≥ 30 usuarios | HUMAN-BLOCKED (H.10) | Dashboard 5.5 muestra D1 ≥ 40 % / D7 ≥ 20 % medidos; ganancia media de `p_known` pre/post por skill practicada ≥ +0,20; ≥ 100 respuestas exec ejecutadas sin error de consola. Sin esto, "motor adaptativo" y "gamificación" siguen siendo capacidades, no ventajas |
+| 11.9 | 4 | k6 contra prod: p95 < 500 ms con 100 VUs | BLOCKED (H.1) | `k6 run` con `P95_BUDGET_MS=500` contra `api-production-9751`; 0 % errores; salida pegada |
 
 ### Dependencias
 
@@ -223,6 +244,10 @@ No arrancar la tarea de la izquierda sin las de la derecha en `DONE`:
 | 10.2 | 10.1, 5.1, 5.2 |
 | 10.3 | 10.2 |
 | 10.4 | 10.3, 7.2, 7.3 |
+| 11.2 | 7.3 |
+| 11.4 | 2.1, 5.2 |
+| 11.6, 11.9 | H.1 resuelto |
+| 11.8 | H.1 resuelto, 11.2, H.10 |
 
 ### Grupos paralelos
 
@@ -238,6 +263,8 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | G5 | 9.1 ‖ 9.4 ‖ 7.4 | `design-tokens.css` + componentes ‖ `legal/` + páginas ‖ `i18n/` |
 | G6 | P.5 ‖ P.6 ‖ P.7 | `endpoints/account.py` + `SettingsScreen` ‖ `endpoints/reports.py` + botón en `QuizScreen` ‖ `endpoints/export.py` |
 | G7 | P.11 ‖ P.12 | `.github/workflows/` ‖ `alembic/versions/` + queries |
+| G8 | 11.1 ‖ 11.2 ‖ 11.3 | `services/ai/rag.py` + `tests/unit/test_rag.py` ‖ `QuizScreen.tsx` + `e2e/tutor.spec.ts` + i18n ‖ `app/ml/benchmark_kt.py` + `docs/ml/` |
+| G9 | 11.4 ‖ 11.7 | `content/questions/track0{1,2,3}_*/` + `tests/content/` ‖ `LandingScreen.tsx` + `public/{sitemap.xml,robots.txt}` + `index.html` |
 
 ---
 
@@ -256,6 +283,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | H.7 | Rutina remota — única forma de no depender de la app abierta | `RemoteTrigger` responde 200. Schema sondeado: `session_request.worker` (obligatorio) o `job_config` forma "ccr". El preflight del servidor falla sin repo conectado y entorno | **Una vez:** en claude.ai conectar `Neopram/whetzy` y crear un entorno. La siguiente sesión detecta ambos, cierra el schema con 1-2 creates, migra la cadena y borra el task local |
 | H.8 | `GROQ_API_KEY` ausente localmente | Verificado: no está en `backend/.env` ni en ningún `.env*` del repo. Bloquea P.8 (banco 1.500+ Q) y 10.2 (contenido AWS) — ambos dependen de `content_agent.py`, que cae a `NullProvider` sin ella | Añadir `GROQ_API_KEY=<key>` a `backend/.env` (clave de https://console.groq.com, gratis). Una vez ahí, la siguiente sesión retoma P.8/10.2 automáticamente |
 | H.9 | Dispositivo físico o emulador con lector de pantalla real para 9.7 | Audit automático de ARIA/roles/foco ya cubierto por axe-core (9.2) — falta la navegación real con VoiceOver (iOS) o TalkBack (Android) | Correr la app en un iPhone (VoiceOver) o Android (TalkBack) y navegar auth→quiz→duelo→ajustes; anotar cualquier trampa de foco o label faltante |
+| H.10 | Cohorte beta ≥ 30 usuarios reales (11.8) | Analytics 5.4/5.5 instrumentados (D1/D7, funnel, mastery); export GDPR listo; landing 9.8 + SEO 11.7 | Reclutar 30 personas (LATAM/España, autodidactas Python) — comunidades, Discord, LinkedIn — con backend arriba (H.1). Sin usuarios reales ninguna afirmación sobre el motor o la retención es verificable |
 
 ---
 
@@ -292,6 +320,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | 6 | 2026-09-08 | Workers paralelos sin worktree por defecto, sobre grupos de archivos disjuntos | Evita el coste de merge; la disjunción la garantiza el ledger. Worktree solo para refactors amplios | Worktree siempre (merge en cada tarea) |
 | 7 | 2026-09-08 | Continuidad por task recurrente (cron 6 h) que el propio orquestador convierte en su pre-flight y borra al terminar; modelo y permisos en settings de usuario | Una cadena one-shot muere si un corte por límite llega antes de programar la siguiente. El cron reintenta solo: sin trabajo sale en segundos, sin presupuesto no arranca y no gasta. Settings de usuario aplican en cualquier cwd, que el task no controla | Cadena one-shot (frágil); bypass a nivel proyecto (no aplica si el task arranca fuera del cwd) |
 | 8 | 2026-09-11 | Empezar 10.1 (schema de tracks de certificación) sin esperar a que la fase 9 cierre, pese a "Fase 10 arranca tras la 9" | Todo el backlog `TODO` de PRI menor (7.6, 9.7, P.8) está bloqueado por recursos que no tengo: dispositivo físico, cuentas de store, `GROQ_API_KEY`. 10.1 es puro schema, reversible con `git revert`, sin secretos ni dispositivos. Esperar de brazos cruzados desperdicia la sesión; el gate de fase 9 protege contra vender un producto a medio construir, no contra preparar el modelo de datos | Esperar sin hacer nada hasta que 9.7 se desbloquee (desperdicia sesiones autónomas); reabrir la decisión de orden de fases (no — sigue cerrada, solo adelanté trabajo de bajo riesgo) |
+| 9 | 2026-09-12 | Las comparaciones competitivas puntúan **evidencia de resultado**, no inventario de código; y P.8 se reabre con autoría directa de contenido (sesiones b–j lo hicieron así con 1.238 Q) + QA estructural obligatoria | El scorecard del 2026-09-11 daba 77/100 con pesos elegidos a favor y sin usuarios; el dueño preguntó "¿es brutalmente realista?" y no lo era (≈30). Un ledger que se miente viola la línea roja 1. Sobre P.8: la línea roja es "nativo ES/EN con fuente", no "generado por Groq"; bloquearlo por falta de key dejaba el banco en 1.253 sin razón | Mantener el 77 (falso); esperar la key para el banco (bloquea semanas sin necesidad) |
 
 ---
 

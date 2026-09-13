@@ -64,6 +64,10 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 7. **Sin patrones oscuros.** Las rachas no castigan con culpa. Los paywalls no
    engañan. Cancelar cuesta dos toques.
 8. **Rápido en móvil medio.** LCP < 2,5 s en 4G. p95 de API < 500 ms.
+9. **Honestidad competitiva.** Ninguna comparación con la competencia puntúa
+   una capacidad sin evidencia de resultado (benchmark público, usuarios
+   reales, métrica medida). Lo que existe en código y nadie ha usado es una
+   *capacidad*, no una *ventaja*. Un scorecard que se infla viola la línea 1.
 
 ### Qué significa "calidad de mercado", en números
 | Métrica | Umbral | Cómo se mide |
@@ -75,6 +79,9 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 | Bugs P0/P1 abiertos al lanzar | 0 | Ledger |
 | Cobertura backend / frontend | ≥ 80 % / ≥ 70 % | `coverage` / `vitest --coverage` |
 | Revisión de stores | Aprobada a la primera | Checklists 9.5 / 9.6 completos con evidencia |
+| Motor adaptativo con evidencia | DKT AUC ≥ 0,70 y > BKT en benchmark público | `app/ml/benchmark_kt.py` (11.3), no el eval interno con 3 secuencias |
+| Tutor grounded en prod | ≥ 95 % self-retrieval top-3; `grounded` refleja un hit real | Test de 11.1 contra la DB de contenido |
+| Posición competitiva | Score honesto ≥ 60/100 | `docs/competitive-teardown.md` §6, recalculado solo con tareas DONE-con-evidencia |
 
 ### Cómo decide un dueño cuando hay tensión
 1. Estabilidad de producción por encima de todo.
