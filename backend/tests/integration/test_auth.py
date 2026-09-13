@@ -12,9 +12,6 @@ from __future__ import annotations
 
 import itertools
 
-import pytest
-
-
 AUTH = "/api/v1/auth"
 
 # Each test gets its own /8 subnet to avoid sharing rate-limit buckets.

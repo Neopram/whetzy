@@ -8,7 +8,6 @@ from __future__ import annotations
 import uuid
 from datetime import date, timedelta
 
-import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.gamification import Badge, League, LeagueEntry, Mission
@@ -23,7 +22,6 @@ from app.services.gamification.service import (
     get_user_badges,
     week_start_of,
 )
-
 
 # ── Factories ─────────────────────────────────────────────────────────────────
 

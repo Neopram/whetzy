@@ -7,30 +7,27 @@ Structural checks are deterministic so no LLM is needed for these tests.
 
 from __future__ import annotations
 
-import pytest
-
 from app.models.content import Question
-from app.services.content_qa import Severity, _structural_check, _score
-
+from app.services.content_qa import Severity, _score, _structural_check
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _q(**overrides) -> Question:
     """Return a valid Question with optional field overrides."""
-    defaults = dict(
-        id="q_test_001",
-        skill_id="sk_test",
-        type="mcq",
-        difficulty_tier="medium",
-        question_es="¿Cuál es la capital de Francia?",
-        question_en="What is the capital of France?",
-        options_es=["París", "Madrid", "Roma", "Berlín"],
-        options_en=["Paris", "Madrid", "Rome", "Berlin"],
-        correct_index=0,
-        explanation_es="París es la capital de Francia.",
-        explanation_en="Paris is the capital of France.",
-        source="World Geography, 3rd edition, chapter 5",
-    )
+    defaults = {
+        "id": "q_test_001",
+        "skill_id": "sk_test",
+        "type": "mcq",
+        "difficulty_tier": "medium",
+        "question_es": "¿Cuál es la capital de Francia?",
+        "question_en": "What is the capital of France?",
+        "options_es": ["París", "Madrid", "Roma", "Berlín"],
+        "options_en": ["Paris", "Madrid", "Rome", "Berlin"],
+        "correct_index": 0,
+        "explanation_es": "París es la capital de Francia.",
+        "explanation_en": "Paris is the capital of France.",
+        "source": "World Geography, 3rd edition, chapter 5",
+    }
     defaults.update(overrides)
     return Question(**defaults)
 

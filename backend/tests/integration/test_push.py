@@ -14,9 +14,8 @@ from __future__ import annotations
 
 import itertools
 import uuid
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
-import pytest
 from sqlalchemy import select
 
 from app.core.security import create_access_token

@@ -14,8 +14,6 @@ import itertools
 import uuid
 from unittest.mock import AsyncMock, patch
 
-import pytest
-
 from app.core.security import create_access_token
 from app.models.user import User
 

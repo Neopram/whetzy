@@ -12,15 +12,15 @@ from __future__ import annotations
 
 import time
 from typing import Any
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
 from app.services import dkt as dkt_mod
 from app.services.dkt import (
     _cache,
-    _cache_key,
     _cache_get,
+    _cache_key,
     _cache_set,
     dkt_cache_clear,
     predict,

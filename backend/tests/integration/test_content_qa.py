@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import uuid
 
-import pytest
-
 from app.models.content import Module, Question, Skill, Track
 
 CONTENT = "/api/v1/content"
@@ -23,20 +21,20 @@ async def _make_question(db_session, *, defective: bool = False, **overrides) ->
     skill = Skill(id=f"sk_{uid}", module_id=f"m_{uid}", name_es="S", name_en="S", order=1)
     db_session.add_all([track, mod, skill])
 
-    defaults: dict = dict(
-        id=f"q_qa_{uid}",
-        skill_id=f"sk_{uid}",
-        type="mcq",
-        difficulty_tier="medium",
-        question_es="¿Qué es el fotón?",
-        question_en="What is a photon?",
-        options_es=["Partícula de luz", "Átomo de hidrógeno", "Molécula de agua", "Electrón libre"],
-        options_en=["Light particle", "Hydrogen atom", "Water molecule", "Free electron"],
-        correct_index=0,
-        explanation_es="Un fotón es una partícula de luz.",
-        explanation_en="A photon is a particle of light.",
-        source="Physics 101, chapter 3",
-    )
+    defaults: dict = {
+        "id": f"q_qa_{uid}",
+        "skill_id": f"sk_{uid}",
+        "type": "mcq",
+        "difficulty_tier": "medium",
+        "question_es": "¿Qué es el fotón?",
+        "question_en": "What is a photon?",
+        "options_es": ["Partícula de luz", "Átomo de hidrógeno", "Molécula de agua", "Electrón libre"],
+        "options_en": ["Light particle", "Hydrogen atom", "Water molecule", "Free electron"],
+        "correct_index": 0,
+        "explanation_es": "Un fotón es una partícula de luz.",
+        "explanation_en": "A photon is a particle of light.",
+        "source": "Physics 101, chapter 3",
+    }
     if defective:
         # Inject: too few options (CRITICAL) + no source (MEDIUM)
         defaults["options_es"] = ["A", "B"]

@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import itertools
 
-import pytest
 from sqlalchemy import select
 
 from app.models.analytics import AnalyticsEvent
@@ -119,7 +118,7 @@ async def test_second_quiz_answer_does_not_fire_event(client, auth_headers, cont
     )
 
     # Continue session and answer a second question
-    resp = await client.post(
+    await client.post(
         f"{QUIZ}/answer",
         json={"session_id": sid1, "question_id": qid1, "selected_index": 0, "response_time_ms": 500},
         headers=_h(auth_headers),

@@ -14,7 +14,6 @@ Rules enforced:
 from __future__ import annotations
 
 import ast
-import importlib
 from pathlib import Path
 
 import pytest
@@ -40,9 +39,8 @@ def _imports(path: Path) -> list[str]:
         if isinstance(node, ast.Import):
             for alias in node.names:
                 mods.append(alias.name)
-        elif isinstance(node, ast.ImportFrom):
-            if node.module:
-                mods.append(node.module)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            mods.append(node.module)
     return mods
 
 

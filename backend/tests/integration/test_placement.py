@@ -18,7 +18,6 @@ import uuid
 
 import pytest
 
-
 BASE = "/api/v1/placement"
 
 

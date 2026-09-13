@@ -12,7 +12,6 @@ import pytest
 
 from app.models.content import GlossaryTerm
 
-
 BASE = "/api/v1/glossary"
 
 

@@ -19,12 +19,7 @@ import hmac
 import itertools
 import json
 import time
-import uuid
-from typing import Any
-from unittest.mock import MagicMock, patch
-
-import pytest
-from sqlalchemy import select
+from unittest.mock import MagicMock
 
 from app.core.security import create_access_token
 from app.models.user import User

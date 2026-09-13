@@ -16,8 +16,6 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from unittest.mock import AsyncMock, patch
 
-import pytest
-
 from app.core.security import create_access_token, get_password_hash
 from app.models.push_subscription import PushSubscription
 from app.models.user import User
@@ -129,7 +127,8 @@ async def test_streak_reminder_sends_to_eligible_user(client, db_session, monkey
     data = r.json()
     assert data["notified_users"] >= 1
     assert data["notifications_sent"] >= 1
-    send_mock.assert_called()
+    # Not just 'something was sent' — it must be sent for *this* eligible user.
+    assert any(call.args[1] == u.id for call in send_mock.call_args_list)
 
 
 async def test_streak_reminder_skips_zero_streak(client, db_session, monkeypatch):

@@ -12,9 +12,6 @@ from __future__ import annotations
 import itertools
 import uuid
 
-import pytest
-
-
 QUIZ = "/api/v1/quiz"
 
 _ip_counter = itertools.count(100)  # offset from auth tests

@@ -11,14 +11,11 @@ import numpy as np
 import pytest
 
 from app.services.duplicate_detector import (
-    DEFAULT_MAX_PAIRS,
-    DEFAULT_THRESHOLD,
     DuplicatePair,
     cosine_pairs,
     embed_texts,
     find_duplicates,
 )
-
 
 # ── helpers ────────────────────────────────────────────────────────────────────
 

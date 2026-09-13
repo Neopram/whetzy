@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -19,7 +19,7 @@ def new_card() -> Card:
     return Card()
 
 
-NOW = datetime(2026, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+NOW = datetime(2026, 1, 1, 12, 0, 0, tzinfo=UTC)
 
 
 class TestFSRSScheduler:
@@ -71,7 +71,7 @@ class TestFSRSScheduler:
     def test_review_new_card_grade_3(
         self, scheduler: FSRSScheduler, new_card: Card
     ) -> None:
-        card, log = scheduler.review(new_card, grade=3, now=NOW)
+        card, _log = scheduler.review(new_card, grade=3, now=NOW)
         assert card.reps == 1
         assert card.lapses == 0
         assert card.state == "review"

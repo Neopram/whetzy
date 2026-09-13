@@ -84,7 +84,7 @@ async def test_duplicates_detects_near_duplicate(
     skill_id = await _make_skill(db_session)
     q1 = await _make_question(db_session, skill_id, "What is a Python list?", 0)
     q2 = await _make_question(db_session, skill_id, "What is a Python list?", 1)
-    q3 = await _make_question(db_session, skill_id, "Explain the GIL in CPython.", 2)
+    await _make_question(db_session, skill_id, "Explain the GIL in CPython.", 2)
     await db_session.flush()
 
     # Provide fixed embeddings: q1 and q2 identical, q3 orthogonal
@@ -108,7 +108,7 @@ async def test_duplicates_detects_near_duplicate(
     body = resp.json()
     assert body["pairs_found"] >= 1
     assert any(
-        set([p["q1_id"], p["q2_id"]]) == {q1, q2} for p in body["pairs"]
+        {p["q1_id"], p["q2_id"]} == {q1, q2} for p in body["pairs"]
     )
 
 

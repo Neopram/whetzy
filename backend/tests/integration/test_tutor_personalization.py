@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 import pytest_asyncio
@@ -17,7 +17,6 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.models.session import Response, StudySession
-from app.models.user import User
 from app.services.ai.tutor import _times_missed
 
 DB_URL = "sqlite+aiosqlite:///:memory:"
@@ -102,7 +101,6 @@ async def test_times_missed_zero_initially(db_session: AsyncSession):
 async def test_times_missed_counts_only_wrong(db_session: AsyncSession):
     user_id = _uid()
     q_id = "q_test_002"
-    now = datetime.now(timezone.utc).isoformat()
 
     # Create a study session
     sess_id = _uid()
@@ -110,7 +108,7 @@ async def test_times_missed_counts_only_wrong(db_session: AsyncSession):
         id=sess_id,
         user_id=user_id,
         mode="study",
-        started_at=datetime.now(timezone.utc),
+        started_at=datetime.now(UTC),
         questions_answered=3,
         correct_count=1,
         xp_earned=0,
@@ -119,14 +117,14 @@ async def test_times_missed_counts_only_wrong(db_session: AsyncSession):
     # Two wrong responses
     db_session.add(Response(id=_uid(), session_id=sess_id, question_id=q_id,
                              correct=False, grade=0, response_time_ms=1000,
-                             created_at=datetime.now(timezone.utc)))
+                             created_at=datetime.now(UTC)))
     db_session.add(Response(id=_uid(), session_id=sess_id, question_id=q_id,
                              correct=False, grade=0, response_time_ms=1200,
-                             created_at=datetime.now(timezone.utc)))
+                             created_at=datetime.now(UTC)))
     # One correct response (should NOT be counted)
     db_session.add(Response(id=_uid(), session_id=sess_id, question_id=q_id,
                              correct=True, grade=3, response_time_ms=800,
-                             created_at=datetime.now(timezone.utc)))
+                             created_at=datetime.now(UTC)))
     await db_session.flush()
 
     count = await _times_missed(db_session, user_id, q_id)
@@ -142,17 +140,17 @@ async def test_times_missed_ignores_other_users(db_session: AsyncSession):
     sess_a = _uid()
     sess_b = _uid()
     db_session.add(StudySession(id=sess_a, user_id=user_a, mode="study",
-                                 started_at=datetime.now(timezone.utc),
+                                 started_at=datetime.now(UTC),
                                  questions_answered=1, correct_count=0, xp_earned=0, max_combo=0))
     db_session.add(StudySession(id=sess_b, user_id=user_b, mode="study",
-                                 started_at=datetime.now(timezone.utc),
+                                 started_at=datetime.now(UTC),
                                  questions_answered=1, correct_count=0, xp_earned=0, max_combo=0))
     db_session.add(Response(id=_uid(), session_id=sess_a, question_id=q_id,
                              correct=False, grade=0, response_time_ms=500,
-                             created_at=datetime.now(timezone.utc)))
+                             created_at=datetime.now(UTC)))
     db_session.add(Response(id=_uid(), session_id=sess_b, question_id=q_id,
                              correct=False, grade=0, response_time_ms=500,
-                             created_at=datetime.now(timezone.utc)))
+                             created_at=datetime.now(UTC)))
     await db_session.flush()
 
     # user_a missed once, user_b missed once — each should see only their own

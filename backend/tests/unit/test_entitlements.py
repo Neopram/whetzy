@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from app.core.entitlements import user_meets_tier
 
 

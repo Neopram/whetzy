@@ -11,7 +11,6 @@ from __future__ import annotations
 import itertools
 import uuid as _uuid
 
-import pytest
 from sqlalchemy import select
 
 from app.models.session import Response

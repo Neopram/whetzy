@@ -5,12 +5,9 @@ Tests the JSON parsing, validation, and question building without calling the LL
 
 from __future__ import annotations
 
-import json
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.services.content_agent import _GeneratedQ, _extract_json, _make_question_id
-
+from app.services.content_agent import _extract_json, _GeneratedQ, _make_question_id
 
 # ── JSON extraction ───────────────────────────────────────────────────────────
 

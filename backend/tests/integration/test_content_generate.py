@@ -8,9 +8,7 @@ from __future__ import annotations
 
 import json
 import uuid
-from unittest.mock import AsyncMock, MagicMock, patch
-
-import pytest
+from unittest.mock import AsyncMock, patch
 
 from app.models.content import Module, Skill, Track
 
@@ -187,6 +185,7 @@ async def test_generate_rejects_short_source_text(client, db_session, monkeypatc
 async def test_generate_persists_questions_to_db(client, db_session, monkeypatch):
     """Generated questions actually appear in the database."""
     from sqlalchemy import select as sa_select
+
     from app.models.content import Question
 
     monkeypatch.setattr("app.core.config.settings.CONTENT_ADMIN_KEY", ADMIN_KEY)

@@ -8,7 +8,6 @@ Verifies:
 
 from __future__ import annotations
 
-import math
 import random
 from datetime import UTC, datetime, timedelta
 from unittest.mock import AsyncMock, MagicMock
@@ -16,7 +15,6 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 
 from app.services.churn import ChurnRiskResult, _sigmoid, compute_risk
-
 
 # ── unit: sigmoid ────────────────────────────────────────────────────────────
 
@@ -166,7 +164,6 @@ async def test_auc_over_synthetic_population():
         pytest.skip("Degenerate split — adjust seed")
     tp = fp = 0
     auc = 0.0
-    prev_fp = 0
     for _, lbl in pairs:
         if lbl == 1:
             tp += 1
