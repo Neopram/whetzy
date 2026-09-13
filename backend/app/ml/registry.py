@@ -44,7 +44,7 @@ class _Net:
         import torch
         from torch import nn
 
-        class _LSTMNet(nn.Module):
+        class _LSTMNet(nn.Module):  # type: ignore[misc]
             def __init__(self, n: int, h: int) -> None:
                 super().__init__()
                 self.embed = nn.Embedding(n * 2, h)

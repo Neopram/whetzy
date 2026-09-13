@@ -81,7 +81,7 @@ def embed_texts(texts: list[str], model_name: str = DEFAULT_MODEL) -> np.ndarray
 
     raw: Any = model.encode(texts, convert_to_numpy=True, show_progress_bar=False)
     vecs = np.asarray(raw, dtype=np.float32)
-    norms = np.linalg.norm(vecs, axis=1, keepdims=True)
+    norms = np.linalg.norm(vecs, axis=1, keepdims=True).astype(np.float32)
     normed: np.ndarray = vecs / np.maximum(norms, 1e-9)
     return normed
 

@@ -18,3 +18,17 @@ ignore = [
 [[tool.mypy.overrides]]
 module = ["app.services.dkt", "app.services.ai.rag"]
 warn_unused_ignores = false
+
+# app.ml.registry / app.ml.train_dkt subclass torch.nn.Module (and
+# torch.utils.data.Dataset) at class-definition time. Same situation as
+# app.services.dkt above (torch optional per DECISIONS.md #4): with torch
+# installed these are real classes and the `# type: ignore[misc]` (and, for
+# the Dataset subclass, `[type-arg]`) comments on the class lines are inert;
+# without torch (CI, Railway) the base is `Any` and the comments are what
+# suppresses the resulting `[misc]` subclassing-Any error. Either way the
+# comments are "used" in one environment and "unused" in the other, so
+# warn_unused_ignores must stay off for just these two modules — a single
+# strict answer that satisfies both is impossible.
+[[tool.mypy.overrides]]
+module = ["app.ml.registry", "app.ml.train_dkt"]
+warn_unused_ignores = false
