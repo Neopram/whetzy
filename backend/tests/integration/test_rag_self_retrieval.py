@@ -8,7 +8,8 @@
     in BOTH Spanish and English (bilingual parity, red line #3).
   - Memory: building the index adds well under 30MB.
 
-Loads the *real* content/ JSON corpus (1253 questions, 70 glossary terms)
+Loads the *real* content/ JSON corpus (the whole bank, whatever its
+current size — see _MIN_CORPUS_QUESTIONS)
 through app.services.content_loader.load_content() into a throwaway
 in-memory SQLite DB — the same ingestion path used in production — rather
 than hitting a prod database, per the task's measurement instructions.
@@ -27,6 +28,8 @@ from app.models.content import Question, Skill
 from app.services.ai.rag import RAGIndex
 from app.services.content_loader import load_content
 
+# Floor, not an exact count: the bank grows. Only catches a truncated tree.
+_MIN_CORPUS_QUESTIONS = 1253
 _MIN_SELF_RETRIEVAL_PCT = 95.0
 _MAX_BUILD_SECONDS = 2.0
 _MAX_RSS_DELTA_BYTES = 30 * 1024 * 1024
@@ -39,10 +42,19 @@ async def _load_real_corpus() -> async_sessionmaker[AsyncSession]:
     factory = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False)
     async with factory() as db:
         stats = await load_content(db)
-    assert stats["questions"] == 1253, (
-        f"Expected the full 1253-question corpus, loaded {stats['questions']} "
-        f"({stats['skipped']} skipped) — self-retrieval % below is meaningless "
-        "against a partial corpus."
+    # The guard here is "the corpus loaded COMPLETELY", not "the corpus is
+    # exactly N questions" — the bank grows every content session, and pinning
+    # an exact count makes an unrelated content commit fail this test (it did:
+    # 11.4 added 104 exec questions). `skipped == 0` is the assertion that
+    # actually protects the percentage below; the floor just catches a corpus
+    # that failed to load at all.
+    assert stats["skipped"] == 0, (
+        f"{stats['skipped']} questions were skipped on load — self-retrieval % "
+        "below would be measured against a partial corpus."
+    )
+    assert stats["questions"] >= _MIN_CORPUS_QUESTIONS, (
+        f"Only {stats['questions']} questions loaded (expected at least "
+        f"{_MIN_CORPUS_QUESTIONS}) — the content tree looks truncated."
     )
     return factory
 
