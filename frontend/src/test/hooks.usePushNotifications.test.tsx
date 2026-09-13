@@ -15,6 +15,29 @@ import { usePushNotifications } from '../hooks/usePushNotifications';
 
 const TOKEN_KEY = 'whetzy_access_token';
 
+// jsdom doesn't implement `atob`, so the hook's tests stub it in. This decodes
+// base64 to a binary string the same way the browser global does — written in
+// plain JS (no Node's `Buffer`) since this is standing in for a browser API,
+// not a server one, and app code must never rely on Node globals type-checking.
+const BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+function base64ToBinaryString(base64: string): string {
+  const clean = base64.replace(/=+$/, '');
+  let output = '';
+  let buffer = 0;
+  let bits = 0;
+  for (const char of clean) {
+    const value = BASE64_ALPHABET.indexOf(char);
+    if (value === -1) continue;
+    buffer = (buffer << 6) | value;
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      output += String.fromCharCode((buffer >> bits) & 0xff);
+    }
+  }
+  return output;
+}
+
 type Harness = {
   requestPermission: ReturnType<typeof vi.fn>;
   subscribe: ReturnType<typeof vi.fn>;
@@ -69,7 +92,7 @@ function install({
     return { ok: true, json: async () => ({}) };
   });
   vi.stubGlobal('fetch', fetchMock);
-  vi.stubGlobal('atob', (s: string) => Buffer.from(s, 'base64').toString('binary'));
+  vi.stubGlobal('atob', base64ToBinaryString);
 
   return { requestPermission, subscribe, getSubscription, unsubscribeFn, fetchMock };
 }
