@@ -18,13 +18,34 @@ import { expect, test, type Page } from '@playwright/test';
  * Run: npm run test:e2e:prod
  */
 
-/** Chrome DevTools' own "Fast 4G" preset — 4 Mbps down / 3 Mbps up / 150 ms RTT. */
-const FOUR_G = {
-  offline: false,
-  downloadThroughput: (4 * 1024 * 1024) / 8,
-  uploadThroughput: (3 * 1024 * 1024) / 8,
-  latency: 150,
-};
+/**
+ * Which "4G" is being measured. They are not the same and the difference is worth
+ * a full second of LCP, so the profile is explicit rather than implied:
+ *
+ *  - `fast4g` (default) — Chrome DevTools' "Fast 4G": 4 Mbps down / 3 Mbps up / 150 ms.
+ *  - `slow4g` — the profile Lighthouse's mobile preset uses: 1.6 Mbps down /
+ *    750 kbps up / 150 ms. Harsher, and the one behind the 3.5 s figure recorded
+ *    in the project log, so quote that number only against this profile.
+ *
+ * Select with NET_PROFILE=slow4g.
+ */
+const NET_PROFILES = {
+  fast4g: {
+    offline: false,
+    downloadThroughput: (4 * 1024 * 1024) / 8,
+    uploadThroughput: (3 * 1024 * 1024) / 8,
+    latency: 150,
+  },
+  slow4g: {
+    offline: false,
+    downloadThroughput: (1.6 * 1024 * 1024) / 8,
+    uploadThroughput: (750 * 1024) / 8,
+    latency: 150,
+  },
+} as const;
+
+const PROFILE = (process.env.NET_PROFILE as keyof typeof NET_PROFILES) ?? 'fast4g';
+const FOUR_G = NET_PROFILES[PROFILE];
 
 const PASSWORD = 'PerfProbe!2026';
 
@@ -40,10 +61,23 @@ async function observeLcp(page: Page): Promise<void> {
   });
 }
 
+/**
+ * CPU slowdown applied on top of the network throttle.
+ *
+ * Network throttling alone is not "a mid-range phone on 4G": it leaves a fast
+ * desktop CPU doing the React mount, which is exactly the work that decides the
+ * LCP of this landing (the LCP element is an <h1> React has to render). Measuring
+ * without it produces a flattering number that is not comparable to the Lighthouse
+ * mobile figure in the project log, so both are applied. 4x is the multiplier
+ * Lighthouse's own mobile preset uses.
+ */
+const CPU_SLOWDOWN = 4;
+
 async function throttleTo4g(page: Page): Promise<void> {
   const cdp = await page.context().newCDPSession(page);
   await cdp.send('Network.enable');
   await cdp.send('Network.emulateNetworkConditions', FOUR_G);
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU_SLOWDOWN });
 }
 
 /**
@@ -117,7 +151,8 @@ test.describe('production performance on 4G', () => {
     );
 
     console.log(
-      `[11.6] time-to-first-question=${ttfqMs} ms | landing LCP=${Math.round(lcpMs)} ms | ` +
+      `[11.6] profile=${PROFILE}+${CPU_SLOWDOWN}x CPU | time-to-first-question=${ttfqMs} ms | ` +
+        `landing LCP=${Math.round(lcpMs)} ms | ` +
         `question="${(await questionText.textContent())?.slice(0, 60)}" | cleanup=${cleanup}`,
     );
 
@@ -133,7 +168,7 @@ test.describe('production performance on 4G', () => {
     await page.waitForLoadState('networkidle');
 
     const lcpMs = await page.evaluate(() => (window as unknown as { __lcp: number }).__lcp);
-    console.log(`[11.6] landing LCP on 4G = ${Math.round(lcpMs)} ms`);
+    console.log(`[11.6] landing LCP on ${PROFILE} + ${CPU_SLOWDOWN}x CPU = ${Math.round(lcpMs)} ms`);
 
     expect(lcpMs, 'landing LCP on 4G (budget 2500 ms)').toBeLessThan(2_500);
   });
