@@ -349,3 +349,4 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | taskId | Programada para | Creada por | Estado |
 |---|---|---|---|
 | whetzy-orch-20260911-0730 | 2026-09-11 07:30 one-shot → cron `23 */6 * * *` en su primer pre-flight | sesión s | ARMADO |
+| whetzy-orch-20260911-0730 | cron `23 */6 * * *` — consumido por la sesión **al** (2026-09-13 14:13 UTC) | sesión s | **VIVO, no se borra.** El pre-flight lo encontró ya recurrente y habilitado, sin necesidad de convertirlo. **NO se aplica el CIERRE**: el backlog ejecutable NO está agotado — quedan 10.2 (TODO, reabierta al invalidar su bloqueo por H.8), 11.11 (PARCIAL, necesita el prerender de la bitácora #10) y 11.13 (TODO, deuda de ruff en tests). El cron sigue para que la siguiente sesión las tome; próximo disparo 2026-09-13 21:29 UTC |
