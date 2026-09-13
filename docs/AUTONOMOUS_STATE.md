@@ -34,6 +34,16 @@
 - Archivos escritos con Write tool en sesiones **previas** pueden ser invisibles a
   `os.listdir()` en subprocess Python. Fix: reescribirlos en la sesión actual
 - `content_loader` solo corre desde `start.sh` en prod. En dev, ejecutarlo a mano
+- **Coverage bajo SQLAlchemy async miente sin `concurrency = greenlet`.** El
+  engine async puentea el driver sincrono a asyncio con greenlets; el tracer
+  por defecto de coverage no sigue esos cambios de contexto, asi que todo
+  cuerpo de servicio con `await db.execute(...)` se cuenta como NO ejecutado.
+  Sintoma: logica pura al 100 %, servicios con DB al ~30 %. Arreglado en
+  `backend/.coveragerc` (sesion al). Sin ese fichero, cualquier medida de
+  cobertura de este repo esta subestimada ~10 puntos
+- El sqlite de coverage (`.coverage`) **no se puede crear bajo OneDrive**
+  ("unable to open database file"). Exporta `COVERAGE_FILE` fuera del arbol
+  sincronizado antes de `pytest --cov` (CI ya lo hace: `/tmp/.coverage_whetzy`)
 - `ruff check --fix` puede fallar con "Access is denied" (os error 5) en ciertos
   archivos bajo OneDrive (rename atómico choca con el sync). Fix: copiar
   `backend/app` al scratchpad (fuera de OneDrive), correr `--fix` ahí, copiar
