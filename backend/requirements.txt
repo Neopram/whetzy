@@ -25,8 +25,14 @@ redis==5.2.1
 # AI tutor (Groq)
 groq==0.13.1
 httpx==0.28.1
-# chromadb and sentence-transformers omitted: too heavy for Railway free tier (torch ~2GB RAM)
-# RAG degrades gracefully to [] when these are absent — app still serves /health and all endpoints
+
+# RAG (11.1): pure-Python BM25 over question explanations + glossary, built
+# from the DB at lifespan startup in well under a second. No ChromaDB, no
+# sentence-transformers, no torch — fits Railway free tier.
+# (services/duplicate_detector.py has its own, separate, optional
+# sentence-transformers dependency for question-bank dedup; still omitted
+# here for the same free-tier RAM reason and still degrades gracefully.)
+rank-bm25==0.2.2
 
 # OpenTelemetry (tracing)
 opentelemetry-api>=1.24

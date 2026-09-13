@@ -7,16 +7,38 @@ returns NullProvider. NullProvider.complete() is fully async and requires no
 network access — it extracts the grounding context from the built prompt and
 returns it directly. No mocking needed.
 
-The RAG module's retrieve() also short-circuits to [] when its index has not
-been built (no build_bg() is called during tests), so no ChromaDB I/O either.
+The RAG module's retrieve() short-circuits to [] when its index has not been
+built, and no build_bg() runs during tests — so `grounded` is honestly False
+unless a test builds the index itself. `rag_index` below does exactly that,
+in-process and with no network, which is what lets the grounded assertions
+below prove the real behaviour instead of a hardcoded flag.
 """
 
 from __future__ import annotations
 
-import pytest
+import pytest_asyncio
 from httpx import AsyncClient
 
+from app.services.ai import rag as rag_service
+
 BASE = "/api/v1/tutor"
+
+
+@pytest_asyncio.fixture
+async def rag_index(db_session):
+    """Build the BM25 index over whatever content the test seeded.
+
+    Production builds this in the lifespan via `build_bg`; tests have no
+    lifespan, so without this the index is None and `grounded` is False for
+    every question. Restores the module global afterwards so tests that want
+    the unbuilt-index behaviour still get it.
+    """
+    previous = rag_service._index
+    index = rag_service.RAGIndex()
+    await index.build(db_session)
+    rag_service._index = index
+    yield index
+    rag_service._index = previous
 
 
 # ── Auth guards ───────────────────────────────────────────────────────────────
@@ -75,8 +97,15 @@ async def test_explain_known_question_returns_grounded_answer(
     client: AsyncClient,
     plus_auth_headers: dict,
     content_seed: dict,
+    rag_index,
 ) -> None:
-    """With a seeded question, NullProvider returns the canonical explanation."""
+    """With the index built over seeded content, `grounded` is True because a
+    real retrieval hit carried a `source` — not because the flag is hardcoded.
+
+    This test used to pass against a `grounded = True` literal. It now depends
+    on the `rag_index` fixture: drop the fixture and it fails, which is the
+    point (red line 2 — never claim a citation we do not have).
+    """
     resp = await client.post(
         f"{BASE}/explain",
         json={"question_id": content_seed["question_id"]},
@@ -90,6 +119,30 @@ async def test_explain_known_question_returns_grounded_answer(
     assert data["provider"] == "fallback"
     assert data["grounded"] is True
     assert data["times_missed"] == 0
+
+    # The flag tracks a retrievable chunk that actually carries a citation.
+    chunks = rag_index.retrieve("Variables básicas: ¿Qué imprime print(type(42))?", n=3)
+    assert chunks, "the seeded question should be retrievable from its own text"
+    assert any(c.source for c in chunks)
+
+
+async def test_explain_is_not_grounded_when_the_index_is_empty(
+    client: AsyncClient,
+    plus_auth_headers: dict,
+    content_seed: dict,
+) -> None:
+    """No `rag_index` fixture here: the index is never built, so the tutor must
+    report `grounded=False` even for a question it can answer. An honest False
+    is the whole reason this endpoint is trustworthy."""
+    resp = await client.post(
+        f"{BASE}/explain",
+        json={"question_id": content_seed["question_id"]},
+        headers=plus_auth_headers,
+    )
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert len(data["explanation"]) > 0  # still answers from the canonical text
+    assert data["grounded"] is False
 
 
 async def test_explain_with_conversation_history(

@@ -129,10 +129,16 @@ async def explain_question(
         system_prompt = system_prompt + weak_ctx
 
     # --- RAG: related content chunks ---
-    rag_chunks = await rag_service.retrieve(
-        f"{skill_name}: {q_text}", n=2
-    )
-    related = [c for c in rag_chunks if c.strip() != (canonical or "").strip()][:2]
+    # n=3 (not 2): the question's own chunk is almost always the top hit
+    # (self-retrieval ~99.8%, see tests/unit/test_rag.py), and it is excluded
+    # from `related` below by doc_id — bumping n keeps up to 2 *other* chunks
+    # available after that exclusion.
+    rag_chunks = await rag_service.retrieve(f"{skill_name}: {q_text}", n=3)
+    # `grounded` reflects a real retrieval hit carrying a citation — never a
+    # fixed True. It is False whenever the index isn't built yet (startup,
+    # or no lifespan in tests) or nothing in it shares a term with the query.
+    grounded = any(chunk.source for chunk in rag_chunks)
+    related = [chunk.text for chunk in rag_chunks if chunk.doc_id != f"q_{question_id}"][:2]
     related_block = ("\n\nCONTEXTO RELACIONADO:\n" + "\n---\n".join(related)) if related else ""
 
     user_prompt = (
@@ -159,6 +165,6 @@ async def explain_question(
     return {
         "explanation": explanation,
         "provider": provider.name,
-        "grounded": True,
+        "grounded": grounded,
         "times_missed": missed,
     }
