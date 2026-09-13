@@ -1,0 +1,96 @@
+{
+  "generated_at": "2026-09-13T14:56:55.922050+00:00",
+  "task": "11.3 — BKT vs DKT benchmark on a public knowledge-tracing dataset",
+  "dataset": {
+    "name": "synthetic-5",
+    "citation": "Piech et al. 2015, 'Deep Knowledge Tracing' (NeurIPS)",
+    "source": "https://github.com/chrispiech/DeepKnowledgeTracing",
+    "file": "data/synthetic/naive_c5_q50_s4000_v0.csv",
+    "n_concepts": 5,
+    "n_students": 4000,
+    "n_questions_per_student": 50,
+    "seed_variant_used": "v0",
+    "seed_variant_note": "20 seed variants (v0-v19) exist upstream; only v0 was used — not cherry-picked across seeds.",
+    "item_representation": "concept id (0-4) from the info file, NOT question id (0-49)",
+    "item_representation_note": "This is the representation the production engine uses (mastery per skill, not per question), but it is NOT the paper's setup, which keys on question ids. Handing the model ground-truth concept labels removes within-concept difficulty and makes the task strictly easier for BOTH models — which is why both score above the paper's numbers here. See paper_reference_numbers."
+  },
+  "split": {
+    "method": "temporal, by student — original row order preserved, no shuffling",
+    "train_frac": 0.8,
+    "n_train_students": 3200,
+    "n_test_students": 800,
+    "note": "Step-ahead prediction within every evaluated sequence uses only responses 1..t-1 of that student."
+  },
+  "methodology": {
+    "auc_implementation": "sklearn.metrics.roc_auc_score",
+    "bkt_fitting": "Coarse grid search over 4 global BKTModel parameters (p_l0 in [0.1, 0.3, 0.5], p_t in [0.1, 0.2, 0.3, 0.4], p_g in [0.1, 0.2, 0.3], p_s in [0.05, 0.1, 0.2]), selected by AUC on the TRAIN split only. NOT full Baum-Welch/EM. The production BKTModel (app/services/engine/bkt.py) has no parameter-fitting logic at all; grid search was added here only for this benchmark, via the existing public BKTModel(SkillParams) API, to avoid under-fitting the baseline.",
+    "dkt_reuse": "app.ml.train_dkt._Net / _DKTDataset / _collate reused unmodified; only the outer train/eval loop is new.",
+    "dkt_seed": 42,
+    "dkt_hidden": 64,
+    "dkt_epochs": 20
+  },
+  "bkt": {
+    "fitted_params": {
+      "p_l0": 0.5,
+      "p_t": 0.1,
+      "p_g": 0.3,
+      "p_s": 0.2
+    },
+    "train_auc": 0.7959,
+    "test_auc": 0.7983,
+    "test_acc": 0.7281,
+    "n_test_predictions": 39200
+  },
+  "dkt": {
+    "test_auc": 0.8294,
+    "test_acc": 0.7563,
+    "n_test_predictions": 39200,
+    "note": null
+  },
+  "paper_reference_numbers": {
+    "note": "Piech et al. 2015 report these on synthetic-5 with their own split/CV setup AND question-id items. NOT comparable to the AUCs above — see dataset.item_representation_note. These are context for the DKT-over-BKT margin, not a scoreboard: do not report this run as beating the paper.",
+    "dkt_auc": 0.75,
+    "bkt_auc": 0.62,
+    "paper_dkt_minus_bkt": 0.13,
+    "this_run_dkt_minus_bkt": 0.0311,
+    "margin_note": "The margin, not the absolute AUC, is what transfers. It is much smaller here than in the paper: a well-fit BKT is a strong baseline over only 5 concepts, and DKT's edge grows with item-level sparsity that this concept-level variant removes by construction. Defensible claim from this file: 'on concept-level synthetic-5, our DKT beats our grid-fit BKT by ~0.03 AUC.' Nothing stronger."
+  },
+  "acceptance_criterion": {
+    "text": "DKT AUC >= 0.70 AND DKT AUC > BKT AUC",
+    "dkt_meets_0_70": true,
+    "dkt_beats_bkt": true,
+    "met": true
+  },
+  "assistments_2009": {
+    "attempted": true,
+    "included_in_benchmark": false,
+    "reason": "Official distribution page is a Google Sites page with no static/scriptable direct-download URL (file lives behind a client-side-rendered Google Drive link). No working GitHub mirror was found among the candidates probed below.",
+    "candidates_probed": [
+      {
+        "url": "https://sites.google.com/site/assistmentsdata/home/assistment-2009-2010-data",
+        "status": 200,
+        "note": "200 OK, but no scriptable direct-download CSV"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/ckyeungac/deep-knowledge-tracing-plus/master/data/assist2009_pid/skill_builder_data_corrected_collapsed.csv",
+        "status": 404,
+        "note": "HTTP 404 Not Found"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/jennyzhang0215/DKVMN/master/data/assist2009_pid/builder_train.csv",
+        "status": 404,
+        "note": "HTTP 404 Not Found"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/lccasagrande/Deep-Knowledge-Tracing/master/data/assistments/skill_builder_data.csv",
+        "status": 404,
+        "note": "HTTP 404 Not Found"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/hcnoh/knowledge-tracing-collection-pytorch/main/datasets/ASSIST2009/skill_builder_data.csv",
+        "status": 404,
+        "note": "HTTP 404 Not Found"
+      }
+    ]
+  }
+}
