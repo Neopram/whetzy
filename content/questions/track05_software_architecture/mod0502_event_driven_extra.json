@@ -1,0 +1,170 @@
+{
+  "questions": [
+    {
+      "id": "q050201007",
+      "skill_id": "sk050201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En una arquitectura orientada a eventos, un \"evento\" representa típicamente:",
+      "question_en": "In an event-driven architecture, an \"event\" typically represents:",
+      "options_es": [
+        "un hecho inmutable que ya ocurrió en el pasado (p.ej. \"OrderPlaced\"), al que otros componentes pueden reaccionar de forma desacoplada",
+        "un comando que otro servicio debe ejecutar obligatoriamente",
+        "una tabla de la base de datos compartida",
+        "una llamada RPC síncrona"
+      ],
+      "options_en": [
+        "an immutable fact that already happened in the past (e.g. \"OrderPlaced\"), which other components can react to in a decoupled way",
+        "a command that another service must mandatorily execute",
+        "a shared database table",
+        "a synchronous RPC call"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un evento describe algo que ya sucedió (hecho consumado, generalmente nombrado en pasado); los consumidores deciden de forma autónoma y desacoplada cómo reaccionar, a diferencia de un comando, que es una orden dirigida a un receptor específico.",
+      "explanation_en": "An event describes something that already happened (a completed fact, usually named in the past tense); consumers autonomously and independently decide how to react, unlike a command, which is an order directed at a specific receiver.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "event-driven",
+        "events"
+      ],
+      "source": "Fowler, M. — What do you mean by Event-Driven? (martinfowler.com); Kleppmann, M. — DDIA cap. 11"
+    },
+    {
+      "id": "q050202007",
+      "skill_id": "sk050202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué garantiza principalmente una cola de mensajes punto a punto (point-to-point) como las colas clásicas de RabbitMQ?",
+      "question_en": "What does a point-to-point message queue (like classic RabbitMQ queues) primarily guarantee?",
+      "options_es": [
+        "Que cada mensaje sea consumido por UN único consumidor entre los que compiten por la cola (competing consumers)",
+        "Que todos los consumidores suscritos reciban una copia de cada mensaje",
+        "Que los mensajes se procesen siempre en orden estrictamente global entre múltiples consumidores",
+        "Que no haga falta un broker intermedio"
+      ],
+      "options_en": [
+        "That each message is consumed by ONE single consumer among those competing for the queue (competing consumers)",
+        "That all subscribed consumers receive a copy of each message",
+        "That messages are always processed in strict global order across multiple consumers",
+        "That no intermediary broker is needed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En el patrón punto a punto, varios consumidores compiten por los mensajes de una misma cola, pero cada mensaje se entrega y procesa por un único consumidor, lo que permite repartir la carga de trabajo.",
+      "explanation_en": "In the point-to-point pattern, several consumers compete for messages from the same queue, but each message is delivered to and processed by a single consumer, allowing work to be distributed.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "messaging",
+        "queues"
+      ],
+      "source": "RabbitMQ Documentation — Queues; Hohpe & Woolf — Enterprise Integration Patterns (Point-to-Point Channel)"
+    },
+    {
+      "id": "q050202008",
+      "skill_id": "sk050202",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Las colas de mensajes garantizan siempre entrega \"exactly-once\" (exactamente una vez) sin ningún esfuerzo adicional por parte del consumidor.",
+      "question_en": "Message queues always guarantee \"exactly-once\" delivery with no additional effort required from the consumer.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La mayoría de sistemas de mensajería ofrecen por defecto entrega \"at-least-once\" (posibles duplicados) o \"at-most-once\" (posible pérdida); lograr semántica \"exactly-once\" real normalmente requiere que el consumidor implemente idempotencia o deduplicación explícita.",
+      "explanation_en": "Most messaging systems default to \"at-least-once\" delivery (possible duplicates) or \"at-most-once\" (possible loss); achieving real \"exactly-once\" semantics usually requires the consumer to implement idempotency or explicit deduplication.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "messaging",
+        "delivery-guarantees"
+      ],
+      "source": "Kleppmann, M. — Designing Data-Intensive Applications, cap. 11 (Message delivery guarantees)"
+    },
+    {
+      "id": "q050203007",
+      "skill_id": "sk050203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿En qué se diferencia el patrón publicación/suscripción (pub/sub) de una cola punto a punto?",
+      "question_en": "How does the publish/subscribe (pub/sub) pattern differ from a point-to-point queue?",
+      "options_es": [
+        "En pub/sub, cada mensaje publicado en un topic puede ser entregado a MÚLTIPLES suscriptores independientes, en lugar de a un único consumidor",
+        "En pub/sub no existe un broker de mensajería",
+        "En pub/sub los mensajes nunca pueden persistirse",
+        "Pub/sub solo funciona con HTTP, nunca con TCP"
+      ],
+      "options_en": [
+        "In pub/sub, each message published to a topic can be delivered to MULTIPLE independent subscribers, instead of a single consumer",
+        "In pub/sub there is no messaging broker",
+        "In pub/sub messages can never be persisted",
+        "Pub/sub only works over HTTP, never over TCP"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En pub/sub, los publicadores envían mensajes a un topic sin conocer a los suscriptores; cada suscriptor interesado recibe su propia copia del mensaje, a diferencia del modelo punto a punto donde los consumidores compiten por un mismo mensaje.",
+      "explanation_en": "In pub/sub, publishers send messages to a topic without knowing the subscribers; each interested subscriber receives its own copy of the message, unlike the point-to-point model where consumers compete for the same message.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "messaging",
+        "pubsub"
+      ],
+      "source": "Hohpe & Woolf — Enterprise Integration Patterns (Publish-Subscribe Channel)"
+    },
+    {
+      "id": "q050204007",
+      "skill_id": "sk050204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En Event Sourcing, el estado actual de un agregado se obtiene:",
+      "question_en": "In Event Sourcing, the current state of an aggregate is obtained by:",
+      "options_es": [
+        "reproduciendo (replay) la secuencia completa de eventos almacenados que le han ocurrido, desde el principio (o desde el último snapshot)",
+        "leyendo directamente una fila de una tabla que representa su estado actual, sin histórico",
+        "consultando una caché en memoria que nunca se persiste",
+        "promediando los valores de todos los eventos"
+      ],
+      "options_en": [
+        "replaying the full sequence of stored events that happened to it, from the beginning (or from the last snapshot)",
+        "reading directly a row from a table representing its current state, with no history",
+        "querying an in-memory cache that is never persisted",
+        "averaging the values of all the events"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Event Sourcing persiste la secuencia inmutable de eventos como fuente de verdad; el estado actual se reconstruye reproduciendo esos eventos (opcionalmente acelerado con snapshots periódicos), en lugar de guardar directamente el estado mutable.",
+      "explanation_en": "Event Sourcing persists the immutable sequence of events as the source of truth; current state is rebuilt by replaying those events (optionally sped up with periodic snapshots), instead of directly storing mutable state.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "event-sourcing",
+        "cqrs"
+      ],
+      "source": "Fowler, M. — Event Sourcing (martinfowler.com); Vernon, V. — Implementing Domain-Driven Design, cap. 8"
+    },
+    {
+      "id": "q050204008",
+      "skill_id": "sk050204",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "CQRS (Command Query Responsibility Segregation) exige obligatoriamente usar Event Sourcing; no pueden aplicarse por separado.",
+      "question_en": "CQRS (Command Query Responsibility Segregation) mandatorily requires Event Sourcing; they cannot be applied separately.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "CQRS y Event Sourcing son patrones independientes que se combinan a menudo, pero no son obligatorios entre sí: se puede aplicar CQRS (separar modelos de lectura y escritura) sobre un almacenamiento de estado tradicional, sin Event Sourcing.",
+      "explanation_en": "CQRS and Event Sourcing are independent patterns often combined, but neither requires the other: CQRS (separating read and write models) can be applied over traditional state storage, without Event Sourcing.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "event-sourcing",
+        "cqrs"
+      ],
+      "source": "Fowler, M. — CQRS (martinfowler.com); Young, G. — CQRS Documents"
+    }
+  ]
+}

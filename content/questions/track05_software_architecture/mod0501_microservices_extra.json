@@ -1,0 +1,170 @@
+{
+  "questions": [
+    {
+      "id": "q050101007",
+      "skill_id": "sk050101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Uno de los principios centrales de una arquitectura de microservicios es que cada servicio debe:",
+      "question_en": "One of the core principles of a microservices architecture is that each service should:",
+      "options_es": [
+        "poseer su propio modelo de datos y ser desplegable de forma independiente de los demás servicios",
+        "compartir una única base de datos con todos los demás servicios para mantener consistencia",
+        "ejecutarse siempre en el mismo proceso que los demás servicios",
+        "depender de que todos los demás servicios estén disponibles para arrancar"
+      ],
+      "options_en": [
+        "own its own data model and be independently deployable from the other services",
+        "share a single database with all other services to maintain consistency",
+        "always run in the same process as the other services",
+        "depend on every other service being available in order to start"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los microservicios se organizan en torno a capacidades de negocio, con su propio almacenamiento de datos y ciclo de despliegue independiente, permitiendo escalar y evolucionar cada servicio por separado.",
+      "explanation_en": "Microservices are organized around business capabilities, with their own data storage and independent deployment cycle, allowing each service to scale and evolve separately.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "microservices",
+        "principles"
+      ],
+      "source": "Newman, S. — Building Microservices, 2nd ed., cap. 1"
+    },
+    {
+      "id": "q050101008",
+      "skill_id": "sk050101",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Una arquitectura de microservicios elimina por completo la complejidad del sistema; simplemente traslada la complejidad de dentro de un monolito a la interacción entre procesos distribuidos.",
+      "question_en": "A microservices architecture completely eliminates system complexity; it merely moves complexity from inside a monolith to the interaction between distributed processes.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los microservicios no reducen la complejidad inherente del dominio; la redistribuyen como complejidad de sistemas distribuidos (latencia de red, fallos parciales, consistencia eventual, observabilidad), que antes era complejidad interna del monolito.",
+      "explanation_en": "Microservices don't reduce the domain's inherent complexity; they redistribute it as distributed-systems complexity (network latency, partial failures, eventual consistency, observability), which used to be internal complexity of the monolith.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "microservices",
+        "trade-offs"
+      ],
+      "source": "Newman, S. — Building Microservices, 2nd ed., cap. 1; Fowler, M. — MicroservicePremium"
+    },
+    {
+      "id": "q050102007",
+      "skill_id": "sk050102",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la principal desventaja de la comunicación síncrona (p.ej. REST/gRPC petición-respuesta) entre microservicios frente a la comunicación asíncrona vía mensajería?",
+      "question_en": "What is the main drawback of synchronous communication (e.g. REST/gRPC request-response) between microservices compared to asynchronous messaging?",
+      "options_es": [
+        "Acopla temporalmente a los servicios: si el servicio llamado está caído o lento, el llamador también se bloquea o falla, propagando el problema en cascada",
+        "Es imposible de implementar con HTTP/2",
+        "No permite pasar datos estructurados como JSON",
+        "Requiere obligatoriamente un balanceador de carga"
+      ],
+      "options_en": [
+        "It temporally couples the services: if the called service is down or slow, the caller also blocks or fails, propagating the problem in cascade",
+        "It's impossible to implement over HTTP/2",
+        "It cannot pass structured data like JSON",
+        "It mandatorily requires a load balancer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En llamadas síncronas el cliente espera la respuesta, por lo que la indisponibilidad o lentitud de un servicio se propaga directamente al llamador (y potencialmente en cascada). La mensajería asíncrona desacopla temporalmente a los servicios.",
+      "explanation_en": "In synchronous calls the client waits for the response, so a service's unavailability or slowness propagates directly to the caller (and potentially cascades). Asynchronous messaging temporally decouples the services.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "microservices",
+        "communication"
+      ],
+      "source": "Richardson, C. — Microservices Patterns, cap. 3 (Interprocess communication)"
+    },
+    {
+      "id": "q050103007",
+      "skill_id": "sk050103",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la función principal de un API Gateway en una arquitectura de microservicios?",
+      "question_en": "What is the main role of an API Gateway in a microservices architecture?",
+      "options_es": [
+        "Actuar como punto de entrada único que enruta peticiones a los microservicios internos, y centralizar preocupaciones transversales como autenticación, rate limiting y logging",
+        "Almacenar los datos de todos los microservicios en una sola base de datos",
+        "Compilar el código de todos los servicios en un único binario",
+        "Reemplazar la necesidad de tener un balanceador de carga interno"
+      ],
+      "options_en": [
+        "Act as the single entry point that routes requests to the internal microservices, and centralize cross-cutting concerns like authentication, rate limiting and logging",
+        "Store the data of all microservices in a single database",
+        "Compile the code of all services into a single binary",
+        "Replace the need for an internal load balancer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El API Gateway centraliza el enrutamiento hacia los servicios internos y las preocupaciones transversales (auth, rate limiting, agregación de respuestas, logging), simplificando el contrato expuesto a los clientes externos.",
+      "explanation_en": "The API Gateway centralizes routing to internal services and cross-cutting concerns (auth, rate limiting, response aggregation, logging), simplifying the contract exposed to external clients.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "microservices",
+        "api-gateway"
+      ],
+      "source": "Richardson, C. — Microservices Patterns, cap. 8 (API Gateway pattern)"
+    },
+    {
+      "id": "q050103008",
+      "skill_id": "sk050103",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Un API Gateway mal diseñado puede convertirse en un cuello de botella o un punto único de fallo si no se le da alta disponibilidad y escalado adecuados.",
+      "question_en": "A poorly designed API Gateway can become a bottleneck or single point of failure if it isn't given adequate high availability and scaling.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Al concentrar todo el tráfico de entrada, el API Gateway necesita ser altamente disponible y escalar horizontalmente; de lo contrario se convierte en un SPOF que puede tumbar el acceso a todos los servicios detrás de él.",
+      "explanation_en": "Since it concentrates all incoming traffic, the API Gateway needs to be highly available and scale horizontally; otherwise it becomes a SPOF that can take down access to every service behind it.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "microservices",
+        "api-gateway"
+      ],
+      "source": "Richardson, C. — Microservices Patterns, cap. 8 (API Gateway drawbacks)"
+    },
+    {
+      "id": "q050104007",
+      "skill_id": "sk050104",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En \"client-side service discovery\", ¿quién es responsable de consultar el registro de servicios y elegir una instancia concreta a la que llamar?",
+      "question_en": "In \"client-side service discovery\", who is responsible for querying the service registry and choosing a specific instance to call?",
+      "options_es": [
+        "El propio cliente (o su librería de comunicación), que consulta el registro y aplica balanceo de carga",
+        "Un proxy de red externo, sin que el cliente lo sepa",
+        "El sistema operativo del host",
+        "La base de datos del servicio destino"
+      ],
+      "options_en": [
+        "The client itself (or its communication library), which queries the registry and applies load balancing",
+        "An external network proxy, without the client's knowledge",
+        "The host's operating system",
+        "The target service's database"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En client-side discovery, el cliente consulta directamente el registro de servicios (p.ej. Eureka, Consul) y decide con qué instancia comunicarse, a menudo aplicando balanceo de carga en el propio cliente.",
+      "explanation_en": "In client-side discovery, the client directly queries the service registry (e.g. Eureka, Consul) and decides which instance to talk to, often applying load balancing on the client itself.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "microservices",
+        "service-discovery"
+      ],
+      "source": "Richardson, C. — Microservices Patterns, cap. 3 (Service discovery patterns)"
+    }
+  ]
+}

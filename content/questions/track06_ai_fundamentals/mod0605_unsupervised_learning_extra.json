@@ -1,0 +1,166 @@
+{
+  "questions": [
+    {
+      "id": "q060501007",
+      "skill_id": "sk060501",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué mide el 'método del codo' (elbow method) al elegir el número de clusters k en K-Means?",
+      "question_en": "What does the 'elbow method' measure when choosing the number of clusters k in K-Means?",
+      "options_es": [
+        "La inercia (suma de distancias al cuadrado dentro de cada cluster) en función de k, buscando el punto donde deja de disminuir mucho",
+        "La precisión de clasificación del modelo para distintos valores de k",
+        "El tiempo de ejecución del algoritmo para cada k",
+        "La cantidad de memoria RAM usada por cada valor de k"
+      ],
+      "options_en": [
+        "Inertia (sum of squared within-cluster distances) as a function of k, looking for the point where it stops decreasing much",
+        "The classification accuracy of the model for different values of k",
+        "The algorithm's running time for each k",
+        "The amount of RAM used for each value of k"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se grafica la inercia (within-cluster sum of squares) frente a distintos valores de k. La inercia siempre baja al aumentar k, pero el 'codo' del gráfico —donde la mejora se vuelve marginal— sugiere un buen compromiso entre número de clusters y ajuste.",
+      "explanation_en": "Inertia (within-cluster sum of squares) is plotted against different values of k. Inertia always decreases as k grows, but the 'elbow' of the curve—where improvement becomes marginal—suggests a good trade-off between number of clusters and fit.",
+      "source": "scikit-learn User Guide – Selecting the number of clusters; Géron, Hands-On ML 2e, Ch. 9",
+      "expected_time_ms": 22000,
+      "tags": [
+        "k-means",
+        "elbow-method"
+      ]
+    },
+    {
+      "id": "q060501008",
+      "skill_id": "sk060501",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "K-Means garantiza siempre encontrar el óptimo global de su función objetivo, sin importar cómo se inicialicen los centroides.",
+      "question_en": "K-Means always guarantees finding the global optimum of its objective function, regardless of how the centroids are initialized.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "K-Means usa el algoritmo de Lloyd, que converge a un óptimo local, no necesariamente global; el resultado depende de la inicialización de los centroides. Por eso en la práctica se usan estrategias como k-means++ y múltiples inicializaciones aleatorias (`n_init`), quedándose con la mejor.",
+      "explanation_en": "K-Means uses Lloyd's algorithm, which converges to a local optimum, not necessarily a global one; the result depends on centroid initialization. This is why in practice strategies like k-means++ and multiple random initializations (`n_init`) are used, keeping the best result.",
+      "source": "scikit-learn User Guide – K-Means (Lloyd's algorithm); Géron, Hands-On ML 2e, Ch. 9",
+      "expected_time_ms": 20000,
+      "tags": [
+        "k-means",
+        "local-optimum"
+      ]
+    },
+    {
+      "id": "q060502007",
+      "skill_id": "sk060502",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué estructura visual se usa para representar el proceso de fusión de clusters en un clustering jerárquico aglomerativo?",
+      "question_en": "What visual structure is used to represent the merging process of clusters in agglomerative hierarchical clustering?",
+      "options_es": [
+        "Un dendrograma",
+        "Un diagrama de dispersión",
+        "Un histograma",
+        "Una matriz de confusión"
+      ],
+      "options_en": [
+        "A dendrogram",
+        "A scatter plot",
+        "A histogram",
+        "A confusion matrix"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un dendrograma es un diagrama en forma de árbol que muestra el orden y la distancia a la que se van fusionando los clusters (o los puntos individuales), desde hojas individuales hasta un único cluster raíz. Cortarlo a distinta altura produce distintos números de clusters.",
+      "explanation_en": "A dendrogram is a tree-shaped diagram showing the order and distance at which clusters (or individual points) get merged, from individual leaves up to a single root cluster. Cutting it at different heights produces different numbers of clusters.",
+      "source": "scikit-learn User Guide – Hierarchical clustering; SciPy dendrogram documentation",
+      "expected_time_ms": 18000,
+      "tags": [
+        "hierarchical-clustering",
+        "dendrogram"
+      ]
+    },
+    {
+      "id": "q060502008",
+      "skill_id": "sk060502",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama el criterio de enlace (linkage) en clustering jerárquico que, al fusionar dos clusters, minimiza el incremento resultante en la varianza total dentro de los clusters?",
+      "question_en": "What is the name of the linkage criterion in hierarchical clustering that, when merging two clusters, minimizes the resulting increase in total within-cluster variance?",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "enlace de Ward (Ward linkage)",
+      "correct_answer_en": "Ward linkage",
+      "explanation_es": "El enlace de Ward elige en cada paso la fusión de clusters que produce el menor incremento posible en la suma total de varianzas intra-cluster, tendiendo a generar clusters de tamaño más equilibrado que otros linkages como 'single' o 'complete'.",
+      "explanation_en": "Ward linkage chooses, at each step, the merge of clusters that produces the smallest possible increase in the total within-cluster variance, tending to produce more evenly sized clusters than other linkages like 'single' or 'complete'.",
+      "source": "scikit-learn User Guide – Hierarchical clustering: Ward; Ward (1963)",
+      "expected_time_ms": 24000,
+      "tags": [
+        "hierarchical-clustering",
+        "ward-linkage"
+      ]
+    },
+    {
+      "id": "q060503007",
+      "skill_id": "sk060503",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué representa la primera componente principal (PC1) obtenida mediante PCA?",
+      "question_en": "What does the first principal component (PC1) obtained via PCA represent?",
+      "options_es": [
+        "La dirección en el espacio de los datos a lo largo de la cual la varianza es máxima",
+        "La media de todas las variables originales",
+        "La variable original con más valores faltantes",
+        "Un cluster formado automáticamente por el algoritmo"
+      ],
+      "options_en": [
+        "The direction in the data space along which variance is maximal",
+        "The mean of all the original variables",
+        "The original variable with the most missing values",
+        "A cluster automatically formed by the algorithm"
+      ],
+      "correct_index": 0,
+      "explanation_es": "PCA encuentra un nuevo sistema de ejes ortogonales ordenados por la cantidad de varianza que capturan de los datos. PC1 es el eje a lo largo del cual los datos proyectados tienen la mayor varianza posible; PC2 es el siguiente eje ortogonal con mayor varianza, y así sucesivamente.",
+      "explanation_en": "PCA finds a new set of orthogonal axes ordered by how much variance of the data they capture. PC1 is the axis along which the projected data has the maximum possible variance; PC2 is the next orthogonal axis with the highest remaining variance, and so on.",
+      "source": "scikit-learn User Guide – Decomposition: PCA; Bishop, PRML, Ch. 12.1",
+      "expected_time_ms": 22000,
+      "tags": [
+        "pca",
+        "dimensionality-reduction"
+      ]
+    },
+    {
+      "id": "q060504007",
+      "skill_id": "sk060504",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿En qué principio se basa el algoritmo Isolation Forest para detectar anomalías?",
+      "question_en": "What principle does the Isolation Forest algorithm rely on to detect anomalies?",
+      "options_es": [
+        "Los puntos anómalos son más fáciles de 'aislar' con menos divisiones aleatorias que los puntos normales",
+        "Los puntos anómalos siempre están más lejos del centroide global de los datos",
+        "Los puntos anómalos tienen valores faltantes en más columnas",
+        "Los puntos anómalos siempre pertenecen a la clase minoritaria en un problema de clasificación"
+      ],
+      "options_en": [
+        "Anomalous points are easier to 'isolate' with fewer random splits than normal points",
+        "Anomalous points are always farther from the global centroid of the data",
+        "Anomalous points have missing values in more columns",
+        "Anomalous points always belong to the minority class in a classification problem"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Isolation Forest construye árboles de división aleatoria; como los puntos anómalos suelen estar aislados y en regiones de baja densidad, en promedio requieren muchas menos divisiones para quedar aislados en su propia hoja que los puntos normales. Esa profundidad promedio más corta es la señal de anomalía.",
+      "explanation_en": "Isolation Forest builds random-split trees; since anomalous points tend to be isolated in low-density regions, on average they require far fewer splits to be isolated into their own leaf than normal points. That shorter average path length is the anomaly signal.",
+      "source": "Liu, Ting & Zhou, 'Isolation Forest' (2008); scikit-learn User Guide – IsolationForest",
+      "expected_time_ms": 24000,
+      "tags": [
+        "anomaly-detection",
+        "isolation-forest"
+      ]
+    }
+  ]
+}

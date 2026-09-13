@@ -1,0 +1,145 @@
+{
+  "questions": [
+    {
+      "id": "q050601007",
+      "skill_id": "sk050601",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia principal entre la replicación y el sharding (particionamiento) de una base de datos?",
+      "question_en": "What is the main difference between replication and sharding (partitioning) of a database?",
+      "options_es": [
+        "La replicación copia el mismo conjunto completo de datos en varios nodos (para disponibilidad/lectura); el sharding divide los datos en subconjuntos distintos repartidos entre nodos (para escalar volumen y escritura)",
+        "Son sinónimos exactos",
+        "El sharding solo aplica a bases NoSQL y la replicación solo a SQL",
+        "La replicación siempre reduce la disponibilidad"
+      ],
+      "options_en": [
+        "Replication copies the same complete dataset across multiple nodes (for availability/reads); sharding splits the data into distinct subsets spread across nodes (to scale volume and writes)",
+        "They are exact synonyms",
+        "Sharding only applies to NoSQL databases and replication only to SQL",
+        "Replication always reduces availability"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La replicación mantiene copias idénticas de todo el dataset en varios nodos, mejorando disponibilidad y capacidad de lectura. El sharding distribuye porciones DISTINTAS de los datos entre nodos, permitiendo escalar el volumen total y el throughput de escritura. A menudo se combinan.",
+      "explanation_en": "Replication keeps identical copies of the whole dataset across multiple nodes, improving availability and read capacity. Sharding distributes DIFFERENT portions of the data across nodes, allowing total volume and write throughput to scale. They are often combined.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "scalability",
+        "sharding"
+      ],
+      "source": "Kleppmann, M. — Designing Data-Intensive Applications, cap. 5 (Replication) y cap. 6 (Partitioning)"
+    },
+    {
+      "id": "q050602007",
+      "skill_id": "sk050602",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia entre un \"fault\" (fallo) y una \"failure\" (avería) según Kleppmann en DDIA?",
+      "question_en": "What is the difference between a \"fault\" and a \"failure\" according to Kleppmann in DDIA?",
+      "options_es": [
+        "Un fault es que un componente individual se desvíe de su especificación (p.ej. un disco falla); una failure es que el SISTEMA COMPLETO deje de proveer el servicio requerido al usuario",
+        "Son términos idénticos usados indistintamente",
+        "Un fault solo ocurre en hardware, una failure solo en software",
+        "Una failure siempre precede a un fault"
+      ],
+      "options_en": [
+        "A fault is an individual component deviating from its spec (e.g. a disk fails); a failure is the WHOLE SYSTEM ceasing to provide the required service to the user",
+        "They are identical terms used interchangeably",
+        "A fault only happens in hardware, a failure only in software",
+        "A failure always precedes a fault"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Kleppmann distingue: un \"fault\" es la desviación de un componente respecto a su spec; una \"failure\" es que el sistema en su conjunto deja de funcionar para el usuario. La ingeniería de tolerancia a fallos busca que faults individuales no se conviertan en failures.",
+      "explanation_en": "Kleppmann distinguishes: a \"fault\" is a component's deviation from its spec; a \"failure\" is the system as a whole ceasing to work for the user. Fault-tolerance engineering aims to prevent individual faults from becoming failures.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "fault-tolerance",
+        "reliability"
+      ],
+      "source": "Kleppmann, M. — Designing Data-Intensive Applications, cap. 1 (Reliability)"
+    },
+    {
+      "id": "q050602008",
+      "skill_id": "sk050602",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Eliminar todos los puntos únicos de fallo (SPOF) de un sistema garantiza automáticamente el 100% de disponibilidad.",
+      "question_en": "Eliminating every single point of failure (SPOF) in a system automatically guarantees 100% availability.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Eliminar SPOFs reduce el riesgo de una caída total por un único componente, pero no garantiza 100% de disponibilidad: pueden ocurrir fallos correlacionados, errores humanos, fallos de red completos, o fallos en cascada que afecten a múltiples componentes redundantes simultáneamente.",
+      "explanation_en": "Eliminating SPOFs reduces the risk of a total outage from a single component, but doesn't guarantee 100% availability: correlated failures, human error, complete network outages, or cascading failures can affect multiple redundant components simultaneously.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "fault-tolerance",
+        "availability"
+      ],
+      "source": "Google — Site Reliability Engineering (SRE Book), cap. 4 (Service Level Objectives)"
+    },
+    {
+      "id": "q050603007",
+      "skill_id": "sk050603",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo funciona el patrón Circuit Breaker para evitar fallos en cascada?",
+      "question_en": "How does the Circuit Breaker pattern work to prevent cascading failures?",
+      "options_es": [
+        "Tras detectar una tasa de fallos que supera un umbral al llamar a un servicio, el circuito se \"abre\" y las siguientes llamadas fallan rápido sin intentar la llamada real, dando tiempo al servicio dependido a recuperarse",
+        "Reintenta indefinidamente cada petición fallida hasta que tenga éxito",
+        "Cierra permanentemente la conexión de red tras el primer error",
+        "Aumenta automáticamente los recursos del servidor que falla"
+      ],
+      "options_en": [
+        "After detecting a failure rate above a threshold when calling a service, the circuit \"opens\" and subsequent calls fail fast without attempting the real call, giving the dependency time to recover",
+        "It retries every failed request indefinitely until it succeeds",
+        "It permanently closes the network connection after the first error",
+        "It automatically increases the resources of the failing server"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El Circuit Breaker monitoriza los fallos de las llamadas a un servicio; al superar un umbral, \"abre\" el circuito y las llamadas posteriores fallan inmediatamente (fail fast) sin intentar la llamada real, evitando saturar aún más al servicio con problemas y dando tiempo a que se recupere. Periódicamente prueba en modo \"half-open\" si el servicio ya responde.",
+      "explanation_en": "The Circuit Breaker monitors failures of calls to a service; once a threshold is exceeded, it \"opens\" the circuit and subsequent calls fail immediately (fail fast) without attempting the real call, avoiding further overloading the troubled service and giving it time to recover. It periodically probes in \"half-open\" mode to see if the service responds again.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "resilience",
+        "circuit-breaker"
+      ],
+      "source": "Nygard, M. — Release It!, 2nd ed. (Circuit Breaker); Fowler, M. — CircuitBreaker (martinfowler.com)"
+    },
+    {
+      "id": "q050604007",
+      "skill_id": "sk050604",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuáles son los tres pilares clásicos de la observabilidad?",
+      "question_en": "What are the three classic pillars of observability?",
+      "options_es": [
+        "Logs, métricas (metrics) y trazas (traces)",
+        "CPU, memoria y disco",
+        "Frontend, backend y base de datos",
+        "Desarrollo, staging y producción"
+      ],
+      "options_en": [
+        "Logs, metrics, and traces",
+        "CPU, memory, and disk",
+        "Frontend, backend, and database",
+        "Development, staging, and production"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los tres pilares clásicos de la observabilidad son los logs (eventos discretos con contexto), las métricas (valores numéricos agregados en el tiempo) y las trazas distribuidas (el recorrido de una petición a través de múltiples servicios), que juntos permiten diagnosticar el comportamiento de un sistema.",
+      "explanation_en": "The three classic pillars of observability are logs (discrete events with context), metrics (numeric values aggregated over time), and distributed traces (a request's journey across multiple services), which together allow diagnosing a system's behavior.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "observability",
+        "monitoring"
+      ],
+      "source": "OpenTelemetry Documentation — Observability primer; Google — Site Reliability Engineering (monitoring distributed systems)"
+    }
+  ]
+}

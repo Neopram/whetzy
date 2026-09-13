@@ -1,0 +1,199 @@
+{
+  "questions": [
+    {
+      "id": "q070101008",
+      "skill_id": "sk070101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué mecanismo permite a un Transformer relacionar cada token de una secuencia con todos los demás tokens en paralelo, sin recurrencia?",
+      "question_en": "Which mechanism allows a Transformer to relate every token in a sequence to every other token in parallel, without recurrence?",
+      "options_es": [
+        "El self-attention (auto-atención)",
+        "El max pooling",
+        "La convolución 1D",
+        "El batch normalization"
+      ],
+      "options_en": [
+        "Self-attention",
+        "Max pooling",
+        "1D convolution",
+        "Batch normalization"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El self-attention calcula, para cada token, una combinación ponderada de todos los demás tokens de la secuencia (usando queries, keys y values), permitiendo capturar dependencias de largo alcance sin procesar la secuencia paso a paso como una RNN.",
+      "explanation_en": "Self-attention computes, for each token, a weighted combination of every other token in the sequence (using queries, keys, and values), capturing long-range dependencies without processing the sequence step by step like an RNN.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "transformer",
+        "self-attention"
+      ]
+    },
+    {
+      "id": "q070101009",
+      "skill_id": "sk070101",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Como los Transformers no usan recurrencia ni convolución, necesitan una codificación posicional (positional encoding) explícita para que el modelo sepa el orden de los tokens.",
+      "question_en": "Because Transformers use neither recurrence nor convolution, they need an explicit positional encoding so the model knows the order of the tokens.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El self-attention por sí mismo es invariante al orden (trata la secuencia como un conjunto de tokens). Para inyectar información sobre la posición, el Transformer original suma vectores de codificación posicional (basados en funciones seno/coseno) a los embeddings de entrada.",
+      "explanation_en": "Self-attention by itself is order-invariant (it treats the sequence as a set of tokens). To inject positional information, the original Transformer adds positional encoding vectors (based on sine/cosine functions) to the input embeddings.",
+      "source": "Vaswani et al., 'Attention Is All You Need' (2017), Sec. 3.5: Positional Encoding",
+      "expected_time_ms": 20000,
+      "tags": [
+        "transformer",
+        "positional-encoding"
+      ]
+    },
+    {
+      "id": "q070102007",
+      "skill_id": "sk070102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Por qué los LLMs modernos usan tokenización por subpalabras (como BPE) en lugar de tokenizar por palabras completas?",
+      "question_en": "Why do modern LLMs use subword tokenization (like BPE) instead of tokenizing by whole words?",
+      "options_es": [
+        "Permite manejar palabras raras o fuera de vocabulario dividiéndolas en subunidades conocidas, manteniendo un vocabulario de tamaño manejable",
+        "Hace que el modelo procese siempre exactamente una palabra por token",
+        "Elimina por completo la necesidad de un vocabulario fijo",
+        "Solo funciona para el idioma inglés"
+      ],
+      "options_en": [
+        "It handles rare or out-of-vocabulary words by splitting them into known subunits, keeping the vocabulary size manageable",
+        "It makes the model always process exactly one word per token",
+        "It completely eliminates the need for a fixed vocabulary",
+        "It only works for the English language"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Tokenizar por palabra completa obliga a un vocabulario enorme (o a tratar cualquier palabra desconocida como un token especial 'desconocido'). Byte-Pair Encoding (BPE) construye un vocabulario de subpalabras frecuentes, de modo que palabras raras o nunca vistas se pueden componer a partir de fragmentos conocidos.",
+      "explanation_en": "Whole-word tokenization forces either a huge vocabulary or treating any unseen word as a special 'unknown' token. Byte-Pair Encoding (BPE) builds a vocabulary of frequent subword units, so rare or previously unseen words can be composed from known fragments.",
+      "source": "Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (BPE, ACL 2016)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "tokenization",
+        "bpe"
+      ]
+    },
+    {
+      "id": "q070103007",
+      "skill_id": "sk070103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es el 'few-shot prompting'?",
+      "question_en": "What is 'few-shot prompting'?",
+      "options_es": [
+        "Incluir en el prompt unos pocos ejemplos de entrada-salida para guiar el formato o comportamiento de la respuesta del modelo",
+        "Entrenar el modelo desde cero con muy pocos ejemplos",
+        "Hacer al modelo la misma pregunta varias veces seguidas",
+        "Usar un prompt de una sola palabra"
+      ],
+      "options_en": [
+        "Including a few input-output examples in the prompt to guide the model's response format or behavior",
+        "Training the model from scratch with very few examples",
+        "Asking the model the same question multiple times in a row",
+        "Using a one-word prompt"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En few-shot prompting se incluyen dentro del propio prompt algunos ejemplos representativos de entrada y salida deseada, sin actualizar los pesos del modelo (a diferencia del fine-tuning); el modelo infiere el patrón a partir de esos ejemplos ('in-context learning').",
+      "explanation_en": "In few-shot prompting, a few representative examples of desired input and output are included directly in the prompt, without updating the model's weights (unlike fine-tuning); the model infers the pattern from those examples ('in-context learning').",
+      "source": "Brown et al., 'Language Models are Few-Shot Learners' (GPT-3, NeurIPS 2020)",
+      "expected_time_ms": 18000,
+      "tags": [
+        "prompt-engineering",
+        "few-shot"
+      ]
+    },
+    {
+      "id": "q070103008",
+      "skill_id": "sk070103",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un 'system prompt' bien diseñado puede establecer el rol, el tono y las restricciones del asistente para toda la conversación, de forma persistente y separada de los mensajes del usuario.",
+      "question_en": "A well-designed 'system prompt' can establish the assistant's role, tone, and constraints for the whole conversation, persistently and separately from user messages.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El mensaje de sistema (system prompt) se usa para dar instrucciones globales y persistentes al modelo (rol, tono, límites, formato de salida), diferenciándolo del rol 'user' que contiene la conversación propiamente dicha. La mayoría de APIs de chat modernas (Anthropic, OpenAI) exponen este rol explícitamente.",
+      "explanation_en": "The system message (system prompt) is used to give the model global, persistent instructions (role, tone, boundaries, output format), distinct from the 'user' role that carries the actual conversation. Most modern chat APIs (Anthropic, OpenAI) expose this role explicitly.",
+      "source": "Anthropic – Prompt engineering guide (role / system prompting)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "prompt-engineering",
+        "system-prompt"
+      ]
+    },
+    {
+      "id": "q070104007",
+      "skill_id": "sk070104",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿En qué consiste la técnica de 'chain-of-thought prompting'?",
+      "question_en": "What does the 'chain-of-thought prompting' technique consist of?",
+      "options_es": [
+        "Pedir al modelo que produzca pasos de razonamiento intermedios antes de dar la respuesta final",
+        "Encadenar varias llamadas independientes a distintos modelos",
+        "Reducir el prompt a una sola instrucción muy breve",
+        "Pedir al modelo que resuma la conversación completa"
+      ],
+      "options_en": [
+        "Asking the model to produce intermediate reasoning steps before giving the final answer",
+        "Chaining several independent calls to different models",
+        "Reducing the prompt to a single very short instruction",
+        "Asking the model to summarize the whole conversation"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Chain-of-thought (CoT) prompting induce al modelo a 'pensar en voz alta', generando una secuencia de pasos de razonamiento intermedios antes de la respuesta final. Esto mejora notablemente el desempeño en tareas que requieren razonamiento aritmético, lógico o de sentido común.",
+      "explanation_en": "Chain-of-thought (CoT) prompting induces the model to 'think out loud,' generating a sequence of intermediate reasoning steps before the final answer. This notably improves performance on tasks requiring arithmetic, logical, or common-sense reasoning.",
+      "source": "Wei et al., 'Chain-of-Thought Prompting Elicits Reasoning in Large Language Models' (NeurIPS 2022)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "prompt-engineering",
+        "chain-of-thought"
+      ]
+    },
+    {
+      "id": "q070105007",
+      "skill_id": "sk070105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Si se reduce el parámetro `temperature` a un valor cercano a 0 en la generación de un LLM, ¿qué efecto tiene sobre las salidas?",
+      "question_en": "If the `temperature` parameter is reduced to a value close to 0 in an LLM's generation, what effect does it have on the outputs?",
+      "options_es": [
+        "Las salidas se vuelven más deterministas y menos diversas, favoreciendo casi siempre el token más probable",
+        "Las salidas se vuelven completamente aleatorias",
+        "El modelo deja de respetar el límite de tokens (max_tokens)",
+        "El costo por token de la llamada a la API aumenta"
+      ],
+      "options_en": [
+        "Outputs become more deterministic and less diverse, almost always favoring the most probable token",
+        "Outputs become completely random",
+        "The model stops respecting the max_tokens limit",
+        "The per-token cost of the API call increases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`temperature` reescala los logits antes de aplicar softmax al elegir el siguiente token. Con `temperature` cercana a 0 la distribución se vuelve casi un argmax (comportamiento casi greedy y determinista); valores más altos aplanan la distribución, aumentando la aleatoriedad y diversidad de las salidas.",
+      "explanation_en": "`temperature` rescales the logits before applying softmax to pick the next token. With `temperature` near 0, the distribution becomes nearly an argmax (almost greedy, deterministic behavior); higher values flatten the distribution, increasing randomness and diversity in the outputs.",
+      "source": "OpenAI API Reference – generation parameters (temperature, top_p)",
+      "expected_time_ms": 18000,
+      "tags": [
+        "generation-parameters",
+        "temperature"
+      ]
+    }
+  ]
+}

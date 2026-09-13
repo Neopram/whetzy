@@ -1,0 +1,170 @@
+{
+  "questions": [
+    {
+      "id": "q040301007",
+      "skill_id": "sk040301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "La restricción REST de \"sistema en capas\" (layered system) permite que:",
+      "question_en": "The REST \"layered system\" constraint allows:",
+      "options_es": [
+        "intermediarios como proxies o gateways se inserten entre cliente y servidor sin que el cliente necesite saberlo",
+        "el cliente y el servidor compartan la misma base de datos",
+        "el servidor mantenga el estado de sesión del cliente entre peticiones",
+        "los mensajes deban ser binarios en vez de texto"
+      ],
+      "options_en": [
+        "intermediaries like proxies or gateways to be inserted between client and server without the client needing to know",
+        "the client and server to share the same database",
+        "the server to keep the client's session state between requests",
+        "messages to be binary instead of text"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La restricción de sistema en capas permite componentes intermediarios (proxies, gateways, balanceadores) sin que el cliente sepa si habla directamente con el servidor final, mejorando escalabilidad y seguridad.",
+      "explanation_en": "The layered system constraint allows intermediary components (proxies, gateways, load balancers) without the client knowing whether it's talking directly to the final server, improving scalability and security.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "rest",
+        "constraints"
+      ],
+      "source": "Fielding, R. — Architectural Styles and the Design of Network-based Software Architectures, cap. 5.2.4"
+    },
+    {
+      "id": "q040301008",
+      "skill_id": "sk040301",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En una API REST estrictamente HATEOAS, el cliente debe codificar de antemano las URIs de todas las transiciones de estado posibles, en lugar de descubrirlas mediante enlaces en las respuestas.",
+      "question_en": "In a strictly HATEOAS REST API, the client must hardcode the URIs of all possible state transitions in advance, instead of discovering them through links in responses.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "HATEOAS (Hypermedia As The Engine Of Application State) exige lo contrario: el cliente descubre dinámicamente las acciones disponibles a través de hiperenlaces incluidos en las respuestas, sin URIs codificadas de antemano.",
+      "explanation_en": "HATEOAS (Hypermedia As The Engine Of Application State) requires the opposite: the client dynamically discovers available actions through hyperlinks included in responses, without hardcoded URIs.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "rest",
+        "hateoas"
+      ],
+      "source": "Fielding, R. — Architectural Styles and the Design of Network-based Software Architectures, cap. 5.1.5"
+    },
+    {
+      "id": "q040302007",
+      "skill_id": "sk040302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué característica distingue a PUT de PATCH según la semántica HTTP?",
+      "question_en": "What characteristic distinguishes PUT from PATCH according to HTTP semantics?",
+      "options_es": [
+        "PUT reemplaza el recurso completo con la representación enviada; PATCH aplica una modificación parcial",
+        "PUT es idempotente y PATCH nunca lo es",
+        "PUT no puede usarse para crear recursos",
+        "PATCH requiere autenticación y PUT no"
+      ],
+      "options_en": [
+        "PUT replaces the entire resource with the sent representation; PATCH applies a partial modification",
+        "PUT is idempotent and PATCH never is",
+        "PUT cannot be used to create resources",
+        "PATCH requires authentication and PUT does not"
+      ],
+      "correct_index": 0,
+      "explanation_es": "PUT sustituye el recurso completo por la representación del cuerpo; PATCH aplica un conjunto parcial de cambios. PUT es idempotente por definición; PATCH puede serlo o no según su implementación.",
+      "explanation_en": "PUT replaces the whole resource with the body's representation; PATCH applies a partial set of changes. PUT is idempotent by definition; PATCH may or may not be depending on its implementation.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "http",
+        "rest"
+      ],
+      "source": "RFC 9110 §9.3.4 (PUT) y RFC 5789 (PATCH Method)"
+    },
+    {
+      "id": "q040303007",
+      "skill_id": "sk040303",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Siguiendo buenas prácticas de diseño de endpoints REST, ¿cuál de las siguientes rutas es la más idiomática para obtener los pedidos de un cliente específico?",
+      "question_en": "Following REST endpoint design best practices, which of the following routes is the most idiomatic for retrieving orders belonging to a specific customer?",
+      "options_es": [
+        "GET /customers/{id}/orders",
+        "GET /getOrdersByCustomer?id={id}",
+        "POST /orders/search",
+        "GET /orders/all/customer/{id}"
+      ],
+      "options_en": [
+        "GET /customers/{id}/orders",
+        "GET /getOrdersByCustomer?id={id}",
+        "POST /orders/search",
+        "GET /orders/all/customer/{id}"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las convenciones REST favorecen sustantivos en plural y jerarquías de recursos anidados (`/customers/{id}/orders`) en lugar de verbos en la URL, propios de RPC.",
+      "explanation_en": "REST conventions favor plural nouns and nested resource hierarchies (`/customers/{id}/orders`) instead of verbs in the URL, which are typical of RPC.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "rest",
+        "api-design"
+      ],
+      "source": "Fielding, R. — REST dissertation; Microsoft REST API Guidelines (naming conventions)"
+    },
+    {
+      "id": "q040304007",
+      "skill_id": "sk040304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En la especificación OpenAPI, ¿en qué sección se definen estructuras de datos reutilizables (como esquemas de request/response) para evitar duplicación?",
+      "question_en": "In the OpenAPI specification, which section defines reusable data structures (like request/response schemas) to avoid duplication?",
+      "options_es": [
+        "components/schemas",
+        "paths",
+        "info",
+        "servers"
+      ],
+      "options_en": [
+        "components/schemas",
+        "paths",
+        "info",
+        "servers"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`components/schemas` (antes `definitions` en Swagger 2.0) permite declarar esquemas reutilizables que se referencian con `$ref` desde múltiples operaciones en `paths`.",
+      "explanation_en": "`components/schemas` (formerly `definitions` in Swagger 2.0) lets you declare reusable schemas referenced with `$ref` from multiple operations in `paths`.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "openapi",
+        "documentation"
+      ],
+      "source": "OpenAPI Specification 3.1 — sección Components Object"
+    },
+    {
+      "id": "q040304008",
+      "skill_id": "sk040304",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "OpenAPI es un formato ejecutable: basta con escribir el documento YAML/JSON para que el servidor implemente automáticamente la lógica de negocio de cada endpoint.",
+      "question_en": "OpenAPI is an executable format: simply writing the YAML/JSON document makes the server automatically implement the business logic for each endpoint.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "OpenAPI es solo una especificación descriptiva del contrato de la API; no ejecuta lógica de negocio. Sirve para generar documentación, clientes/SDKs y validación, pero la implementación sigue siendo responsabilidad del desarrollador.",
+      "explanation_en": "OpenAPI is only a descriptive specification of the API contract; it does not execute business logic. It is used to generate documentation, clients/SDKs and validation, but implementation remains the developer's responsibility.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "openapi",
+        "documentation"
+      ],
+      "source": "OpenAPI Specification 3.1 — Introducción"
+    }
+  ]
+}

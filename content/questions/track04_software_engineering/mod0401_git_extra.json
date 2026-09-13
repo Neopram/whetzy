@@ -1,0 +1,165 @@
+{
+  "questions": [
+    {
+      "id": "q040101008",
+      "skill_id": "sk040101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué comando de Git muestra las diferencias entre el directorio de trabajo y el área de staging (index)?",
+      "question_en": "Which Git command shows the differences between the working directory and the staging area (index)?",
+      "options_es": [
+        "git diff",
+        "git diff --staged",
+        "git status",
+        "git log -p"
+      ],
+      "options_en": [
+        "git diff",
+        "git diff --staged",
+        "git status",
+        "git log -p"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`git diff` sin argumentos compara el directorio de trabajo contra el índice. `git diff --staged` (o `--cached`) compara el índice contra el último commit.",
+      "explanation_en": "`git diff` with no arguments compares the working directory against the index. `git diff --staged` (or `--cached`) compares the index against the last commit.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "diff"
+      ],
+      "source": "Git Documentation — git-diff(1)"
+    },
+    {
+      "id": "q040102007",
+      "skill_id": "sk040102",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una fusión (merge) \"fast-forward\" crea un nuevo commit de fusión con dos padres.",
+      "question_en": "A \"fast-forward\" merge creates a new merge commit with two parents.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un fast-forward simplemente mueve el puntero de la rama hacia adelante, sin crear un commit nuevo, porque no hubo divergencia de historiales que reconciliar.",
+      "explanation_en": "A fast-forward simply moves the branch pointer forward without creating a new commit, because there was no history divergence to reconcile.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "merge"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Basic Branching and Merging"
+    },
+    {
+      "id": "q040103007",
+      "skill_id": "sk040103",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la principal razón para NO hacer rebase de una rama pública que otros ya han clonado?",
+      "question_en": "What is the main reason NOT to rebase a public branch that others have already cloned?",
+      "options_es": [
+        "Rebase reescribe el historial y cambia los hashes de commit, rompiendo el trabajo de quienes ya basaron cambios en los commits antiguos",
+        "Rebase borra archivos del directorio de trabajo",
+        "Rebase requiere conexión a internet",
+        "Rebase no soporta ramas con más de 50 commits"
+      ],
+      "options_en": [
+        "Rebase rewrites history and changes commit hashes, breaking the work of anyone who already based changes on the old commits",
+        "Rebase deletes files from the working directory",
+        "Rebase requires an internet connection",
+        "Rebase doesn't support branches with more than 50 commits"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Rebase reescribe commits con nuevos hashes; si otros ya tienen la rama original, sus historiales divergen del reescrito, causando duplicados y conflictos dolorosos al sincronizar. Es la 'Golden Rule of Rebasing'.",
+      "explanation_en": "Rebase rewrites commits with new hashes; if others already have the original branch, their histories diverge from the rewritten one, causing duplicates and painful conflicts when syncing. This is the 'Golden Rule of Rebasing'.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "git",
+        "rebase"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.6 Rebasing (The Perils of Rebasing)"
+    },
+    {
+      "id": "q040104007",
+      "skill_id": "sk040104",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Durante un conflicto de merge, ¿qué marca usa Git para delimitar el inicio del bloque en conflicto proveniente de la rama actual (HEAD)?",
+      "question_en": "During a merge conflict, which marker does Git use to delimit the start of the conflicting block from the current branch (HEAD)?",
+      "options_es": [
+        "<<<<<<< HEAD",
+        "=======",
+        ">>>>>>>",
+        "### CONFLICT"
+      ],
+      "options_en": [
+        "<<<<<<< HEAD",
+        "=======",
+        ">>>>>>>",
+        "### CONFLICT"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Git delimita el bloque conflictivo con `<<<<<<< HEAD` (versión actual), `=======` (separador) y `>>>>>>> <rama>` (versión entrante).",
+      "explanation_en": "Git delimits the conflicting block with `<<<<<<< HEAD` (current version), `=======` (separator) and `>>>>>>> <branch>` (incoming version).",
+      "expected_time_ms": 15000,
+      "tags": [
+        "git",
+        "merge",
+        "conflict"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Basic Merge Conflicts"
+    },
+    {
+      "id": "q040104008",
+      "skill_id": "sk040104",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Después de resolver manualmente un conflicto en un archivo, es necesario ejecutar `git add` sobre ese archivo antes de poder completar el commit de fusión.",
+      "question_en": "After manually resolving a conflict in a file, you must run `git add` on that file before you can complete the merge commit.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`git add` marca el archivo como resuelto (staged); sin esto, `git commit` no completa correctamente la fusión, ya que Git aún lo considera en estado de conflicto sin confirmar.",
+      "explanation_en": "`git add` marks the file as resolved (staged); without it, `git commit` will not correctly complete the merge, since Git still considers it in an unresolved conflict state.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "git",
+        "merge",
+        "conflict"
+      ],
+      "source": "Pro Git 2e (Chacon & Straub) — Cap. 3.2 Basic Merge Conflicts"
+    },
+    {
+      "id": "q040105007",
+      "skill_id": "sk040105",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "En trunk-based development, los desarrolladores integran cambios pequeños y frecuentes directamente (o casi) a la rama principal, evitando ramas de larga duración (_____-lived branches). (una palabra en inglés)",
+      "question_en": "In trunk-based development, developers integrate small, frequent changes directly (or nearly so) into the main branch, avoiding _____-lived branches. (one English word)",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "long",
+      "correct_answer_en": "long",
+      "explanation_es": "El desarrollo basado en tronco (trunk-based development) minimiza las ramas de larga vida ('long-lived branches') para reducir divergencia y conflictos de integración, favoreciendo la integración continua.",
+      "explanation_en": "Trunk-based development minimizes long-lived branches to reduce divergence and integration conflicts, favoring continuous integration.",
+      "expected_time_ms": 28000,
+      "tags": [
+        "git",
+        "workflow",
+        "trunk-based"
+      ],
+      "source": "Trunk Based Development (trunkbaseddevelopment.com) — Paul Hammant"
+    }
+  ]
+}

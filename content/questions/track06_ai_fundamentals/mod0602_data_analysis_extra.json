@@ -1,0 +1,175 @@
+{
+  "questions": [
+    {
+      "id": "q060201007",
+      "skill_id": "sk060201",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué devuelve `np.arange(0, 10, 2)` en NumPy?",
+      "question_en": "What does `np.arange(0, 10, 2)` return in NumPy?",
+      "options_es": [
+        "array([0, 2, 4, 6, 8])",
+        "array([0, 2, 4, 6, 8, 10])",
+        "array([2, 4, 6, 8, 10])",
+        "array([0, 1, 2, ..., 9])"
+      ],
+      "options_en": [
+        "array([0, 2, 4, 6, 8])",
+        "array([0, 2, 4, 6, 8, 10])",
+        "array([2, 4, 6, 8, 10])",
+        "array([0, 1, 2, ..., 9])"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`np.arange(start, stop, step)` genera valores desde `start` (inclusive) hasta `stop` (exclusive) con el paso indicado: `0, 2, 4, 6, 8`. El valor `10` no se incluye porque el límite superior es exclusivo.",
+      "explanation_en": "`np.arange(start, stop, step)` generates values from `start` (inclusive) to `stop` (exclusive) with the given step: `0, 2, 4, 6, 8`. `10` is not included because the upper bound is exclusive.",
+      "source": "NumPy User Guide – numpy.arange reference",
+      "expected_time_ms": 18000,
+      "tags": [
+        "numpy",
+        "array-creation"
+      ]
+    },
+    {
+      "id": "q060201008",
+      "skill_id": "sk060201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué hace `np.zeros((3, 4))` en NumPy?",
+      "question_en": "What does `np.zeros((3, 4))` do in NumPy?",
+      "options_es": [
+        "Crea un array de forma (3, 4) lleno de ceros de tipo float",
+        "Crea una lista de Python con 3 sublistas de 4 ceros",
+        "Crea un array de forma (4, 3) lleno de ceros",
+        "Elimina los valores nulos de un array existente"
+      ],
+      "options_en": [
+        "Creates a (3, 4)-shaped array filled with floating-point zeros",
+        "Creates a Python list with 3 sublists of 4 zeros",
+        "Creates a (4, 3)-shaped array filled with zeros",
+        "Removes null values from an existing array"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`np.zeros(shape)` crea un `ndarray` con la forma indicada (aquí 3 filas × 4 columnas) inicializado con ceros de tipo `float64` por defecto. Es una forma común de pre-asignar memoria antes de rellenar un array.",
+      "explanation_en": "`np.zeros(shape)` creates an `ndarray` with the given shape (here 3 rows × 4 columns) initialized with `float64` zeros by default. It is a common way to pre-allocate memory before filling an array.",
+      "source": "NumPy User Guide – Array creation routines",
+      "expected_time_ms": 16000,
+      "tags": [
+        "numpy",
+        "array-creation"
+      ]
+    },
+    {
+      "id": "q060202007",
+      "skill_id": "sk060202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la diferencia principal entre una `Series` y un `DataFrame` en pandas?",
+      "question_en": "What is the main difference between a pandas `Series` and a `DataFrame`?",
+      "options_es": [
+        "Una Series es un array unidimensional con etiquetas; un DataFrame es una tabla bidimensional de columnas (cada una una Series)",
+        "Una Series solo admite números; un DataFrame admite texto",
+        "Un DataFrame es simplemente una lista de Series sin índice compartido",
+        "No hay diferencia real, son alias del mismo objeto"
+      ],
+      "options_en": [
+        "A Series is a one-dimensional labeled array; a DataFrame is a two-dimensional table of columns (each a Series)",
+        "A Series only holds numbers; a DataFrame holds text",
+        "A DataFrame is just a list of Series with no shared index",
+        "There is no real difference, they are aliases of the same object"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una `Series` es como una columna: un array 1D con un índice. Un `DataFrame` es una tabla 2D donde cada columna es internamente una `Series`, todas compartiendo el mismo índice de filas.",
+      "explanation_en": "A `Series` is like a single column: a 1D array with an index. A `DataFrame` is a 2D table where each column is internally a `Series`, all sharing the same row index.",
+      "source": "pandas documentation – Intro to data structures",
+      "expected_time_ms": 18000,
+      "tags": [
+        "pandas",
+        "series",
+        "dataframe"
+      ]
+    },
+    {
+      "id": "q060202008",
+      "skill_id": "sk060202",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Dado `df = pd.DataFrame({'x': [1, 2, 3]})`, ¿qué devuelve `df['x'].sum()`?",
+      "question_en": "Given `df = pd.DataFrame({'x': [1, 2, 3]})`, what does `df['x'].sum()` return?",
+      "options_es": [
+        "6",
+        "3",
+        "[1, 2, 3]",
+        "1"
+      ],
+      "options_en": [
+        "6",
+        "3",
+        "[1, 2, 3]",
+        "1"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`df['x']` selecciona la columna `x` como una Series `[1, 2, 3]`, y `.sum()` suma sus elementos: `1 + 2 + 3 = 6`.",
+      "explanation_en": "`df['x']` selects the `x` column as a Series `[1, 2, 3]`, and `.sum()` adds its elements: `1 + 2 + 3 = 6`.",
+      "source": "pandas User Guide – Essential basic functionality",
+      "expected_time_ms": 16000,
+      "tags": [
+        "pandas",
+        "aggregation"
+      ]
+    },
+    {
+      "id": "q060203007",
+      "skill_id": "sk060203",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Al llamar `df.drop_duplicates()` sin más argumentos, el DataFrame original queda sin modificar a menos que se use `inplace=True` o se reasigne el resultado (`df = df.drop_duplicates()`).",
+      "question_en": "Calling `df.drop_duplicates()` with no other arguments leaves the original DataFrame unmodified unless you pass `inplace=True` or reassign the result (`df = df.drop_duplicates()`).",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Por defecto, la mayoría de métodos de pandas (incluido `drop_duplicates`) devuelven una copia nueva y no modifican el DataFrame original. Para modificarlo in situ hace falta `inplace=True`, o reasignar la variable con el resultado devuelto.",
+      "explanation_en": "By default, most pandas methods (including `drop_duplicates`) return a new copy and leave the original DataFrame untouched. Modifying it in place requires `inplace=True`, or reassigning the variable with the returned result.",
+      "source": "pandas documentation – DataFrame.drop_duplicates",
+      "expected_time_ms": 20000,
+      "tags": [
+        "pandas",
+        "data-cleaning"
+      ]
+    },
+    {
+      "id": "q060204007",
+      "skill_id": "sk060204",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué tipo de gráfico es el más adecuado para visualizar la distribución de una única variable numérica continua?",
+      "question_en": "Which chart type is most appropriate for visualizing the distribution of a single continuous numeric variable?",
+      "options_es": [
+        "Un histograma",
+        "Un gráfico de líneas",
+        "Un diagrama de dispersión (scatter plot)",
+        "Un gráfico circular (pie chart)"
+      ],
+      "options_en": [
+        "A histogram",
+        "A line chart",
+        "A scatter plot",
+        "A pie chart"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un histograma agrupa los valores en intervalos (bins) y muestra su frecuencia, lo que revela la forma de la distribución (sesgo, modas, dispersión) de una sola variable continua. Un scatter plot, en cambio, se usa para relacionar dos variables.",
+      "explanation_en": "A histogram groups values into bins and shows their frequency, revealing the shape of the distribution (skew, modes, spread) of a single continuous variable. A scatter plot, by contrast, is used to relate two variables.",
+      "source": "matplotlib documentation – Histograms",
+      "expected_time_ms": 16000,
+      "tags": [
+        "visualization",
+        "histogram"
+      ]
+    }
+  ]
+}

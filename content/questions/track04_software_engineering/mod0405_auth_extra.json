@@ -1,0 +1,146 @@
+{
+  "questions": [
+    {
+      "id": "q040501007",
+      "skill_id": "sk040501",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En autenticación basada en sesiones, ¿dónde se almacena típicamente el estado de la sesión del usuario autenticado?",
+      "question_en": "In session-based authentication, where is the authenticated user's session state typically stored?",
+      "options_es": [
+        "En el servidor (o un almacén compartido como Redis), identificado por un ID de sesión enviado al cliente en una cookie",
+        "Únicamente en el navegador, en localStorage",
+        "Dentro del propio token, sin estado en el servidor",
+        "En la URL como parámetro de consulta"
+      ],
+      "options_en": [
+        "On the server (or a shared store like Redis), identified by a session ID sent to the client in a cookie",
+        "Only in the browser, in localStorage",
+        "Inside the token itself, with no server-side state",
+        "In the URL as a query parameter"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La autenticación basada en sesión es \"stateful\": el servidor guarda los datos de sesión (en memoria, base de datos o Redis) y solo entrega al cliente un identificador de sesión opaco vía cookie.",
+      "explanation_en": "Session-based authentication is \"stateful\": the server keeps the session data (in memory, a database, or Redis) and only hands the client an opaque session identifier via a cookie.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "auth",
+        "sessions"
+      ],
+      "source": "OWASP — Session Management Cheat Sheet"
+    },
+    {
+      "id": "q040502007",
+      "skill_id": "sk040502",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la estructura de tres partes separadas por puntos que compone un JWT compacto?",
+      "question_en": "What is the three-part, dot-separated structure that makes up a compact JWT?",
+      "options_es": [
+        "Header.Payload.Signature",
+        "Header.Body.Footer",
+        "Algorithm.Claims.Key",
+        "Issuer.Subject.Audience"
+      ],
+      "options_en": [
+        "Header.Payload.Signature",
+        "Header.Body.Footer",
+        "Algorithm.Claims.Key",
+        "Issuer.Subject.Audience"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un JWT compacto codifica en Base64URL tres partes separadas por puntos: el header (algoritmo y tipo), el payload (claims) y la firma que garantiza integridad.",
+      "explanation_en": "A compact JWT Base64URL-encodes three dot-separated parts: the header (algorithm and type), the payload (claims), and the signature that guarantees integrity.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "jwt",
+        "auth"
+      ],
+      "source": "RFC 7519 §3 (JWT Format); RFC 7515 (JWS Compact Serialization)"
+    },
+    {
+      "id": "q040502008",
+      "skill_id": "sk040502",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Un JWT firmado (JWS) garantiza que su contenido (claims) está cifrado y no puede ser leído por quien lo intercepte.",
+      "question_en": "A signed JWT (JWS) guarantees that its content (claims) is encrypted and cannot be read by anyone who intercepts it.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un JWT firmado (JWS) solo garantiza integridad y autenticidad, pero el payload va codificado en Base64URL, NO cifrado: cualquiera puede decodificarlo y leerlo. Para confidencialidad se necesita JWE.",
+      "explanation_en": "A signed JWT (JWS) only guarantees integrity and authenticity, but the payload is Base64URL-encoded, NOT encrypted: anyone can decode and read it. Confidentiality requires JWE.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "jwt",
+        "security"
+      ],
+      "source": "RFC 7519 §6 (Unsecured JWTs); RFC 7516 (JWE)"
+    },
+    {
+      "id": "q040503007",
+      "skill_id": "sk040503",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En el flujo \"Authorization Code\" de OAuth 2.0, ¿qué intercambia el cliente por el token de acceso?",
+      "question_en": "In the OAuth 2.0 \"Authorization Code\" flow, what does the client exchange for the access token?",
+      "options_es": [
+        "El código de autorización obtenido tras la redirección del usuario, junto con sus credenciales de cliente",
+        "La contraseña del usuario final directamente",
+        "Un token de refresco previamente emitido, sin código",
+        "El nombre de usuario en texto plano"
+      ],
+      "options_en": [
+        "The authorization code obtained after the user is redirected, along with its client credentials",
+        "The end user's password directly",
+        "A previously issued refresh token, with no code",
+        "The plain-text username"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En Authorization Code, el usuario se autentica ante el servidor de autorización, que redirige al cliente con un código de un solo uso; el cliente intercambia ese código, junto con sus credenciales, por el access token en una llamada servidor-a-servidor.",
+      "explanation_en": "In Authorization Code, the user authenticates with the authorization server, which redirects the client with a one-time code; the client exchanges that code, along with its credentials, for the access token in a server-to-server call.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "oauth2",
+        "auth"
+      ],
+      "source": "RFC 6749 §4.1 (Authorization Code Grant)"
+    },
+    {
+      "id": "q040504007",
+      "skill_id": "sk040504",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por qué OWASP recomienda NO usar SHA-256 o MD5 sin más para almacenar contraseñas?",
+      "question_en": "Why does OWASP recommend NOT using plain SHA-256 or MD5 to store passwords?",
+      "options_es": [
+        "Son funciones de hash rápidas de propósito general, diseñadas para velocidad, lo que permite a un atacante probar miles de millones de contraseñas por segundo en un ataque de fuerza bruta",
+        "Porque no producen un resultado de longitud fija",
+        "Porque no están disponibles en Python",
+        "Porque requieren una clave privada"
+      ],
+      "options_en": [
+        "They are fast, general-purpose hash functions designed for speed, letting an attacker try billions of passwords per second in a brute-force attack",
+        "Because they don't produce a fixed-length output",
+        "Because they aren't available in Python",
+        "Because they require a private key"
+      ],
+      "correct_index": 0,
+      "explanation_es": "SHA-256/MD5 son rápidas por diseño (útiles para checksums), lo cual es indeseable para contraseñas: un atacante con GPUs puede probar miles de millones de hashes por segundo. Se recomiendan funciones lentas y con costo ajustable como bcrypt, scrypt o Argon2.",
+      "explanation_en": "SHA-256/MD5 are fast by design (useful for checksums), which is undesirable for passwords: an attacker with GPUs can try billions of hashes per second. Slow, tunable-cost functions like bcrypt, scrypt or Argon2 are recommended instead.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "auth",
+        "password",
+        "hashing"
+      ],
+      "source": "OWASP — Password Storage Cheat Sheet"
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "questions": [
+    {
+      "id": "q050501007",
+      "skill_id": "sk050501",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por qué dos Bounded Contexts distintos pueden usar el mismo término (p.ej. \"Cliente\") con significados diferentes?",
+      "question_en": "Why can two different Bounded Contexts use the same term (e.g. \"Customer\") with different meanings?",
+      "options_es": [
+        "Porque cada Bounded Context define su propio modelo, consistente internamente, adaptado a las necesidades de ese subdominio concreto, aunque comparta nombres con otros contextos",
+        "Porque DDD prohíbe reutilizar nombres entre módulos",
+        "Porque es un error de diseño que siempre debe evitarse",
+        "Porque las bases de datos no permiten nombres de tabla duplicados"
+      ],
+      "options_en": [
+        "Because each Bounded Context defines its own internally consistent model, tailored to that specific subdomain's needs, even if it shares names with other contexts",
+        "Because DDD forbids reusing names across modules",
+        "Because it's a design mistake that must always be avoided",
+        "Because databases don't allow duplicate table names"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Bounded Context delimita el alcance donde un modelo (y su lenguaje ubicuo) es válido y consistente; el mismo término puede significar algo distinto en otro contexto sin que eso sea un problema, siempre que el límite esté explícito.",
+      "explanation_en": "A Bounded Context delimits the scope where a model (and its ubiquitous language) is valid and consistent; the same term can mean something different in another context without being a problem, as long as the boundary is explicit.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "ddd",
+        "bounded-context"
+      ],
+      "source": "Evans, E. — Domain-Driven Design (Bounded Context)"
+    },
+    {
+      "id": "q050501008",
+      "skill_id": "sk050501",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En DDD, un Context Map documenta las relaciones e integraciones (p.ej. Shared Kernel, Customer-Supplier, Anticorruption Layer) entre distintos Bounded Contexts.",
+      "question_en": "In DDD, a Context Map documents the relationships and integrations (e.g. Shared Kernel, Customer-Supplier, Anticorruption Layer) between different Bounded Contexts.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El Context Map es una herramienta de diseño estratégico que hace explícitas las relaciones entre Bounded Contexts y el tipo de integración/dependencia que existe entre los equipos que los mantienen.",
+      "explanation_en": "The Context Map is a strategic design tool that makes explicit the relationships between Bounded Contexts and the kind of integration/dependency that exists between the teams that maintain them.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "ddd",
+        "context-map"
+      ],
+      "source": "Evans, E. — Domain-Driven Design (Context Map)"
+    },
+    {
+      "id": "q050502007",
+      "skill_id": "sk050502",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué distingue fundamentalmente a una Entidad de un Value Object en DDD?",
+      "question_en": "What fundamentally distinguishes an Entity from a Value Object in DDD?",
+      "options_es": [
+        "La Entidad se define por una identidad continua a lo largo del tiempo, aunque sus atributos cambien; el Value Object se define únicamente por sus atributos y es intercambiable si son iguales",
+        "Las Entidades nunca pueden persistirse en base de datos",
+        "Los Value Objects siempre son mutables",
+        "Solo las Entidades pueden tener métodos"
+      ],
+      "options_en": [
+        "An Entity is defined by a continuous identity over time, even as its attributes change; a Value Object is defined solely by its attributes and is interchangeable if equal",
+        "Entities can never be persisted to a database",
+        "Value Objects are always mutable",
+        "Only Entities can have methods"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una Entidad (p.ej. un Pedido con un ID) mantiene su identidad aunque sus atributos cambien con el tiempo. Un Value Object (p.ej. una Dirección o un Dinero) no tiene identidad propia: dos instancias con los mismos atributos son intercambiables, y suelen modelarse como inmutables.",
+      "explanation_en": "An Entity (e.g. an Order with an ID) keeps its identity even as its attributes change over time. A Value Object (e.g. an Address or Money) has no identity of its own: two instances with the same attributes are interchangeable, and are usually modeled as immutable.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "ddd",
+        "entities"
+      ],
+      "source": "Evans, E. — Domain-Driven Design (Entities and Value Objects)"
+    },
+    {
+      "id": "q050503007",
+      "skill_id": "sk050503",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es el rol de la \"raíz del agregado\" (Aggregate Root) en DDD?",
+      "question_en": "What is the role of the \"Aggregate Root\" in DDD?",
+      "options_es": [
+        "Es la única entidad del agregado accesible desde fuera; toda referencia y modificación al agregado debe pasar por ella, garantizando sus invariantes",
+        "Es simplemente la primera entidad creada cronológicamente",
+        "Es una tabla física obligatoria en la base de datos",
+        "Es un patrón exclusivo de bases de datos NoSQL"
+      ],
+      "options_en": [
+        "It's the only entity of the aggregate accessible from outside; every reference and modification to the aggregate must go through it, guaranteeing its invariants",
+        "It's simply the first entity created chronologically",
+        "It's a mandatory physical table in the database",
+        "It's a pattern exclusive to NoSQL databases"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La Aggregate Root actúa como punto de entrada único al agregado: el código externo solo referencia y modifica el agregado a través de ella, lo que le permite mantener consistentes sus invariantes internos.",
+      "explanation_en": "The Aggregate Root acts as the single entry point to the aggregate: external code only references and modifies the aggregate through it, which lets it keep its internal invariants consistent.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "ddd",
+        "aggregates"
+      ],
+      "source": "Evans, E. — Domain-Driven Design (Aggregates); Vernon, V. — Effective Aggregate Design"
+    },
+    {
+      "id": "q050503008",
+      "skill_id": "sk050503",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Un Repository en DDD expone operaciones de bajo nivel específicas de SQL (como JOINs arbitrarios) para que la capa de dominio pueda construir cualquier consulta posible.",
+      "question_en": "A Repository in DDD exposes low-level, SQL-specific operations (like arbitrary JOINs) so the domain layer can build any possible query.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un Repository expone una interfaz orientada al dominio (p.ej. `findById`, `save`, métodos con significado de negocio) que oculta los detalles de persistencia; no debe filtrar detalles de bajo nivel de la base de datos hacia la capa de dominio.",
+      "explanation_en": "A Repository exposes a domain-oriented interface (e.g. `findById`, `save`, methods with business meaning) that hides persistence details; it should not leak low-level database details into the domain layer.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "ddd",
+        "repositories"
+      ],
+      "source": "Evans, E. — Domain-Driven Design (Repositories)"
+    },
+    {
+      "id": "q050504007",
+      "skill_id": "sk050504",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es el propósito principal del Lenguaje Ubicuo (Ubiquitous Language) en DDD?",
+      "question_en": "What is the main purpose of the Ubiquitous Language in DDD?",
+      "options_es": [
+        "Establecer un vocabulario compartido, riguroso y consistente entre expertos del dominio y desarrolladores, usado tanto en las conversaciones como en el propio código",
+        "Forzar que todo el código se escriba en inglés",
+        "Sustituir la necesidad de tener expertos de dominio en el equipo",
+        "Definir el lenguaje de programación que debe usarse en el proyecto"
+      ],
+      "options_en": [
+        "To establish a shared, rigorous, consistent vocabulary between domain experts and developers, used both in conversations and in the code itself",
+        "To force all code to be written in English",
+        "To replace the need for domain experts on the team",
+        "To define which programming language must be used in the project"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El Lenguaje Ubicuo busca eliminar la brecha de traducción entre negocio y técnica: los mismos términos usados por los expertos del dominio deben aparecer literalmente en el modelo y el código, evitando ambigüedades.",
+      "explanation_en": "The Ubiquitous Language aims to eliminate the translation gap between business and tech: the same terms used by domain experts must appear literally in the model and the code, avoiding ambiguity.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "ddd",
+        "ubiquitous-language"
+      ],
+      "source": "Evans, E. — Domain-Driven Design (Ubiquitous Language)"
+    }
+  ]
+}

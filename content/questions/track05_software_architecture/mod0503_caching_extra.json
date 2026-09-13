@@ -1,0 +1,170 @@
+{
+  "questions": [
+    {
+      "id": "q050301007",
+      "skill_id": "sk050301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En la estrategia \"cache-aside\" (lazy loading), ¿qué ocurre cuando se produce un \"cache miss\"?",
+      "question_en": "In the \"cache-aside\" (lazy loading) strategy, what happens on a \"cache miss\"?",
+      "options_es": [
+        "La aplicación lee el dato desde la base de datos, lo devuelve al cliente y además lo escribe en la caché para futuras peticiones",
+        "La petición falla inmediatamente sin consultar la base de datos",
+        "La caché se autorrellena de forma proactiva antes de que se solicite el dato",
+        "El sistema bloquea todas las escrituras hasta refrescar la caché completa"
+      ],
+      "options_en": [
+        "The application reads the data from the database, returns it to the client, and also writes it to the cache for future requests",
+        "The request fails immediately without querying the database",
+        "The cache proactively fills itself before the data is requested",
+        "The system blocks all writes until the whole cache is refreshed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En cache-aside, la aplicación consulta primero la caché; si no está el dato (miss), lo obtiene de la fuente de verdad (BD) y lo almacena en caché antes de responder, para que la siguiente lectura sea un \"hit\".",
+      "explanation_en": "In cache-aside, the application first checks the cache; on a miss, it fetches the data from the source of truth (DB) and stores it in the cache before responding, so the next read is a \"hit\".",
+      "expected_time_ms": 15000,
+      "tags": [
+        "caching",
+        "cache-aside"
+      ],
+      "source": "AWS — Database Caching Strategies Using Redis (cache-aside pattern)"
+    },
+    {
+      "id": "q050301008",
+      "skill_id": "sk050301",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En la estrategia \"write-through\", los datos se escriben simultáneamente en la caché y en la base de datos como parte de la misma operación de escritura.",
+      "question_en": "In the \"write-through\" strategy, data is written to the cache and the database simultaneously as part of the same write operation.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Write-through escribe primero (o a la vez) en la caché y de inmediato propaga la escritura a la base de datos antes de confirmar la operación, manteniendo la caché siempre sincronizada, a costa de mayor latencia de escritura.",
+      "explanation_en": "Write-through writes to the cache first (or at the same time) and immediately propagates the write to the database before confirming the operation, keeping the cache always in sync, at the cost of higher write latency.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "caching",
+        "write-through"
+      ],
+      "source": "AWS — Database Caching Strategies Using Redis (write-through)"
+    },
+    {
+      "id": "q050302007",
+      "skill_id": "sk050302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué estructura de datos de Redis es más adecuada para implementar un ranking (leaderboard) ordenado por puntuación?",
+      "question_en": "Which Redis data structure is best suited for implementing a leaderboard ordered by score?",
+      "options_es": [
+        "Sorted Set (ZSET)",
+        "String",
+        "Hash",
+        "List"
+      ],
+      "options_en": [
+        "Sorted Set (ZSET)",
+        "String",
+        "Hash",
+        "List"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Sorted Set asocia a cada miembro una puntuación (score) y mantiene el conjunto ordenado automáticamente, permitiendo operaciones eficientes como `ZRANGE`/`ZREVRANGE` para obtener el top N o el rango de un jugador.",
+      "explanation_en": "A Sorted Set associates a score with each member and keeps the set automatically ordered, allowing efficient operations like `ZRANGE`/`ZREVRANGE` to get the top N or a player's rank.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "redis",
+        "data-structures"
+      ],
+      "source": "Redis Documentation — Sorted sets"
+    },
+    {
+      "id": "q050303007",
+      "skill_id": "sk050303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "La frase atribuida a Phil Karlton, \"There are only two hard things in Computer Science: cache invalidation and naming things\", hace referencia a que la invalidación de caché es difícil principalmente porque:",
+      "question_en": "The phrase attributed to Phil Karlton, \"There are only two hard things in Computer Science: cache invalidation and naming things\", refers to the fact that cache invalidation is hard mainly because:",
+      "options_es": [
+        "Es difícil saber con certeza CUÁNDO un dato cacheado ha quedado obsoleto y debe refrescarse, sin invalidar de más (perdiendo el beneficio de la caché) ni de menos (sirviendo datos obsoletos)",
+        "Redis no permite borrar claves",
+        "Los TTLs siempre son iguales a cero por defecto",
+        "Solo puede invalidarse una clave por segundo"
+      ],
+      "options_en": [
+        "It's hard to know with certainty WHEN a cached value has become stale and must be refreshed, without invalidating too much (losing the cache's benefit) or too little (serving stale data)",
+        "Redis doesn't allow deleting keys",
+        "TTLs are always zero by default",
+        "Only one key can be invalidated per second"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El reto de fondo es el equilibrio: invalidar muy agresivamente anula el beneficio de rendimiento de la caché, e invalidar muy poco sirve datos obsoletos (staleness) a los usuarios; encontrar la estrategia correcta (TTL, invalidación por evento, versión) es notoriamente difícil.",
+      "explanation_en": "The underlying challenge is balance: invalidating too aggressively negates the cache's performance benefit, and invalidating too little serves stale data to users; finding the right strategy (TTL, event-based invalidation, versioning) is notoriously hard.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "caching",
+        "invalidation"
+      ],
+      "source": "Karlton, P. (atribuido) — cita ampliamente documentada en la industria; AWS — Caching Overview (invalidation strategies)"
+    },
+    {
+      "id": "q050304007",
+      "skill_id": "sk050304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es el beneficio principal de servir contenido estático a través de una CDN (Content Delivery Network)?",
+      "question_en": "What is the main benefit of serving static content through a CDN (Content Delivery Network)?",
+      "options_es": [
+        "Reduce la latencia sirviendo el contenido desde un servidor (edge) geográficamente cercano al usuario, y descarga tráfico del servidor de origen",
+        "Elimina por completo la necesidad de un servidor de origen",
+        "Garantiza consistencia fuerte en todas las regiones",
+        "Cifra automáticamente todo el contenido servido"
+      ],
+      "options_en": [
+        "It reduces latency by serving content from a geographically nearby (edge) server, and offloads traffic from the origin server",
+        "It completely eliminates the need for an origin server",
+        "It guarantees strong consistency across all regions",
+        "It automatically encrypts all served content"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una CDN replica el contenido en servidores \"edge\" distribuidos geográficamente, de modo que la petición del usuario se sirve desde el nodo más cercano, reduciendo latencia de red y aliviando la carga del servidor de origen.",
+      "explanation_en": "A CDN replicates content across geographically distributed \"edge\" servers, so the user's request is served from the nearest node, reducing network latency and easing load on the origin server.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "cdn",
+        "caching"
+      ],
+      "source": "Cloudflare Learning Center — What is a CDN?; MDN Web Docs — Content delivery network glossary"
+    },
+    {
+      "id": "q050304008",
+      "skill_id": "sk050304",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "El cabecera HTTP `Cache-Control: no-store` permite que la respuesta se almacene en caché pero obliga a revalidarla con el servidor de origen antes de cada uso.",
+      "question_en": "The HTTP header `Cache-Control: no-store` allows the response to be cached but forces revalidation with the origin server before each use.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`no-store` prohíbe completamente almacenar la respuesta en cualquier caché, ni siquiera temporalmente. La directiva que permite el almacenamiento pero exige revalidación antes de reutilizar la copia es `no-cache` (a pesar de su nombre confuso).",
+      "explanation_en": "`no-store` completely forbids storing the response in any cache, not even temporarily. The directive that allows storage but requires revalidation before reusing the copy is `no-cache` (despite its confusing name).",
+      "expected_time_ms": 20000,
+      "tags": [
+        "http",
+        "caching"
+      ],
+      "source": "RFC 9111 §5.2.2 (Cache-Control: no-store, no-cache)"
+    }
+  ]
+}

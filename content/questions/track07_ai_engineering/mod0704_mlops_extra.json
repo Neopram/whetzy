@@ -1,0 +1,147 @@
+{
+  "questions": [
+    {
+      "id": "q070401007",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué problema resuelve principalmente una herramienta como DVC (Data Version Control)?",
+      "question_en": "What problem does a tool like DVC (Data Version Control) mainly solve?",
+      "options_es": [
+        "Versionar datasets y modelos de gran tamaño junto con el código, algo para lo que Git no está diseñado",
+        "Reemplazar por completo a Git para versionar código fuente",
+        "Entrenar modelos de forma distribuida en múltiples GPUs",
+        "Generar automáticamente documentación de la API del modelo"
+      ],
+      "options_en": [
+        "Versioning large datasets and models alongside code, something Git is not designed for",
+        "Completely replacing Git for versioning source code",
+        "Training models in a distributed fashion across multiple GPUs",
+        "Automatically generating API documentation for the model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Git está optimizado para archivos de texto pequeños, no para datasets o pesos de modelos que pueden pesar gigabytes. DVC versiona estos artefactos grandes (guardándolos en almacenamiento externo como S3) mientras mantiene en Git solo punteros ligeros, permitiendo reproducir exactamente qué datos y qué modelo se usaron en cada experimento.",
+      "explanation_en": "Git is optimized for small text files, not for datasets or model weights that can weigh gigabytes. DVC versions these large artifacts (storing them in external storage like S3) while keeping only lightweight pointers in Git, making it possible to reproduce exactly which data and which model were used in each experiment.",
+      "source": "DVC documentation – How it works; Git LFS documentation",
+      "expected_time_ms": 20000,
+      "tags": [
+        "mlops",
+        "data-versioning"
+      ]
+    },
+    {
+      "id": "q070401008",
+      "skill_id": "sk070401",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un Model Registry, como el de MLflow, permite llevar control de versiones de modelos entrenados y de su estado dentro del ciclo de vida (por ejemplo, staging, producción, archivado).",
+      "question_en": "A Model Registry, like MLflow's, lets you keep version control over trained models and their lifecycle stage (e.g. staging, production, archived).",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un Model Registry centraliza todas las versiones de un modelo, junto con metadatos (métricas, artefactos, quién lo entrenó) y permite marcar transiciones de estado explícitas (de 'staging' a 'production', por ejemplo), dando trazabilidad sobre qué versión está sirviendo en cada momento.",
+      "explanation_en": "A Model Registry centralizes every version of a model, along with metadata (metrics, artifacts, who trained it), and allows explicit stage transitions (e.g. from 'staging' to 'production'), providing traceability over which version is serving at any given time.",
+      "source": "MLflow documentation – Model Registry",
+      "expected_time_ms": 18000,
+      "tags": [
+        "mlops",
+        "model-registry"
+      ]
+    },
+    {
+      "id": "q070402007",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué ventaja principal ofrece orquestar el entrenamiento de un modelo como un DAG (grafo acíclico dirigido) usando una herramienta como Airflow o Kubeflow Pipelines?",
+      "question_en": "What is the main advantage of orchestrating model training as a DAG (directed acyclic graph) using a tool like Airflow or Kubeflow Pipelines?",
+      "options_es": [
+        "Define dependencias explícitas y reproducibles entre pasos (preparación de datos, entrenamiento, evaluación) con reintentos y programación automática",
+        "Elimina por completo la necesidad de un conjunto de datos de entrenamiento",
+        "Garantiza que el modelo nunca sufrirá overfitting",
+        "Reduce automáticamente el tamaño del modelo entrenado"
+      ],
+      "options_en": [
+        "It defines explicit, reproducible dependencies between steps (data preparation, training, evaluation) with retries and automated scheduling",
+        "It completely eliminates the need for a training dataset",
+        "It guarantees the model will never overfit",
+        "It automatically reduces the size of the trained model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Modelar el pipeline como un DAG hace explícito qué pasos dependen de cuáles (p. ej. entrenar depende de que termine la preparación de datos), permite reintentar solo el paso que falló, programar ejecuciones periódicas, y reproducir exactamente la misma secuencia en cada corrida.",
+      "explanation_en": "Modeling the pipeline as a DAG makes explicit which steps depend on which (e.g. training depends on data preparation finishing), allows retrying only the step that failed, scheduling periodic runs, and reproducing the exact same sequence on every run.",
+      "source": "Apache Airflow documentation – DAGs; Kubeflow Pipelines documentation",
+      "expected_time_ms": 20000,
+      "tags": [
+        "mlops",
+        "training-pipelines"
+      ]
+    },
+    {
+      "id": "q070403007",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué caracteriza a un despliegue de tipo 'canary' de un nuevo modelo en producción?",
+      "question_en": "What characterizes a 'canary' deployment of a new model in production?",
+      "options_es": [
+        "Se enruta inicialmente un pequeño porcentaje del tráfico real al nuevo modelo, monitoreando su comportamiento antes de un despliegue completo",
+        "El modelo nuevo se despliega directamente al 100% del tráfico desde el primer momento",
+        "El modelo se prueba únicamente en un entorno de laboratorio sin tráfico real",
+        "Se apaga por completo el modelo anterior antes de desplegar el nuevo"
+      ],
+      "options_en": [
+        "A small percentage of real traffic is initially routed to the new model, monitoring its behavior before a full rollout",
+        "The new model is deployed directly to 100% of traffic from the very start",
+        "The model is only tested in a lab environment with no real traffic",
+        "The previous model is fully shut down before deploying the new one"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un despliegue canary reduce el riesgo de un lanzamiento fallido enviando primero solo una fracción pequeña del tráfico real (p. ej. 5%) al nuevo modelo, comparando sus métricas con las del modelo actual, y aumentando gradualmente el tráfico solo si el comportamiento es satisfactorio.",
+      "explanation_en": "A canary deployment reduces the risk of a failed release by first sending only a small fraction of real traffic (e.g. 5%) to the new model, comparing its metrics against the current model, and gradually increasing traffic only if behavior is satisfactory.",
+      "source": "MLOps / DevOps deployment-strategy literature; Google Cloud MLOps guide",
+      "expected_time_ms": 20000,
+      "tags": [
+        "mlops",
+        "deployment",
+        "canary"
+      ]
+    },
+    {
+      "id": "q070404007",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama el fenómeno en el que la distribución de los datos de entrada en producción cambia respecto a los datos con los que se entrenó el modelo, degradando su rendimiento?",
+      "question_en": "What is the name of the phenomenon in which the distribution of input data in production shifts relative to the data the model was trained on, degrading its performance?",
+      "options_es": [
+        "Drift de datos (data drift) o drift de concepto (concept drift)",
+        "Overfitting",
+        "Regularización L2",
+        "Data leakage"
+      ],
+      "options_en": [
+        "Data drift or concept drift",
+        "Overfitting",
+        "L2 regularization",
+        "Data leakage"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Data drift ocurre cuando cambia la distribución de las variables de entrada (p. ej. nuevos patrones de comportamiento de usuarios); concept drift ocurre cuando cambia la relación entre las entradas y la variable objetivo. Ambos hacen que un modelo entrenado con datos pasados pierda precisión con el tiempo si no se monitorea y reentrena.",
+      "explanation_en": "Data drift occurs when the distribution of the input variables changes (e.g. new user behavior patterns); concept drift occurs when the relationship between inputs and the target variable changes. Both cause a model trained on past data to lose accuracy over time if it is not monitored and retrained.",
+      "source": "Gama et al., 'A Survey on Concept Drift Adaptation' (ACM Computing Surveys 2014)",
+      "expected_time_ms": 22000,
+      "tags": [
+        "mlops",
+        "monitoring",
+        "drift"
+      ]
+    }
+  ]
+}

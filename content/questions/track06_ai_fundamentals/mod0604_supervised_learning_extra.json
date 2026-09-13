@@ -1,0 +1,205 @@
+{
+  "questions": [
+    {
+      "id": "q060401007",
+      "skill_id": "sk060401",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "En una regresión lineal simple `y = β0 + β1*x`, ¿qué representa el coeficiente β1?",
+      "question_en": "In simple linear regression `y = β0 + β1*x`, what does the coefficient β1 represent?",
+      "options_es": [
+        "La pendiente: el cambio esperado en y por cada unidad de incremento en x",
+        "El valor de y cuando x es igual a 0",
+        "El error cuadrático medio del modelo",
+        "La correlación entre x e y"
+      ],
+      "options_en": [
+        "The slope: the expected change in y per one-unit increase in x",
+        "The value of y when x equals 0",
+        "The mean squared error of the model",
+        "The correlation between x and y"
+      ],
+      "correct_index": 0,
+      "explanation_es": "β1 es la pendiente de la recta: indica cuánto cambia la predicción `y` por cada incremento de una unidad en `x`. β0 es la ordenada al origen (el valor de y cuando x=0).",
+      "explanation_en": "β1 is the slope of the line: it indicates how much the predicted `y` changes for each one-unit increase in `x`. β0 is the intercept (the value of y when x=0).",
+      "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Linear Regression",
+      "expected_time_ms": 18000,
+      "tags": [
+        "linear-regression",
+        "coefficients"
+      ]
+    },
+    {
+      "id": "q060401008",
+      "skill_id": "sk060401",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un modelo de regresión lineal aprendió `y = 2x + 1`. ¿Cuál es su predicción para x = 3?",
+      "question_en": "A linear regression model learned `y = 2x + 1`. What is its prediction for x = 3?",
+      "options_es": [
+        "7",
+        "6",
+        "5",
+        "3"
+      ],
+      "options_en": [
+        "7",
+        "6",
+        "5",
+        "3"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sustituyendo `x=3` en `y = 2x + 1`: `y = 2*3 + 1 = 6 + 1 = 7`.",
+      "explanation_en": "Substituting `x=3` into `y = 2x + 1`: `y = 2*3 + 1 = 6 + 1 = 7`.",
+      "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Linear Regression",
+      "expected_time_ms": 15000,
+      "tags": [
+        "linear-regression",
+        "prediction"
+      ]
+    },
+    {
+      "id": "q060402007",
+      "skill_id": "sk060402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué función utiliza la regresión logística para convertir la combinación lineal de las entradas en una probabilidad entre 0 y 1?",
+      "question_en": "Which function does logistic regression use to convert the linear combination of inputs into a probability between 0 and 1?",
+      "options_es": [
+        "La función sigmoide (logística)",
+        "La función ReLU",
+        "La función identidad",
+        "La función escalón (step function)"
+      ],
+      "options_en": [
+        "The sigmoid (logistic) function",
+        "The ReLU function",
+        "The identity function",
+        "The step function"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La regresión logística aplica la función sigmoide `σ(z) = 1/(1+e^-z)` a la combinación lineal `z = w·x + b`, comprimiendo cualquier valor real al rango (0, 1) interpretable como probabilidad.",
+      "explanation_en": "Logistic regression applies the sigmoid function `σ(z) = 1/(1+e^-z)` to the linear combination `z = w·x + b`, squashing any real value into the (0, 1) range interpretable as a probability.",
+      "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Logistic Regression",
+      "expected_time_ms": 18000,
+      "tags": [
+        "logistic-regression",
+        "sigmoid"
+      ]
+    },
+    {
+      "id": "q060403007",
+      "skill_id": "sk060403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué criterio usa comúnmente un árbol de decisión de clasificación en scikit-learn para elegir la mejor división (split) en cada nodo?",
+      "question_en": "Which criterion does a classification decision tree in scikit-learn commonly use to choose the best split at each node?",
+      "options_es": [
+        "Impureza de Gini o entropía",
+        "El error cuadrático medio (MSE)",
+        "La distancia euclidiana",
+        "El coeficiente de correlación"
+      ],
+      "options_en": [
+        "Gini impurity or entropy",
+        "Mean squared error (MSE)",
+        "Euclidean distance",
+        "The correlation coefficient"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los árboles de clasificación evalúan cada posible división según cuánto reduce la impureza de Gini o la entropía de los nodos hijos respecto al nodo padre, eligiendo el split que produce hijos más 'puros' (dominados por una sola clase).",
+      "explanation_en": "Classification trees evaluate each candidate split by how much it reduces Gini impurity or entropy in the child nodes relative to the parent, choosing the split that produces the 'purest' children (dominated by a single class).",
+      "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 6: Gini Impurity or Entropy",
+      "expected_time_ms": 20000,
+      "tags": [
+        "decision-trees",
+        "gini",
+        "entropy"
+      ]
+    },
+    {
+      "id": "q060403008",
+      "skill_id": "sk060403",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Random Forest reduce la varianza de un árbol de decisión individual promediando las predicciones de muchos árboles entrenados sobre muestras bootstrap distintas del mismo conjunto de datos.",
+      "question_en": "Random Forest reduces the variance of a single decision tree by averaging the predictions of many trees trained on different bootstrap samples of the same dataset.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Random Forest es un método de bagging: entrena muchos árboles sobre muestras bootstrap (con reemplazo) del dataset, y además introduce aleatoriedad extra al elegir un subconjunto de features en cada split. Promediar (o votar) sus predicciones reduce la varianza respecto a un solo árbol, que tiende a sobreajustar.",
+      "explanation_en": "Random Forest is a bagging method: it trains many trees on bootstrap samples (with replacement) of the dataset, and adds extra randomness by considering only a subset of features at each split. Averaging (or voting on) their predictions reduces variance compared to a single tree, which tends to overfit.",
+      "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 7: Random Forests; Breiman (2001)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "random-forest",
+        "ensembles",
+        "bagging"
+      ]
+    },
+    {
+      "id": "q060404007",
+      "skill_id": "sk060404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué son los 'vectores de soporte' (support vectors) en una Support Vector Machine?",
+      "question_en": "What are the 'support vectors' in a Support Vector Machine?",
+      "options_es": [
+        "Los puntos de entrenamiento más cercanos al límite de decisión, que determinan el margen",
+        "Todos los puntos de entrenamiento sin excepción",
+        "Los puntos mal clasificados que se eliminan del entrenamiento",
+        "Los centroides de cada clase"
+      ],
+      "options_en": [
+        "The training points closest to the decision boundary, which determine the margin",
+        "All training points without exception",
+        "The misclassified points that get removed from training",
+        "The centroids of each class"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los vectores de soporte son los puntos de entrenamiento situados justo en el borde del margen (o dentro de él, en el caso de soft margin). Son los únicos puntos que realmente determinan la posición del hiperplano separador; el resto de puntos podrían eliminarse sin cambiar el resultado.",
+      "explanation_en": "Support vectors are the training points that sit right at the edge of the margin (or inside it, in the soft-margin case). They are the only points that actually determine the position of the separating hyperplane; every other point could be removed without changing the result.",
+      "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 5: Support Vector Machines",
+      "expected_time_ms": 20000,
+      "tags": [
+        "svm",
+        "support-vectors"
+      ]
+    },
+    {
+      "id": "q060405007",
+      "skill_id": "sk060405",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En k-Nearest Neighbors, ¿qué ocurre típicamente si se elige un valor de k demasiado pequeño (por ejemplo, k=1)?",
+      "question_en": "In k-Nearest Neighbors, what typically happens if k is chosen too small (e.g. k=1)?",
+      "options_es": [
+        "El modelo se vuelve muy sensible al ruido y tiende a sobreajustar (alta varianza)",
+        "El modelo se vuelve muy suave y tiende a subajustar (alto sesgo)",
+        "El tiempo de predicción se reduce drásticamente",
+        "El modelo deja de depender de la métrica de distancia usada"
+      ],
+      "options_en": [
+        "The model becomes very sensitive to noise and tends to overfit (high variance)",
+        "The model becomes overly smooth and tends to underfit (high bias)",
+        "Prediction time is drastically reduced",
+        "The model stops depending on the distance metric used"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con k=1, la predicción para un punto depende únicamente de su vecino más cercano, así que un solo dato ruidoso o atípico puede cambiar completamente la predicción: el modelo tiene alta varianza y frontera de decisión muy irregular. Valores de k más grandes suavizan la frontera, a costa de más sesgo.",
+      "explanation_en": "With k=1, a point's prediction depends solely on its single nearest neighbor, so one noisy or outlier point can completely change the prediction: the model has high variance and a very jagged decision boundary. Larger k values smooth the boundary at the cost of more bias.",
+      "source": "scikit-learn User Guide – Nearest Neighbors Classification",
+      "expected_time_ms": 20000,
+      "tags": [
+        "knn",
+        "bias-variance"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "questions": [
+    {
+      "id": "q060601007",
+      "skill_id": "sk060601",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la principal limitación del perceptrón simple (de una sola capa), señalada históricamente por Minsky y Papert?",
+      "question_en": "What is the main limitation of the simple (single-layer) perceptron, historically pointed out by Minsky and Papert?",
+      "options_es": [
+        "No puede resolver problemas que no son linealmente separables, como XOR",
+        "Solo puede procesar imágenes en blanco y negro",
+        "Requiere obligatoriamente una función de activación sigmoide",
+        "No puede usarse para tareas de clasificación binaria"
+      ],
+      "options_en": [
+        "It cannot solve problems that are not linearly separable, such as XOR",
+        "It can only process black-and-white images",
+        "It must always use a sigmoid activation function",
+        "It cannot be used for binary classification tasks"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un perceptrón simple traza una única frontera de decisión lineal, por lo que no puede resolver funciones como XOR, cuyas clases no se pueden separar con una sola línea recta. Se necesitan redes con capas ocultas (perceptrón multicapa) para aprender fronteras no lineales.",
+      "explanation_en": "A simple perceptron draws a single linear decision boundary, so it cannot solve functions like XOR, whose classes cannot be separated by a single straight line. Networks with hidden layers (multilayer perceptrons) are needed to learn non-linear boundaries.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.1: Example – Learning XOR",
+      "expected_time_ms": 20000,
+      "tags": [
+        "perceptron",
+        "xor",
+        "linear-separability"
+      ]
+    },
+    {
+      "id": "q060601008",
+      "skill_id": "sk060601",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un perceptrón calcula `z = w·x + b`. Con `w = [0.5, -0.5]`, `x = [2, 4]` y `b = 1`, ¿cuál es el valor de z antes de aplicar la función de activación?",
+      "question_en": "A perceptron computes `z = w·x + b`. With `w = [0.5, -0.5]`, `x = [2, 4]` and `b = 1`, what is the value of z before applying the activation function?",
+      "options_es": [
+        "0",
+        "1",
+        "2",
+        "-1"
+      ],
+      "options_en": [
+        "0",
+        "1",
+        "2",
+        "-1"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`z = (0.5*2) + (-0.5*4) + 1 = 1 - 2 + 1 = 0`. El producto punto `w·x` combina las entradas ponderadas y se le suma el sesgo (bias) `b` antes de pasar por la función de activación.",
+      "explanation_en": "`z = (0.5*2) + (-0.5*4) + 1 = 1 - 2 + 1 = 0`. The dot product `w·x` combines the weighted inputs, and the bias `b` is added before passing through the activation function.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.1",
+      "expected_time_ms": 22000,
+      "tags": [
+        "perceptron",
+        "weighted-sum"
+      ]
+    },
+    {
+      "id": "q060602007",
+      "skill_id": "sk060602",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la principal ventaja de ReLU frente a sigmoid como función de activación en redes profundas?",
+      "question_en": "What is the main advantage of ReLU over sigmoid as an activation function in deep networks?",
+      "options_es": [
+        "Mitiga el problema del gradiente desvanecido para entradas positivas y es más barata de calcular",
+        "Siempre produce salidas entre 0 y 1, lo cual es necesario para clasificación",
+        "Es una función suave y diferenciable en todos sus puntos",
+        "Nunca produce neuronas 'muertas' (dead neurons)"
+      ],
+      "options_en": [
+        "It mitigates the vanishing gradient problem for positive inputs and is cheaper to compute",
+        "It always produces outputs between 0 and 1, which is required for classification",
+        "It is a smooth function, differentiable everywhere",
+        "It never produces 'dead' neurons"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La derivada de sigmoid se satura y tiende a 0 para valores muy positivos o negativos, dificultando el entrenamiento de redes profundas (vanishing gradient). ReLU tiene derivada constante igual a 1 para entradas positivas y es mucho más barata de computar, aunque puede sufrir el problema de 'neuronas muertas' para entradas negativas.",
+      "explanation_en": "Sigmoid's derivative saturates and tends to 0 for very positive or negative values, hindering the training of deep networks (vanishing gradient). ReLU has a constant derivative of 1 for positive inputs and is much cheaper to compute, though it can suffer from the 'dead neuron' problem for negative inputs.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3.1: Rectified Linear Units",
+      "expected_time_ms": 22000,
+      "tags": [
+        "activation-functions",
+        "relu",
+        "vanishing-gradient"
+      ]
+    },
+    {
+      "id": "q060603007",
+      "skill_id": "sk060603",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿En qué regla matemática se basa fundamentalmente el algoritmo de backpropagation para calcular los gradientes en una red multicapa?",
+      "question_en": "What mathematical rule does the backpropagation algorithm fundamentally rely on to compute gradients in a multilayer network?",
+      "options_es": [
+        "La regla de la cadena del cálculo diferencial",
+        "El teorema de Bayes",
+        "La descomposición en valores singulares (SVD)",
+        "El teorema del límite central"
+      ],
+      "options_en": [
+        "The chain rule of differential calculus",
+        "Bayes' theorem",
+        "Singular value decomposition (SVD)",
+        "The central limit theorem"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Backpropagation aplica repetidamente la regla de la cadena para propagar el gradiente del error desde la capa de salida hacia las capas anteriores, multiplicando las derivadas parciales capa por capa hasta obtener el gradiente respecto a cada peso de la red.",
+      "explanation_en": "Backpropagation repeatedly applies the chain rule to propagate the error gradient from the output layer back through earlier layers, multiplying partial derivatives layer by layer to obtain the gradient with respect to every weight in the network.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5.2: Chain Rule of Calculus",
+      "expected_time_ms": 20000,
+      "tags": [
+        "backpropagation",
+        "chain-rule"
+      ]
+    },
+    {
+      "id": "q060603008",
+      "skill_id": "sk060603",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Backpropagation calcula los gradientes propagando el error hacia adelante, desde la capa de entrada hacia la capa de salida.",
+      "question_en": "Backpropagation computes gradients by propagating the error forward, from the input layer toward the output layer.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es al revés: primero se hace un 'forward pass' para calcular la salida y la pérdida, y luego backpropagation propaga el gradiente del error hacia atrás (backward pass), desde la capa de salida hacia las capas anteriores, de ahí su nombre.",
+      "explanation_en": "It's the other way around: first a 'forward pass' computes the output and the loss, and then backpropagation propagates the error gradient backward (backward pass), from the output layer toward earlier layers — hence its name.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5: Back-Propagation; Rumelhart et al. (1986)",
+      "expected_time_ms": 20000,
+      "tags": [
+        "backpropagation",
+        "forward-pass",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q060604007",
+      "skill_id": "sk060604",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué propósito cumple una capa de pooling (por ejemplo, max pooling) en una red convolucional (CNN)?",
+      "question_en": "What purpose does a pooling layer (e.g. max pooling) serve in a convolutional network (CNN)?",
+      "options_es": [
+        "Reduce las dimensiones espaciales del mapa de características, aportando cierta invariancia a pequeñas traslaciones",
+        "Aumenta el número de canales de la imagen de entrada",
+        "Reemplaza por completo la necesidad de funciones de activación",
+        "Calcula el gradiente de la función de pérdida"
+      ],
+      "options_en": [
+        "It reduces the spatial dimensions of the feature map, adding some invariance to small translations",
+        "It increases the number of channels in the input image",
+        "It fully replaces the need for activation functions",
+        "It computes the gradient of the loss function"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Max pooling toma el valor máximo dentro de una ventana (p. ej. 2×2), reduciendo el tamaño espacial del mapa de características. Esto disminuye el número de parámetros y de cómputo en capas posteriores y aporta cierta robustez ante pequeños desplazamientos del objeto en la imagen.",
+      "explanation_en": "Max pooling takes the maximum value within a window (e.g. 2×2), reducing the spatial size of the feature map. This decreases the number of parameters and computation in later layers and provides some robustness to small shifts of the object in the image.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.3: Pooling",
+      "expected_time_ms": 20000,
+      "tags": [
+        "cnn",
+        "pooling"
+      ]
+    },
+    {
+      "id": "q060605007",
+      "skill_id": "sk060605",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué problema de las RNN simples busca resolver la arquitectura LSTM mediante sus 'gates' (puertas)?",
+      "question_en": "What problem of simple RNNs does the LSTM architecture aim to solve through its 'gates'?",
+      "options_es": [
+        "El desvanecimiento (o explosión) del gradiente al propagarlo a través de secuencias largas",
+        "El sobreajuste en conjuntos de datos pequeños",
+        "La necesidad de normalizar las entradas antes de entrenar",
+        "El alto costo computacional de la función softmax"
+      ],
+      "options_en": [
+        "The vanishing (or exploding) gradient when propagated through long sequences",
+        "Overfitting on small datasets",
+        "The need to normalize inputs before training",
+        "The high computational cost of the softmax function"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En una RNN simple, el gradiente se multiplica repetidamente al retropropagarse por muchos pasos temporales, lo que suele hacer que se desvanezca (o explote), impidiendo aprender dependencias a largo plazo. Las puertas de la LSTM (entrada, olvido, salida) regulan qué información se mantiene o descarta en la celda de memoria, permitiendo que el gradiente fluya de forma más estable a través del tiempo.",
+      "explanation_en": "In a simple RNN, the gradient is repeatedly multiplied as it is backpropagated through many time steps, which tends to make it vanish (or explode), preventing the network from learning long-range dependencies. LSTM's gates (input, forget, output) regulate what information is kept or discarded in the memory cell, letting the gradient flow more stably across time.",
+      "source": "Hochreiter & Schmidhuber, 'Long Short-Term Memory' (1997); Goodfellow et al., Deep Learning, Ch. 10.10",
+      "expected_time_ms": 24000,
+      "tags": [
+        "lstm",
+        "vanishing-gradient",
+        "rnn"
+      ]
+    }
+  ]
+}

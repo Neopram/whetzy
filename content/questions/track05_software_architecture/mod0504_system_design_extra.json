@@ -1,0 +1,170 @@
+{
+  "questions": [
+    {
+      "id": "q050401007",
+      "skill_id": "sk050401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la principal limitación del escalado vertical (scale up) frente al horizontal (scale out)?",
+      "question_en": "What is the main limitation of vertical scaling (scale up) compared to horizontal scaling (scale out)?",
+      "options_es": [
+        "Existe un límite físico/económico en el hardware de una sola máquina, y además crea un único punto de fallo",
+        "El escalado vertical siempre es más barato a cualquier escala",
+        "El escalado vertical requiere obligatoriamente contenedores",
+        "No se puede combinar con balanceo de carga"
+      ],
+      "options_en": [
+        "There is a physical/economic limit on a single machine's hardware, and it also creates a single point of failure",
+        "Vertical scaling is always cheaper at any scale",
+        "Vertical scaling mandatorily requires containers",
+        "It cannot be combined with load balancing"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Escalar verticalmente (más CPU/RAM en una sola máquina) tiene un techo físico y de coste creciente, y esa máquina sigue siendo un único punto de fallo. Escalar horizontalmente distribuye tanto la carga como el riesgo, aunque añade complejidad de coordinación.",
+      "explanation_en": "Scaling vertically (more CPU/RAM on a single machine) has a physical ceiling and rising cost, and that machine remains a single point of failure. Scaling horizontally distributes both load and risk, though it adds coordination complexity.",
+      "expected_time_ms": 15000,
+      "tags": [
+        "scalability",
+        "system-design"
+      ],
+      "source": "Kleppmann, M. — Designing Data-Intensive Applications, cap. 1 (Scalability)"
+    },
+    {
+      "id": "q050402007",
+      "skill_id": "sk050402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "El algoritmo de balanceo de carga \"round robin\" distribuye las peticiones:",
+      "question_en": "The \"round robin\" load balancing algorithm distributes requests:",
+      "options_es": [
+        "secuencialmente entre los servidores disponibles, uno tras otro, en un ciclo, sin considerar su carga actual",
+        "siempre al servidor con menor latencia medida en tiempo real",
+        "únicamente al servidor primario, usando los demás solo como respaldo pasivo",
+        "según un hash del contenido del cuerpo de la petición"
+      ],
+      "options_en": [
+        "sequentially among the available servers, one after another in a cycle, without considering their current load",
+        "always to the server with the lowest real-time measured latency",
+        "only to the primary server, using the others solely as passive backup",
+        "based on a hash of the request body's content"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Round robin asigna cada nueva petición al siguiente servidor de una lista de forma cíclica, de manera simple pero sin tener en cuenta la carga real de cada servidor (a diferencia de algoritmos como \"least connections\").",
+      "explanation_en": "Round robin assigns each new request to the next server in a list cyclically, simply but without accounting for each server's actual load (unlike algorithms like \"least connections\").",
+      "expected_time_ms": 15000,
+      "tags": [
+        "load-balancing",
+        "system-design"
+      ],
+      "source": "NGINX Documentation — Load Balancing (Round Robin)"
+    },
+    {
+      "id": "q050402008",
+      "skill_id": "sk050402",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Un balanceador de carga con \"sticky sessions\" (afinidad de sesión) dirige siempre las peticiones de un mismo cliente al mismo servidor backend, lo cual puede complicar el escalado horizontal si el estado de sesión no es compartido.",
+      "question_en": "A load balancer with \"sticky sessions\" (session affinity) always routes a given client's requests to the same backend server, which can complicate horizontal scaling if session state is not shared.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sticky sessions fijan al cliente a un servidor concreto (por cookie o IP), lo cual simplifica servidores con estado en memoria, pero reduce la flexibilidad de balanceo y dificulta redistribuir carga o tolerar la caída de ese servidor, salvo que la sesión también se replique o externalice.",
+      "explanation_en": "Sticky sessions pin the client to a specific server (via cookie or IP), which simplifies in-memory stateful servers, but reduces balancing flexibility and makes it harder to redistribute load or tolerate that server's failure, unless the session is also replicated or externalized.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "load-balancing",
+        "sessions"
+      ],
+      "source": "NGINX Documentation — Load Balancing (sticky sessions); Kleppmann, DDIA cap. 1"
+    },
+    {
+      "id": "q050403007",
+      "skill_id": "sk050403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Según el teorema CAP, cuando ocurre una partición de red (P) entre nodos, un sistema distribuido debe elegir entre:",
+      "question_en": "According to the CAP theorem, when a network partition (P) occurs between nodes, a distributed system must choose between:",
+      "options_es": [
+        "Consistencia (C) o Disponibilidad (A); no puede garantizar ambas simultáneamente durante la partición",
+        "Rendimiento (Performance) o Seguridad (Security)",
+        "Latencia (Latency) o Throughput",
+        "Almacenamiento (Storage) o Cómputo (Compute)"
+      ],
+      "options_en": [
+        "Consistency (C) or Availability (A); it cannot guarantee both simultaneously during the partition",
+        "Performance or Security",
+        "Latency or Throughput",
+        "Storage or Compute"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El teorema CAP (Brewer) establece que ante una partición de red, un sistema distribuido debe sacrificar consistencia (todas las réplicas ven los mismos datos) o disponibilidad (todo nodo responde), ya que garantizar ambas simultáneamente es imposible mientras persista la partición.",
+      "explanation_en": "The CAP theorem (Brewer) states that during a network partition, a distributed system must sacrifice consistency (all replicas see the same data) or availability (every node responds), since guaranteeing both simultaneously is impossible while the partition persists.",
+      "expected_time_ms": 22000,
+      "tags": [
+        "cap-theorem",
+        "consistency"
+      ],
+      "source": "Brewer, E. — CAP Theorem (PODC 2000 keynote); Gilbert & Lynch — Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services (2002)"
+    },
+    {
+      "id": "q050403008",
+      "skill_id": "sk050403",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "La consistencia eventual (eventual consistency) garantiza que, si no llegan nuevas escrituras, todas las réplicas convergerán finalmente al mismo valor.",
+      "question_en": "Eventual consistency guarantees that, if no new writes arrive, all replicas will eventually converge to the same value.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La consistencia eventual es una garantía débil: no promete que una lectura inmediatamente después de una escritura vea el nuevo valor, pero sí que, en ausencia de nuevas escrituras, todas las réplicas convergerán eventualmente al mismo estado.",
+      "explanation_en": "Eventual consistency is a weak guarantee: it doesn't promise that a read immediately after a write will see the new value, but it does promise that, absent new writes, all replicas will eventually converge to the same state.",
+      "expected_time_ms": 20000,
+      "tags": [
+        "consistency",
+        "replication"
+      ],
+      "source": "Kleppmann, M. — Designing Data-Intensive Applications, cap. 5 (Problems with Replication Lag / Eventual Consistency)"
+    },
+    {
+      "id": "q050404007",
+      "skill_id": "sk050404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Al diseñar un sistema para acortar URLs (como bit.ly) a gran escala, ¿cuál es un requisito no funcional crítico que domina el diseño?",
+      "question_en": "When designing a large-scale URL shortener (like bit.ly), which non-functional requirement critically dominates the design?",
+      "options_es": [
+        "Las lecturas (redirecciones) superan ampliamente a las escrituras (creación de enlaces), por lo que el sistema debe optimizarse fuertemente para lecturas de baja latencia (caching agresivo)",
+        "El sistema debe garantizar transacciones ACID multi-tabla en cada redirección",
+        "La consistencia fuerte importa más que la disponibilidad",
+        "Es un problema principalmente de cómputo intensivo (CPU-bound)"
+      ],
+      "options_en": [
+        "Reads (redirects) vastly outnumber writes (link creation), so the system must be heavily optimized for low-latency reads (aggressive caching)",
+        "The system must guarantee multi-table ACID transactions on every redirect",
+        "Strong consistency matters more than availability",
+        "It's mainly a CPU-bound, compute-intensive problem"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un acortador de URLs es extremadamente read-heavy (muchas más redirecciones que creaciones); el diseño típico prioriza baja latencia de lectura mediante caching agresivo (CDN, Redis) y una capa de escritura simple que genera claves cortas únicas.",
+      "explanation_en": "A URL shortener is extremely read-heavy (far more redirects than creations); the typical design prioritizes low read latency via aggressive caching (CDN, Redis) and a simple write path that generates unique short keys.",
+      "expected_time_ms": 18000,
+      "tags": [
+        "system-design",
+        "scalability"
+      ],
+      "source": "Kleppmann, M. — Designing Data-Intensive Applications, cap. 1 (describing load: read vs write ratio)"
+    }
+  ]
+}
