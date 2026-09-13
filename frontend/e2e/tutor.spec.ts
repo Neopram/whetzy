@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs';
-import path from 'path';
 import { test, expect, type Page, type Route } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { formatViolations } from './helpers';
 
 /**
  * TASK 11.2 — Tutor VISIBLE ("¿Por qué? / Why?" inline button under quiz feedback).
@@ -16,42 +16,14 @@ import { test, expect, type Page, type Route } from '@playwright/test';
  * Auth is bypassed by seeding localStorage tokens before the app boots
  * (App.tsx reads `isAuthenticated()` synchronously on mount) instead of
  * driving the login form — the login flow itself is already covered by
- * e2e/tests/auth.spec.ts.
- *
- * axe-core: @axe-core/playwright is a frontend/ devDependency but this
- * package (e2e/) has its own, separate package.json/node_modules and does
- * not declare it, so the wrapper package isn't resolvable from here. The
- * underlying axe-core ENGINE (frontend/node_modules/axe-core/axe.min.js,
- * v4.13.0 — the same engine @axe-core/playwright wraps) is loaded straight
- * into the page instead, with no network access required.
+ * frontend/e2e/auth.spec.ts.
  */
 
-const AXE_SOURCE = readFileSync(
-  path.join(__dirname, '../../frontend/node_modules/axe-core/axe.min.js'),
-  'utf-8'
-);
-
-type AxeViolation = { id: string; impact?: string | null; description: string; nodes: { html: string }[] };
-
-function formatViolations(violations: AxeViolation[]): string {
-  if (!violations.length) return '';
-  return violations
-    .map((v) => `[${v.impact ?? 'unknown'}] ${v.id}: ${v.description}\n  ${v.nodes.map((n) => n.html).join('\n  ')}`)
-    .join('\n\n');
-}
-
 async function expectNoAxeViolations(page: Page, scopeSelector?: string) {
-  await page.addScriptTag({ content: AXE_SOURCE });
-  const violations = await page.evaluate<AxeViolation[], string | undefined>(async (selector) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const axe = (window as any).axe;
-    const context = selector ?? document;
-    const results = await axe.run(context, {
-      runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] },
-    });
-    return results.violations;
-  }, scopeSelector);
-  expect(violations, formatViolations(violations)).toHaveLength(0);
+  let builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']);
+  if (scopeSelector) builder = builder.include(scopeSelector);
+  const results = await builder.analyze();
+  expect(results.violations, formatViolations(results.violations)).toHaveLength(0);
 }
 
 const USER_ID = 'e2e-tutor-user';

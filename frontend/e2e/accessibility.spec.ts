@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { registerUser, uniqueUsername } from './helpers';
+import { registerUser, uniqueUsername, formatViolations } from './helpers';
 
 test.describe('WCAG 2.2 AA — axe-core', () => {
   test('auth screen has zero violations', async ({ page }) => {
@@ -38,12 +38,3 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     expect(results.violations, formatViolations(results.violations)).toHaveLength(0);
   });
 });
-
-type AxeViolation = { id: string; impact?: string | null; description: string; nodes: { html: string }[] };
-
-function formatViolations(violations: AxeViolation[]): string {
-  if (!violations.length) return '';
-  return violations
-    .map((v) => `[${v.impact ?? 'unknown'}] ${v.id}: ${v.description}\n  ${v.nodes.map((n) => n.html).join('\n  ')}`)
-    .join('\n\n');
-}

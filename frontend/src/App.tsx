@@ -58,6 +58,7 @@ function App() {
   const currentScreen = useAppStore((s) => s.currentScreen);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
+  const userId = useAppStore((s) => s.user.id);
 
   useEffect(() => {
     void i18n.changeLanguage(userLanguage);
@@ -80,6 +81,19 @@ function App() {
         setAuthState('unauthed');
       });
   }, [authState, hydrateFromApi]);
+
+  // `signOut` (useAppStore) clears the stored tokens and resets the store, but
+  // it has no way to reach this component's local `authState`, so without this
+  // the app kept rendering the authenticated shell around a reset placeholder
+  // user until the next reload. Watch the store's user instead: whenever it
+  // changes while we believe we are authed, re-read the only real source of
+  // truth — whether a token still exists — and fall back to the auth screen.
+  useEffect(() => {
+    if (authState === 'authed' && !isAuthenticated()) {
+      setShowOnboarding(false);
+      setAuthState('unauthed');
+    }
+  }, [userId, authState]);
 
   function handleAuthed() {
     setAuthState('checking');

@@ -82,6 +82,20 @@ export function uniqueUsername(prefix: string): string {
   return `${prefix}${Date.now().toString(36)}${Math.floor(Math.random() * 1000)}`;
 }
 
+type AxeViolation = { id: string; impact?: string | null; description: string; nodes: { html: string }[] };
+
+/** Renders axe-core violations as readable Playwright assertion-failure output
+ *  (id + impact + description + offending HTML), instead of the useless
+ *  `toHaveLength(0)` default of just printing the count. Shared by
+ *  accessibility.spec.ts and tutor.spec.ts, both of which assert zero axe
+ *  violations against different scopes. */
+export function formatViolations(violations: AxeViolation[]): string {
+  if (!violations.length) return '';
+  return violations
+    .map((v) => `[${v.impact ?? 'unknown'}] ${v.id}: ${v.description}\n  ${v.nodes.map((n) => n.html).join('\n  ')}`)
+    .join('\n\n');
+}
+
 /**
  * Answers whatever question is currently on screen in QuizScreen and waits
  * for the feedback panel. Handles both MCQ questions (click an option) and

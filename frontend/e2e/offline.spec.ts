@@ -53,6 +53,25 @@ function pendingCount(page: Page): Promise<number> {
 }
 
 test.describe('offline', () => {
+  test('the TopBar connectivity indicator appears offline and disappears on reconnect', async ({
+    page,
+    context,
+  }) => {
+    // Distinct from the per-answer "guardado sin conexión" toast asserted below:
+    // TopBar.tsx renders its own persistent "Sin conexión" badge for as long as
+    // `useOfflineSync().isOnline` is false, independent of whether the learner
+    // has answered anything. It is always mounted (App.tsx renders <TopBar />
+    // outside the screen switch), so this only needs the home screen.
+    const username = uniqueUsername('e2e_offline_indicator_');
+    await registerUser(page, { username, displayName: 'E2E Offline Indicator' });
+
+    await context.setOffline(true);
+    await expect(page.getByText(/^Sin conexión/i)).toBeVisible({ timeout: 5_000 });
+
+    await context.setOffline(false);
+    await expect(page.getByText(/^Sin conexión/i)).not.toBeVisible({ timeout: 5_000 });
+  });
+
   test('an answer given offline is queued in IndexedDB and flushed on reconnect', async ({
     page,
     context,
