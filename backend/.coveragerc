@@ -1,0 +1,19 @@
+# Coverage config for the Whetzy backend.
+#
+# `concurrency = greenlet` is load-bearing, not cosmetic: SQLAlchemy's async
+# engine bridges sync drivers to asyncio through greenlets, so every service
+# body that awaits `db.execute(...)` runs inside a greenlet the default tracer
+# never follows. Without this, DB-backed services report ~30% while pure-logic
+# modules report 100% — an artifact of the tracer, not of the test suite.
+#
+# `thread` stays in the list for the background tasks started during lifespan.
+[run]
+source = app
+concurrency = greenlet,thread
+branch = false
+
+[report]
+exclude_also =
+    if TYPE_CHECKING:
+    raise NotImplementedError
+    @(abc\.)?abstractmethod
