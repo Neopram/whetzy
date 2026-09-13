@@ -214,3 +214,28 @@ Seis puntos en una sesión, todos comprados con evidencia ejecutable. Y sigue si
 - No significa que haya adquisición. Significa que la infraestructura para tenerla existe y está medida, esperando a que haya un producto vivo al que mandar tráfico.
 
 El techo de §6.3 no se mueve: **≈ 60–65** con todo hecho y medido, y sólo llegando a paridad en un nicho más estrecho y mejor servido. La ruta más corta a subir sigue siendo la misma y no es técnica: **levantar el backend (H.1)** y **poner 30 personas reales a usarlo (H.8/H.10)**. Entre las dos valen más puntos que todo el trabajo de ingeniería pendiente junto.
+
+### 7.5 Segunda tanda de la misma sesión — contenido
+
+Dos filas más de §6.3 cerraron con evidencia después del recálculo de §7.3.
+
+| Dimensión | Antes | Ahora | Evidencia — y qué la limita |
+|---|---|---|---|
+| **Contenido** | 35 | **45** | P.8 DONE: el banco pasa de 1.253 a **1.507 preguntas**, las 207 skills con ≥ 6 Q, 100 % con `source` no vacío, 0 huérfanas al cargar, 1.507 ids únicos. Es exactamente el movimiento que §6.3 predijo para esta tarea, ni un punto más: **sigue siendo texto** frente a las horas de vídeo, notebooks y proyectos de DataCamp o las visualizaciones interactivas de Brilliant. 1.507 preguntas bien citadas es un banco decente, no una biblioteca |
+| **Ejecución de código** | 30 | **60** | 11.4 DONE: de 7 preguntas ejecutables a **111**, y el ratio en tracks 01-03 sube de 1,15 % a **15,57 %**. Lo que hace que esto puntúe no es el número sino la verificación: un test de CI ejecuta los 111 programas de referencia en CPython real y compara su stdout con la respuesta que la pregunta anuncia — 100 % coinciden. Una pregunta "ejecuta este código" cuya respuesta publicada estuviera mal es peor que no tenerla. Aun así 60 y no más: DataCamp **es** un IDE con dataset, sesión persistente y proyectos; esto son ejercicios de una celda dentro de Pyodide |
+
+```
+0,34×0  + 0,14×55 + 0,14×45 + 0,09×80 + 0,07×60
+        + 0,06×40 + 0,06×80 + 0,05×70 + 0,05×75   =  39,85
+```
+
+**Whetzy ≈ 40 / 100** (≈ 30 al empezar la sesión, ≈ 36 tras §7.3). Duolingo ≈ 72, DataCamp ≈ 68, Brilliant ≈ 66, Codecademy ≈ 58 — sin cambios.
+
+Diez puntos en una sesión, todos con salida ejecutable pegada en el ledger. Y el techo sigue donde estaba: con **todo** el trabajo técnico restante hecho y medido, ≈ 60-65. La distancia que queda hasta Duolingo no se cierra escribiendo más código.
+
+**Lo que de verdad falta, en orden de puntos:**
+
+1. **Levantar el backend (H.1).** Distribución vale 0 y pesa 0,34 — un tercio del marcador. Mientras la API devuelva 404, el SEO de 11.7, el tutor de 11.1/11.2 y las 1.507 preguntas son inventario. El arranque ya está verificado con el código de hoy (ver H.1): es entrar a Railway y desplegar.
+2. **30 usuarios reales (H.8/H.10).** Sin retención medida, "motor adaptativo" y "gamificación" siguen siendo capacidades. El benchmark de 11.3 prueba que el motor *funciona*; sólo una cohorte prueba que *sirve*.
+
+Las dos juntas valen más que todo el backlog de ingeniería pendiente. Ninguna de las dos la puede hacer un agente.
