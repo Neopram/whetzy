@@ -10,13 +10,20 @@ const TIER_META: Record<string, { icon: string }> = {
 };
 
 export function LeagueScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data, loading, error } = useApi(() => leagueApi.current(), []);
 
   if (loading) return <div className={styles.screen}><p className={styles.loading}>{t('league.loading')}</p></div>;
   if (error || !data) return <div className={styles.screen}><p className={styles.loading}>{t('league.empty')}</p></div>;
 
   const tier = TIER_META[data.league.tier] ?? { icon: '🏆' };
+  // `data.league.name` is a Spanish-only internal label ("Bronce", "Platino"),
+  // so rendering it directly showed "League Platino" to English users. The
+  // tier key is language-neutral, so the display name comes from i18n; the
+  // server name is only a fallback for a tier the client doesn't know yet.
+  const leagueName = i18n.exists(`league.tiers.${data.league.tier}`)
+    ? t(`league.tiers.${data.league.tier}`)
+    : data.league.name;
   const top3 = data.standings.slice(0, 3);
   const rest = data.standings.slice(3);
 
@@ -24,7 +31,7 @@ export function LeagueScreen() {
     <div className={styles.screen}>
       <div className={styles.leagueHeader}>
         <span className={styles.leagueIcon}>{tier.icon}</span>
-        <h1 className={styles.leagueName}>{t('league.league')} {data.league.name}</h1>
+        <h1 className={styles.leagueName}>{t('league.league')} {leagueName}</h1>
         <p className={styles.leagueInfo}>{t('league.rules')}</p>
       </div>
 
