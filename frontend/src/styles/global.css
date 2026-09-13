@@ -1,4 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+/* The Nunito webfont is loaded from index.html's <head> as a directly
+ * declared <link>, not as an `@import` here (task 11.11). A CSS `@import` of
+ * a cross-origin stylesheet is invisible to the browser's HTML preload
+ * scanner: it's only discovered once this bundled CSS file has already been
+ * fetched *and* parsed, so the fonts.googleapis.com request only starts
+ * after that — a fully serial chain that was the dominant contributor to the
+ * landing page's LCP delay (Lighthouse's "lcp-breakdown-insight" attributed
+ * ~3.2s of a ~3.2s total LCP to "element render delay", not to slow
+ * resources). A plain <link rel="stylesheet"> in the HTML is discoverable
+ * immediately, in parallel with every other head resource. */
 @import './design-tokens.css';
 
 *, *::before, *::after {

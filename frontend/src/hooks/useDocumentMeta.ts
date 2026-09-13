@@ -54,6 +54,12 @@ function setLinkByRel(rel: string, href: string, hreflang?: string) {
 /** Applies document-level SEO tags for the current render and restores the prior state on unmount. */
 export function useDocumentMeta({ title, description, lang, url, imageAlt }: DocumentMetaInput) {
   useEffect(() => {
+    // No-op under SSR/build-time prerendering (scripts/prerender-landing.mjs
+    // renders this component with renderToStaticMarkup, which never runs
+    // effects anyway, but this guard keeps the hook safe if it's ever used
+    // with a render path that does, e.g. renderToString + hydration).
+    if (typeof document === 'undefined') return;
+
     const prevTitle = document.title;
     const prevLang = document.documentElement.lang;
     const prevDescription = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? '';
