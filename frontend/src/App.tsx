@@ -1,24 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import i18n from './i18n';
 import { useAppStore } from './stores/useAppStore';
 import { isAuthenticated, logout } from './services/api';
 import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
-import { HomeScreen } from './pages/HomeScreen';
-import { QuizScreen } from './pages/QuizScreen';
-import { StatsScreen } from './pages/StatsScreen';
-import { LeagueScreen } from './pages/LeagueScreen';
-import { ProfileScreen } from './pages/ProfileScreen';
-import { PlacementScreen } from './pages/PlacementScreen';
-import { TracksScreen } from './pages/TracksScreen';
-import { DuelScreen } from './pages/DuelScreen';
-import { AuthScreen } from './pages/AuthScreen';
-import { DeleteAccountScreen } from './pages/DeleteAccountScreen';
-import { LegalScreen } from './pages/LegalScreen';
-import { OnboardingScreen } from './pages/OnboardingScreen';
-import { LandingScreen } from './pages/LandingScreen';
 import { Toast } from './components/common/Toast';
 import './styles/global.css';
+
+// Every screen is loaded on demand. Statically importing them put the whole
+// app — quiz, Pyodide, Lottie, duels — into the landing page's first bundle,
+// which is the page most likely to be opened cold on a mid-range phone over
+// 4G. Each entry below is its own chunk; a visitor downloads the one screen
+// they are actually looking at.
+const HomeScreen = lazy(() => import('./pages/HomeScreen').then((m) => ({ default: m.HomeScreen })));
+const QuizScreen = lazy(() => import('./pages/QuizScreen').then((m) => ({ default: m.QuizScreen })));
+const StatsScreen = lazy(() => import('./pages/StatsScreen').then((m) => ({ default: m.StatsScreen })));
+const LeagueScreen = lazy(() => import('./pages/LeagueScreen').then((m) => ({ default: m.LeagueScreen })));
+const ProfileScreen = lazy(() => import('./pages/ProfileScreen').then((m) => ({ default: m.ProfileScreen })));
+const PlacementScreen = lazy(() => import('./pages/PlacementScreen').then((m) => ({ default: m.PlacementScreen })));
+const TracksScreen = lazy(() => import('./pages/TracksScreen').then((m) => ({ default: m.TracksScreen })));
+const DuelScreen = lazy(() => import('./pages/DuelScreen').then((m) => ({ default: m.DuelScreen })));
+const AuthScreen = lazy(() => import('./pages/AuthScreen').then((m) => ({ default: m.AuthScreen })));
+const DeleteAccountScreen = lazy(() =>
+  import('./pages/DeleteAccountScreen').then((m) => ({ default: m.DeleteAccountScreen }))
+);
+const LegalScreen = lazy(() => import('./pages/LegalScreen').then((m) => ({ default: m.LegalScreen })));
+const OnboardingScreen = lazy(() =>
+  import('./pages/OnboardingScreen').then((m) => ({ default: m.OnboardingScreen }))
+);
+const LandingScreen = lazy(() => import('./pages/LandingScreen').then((m) => ({ default: m.LandingScreen })));
 
 // URL-based routing for standalone pages (no React Router needed)
 const _path = window.location.pathname;
@@ -40,10 +50,10 @@ function needsOnboarding(userId: string): boolean {
 function App() {
   // Standalone pages routed by URL path
   const path = window.location.pathname;
-  if (path === '/delete-account') return <DeleteAccountScreen />;
-  if (path === '/privacy') return <LegalScreen doc="privacy" />;
-  if (path === '/terms') return <LegalScreen doc="terms" />;
-  if (path === '/landing') return <LandingScreen />;
+  if (path === '/delete-account') return <Screen><DeleteAccountScreen /></Screen>;
+  if (path === '/privacy') return <Screen><LegalScreen doc="privacy" /></Screen>;
+  if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
+  if (path === '/landing') return <Screen><LandingScreen /></Screen>;
 
   const currentScreen = useAppStore((s) => s.currentScreen);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
@@ -78,7 +88,7 @@ function App() {
   if (authState === 'unauthed') {
     return (
       <>
-        <AuthScreen onAuthed={handleAuthed} />
+        <Screen><AuthScreen onAuthed={handleAuthed} /></Screen>
         <Toast />
       </>
     );
@@ -91,7 +101,7 @@ function App() {
   if (showOnboarding) {
     return (
       <>
-        <OnboardingScreen onDone={() => setShowOnboarding(false)} />
+        <Screen><OnboardingScreen onDone={() => setShowOnboarding(false)} /></Screen>
         <Toast />
       </>
     );
@@ -115,12 +125,17 @@ function App() {
     <>
       <TopBar />
       <main className="app-content">
-        {renderScreen()}
+        <Screen>{renderScreen()}</Screen>
       </main>
       {currentScreen !== 'quiz' && currentScreen !== 'placement' && <BottomNav />}
       <Toast />
     </>
   );
+}
+
+/** Suspense boundary for a lazily loaded screen. */
+function Screen({ children }: { children: React.ReactNode }) {
+  return <Suspense fallback={<BootSplash />}>{children}</Suspense>;
 }
 
 function BootSplash() {
