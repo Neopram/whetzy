@@ -1,5 +1,23 @@
 import { useTranslation } from 'react-i18next';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import './LandingScreen.css';
+
+const LANDING_URL = 'https://whetzy.com/landing';
+
+/**
+ * The landing has no server-side render, so the `?lang=en` query string is
+ * the hreflang-addressable EN variant (see index.html + public/sitemap.xml).
+ * It overrides the app's global language for this page only.
+ */
+function resolveLandingLang(i18nLang: string): 'es' | 'en' {
+  try {
+    const q = new URLSearchParams(window.location.search).get('lang');
+    if (q === 'en' || q === 'es') return q;
+  } catch {
+    /* window unavailable (SSR/tests) — fall through to i18n language */
+  }
+  return i18nLang.startsWith('es') ? 'es' : 'en';
+}
 
 interface PlanCardProps {
   name: string;
@@ -50,9 +68,13 @@ function FeatureCard({ icon, title, body }: FeatureCardProps) {
 
 export function LandingScreen() {
   const { i18n } = useTranslation();
-  const es = i18n.language.startsWith('es');
+  const lang = resolveLandingLang(i18n.language);
+  const es = lang === 'es';
 
   const t = {
+    metaTitle:  es ? 'Whetzy — Aprende lo que importa, cuando importa' : 'Whetzy — Master what matters, when it matters',
+    metaDesc:   es ? 'Whetzy adapta cada pregunta a tu nivel con IA, repaso espaciado y gamificación — de Python básico a AI Engineer, en español e inglés.' : 'Whetzy adapts every question to your level with AI, spaced repetition and gamification — from basic Python to AI Engineer, in Spanish and English.',
+    imageAlt:   es ? 'Whetzy — aprende lo que importa' : 'Whetzy — learn what matters',
     heroTag:    es ? 'Prepárate diferente' : 'Study smarter',
     heroH1:     es ? 'Domina lo que importa,\ncuando importa.' : 'Master what matters,\nwhen it matters.',
     heroSub:    es ? 'Whetzy adapta cada pregunta a tu nivel con IA, repaso espaciado y gamificación — en español e inglés.' : 'Whetzy adapts every question to your level with AI, spaced repetition and gamification — in Spanish and English.',
@@ -86,6 +108,14 @@ export function LandingScreen() {
       : ['Everything in Plus', 'Analytics history', 'Early access to new tracks', 'Priority support'],
     footerNote: es ? '© 2026 Whetzy. Hecho con ♥ en Europa.' : '© 2026 Whetzy. Made with ♥ in Europe.',
   };
+
+  useDocumentMeta({
+    title: t.metaTitle,
+    description: t.metaDesc,
+    lang,
+    url: es ? LANDING_URL : `${LANDING_URL}?lang=en`,
+    imageAlt: t.imageAlt,
+  });
 
   function goToAuth() {
     window.location.href = '/';
