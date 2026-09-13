@@ -9,6 +9,46 @@
 3. Monitor logs for startup message: `Starting Whetzy (env=production ...)`
 4. Verify: `curl https://api-production-9751.up.railway.app/health/ready`
 
+### Recovering from "Application not found" (incident H.1)
+
+`GET /health` returning `404 {"message":"Application not found"}` with the
+header `x-railway-fallback: true` is **not** stale code. It means Railway has
+no deployment behind the domain at all — the service is stopped, deleted, or
+the domain was unlinked. No amount of pushing to `master` fixes it; the fix is
+in the Railway dashboard.
+
+1. railway.app → does the backend service still exist?
+   - **Exists but stopped/crashed** → restart it, then read the deploy logs.
+   - **Deleted** → recreate from the repo root `Dockerfile` (Railway must
+     auto-detect Docker; if it falls back to Railpack the build fails).
+   - **Exists and running but the domain 404s** → the domain is unlinked:
+     re-attach `api-production-9751.up.railway.app` to the service.
+2. Required env vars (see `.env.example`): `SECRET_KEY`, `DATABASE_URL`,
+   `ENVIRONMENT=production`, `BACKEND_CORS_ORIGINS`. `GROQ_API_KEY` is
+   optional — without it the tutor answers from the canonical explanation
+   instead of the LLM, which degrades gracefully and does not block startup.
+3. Deploy the latest `master`.
+4. Verify, in this order:
+   ```bash
+   curl https://api-production-9751.up.railway.app/health
+   curl -s https://api-production-9751.up.railway.app/api/v1/openapi.json | head -c 200
+   ```
+   `/health` must return `{"status":"healthy"}` and the OpenAPI document must
+   list **57** paths.
+5. In the deploy logs, confirm `start.sh` got through all four stages:
+   `alembic upgrade head` → `content loaded` → `gamification seeded` →
+   `launching gunicorn`. Content load should report **1507 questions, 0
+   skipped**; anything else means the `content/` tree did not make it into the
+   image.
+
+**The startup path was smoke-tested end to end on 2026-09-13** against the
+current `master`, running the real lifespan: 1507 questions / 0 skipped,
+`/health` 200, 57 endpoints, BM25 RAG index built in 0.60 s with every
+retrieved chunk carrying a `source`. The only dependency added since the last
+successful deploy is `rank-bm25` (pure Python, no torch), which the existing
+Dockerfile builds unchanged. So a redeploy is safe: if it fails, suspect the
+Railway service or its env vars, not the code.
+
 ## DB migrations
 
 ```bash
@@ -27,8 +67,15 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `d4e5f6a7b8c9`
-Chain: `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9`
+Current Alembic HEAD: `m3n4o5p6q7r8` (13 migrations, single head — verified 2026-09-13)
+Chain: `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9 → e5f6a7b8c9d0 → f6a7b8c9d0e1 → g7h8i9j0k1l2 → h8i9j0k1l2m3 → i9j0k1l2m3n4 → j0k1l2m3n4o5 → k1l2m3n4o5p6 → l2m3n4o5p6q7 → m3n4o5p6q7r8`
+
+Don't trust this line — recompute it. It was stale by 9 migrations until
+2026-09-13 because six schema changes landed without anyone updating it:
+
+```bash
+cd backend && alembic heads     # must print exactly ONE head
+```
 
 **First deploy to a DB with no alembic_version:** `start.sh` runs `alembic stamp head` before `upgrade head` to handle pre-existing schemas.
 

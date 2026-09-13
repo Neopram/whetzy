@@ -83,10 +83,6 @@ class Settings(BaseSettings):
     GROQ_MODEL: str = "qwen/qwen3.8-27b"
     GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
 
-    # --- RAG (ChromaDB) -------------------------------------------------------
-    # Empty → auto-resolved to backend/chroma_db/ relative to rag.py location.
-    CHROMA_PERSIST_PATH: str = ""
-
     # --- Email (transaccional) -----------------------------------------------
     EMAIL_PROVIDER: str = "smtp"  # smtp | resend | log (fallback/dev)
     SMTP_HOST: str = "smtp.gmail.com"
