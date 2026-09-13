@@ -1,7 +1,28 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
-/** Fills the registration form and submits it, landing on the home screen. */
+/**
+ * Fills the registration form and submits it, then lands on the home screen.
+ *
+ * A freshly registered user in a fresh browser context always sees the
+ * first-run OnboardingScreen first (see `needsOnboarding` in App.tsx — it
+ * gates on a per-user `whetzy_onboarded_<uid>` localStorage flag that a new
+ * account can't have yet). OnboardingScreen's own CTA doesn't lead to the
+ * home screen though: `handleStart` in OnboardingScreen.tsx marks onboarding
+ * done and jumps straight into a quiz (`startQuiz('study', 10)`), which is
+ * exactly what `e2e/onboarding.spec.ts` covers on its own.
+ *
+ * This helper is used by specs that are about auth/quiz/duel/offline/pyodide/
+ * accessibility, not onboarding, so instead of clicking through onboarding
+ * (which would land in a quiz, not home, breaking this helper's contract) it
+ * suppresses onboarding deterministically: it waits for the onboarding
+ * screen's own headline (unique markup — the register button and the
+ * onboarding CTA share the same accessible name "EMPEZAR A APRENDER", so
+ * that name alone can't disambiguate the two screens), sets the
+ * `whetzy_onboarded_<uid>` flag the same way a returning user would have it
+ * set, and reloads. That reproduces real "returning user" behavior and lands
+ * on the home screen without exercising the onboarding flow itself.
+ */
 export async function registerUser(page: Page, opts: { username: string; displayName: string }) {
   const { username, displayName } = opts;
   // NOTE: use a real, deliverable-looking domain — python's email-validator
@@ -19,8 +40,41 @@ export async function registerUser(page: Page, opts: { username: string; display
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
+  await suppressOnboarding(page);
+
   // Successful registration lands on the home screen (bottom nav visible).
   await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
+}
+
+/**
+ * Clears the first-run onboarding gate for whoever just signed in on this page.
+ *
+ * The gate is a `whetzy_onboarded_<uid>` key in localStorage, so it is per
+ * browser *context*, not per account: a user who onboarded in one context still
+ * sees onboarding after logging in from a fresh one. That means every entry
+ * point into the app from a clean context needs this — registration AND login
+ * (see the opponent's second context in duel.spec.ts).
+ *
+ * It waits for the onboarding screen's own headline rather than its CTA's
+ * accessible name, which is identical to the registration button's
+ * ("EMPEZAR A APRENDER") and so cannot tell the two screens apart. The wait is
+ * deliberately strict: if onboarding ever stops appearing for a new context,
+ * this should fail loudly instead of skipping silently.
+ */
+export async function suppressOnboarding(page: Page): Promise<void> {
+  await expect(page.locator('[class*="headline_"]')).toBeVisible({ timeout: 15_000 });
+
+  await page.evaluate(() => {
+    try {
+      const raw = localStorage.getItem('learning-engine-store');
+      if (raw) {
+        const parsed = JSON.parse(raw) as { state?: { user?: { id?: string } } };
+        const uid = parsed.state?.user?.id;
+        if (uid) localStorage.setItem(`whetzy_onboarded_${uid}`, '1');
+      }
+    } catch { /* storage unavailable */ }
+  });
+  await page.reload();
 }
 
 /** Unique-enough username per test run so re-runs don't collide on a shared DB. */

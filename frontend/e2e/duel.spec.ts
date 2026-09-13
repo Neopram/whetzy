@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { registerAndCompleteAQuiz, uniqueUsername } from './helpers';
+import { registerAndCompleteAQuiz, suppressOnboarding, uniqueUsername } from './helpers';
 
 test.describe('duel', () => {
   test('challenge an opponent and complete the challenger side', async ({ page, request, baseURL }) => {
@@ -107,6 +107,11 @@ test.describe('duel', () => {
     await oppPage.getByLabel('Correo electrónico').fill(oppEmail);
     await oppPage.getByLabel('Contraseña').fill('e2e-test-pass-123');
     await oppPage.getByRole('button', { name: 'ENTRAR' }).click();
+
+    // Second browser context: the onboarding flag lives in localStorage, so the
+    // opponent gets the first-run screen here even though the account already
+    // exists — logging in is not enough to skip it.
+    await suppressOnboarding(oppPage);
     await expect(oppPage.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
 
     // Navigate to duels and play

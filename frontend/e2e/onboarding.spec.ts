@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { uniqueUsername } from './helpers';
+import { answerCurrentQuestion, uniqueUsername } from './helpers';
 
 test('onboarding: landing → first answered question in < 60 s', async ({ page }) => {
   const start = Date.now();
@@ -25,18 +25,13 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
   // First question must appear
   await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
 
-  // Answer the first question
-  const options = page.locator('[class*="options_"] button');
-  const runBtn = page.locator('[class*="btnRun_"]');
-  if (await options.count() > 0) {
-    await options.first().click();
-  } else {
-    await expect(runBtn).toBeVisible({ timeout: 10_000 });
-    await runBtn.click();
-  }
-
-  // Explanation panel confirms the question was answered
-  await expect(page.locator('[class*="explanation_"]')).toBeVisible({ timeout: 10_000 });
+  // Answer the first question. Which *kind* of question gets drawn depends on the
+  // learner's state and on row order in the content DB, so this must handle an
+  // exec question too: one click on "Run" does not necessarily reach feedback
+  // (Pyodide has to boot, and the app only auto-submits on the 3rd attempt).
+  // answerCurrentQuestion encapsulates exactly that, and is what every other
+  // spec uses.
+  await answerCurrentQuestion(page);
 
   const elapsed = (Date.now() - start) / 1000;
   expect(elapsed, `Took ${elapsed.toFixed(1)}s — must be < 60s`).toBeLessThan(60);
