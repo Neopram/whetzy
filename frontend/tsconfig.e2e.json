@@ -1,0 +1,29 @@
+{
+  // Playwright specs. They were type-checked by nothing at all until now:
+  // tsconfig.app.json includes only "src" and tsconfig.node.json only
+  // vite.config.ts, so `tsc -b --listFiles | grep frontend/e2e` returned 0 and
+  // Playwright's own transpile strips the types without checking them. That is
+  // ~1k lines of TypeScript describing the API contract, running unchecked.
+  //
+  // DOM libs are on because the specs run page.evaluate() bodies in the browser
+  // (indexedDB, localStorage, PerformanceObserver); "node" is on because they
+  // read process.env and __dirname-style config.
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.e2e.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["e2e", "e2e-prod", "playwright.config.ts", "playwright.prod.config.ts", "vitest.config.ts"]
+}
