@@ -1,6 +1,28 @@
 # Whetzy — Estado real / Honest Status
 
-_Última actualización: 2026-09-08. Evaluación técnica brutalmente honesta._
+_Última actualización del cuerpo: 2026-09-08. Evaluación técnica brutalmente honesta._
+
+> **Aviso añadido el 2026-09-14 (sesión am). Lee esto antes de citar nada de aquí.**
+>
+> Este fichero es un **registro histórico por sesión**: cada entrada dice lo que
+> aquella sesión creyó en aquel momento. No se reescribe hacia atrás. La fuente de
+> verdad del estado **actual** es `docs/AUTONOMOUS_STATE.md`.
+>
+> Dos cosas concretas que este documento afirma y que hoy son falsas:
+>
+> 1. **`validate_content.py` no existe en el repo.** Se cita como evidencia
+>    («`validate_content.py` → 0 errores») en media docena de entradas de sesión.
+>    Dos búsquedas independientes por todo el árbol y por `git log --all
+>    --diff-filter=A` no lo encuentran: nunca se commiteó. Lo que de verdad valida
+>    el contenido hoy es `backend/tests/integration/test_content_loader.py` y
+>    `backend/tests/content/test_exec_questions.py`, y ambos sí están en CI.
+>    No cites la herramienta fantasma.
+> 2. **«whetzy.com live» no significa «whetzy.com sirve el código de hoy».** El
+>    dominio responde 200, pero el 2026-09-14 se comprobó que sirve un build
+>    anterior al landing, al onboarding, al botón «¿Por qué?», al SEO y al
+>    code-splitting. Está en el ledger como `12.2` / `H.11`.
+>
+> La tabla «Por fase» de abajo es la de la sesión que la escribió, no la de hoy.
 
 Este documento distingue **lo que funciona de verdad y está verificado** de **lo
 que es scaffold o no existe**. El plan aprobado (`velvet-tickling-fog.md`) es
