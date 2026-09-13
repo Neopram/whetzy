@@ -36,11 +36,16 @@ const NET_PROFILES = {
     uploadThroughput: (3 * 1024 * 1024) / 8,
     latency: 150,
   },
+  // These are the numbers Lighthouse ACTUALLY applies for its mobile preset,
+  // read out of a real run's `configSettings.throttling`, not a hand-rounded
+  // "1.6 Mbps / 150 ms". The latency matters most: Lighthouse inflates the
+  // 150 ms RTT to a 562.5 ms per-request latency, ~3.75x, and using the raw
+  // 150 ms here produced an LCP almost two seconds too optimistic.
   slow4g: {
     offline: false,
-    downloadThroughput: (1.6 * 1024 * 1024) / 8,
-    uploadThroughput: (750 * 1024) / 8,
-    latency: 150,
+    downloadThroughput: (1474.56 * 1024) / 8,
+    uploadThroughput: (675 * 1024) / 8,
+    latency: 562.5,
   },
 } as const;
 
