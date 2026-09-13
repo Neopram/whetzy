@@ -157,3 +157,60 @@ Each row maps a gap to the ledger task whose acceptance criterion is the *eviden
 | Not in stores | IAP + submission | 7.6, H.2–H.5 | Distribution +30 |
 
 Realistic ceiling with all of the above done and measured: **≈ 60–65 / 100** — parity on a narrower, better-served niche, not dominance. "Superar con creces a toda la competencia" is not a claim this document can make; it is a target the ledger can earn.
+
+---
+
+## 7. Recálculo — 2026-09-13 (sesión al)
+
+Cinco tareas de §6.3 cerraron **con evidencia ejecutable pegada en el ledger**. Esta sección aplica sus movimientos y sólo los suyos. Regla de la decisión #9: una capacidad sin evidencia de resultado no puntúa, y una tarea sólo mueve el marcador por lo que midió, no por lo que prometía.
+
+### 7.1 Pesos, explícitos por primera vez
+
+El ≈30 de §6 salió de una ponderación que nunca se escribió, así que nadie podía auditarla. Se hace explícita aquí. Estos pesos reproducen el ≈30 anterior (30,4), por lo que el antes y el después son comparables:
+
+| Dimensión | Peso |
+|---|---|
+| Distribución (usuarios, stores, prod viva) | 0,34 |
+| Motor adaptativo | 0,14 |
+| Contenido | 0,14 |
+| Tutor AI | 0,09 |
+| Ejecución de código | 0,07 |
+| Gamificación | 0,06 |
+| Bilingüe | 0,06 |
+| PWA / offline | 0,05 |
+| Accesibilidad | 0,05 |
+
+Distribución pesa un tercio a propósito: es la única dimensión que mide si alguien **usa** el producto. Mientras valga 0, ninguna mejora técnica puede levantar el total por encima de ~66.
+
+### 7.2 Qué se movió, y exactamente por qué
+
+| Dimensión | Antes | Ahora | Evidencia que lo justifica — y qué la limita |
+|---|---|---|---|
+| **Tutor AI** | 45 | **80** | 11.1 + 11.2 DONE. El RAG dejó de ser decorativo: BM25 puro Python que sí cabe en el free tier, self-retrieval top-3 **99,60 % ES / 99,68 % EN** sobre las 1.253 preguntas reales, índice en 0,569 s, +6,9–15,7 MB de RSS. `grounded` pasa de literal `True` a `any(chunk.source for chunk in rag_chunks)`. Y ahora **se ve**: botón «¿Por qué? / Why?» bajo cada feedback, axe 0 violaciones, ES/EN. Sigue por debajo de Khanmigo (85+): un LLM de 27B con BM25 no es GPT-4 con retrieval entrenado, y nadie lo ha usado todavía |
+| **Motor adaptativo** | 35 | **55** | 11.3 DONE. Por primera vez hay un número contra un dataset público en vez de 3 secuencias inventadas: DKT **0,8294** vs BKT **0,7983** en synthetic-5, reproducido 3 veces. **No subo a los 60 que §6.3 preveía**, por dos razones que están en el JSON: el benchmark indexa por *concept id*, no por *question id* como el paper — tarea más fácil, AUC no comparable con el 0,75/0,62 publicado — y el margen DKT−BKT es **+0,031** frente al +0,13 del paper. Que tu red gane a tu propio BKT por tres centésimas en la variante fácil es evidencia de que el motor funciona, no de que sea superior a nadie. Duolingo sigue en 85 y con miles de millones de respuestas |
+| **Bilingüe** | 80 | **80** | Sin cambio de número, pero el 80 anterior era generoso: 11.10 encontró que la pantalla de liga entera renderizaba `League.name`, que el seeder escribe **sólo en español**, así que un usuario en inglés leía "League Platino". Arreglado por i18n con dos tests que impiden la regresión. El 80 pasa de afirmado a ganado |
+| **Distribución** | 0 | **0** | 11.7 DONE con Lighthouse **SEO 100 / Performance 99** (desktop) y 11.11 bajó la carga inicial del landing de 202 kB gzip a ~96. Pero §6.3 preveía "+10" y **no lo aplico**: el backend lleva caído desde ≤ 2026-09-11 (H.1). SEO perfecto hacia un producto cuya API devuelve 404 no adquiere a nadie. Es exactamente el caso que la decisión #9 describe — una capacidad construida que nadie ha usado. Queda **en depósito**: el día que H.1 se resuelva, estos +10 se cobran sin trabajo adicional |
+| Contenido | 35 | 35 | 11.4 y P.8 siguen abiertas. 1.253 preguntas |
+| Ejecución de código | 30 | 30 | 11.4 en curso. Sigue en 7 de 1.253 (0,56 %), medido hoy |
+| Gamificación | 40 | 40 | Cero usuarios. No se mueve hasta 11.8 (H.10) |
+| PWA / offline | 70 | 70 | Sin medición nueva en un Android real |
+| Accesibilidad | 75 | 75 | 9.7 sigue bloqueada por dispositivo físico (H.9) |
+
+### 7.3 El número
+
+```
+0,34×0  + 0,14×55 + 0,14×35 + 0,09×80 + 0,07×30
+        + 0,06×40 + 0,06×80 + 0,05×70 + 0,05×75   =  36,35
+```
+
+**Whetzy ≈ 36 / 100** (antes ≈ 30). Duolingo ≈ 72, DataCamp ≈ 68, Brilliant ≈ 66, Codecademy ≈ 58 — sin cambios; nada de lo hecho esta sesión les afecta.
+
+Seis puntos en una sesión, todos comprados con evidencia ejecutable. Y sigue siendo **la mitad que Duolingo**, porque el tercio del marcador que mide si alguien usa el producto vale cero mientras el backend esté caído.
+
+### 7.4 Lo que esto no significa
+
+- No significa que el motor sea mejor que el de nadie. Significa que ya **se puede medir**, que es el requisito previo.
+- No significa que el tutor compita con Khanmigo. Significa que dejó de mentir sobre sus citas.
+- No significa que haya adquisición. Significa que la infraestructura para tenerla existe y está medida, esperando a que haya un producto vivo al que mandar tráfico.
+
+El techo de §6.3 no se mueve: **≈ 60–65** con todo hecho y medido, y sólo llegando a paridad en un nicho más estrecho y mejor servido. La ruta más corta a subir sigue siendo la misma y no es técnica: **levantar el backend (H.1)** y **poner 30 personas reales a usarlo (H.8/H.10)**. Entre las dos valen más puntos que todo el trabajo de ingeniería pendiente junto.
