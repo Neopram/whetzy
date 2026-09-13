@@ -76,17 +76,28 @@ def _load_reference_solutions() -> dict[str, Any]:
     return json.loads(REFERENCE_SOLUTIONS_PATH.read_text(encoding="utf-8"))
 
 
-def _build_code_to_run(question: dict[str, Any], reference: dict[str, Any]) -> str:
-    """Reproduces the frontend's `codeToRun` construction (QuizScreen.tsx handleRun)."""
+def _build_code_to_run(
+    question: dict[str, Any], reference: dict[str, Any], lang: str = "es"
+) -> str:
+    """Reproduces the frontend's `codeToRun` construction (QuizScreen.tsx
+    handleRun) for one language.
+
+    The two languages are not always the same program: `question_en` carries
+    its own fenced block, and where the printed output is a message rather
+    than a demo literal it uses English identifiers and English strings
+    (11.12). `fill_en` / `fixed_en` in the sidecar override the Spanish
+    reference for exactly those; everywhere else the same fill serves both.
+    """
+    field = "question_es" if lang == "es" else "question_en"
     if question["type"] == "fill_blank_exec":
-        code = _extract_code_block(question["question_es"])
-        assert code is not None, f"{question['id']}: no fenced code block in question_es"
-        fill = reference["fill"]
+        code = _extract_code_block(question[field])
+        assert code is not None, f"{question['id']}: no fenced code block in {field}"
+        fill = reference["fill"] if lang == "es" else reference.get("fill_en", reference["fill"])
         return code.replace("___", fill, 1)
     # fix_bug: the student edits the buggy code directly; the reference
     # solution is the fixed program, run as-is (mirrors userInput after a
     # correct fix).
-    return reference["fixed"]
+    return reference["fixed"] if lang == "es" else reference.get("fixed_en", reference["fixed"])
 
 
 def _run_in_cpython(code: str) -> subprocess.CompletedProcess[str]:
@@ -150,10 +161,18 @@ class TestExecQuestionCorpus:
         assert ratio >= 0.15, f"exec ratio in tracks 01-03 is {ratio:.4f} ({exec_total}/{total}), need >= 0.15"
 
     def test_every_reference_solution_matches_correct_answer(self) -> None:
-        """The core guarantee: run the reference program for every exec question in
-        real CPython and assert its stdout equals the shipped correct_answer_es /
-        correct_answer_en, exactly (after trim — mirrors the frontend's
+        """The core guarantee: run each exec question's reference program in real
+        CPython and assert its stdout equals the answer that question publishes,
+        exactly (after trim — mirrors the frontend's
         `result.output.trim() === expected` comparison).
+
+        Both languages are checked independently. They are not always the same
+        program: `question_en` carries its own fenced block, and where the
+        printed output is a message rather than a demo literal it uses English
+        identifiers and English strings (11.12), so `correct_answer_en` differs
+        from `correct_answer_es`. Comparing one run against both answers, as
+        this test used to, would have silently required them to be identical —
+        i.e. required the English learner to read Spanish code.
         """
         failures: list[str] = []
         checked = 0
@@ -165,60 +184,67 @@ class TestExecQuestionCorpus:
                 # Reported by test_every_exec_question_has_a_reference_solution.
                 continue
 
-            try:
-                code = _build_code_to_run(question, reference)
-            except AssertionError as e:
-                failures.append(str(e))
-                continue
-
-            try:
-                proc = _run_in_cpython(code)
-            except subprocess.TimeoutExpired:
-                failures.append(f"{qid}: reference solution timed out after {PER_QUESTION_TIMEOUT_S}s")
-                continue
-
-            if proc.returncode != 0:
-                failures.append(
-                    f"{qid}: reference solution raised an error instead of running "
-                    f"cleanly:\n{proc.stderr.strip()[-500:]}"
-                )
-                continue
-
-            if proc.stdout is None:
-                # Defensive: a captured subprocess should always yield a
-                # string. If the platform hands back None (seen on Windows
-                # under load), report it as this question's failure with
-                # context instead of raising AttributeError and aborting the
-                # whole corpus check — one flaky process must not hide the
-                # verdict on the other 110.
-                failures.append(
-                    f"{qid}: subprocess returned no captured stdout "
-                    f"(rc={proc.returncode}, stderr={(proc.stderr or '')!r})"
-                )
-                continue
-
-            actual = proc.stdout.strip()
-            expected_es = (question.get("correct_answer_es") or "").strip()
-            expected_en = (question.get("correct_answer_en") or "").strip()
-
-            if actual != expected_es:
-                failures.append(
-                    f"{qid}: stdout {actual!r} != correct_answer_es {expected_es!r}"
-                )
-                continue
-            if actual != expected_en:
-                failures.append(
-                    f"{qid}: stdout {actual!r} != correct_answer_en {expected_en!r}"
-                )
-                continue
-
-            checked += 1
+            for lang in ("es", "en"):
+                expected = (question.get(f"correct_answer_{lang}") or "").strip()
+                if self._verify_one(qid, question, reference, lang, expected, failures):
+                    checked += 1
 
         assert checked > 0, "no exec questions were actually executed — check content path resolution"
         assert failures == [], (
-            f"{len(failures)}/{checked + len(failures)} exec question(s) failed reference "
-            "verification:\n" + "\n".join(failures)
+            f"{len(failures)} of {checked + len(failures)} exec question/language pairs "
+            "failed reference verification:\n" + "\n".join(failures)
         )
+
+    def _verify_one(
+        self,
+        qid: str,
+        question: dict[str, Any],
+        reference: dict[str, Any],
+        lang: str,
+        expected: str,
+        failures: list[str],
+    ) -> bool:
+        """Run one question's reference program in one language. Returns True
+        when its stdout matched that language's published answer."""
+        try:
+            code = _build_code_to_run(question, reference, lang)
+        except AssertionError as e:
+            failures.append(str(e))
+            return False
+
+        try:
+            proc = _run_in_cpython(code)
+        except subprocess.TimeoutExpired:
+            failures.append(
+                f"{qid} [{lang}]: reference solution timed out after {PER_QUESTION_TIMEOUT_S}s"
+            )
+            return False
+
+        if proc.returncode != 0:
+            failures.append(
+                f"{qid} [{lang}]: reference solution raised an error instead of "
+                f"running cleanly:\n{(proc.stderr or '').strip()[-500:]}"
+            )
+            return False
+
+        if proc.stdout is None:
+            # Defensive: a captured subprocess should always yield a string. If
+            # the platform hands back None, report it as this pair's failure
+            # with context instead of raising AttributeError and aborting the
+            # verdict on every other question.
+            failures.append(
+                f"{qid} [{lang}]: subprocess returned no captured stdout "
+                f"(rc={proc.returncode}, stderr={(proc.stderr or '')!r})"
+            )
+            return False
+
+        actual = proc.stdout.strip()
+        if actual != expected:
+            failures.append(
+                f"{qid} [{lang}]: stdout {actual!r} != correct_answer_{lang} {expected!r}"
+            )
+            return False
+        return True
 
     @pytest.mark.parametrize("track_dir", [
         "track01_python_basics",
