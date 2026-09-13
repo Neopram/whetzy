@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { answerCurrentQuestion, uniqueUsername } from './helpers';
+import { answerCurrentQuestion, suppressOnboarding, uniqueUsername } from './helpers';
 
 test('onboarding: landing → first answered question in < 60 s', async ({ page }) => {
   const start = Date.now();
@@ -40,7 +40,8 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
 test('onboarding is skipped for returning users', async ({ page }) => {
   const username = uniqueUsername('e2e_ret_');
 
-  // Register
+  // Register by hand rather than via registerUser — that helper suppresses
+  // onboarding itself, which is the very thing under test here.
   await page.goto('/');
   await page.getByLabel('Nombre').fill('Returning Test');
   await page.getByLabel('Usuario').fill(username);
@@ -48,25 +49,25 @@ test('onboarding is skipped for returning users', async ({ page }) => {
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
-  // Mark onboarding done in localStorage (simulates returning user)
-  await page.waitForLoadState('networkidle');
-  await page.evaluate(() => {
-    // Find the user id from zustand persisted state
-    try {
-      const raw = localStorage.getItem('learning-engine-store');
-      if (raw) {
-        const parsed = JSON.parse(raw) as { state?: { user?: { id?: string } } };
-        const uid = parsed.state?.user?.id;
-        if (uid) localStorage.setItem(`whetzy_onboarded_${uid}`, '1');
-      }
-    } catch { /* ignore */ }
-  });
+  // Turn this brand-new account into a returning one: set the same
+  // whetzy_onboarded_<uid> flag a returning user would already carry, then
+  // reload.
+  //
+  // This used to be inlined here, reading the user id straight after
+  // waitForLoadState('networkidle') — which does NOT guarantee zustand has
+  // persisted it yet. When it hadn't, the `if (uid)` guard silently did
+  // nothing, the reload showed onboarding again, and the test failed 15 s
+  // later pointing at a missing "Inicio" button instead of at the real cause.
+  // It passed locally and failed in CI, twice, for exactly that reason.
+  // suppressOnboarding waits for the onboarding screen first, which is proof
+  // that hydration finished and the id exists.
+  await suppressOnboarding(page);
 
-  // Reload — should land on home screen, not onboarding
-  await page.reload();
-  await page.waitForLoadState('networkidle');
-
-  // Home screen bottom nav must appear (no onboarding CTA)
+  // A returning user lands on the home screen…
   await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByRole('button', { name: /EMPEZAR A APRENDER/i })).not.toBeVisible({ timeout: 2_000 }).catch(() => {/* already not visible */});
+  // …and onboarding is nowhere on it. Asserted on OnboardingScreen's own
+  // headline, not on its CTA: the CTA shares an accessible name with the
+  // registration button. (The previous version asserted this with a
+  // `.catch(() => {})` tacked on, which made it incapable of ever failing.)
+  await expect(page.locator('[class*="headline_"]')).toHaveCount(0);
 });
