@@ -102,6 +102,8 @@ Nada se marca `DONE` sin salida ejecutable pegada en el ledger.
 |---|---|
 | "El endpoint funciona" | Respuesta HTTP real: status + body |
 | "Los tests pasan" | Salida de `pytest`/`vitest` con conteo |
+| "CI está verde" | `gh run list` con el **run id** y `success`. Una corrida local nunca es evidencia de CI |
+| "El usuario lo ve" | HTTP contra `whetzy.com` que muestre el cambio, no un build local |
 | "Subió la cobertura" | `coverage report` con el % |
 | "Tipos limpios" | `mypy`/`tsc` con `0 errors` |
 | "La UI está bien" | Screenshot del Browser pane |
@@ -170,7 +172,7 @@ Así un corte por límite de uso no rompe nada: el siguiente disparo continúa
 donde el ledger diga. Una sesión que no puede arrancar no gasta; una que arranca
 sin trabajo sale en segundos.
 
-### 1-4. Estado del sistema
+### 1-6. Estado del sistema
 ```powershell
 # 1. Repo limpio. Si hay cambios huérfanos de una sesión cortada: revisa, commitea o descarta, anótalo.
 git status --short
@@ -185,7 +187,21 @@ docker ps --filter "name=db" --format "{{.Names}} {{.Status}}"
 
 # 4. La suite colecta sin errores de import
 Set-Location backend; python -m pytest -q --co 2>&1 | Select-Object -Last 3
+
+# 5. CI. La ÚNICA evidencia válida del estado de CI. Correr los comandos a mano
+#    en local NO lo es: el entorno de CI no es este (ver gotchas del ledger).
+gh run list --limit 5
+
+# 6. Que lo desplegado sea lo construido. Un `git log` limpio no implica que
+#    ningún usuario vea el código de hoy.
+(Invoke-WebRequest "https://whetzy.com/" -UseBasicParsing).Content -match 'canonical'
 ```
+
+Si el paso 5 sale en rojo, **arreglarlo es la tarea de la sesión**, por delante de
+cualquier cosa del backlog: un CI rojo significa que ninguna medición posterior
+vale, y que cada sesión que pegue evidencia local está construyendo sobre arena.
+Si el paso 6 sale `False`, el frontend desplegado es anterior al `index.html`
+actual: abre `https://whetzy.com/landing` y comprueba qué pantalla pinta de verdad.
 
 Después: `Read docs/AUTONOMOUS_STATE.md`. Escéptico — el ledger dice lo que la
 sesión anterior *creyó*; producción dice lo que *es*.
