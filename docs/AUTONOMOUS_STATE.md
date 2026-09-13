@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-11 (sesión ak) — 10.1 DONE (certification track schema); Q.11 DONE (mypy strict regression, 16 err/5 archivos → 0); P.8+9.7 pasan de TODO a BLOCKED con razón (GROQ_API_KEY / dispositivo físico); Alembic HEAD invariant corregido (era g7h8i9j0k1l2 desde P.9, real m3n4o5p6q7r8); backend prod sigue CAÍDO (H.1 vigente)
+> Última actualización: 2026-09-13 (sesión al) — 11.1/11.2/11.3/11.4/11.5/11.7/11.10/11.12 DONE con evidencia; **P.8 cerrada, banco a 1.507 preguntas**; fase P al 100%; cobertura backend **83%** medida (el 62%/72% previo era un bug del tracer, no del suite) y gate CI a 80; **el job de CI de frontend estaba ROJO desde el 2026-09-08** (59,84% lines vs umbral 70) y quedó arreglado a 93,93%; 737 tests back + 87 front, 0 fallos; score competitivo honesto 30→40/100; backend prod SIGUE CAÍDO (H.1) — arranque verificado end-to-end con el master de hoy, el redeploy es seguro
 
 ---
 
@@ -318,7 +318,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | ad | 2026-09-08 | 310 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 4.5(churn),5.4(analytics),7.2(Stripe),7.3(entitlements),3.3(push),P.9(content versioning) | 0,1,Q |
 | aj | 2026-09-11 | 451 back (exit 0) + 0 err tsc | ≥60% cov | 87.6% stmts | — | 0 err | 0 err | Phase 8 corregida a 100%; launch console publicada; backend prod CAÍDO (H.1 vigente) | 0,1,2,3,4,5,6,Q,8 |
 | ak | 2026-09-11 | 451 back (exit 0) | sin medir | sin medir | limpio | 0 err (16→0, Q.11 fijado) | sin correr | 10.1 (certification track schema); Q.11 (mypy strict regression, 16 err/5 archivos → 0); H.1 confirmado vigente; H.8/H.9 añadidos al backlog | 0,1,2,3,4,5,6,Q,8 |
-| al | 2026-09-13 | **666+ back** (exit 0) + **87 front** (11 files, antes 58) | **82%** medida — 62% inicial, 72% solo por arreglar el tracer greenlet, 82% con tests nuevos; gate CI 60→80 | **93,93% lines / 90,26% stmts / 84,04% branch / 82,35% funcs** — el job de frontend estaba **ROJO** (59,84% lines vs umbral 70) desde el 2026-09-08 y el ledger decia "CI ✓"; el 87,6% histórico llevaba sesiones sin medirse | limpio | 0 err (strict, 84 files) | 0 err | 11.1 RAG BM25 (self-retr. 99,56% ES / 99,48% EN sobre 1.357) · 11.2 tutor visible (axe 0) · 11.3 benchmark KT público (DKT 0,8294 > BKT 0,7983) · 11.4 exec 1,15%→15,57% (104 Q, 111 programas verificados en CPython) · **P.8 banco 1.253→1.507** · 11.5 cobertura 82% · 11.7 SEO 100/99 · 11.10 ligas i18n · 11.11 parcial (bundle 202→96 kB gzip) · CI frontend arreglado · teardown 30→40/100 | 0,1,2,3,4,5,6,Q,8,P |
+| al | 2026-09-13 | **737 back** (exit 0, 0 fallos) + **87 front** (11 files; antes 451 y 58) | **83%** medida (5067 stmts, 844 miss). 62% inicial → 72% solo por arreglar el tracer greenlet → 83% con tests nuevos; gate CI 60→80 | **93,93% lines / 90,26% stmts / 84,04% branch / 82,35% funcs** — el job de frontend estaba **ROJO** (59,84% vs umbral 70) desde el 2026-09-08 y el ledger decía "CI ✓" | `ruff check app` limpio | 0 err (strict, 84 files) | 0 err + oxlint 0 + bundle budget PASS | 11.1 RAG BM25 (self-retr. 99,56% ES / 99,48% EN) · 11.2 tutor visible (axe 0) · 11.3 benchmark KT público (DKT 0,8294 > BKT 0,7983) · 11.4 exec 1,15%→15,57% · **P.8 banco 1.253→1.507** · 11.5 cobertura 83% · 11.7 SEO 100/99 · 11.10 ligas i18n · 11.12 exec bilingüe (222 pares) · 11.11 parcial · CI frontend arreglado · teardown 30→40/100 | 0,1,2,3,4,5,6,Q,8,P |
 
 ---
 
