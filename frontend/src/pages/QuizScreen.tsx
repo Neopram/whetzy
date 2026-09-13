@@ -2,10 +2,11 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, tutor as tutorApi, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
+import { quiz as quizApi, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
 import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
+import { WhyButton } from '../components/quiz/WhyButton';
 import { usePyodide } from '../hooks/usePyodide';
 import styles from './QuizScreen.module.css';
 
@@ -31,6 +32,7 @@ export function QuizScreen() {
   const setScreen = useAppStore((s) => s.setScreen);
   const resetQuiz = useAppStore((s) => s.resetQuiz);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
+  const isPremium = useAppStore((s) => s.user.isPremium);
   const { t } = useTranslation();
 
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -45,8 +47,6 @@ export function QuizScreen() {
   const [error, setError] = useState<string | null>(null);
   const [summary, setSummary] = useState<QuizEndResponse | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [tutorText, setTutorText] = useState<string | null>(null);
-  const [tutorLoading, setTutorLoading] = useState(false);
   const [lottieSrc, setLottieSrc] = useState<string | null>(null);
 
   // Exec-type state
@@ -232,7 +232,6 @@ export function QuizScreen() {
       setIndex((i) => i + 1);
       setSelected(null);
       setFeedback(null);
-      setTutorText(null);
       setTimer(30);
       questionStart.current = Date.now();
     } else {
@@ -251,18 +250,9 @@ export function QuizScreen() {
     setScreen('home');
   }, [resetQuiz, setScreen]);
 
-  const handleTutor = useCallback(async () => {
-    if (!question || tutorLoading) return;
-    setTutorLoading(true);
-    try {
-      const res = await tutorApi.explain(question.id);
-      setTutorText(res.explanation || t('quiz.tutorEmpty'));
-    } catch {
-      setTutorText(t('quiz.tutorError'));
-    } finally {
-      setTutorLoading(false);
-    }
-  }, [question, tutorLoading, t]);
+  const handleUpgrade = useCallback(() => {
+    setScreen('profile');
+  }, [setScreen]);
 
   // ── Early returns ──────────────────────────────────────────────────────
   if (loading) return <QuizLoader />;
@@ -334,16 +324,7 @@ export function QuizScreen() {
         <p className={styles.sourceBadge}>📚 {t('quiz.source')}: {feedback.source}</p>
       )}
 
-      {tutorText ? (
-        <div className={styles.tutorBox}>
-          <span className={styles.tutorLabel}>🧠 {t('quiz.tutor')}</span>
-          <p className={styles.tutorText}>{tutorText}</p>
-        </div>
-      ) : (
-        <button className={styles.btnTutor} onClick={handleTutor} disabled={tutorLoading}>
-          {tutorLoading ? t('quiz.tutorLoading') : `🧠 ${t('quiz.explainThis')}`}
-        </button>
-      )}
+      <WhyButton questionId={question.id} isPremium={isPremium} onUpgrade={handleUpgrade} />
 
       <button className={styles.btnNext} onClick={handleNext}>
         {index + 1 >= TARGET_QUESTIONS || !feedback.next_question ? t('quiz.seeResults') : t('quiz.next')}

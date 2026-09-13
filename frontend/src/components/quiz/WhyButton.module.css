@@ -1,0 +1,202 @@
+.wrap {
+  margin-bottom: var(--le-space-sm);
+}
+
+.toggleBtn {
+  width: 100%;
+  padding: var(--le-space-md);
+  background: var(--le-brand-light);
+  /* Plain --le-text (not a pastel-on-pastel brand color) keeps this well
+     above WCAG AA contrast at this size/weight — the blue border + icon
+     already carry the brand accent. */
+  color: var(--le-text);
+  border: 2px solid var(--le-brand);
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  cursor: pointer;
+  transition: transform var(--le-transition-base);
+}
+
+.toggleBtn:active {
+  transform: scale(0.98);
+}
+
+.panel {
+  position: relative;
+  background: var(--le-surface);
+  border: 2px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  padding: var(--le-space-md);
+  margin-top: var(--le-space-sm);
+  animation: whyPanelIn 0.25s ease;
+}
+
+@keyframes whyPanelIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.closeBtn {
+  position: absolute;
+  top: var(--le-space-xs);
+  right: var(--le-space-xs);
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--le-bg);
+  color: var(--le-text);
+  border: 1px solid var(--le-border);
+  border-radius: var(--le-radius-full);
+  cursor: pointer;
+}
+
+/* ===== Upsell (free tier — honest, no fake loading, closes in one tap) ===== */
+.upsell {
+  padding-right: var(--le-space-xl);
+}
+
+.upsellBadge {
+  display: inline-block;
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  /* #1a1a2e is the same near-black used for text-on-gold elsewhere in the
+     app (ProfileScreen's Pro card CTA) — >15:1 contrast on gold-light. */
+  color: #1a1a2e;
+  background: var(--le-gold-light);
+  border: 1px solid var(--le-gold);
+  border-radius: var(--le-radius-full);
+  padding: 2px var(--le-space-sm);
+  margin-bottom: var(--le-space-xs);
+}
+
+.upsellTitle {
+  font-size: var(--le-fs-base);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+  margin-bottom: 4px;
+}
+
+.upsellBody {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text);
+  line-height: 1.5;
+  margin-bottom: var(--le-space-md);
+}
+
+.upsellCta {
+  width: 100%;
+  padding: var(--le-space-sm) var(--le-space-lg);
+  background: linear-gradient(135deg, var(--le-gold) 0%, var(--le-orange) 100%);
+  color: #1a1a2e;
+  border: none;
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  cursor: pointer;
+  transition: transform var(--le-transition-base);
+}
+
+.upsellCta:active {
+  transform: scale(0.97);
+}
+
+/* ===== Loading — skeleton, never a centered spinner ===== */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-xs);
+  padding-right: var(--le-space-xl);
+}
+
+.skeletonLine {
+  height: 12px;
+  border-radius: var(--le-radius-sm);
+  background: linear-gradient(90deg, var(--le-border-light) 25%, var(--le-border) 50%, var(--le-border-light) 75%);
+  background-size: 200% 100%;
+  animation: whySkeletonShimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonShort {
+  width: 60%;
+}
+
+@keyframes whySkeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* prefers-reduced-motion is also handled globally, but a static skeleton
+   reads more clearly than a frozen mid-shimmer frame. */
+@media (prefers-reduced-motion: reduce) {
+  .skeletonLine {
+    animation: none;
+    background: var(--le-border-light);
+  }
+}
+
+/* ===== Error ===== */
+.errorBox {
+  padding-right: var(--le-space-xl);
+}
+
+.errorText {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text);
+  margin-bottom: var(--le-space-sm);
+}
+
+.retryBtn {
+  padding: var(--le-space-xs) var(--le-space-md);
+  background: var(--le-bg);
+  color: var(--le-text);
+  border: 2px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  cursor: pointer;
+}
+
+/* ===== Result ===== */
+.result {
+  padding-right: var(--le-space-xl);
+}
+
+.resultText {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: var(--le-space-sm);
+}
+
+.sourceBadge {
+  display: inline-block;
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  border-radius: var(--le-radius-full);
+  padding: 2px var(--le-space-sm);
+  border: 1px solid;
+}
+
+/* Both states keep the same plain, high-contrast --le-text foreground —
+   only the background tint, border and icon change — so the honesty signal
+   never rides on a low-contrast colored label. */
+
+/* grounded === true: explanation is anchored in course content */
+.sourceGrounded {
+  color: var(--le-text);
+  background: var(--le-brand-light);
+  border-color: var(--le-brand);
+}
+
+/* grounded === false: say so honestly — never dress general-knowledge
+   output up as a cited source (red line 2). */
+.sourceGeneral {
+  color: var(--le-text);
+  background: var(--le-bg);
+  border-color: var(--le-border);
+}
