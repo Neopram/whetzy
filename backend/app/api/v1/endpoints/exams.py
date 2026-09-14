@@ -48,6 +48,14 @@ async def start_mock_exam(
     except mock_exam_service.MockExamError as err:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, str(err)) from err
 
+    # `get_db` yields a session and never commits, so every endpoint that writes
+    # commits for itself - see auth.py, which does it at each write. A flush
+    # alone is not enough: on Postgres the transaction is discarded when the
+    # session closes and the attempt would not exist by the time the learner
+    # answers. It survives on SQLite, which is what local tooling and the tests
+    # use, so this is a difference that only shows up in production.
+    await db.commit()
+
     questions = (
         await db.scalars(select(Question).where(Question.id.in_(attempt.question_ids)))
     ).all()
@@ -88,7 +96,7 @@ async def submit_mock_exam(
     attempt.report = report
     attempt.submitted_at = datetime.now(UTC)
     attempt.status = "expired" if expired else "submitted"
-    await db.flush()
+    await db.commit()
 
     return MockExamSubmitResponse(
         attempt_id=attempt.id,

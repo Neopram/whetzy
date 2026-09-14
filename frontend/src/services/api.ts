@@ -495,3 +495,77 @@ export const duels = {
     return request<DuelResultResponse>(`/duels/${duelId}/result`);
   },
 };
+
+// ── Certification mock exam (10.3) ────────────────────────────────────────────
+
+export interface MockExamStartResponse {
+  attempt_id: string;
+  track_id: string;
+  duration_minutes: number;
+  started_at: string;
+  /** The deadline is the server's, not the browser's: a timed mock whose clock
+   *  lives in the client is only timed until someone reloads. */
+  expires_at: string;
+  questions: QuestionPublic[];
+}
+
+export interface MockExamDomainResult {
+  domain_id: string;
+  name_es: string;
+  name_en: string;
+  weight_pct: number;
+  correct: number;
+  total: number;
+  pct: number | null;
+  /** False when the domain carries too few questions for its percentage to
+   *  mean anything — the exam guide asks for caution reading section feedback. */
+  enough_questions_to_judge: boolean;
+}
+
+export interface MockExamReport {
+  track_id: string;
+  questions: number;
+  answered: number;
+  unanswered: number;
+  correct: number;
+  raw_pct: number;
+  per_domain: MockExamDomainResult[];
+  elapsed_seconds: number;
+  duration_minutes: number;
+  scoring_note_es: string;
+  scoring_note_en: string;
+  per_domain_caveat_es: string;
+  per_domain_caveat_en: string;
+}
+
+export interface MockExamSubmitResponse {
+  attempt_id: string;
+  status: string;
+  expired: boolean;
+  report: MockExamReport;
+}
+
+export const exams = {
+  async startMock(trackId: string) {
+    return request<MockExamStartResponse>('/exams/mock/start', {
+      method: 'POST',
+      body: JSON.stringify({ track_id: trackId }),
+    });
+  },
+
+  async submitMock(attemptId: string, answers: Record<string, number>) {
+    return request<MockExamSubmitResponse>(`/exams/mock/${attemptId}/submit`, {
+      method: 'POST',
+      body: JSON.stringify({
+        answers: Object.entries(answers).map(([question_id, selected_index]) => ({
+          question_id,
+          selected_index,
+        })),
+      }),
+    });
+  },
+
+  async getMock(attemptId: string) {
+    return request<MockExamSubmitResponse>(`/exams/mock/${attemptId}`);
+  },
+};

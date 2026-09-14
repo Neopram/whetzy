@@ -1,0 +1,256 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  padding-bottom: calc(var(--le-nav-height) + var(--le-space-xl));
+}
+
+.title {
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+}
+
+.subtitle {
+  font-size: var(--le-fs-lg);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+  margin-top: var(--le-space-md);
+}
+
+.intro,
+.format {
+  font-size: var(--le-fs-base);
+  color: var(--le-text-secondary);
+  line-height: 1.5;
+}
+
+.format {
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+/* ===== Exam bar ===== */
+.examBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-sm) 0;
+  border-bottom: 2px solid var(--le-border);
+}
+
+.counter {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text-secondary);
+}
+
+.clock,
+.clockUrgent {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--le-fs-lg);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+}
+
+/* Urgency is carried by the label text as well as the colour, so it does not
+   depend on colour perception alone (WCAG 1.4.1). */
+.clockUrgent {
+  color: var(--le-danger);
+}
+
+/* ===== Question ===== */
+.question {
+  font-size: var(--le-fs-lg);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-sm);
+}
+
+.option,
+.optionSelected {
+  text-align: left;
+  padding: var(--le-space-md);
+  border-radius: var(--le-radius-md);
+  border: 2px solid var(--le-border);
+  background: var(--le-surface);
+  color: var(--le-text);
+  font-size: var(--le-fs-base);
+  font-weight: var(--le-fw-bold);
+  min-height: 44px;
+  cursor: pointer;
+  transition: border-color var(--le-transition-base), background var(--le-transition-base);
+}
+
+.optionSelected {
+  border-color: var(--le-brand);
+  background: var(--le-blue-light);
+}
+
+@media (hover: hover) {
+  .option:hover {
+    border-color: var(--le-brand-deep);
+  }
+}
+
+/* ===== Navigation ===== */
+.nav {
+  display: flex;
+  gap: var(--le-space-sm);
+}
+
+.primary,
+.secondary {
+  flex: 1;
+  padding: var(--le-space-md);
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-base);
+  font-weight: var(--le-fw-black);
+  min-height: 44px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: opacity var(--le-transition-base);
+}
+
+.primary {
+  background: var(--le-brand);
+  color: var(--le-text-inverse);
+}
+
+.secondary {
+  background: var(--le-surface);
+  color: var(--le-text);
+  border-color: var(--le-border);
+}
+
+.primary:disabled,
+.secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Result ===== */
+.score {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  font-size: var(--le-fs-base);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+.pct {
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-black);
+  font-variant-numeric: tabular-nums;
+  color: var(--le-brand-deep);
+}
+
+.expired {
+  padding: var(--le-space-sm) var(--le-space-md);
+  border-radius: var(--le-radius-md);
+  background: var(--le-surface);
+  border: 2px solid var(--le-border);
+  color: var(--le-text-secondary);
+  font-size: var(--le-fs-sm);
+  line-height: 1.45;
+}
+
+/* The scoring note and the per-domain caveat are not fine print: they are the
+   reason the numbers above can be trusted, so they read at body size. */
+.note,
+.caveat {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  line-height: 1.5;
+}
+
+.domains {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+  list-style: none;
+}
+
+.domain {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.domainHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+}
+
+.domainName {
+  font-size: var(--le-fs-base);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+.domainScore {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+}
+
+.bar {
+  height: 10px;
+  border-radius: var(--le-radius-sm);
+  background: var(--le-border);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--le-brand);
+  transition: width var(--le-transition-base);
+}
+
+.domainMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-muted);
+}
+
+.tooFew {
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text-secondary);
+}
+
+.elapsed,
+.unanswered {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+}
+
+.error {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option,
+  .optionSelected,
+  .primary,
+  .secondary,
+  .barFill {
+    transition: none;
+  }
+}

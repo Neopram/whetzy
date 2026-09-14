@@ -29,6 +29,9 @@ const OnboardingScreen = lazy(() =>
   import('./pages/OnboardingScreen').then((m) => ({ default: m.OnboardingScreen }))
 );
 const LandingScreen = lazy(() => import('./pages/LandingScreen').then((m) => ({ default: m.LandingScreen })));
+const MockExamScreen = lazy(() =>
+  import('./pages/MockExamScreen').then((m) => ({ default: m.MockExamScreen }))
+);
 
 // URL-based routing for standalone pages (no React Router needed)
 const _path = window.location.pathname;
@@ -56,6 +59,7 @@ function App() {
   if (path === '/landing') return <Screen><LandingScreen /></Screen>;
 
   const currentScreen = useAppStore((s) => s.currentScreen);
+  const setScreen = useAppStore((s) => s.setScreen);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
   const userId = useAppStore((s) => s.user.id);
@@ -131,6 +135,10 @@ function App() {
       case 'profile': return <ProfileScreen />;
       case 'placement': return <PlacementScreen />;
       case 'duels': return <DuelScreen />;
+      // The blueprint figures are the CLF-C02 ones; the server is the
+      // authority once the exam starts (it sets the deadline and the mix).
+      case 'mockexam':
+        return <MockExamScreen trackId="track08" questionCount={65} durationMinutes={90} onExit={() => setScreen('tracks')} />;
       default: return <HomeScreen />;
     }
   };
@@ -141,7 +149,7 @@ function App() {
       <main className="app-content">
         <Screen>{renderScreen()}</Screen>
       </main>
-      {currentScreen !== 'quiz' && currentScreen !== 'placement' && <BottomNav />}
+      {currentScreen !== 'quiz' && currentScreen !== 'placement' && currentScreen !== 'mockexam' && <BottomNav />}
       <Toast />
     </>
   );

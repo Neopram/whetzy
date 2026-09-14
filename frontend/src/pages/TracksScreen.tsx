@@ -13,7 +13,16 @@ import styles from './TracksScreen.module.css';
 
 type View = 'curriculum' | 'glossary';
 
-const TRACKS: { id: string; icon: string; name_es: string; name_en: string }[] = [
+// Hardcoded to match the shipped curriculum. `certification: true` marks a
+// track that mirrors a published exam blueprint, which is what unlocks the
+// timed mock (10.3) - the other tracks have no exam to rehearse.
+const TRACKS: {
+  id: string;
+  icon: string;
+  name_es: string;
+  name_en: string;
+  certification?: boolean;
+}[] = [
   { id: 'track01', icon: '🐍', name_es: 'Python Básico', name_en: 'Python Basics' },
   { id: 'track02', icon: '🧩', name_es: 'Python Intermedio', name_en: 'Python Intermediate' },
   { id: 'track03', icon: '⚙️', name_es: 'Python Avanzado', name_en: 'Python Advanced' },
@@ -21,6 +30,7 @@ const TRACKS: { id: string; icon: string; name_es: string; name_en: string }[] =
   { id: 'track05', icon: '🌐', name_es: 'Arquitectura', name_en: 'Software Architecture' },
   { id: 'track06', icon: '🤖', name_es: 'Fundamentos de IA', name_en: 'AI Fundamentals' },
   { id: 'track07', icon: '🧠', name_es: 'Ingeniería de IA', name_en: 'AI Engineering' },
+  { id: 'track08', icon: '☁️', name_es: 'AWS Cloud Practitioner', name_en: 'AWS Cloud Practitioner', certification: true },
 ];
 
 function statusMeta(status: CurriculumModule['status']) {
@@ -34,9 +44,11 @@ function statusMeta(status: CurriculumModule['status']) {
 export function TracksScreen() {
   const lang = useAppStore((s) => s.user.language);
   const startQuiz = useAppStore((s) => s.startQuiz);
+  const setScreen = useAppStore((s) => s.setScreen);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
   const { t } = useTranslation();
+  const selected = TRACKS.find((tr) => tr.id === track);
 
   return (
     <div className={styles.screen}>
@@ -70,6 +82,17 @@ export function TracksScreen() {
           onClick={() => setView('glossary')}
         >{t('tracks.glossary')}</button>
       </div>
+
+      {/* Only a certification track offers a mock exam, and it says what it
+          costs in time before the clock starts. */}
+      {selected?.certification && (
+        <button className={styles.mockExamCta} onClick={() => setScreen('mockexam')}>
+          <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
+          <span className={styles.mockExamMeta}>
+            {t('mockExam.format', { count: 65, minutes: 90 })}
+          </span>
+        </button>
+      )}
 
       {view === 'curriculum'
         ? <CurriculumView track={track} lang={lang} startQuiz={startQuiz} />
