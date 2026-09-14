@@ -123,8 +123,8 @@
       "skill_id": "sk050301",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Cachear puede introducir bugs difíciles porque sirve datos potencialmente obsoletos; por eso se dice que 'invalidar la cache' es uno de los problemas difíciles de la informática.",
-      "question_en": "Caching can introduce hard bugs because it serves potentially stale data; that's why 'cache invalidation' is said to be one of the hard problems in computer science.",
+      "question_es": "Anadir una cache no puede introducir errores funcionales en una aplicacion, porque la cache solo guarda copias de datos que ya existen.",
+      "question_en": "Adding a cache cannot introduce functional bugs in an application, because a cache only stores copies of data that already exists.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -133,9 +133,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Toda cache introduce el riesgo de servir datos que ya cambiaron en el origen (staleness). Decidir cuándo y cómo invalidar o refrescar es genuinamente difícil, de ahí la famosa cita atribuida a Phil Karlton: 'solo hay dos cosas difíciles en informática: la invalidación de cache y nombrar cosas'. El equilibrio es entre frescura de datos y beneficio de rendimiento.",
-      "explanation_en": "Every cache introduces the risk of serving data that has already changed at the origin (staleness). Deciding when and how to invalidate or refresh is genuinely hard, hence the famous quip attributed to Phil Karlton: 'there are only two hard things in computer science: cache invalidation and naming things'. The balance is between data freshness and performance benefit.",
+      "correct_index": 1,
+      "explanation_es": "Falso, y es una de las fuentes de bugs mas dificiles de diagnosticar. Una copia puede quedar **obsoleta**, y entonces la aplicacion toma decisiones con datos que ya no son ciertos: un precio antiguo, un permiso revocado, un saldo que no cuadra. Ademas suelen ser intermitentes y no reproducibles en local, donde la cache esta vacia. De ahi la broma sobre que invalidar caches es uno de los problemas dificiles de la informatica.",
+      "explanation_en": "False, and it is one of the hardest classes of bug to diagnose. A copy can go **stale**, and then the application makes decisions on data that is no longer true: an old price, a revoked permission, a balance that does not add up. They also tend to be intermittent and unreproducible locally, where the cache is empty. Hence the joke that cache invalidation is one of the hard problems in computer science.",
       "source": "Phil Karlton (atribuido) / Fowler",
       "expected_time_ms": 24000,
       "tags": [
@@ -200,8 +200,8 @@
       "skill_id": "sk050302",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Redis permite asignar un tiempo de expiración (TTL) a las claves, tras el cual se eliminan automáticamente.",
-      "question_en": "Redis allows assigning an expiration time (TTL) to keys, after which they are automatically removed.",
+      "question_es": "En Redis, una clave con TTL se elimina exactamente en el instante en que expira, porque el servidor recorre continuamente todas las claves comprobando su vencimiento.",
+      "question_en": "In Redis, a key with a TTL is removed at the exact instant it expires, because the server continuously scans every key checking expiry.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -210,9 +210,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Con comandos como `EXPIRE clave segundos` o `SET clave valor EX segundos`, Redis elimina la clave al vencer su TTL, lo que es ideal para caches (los datos se autolimpian) y para sesiones o tokens con caducidad. Redis combina expiración perezosa (al acceder) y activa (muestreo periódico) para liberar memoria de claves vencidas.",
-      "explanation_en": "With commands like `EXPIRE key seconds` or `SET key value EX seconds`, Redis removes the key when its TTL elapses, which is ideal for caches (data self-cleans) and for sessions or tokens with expiry. Redis combines lazy expiration (on access) and active expiration (periodic sampling) to free memory from expired keys.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Redis combina expiracion **perezosa** — comprueba el vencimiento cuando se accede a la clave — con un muestreo activo periodico de claves con TTL. Una clave vencida puede seguir ocupando memoria un rato, aunque ya no se sirva. Recorrer todas las claves continuamente seria inviable con millones de ellas.",
+      "explanation_en": "False. Redis combines **lazy** expiration - checking expiry when the key is accessed - with periodic active sampling of keys that have a TTL. An expired key can keep occupying memory for a while, even though it is no longer served. Continuously scanning every key would be unworkable with millions of them.",
       "source": "Redis docs — Key expiration (EXPIRE / TTL)",
       "expected_time_ms": 24000,
       "tags": [
@@ -286,8 +286,8 @@
       "skill_id": "sk050302",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Aunque Redis es principalmente en memoria, ofrece mecanismos de persistencia (RDB por snapshots y AOF por log de operaciones) para poder recuperar datos tras un reinicio.",
-      "question_en": "Although Redis is primarily in-memory, it offers persistence mechanisms (RDB snapshots and AOF operation log) to recover data after a restart.",
+      "question_es": "Redis es una base de datos exclusivamente en memoria, de modo que si el proceso se reinicia se pierde inevitablemente todo su contenido.",
+      "question_en": "Redis is a purely in-memory database, so if the process restarts all its contents are inevitably lost.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -296,9 +296,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Redis puede persistir con RDB (snapshots periódicos del dataset, compactos y rápidos de restaurar, pero pueden perder los cambios desde el último snapshot) y con AOF (append-only file que registra cada operación de escritura, más duradero pero con archivos mayores). Se pueden combinar. Aun así, como cache, su pérdida debe tolerarse; como base de datos, la persistencia importa.",
-      "explanation_en": "Redis can persist with RDB (periodic snapshots of the dataset, compact and fast to restore, but can lose changes since the last snapshot) and with AOF (append-only file logging every write operation, more durable but with larger files). They can be combined. Even so, as a cache its loss should be tolerable; as a database, persistence matters.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Aunque Redis es principalmente en memoria, ofrece persistencia: RDB toma snapshots periodicos y AOF registra las operaciones de escritura en un log que se puede reproducir al arrancar. Se pueden usar por separado o juntos, con distintas garantias de durabilidad frente a coste de rendimiento.",
+      "explanation_en": "False. Although Redis is primarily in-memory, it offers persistence: RDB takes periodic snapshots and AOF records write operations to a log that can be replayed on start. They can be used separately or together, with different durability guarantees against a performance cost.",
       "source": "Redis docs — Persistence (RDB and AOF)",
       "expected_time_ms": 28000,
       "tags": [
@@ -392,8 +392,8 @@
       "skill_id": "sk050303",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "La invalidación basada en eventos (borrar/actualizar la entrada de cache justo cuando el dato cambia) suele dar datos más frescos que confiar solo en un TTL, pero es más compleja de implementar correctamente.",
-      "question_en": "Event-based invalidation (deleting/updating the cache entry right when the data changes) usually gives fresher data than relying only on a TTL, but is more complex to implement correctly.",
+      "question_es": "Configurar un TTL suficientemente corto garantiza que la cache nunca devuelva datos obsoletos.",
+      "question_en": "Setting a short enough TTL guarantees the cache never returns stale data.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -402,9 +402,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Invalidar por evento (en el momento de la escritura al origen) minimiza el tiempo de datos obsoletos, pero exige detectar de forma fiable qué claves afecta cada cambio y ejecutar la invalidación sin fallos ni condiciones de carrera. El TTL es más simple pero admite un rango de obsolescencia. En la práctica, se suelen combinar ambos.",
-      "explanation_en": "Event-based invalidation (at the moment of writing to the origin) minimizes the stale-data window, but requires reliably detecting which keys each change affects and executing the invalidation without failures or race conditions. TTL is simpler but tolerates a staleness window. In practice, the two are usually combined.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Un TTL acota **cuanto tiempo** puede estar obsoleto un dato, no elimina la ventana: si el dato cambia justo despues de cachearse, se sirve desactualizado hasta que expire. Acortarlo reduce la ventana a costa de mas fallos de cache y mas carga sobre el origen. Para frescura real se usa invalidacion basada en eventos, que es mas compleja de implementar bien.",
+      "explanation_en": "False. A TTL bounds **how long** data can be stale, it does not remove the window: if the data changes right after being cached, it is served outdated until expiry. Shortening it narrows the window at the cost of more cache misses and more load on the origin. Real freshness needs event-based invalidation, which is harder to implement correctly.",
       "source": "AWS / Fowler — event-based vs TTL invalidation",
       "expected_time_ms": 26000,
       "tags": [
@@ -448,8 +448,8 @@
       "skill_id": "sk050303",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Una política de desalojo (eviction) como LRU decide qué entradas eliminar cuando la cache se queda sin espacio, y es distinta de la invalidación por obsolescencia de datos.",
-      "question_en": "An eviction policy like LRU decides which entries to remove when the cache runs out of space, and is distinct from invalidation due to data staleness.",
+      "question_es": "Una politica de desalojo como LRU garantiza que la cache nunca sirva datos obsoletos, porque elimina las entradas viejas.",
+      "question_en": "An eviction policy such as LRU guarantees the cache never serves stale data, because it removes old entries.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -458,9 +458,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Hay que distinguir dos conceptos: la INVALIDACIÓN retira entradas porque el dato ya no es válido (cambió en el origen); el DESALOJO (eviction) retira entradas por falta de espacio, según una política como LRU (Least Recently Used), LFU o aleatoria, aunque el dato siguiera siendo válido. Ambos gestionan qué hay en la cache, pero por razones diferentes.",
-      "explanation_en": "Two concepts must be distinguished: INVALIDATION removes entries because the data is no longer valid (it changed at the origin); EVICTION removes entries due to lack of space, per a policy like LRU (Least Recently Used), LFU, or random, even though the data was still valid. Both manage what's in the cache, but for different reasons.",
+      "correct_index": 1,
+      "explanation_es": "Falso: son dos problemas distintos. El desalojo decide que entradas quitar cuando falta **espacio**, y LRU quita las menos usadas recientemente — que pueden estar perfectamente frescas. La obsolescencia se combate con invalidacion o TTL. Una entrada muy consultada y desactualizada es justo la que LRU conserva.",
+      "explanation_en": "False: these are two different problems. Eviction decides which entries to drop when **space** runs out, and LRU drops the least recently used - which may be perfectly fresh. Staleness is handled by invalidation or TTL. A heavily read but outdated entry is exactly the one LRU keeps.",
       "source": "Redis docs — eviction policies (maxmemory)",
       "expected_time_ms": 28000,
       "tags": [
@@ -525,8 +525,8 @@
       "skill_id": "sk050304",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Servir contenido estático desde una CDN cercana al usuario reduce la latencia principalmente porque acorta la distancia física que deben recorrer los datos.",
-      "question_en": "Serving static content from a CDN close to the user reduces latency mainly because it shortens the physical distance the data must travel.",
+      "question_es": "Una CDN reduce la latencia principalmente porque comprime el contenido antes de enviarlo, no por la ubicacion de sus servidores.",
+      "question_en": "A CDN reduces latency mainly because it compresses content before sending it, not because of where its servers are.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -535,9 +535,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "La latencia de red está limitada, en última instancia, por la velocidad de la luz y el número de saltos: cuanta más distancia, más retardo (round-trip time). Al acercar el contenido al usuario mediante servidores edge, la CDN reduce esa distancia y los saltos, disminuyendo la latencia y mejorando la experiencia, además de descargar el origen.",
-      "explanation_en": "Network latency is ultimately bounded by the speed of light and the number of hops: the greater the distance, the more delay (round-trip time). By bringing content closer to the user via edge servers, the CDN reduces that distance and hop count, lowering latency and improving experience, while also offloading the origin.",
+      "correct_index": 1,
+      "explanation_es": "Falso. La ganancia principal es **geografica**: servir desde un nodo cercano acorta la distancia fisica y, por tanto, el tiempo de ida y vuelta, que esta acotado por la velocidad de la luz en la fibra. La compresion ayuda con el volumen de bytes, pero no arregla un viaje transatlantico por cada peticion.",
+      "explanation_en": "False. The main gain is **geographic**: serving from a nearby node shortens the physical distance and therefore the round-trip time, which is bounded by the speed of light in fibre. Compression helps with byte volume, but does not fix a transatlantic trip on every request.",
       "source": "Cloudflare — How CDNs reduce latency",
       "expected_time_ms": 24000,
       "tags": [

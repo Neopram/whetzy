@@ -34,8 +34,8 @@
       "skill_id": "sk050301",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "En la estrategia \"write-through\", los datos se escriben simultáneamente en la caché y en la base de datos como parte de la misma operación de escritura.",
-      "question_en": "In the \"write-through\" strategy, data is written to the cache and the database simultaneously as part of the same write operation.",
+      "question_es": "En la estrategia 'write-through', la escritura se confirma en cuanto los datos estan en la cache, y la base de datos se actualiza despues de forma asincrona.",
+      "question_en": "In the write-through strategy, the write is acknowledged as soon as the data is in the cache, and the database is updated asynchronously afterwards.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -44,9 +44,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Write-through escribe primero (o a la vez) en la caché y de inmediato propaga la escritura a la base de datos antes de confirmar la operación, manteniendo la caché siempre sincronizada, a costa de mayor latencia de escritura.",
-      "explanation_en": "Write-through writes to the cache first (or at the same time) and immediately propagates the write to the database before confirming the operation, keeping the cache always in sync, at the cost of higher write latency.",
+      "correct_index": 1,
+      "explanation_es": "Falso: eso describe **write-back** (o write-behind). En write-through los datos se escriben en la cache y en la base de datos como parte de la misma operacion, asi que la escritura es mas lenta pero la cache y el almacen nunca divergen. Write-back es mas rapido y arriesga perder escrituras si la cache cae antes de volcar.",
+      "explanation_en": "False: that describes **write-back** (or write-behind). In write-through the data is written to both the cache and the database as part of the same operation, so the write is slower but cache and store never diverge. Write-back is faster and risks losing writes if the cache dies before flushing.",
       "expected_time_ms": 18000,
       "tags": [
         "caching",

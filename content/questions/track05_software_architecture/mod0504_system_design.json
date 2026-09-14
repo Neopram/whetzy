@@ -34,8 +34,8 @@
       "skill_id": "sk050401",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Para escalar horizontalmente con facilidad, es muy conveniente que los servidores de aplicación sean 'stateless' (sin estado de sesión local), de modo que cualquier instancia pueda atender cualquier petición.",
-      "question_en": "To scale horizontally easily, it's very convenient for application servers to be 'stateless' (no local session state), so any instance can handle any request.",
+      "question_es": "Que un servidor de aplicacion sea 'stateless' significa que la aplicacion no puede tener sesiones de usuario.",
+      "question_en": "A 'stateless' application server means the application cannot have user sessions.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -44,9 +44,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Si el estado de sesión vive en la memoria de una instancia concreta, las peticiones de un usuario deben ir siempre a esa instancia (sticky sessions), lo que complica el balanceo y la resiliencia. Con servidores stateless (el estado se externaliza a una cache/BD compartida), cualquier instancia atiende cualquier petición, y añadir/quitar instancias es trivial.",
-      "explanation_en": "If session state lives in a specific instance's memory, a user's requests must always go to that instance (sticky sessions), complicating balancing and resilience. With stateless servers (state externalized to a shared cache/DB), any instance handles any request, and adding/removing instances is trivial.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Stateless se refiere a que el **servidor** no guarda el estado de sesion en su memoria local, no a que no existan sesiones. El estado se externaliza — a Redis, a una base de datos o a un token firmado en el cliente — para que cualquier instancia pueda atender cualquier peticion. Eso es justo lo que hace posible escalar horizontalmente y perder una instancia sin tirar las sesiones.",
+      "explanation_en": "False. Stateless means the **server** does not hold session state in its local memory, not that sessions do not exist. State is externalized - to Redis, a database or a signed token on the client - so any instance can serve any request. That is exactly what makes horizontal scaling possible and lets you lose an instance without dropping sessions.",
       "source": "Kleppmann, M. — DDIA / 12-Factor App (statelessness)",
       "expected_time_ms": 26000,
       "tags": [
@@ -118,8 +118,8 @@
       "skill_id": "sk050401",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "La Ley de Amdahl implica que la porción secuencial (no paralelizable) de un programa limita la aceleración máxima que se puede lograr añadiendo más recursos de cómputo.",
-      "question_en": "Amdahl's Law implies that the sequential (non-parallelizable) portion of a program limits the maximum speedup achievable by adding more compute resources.",
+      "question_es": "Segun la Ley de Amdahl, si se anaden suficientes procesadores se puede conseguir una aceleracion arbitrariamente grande en cualquier programa.",
+      "question_en": "According to Amdahl's Law, adding enough processors can achieve arbitrarily large speedup in any program.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -128,9 +128,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "La Ley de Amdahl dice que si una fracción del trabajo es inherentemente secuencial, la aceleración total está acotada por ella por mucho que paralelices el resto: si el 10% es secuencial, el máximo teórico es 10x aunque tengas infinitas CPUs. Es un recordatorio de que escalar horizontalmente tiene rendimientos decrecientes cuando hay cuellos de botella no paralelizables.",
-      "explanation_en": "Amdahl's Law states that if a fraction of the work is inherently sequential, total speedup is bounded by it no matter how much you parallelize the rest: if 10% is sequential, the theoretical max is 10x even with infinite CPUs. It's a reminder that horizontal scaling has diminishing returns when there are non-parallelizable bottlenecks.",
+      "correct_index": 1,
+      "explanation_es": "Falso, y es justo lo contrario de lo que dice la ley. La porcion **secuencial** del programa acota la aceleracion maxima: si el 10 % no es paralelizable, el limite superior es 10x por muchos procesadores que se anadan. Por eso la respuesta a un sistema lento no siempre es mas maquinas.",
+      "explanation_en": "False, and it is the opposite of what the law says. The **sequential** portion of the program bounds the maximum speedup: if 10 % cannot be parallelized, the upper limit is 10x no matter how many processors you add. That is why the answer to a slow system is not always more machines.",
       "source": "Amdahl's Law (arquitectura de computadores)",
       "expected_time_ms": 28000,
       "tags": [
@@ -276,8 +276,8 @@
       "skill_id": "sk050402",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Un único balanceador de carga puede convertirse en un punto único de fallo, por lo que en sistemas de alta disponibilidad se despliega de forma redundante (por ejemplo, en pareja activo/pasivo o con múltiples nodos).",
-      "question_en": "A single load balancer can become a single point of failure, so in high-availability systems it is deployed redundantly (e.g. active/passive pair or multiple nodes).",
+      "question_es": "Poner un balanceador de carga delante de varias instancias elimina por si solo todos los puntos unicos de fallo del sistema.",
+      "question_en": "Putting a load balancer in front of several instances by itself removes every single point of failure in the system.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -286,9 +286,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Si todo el tráfico pasa por un solo balanceador y este cae, cae el servicio: es un punto único de fallo. Por eso se replica (par activo/pasivo con failover, o varios activos), a menudo combinado con DNS o IPs virtuales flotantes para redirigir si uno falla. Eliminar los puntos únicos de fallo es un principio central de la alta disponibilidad.",
-      "explanation_en": "If all traffic passes through a single balancer and it goes down, the service goes down: it's a single point of failure. That's why it's replicated (active/passive pair with failover, or several active), often combined with DNS or floating virtual IPs to redirect if one fails. Eliminating single points of failure is a core high-availability principle.",
+      "correct_index": 1,
+      "explanation_es": "Falso: mueve el punto unico de fallo al propio balanceador. Si el balanceador cae, cae todo, aunque las instancias esten sanas. Por eso en alta disponibilidad se despliega de forma redundante — por ejemplo en pareja activo/pasivo o gestionado por el proveedor entre varias zonas. Y sigue habiendo otros candidatos a punto unico: la base de datos, el DNS, la propia zona.",
+      "explanation_en": "False: it moves the single point of failure to the load balancer itself. If the balancer goes down, everything goes down, however healthy the instances are. That is why highly available setups deploy it redundantly - an active/passive pair, or provider-managed across zones. And other single-point candidates remain: the database, DNS, the zone itself.",
       "source": "Kleppmann / HA architecture — redundant load balancers",
       "expected_time_ms": 26000,
       "tags": [
