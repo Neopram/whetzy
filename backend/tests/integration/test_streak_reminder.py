@@ -165,8 +165,15 @@ async def test_streak_reminder_skips_disabled_users(client, db_session, monkeypa
 
 async def test_streak_reminder_skips_already_reminded_today(client, db_session, monkeypatch):
     monkeypatch.setattr("app.core.config.settings.CONTENT_ADMIN_KEY", ADMIN_KEY)
-    yesterday = datetime.now(UTC) - timedelta(days=1)
-    reminded_today = datetime.now(UTC) - timedelta(hours=2)
+    now = datetime.now(UTC)
+    yesterday = now - timedelta(days=1)
+    # Anchored to the same UTC midnight the endpoint uses (push.py: `today_start
+    # = now.replace(hour=0, ...)`), not to "now minus a couple of hours".
+    # Between 00:00 and 02:00 UTC that arithmetic lands on *yesterday*, the user
+    # stops counting as already-reminded, a reminder goes out and the assertion
+    # below flips — deterministically, for a two-hour window every single day.
+    # CI caught it at 00:03 UTC.
+    reminded_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
     await _make_user_with_sub(db_session, streak=5, last_active=yesterday, last_reminded=reminded_today)
 
     send_mock = AsyncMock(return_value=0)
