@@ -100,8 +100,14 @@ jobs:
       - name: Tests (vitest)
         run: npm run test:coverage
 
+      # `npm run build`, not `npx vite build`: the landing prerender (11.11) lives
+      # in that script, and building without it silently skipped the prerender in
+      # CI for as long as this step existed — see task 12.10.
       - name: Build
-        run: npx vite build
+        run: npm run build
+
+      - name: Landing prerender emitted (11.11 / 12.10)
+        run: node scripts/check-prerender.mjs
 
       - name: Bundle size budget (8.3)
         run: node scripts/check-bundle.mjs
