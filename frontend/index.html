@@ -7,30 +7,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="theme-color" content="#1CB0F6" />
-
-    <!-- Declared directly here (not via CSS @import — see src/styles/global.css)
-         so the browser's preload scanner discovers and fetches it immediately,
-         in parallel with the rest of <head>, instead of only after the main
-         CSS bundle has been fetched and parsed (task 11.11). Loaded async
-         (the classic loadCSS `media="print"` swap) rather than as a plain
-         render-blocking stylesheet: a cross-origin CSS request to
-         fonts.googleapis.com still measurably delayed LCP even once
-         discoverable immediately (Lighthouse's render-blocking-insight
-         flagged ~600ms of estimated savings here). `font-display: swap` in
-         Google's CSS means text already renders in the fallback font the
-         instant it can and swaps to Nunito once it loads, so this only
-         changes *when* the swap happens, not whether text is visible. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" />
-    </noscript>
+    <!-- No <link> for the webfont. Nunito is self-hosted: its @font-face rules
+         ship inside the CSS bundle this page already blocks on, so there is
+         no third-party request to declare here (task 12.7 — the rationale is
+         in src/styles/global.css, kept out of this file so that grepping the
+         shipped HTML for a font CDN hostname returns nothing at all). -->
 
     <title>Whetzy — Aprende lo que importa, cuando importa</title>
     <meta name="description" content="Whetzy adapta cada pregunta a tu nivel con IA, repaso espaciado y gamificación — de Python básico a AI Engineer, en español e inglés." />

@@ -1,14 +1,43 @@
-/* The Nunito webfont is loaded from index.html's <head> as a directly
- * declared <link>, not as an `@import` here (task 11.11). A CSS `@import` of
- * a cross-origin stylesheet is invisible to the browser's HTML preload
- * scanner: it's only discovered once this bundled CSS file has already been
- * fetched *and* parsed, so the fonts.googleapis.com request only starts
- * after that — a fully serial chain that was the dominant contributor to the
- * landing page's LCP delay (Lighthouse's "lcp-breakdown-insight" attributed
- * ~3.2s of a ~3.2s total LCP to "element render delay", not to slow
- * resources). A plain <link rel="stylesheet"> in the HTML is discoverable
- * immediately, in parallel with every other head resource. */
 @import './design-tokens.css';
+
+/* Nunito is self-hosted, not fetched from fonts.googleapis.com (task 12.7).
+ * A cross-origin webfont request leaks every visitor's IP to Google before
+ * any consent is given, which red line 5 (real GDPR, no third parties
+ * without explicit consent) does not allow — LG München I, 3 O 17493/20
+ * treats an embedded Google Font as a GDPR infringement on exactly that
+ * basis. The woff2 files ship with the `@fontsource-variable/nunito`
+ * dependency, so Vite fingerprints and serves them from our own origin;
+ * nothing is vendored into the repo by hand.
+ *
+ * These `@font-face` rules replace the `<link>` that index.html used to
+ * declare (task 11.11). That link existed because a cross-origin stylesheet
+ * is invisible to the preload scanner when it hides behind a CSS `@import`;
+ * with the font same-origin there is no second stylesheet to discover at
+ * all — the rules are already inside this render-blocking bundle, and the
+ * woff2 needs neither a DNS lookup nor a TLS handshake to a foreign origin.
+ *
+ * Only the latin and latin-ext subsets are declared: the product ships in
+ * Spanish and English (red line 3), and `unicode-range` means a browser
+ * downloads the second file only if the page actually uses a character
+ * outside latin. The family is declared as `Nunito` — not fontsource's
+ * `Nunito Variable` — so `--le-font` in design-tokens.css stays unchanged. */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 1000;
+  src: url('@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 1000;
+  src: url('@fontsource-variable/nunito/files/nunito-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 *, *::before, *::after {
   margin: 0;
