@@ -1,4 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
 import { useAppStore } from './stores/useAppStore';
 import { isAuthenticated, logout } from './services/api';
@@ -34,13 +35,42 @@ const MockExamScreen = lazy(() =>
 );
 
 // URL-based routing for standalone pages (no React Router needed)
-const _path = window.location.pathname;
-if (_path === '/delete-account') document.title = 'Eliminar cuenta — Whetzy';
-if (_path === '/privacy') document.title = 'Privacidad — Whetzy';
-if (_path === '/terms') document.title = 'Términos — Whetzy';
-if (_path === '/landing') document.title = 'Whetzy — Aprende lo que importa';
+const STANDALONE_DOC: Record<string, string> = {
+  '/delete-account': 'deleteAccount',
+  '/privacy': 'privacy',
+  '/terms': 'terms',
+  '/landing': 'landing',
+};
 
 type AuthState = 'checking' | 'unauthed' | 'authed';
+
+/**
+ * These pages used to be returned straight out of `App`, above the effect that
+ * calls `i18n.changeLanguage`. That effect therefore never ran for them, so the
+ * privacy policy, the terms, the deletion flow and the landing always rendered
+ * in the fallback language whatever the user had chosen — and `<html lang>`
+ * stayed wrong with it. Giving them their own component means the language is
+ * applied before anything is painted.
+ */
+function StandalonePage({ path }: { path: string }) {
+  const userLanguage = useAppStore((s) => s.user.language);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    void i18n.changeLanguage(userLanguage);
+    document.documentElement.lang = userLanguage;
+  }, [userLanguage]);
+
+  useEffect(() => {
+    const doc = STANDALONE_DOC[path];
+    if (doc) document.title = t(`docTitle.${doc}`);
+  }, [path, t, userLanguage]);
+
+  if (path === '/delete-account') return <Screen><DeleteAccountScreen /></Screen>;
+  if (path === '/privacy') return <Screen><LegalScreen doc="privacy" /></Screen>;
+  if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
+  return <Screen><LandingScreen /></Screen>;
+}
 
 function needsOnboarding(userId: string): boolean {
   try {
@@ -53,10 +83,7 @@ function needsOnboarding(userId: string): boolean {
 function App() {
   // Standalone pages routed by URL path
   const path = window.location.pathname;
-  if (path === '/delete-account') return <Screen><DeleteAccountScreen /></Screen>;
-  if (path === '/privacy') return <Screen><LegalScreen doc="privacy" /></Screen>;
-  if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
-  if (path === '/landing') return <Screen><LandingScreen /></Screen>;
+  if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
 
   const currentScreen = useAppStore((s) => s.currentScreen);
   const setScreen = useAppStore((s) => s.setScreen);
@@ -66,6 +93,7 @@ function App() {
 
   useEffect(() => {
     void i18n.changeLanguage(userLanguage);
+    document.documentElement.lang = userLanguage;
   }, [userLanguage]);
   const [authState, setAuthState] = useState<AuthState>(() =>
     isAuthenticated() ? 'checking' : 'unauthed'
