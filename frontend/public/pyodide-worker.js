@@ -1,5 +1,7 @@
-// Pyodide WebWorker — hardened sandbox with import blocking and 5-second timeout.
-// Messages IN:  { type: 'run', id: string, code: string }
+// Pyodide WebWorker — hardened sandbox with import blocking and a 5-second
+// timeout enforced by the MAIN thread (see the note on interruptBuffer below).
+// Messages IN:  { type: 'init', interruptBuffer: Int32Array on a SharedArrayBuffer }
+//               { type: 'run', id: string, code: string }
 // Messages OUT: { type: 'ready' }
 //               { type: 'result', id, output, error, timedOut }
 //               { type: 'loadError', message }
@@ -40,7 +42,27 @@ del _b
 `;
 
 let pyodide = null;
-let interruptBuffer = null;  // Int32Array on SharedArrayBuffer, or null
+
+/**
+ * Int32Array over a SharedArrayBuffer, created and owned by the MAIN thread.
+ *
+ * It has to come from there, and that is the whole point of task 12.11. This
+ * worker used to allocate the buffer itself and arm a `setTimeout` here to
+ * write the interrupt — which can never fire: `pyodide.runPython` is
+ * synchronous, so while user code runs (`while True: pass` being the case that
+ * matters) this worker's event loop is blocked and no callback of its own will
+ * ever execute. The writer must be a different thread. A SharedArrayBuffer is
+ * precisely the mechanism for that, and it was being used to talk to nobody.
+ *
+ * Slot 0 is Pyodide's own interrupt signal (2 = SIGINT -> KeyboardInterrupt),
+ * written by the main thread.
+ * Slot 1 is ours: the main thread sets it to 1 just before signalling, so this
+ * worker can tell "the deadline killed it" from "the user's own code raised
+ * KeyboardInterrupt" and report `timedOut` honestly either way.
+ */
+let interruptBuffer = null;
+const SLOT_SIGNAL = 0;
+const SLOT_DEADLINE = 1;
 
 (async () => {
   try {
@@ -48,15 +70,10 @@ let interruptBuffer = null;  // Int32Array on SharedArrayBuffer, or null
       indexURL: '/pyodide/',
     });
 
-    // SharedArrayBuffer-based interrupt requires COOP + COEP headers.
-    try {
-      if (typeof SharedArrayBuffer !== 'undefined') {
-        interruptBuffer = new Int32Array(new SharedArrayBuffer(4));
-        pyodide.setInterruptBuffer(interruptBuffer);
-      }
-    } catch {
-      interruptBuffer = null;
-    }
+    // If the main thread already sent its buffer, wire it up now; if it has not
+    // yet, the 'init' handler below does it. Either order works, because a
+    // worker queues messages until its listeners are registered.
+    applyInterruptBuffer();
 
     // Pre-import io/sys so first run doesn't pay the import cost.
     pyodide.runPython('import io, sys');
@@ -66,7 +83,31 @@ let interruptBuffer = null;  // Int32Array on SharedArrayBuffer, or null
   }
 })();
 
+/**
+ * Hands the main thread's buffer to Pyodide once both exist. Called from the
+ * bootstrap and from the 'init' handler, whichever happens second.
+ *
+ * Cross-origin isolation (COOP + COEP) is what makes SharedArrayBuffer
+ * available at all; without it the main thread sends nothing and this stays
+ * null, which is a supported degradation, not a failure — the main thread then
+ * falls back to terminating the worker. That path costs a full Pyodide reboot,
+ * so it is the fallback rather than the design.
+ */
+function applyInterruptBuffer() {
+  if (!pyodide || !interruptBuffer) return;
+  try {
+    pyodide.setInterruptBuffer(interruptBuffer);
+  } catch {
+    interruptBuffer = null;
+  }
+}
+
 self.addEventListener('message', ({ data }) => {
+  if (data.type === 'init') {
+    interruptBuffer = data.interruptBuffer ?? null;
+    applyInterruptBuffer();
+    return;
+  }
   if (data.type !== 'run') return;
   const { id, code } = data;
 
@@ -79,14 +120,11 @@ self.addEventListener('message', ({ data }) => {
   let error = null;
   let timedOut = false;
 
-  // Arm the interrupt timer (only effective when interruptBuffer is set).
-  let timeoutHandle = null;
+  // Clear both slots so a signal left over from a previous run cannot interrupt
+  // this one. The deadline itself is armed by the main thread, not here.
   if (interruptBuffer) {
-    interruptBuffer[0] = 0;
-    timeoutHandle = setTimeout(() => {
-      timedOut = true;
-      Atomics.store(interruptBuffer, 0, 2);  // SIGINT → KeyboardInterrupt in Python
-    }, TIMEOUT_MS);
+    Atomics.store(interruptBuffer, SLOT_SIGNAL, 0);
+    Atomics.store(interruptBuffer, SLOT_DEADLINE, 0);
   }
 
   try {
@@ -101,8 +139,11 @@ self.addEventListener('message', ({ data }) => {
     output = pyodide.runPython('_nbuf.getvalue()');
   } catch (err) {
     try { output = pyodide.runPython('_nbuf.getvalue()'); } catch { /* nothing captured yet */ }
-    if (timedOut) {
-      error = 'TimeoutError: code execution exceeded 5 seconds';
+    // The main thread flags the deadline before signalling, so a KeyboardInterrupt
+    // raised by the user's own code is not misreported as a timeout.
+    if (interruptBuffer && Atomics.load(interruptBuffer, SLOT_DEADLINE) === 1) {
+      timedOut = true;
+      error = `TimeoutError: code execution exceeded ${TIMEOUT_MS / 1000} seconds`;
     } else {
       // Pyodide wraps Python exceptions in a JS PythonError whose err.message may
       // be empty or just "PythonError".  The real traceback is often captured in
@@ -120,11 +161,10 @@ self.addEventListener('message', ({ data }) => {
       }
     }
   } finally {
-    if (timeoutHandle !== null) {
-      clearTimeout(timeoutHandle);
-      timeoutHandle = null;
+    if (interruptBuffer) {
+      Atomics.store(interruptBuffer, SLOT_SIGNAL, 0);
+      Atomics.store(interruptBuffer, SLOT_DEADLINE, 0);
     }
-    if (interruptBuffer) interruptBuffer[0] = 0;
     try {
       pyodide.runPython(
         '__import__("sys").stdout = __import__("sys").__stdout__\n' +

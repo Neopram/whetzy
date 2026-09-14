@@ -6,14 +6,37 @@
 </head>
 <body>
 <pre id="status">loading</pre>
+<pre id="isolated"></pre>
 <pre id="result-import-os"></pre>
 <pre id="result-timeout"></pre>
+<pre id="result-after-timeout"></pre>
 <script>
-  // Mirrors usePyodide.ts: terminate the worker after TIMEOUT_MS if it doesn't respond.
-  const TIMEOUT_MS = 7000;
+  // Mirrors usePyodide.ts (task 12.11): the interrupt is written from THIS
+  // thread, because the worker's own event loop is blocked while user code runs.
+  //
+  // What this harness must NOT do — and used to do — is answer for the worker.
+  // It previously ran its own kill timer and, when the worker went quiet, wrote
+  // `timedOut: true` into the DOM itself; sandbox.spec.ts then read that back
+  // and passed. The test would have passed just as happily against a worker
+  // with no timeout logic at all, which is exactly what was shipped. Now the
+  // page reports only what the worker actually said, and a worker that never
+  // answers is recorded as a FAILURE, not as a success.
+  const TIMEOUT_MS = 5000;
+  const HARD_LIMIT_MS = 20000;
+
+  const SLOT_SIGNAL = 0;
+  const SLOT_DEADLINE = 1;
+  const SIGINT = 2;
 
   let worker = null;
-  let killTimer = null;
+  let interruptBuffer = null;
+  let deadlineTimer = null;
+  let hardTimer = null;
+
+  document.getElementById('isolated').textContent = JSON.stringify({
+    crossOriginIsolated: self.crossOriginIsolated === true,
+    sharedArrayBuffer: typeof SharedArrayBuffer !== 'undefined',
+  });
 
   function makeWorker() {
     const w = new Worker('/pyodide-worker.js');
@@ -21,7 +44,37 @@
     w.addEventListener('error', (e) => {
       document.getElementById('status').textContent = 'workerError: ' + String(e.message);
     });
+    try {
+      if (typeof SharedArrayBuffer !== 'undefined') {
+        interruptBuffer = new Int32Array(new SharedArrayBuffer(8));
+        w.postMessage({ type: 'init', interruptBuffer });
+      }
+    } catch {
+      interruptBuffer = null;
+    }
     return w;
+  }
+
+  function armDeadline() {
+    deadlineTimer = setTimeout(() => {
+      if (!interruptBuffer) return; // no SAB: nothing can be interrupted here
+      Atomics.store(interruptBuffer, SLOT_DEADLINE, 1);
+      Atomics.store(interruptBuffer, SLOT_SIGNAL, SIGINT);
+    }, TIMEOUT_MS);
+
+    // Records a failure rather than inventing a pass. The distinction is the
+    // entire point of this file.
+    hardTimer = setTimeout(() => {
+      const el = document.getElementById('result-timeout');
+      if (el.textContent === '') {
+        el.textContent = JSON.stringify({
+          error: 'worker never reported back — the interrupt did not land',
+          output: '',
+          timedOut: false,
+          harnessGaveUp: true,
+        });
+      }
+    }, HARD_LIMIT_MS);
   }
 
   function handleMessage({ data }) {
@@ -32,32 +85,29 @@
 
     if (data.type === 'ready') {
       document.getElementById('status').textContent = 'ready';
-      // Test 1: blocked import
       worker.postMessage({ type: 'run', id: 'import-os', code: 'import os\nprint(os.getcwd())' });
       return;
     }
 
-    if (data.type === 'result') {
-      if (killTimer) { clearTimeout(killTimer); killTimer = null; }
+    if (data.type !== 'result') return;
 
-      const el = document.getElementById('result-' + data.id);
-      if (el) {
-        el.textContent = JSON.stringify({ error: data.error, output: data.output, timedOut: data.timedOut });
-      }
+    const el = document.getElementById('result-' + data.id);
+    if (el) {
+      el.textContent = JSON.stringify({ error: data.error, output: data.output, timedOut: data.timedOut });
+    }
 
-      if (data.id === 'import-os') {
-        // Test 2: timeout — kill the worker if no response in TIMEOUT_MS.
-        killTimer = setTimeout(() => {
-          killTimer = null;
-          worker.terminate();
-          document.getElementById('result-timeout').textContent = JSON.stringify({
-            error: 'TimeoutError: code execution exceeded 5 seconds',
-            output: '',
-            timedOut: true,
-          });
-        }, TIMEOUT_MS);
-        worker.postMessage({ type: 'run', id: 'timeout', code: 'while True: pass' });
-      }
+    if (data.id === 'import-os') {
+      armDeadline();
+      worker.postMessage({ type: 'run', id: 'timeout', code: 'while True: pass' });
+      return;
+    }
+
+    if (data.id === 'timeout') {
+      clearTimeout(deadlineTimer);
+      clearTimeout(hardTimer);
+      // Proves the interrupt left a usable interpreter behind: the point of
+      // interrupting rather than terminating is that the next run costs nothing.
+      worker.postMessage({ type: 'run', id: 'after-timeout', code: 'print(6 * 7)' });
     }
   }
 
