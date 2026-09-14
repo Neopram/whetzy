@@ -36,16 +36,47 @@ Whetzy es el motor adaptativo que convierte el conocimiento de cualquier experto
 
 Cada track de aprendizaje propio de Whetzy termina con preparación específica para la certificación oficial que el mercado ya reconoce — no una certificación propia de Whetzy (que no vale nada todavía).
 
-| Track Whetzy | Certificación objetivo | Por qué |
-|-------------|----------------------|---------|
-| 01 Python Básico | PCEP — Python Certified Entry | Python Institute, reconocida globalmente |
-| 02 Python Intermedio | PCAP — Python Certified Associate | Escalón natural |
-| 03 Python Avanzado | PCPP — Python Certified Professional | Techo de Python puro |
-| 04 Ingeniería de Software | PSM I + GitHub Actions cert | Scrum + CI/CD |
-| 05 Arquitectura de Software | TOGAF Foundation | Enterprise, reconocida globalmente |
-| 06 Fundamentos de IA | TensorFlow Developer Certificate | Google, reconocida por empleadores |
-| 07 Ingeniería de IA | AWS Machine Learning Specialty | El más respetado en ML engineering |
-| 08 Cybersecurity | Security+ SY0-701 | 48% de job postings cyber |
+> **Hoja unificada (decisión #10, 2026-09-14).** Hasta esta fecha convivían dos
+> hojas de ruta incompatibles: ésta (una certificación por track) y la de
+> `ORCHESTRATOR.md` (AWS CLF → Security+ → AWS SAA → Azure AI-102 → Google ML).
+> El trabajo real fue a la segunda —300 preguntas de AWS Cloud Practitioner— que
+> no aparecía en ésta. Se fusionan aquí en una sola lista con dos carriles.
+
+### Carril 1 — Certificación alineada a cada track (el camino del alumno)
+
+Cada track termina preparando la certificación que su alumno necesita a
+continuación. Es el destino natural de quien ya está dentro.
+
+| Track Whetzy | Certificación objetivo | Estado | Por qué |
+|-------------|----------------------|--------|---------|
+| 01 Python Básico | **PCEP** — Python Certified Entry | **Primera a construir** | Python Institute, reconocida globalmente. $59, el examen más accesible: es donde entra la cuña |
+| 02 Python Intermedio | PCAP — Python Certified Associate | Pendiente | Escalón natural |
+| 03 Python Avanzado | PCPP — Python Certified Professional | Pendiente | Techo de Python puro |
+| 04 Ingeniería de Software | PSM I + GitHub Actions cert | Pendiente | Scrum + CI/CD |
+| 05 Arquitectura de Software | TOGAF Foundation | Pendiente | Enterprise, reconocida globalmente |
+| 06 Fundamentos de IA | TensorFlow Developer Certificate | Pendiente | Google, reconocida por empleadores |
+| 07 Ingeniería de IA | AWS Machine Learning Specialty | Pendiente | El más respetado en ML engineering |
+| 08 Cloud / Cybersecurity | **AWS CLF-C02** (construida) → Security+ SY0-701 | **CLF-C02 COMPLETA** | 300 Q, 4 dominios oficiales con pesos reales, 18 fuentes verificadas, simulacro cronometrado. Security+ después: 48 % de las ofertas de cyber |
+
+### Carril 2 — Catálogo de certificaciones sueltas (el camino del mercado)
+
+Certificaciones que se venden por sí solas, sin exigir el track previo. Es lo
+que describía `ORCHESTRATOR.md`, y es lo que alimenta el marketplace de la
+Parte IV. Orden por demanda de mercado:
+
+| # | Certificación | Estado | Relación con los tracks |
+|---|---------------|--------|--------------------------|
+| 1 | **AWS Cloud Practitioner (CLF-C02)** | **Construida** — track 8 | Ya existe: 300 Q y simulacro |
+| 2 | CompTIA Security+ SY0-701 | Siguiente tras PCEP | Cierra el track 08 |
+| 3 | AWS Solutions Architect Associate | Pendiente | Extiende el track 05 |
+| 4 | Azure AI-102 | Pendiente | Extiende el track 07 |
+| 5 | Google Professional ML Engineer | Pendiente | Extiende el track 07 |
+
+**Regla de prioridad:** el carril 1 manda mientras no haya usuarios, porque
+convierte a quien ya está dentro. El carril 2 se prioriza cuando haya
+adquisición que justifique vender una certificación a alguien que llega de
+fuera. Lo construido (AWS CLF-C02) no se tira: queda como la primera pieza del
+carril 2 y como final del track 08.
 
 ### Cómo funciona el alineamiento
 

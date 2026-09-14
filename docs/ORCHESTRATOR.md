@@ -47,8 +47,12 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 - Marca: azul cielo `#1CB0F6`; el verde **solo** para éxito; modo claro por
   defecto; logo de triángulo neural.
 - Monolito FastAPI mientras un solo equipo lo mantenga.
-- Dirección estratégica: marketplace de certificaciones. Orden: AWS Cloud
-  Practitioner → CompTIA Security+ → AWS SAA → Azure AI-102 → Google ML.
+- Dirección estratégica: marketplace de certificaciones. **Hoja unificada en
+  `whetzy_estrategia_definitiva_v3.md` Parte II** (decisión #10) — dos carriles,
+  no dos hojas rivales. Carril 1, una cert por track, empezando por **PCEP**
+  (track 01, $59, donde entra la cuña). Carril 2, catálogo suelto por demanda:
+  AWS CLF-C02 (ya construida) → Security+ → AWS SAA → Azure AI-102 → Google ML.
+  El carril 1 manda mientras no haya usuarios.
 
 ### Líneas rojas — se cumplen o no se lanza
 1. **Motor honesto.** El % de dominio es BKT/DKT real. Nunca se infla, nunca se
