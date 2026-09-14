@@ -419,7 +419,15 @@ async def submit_answer(
         # treat it through a separate path.
         correct = False
     elif question.type in _EXEC_TYPES:
+        # Some exec questions ask the learner to print a message, and the message
+        # is legitimately different per language ("Cannot divide by zero" vs "No
+        # se puede dividir entre cero"). Grading against the Spanish string no
+        # matter who is answering marked correct English work as wrong, while
+        # the client — which compares against the learner's own language — said
+        # it was right. Grade against the language the learner is actually using.
         expected = question.correct_answer_es
+        if user.language == "en" and question.correct_answer_en is not None:
+            expected = question.correct_answer_en
         if expected is not None and req.exec_output is not None:
             correct = req.exec_output.strip() == expected.strip()
         else:

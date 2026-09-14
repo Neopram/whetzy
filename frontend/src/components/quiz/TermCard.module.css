@@ -1,0 +1,74 @@
+.card {
+  background: var(--le-surface);
+  border: 1.5px solid var(--le-brand);
+  border-radius: var(--le-radius-md);
+  padding: var(--le-space-md);
+  margin-top: var(--le-space-sm);
+  animation: rise var(--le-transition-base) ease-out;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; }
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+}
+
+.pair {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.es {
+  font-weight: 800;
+  color: var(--le-text);
+  font-size: 0.95rem;
+}
+
+.arrow {
+  color: var(--le-text-muted);
+}
+
+/* The English label is the thing the learner is here to pick up, so it gets
+   the brand colour rather than being a greyed-out translation. */
+.en {
+  font-weight: 700;
+  color: var(--le-brand);
+  font-size: 0.95rem;
+}
+
+.close {
+  background: none;
+  border: none;
+  color: var(--le-text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+}
+
+.close:hover { color: var(--le-text); }
+
+.definition {
+  margin-top: 6px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--le-text);
+}
+
+.source {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--le-text-muted);
+}

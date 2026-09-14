@@ -2,12 +2,15 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
+import { quiz as quizApi, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse } from '../services/api';
 import { enqueue } from '../services/offlineQueue';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { WhyButton } from '../components/quiz/WhyButton';
+import { GlossaryText } from '../components/quiz/GlossaryText';
+import { TermCard } from '../components/quiz/TermCard';
 import { usePyodide } from '../hooks/usePyodide';
+import { useGlossary } from '../hooks/useGlossary';
 import styles from './QuizScreen.module.css';
 
 const EXEC_TYPES = new Set<QuestionPublic['type']>(['fill_blank_exec', 'fix_bug']);
@@ -48,6 +51,14 @@ export function QuizScreen() {
   const [summary, setSummary] = useState<QuizEndResponse | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [lottieSrc, setLottieSrc] = useState<string | null>(null);
+
+  // Which language this question is *shown* in. Separate from the app language
+  // on purpose: peeking at the English wording of one question should not
+  // change the whole interface, and it must never touch grading — the answer
+  // is an index, and the engine never sees this value.
+  const [viewLang, setViewLang] = useState<'es' | 'en'>('es');
+  const [pickedTerm, setPickedTerm] = useState<GlossaryTerm | null>(null);
+  const glossaryTerms = useGlossary(question?.skill_id);
 
   // Exec-type state
   const [userInput, setUserInput] = useState('');
@@ -110,7 +121,11 @@ export function QuizScreen() {
   // ── Reset timer when question changes ──────────────────────────────────
   useEffect(() => {
     setTimer(30);
-  }, [question?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Each question starts in the learner's own language; a peek at the English
+    // wording is a decision taken per question, not a mode you fall into.
+    setViewLang(language);
+    setPickedTerm(null);
+  }, [question?.id, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Core answer submission ─────────────────────────────────────────────
   const submitAnswer = useCallback(
@@ -279,10 +294,11 @@ export function QuizScreen() {
   if (summary) return <SessionSummary summary={summary} onClose={handleClose} />;
   if (!question) return <QuizError message={t('quiz.noQuestions')} onClose={handleClose} />;
 
-  const qText = language === 'es' ? question.question_es : question.question_en;
-  const options = (language === 'es' ? question.options_es : question.options_en) ?? [];
+  const qText = viewLang === 'es' ? question.question_es : question.question_en;
+  const options = (viewLang === 'es' ? question.options_es : question.options_en) ?? [];
   const { prose, code } = parseQuestion(qText);
   const answered = feedback !== null;
+  const otherLang: 'es' | 'en' = viewLang === 'es' ? 'en' : 'es';
 
   const diffColor =
     question.difficulty_tier === 'hard' || question.difficulty_tier === 'expert'
@@ -325,9 +341,25 @@ export function QuizScreen() {
 
   const questionCard = (
     <div className={styles.questionCard}>
-      <span className={styles.topic}>{t(`quiz.mode.${mode}`) ?? mode}</span>
-      <h2 className={styles.questionText}>{prose}</h2>
+      <div className={styles.questionTop}>
+        <span className={styles.topic}>{t(`quiz.mode.${mode}`) ?? mode}</span>
+        <button
+          type="button"
+          className={styles.langToggle}
+          onClick={() => { setViewLang(otherLang); setPickedTerm(null); }}
+          aria-label={t('quiz.showIn', { lang: t(`quiz.lang.${otherLang}`) })}
+          title={t('quiz.showIn', { lang: t(`quiz.lang.${otherLang}`) })}
+        >
+          {otherLang.toUpperCase()}
+        </button>
+      </div>
+      <h2 className={styles.questionText}>
+        <GlossaryText text={prose} terms={glossaryTerms} lang={viewLang} onPick={setPickedTerm} />
+      </h2>
       {code && !isExecType && <pre className={styles.codeBlock}><code>{code}</code></pre>}
+      {pickedTerm && (
+        <TermCard term={pickedTerm} lang={viewLang} onClose={() => setPickedTerm(null)} />
+      )}
     </div>
   );
 
@@ -337,7 +369,12 @@ export function QuizScreen() {
         {feedback.correct ? `🎯 ${t('quiz.correct')}` : `💡 ${t('quiz.explanation')}`}
       </div>
       <p className={styles.explanationText}>
-        {language === 'es' ? feedback.explanation_es : feedback.explanation_en}
+        <GlossaryText
+          text={viewLang === 'es' ? feedback.explanation_es : feedback.explanation_en}
+          terms={glossaryTerms}
+          lang={viewLang}
+          onPick={setPickedTerm}
+        />
       </p>
       {feedback.source && (
         <p className={styles.sourceBadge}>📚 {t('quiz.source')}: {feedback.source}</p>

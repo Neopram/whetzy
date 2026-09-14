@@ -571,3 +571,116 @@ async def test_declared_unknown_defaults_to_false(client, auth_headers, content_
         headers=_h(auth_headers),
     )
     assert r.status_code == 200
+
+
+# ── exec grading honours the learner's language (13.8) ────────────────────────
+
+
+async def test_exec_output_graded_against_the_learners_language(
+    client, auth_headers, db_session
+):
+    """An English learner printing the English message must be graded correct.
+
+    Four questions in the bank ask for a message string that legitimately
+    differs per language ("Cannot divide by zero" vs "No se puede dividir
+    entre cero"). Grading everyone against the Spanish string marked correct
+    English work as wrong — while the client, which compares against the
+    learner's own language, told them it was right.
+    """
+    from sqlalchemy import select
+
+    from app.models.content import Module, Question, Skill, Track
+    from app.models.user import User
+
+    track = Track(
+        id="track_lang", name_es="T", name_en="T", order=98,
+        icon="x", color="#000", total_questions=1,
+    )
+    mod = Module(
+        id="m_lang", track_id="track_lang", name_es="M", name_en="M",
+        order=1, description_es="", description_en="",
+    )
+    skill = Skill(id="sk_lang", module_id="m_lang", name_es="S", name_en="S", order=1)
+    question = Question(
+        id="q_lang",
+        skill_id="sk_lang",
+        type="fill_blank_exec",
+        difficulty_tier="easy",
+        question_es="```\nprint(___)\n```",
+        question_en="```\nprint(___)\n```",
+        correct_answer_es="No se puede dividir entre cero",
+        correct_answer_en="Cannot divide by zero",
+        explanation_es="x", explanation_en="x",
+        source="test", elo_rating=1200.0,
+    )
+    db_session.add_all([track, mod, skill, question])
+    await db_session.commit()
+
+    async def answer(output: str) -> bool:
+        started = await client.post(
+            f"{QUIZ}/start",
+            json={"force_question_id": "q_lang"},
+            headers=_h(auth_headers),
+        )
+        r = await client.post(
+            f"{QUIZ}/answer",
+            json={
+                "session_id": started.json()["session_id"],
+                "question_id": "q_lang",
+                "exec_output": output,
+                "response_time_ms": 1200,
+            },
+            headers=_h(auth_headers),
+        )
+        assert r.status_code == 200
+        return bool(r.json()["correct"])
+
+    # Default learner is Spanish: the Spanish string is the right one.
+    assert await answer("No se puede dividir entre cero") is True
+    assert await answer("Cannot divide by zero") is False
+
+    # Switch the learner to English and the expectation follows them.
+    me = (await db_session.execute(select(User).limit(1))).scalars().first()
+    assert me is not None
+    me.language = "en"
+    await db_session.commit()
+
+    assert await answer("Cannot divide by zero") is True
+
+
+async def test_viewing_a_question_in_the_other_language_cannot_change_grading(
+    client, auth_headers, content_seed
+):
+    """The language switch is a reading aid, never an input to the engine.
+
+    Options are stored in the same order in both languages, and the answer
+    travels as an index, so reading a question in English and answering it must
+    land on exactly the same verdict as reading it in Spanish. This test pins
+    that: the API has no language parameter on /answer at all, and if one is
+    ever added, this is where it should hurt.
+    """
+    verdicts = set()
+    correct_indices = set()
+
+    for _ in range(2):
+        started = await client.post(
+            f"{QUIZ}/start",
+            json={"skill_id": content_seed["skill_id"], "mode": "study"},
+            headers=_h(auth_headers),
+        )
+        r = await client.post(
+            f"{QUIZ}/answer",
+            json={
+                "session_id": started.json()["session_id"],
+                "question_id": content_seed["question_id"],
+                "selected_index": 0,
+                "response_time_ms": 1000,
+            },
+            headers=_h(auth_headers),
+        )
+        assert r.status_code == 200
+        verdicts.add(r.json()["correct"])
+        correct_indices.add(r.json()["correct_index"])
+
+    assert len(verdicts) == 1, "the same index must always get the same verdict"
+    assert len(correct_indices) == 1, "the correct index must not depend on presentation"

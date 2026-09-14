@@ -1,0 +1,30 @@
+/* A glossary term inside question text. It has to read as "there is more here"
+   without competing with the question itself, so: no button chrome, no colour
+   change, just a dotted underline — the typographic convention for a gloss. */
+.term {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--le-brand);
+}
+
+.term:hover,
+.term:focus-visible {
+  text-decoration-style: solid;
+  background: color-mix(in srgb, var(--le-brand) 12%, transparent);
+  border-radius: 3px;
+}
+
+.term:focus-visible {
+  outline: 2px solid var(--le-brand);
+  outline-offset: 2px;
+}
