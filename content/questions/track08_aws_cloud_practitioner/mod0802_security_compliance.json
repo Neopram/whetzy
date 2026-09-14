@@ -1,0 +1,2611 @@
+{
+  "questions": [
+    {
+      "id": "q080201001",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "En el modelo de responsabilidad compartida, ¿que expresion describe la parte de AWS?",
+      "question_en": "In the shared responsibility model, which phrase describes AWS's part?",
+      "options_es": [
+        "Seguridad «con» la nube",
+        "Seguridad «en» la nube",
+        "Seguridad «sobre» la nube",
+        "Seguridad «de» la nube"
+      ],
+      "options_en": [
+        "Security \"with\" the cloud",
+        "Security \"in\" the cloud",
+        "Security \"on\" the cloud",
+        "Security \"of\" the cloud"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AWS responde de la «seguridad DE la nube»: proteger la infraestructura que ejecuta todos los servicios — hardware, software, red e instalaciones. El cliente responde de la «seguridad EN la nube»: lo que despliega y configura dentro.",
+      "explanation_en": "AWS is responsible for \"security OF the cloud\": protecting the infrastructure that runs all the services - hardware, software, networking and facilities. The customer is responsible for \"security IN the cloud\": what they deploy and configure inside it.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201002",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿De cual de estos responde SIEMPRE AWS?",
+      "question_en": "Which of these is AWS ALWAYS responsible for?",
+      "options_es": [
+        "Las contrasenas de los usuarios IAM del cliente",
+        "La seguridad fisica de los centros de datos",
+        "Los parches del sistema operativo invitado de una instancia EC2",
+        "Las reglas del grupo de seguridad"
+      ],
+      "options_en": [
+        "The customer's IAM user passwords",
+        "Physical security of the data centers",
+        "Guest operating system patches on an EC2 instance",
+        "Security group rules"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La seguridad fisica de las instalaciones es responsabilidad de AWS en todos los servicios: es un control «heredado», que el cliente hereda por completo. Las otras tres son del cliente: sus credenciales, el parcheo del SO invitado y la configuracion del cortafuegos que AWS le proporciona.",
+      "explanation_en": "Physical security of facilities is AWS's responsibility across every service: it is an \"inherited control\", which the customer inherits entirely. The other three are the customer's: their credentials, guest OS patching and the configuration of the AWS-provided firewall.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201003",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Una empresa ejecuta una aplicacion en EC2. ¿Quien debe aplicar los parches de seguridad del sistema operativo invitado?",
+      "question_en": "A company runs an application on EC2. Who must apply the guest operating system's security patches?",
+      "options_es": [
+        "AWS, automaticamente",
+        "El proveedor del sistema operativo",
+        "Se reparte al 50 % entre ambos",
+        "El cliente"
+      ],
+      "options_en": [
+        "AWS, automatically",
+        "The operating system vendor",
+        "Split 50/50 between both",
+        "The customer"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con EC2 el cliente asume el sistema operativo invitado, incluidas actualizaciones y parches de seguridad, cualquier software de aplicacion que instale y la configuracion del cortafuegos que AWS proporciona. AWS parchea la infraestructura subyacente, no el SO invitado del cliente.",
+      "explanation_en": "With EC2 the customer assumes the guest operating system, including updates and security patches, any application software they install and the configuration of the AWS-provided firewall. AWS patches the underlying infrastructure, not the customer's guest OS.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "ec2"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201004",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que significa que la responsabilidad del cliente «se desplaza» segun el servicio que use?",
+      "question_en": "What does it mean that customer responsibility \"shifts\" depending on the service used?",
+      "options_es": [
+        "Que AWS asume toda la responsabilidad en los servicios gestionados",
+        "Que la responsabilidad es identica en todos los servicios",
+        "Que cuanto mas gestionado es el servicio, menos capas operativas quedan del lado del cliente — pero nunca llegan a cero",
+        "Que el cliente puede elegir cada trimestre de que responde"
+      ],
+      "options_en": [
+        "That AWS takes all responsibility for managed services",
+        "That responsibility is identical across all services",
+        "That the more managed the service, the fewer operational layers remain on the customer's side - but they never reach zero",
+        "That the customer can choose each quarter what they are responsible for"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Con EC2 el cliente gestiona el SO invitado; con RDS, AWS se encarga del motor y los parches, y el cliente sigue respondiendo de los permisos, el cifrado, las reglas de red y sus datos. Con Lambda desaparece incluso el servidor, pero el codigo, los permisos y los datos siguen siendo del cliente. Nunca llega a cero.",
+      "explanation_en": "With EC2 the customer manages the guest OS; with RDS, AWS handles the engine and its patches while the customer still owns permissions, encryption, network rules and their data. With Lambda even the server disappears, but the code, permissions and data remain the customer's. It never reaches zero.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "managed-services"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.1 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080201005",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es un «control heredado» en el modelo de responsabilidad compartida?",
+      "question_en": "What is an \"inherited control\" in the shared responsibility model?",
+      "options_es": [
+        "Un control que caduca cada ano",
+        "Un control que el cliente configura una vez y se propaga solo",
+        "Un control heredado de la cuenta raiz a las cuentas miembro",
+        "Un control que el cliente hereda por completo de AWS, como los fisicos y medioambientales"
+      ],
+      "options_en": [
+        "A control that expires yearly",
+        "A control the customer configures once and that propagates by itself",
+        "A control inherited from the root account to member accounts",
+        "A control the customer inherits entirely from AWS, such as physical and environmental ones"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los controles heredados son los que el cliente hereda integramente de AWS: los fisicos y los medioambientales. No hay nada que el cliente tenga que hacer respecto de ellos, mas alla de poder usar la documentacion de cumplimiento de AWS para su propia verificacion.",
+      "explanation_en": "Inherited controls are those the customer inherits fully from AWS: physical and environmental controls. There is nothing for the customer to do about them, beyond being able to use AWS's compliance documentation for their own verification.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "controls"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201006",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cual de estos es un «control compartido» y no responsabilidad exclusiva de una parte?",
+      "question_en": "Which of these is a \"shared control\" rather than one party's exclusive responsibility?",
+      "options_es": [
+        "La seguridad fisica del centro de datos",
+        "La eleccion de la contrasena del usuario raiz",
+        "La gestion de parches",
+        "La proteccion de las comunicaciones del servicio del cliente"
+      ],
+      "options_en": [
+        "Physical data center security",
+        "Choosing the root user password",
+        "Patch management",
+        "Protecting the customer's service communications"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La gestion de parches es un control compartido: AWS parchea la infraestructura y el cliente parchea el sistema operativo invitado y sus aplicaciones. La configuracion y la formacion tambien son compartidas. La seguridad fisica es heredada (de AWS) y las dos ultimas son especificas del cliente.",
+      "explanation_en": "Patch management is a shared control: AWS patches the infrastructure and the customer patches the guest OS and their applications. Configuration management and awareness and training are also shared. Physical security is inherited (AWS) and the last two are customer specific.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "controls"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201007",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En el modelo de responsabilidad compartida, ¿de quien son los datos que el cliente guarda en AWS?",
+      "question_en": "In the shared responsibility model, who owns the data a customer stores on AWS?",
+      "options_es": [
+        "Del cliente, que responde de su clasificacion, cifrado y control de acceso",
+        "De AWS, que los custodia",
+        "De ambos a partes iguales",
+        "Del proveedor de la region donde residen"
+      ],
+      "options_en": [
+        "The customer, who is responsible for their classification, encryption and access control",
+        "AWS, as custodian",
+        "Both equally",
+        "The provider of the Region where they reside"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los datos del cliente son siempre del cliente, y con ellos su clasificacion, su cifrado y quien puede acceder. Es la parte del modelo que nunca se desplaza hacia AWS, por muy gestionado que sea el servicio.",
+      "explanation_en": "Customer data is always the customer's, and with it its classification, its encryption and who may access it. It is the part of the model that never shifts towards AWS, however managed the service is.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "data"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201008",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que pasa con la responsabilidad del cliente al pasar de EC2 a un servicio gestionado como Amazon RDS?",
+      "question_en": "What happens to customer responsibility when moving from EC2 to a managed service like Amazon RDS?",
+      "options_es": [
+        "Se reduce: AWS asume el parcheo del motor y el SO, y el cliente mantiene permisos, cifrado, red y datos",
+        "Desaparece por completo",
+        "Aumenta, porque hay mas configuracion",
+        "No cambia"
+      ],
+      "options_en": [
+        "It shrinks: AWS takes on engine and OS patching, and the customer keeps permissions, encryption, network and data",
+        "It disappears entirely",
+        "It grows, because there is more configuration",
+        "It does not change"
+      ],
+      "correct_index": 0,
+      "explanation_es": "RDS traslada a AWS el parcheo del motor y del sistema operativo, que con una base de datos instalada a mano sobre EC2 serian del cliente. Lo que no se traslada: quien puede conectarse, si los datos van cifrados, en que subred vive y que hay dentro.",
+      "explanation_en": "RDS moves engine and operating system patching to AWS, which with a hand-installed database on EC2 would be the customer's. What does not move: who can connect, whether data is encrypted, which subnet it lives in and what it contains.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "rds"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.1 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080201009",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un auditor pregunta quien responde de la formacion en seguridad del personal. ¿Que respuesta es correcta?",
+      "question_en": "An auditor asks who is responsible for security awareness training of staff. Which answer is correct?",
+      "options_es": [
+        "Es un control compartido: AWS forma a sus empleados y el cliente a los suyos",
+        "AWS forma a todo el personal, incluido el del cliente",
+        "Solo el cliente, tambien del personal de AWS",
+        "No aparece en el modelo"
+      ],
+      "options_en": [
+        "It is a shared control: AWS trains its employees and the customer trains theirs",
+        "AWS trains all staff, including the customer's",
+        "Only the customer, including AWS staff",
+        "It does not appear in the model"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La concienciacion y la formacion figuran como control compartido: cada parte forma a su propia gente. Es un buen ejemplo de que «compartido» no significa «a medias en la misma tarea», sino la misma categoria de control aplicada a ambos lados de la frontera.",
+      "explanation_en": "Awareness and training is listed as a shared control: each party trains its own people. It is a good example of \"shared\" not meaning \"half each on the same task\", but the same control category applied on both sides of the boundary.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "controls"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201010",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que protege AWS bajo «seguridad de la nube»?",
+      "question_en": "What does AWS protect under \"security of the cloud\"?",
+      "options_es": [
+        "La infraestructura que ejecuta todos los servicios: hardware, software, red e instalaciones",
+        "Las aplicaciones que despliega el cliente",
+        "Las politicas IAM del cliente",
+        "El contenido de los buckets de S3 del cliente"
+      ],
+      "options_en": [
+        "The infrastructure that runs all the services: hardware, software, networking and facilities",
+        "The applications the customer deploys",
+        "The customer's IAM policies",
+        "The contents of the customer's S3 buckets"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS define su parte como proteger la infraestructura que ejecuta todos los servicios ofrecidos en la nube de AWS, lo que abarca hardware, software, red e instalaciones. Todo lo que el cliente despliega, configura o guarda encima queda del otro lado de la linea.",
+      "explanation_en": "AWS defines its part as protecting the infrastructure that runs all of the services offered in the AWS Cloud, which covers hardware, software, networking and facilities. Everything the customer deploys, configures or stores on top sits on the other side of the line.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201011",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por que recomienda AWS estudiar con cuidado que servicios se eligen?",
+      "question_en": "Why does AWS recommend carefully considering which services you choose?",
+      "options_es": [
+        "Porque los precios varian mucho",
+        "Porque las responsabilidades del cliente varian segun los servicios usados, su integracion y las leyes aplicables",
+        "Porque no todos los servicios estan en todas las regiones",
+        "Porque algunos servicios no tienen SLA"
+      ],
+      "options_en": [
+        "Because prices vary a lot",
+        "Because customer responsibilities vary depending on the services used, their integration and applicable laws",
+        "Because not every service is in every Region",
+        "Because some services have no SLA"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS lo dice explicitamente: conviene estudiar los servicios elegidos porque las responsabilidades varian segun los servicios usados, como se integran en el entorno de TI y que leyes y normativas aplican. Las otras tres son consideraciones reales, pero no son la razon que da el modelo.",
+      "explanation_en": "AWS says it explicitly: consider the services you choose carefully because responsibilities vary depending on the services used, their integration into your IT environment, and applicable laws and regulations. The other three are real considerations, but not the reason the model gives.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201012",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un bucket de S3 queda expuesto publicamente por una politica mal escrita y se filtran datos. ¿De quien es la responsabilidad?",
+      "question_en": "An S3 bucket is publicly exposed by a badly written policy and data leaks. Whose responsibility is it?",
+      "options_es": [
+        "De AWS, por no impedirlo",
+        "Compartida al 50 %",
+        "Del cliente: la configuracion del control de acceso a sus datos es «seguridad en la nube»",
+        "Del auditor externo"
+      ],
+      "options_en": [
+        "AWS's, for not preventing it",
+        "50/50 shared",
+        "The customer's: configuring access control to their data is \"security in the cloud\"",
+        "The external auditor's"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS responde de que la infraestructura de S3 sea segura y este disponible; quien puede leer un bucket concreto lo decide el cliente con su politica. AWS ofrece herramientas para detectarlo — IAM Access Analyzer, el bloqueo de acceso publico — pero la configuracion es del cliente.",
+      "explanation_en": "AWS is responsible for S3's infrastructure being secure and available; who can read a particular bucket is decided by the customer's policy. AWS provides tools to catch it - IAM Access Analyzer, Block Public Access - but the configuration is the customer's.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "s3"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201013",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es un control «especifico del cliente» en este modelo?",
+      "question_en": "What is a \"customer specific\" control in this model?",
+      "options_es": [
+        "Un control que solo existe en cuentas de pago",
+        "Un control exclusivo de AWS GovCloud",
+        "Un control que AWS aplica a peticion",
+        "Un control cuya responsabilidad es unicamente del cliente, como la proteccion del servicio y las comunicaciones o la seguridad por zonas"
+      ],
+      "options_en": [
+        "A control that only exists in paid accounts",
+        "A control exclusive to AWS GovCloud",
+        "A control AWS applies on request",
+        "A control that is solely the customer's responsibility, such as service and communications protection or zone security"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los controles especificos del cliente son los que recaen solo en el, y el modelo cita como ejemplos la proteccion del servicio y las comunicaciones o la seguridad por zonas. Se distinguen de los heredados (solo AWS) y de los compartidos (ambos, cada uno en su capa).",
+      "explanation_en": "Customer specific controls are those falling solely on the customer, and the model cites service and communications protection or zone security as examples. They are distinct from inherited controls (AWS only) and shared controls (both, each in their own layer).",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "controls"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201014",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Como puede un cliente reforzar su seguridad mas alla de lo que ofrece AWS?",
+      "question_en": "How can a customer strengthen security beyond what AWS provides?",
+      "options_es": [
+        "Con cortafuegos y deteccion de intrusiones basados en host, cifrado y gestion de claves",
+        "No puede: el nivel lo fija AWS",
+        "Solicitando acceso fisico al centro de datos",
+        "Cambiando de region cada mes"
+      ],
+      "options_en": [
+        "With host-based firewalls, host-based intrusion detection and prevention, encryption and key management",
+        "They cannot: AWS sets the level",
+        "By requesting physical access to the data center",
+        "By changing Region every month"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El modelo dice que los clientes pueden reforzar su seguridad o cumplir requisitos mas estrictos apoyandose en tecnologia como cortafuegos basados en host, deteccion y prevencion de intrusiones en host, cifrado y gestion de claves. El acceso fisico al centro de datos nunca se concede a clientes.",
+      "explanation_en": "The model states that customers can enhance their security or meet stricter compliance requirements by leveraging technology such as host-based firewalls, host-based intrusion detection and prevention, encryption and key management. Physical data center access is never granted to customers.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "defense-in-depth"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201015",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por que el modelo de responsabilidad compartida «alivia la carga operativa» del cliente?",
+      "question_en": "Why does the shared responsibility model \"relieve the customer's operational burden\"?",
+      "options_es": [
+        "Porque AWS asume la responsabilidad legal del cliente",
+        "Porque el cliente deja de necesitar politicas de seguridad",
+        "Porque AWS opera, gestiona y controla desde el sistema operativo anfitrion y la capa de virtualizacion hacia abajo, hasta la seguridad fisica",
+        "Porque las auditorias dejan de ser necesarias"
+      ],
+      "options_en": [
+        "Because AWS assumes the customer's legal responsibility",
+        "Because the customer no longer needs security policies",
+        "Because AWS operates, manages and controls everything from the host operating system and virtualization layer down to the physical security of the facilities",
+        "Because audits are no longer necessary"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Esa es la razon literal del modelo: AWS opera, gestiona y controla los componentes desde el SO anfitrion y la capa de virtualizacion hasta la seguridad fisica de las instalaciones. Lo que no hace es asumir la responsabilidad legal del cliente ni eliminar sus politicas ni sus auditorias.",
+      "explanation_en": "That is the model's literal reasoning: AWS operates, manages and controls the components from the host operating system and virtualization layer down to the physical security of the facilities. What it does not do is assume the customer's legal responsibility or remove their policies or audits.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201016",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Quien configura el cortafuegos del grupo de seguridad que AWS proporciona?",
+      "question_en": "Who configures the AWS-provided security group firewall?",
+      "options_es": [
+        "AWS, con valores seguros por defecto",
+        "El proveedor del sistema operativo",
+        "Se configura solo segun el trafico",
+        "El cliente"
+      ],
+      "options_en": [
+        "AWS, with secure defaults",
+        "The operating system vendor",
+        "It configures itself based on traffic",
+        "The customer"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El modelo lo dice expresamente: el cliente asume la configuracion del cortafuegos del grupo de seguridad que AWS proporciona. AWS pone la herramienta y se asegura de que funcione; que puertas quedan abiertas lo decide el cliente.",
+      "explanation_en": "The model says so explicitly: the customer assumes configuration of the AWS-provided security group firewall. AWS supplies the tool and ensures it works; which doors are left open is the customer's decision.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "security-groups"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201017",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Como se aplica el modelo de responsabilidad compartida a los controles de TI y a las auditorias?",
+      "question_en": "How does the shared responsibility model apply to IT controls and audits?",
+      "options_es": [
+        "Las auditorias son solo cosa de AWS",
+        "Los controles de TI quedan fuera del modelo",
+        "El cliente debe auditar los centros de datos de AWS en persona",
+        "La gestion, operacion y verificacion de los controles tambien se comparte: AWS gestiona los de la infraestructura fisica y el cliente usa su documentacion de cumplimiento para su propia verificacion"
+      ],
+      "options_en": [
+        "Audits are AWS's business only",
+        "IT controls fall outside the model",
+        "The customer must audit AWS data centers in person",
+        "Managing, operating and verifying controls is also shared: AWS manages those of the physical infrastructure and the customer uses its compliance documentation for their own verification"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El modelo se extiende a los controles de TI: la gestion, operacion y verificacion tambien es compartida. AWS gestiona los controles asociados a la infraestructura fisica, y el cliente usa la documentacion de control y cumplimiento disponible para hacer sus propios procedimientos de evaluacion y verificacion.",
+      "explanation_en": "The model extends to IT controls: their management, operation and verification is also shared. AWS manages the controls associated with the physical infrastructure, and the customer uses the available control and compliance documentation to perform their own evaluation and verification procedures.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "audit"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201018",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cual de estas responsabilidades NUNCA es de AWS?",
+      "question_en": "Which of these responsibilities is NEVER AWS's?",
+      "options_es": [
+        "La virtualizacion del hipervisor",
+        "La seguridad fisica de las instalaciones",
+        "El mantenimiento del hardware de red",
+        "Decidir que usuarios pueden acceder a los recursos del cliente"
+      ],
+      "options_en": [
+        "Hypervisor virtualization",
+        "Physical security of the facilities",
+        "Network hardware maintenance",
+        "Deciding which users can access the customer's resources"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El control de acceso a los recursos del cliente es siempre del cliente: es el nucleo de la «seguridad en la nube». Las otras tres pertenecen a la infraestructura que AWS opera de extremo a extremo.",
+      "explanation_en": "Access control to the customer's resources is always the customer's: it is the core of \"security in the cloud\". The other three belong to the infrastructure AWS operates end to end.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "iam"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201019",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Con AWS Lambda, ¿que sigue siendo responsabilidad del cliente?",
+      "question_en": "With AWS Lambda, what remains the customer's responsibility?",
+      "options_es": [
+        "Nada: el modelo serverless traslada todo a AWS",
+        "El codigo de la funcion, sus permisos IAM, el tratamiento de los datos y la configuracion de red",
+        "El parcheo del sistema operativo subyacente",
+        "El mantenimiento del runtime del lenguaje"
+      ],
+      "options_en": [
+        "Nothing: the serverless model shifts everything to AWS",
+        "The function code, its IAM permissions, data handling and network configuration",
+        "Patching the underlying operating system",
+        "Maintaining the language runtime"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Lambda elimina del lado del cliente el servidor, el SO y el runtime, pero no el codigo, los permisos con los que se ejecuta, los datos que toca ni la red por la que habla. «Sin servidor» no significa «sin responsabilidad».",
+      "explanation_en": "Lambda removes the server, OS and runtime from the customer's side, but not the code, the permissions it runs with, the data it touches or the network it speaks over. \"Serverless\" does not mean \"responsibility-free\".",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "lambda"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.1 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080201020",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que flexibilidad da la naturaleza compartida del modelo?",
+      "question_en": "What flexibility does the shared nature of the model give?",
+      "options_es": [
+        "Permite auditar otras cuentas de AWS",
+        "Permite renegociar el reparto de responsabilidades con AWS",
+        "Permite delegar el cumplimiento normativo en AWS",
+        "Permite al cliente desplegar soluciones que cumplan requisitos de certificacion especificos de su sector"
+      ],
+      "options_en": [
+        "It lets you audit other AWS accounts",
+        "It lets the customer renegotiate the split with AWS",
+        "It lets compliance be delegated to AWS",
+        "It lets the customer deploy solutions that meet industry-specific certification requirements"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El modelo dice que esa naturaleza compartida aporta la flexibilidad y el control que permiten al cliente desplegar soluciones que cumplan requisitos de certificacion especificos de su industria. El reparto no se negocia: viene dado por el servicio que se usa.",
+      "explanation_en": "The model states that its shared nature provides the flexibility and customer control that permit customers to deploy solutions meeting industry-specific certification requirements. The split is not negotiable: it follows from the service used.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "compliance"
+      ],
+      "source": "AWS Shared Responsibility Model (https://aws.amazon.com/compliance/shared-responsibility-model/)"
+    },
+    {
+      "id": "q080201021",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Quien responde del cifrado de los datos en reposo de un cliente?",
+      "question_en": "Who is responsible for encrypting a customer's data at rest?",
+      "options_es": [
+        "El cliente decide si cifra y con que claves, usando las herramientas que AWS ofrece",
+        "AWS lo cifra todo por defecto sin configuracion",
+        "Solo se puede cifrar con claves de AWS",
+        "El cifrado en reposo no existe en la nube"
+      ],
+      "options_en": [
+        "The customer decides whether to encrypt and with which keys, using the tools AWS provides",
+        "AWS encrypts everything by default with no configuration",
+        "Encryption is only possible with AWS-owned keys",
+        "Encryption at rest does not exist in the cloud"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El cifrado de los datos del cliente cae del lado del cliente: el decide si cifra, con que servicio y con que claves. Muchos servicios ofrecen cifrado activado por defecto, pero eso no traslada la responsabilidad: sigue siendo una decision de configuracion suya.",
+      "explanation_en": "Encrypting customer data falls on the customer's side: they decide whether to encrypt, with which service and with which keys. Many services offer encryption on by default, but that does not shift responsibility: it remains their configuration decision.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "encryption"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080201022",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un responsable afirma: «usamos solo servicios gestionados, asi que la seguridad es de AWS». ¿Que falla en el razonamiento?",
+      "question_en": "A manager claims: \"we only use managed services, so security is AWS's problem\". What is wrong with the reasoning?",
+      "options_es": [
+        "Nada, es correcto para servicios gestionados",
+        "Solo falla si se usa EC2",
+        "Es correcto salvo para el cifrado",
+        "Los servicios gestionados reducen las capas operativas del cliente, pero los datos, los permisos, la configuracion de red y el cumplimiento siguen siendo suyos"
+      ],
+      "options_en": [
+        "Nothing, it is correct for managed services",
+        "It only fails if EC2 is used",
+        "It is correct except for encryption",
+        "Managed services reduce the customer's operational layers, but data, permissions, network configuration and compliance remain theirs"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La responsabilidad se desplaza, no desaparece. Una base de datos RDS perfectamente parcheada por AWS sigue siendo una filtracion si el grupo de seguridad la abre a internet o si un rol tiene permisos de mas. Las brechas reales casi nunca estan en la capa que AWS opera.",
+      "explanation_en": "Responsibility shifts, it does not vanish. An RDS database perfectly patched by AWS is still a breach if the security group opens it to the internet or a role holds excess permissions. Real incidents are almost never in the layer AWS operates.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "managed-services"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.1 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080201023",
+      "skill_id": "sk080201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por que las ACL de red pueden servir como defensa en profundidad segun la guia de AWS?",
+      "question_en": "Why can network ACLs serve as defense in depth according to AWS guidance?",
+      "options_es": [
+        "Porque son mas rapidas que los grupos de seguridad",
+        "Porque cifran el trafico",
+        "Porque se aplican a toda la subred, asi que protegen incluso si una instancia se lanza sin el grupo de seguridad correcto",
+        "Porque sustituyen a los grupos de seguridad"
+      ],
+      "options_en": [
+        "Because they are faster than security groups",
+        "Because they encrypt traffic",
+        "Because they apply to the whole subnet, so they protect even if an instance is launched without the correct security group",
+        "Because they replace security groups"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS lo plantea exactamente asi: como las ACL de red aplican a una subred entera, sirven de defensa en profundidad por si alguna vez se lanza una instancia sin el grupo de seguridad correcto. No cifran nada ni sustituyen a los grupos de seguridad, que siguen siendo el mecanismo principal.",
+      "explanation_en": "AWS frames it exactly that way: because network ACLs apply to an entire subnet, they work as defense in depth in case an instance is ever launched without the correct security group. They encrypt nothing and do not replace security groups, which remain the primary mechanism.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "shared-responsibility",
+        "network-acl"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080202001",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que servicio usarias para descargar informes de cumplimiento de AWS, como los SOC o ISO?",
+      "question_en": "Which service would you use to download AWS compliance reports, such as SOC or ISO?",
+      "options_es": [
+        "AWS CloudTrail",
+        "AWS Config",
+        "Amazon CloudWatch",
+        "AWS Artifact"
+      ],
+      "options_en": [
+        "AWS CloudTrail",
+        "AWS Config",
+        "Amazon CloudWatch",
+        "AWS Artifact"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AWS Artifact es donde se encuentra la informacion de cumplimiento de AWS, incluidos sus informes de auditoria. Config evalua configuraciones, CloudWatch monitoriza metricas y logs, y CloudTrail registra llamadas a la API.",
+      "explanation_en": "AWS Artifact is where AWS compliance information lives, including its audit reports. Config evaluates configurations, CloudWatch monitors metrics and logs, and CloudTrail records API calls.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "compliance",
+        "artifact"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202002",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que servicio registra las llamadas a la API hechas en una cuenta de AWS, para auditoria?",
+      "question_en": "Which service records the API calls made in an AWS account, for auditing?",
+      "options_es": [
+        "Amazon CloudWatch",
+        "AWS Artifact",
+        "AWS CloudTrail",
+        "Amazon GuardDuty"
+      ],
+      "options_en": [
+        "Amazon CloudWatch",
+        "AWS Artifact",
+        "AWS CloudTrail",
+        "Amazon GuardDuty"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La guia del examen asocia la auditoria con AWS CloudTrail, AWS Audit Manager y AWS Config, y la monitorizacion con Amazon CloudWatch. CloudTrail responde a «quien hizo que y cuando»; CloudWatch, a «como se esta comportando el sistema».",
+      "explanation_en": "The exam guide associates auditing with AWS CloudTrail, AWS Audit Manager and AWS Config, and monitoring with Amazon CloudWatch. CloudTrail answers \"who did what and when\"; CloudWatch answers \"how is the system behaving\".",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "cloudtrail"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202003",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cual es la diferencia principal entre Amazon CloudWatch y AWS CloudTrail?",
+      "question_en": "What is the main difference between Amazon CloudWatch and AWS CloudTrail?",
+      "options_es": [
+        "CloudWatch es gratis y CloudTrail de pago",
+        "Son el mismo servicio con dos nombres",
+        "CloudWatch audita y CloudTrail monitoriza",
+        "CloudWatch monitoriza metricas y logs de rendimiento; CloudTrail registra quien hizo que llamada a la API y cuando"
+      ],
+      "options_en": [
+        "CloudWatch is free and CloudTrail is paid",
+        "They are the same service under two names",
+        "CloudWatch audits and CloudTrail monitors",
+        "CloudWatch monitors performance metrics and logs; CloudTrail records who made which API call and when"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Es la confusion mas frecuente del examen. CloudWatch responde «¿como va el sistema?» con metricas, logs y alarmas. CloudTrail responde «¿quien hizo esto?» con el registro de llamadas a la API. La guia los asocia respectivamente a monitorizacion y a auditoria.",
+      "explanation_en": "This is the exam's most common confusion. CloudWatch answers \"how is the system doing?\" with metrics, logs and alarms. CloudTrail answers \"who did this?\" with a record of API calls. The guide associates them with monitoring and auditing respectively.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "cloudwatch",
+        "cloudtrail"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202004",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que servicio evalua si la configuracion de los recursos cumple las reglas que define la organizacion?",
+      "question_en": "Which service evaluates whether resource configuration complies with rules the organization defines?",
+      "options_es": [
+        "AWS Config",
+        "Amazon Inspector",
+        "AWS Shield",
+        "Amazon GuardDuty"
+      ],
+      "options_en": [
+        "AWS Config",
+        "Amazon Inspector",
+        "AWS Shield",
+        "Amazon GuardDuty"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS Config registra y evalua las configuraciones de los recursos frente a reglas. La guia lo agrupa con CloudTrail y Audit Manager en el lado de auditoria. Inspector busca vulnerabilidades, GuardDuty detecta amenazas y Shield protege frente a DDoS.",
+      "explanation_en": "AWS Config records and evaluates resource configurations against rules. The guide groups it with CloudTrail and Audit Manager on the auditing side. Inspector finds vulnerabilities, GuardDuty detects threats and Shield protects against DDoS.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "config"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202005",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que servicio esta pensado para proteger frente a ataques de denegacion de servicio distribuida (DDoS)?",
+      "question_en": "Which service is designed to protect against distributed denial of service (DDoS) attacks?",
+      "options_es": [
+        "AWS Shield",
+        "Amazon Inspector",
+        "AWS Artifact",
+        "AWS Config"
+      ],
+      "options_en": [
+        "AWS Shield",
+        "Amazon Inspector",
+        "AWS Artifact",
+        "AWS Config"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS Shield es el servicio de proteccion frente a DDoS que cita la guia entre las formas en que los clientes protegen sus recursos, junto a Amazon Inspector, AWS Security Hub y Amazon GuardDuty, cada uno con un proposito distinto.",
+      "explanation_en": "AWS Shield is the DDoS protection service the guide cites among the ways customers secure their resources, alongside Amazon Inspector, AWS Security Hub and Amazon GuardDuty, each with a different purpose.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "shield"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202006",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que servicio detecta amenazas analizando de forma continua la actividad de la cuenta?",
+      "question_en": "Which service detects threats by continuously analyzing account activity?",
+      "options_es": [
+        "AWS Artifact",
+        "Amazon GuardDuty",
+        "AWS Config",
+        "AWS WAF"
+      ],
+      "options_en": [
+        "AWS Artifact",
+        "Amazon GuardDuty",
+        "AWS Config",
+        "AWS WAF"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Amazon GuardDuty es el servicio de deteccion de amenazas que la guia enumera entre los que ayudan a proteger recursos. Config mira configuraciones, Artifact entrega documentacion de cumplimiento y WAF filtra trafico web.",
+      "explanation_en": "Amazon GuardDuty is the threat detection service the guide lists among those that help secure resources. Config looks at configuration, Artifact delivers compliance documentation and WAF filters web traffic.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "guardduty"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202007",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que dos grandes categorias de cifrado distingue el examen?",
+      "question_en": "Which two broad encryption categories does the exam distinguish?",
+      "options_es": [
+        "Cifrado simetrico y asimetrico",
+        "Cifrado en transito y cifrado en reposo",
+        "Cifrado publico y privado",
+        "Cifrado de cliente y de servidor"
+      ],
+      "options_en": [
+        "Symmetric and asymmetric encryption",
+        "Encryption in transit and encryption at rest",
+        "Public and private encryption",
+        "Client and server encryption"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La guia pide identificar las distintas opciones de cifrado, y pone como ejemplo el cifrado en transito y el cifrado en reposo. Simetrico y asimetrico es una clasificacion criptografica valida, pero no es la que usa el temario.",
+      "explanation_en": "The guide asks you to identify different encryption options, giving encryption in transit and encryption at rest as the example. Symmetric versus asymmetric is a valid cryptographic classification, but it is not the one the syllabus uses.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "encryption"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202008",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que protege el cifrado en transito?",
+      "question_en": "What does encryption in transit protect?",
+      "options_es": [
+        "Las claves de cifrado",
+        "Los datos almacenados en disco",
+        "Los datos mientras viajan por la red entre cliente y servicio",
+        "Las copias de seguridad"
+      ],
+      "options_en": [
+        "The encryption keys",
+        "Data stored on disk",
+        "Data while it travels over the network between client and service",
+        "Backups"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El cifrado en transito protege los datos mientras se mueven por la red, tipicamente con TLS. El cifrado en reposo protege lo que ya esta almacenado. Son complementarios: hacen falta los dos, y protegen contra ataques distintos.",
+      "explanation_en": "Encryption in transit protects data while it moves over the network, typically with TLS. Encryption at rest protects what is already stored. They are complementary: you need both, and they defend against different attacks.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "encryption"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202009",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una empresa necesita demostrar a un auditor que cumple una norma concreta. ¿Que combinacion es la adecuada?",
+      "question_en": "A company must prove to an auditor that it complies with a specific standard. Which combination is appropriate?",
+      "options_es": [
+        "Solo Amazon CloudWatch",
+        "Solo AWS Shield",
+        "AWS Artifact para la documentacion de cumplimiento de AWS, mas CloudTrail y Config para evidenciar lo que hace el cliente",
+        "Solo Amazon GuardDuty"
+      ],
+      "options_en": [
+        "Amazon CloudWatch alone",
+        "AWS Shield alone",
+        "AWS Artifact for AWS's compliance documentation, plus CloudTrail and Config to evidence what the customer does",
+        "Amazon GuardDuty alone"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una auditoria tiene dos mitades, como el modelo de responsabilidad compartida. Artifact aporta la documentacion de cumplimiento de la parte de AWS; CloudTrail y Config evidencian lo que ha hecho y como esta configurado el lado del cliente.",
+      "explanation_en": "An audit has two halves, like the shared responsibility model. Artifact supplies the compliance documentation for AWS's side; CloudTrail and Config evidence what the customer did and how their side is configured.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "compliance",
+        "audit"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202010",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que servicio ayuda a automatizar la evaluacion de evidencias para auditorias?",
+      "question_en": "Which service helps automate evidence collection for audits?",
+      "options_es": [
+        "Amazon CloudWatch",
+        "AWS Audit Manager",
+        "AWS Shield",
+        "AWS WAF"
+      ],
+      "options_en": [
+        "Amazon CloudWatch",
+        "AWS Audit Manager",
+        "AWS Shield",
+        "AWS WAF"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La guia cita AWS Audit Manager junto a CloudTrail y Config como servicios de auditoria. CloudWatch es monitorizacion, Shield es proteccion DDoS y WAF filtra peticiones web.",
+      "explanation_en": "The guide cites AWS Audit Manager alongside CloudTrail and Config as auditing services. CloudWatch is monitoring, Shield is DDoS protection and WAF filters web requests.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "audit-manager"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202011",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por que varian los requisitos de cumplimiento entre servicios de AWS?",
+      "question_en": "Why do compliance requirements vary between AWS services?",
+      "options_es": [
+        "Porque cada servicio deja una frontera de responsabilidad distinta entre AWS y el cliente, y las certificaciones cubren distintos alcances",
+        "Porque cada servicio tiene un precio distinto",
+        "Porque solo los servicios de pago cumplen normas",
+        "Porque el cumplimiento depende del navegador"
+      ],
+      "options_en": [
+        "Because each service draws a different responsibility boundary between AWS and the customer, and certifications cover different scopes",
+        "Because each service has a different price",
+        "Because only paid services meet standards",
+        "Because compliance depends on the browser"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La guia pide expresamente reconocer que los requisitos de cumplimiento varian entre servicios de AWS. La razon de fondo es el modelo de responsabilidad compartida: cada servicio deja una frontera distinta, y no todos los servicios estan dentro del alcance de todas las certificaciones.",
+      "explanation_en": "The guide explicitly asks you to recognize that compliance requirements vary among AWS services. The underlying reason is the shared responsibility model: each service draws a different boundary, and not every service is in scope for every certification.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "compliance"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202012",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que servicio ayuda a encontrar vulnerabilidades conocidas en cargas de trabajo?",
+      "question_en": "Which service helps find known vulnerabilities in workloads?",
+      "options_es": [
+        "AWS Config",
+        "AWS Artifact",
+        "Amazon CloudWatch",
+        "Amazon Inspector"
+      ],
+      "options_en": [
+        "AWS Config",
+        "AWS Artifact",
+        "Amazon CloudWatch",
+        "Amazon Inspector"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Amazon Inspector aparece en la guia entre los servicios con los que los clientes protegen sus recursos, junto a Security Hub, GuardDuty y Shield. Config comprueba configuracion frente a reglas, que es una pregunta distinta de «¿tiene vulnerabilidades conocidas?».",
+      "explanation_en": "Amazon Inspector appears in the guide among the services customers use to secure their resources, alongside Security Hub, GuardDuty and Shield. Config checks configuration against rules, which is a different question from \"does it have known vulnerabilities?\".",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "inspector"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202013",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que hace AWS Security Hub?",
+      "question_en": "What does AWS Security Hub do?",
+      "options_es": [
+        "Sustituye a IAM",
+        "Centraliza y prioriza hallazgos de seguridad de varios servicios",
+        "Cifra los datos en reposo",
+        "Gestiona las facturas"
+      ],
+      "options_en": [
+        "Replaces IAM",
+        "Centralizes and prioritizes security findings from several services",
+        "Encrypts data at rest",
+        "Manages invoices"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Security Hub agrega hallazgos de seguridad para poder verlos y priorizarlos en un solo sitio. La guia lo cita entre los servicios con que los clientes protegen sus recursos. No sustituye a IAM ni cifra nada por si mismo.",
+      "explanation_en": "Security Hub aggregates security findings so they can be seen and prioritized in one place. The guide cites it among the services customers use to secure their resources. It does not replace IAM, nor encrypt anything itself.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "security-hub"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202014",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Donde se busca informacion sobre si AWS cumple una normativa de un sector o una geografia concreta?",
+      "question_en": "Where do you look for information on whether AWS meets a specific industry or geographic regulation?",
+      "options_es": [
+        "En AWS Config",
+        "En Amazon CloudWatch Logs",
+        "En la consola de facturacion",
+        "En AWS Artifact y en la pagina de AWS Compliance"
+      ],
+      "options_en": [
+        "In AWS Config",
+        "In Amazon CloudWatch Logs",
+        "In the billing console",
+        "In AWS Artifact and the AWS Compliance page"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La guia dice literalmente que hay que saber identificar donde encontrar informacion de cumplimiento de AWS — con AWS Artifact como ejemplo — y entender las necesidades de cumplimiento segun geografia o sector, citando AWS Compliance.",
+      "explanation_en": "The guide literally says you must be able to identify where to find AWS compliance information - with AWS Artifact as the example - and understand compliance needs across geographic locations or industries, citing AWS Compliance.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "compliance",
+        "artifact"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202015",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cual de estas es una razon valida para cifrar datos en reposo aunque el centro de datos sea seguro?",
+      "question_en": "Which is a valid reason to encrypt data at rest even though the data center is secure?",
+      "options_es": [
+        "Reduce el coste de almacenamiento",
+        "Elimina la necesidad de copias de seguridad",
+        "Acelera las consultas",
+        "Protege frente a accesos indebidos a nivel logico y suele ser un requisito normativo, ademas de defensa en profundidad"
+      ],
+      "options_en": [
+        "It lowers storage cost",
+        "It removes the need for backups",
+        "It speeds up queries",
+        "It protects against improper access at the logical level and is often a regulatory requirement, as well as defense in depth"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La seguridad fisica es una capa, no todas. El cifrado en reposo protege ante accesos logicos indebidos — una copia mal compartida, un volumen montado donde no debe — y muchas normativas lo exigen. No abarata, no acelera y no sustituye a las copias.",
+      "explanation_en": "Physical security is one layer, not all of them. Encryption at rest protects against improper logical access - a badly shared snapshot, a volume mounted where it should not be - and many regulations require it. It does not reduce cost, speed things up or replace backups.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "encryption"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202016",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que servicio da visibilidad de metricas, logs y alarmas sobre el comportamiento de los sistemas?",
+      "question_en": "Which service gives visibility into metrics, logs and alarms about system behavior?",
+      "options_es": [
+        "AWS Audit Manager",
+        "AWS Artifact",
+        "Amazon CloudWatch",
+        "AWS Shield"
+      ],
+      "options_en": [
+        "AWS Audit Manager",
+        "AWS Artifact",
+        "Amazon CloudWatch",
+        "AWS Shield"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La guia asocia la monitorizacion a Amazon CloudWatch. Es el servicio al que se acude para saber como se esta comportando el sistema, frente a los de auditoria, que dicen quien hizo que.",
+      "explanation_en": "The guide associates monitoring with Amazon CloudWatch. It is the service you turn to for how the system is behaving, as opposed to the auditing services, which say who did what.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "cloudwatch"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202017",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un equipo quiere saber quien borro una tabla de DynamoDB la semana pasada. ¿Que servicio consulta?",
+      "question_en": "A team wants to know who deleted a DynamoDB table last week. Which service do they consult?",
+      "options_es": [
+        "Amazon CloudWatch Metrics",
+        "AWS Artifact",
+        "AWS CloudTrail",
+        "Amazon Inspector"
+      ],
+      "options_en": [
+        "Amazon CloudWatch Metrics",
+        "AWS Artifact",
+        "AWS CloudTrail",
+        "Amazon Inspector"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Borrar una tabla es una llamada a la API, y las llamadas a la API las registra CloudTrail con su identidad, su momento y su origen. CloudWatch habria mostrado que las metricas de la tabla se detuvieron, pero no quien lo hizo.",
+      "explanation_en": "Deleting a table is an API call, and API calls are recorded by CloudTrail with the identity, time and source of the call. CloudWatch would have shown the table's metrics stopping, but not who did it.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "cloudtrail"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202018",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que son los «informes de acceso» que cita la guia dentro de gobernanza y cumplimiento?",
+      "question_en": "What are the \"access reports\" the guide cites under governance and compliance?",
+      "options_es": [
+        "Informes de rendimiento de red",
+        "Informes de facturacion por servicio",
+        "Informes que ayudan a revisar quien accede a que, para ajustar permisos",
+        "Informes de disponibilidad de region"
+      ],
+      "options_en": [
+        "Network performance reports",
+        "Per-service billing reports",
+        "Reports that help review who accesses what, to tune permissions",
+        "Region availability reports"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La guia agrupa «reporting with access reports» entre los servicios que ayudan a la gobernanza y el cumplimiento. Sirven para revisar accesos reales y afinar permisos hacia el minimo privilegio, no para facturacion ni rendimiento.",
+      "explanation_en": "The guide groups \"reporting with access reports\" among the services that aid governance and compliance. They serve to review actual access and refine permissions towards least privilege, not for billing or performance.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "iam"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202019",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cual es la diferencia de proposito entre AWS Config y AWS CloudTrail?",
+      "question_en": "What is the difference in purpose between AWS Config and AWS CloudTrail?",
+      "options_es": [
+        "Config registra llamadas a la API y CloudTrail evalua configuraciones",
+        "Config registra y evalua en que estado estan configurados los recursos; CloudTrail registra que llamadas a la API se hicieron y por quien",
+        "Ambos hacen lo mismo",
+        "Config es para redes y CloudTrail para bases de datos"
+      ],
+      "options_en": [
+        "Config records API calls and CloudTrail evaluates configuration",
+        "Config records and evaluates how resources are configured; CloudTrail records which API calls were made and by whom",
+        "They do the same thing",
+        "Config is for networks and CloudTrail for databases"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Config responde «¿como esta configurado esto ahora, y cumple mis reglas?». CloudTrail responde «¿que acciones se ejecutaron, cuando y por quien?». Se complementan en una auditoria: uno da el estado, el otro la historia.",
+      "explanation_en": "Config answers \"how is this configured now, and does it meet my rules?\". CloudTrail answers \"what actions were executed, when and by whom?\". They complement each other in an audit: one gives the state, the other the history.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "config",
+        "cloudtrail"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202020",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cual de estas afirmaciones sobre el cumplimiento en AWS es correcta?",
+      "question_en": "Which of these statements about compliance on AWS is correct?",
+      "options_es": [
+        "Usar AWS hace a una empresa automaticamente conforme con el RGPD",
+        "AWS aporta certificaciones y documentacion de su infraestructura, pero el cumplimiento de la carga de trabajo sigue siendo del cliente",
+        "El cumplimiento solo aplica a clientes de Estados Unidos",
+        "AWS audita las aplicaciones de sus clientes"
+      ],
+      "options_en": [
+        "Using AWS automatically makes a company GDPR compliant",
+        "AWS provides certifications and documentation for its infrastructure, but workload compliance remains the customer's",
+        "Compliance only applies to United States customers",
+        "AWS audits its customers' applications"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es el error mas caro de este tema. AWS certifica su infraestructura y publica la evidencia en Artifact; que una aplicacion concreta cumpla el RGPD depende de que datos trata, donde, con que base legal y quien accede — todo del lado del cliente.",
+      "explanation_en": "This is the costliest mistake in this topic. AWS certifies its infrastructure and publishes the evidence in Artifact; whether a specific application meets GDPR depends on which data it processes, where, under which legal basis and who accesses it - all on the customer's side.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "compliance",
+        "gdpr"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202021",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Donde se capturan y localizan los logs asociados a la seguridad en la nube?",
+      "question_en": "Where are logs associated with cloud security captured and located?",
+      "options_es": [
+        "Solo en la consola de IAM",
+        "Solo en la factura mensual",
+        "En servicios como CloudTrail para llamadas a la API y CloudWatch Logs para logs de aplicacion y sistema",
+        "En AWS Artifact"
+      ],
+      "options_en": [
+        "Only in the IAM console",
+        "Only in the monthly invoice",
+        "In services such as CloudTrail for API calls and CloudWatch Logs for application and system logs",
+        "In AWS Artifact"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La guia incluye expresamente «donde capturar y localizar los logs asociados a la seguridad en la nube» como conocimiento exigible. La respuesta practica combina CloudTrail (quien llamo a que) con CloudWatch Logs (que registro la aplicacion o el sistema).",
+      "explanation_en": "The guide explicitly includes \"where to capture and locate logs that are associated with cloud security\" as required knowledge. The practical answer combines CloudTrail (who called what) with CloudWatch Logs (what the application or system logged).",
+      "expected_time_ms": 25000,
+      "tags": [
+        "governance",
+        "logging"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080202022",
+      "skill_id": "sk080202",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Una empresa cifra todo en reposo y en transito y concluye que ya cumple cualquier normativa de proteccion de datos. ¿Que le falta?",
+      "question_en": "A company encrypts everything at rest and in transit and concludes it now meets any data protection regulation. What is it missing?",
+      "options_es": [
+        "Nada, el cifrado es suficiente",
+        "Le falta contratar soporte Enterprise",
+        "Le falta cifrar tambien las copias de seguridad",
+        "El cifrado es un control entre muchos: siguen faltando base legal del tratamiento, minimizacion, control de accesos, retencion, y poder exportar y borrar datos de verdad"
+      ],
+      "options_en": [
+        "Nothing, encryption is enough",
+        "It needs to buy Enterprise Support",
+        "It also needs to encrypt backups",
+        "Encryption is one control among many: legal basis for processing, minimization, access control, retention, and real export and deletion of data are still missing"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El cifrado protege la confidencialidad frente a ciertos accesos, y no responde a casi ninguna de las preguntas que hace un regulador: por que tratas estos datos, cuantos guardas, cuanto tiempo, quien los ve y como los borras cuando alguien lo pide.",
+      "explanation_en": "Encryption protects confidentiality against certain access, and answers almost none of the questions a regulator asks: why you process this data, how much you keep, for how long, who sees it and how you delete it when someone asks.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "compliance",
+        "encryption",
+        "gdpr"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.2 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080203001",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que es el principio de minimo privilegio?",
+      "question_en": "What is the principle of least privilege?",
+      "options_es": [
+        "Dar a cada usuario el mismo nivel de acceso",
+        "Conceder permisos de administrador y quitarlos despues",
+        "Conceder solo los permisos necesarios para realizar una tarea",
+        "Usar siempre el usuario raiz"
+      ],
+      "options_en": [
+        "Giving every user the same access level",
+        "Granting administrator permissions and removing them later",
+        "Granting only the permissions required to perform a task",
+        "Always using the root user"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS lo define como conceder solo los permisos necesarios para realizar una tarea, definiendo que acciones se pueden ejecutar sobre que recursos y bajo que condiciones. Es aceptable empezar con permisos amplios mientras se descubre lo que hace falta, pero el destino es reducirlos.",
+      "explanation_en": "AWS defines it as granting only the permissions required to perform a task, by defining the actions that can be taken on specific resources under specific conditions. Starting broad while you discover what is needed is acceptable, but the destination is to reduce them.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "least-privilege"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203002",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que recomienda AWS sobre el uso del usuario raiz de la cuenta?",
+      "question_en": "What does AWS recommend about using the account root user?",
+      "options_es": [
+        "Usarlo solo para las tareas que requieren permisos de nivel raiz y proteger sus credenciales",
+        "Usarlo para el trabajo diario porque tiene todos los permisos",
+        "Compartirlo entre el equipo de administracion",
+        "Eliminarlo despues de crear la cuenta"
+      ],
+      "options_en": [
+        "Using it only for tasks that require root-level permissions and safeguarding its credentials",
+        "Using it for daily work because it has all permissions",
+        "Sharing it among the administration team",
+        "Deleting it after creating the account"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS recomienda expresamente no usar el usuario raiz para tareas cotidianas, proteger sus credenciales como cualquier informacion personal sensible y reservarlo para las tareas que solo el puede hacer. No se puede eliminar ni se debe compartir.",
+      "explanation_en": "AWS explicitly recommends not using the root user for everyday tasks, safeguarding its credentials as you would other sensitive personal information, and reserving it for tasks only it can perform. It cannot be deleted and should not be shared.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "root-user"
+      ],
+      "source": "AWS Account Management - Tasks that require root user credentials (https://docs.aws.amazon.com/accounts/latest/reference/root-user-tasks.html)"
+    },
+    {
+      "id": "q080203003",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cual de estas tareas requiere obligatoriamente iniciar sesion como usuario raiz?",
+      "question_en": "Which of these tasks strictly requires signing in as the root user?",
+      "options_es": [
+        "Cerrar la cuenta de AWS (en una cuenta independiente, fuera de AWS Organizations)",
+        "Crear un bucket de S3",
+        "Lanzar una instancia EC2",
+        "Crear un rol IAM"
+      ],
+      "options_en": [
+        "Closing the AWS account (for a standalone account, outside AWS Organizations)",
+        "Creating an S3 bucket",
+        "Launching an EC2 instance",
+        "Creating an IAM role"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cerrar una cuenta independiente que no forma parte de AWS Organizations exige credenciales de raiz. Crear buckets, lanzar instancias o crear roles son tareas normales que debe hacer un usuario con permisos, nunca el raiz.",
+      "explanation_en": "Closing a standalone account that is not part of AWS Organizations requires root credentials. Creating buckets, launching instances or creating roles are ordinary tasks that a permissioned user should do, never root.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "root-user"
+      ],
+      "source": "AWS Account Management - Tasks that require root user credentials (https://docs.aws.amazon.com/accounts/latest/reference/root-user-tasks.html)"
+    },
+    {
+      "id": "q080203004",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "El unico administrador IAM se revoca sus propios permisos por error. ¿Como se recupera el acceso?",
+      "question_en": "The only IAM administrator accidentally revokes their own permissions. How is access recovered?",
+      "options_es": [
+        "Abriendo un ticket de soporte, es la unica via",
+        "Iniciando sesion como usuario raiz para editar las politicas y restaurar los permisos",
+        "Creando una cuenta nueva y migrando",
+        "Esperando 24 horas a que se restablezcan"
+      ],
+      "options_en": [
+        "Opening a support ticket, the only route",
+        "Signing in as the root user to edit the policies and restore the permissions",
+        "Creating a new account and migrating",
+        "Waiting 24 hours for them to reset"
+      ],
+      "correct_index": 1,
+      "explanation_es": "«Restaurar los permisos de un usuario IAM» figura entre las tareas que solo puede hacer el usuario raiz, y este escenario es justo el ejemplo que da AWS. Es tambien la mejor razon para no perder las credenciales de raiz aunque no se usen a diario.",
+      "explanation_en": "\"Restore IAM user permissions\" is among the tasks only the root user can perform, and this scenario is AWS's own example. It is also the best reason not to lose the root credentials even though they are not used daily.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "root-user"
+      ],
+      "source": "AWS Account Management - Tasks that require root user credentials (https://docs.aws.amazon.com/accounts/latest/reference/root-user-tasks.html)"
+    },
+    {
+      "id": "q080203005",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es la autenticacion multifactor (MFA)?",
+      "question_en": "What is multi-factor authentication (MFA)?",
+      "options_es": [
+        "Exigir, ademas de las credenciales, una respuesta generada por un dispositivo del usuario para completar el inicio de sesion",
+        "Usar una contrasena muy larga",
+        "Tener varias cuentas de AWS",
+        "Iniciar sesion desde varios dispositivos"
+      ],
+      "options_en": [
+        "Requiring, in addition to the credentials, a response generated by the user's device to complete sign-in",
+        "Using a very long password",
+        "Having several AWS accounts",
+        "Signing in from several devices"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con MFA el usuario dispone de un dispositivo que genera una respuesta a un desafio de autenticacion; hacen falta las credenciales **y** esa respuesta. AWS recomienda ademas usar MFA resistente a phishing, como passkeys y llaves de seguridad, siempre que sea posible.",
+      "explanation_en": "With MFA the user has a device that generates a response to an authentication challenge; both the credentials **and** that response are required. AWS further recommends phishing-resistant MFA such as passkeys and security keys wherever possible.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "mfa"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203006",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que recomienda AWS para que los usuarios humanos accedan a AWS?",
+      "question_en": "What does AWS recommend for human users accessing AWS?",
+      "options_es": [
+        "Crear un usuario IAM con clave de acceso para cada persona",
+        "Que usen federacion con un proveedor de identidad y credenciales temporales, con IAM Identity Center para la gestion centralizada",
+        "Compartir un usuario comun del equipo",
+        "Usar el usuario raiz con MFA"
+      ],
+      "options_en": [
+        "Creating an IAM user with an access key for each person",
+        "That they use federation with an identity provider and temporary credentials, with IAM Identity Center for centralized management",
+        "Sharing a common team user",
+        "Using the root user with MFA"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es la primera buena practica de la lista de IAM: exigir que los usuarios humanos usen federacion con un proveedor de identidad y accedan con credenciales temporales asumiendo roles, y usar AWS IAM Identity Center para gestionar accesos de forma centralizada.",
+      "explanation_en": "It is the first best practice on IAM's list: require human users to use federation with an identity provider and access AWS with temporary credentials by assuming roles, using AWS IAM Identity Center for centralized access management.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "federation"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203007",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que deben usar las cargas de trabajo que se ejecutan en AWS para acceder a otros servicios?",
+      "question_en": "What should workloads running on AWS use to access other services?",
+      "options_es": [
+        "Credenciales temporales mediante roles IAM",
+        "Claves de acceso de un usuario IAM incrustadas en el codigo",
+        "Las credenciales del usuario raiz",
+        "Un usuario compartido por aplicacion"
+      ],
+      "options_en": [
+        "Temporary credentials via IAM roles",
+        "Access keys of an IAM user embedded in the code",
+        "The root user's credentials",
+        "A shared user per application"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cuando se construye sobre un servicio de computo de AWS como EC2 o Lambda, AWS entrega a ese recurso las credenciales temporales de un rol IAM, y los SDK las descubren solas. Asi no hace falta repartir credenciales de larga duracion por las cargas de trabajo.",
+      "explanation_en": "When building on an AWS compute service such as EC2 or Lambda, AWS delivers the temporary credentials of an IAM role to that resource, and the SDKs discover them automatically. That removes any need to distribute long-lived credentials to workloads.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "roles"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203008",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿En que caso sigue siendo razonable usar claves de acceso de larga duracion?",
+      "question_en": "In which case is it still reasonable to use long-term access keys?",
+      "options_es": [
+        "En cargas que no pueden usar roles IAM, clientes de terceros que no soportan IAM Identity Center y casos similares",
+        "Siempre, son la forma estandar de autenticarse",
+        "Para el usuario raiz en el dia a dia",
+        "Nunca, bajo ninguna circunstancia"
+      ],
+      "options_en": [
+        "For workloads that cannot use IAM roles, third-party clients that do not support IAM Identity Center, and similar cases",
+        "Always, they are the standard way to authenticate",
+        "For the root user day to day",
+        "Never, under any circumstance"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS prefiere credenciales temporales, pero reconoce casos concretos que exigen claves de larga duracion: cargas que no pueden usar roles (por ejemplo ciertos plugins), clientes de terceros que no soportan IAM Identity Center, o credenciales especificas de servicio. En esos casos, recomienda actualizarlas cuando haga falta.",
+      "explanation_en": "AWS prefers temporary credentials but recognises specific cases that require long-term keys: workloads that cannot use roles (certain plugins, for instance), third-party clients that do not support IAM Identity Center, or service-specific credentials. In those cases it recommends updating them when needed.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "access-keys"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203009",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que informacion recomienda AWS usar para retirar claves de acceso con seguridad?",
+      "question_en": "Which information does AWS recommend using to remove access keys safely?",
+      "options_es": [
+        "La fecha de creacion de la clave",
+        "La informacion de ultimo uso de la clave («access last used»)",
+        "El numero de caracteres de la clave",
+        "El nombre del usuario"
+      ],
+      "options_en": [
+        "The key's creation date",
+        "The key's last-used information (\"access last used\")",
+        "The key's character count",
+        "The user's name"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS recomienda apoyarse en la informacion de ultimo uso de IAM para actualizar y eliminar claves de acceso de forma segura: dice si algo sigue usando esa clave, que es lo que hace falta saber antes de retirarla. La fecha de creacion no lo dice.",
+      "explanation_en": "AWS recommends relying on IAM access last used information to update and remove access keys safely: it tells you whether anything still uses that key, which is what you need to know before removing it. The creation date does not.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "access-keys"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203010",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es AWS IAM Identity Center?",
+      "question_en": "What is AWS IAM Identity Center?",
+      "options_es": [
+        "Un servicio para gestionar de forma centralizada el acceso a varias cuentas y los permisos dentro de ellas",
+        "Un almacen de secretos de aplicacion",
+        "Un cortafuegos de aplicaciones web",
+        "Un servicio de facturacion"
+      ],
+      "options_en": [
+        "A service to centrally manage access to multiple accounts and the permissions within them",
+        "An application secret store",
+        "A web application firewall",
+        "A billing service"
+      ],
+      "correct_index": 0,
+      "explanation_es": "IAM Identity Center (antes AWS Single Sign-On) es lo que AWS recomienda para la gestion centralizada del acceso: administrar identidades de usuario o conectarlas desde un proveedor externo, y controlar el acceso a las cuentas y los permisos dentro de cada una.",
+      "explanation_en": "IAM Identity Center (formerly AWS Single Sign-On) is what AWS recommends for centralized access management: managing user identities or connecting them from an external provider, and controlling access to accounts and permissions within them.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "identity-center"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203011",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que servicio usarias para guardar y rotar credenciales de una base de datos usada por una aplicacion?",
+      "question_en": "Which service would you use to store and rotate credentials for a database used by an application?",
+      "options_es": [
+        "AWS Config",
+        "AWS Artifact",
+        "Amazon CloudWatch",
+        "AWS Secrets Manager"
+      ],
+      "options_en": [
+        "AWS Config",
+        "AWS Artifact",
+        "Amazon CloudWatch",
+        "AWS Secrets Manager"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La guia del examen cita AWS Secrets Manager y AWS Systems Manager como ejemplos al hablar de claves de acceso, politicas de contrasenas y almacenamiento de credenciales. Guardar secretos en el codigo o en variables de entorno sin proteger es el antipatron que este servicio existe para eliminar.",
+      "explanation_en": "The exam guide cites AWS Secrets Manager and AWS Systems Manager as examples when covering access keys, password policies and credential storage. Keeping secrets in code or in unprotected environment variables is the antipattern this service exists to remove.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "secrets"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.3 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080203012",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es una politica gestionada por AWS?",
+      "question_en": "What is an AWS managed policy?",
+      "options_es": [
+        "Una politica que AWS provee para casos de uso comunes, disponible en tu cuenta",
+        "Una politica que solo AWS puede leer",
+        "Una politica que se factura aparte",
+        "Una politica que caduca cada 90 dias"
+      ],
+      "options_en": [
+        "A policy AWS provides for many common use cases, available in your account",
+        "A policy only AWS can read",
+        "A policy billed separately",
+        "A policy that expires every 90 days"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las politicas gestionadas por AWS cubren casos de uso comunes y estan disponibles en tu cuenta. AWS advierte de que, precisamente por estar pensadas para todos sus clientes, pueden no ser de minimo privilegio para tu caso: el consejo es empezar con ellas y afinar con politicas gestionadas por el cliente.",
+      "explanation_en": "AWS managed policies cover many common use cases and are available in your account. AWS warns that, precisely because they are meant for all its customers, they may not be least-privilege for your case: the advice is to start with them and refine using customer managed policies.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "policies"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203013",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que herramienta genera politicas de minimo privilegio a partir de la actividad de acceso registrada?",
+      "question_en": "Which tool generates least-privilege policies from logged access activity?",
+      "options_es": [
+        "IAM Access Analyzer",
+        "AWS Artifact",
+        "Amazon GuardDuty",
+        "AWS Shield"
+      ],
+      "options_en": [
+        "IAM Access Analyzer",
+        "AWS Artifact",
+        "Amazon GuardDuty",
+        "AWS Shield"
+      ],
+      "correct_index": 0,
+      "explanation_es": "IAM Access Analyzer analiza los servicios y acciones que usan tus roles IAM, apoyandose en la actividad registrada en AWS CloudTrail, y genera una politica de grano fino. AWS recomienda probar cada politica generada antes de desplegarla.",
+      "explanation_en": "IAM Access Analyzer analyzes the services and actions your IAM roles use, based on activity logged in AWS CloudTrail, and generates a fine-grained policy. AWS recommends testing each generated policy before deploying it.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "access-analyzer"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203014",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por que recomienda AWS revisar y eliminar periodicamente usuarios, roles y credenciales sin usar?",
+      "question_en": "Why does AWS recommend regularly reviewing and removing unused users, roles and credentials?",
+      "options_es": [
+        "Para reducir la factura",
+        "Porque caducan automaticamente",
+        "Porque IAM tiene un limite de 100 usuarios",
+        "Para reducir el numero de identidades y permisos que hay que vigilar, y afinar hacia el minimo privilegio"
+      ],
+      "options_en": [
+        "To reduce the bill",
+        "Because they expire automatically",
+        "Because IAM has a 100-user limit",
+        "To reduce the number of identities and permissions to monitor, and refine towards least privilege"
+      ],
+      "correct_index": 3,
+      "explanation_es": "IAM ofrece informacion de ultimo acceso justamente para identificar lo que ya no hace falta. Quitarlo reduce la superficie que hay que vigilar y ayuda a afinar las politicas hacia el minimo privilegio. IAM no cobra por usuario ni los caduca solo.",
+      "explanation_en": "IAM provides last accessed information precisely to identify what is no longer needed. Removing it reduces the surface you must monitor and helps refine policies towards least privilege. IAM does not charge per user, nor expire them by itself.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "hygiene"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203015",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Para que sirven las condiciones en una politica IAM?",
+      "question_en": "What are conditions in an IAM policy for?",
+      "options_es": [
+        "Para que el permiso solo aplique si la peticion cumple requisitos concretos, por ejemplo que use TLS",
+        "Para documentar la politica",
+        "Para acelerar la evaluacion de la politica",
+        "Para asignar la politica a un grupo"
+      ],
+      "options_en": [
+        "So the permission only applies if the request meets specific requirements, for example that it uses TLS",
+        "To document the policy",
+        "To speed up policy evaluation",
+        "To attach the policy to a group"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las condiciones especifican bajo que circunstancias una sentencia tiene efecto: se concede acceso a acciones y recursos, pero solo si la peticion cumple determinados requisitos. El ejemplo que da AWS es exigir que todas las peticiones se envien por TLS.",
+      "explanation_en": "Conditions specify the circumstances under which a policy statement is in effect: access to actions and resources is granted, but only if the request meets specific requirements. AWS's example is requiring that all requests be sent using TLS.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "policies"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203016",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que son los «permissions boundaries» (limites de permisos)?",
+      "question_en": "What are permissions boundaries?",
+      "options_es": [
+        "Politicas que conceden permisos por si solas",
+        "El limite de politicas que se pueden crear",
+        "Una politica gestionada que fija el maximo de permisos que una politica basada en identidad puede conceder a un rol",
+        "Un limite de gasto por usuario"
+      ],
+      "options_en": [
+        "Policies that grant permissions on their own",
+        "The limit on how many policies you can create",
+        "A managed policy that sets the maximum permissions an identity-based policy can grant to a role",
+        "A spending limit per user"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un limite de permisos fija el techo de lo que una politica basada en identidad puede conceder a un rol, y es util para delegar la gestion de permisos: por ejemplo, dejar que los desarrolladores creen roles para sus cargas sin que puedan concederse mas de lo permitido. Por si solo no concede ningun permiso.",
+      "explanation_en": "A permissions boundary sets the ceiling on what an identity-based policy can grant to a role, and is useful for delegating permissions management: letting developers create roles for their workloads without being able to grant themselves more than allowed. On its own it grants no permissions.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "boundaries"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203017",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que son las SCP (service control policies) de AWS Organizations?",
+      "question_en": "What are AWS Organizations service control policies (SCPs)?",
+      "options_es": [
+        "Politicas que conceden permisos a los principales de la organizacion",
+        "Barreras de permisos que controlan el acceso de todos los principales de las cuentas, sin conceder permisos por si mismas",
+        "Politicas de facturacion",
+        "Politicas de copia de seguridad"
+      ],
+      "options_en": [
+        "Policies that grant permissions to the organization's principals",
+        "Permissions guardrails controlling access for all principals across accounts, which grant no permissions by themselves",
+        "Billing policies",
+        "Backup policies"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las SCP establecen barreras de permisos a nivel de organizacion, unidad organizativa o cuenta. AWS es explicito: ni las SCP ni las RCP conceden permisos por si solas; para conceder hay que adjuntar politicas basadas en identidad o en recurso.",
+      "explanation_en": "SCPs establish permissions guardrails at the organization, organizational unit or account level. AWS is explicit: neither SCPs nor RCPs grant permissions on their own; to grant, you must attach identity-based or resource-based policies.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "organizations"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203018",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que significa «identidad federada»?",
+      "question_en": "What does \"federated identity\" mean?",
+      "options_es": [
+        "Una identidad creada directamente en IAM",
+        "Una identidad gestionada en un proveedor externo que accede a AWS asumiendo roles con credenciales temporales",
+        "Una identidad compartida por varios usuarios",
+        "El usuario raiz de la cuenta"
+      ],
+      "options_en": [
+        "An identity created directly in IAM",
+        "An identity managed in an external provider that accesses AWS by assuming roles with temporary credentials",
+        "An identity shared by several users",
+        "The account's root user"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La federacion permite que las personas usen la identidad que ya tiene la organizacion y accedan a AWS asumiendo roles, con credenciales temporales. Es lo que AWS recomienda para usuarios humanos, frente a crear un usuario IAM por persona con credenciales de larga duracion.",
+      "explanation_en": "Federation lets people use the identity the organization already has and access AWS by assuming roles, with temporary credentials. It is what AWS recommends for human users, as opposed to creating one IAM user per person with long-term credentials.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "federation"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.3 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080203019",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que es un grupo IAM?",
+      "question_en": "What is an IAM group?",
+      "options_es": [
+        "Un conjunto de regiones",
+        "Un conjunto de cuentas de AWS",
+        "Un conjunto de usuarios al que se asignan permisos en bloque",
+        "Un conjunto de instancias EC2"
+      ],
+      "options_en": [
+        "A set of Regions",
+        "A set of AWS accounts",
+        "A set of users to which permissions are assigned in bulk",
+        "A set of EC2 instances"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La guia pide saber definir grupos, usuarios y politicas — propias y gestionadas — conforme al principio de minimo privilegio. Un grupo agrupa usuarios para asignarles permisos en bloque; agrupar cuentas es cosa de AWS Organizations.",
+      "explanation_en": "The guide asks you to define groups, users and policies - custom and managed - in compliance with the principle of least privilege. A group gathers users so permissions can be assigned in bulk; grouping accounts is what AWS Organizations does.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "groups"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.3 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080203020",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que verifica IAM Access Analyzer respecto al acceso publico y entre cuentas?",
+      "question_en": "What does IAM Access Analyzer verify regarding public and cross-account access?",
+      "options_es": [
+        "Bloquea automaticamente todo acceso publico",
+        "Permite previsualizar y analizar el acceso publico y entre cuentas de tipos de recurso soportados, generando hallazgos",
+        "Cifra los recursos expuestos",
+        "Elimina los recursos publicos"
+      ],
+      "options_en": [
+        "It automatically blocks all public access",
+        "It lets you preview and analyze public and cross-account access for supported resource types, generating findings",
+        "It encrypts exposed resources",
+        "It deletes public resources"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Access Analyzer genera hallazgos que permiten comprobar que los controles de acceso conceden lo que se espera, y vigila de forma continua los tipos de recurso soportados. Avisa y analiza; no bloquea, ni cifra, ni borra por su cuenta.",
+      "explanation_en": "Access Analyzer generates findings that let you verify your access controls grant the access you expect, and continuously monitors supported resource types. It warns and analyzes; it does not block, encrypt or delete on its own.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "access-analyzer"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203021",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que politica de contrasenas tiene sentido en una cuenta con usuarios IAM?",
+      "question_en": "What password policy makes sense in an account with IAM users?",
+      "options_es": [
+        "Ninguna, las contrasenas no se usan en AWS",
+        "Una que use la misma contrasena que el usuario raiz",
+        "Una que obligue a compartir la contrasena con el equipo",
+        "Una que fije requisitos de complejidad y rotacion, complementada con MFA"
+      ],
+      "options_en": [
+        "None, passwords are not used on AWS",
+        "One that reuses the root user's password",
+        "One that requires sharing the password with the team",
+        "One that sets complexity and rotation requirements, complemented with MFA"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La guia incluye entender claves de acceso, politicas de contrasenas y almacenamiento de credenciales. Una politica de contrasenas es el minimo; lo que de verdad cambia el riesgo es exigir MFA, porque una contrasena robada por si sola deja de bastar.",
+      "explanation_en": "The guide covers understanding access keys, password policies and credential storage. A password policy is the floor; what actually changes the risk is requiring MFA, because a stolen password alone stops being enough.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "passwords"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.3 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080203022",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un equipo concede `AdministratorAccess` a todos los desarrolladores «para no bloquear el trabajo». ¿Cual es el riesgo concreto?",
+      "question_en": "A team grants `AdministratorAccess` to every developer \"so nobody gets blocked\". What is the concrete risk?",
+      "options_es": [
+        "Ninguno si todos son de confianza",
+        "Que IAM deja de registrar la actividad",
+        "Solo que la factura sube",
+        "Cualquier credencial comprometida, o un error humano, se convierte en control total de la cuenta: el radio de dano deja de estar acotado"
+      ],
+      "options_en": [
+        "None if everyone is trusted",
+        "That IAM stops logging activity",
+        "Only that the bill goes up",
+        "Any compromised credential, or human error, becomes full control of the account: the blast radius stops being bounded"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El minimo privilegio no es desconfianza del equipo: es acotar el dano de un error o de una credencial robada. Con permisos de administrador para todos, un phishing exitoso o un script mal escrito puede borrar produccion. AWS propone empezar amplio mientras se descubre lo necesario, y reducir despues.",
+      "explanation_en": "Least privilege is not distrust of the team: it bounds the damage of a mistake or a stolen credential. With administrator permissions for everyone, one successful phishing attempt or one bad script can delete production. AWS suggests starting broad while discovering what is needed, then reducing.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "least-privilege"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080203023",
+      "skill_id": "sk080203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por que AWS recomienda MFA resistente a phishing, como passkeys o llaves de seguridad?",
+      "question_en": "Why does AWS recommend phishing-resistant MFA such as passkeys or security keys?",
+      "options_es": [
+        "Porque es mas barato",
+        "Porque un codigo de un solo uso puede ser capturado y reutilizado por un atacante en una pagina falsa, y una passkey esta ligada al dominio",
+        "Porque no requiere dispositivo",
+        "Porque permite compartir el acceso"
+      ],
+      "options_en": [
+        "Because it is cheaper",
+        "Because a one-time code can be captured and replayed by an attacker on a fake page, while a passkey is bound to the domain",
+        "Because it needs no device",
+        "Because it allows sharing access"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS recomienda usar MFA resistente a phishing siempre que sea posible. La diferencia practica es que un codigo que el usuario teclea se le puede pedir en una pagina falsa y reutilizarlo al instante, mientras que una passkey esta ligada criptograficamente al dominio legitimo.",
+      "explanation_en": "AWS recommends using phishing-resistant MFA wherever possible. The practical difference is that a code the user types can be requested on a fake page and replayed instantly, while a passkey is cryptographically bound to the legitimate domain.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "iam",
+        "mfa"
+      ],
+      "source": "Security best practices in IAM (https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)"
+    },
+    {
+      "id": "q080204001",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿A que nivel opera un grupo de seguridad?",
+      "question_en": "At what level does a security group operate?",
+      "options_es": [
+        "A nivel de VPC",
+        "A nivel de subred",
+        "A nivel de instancia",
+        "A nivel de region"
+      ],
+      "options_en": [
+        "VPC level",
+        "Subnet level",
+        "Instance level",
+        "Region level"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La tabla comparativa de AWS lo fija: el grupo de seguridad opera a nivel de instancia y la ACL de red a nivel de subred. Es la diferencia de la que se derivan casi todas las demas.",
+      "explanation_en": "AWS's comparison table settles it: the security group operates at instance level and the network ACL at subnet level. Nearly every other difference follows from this one.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security-groups",
+        "vpc"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204002",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que tipos de reglas admite un grupo de seguridad?",
+      "question_en": "Which rule types does a security group support?",
+      "options_es": [
+        "Solo reglas de permitir",
+        "Reglas de permitir y de denegar",
+        "Solo reglas de denegar",
+        "Reglas condicionales por hora"
+      ],
+      "options_en": [
+        "Allow rules only",
+        "Allow and deny rules",
+        "Deny rules only",
+        "Time-based conditional rules"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un grupo de seguridad solo admite reglas de permitir: lo que no esta permitido queda denegado implicitamente. Las ACL de red si admiten reglas de permitir y de denegar, y por eso sirven para bloquear un subconjunto concreto de trafico.",
+      "explanation_en": "A security group supports allow rules only: whatever is not allowed is implicitly denied. Network ACLs do support both allow and deny rules, which is why they are useful to block a specific subset of traffic.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security-groups",
+        "vpc"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204003",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que significa que un grupo de seguridad sea «con estado» (stateful)?",
+      "question_en": "What does it mean that a security group is stateful?",
+      "options_es": [
+        "Que el trafico de vuelta se permite automaticamente, sin necesidad de una regla explicita",
+        "Que guarda logs del trafico",
+        "Que mantiene su configuracion al reiniciar",
+        "Que solo funciona con IP fijas"
+      ],
+      "options_en": [
+        "That return traffic is automatically allowed, with no explicit rule needed",
+        "That it keeps traffic logs",
+        "That it keeps its configuration across reboots",
+        "That it only works with static IPs"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En la tabla de AWS, el trafico de vuelta de un grupo de seguridad se permite automaticamente — eso es ser stateful. En una ACL de red hay que permitirlo explicitamente, porque es stateless: es el olvido clasico al configurar ACL a mano.",
+      "explanation_en": "In AWS's table, return traffic for a security group is automatically allowed - that is what stateful means. In a network ACL it must be explicitly allowed, because it is stateless: the classic omission when configuring ACLs by hand.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security-groups",
+        "vpc"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204004",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Como evalua sus reglas una ACL de red?",
+      "question_en": "How does a network ACL evaluate its rules?",
+      "options_es": [
+        "Evalua todas las reglas antes de decidir",
+        "Evalua solo la ultima regla",
+        "Evalua en orden aleatorio",
+        "Evalua las reglas en orden ascendente hasta encontrar una coincidencia"
+      ],
+      "options_en": [
+        "It evaluates all rules before deciding",
+        "It evaluates only the last rule",
+        "It evaluates in random order",
+        "It evaluates rules in ascending order until it finds a match"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La ACL de red evalua en orden ascendente de numero hasta encontrar una coincidencia, asi que el orden importa y una regla amplia colocada antes puede anular a una posterior. El grupo de seguridad, en cambio, evalua todas sus reglas antes de decidir.",
+      "explanation_en": "A network ACL evaluates rules in ascending number order until it finds a match, so order matters and a broad rule placed earlier can shadow a later one. A security group, by contrast, evaluates all its rules before deciding.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "network-acl",
+        "vpc"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204005",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una ACL de red permite el trafico entrante al puerto 443 pero la aplicacion no responde. ¿Cual es la causa mas probable?",
+      "question_en": "A network ACL allows inbound traffic on port 443 but the application does not respond. What is the most likely cause?",
+      "options_es": [
+        "El grupo de seguridad esta mal",
+        "La ACL no soporta el puerto 443",
+        "Falta permitir el trafico de vuelta: la ACL es stateless y hay que permitirlo explicitamente",
+        "Hay que reiniciar la instancia"
+      ],
+      "options_en": [
+        "The security group is misconfigured",
+        "The ACL does not support port 443",
+        "Return traffic has not been allowed: the ACL is stateless and it must be explicitly permitted",
+        "The instance must be restarted"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Es el fallo mas comun con ACL de red: al ser stateless, permitir la entrada no permite la salida de la respuesta. Hay que anadir la regla de salida para los puertos efimeros. Con un grupo de seguridad no pasaria, porque el trafico de vuelta se permite solo.",
+      "explanation_en": "This is the most common network ACL mistake: being stateless, allowing inbound does not allow the response out. An outbound rule for the ephemeral ports is required. It would not happen with a security group, where return traffic is allowed automatically.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "network-acl",
+        "vpc",
+        "troubleshooting"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204006",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que mecanismo recomienda AWS como principal para controlar el acceso de red a una VPC?",
+      "question_en": "Which mechanism does AWS recommend as the primary one for controlling network access to a VPC?",
+      "options_es": [
+        "Los grupos de seguridad",
+        "Las ACL de red",
+        "Las tablas de rutas",
+        "AWS WAF"
+      ],
+      "options_en": [
+        "Security groups",
+        "Network ACLs",
+        "Route tables",
+        "AWS WAF"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS recomienda usar los grupos de seguridad como mecanismo principal, y las ACL de red cuando haga falta un control mas basto y sin estado. Los grupos son mas versatiles porque filtran con estado y pueden referenciar otros grupos de seguridad.",
+      "explanation_en": "AWS recommends using security groups as the primary mechanism, and network ACLs when stateless, coarse-grained control is needed. Security groups are more versatile because they filter statefully and can reference other security groups.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security-groups",
+        "vpc"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204007",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que puede hacer un grupo de seguridad que una ACL de red no puede?",
+      "question_en": "What can a security group do that a network ACL cannot?",
+      "options_es": [
+        "Denegar trafico concreto",
+        "Aplicarse a toda una subred",
+        "Crear reglas que referencian otros grupos de seguridad",
+        "Evaluar reglas por orden numerico"
+      ],
+      "options_en": [
+        "Deny specific traffic",
+        "Apply to an entire subnet",
+        "Create rules that reference other security groups",
+        "Evaluate rules in numeric order"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS destaca que los grupos de seguridad son mas versatiles por dos motivos: filtran con estado y pueden crear reglas que referencian otros grupos de seguridad. Denegar trafico concreto y aplicarse a la subred entera son justamente lo propio de las ACL.",
+      "explanation_en": "AWS highlights that security groups are more versatile for two reasons: they filter statefully and can create rules that reference other security groups. Denying specific traffic and applying to a whole subnet are exactly what ACLs are for.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security-groups",
+        "vpc"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204008",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es AWS WAF?",
+      "question_en": "What is AWS WAF?",
+      "options_es": [
+        "Un cortafuegos de red a nivel de subred",
+        "Un cortafuegos de aplicaciones web que filtra peticiones HTTP/HTTPS",
+        "Un servicio de cifrado",
+        "Un gestor de identidades"
+      ],
+      "options_en": [
+        "A network firewall at subnet level",
+        "A web application firewall that filters HTTP/HTTPS requests",
+        "An encryption service",
+        "An identity manager"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La guia cita AWS WAF junto a los grupos de seguridad y las ACL de red al describir las funciones y servicios de seguridad de AWS. WAF trabaja en la capa de aplicacion, filtrando peticiones web; los otros dos filtran a nivel de red.",
+      "explanation_en": "The guide cites AWS WAF alongside security groups and network ACLs when describing AWS security features and services. WAF works at the application layer, filtering web requests; the other two filter at network level.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "waf",
+        "security"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.4 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080204009",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Se pueden usar productos de seguridad de terceros en AWS?",
+      "question_en": "Can third-party security products be used on AWS?",
+      "options_es": [
+        "No, solo servicios nativos de AWS",
+        "Si: la guia del examen senala expresamente que estan disponibles",
+        "Solo con soporte Enterprise",
+        "Solo en AWS GovCloud"
+      ],
+      "options_en": [
+        "No, only AWS-native services",
+        "Yes: the exam guide explicitly notes they are available",
+        "Only with Enterprise Support",
+        "Only in AWS GovCloud"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La guia incluye como conocimiento exigible «entender que hay productos de seguridad de terceros disponibles». Muchos se distribuyen por AWS Marketplace, y conviven con los servicios nativos en vez de excluirlos.",
+      "explanation_en": "The guide includes as required knowledge \"understanding that third-party security products are available\". Many are distributed through AWS Marketplace, and they coexist with native services rather than excluding them.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "marketplace"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.4 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080204010",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cual es el alcance de un grupo de seguridad frente al de una ACL de red?",
+      "question_en": "What is a security group's scope compared to a network ACL's?",
+      "options_es": [
+        "Ambos aplican solo a una instancia",
+        "Ambos aplican a la VPC entera",
+        "El grupo aplica a la subred y la ACL a la instancia",
+        "El grupo aplica a todas las instancias asociadas a el; la ACL, a todas las instancias de las subredes asociadas"
+      ],
+      "options_en": [
+        "Both apply to a single instance only",
+        "Both apply to the whole VPC",
+        "The group applies to the subnet and the ACL to the instance",
+        "The group applies to all instances associated with it; the ACL applies to all instances in the associated subnets"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Es literalmente la fila «alcance» de la tabla de AWS. La consecuencia practica: para proteger una instancia concreta se usa su grupo de seguridad; para poner una barrera que cubra todo lo que hay en una subred, la ACL.",
+      "explanation_en": "This is literally the \"scope\" row of AWS's table. The practical consequence: to protect one specific instance you use its security group; to place a guard rail covering everything in a subnet, the ACL.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security-groups",
+        "network-acl"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204011",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que recomienda AWS para instancias que no deben ser accesibles directamente desde internet?",
+      "question_en": "What does AWS recommend for instances that should not be directly accessible from the internet?",
+      "options_es": [
+        "Cambiarles la IP publica cada dia",
+        "Ponerles una ACL de red con todo denegado",
+        "Apagarlas fuera de horario",
+        "Ponerlas en subredes privadas y usar un bastion o una NAT gateway para la salida"
+      ],
+      "options_en": [
+        "Rotating their public IP daily",
+        "Attaching a network ACL that denies everything",
+        "Shutting them down out of hours",
+        "Placing them in private subnets and using a bastion host or NAT gateway for outbound access"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AWS lo dice expresamente: usar subredes privadas para las instancias que no deban ser accesibles desde internet, y un bastion o una NAT gateway cuando esas instancias necesiten salir. Es una decision de topologia, anterior a cualquier regla de cortafuegos.",
+      "explanation_en": "AWS states it explicitly: use private subnets for instances that should not be accessed directly from the internet, and a bastion host or NAT gateway when those instances need outbound access. It is a topology decision, prior to any firewall rule.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "network-design"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204012",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Para que sirven los VPC Flow Logs?",
+      "question_en": "What are VPC Flow Logs for?",
+      "options_es": [
+        "Para facturar por transferencia",
+        "Para cifrar el trafico",
+        "Para balancear carga",
+        "Para monitorizar el trafico que llega a las instancias"
+      ],
+      "options_en": [
+        "To bill for transfer",
+        "To encrypt traffic",
+        "To balance load",
+        "To monitor the traffic reaching your instances"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AWS recomienda usar VPC Flow Logs para monitorizar el trafico que llega a las instancias. Son una herramienta de visibilidad: dicen que conexiones hubo y si se aceptaron o rechazaron, que es lo que hace falta para diagnosticar una regla mal puesta.",
+      "explanation_en": "AWS recommends using VPC Flow Logs to monitor the traffic that reaches your instances. They are a visibility tool: they say which connections occurred and whether they were accepted or rejected, which is what you need to diagnose a badly placed rule.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "logging"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204013",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por que recomienda AWS configurar las tablas de rutas de las subredes con las rutas minimas?",
+      "question_en": "Why does AWS recommend configuring subnet route tables with minimal routes?",
+      "options_es": [
+        "Para acelerar el enrutamiento",
+        "Porque hay un limite de 5 rutas",
+        "Para que solo exista la conectividad que los requisitos exigen, reduciendo caminos de acceso no previstos",
+        "Para abaratar la transferencia de datos"
+      ],
+      "options_en": [
+        "To speed up routing",
+        "Because there is a 5-route limit",
+        "So only the connectivity the requirements demand exists, reducing unforeseen access paths",
+        "To reduce data transfer cost"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Es minimo privilegio aplicado a la red: AWS recomienda configurar las tablas de rutas con las rutas minimas que soporten los requisitos de conectividad. Una ruta de mas es un camino que nadie pensaba que existia, y los cortafuegos no lo cierran si esta permitido.",
+      "explanation_en": "It is least privilege applied to the network: AWS recommends configuring subnet route tables with the minimum network routes to support your connectivity requirements. One route too many is a path nobody thought existed, and firewalls will not close it if it is allowed.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "network-design"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204014",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es AWS Network Firewall segun la guia de VPC?",
+      "question_en": "What is AWS Network Firewall according to the VPC guidance?",
+      "options_es": [
+        "Un cortafuegos de aplicacion web",
+        "Un sustituto de los grupos de seguridad",
+        "Un servicio para proteger las subredes de una VPC frente a amenazas de red comunes",
+        "Un servicio de VPN"
+      ],
+      "options_en": [
+        "A web application firewall",
+        "A replacement for security groups",
+        "A service to protect the subnets in a VPC from common network threats",
+        "A VPN service"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS lo describe como una opcion para proteger las subredes de la VPC frente a amenazas de red comunes. No sustituye a los grupos de seguridad, que siguen siendo el mecanismo principal, ni cumple la funcion de WAF, que trabaja sobre peticiones web.",
+      "explanation_en": "AWS describes it as an option to protect the subnets in your VPC from common network threats. It does not replace security groups, which remain the primary mechanism, nor does it do WAF's job, which operates on web requests.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "network-firewall"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204015",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por que recomienda AWS separar el trafico de gestion de las instancias del trafico de aplicacion?",
+      "question_en": "Why does AWS recommend separating instance management traffic from application traffic?",
+      "options_es": [
+        "Para reducir la latencia de la aplicacion",
+        "Para poder controlarlo y auditarlo por separado, con politicas IAM propias de control de cambios",
+        "Porque es obligatorio en la VPC",
+        "Para ahorrar direcciones IP"
+      ],
+      "options_en": [
+        "To reduce application latency",
+        "So it can be controlled and audited separately, with dedicated IAM change-control policies",
+        "Because it is mandatory in a VPC",
+        "To save IP addresses"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS sugiere usar grupos de seguridad o interfaces de red adicionales para controlar y auditar el trafico de gestion de EC2 por separado del de aplicacion, lo que permite politicas IAM especificas de control de cambios y facilita auditar los cambios de reglas.",
+      "explanation_en": "AWS suggests using additional security groups or network interfaces to control and audit EC2 management traffic separately from regular application traffic, which enables specific IAM change-control policies and makes auditing rule changes easier.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "network-design"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204016",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que herramienta sugiere AWS para detectar accesibilidad de red no intencionada desde las instancias?",
+      "question_en": "Which tool does AWS suggest for detecting unintended network accessibility from your instances?",
+      "options_es": [
+        "AWS Budgets",
+        "AWS Artifact",
+        "Amazon Athena",
+        "AWS Security Hub"
+      ],
+      "options_en": [
+        "AWS Budgets",
+        "AWS Artifact",
+        "Amazon Athena",
+        "AWS Security Hub"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La propia guia de seguridad de VPC recomienda usar AWS Security Hub para comprobar si hay accesibilidad de red no intencionada desde las instancias. Es un ejemplo de para que sirve centralizar hallazgos: nadie revisa a mano todas las reglas de todas las cuentas.",
+      "explanation_en": "The VPC security guidance itself recommends using AWS Security Hub to check for unintended network accessibility from your instances. It is a good example of why centralizing findings matters: nobody reviews every rule in every account by hand.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "security-hub"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204017",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que aisla una VPC?",
+      "question_en": "What does a VPC isolate?",
+      "options_es": [
+        "Una region entera",
+        "Una red virtual en un area logicamente aislada de la nube de AWS",
+        "Una cuenta de facturacion",
+        "Un grupo de usuarios IAM"
+      ],
+      "options_en": [
+        "An entire Region",
+        "A virtual network in your own logically isolated area of the AWS Cloud",
+        "A billing account",
+        "A group of IAM users"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una VPC es una red virtual en un area propia, logicamente aislada, de la nube de AWS. AWS recomienda usar VPC separadas para aislar infraestructura por carga de trabajo o por entidad organizativa.",
+      "explanation_en": "A VPC is a virtual network in your own logically isolated area of the AWS Cloud. AWS recommends using separate VPCs to isolate infrastructure by workload or organizational entity.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204018",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Para que sirven las subredes dentro de una VPC, desde el punto de vista de seguridad?",
+      "question_en": "What are subnets within a VPC for, from a security standpoint?",
+      "options_es": [
+        "Para aislar las capas de una aplicacion, por ejemplo web, aplicacion y base de datos",
+        "Para asignar precios distintos",
+        "Para separar regiones",
+        "Para repartir el ancho de banda"
+      ],
+      "options_en": [
+        "To isolate an application's tiers, for example web, application and database",
+        "To assign different prices",
+        "To separate Regions",
+        "To split bandwidth"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS recomienda usar subredes para aislar las capas de la aplicacion — web, aplicacion, base de datos — dentro de una misma VPC, y subredes privadas para lo que no deba ser accesible desde internet. Es la base sobre la que despues actuan ACL y grupos de seguridad.",
+      "explanation_en": "AWS recommends using subnets to isolate an application's tiers - web, application, database - within a single VPC, and private subnets for anything that should not be internet-accessible. It is the foundation on which ACLs and security groups then act.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "network-design"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204019",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que permite AWS PrivateLink?",
+      "question_en": "What does AWS PrivateLink enable?",
+      "options_es": [
+        "Cifrar el trafico dentro de la VPC",
+        "Que los recursos de una VPC se conecten a servicios de AWS por IP privadas, sin internet gateway ni NAT",
+        "Conectar dos regiones",
+        "Publicar un servicio en internet"
+      ],
+      "options_en": [
+        "Encrypting traffic within the VPC",
+        "Resources in a VPC connecting to AWS services over private IP addresses, with no internet gateway or NAT device",
+        "Connecting two Regions",
+        "Publishing a service to the internet"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PrivateLink permite que los recursos de la VPC se conecten a servicios de AWS usando direcciones IP privadas, como si esos servicios estuvieran alojados dentro de la VPC, de modo que no hace falta internet gateway ni dispositivo NAT para acceder a ellos.",
+      "explanation_en": "PrivateLink enables resources in your VPC to connect to AWS services using private IP addresses, as if those services were hosted directly in your VPC, so no internet gateway or NAT device is needed to reach them.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "privatelink"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204020",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que exige AWS a los clientes que acceden a la API de Amazon VPC por red?",
+      "question_en": "What does AWS require of clients accessing the Amazon VPC API over the network?",
+      "options_es": [
+        "Soporte Enterprise",
+        "Una VPN obligatoria",
+        "Una IP fija",
+        "TLS, con TLS 1.2 como minimo y 1.3 recomendado, y suites con perfect forward secrecy"
+      ],
+      "options_en": [
+        "Enterprise Support",
+        "A mandatory VPN",
+        "A static IP",
+        "TLS, with TLS 1.2 required and 1.3 recommended, and cipher suites with perfect forward secrecy"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La pagina de seguridad de infraestructura de VPC lo especifica: los clientes deben soportar TLS (se exige 1.2 y se recomienda 1.3) y suites de cifrado con perfect forward secrecy, como DHE o ECDHE. Es un ejemplo concreto de cifrado en transito impuesto por el servicio.",
+      "explanation_en": "The VPC infrastructure security page specifies it: clients must support TLS (1.2 required, 1.3 recommended) and cipher suites with perfect forward secrecy, such as DHE or ECDHE. It is a concrete example of encryption in transit enforced by the service.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "vpc",
+        "encryption"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204021",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un equipo quiere bloquear una sola direccion IP concreta que esta abusando del servicio. ¿Que mecanismo de red es el adecuado?",
+      "question_en": "A team wants to block one specific IP address that is abusing the service. Which network mechanism is appropriate?",
+      "options_es": [
+        "Un grupo de seguridad, anadiendo una regla de denegar",
+        "PrivateLink",
+        "Una tabla de rutas",
+        "Una ACL de red, que admite reglas de denegar"
+      ],
+      "options_en": [
+        "A security group, by adding a deny rule",
+        "PrivateLink",
+        "A route table",
+        "A network ACL, which supports deny rules"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Un grupo de seguridad no puede hacerlo: solo admite reglas de permitir, asi que no hay forma de expresar «todo el mundo menos esta IP». La ACL de red si admite reglas de denegar, y AWS la cita precisamente como control secundario para denegar un subconjunto concreto de trafico.",
+      "explanation_en": "A security group cannot do it: it supports allow rules only, so there is no way to express \"everyone except this IP\". A network ACL does support deny rules, and AWS cites it precisely as a secondary control to deny a specific subset of traffic.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "network-acl",
+        "security-groups"
+      ],
+      "source": "Infrastructure security in Amazon VPC - Compare security groups and network ACLs (https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)"
+    },
+    {
+      "id": "q080204022",
+      "skill_id": "sk080204",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Por que no basta con un grupo de seguridad bien configurado para considerar segura una instancia?",
+      "question_en": "Why is a well-configured security group not enough to consider an instance secure?",
+      "options_es": [
+        "Porque los grupos de seguridad fallan a menudo",
+        "Porque hace falta ademas una ACL de red siempre",
+        "Porque filtra trafico de red, pero no cubre parches del SO, permisos IAM, cifrado de datos ni vulnerabilidades de la aplicacion",
+        "Porque solo protege el trafico saliente"
+      ],
+      "options_en": [
+        "Because security groups often fail",
+        "Because a network ACL is always required as well",
+        "Because it filters network traffic, but does not cover OS patching, IAM permissions, data encryption or application vulnerabilities",
+        "Because it only protects outbound traffic"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un grupo de seguridad responde a «¿que puede conectarse?», y nada mas. Un servicio expuesto legitimamente en el puerto 443 puede seguir siendo vulnerable, correr un SO sin parchear, guardar datos sin cifrar o usar un rol con permisos de mas. La defensa en profundidad existe por eso.",
+      "explanation_en": "A security group answers \"what can connect?\", and nothing else. A service legitimately exposed on port 443 can still be vulnerable, run an unpatched OS, store unencrypted data or use an over-permissioned role. That is why defense in depth exists.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "security",
+        "defense-in-depth"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 2.4 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    }
+  ]
+}
