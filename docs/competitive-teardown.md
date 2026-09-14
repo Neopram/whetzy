@@ -239,3 +239,53 @@ Diez puntos en una sesión, todos con salida ejecutable pegada en el ledger. Y e
 2. **30 usuarios reales (H.8/H.10).** Sin retención medida, "motor adaptativo" y "gamificación" siguen siendo capacidades. El benchmark de 11.3 prueba que el motor *funciona*; sólo una cohorte prueba que *sirve*.
 
 Las dos juntas valen más que todo el backlog de ingeniería pendiente. Ninguna de las dos la puede hacer un agente.
+
+---
+
+## 8. Recálculo — 2026-09-14 (sesión an/ao)
+
+Mismos pesos de §7.1. Se aplican sólo los movimientos con evidencia pegada en el ledger desde §7.
+
+### 8.1 Qué se movió
+
+| Dimensión | §7 | Ahora | Evidencia — y qué la limita |
+|---|---|---|---|
+| **Distribución** | 0 | **5** | H.1 resuelto: el backend está vivo (`/health` 200, 61 rutas, `/tutor/explain` y `/exam` presentes, verificado por HTTP hoy). Pero los "+10 en depósito" de §7.2 **se cobran sólo a medias**, y por una razón comprobada, no estimada: el frontend desplegado es un build anterior a 9.8/11.2/11.7/11.11 (H.11). Medido hoy contra `whetzy.com`: `/sitemap.xml` devuelve `text/html` en vez de `text/xml`, y el HTML servido tiene **0** etiquetas `hreflang`. El SEO de 11.7 existe en el repo y **no llega a nadie**. La API viva vale 5; los otros 5 siguen en depósito hasta que Pages sirva el build nuevo |
+| **Contenido** | 35 | **50** | P.8 cerrada: **1.507 preguntas** (meta 1.500), 207/207 skills con ≥6, 100 % con `source`, 0 skipped. Más 10.2 completa — **300 preguntas de AWS Cloud Practitioner** cubriendo los 4 dominios según pesos oficiales, con 18 fuentes verificadas — y 10.3, simulacro cronometrado con informe por dominio. Eso es el diferenciador de DataCamp, en su primera versión. No sube más porque DataCamp sigue teniendo miles de horas de vídeo, notebooks y proyectos: 90 es suyo con razón |
+| **Ejecución de código** | 30 | **55** | 11.4 DONE: de 7 preguntas ejecutables (0,56 %) a **15,57 %** en los tracks 01–03, con cada salida esperada verificada ejecutando CPython en CI. No llega a 60 porque los tracks 04–07 siguen sin exec y DataCamp *es* un IDE |
+| Motor adaptativo | 55 | 55 | Sin evidencia nueva desde 11.3. La salvedad del *concept id* sigue en pie |
+| Tutor AI | 80 | 80 | Sin cambio. 11.2 ya estaba contado en §7 — y sigue sin llegar a producción por H.11 |
+| Gamificación | 40 | 40 | Cero usuarios. No se mueve hasta 11.8 (H.10) |
+| Bilingüe | 80 | 80 | 11.12 (exec bilingüe) refuerza el 80; no lo sube |
+| PWA / offline | 70 | 70 | Sin medición en Android real |
+| Accesibilidad | 75 | 75 | 9.7 sigue bloqueada por dispositivo (H.9) |
+
+### 8.2 El número
+
+```
+0,34×5  + 0,14×55 + 0,14×50 + 0,09×80 + 0,07×55
+        + 0,06×40 + 0,06×80 + 0,05×70 + 0,05×75   =  41,90
+```
+
+**Whetzy ≈ 42 / 100** (≈36 en §7, ≈30 en §6). Duolingo ≈ 72, DataCamp ≈ 68, Brilliant ≈ 66, Codecademy ≈ 58 — sin cambios.
+
+### 8.3 El techo, calculado con los mismos pesos
+
+Con **todo** el backlog cerrado — frontend desplegado, cohorte beta midiendo retención, IAP, stores, VoiceOver:
+
+```
+0,34×45 + 0,14×65 + 0,14×55 + 0,09×85 + 0,07×60
+        + 0,06×60 + 0,06×85 + 0,05×80 + 0,05×90   =  61,15
+```
+
+**Techo ≈ 61.** Conviene decir en voz alta lo que eso significa: con absolutamente todo hecho, Whetzy superaría a **Codecademy (58)** y seguiría por debajo de **Brilliant (66), DataCamp (68) y Duolingo (72)**.
+
+Distribución a 45 ya es optimista — supone stores, tráfico orgánico funcionando y una base de usuarios establecida, que es trabajo de meses y de mercado, no de backlog. Ésa es la aritmética honesta: **el marcador global no se gana construyendo**. Se gana teniendo usuarios, y ese tercio del marcador no lo mueve ningún agente.
+
+### 8.4 Entonces, ¿se supera a la competencia?
+
+En el marcador global, no — ni con el backlog entero cerrado. La pregunta útil es otra, y ahí la respuesta cambia:
+
+**Para un autodidacta hispanohablante que quiere aprender Python en serio**, Whetzy ya gana hoy en las dimensiones que le importan a esa persona: contenido técnico nativo en su idioma con fuente canónica citada (Duolingo no tiene tracks técnicos; DataCamp, Brilliant y Codecademy son EN-only), motor que no infla el progreso, tutor que dice cuándo no sabe, offline real y accesibilidad AA. Ese segmento no lo atiende bien nadie del set, y no es pequeño.
+
+La estrategia defendible no es «superar a toda la competencia». Es **ser incuestionablemente el mejor en un nicho que los cuatro ignoran**, y dejar que el marcador global suba solo cuando ese nicho traiga usuarios. Lo primero que hace falta para empezar a comprobarlo es que alguien pueda *ver* el producto: H.11.

@@ -81,7 +81,7 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 | Revisión de stores | Aprobada a la primera | Checklists 9.5 / 9.6 completos con evidencia |
 | Motor adaptativo con evidencia | DKT AUC ≥ 0,70 y > BKT en benchmark público | `app/ml/benchmark_kt.py` (11.3), no el eval interno con 3 secuencias |
 | Tutor grounded en prod | ≥ 95 % self-retrieval top-3; `grounded` refleja un hit real | Test de 11.1 contra la DB de contenido |
-| Posición competitiva | Score honesto ≥ 60/100 | `docs/competitive-teardown.md` §6, recalculado solo con tareas DONE-con-evidencia |
+| Posición competitiva | Score honesto ≥ 60/100 | `docs/competitive-teardown.md`, sección de recálculo más reciente (§8 el 14-sep: **42**; techo del backlog entero: **61**). Los pesos están fijados en §7.1 — **no se tocan entre mediciones**, o la serie 30 → 36 → 42 deja de ser comparable y el marcador vuelve a ser opinión |
 
 ### Cómo decide un dueño cuando hay tensión
 1. Estabilidad de producción por encima de todo.
