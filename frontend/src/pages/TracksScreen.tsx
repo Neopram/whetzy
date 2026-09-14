@@ -5,33 +5,20 @@ import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
 import {
+  content as contentApi,
   progress as progressApi,
   glossary as glossaryApi,
   type CurriculumModule,
+  type TrackRead,
 } from '../services/api';
 import styles from './TracksScreen.module.css';
 
 type View = 'curriculum' | 'glossary';
 
-// Hardcoded to match the shipped curriculum. `certification: true` marks a
-// track that mirrors a published exam blueprint, which is what unlocks the
-// timed mock (10.3) - the other tracks have no exam to rehearse.
-const TRACKS: {
-  id: string;
-  icon: string;
-  name_es: string;
-  name_en: string;
-  certification?: boolean;
-}[] = [
-  { id: 'track01', icon: '🐍', name_es: 'Python Básico', name_en: 'Python Basics' },
-  { id: 'track02', icon: '🧩', name_es: 'Python Intermedio', name_en: 'Python Intermediate' },
-  { id: 'track03', icon: '⚙️', name_es: 'Python Avanzado', name_en: 'Python Advanced' },
-  { id: 'track04', icon: '🏗️', name_es: 'Ing. de Software', name_en: 'Software Engineering' },
-  { id: 'track05', icon: '🌐', name_es: 'Arquitectura', name_en: 'Software Architecture' },
-  { id: 'track06', icon: '🤖', name_es: 'Fundamentos de IA', name_en: 'AI Fundamentals' },
-  { id: 'track07', icon: '🧠', name_es: 'Ingeniería de IA', name_en: 'AI Engineering' },
-  { id: 'track08', icon: '☁️', name_es: 'AWS Cloud Practitioner', name_en: 'AWS Cloud Practitioner', certification: true },
-];
+// No hardcoded track list: it is fetched from the API (task Q.14). Keeping a
+// copy here is how the AWS certification track stayed invisible in the app for
+// a whole session while being loaded, stored and served correctly.
+const ICON_FALLBACK = '📘';
 
 function statusMeta(status: CurriculumModule['status']) {
   switch (status) {
@@ -48,7 +35,10 @@ export function TracksScreen() {
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
   const { t } = useTranslation();
-  const selected = TRACKS.find((tr) => tr.id === track);
+  const { data: tracks, loading: tracksLoading, error: tracksError } =
+    useApi<TrackRead[]>(() => contentApi.tracks(), []);
+  const trackList = tracks ?? [];
+  const selected = trackList.find((tr) => tr.id === track);
 
   return (
     <div className={styles.screen}>
@@ -57,7 +47,7 @@ export function TracksScreen() {
 
       {/* Track selector */}
       <div className={styles.trackRow} role="tablist" aria-label={t('tracks.title')}>
-        {TRACKS.map((tr) => (
+        {trackList.map((tr) => (
           <button
             key={tr.id}
             role="tab"
@@ -65,12 +55,23 @@ export function TracksScreen() {
             className={`${styles.trackChip} ${track === tr.id ? styles.trackChipActive : ''}`}
             onClick={() => setTrack(tr.id)}
           >
-            <span className={styles.trackChipIcon}>{tr.icon}</span>
+            <span className={styles.trackChipIcon}>{tr.icon || ICON_FALLBACK}</span>
             <span>{lang === 'es' ? tr.name_es : tr.name_en}</span>
           </button>
         ))}
+        {tracksLoading && trackList.length === 0 && (
+          <span className={styles.trackChip}>{t('loading')}</span>
+        )}
       </div>
 
+      {/* Without this the screen just renders an empty selector and says
+          nothing, which is what it did when the endpoint 404'd during
+          development - silence looks identical to "no tracks exist". */}
+      {!tracksLoading && trackList.length === 0 && (
+        <p className={styles.tracksError} role="alert">
+          {tracksError ?? t('tracks.empty')}
+        </p>
+      )}
       {/* View toggle */}
       <div className={styles.viewToggle}>
         <button
@@ -85,11 +86,14 @@ export function TracksScreen() {
 
       {/* Only a certification track offers a mock exam, and it says what it
           costs in time before the clock starts. */}
-      {selected?.certification && (
+      {selected?.is_certification && selected.exam_question_count && selected.exam_duration_minutes && (
         <button className={styles.mockExamCta} onClick={() => setScreen('mockexam')}>
           <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
           <span className={styles.mockExamMeta}>
-            {t('mockExam.format', { count: 65, minutes: 90 })}
+            {t('mockExam.format', {
+              count: selected.exam_question_count,
+              minutes: selected.exam_duration_minutes,
+            })}
           </span>
         </button>
       )}

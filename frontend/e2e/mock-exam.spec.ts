@@ -27,7 +27,10 @@ test.describe('certification mock exam', () => {
     // failures here: if any of these three steps stops working, the mock exam
     // is unreachable and this test must say so.
     await page.getByRole('button', { name: 'Rutas' }).click();
-    await page.getByRole('tab', { name: /AWS Cloud Practitioner/ }).click();
+    // The track name comes from content/curriculum/tracks.json since Q.14,
+    // so match the name the content actually uses rather than a shortened
+    // one a hardcoded list happened to have.
+    await page.getByRole('tab', { name: /AWS Certified Cloud Practitioner/ }).click();
 
     const cta = page.getByRole('button', { name: /Simulacro de examen|Mock exam/ });
     await expect(cta).toBeVisible({ timeout: 10_000 });

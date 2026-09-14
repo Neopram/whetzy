@@ -9,8 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.db import get_db
-from app.models.content import Question
-from app.schemas.content import QuestionPatch
+from app.core.security import get_current_user
+from app.models.content import Question, Track
+from app.models.user import User
+from app.schemas.content import QuestionPatch, TrackRead
 from app.services import content_agent, content_qa
 from app.services.duplicate_detector import (
     DEFAULT_MAX_PAIRS,
@@ -25,6 +27,22 @@ def _require_admin_key(x_admin_key: str = Header(default="")) -> None:
     key = settings.CONTENT_ADMIN_KEY
     if not key or x_admin_key != key:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+
+
+@router.get("/tracks", response_model=list[TrackRead])
+async def list_tracks(
+    _current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> list[Track]:
+    """The tracks the app should offer, from the content that is actually loaded.
+
+    This exists because the client used to hardcode the list, so adding a track
+    to `content/` shipped it to the database and the API while leaving it
+    invisible in the UI - which is exactly what happened to the AWS
+    certification track (task Q.14). Serving the list removes the possibility
+    of the two disagreeing.
+    """
+    return list(await db.scalars(select(Track).order_by(Track.order)))
 
 
 @router.patch(

@@ -14,6 +14,14 @@ class TrackRead(BaseModel):
     color: str
     total_questions: int
 
+    # Certification tracks only. A learning track leaves these null, which is
+    # how the client knows not to offer a mock exam for it rather than keeping
+    # its own list of which tracks are certifications.
+    is_certification: bool = False
+    cert_provider: str | None = None
+    exam_question_count: int | None = None
+    exam_duration_minutes: int | None = None
+
 
 class ModuleRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)

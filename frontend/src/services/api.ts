@@ -496,6 +496,30 @@ export const duels = {
   },
 };
 
+// ── Tracks (Q.14) ─────────────────────────────────────────────────────────────
+
+export interface TrackRead {
+  id: string;
+  name_es: string;
+  name_en: string;
+  order: number;
+  icon: string;
+  color: string;
+  total_questions: number;
+  /** Certification tracks only; null on a learning track. The client uses this
+   *  to decide whether to offer a mock exam, instead of keeping its own list. */
+  is_certification: boolean;
+  cert_provider: string | null;
+  exam_question_count: number | null;
+  exam_duration_minutes: number | null;
+}
+
+export const content = {
+  async tracks() {
+    return request<TrackRead[]>('/content/tracks');
+  },
+};
+
 // ── Certification mock exam (10.3) ────────────────────────────────────────────
 
 export interface MockExamStartResponse {
