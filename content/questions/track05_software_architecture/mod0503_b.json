@@ -1,0 +1,836 @@
+{
+  "questions": [
+    {
+      "id": "q050301009",
+      "skill_id": "sk050301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué distingue a la estrategia 'read-through' de la estrategia 'cache-aside'?",
+      "question_en": "What distinguishes the 'read-through' strategy from the 'cache-aside' strategy?",
+      "options_es": [
+        "En read-through es la propia cache (o su librería) quien consulta el origen y se rellena en el fallo; en cache-aside esa lógica vive en el código de la aplicación",
+        "Read-through escribe en la base de datos y cache-aside solo lee; son estrategias de escritura y de lectura respectivamente",
+        "Read-through no usa TTL porque los datos se refrescan solos en cada petición",
+        "Cache-aside solo funciona con caches locales en proceso, mientras que read-through requiere una cache distribuida"
+      ],
+      "options_en": [
+        "In read-through the cache itself (or its library) queries the origin and populates on a miss; in cache-aside that logic lives in the application code",
+        "Read-through writes to the database and cache-aside only reads; they are a write and a read strategy respectively",
+        "Read-through does not use TTLs because the data refreshes itself on every request",
+        "Cache-aside only works with local in-process caches, while read-through requires a distributed cache"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La diferencia es de responsabilidad, no de resultado: ambas terminan con el dato en la cache tras un fallo. En cache-aside la aplicación hace get, detecta el miss, consulta la base y hace set; en read-through delega ese camino a la cache, que se comporta como un proxy del origen. La opción 2 confunde el eje lectura/escritura con el eje quién-rellena (write-through es su contraparte de escritura). La 3 es el malentendido de que 'si la cache habla con el origen ya nunca hay datos rancios': el TTL sigue siendo necesario. La 4 confunde estrategia con topología: ambas se implementan en cache local o distribuida.",
+      "explanation_en": "The difference is about responsibility, not outcome: both end with the value cached after a miss. In cache-aside the application does the get, detects the miss, queries the database and sets; in read-through that path is delegated to the cache, which acts as a proxy for the origin. Option 2 confuses the read/write axis with the who-populates axis (write-through is the write counterpart). Option 3 is the belief that 'if the cache talks to the origin there is never stale data': a TTL is still needed. Option 4 confuses strategy with topology: both can be implemented on a local or a distributed cache.",
+      "source": "AWS ElastiCache User Guide - Caching Strategies / Kleppmann, Designing Data-Intensive Applications",
+      "expected_time_ms": 35000,
+      "tags": [
+        "caching",
+        "read-through",
+        "cache-aside"
+      ]
+    },
+    {
+      "id": "q050301010",
+      "skill_id": "sk050301",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un servicio implementa cache-aside con un TTL de 60 s:\\n\\n```python\\ndef get_user(uid):\\n    v = cache.get(uid)\\n    if v is None:\\n        v = db.query(uid)      # cuenta como 1 lectura de BD\\n        cache.set(uid, v, ttl=60)\\n    return v\\n```\\n\\nEn 10 segundos llegan estas peticiones: `get_user(1)`, `get_user(1)`, `get_user(2)`, `get_user(1)`, `get_user(2)`. ¿Cuántas lecturas de BD se producen?",
+      "question_en": "A service implements cache-aside with a 60 s TTL:\\n\\n```python\\ndef get_user(uid):\\n    v = cache.get(uid)\\n    if v is None:\\n        v = db.query(uid)      # counts as 1 DB read\\n        cache.set(uid, v, ttl=60)\\n    return v\\n```\\n\\nWithin 10 seconds these calls arrive: `get_user(1)`, `get_user(1)`, `get_user(2)`, `get_user(1)`, `get_user(2)`. How many DB reads happen?",
+      "options_es": [
+        "5, porque cada llamada consulta la base antes de mirar la cache",
+        "2, una por cada clave distinta: el resto se sirve desde la cache dentro del TTL",
+        "3, porque la cache se invalida al cambiar de clave",
+        "0, porque el TTL de 60 s significa que la cache se precarga al arrancar"
+      ],
+      "options_en": [
+        "5, because every call queries the database before looking at the cache",
+        "2, one per distinct key: the rest are served from the cache inside the TTL",
+        "3, because the cache is invalidated when the key changes",
+        "0, because a 60 s TTL means the cache is pre-warmed at startup"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Solo el primer acceso a cada clave falla; con TTL de 60 s y una ventana de 10 s, los accesos siguientes a 1 y a 2 son aciertos. El hit ratio es 3/5 = 60 %. La opción 1 es el error de leer el código al revés (la BD se consulta solo dentro del `if`). La 3 imagina una cache de una sola entrada: las caches se indexan por clave y guardan muchas a la vez. La 4 confunde TTL con precarga (cache warming): un TTL no rellena nada, solo marca cuándo caduca lo que ya se guardó de forma perezosa.",
+      "explanation_en": "Only the first access to each key misses; with a 60 s TTL and a 10 s window, later accesses to 1 and 2 are hits. The hit ratio is 3/5 = 60 %. Option 1 is reading the code backwards (the DB is only queried inside the `if`). Option 3 imagines a single-entry cache: caches are keyed and hold many entries at once. Option 4 confuses TTL with cache warming: a TTL populates nothing, it only marks when a lazily stored entry expires.",
+      "source": "AWS ElastiCache User Guide - Lazy Loading / Kleppmann, Designing Data-Intensive Applications",
+      "expected_time_ms": 40000,
+      "tags": [
+        "caching",
+        "cache-aside",
+        "hit-ratio"
+      ]
+    },
+    {
+      "id": "q050301011",
+      "skill_id": "sk050301",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una cache aporta más valor cuanto mayor es la proporción de lecturas por escritura del dato: si cada entrada se lee muchas veces antes de cambiar, el coste de poblarla se amortiza entre muchos aciertos.",
+      "question_en": "A cache pays off more the higher the read-to-write ratio of the data: if each entry is read many times before it changes, the cost of populating it is amortised over many hits.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El beneficio de una cache es proporcional al número de aciertos que obtiene cada entrada antes de caducar o invalidarse. Con datos que cambian en cada escritura y se leen una sola vez, la cache añade latencia, memoria y riesgo de datos rancios sin ahorrar nada: es el caso en el que conviene no cachear. El error frecuente es tratar la cache como una mejora universal y medir solo la latencia del camino con acierto, sin mirar el hit ratio ni el coste de la invalidación.",
+      "explanation_en": "True. A cache's benefit is proportional to how many hits each entry earns before it expires or is invalidated. For data that changes on every write and is read once, the cache adds latency, memory and staleness risk while saving nothing: that is the case where you should not cache. The common mistake is treating a cache as a universal win and measuring only the hit-path latency, without looking at the hit ratio or the cost of invalidation.",
+      "source": "Kleppmann, Designing Data-Intensive Applications / AWS ElastiCache User Guide - Caching Strategies",
+      "expected_time_ms": 25000,
+      "tags": [
+        "caching",
+        "read-write-ratio",
+        "trade-offs"
+      ]
+    },
+    {
+      "id": "q050301012",
+      "skill_id": "sk050301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un atacante pide en bucle identificadores que no existen. Cada petición falla en la cache y golpea la base de datos. ¿Qué técnica de caching ataca directamente este problema?",
+      "question_en": "An attacker requests non-existent identifiers in a loop. Every request misses the cache and hits the database. Which caching technique addresses this problem directly?",
+      "options_es": [
+        "Subir el TTL de las entradas existentes para que la cache retenga más datos",
+        "Cambiar la política de desalojo de LRU a LFU para conservar las claves populares",
+        "Cachear también el resultado negativo ('no existe') con un TTL corto, para que las peticiones repetidas por esa clave no lleguen al origen",
+        "Aumentar la memoria de la cache hasta que quepa la base de datos entera"
+      ],
+      "options_en": [
+        "Raising the TTL of existing entries so the cache retains more data",
+        "Switching the eviction policy from LRU to LFU to keep popular keys",
+        "Caching the negative result ('does not exist') too, with a short TTL, so repeated requests for that key never reach the origin",
+        "Growing the cache memory until the whole database fits"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Es el patrón de 'negative caching' (o cache de ausencias), la defensa estándar frente al cache penetration. El TTL corto limita el daño si la clave pasa a existir de verdad. Las opciones 1, 2 y 4 comparten la misma equivocación: intentan mejorar la cobertura de datos que sí existen, y la clave inexistente sigue sin estar en la cache por definición, así que el fallo se repite igual. Ampliar memoria o cambiar la política de desalojo no crea una entrada que nunca se ha guardado.",
+      "explanation_en": "This is negative caching, the standard defence against cache penetration. The short TTL bounds the damage if the key later does exist. Options 1, 2 and 4 share the same error: they try to improve coverage of data that does exist, while the non-existent key is by definition still absent from the cache, so the miss repeats identically. More memory or a different eviction policy cannot create an entry that was never stored.",
+      "source": "AWS ElastiCache User Guide - Caching Strategies / Nygard, Release It! 2e",
+      "expected_time_ms": 42000,
+      "tags": [
+        "caching",
+        "negative-caching",
+        "resilience"
+      ]
+    },
+    {
+      "id": "q050301013",
+      "skill_id": "sk050301",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "La estrategia de escritura en la que la aplicación escribe directamente en la base de datos y NO puebla la cache en ese momento (la entrada solo aparecerá cuando alguien la lea) se llama write-_____. (una palabra en inglés)",
+      "question_en": "The write strategy in which the application writes straight to the database and does NOT populate the cache at that moment (the entry only appears when someone reads it) is called write-_____. (one word)",
+      "correct_answer_es": "around",
+      "correct_answer_en": "around",
+      "explanation_es": "Write-around evita llenar la cache de datos que se escriben mucho y se leen poco, que es justo lo que ensucia una cache con write-through. Su coste es que la primera lectura tras cada escritura siempre falla. Quien confunde los tres términos suele responder 'through' (escribe en cache y base a la vez, síncrono) o 'back'/'behind' (escribe en cache y difiere la base, rápido pero con riesgo de pérdida si la cache cae antes de vaciarse).",
+      "explanation_en": "Write-around avoids filling the cache with write-heavy, read-light data, which is exactly what pollutes a write-through cache. Its cost is that the first read after each write always misses. People who mix the three up usually answer 'through' (writes cache and database together, synchronously) or 'back'/'behind' (writes the cache and defers the database, fast but at risk of loss if the cache dies before flushing).",
+      "source": "AWS ElastiCache User Guide - Write Strategies / Kleppmann, Designing Data-Intensive Applications",
+      "expected_time_ms": 30000,
+      "tags": [
+        "caching",
+        "write-around",
+        "write-strategies"
+      ]
+    },
+    {
+      "id": "q050301014",
+      "skill_id": "sk050301",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Dos procesos operan sobre la misma clave con cache-aside. El entrelazado real es:\\n\\n```\\nP1: v = cache.get('u1')   -> None (miss)\\nP1: v = db.read('u1')     -> \"Ana\"\\nP2: db.write('u1', \"Eva\")\\nP2: cache.delete('u1')\\nP1: cache.set('u1', \"Ana\", ttl=600)\\n```\\n\\n¿Qué queda en la cache y durante cuánto tiempo?",
+      "question_en": "Two processes work on the same key with cache-aside. The actual interleaving is:\\n\\n```\\nP1: v = cache.get('u1')   -> None (miss)\\nP1: v = db.read('u1')     -> \"Ana\"\\nP2: db.write('u1', \"Eva\")\\nP2: cache.delete('u1')\\nP1: cache.set('u1', \"Ana\", ttl=600)\\n```\\n\\nWhat ends up in the cache, and for how long?",
+      "options_es": [
+        "Queda \"Eva\", porque la escritura en la base de datos actualiza también la cache",
+        "La clave queda vacía, porque el delete de P2 se aplica después del set de P1",
+        "Queda \"Eva\" con TTL 600 s, porque el set de P1 reescribe el valor más reciente de la base",
+        "Queda \"Ana\" (valor rancio) durante 600 s, porque el set tardío de P1 resucita un valor leído antes de la escritura y el delete ya ocurrió"
+      ],
+      "options_en": [
+        "\"Eva\" remains, because writing to the database also updates the cache",
+        "The key is left empty, because P2's delete applies after P1's set",
+        "\"Eva\" remains with a 600 s TTL, because P1's set writes back the latest database value",
+        "\"Ana\" (a stale value) remains for 600 s, because P1's late set revives a value read before the write, and the delete already happened"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Es la carrera clásica de cache-aside: la invalidación de P2 llega antes que el set de P1, así que no borra nada útil y el valor viejo se reinstala con TTL completo. La inconsistencia dura hasta que expire o se vuelva a invalidar. La opción 1 supone que la base notifica a la cache, cosa que cache-aside no hace. La 2 reordena los pasos a conveniencia. La 3 cree que `set` releé la base; P1 escribe la variable `v` que capturó antes. Mitigaciones: CAS/versionado, bloqueo por clave o TTL corto.",
+      "explanation_en": "This is the classic cache-aside race: P2's invalidation lands before P1's set, so it deletes nothing useful and the old value is reinstalled with a full TTL. The inconsistency lasts until it expires or is invalidated again. Option 1 assumes the database notifies the cache, which cache-aside does not do. Option 2 reorders the steps to taste. Option 3 believes `set` re-reads the database; P1 writes the `v` it captured earlier. Mitigations: CAS/versioning, per-key locking, or a short TTL.",
+      "source": "Kleppmann, Designing Data-Intensive Applications / martinfowler.com - Two Hard Things",
+      "expected_time_ms": 55000,
+      "tags": [
+        "caching",
+        "race-condition",
+        "consistency"
+      ]
+    },
+    {
+      "id": "q050301015",
+      "skill_id": "sk050301",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un equipo añade una cache local en proceso delante de la cache distribuida (Redis) para ahorrar el salto de red. ¿Cuál es el coste arquitectónico que casi siempre se subestima?",
+      "question_en": "A team adds a local in-process cache in front of the distributed cache (Redis) to save the network hop. Which architectural cost is almost always underestimated?",
+      "options_es": [
+        "Cada réplica del servicio tiene su propia copia, así que invalidar en Redis no basta y durante la ventana de propagación distintas instancias responden valores distintos al mismo usuario",
+        "La cache local no puede almacenar objetos serializados, solo cadenas de texto",
+        "Redis deja de poder desalojar claves porque la cache local mantiene una referencia a ellas",
+        "El hit ratio global baja, porque los aciertos locales dejan de contarse como aciertos de Redis"
+      ],
+      "options_en": [
+        "Each service replica keeps its own copy, so invalidating in Redis is not enough, and during the propagation window different instances answer the same user with different values",
+        "A local cache cannot store serialised objects, only text strings",
+        "Redis can no longer evict keys, because the local cache holds a reference to them",
+        "The global hit ratio drops, because local hits stop counting as Redis hits"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Pasar de una cache compartida a N caches locales convierte un problema de invalidación con un punto de control en uno distribuido: hay que difundir la invalidación (pub/sub, client-side caching con invalidación de Redis) y aun así queda una ventana de incoherencia, visible como el usuario que refresca y ve el dato viejo y el nuevo alternándose por el balanceador. La opción 2 es falsa. La 3 invierte la relación: Redis desaloja sin saber nada de los clientes. La 4 confunde una métrica con un problema: los aciertos locales son precisamente el ahorro buscado.",
+      "explanation_en": "Going from one shared cache to N local caches turns invalidation from a single-control-point problem into a distributed one: the invalidation must be broadcast (pub/sub, Redis client-side caching invalidation) and even then an incoherence window remains, visible as the user who refreshes and sees the old and new values alternate behind the load balancer. Option 2 is false. Option 3 inverts the relationship: Redis evicts without knowing anything about clients. Option 4 mistakes a metric for a problem: local hits are exactly the saving you wanted.",
+      "source": "Redis docs - Client-side caching / Kleppmann, Designing Data-Intensive Applications",
+      "expected_time_ms": 55000,
+      "tags": [
+        "caching",
+        "local-cache",
+        "coherence"
+      ]
+    },
+    {
+      "id": "q050302008",
+      "skill_id": "sk050302",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "En redis-cli:\\n\\n```\\n> SET sesion \"abc\" EX 300\\nOK\\n> SET sesion \"xyz\"\\nOK\\n> TTL sesion\\n```\\n\\n¿Qué devuelve el último comando?",
+      "question_en": "In redis-cli:\\n\\n```\\n> SET session \"abc\" EX 300\\nOK\\n> SET session \"xyz\"\\nOK\\n> TTL session\\n```\\n\\nWhat does the last command return?",
+      "options_es": [
+        "(integer) 300, porque el TTL se fijó en la primera escritura y sigue vigente",
+        "(integer) -1, porque un SET sin EX ni KEEPTTL descarta el TTL anterior y la clave queda sin caducidad",
+        "(integer) -2, porque sobrescribir una clave con TTL la elimina",
+        "(error) porque no se puede sobrescribir una clave que tiene TTL"
+      ],
+      "options_en": [
+        "(integer) 300, because the TTL was set on the first write and still applies",
+        "(integer) -1, because a SET without EX or KEEPTTL discards the previous TTL and the key is left with no expiry",
+        "(integer) -2, because overwriting a key that has a TTL deletes it",
+        "(error) because a key that has a TTL cannot be overwritten"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`SET` reemplaza la clave por completo, incluidos sus metadatos: salvo que se pase `KEEPTTL`, la caducidad se pierde. `TTL` devuelve -1 para una clave existente sin caducidad y -2 si la clave no existe, que es justo la confusión de la opción 3. La opción 1 es la creencia de que el TTL va 'pegado al nombre de la clave'; es la causa real de sesiones que nunca caducan y de caches que crecen sin límite hasta que el desalojo empieza a tirar datos.",
+      "explanation_en": "`SET` replaces the key entirely, metadata included: unless `KEEPTTL` is passed, the expiry is lost. `TTL` returns -1 for an existing key with no expiry and -2 when the key does not exist, which is exactly the confusion in option 3. Option 1 is the belief that a TTL is 'attached to the key name'; it is the real cause of sessions that never expire and caches that grow unbounded until eviction starts dropping data.",
+      "source": "Redis docs - SET / TTL commands",
+      "expected_time_ms": 30000,
+      "tags": [
+        "redis",
+        "ttl",
+        "expiration"
+      ]
+    },
+    {
+      "id": "q050302009",
+      "skill_id": "sk050302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Hay que contar visitantes únicos diarios de millones de usuarios, aceptando ~0,8 % de error, con un consumo de memoria fijo y diminuto por día. ¿Qué estructura de Redis encaja?",
+      "question_en": "You must count daily unique visitors across millions of users, accepting ~0.8 % error, with a tiny fixed memory footprint per day. Which Redis structure fits?",
+      "options_es": [
+        "Una lista (LPUSH) con un identificador por visita, contando después su longitud",
+        "Un set (SADD) con el id de cada usuario y SCARD para el total",
+        "Un HyperLogLog (PFADD / PFCOUNT), que da una cardinalidad aproximada en unos 12 KB por contador",
+        "Un contador simple (INCR) por día"
+      ],
+      "options_en": [
+        "A list (LPUSH) with one identifier per visit, then reading its length",
+        "A set (SADD) with each user id and SCARD for the total",
+        "A HyperLogLog (PFADD / PFCOUNT), which gives an approximate cardinality in about 12 KB per counter",
+        "A plain counter (INCR) per day"
+      ],
+      "correct_index": 2,
+      "explanation_es": "HyperLogLog está diseñado exactamente para este caso: cardinalidad aproximada con error estándar de ~0,81 % y memoria constante (~12 KB), independientemente de si hay mil o cien millones de usuarios. El set de la opción 2 da el número exacto, y es la respuesta correcta cuando se necesita exactitud o consultar pertenencia, pero su memoria crece con el número de usuarios: es el error de diseño típico. La lista además duplica las visitas repetidas, y `INCR` cuenta visitas, no visitantes únicos.",
+      "explanation_en": "HyperLogLog is designed for exactly this: approximate cardinality with ~0.81 % standard error and constant memory (~12 KB), whether there are a thousand or a hundred million users. The set in option 2 gives the exact number, and is the right answer when you need exactness or membership queries, but its memory grows with the number of users: that is the classic design mistake. The list additionally double-counts repeat visits, and `INCR` counts visits, not unique visitors.",
+      "source": "Redis docs - HyperLogLog (PFADD/PFCOUNT)",
+      "expected_time_ms": 38000,
+      "tags": [
+        "redis",
+        "hyperloglog",
+        "data-structures"
+      ]
+    },
+    {
+      "id": "q050302010",
+      "skill_id": "sk050302",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En una transacción de Redis (MULTI/EXEC), si un comando falla en tiempo de ejecución (por ejemplo, un LPUSH sobre una clave que contiene un string), Redis deshace los comandos anteriores de la transacción.",
+      "question_en": "In a Redis transaction (MULTI/EXEC), if a command fails at runtime (for example an LPUSH against a key holding a string), Redis rolls back the earlier commands in the transaction.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso: Redis no hace rollback. Los comandos encolados se ejecutan todos de forma aislada, y si uno falla en ejecución, el error se refleja en su posición de la respuesta pero el resto de efectos quedan aplicados. Solo los errores detectados al encolar (sintaxis, comando inexistente) abortan el EXEC completo. Quien traslada el modelo ACID de una base relacional a Redis espera atomicidad con rollback; aquí 'atómico' significa que nadie ve un estado intermedio, no que haya deshacer. Para lógica condicional real se usan WATCH (CAS optimista) o scripts Lua.",
+      "explanation_en": "False: Redis does not roll back. All queued commands are executed in isolation, and if one fails at runtime the error appears in its slot of the reply while the other effects remain applied. Only errors detected at queueing time (syntax, unknown command) abort the whole EXEC. People carrying the ACID model of a relational database over to Redis expect atomicity with rollback; here 'atomic' means no one observes an intermediate state, not that there is an undo. For real conditional logic, use WATCH (optimistic CAS) or Lua scripts.",
+      "source": "Redis docs - Transactions (MULTI/EXEC/WATCH)",
+      "expected_time_ms": 32000,
+      "tags": [
+        "redis",
+        "transactions",
+        "atomicity"
+      ]
+    },
+    {
+      "id": "q050302011",
+      "skill_id": "sk050302",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En Redis Cluster, una operación multi-clave como `MGET user:1 user:2` funciona siempre, porque el cliente consulta los nodos necesarios y agrega los resultados de forma transparente.",
+      "question_en": "In Redis Cluster, a multi-key operation such as `MGET user:1 user:2` always works, because the client queries the nodes involved and transparently merges the results.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. Redis Cluster reparte las claves en 16384 hash slots y una operación multi-clave solo se admite si todas las claves caen en el mismo slot; si no, el servidor responde CROSSSLOT. La solución explícita son los hash tags: `user:{42}:perfil` y `user:{42}:sesion` se calculan sobre `42` y comparten slot. La suposición contraria es el error que suele aparecer al migrar de un Redis único a cluster: código que funcionaba (MGET, MULTI multi-clave, scripts Lua con varias KEYS) empieza a fallar sin que cambie ninguna lógica de negocio.",
+      "explanation_en": "False. Redis Cluster spreads keys over 16384 hash slots, and a multi-key operation is only accepted when every key falls in the same slot; otherwise the server replies CROSSSLOT. The explicit fix is hash tags: `user:{42}:profile` and `user:{42}:session` hash on `42` and share a slot. The opposite assumption is the error that surfaces when migrating from a single Redis to a cluster: code that used to work (MGET, multi-key MULTI, Lua scripts with several KEYS) starts failing without any business logic changing.",
+      "source": "Redis docs - Redis Cluster specification (hash slots and hash tags)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "redis",
+        "cluster",
+        "hash-slots"
+      ]
+    },
+    {
+      "id": "q050302012",
+      "skill_id": "sk050302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un Redis usado solo como cache está configurado con `maxmemory 2gb` y `maxmemory-policy volatile-lru`, pero la aplicación guarda las claves SIN TTL. Al llenarse la memoria, ¿qué ocurre?",
+      "question_en": "A Redis used purely as a cache is configured with `maxmemory 2gb` and `maxmemory-policy volatile-lru`, but the application stores keys WITHOUT a TTL. When memory fills up, what happens?",
+      "options_es": [
+        "Redis desaloja igualmente las claves menos usadas, porque LRU se aplica a todo el espacio de claves",
+        "Redis empieza a escribir en disco para no perder datos y sigue aceptando escrituras",
+        "Redis sube el límite de memoria automáticamente hasta la RAM disponible de la máquina",
+        "No hay ninguna clave candidata a desalojo, así que las escrituras empiezan a fallar con un error OOM mientras las lecturas siguen funcionando"
+      ],
+      "options_en": [
+        "Redis evicts the least-recently-used keys anyway, because LRU applies to the whole keyspace",
+        "Redis starts spilling to disk so nothing is lost and keeps accepting writes",
+        "Redis automatically raises the memory limit up to the machine's available RAM",
+        "There is no eviction candidate, so writes start failing with an OOM error while reads keep working"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`volatile-*` solo considera claves con caducidad fijada; sin TTL el conjunto de candidatos está vacío y Redis se comporta como `noeviction` para las escrituras. Para una cache pura la política correcta es `allkeys-lru` (o `allkeys-lfu`), que es justo lo que la opción 1 da por hecho sin leer el prefijo `volatile`. La opción 2 confunde persistencia (RDB/AOF, que escriben el dataset a disco) con swap o memoria virtual: Redis no descarga claves a disco para liberar RAM. La 3 no existe: `maxmemory` es un límite duro.",
+      "explanation_en": "`volatile-*` only considers keys that have an expiry set; with no TTL the candidate set is empty and Redis behaves like `noeviction` for writes. For a pure cache the right policy is `allkeys-lru` (or `allkeys-lfu`), which is exactly what option 1 assumes without reading the `volatile` prefix. Option 2 confuses persistence (RDB/AOF, which write the dataset to disk) with swapping: Redis does not offload keys to disk to free RAM. Option 3 does not exist: `maxmemory` is a hard limit.",
+      "source": "Redis docs - Key eviction (maxmemory-policy)",
+      "expected_time_ms": 45000,
+      "tags": [
+        "redis",
+        "eviction",
+        "maxmemory"
+      ]
+    },
+    {
+      "id": "q050302013",
+      "skill_id": "sk050302",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "En redis-cli:\\n\\n```\\n> SET visitas 10\\nOK\\n> INCR visitas\\n(integer) 11\\n> APPEND visitas \"x\"\\n(integer) 3\\n> INCR visitas\\n```\\n\\n¿Qué devuelve el último INCR?",
+      "question_en": "In redis-cli:\\n\\n```\\n> SET visits 10\\nOK\\n> INCR visits\\n(integer) 11\\n> APPEND visits \"x\"\\n(integer) 3\\n> INCR visits\\n```\\n\\nWhat does the last INCR return?",
+      "options_es": [
+        "(error) ERR value is not an integer or out of range, porque la clave ahora contiene \"11x\", que no es un entero",
+        "(integer) 12, porque INCR ignora los caracteres no numéricos del valor",
+        "(integer) 1, porque INCR reinicia la clave cuando no puede interpretarla",
+        "(error) WRONGTYPE, porque APPEND convirtió la clave en otro tipo de dato"
+      ],
+      "options_en": [
+        "(error) ERR value is not an integer or out of range, because the key now holds \"11x\", which is not an integer",
+        "(integer) 12, because INCR ignores non-numeric characters in the value",
+        "(integer) 1, because INCR resets the key when it cannot parse it",
+        "(error) WRONGTYPE, because APPEND changed the key to a different data type"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En Redis los contadores no son un tipo aparte: son strings que INCR interpreta como entero en base 10 en cada llamada. `APPEND` deja \"11x\" (de ahí el 3 de longitud) y el siguiente INCR falla al parsear. La opción 4 es el error más sutil: el tipo sigue siendo `string`, así que no hay WRONGTYPE; ese error aparecería con `LPUSH` sobre la misma clave. Las opciones 2 y 3 atribuyen a INCR una tolerancia que no tiene: falla en voz alta en lugar de inventar un valor, que es el comportamiento que conviene en un contador.",
+      "explanation_en": "In Redis counters are not a separate type: they are strings that INCR parses as a base-10 integer on every call. `APPEND` leaves \"11x\" (hence the length 3) and the next INCR fails to parse it. Option 4 is the subtler error: the type is still `string`, so there is no WRONGTYPE; that error would appear with `LPUSH` on the same key. Options 2 and 3 credit INCR with a tolerance it does not have: it fails loudly instead of inventing a value, which is the behaviour you want in a counter.",
+      "source": "Redis docs - INCR / APPEND commands",
+      "expected_time_ms": 40000,
+      "tags": [
+        "redis",
+        "strings",
+        "counters"
+      ]
+    },
+    {
+      "id": "q050302014",
+      "skill_id": "sk050302",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Para adquirir un lock distribuido en Redis de forma atómica se usa `SET lock:pedido <token> _____ EX 30`: la opción que hace que el SET solo tenga efecto si la clave NO existe. (dos letras)",
+      "question_en": "To acquire a distributed lock in Redis atomically you use `SET lock:order <token> _____ EX 30`: the option that makes the SET take effect only if the key does NOT exist. (two letters)",
+      "correct_answer_es": "NX",
+      "correct_answer_en": "NX",
+      "explanation_es": "`NX` (Not eXists) y `EX` en el mismo comando dan adquisición y caducidad en una sola operación atómica; hacerlo en dos pasos (SETNX y luego EXPIRE) deja una ventana en la que el proceso puede morir entre ambos y el lock queda para siempre. Su opuesto, `XX`, solo escribe si la clave ya existe. El token aleatorio importa igual: al liberar hay que comprobar con un script Lua que el valor sigue siendo el propio, o se acabará borrando el lock de otro proceso tras una expiración inesperada.",
+      "explanation_en": "`NX` (Not eXists) plus `EX` in the same command give acquisition and expiry in one atomic operation; doing it in two steps (SETNX then EXPIRE) leaves a window where the process can die in between and the lock is held forever. Its opposite, `XX`, only writes if the key already exists. The random token matters just as much: on release you must check with a Lua script that the value is still yours, or you will eventually delete another process's lock after an unexpected expiry.",
+      "source": "Redis docs - SET command / Distributed Locks with Redis",
+      "expected_time_ms": 35000,
+      "tags": [
+        "redis",
+        "locks",
+        "atomicity"
+      ]
+    },
+    {
+      "id": "q050302015",
+      "skill_id": "sk050302",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un Redis con AOF activado y `appendfsync everysec` sufre un corte de energía. ¿Qué garantía de durabilidad describe mejor la situación?",
+      "question_en": "A Redis with AOF enabled and `appendfsync everysec` suffers a power cut. Which durability guarantee best describes the situation?",
+      "options_es": [
+        "Ninguna escritura se pierde: el AOF se sincroniza a disco antes de responder OK a cada comando",
+        "Se puede perder hasta aproximadamente un segundo de escrituras, porque el fsync se agrupa cada segundo en lugar de por comando",
+        "Se pierde todo el dataset, porque AOF solo guarda un snapshot periódico de la memoria",
+        "Se pierden solo las claves con TTL, porque las persistentes se escriben de inmediato"
+      ],
+      "options_en": [
+        "No writes are lost: the AOF is fsynced to disk before each command is acknowledged",
+        "Up to roughly one second of writes can be lost, because the fsync is batched every second rather than per command",
+        "The whole dataset is lost, because AOF only stores a periodic snapshot of memory",
+        "Only keys with a TTL are lost, because persistent keys are written immediately"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`everysec` es el compromiso por defecto entre rendimiento y durabilidad: el comando se confirma antes del fsync, así que un corte puede llevarse hasta ~1 s de escrituras. La opción 1 describe `appendfsync always`, mucho más lento. La 3 confunde AOF (registro de comandos) con RDB (snapshot puntual), y además un RDB tampoco pierde todo, solo lo posterior al último volcado. La 4 inventa una relación entre TTL y persistencia. La lección arquitectónica: una cache debe tolerar perder su contenido, y si el dato no se puede perder, la fuente de verdad no puede ser la cache.",
+      "explanation_en": "`everysec` is the default compromise between throughput and durability: the command is acknowledged before the fsync, so a crash can take up to ~1 s of writes with it. Option 1 describes `appendfsync always`, which is far slower. Option 3 confuses AOF (a command log) with RDB (a point-in-time snapshot), and even an RDB does not lose everything, only what followed the last dump. Option 4 invents a link between TTL and persistence. The architectural lesson: a cache must tolerate losing its contents, and if the data cannot be lost, the cache cannot be the source of truth.",
+      "source": "Redis docs - Persistence (RDB and AOF)",
+      "expected_time_ms": 50000,
+      "tags": [
+        "redis",
+        "persistence",
+        "durability"
+      ]
+    },
+    {
+      "id": "q050303008",
+      "skill_id": "sk050303",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Al modificar un registro, ¿por qué se recomienda BORRAR la entrada de cache en lugar de sobrescribirla con el nuevo valor?",
+      "question_en": "When a record changes, why is DELETING the cache entry usually recommended over overwriting it with the new value?",
+      "options_es": [
+        "Porque borrar es una operación más rápida que escribir en cualquier cache",
+        "Porque sobrescribir consume el doble de memoria durante la operación",
+        "Porque si dos escrituras concurrentes sobrescriben, la última en llegar a la cache puede no ser la última en la base de datos, mientras que el borrado deja que la próxima lectura repueble desde la fuente de verdad",
+        "Porque las caches distribuidas no admiten sobrescribir una clave existente"
+      ],
+      "options_en": [
+        "Because deleting is a faster operation than writing in any cache",
+        "Because overwriting uses twice the memory during the operation",
+        "Because if two concurrent writes overwrite, the last one to reach the cache may not be the last one in the database, whereas deleting lets the next read repopulate from the source of truth",
+        "Because distributed caches do not support overwriting an existing key"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El borrado es idempotente y no afirma nada sobre el valor correcto: delega esa decisión en la base de datos. Sobrescribir sí afirma un valor, y el orden de llegada a la cache puede diferir del orden de commit en la base, dejando fijado el valor viejo. Las opciones 1 y 2 buscan una justificación de rendimiento donde la razón es de corrección. La 4 es sencillamente falsa. El coste del borrado es una lectura en frío después de cada escritura, aceptable salvo en claves muy calientes.",
+      "explanation_en": "Deleting is idempotent and asserts nothing about the correct value: it defers that decision to the database. Overwriting does assert a value, and the arrival order at the cache can differ from the commit order in the database, pinning the old value. Options 1 and 2 look for a performance justification where the reason is correctness. Option 4 is simply false. The cost of deleting is one cold read after each write, acceptable except on very hot keys.",
+      "source": "Kleppmann, Designing Data-Intensive Applications / AWS ElastiCache User Guide - Caching Strategies",
+      "expected_time_ms": 30000,
+      "tags": [
+        "cache-invalidation",
+        "consistency",
+        "write-path"
+      ]
+    },
+    {
+      "id": "q050303009",
+      "skill_id": "sk050303",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Invalidación y desalojo (eviction) de cache son dos nombres para lo mismo: en ambos casos se elimina una entrada porque su contenido ha dejado de ser válido.",
+      "question_en": "Cache invalidation and cache eviction are two names for the same thing: in both cases an entry is removed because its contents are no longer valid.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. La invalidación la dispara la corrección: el dato cambió en el origen y su copia ya no sirve. El desalojo lo dispara la capacidad: falta memoria y hay que sacrificar alguna entrada, aunque sea perfectamente válida, siguiendo una política (LRU, LFU, aleatoria). Confundirlos lleva a dos errores caros: creer que el desalojo mantiene la cache coherente (no lo hace: puede conservar durante días una entrada rancia que nadie toca) y creer que subir la memoria reduce los datos rancios (no los toca; solo reduce los fallos por capacidad).",
+      "explanation_en": "False. Invalidation is driven by correctness: the data changed at the origin and the copy is no longer usable. Eviction is driven by capacity: memory is short, so some entry must be sacrificed even if it is perfectly valid, following a policy (LRU, LFU, random). Conflating them produces two expensive mistakes: believing eviction keeps the cache coherent (it does not: it can keep a stale entry nobody touches for days) and believing more memory reduces staleness (it does not; it only reduces capacity misses).",
+      "source": "Kleppmann, Designing Data-Intensive Applications / Redis docs - Key eviction",
+      "expected_time_ms": 30000,
+      "tags": [
+        "cache-invalidation",
+        "eviction",
+        "concepts"
+      ]
+    },
+    {
+      "id": "q050303010",
+      "skill_id": "sk050303",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un servicio invalida ANTES de escribir:\\n\\n```\\nP1: cache.delete('precio:9')\\nP2: lee precio:9 -> miss -> db.read() -> 100 -> cache.set('precio:9', 100, ttl=3600)\\nP1: db.write('precio:9', 250)\\n```\\n\\n¿Qué servirá la cache en la siguiente lectura y por qué?",
+      "question_en": "A service invalidates BEFORE writing:\\n\\n```\\nP1: cache.delete('price:9')\\nP2: reads price:9 -> miss -> db.read() -> 100 -> cache.set('price:9', 100, ttl=3600)\\nP1: db.write('price:9', 250)\\n```\\n\\nWhat will the cache serve on the next read, and why?",
+      "options_es": [
+        "250, porque la escritura en la base de datos invalida automáticamente cualquier copia en cache",
+        "Un fallo de cache, porque el delete de P1 tiene efecto hasta que expire el TTL",
+        "100 durante hasta una hora, porque P2 repobló la cache con el valor anterior a la escritura de P1",
+        "250, porque el TTL de 3600 s solo se aplica a claves nuevas"
+      ],
+      "options_en": [
+        "250, because writing to the database automatically invalidates any cached copy",
+        "A cache miss, because P1's delete holds until the TTL expires",
+        "100 for up to an hour, because P2 repopulated the cache with the value from before P1's write",
+        "250, because the 3600 s TTL only applies to new keys"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Invalidar antes de escribir abre una ventana en la que una lectura concurrente puede repoblar con el valor viejo, y el TTL largo fija la inconsistencia durante una hora. Por eso el orden recomendado es escribir en la base y borrar después, y aun así queda una carrera residual que se cierra con TTL corto, doble borrado diferido o invalidación desde el log de cambios (CDC). La opción 1 atribuye a la base una notificación que no existe. La 2 cree que un delete 'deja una marca'; borra una entrada y nada más. La 4 inventa una regla de TTL.",
+      "explanation_en": "Invalidating before writing opens a window in which a concurrent read can repopulate with the old value, and the long TTL pins the inconsistency for an hour. That is why the recommended order is write the database, then delete, and even then a residual race remains, closed with a short TTL, a delayed second delete, or invalidation driven by the change log (CDC). Option 1 credits the database with a notification it does not send. Option 2 thinks a delete 'leaves a marker'; it removes one entry and nothing else. Option 4 invents a TTL rule.",
+      "source": "Kleppmann, Designing Data-Intensive Applications / martinfowler.com - Two Hard Things",
+      "expected_time_ms": 45000,
+      "tags": [
+        "cache-invalidation",
+        "race-condition",
+        "ordering"
+      ]
+    },
+    {
+      "id": "q050303011",
+      "skill_id": "sk050303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un catálogo cachea decenas de claves derivadas por producto (`prod:9:ficha`, `prod:9:precio`, `prod:9:stock`). Al cambiar el producto hay que invalidarlas todas. ¿Cuál es la solución más robusta?",
+      "question_en": "A catalogue caches dozens of derived keys per product (`prod:9:detail`, `prod:9:price`, `prod:9:stock`). When the product changes they must all be invalidated. What is the most robust approach?",
+      "options_es": [
+        "Incluir un número de versión del producto en la clave (`prod:9:v7:precio`) e incrementarlo al escribir: las claves viejas quedan huérfanas y las desaloja la política de memoria",
+        "Recorrer el espacio de claves con `KEYS prod:9:*` y borrar las coincidencias en cada escritura",
+        "Vaciar la cache entera (FLUSHDB) cada vez que cambie cualquier producto",
+        "Bajar el TTL de todas las claves del catálogo a 1 segundo"
+      ],
+      "options_en": [
+        "Include a product version number in the key (`prod:9:v7:price`) and bump it on write: the old keys are orphaned and the memory policy evicts them",
+        "Scan the keyspace with `KEYS prod:9:*` and delete the matches on every write",
+        "Flush the entire cache (FLUSHDB) whenever any product changes",
+        "Lower the TTL of every catalogue key to 1 second"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El versionado de claves convierte N borrados en un solo incremento atómico y es inmune a la carrera de repoblación: nadie puede reinstalar una clave de la versión vieja en el espacio de la nueva. La opción 2 es tentadora porque parece directa, pero `KEYS` bloquea el servidor mono-hilo y hay que usar `SCAN`; aun así sigue siendo una operación O(n) en el camino de escritura. La 3 destruye el hit ratio de todo el catálogo por un cambio en un producto. La 4 confunde invalidación con caducidad: un TTL de 1 s equivale a no cachear y dispara la carga del origen.",
+      "explanation_en": "Key versioning turns N deletes into a single atomic increment and is immune to the repopulation race: nobody can reinstall an old-version key into the new version's namespace. Option 2 is tempting because it looks direct, but `KEYS` blocks the single-threaded server and you must use `SCAN`; even then it remains an O(n) operation on the write path. Option 3 destroys the hit ratio of the whole catalogue over one product change. Option 4 confuses invalidation with expiry: a 1 s TTL is equivalent to not caching and spikes origin load.",
+      "source": "Redis docs - KEYS / SCAN commands / AWS ElastiCache User Guide - Caching Strategies",
+      "expected_time_ms": 48000,
+      "tags": [
+        "cache-invalidation",
+        "key-versioning",
+        "redis"
+      ]
+    },
+    {
+      "id": "q050303012",
+      "skill_id": "sk050303",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Para evitar que miles de entradas cacheadas a la vez caduquen en el mismo instante y golpeen el origen de golpe, se suma un desfase aleatorio a cada TTL. A esa aleatoriedad añadida se la llama _____. (una palabra en inglés)",
+      "question_en": "To stop thousands of entries cached at the same moment from expiring at the same instant and hitting the origin all at once, a random offset is added to each TTL. That added randomness is called _____. (one word)",
+      "correct_answer_es": "jitter",
+      "correct_answer_en": "jitter",
+      "explanation_es": "El jitter (por ejemplo, TTL = 300 s ± 10 %) desincroniza las caducidades y evita el 'cache avalanche', el pico de fallos simultáneos que aparece justo después de un despliegue o de un reinicio de la cache, cuando todo se pobló en el mismo segundo. Es la misma idea que el jitter en los reintentos con backoff exponencial: sin él, los clientes que fallaron juntos vuelven a intentarlo juntos. No confundirlo con el 'cache stampede', que es la estampida sobre UNA clave caliente y se mitiga con un lock o con recálculo anticipado.",
+      "explanation_en": "Jitter (for example, TTL = 300 s ± 10 %) desynchronises expiries and prevents the 'cache avalanche', the spike of simultaneous misses that appears right after a deploy or a cache restart, when everything was populated in the same second. It is the same idea as jitter in exponential-backoff retries: without it, clients that failed together retry together. Do not confuse it with a 'cache stampede', which is the herd on ONE hot key and is mitigated with a lock or early recomputation.",
+      "source": "Nygard, Release It! 2e / Google SRE Book - Handling Overload",
+      "expected_time_ms": 35000,
+      "tags": [
+        "cache-invalidation",
+        "jitter",
+        "ttl"
+      ]
+    },
+    {
+      "id": "q050303013",
+      "skill_id": "sk050303",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Se usa una clave de versión por producto en Redis:\\n\\n```\\n> GET prod:9:ver\\n\"7\"\\n> INCR prod:9:ver\\n(integer) 8\\n```\\n\\nLa aplicación construye la clave de cache como `prod:9:v{ver}:precio`. ¿Qué efecto tiene el INCR sobre las lecturas posteriores?",
+      "question_en": "A per-product version key is used in Redis:\\n\\n```\\n> GET prod:9:ver\\n\"7\"\\n> INCR prod:9:ver\\n(integer) 8\\n```\\n\\nThe application builds its cache key as `prod:9:v{ver}:price`. What effect does the INCR have on later reads?",
+      "options_es": [
+        "Ninguno: INCR solo cambia un contador y las lecturas siguen usando `prod:9:v7:precio`",
+        "Las lecturas pasan a buscar `prod:9:v8:precio`, que no existe: fallan en cache y repueblan desde la base, mientras `prod:9:v7:precio` queda huérfana hasta que la desaloje la política de memoria",
+        "Redis renombra automáticamente las claves que contienen `v7` a `v8`",
+        "Las lecturas devuelven error porque la clave `prod:9:v8:precio` no ha sido creada todavía"
+      ],
+      "options_en": [
+        "None: INCR only changes a counter and reads keep using `prod:9:v7:price`",
+        "Reads now look up `prod:9:v8:price`, which does not exist: they miss and repopulate from the database, while `prod:9:v7:price` is orphaned until the memory policy evicts it",
+        "Redis automatically renames keys containing `v7` to `v8`",
+        "Reads return an error because the key `prod:9:v8:price` has not been created yet"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La invalidación ocurre por construcción del nombre, no por borrado: al cambiar el prefijo de versión todo el conjunto derivado deja de ser alcanzable en O(1). El precio es memoria retenida temporalmente por las claves huérfanas, motivo por el que este patrón exige una política `allkeys-*` y un TTL de seguridad. La opción 1 olvida que la propia aplicación lee la versión antes de componer la clave. La 3 atribuye a Redis una reescritura mágica. La 4 confunde un fallo de cache con un error: un `GET` sobre una clave inexistente devuelve nil, que es exactamente la señal que dispara el repoblado.",
+      "explanation_en": "Invalidation happens by name construction, not by deletion: changing the version prefix makes the whole derived set unreachable in O(1). The price is memory temporarily held by the orphaned keys, which is why this pattern requires an `allkeys-*` policy and a safety TTL. Option 1 forgets that the application itself reads the version before composing the key. Option 3 credits Redis with a magic rewrite. Option 4 confuses a cache miss with an error: a `GET` on a missing key returns nil, which is exactly the signal that triggers repopulation.",
+      "source": "Redis docs - INCR command / AWS ElastiCache User Guide - Caching Strategies",
+      "expected_time_ms": 45000,
+      "tags": [
+        "cache-invalidation",
+        "key-versioning",
+        "redis"
+      ]
+    },
+    {
+      "id": "q050303014",
+      "skill_id": "sk050303",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Para invalidar caches locales repartidas en 40 réplicas, el equipo publica un mensaje en un canal pub/sub al que todas están suscritas. ¿Qué límite conserva este diseño?",
+      "question_en": "To invalidate local caches spread across 40 replicas, the team publishes a message on a pub/sub channel that all of them subscribe to. What limitation does this design retain?",
+      "options_es": [
+        "Que el pub/sub garantiza orden total, así que las réplicas pueden aplicar las invalidaciones en cualquier orden sin riesgo",
+        "Que la entrega del mensaje no es instantánea ni garantizada: queda una ventana de inconsistencia, y una réplica desconectada durante la publicación se queda con el dato rancio indefinidamente",
+        "Que ninguna réplica puede leer de su cache local mientras haya un mensaje de invalidación en vuelo",
+        "Que el patrón solo funciona si todas las réplicas comparten la misma instancia de cache"
+      ],
+      "options_en": [
+        "That pub/sub guarantees total ordering, so replicas can apply invalidations in any order with no risk",
+        "That message delivery is neither instantaneous nor guaranteed: an inconsistency window remains, and a replica disconnected during the publish keeps the stale value indefinitely",
+        "That no replica may read from its local cache while an invalidation message is in flight",
+        "That the pattern only works if all replicas share the same cache instance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El pub/sub de Redis es fire-and-forget: quien no está suscrito en ese instante nunca recibe el mensaje, y por eso este patrón se combina siempre con un TTL de seguridad que acota cuánto puede durar el dato rancio en el peor caso. La opción 1 confunde pub/sub con un log ordenado y duradero tipo Kafka, y además contradice su propia premisa. La 3 describe un bloqueo global que nadie implementa y que anularía el motivo de tener cache local. La 4 niega el propio escenario: si compartieran instancia, no habría 40 copias que invalidar.",
+      "explanation_en": "Redis pub/sub is fire-and-forget: anyone not subscribed at that instant never receives the message, which is why this pattern is always paired with a safety TTL that bounds how long staleness can last in the worst case. Option 1 confuses pub/sub with an ordered, durable log such as Kafka, and contradicts its own premise anyway. Option 3 describes a global block nobody implements, which would defeat the point of a local cache. Option 4 denies the scenario itself: with a shared instance there would be no 40 copies to invalidate.",
+      "source": "Redis docs - Pub/Sub and client-side caching / Kleppmann, Designing Data-Intensive Applications",
+      "expected_time_ms": 55000,
+      "tags": [
+        "cache-invalidation",
+        "pubsub",
+        "distributed-cache"
+      ]
+    },
+    {
+      "id": "q050303015",
+      "skill_id": "sk050303",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En Redis, ejecutar `EXPIRE clave 0` deja la clave sin caducidad, es decir, la vuelve permanente.",
+      "question_en": "In Redis, running `EXPIRE key 0` leaves the key with no expiry, that is, makes it permanent.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso: un TTL de 0 (o negativo) hace que Redis borre la clave inmediatamente, no que la conserve. El comando que sí quita la caducidad y deja la clave permanente es `PERSIST`. La confusión viene de leer 0 como 'sin límite', por analogía con configuraciones donde 0 significa infinito; aquí significa 'caduca ya'. Es un error con consecuencias reales cuando un TTL se calcula como `deadline - now` y el cálculo sale no positivo: en lugar de una entrada de larga vida se obtiene un borrado, y la cache empieza a fallar sin ninguna traza de error.",
+      "explanation_en": "False: a TTL of 0 (or negative) makes Redis delete the key immediately, not keep it. The command that actually removes the expiry and makes the key permanent is `PERSIST`. The confusion comes from reading 0 as 'no limit', by analogy with configuration where 0 means infinity; here it means 'expire now'. It is a mistake with real consequences when a TTL is computed as `deadline - now` and the result is non-positive: instead of a long-lived entry you get a deletion, and the cache starts missing with no error trace at all.",
+      "source": "Redis docs - EXPIRE / PERSIST commands",
+      "expected_time_ms": 32000,
+      "tags": [
+        "cache-invalidation",
+        "redis",
+        "ttl"
+      ]
+    },
+    {
+      "id": "q050304009",
+      "skill_id": "sk050304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Una respuesta con datos de la cuenta del usuario lleva `Cache-Control: private, max-age=600`. ¿Qué implica exactamente?",
+      "question_en": "A response carrying the user's account data is sent with `Cache-Control: private, max-age=600`. What exactly does this imply?",
+      "options_es": [
+        "Que la respuesta viaja cifrada y solo el usuario autenticado puede descifrarla",
+        "Que ninguna cache, ni siquiera el navegador, puede almacenar la respuesta",
+        "Que la respuesta caduca a los 600 s solo si el usuario cierra sesión antes",
+        "Que solo la cache privada del navegador puede almacenarla durante 600 s; una cache compartida como un CDN no debe guardarla"
+      ],
+      "options_en": [
+        "That the response travels encrypted and only the authenticated user can decrypt it",
+        "That no cache, not even the browser, may store the response",
+        "That the response expires after 600 s only if the user logs out first",
+        "That only the browser's private cache may store it for 600 s; a shared cache such as a CDN must not keep it"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`private` es una instrucción sobre QUIÉN puede almacenar, no sobre confidencialidad en tránsito: eso lo aporta TLS, que es la confusión de la opción 1. Marcar `public` (o simplemente omitir `private`) en una respuesta personalizada es la causa habitual de la fuga más vergonzosa de un CDN: un usuario recibe la página cacheada de otro. La opción 2 describe `no-store`. La 3 inventa una relación entre el ciclo de sesión y el `max-age`, que es un contador de segundos desde que la respuesta se generó y nada más.",
+      "explanation_en": "`private` is an instruction about WHO may store, not about confidentiality in transit: that is what TLS provides, which is the confusion in option 1. Marking a personalised response `public` (or simply omitting `private`) is the usual cause of the most embarrassing CDN leak: one user receives another user's cached page. Option 2 describes `no-store`. Option 3 invents a link between the session lifecycle and `max-age`, which is a count of seconds since the response was generated and nothing more.",
+      "source": "RFC 9111 - HTTP Caching, section 5.2 / MDN Web Docs - HTTP caching",
+      "expected_time_ms": 38000,
+      "tags": [
+        "cdn",
+        "http-caching",
+        "cache-control"
+      ]
+    },
+    {
+      "id": "q050304010",
+      "skill_id": "sk050304",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "El origen responde con:\\n\\n```\\nHTTP/1.1 200 OK\\nCache-Control: public, max-age=60, s-maxage=600\\n```\\n\\n¿Cuánto tiempo considera fresca la respuesta cada capa?",
+      "question_en": "The origin responds with:\\n\\n```\\nHTTP/1.1 200 OK\\nCache-Control: public, max-age=60, s-maxage=600\\n```\\n\\nHow long does each layer consider the response fresh?",
+      "options_es": [
+        "El navegador 60 s y el CDN 600 s: `s-maxage` se dirige a las caches compartidas y tiene prioridad sobre `max-age` para ellas",
+        "Ambos 60 s: `max-age` siempre gana porque aparece primero en la cabecera",
+        "Ambos 600 s: `s-maxage` sustituye a `max-age` para todas las caches",
+        "El navegador 600 s y el CDN 60 s: `s` significa 'single user'"
+      ],
+      "options_en": [
+        "The browser 60 s and the CDN 600 s: `s-maxage` targets shared caches and overrides `max-age` for them",
+        "Both 60 s: `max-age` always wins because it appears first in the header",
+        "Both 600 s: `s-maxage` replaces `max-age` for every cache",
+        "The browser 600 s and the CDN 60 s: `s` means 'single user'"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La `s` de `s-maxage` es de 'shared': solo la interpretan las caches compartidas (CDN, proxy inverso), y para ellas sustituye a `max-age`. El navegador, cache privada, ignora `s-maxage` y usa `max-age`. Este par es el patrón estándar para descargar el origen sin perder capacidad de reaccionar rápido: el CDN aguanta la carga durante 10 minutos y se puede purgar al instante, mientras el navegador revalida cada minuto. La opción 4 invierte el significado, y la 2 inventa una precedencia por orden de aparición que HTTP no define.",
+      "explanation_en": "The `s` in `s-maxage` stands for 'shared': only shared caches (CDN, reverse proxy) honour it, and for them it overrides `max-age`. The browser, a private cache, ignores `s-maxage` and uses `max-age`. This pair is the standard pattern for offloading the origin without losing the ability to react fast: the CDN absorbs load for 10 minutes and can be purged instantly, while the browser revalidates every minute. Option 4 inverts the meaning, and option 2 invents a precedence by order of appearance that HTTP does not define.",
+      "source": "RFC 9111 - HTTP Caching, section 5.2.2 / MDN Web Docs - Cache-Control",
+      "expected_time_ms": 40000,
+      "tags": [
+        "cdn",
+        "http-caching",
+        "s-maxage"
+      ]
+    },
+    {
+      "id": "q050304011",
+      "skill_id": "sk050304",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "La cabecera `Vary: Accept-Encoding` hace que la cache guarde variantes separadas de la misma URL según el valor de esa cabecera de la petición, de modo que un cliente sin soporte de gzip no reciba la versión comprimida.",
+      "question_en": "The `Vary: Accept-Encoding` header makes the cache store separate variants of the same URL keyed by that request header, so a client without gzip support is not served the compressed version.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero: `Vary` amplía la clave de cache más allá de la URL, añadiendo las cabeceras de petición que listan. El riesgo está en el otro extremo: cabeceras muy variables como `User-Agent` o `Cookie` en `Vary` multiplican las variantes y hunden el hit ratio, que es la causa silenciosa de un CDN que reporta MISS casi siempre. La regla práctica es variar por el mínimo imprescindible y normalizar el resto en el edge.",
+      "explanation_en": "True: `Vary` widens the cache key beyond the URL by adding the request headers it lists. The risk is at the other extreme: highly variable headers such as `User-Agent` or `Cookie` in `Vary` multiply the variants and sink the hit ratio, which is the silent cause of a CDN that reports MISS nearly always. The practical rule is to vary on the bare minimum and normalise the rest at the edge.",
+      "source": "RFC 9111 - HTTP Caching, section 4.1 / MDN Web Docs - Vary",
+      "expected_time_ms": 30000,
+      "tags": [
+        "cdn",
+        "http-caching",
+        "vary"
+      ]
+    },
+    {
+      "id": "q050304012",
+      "skill_id": "sk050304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Al caducar un objeto muy popular, cientos de nodos edge fallan a la vez y el origen recibe una avalancha de peticiones idénticas. ¿Qué mecanismo de CDN aborda esto?",
+      "question_en": "When a very popular object expires, hundreds of edge nodes miss at once and the origin receives a flood of identical requests. Which CDN mechanism addresses this?",
+      "options_es": [
+        "Aumentar el número de POPs del CDN para repartir mejor el tráfico de usuarios",
+        "Colapso de peticiones (request collapsing) más una capa de origin shield: las peticiones idénticas en vuelo se agrupan en una sola hacia el origen, y una capa intermedia concentra los fallos de todos los edge",
+        "Activar compresión Brotli en el origen para que la respuesta viaje más rápido",
+        "Marcar el objeto como `no-store` para que el CDN no tenga que revalidarlo nunca"
+      ],
+      "options_en": [
+        "Increasing the number of CDN POPs so user traffic is spread better",
+        "Request collapsing plus an origin shield layer: identical in-flight requests are coalesced into one towards the origin, and an intermediate tier concentrates the misses from every edge",
+        "Enabling Brotli compression at the origin so the response travels faster",
+        "Marking the object `no-store` so the CDN never has to revalidate it"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es el cache stampede llevado al edge, y se ataca reduciendo el número de peticiones que llegan al origen, no acelerando cada una. El colapso de peticiones es el equivalente del `proxy_cache_lock` de NGINX; el origin shield añade una jerarquía en la que solo un nodo habla con el origen. La opción 1 empeora el problema: más POPs son más fuentes de fallo simultáneo. La 3 confunde tamaño de respuesta con número de peticiones, que es lo que satura. La 4 es la peor: `no-store` elimina el cacheo y manda el 100 % del tráfico al origen.",
+      "explanation_en": "This is a cache stampede at the edge, and it is attacked by reducing how many requests reach the origin, not by making each one faster. Request collapsing is the equivalent of NGINX's `proxy_cache_lock`; an origin shield adds a hierarchy where only one node talks to the origin. Option 1 makes it worse: more POPs means more simultaneous miss sources. Option 3 confuses response size with request count, which is what saturates. Option 4 is the worst: `no-store` removes caching entirely and sends 100 % of traffic to the origin.",
+      "source": "AWS CloudFront Developer Guide - Origin Shield / NGINX docs - proxy_cache_lock",
+      "expected_time_ms": 50000,
+      "tags": [
+        "cdn",
+        "origin-shield",
+        "stampede"
+      ]
+    },
+    {
+      "id": "q050304013",
+      "skill_id": "sk050304",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "La extensión de `Cache-Control` que permite a un CDN entregar de inmediato una respuesta ya caducada mientras la refresca en segundo plano contra el origen es `stale-while-_____`. (una palabra en inglés)",
+      "question_en": "The `Cache-Control` extension that lets a CDN serve an already-expired response immediately while refreshing it in the background against the origin is `stale-while-_____`. (one word)",
+      "correct_answer_es": "revalidate",
+      "correct_answer_en": "revalidate",
+      "explanation_es": "`stale-while-revalidate` (RFC 5861) elimina la penalización de latencia del primer usuario tras cada caducidad: nadie espera al origen, y el objeto se refresca de fondo. Su hermana `stale-if-error` permite seguir sirviendo contenido caducado cuando el origen falla, que es degradación elegante aplicada al edge. Conviene no confundirla con `must-revalidate`, que es lo contrario: prohíbe servir contenido caducado y obliga a contactar con el origen antes de responder.",
+      "explanation_en": "`stale-while-revalidate` (RFC 5861) removes the latency penalty that the first user after each expiry would pay: nobody waits for the origin, and the object is refreshed in the background. Its sibling `stale-if-error` keeps serving expired content when the origin fails, which is graceful degradation applied at the edge. Do not confuse it with `must-revalidate`, which is the opposite: it forbids serving stale content and forces contacting the origin before responding.",
+      "source": "RFC 5861 - HTTP Cache-Control Extensions for Stale Content",
+      "expected_time_ms": 35000,
+      "tags": [
+        "cdn",
+        "http-caching",
+        "stale-while-revalidate"
+      ]
+    },
+    {
+      "id": "q050304014",
+      "skill_id": "sk050304",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "El navegador tiene en cache una respuesta caducada con `ETag: \"a1b2\"` y revalida:\\n\\n```\\nGET /logo.png HTTP/1.1\\nIf-None-Match: \"a1b2\"\\n```\\n\\nEl recurso no ha cambiado. ¿Qué responde el servidor?",
+      "question_en": "The browser holds an expired cached response with `ETag: \"a1b2\"` and revalidates:\\n\\n```\\nGET /logo.png HTTP/1.1\\nIf-None-Match: \"a1b2\"\\n```\\n\\nThe resource has not changed. What does the server respond?",
+      "options_es": [
+        "200 OK con el cuerpo completo, porque la entrada ya estaba caducada y hay que reenviarla",
+        "404 Not Found, porque `If-None-Match` indica que el cliente no quiere el recurso",
+        "304 Not Modified sin cuerpo: el cliente reutiliza la copia que ya tiene y solo se transfieren cabeceras",
+        "204 No Content, porque el recurso existe pero no ha cambiado"
+      ],
+      "options_en": [
+        "200 OK with the full body, because the entry had already expired and must be re-sent",
+        "404 Not Found, because `If-None-Match` tells the server the client does not want the resource",
+        "304 Not Modified with no body: the client reuses the copy it already has and only headers are transferred",
+        "204 No Content, because the resource exists but has not changed"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Caducado no significa inválido: significa que hay que revalidar. El ETag permite confirmar en una respuesta sin cuerpo que la copia local sigue siendo buena, ahorrando el ancho de banda del objeto entero. La opción 1 es el error de fondo, creer que `max-age` vencido obliga a redescargar. La 4 confunde 304 con 204: 204 se usa para peticiones cuya respuesta legítimamente no tiene contenido (un DELETE, por ejemplo), no para validación condicional. La 2 malinterpreta la semántica de la cabecera condicional.",
+      "explanation_en": "Expired does not mean invalid: it means revalidate. The ETag lets the server confirm in a bodyless response that the local copy is still good, saving the bandwidth of the whole object. Option 1 is the underlying mistake, believing an elapsed `max-age` forces a re-download. Option 4 confuses 304 with 204: 204 is for requests whose response legitimately has no content (a DELETE, for instance), not for conditional validation. Option 2 misreads the semantics of the conditional header.",
+      "source": "RFC 9111 - HTTP Caching, section 4.3 / MDN Web Docs - ETag and If-None-Match",
+      "expected_time_ms": 42000,
+      "tags": [
+        "cdn",
+        "http-caching",
+        "etag"
+      ]
+    },
+    {
+      "id": "q050304015",
+      "skill_id": "sk050304",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Una página estática servida por CDN devuelve `X-Cache: MISS` en casi todas las peticiones pese a tener `Cache-Control: public, max-age=86400`. ¿Cuál es la causa más probable?",
+      "question_en": "A static page served through a CDN returns `X-Cache: MISS` on nearly every request despite carrying `Cache-Control: public, max-age=86400`. What is the most likely cause?",
+      "options_es": [
+        "Que el `max-age` de 86400 s es demasiado alto y el CDN lo recorta a cero por seguridad",
+        "Que la clave de cache incluye elementos que cambian por usuario o por visita (parámetros de campaña en la query string, cookies o cabeceras incluidas en la clave), de modo que casi cada petición es un objeto distinto",
+        "Que el CDN solo cachea imágenes y hojas de estilo, nunca documentos HTML",
+        "Que el origen está en otra región y el CDN no cachea contenido de origen remoto"
+      ],
+      "options_en": [
+        "That a `max-age` of 86400 s is too high and the CDN clamps it to zero for safety",
+        "That the cache key includes elements varying per user or per visit (campaign parameters in the query string, cookies or headers folded into the key), so almost every request is a distinct object",
+        "That the CDN only caches images and stylesheets, never HTML documents",
+        "That the origin is in another region and the CDN does not cache remote-origin content"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La cabecera dice cuánto tiempo es fresca una entrada; el hit ratio depende además de cuántas peticiones comparten la misma clave. Con `?utm_source=...` o una cookie de sesión dentro de la clave, cada visitante crea su propia entrada y el TTL nunca llega a amortizarse. La solución es normalizar la clave: ignorar los parámetros irrelevantes y las cookies en rutas estáticas. La opción 1 invierte la relación (un TTL alto ayuda al hit ratio). La 3 y la 4 son mitos: los CDN cachean HTML si las cabeceras lo permiten, y la distancia al origen solo afecta a la latencia del fallo, no a si se cachea.",
+      "explanation_en": "The header says how long an entry is fresh; the hit ratio also depends on how many requests share the same key. With `?utm_source=...` or a session cookie inside the key, each visitor creates their own entry and the TTL never gets amortised. The fix is normalising the key: ignore irrelevant parameters and cookies on static paths. Option 1 inverts the relationship (a long TTL helps the hit ratio). Options 3 and 4 are myths: CDNs cache HTML when the headers allow it, and distance to the origin only affects miss latency, not whether something is cached.",
+      "source": "AWS CloudFront Developer Guide - Cache key and origin requests / RFC 9111 - HTTP Caching",
+      "expected_time_ms": 55000,
+      "tags": [
+        "cdn",
+        "cache-key",
+        "hit-ratio"
+      ]
+    }
+  ]
+}

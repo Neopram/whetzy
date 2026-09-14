@@ -1,0 +1,876 @@
+{
+  "questions": [
+    {
+      "id": "q040401010",
+      "skill_id": "sk040401",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "La tabla `empleados(id, bono)` contiene las filas `(1, 100)`, `(2, NULL)`, `(3, 50)`, `(4, NULL)`.\\n\\n```sql\\nSELECT COUNT(*), COUNT(bono), SUM(bono) FROM empleados;\\n```\\n\\n¿Qué devuelve?",
+      "question_en": "Table `employees(id, bonus)` holds the rows `(1, 100)`, `(2, NULL)`, `(3, 50)`, `(4, NULL)`.\\n\\n```sql\\nSELECT COUNT(*), COUNT(bonus), SUM(bonus) FROM employees;\\n```\\n\\nWhat does it return?",
+      "options_es": [
+        "4 | 2 | 150",
+        "4 | 4 | 150",
+        "4 | 2 | NULL",
+        "2 | 2 | 150"
+      ],
+      "options_en": [
+        "4 | 2 | 150",
+        "4 | 4 | 150",
+        "4 | 2 | NULL",
+        "2 | 2 | 150"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`COUNT(*)` cuenta filas y da 4. `COUNT(bono)` cuenta solo los valores no nulos de esa columna y da 2: esta es la diferencia que hace tentadora la opción `4 | 4`. `SUM` también ignora los NULL, así que suma 100 + 50 = 150; devuelve NULL solo si NO hay ningún valor no nulo, que no es el caso aquí. La opción `2 | 2` confunde `COUNT(*)` con \"filas con datos\": las filas con NULL siguen siendo filas.",
+      "explanation_en": "`COUNT(*)` counts rows, so 4. `COUNT(bonus)` counts only non-null values in that column, so 2 — that distinction is what makes `4 | 4` tempting. `SUM` also skips NULLs, giving 100 + 50 = 150; it returns NULL only when there is no non-null value at all, which is not the case here. The `2 | 2` option confuses `COUNT(*)` with \"rows that have data\": rows holding NULL are still rows.",
+      "source": "PostgreSQL 16 docs - Aggregate Functions (count, sum and null values)",
+      "expected_time_ms": 30000,
+      "tags": ["sql", "null", "aggregation"]
+    },
+    {
+      "id": "q040401011",
+      "skill_id": "sk040401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "`SELECT * FROM clientes WHERE id NOT IN (SELECT cliente_id FROM pedidos);` devuelve cero filas, aunque sabes que hay clientes sin ningún pedido. ¿Cuál es la causa más probable?",
+      "question_en": "`SELECT * FROM customers WHERE id NOT IN (SELECT customer_id FROM orders);` returns zero rows, even though you know some customers have no orders. What is the most likely cause?",
+      "options_es": [
+        "`NOT IN` no admite subconsultas, solo listas literales de valores",
+        "La subconsulta se ejecuta una sola vez y guarda en caché el primer resultado",
+        "Alguna fila de `pedidos` tiene `cliente_id` NULL, de modo que la comparación da UNKNOWN y ninguna fila supera el WHERE",
+        "`NOT IN` compara solo la primera fila devuelta por la subconsulta"
+      ],
+      "options_en": [
+        "`NOT IN` does not accept subqueries, only literal value lists",
+        "The subquery runs once and caches its first result",
+        "Some row in `orders` has a NULL `customer_id`, so the comparison evaluates to UNKNOWN and no row passes the WHERE",
+        "`NOT IN` only compares against the first row the subquery returns"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`x NOT IN (a, b, NULL)` se expande a `x <> a AND x <> b AND x <> NULL`, y `x <> NULL` siempre es UNKNOWN, nunca TRUE. Basta un solo NULL en la subconsulta para que la condición nunca sea verdadera y el resultado quede vacío. Las otras opciones describen limitaciones inventadas: `NOT IN` sí acepta subconsultas y evalúa todas sus filas. La solución habitual es `NOT EXISTS`, o filtrar con `WHERE cliente_id IS NOT NULL` dentro de la subconsulta.",
+      "explanation_en": "`x NOT IN (a, b, NULL)` expands to `x <> a AND x <> b AND x <> NULL`, and `x <> NULL` is always UNKNOWN, never TRUE. A single NULL in the subquery is enough for the condition never to hold, leaving an empty result. The other options describe invented limitations: `NOT IN` does accept subqueries and evaluates all of their rows. The usual fix is `NOT EXISTS`, or filtering with `WHERE customer_id IS NOT NULL` inside the subquery.",
+      "source": "PostgreSQL 16 docs - Subquery Expressions (NOT IN) and Comparison Operators (NULL)",
+      "expected_time_ms": 35000,
+      "tags": ["sql", "null", "subquery"]
+    },
+    {
+      "id": "q040401012",
+      "skill_id": "sk040401",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la diferencia entre `UNION` y `UNION ALL`?",
+      "question_en": "What is the difference between `UNION` and `UNION ALL`?",
+      "options_es": [
+        "`UNION` elimina las filas duplicadas del resultado combinado; `UNION ALL` las conserva todas",
+        "`UNION` combina columnas y `UNION ALL` combina filas",
+        "`UNION ALL` solo funciona si las dos consultas usan la misma tabla",
+        "`UNION` ordena el resultado automáticamente y `UNION ALL` lo devuelve sin ordenar"
+      ],
+      "options_en": [
+        "`UNION` removes duplicate rows from the combined result; `UNION ALL` keeps every row",
+        "`UNION` combines columns while `UNION ALL` combines rows",
+        "`UNION ALL` only works when both queries read the same table",
+        "`UNION` sorts the result automatically while `UNION ALL` leaves it unsorted"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`UNION` aplica una deduplicación sobre el resultado combinado, lo que obliga al motor a ordenar o hashear todas las filas: por eso `UNION ALL` suele ser bastante más barato cuando sabes que no hay duplicados. Combinar columnas es tarea de un JOIN, no de UNION. Y aunque la deduplicación de `UNION` a menudo produce un resultado ordenado como efecto secundario del plan, eso no está garantizado: sin `ORDER BY` no puedes contar con ningún orden.",
+      "explanation_en": "`UNION` deduplicates the combined result, which forces the engine to sort or hash every row — that is why `UNION ALL` is usually noticeably cheaper when you know there are no duplicates. Combining columns is a JOIN's job, not UNION's. And although `UNION`'s deduplication often yields sorted-looking output as a side effect of the plan, that is not guaranteed: without `ORDER BY` you cannot rely on any ordering.",
+      "source": "PostgreSQL 16 docs - Combining Queries (UNION, INTERSECT, EXCEPT)",
+      "expected_time_ms": 18000,
+      "tags": ["sql", "union", "set-operations"]
+    },
+    {
+      "id": "q040401013",
+      "skill_id": "sk040401",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "`clientes(id, nombre)` contiene `(1, 'Ana')` y `(2, 'Beto')`. `pedidos(id, cliente_id, total)` contiene solo `(10, 1, 50)`.\\n\\n```sql\\nSELECT c.nombre, p.total\\nFROM clientes c\\nLEFT JOIN pedidos p ON p.cliente_id = c.id\\nWHERE p.total > 10;\\n```\\n\\n¿Qué devuelve?",
+      "question_en": "`customers(id, name)` holds `(1, 'Ana')` and `(2, 'Beto')`. `orders(id, customer_id, total)` holds only `(10, 1, 50)`.\\n\\n```sql\\nSELECT c.name, p.total\\nFROM customers c\\nLEFT JOIN orders p ON p.customer_id = c.id\\nWHERE p.total > 10;\\n```\\n\\nWhat does it return?",
+      "options_es": [
+        "Dos filas: `Ana | 50` y `Beto | NULL`",
+        "Una fila: `Ana | 50`",
+        "Dos filas: `Ana | 50` y `Beto | 0`",
+        "Cero filas, porque el WHERE se aplica antes del JOIN"
+      ],
+      "options_en": [
+        "Two rows: `Ana | 50` and `Beto | NULL`",
+        "One row: `Ana | 50`",
+        "Two rows: `Ana | 50` and `Beto | 0`",
+        "Zero rows, because the WHERE runs before the JOIN"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El LEFT JOIN sí produce la fila `Beto | NULL`, pero después el `WHERE p.total > 10` la evalúa como `NULL > 10`, que es UNKNOWN, y la descarta. Un predicado sobre la tabla derecha en el `WHERE` convierte silenciosamente un LEFT JOIN en un INNER JOIN: este es el error más común con outer joins. Para conservar a Beto hay que mover la condición al `ON`, o escribir `WHERE p.total > 10 OR p.total IS NULL`. La opción del `0` supone que el outer join rellena con ceros, cosa que nunca hace: rellena con NULL.",
+      "explanation_en": "The LEFT JOIN does produce the row `Beto | NULL`, but then `WHERE p.total > 10` evaluates it as `NULL > 10`, which is UNKNOWN, and drops it. A predicate on the right-hand table placed in the `WHERE` silently turns a LEFT JOIN into an INNER JOIN — the single most common outer-join mistake. To keep Beto you move the condition into the `ON`, or write `WHERE p.total > 10 OR p.total IS NULL`. The `0` option assumes outer joins pad with zeros, which they never do: they pad with NULL.",
+      "source": "PostgreSQL 16 docs - Table Expressions (Joined Tables, ON vs WHERE)",
+      "expected_time_ms": 38000,
+      "tags": ["sql", "join", "null"]
+    },
+    {
+      "id": "q040401014",
+      "skill_id": "sk040401",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "`ventas(vendedor, monto)` contiene `('Ana', 100)`, `('Ana', 50)`, `('Beto', 300)`, `('Cris', 20)`.\\n\\n```sql\\nSELECT vendedor, SUM(monto)\\nFROM ventas\\nGROUP BY vendedor\\nHAVING SUM(monto) > 100\\nORDER BY vendedor;\\n```\\n\\n¿Qué devuelve?",
+      "question_en": "`sales(rep, amount)` holds `('Ana', 100)`, `('Ana', 50)`, `('Beto', 300)`, `('Cris', 20)`.\\n\\n```sql\\nSELECT rep, SUM(amount)\\nFROM sales\\nGROUP BY rep\\nHAVING SUM(amount) > 100\\nORDER BY rep;\\n```\\n\\nWhat does it return?",
+      "options_es": [
+        "Solo `Beto | 300`",
+        "`Ana | 150`, `Beto | 300`, `Cris | 20`",
+        "`Ana | 150`, `Beto | 300`",
+        "Error: no se puede usar una función de agregación en HAVING"
+      ],
+      "options_en": [
+        "Only `Beto | 300`",
+        "`Ana | 150`, `Beto | 300`, `Cris | 20`",
+        "`Ana | 150`, `Beto | 300`",
+        "Error: an aggregate function cannot be used in HAVING"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`HAVING` se evalúa sobre los grupos ya agregados, así que compara 150 (Ana), 300 (Beto) y 20 (Cris) contra 100: pasan Ana y Beto. La opción \"solo Beto\" sale de aplicar mentalmente el filtro a las filas individuales antes de agrupar, que es justo lo que hace `WHERE` y no `HAVING`. Y al revés de lo que dice la última opción, `HAVING` es precisamente el único sitio donde una función de agregación puede aparecer en un filtro; ponerla en `WHERE` sí sería un error.",
+      "explanation_en": "`HAVING` is evaluated against already-aggregated groups, so it compares 150 (Ana), 300 (Beto) and 20 (Cris) against 100: Ana and Beto pass. The \"only Beto\" option comes from mentally applying the filter to individual rows before grouping, which is exactly what `WHERE` does and `HAVING` does not. And contrary to the last option, `HAVING` is precisely the one place an aggregate may appear in a filter; putting it in `WHERE` would be the error.",
+      "source": "PostgreSQL 16 docs - HAVING clause",
+      "expected_time_ms": 32000,
+      "tags": ["sql", "group-by", "having"]
+    },
+    {
+      "id": "q040401015",
+      "skill_id": "sk040401",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En una tabla donde alguna fila tiene la columna `bono` a NULL, `COUNT(*)` y `COUNT(bono)` devuelven siempre el mismo número.",
+      "question_en": "In a table where some row has a NULL in its `bonus` column, `COUNT(*)` and `COUNT(bonus)` always return the same number.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. `COUNT(*)` cuenta filas, mientras que `COUNT(columna)` cuenta solo los valores no nulos de esa columna. Coinciden únicamente si la columna no tiene ningún NULL, cosa que sí ocurre por definición cuando la columna es NOT NULL o es la clave primaria: de ahí viene la confusión, porque en esas columnas ambas formas dan lo mismo y uno generaliza la regla. En cuanto hay un NULL, `COUNT(bono)` es menor.",
+      "explanation_en": "False. `COUNT(*)` counts rows, while `COUNT(column)` counts only the non-null values of that column. They agree only when the column has no NULLs at all — which is true by definition for a NOT NULL column or a primary key. That is where the confusion comes from: on those columns both forms match, and the rule gets over-generalised. As soon as one NULL exists, `COUNT(bonus)` is smaller.",
+      "source": "PostgreSQL 16 docs - Aggregate Functions (count)",
+      "expected_time_ms": 20000,
+      "tags": ["sql", "null", "aggregation"]
+    },
+    {
+      "id": "q040401016",
+      "skill_id": "sk040401",
+      "type": "fill_blank",
+      "difficulty_tier": "easy",
+      "question_es": "La palabra clave que se coloca justo después de `SELECT` para que el resultado elimine las filas repetidas es _____. (una palabra)",
+      "question_en": "The keyword placed right after `SELECT` so the result drops repeated rows is _____. (one word)",
+      "correct_answer_es": "DISTINCT",
+      "correct_answer_en": "DISTINCT",
+      "explanation_es": "`SELECT DISTINCT region FROM ventas` devuelve cada región una sola vez. Conviene recordar que `DISTINCT` actúa sobre la fila completa proyectada, no sobre una columna suelta: `SELECT DISTINCT region, vendedor` deduplica pares (region, vendedor). No lo confundas con `GROUP BY`, que también deduplica como efecto secundario pero existe para poder calcular agregados por grupo.",
+      "explanation_en": "`SELECT DISTINCT region FROM sales` returns each region once. Keep in mind that `DISTINCT` applies to the whole projected row, not to a single column: `SELECT DISTINCT region, rep` deduplicates (region, rep) pairs. Do not conflate it with `GROUP BY`, which also deduplicates as a side effect but exists so you can compute aggregates per group.",
+      "source": "PostgreSQL 16 docs - SELECT (DISTINCT clause)",
+      "expected_time_ms": 22000,
+      "tags": ["sql", "distinct"]
+    },
+    {
+      "id": "q040401017",
+      "skill_id": "sk040401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una consulta `SELECT` sin `ORDER BY` lleva meses devolviendo las filas en orden de inserción. ¿Qué garantiza realmente PostgreSQL sobre ese orden?",
+      "question_en": "A `SELECT` with no `ORDER BY` has been returning rows in insertion order for months. What does PostgreSQL actually guarantee about that ordering?",
+      "options_es": [
+        "Que las filas salen ordenadas por la clave primaria",
+        "Que las filas salen en el orden físico de inserción mientras nadie las actualice",
+        "Que el orden se mantiene estable mientras el plan de ejecución no cambie",
+        "Nada: sin `ORDER BY` el orden es indefinido y puede cambiar con el plan, el paralelismo o un VACUUM"
+      ],
+      "options_en": [
+        "That rows come back ordered by primary key",
+        "That rows come back in physical insertion order as long as nobody updates them",
+        "That the ordering stays stable as long as the execution plan does not change",
+        "Nothing: without `ORDER BY` the order is undefined and can change with the plan, parallelism or a VACUUM"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El orden observado es un accidente del plan elegido hoy. Un Seq Scan sobre una tabla recién cargada suele parecer orden de inserción, pero un UPDATE mueve la fila al final del heap, un VACUUM reutiliza huecos, un cambio de estadísticas puede hacer que el planificador elija un Index Scan, y un plan paralelo entrelaza los resultados de varios workers. Las tres opciones incorrectas son exactamente las racionalizaciones que se hacen al ver un orden estable por casualidad: ninguna está en el contrato de SQL. Si el orden importa, hay que pedirlo.",
+      "explanation_en": "The order you observe is an accident of today's plan. A Seq Scan over a freshly loaded table often looks like insertion order, but an UPDATE moves the row to the end of the heap, a VACUUM reuses gaps, changed statistics can push the planner to an Index Scan, and a parallel plan interleaves several workers' output. The three wrong options are exactly the rationalisations people reach for after seeing a stable order by luck: none of them is part of the SQL contract. If ordering matters, ask for it.",
+      "source": "PostgreSQL 16 docs - SELECT (ORDER BY clause)",
+      "expected_time_ms": 34000,
+      "tags": ["sql", "order-by", "determinism"]
+    },
+
+    {
+      "id": "q040402010",
+      "skill_id": "sk040402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Defines la clave foránea `pedidos.cliente_id REFERENCES clientes(id) ON DELETE CASCADE`. ¿Qué ocurre al ejecutar `DELETE FROM clientes WHERE id = 7`?",
+      "question_en": "You define the foreign key `orders.customer_id REFERENCES customers(id) ON DELETE CASCADE`. What happens when you run `DELETE FROM customers WHERE id = 7`?",
+      "options_es": [
+        "Se borra el cliente 7 y, en la misma transacción, todos sus pedidos",
+        "El DELETE falla porque el cliente 7 todavía tiene pedidos que lo referencian",
+        "Se borra el cliente 7 y sus pedidos quedan con `cliente_id` a NULL",
+        "Se borra el cliente 7 y sus pedidos quedan huérfanos apuntando a un id inexistente"
+      ],
+      "options_en": [
+        "Customer 7 is deleted and, in the same transaction, all of their orders",
+        "The DELETE fails because customer 7 still has orders referencing it",
+        "Customer 7 is deleted and their orders get `customer_id` set to NULL",
+        "Customer 7 is deleted and their orders are left orphaned, pointing at a nonexistent id"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`ON DELETE CASCADE` propaga el borrado a las filas hijas dentro de la misma transacción. La segunda opción describe el comportamiento por defecto, `NO ACTION`/`RESTRICT`, que es lo que la mayoría ha visto antes y por eso resulta tentadora. La tercera es `ON DELETE SET NULL`, una acción distinta que además exige que la columna acepte NULL. La cuarta no puede ocurrir mientras la clave foránea exista: el objetivo de la restricción es precisamente impedir filas huérfanas. Ojo: CASCADE es cómodo y silencioso, y un borrado en una tabla raíz puede llevarse media base de datos.",
+      "explanation_en": "`ON DELETE CASCADE` propagates the delete to child rows inside the same transaction. The second option describes the default, `NO ACTION`/`RESTRICT`, which is what most people have met before and is therefore tempting. The third is `ON DELETE SET NULL`, a different action that also requires the column to be nullable. The fourth cannot happen while the foreign key exists: preventing orphan rows is the whole point of the constraint. Note that CASCADE is convenient and silent — a delete on a root table can take half the database with it.",
+      "source": "PostgreSQL 16 docs - Constraints (Foreign Keys, referential actions)",
+      "expected_time_ms": 28000,
+      "tags": ["modeling", "foreign-key", "cascade"]
+    },
+    {
+      "id": "q040402011",
+      "skill_id": "sk040402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "La tabla `contactos(id, nombre, telefonos)` guarda en `telefonos` una cadena como `'600111222, 600333444'`. ¿Qué forma normal se está violando y por qué duele en la práctica?",
+      "question_en": "Table `contacts(id, name, phones)` stores in `phones` a string such as `'600111222, 600333444'`. Which normal form is violated, and why does it hurt in practice?",
+      "options_es": [
+        "La 2FN: hay una dependencia parcial de parte de la clave",
+        "La 3FN: `telefonos` depende transitivamente de `nombre`",
+        "La 1FN: la columna no es atómica, así que no se puede indexar, unir ni restringir un teléfono concreto",
+        "Ninguna: guardar listas en una columna de texto es válido mientras se documente el separador"
+      ],
+      "options_en": [
+        "2NF: there is a partial dependency on part of the key",
+        "3NF: `phones` transitively depends on `name`",
+        "1NF: the column is not atomic, so a single phone cannot be indexed, joined or constrained",
+        "None: storing lists in a text column is fine as long as the separator is documented"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La Primera Forma Normal exige valores atómicos: un solo teléfono por celda. Con la lista embebida, buscar quién tiene el 600333444 obliga a un `LIKE '%600333444%'` que no puede usar un índice B-tree, no se puede poner un UNIQUE sobre un teléfono, y borrar uno requiere reescribir la cadena entera. Las opciones 2FN y 3FN suenan más avanzadas y por eso atraen, pero ambas presuponen que ya se cumple la 1FN. La cuarta confunde \"documentado\" con \"modelado\": la solución es una tabla `telefonos(contacto_id, numero)`.",
+      "explanation_en": "First Normal Form demands atomic values: one phone per cell. With the list embedded, finding who owns 600333444 forces a `LIKE '%600333444%'` that no B-tree index can serve, you cannot put a UNIQUE on a single phone, and deleting one means rewriting the whole string. The 2NF and 3NF options sound more advanced and so attract attention, but both presuppose 1NF already holds. The fourth confuses \"documented\" with \"modelled\": the fix is a `phones(contact_id, number)` table.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 2 - Data Models and Query Languages",
+      "expected_time_ms": 34000,
+      "tags": ["modeling", "normalization", "1nf"]
+    },
+    {
+      "id": "q040402012",
+      "skill_id": "sk040402",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Una transacción ejecuta `SELECT COUNT(*) FROM reservas WHERE sala = 'A'` dos veces y obtiene 3 y luego 4, porque otra transacción insertó una reserva y confirmó en medio. ¿Cómo se llama esa anomalía y qué nivel de aislamiento la impide en PostgreSQL?",
+      "question_en": "A transaction runs `SELECT COUNT(*) FROM bookings WHERE room = 'A'` twice and gets 3, then 4, because another transaction inserted a booking and committed in between. What is this anomaly called, and which isolation level prevents it in PostgreSQL?",
+      "options_es": [
+        "Lectura fantasma (phantom read); la evitan REPEATABLE READ y SERIALIZABLE en PostgreSQL",
+        "Lectura sucia (dirty read); la evita READ COMMITTED",
+        "Lectura no repetible; la evita READ UNCOMMITTED",
+        "Actualización perdida; solo la evita bloquear la tabla explícitamente"
+      ],
+      "options_en": [
+        "Phantom read; prevented by REPEATABLE READ and SERIALIZABLE in PostgreSQL",
+        "Dirty read; prevented by READ COMMITTED",
+        "Non-repeatable read; prevented by READ UNCOMMITTED",
+        "Lost update; only preventable by explicitly locking the table"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Aparecen filas NUEVAS que cumplen el mismo predicado: eso es un fantasma, distinto de la lectura no repetible, donde cambia una fila que ya habías leído. El estándar SQL solo obliga a SERIALIZABLE a impedir fantasmas, pero la implementación MVCC de PostgreSQL usa una instantánea fija en REPEATABLE READ, así que allí tampoco se ven. La lectura sucia (leer datos no confirmados) directamente no ocurre en PostgreSQL ni en READ UNCOMMITTED, que se comporta como READ COMMITTED. Y READ UNCOMMITTED, lejos de evitar nada, es el nivel más permisivo del estándar.",
+      "explanation_en": "NEW rows matching the same predicate appear: that is a phantom, distinct from a non-repeatable read, where a row you already read changes. The SQL standard only requires SERIALIZABLE to prevent phantoms, but PostgreSQL's MVCC implementation uses a fixed snapshot at REPEATABLE READ, so they do not occur there either. Dirty reads (seeing uncommitted data) never happen in PostgreSQL at all — even READ UNCOMMITTED behaves as READ COMMITTED. And READ UNCOMMITTED, far from preventing anything, is the most permissive level in the standard.",
+      "source": "PostgreSQL 16 docs - Transaction Isolation",
+      "expected_time_ms": 40000,
+      "tags": ["modeling", "transactions", "isolation"]
+    },
+    {
+      "id": "q040402013",
+      "skill_id": "sk040402",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "```sql\\nCREATE TABLE clientes (id int PRIMARY KEY);\\nCREATE TABLE pedidos (\\n  id int PRIMARY KEY,\\n  cliente_id int REFERENCES clientes(id)\\n);\\nINSERT INTO clientes VALUES (1);\\nINSERT INTO pedidos VALUES (10, 1);\\nINSERT INTO pedidos VALUES (11, 99);\\n```\\n\\n¿Cuál es el resultado del último INSERT?",
+      "question_en": "```sql\\nCREATE TABLE customers (id int PRIMARY KEY);\\nCREATE TABLE orders (\\n  id int PRIMARY KEY,\\n  customer_id int REFERENCES customers(id)\\n);\\nINSERT INTO customers VALUES (1);\\nINSERT INTO orders VALUES (10, 1);\\nINSERT INTO orders VALUES (11, 99);\\n```\\n\\nWhat is the outcome of the last INSERT?",
+      "options_es": [
+        "Se inserta y crea automáticamente el cliente 99",
+        "Se inserta con `cliente_id` convertido a NULL",
+        "Se inserta sin más: las claves foráneas solo se comprueban al hacer COMMIT explícito",
+        "Falla con un error de violación de clave foránea porque no existe `clientes.id = 99`"
+      ],
+      "options_en": [
+        "It succeeds and auto-creates customer 99",
+        "It succeeds with `customer_id` coerced to NULL",
+        "It succeeds outright: foreign keys are only checked on an explicit COMMIT",
+        "It fails with a foreign key violation because `customers.id = 99` does not exist"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La restricción de integridad referencial se comprueba al ejecutar la sentencia y rechaza la fila: no existe ningún cliente 99. Ninguna base de datos relacional \"crea\" la fila padre que falta; esa idea viene de los ORM, donde el objeto padre se persiste en cascada antes que el hijo, pero eso lo hace la aplicación, no el motor. Tampoco se convierte nada a NULL en silencio: un `cliente_id` NULL sí sería válido (significa \"sin cliente\"), pero hay que escribirlo explícitamente. Y salvo que la restricción se declare DEFERRABLE INITIALLY DEFERRED, la comprobación no espera al COMMIT.",
+      "explanation_en": "The referential integrity constraint is checked as the statement runs and rejects the row: there is no customer 99. No relational database \"creates\" the missing parent row; that idea comes from ORMs, where the parent object is cascade-persisted before the child — but that is the application doing it, not the engine. Nothing is silently coerced to NULL either: a NULL `customer_id` would be legal (meaning \"no customer\"), but you have to write it. And unless the constraint is declared DEFERRABLE INITIALLY DEFERRED, the check does not wait for COMMIT.",
+      "source": "PostgreSQL 16 docs - Constraints (Foreign Keys)",
+      "expected_time_ms": 30000,
+      "tags": ["modeling", "foreign-key", "integrity"]
+    },
+    {
+      "id": "q040402014",
+      "skill_id": "sk040402",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "```sql\\nCREATE TABLE usuarios (\\n  id int PRIMARY KEY,\\n  email text UNIQUE\\n);\\nINSERT INTO usuarios VALUES (1, NULL);\\nINSERT INTO usuarios VALUES (2, NULL);\\nSELECT COUNT(*) FROM usuarios;\\n```\\n\\n¿Qué imprime el SELECT en PostgreSQL 16?",
+      "question_en": "```sql\\nCREATE TABLE users (\\n  id int PRIMARY KEY,\\n  email text UNIQUE\\n);\\nINSERT INTO users VALUES (1, NULL);\\nINSERT INTO users VALUES (2, NULL);\\nSELECT COUNT(*) FROM users;\\n```\\n\\nWhat does the SELECT print in PostgreSQL 16?",
+      "options_es": [
+        "2: por defecto UNIQUE no considera iguales dos NULL, así que ambas filas se insertan",
+        "1: el segundo INSERT falla por violar la restricción UNIQUE sobre `email`",
+        "0: la tabla se queda vacía porque toda la sentencia se revierte",
+        "2, pero solo si la columna se declara además NOT NULL"
+      ],
+      "options_en": [
+        "2: by default UNIQUE does not treat two NULLs as equal, so both rows are inserted",
+        "1: the second INSERT fails, violating the UNIQUE constraint on `email`",
+        "0: the table ends up empty because the whole statement is rolled back",
+        "2, but only if the column is additionally declared NOT NULL"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una restricción UNIQUE se basa en la igualdad, y `NULL = NULL` es UNKNOWN, no TRUE: por eso PostgreSQL admite tantos NULL como quieras en una columna UNIQUE (el comportamiento por defecto, equivalente a `NULLS DISTINCT`). La opción \"1\" es la intuición razonable de que UNIQUE significa \"un solo valor de cada\", y es justo la trampa que deja entrar duplicados lógicos en producción. La última opción se contradice: si la columna fuese NOT NULL no se podría insertar ningún NULL. Si quieres prohibir el segundo NULL, PostgreSQL 15+ permite `UNIQUE NULLS NOT DISTINCT`.",
+      "explanation_en": "A UNIQUE constraint rests on equality, and `NULL = NULL` is UNKNOWN, not TRUE — which is why PostgreSQL accepts as many NULLs as you like in a UNIQUE column (the default, equivalent to `NULLS DISTINCT`). The \"1\" option is the reasonable intuition that UNIQUE means \"one of each value\", and it is exactly the trap that lets logical duplicates into production. The last option contradicts itself: a NOT NULL column could not accept any NULL at all. To forbid the second NULL, PostgreSQL 15+ offers `UNIQUE NULLS NOT DISTINCT`.",
+      "source": "PostgreSQL 16 docs - Constraints (Unique Constraints, NULLS DISTINCT)",
+      "expected_time_ms": 36000,
+      "tags": ["modeling", "unique", "null"]
+    },
+    {
+      "id": "q040402015",
+      "skill_id": "sk040402",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Una clave primaria compuesta puede tener NULL en una de sus columnas, siempre que la otra columna tenga valor.",
+      "question_en": "A composite primary key may hold NULL in one of its columns, as long as the other column has a value.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. Declarar una clave primaria impone NOT NULL sobre TODAS sus columnas, también en una clave compuesta: si una parte fuese NULL, la fila no podría compararse de forma fiable con ninguna otra y la clave dejaría de identificar nada. Lo tentador es extrapolar desde UNIQUE, que sí admite NULL porque solo exige que los valores conocidos no se repitan. Por eso una columna opcional que debe ser única va con `UNIQUE`, y la clave primaria se reserva para el identificador que siempre existe.",
+      "explanation_en": "False. Declaring a primary key imposes NOT NULL on ALL of its columns, composite keys included: if one part were NULL, the row could not be reliably compared with any other and the key would identify nothing. The tempting move is to extrapolate from UNIQUE, which does allow NULLs because it only requires known values not to repeat. That is why an optional column that must be unique gets `UNIQUE`, while the primary key is reserved for the identifier that always exists.",
+      "source": "PostgreSQL 16 docs - Constraints (Primary Keys)",
+      "expected_time_ms": 20000,
+      "tags": ["modeling", "primary-key", "null"]
+    },
+    {
+      "id": "q040402016",
+      "skill_id": "sk040402",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "El nivel de aislamiento de transacciones que PostgreSQL usa por defecto, y en el que cada sentencia ve una instantánea nueva de los datos confirmados, se llama _____. (dos palabras)",
+      "question_en": "The transaction isolation level PostgreSQL uses by default, in which each statement sees a fresh snapshot of committed data, is called _____. (two words)",
+      "correct_answer_es": "READ COMMITTED",
+      "correct_answer_en": "READ COMMITTED",
+      "explanation_es": "En READ COMMITTED cada sentencia toma su propia instantánea, de modo que nunca lees datos sin confirmar pero dos `SELECT` dentro de la misma transacción pueden diferir (lectura no repetible y fantasmas). Mucha gente asume que el defecto es SERIALIZABLE porque es el nivel del que habla el estándar; en la práctica casi ningún motor lo pone por defecto, por su coste. Si necesitas que toda la transacción vea una imagen congelada, hay que pedir REPEATABLE READ o SERIALIZABLE explícitamente.",
+      "explanation_en": "Under READ COMMITTED each statement takes its own snapshot, so you never read uncommitted data but two `SELECT`s inside one transaction can disagree (non-repeatable reads and phantoms). Many people assume the default is SERIALIZABLE because that is the level the standard talks about; in practice almost no engine defaults to it, given the cost. If you need the whole transaction to see a frozen image, you must ask for REPEATABLE READ or SERIALIZABLE explicitly.",
+      "source": "PostgreSQL 16 docs - Transaction Isolation (Read Committed)",
+      "expected_time_ms": 28000,
+      "tags": ["modeling", "transactions", "isolation"]
+    },
+
+    {
+      "id": "q040403010",
+      "skill_id": "sk040403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia práctica entre `EXPLAIN consulta` y `EXPLAIN ANALYZE consulta` en PostgreSQL?",
+      "question_en": "What is the practical difference between `EXPLAIN query` and `EXPLAIN ANALYZE query` in PostgreSQL?",
+      "options_es": [
+        "`EXPLAIN` muestra el plan estimado sin ejecutar; `EXPLAIN ANALYZE` ejecuta la consulta de verdad y añade tiempos y filas reales",
+        "`EXPLAIN` ejecuta la consulta y `EXPLAIN ANALYZE` solo la estima",
+        "`EXPLAIN ANALYZE` recalcula las estadísticas de la tabla antes de planificar",
+        "Son sinónimos; `ANALYZE` solo hace la salida más detallada"
+      ],
+      "options_en": [
+        "`EXPLAIN` shows the estimated plan without running it; `EXPLAIN ANALYZE` actually runs the query and adds real timings and row counts",
+        "`EXPLAIN` runs the query and `EXPLAIN ANALYZE` only estimates it",
+        "`EXPLAIN ANALYZE` recomputes the table statistics before planning",
+        "They are synonyms; `ANALYZE` only makes the output more verbose"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`EXPLAIN` es barato y solo pide el plan al planificador con sus estimaciones. `EXPLAIN ANALYZE` ejecuta la consulta, así que devuelve `actual rows` y `actual time` junto a las estimaciones, y la distancia entre estimado y real es lo que delata estadísticas obsoletas. Consecuencia importante que la opción \"son sinónimos\" hace olvidar: como ejecuta de verdad, un `EXPLAIN ANALYZE DELETE ...` borra filas; para inspeccionarlo sin efectos hay que envolverlo en una transacción y hacer ROLLBACK. Recalcular estadísticas es el comando `ANALYZE` suelto, que es otra cosa.",
+      "explanation_en": "`EXPLAIN` is cheap and merely asks the planner for its plan and estimates. `EXPLAIN ANALYZE` executes the query, so it reports `actual rows` and `actual time` alongside the estimates, and the gap between estimated and actual is what exposes stale statistics. An important consequence the \"synonyms\" option makes people forget: because it really runs, `EXPLAIN ANALYZE DELETE ...` deletes rows; to inspect one safely, wrap it in a transaction and ROLLBACK. Recomputing statistics is the standalone `ANALYZE` command, a different thing.",
+      "source": "PostgreSQL 16 docs - Using EXPLAIN / EXPLAIN ANALYZE",
+      "expected_time_ms": 28000,
+      "tags": ["indexes", "explain", "optimization"]
+    },
+    {
+      "id": "q040403011",
+      "skill_id": "sk040403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Existe un índice B-tree sobre `usuarios(email)`, pero `WHERE lower(email) = 'ana@x.com'` sigue haciendo un Seq Scan. ¿Por qué?",
+      "question_en": "There is a B-tree index on `users(email)`, yet `WHERE lower(email) = 'ana@x.com'` still does a Seq Scan. Why?",
+      "options_es": [
+        "Porque un índice B-tree no sirve para comparaciones de igualdad sobre texto",
+        "Porque el índice guarda `email` tal cual, y el índice sobre la columna no puede satisfacer una búsqueda por `lower(email)`",
+        "Porque PostgreSQL desactiva los índices cuando la consulta usa literales entre comillas simples",
+        "Porque falta un `ORDER BY email` que obligue al planificador a recorrer el índice"
+      ],
+      "options_en": [
+        "Because a B-tree index cannot serve equality comparisons on text",
+        "Because the index stores `email` verbatim, and an index on the column cannot satisfy a search on `lower(email)`",
+        "Because PostgreSQL disables indexes when the query uses single-quoted literals",
+        "Because there is no `ORDER BY email` forcing the planner to walk the index"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El índice está ordenado por los valores originales de `email`; envolver la columna en una función produce una expresión distinta que el índice no indexa, así que el planificador no tiene más remedio que leer toda la tabla. La solución es un índice de expresión: `CREATE INDEX ON usuarios (lower(email))`, y usar exactamente la misma expresión en el WHERE. La primera opción es falsa: el B-tree es precisamente la estructura para `=` y para rangos. Las otras dos inventan reglas que no existen; el `ORDER BY` influye en el plan, pero no es lo que bloquea el índice aquí.",
+      "explanation_en": "The index is ordered by the raw `email` values; wrapping the column in a function produces a different expression that the index does not cover, so the planner has no choice but to read the whole table. The fix is an expression index: `CREATE INDEX ON users (lower(email))`, using exactly the same expression in the WHERE. The first option is false: B-tree is precisely the structure for `=` and for ranges. The other two invent rules that do not exist; `ORDER BY` does influence plans, but it is not what blocks the index here.",
+      "source": "PostgreSQL 16 docs - Indexes on Expressions",
+      "expected_time_ms": 34000,
+      "tags": ["indexes", "expression-index", "optimization"]
+    },
+    {
+      "id": "q040403012",
+      "skill_id": "sk040403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una tabla tiene un índice sobre `estado`, pero `WHERE estado = 'activo'` (el 80 % de las filas) se ejecuta con Seq Scan. ¿Cuál es la explicación correcta?",
+      "question_en": "A table has an index on `status`, but `WHERE status = 'active'` (80 % of the rows) runs as a Seq Scan. What is the correct explanation?",
+      "options_es": [
+        "El índice está corrupto y hay que hacer REINDEX",
+        "PostgreSQL ignora los índices sobre columnas de tipo texto con baja cardinalidad",
+        "El planificador solo usa índices en tablas de más de un millón de filas",
+        "Con una selectividad tan baja, saltar del índice al heap por cada fila cuesta más que leer la tabla entera de forma secuencial"
+      ],
+      "options_en": [
+        "The index is corrupt and needs a REINDEX",
+        "PostgreSQL ignores indexes on low-cardinality text columns",
+        "The planner only uses indexes on tables with more than a million rows",
+        "At such low selectivity, hopping from the index to the heap for every row costs more than reading the whole table sequentially"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El planificador es un optimizador basado en costes, no una máquina de \"usar el índice siempre que exista\". Un Index Scan que devuelve el 80 % de las filas implica lecturas aleatorias del heap para casi todas ellas, mucho más caras que la lectura secuencial. Elegir Seq Scan es la decisión correcta, no un fallo. Las tres opciones incorrectas comparten la misma premisa equivocada —que un índice no usado es un síntoma de avería o de una regla arbitraria— cuando lo que hay detrás es aritmética de costes y estadísticas. Si sospechas de las estadísticas, ejecuta `ANALYZE` y compara `EXPLAIN ANALYZE`.",
+      "explanation_en": "The planner is a cost-based optimiser, not a machine for \"always use the index if one exists\". An Index Scan returning 80 % of the rows means random heap fetches for nearly all of them, far more expensive than a sequential read. Choosing a Seq Scan is the right call, not a malfunction. The three wrong options share one mistaken premise — that an unused index signals breakage or an arbitrary rule — when the real driver is cost arithmetic over statistics. If you suspect the statistics, run `ANALYZE` and compare with `EXPLAIN ANALYZE`.",
+      "source": "PostgreSQL 16 docs - Using EXPLAIN (Seq Scan vs Index Scan, planner cost estimates)",
+      "expected_time_ms": 35000,
+      "tags": ["indexes", "planner", "selectivity"]
+    },
+    {
+      "id": "q040403013",
+      "skill_id": "sk040403",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "```\\nEXPLAIN ANALYZE SELECT * FROM pedidos WHERE cliente_id = 42;\\n\\nSeq Scan on pedidos  (cost=0.00..18334.00 rows=1 width=36)\\n                     (actual time=0.412..96.118 rows=9871 loops=1)\\n  Filter: (cliente_id = 42)\\n  Rows Removed by Filter: 990129\\n```\\n\\n¿Qué es lo primero que revela este plan?",
+      "question_en": "```\\nEXPLAIN ANALYZE SELECT * FROM orders WHERE customer_id = 42;\\n\\nSeq Scan on orders  (cost=0.00..18334.00 rows=1 width=36)\\n                    (actual time=0.412..96.118 rows=9871 loops=1)\\n  Filter: (customer_id = 42)\\n  Rows Removed by Filter: 990129\\n```\\n\\nWhat does this plan reveal first?",
+      "options_es": [
+        "Que el planificador estimó 1 fila y salieron 9871: las estadísticas están desfasadas, y además no hay índice utilizable sobre `cliente_id`",
+        "Que la consulta es óptima: 96 ms para un millón de filas es un buen resultado",
+        "Que el índice sobre `cliente_id` existe pero está deshabilitado por `enable_indexscan = off`",
+        "Que `Rows Removed by Filter` indica filas borradas de la tabla durante la ejecución"
+      ],
+      "options_en": [
+        "That the planner estimated 1 row and 9871 came back: the statistics are stale, and on top of that there is no usable index on `customer_id`",
+        "That the query is optimal: 96 ms over a million rows is a good result",
+        "That an index on `customer_id` exists but is disabled via `enable_indexscan = off`",
+        "That `Rows Removed by Filter` means rows deleted from the table during execution"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La señal clave de un `EXPLAIN ANALYZE` es la distancia entre `rows=1` (estimado) y `actual ... rows=9871`. Un error de casi cuatro órdenes de magnitud significa que el planificador está decidiendo a ciegas, y el remedio empieza por `ANALYZE pedidos`. El `Seq Scan` con `Rows Removed by Filter: 990129` confirma que se leyó toda la tabla para quedarse con el 1 %, el caso de libro para un índice sobre `cliente_id`. La opción \"es óptima\" es tentadora porque 96 ms suena aceptable, pero ese coste se multiplica con la tabla y con la concurrencia. Y `Rows Removed by Filter` cuenta filas descartadas por el predicado, no filas borradas: un `SELECT` no borra nada.",
+      "explanation_en": "The key signal in an `EXPLAIN ANALYZE` is the gap between `rows=1` (estimated) and `actual ... rows=9871`. Being off by nearly four orders of magnitude means the planner is deciding blind, and the remedy starts with `ANALYZE orders`. The `Seq Scan` with `Rows Removed by Filter: 990129` confirms the whole table was read to keep 1 % of it — the textbook case for an index on `customer_id`. The \"optimal\" option is tempting because 96 ms sounds acceptable, but that cost scales with the table and with concurrency. And `Rows Removed by Filter` counts rows discarded by the predicate, not rows deleted: a `SELECT` deletes nothing.",
+      "source": "PostgreSQL 16 docs - Using EXPLAIN (EXPLAIN ANALYZE output)",
+      "expected_time_ms": 45000,
+      "tags": ["indexes", "explain", "statistics"]
+    },
+    {
+      "id": "q040403014",
+      "skill_id": "sk040403",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Con un índice B-tree sobre `productos(nombre)`, ¿cuál de estas dos consultas puede usarlo y cuál no?\\n\\n```sql\\n-- A\\nSELECT * FROM productos WHERE nombre LIKE 'teclado%';\\n-- B\\nSELECT * FROM productos WHERE nombre LIKE '%teclado';\\n```",
+      "question_en": "With a B-tree index on `products(name)`, which of these two queries can use it and which cannot?\\n\\n```sql\\n-- A\\nSELECT * FROM products WHERE name LIKE 'keyboard%';\\n-- B\\nSELECT * FROM products WHERE name LIKE '%keyboard';\\n```",
+      "options_es": [
+        "Ninguna: `LIKE` nunca puede aprovechar un índice",
+        "A sí, porque el patrón está anclado al principio; B no, porque un comodín inicial impide acotar un rango en el árbol ordenado",
+        "B sí, porque el comodín inicial hace el patrón más selectivo; A no",
+        "Ambas por igual: al planificador le da lo mismo dónde esté el comodín"
+      ],
+      "options_en": [
+        "Neither: `LIKE` can never use an index",
+        "A yes, because the pattern is anchored at the start; B no, because a leading wildcard makes it impossible to bound a range in the sorted tree",
+        "B yes, because the leading wildcard makes the pattern more selective; A no",
+        "Both equally: the planner does not care where the wildcard sits"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un B-tree guarda los valores ordenados, así que un prefijo fijo se traduce en un rango contiguo (`nombre >= 'teclado' AND nombre < 'tecladp'`) que el índice recorre directamente. Con `%teclado` la coincidencia puede empezar en cualquier posición, no hay rango que acotar y solo queda leer todo. La opción \"nunca\" generaliza de más partiendo del caso B. La tercera confunde selectividad con usabilidad del índice: aunque `%teclado` devolviera menos filas, seguiría sin poder navegarse por el árbol. Para búsquedas por infijo se usan índices de trigramas (`pg_trgm` con GIN) o búsqueda de texto completo.",
+      "explanation_en": "A B-tree stores values in sorted order, so a fixed prefix maps to a contiguous range (`name >= 'keyboard' AND name < 'keyboarE'`) the index can walk directly. With `%keyboard` the match may begin anywhere, there is no range to bound, and only a full read remains. The \"never\" option over-generalises from case B. The third confuses selectivity with index usability: even if `%keyboard` returned fewer rows, the tree still could not be navigated. Infix searches call for trigram indexes (`pg_trgm` with GIN) or full-text search.",
+      "source": "PostgreSQL 16 docs - Indexes (index usage with LIKE patterns) / pg_trgm",
+      "expected_time_ms": 36000,
+      "tags": ["indexes", "btree", "like"]
+    },
+    {
+      "id": "q040403015",
+      "skill_id": "sk040403",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un índice acelera tanto las lecturas como las escrituras sobre la tabla indexada.",
+      "question_en": "An index speeds up both reads and writes on the indexed table.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso, y la mitad tentadora es la primera: los índices sí aceleran las lecturas selectivas. Pero cada `INSERT`, `UPDATE` o `DELETE` debe mantener actualizada cada estructura de índice de la tabla, además del heap, así que las escrituras se encarecen de forma proporcional al número de índices; también ocupan disco y hay que mantenerlos (VACUUM, reindexado). Un índice es un intercambio deliberado: más rápido leer, más lento escribir. Kleppmann lo resume como el compromiso central del almacenamiento.",
+      "explanation_en": "False, and the tempting half is the first one: indexes do speed up selective reads. But every `INSERT`, `UPDATE` or `DELETE` must keep each of the table's index structures in sync as well as the heap, so writes get more expensive in proportion to the number of indexes; they also consume disk and need maintenance (VACUUM, reindexing). An index is a deliberate trade: faster reads, slower writes. Kleppmann frames this as the central storage trade-off.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 3 - Storage and Retrieval",
+      "expected_time_ms": 20000,
+      "tags": ["indexes", "write-amplification", "tradeoffs"]
+    },
+    {
+      "id": "q040403016",
+      "skill_id": "sk040403",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`EXPLAIN ANALYZE` ejecuta realmente la consulta, por lo que sobre un `UPDATE` o un `DELETE` modifica los datos.",
+      "question_en": "`EXPLAIN ANALYZE` really executes the query, so on an `UPDATE` or a `DELETE` it modifies the data.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. `EXPLAIN` a secas solo pide el plan estimado y es inofensivo, y de ahí viene la idea —falsa— de que añadir `ANALYZE` sigue siendo una inspección pasiva. `ANALYZE` ejecuta la sentencia para poder informar de tiempos y filas reales, incluidos los efectos de escritura. La práctica segura es `BEGIN; EXPLAIN ANALYZE DELETE ...; ROLLBACK;`, que te deja ver el plan real sin conservar el cambio.",
+      "explanation_en": "True. Plain `EXPLAIN` only asks for the estimated plan and is harmless, which is where the false idea comes from that adding `ANALYZE` is still a passive inspection. `ANALYZE` executes the statement in order to report real timings and row counts, write effects included. The safe practice is `BEGIN; EXPLAIN ANALYZE DELETE ...; ROLLBACK;`, which lets you see the real plan without keeping the change.",
+      "source": "PostgreSQL 16 docs - Using EXPLAIN (EXPLAIN ANALYZE caveats)",
+      "expected_time_ms": 22000,
+      "tags": ["indexes", "explain", "safety"]
+    },
+    {
+      "id": "q040403017",
+      "skill_id": "sk040403",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "El comando de PostgreSQL que recopila las estadísticas de distribución de los datos que el planificador usa para estimar cuántas filas devolverá cada paso del plan se llama _____. (una palabra)",
+      "question_en": "The PostgreSQL command that collects the data distribution statistics the planner uses to estimate how many rows each plan step will return is called _____. (one word)",
+      "correct_answer_es": "ANALYZE",
+      "correct_answer_en": "ANALYZE",
+      "explanation_es": "`ANALYZE tabla` muestrea la tabla y guarda histogramas y cardinalidades en `pg_statistic`; el autovacuum lo lanza solo, pero después de una carga masiva conviene ejecutarlo a mano. La confusión habitual es con `EXPLAIN ANALYZE`, donde la misma palabra significa otra cosa: allí es un modificador que hace que la consulta se ejecute de verdad, no una recogida de estadísticas. Sin estadísticas frescas el planificador estima mal y elige planes malos, aunque los índices correctos existan.",
+      "explanation_en": "`ANALYZE table` samples the table and stores histograms and cardinalities in `pg_statistic`; autovacuum triggers it on its own, but after a bulk load it is worth running manually. The usual confusion is with `EXPLAIN ANALYZE`, where the same word means something else entirely: there it is a modifier that makes the query actually execute, not a statistics collection. Without fresh statistics the planner estimates badly and picks bad plans, even when the right indexes exist.",
+      "source": "PostgreSQL 16 docs - ANALYZE / Statistics Used by the Planner",
+      "expected_time_ms": 30000,
+      "tags": ["indexes", "statistics", "planner"]
+    },
+
+    {
+      "id": "q040404010",
+      "skill_id": "sk040404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En SQLAlchemy 2.0 detectas el patrón N+1 al recorrer `autor.libros` de 200 autores. ¿Cuál es la corrección idiomática?",
+      "question_en": "In SQLAlchemy 2.0 you spot the N+1 pattern while iterating `author.books` over 200 authors. What is the idiomatic fix?",
+      "options_es": [
+        "Cargar la relación con una estrategia de carga ansiosa, por ejemplo `select(Autor).options(selectinload(Autor.libros))`",
+        "Aumentar el tamaño del pool de conexiones para que las 201 consultas vayan en paralelo",
+        "Envolver el bucle en una única transacción para que las consultas cuenten como una sola",
+        "Añadir un índice sobre `libros.autor_id` para que las 201 consultas sean rápidas"
+      ],
+      "options_en": [
+        "Load the relationship with an eager loading strategy, e.g. `select(Author).options(selectinload(Author.books))`",
+        "Increase the connection pool size so the 201 queries run in parallel",
+        "Wrap the loop in a single transaction so the queries count as one",
+        "Add an index on `books.author_id` so all 201 queries are fast"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El problema del N+1 es el número de idas y vueltas a la base de datos, no la lentitud de cada consulta. `selectinload` emite una segunda consulta con `IN (...)` que trae los libros de los 200 autores de golpe, y `joinedload` hace lo propio con un LEFT OUTER JOIN en una sola consulta. Las otras tres opciones son tentadoras porque todas son buenas prácticas en su contexto —pool, transacciones, índices— pero ninguna reduce las 201 idas y vueltas: el índice hace que cada viaje sea rápido, y 200 viajes rápidos siguen pagando 200 latencias de red.",
+      "explanation_en": "The N+1 problem is the number of round trips to the database, not the slowness of each query. `selectinload` emits a second query with `IN (...)` fetching all 200 authors' books at once, and `joinedload` does the same via a LEFT OUTER JOIN in a single query. The other three options are tempting because each is good practice in its own context — pooling, transactions, indexes — but none reduces the 201 round trips: the index makes each trip fast, and 200 fast trips still pay 200 network latencies.",
+      "source": "SQLAlchemy 2.0 docs - ORM Querying Guide: Relationship Loading Techniques",
+      "expected_time_ms": 30000,
+      "tags": ["orm", "sqlalchemy", "n+1"]
+    },
+    {
+      "id": "q040404011",
+      "skill_id": "sk040404",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En SQLAlchemy, ¿qué diferencia hay entre `session.flush()` y `session.commit()`?",
+      "question_en": "In SQLAlchemy, what is the difference between `session.flush()` and `session.commit()`?",
+      "options_es": [
+        "`flush()` guarda en un archivo local y `commit()` envía los datos al servidor",
+        "`flush()` descarta los cambios pendientes y `commit()` los aplica",
+        "`flush()` envía el SQL pendiente dentro de la transacción abierta, sin confirmarla; `commit()` hace flush y además confirma",
+        "Son equivalentes: `commit()` es solo un alias más legible de `flush()`"
+      ],
+      "options_en": [
+        "`flush()` writes to a local file while `commit()` sends the data to the server",
+        "`flush()` discards pending changes and `commit()` applies them",
+        "`flush()` emits the pending SQL inside the open transaction without committing it; `commit()` flushes and then commits",
+        "They are equivalent: `commit()` is just a more readable alias for `flush()`"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`flush()` sincroniza la unidad de trabajo con la base de datos: emite los INSERT/UPDATE/DELETE para que la transacción actual pueda verlos (por ejemplo, para obtener una clave primaria autogenerada antes de usarla), pero todo sigue siendo revertible con `rollback()`. `commit()` hace ese flush y confirma la transacción, volviéndolo permanente y visible para los demás. La opción que los llama equivalentes es la peligrosa: lleva a suponer que un flush ya persistió los datos, cuando un error posterior los revertirá.",
+      "explanation_en": "`flush()` synchronises the unit of work with the database: it emits the pending INSERT/UPDATE/DELETE so the current transaction can see them (for instance to obtain an autogenerated primary key before using it), yet everything remains revertible with `rollback()`. `commit()` performs that flush and then commits the transaction, making it permanent and visible to others. The option calling them equivalent is the dangerous one: it leads to assuming a flush already persisted the data, when a later error will roll it back.",
+      "source": "SQLAlchemy 2.0 docs - Using the Session (Flushing, Committing)",
+      "expected_time_ms": 32000,
+      "tags": ["orm", "sqlalchemy", "session"]
+    },
+    {
+      "id": "q040404012",
+      "skill_id": "sk040404",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Una función devuelve un objeto `Usuario` cargado dentro de un `with Session(engine) as session:` y, ya fuera del bloque, la plantilla accede a `usuario.pedidos`. Salta `DetachedInstanceError`. ¿Cuál es la causa?",
+      "question_en": "A function returns a `User` object loaded inside a `with Session(engine) as session:` block and, outside that block, the template accesses `user.orders`. A `DetachedInstanceError` is raised. What is the cause?",
+      "options_es": [
+        "La relación `pedidos` está mal declarada y le falta un `back_populates`",
+        "El objeto quedó desasociado al cerrarse la sesión, y la relación con carga perezosa necesita una sesión viva para emitir su consulta",
+        "El objeto se recolectó como basura al salir del `with`, así que sus atributos ya no existen",
+        "La base de datos cerró la conexión por inactividad y hay que subir el timeout del pool"
+      ],
+      "options_en": [
+        "The `orders` relationship is misdeclared and lacks a `back_populates`",
+        "The object was detached when the session closed, and a lazy-loaded relationship needs a live session to emit its query",
+        "The object was garbage collected on leaving the `with`, so its attributes no longer exist",
+        "The database dropped the connection on idle timeout and the pool timeout must be raised"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una relación con carga perezosa no contiene datos hasta que alguien la toca: en ese momento el ORM necesita la sesión para emitir el SELECT. Al salir del `with`, la sesión se cierra y el objeto queda *detached*, así que la carga perezosa ya no tiene por dónde ir. Las soluciones son precargar lo que vas a necesitar (`selectinload`/`joinedload`) antes de salir, mantener la sesión abierta durante el renderizado, o devolver un DTO ya materializado. El objeto no ha desaparecido —sus columnas ya cargadas se leen sin problema—, y nada de esto tiene que ver con el timeout del pool ni con `back_populates`, que solo sincroniza los dos lados de la relación en memoria.",
+      "explanation_en": "A lazy-loaded relationship holds no data until something touches it — at that moment the ORM needs the session to emit the SELECT. Leaving the `with` closes the session and detaches the object, so the lazy load has nowhere to go. The fixes are to eagerly load what you will need (`selectinload`/`joinedload`) before leaving, to keep the session open across rendering, or to return an already-materialised DTO. The object has not vanished — its already-loaded columns read fine — and none of this relates to pool timeouts or to `back_populates`, which only keeps the two sides of a relationship in sync in memory.",
+      "source": "SQLAlchemy 2.0 docs - State Management / Relationship Loading Techniques (lazy loading, detached instances)",
+      "expected_time_ms": 42000,
+      "tags": ["orm", "sqlalchemy", "lazy-loading"]
+    },
+    {
+      "id": "q040404013",
+      "skill_id": "sk040404",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "`autores` tiene 3 filas y cada autor tiene libros. La relación `Autor.libros` usa la estrategia por defecto.\\n\\n```python\\nautores = session.scalars(select(Autor)).all()\\nfor a in autores:\\n    print(a.nombre, len(a.libros))\\n```\\n\\n¿Cuántas sentencias SELECT llegan a la base de datos?",
+      "question_en": "`authors` has 3 rows and each author has books. The `Author.books` relationship uses the default strategy.\\n\\n```python\\nauthors = session.scalars(select(Author)).all()\\nfor a in authors:\\n    print(a.name, len(a.books))\\n```\\n\\nHow many SELECT statements reach the database?",
+      "options_es": [
+        "1: el ORM trae autores y libros en una sola consulta con JOIN",
+        "2: una para los autores y otra para todos los libros",
+        "4: una para los autores más una por cada autor al tocar `a.libros`",
+        "3: una por autor, porque la lista de autores ya venía en memoria"
+      ],
+      "options_en": [
+        "1: the ORM fetches authors and books in a single JOIN query",
+        "2: one for the authors and one for all the books",
+        "4: one for the authors plus one per author when `a.books` is touched",
+        "3: one per author, since the author list was already in memory"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La estrategia por defecto de una relación es `lazy=\"select\"`: la primera consulta trae los 3 autores y cada acceso a `a.libros` dispara un SELECT adicional. 1 + 3 = 4, el patrón N+1 con N = 3. La opción \"1\" describe lo que ocurriría con `joinedload`, y la \"2\" lo que haría `selectinload`; ambas son tentadoras porque son el comportamiento que se querría, pero hay que pedirlo explícitamente con `.options(...)`. La opción \"3\" olvida que la lista de autores también costó una consulta. Con 3 autores no se nota; con 3000, son 3001 idas y vueltas.",
+      "explanation_en": "The default relationship strategy is `lazy=\"select\"`: the first query fetches the 3 authors and each access to `a.books` fires an extra SELECT. 1 + 3 = 4 — the N+1 pattern with N = 3. Option \"1\" describes what `joinedload` would do and \"2\" what `selectinload` would do; both are tempting because they are the behaviour you want, but you have to ask for it explicitly with `.options(...)`. Option \"3\" forgets that fetching the author list cost a query too. With 3 authors nobody notices; with 3000 it is 3001 round trips.",
+      "source": "SQLAlchemy 2.0 docs - Relationship Loading Techniques (lazy loading, the N plus one problem)",
+      "expected_time_ms": 38000,
+      "tags": ["orm", "sqlalchemy", "n+1"]
+    },
+    {
+      "id": "q040404014",
+      "skill_id": "sk040404",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "En la base de datos el usuario 1 se llama `'Ana'`.\\n\\n```python\\nu = session.get(Usuario, 1)\\nu.nombre = \"Berta\"\\nsession.rollback()\\nprint(u.nombre)\\n```\\n\\n¿Qué imprime?",
+      "question_en": "In the database, user 1 is named `'Ana'`.\\n\\n```python\\nu = session.get(User, 1)\\nu.name = \"Berta\"\\nsession.rollback()\\nprint(u.name)\\n```\\n\\nWhat does it print?",
+      "options_es": [
+        "`Berta`: el rollback afecta a la base de datos, pero el objeto Python conserva el valor asignado",
+        "`Ana`: el rollback expira los objetos de la sesión, así que leer el atributo los recarga desde la base de datos",
+        "`None`: el rollback deja el objeto vacío hasta un nuevo `get()`",
+        "Lanza una excepción, porque tras un rollback el objeto ya no pertenece a la sesión"
+      ],
+      "options_en": [
+        "`Berta`: the rollback affects the database, but the Python object keeps the assigned value",
+        "`Ana`: the rollback expires the session's objects, so reading the attribute reloads it from the database",
+        "`None`: the rollback leaves the object empty until a fresh `get()`",
+        "It raises an exception, because after a rollback the object no longer belongs to the session"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`Session.rollback()` revierte la transacción y además marca como expirados todos los objetos de la sesión; el siguiente acceso a un atributo dispara una recarga y devuelve `'Ana'`. La primera opción es la intuición natural —\"el rollback es cosa de la base de datos, mi objeto es mío\"— y explica por qué este comportamiento sorprende: es precisamente el diseño que evita quedarte con objetos que mienten sobre el estado persistido. El objeto sigue siendo válido y asociado a la sesión, así que ni queda vacío ni lanza excepción; eso último ocurriría con un objeto *detached* fuera de sesión.",
+      "explanation_en": "`Session.rollback()` reverts the transaction and also marks every object in the session as expired; the next attribute access triggers a reload and returns `'Ana'`. The first option is the natural intuition — \"a rollback is a database thing, my object is mine\" — and explains why this behaviour surprises people: it is exactly the design that stops you holding objects that lie about persisted state. The object remains valid and attached to the session, so it is neither emptied nor raises; that last case would happen with a detached object outside a session.",
+      "source": "SQLAlchemy 2.0 docs - Using the Session (Rolling Back, expire_on_commit and expiration)",
+      "expected_time_ms": 45000,
+      "tags": ["orm", "sqlalchemy", "transactions"]
+    },
+    {
+      "id": "q040404015",
+      "skill_id": "sk040404",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "`alembic revision --autogenerate` detecta con fiabilidad todos los cambios del modelo, incluidos los renombrados de columna, así que la migración generada puede aplicarse sin revisarla.",
+      "question_en": "`alembic revision --autogenerate` reliably detects every model change, column renames included, so the generated migration can be applied without review.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. Autogenerate compara los metadatos con el esquema real y acierta en lo evidente (tablas y columnas nuevas, cambios de tipo), lo que hace muy fácil confiar del todo en él. Pero no puede adivinar la intención: un renombrado de columna lo ve como un DROP más un ADD, y ejecutarlo tal cual destruye los datos de esa columna. La propia documentación de Alembic enumera lo que no detecta o detecta mal (cambios de nombre, server defaults, restricciones sin nombre, cambios en tipos personalizados). La migración generada es un borrador que hay que leer, editar y probar sobre una copia antes de tocar producción.",
+      "explanation_en": "False. Autogenerate diffs the metadata against the live schema and gets the obvious things right (new tables and columns, type changes), which makes it very easy to trust completely. But it cannot infer intent: a column rename looks like a DROP plus an ADD, and running that as-is destroys the column's data. Alembic's own documentation lists what it does not detect or detects poorly (renames, server defaults, unnamed constraints, changes inside custom types). The generated migration is a draft to read, edit and rehearse against a copy before it touches production.",
+      "source": "Alembic docs - Auto Generating Migrations (What does Autogenerate Detect, and What Does it Not Detect?)",
+      "expected_time_ms": 26000,
+      "tags": ["orm", "alembic", "migrations"]
+    },
+    {
+      "id": "q040404016",
+      "skill_id": "sk040404",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En SQLAlchemy, `session.add(objeto)` ejecuta inmediatamente un INSERT en la base de datos.",
+      "question_en": "In SQLAlchemy, `session.add(object)` immediately issues an INSERT against the database.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. `add()` solo registra el objeto como pendiente en la unidad de trabajo. El INSERT se emite en el siguiente flush, que ocurre automáticamente antes de la siguiente consulta o al hacer `commit()`. El nombre invita a leerlo como \"añadir a la tabla\", y por eso muchos se sorprenden al ver que la fila no está todavía y al descubrir que la clave primaria autogenerada sigue siendo `None` justo después del `add()`. Si necesitas ese id antes de confirmar, fuerza un `session.flush()`.",
+      "explanation_en": "False. `add()` merely registers the object as pending in the unit of work. The INSERT is emitted at the next flush, which happens automatically before the next query or on `commit()`. The name invites reading it as \"add to the table\", which is why people are surprised the row is not there yet and why the autogenerated primary key is still `None` right after the `add()`. If you need that id before committing, force a `session.flush()`.",
+      "source": "SQLAlchemy 2.0 docs - Using the Session (Adding New or Existing Items, Flushing)",
+      "expected_time_ms": 22000,
+      "tags": ["orm", "sqlalchemy", "session"]
+    },
+    {
+      "id": "q040404017",
+      "skill_id": "sk040404",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "La opción de carga ansiosa de SQLAlchemy 2.0 que emite una segunda consulta con `WHERE ... IN (...)` para traer las relaciones de todos los objetos padre de una vez se llama _____. (una palabra, tal como se escribe en el código)",
+      "question_en": "The SQLAlchemy 2.0 eager loading option that emits a second query using `WHERE ... IN (...)` to fetch the relationships of every parent object at once is called _____. (one word, as written in code)",
+      "correct_answer_es": "selectinload",
+      "correct_answer_en": "selectinload",
+      "explanation_es": "`select(Autor).options(selectinload(Autor.libros))` hace dos consultas en total, independientemente del número de autores: la segunda usa un `IN` con las claves de los padres. Su alternativa, `joinedload`, resuelve todo en una sola consulta con LEFT OUTER JOIN, pero duplica las columnas del padre por cada hijo, lo que la hace peor para colecciones grandes y mejor para relaciones muchos-a-uno. Confundir ambas es habitual: las dos eliminan el N+1, pero con perfiles de coste distintos.",
+      "explanation_en": "`select(Author).options(selectinload(Author.books))` runs two queries in total regardless of how many authors there are: the second uses an `IN` over the parent keys. Its alternative, `joinedload`, resolves everything in one query via a LEFT OUTER JOIN, but repeats the parent's columns for every child, which makes it worse for large collections and better for many-to-one relationships. Mixing the two up is common: both remove the N+1, with different cost profiles.",
+      "source": "SQLAlchemy 2.0 docs - Relationship Loading Techniques (Select IN loading)",
+      "expected_time_ms": 34000,
+      "tags": ["orm", "sqlalchemy", "eager-loading"]
+    },
+
+    {
+      "id": "q040405010",
+      "skill_id": "sk040405",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En el contexto de los sistemas distribuidos, ¿qué describe el acrónimo BASE frente a ACID?",
+      "question_en": "In distributed systems, what does the acronym BASE describe as opposed to ACID?",
+      "options_es": [
+        "Un formato binario de serialización usado por las bases NoSQL",
+        "Un protocolo de confirmación en dos fases entre réplicas",
+        "Un estándar de cifrado en reposo para almacenes distribuidos",
+        "Un modelo deliberadamente laxo: disponible básicamente, estado blando y consistencia eventual, que cambia garantías fuertes por disponibilidad y escalado"
+      ],
+      "options_en": [
+        "A binary serialization format used by NoSQL stores",
+        "A two-phase commit protocol between replicas",
+        "An at-rest encryption standard for distributed stores",
+        "A deliberately loose model: basically available, soft state, eventual consistency, trading strong guarantees for availability and scale"
+      ],
+      "correct_index": 3,
+      "explanation_es": "BASE (Basically Available, Soft state, Eventual consistency) nació como contraposición retórica a ACID para describir sistemas que aceptan inconsistencias temporales a cambio de seguir respondiendo. Kleppmann advierte de que el término es vago —\"eventual consistency\" no dice cuándo ni con qué garantías— y que conviene razonar sobre modelos de consistencia concretos (lectura de tus propias escrituras, consistencia causal, linealizabilidad). Las tres opciones incorrectas juegan con que el acrónimo suena a tecnología concreta, cuando describe una postura de diseño.",
+      "explanation_en": "BASE (Basically Available, Soft state, Eventual consistency) was coined as a rhetorical counterpart to ACID, describing systems that accept temporary inconsistency in exchange for staying responsive. Kleppmann warns that the term is vague — \"eventual consistency\" says nothing about when or with what guarantees — and that it is better to reason about concrete consistency models (read-your-writes, causal consistency, linearizability). The three wrong options play on the acronym sounding like a specific technology, when it describes a design stance.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 9 - Consistency and Consensus",
+      "expected_time_ms": 34000,
+      "tags": ["nosql", "base", "consistency"]
+    },
+    {
+      "id": "q040405011",
+      "skill_id": "sk040405",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Durante una partición de red, un sistema distribuido que se describe como \"AP\" según el teorema CAP, ¿qué hace?",
+      "question_en": "During a network partition, what does a distributed system described as \"AP\" under the CAP theorem do?",
+      "options_es": [
+        "Sigue aceptando lecturas y escrituras en ambos lados de la partición, a costa de que las réplicas devuelvan valores divergentes hasta reconciliarse",
+        "Rechaza toda operación hasta que la partición se resuelve, para no perder consistencia",
+        "Elige automáticamente un nodo maestro y bloquea a los demás en modo solo lectura",
+        "Reduce el factor de replicación para que solo quede una copia autoritativa"
+      ],
+      "options_en": [
+        "It keeps accepting reads and writes on both sides of the partition, at the cost of replicas returning divergent values until they reconcile",
+        "It rejects every operation until the partition heals, so as not to lose consistency",
+        "It automatically elects a master node and puts the others in read-only mode",
+        "It lowers the replication factor so only one authoritative copy remains"
+      ],
+      "correct_index": 0,
+      "explanation_es": "CAP solo dice algo cuando hay partición: entonces hay que elegir entre seguir respondiendo (AP) o preservar la consistencia lineal (CP). Un sistema AP acepta escrituras en ambos lados y se queda con versiones divergentes que habrá que reconciliar después (última escritura gana, vectores de versión, CRDTs). La segunda opción describe justamente la conducta CP, que es la confusión clásica al memorizar las siglas sin el escenario. La tercera mezcla CAP con la elección de líder, un mecanismo concreto de sistemas CP; la cuarta es una operación de administración que ningún sistema realiza solo durante un fallo de red.",
+      "explanation_en": "CAP only says anything while a partition is happening: at that point you choose between staying responsive (AP) or preserving linearizable consistency (CP). An AP system accepts writes on both sides and ends up with divergent versions to reconcile later (last-write-wins, version vectors, CRDTs). The second option describes exactly the CP behaviour, the classic confusion when the letters are memorised without the scenario. The third mixes CAP up with leader election, a concrete mechanism of CP systems; the fourth is an administrative operation no system performs on its own during a network fault.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 9 - The CAP theorem",
+      "expected_time_ms": 42000,
+      "tags": ["nosql", "cap", "partitions"]
+    },
+    {
+      "id": "q040405012",
+      "skill_id": "sk040405",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿En qué caso una base de datos de grafos encaja mejor que una relacional o una documental?",
+      "question_en": "In which case does a graph database fit better than a relational or a document store?",
+      "options_es": [
+        "Cuando hay que almacenar ficheros binarios grandes junto a sus metadatos",
+        "Cuando el volumen de escrituras por segundo supera lo que aguanta un único nodo",
+        "Cuando las consultas recorren relaciones de profundidad arbitraria o desconocida, como \"amigos de amigos hasta 5 saltos\"",
+        "Cuando el esquema cambia a menudo y cada registro tiene campos distintos"
+      ],
+      "options_en": [
+        "When large binary files must be stored alongside their metadata",
+        "When the write rate per second exceeds what a single node can take",
+        "When queries traverse relationships of arbitrary or unknown depth, such as \"friends of friends up to 5 hops\"",
+        "When the schema changes often and each record has different fields"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El grafo gana cuando las relaciones son el dato y la profundidad del recorrido es variable: en SQL eso exige un JOIN por salto o CTEs recursivos, que se vuelven incómodos y caros, mientras que Cypher o Gremlin lo expresan de forma directa. La cuarta opción describe el caso de una base documental (esquema flexible), y es la confusión más común porque ambas se agrupan bajo \"NoSQL\" como si fueran intercambiables. La segunda apunta a un problema de particionado, que es ortogonal al modelo de datos —y de hecho los grafos son de lo más difícil de particionar—, y la primera a un almacén de objetos.",
+      "explanation_en": "Graphs win when relationships are the data and traversal depth varies: in SQL that means one JOIN per hop or recursive CTEs, which get awkward and expensive, whereas Cypher or Gremlin express it directly. The fourth option describes the document-store case (flexible schema), and is the commonest confusion because both sit under the \"NoSQL\" umbrella as though interchangeable. The second points at a partitioning problem, orthogonal to the data model — graphs are in fact among the hardest things to partition — and the first at an object store.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 2 - Graph-Like Data Models",
+      "expected_time_ms": 30000,
+      "tags": ["nosql", "graph", "data-models"]
+    },
+    {
+      "id": "q040405013",
+      "skill_id": "sk040405",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "En PostgreSQL, `docs(id int, data jsonb)` contiene:\\n\\n```\\n1 | {\"nombre\": \"Ana\",  \"rol\": \"admin\"}\\n2 | {\"nombre\": \"Beto\", \"rol\": \"user\"}\\n3 | {\"nombre\": \"Cris\"}\\n```\\n\\n```sql\\nSELECT id FROM docs WHERE data->>'rol' = 'admin';\\n```\\n\\n¿Qué devuelve?",
+      "question_en": "In PostgreSQL, `docs(id int, data jsonb)` holds:\\n\\n```\\n1 | {\"name\": \"Ana\",  \"role\": \"admin\"}\\n2 | {\"name\": \"Beto\", \"role\": \"user\"}\\n3 | {\"name\": \"Cris\"}\\n```\\n\\n```sql\\nSELECT id FROM docs WHERE data->>'role' = 'admin';\\n```\\n\\nWhat does it return?",
+      "options_es": [
+        "Solo `1`",
+        "`1` y `3`, porque el documento 3 no contradice la condición",
+        "Error: la fila 3 no tiene la clave y el operador falla",
+        "`1`, `2` y `3`, porque `->>` devuelve el documento completo como texto"
+      ],
+      "options_en": [
+        "Only `1`",
+        "`1` and `3`, since document 3 does not contradict the condition",
+        "Error: row 3 lacks the key and the operator fails",
+        "`1`, `2` and `3`, because `->>` returns the whole document as text"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`->>` extrae el valor de una clave como texto, y en la fila 3, donde la clave no existe, devuelve NULL en lugar de fallar: `NULL = 'admin'` es UNKNOWN, así que esa fila se descarta. Solo queda el id 1. La opción \"1 y 3\" aplica la lógica de dos valores (\"si no dice lo contrario, cuenta\"), que es exactamente lo que la lógica ternaria de SQL no hace. Es útil recordar que un esquema flexible no elimina esta clase de trampas: cualquier documento al que le falte el campo desaparece silenciosamente del resultado, también cuando la consulta pretende contarlo.",
+      "explanation_en": "`->>` extracts a key's value as text, and on row 3, where the key is absent, it yields NULL rather than failing: `NULL = 'admin'` is UNKNOWN, so that row is dropped. Only id 1 remains. The \"1 and 3\" option applies two-valued logic (\"if it does not say otherwise, it counts\"), which is exactly what SQL's three-valued logic does not do. Worth remembering that a flexible schema does not remove this class of trap: any document missing the field silently disappears from the result, including when the query means to count it.",
+      "source": "PostgreSQL 16 docs - JSON Types and Functions (jsonb operators)",
+      "expected_time_ms": 36000,
+      "tags": ["nosql", "jsonb", "null"]
+    },
+    {
+      "id": "q040405014",
+      "skill_id": "sk040405",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "El teorema CAP obliga a un sistema distribuido a renunciar de forma permanente a una de las tres propiedades, incluso cuando la red funciona con normalidad.",
+      "question_en": "The CAP theorem forces a distributed system to permanently give up one of the three properties, even while the network is working normally.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. La formulación popular \"elige dos de tres\" es la que hace tan creíble esta afirmación, pero el teorema solo habla del momento en que hay una partición de red: entonces, y solo entonces, hay que elegir entre responder (disponibilidad) o mantener la linealizabilidad (consistencia). Sin partición, un sistema puede ofrecer ambas a la vez. Kleppmann recomienda incluso abandonar el marco CAP para diseñar, porque su definición de consistencia es estrecha y deja fuera la latencia, que en la práctica pesa más.",
+      "explanation_en": "False. The popular \"pick two of three\" framing is what makes this claim so believable, but the theorem only speaks about the moment a network partition occurs: then, and only then, must you choose between responding (availability) and keeping linearizability (consistency). With no partition, a system can offer both at once. Kleppmann goes further and recommends dropping the CAP framing for design work, because its definition of consistency is narrow and ignores latency, which in practice matters more.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 9 - The CAP theorem",
+      "expected_time_ms": 26000,
+      "tags": ["nosql", "cap", "consistency"]
+    },
+    {
+      "id": "q040405015",
+      "skill_id": "sk040405",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En muchas bases de datos documentales, la atomicidad está garantizada dentro de un único documento, pero coordinar cambios en varios documentos exige una función transaccional aparte.",
+      "question_en": "In many document databases, atomicity is guaranteed within a single document, while coordinating changes across several documents requires a separate transactional feature.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El modelo documental parte de que una actualización sobre un documento es atómica, y por eso anima a agrupar en un mismo documento lo que se modifica junto. Coordinar varios documentos, en cambio, es el caso costoso y ha requerido históricamente soporte explícito (MongoDB solo añadió transacciones multi-documento en 4.0). La confusión habitual va en las dos direcciones: creer que NoSQL no ofrece ninguna garantía transaccional, o creer que ofrece las mismas que un motor relacional. Lo importante es que el alcance de la atomicidad cambia el modelado: influye en dónde poner cada frontera.",
+      "explanation_en": "True. The document model starts from the premise that an update to one document is atomic, which is why it encourages grouping into a single document whatever changes together. Coordinating several documents is the expensive case and has historically required explicit support (MongoDB only added multi-document transactions in 4.0). The usual confusion runs both ways: believing NoSQL offers no transactional guarantees at all, or believing it offers the same ones as a relational engine. What matters is that the scope of atomicity changes your modelling: it drives where each boundary goes.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 7 - Transactions (The Meaning of ACID, single-object operations)",
+      "expected_time_ms": 26000,
+      "tags": ["nosql", "transactions", "atomicity"]
+    },
+    {
+      "id": "q040405016",
+      "skill_id": "sk040405",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "El modelo de datos NoSQL en el que las relaciones entre entidades son ciudadanos de primera clase, pensado para recorridos de profundidad arbitraria, es la base de datos de _____. (una palabra)",
+      "question_en": "The NoSQL data model in which relationships between entities are first-class citizens, designed for traversals of arbitrary depth, is the _____ database. (one word)",
+      "correct_answer_es": "grafos",
+      "correct_answer_en": "graph",
+      "explanation_es": "En un grafo, las aristas se almacenan y se indexan como los vértices, de modo que saltar de un nodo a sus vecinos no requiere un JOIN. Es el modelo indicado para redes sociales, grafos de dependencias o detección de fraude. Conviene no confundirlo con el modelo documental, que también es \"sin esquema\" pero está pensado justo para lo contrario: documentos autocontenidos con pocas relaciones entre ellos.",
+      "explanation_en": "In a graph, edges are stored and indexed just like vertices, so hopping from a node to its neighbours needs no JOIN. It is the model of choice for social networks, dependency graphs and fraud detection. Do not confuse it with the document model, which is also \"schemaless\" but aimed at the opposite shape: self-contained documents with few relationships between them.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 2 - Graph-Like Data Models",
+      "expected_time_ms": 24000,
+      "tags": ["nosql", "graph", "data-models"]
+    },
+    {
+      "id": "q040405017",
+      "skill_id": "sk040405",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "En un almacén replicado sin líder con `n` réplicas, donde cada escritura se confirma en `w` nodos y cada lectura consulta `r` nodos, la desigualdad que asegura que toda lectura solape con la última escritura es _____. (escríbela usando n, w y r)",
+      "question_en": "In a leaderless replicated store with `n` replicas, where each write is acknowledged by `w` nodes and each read queries `r` nodes, the inequality guaranteeing that every read overlaps the latest write is _____. (write it using n, w and r)",
+      "correct_answer_es": "w + r > n",
+      "correct_answer_en": "w + r > n",
+      "explanation_es": "Si `w + r > n`, los conjuntos de nodos escritos y leídos tienen por fuerza al menos uno en común, de modo que la lectura ve el valor más reciente (el cliente se queda con la versión de número más alto). Con `w + r <= n` puedes leer de un conjunto que no recibió la escritura y obtener datos viejos; a cambio ganas latencia y disponibilidad. Kleppmann insiste en que incluso cumpliendo el quórum hay casos límite —escrituras concurrentes, escrituras parcialmente fallidas, restauración de una réplica desde una copia antigua— en los que la garantía no es absoluta.",
+      "explanation_en": "If `w + r > n`, the set of nodes written and the set read must overlap in at least one node, so the read sees the most recent value (the client keeps the version with the highest number). With `w + r <= n` you may read from a set that never received the write and get stale data — in exchange for latency and availability. Kleppmann stresses that even when the quorum condition holds there are edge cases — concurrent writes, partially failed writes, a replica restored from an old backup — where the guarantee is not absolute.",
+      "source": "Designing Data-Intensive Applications (Kleppmann), ch. 5 - Replication (Quorums for reading and writing)",
+      "expected_time_ms": 40000,
+      "tags": ["nosql", "replication", "quorum"]
+    }
+  ]
+}

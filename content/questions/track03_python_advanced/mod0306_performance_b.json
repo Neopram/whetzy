@@ -1,0 +1,633 @@
+{
+  "questions": [
+    {
+      "id": "q030601010",
+      "skill_id": "sk030601",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Al hacer un microbenchmark con `timeit.repeat()`, ¿por qué se informa normalmente el MÍNIMO de las repeticiones en lugar de la media?",
+      "question_en": "When microbenchmarking with `timeit.repeat()`, why is the MINIMUM of the repetitions usually reported rather than the mean?",
+      "options_es": [
+        "Porque el ruido del sistema solo puede añadir tiempo: el mínimo es la medición menos contaminada",
+        "Porque la media queda sesgada por el recolector de basura, que timeit no puede desactivar",
+        "Porque el mínimo corresponde siempre a la primera repetición, con la caché aún fría",
+        "Porque la media solo es válida si todas las repeticiones usan el mismo valor de `number`"
+      ],
+      "options_en": [
+        "Because system noise can only add time: the minimum is the least contaminated measurement",
+        "Because the mean is skewed by the garbage collector, which timeit cannot switch off",
+        "Because the minimum is always the first repetition, while the cache is still cold",
+        "Because the mean is only valid if every repetition uses the same `number`"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Otros procesos, el planificador del sistema operativo y el ruido de la máquina solo pueden hacer que un fragmento tarde MÁS, nunca menos; por eso el mínimo es la estimación más limpia del coste real y la media arrastra todo ese ruido hacia arriba. La opción del recolector de basura es tentadora pero falsa al revés: `timeit` sí lo desactiva durante la medición, precisamente para eliminar esa fuente de variación. La tercera confunde el mínimo con un orden concreto de repeticiones, y la cuarta describe algo que `repeat()` garantiza por construcción: `number` es el mismo en todas.",
+      "explanation_en": "Other processes, the OS scheduler and general machine noise can only make a snippet take LONGER, never shorter, so the minimum is the cleanest estimate of the real cost while the mean drags all that noise upward. The garbage-collector option is tempting but backwards: `timeit` does disable the collector while timing, precisely to remove that source of variation. The third ties the minimum to a particular repetition, and the fourth describes something `repeat()` guarantees anyway: `number` is identical across repetitions.",
+      "source": "CPython docs 3.13 — timeit (note on min() vs mean in Timer.repeat)",
+      "expected_time_ms": 35000,
+      "tags": ["performance", "profiling", "timeit", "benchmarking"]
+    },
+    {
+      "id": "q030601011",
+      "skill_id": "sk030601",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\n```python\nimport time\nimport timeit\n\nprint(timeit.default_timer is time.perf_counter)\n```",
+      "question_en": "What does this code print?\n```python\nimport time\nimport timeit\n\nprint(timeit.default_timer is time.perf_counter)\n```",
+      "options_es": [
+        "False",
+        "Lanza AttributeError: el módulo timeit no expone default_timer",
+        "True",
+        "None"
+      ],
+      "options_en": [
+        "False",
+        "Raises AttributeError: the timeit module has no default_timer",
+        "True",
+        "None"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`timeit.default_timer` es un alias directo de `time.perf_counter`, el reloj de mayor resolución disponible y monótono, así que la comparación por identidad da True. La respuesta `False` es tentadora porque mucha gente supone que `timeit` usa `time.time()` (reloj de pared, que puede saltar hacia atrás con un ajuste NTP) o `time.process_time()` (que descuenta el tiempo dormido). Saber qué reloj hay debajo importa: `perf_counter` incluye el tiempo de espera, por lo que medir código que duerme o hace E/S con `timeit` mide la espera, no la CPU.",
+      "explanation_en": "`timeit.default_timer` is a straight alias for `time.perf_counter`, the highest-resolution monotonic clock available, so the identity check is True. `False` is tempting because many people assume `timeit` uses `time.time()` (a wall clock that can jump backwards on an NTP adjustment) or `time.process_time()` (which excludes sleep). Knowing which clock sits underneath matters: `perf_counter` includes time spent waiting, so timing code that sleeps or does I/O measures the wait, not the CPU.",
+      "source": "CPython docs 3.13 — timeit.default_timer / time.perf_counter",
+      "expected_time_ms": 30000,
+      "tags": ["performance", "profiling", "timeit", "clocks"]
+    },
+    {
+      "id": "q030601012",
+      "skill_id": "sk030601",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Restar dos llamadas a `time.time()` alrededor de un fragmento es igual de fiable que `timeit` para medir operaciones de microsegundos.",
+      "question_en": "Subtracting two `time.time()` calls around a snippet is just as reliable as `timeit` for measuring microsecond-scale operations.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "La resta parece medir el tiempo transcurrido, y lo hace, pero con un margen de error mayor que aquello que se quiere medir. `time.time()` es un reloj de pared: puede retroceder con un ajuste de hora, tiene resolución gruesa en algunas plataformas y mide una única ejecución dominada por el ruido del sistema. `timeit` repite el fragmento `number` veces para amortizar la resolución del reloj, usa `perf_counter` (monótono) y desactiva el recolector de basura durante la medición. La intuición de que \"restar dos marcas de tiempo es obviamente correcto\" es justo la que produce benchmarks que cambian de ganador en cada ejecución.",
+      "explanation_en": "Subtracting two timestamps looks like it measures elapsed time, and it does — with an error bar larger than the thing you are trying to measure. `time.time()` is a wall clock: it can step backwards on a clock adjustment, it has coarse resolution on some platforms, and it measures a single run dominated by system noise. `timeit` repeats the snippet `number` times to amortise clock resolution, uses the monotonic `perf_counter`, and disables the garbage collector while timing. The intuition that \"subtracting two timestamps is obviously fine\" is exactly what produces benchmarks whose winner changes on every run.",
+      "source": "CPython docs 3.13 — timeit / time.perf_counter vs time.time",
+      "expected_time_ms": 28000,
+      "tags": ["performance", "profiling", "timeit", "measurement"]
+    },
+    {
+      "id": "q030601013",
+      "skill_id": "sk030601",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En la salida de `cProfile`, la columna `ncalls` muestra `120/20` para una función. ¿Qué significa?",
+      "question_en": "In `cProfile` output, the `ncalls` column shows `120/20` for a function. What does that mean?",
+      "options_es": [
+        "120 llamadas repartidas entre 20 hilos distintos",
+        "120 llamadas, de las cuales 20 terminaron lanzando una excepción",
+        "120 microsegundos por llamada a lo largo de 20 ejecuciones",
+        "120 llamadas totales y 20 primitivas: la función es recursiva y 100 llamadas vinieron de sí misma"
+      ],
+      "options_en": [
+        "120 calls spread across 20 different threads",
+        "120 calls, 20 of which ended by raising an exception",
+        "120 microseconds per call over 20 runs",
+        "120 total calls and 20 primitive ones: the function recursed, so 100 calls came from itself"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Cuando aparecen dos números, el primero es el total de llamadas y el segundo las llamadas primitivas, es decir, las que no proceden de la recursión. Un solo número significa que no hubo recursión. Las opciones de hilos y excepciones son tentadoras porque suenan a información de diagnóstico que un perfilador \"debería\" dar, pero `cProfile` no separa por hilo en esa columna ni cuenta excepciones. La tercera confunde una cuenta con un tiempo: los tiempos están en `tottime` y `cumtime`, no en `ncalls`. La distinción importa al leer un perfil: una función recursiva con muchas llamadas totales y pocas primitivas casi nunca es el cuello de botella real; suele serlo lo que hace en el nivel más profundo.",
+      "explanation_en": "When two numbers appear, the first is the total number of calls and the second the primitive ones — those that did not come from recursion. A single number means no recursion happened. The thread and exception options are tempting because they sound like diagnostics a profiler \"ought\" to give, but `cProfile` neither splits that column by thread nor counts exceptions. The third confuses a count with a time: timings live in `tottime` and `cumtime`, not in `ncalls`. The distinction matters when reading a profile: a recursive function with many total and few primitive calls is rarely the real bottleneck — what it does at the deepest level usually is.",
+      "source": "CPython docs 3.13 — The Python Profilers: Instant User's Manual (recursive ncalls)",
+      "expected_time_ms": 42000,
+      "tags": ["performance", "profiling", "cProfile", "pstats"]
+    },
+    {
+      "id": "q030601014",
+      "skill_id": "sk030601",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué ocurre al ejecutar este script?\n```python\nimport timeit\n\nvalores = [1, 2, 3]\nprint(timeit.timeit(\"len(valores)\", number=1))\n```",
+      "question_en": "What happens when this script runs?\n```python\nimport timeit\n\nvalues = [1, 2, 3]\nprint(timeit.timeit(\"len(values)\", number=1))\n```",
+      "options_es": [
+        "Imprime 3",
+        "Lanza NameError: el fragmento se ejecuta en su propio espacio de nombres y no ve `valores`",
+        "Imprime un decimal muy pequeño, del orden de 1e-07",
+        "Imprime 0.0 porque `number=1` no deja tiempo medible"
+      ],
+      "options_en": [
+        "Prints 3",
+        "Raises NameError: the snippet runs in its own namespace and cannot see `values`",
+        "Prints a very small float, on the order of 1e-07",
+        "Prints 0.0 because `number=1` leaves no measurable time"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`timeit` compila la sentencia y la ejecuta en un espacio de nombres propio; los globales del módulo no son visibles salvo que se los pases. La respuesta tentadora es la tercera: el fragmento \"obviamente funciona\" si lo pegas en el intérprete, y la firma de `timeit` invita a pensar que hereda el entorno de quien lo llama. Las soluciones son `setup=\"from __main__ import valores\"` o, más directo, `globals=globals()`. La primera opción confunde el valor que devuelve el fragmento con lo que devuelve `timeit`, que siempre es un tiempo.",
+      "explanation_en": "`timeit` compiles the statement and runs it in a namespace of its own; module globals are not visible unless you hand them over. The tempting answer is the third: the snippet \"obviously works\" if you paste it into the REPL, and `timeit`'s signature invites the assumption that it inherits the caller's environment. The fixes are `setup=\"from __main__ import values\"` or, more directly, `globals=globals()`. The first option confuses what the snippet evaluates to with what `timeit` returns, which is always a time.",
+      "source": "CPython docs 3.13 — timeit: Examples (the globals parameter)",
+      "expected_time_ms": 42000,
+      "tags": ["performance", "profiling", "timeit", "namespaces"]
+    },
+    {
+      "id": "q030601015",
+      "skill_id": "sk030601",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Completa el parámetro de `timeit.timeit()` que hace que el fragmento vea las variables del módulo actual: `timeit.timeit(\"len(valores)\", ___=globals(), number=1000)`",
+      "question_en": "Complete the `timeit.timeit()` parameter that lets the snippet see the current module's variables: `timeit.timeit(\"len(values)\", ___=globals(), number=1000)`",
+      "correct_answer_es": "globals",
+      "correct_answer_en": "globals",
+      "explanation_es": "El parámetro `globals` (añadido en Python 3.5) indica el espacio de nombres en el que se ejecuta el fragmento. Pasarle `globals()` es la forma corta de medir código que usa objetos ya construidos sin reconstruirlos en `setup`, lo cual además evita el error clásico de incluir en la medición el coste de preparar los datos. La alternativa histórica, `setup=\"from __main__ import valores\"`, sigue funcionando pero es más frágil cuando el código no está en `__main__`.",
+      "explanation_en": "The `globals` parameter (added in Python 3.5) names the namespace the snippet runs in. Passing `globals()` is the short way to time code against objects you already built, without rebuilding them in `setup` — which also avoids the classic mistake of folding data-preparation cost into the measurement. The older alternative, `setup=\"from __main__ import values\"`, still works but is more fragile when the code does not live in `__main__`.",
+      "source": "CPython docs 3.13 — timeit.timeit(stmt, setup, timer, number, globals)",
+      "expected_time_ms": 38000,
+      "tags": ["performance", "profiling", "timeit", "namespaces"]
+    },
+    {
+      "id": "q030601016",
+      "skill_id": "sk030601",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Perfilas con cProfile y descubres que una función ocupa el 3 % del tiempo total. La optimizas y consigues que sea 10 veces más rápida. ¿Cuál es la aceleración máxima del programa completo?",
+      "question_en": "You profile with cProfile and find a function accounts for 3 % of total time. You optimise it and make it 10 times faster. What is the maximum speedup of the whole program?",
+      "options_es": [
+        "10x, porque la función ahora es 10 veces más rápida",
+        "Ninguna: optimizar una sola función nunca cambia el total",
+        "Menos del 3 %: la fracción que ocupaba es el techo de cualquier mejora",
+        "Alrededor del 30 %, la décima parte de un 300 %"
+      ],
+      "options_en": [
+        "10x, because the function itself is now 10 times faster",
+        "None: optimising one function never changes the total",
+        "Under 3 %: the fraction it occupied is the ceiling on any improvement",
+        "Around 30 %, one tenth of 300 %"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Aunque esa función pasara a costar cero, solo ahorrarías su 3 %. Ese es exactamente el motivo de perfilar antes de optimizar: la intuición señala la función que parece complicada, mientras que cProfile señala la que de verdad consume tiempo. La primera opción confunde la aceleración local con la global, que es el error que lleva a celebrar optimizaciones invisibles en producción. La segunda exagera en el sentido contrario. La cuarta inventa una aritmética que no corresponde a nada: el techo no depende del factor de mejora, sino de la fracción que se mejora.",
+      "explanation_en": "Even if that function dropped to zero cost, you would save only its 3 %. That is precisely why you profile before optimising: intuition points at the function that looks complicated, while cProfile points at the one that actually spends time. The first option confuses local speedup with global speedup — the mistake behind optimisations that are celebrated in a benchmark and invisible in production. The second overcorrects. The fourth invents arithmetic that corresponds to nothing: the ceiling is set by the fraction you improve, not by the improvement factor.",
+      "source": "Effective Python 3e (Slatkin), Item on profiling before optimizing",
+      "expected_time_ms": 45000,
+      "tags": ["performance", "profiling", "cProfile", "optimization-strategy"]
+    },
+    {
+      "id": "q030601017",
+      "skill_id": "sk030601",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "`cProfile` atribuye el tiempo de un bucle apretado a la función que lo contiene sin desglosarlo por línea, porque instrumenta eventos de llamada y retorno.",
+      "question_en": "`cProfile` attributes a tight loop's time to the enclosing function without breaking it down by line, because it instruments call and return events.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "cProfile es un perfilador determinista de nivel de función: se engancha a los eventos de llamada, retorno y excepción, así que su resolución termina donde termina la llamada. Un bucle de un millón de iteraciones dentro de una única función aparece como una sola entrada con mucho `tottime` y ninguna pista de qué línea cuesta. Quien espera un desglose por línea acaba mirando el perfil sin entender por qué no le dice nada nuevo; para eso hace falta `line_profiler` o un perfilador por muestreo. Corolario práctico: si tu código \"caliente\" está en pocas funciones grandes, cProfile te dirá poco hasta que las partas en funciones más pequeñas.",
+      "explanation_en": "cProfile is a deterministic function-level profiler: it hooks call, return and exception events, so its resolution stops where the call does. A million-iteration loop inside a single function shows up as one row with a lot of `tottime` and no hint of which line costs. Anyone expecting a per-line breakdown ends up staring at a profile that tells them nothing new; that needs `line_profiler` or a sampling profiler. Practical corollary: if your hot code lives in a few large functions, cProfile says little until you split them into smaller ones.",
+      "source": "CPython docs 3.13 — The Python Profilers: What Is Deterministic Profiling?",
+      "expected_time_ms": 38000,
+      "tags": ["performance", "profiling", "cProfile", "granularity"]
+    },
+    {
+      "id": "q030601018",
+      "skill_id": "sk030601",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\n```python\nimport timeit\n\nresultados = timeit.repeat(\"pass\", repeat=5, number=1)\nprint(len(resultados), type(resultados).__name__)\n```",
+      "question_en": "What does this code print?\n```python\nimport timeit\n\nresults = timeit.repeat(\"pass\", repeat=5, number=1)\nprint(len(results), type(results).__name__)\n```",
+      "options_es": [
+        "5 list",
+        "1 float",
+        "5 tuple",
+        "Lanza TypeError: repeat no acepta number"
+      ],
+      "options_en": [
+        "5 list",
+        "1 float",
+        "5 tuple",
+        "Raises TypeError: repeat does not accept number"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`repeat()` ejecuta `timeit()` tantas veces como diga `repeat` y devuelve una lista con un tiempo por repetición. La opción `1 float` es la tentadora: como `timeit()` devuelve un único número, se asume que `repeat()` agrega los resultados. No lo hace a propósito, para que seas tú quien decida el estadístico, y lo habitual es quedarse con `min()`. Las otras dos confunden el tipo del contenedor y la firma: `number` sí es un parámetro válido de `repeat()` y controla cuántas veces se ejecuta el fragmento dentro de cada repetición.",
+      "explanation_en": "`repeat()` runs `timeit()` as many times as `repeat` says and returns a list with one timing per repetition. `1 float` is the tempting answer: since `timeit()` returns a single number, people assume `repeat()` aggregates. It deliberately does not, so that you choose the statistic — usually `min()`. The other two get the container type and the signature wrong: `number` is a valid `repeat()` parameter and controls how many times the snippet runs inside each repetition.",
+      "source": "CPython docs 3.13 — timeit.repeat",
+      "expected_time_ms": 30000,
+      "tags": ["performance", "profiling", "timeit", "benchmarking"]
+    },
+
+    {
+      "id": "q030602010",
+      "skill_id": "sk030602",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\n```python\ndef pares(n):\n    total = 0\n    for i in range(n):\n        for j in range(i):\n            total += 1\n    return total\n\nprint(pares(5), pares(10))\n```",
+      "question_en": "What does this code print?\n```python\ndef pairs(n):\n    total = 0\n    for i in range(n):\n        for j in range(i):\n            total += 1\n    return total\n\nprint(pairs(5), pairs(10))\n```",
+      "options_es": ["25 100", "5 10", "20 90", "10 45"],
+      "options_en": ["25 100", "5 10", "20 90", "10 45"],
+      "correct_index": 3,
+      "explanation_es": "El bucle interno se ejecuta `i` veces, no `n`, así que el total es 0+1+...+(n-1) = n(n-1)/2: 10 y 45. Lo interesante es la relación entre ambos: duplicar n multiplica el trabajo por unas 4,5 veces, la firma de O(n²). La opción `25 100` es la que sale si supones que el bucle interno siempre da n vueltas; la opción `20 90` es n(n-1), olvidar el factor ½. Ninguna de las tres cambia la clase de complejidad: la constante ½ desaparece en Big-O, y por eso este código es cuadrático aunque haga la mitad del trabajo que un doble bucle completo.",
+      "explanation_en": "The inner loop runs `i` times, not `n`, so the total is 0+1+...+(n-1) = n(n-1)/2: 10 and 45. The interesting part is the ratio: doubling n multiplies the work by about 4.5, the signature of O(n²). `25 100` is what you get assuming the inner loop always runs n times; `20 90` is n(n-1) — forgetting the ½. None of them changes the complexity class: the ½ vanishes in Big-O, which is why this code is quadratic even though it does half the work of a full double loop.",
+      "source": "Introduction to Algorithms (Cormen et al.), 4e — asymptotic notation",
+      "expected_time_ms": 40000,
+      "tags": ["performance", "complexity", "big-o", "loops"]
+    },
+    {
+      "id": "q030602011",
+      "skill_id": "sk030602",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "`list.append()` se describe como O(1) AMORTIZADO y no O(1) en el peor caso. ¿Por qué?",
+      "question_en": "`list.append()` is described as AMORTISED O(1) rather than worst-case O(1). Why?",
+      "options_es": [
+        "Porque append tiene que recorrer la lista para localizar el final",
+        "Porque de vez en cuando la lista agota el espacio reservado y copia todos sus punteros a un bloque mayor",
+        "Porque append compite con el recolector de basura, que se dispara cada cierto número de objetos",
+        "Porque el coste depende del tipo del elemento que se añade"
+      ],
+      "options_en": [
+        "Because append has to walk the list to find the end",
+        "Because now and then the list runs out of reserved room and copies all its pointers to a larger block",
+        "Because append competes with the garbage collector, which fires every so many objects",
+        "Because the cost depends on the type of the element being appended"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una lista de CPython reserva más espacio del que usa. La mayoría de los `append` escriben en ese hueco en tiempo constante, pero cuando se agota hay que pedir un bloque mayor y copiar n punteros; repartido entre las n inserciones, el coste medio vuelve a ser constante. La primera opción es la intuición de lista enlazada: una lista de Python es un array de punteros y conoce su longitud, nunca recorre nada para añadir. La tercera confunde el comportamiento del recolector con el redimensionado, y la cuarta confunde `append` (que solo guarda un puntero) con operaciones que sí dependen del tipo, como el hash al meter algo en un set.",
+      "explanation_en": "A CPython list over-allocates. Most appends write into that spare room in constant time, but when it runs out the list must request a larger block and copy n pointers; spread over n insertions the average cost is constant again. The first option is linked-list intuition: a Python list is an array of pointers and knows its own length, so it never walks anything to append. The third confuses collector behaviour with resizing, and the fourth confuses `append` — which just stores a pointer — with operations that genuinely depend on type, such as hashing when inserting into a set.",
+      "source": "CPython docs 3.13 — Data Structures / Python Wiki: TimeComplexity (list append)",
+      "expected_time_ms": 38000,
+      "tags": ["performance", "complexity", "big-o", "amortized", "list"]
+    },
+    {
+      "id": "q030602012",
+      "skill_id": "sk030602",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Tienes una lista `permitidos` con n nombres y debes comprobar m nombres contra ella. ¿Qué coste total tiene convertirla a `set` antes de comprobar?",
+      "question_en": "You have a list `allowed` of n names and must check m names against it. What is the total cost of converting it to a `set` first?",
+      "options_es": [
+        "O(n + m), frente a O(n × m) si compruebas directamente contra la lista",
+        "O(n × m) igual, porque construir el set ya cuesta lo mismo que las comprobaciones",
+        "O(m log n), como una búsqueda binaria sobre la lista ordenada",
+        "O(1), porque el coste de un set no depende de su tamaño"
+      ],
+      "options_en": [
+        "O(n + m), versus O(n × m) if you check against the list directly",
+        "O(n × m) all the same, because building the set costs as much as the checks",
+        "O(m log n), like a binary search over the sorted list",
+        "O(1), because a set's cost does not depend on its size"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Construir el set cuesta n hashes (una sola vez) y cada `in` posterior es O(1) promedio, así que el total es n + m. La segunda opción es el reflejo de \"la conversión se come la ganancia\", y solo es cierta cuando m es 1: la gracia está en pagar el coste n una vez y amortizarlo entre m consultas. La tercera describe `bisect` sobre una lista ordenada, una alternativa real pero peor aquí, y que además exige ordenar (n log n). La cuarta confunde el coste POR consulta con el coste TOTAL: nada que tenga que mirar n elementos puede ser O(1) en total.",
+      "explanation_en": "Building the set costs n hashes, paid once, and each later `in` is O(1) on average, so the total is n + m. The second option is the \"the conversion eats the gain\" reflex, true only when m is 1: the whole point is paying the n cost once and amortising it across m lookups. The third describes `bisect` over a sorted list — a genuine alternative, but worse here, and it needs a sort (n log n) first. The fourth confuses the PER-lookup cost with the TOTAL cost: nothing that must look at n elements can be O(1) overall.",
+      "source": "CPython docs 3.13 — Built-in Types: set / Python Wiki: TimeComplexity",
+      "expected_time_ms": 45000,
+      "tags": ["performance", "complexity", "big-o", "set", "membership"]
+    },
+    {
+      "id": "q030602013",
+      "skill_id": "sk030602",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Para entradas pequeñas, un algoritmo O(n²) puede ser más rápido que uno O(n log n), porque Big-O ignora las constantes y los términos de menor orden.",
+      "question_en": "For small inputs an O(n²) algorithm can be faster than an O(n log n) one, because Big-O ignores constants and lower-order terms.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Big-O describe cómo crece el coste, no cuánto cuesta. La ordenación por inserción gana a la ordenación por mezcla en listas de unas pocas decenas de elementos porque su constante es minúscula, y el propio Timsort de CPython aprovecha ese hecho: cambia a inserción binaria para los tramos cortos. El error habitual es el espejo de este enunciado: dar por sentado que el algoritmo asintóticamente mejor gana siempre, incluido en las listas de 12 elementos que tu código ve en realidad. La conclusión no es despreciar Big-O, sino medir con el tamaño de entrada que tienes.",
+      "explanation_en": "Big-O describes how cost grows, not what it costs. Insertion sort beats merge sort on lists of a few dozen items because its constant is tiny, and CPython's own Timsort exploits exactly that: it switches to binary insertion sort for short runs. The common error is this statement's mirror image — assuming the asymptotically better algorithm always wins, including on the 12-element lists your code actually sees. The lesson is not to dismiss Big-O but to measure at the input size you really have.",
+      "source": "CPython source — Objects/listsort.txt (binary insertion sort for short runs)",
+      "expected_time_ms": 33000,
+      "tags": ["performance", "complexity", "big-o", "constants"]
+    },
+    {
+      "id": "q030602014",
+      "skill_id": "sk030602",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Completa la complejidad temporal PROMEDIO de buscar una clave con `clave in mi_dict`: `O(___)`",
+      "question_en": "Complete the AVERAGE time complexity of looking a key up with `key in my_dict`: `O(___)`",
+      "correct_answer_es": "1",
+      "correct_answer_en": "1",
+      "explanation_es": "El dict es una tabla hash: calcula el hash de la clave y salta a la posición, así que el coste promedio no depende del número de elementos. La respuesta tentadora es `log n`, tomada prestada de los árboles balanceados, que es lo que hay detrás del mapa ordenado de otros lenguajes; en Python no. Matiz importante: el peor caso sí es O(n) cuando todas las claves colisionan, lo que convierte un `__hash__` mal escrito en un problema de rendimiento silencioso.",
+      "explanation_en": "A dict is a hash table: it hashes the key and jumps to a slot, so the average cost does not depend on how many items it holds. The tempting answer is `log n`, borrowed from balanced trees — which is what backs the ordered map in some other languages, but not in Python. Important caveat: the worst case really is O(n) when every key collides, which turns a badly written `__hash__` into a silent performance problem.",
+      "source": "CPython docs 3.13 — Built-in Types: Mapping Types / Python Wiki: TimeComplexity (dict)",
+      "expected_time_ms": 35000,
+      "tags": ["performance", "complexity", "big-o", "dict", "hashing"]
+    },
+    {
+      "id": "q030602015",
+      "skill_id": "sk030602",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime este código?\n```python\nfrom itertools import permutations\n\nprint(len(list(permutations(range(5)))))\n```",
+      "question_en": "What does this code print?\n```python\nfrom itertools import permutations\n\nprint(len(list(permutations(range(5)))))\n```",
+      "options_es": ["25", "32", "120", "5"],
+      "options_en": ["25", "32", "120", "5"],
+      "correct_index": 2,
+      "explanation_es": "Las permutaciones de n elementos distintos son n!, es decir 120. Esa es la clase de crecimiento que hace inservible la fuerza bruta sobre ordenaciones: con 10 elementos son 3,6 millones y con 15 son 1,3 billones. La opción 25 es n² y la 32 es 2^n, el número de subconjuntos, que ya es malo pero queda infinitamente por debajo del factorial. Aquí está el límite de la micro-optimización: ningún truco de Python, ni Cython, ni una máquina diez veces más rápida salvan un algoritmo O(n!); solo lo hace un algoritmo distinto.",
+      "explanation_en": "The permutations of n distinct items number n!, i.e. 120. That growth class is what makes brute force over orderings unusable: 10 items is 3.6 million, 15 items is 1.3 trillion. Option 25 is n² and 32 is 2^n, the number of subsets — already bad, yet infinitely below factorial. This is where micro-optimisation hits its ceiling: no Python trick, no Cython, and no machine ten times faster rescues an O(n!) algorithm. Only a different algorithm does.",
+      "source": "CPython docs 3.13 — itertools.permutations",
+      "expected_time_ms": 42000,
+      "tags": ["performance", "complexity", "big-o", "factorial", "itertools"]
+    },
+
+    {
+      "id": "q030603010",
+      "skill_id": "sk030603",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\n```python\nfrom collections import deque\n\nultimos = deque(maxlen=3)\nfor x in range(5):\n    ultimos.append(x)\nprint(list(ultimos))\n```",
+      "question_en": "What does this code print?\n```python\nfrom collections import deque\n\nlatest = deque(maxlen=3)\nfor x in range(5):\n    latest.append(x)\nprint(list(latest))\n```",
+      "options_es": [
+        "[0, 1, 2]",
+        "[2, 3, 4]",
+        "[0, 1, 2, 3, 4]",
+        "Lanza IndexError al superar maxlen"
+      ],
+      "options_en": [
+        "[0, 1, 2]",
+        "[2, 3, 4]",
+        "[0, 1, 2, 3, 4]",
+        "Raises IndexError once maxlen is exceeded"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una deque acotada descarta por el extremo opuesto al que insertas: es un búfer circular que no hay que recortar a mano y en el que cada `append` sigue siendo O(1). La opción [0, 1, 2] asume que la deque rechaza los elementos nuevos cuando se llena, y la del IndexError que protesta; ninguna de las dos es lo que hace. Lo interesante es la alternativa que evita: llevar los últimos 3 con una lista (`xs.append(x)` y luego `del xs[0]`) cuesta O(n) por elemento, porque borrar por el principio desplaza todo lo demás.",
+      "explanation_en": "A bounded deque discards from the end opposite the one you push into: a ring buffer you never have to trim by hand, where every `append` stays O(1). Option [0, 1, 2] assumes the deque refuses new items once full, and the IndexError option that it complains; it does neither. What matters is the alternative it avoids: keeping the last 3 in a list (`xs.append(x)` then `del xs[0]`) costs O(n) per element, because deleting from the front shifts everything else.",
+      "source": "CPython docs 3.13 — collections.deque (maxlen)",
+      "expected_time_ms": 33000,
+      "tags": ["performance", "data-structures", "deque", "collections"]
+    },
+    {
+      "id": "q030603011",
+      "skill_id": "sk030603",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué imprime este código?\n```python\nnombres = [\"ana\", \"luis\", \"ana\", \"eva\"]\nunicos = set(nombres)\nprint(len(unicos), sorted(unicos))\n```",
+      "question_en": "What does this code print?\n```python\nnames = [\"ana\", \"luis\", \"ana\", \"eva\"]\nunique = set(names)\nprint(len(unique), sorted(unique))\n```",
+      "options_es": [
+        "4 ['ana', 'ana', 'eva', 'luis']",
+        "3 ['ana', 'eva', 'luis', 'ana']",
+        "4 ['ana', 'eva', 'luis']",
+        "3 ['ana', 'eva', 'luis']"
+      ],
+      "options_en": [
+        "4 ['ana', 'ana', 'eva', 'luis']",
+        "3 ['ana', 'eva', 'luis', 'ana']",
+        "4 ['ana', 'eva', 'luis']",
+        "3 ['ana', 'eva', 'luis']"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El set elimina duplicados, así que quedan 3 elementos, y `sorted` devuelve una lista ordenada. Las opciones con 4 conservan el duplicado, el error de suponer que `set()` solo cambia el tipo del contenedor. Más allá del resultado, esto es la forma eficiente de deduplicar: construir el set es O(n). El bucle que mucha gente escribe en su lugar, `if x not in resultado: resultado.append(x)` sobre una lista, es O(n²), porque cada `in` sobre una lista recorre todos los elementos ya acumulados.",
+      "explanation_en": "The set drops duplicates, leaving 3 items, and `sorted` returns a sorted list. The options with 4 keep the duplicate — the mistake of assuming `set()` only changes the container type. Beyond the answer, this is the efficient way to deduplicate: building the set is O(n). The loop many people write instead, `if x not in result: result.append(x)` over a list, is O(n²), because each `in` over a list scans everything collected so far.",
+      "source": "CPython docs 3.13 — Built-in Types: set",
+      "expected_time_ms": 24000,
+      "tags": ["performance", "data-structures", "set", "deduplication"]
+    },
+    {
+      "id": "q030603012",
+      "skill_id": "sk030603",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime este código?\n```python\nimport heapq\n\nxs = [5, 1, 9, 3]\nheapq.heapify(xs)\nprint(heapq.heappop(xs), heapq.nsmallest(2, xs))\n```",
+      "question_en": "What does this code print?\n```python\nimport heapq\n\nxs = [5, 1, 9, 3]\nheapq.heapify(xs)\nprint(heapq.heappop(xs), heapq.nsmallest(2, xs))\n```",
+      "options_es": ["1 [3, 5]", "1 [3, 9]", "5 [1, 3]", "9 [1, 3]"],
+      "options_en": ["1 [3, 5]", "1 [3, 9]", "5 [1, 3]", "9 [1, 3]"],
+      "correct_index": 0,
+      "explanation_es": "`heapify` reordena la lista in situ en O(n) de modo que `xs[0]` sea el menor; `heappop` lo extrae y devuelve 1, dejando [3, 5, 9] como montículo válido, y `nsmallest(2, ...)` da [3, 5]. La opción `5 [1, 3]` supone que `heappop` quita el último elemento, como `list.pop()`. La opción que empieza por 9 asume un max-heap: `heapq` es un MIN-heap, y por eso los max-heaps se simulan negando las claves. Detalle que confunde a todo el mundo: un montículo NO está ordenado; solo se garantiza la raíz, así que imprimir la lista entera después de `heapify` no da una secuencia ordenada.",
+      "explanation_en": "`heapify` rearranges the list in place in O(n) so that `xs[0]` is the smallest; `heappop` removes and returns 1, leaving [3, 5, 9] as a valid heap, and `nsmallest(2, ...)` gives [3, 5]. Option `5 [1, 3]` assumes `heappop` takes the last item, like `list.pop()`. The options starting with 9 assume a max-heap: `heapq` is a MIN-heap, which is why max-heaps are faked by negating keys. The detail that trips everyone: a heap is NOT sorted — only the root is guaranteed, so printing the whole list after `heapify` does not give a sorted sequence.",
+      "source": "CPython docs 3.13 — heapq — Heap queue algorithm",
+      "expected_time_ms": 45000,
+      "tags": ["performance", "data-structures", "heapq", "priority-queue"]
+    },
+    {
+      "id": "q030603013",
+      "skill_id": "sk030603",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "`deque` inserta y extrae en O(1) por ambos extremos. ¿Cuál es el precio que se paga frente a `list`?",
+      "question_en": "`deque` inserts and removes in O(1) at both ends. What is the price paid compared with `list`?",
+      "options_es": [
+        "No se puede iterar sobre ella, solo acceder por los extremos",
+        "Consume siempre el doble de memoria por elemento",
+        "El acceso por índice al medio es O(n): una deque es una lista enlazada de bloques, no un array contiguo",
+        "No es segura entre hilos, mientras que list sí lo es"
+      ],
+      "options_en": [
+        "You cannot iterate over it, only reach the two ends",
+        "It always uses twice the memory per element",
+        "Indexed access to the middle is O(n): a deque is a linked list of blocks, not a contiguous array",
+        "It is not thread-safe, whereas list is"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Una deque es una lista doblemente enlazada de bloques de tamaño fijo: llegar al centro obliga a recorrer bloques, así que `d[n // 2]` es O(n) mientras que `xs[n // 2]` es O(1). Elegir deque para una carga que accede por índice al azar cambia un extremo rápido por un centro lento. La última opción invierte la realidad: los `append` y `pop` de deque están documentados como seguros entre hilos (atómicos), y son las operaciones de list las que no ofrecen esa garantía. La primera es falsa —deque es iterable— y la segunda inventa una cifra: el uso de memoria depende del llenado de los bloques.",
+      "explanation_en": "A deque is a doubly linked list of fixed-size blocks: reaching the middle means walking blocks, so `d[n // 2]` is O(n) while `xs[n // 2]` is O(1). Choosing a deque for a workload that indexes randomly trades a fast end for a slow middle. The last option inverts reality: deque's `append` and `pop` are documented as thread-safe (atomic), and it is list's operations that carry no such guarantee. The first is false — a deque is iterable — and the second invents a figure: memory use depends on how full the blocks are.",
+      "source": "CPython docs 3.13 — collections.deque (indexed access is O(n))",
+      "expected_time_ms": 45000,
+      "tags": ["performance", "data-structures", "deque", "trade-offs"]
+    },
+    {
+      "id": "q030603014",
+      "skill_id": "sk030603",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un `set` conserva el orden de inserción igual que un `dict` desde Python 3.7.",
+      "question_en": "A `set` preserves insertion order just like a `dict` does, as of Python 3.7.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Los dict garantizan el orden de inserción desde 3.7 como parte del lenguaje; los set no. El orden de iteración de un set depende de los hashes y del tamaño de la tabla, y para cadenas puede cambiar entre ejecuciones por la aleatorización del hash (PYTHONHASHSEED). La confusión es comprensible: ambos son tablas hash y en ejemplos cortos los sets parecen salir en un orden estable. Si necesitas deduplicar Y conservar el orden, `list(dict.fromkeys(iterable))` te da las dos cosas en O(n), sin pagar el O(n²) del bucle con `not in` sobre una lista.",
+      "explanation_en": "Dicts guarantee insertion order as of 3.7, as a language guarantee; sets do not. A set's iteration order follows hash values and table layout, and for strings it can change between runs because of hash randomisation (PYTHONHASHSEED). The confusion is understandable: both are hash tables, and in short examples sets appear to come out in a stable order. If you need deduplication AND order, `list(dict.fromkeys(iterable))` gives you both in O(n), without paying the O(n²) of a `not in` loop over a list.",
+      "source": "CPython docs 3.13 — Built-in Types: dict (insertion order) / set (unordered)",
+      "expected_time_ms": 33000,
+      "tags": ["performance", "data-structures", "set", "dict", "ordering"]
+    },
+    {
+      "id": "q030603015",
+      "skill_id": "sk030603",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Completa la función del módulo `bisect` que inserta un elemento manteniendo la lista ordenada sin volver a ordenarla: `bisect.___(xs, x)`",
+      "question_en": "Complete the `bisect` function that inserts an element keeping the list sorted, without re-sorting it: `bisect.___(xs, x)`",
+      "correct_answer_es": "insort",
+      "correct_answer_en": "insort",
+      "explanation_es": "`insort` localiza la posición con búsqueda binaria, O(log n), y después inserta. La inserción en sí sigue desplazando elementos, O(n), pero evitas el `xs.append(x); xs.sort()` que la costumbre dicta y que cuesta O(n log n) en cada añadido. El matiz que decide: si las inserciones dominan y solo necesitas el elemento menor, `heapq` es mejor estructura, porque inserta y extrae el mínimo en O(log n) sin desplazar nada.",
+      "explanation_en": "`insort` finds the position by binary search, O(log n), then inserts. The insertion itself still shifts elements, O(n), but you avoid the habitual `xs.append(x); xs.sort()`, which costs O(n log n) on every addition. The deciding nuance: if insertions dominate and you only ever need the smallest item, `heapq` is the better structure, since it inserts and pops the minimum in O(log n) with no shifting at all.",
+      "source": "CPython docs 3.13 — bisect.insort",
+      "expected_time_ms": 40000,
+      "tags": ["performance", "data-structures", "bisect", "sorted-list"]
+    },
+
+    {
+      "id": "q030604010",
+      "skill_id": "sk030604",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿En qué caso es correcto aplicar `functools.lru_cache` a una función?",
+      "question_en": "When is it correct to apply `functools.lru_cache` to a function?",
+      "options_es": [
+        "En cualquier función, porque la caché solo guarda lo que ya se había calculado",
+        "Cuando la función es pura: mismo resultado para los mismos argumentos, sin efectos secundarios y con argumentos hashables",
+        "Solo en funciones recursivas; en el resto no aporta nada",
+        "Cuando la función hace E/S, porque así se evita volver a tocar el disco"
+      ],
+      "options_en": [
+        "On any function, since the cache only stores what was already computed",
+        "When the function is pure: same result for the same arguments, no side effects, hashable arguments",
+        "Only on recursive functions; elsewhere it adds nothing",
+        "When the function does I/O, since that avoids touching the disk again"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La caché solo es correcta si la función es una aplicación matemática de sus argumentos. La opción de la E/S es la más peligrosa precisamente porque suena a la mejor idea: cachear una función que lee un fichero o consulta un servicio la deja devolviendo datos obsoletos para siempre, y el fallo aparece como \"el programa ignora mi cambio\". La primera olvida dos cosas reales: los argumentos no hashables lanzan TypeError, y la caché mantiene referencias fuertes a argumentos y resultados, así que con `maxsize=None` crece sin límite. La tercera se queda corta: cualquier función pura y cara con argumentos repetidos se beneficia.",
+      "explanation_en": "Caching is only correct when the function is a mathematical mapping of its arguments. The I/O option is the most dangerous precisely because it sounds like the best idea: caching a function that reads a file or queries a service leaves it returning stale data forever, and the bug shows up as \"the program is ignoring my change\". The first forgets two real constraints: unhashable arguments raise TypeError, and the cache holds strong references to arguments and results, so with `maxsize=None` it grows without bound. The third undersells it: any expensive pure function with repeated arguments benefits.",
+      "source": "CPython docs 3.13 — functools.lru_cache",
+      "expected_time_ms": 35000,
+      "tags": ["performance", "optimization", "lru_cache", "memoization"]
+    },
+    {
+      "id": "q030604011",
+      "skill_id": "sk030604",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime este código?\n```python\nfrom functools import lru_cache\n\nllamadas = 0\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    global llamadas\n    llamadas += 1\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nfib(10)\nprint(llamadas, fib.cache_info().hits)\n```",
+      "question_en": "What does this code print?\n```python\nfrom functools import lru_cache\n\ncalls = 0\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    global calls\n    calls += 1\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n\nfib(10)\nprint(calls, fib.cache_info().hits)\n```",
+      "options_es": ["177 0", "11 0", "89 8", "11 8"],
+      "options_en": ["177 0", "11 0", "89 8", "11 8"],
+      "correct_index": 3,
+      "explanation_es": "El cuerpo se ejecuta una vez por cada n distinto, de 0 a 10, es decir 11 veces; las otras 8 llamadas se resuelven desde la caché y cuentan como aciertos. Sin el decorador el cuerpo se ejecutaría 177 veces: esa es la opción tentadora si supones que `lru_cache` solo guarda el resultado final en lugar de cada llamada intermedia. La opción `11 0` acierta las ejecuciones pero da por hecho que no hubo aciertos, contradiciendo lo que hizo posible reducirlas. Aquí la memoización no acelera una constante: convierte un algoritmo exponencial en lineal, que es un cambio de clase de complejidad.",
+      "explanation_en": "The body runs once per distinct n, 0 through 10, i.e. 11 times; the other 8 calls are served from the cache and count as hits. Without the decorator the body would run 177 times — that is the tempting option if you assume `lru_cache` stores only the final result rather than every intermediate call. `11 0` gets the executions right but assumes there were no hits, contradicting the very thing that reduced them. Memoisation here is not a constant-factor win: it turns an exponential algorithm into a linear one, a change of complexity class.",
+      "source": "CPython docs 3.13 — functools.lru_cache (fibonacci example)",
+      "expected_time_ms": 50000,
+      "tags": ["performance", "optimization", "lru_cache", "memoization", "recursion"]
+    },
+    {
+      "id": "q030604012",
+      "skill_id": "sk030604",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Has movido una función a una extensión compilada, pero la llamas dentro de un bucle Python de un millón de iteraciones y apenas ganas velocidad. ¿Cuál es la causa más probable?",
+      "question_en": "You moved a function into a compiled extension, but you call it inside a one-million-iteration Python loop and barely gain any speed. What is the most likely cause?",
+      "options_es": [
+        "El coste por llamada de cruzar la frontera Python-C domina; hay que mover el BUCLE al código compilado, no solo el cuerpo",
+        "Las extensiones compiladas solo aceleran si se construyen con optimización -O3",
+        "El GIL impide que una extensión en C sea más rápida que Python puro",
+        "CPython interpreta las extensiones compiladas igual que el bytecode"
+      ],
+      "options_en": [
+        "The per-call cost of crossing the Python-C boundary dominates; the LOOP has to move into compiled code, not just the body",
+        "Compiled extensions only speed things up when built with -O3 optimisation",
+        "The GIL prevents a C extension from being faster than pure Python",
+        "CPython interprets compiled extensions the same way it interprets bytecode"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada llamada empaqueta los argumentos, convierte objetos de Python a tipos de C y vuelve a convertir el resultado. Con un millón de iteraciones ese coste fijo se come una mejora de un cuerpo que ya era barato. Por eso NumPy expone operaciones sobre arrays enteros y por eso Cython insiste en tipar el bucle, no solo la aritmética. La opción del GIL confunde una restricción de concurrencia con la velocidad en un solo hilo: una extensión que mantiene el GIL sigue ejecutando a velocidad de C. La opción de -O3 convierte una afinación menor en la explicación principal, y la última es simplemente falsa: el código compilado se ejecuta como código máquina.",
+      "explanation_en": "Every call packs the arguments, converts Python objects into C types and converts the result back. Over a million iterations that fixed cost swallows an improvement to a body that was already cheap. This is why NumPy exposes whole-array operations and why Cython pushes you to type the loop, not just the arithmetic. The GIL option confuses a concurrency constraint with single-threaded speed: an extension holding the GIL still runs at C speed. The -O3 option promotes a minor tuning knob to the main explanation, and the last is simply false — compiled code runs as machine code.",
+      "source": "Cython docs — Tutorials: Basic Tutorial (moving loops into compiled code)",
+      "expected_time_ms": 48000,
+      "tags": ["performance", "cython", "c-extensions", "call-overhead"]
+    },
+    {
+      "id": "q030604013",
+      "skill_id": "sk030604",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "PyPy ejecuta código Python sin modificarlo y suele acelerar bucles largos, pero puede resultar MÁS lento en scripts de vida corta porque su JIT necesita calentarse.",
+      "question_en": "PyPy runs Python code unmodified and usually speeds up long loops, but it can be SLOWER on short-lived scripts because its JIT needs to warm up.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "El JIT observa qué bucles se ejecutan muchas veces y solo entonces los compila a código máquina; esa observación y esa compilación cuestan tiempo por adelantado. Un script que dura 200 ms puede terminar antes de que el JIT haya amortizado su inversión. La idea equivocada es que \"PyPy es sencillamente un Python más rápido\": es más rápido en trabajo largo, con muchos bucles y en Python puro, y es más lento o directamente incompatible en scripts cortos y en pilas con muchas extensiones en C. Medir con tu carga real, y no con un microbenchmark, es lo único que decide.",
+      "explanation_en": "The JIT watches which loops run often and only then compiles them to machine code; that observation and compilation cost time up front. A script that lives for 200 ms can finish before the JIT has paid for itself. The wrong idea is that \"PyPy is simply a faster Python\": it is faster for long-running, loop-heavy, pure-Python work, and slower or outright incompatible for short scripts and C-extension-heavy stacks. Measuring with your real workload, not a microbenchmark, is what settles it.",
+      "source": "PyPy documentation — Frequently Asked Questions (JIT warm-up)",
+      "expected_time_ms": 35000,
+      "tags": ["performance", "pypy", "jit", "alternatives"]
+    },
+    {
+      "id": "q030604014",
+      "skill_id": "sk030604",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime este código?\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=2)\ndef doble(x):\n    return x * 2\n\ndoble(1)\ndoble(2)\ndoble(3)\ndoble(1)\nprint(doble.cache_info().hits, doble.cache_info().misses)\n```",
+      "question_en": "What does this code print?\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=2)\ndef double(x):\n    return x * 2\n\ndouble(1)\ndouble(2)\ndouble(3)\ndouble(1)\nprint(double.cache_info().hits, double.cache_info().misses)\n```",
+      "options_es": ["1 3", "3 1", "0 4", "1 4"],
+      "options_en": ["1 3", "3 1", "0 4", "1 4"],
+      "correct_index": 2,
+      "explanation_es": "Con `maxsize=2` la caché solo retiene las dos entradas usadas más recientemente: la llamada con 3 expulsa la de 1, así que la cuarta llamada también falla. Cero aciertos en cuatro llamadas. La opción `1 3` es la que sale si supones que la caché guarda todo, que es lo que haría `maxsize=None`. La lección es que dimensionar la caché es una decisión real: por debajo del conjunto de trabajo, `lru_cache` no ahorra nada y solo añade el coste de hashear los argumentos y consultar la tabla en cada llamada.",
+      "explanation_en": "With `maxsize=2` the cache keeps only the two most recently used entries: the call with 3 evicts the entry for 1, so the fourth call misses too. Zero hits across four calls. Option `1 3` is what you get assuming the cache holds everything, which is what `maxsize=None` would do. The lesson is that sizing the cache is a real decision: below the working set, `lru_cache` saves nothing and only adds the cost of hashing the arguments and probing the table on every call.",
+      "source": "CPython docs 3.13 — functools.lru_cache (maxsize and cache_info)",
+      "expected_time_ms": 46000,
+      "tags": ["performance", "optimization", "lru_cache", "eviction"]
+    },
+    {
+      "id": "q030604015",
+      "skill_id": "sk030604",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Completa el decorador de `functools` (Python 3.9+) que memoriza sin límite de tamaño y es más ligero que `lru_cache(maxsize=None)`: `@functools.___`",
+      "question_en": "Complete the `functools` decorator (Python 3.9+) that memoises with no size limit and is lighter than `lru_cache(maxsize=None)`: `@functools.___`",
+      "correct_answer_es": "cache",
+      "correct_answer_en": "cache",
+      "explanation_es": "`functools.cache` es una envoltura fina sobre `lru_cache(maxsize=None)` que se ahorra la contabilidad del orden de uso reciente, por lo que cada consulta es algo más rápida. La contrapartida es que nunca expulsa nada: es la opción correcta para un conjunto acotado de argumentos y la incorrecta para claves que vienen del usuario, donde crece hasta agotar la memoria. Si no sabes cuántos argumentos distintos verás, `lru_cache` con un `maxsize` explícito es la elección segura.",
+      "explanation_en": "`functools.cache` is a thin wrapper over `lru_cache(maxsize=None)` that skips the recency bookkeeping, so each lookup is slightly faster. The trade-off is that it never evicts: it is the right choice for a bounded set of arguments and the wrong one for user-supplied keys, where it grows until memory runs out. If you do not know how many distinct arguments you will see, `lru_cache` with an explicit `maxsize` is the safe pick.",
+      "source": "CPython docs 3.13 — functools.cache",
+      "expected_time_ms": 32000,
+      "tags": ["performance", "optimization", "functools", "memoization"]
+    },
+    {
+      "id": "q030604016",
+      "skill_id": "sk030604",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué distingue a Cython de Numba?",
+      "question_en": "What distinguishes Cython from Numba?",
+      "options_es": [
+        "Cython genera código máquina en tiempo de ejecución; Numba traduce a C antes de ejecutar",
+        "Cython traduce a C y se compila antes de ejecutar, con un compilador en el sistema; Numba compila funciones en tiempo de ejecución con LLVM",
+        "Cython solo sirve con NumPy; Numba sirve con cualquier objeto de Python",
+        "Cython sustituye al intérprete de CPython; Numba es un intérprete alternativo como PyPy"
+      ],
+      "options_en": [
+        "Cython generates machine code at run time; Numba translates to C ahead of time",
+        "Cython translates to C and is compiled ahead of time, needing a compiler on the machine; Numba compiles functions at run time with LLVM",
+        "Cython only works with NumPy; Numba works with any Python object",
+        "Cython replaces the CPython interpreter; Numba is an alternative interpreter like PyPy"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cython es anticipado: escribes un `.pyx`, añades un paso de compilación al empaquetado y distribuyes un módulo de extensión ya compilado. Numba es justo a tiempo: decoras con `@njit` y compila esa función en la primera llamada, limitada al subconjunto de Python y NumPy que entiende. La primera opción es exactamente la confusión más común, con los dos papeles intercambiados. La tercera invierte la restricción real: es Numba quien está pensado para código numérico y NumPy, no Cython. La cuarta describe PyPy: ninguna de las dos herramientas reemplaza al intérprete; ambas producen módulos que CPython carga.",
+      "explanation_en": "Cython is ahead-of-time: you write a `.pyx`, add a build step to your packaging, and ship a compiled extension module. Numba is just-in-time: you decorate with `@njit` and it compiles that function on first call, limited to the subset of Python and NumPy it understands. The first option is exactly the most common mix-up, with the two roles swapped. The third inverts the real constraint: it is Numba that targets numeric and NumPy code, not Cython. The fourth describes PyPy — neither tool replaces the interpreter; both produce modules CPython loads.",
+      "source": "Cython docs — Overview / Numba documentation — A ~5 minute guide to Numba",
+      "expected_time_ms": 38000,
+      "tags": ["performance", "cython", "numba", "jit", "alternatives"]
+    },
+    {
+      "id": "q030604017",
+      "skill_id": "sk030604",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\n```python\nfrom operator import itemgetter\n\nfilas = [(\"b\", 2), (\"a\", 3), (\"c\", 1)]\nprint(sorted(filas, key=itemgetter(1))[0], sorted(filas, key=itemgetter(0))[0])\n```",
+      "question_en": "What does this code print?\n```python\nfrom operator import itemgetter\n\nrows = [(\"b\", 2), (\"a\", 3), (\"c\", 1)]\nprint(sorted(rows, key=itemgetter(1))[0], sorted(rows, key=itemgetter(0))[0])\n```",
+      "options_es": [
+        "('b', 2) ('b', 2)",
+        "('a', 3) ('c', 1)",
+        "('c', 1) ('c', 1)",
+        "('c', 1) ('a', 3)"
+      ],
+      "options_en": [
+        "('b', 2) ('b', 2)",
+        "('a', 3) ('c', 1)",
+        "('c', 1) ('c', 1)",
+        "('c', 1) ('a', 3)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`itemgetter(1)` ordena por el segundo campo, así que el primero es ('c', 1); `itemgetter(0)` ordena por el primero y da ('a', 3). La opción que los intercambia es la trampa: es fácil leer el índice como si nombrara la columna por la que se ordena en orden de lectura. Lo relevante para rendimiento es que `itemgetter` devuelve un invocable implementado en C, de modo que la función clave no vuelve a entrar en el intérprete en cada comparación como haría `lambda f: f[1]`. En ordenaciones grandes eso se nota, y es el tipo de alternativa que conviene agotar antes de plantearse Cython.",
+      "explanation_en": "`itemgetter(1)` sorts by the second field, so the first row is ('c', 1); `itemgetter(0)` sorts by the first and gives ('a', 3). The option that swaps them is the trap: it is easy to read the index as naming the column in reading order. What matters for performance is that `itemgetter` returns a C-level callable, so the key function does not re-enter the interpreter on every comparison the way `lambda r: r[1]` does. On large sorts that shows, and it is exactly the kind of alternative worth exhausting before reaching for Cython.",
+      "source": "CPython docs 3.13 — operator.itemgetter / Sorting HOW TO",
+      "expected_time_ms": 38000,
+      "tags": ["performance", "optimization", "operator", "sorting"]
+    },
+    {
+      "id": "q030604018",
+      "skill_id": "sk030604",
+      "type": "true_false",
+      "difficulty_tier": "expert",
+      "question_es": "Reescribir una función en Cython siempre da más aceleración que sustituir el algoritmo por otro de mejor complejidad.",
+      "question_en": "Rewriting a function in Cython always yields a bigger speedup than replacing the algorithm with one of better complexity.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Cython compra un factor constante, típicamente entre 2x y 100x en bucles numéricos apretados. Cambiar de clase de complejidad cambia la forma de la curva: pasar de O(n²) a O(n log n) con n = 1.000.000 es un factor de unas 50.000 veces, y crece con n. Compilar un algoritmo cuadrático solo te lleva antes al muro. El enunciado resulta tentador porque la mejora de Cython es visible e inmediata, mientras que la algorítmica exige repensar el problema; esa asimetría de esfuerzo percibido es justo la que hace que la optimización prematura gane la discusión. El orden sensato es medir, arreglar el algoritmo, elegir la estructura de datos y solo entonces compilar.",
+      "explanation_en": "Cython buys a constant factor, typically 2x to 100x on tight numeric loops. Changing complexity class changes the shape of the curve: going from O(n²) to O(n log n) at n = 1,000,000 is a factor of roughly 50,000, and it grows with n. Compiling a quadratic algorithm only gets you to the wall sooner. The statement is tempting because the Cython win is visible and immediate while the algorithmic one demands rethinking the problem; that asymmetry in perceived effort is exactly what lets premature optimisation win the argument. The sensible order is measure, fix the algorithm, pick the data structure, and only then compile.",
+      "source": "Cython docs — Overview / Introduction to Algorithms (Cormen et al.), 4e",
+      "expected_time_ms": 45000,
+      "tags": ["performance", "cython", "big-o", "optimization-strategy"]
+    }
+  ]
+}

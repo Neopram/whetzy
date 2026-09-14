@@ -1,0 +1,652 @@
+{
+  "questions": [
+    {
+      "id": "q050201008",
+      "skill_id": "sk050201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Fowler distingue varios estilos que la gente agrupa bajo la etiqueta 'event-driven'. ¿Qué describe el estilo 'event-carried state transfer' (transferencia de estado mediante eventos)?",
+      "question_en": "Fowler distinguishes several styles that people lump together under the 'event-driven' label. What describes 'event-carried state transfer'?",
+      "options_es": [
+        "El evento es una orden dirigida a un servicio concreto que debe ejecutarla",
+        "El evento solo contiene un identificador, y el consumidor llama de vuelta al productor para pedir los datos",
+        "El evento lleva dentro los datos que el consumidor necesita, de modo que este puede mantener su propia copia local y no consultar al productor",
+        "El estado se guarda exclusivamente como la secuencia completa de eventos, sin tabla de estado actual"
+      ],
+      "options_en": [
+        "The event is an order directed at a specific service that must execute it",
+        "The event carries only an identifier, and the consumer calls back to the producer to fetch the data",
+        "The event carries the data the consumer needs inside it, so the consumer can keep its own local copy and never query the producer",
+        "State is stored exclusively as the full sequence of events, with no current-state table"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En 'event-carried state transfer' el evento viaja con la información suficiente (nombre, dirección, importe...) para que el consumidor actualice su réplica local. La opción del identificador describe 'event notification', el estilo más ligero, que reintroduce acoplamiento porque el consumidor debe volver a llamar al productor. La última opción es event sourcing, que es un estilo distinto: hablar de 'eventos' no implica guardarlos como fuente de verdad. La primera confunde evento con comando.",
+      "explanation_en": "In event-carried state transfer the event travels with enough information (name, address, amount...) for the consumer to update its local replica. The identifier-only option describes 'event notification', the lightest style, which reintroduces coupling because the consumer must call back to the producer. The last option is event sourcing, a different style: using 'events' does not imply storing them as the source of truth. The first confuses an event with a command.",
+      "source": "Fowler, M. - What do you mean by 'Event-Driven'? (martinfowler.com)",
+      "expected_time_ms": 34000,
+      "tags": ["event-driven", "event-carried-state-transfer", "fowler"]
+    },
+    {
+      "id": "q050201009",
+      "skill_id": "sk050201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En un flujo de negocio repartido entre varios servicios, ¿qué diferencia hay entre coreografía (choreography) y orquestación (orchestration)?",
+      "question_en": "In a business flow spread across several services, what is the difference between choreography and orchestration?",
+      "options_es": [
+        "En coreografía cada servicio reacciona por su cuenta a los eventos que le interesan; en orquestación existe un coordinador central que dice a cada servicio qué hacer y cuándo",
+        "La coreografía usa HTTP y la orquestación usa colas de mensajes",
+        "La orquestación es siempre asíncrona y la coreografía siempre síncrona",
+        "Son el mismo patrón con distinto nombre según el proveedor de nube"
+      ],
+      "options_en": [
+        "In choreography each service reacts on its own to the events it cares about; in orchestration a central coordinator tells each service what to do and when",
+        "Choreography uses HTTP and orchestration uses message queues",
+        "Orchestration is always asynchronous and choreography always synchronous",
+        "They are the same pattern named differently by each cloud vendor"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La diferencia es dónde vive la lógica del flujo, no el transporte. En coreografía la lógica está repartida: nadie tiene la foto completa, lo que abarata añadir pasos pero encarece depurar. En orquestación un coordinador conoce el flujo entero: es fácil de leer, pero concentra conocimiento y puede volverse un cuello de botella. Las opciones sobre HTTP frente a colas o sobre síncrono frente a asíncrono confunden el estilo de coordinación con el mecanismo de transporte: ambos estilos pueden implementarse con cualquiera de los dos.",
+      "explanation_en": "The difference is where the flow logic lives, not the transport. In choreography the logic is distributed: nobody holds the whole picture, which makes adding steps cheap but debugging expensive. In orchestration a coordinator knows the entire flow: easy to read, but it concentrates knowledge and can become a bottleneck. The HTTP-vs-queues and sync-vs-async options confuse the coordination style with the transport mechanism: either style can be built on either.",
+      "source": "Richardson, C. - Microservices Patterns, cap. 4 (Sagas: choreography vs orchestration)",
+      "expected_time_ms": 32000,
+      "tags": ["event-driven", "choreography", "orchestration"]
+    },
+    {
+      "id": "q050201010",
+      "skill_id": "sk050201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un equipo sustituye las llamadas REST entre servicios por eventos que llevan todo el estado del cliente. ¿Cuál es el coste real de esa decisión?",
+      "question_en": "A team replaces REST calls between services with events that carry the customer's full state. What is the real cost of that decision?",
+      "options_es": [
+        "Los servicios quedan acoplados en tiempo: si el productor cae, los consumidores dejan de funcionar",
+        "Deja de ser posible escalar horizontalmente los consumidores",
+        "Se pierde la trazabilidad porque los eventos no pueden llevar metadatos",
+        "Se duplican los datos en cada consumidor, que trabajará con copias potencialmente desactualizadas y habrá que decidir cuánta obsolescencia es tolerable"
+      ],
+      "options_en": [
+        "The services become coupled in time: if the producer goes down, consumers stop working",
+        "It is no longer possible to scale consumers horizontally",
+        "Traceability is lost because events cannot carry metadata",
+        "Data is duplicated in every consumer, which works with potentially stale copies, and you must decide how much staleness is tolerable"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La transferencia de estado mediante eventos compra disponibilidad (el consumidor responde aunque el productor esté caído) pagando con replicación y consistencia eventual. El acoplamiento temporal es justo lo contrario: es lo que sufren las llamadas REST síncronas que se acaban de eliminar. El escalado horizontal no se pierde, de hecho mejora al no depender de una llamada remota. Y los eventos sí pueden llevar metadatos como identificadores de correlación; de hecho son necesarios precisamente porque la traza distribuida se vuelve más difícil.",
+      "explanation_en": "Event-carried state transfer buys availability (the consumer answers even when the producer is down) and pays with replication and eventual consistency. Temporal coupling is the opposite: it is what the synchronous REST calls just removed suffered from. Horizontal scaling is not lost - it improves, since no remote call is needed. And events can carry metadata such as correlation identifiers; they are needed precisely because distributed tracing becomes harder.",
+      "source": "Fowler, M. - What do you mean by 'Event-Driven'? (martinfowler.com); Newman, S. - Building Microservices 2e, cap. 4",
+      "expected_time_ms": 38000,
+      "tags": ["event-driven", "eventual-consistency", "trade-offs"]
+    },
+    {
+      "id": "q050201011",
+      "skill_id": "sk050201",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Este consumidor recibe entregas duplicadas del broker (semántica at-least-once). ¿Qué imprime?\n```python\nprocesados = set()\ntotal = 0\n\ndef manejar(evento_id, importe):\n    global total\n    if evento_id in procesados:\n        return\n    procesados.add(evento_id)\n    total += importe\n\nfor e in [(\"e1\", 10), (\"e2\", 5), (\"e1\", 10), (\"e3\", 7), (\"e2\", 5)]:\n    manejar(*e)\n\nprint(total)\n```",
+      "question_en": "This consumer receives duplicate deliveries from the broker (at-least-once semantics). What does it print?\n```python\nprocesados = set()\ntotal = 0\n\ndef manejar(evento_id, importe):\n    global total\n    if evento_id in procesados:\n        return\n    procesados.add(evento_id)\n    total += importe\n\nfor e in [(\"e1\", 10), (\"e2\", 5), (\"e1\", 10), (\"e3\", 7), (\"e2\", 5)]:\n    manejar(*e)\n\nprint(total)\n```",
+      "options_es": ["37", "22", "32", "15"],
+      "options_en": ["37", "22", "32", "15"],
+      "correct_index": 1,
+      "explanation_es": "El consumidor es idempotente: registra el identificador de cada evento ya aplicado y descarta las repeticiones, así que solo suma e1, e2 y e3 (10+5+7 = 22). 37 es la respuesta de quien cuenta todas las entregas, que es exactamente lo que ocurre cuando se olvida la deduplicación bajo at-least-once. 32 corresponde a deduplicar solo e1 y 15 a procesar únicamente las dos primeras entregas.",
+      "explanation_en": "The consumer is idempotent: it records the id of each event already applied and drops repeats, so it only adds e1, e2 and e3 (10+5+7 = 22). 37 is the answer of someone counting every delivery, which is exactly what happens when deduplication is forgotten under at-least-once. 32 corresponds to deduplicating only e1, and 15 to processing just the first two deliveries.",
+      "source": "Kleppmann, M. - Designing Data-Intensive Applications, cap. 11 (idempotence and exactly-once)",
+      "expected_time_ms": 42000,
+      "tags": ["event-driven", "idempotence", "at-least-once"]
+    },
+    {
+      "id": "q050201012",
+      "skill_id": "sk050201",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "El broker reentrega 'retiro-A' porque el ack se perdió por un corte de red. ¿Qué imprime este manejador?\n```python\nsaldo = 100\nentregas = [\"retiro-A\", \"retiro-A\", \"retiro-B\"]\n\ndef aplicar(mensaje):\n    global saldo\n    saldo -= 30\n\nfor m in entregas:\n    aplicar(m)\n\nprint(saldo)\n```",
+      "question_en": "The broker redelivers 'retiro-A' because the ack was lost to a network blip. What does this handler print?\n```python\nsaldo = 100\nentregas = [\"retiro-A\", \"retiro-A\", \"retiro-B\"]\n\ndef aplicar(mensaje):\n    global saldo\n    saldo -= 30\n\nfor m in entregas:\n    aplicar(m)\n\nprint(saldo)\n```",
+      "options_es": ["40", "70", "100", "10"],
+      "options_en": ["40", "70", "100", "10"],
+      "correct_index": 3,
+      "explanation_es": "El manejador no mira el identificador del mensaje, así que aplica el descuento tres veces: 100 - 90 = 10. El dinero desaparece por una reentrega, no por un error de negocio. 40 es lo que habría salido con un consumidor idempotente (dos retiros distintos), y es el error de quien asume que el broker garantiza exactly-once por sí solo. 70 supone una única aplicación y 100 supone que el broker filtra los duplicados automáticamente.",
+      "explanation_en": "The handler never inspects the message id, so it applies the debit three times: 100 - 90 = 10. Money vanishes because of a redelivery, not a business error. 40 is what an idempotent consumer would have produced (two distinct withdrawals), and it is the mistake of anyone assuming the broker guarantees exactly-once on its own. 70 assumes a single application and 100 assumes the broker filters duplicates automatically.",
+      "source": "Kleppmann, M. - Designing Data-Intensive Applications, cap. 11 (message delivery guarantees)",
+      "expected_time_ms": 40000,
+      "tags": ["event-driven", "at-least-once", "duplicates"]
+    },
+    {
+      "id": "q050201013",
+      "skill_id": "sk050201",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Como el broker reintenta la entrega de los mensajes fallidos, un consumidor event-driven no necesita su propia estrategia de manejo de errores.",
+      "question_en": "Because the broker retries delivery of failed messages, an event-driven consumer does not need its own error-handling strategy.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso, y es una de las confusiones más caras. El reintento del broker solo ayuda ante fallos transitorios; ante un error permanente (un mensaje mal formado, un campo obligatorio ausente) el reintento se repite indefinidamente y bloquea la cola: es el clásico 'poison message'. El consumidor necesita distinguir errores reintentables de los que no lo son, limitar el número de intentos, aplicar espera exponencial y derivar lo irrecuperable a una dead-letter queue. La tentación de la respuesta contraria viene de que en una llamada síncrona el error vuelve al llamante y alguien lo ve; en asíncrono no hay nadie mirando.",
+      "explanation_en": "False, and it is one of the most expensive confusions. Broker retries only help with transient failures; with a permanent error (a malformed message, a missing required field) the retry repeats forever and blocks the queue - the classic poison message. The consumer must tell retryable errors from non-retryable ones, cap the attempts, back off exponentially and route the unrecoverable to a dead-letter queue. The opposite answer is tempting because in a synchronous call the error returns to the caller and somebody sees it; in async nobody is watching.",
+      "source": "Nygard, M. - Release It! 2e (fail fast, handling failures); RabbitMQ documentation - Consumer Acknowledgements",
+      "expected_time_ms": 28000,
+      "tags": ["event-driven", "error-handling", "poison-message"]
+    },
+    {
+      "id": "q050201014",
+      "skill_id": "sk050201",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Con notificación por eventos puros, un flujo de negocio completo no está escrito en ningún sitio del código: solo emerge de la suma de los consumidores, lo que dificulta razonar sobre él.",
+      "question_en": "With pure event notification, a complete business flow is written down nowhere in the code: it only emerges from the sum of the consumers, which makes it hard to reason about.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Es el inconveniente que Fowler subraya: el desacoplamiento que hace fácil añadir consumidores es el mismo que hace imposible abrir un fichero y leer el flujo de principio a fin. Hay que reconstruirlo leyendo quién se suscribe a qué, y por eso se vuelven imprescindibles los identificadores de correlación, la traza distribuida y la documentación explícita de los flujos. Quien responde 'falso' suele estar pensando en que los eventos se pueden listar en un catálogo de esquemas: eso documenta los mensajes, no la secuencia.",
+      "explanation_en": "True. This is the downside Fowler stresses: the decoupling that makes adding consumers easy is the same decoupling that makes it impossible to open one file and read the flow end to end. You must reconstruct it by tracing who subscribes to what, which is why correlation identifiers, distributed tracing and explicit flow documentation become essential. Answering 'false' usually comes from thinking events can be listed in a schema catalogue: that documents the messages, not the sequence.",
+      "source": "Fowler, M. - What do you mean by 'Event-Driven'? (the downsides, martinfowler.com)",
+      "expected_time_ms": 30000,
+      "tags": ["event-driven", "observability", "downsides"]
+    },
+    {
+      "id": "q050201015",
+      "skill_id": "sk050201",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Para poder seguir un mismo flujo de negocio a través de varios servicios y mensajes asíncronos, cada mensaje arrastra un identificador compartido que enlaza todos los pasos. En Enterprise Integration Patterns ese patrón se llama 'identificador de _____' (una palabra).",
+      "question_en": "To follow one business flow across several services and asynchronous messages, every message carries a shared identifier that links all the steps. In Enterprise Integration Patterns that pattern is called the '_____ identifier' (one word).",
+      "correct_answer_es": "correlación",
+      "correct_answer_en": "correlation",
+      "explanation_es": "El Correlation Identifier viaja en la cabecera de cada mensaje y permite unir una petición con su respuesta, o todos los eventos de una misma saga, cuando no hay pila de llamadas que seguir. Sin él la depuración en event-driven se reduce a cruzar timestamps a mano. No hay que confundirlo con el identificador del mensaje (único por mensaje, sirve para deduplicar) ni con la clave de partición (determina el orden, no la traza).",
+      "explanation_en": "The Correlation Identifier travels in each message's header and lets you join a request with its reply, or all the events of one saga, when there is no call stack to follow. Without it, debugging an event-driven system degrades into matching timestamps by hand. Do not confuse it with the message id (unique per message, used for deduplication) or with the partition key (which determines ordering, not tracing).",
+      "source": "Hohpe, G. & Woolf, B. - Enterprise Integration Patterns (Correlation Identifier)",
+      "expected_time_ms": 34000,
+      "tags": ["event-driven", "correlation-id", "tracing"]
+    },
+
+    {
+      "id": "q050202009",
+      "skill_id": "sk050202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Se conectan cinco instancias del mismo servicio a una única cola para repartir la carga. ¿Cómo se llama ese patrón y qué propiedad conserva?",
+      "question_en": "Five instances of the same service are attached to a single queue to share the load. What is that pattern called and what property does it preserve?",
+      "options_es": [
+        "Publish-subscribe: las cinco instancias reciben cada mensaje y luego descartan los que no les tocan",
+        "Competing consumers: cada mensaje lo entrega el broker a una sola de las instancias, así que el trabajo se reparte sin duplicarse",
+        "Message broker: el broker replica cada mensaje a las cinco y espera cinco acks",
+        "Content-based router: el broker inspecciona el cuerpo del mensaje y solo una instancia lo acepta"
+      ],
+      "options_en": [
+        "Publish-subscribe: all five instances receive every message and then discard the ones not meant for them",
+        "Competing consumers: the broker delivers each message to exactly one of the instances, so work is shared without duplication",
+        "Message broker: the broker replicates each message to all five and waits for five acks",
+        "Content-based router: the broker inspects the message body and only one instance accepts it"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Competing Consumers es el patrón que convierte una cola en un repartidor de trabajo: N consumidores compiten por los mensajes y el broker entrega cada uno a uno solo, de modo que el throughput escala con el número de consumidores. La primera y la tercera opción describen pub/sub, donde cada suscriptor recibe una copia; usar esa semántica para repartir carga significaría procesar cinco veces el mismo pedido. El router basado en contenido enruta por criterios de negocio, no para balancear. El precio de competing consumers es que se pierde el orden global entre mensajes procesados en paralelo.",
+      "explanation_en": "Competing Consumers is the pattern that turns a queue into a work distributor: N consumers compete for messages and the broker hands each message to exactly one, so throughput scales with the consumer count. The first and third options describe pub/sub, where every subscriber gets a copy; using that semantics to share load would mean processing the same order five times. A content-based router routes on business criteria, not for balancing. The price of competing consumers is losing global ordering across messages handled in parallel.",
+      "source": "Hohpe, G. & Woolf, B. - Enterprise Integration Patterns (Competing Consumers)",
+      "expected_time_ms": 32000,
+      "tags": ["message-queues", "competing-consumers", "scaling"]
+    },
+    {
+      "id": "q050202010",
+      "skill_id": "sk050202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En Amazon SQS, un consumidor recibe un mensaje y tarda más de lo esperado en procesarlo. ¿Qué hace el 'visibility timeout' y qué ocurre si se agota antes del ack?",
+      "question_en": "In Amazon SQS, a consumer receives a message and takes longer than expected to process it. What does the visibility timeout do, and what happens if it expires before the ack?",
+      "options_es": [
+        "Oculta el mensaje al resto de consumidores durante un tiempo; si expira sin borrado, el mensaje vuelve a ser visible y otro consumidor lo procesará, con riesgo de procesamiento duplicado",
+        "Borra el mensaje automáticamente para evitar que se procese dos veces",
+        "Bloquea la cola entera hasta que el consumidor lento termine",
+        "Mide el tiempo máximo que un mensaje puede permanecer en la cola antes de expirar definitivamente"
+      ],
+      "options_en": [
+        "It hides the message from other consumers for a period; if it expires without a delete, the message becomes visible again and another consumer will process it, risking duplicate processing",
+        "It deletes the message automatically to prevent it being processed twice",
+        "It locks the entire queue until the slow consumer finishes",
+        "It measures the maximum time a message may stay in the queue before expiring for good"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El visibility timeout es un arrendamiento, no un borrado: SQS oculta el mensaje mientras se procesa y solo lo elimina cuando el consumidor llama a DeleteMessage. Si el procesamiento excede el plazo, el mensaje reaparece y se procesa dos veces, que es el origen habitual de los duplicados en producción cuando el manejador no es idempotente. La última opción describe el retention period o el TTL del mensaje, que es un parámetro distinto; el bloqueo de la cola entera no ocurre, solo se oculta ese mensaje.",
+      "explanation_en": "The visibility timeout is a lease, not a delete: SQS hides the message while it is being processed and only removes it when the consumer calls DeleteMessage. If processing overruns the lease, the message reappears and gets processed twice - the usual origin of production duplicates when the handler is not idempotent. The last option describes the retention period or message TTL, a different setting; the whole queue is never locked, only that message is hidden.",
+      "source": "Amazon SQS Developer Guide - Visibility timeout",
+      "expected_time_ms": 36000,
+      "tags": ["message-queues", "visibility-timeout", "sqs"]
+    },
+    {
+      "id": "q050202011",
+      "skill_id": "sk050202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "La profundidad de una cola crece de forma sostenida durante horas, sin bajar en los valles de tráfico. ¿Qué indica esa señal?",
+      "question_en": "A queue's depth grows steadily for hours and never drains during traffic troughs. What does that signal mean?",
+      "options_es": [
+        "La capacidad de consumo es inferior a la tasa de producción, así que la latencia de extremo a extremo crecerá sin límite hasta que se añadan consumidores o se reduzca la entrada",
+        "La cola está funcionando como debe: amortiguar picos es exactamente su propósito",
+        "El broker tiene un fallo de configuración de memoria",
+        "Los mensajes se están duplicando por culpa de la semántica at-least-once"
+      ],
+      "options_en": [
+        "Consumption capacity is below the production rate, so end-to-end latency will grow without bound until consumers are added or input is reduced",
+        "The queue is working as intended: absorbing spikes is exactly its purpose",
+        "The broker has a memory misconfiguration",
+        "Messages are being duplicated because of at-least-once semantics"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una cola absorbe picos, no déficits sostenidos de capacidad. El queue-based load leveling funciona cuando la cola se vacía en los valles; si no baja nunca, el sistema es inestable y el retraso crece de forma acumulativa, aunque ningún mensaje se pierda. La segunda opción es la confusión clásica: se mira la cola llena y se concluye que está cumpliendo su función, cuando lo que hace es convertir un problema de capacidad en un problema de latencia invisible hasta que los datos ya están obsoletos. La duplicación y la memoria del broker son síntomas de otras causas, no de esta tendencia.",
+      "explanation_en": "A queue absorbs spikes, not sustained capacity deficits. Queue-based load leveling works while the queue drains in the troughs; if it never drains, the system is unstable and lag accumulates even though no message is lost. The second option is the classic confusion: people see a full queue and conclude it is doing its job, when what it is doing is converting a capacity problem into a latency problem that stays invisible until the data is already stale. Duplication and broker memory are symptoms of other causes, not of this trend.",
+      "source": "Azure Architecture Center - Queue-Based Load Leveling pattern; Nygard, M. - Release It! 2e (backpressure)",
+      "expected_time_ms": 32000,
+      "tags": ["message-queues", "backpressure", "capacity"]
+    },
+    {
+      "id": "q050202012",
+      "skill_id": "sk050202",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Esta simulación de una cola devuelve al final los mensajes rechazados (nack con requeue). ¿Qué imprime?\n```python\nfrom collections import deque\n\ncola = deque([\"m1\", \"m2\", \"m3\"])\nprocesados = []\nfallos = {\"m2\"}\n\nwhile cola:\n    m = cola.popleft()\n    if m in fallos:\n        fallos.discard(m)   # el reintento sí tendrá éxito\n        cola.append(m)      # nack: vuelve al final\n        continue\n    procesados.append(m)\n\nprint(procesados)\n```",
+      "question_en": "This queue simulation requeues rejected messages at the tail (nack with requeue). What does it print?\n```python\nfrom collections import deque\n\ncola = deque([\"m1\", \"m2\", \"m3\"])\nprocesados = []\nfallos = {\"m2\"}\n\nwhile cola:\n    m = cola.popleft()\n    if m in fallos:\n        fallos.discard(m)   # the retry will succeed\n        cola.append(m)      # nack: goes back to the tail\n        continue\n    procesados.append(m)\n\nprint(procesados)\n```",
+      "options_es": [
+        "['m1', 'm2', 'm3']",
+        "['m1', 'm3']",
+        "['m3', 'm2', 'm1']",
+        "['m1', 'm3', 'm2']"
+      ],
+      "options_en": [
+        "['m1', 'm2', 'm3']",
+        "['m1', 'm3']",
+        "['m3', 'm2', 'm1']",
+        "['m1', 'm3', 'm2']"
+      ],
+      "correct_index": 3,
+      "explanation_es": "m1 se procesa, m2 falla y se reencola al final, m3 se procesa y por último m2 lo consigue en el reintento: ['m1', 'm3', 'm2']. La primera opción es la de quien da por hecho que una cola FIFO garantiza el orden de procesamiento; el FIFO es de entrega, y cualquier reintento lo rompe. La segunda supone que un nack descarta el mensaje, que es lo que ocurriría con requeue desactivado y sin dead-letter queue. Este detalle es el motivo por el que un sistema que reintenta no puede asumir orden causal entre mensajes.",
+      "explanation_en": "m1 is processed, m2 fails and is requeued at the tail, m3 is processed, and finally m2 succeeds on the retry: ['m1', 'm3', 'm2']. The first option comes from assuming a FIFO queue guarantees processing order; FIFO is about delivery, and any retry breaks it. The second assumes a nack drops the message, which is what would happen with requeue disabled and no dead-letter queue. This detail is why a system that retries cannot assume causal ordering between messages.",
+      "source": "RabbitMQ documentation - Consumer Acknowledgements and Publisher Confirms (nack and requeue)",
+      "expected_time_ms": 45000,
+      "tags": ["message-queues", "ordering", "retries"]
+    },
+    {
+      "id": "q050202013",
+      "skill_id": "sk050202",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "El productor elige partición con esta función determinista. ¿Qué imprime el código?\n```python\ndef particion(clave, n=3):\n    return sum(ord(c) for c in clave) % n\n\neventos = [(\"pedido-7\", \"creado\"),\n           (\"pedido-7\", \"pagado\"),\n           (\"pedido-8\", \"creado\")]\n\nfor clave, tipo in eventos:\n    print(clave, tipo, particion(clave))\n```",
+      "question_en": "The producer picks a partition with this deterministic function. What does the code print?\n```python\ndef particion(clave, n=3):\n    return sum(ord(c) for c in clave) % n\n\neventos = [(\"pedido-7\", \"creado\"),\n           (\"pedido-7\", \"pagado\"),\n           (\"pedido-8\", \"creado\")]\n\nfor clave, tipo in eventos:\n    print(clave, tipo, particion(clave))\n```",
+      "options_es": [
+        "pedido-7 creado 0\npedido-7 pagado 1\npedido-8 creado 2",
+        "pedido-7 creado 1\npedido-7 pagado 1\npedido-8 creado 2",
+        "pedido-7 creado 0\npedido-7 pagado 0\npedido-8 creado 1",
+        "pedido-7 creado 0\npedido-7 pagado 0\npedido-8 creado 0"
+      ],
+      "options_en": [
+        "pedido-7 creado 0\npedido-7 pagado 1\npedido-8 creado 2",
+        "pedido-7 creado 1\npedido-7 pagado 1\npedido-8 creado 2",
+        "pedido-7 creado 0\npedido-7 pagado 0\npedido-8 creado 1",
+        "pedido-7 creado 0\npedido-7 pagado 0\npedido-8 creado 0"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La partición depende solo de la clave, no del evento: 'pedido-7' suma 729 y 729 % 3 = 0, así que sus dos eventos caen en la misma partición y conservan su orden relativo; 'pedido-8' suma 730 y 730 % 3 = 1. La primera opción es el error de quien cree que el reparto es round-robin por mensaje, que es justamente lo que rompería el orden por pedido. La última asume que todas las claves caen en la misma partición. Este es el mecanismo real detrás de la regla de que el orden solo está garantizado dentro de una partición y por clave.",
+      "explanation_en": "The partition depends only on the key, not on the event: 'pedido-7' sums to 729 and 729 % 3 = 0, so both of its events land on the same partition and keep their relative order; 'pedido-8' sums to 730 and 730 % 3 = 1. The first option is the mistake of believing distribution is round-robin per message, which is exactly what would break per-order ordering. The last assumes every key lands on one partition. This is the real mechanism behind the rule that ordering is guaranteed only within a partition and per key.",
+      "source": "Apache Kafka documentation - Producer partitioning and ordering guarantees",
+      "expected_time_ms": 48000,
+      "tags": ["message-queues", "partitioning", "kafka", "ordering"]
+    },
+    {
+      "id": "q050202014",
+      "skill_id": "sk050202",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Añadir más consumidores a una cola siempre aumenta el rendimiento sin efectos secundarios, incluso cuando el negocio exige procesar los mensajes de una misma entidad en orden.",
+      "question_en": "Adding more consumers to a queue always increases throughput with no side effects, even when the business requires messages for the same entity to be processed in order.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. Con varios consumidores compitiendo, dos mensajes de la misma entidad pueden procesarse a la vez en máquinas distintas y terminar en orden invertido: 'PedidoCancelado' puede aplicarse antes que 'PedidoCreado'. Por eso los sistemas que necesitan orden lo garantizan solo dentro de una partición o grupo de mensajes con la misma clave (partition key en Kafka, MessageGroupId en SQS FIFO), lo que acota el paralelismo al número de claves activas. El atractivo de la respuesta 'verdadero' está en que el throughput agregado sí sube; lo que se pierde es una garantía que el negocio puede necesitar.",
+      "explanation_en": "False. With competing consumers, two messages for the same entity can be handled simultaneously on different machines and finish out of order: 'OrderCancelled' may be applied before 'OrderCreated'. That is why systems needing ordering guarantee it only within a partition or a group of messages sharing a key (partition key in Kafka, MessageGroupId in SQS FIFO), which caps parallelism at the number of active keys. 'True' is tempting because aggregate throughput really does rise; what is lost is a guarantee the business may depend on.",
+      "source": "Kleppmann, M. - Designing Data-Intensive Applications, cap. 11 (multiple consumers, ordering)",
+      "expected_time_ms": 30000,
+      "tags": ["message-queues", "ordering", "concurrency"]
+    },
+    {
+      "id": "q050202015",
+      "skill_id": "sk050202",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Un mensaje que falla siempre al procesarse, se reintenta indefinidamente y acaba impidiendo que avancen los demás mensajes de la cola se conoce como mensaje '_____' (un adjetivo, en inglés significa 'envenenado').",
+      "question_en": "A message that always fails processing, is retried forever and ends up preventing the rest of the queue from making progress is known as a '_____' message (one adjective; in Spanish it translates as 'envenenado').",
+      "correct_answer_es": "envenenado",
+      "correct_answer_en": "poison",
+      "explanation_es": "El poison message es el motivo por el que existen las dead-letter queues y los contadores de entregas: sin un límite de reintentos, un solo mensaje corrupto consume toda la capacidad del consumidor y detiene el flujo, un fallo que se propaga como una caída aunque el broker esté sano. Conviene no confundirlo con un mensaje simplemente lento, que sí terminará, ni con un duplicado, que se resuelve con idempotencia y no con una DLQ.",
+      "explanation_en": "The poison message is why dead-letter queues and delivery counters exist: without a retry cap, a single corrupt message eats the consumer's entire capacity and halts the flow - a failure that looks like an outage even though the broker is healthy. Do not confuse it with a merely slow message, which does finish, or with a duplicate, which is solved by idempotence rather than by a DLQ.",
+      "source": "Azure Architecture Center - Asynchronous messaging primer (poison messages); Amazon SQS Developer Guide - Dead-letter queues",
+      "expected_time_ms": 32000,
+      "tags": ["message-queues", "poison-message", "dlq"]
+    },
+
+    {
+      "id": "q050203008",
+      "skill_id": "sk050203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En RabbitMQ, ¿qué diferencia hay entre un exchange de tipo 'fanout' y uno de tipo 'topic'?",
+      "question_en": "In RabbitMQ, what is the difference between a 'fanout' exchange and a 'topic' exchange?",
+      "options_es": [
+        "El fanout entrega a una sola cola por turnos y el topic entrega a todas",
+        "El fanout copia cada mensaje a todas las colas enlazadas ignorando la routing key; el topic copia solo a las colas cuyo patrón de enlace coincide con la routing key",
+        "El fanout solo funciona con un único consumidor y el topic admite varios",
+        "El topic almacena el historial de mensajes y el fanout los descarta tras la entrega"
+      ],
+      "options_en": [
+        "Fanout delivers to one queue at a time in round-robin and topic delivers to all of them",
+        "Fanout copies each message to every bound queue ignoring the routing key; topic copies only to queues whose binding pattern matches the routing key",
+        "Fanout only works with a single consumer while topic supports several",
+        "Topic stores message history and fanout discards messages after delivery"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La diferencia está en el criterio de enrutamiento: fanout difunde a ciegas, topic filtra por patrón. La primera opción confunde fanout con el reparto round-robin entre consumidores de una misma cola, que es otro nivel del modelo: el exchange decide a qué colas va el mensaje, y solo después los consumidores de cada cola compiten por él. El número de consumidores no depende del tipo de exchange. La retención del historial es propia de un log como Kafka, no de un exchange de RabbitMQ.",
+      "explanation_en": "The difference is the routing criterion: fanout broadcasts blindly, topic filters by pattern. The first option confuses fanout with round-robin sharing among consumers of one queue, which is a different level of the model: the exchange decides which queues get the message, and only then do that queue's consumers compete for it. The number of consumers does not depend on the exchange type. History retention belongs to a log like Kafka, not to a RabbitMQ exchange.",
+      "source": "RabbitMQ documentation - Exchanges, bindings and routing keys",
+      "expected_time_ms": 30000,
+      "tags": ["pub-sub", "rabbitmq", "exchanges"]
+    },
+    {
+      "id": "q050203009",
+      "skill_id": "sk050203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un topic emite un millón de eventos al día y un servicio solo necesita el 2 % de ellos. ¿Qué ventaja tiene filtrar en el broker (filtro de suscripción) frente a filtrar dentro del consumidor?",
+      "question_en": "A topic emits a million events a day and one service only needs 2 % of them. What is the advantage of filtering at the broker (subscription filter) over filtering inside the consumer?",
+      "options_es": [
+        "Ninguna: el trabajo total es el mismo, solo cambia dónde se ejecuta el if",
+        "Filtrar en el consumidor garantiza el orden y filtrar en el broker lo rompe",
+        "Filtrar en el broker convierte los eventos en comandos dirigidos",
+        "El broker no entrega ni cobra por lo que no coincide, así que se ahorra ancho de banda, invocaciones y el coste de despertar al consumidor un millón de veces"
+      ],
+      "options_en": [
+        "None: the total work is the same, only the location of the if changes",
+        "Filtering in the consumer guarantees ordering while filtering at the broker breaks it",
+        "Filtering at the broker turns events into directed commands",
+        "The broker neither delivers nor bills what does not match, saving bandwidth, invocations and the cost of waking the consumer a million times"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El filtro de suscripción se evalúa en el broker sobre los atributos del mensaje, de modo que el 98 % restante nunca sale hacia el consumidor. La primera opción es la intuición errónea de que filtrar es gratis: en serverless cada entrega es una invocación facturada, y en un consumidor con conexión persistente es ancho de banda y deserialización desperdiciados. El filtrado no altera el orden relativo de los mensajes que sí se entregan, y sigue siendo pub/sub: filtrar no convierte un evento en un comando, porque el productor sigue sin saber quién escucha.",
+      "explanation_en": "The subscription filter is evaluated at the broker against the message attributes, so the remaining 98 % never leaves for the consumer. The first option is the wrong intuition that filtering is free: in serverless each delivery is a billed invocation, and in a long-lived consumer it is wasted bandwidth and deserialization. Filtering does not alter the relative order of the messages that are delivered, and it is still pub/sub: filtering does not turn an event into a command, because the producer still does not know who listens.",
+      "source": "Google Cloud Pub/Sub documentation - Filtering messages; Hohpe, G. & Woolf, B. - Enterprise Integration Patterns (Message Filter)",
+      "expected_time_ms": 36000,
+      "tags": ["pub-sub", "filtering", "cost"]
+    },
+    {
+      "id": "q050203010",
+      "skill_id": "sk050203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Cuatro servicios se suscriben al mismo topic y uno de ellos procesa mucho más lento que los demás. ¿Por qué ese consumidor lento no frena a los otros tres en un pub/sub bien diseñado?",
+      "question_en": "Four services subscribe to the same topic and one of them processes far more slowly than the rest. Why does that slow consumer not hold back the other three in a well-designed pub/sub system?",
+      "options_es": [
+        "Porque cada suscripción mantiene su propia cola y su propia posición de lectura, de modo que el retraso de un suscriptor solo hace crecer su backlog",
+        "Porque el broker descarta los mensajes que el suscriptor lento no alcanza a procesar",
+        "Porque el broker espera a que los cuatro confirmen antes de aceptar el siguiente mensaje del productor",
+        "Porque el productor detecta al suscriptor lento y deja de enviarle eventos"
+      ],
+      "options_en": [
+        "Because each subscription keeps its own queue and its own read position, so one subscriber's lag only grows its own backlog",
+        "Because the broker drops the messages the slow subscriber cannot keep up with",
+        "Because the broker waits for all four to acknowledge before accepting the producer's next message",
+        "Because the producer detects the slow subscriber and stops sending it events"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El aislamiento se consigue dando a cada suscripción su propio estado de entrega: una cola dedicada en RabbitMQ o Pub/Sub, un offset propio por consumer group en Kafka. La tercera opción describiría un sistema acoplado al peor consumidor, que es precisamente lo que pub/sub evita. La segunda solo ocurre si se configura un TTL o se agota la retención, y es una pérdida de datos, no un mecanismo de aislamiento. La cuarta contradice la premisa del patrón: el productor no conoce a sus suscriptores.",
+      "explanation_en": "Isolation comes from giving each subscription its own delivery state: a dedicated queue in RabbitMQ or Pub/Sub, a per-consumer-group offset in Kafka. The third option would describe a system coupled to its worst consumer, exactly what pub/sub avoids. The second happens only if a TTL is configured or retention runs out, and that is data loss, not an isolation mechanism. The fourth contradicts the pattern's premise: the producer does not know its subscribers.",
+      "source": "Google Cloud Pub/Sub documentation - Subscriptions; Apache Kafka documentation - Consumer Groups and offsets",
+      "expected_time_ms": 32000,
+      "tags": ["pub-sub", "subscriptions", "isolation"]
+    },
+    {
+      "id": "q050203011",
+      "skill_id": "sk050203",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Este despachador pub/sub en memoria. ¿Qué imprime?\n```python\nsuscriptores = {}\n\ndef suscribir(tema, fn):\n    suscriptores.setdefault(tema, []).append(fn)\n\ndef publicar(tema, dato):\n    for fn in suscriptores.get(tema, []):\n        fn(dato)\n\nsuscribir(\"pedidos\", lambda d: print(\"facturacion:\", d))\nsuscribir(\"pedidos\", lambda d: print(\"almacen:\", d))\nsuscribir(\"envios\", lambda d: print(\"tracking:\", d))\n\npublicar(\"pedidos\", 42)\npublicar(\"clientes\", 99)\n```",
+      "question_en": "This in-memory pub/sub dispatcher. What does it print?\n```python\nsuscriptores = {}\n\ndef suscribir(tema, fn):\n    suscriptores.setdefault(tema, []).append(fn)\n\ndef publicar(tema, dato):\n    for fn in suscriptores.get(tema, []):\n        fn(dato)\n\nsuscribir(\"pedidos\", lambda d: print(\"facturacion:\", d))\nsuscribir(\"pedidos\", lambda d: print(\"almacen:\", d))\nsuscribir(\"envios\", lambda d: print(\"tracking:\", d))\n\npublicar(\"pedidos\", 42)\npublicar(\"clientes\", 99)\n```",
+      "options_es": [
+        "facturacion: 42",
+        "facturacion: 42\nalmacen: 42\ntracking: 42",
+        "facturacion: 42\nalmacen: 42",
+        "facturacion: 42\nalmacen: 42\nKeyError: 'clientes'"
+      ],
+      "options_en": [
+        "facturacion: 42",
+        "facturacion: 42\nalmacen: 42\ntracking: 42",
+        "facturacion: 42\nalmacen: 42",
+        "facturacion: 42\nalmacen: 42\nKeyError: 'clientes'"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Publicar en 'pedidos' invoca a sus dos suscriptores, y publicar en 'clientes' no hace nada porque .get devuelve una lista vacía: un topic sin suscriptores acepta el mensaje y nadie lo recibe, que es el fallo silencioso típico de pub/sub. La primera opción es la semántica de cola punto a punto (un solo receptor). La segunda entrega a un suscriptor de otro tema. La cuarta espera una excepción que no se produce porque se usa .get en lugar de indexación directa.",
+      "explanation_en": "Publishing to 'pedidos' invokes its two subscribers, and publishing to 'clientes' does nothing because .get returns an empty list: a topic with no subscribers accepts the message and nobody receives it - the typical silent failure of pub/sub. The first option is point-to-point queue semantics (a single receiver). The second delivers to a subscriber of a different topic. The fourth expects an exception that never happens because .get is used instead of direct indexing.",
+      "source": "Hohpe, G. & Woolf, B. - Enterprise Integration Patterns (Publish-Subscribe Channel)",
+      "expected_time_ms": 40000,
+      "tags": ["pub-sub", "fan-out", "topics"]
+    },
+    {
+      "id": "q050203012",
+      "skill_id": "sk050203",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Simulación del enrutamiento por patrón de un topic exchange ('*' = exactamente una palabra, '#' = cero o más). ¿Qué imprime?\n```python\ndef coincide(patron, clave):\n    p = patron.split(\".\")\n    c = clave.split(\".\")\n    if \"#\" in p:\n        i = p.index(\"#\")\n        return c[:i] == p[:i]\n    if len(p) != len(c):\n        return False\n    return all(a == \"*\" or a == b for a, b in zip(p, c))\n\nclave = \"pedido.es.creado\"\nfor patron in [\"pedido.*.creado\", \"pedido.#\", \"*.creado\", \"pedido.es.creado.v2\"]:\n    print(patron, coincide(patron, clave))\n```",
+      "question_en": "Simulation of a topic exchange's pattern routing ('*' = exactly one word, '#' = zero or more). What does it print?\n```python\ndef coincide(patron, clave):\n    p = patron.split(\".\")\n    c = clave.split(\".\")\n    if \"#\" in p:\n        i = p.index(\"#\")\n        return c[:i] == p[:i]\n    if len(p) != len(c):\n        return False\n    return all(a == \"*\" or a == b for a, b in zip(p, c))\n\nclave = \"pedido.es.creado\"\nfor patron in [\"pedido.*.creado\", \"pedido.#\", \"*.creado\", \"pedido.es.creado.v2\"]:\n    print(patron, coincide(patron, clave))\n```",
+      "options_es": [
+        "pedido.*.creado True\npedido.# False\n*.creado False\npedido.es.creado.v2 False",
+        "pedido.*.creado True\npedido.# True\n*.creado False\npedido.es.creado.v2 False",
+        "pedido.*.creado True\npedido.# True\n*.creado True\npedido.es.creado.v2 False",
+        "pedido.*.creado False\npedido.# True\n*.creado True\npedido.es.creado.v2 True"
+      ],
+      "options_en": [
+        "pedido.*.creado True\npedido.# False\n*.creado False\npedido.es.creado.v2 False",
+        "pedido.*.creado True\npedido.# True\n*.creado False\npedido.es.creado.v2 False",
+        "pedido.*.creado True\npedido.# True\n*.creado True\npedido.es.creado.v2 False",
+        "pedido.*.creado False\npedido.# True\n*.creado True\npedido.es.creado.v2 True"
+      ],
+      "correct_index": 1,
+      "explanation_es": "'pedido.*.creado' encaja porque '*' cubre exactamente la palabra 'es'. 'pedido.#' encaja porque '#' absorbe el resto de palabras. '*.creado' NO encaja: tiene dos palabras frente a las tres de la clave, y '*' no puede cubrir dos. 'pedido.es.creado.v2' tampoco, porque exige una cuarta palabra que la clave no tiene. La tercera opción es el error más común en enlaces reales: dar por hecho que '*' se comporta como el comodín de un shell y cubre cualquier número de palabras, cuando ese papel lo cumple '#'. Un enlace demasiado amplio hace que una cola reciba tráfico que nadie esperaba.",
+      "explanation_en": "'pedido.*.creado' matches because '*' covers exactly the word 'es'. 'pedido.#' matches because '#' absorbs the remaining words. '*.creado' does NOT match: it has two words against the key's three, and '*' cannot cover two. 'pedido.es.creado.v2' does not match either, since it demands a fourth word the key lacks. The third option is the most common mistake in real bindings: assuming '*' behaves like a shell wildcard and spans any number of words, when that is '#''s job. An over-broad binding makes a queue receive traffic nobody expected.",
+      "source": "RabbitMQ documentation - Topic exchange routing patterns",
+      "expected_time_ms": 50000,
+      "tags": ["pub-sub", "routing-keys", "rabbitmq"]
+    },
+    {
+      "id": "q050203013",
+      "skill_id": "sk050203",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En un topic pub/sub, un mensaje se elimina en cuanto el primer suscriptor lo consume, igual que ocurre en una cola punto a punto.",
+      "question_en": "In a pub/sub topic, a message is removed as soon as the first subscriber consumes it, just as in a point-to-point queue.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. En pub/sub cada suscripción recibe su propia copia y avanza a su ritmo: el mensaje solo desaparece cuando todas las suscripciones lo han confirmado, o cuando vence la retención configurada. En un log como Kafka ni siquiera eso: el mensaje permanece hasta que la política de retención lo borra, independientemente de quién lo haya leído. La confusión nace de aplicar el modelo de cola (un mensaje, un consumidor) al modelo de topic (un mensaje, N suscriptores), y lleva a diseños donde alguien añade un consumidor extra a una cola creyendo que recibirá una copia y en realidad le está robando la mitad de los mensajes al consumidor original.",
+      "explanation_en": "False. In pub/sub each subscription gets its own copy and advances at its own pace: the message disappears only once every subscription has acknowledged it, or once the configured retention expires. In a log like Kafka not even then: the message stays until the retention policy deletes it, regardless of who read it. The confusion comes from applying the queue model (one message, one consumer) to the topic model (one message, N subscribers), and it leads to designs where someone attaches an extra consumer to a queue expecting a copy while actually stealing half the messages from the original consumer.",
+      "source": "Hohpe, G. & Woolf, B. - Enterprise Integration Patterns (Publish-Subscribe Channel vs Point-to-Point Channel)",
+      "expected_time_ms": 28000,
+      "tags": ["pub-sub", "topics", "queues"]
+    },
+    {
+      "id": "q050203014",
+      "skill_id": "sk050203",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "El suscriptor que, tras estar desconectado un rato, recibe igualmente los mensajes publicados durante su ausencia porque el broker guardó su suscripción y su posición, se denomina suscriptor '_____' (un adjetivo; en inglés, 'durable').",
+      "question_en": "The subscriber that, after being offline for a while, still receives the messages published during its absence because the broker kept its subscription and its position, is called a '_____' subscriber (one adjective).",
+      "correct_answer_es": "duradero",
+      "correct_answer_en": "durable",
+      "explanation_es": "El Durable Subscriber existe porque la alternativa, una suscripción no duradera, descarta en silencio todo lo publicado mientras el consumidor estaba caído: el sistema parece funcionar tras el reinicio y el hueco solo se descubre semanas después al cuadrar datos. Que la suscripción sea duradera es distinto de que los mensajes sean persistentes: un mensaje persistente sobrevive al reinicio del broker, pero sin una suscripción duradera nadie reclamará su entrega.",
+      "explanation_en": "The Durable Subscriber exists because the alternative, a non-durable subscription, silently drops everything published while the consumer was down: the system looks healthy after the restart and the gap is only discovered weeks later while reconciling data. A durable subscription is not the same as persistent messages: a persistent message survives a broker restart, but without a durable subscription nobody will claim its delivery.",
+      "source": "Hohpe, G. & Woolf, B. - Enterprise Integration Patterns (Durable Subscriber)",
+      "expected_time_ms": 34000,
+      "tags": ["pub-sub", "durable-subscriber", "delivery"]
+    },
+    {
+      "id": "q050203015",
+      "skill_id": "sk050203",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Cuando un exchange o topic entrega una copia del mismo mensaje a todos los destinos enlazados a la vez, se dice que hace '_____-out' (una palabra en inglés; en RabbitMQ da nombre a un tipo de exchange).",
+      "question_en": "When an exchange or topic delivers a copy of the same message to every bound destination at once, it is said to '_____-out' (one word; in RabbitMQ it names an exchange type).",
+      "correct_answer_es": "fan",
+      "correct_answer_en": "fan",
+      "explanation_es": "El fan-out es la difusión uno a muchos que define pub/sub y lo que hace barato añadir un consumidor nuevo sin tocar al productor. Su contrapartida es el coste: duplicar un topic de alto volumen a diez suscripciones multiplica por diez el tráfico y la factura, y un suscriptor que se retrasa acumula su propio backlog. No debe confundirse con el reparto de carga entre consumidores de una misma cola, que es lo contrario: allí cada mensaje va a uno solo.",
+      "explanation_en": "Fan-out is the one-to-many broadcast that defines pub/sub and what makes adding a new consumer cheap without touching the producer. Its counterpart is cost: duplicating a high-volume topic to ten subscriptions multiplies traffic and the bill by ten, and a lagging subscriber accumulates its own backlog. Do not confuse it with load sharing among consumers of a single queue, which is the opposite: there each message goes to exactly one.",
+      "source": "RabbitMQ documentation - Fanout exchange; Hohpe, G. & Woolf, B. - Enterprise Integration Patterns",
+      "expected_time_ms": 26000,
+      "tags": ["pub-sub", "fan-out", "broadcast"]
+    },
+
+    {
+      "id": "q050204009",
+      "skill_id": "sk050204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Más allá de reconstruir el estado actual, ¿qué capacidad concreta aporta event sourcing que un modelo CRUD tradicional no puede ofrecer?",
+      "question_en": "Beyond rebuilding current state, what concrete capability does event sourcing provide that a traditional CRUD model cannot?",
+      "options_es": [
+        "Consultas más rápidas sobre el estado actual, al no necesitar índices",
+        "Transacciones distribuidas atómicas entre varios servicios",
+        "Menor consumo de almacenamiento, porque solo se guardan los cambios",
+        "Consultas temporales: responder cómo era el estado en cualquier momento del pasado y auditar exactamente qué lo cambió"
+      ],
+      "options_en": [
+        "Faster queries over current state, since no indexes are needed",
+        "Atomic distributed transactions across several services",
+        "Lower storage consumption, because only changes are stored",
+        "Temporal queries: answering what the state was at any past moment and auditing exactly what changed it"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El log de eventos es un registro completo e inmutable de cómo se llegó al estado actual, así que permite reproducir el pasado y auditar cada cambio; un CRUD sobrescribe y pierde esa historia salvo que se añada auditoría a mano. Las consultas sobre el estado actual son más lentas, no más rápidas, porque hay que reproducir eventos o mantener proyecciones. El almacenamiento crece, no se reduce: se guarda cada transición además de las proyecciones. Y event sourcing no resuelve la atomicidad entre servicios; eso exige sagas o el patrón outbox.",
+      "explanation_en": "The event log is a complete, immutable record of how the current state was reached, so it lets you replay the past and audit every change; CRUD overwrites and loses that history unless auditing is bolted on by hand. Queries over current state get slower, not faster, because events must be replayed or projections maintained. Storage grows rather than shrinks: every transition is kept in addition to the projections. And event sourcing does not solve cross-service atomicity; that needs sagas or the outbox pattern.",
+      "source": "Fowler, M. - Event Sourcing (martinfowler.com)",
+      "expected_time_ms": 32000,
+      "tags": ["event-sourcing", "audit", "temporal-queries"]
+    },
+    {
+      "id": "q050204010",
+      "skill_id": "sk050204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Tras dos años en producción, el equipo necesita añadir un campo obligatorio a un tipo de evento del que ya hay millones de instancias almacenadas. ¿Cuál es el enfoque correcto?",
+      "question_en": "After two years in production, the team needs to add a required field to an event type of which millions of instances are already stored. What is the correct approach?",
+      "options_es": [
+        "Reescribir los eventos antiguos en el store para que todos tengan el campo nuevo",
+        "Borrar los eventos antiguos y empezar el log desde cero con el esquema nuevo",
+        "Versionar el evento y adaptar en lectura las versiones antiguas (upcasting), o publicar un tipo de evento nuevo que conviva con el antiguo",
+        "Guardar el campo solo en la proyección de lectura y no tocar el evento"
+      ],
+      "options_en": [
+        "Rewrite the old events in the store so they all carry the new field",
+        "Delete the old events and start the log from scratch with the new schema",
+        "Version the event and adapt old versions on read (upcasting), or publish a new event type that coexists with the old one",
+        "Store the field only in the read projection and never touch the event"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El log de eventos es inmutable y de solo anexado, así que la evolución del esquema se resuelve en lectura: cada evento lleva su versión y un upcaster lo transforma al modelo actual al cargarlo, o bien se introduce un tipo nuevo y los manejadores soportan ambos. Reescribir el histórico destruye justamente la propiedad por la que se eligió event sourcing (la auditoría deja de ser fiable) y además rompería cualquier firma o hash sobre el log. Borrar el log elimina la posibilidad de reconstruir proyecciones. Guardar el dato solo en la proyección hace que se pierda al reconstruirla desde los eventos, que es la operación que más se necesita en producción.",
+      "explanation_en": "The event log is immutable and append-only, so schema evolution is handled on read: each event carries its version and an upcaster transforms it into the current model when loaded, or a new type is introduced and handlers support both. Rewriting history destroys the very property event sourcing was chosen for (auditing stops being trustworthy) and would break any signature or hash over the log. Deleting the log removes the ability to rebuild projections. Keeping the field only in the projection means losing it whenever the projection is rebuilt from events - the operation you need most in production.",
+      "source": "Fowler, M. - Event Sourcing (martinfowler.com); Newman, S. - Building Microservices 2e, cap. 5 (schema versioning)",
+      "expected_time_ms": 40000,
+      "tags": ["event-sourcing", "schema-evolution", "upcasting"]
+    },
+    {
+      "id": "q050204011",
+      "skill_id": "sk050204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Al reconstruir una proyección reproduciendo todo el log, algunos manejadores envían correos y cobran tarjetas. ¿Qué precaución exige esto?",
+      "question_en": "When rebuilding a projection by replaying the whole log, some handlers send emails and charge cards. What precaution does this require?",
+      "options_es": [
+        "Separar los efectos externos de la actualización del estado, de modo que la reproducción solo recalcule proyecciones y nunca dispare acciones hacia el exterior",
+        "Reproducir el log a menor velocidad para que los sistemas externos no se saturen",
+        "Eliminar del log los eventos que tuvieron efectos externos antes de reproducirlo",
+        "Reproducir solo desde el último snapshot, lo que garantiza que ningún efecto se repita"
+      ],
+      "options_en": [
+        "Separate external effects from state updates, so a replay only recomputes projections and never triggers outward actions",
+        "Replay the log more slowly so external systems are not overwhelmed",
+        "Remove the events that had external effects from the log before replaying",
+        "Replay only from the latest snapshot, which guarantees no effect is repeated"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Es el problema de las 'interacciones externas' que Fowler señala como el principal escollo práctico de event sourcing: reproducir el histórico debe ser una operación pura sobre el estado derivado. Por eso los efectos se aíslan tras una puerta de salida que se desactiva en modo replay, o se modelan como eventos propios emitidos una sola vez. Bajar la velocidad no evita el segundo cobro, solo lo reparte. Borrar eventos rompe la inmutabilidad y falsea la auditoría. Y reproducir desde un snapshot reduce el volumen pero sigue reejecutando los manejadores posteriores a él.",
+      "explanation_en": "This is the 'external interactions' problem Fowler flags as event sourcing's main practical obstacle: replaying history must be a pure operation over derived state. That is why effects are isolated behind a gateway disabled in replay mode, or modelled as their own events emitted exactly once. Slowing the replay does not prevent the second charge, it just spreads it out. Deleting events breaks immutability and falsifies the audit trail. And replaying from a snapshot reduces volume but still re-runs every handler after it.",
+      "source": "Fowler, M. - Event Sourcing (external interactions, martinfowler.com)",
+      "expected_time_ms": 40000,
+      "tags": ["event-sourcing", "replay", "side-effects"]
+    },
+    {
+      "id": "q050204012",
+      "skill_id": "sk050204",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Reconstrucción del estado a partir del log de eventos. ¿Qué imprime?\n```python\neventos = [\n    {\"tipo\": \"CuentaAbierta\", \"saldo\": 0},\n    {\"tipo\": \"Deposito\", \"importe\": 100},\n    {\"tipo\": \"Retiro\", \"importe\": 30},\n    {\"tipo\": \"Deposito\", \"importe\": 50},\n]\n\ndef aplicar(estado, ev):\n    if ev[\"tipo\"] == \"CuentaAbierta\":\n        return {\"saldo\": ev[\"saldo\"]}\n    if ev[\"tipo\"] == \"Deposito\":\n        return {\"saldo\": estado[\"saldo\"] + ev[\"importe\"]}\n    if ev[\"tipo\"] == \"Retiro\":\n        return {\"saldo\": estado[\"saldo\"] - ev[\"importe\"]}\n    return estado\n\nestado = {}\nfor ev in eventos:\n    estado = aplicar(estado, ev)\n\nprint(estado)\n```",
+      "question_en": "Rebuilding state from the event log. What does it print?\n```python\neventos = [\n    {\"tipo\": \"CuentaAbierta\", \"saldo\": 0},\n    {\"tipo\": \"Deposito\", \"importe\": 100},\n    {\"tipo\": \"Retiro\", \"importe\": 30},\n    {\"tipo\": \"Deposito\", \"importe\": 50},\n]\n\ndef aplicar(estado, ev):\n    if ev[\"tipo\"] == \"CuentaAbierta\":\n        return {\"saldo\": ev[\"saldo\"]}\n    if ev[\"tipo\"] == \"Deposito\":\n        return {\"saldo\": estado[\"saldo\"] + ev[\"importe\"]}\n    if ev[\"tipo\"] == \"Retiro\":\n        return {\"saldo\": estado[\"saldo\"] - ev[\"importe\"]}\n    return estado\n\nestado = {}\nfor ev in eventos:\n    estado = aplicar(estado, ev)\n\nprint(estado)\n```",
+      "options_es": [
+        "{'saldo': 180}",
+        "{'saldo': 120}",
+        "{'saldo': 50}",
+        "{'saldo': 0}"
+      ],
+      "options_en": [
+        "{'saldo': 180}",
+        "{'saldo': 120}",
+        "{'saldo': 50}",
+        "{'saldo': 0}"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El estado es el pliegue (fold) del log sobre el estado inicial: 0 + 100 - 30 + 50 = 120. Esa es toda la mecánica de event sourcing, y muestra por qué el orden de los eventos es parte del dato: aplicar el retiro después del último depósito da otro saldo si hay reglas de saldo mínimo. 180 corresponde a ignorar el retiro. 50 es el error de creer que el estado es el último evento en lugar de la acumulación de todos. 0 supondría que solo cuenta el evento de apertura.",
+      "explanation_en": "State is the fold of the log over the initial state: 0 + 100 - 30 + 50 = 120. That is the whole mechanic of event sourcing, and it shows why event order is part of the data: applying the withdrawal after the last deposit yields a different balance once minimum-balance rules exist. 180 comes from ignoring the withdrawal. 50 is the mistake of thinking state is the latest event rather than the accumulation of all of them. 0 would assume only the opening event counts.",
+      "source": "Fowler, M. - Event Sourcing (martinfowler.com); Vernon, V. - Implementing Domain-Driven Design, cap. 8",
+      "expected_time_ms": 45000,
+      "tags": ["event-sourcing", "replay", "state"]
+    },
+    {
+      "id": "q050204013",
+      "skill_id": "sk050204",
+      "type": "true_false",
+      "difficulty_tier": "expert",
+      "question_es": "Con event sourcing, atender una petición de borrado de datos personales es tan sencillo como eliminar del store los eventos que contienen esos datos.",
+      "question_en": "With event sourcing, honouring a personal-data deletion request is as simple as removing the events containing that data from the store.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso, y es una de las tensiones más serias de event sourcing en producción. El log es inmutable y de solo anexado: borrar eventos invalida las proyecciones que dependen de ellos, puede dejar el estado reconstruido inconsistente y destruye la garantía de auditoría. Las soluciones reales son otras: cifrar los datos personales con una clave por sujeto y destruir la clave (crypto-shredding), o mantener los datos personales fuera del log y referenciarlos por identificador. Quien responde 'verdadero' está aplicando intuición de CRUD, donde borrar una fila es una operación local y sin consecuencias.",
+      "explanation_en": "False, and it is one of event sourcing's most serious production tensions. The log is immutable and append-only: deleting events invalidates the projections that depend on them, can leave rebuilt state inconsistent, and destroys the audit guarantee. The real solutions are different: encrypt personal data with a per-subject key and destroy the key (crypto-shredding), or keep personal data outside the log and reference it by identifier. Answering 'true' applies CRUD intuition, where deleting a row is a local operation with no consequences.",
+      "source": "Kleppmann, M. - Designing Data-Intensive Applications, cap. 12 (immutability and privacy)",
+      "expected_time_ms": 32000,
+      "tags": ["event-sourcing", "immutability", "privacy"]
+    },
+    {
+      "id": "q050204014",
+      "skill_id": "sk050204",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En un sistema con event sourcing, si una proyección de lectura se corrompe o se necesita con otra forma, puede descartarse por completo y reconstruirse desde cero reproduciendo el log.",
+      "question_en": "In an event-sourced system, if a read projection gets corrupted or is needed in a different shape, it can be thrown away entirely and rebuilt from scratch by replaying the log.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero, y es la razón principal por la que event sourcing y CQRS encajan tan bien: la fuente de verdad es el log, y las proyecciones son datos derivados y desechables. Se puede crear una vista nueva para una pantalla que no existía, cambiar de motor de búsqueda o corregir un error de un manejador simplemente reproduciendo. El coste es real: la reconstrucción puede tardar horas con logs grandes y obliga a gestionar la ventana en que la vista está incompleta, además de exigir que la reproducción no tenga efectos externos.",
+      "explanation_en": "True, and it is the main reason event sourcing and CQRS fit so well together: the log is the source of truth and projections are derived, disposable data. You can create a new view for a screen that did not exist, switch search engines, or fix a handler bug simply by replaying. The cost is real: a rebuild can take hours on large logs and forces you to manage the window in which the view is incomplete, besides requiring the replay to be free of external effects.",
+      "source": "Fowler, M. - CQRS (martinfowler.com); Young, G. - CQRS Documents",
+      "expected_time_ms": 28000,
+      "tags": ["cqrs", "projections", "rebuild"]
+    },
+    {
+      "id": "q050204015",
+      "skill_id": "sk050204",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "La secuencia de transacciones locales, cada una publicando un evento que dispara la siguiente y con una acción compensatoria por si un paso falla, es el patrón que sustituye a las transacciones distribuidas entre servicios. Se llama '_____' (una palabra; en Richardson da nombre a un capítulo entero).",
+      "question_en": "The sequence of local transactions, each publishing an event that triggers the next and each with a compensating action in case a step fails, is the pattern that replaces distributed transactions between services. It is called a '_____' (one word; in Richardson it titles a whole chapter).",
+      "correct_answer_es": "saga",
+      "correct_answer_en": "saga",
+      "explanation_es": "La saga renuncia a la atomicidad del 2PC a cambio de disponibilidad: cada servicio confirma su transacción local y, si un paso posterior falla, se ejecutan compensaciones en orden inverso (reembolsar el cobro, liberar el stock). La consecuencia que suele pillar por sorpresa es que la saga no es aislada: existe una ventana en la que otros pueden ver estados intermedios que luego se compensan, así que hace falta modelar explícitamente estados como 'pendiente' o 'reservado'. No hay que confundirla con el patrón outbox, que resuelve la escritura dual dentro de un único servicio.",
+      "explanation_en": "A saga gives up 2PC atomicity in exchange for availability: each service commits its local transaction and, if a later step fails, compensations run in reverse order (refund the charge, release the stock). The consequence that usually surprises people is that a saga is not isolated: there is a window in which others can observe intermediate states that are later compensated, so states like 'pending' or 'reserved' must be modelled explicitly. Do not confuse it with the outbox pattern, which solves dual writes inside a single service.",
+      "source": "Richardson, C. - Microservices Patterns, cap. 4 (Managing transactions with sagas)",
+      "expected_time_ms": 36000,
+      "tags": ["cqrs", "saga", "consistency"]
+    }
+  ]
+}

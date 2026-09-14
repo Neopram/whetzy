@@ -1,0 +1,869 @@
+{
+  "questions": [
+    {
+      "id": "q020201010",
+      "skill_id": "sk020201",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nresultado = list(map(lambda a, b: a + b, [1, 2, 3], [10, 20]))\nprint(resultado)\n```",
+      "question_en": "What does the following code print?\n```python\nresult = list(map(lambda a, b: a + b, [1, 2, 3], [10, 20]))\nprint(result)\n```",
+      "options_es": [
+        "[11, 22]",
+        "[11, 22, 3]",
+        "[11, 22, None]",
+        "TypeError: map() solo acepta un iterable"
+      ],
+      "options_en": [
+        "[11, 22]",
+        "[11, 22, 3]",
+        "[11, 22, None]",
+        "TypeError: map() only accepts one iterable"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`map` acepta varios iterables y llama a la función con un elemento de cada uno; se detiene en cuanto el más corto se agota, igual que `zip`. El `3` sobrante se descarta en silencio. No rellena con `None` (eso sería `itertools.zip_longest`) ni lanza error: aceptar varios iterables es parte de la firma de `map`.",
+      "explanation_en": "`map` accepts several iterables and calls the function with one item from each; it stops as soon as the shortest one runs out, just like `zip`. The leftover `3` is silently dropped. It does not pad with `None` (that would be `itertools.zip_longest`) nor raise: taking several iterables is part of `map`'s signature.",
+      "source": "CPython docs 3.13 — Built-in Functions: map",
+      "expected_time_ms": 28000,
+      "tags": [
+        "functional",
+        "map",
+        "zip"
+      ]
+    },
+    {
+      "id": "q020201011",
+      "skill_id": "sk020201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué devuelve `list(filter(None, [0, 1, \"\", \"a\", [], [2]]))`?",
+      "question_en": "What does `list(filter(None, [0, 1, \"\", \"a\", [], [2]]))` return?",
+      "options_es": [
+        "TypeError, porque `None` no es invocable",
+        "La lista original sin cambios",
+        "`[1, 'a', [2]]`: conserva solo los elementos verdaderos (truthy)",
+        "`[0, '', []]`: conserva solo los elementos falsos"
+      ],
+      "options_en": [
+        "TypeError, because `None` is not callable",
+        "The original list unchanged",
+        "`[1, 'a', [2]]`: it keeps only the truthy items",
+        "`[0, '', []]`: it keeps only the falsy items"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`filter` trata `None` como un caso especial documentado: en lugar de invocarlo, usa la función identidad, de modo que sobreviven los elementos verdaderos. Por eso no hay TypeError, aunque sea lo primero que uno piensa al ver un `None` donde se espera una función. Confundirlo con el filtro inverso es el otro error habitual: para quedarte con los falsos necesitas `filter(lambda x: not x, ...)`.",
+      "explanation_en": "`filter` treats `None` as a documented special case: instead of calling it, it uses the identity function, so the truthy items survive. That is why there is no TypeError, even though that is the first thing you think when you see a `None` where a function belongs. Mistaking it for the inverse filter is the other common slip: to keep the falsy items you need `filter(lambda x: not x, ...)`.",
+      "source": "CPython docs 3.13 — Built-in Functions: filter",
+      "expected_time_ms": 25000,
+      "tags": [
+        "functional",
+        "filter",
+        "truthiness"
+      ]
+    },
+    {
+      "id": "q020201012",
+      "skill_id": "sk020201",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom functools import reduce\nprint(reduce(lambda a, b: a * b, [5]))\nprint(reduce(lambda a, b: a * b, [], 1))\n```",
+      "question_en": "What does the following code print?\n```python\nfrom functools import reduce\nprint(reduce(lambda a, b: a * b, [5]))\nprint(reduce(lambda a, b: a * b, [], 1))\n```",
+      "options_es": [
+        "TypeError en la primera línea",
+        "`1` y luego `1`",
+        "TypeError en la segunda línea",
+        "`5` y luego `1`"
+      ],
+      "options_en": [
+        "TypeError on the first line",
+        "`1` then `1`",
+        "TypeError on the second line",
+        "`5` then `1`"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con un solo elemento y sin inicializador, `reduce` devuelve ese elemento sin llegar a llamar nunca a la función. Con secuencia vacía pero con inicializador, devuelve el inicializador. `reduce` solo falla cuando la secuencia está vacía *y* no hay inicializador, que es el caso que no aparece aquí: por eso las opciones de TypeError son tentadoras pero se equivocan de línea.",
+      "explanation_en": "With a single item and no initializer, `reduce` returns that item without ever calling the function. With an empty sequence but an initializer, it returns the initializer. `reduce` only fails when the sequence is empty *and* there is no initializer, which is the case that never occurs here: that is why the TypeError options are tempting but point at the wrong line.",
+      "source": "CPython docs 3.13 — functools.reduce",
+      "expected_time_ms": 35000,
+      "tags": [
+        "functional",
+        "reduce",
+        "edge-case"
+      ]
+    },
+    {
+      "id": "q020201013",
+      "skill_id": "sk020201",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "`reduce(lambda a, b: a + b, [])`, sin valor inicial, lanza `TypeError`.",
+      "question_en": "`reduce(lambda a, b: a + b, [])`, with no initial value, raises `TypeError`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Lanza `TypeError: reduce() of empty iterable with no initial value`. Es tentador esperar `0` o `None` por analogía con `sum([]) == 0`, pero `sum` conoce su elemento neutro y `reduce` no puede conocer el de una función arbitraria: para `a + b` sería `0` y para `a * b` sería `1`. Por eso exige que se lo pases tú como tercer argumento.",
+      "explanation_en": "It raises `TypeError: reduce() of empty iterable with no initial value`. It is tempting to expect `0` or `None` by analogy with `sum([]) == 0`, but `sum` knows its identity element and `reduce` cannot know the identity of an arbitrary function: for `a + b` it would be `0`, for `a * b` it would be `1`. That is why it makes you pass it as the third argument.",
+      "source": "CPython docs 3.13 — functools.reduce",
+      "expected_time_ms": 24000,
+      "tags": [
+        "functional",
+        "reduce",
+        "edge-case"
+      ]
+    },
+    {
+      "id": "q020201014",
+      "skill_id": "sk020201",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Completa el nombre de la función de `itertools` que, a diferencia de `reduce`, no devuelve solo el resultado final sino un iterador con todos los resultados parciales (para `[1, 2, 3, 4]` produce `1, 3, 6, 10`):\n```python\nfrom itertools import ____\n```",
+      "question_en": "Fill in the name of the `itertools` function that, unlike `reduce`, returns not just the final result but an iterator of every running result (for `[1, 2, 3, 4]` it yields `1, 3, 6, 10`):\n```python\nfrom itertools import ____\n```",
+      "correct_answer_es": "accumulate",
+      "correct_answer_en": "accumulate",
+      "explanation_es": "`itertools.accumulate` es el hermano perezoso de `reduce`: comparte la misma idea de acumulación, pero cede cada paso intermedio en vez de colapsar la secuencia en un valor. Por defecto usa `operator.add`, y acepta un parámetro `func` para cualquier otra operación binaria.",
+      "explanation_en": "`itertools.accumulate` is the lazy sibling of `reduce`: it shares the same accumulation idea but yields every intermediate step instead of collapsing the sequence into one value. It defaults to `operator.add` and takes a `func` parameter for any other binary operation.",
+      "source": "CPython docs 3.13 — itertools.accumulate",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functional",
+        "itertools",
+        "reduce"
+      ]
+    },
+    {
+      "id": "q020201015",
+      "skill_id": "sk020201",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿En qué orden aparece la salida?\n```python\nm = map(print, [\"a\", \"b\"])\nprint(\"antes\")\nlist(m)\n```",
+      "question_en": "In what order does the output appear?\n```python\nm = map(print, [\"a\", \"b\"])\nprint(\"before\")\nlist(m)\n```",
+      "options_es": [
+        "`a`, `b`, `antes`",
+        "`antes`, `a`, `b`",
+        "solo `antes`",
+        "solo `a` y `b`"
+      ],
+      "options_en": [
+        "`a`, `b`, `before`",
+        "`before`, `a`, `b`",
+        "`before` only",
+        "`a` and `b` only"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Construir el objeto `map` no ejecuta nada: es perezoso. Por eso `antes` se imprime primero, y las llamadas a `print` solo ocurren cuando `list(m)` consume el iterador. Quien espera `a, b, antes` está pensando en el `map` de Python 2, que construía la lista de inmediato. Y quien contesta «solo antes» olvida que `list()` sí agota el iterador, aunque su resultado se descarte.",
+      "explanation_en": "Building the `map` object runs nothing: it is lazy. That is why `before` prints first, and the `print` calls only happen when `list(m)` consumes the iterator. Anyone expecting `a, b, before` is thinking of Python 2's `map`, which built the list eagerly. And answering \"`before` only\" forgets that `list()` does drain the iterator, even though its result is thrown away.",
+      "source": "CPython docs 3.13 — Built-in Functions: map",
+      "expected_time_ms": 33000,
+      "tags": [
+        "functional",
+        "map",
+        "lazy"
+      ]
+    },
+    {
+      "id": "q020201016",
+      "skill_id": "sk020201",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Por qué `reduce` dejó de ser una función incorporada en Python 3?",
+      "question_en": "Why did `reduce` stop being a built-in function in Python 3?",
+      "options_es": [
+        "Porque `reduce` es incompatible con los iteradores perezosos",
+        "Porque su implementación en C se eliminó y ahora es Python puro",
+        "PEP 3100 decidió moverla a `functools`: se la consideraba menos legible que un bucle explícito o que `sum`, y poco usada fuera de sumas y productos",
+        "Porque duplicaba exactamente el comportamiento de `itertools.accumulate`"
+      ],
+      "options_en": [
+        "Because `reduce` is incompatible with lazy iterators",
+        "Because its C implementation was dropped and it is now pure Python",
+        "PEP 3100 decided to move it to `functools`: it was seen as less readable than an explicit loop or `sum`, and rarely used beyond sums and products",
+        "Because it exactly duplicated `itertools.accumulate`"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Fue una decisión de legibilidad recogida en PEP 3100, no un problema técnico: `reduce` sigue implementada en C dentro de `functools` y funciona perfectamente con iteradores perezosos. Tampoco duplica a `accumulate`, que devuelve todos los pasos intermedios en vez del valor final. Mover algo a un módulo no lo degrada; solo deja de estar a un golpe de tecla.",
+      "explanation_en": "It was a readability decision recorded in PEP 3100, not a technical problem: `reduce` is still implemented in C inside `functools` and works fine with lazy iterators. Nor does it duplicate `accumulate`, which returns every intermediate step rather than the final value. Moving something into a module does not degrade it; it just stops being one keystroke away.",
+      "source": "PEP 3100 — Miscellaneous Python 3.0 Plans",
+      "expected_time_ms": 34000,
+      "tags": [
+        "functional",
+        "reduce",
+        "pep"
+      ]
+    },
+    {
+      "id": "q020202010",
+      "skill_id": "sk020202",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nnums = [3, 1, 2]\na = sorted(nums)\nb = nums.sort()\nprint(a, b, nums)\n```",
+      "question_en": "What does the following code print?\n```python\nnums = [3, 1, 2]\na = sorted(nums)\nb = nums.sort()\nprint(a, b, nums)\n```",
+      "options_es": [
+        "[1, 2, 3] [1, 2, 3] [3, 1, 2]",
+        "[1, 2, 3] None [1, 2, 3]",
+        "[1, 2, 3] None [3, 1, 2]",
+        "None [1, 2, 3] [1, 2, 3]"
+      ],
+      "options_en": [
+        "[1, 2, 3] [1, 2, 3] [3, 1, 2]",
+        "[1, 2, 3] None [1, 2, 3]",
+        "[1, 2, 3] None [3, 1, 2]",
+        "None [1, 2, 3] [1, 2, 3]"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`sorted` es la versión pura: no toca su entrada y devuelve una lista nueva. `list.sort` ordena en el sitio y devuelve `None` deliberadamente, para que nadie escriba `x = lista.sort()` creyendo que recibe algo. La opción con `[3, 1, 2]` al final es la trampa: olvida que `nums.sort()` sí modificó `nums`, aunque no devolviera nada.",
+      "explanation_en": "`sorted` is the pure version: it leaves its input alone and returns a new list. `list.sort` sorts in place and deliberately returns `None`, so that nobody writes `x = mylist.sort()` expecting a value. The option ending in `[3, 1, 2]` is the trap: it forgets that `nums.sort()` did modify `nums`, even though it returned nothing.",
+      "source": "CPython docs 3.13 — Built-in Functions: sorted / list.sort",
+      "expected_time_ms": 30000,
+      "tags": [
+        "immutability",
+        "pure-functions",
+        "sorted"
+      ]
+    },
+    {
+      "id": "q020202011",
+      "skill_id": "sk020202",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nt = (1, [2, 3])\nt[1].append(4)\nprint(t)\n```",
+      "question_en": "What does the following code print?\n```python\nt = (1, [2, 3])\nt[1].append(4)\nprint(t)\n```",
+      "options_es": [
+        "TypeError: 'tuple' object does not support item assignment",
+        "(1, [2, 3])",
+        "(1, [2, 3, 4])",
+        "AttributeError: 'tuple' object has no attribute 'append'"
+      ],
+      "options_en": [
+        "TypeError: 'tuple' object does not support item assignment",
+        "(1, [2, 3])",
+        "(1, [2, 3, 4])",
+        "AttributeError: 'tuple' object has no attribute 'append'"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La inmutabilidad de una tupla es superficial: fija *qué* objetos contiene, no el estado interno de esos objetos. Aquí no hay ninguna asignación a `t[1]`, solo una llamada a un método de la lista que vive dentro, así que no aparece TypeError. Tampoco AttributeError: `append` se busca en la lista, no en la tupla. Por eso una tupla con una lista dentro no es hashable.",
+      "explanation_en": "A tuple's immutability is shallow: it fixes *which* objects it holds, not the internal state of those objects. There is no assignment to `t[1]` here, only a method call on the list living inside it, so no TypeError. No AttributeError either: `append` is looked up on the list, not on the tuple. This is exactly why a tuple containing a list is not hashable.",
+      "source": "CPython docs 3.13 — Data model: immutable sequences",
+      "expected_time_ms": 32000,
+      "tags": [
+        "immutability",
+        "tuple",
+        "shallow"
+      ]
+    },
+    {
+      "id": "q020202012",
+      "skill_id": "sk020202",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Una función que solo *lee* (nunca modifica) una variable global mutable sigue siendo una función pura.",
+      "question_en": "A function that only *reads* (never modifies) a mutable global variable is still a pure function.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La pureza exige dos cosas: no producir efectos secundarios y devolver siempre el mismo resultado para los mismos argumentos (transparencia referencial). Leer un global mutable rompe la segunda: si otro código lo cambia, la misma llamada devuelve algo distinto. Es tentador razonar «no muta nada, luego es pura», pero eso solo cubre la mitad de la definición.",
+      "explanation_en": "Purity requires two things: no side effects, and always returning the same result for the same arguments (referential transparency). Reading a mutable global breaks the second: if other code changes it, the identical call returns something different. It is tempting to reason \"it mutates nothing, so it is pure\", but that covers only half the definition.",
+      "source": "Lott, \"Functional Python Programming\", 3rd ed. (Packt, 2022) — Ch. 1: Introducing Functional Programming",
+      "expected_time_ms": 26000,
+      "tags": [
+        "pure-functions",
+        "referential-transparency"
+      ]
+    },
+    {
+      "id": "q020202013",
+      "skill_id": "sk020202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Partiendo de `original = [[1, 2], [3, 4]]` haces `copia = original[:]` y luego `copia[0].append(9)`. ¿Qué le ocurre a `original`?",
+      "question_en": "Starting from `original = [[1, 2], [3, 4]]` you do `copy_ = original[:]` and then `copy_[0].append(9)`. What happens to `original`?",
+      "options_es": [
+        "No cambia: el slicing copia en profundidad",
+        "Lanza TypeError: no se puede modificar a través de una copia",
+        "Queda `[[1, 2], [3, 4], 9]`",
+        "Queda `[[1, 2, 9], [3, 4]]`: el slicing hace una copia superficial y las sublistas se comparten"
+      ],
+      "options_en": [
+        "It does not change: slicing makes a deep copy",
+        "It raises TypeError: you cannot modify through a copy",
+        "It becomes `[[1, 2], [3, 4], 9]`",
+        "It becomes `[[1, 2, 9], [3, 4]]`: slicing makes a shallow copy and the sublists are shared"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El slicing duplica el contenedor exterior, pero los elementos siguen siendo *los mismos objetos*: `copia[0] is original[0]`. Creer que copiar es total es la intuición más extendida, y la que produce bugs que aparecen semanas después. Para independencia real hace falta `copy.deepcopy`, o directamente estructuras inmutables que no puedan compartir estado mutable.",
+      "explanation_en": "Slicing duplicates the outer container, but the elements are still *the same objects*: `copy_[0] is original[0]`. Believing that copying is total is the most widespread intuition, and the one that produces bugs surfacing weeks later. Real independence needs `copy.deepcopy`, or simply immutable structures that cannot share mutable state.",
+      "source": "CPython docs 3.13 — copy: Shallow and deep copy operations",
+      "expected_time_ms": 30000,
+      "tags": [
+        "immutability",
+        "shallow-copy",
+        "aliasing"
+      ]
+    },
+    {
+      "id": "q020202014",
+      "skill_id": "sk020202",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Completa el argumento de `@dataclass` que hace inmutables a las instancias, de modo que asignar a un campo lance `FrozenInstanceError`:\n```python\nfrom dataclasses import dataclass\n\n@dataclass(____)\nclass Punto:\n    x: int\n    y: int\n```",
+      "question_en": "Fill in the `@dataclass` argument that makes instances immutable, so assigning to a field raises `FrozenInstanceError`:\n```python\nfrom dataclasses import dataclass\n\n@dataclass(____)\nclass Point:\n    x: int\n    y: int\n```",
+      "correct_answer_es": "frozen=True",
+      "correct_answer_en": "frozen=True",
+      "explanation_es": "`frozen=True` genera `__setattr__` y `__delattr__` que rechazan cualquier cambio, y además hace la clase hashable si `eq` sigue en su valor por defecto. Es la manera idiomática de escribir un *value object* en Python moderno, sin renunciar a los campos con nombre que una tupla no da.",
+      "explanation_en": "`frozen=True` generates `__setattr__` and `__delattr__` that reject any change, and it also makes the class hashable when `eq` is left at its default. It is the idiomatic way to write a value object in modern Python, without giving up the named fields a plain tuple cannot offer.",
+      "source": "CPython docs 3.13 — dataclasses.dataclass (frozen parameter)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "immutability",
+        "dataclasses",
+        "value-object"
+      ]
+    },
+    {
+      "id": "q020202015",
+      "skill_id": "sk020202",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef extender(items):\n    items = items + [4]\n    return items\n\norig = [1, 2, 3]\nextender(orig)\nprint(orig)\n```",
+      "question_en": "What does the following code print?\n```python\ndef extend(items):\n    items = items + [4]\n    return items\n\norig = [1, 2, 3]\nextend(orig)\nprint(orig)\n```",
+      "options_es": [
+        "[1, 2, 3, 4]",
+        "[4]",
+        "None",
+        "[1, 2, 3]"
+      ],
+      "options_en": [
+        "[1, 2, 3, 4]",
+        "[4]",
+        "None",
+        "[1, 2, 3]"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`items = items + [4]` construye una lista nueva y reenlaza el *nombre local* `items`; el objeto del llamante no se toca, así que la función es pura respecto a su argumento. Quien contesta `[1, 2, 3, 4]` está pensando en `items += [4]` o `items.append(4)`, que sí mutan la lista compartida. La diferencia entre reenlazar un nombre y mutar un objeto es el corazón de la programación funcional en Python.",
+      "explanation_en": "`items = items + [4]` builds a new list and rebinds the *local name* `items`; the caller's object is untouched, so the function is pure with respect to its argument. Answering `[1, 2, 3, 4]` means thinking of `items += [4]` or `items.append(4)`, which do mutate the shared list. The gap between rebinding a name and mutating an object is the heart of functional programming in Python.",
+      "source": "CPython docs 3.13 — Programming FAQ: How do I write a function with output parameters (call by reference)?",
+      "expected_time_ms": 36000,
+      "tags": [
+        "pure-functions",
+        "rebinding",
+        "mutation"
+      ]
+    },
+    {
+      "id": "q020202016",
+      "skill_id": "sk020202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la ventaja práctica más directa de que una función sea pura?",
+      "question_en": "What is the most direct practical benefit of a function being pure?",
+      "options_es": [
+        "Se ejecuta siempre más rápido que una equivalente impura",
+        "Python la compila automáticamente a código nativo",
+        "Se puede testear solo con entradas y salidas, sin preparar ni limpiar estado, y su resultado es cacheable",
+        "Permite saltarse el GIL y ejecutarse en paralelo de verdad"
+      ],
+      "options_en": [
+        "It always runs faster than an impure equivalent",
+        "Python automatically compiles it to native code",
+        "It can be tested with inputs and outputs alone, with no setup or teardown, and its result is cacheable",
+        "It bypasses the GIL and runs in true parallel"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La testabilidad y la cacheabilidad se siguen directamente de la definición: mismo argumento, mismo resultado, sin estado que montar ni restaurar. La velocidad no está garantizada (crear objetos nuevos suele ser más caro que mutar uno existente), Python no compila nada a nativo por ser pura, y el GIL sigue ahí: lo que ganas en concurrencia es que no hay estado compartido que proteger, no un permiso para saltártelo.",
+      "explanation_en": "Testability and cacheability follow straight from the definition: same argument, same result, no state to set up or tear down. Speed is not guaranteed (allocating new objects is usually costlier than mutating an existing one), Python compiles nothing to native code just for being pure, and the GIL is still there: what you gain in concurrency is that there is no shared state to protect, not a licence to skip it.",
+      "source": "Lott, \"Functional Python Programming\", 3rd ed. (Packt, 2022) — Ch. 1: Introducing Functional Programming",
+      "expected_time_ms": 24000,
+      "tags": [
+        "pure-functions",
+        "testing",
+        "caching"
+      ]
+    },
+    {
+      "id": "q020202017",
+      "skill_id": "sk020202",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Sobre una lista, `x += y` y `x = x + y` producen exactamente el mismo efecto.",
+      "question_en": "On a list, `x += y` and `x = x + y` have exactly the same effect.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`x += y` invoca `list.__iadd__`, que extiende la lista *en el sitio*: cualquier otro nombre que apunte a ese mismo objeto ve el cambio. `x = x + y` invoca `__add__`, crea una lista nueva y reenlaza solo `x`. Imprimir `x` da lo mismo en los dos casos, y por eso la confusión es tan común, pero el efecto sobre el resto del programa es el opuesto.",
+      "explanation_en": "`x += y` calls `list.__iadd__`, which extends the list *in place*: any other name bound to that same object sees the change. `x = x + y` calls `__add__`, builds a new list and rebinds only `x`. Printing `x` looks identical in both cases, which is why the confusion is so common, but the effect on the rest of the program is the opposite.",
+      "source": "CPython docs 3.13 — Data model: emulating numeric types (__iadd__)",
+      "expected_time_ms": 27000,
+      "tags": [
+        "immutability",
+        "mutation",
+        "operators"
+      ]
+    },
+    {
+      "id": "q020203010",
+      "skill_id": "sk020203",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfs = [lambda: i for i in range(3)]\nprint([f() for f in fs])\n```",
+      "question_en": "What does the following code print?\n```python\nfs = [lambda: i for i in range(3)]\nprint([f() for f in fs])\n```",
+      "options_es": [
+        "[0, 1, 2]",
+        "[2, 2, 2]",
+        "[3, 3, 3]",
+        "NameError: name 'i' is not defined"
+      ],
+      "options_en": [
+        "[0, 1, 2]",
+        "[2, 2, 2]",
+        "[3, 3, 3]",
+        "NameError: name 'i' is not defined"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Las lambdas cierran sobre la *variable* `i`, no sobre su valor en el momento de crearse: esto es el late binding. Cuando por fin se llaman, la comprensión ya terminó e `i` conserva su último valor, `2` (no `3`: `range(3)` se agota después de ceder `2`). `[0, 1, 2]` es lo que espera casi todo el mundo. Y no hay NameError porque, aunque la comprensión tiene su propio ámbito y `i` no existe fuera, las lambdas siguen sujetando esa celda.",
+      "explanation_en": "The lambdas close over the *variable* `i`, not over its value at creation time: that is late binding. By the time they are called the comprehension has finished and `i` holds its last value, `2` (not `3`: `range(3)` is exhausted after yielding `2`). `[0, 1, 2]` is what nearly everyone expects. And there is no NameError because, although the comprehension has its own scope and `i` does not exist outside it, the lambdas still hold that cell alive.",
+      "source": "CPython docs 3.13 — Programming FAQ: Why do lambdas defined in a loop with different values all return the same result?",
+      "expected_time_ms": 40000,
+      "tags": [
+        "higher-order",
+        "closures",
+        "late-binding"
+      ]
+    },
+    {
+      "id": "q020203011",
+      "skill_id": "sk020203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la forma idiomática de que cada lambda de `[lambda: i for i in range(3)]` recuerde su propio valor de `i`?",
+      "question_en": "What is the idiomatic way to make each lambda in `[lambda: i for i in range(3)]` remember its own value of `i`?",
+      "options_es": [
+        "Declarar `global i` dentro de la lambda",
+        "Sustituir la comprensión por un bucle `for` explícito",
+        "Envolver cada lambda en `copy.deepcopy`",
+        "Darle un parámetro con valor por defecto: `[lambda i=i: i for i in range(3)]`"
+      ],
+      "options_en": [
+        "Declare `global i` inside the lambda",
+        "Replace the comprehension with an explicit `for` loop",
+        "Wrap each lambda in `copy.deepcopy`",
+        "Give it a default-valued parameter: `[lambda i=i: i for i in range(3)]`"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El valor por defecto se evalúa una sola vez, al crear la función, y queda congelado dentro de ella; `functools.partial(lambda i: i, i)` consigue lo mismo de forma más explícita. Pasar a un bucle `for` no arregla nada: el problema es el cierre sobre una variable, no la sintaxis de la comprensión. `global` empeora el acoplamiento y `deepcopy` copiaría el objeto función, no la celda que comparten.",
+      "explanation_en": "A default value is evaluated once, when the function is created, and frozen inside it; `functools.partial(lambda i: i, i)` achieves the same more explicitly. Switching to a `for` loop fixes nothing: the problem is closing over a variable, not the comprehension syntax. `global` only worsens the coupling, and `deepcopy` would copy the function object, not the cell they share.",
+      "source": "CPython docs 3.13 — Programming FAQ: Why do lambdas defined in a loop with different values all return the same result?",
+      "expected_time_ms": 34000,
+      "tags": [
+        "higher-order",
+        "closures",
+        "late-binding"
+      ]
+    },
+    {
+      "id": "q020203012",
+      "skill_id": "sk020203",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndatos = [(\"a\", 2), (\"b\", 1), (\"c\", 2)]\nprint(sorted(datos, key=lambda t: t[1]))\n```",
+      "question_en": "What does the following code print?\n```python\ndata = [(\"a\", 2), (\"b\", 1), (\"c\", 2)]\nprint(sorted(data, key=lambda t: t[1]))\n```",
+      "options_es": [
+        "[('b', 1), ('a', 2), ('c', 2)]",
+        "[('b', 1), ('c', 2), ('a', 2)]",
+        "[('a', 2), ('c', 2), ('b', 1)]",
+        "[('a', 2), ('b', 1), ('c', 2)]"
+      ],
+      "options_en": [
+        "[('b', 1), ('a', 2), ('c', 2)]",
+        "[('b', 1), ('c', 2), ('a', 2)]",
+        "[('a', 2), ('c', 2), ('b', 1)]",
+        "[('a', 2), ('b', 1), ('c', 2)]"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`sorted` es estable: los elementos con la misma clave conservan el orden que traían, así que `('a', 2)` sigue apareciendo antes que `('c', 2)`. La segunda opción supone que un empate se rompe comparando el resto de la tupla, cosa que no ocurre porque `key` reduce cada elemento a `t[1]` y el ordenamiento solo ve eso. La última es simplemente la lista sin ordenar.",
+      "explanation_en": "`sorted` is stable: items with equal keys keep the order they came in, so `('a', 2)` still appears before `('c', 2)`. The second option assumes a tie is broken by comparing the rest of the tuple, which does not happen because `key` reduces each item to `t[1]` and the sort sees nothing else. The last one is simply the unsorted list.",
+      "source": "CPython docs 3.13 — Sorting Techniques HOWTO (sort stability)",
+      "expected_time_ms": 33000,
+      "tags": [
+        "higher-order",
+        "sorted",
+        "stability"
+      ]
+    },
+    {
+      "id": "q020203013",
+      "skill_id": "sk020203",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef comprobar(x):\n    print(\"comprobar\", x)\n    return x > 1\n\nprint(any(comprobar(x) for x in [0, 2, 3]))\n```",
+      "question_en": "What does the following code print?\n```python\ndef check(x):\n    print(\"check\", x)\n    return x > 1\n\nprint(any(check(x) for x in [0, 2, 3]))\n```",
+      "options_es": [
+        "`comprobar 0`, `comprobar 2`, `comprobar 3`, `True`",
+        "`True`",
+        "`comprobar 0`, `comprobar 2`, `comprobar 3`, `False`",
+        "`comprobar 0`, `comprobar 2`, `True`"
+      ],
+      "options_en": [
+        "`check 0`, `check 2`, `check 3`, `True`",
+        "`True`",
+        "`check 0`, `check 2`, `check 3`, `False`",
+        "`check 0`, `check 2`, `True`"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`any` consume el iterable hasta el primer valor verdadero y se detiene ahí: como el argumento es una expresión generadora, `comprobar(3)` nunca llega a ejecutarse. Si en su lugar pasaras una comprensión de lista `[comprobar(x) for x in ...]`, las tres llamadas ocurrirían *antes* de que `any` viera nada, y saldría la primera opción. Esa diferencia entre corchetes y paréntesis es exactamente lo que se pierde de vista.",
+      "explanation_en": "`any` consumes the iterable up to the first truthy value and stops there: because the argument is a generator expression, `check(3)` never runs at all. If you passed a list comprehension `[check(x) for x in ...]` instead, all three calls would happen *before* `any` saw anything, giving the first option. That difference between brackets and parentheses is exactly what gets overlooked.",
+      "source": "CPython docs 3.13 — Built-in Functions: any",
+      "expected_time_ms": 31000,
+      "tags": [
+        "higher-order",
+        "any",
+        "short-circuit"
+      ]
+    },
+    {
+      "id": "q020203014",
+      "skill_id": "sk020203",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`all([])` devuelve `False`, porque una lista vacía no contiene ningún elemento verdadero.",
+      "question_en": "`all([])` returns `False`, because an empty list contains no truthy item.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`all([])` devuelve `True`. `all` es una conjunción: pregunta si *ningún* elemento es falso, y sin elementos no hay contraejemplo posible (verdad vacua). Simétricamente `any([])` sí es `False`, porque exige encontrar al menos un verdadero. Esta convención es la que hace que `all(a) and all(b)` coincida siempre con `all(a + b)`.",
+      "explanation_en": "`all([])` returns `True`. `all` is a conjunction: it asks whether *no* item is falsy, and with no items there is no possible counterexample (vacuous truth). Symmetrically `any([])` is `False`, because it demands finding at least one truthy item. This convention is what makes `all(a) and all(b)` always agree with `all(a + b)`.",
+      "source": "CPython docs 3.13 — Built-in Functions: all",
+      "expected_time_ms": 25000,
+      "tags": [
+        "higher-order",
+        "all",
+        "edge-case"
+      ]
+    },
+    {
+      "id": "q020203015",
+      "skill_id": "sk020203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Para ordenar una lista de tuplas por su segundo campo, ¿qué aporta `key=operator.itemgetter(1)` frente a `key=lambda t: t[1]`?",
+      "question_en": "To sort a list of tuples by their second field, what does `key=operator.itemgetter(1)` offer over `key=lambda t: t[1]`?",
+      "options_es": [
+        "Permite ordenar por varios campos a la vez (`itemgetter(1, 0)`) y evita una llamada a función Python por elemento",
+        "Es la única forma de ordenar por un campo que no sea el primero",
+        "Hace que `sorted` sea estable; con una lambda no lo es",
+        "Devuelve un generador perezoso en lugar de una lista"
+      ],
+      "options_en": [
+        "It can sort by several fields at once (`itemgetter(1, 0)`) and avoids one Python-level call per item",
+        "It is the only way to sort by a field other than the first",
+        "It makes `sorted` stable; with a lambda it is not",
+        "It returns a lazy generator instead of a list"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`itemgetter` está implementado en C y devuelve una tupla cuando le das varios índices, que es justo lo que `sorted` necesita para un criterio compuesto. Las otras opciones atribuyen a la `key` cosas que no dependen de ella: la estabilidad es una propiedad del algoritmo de ordenación, no de la función clave, y ni `itemgetter` ni la lambda cambian el tipo que devuelve `sorted`.",
+      "explanation_en": "`itemgetter` is implemented in C and returns a tuple when given several indices, which is exactly what `sorted` needs for a composite criterion. The other options credit the `key` with things that do not depend on it: stability is a property of the sorting algorithm, not of the key function, and neither `itemgetter` nor the lambda changes what `sorted` returns.",
+      "source": "CPython docs 3.13 — operator.itemgetter / Sorting Techniques HOWTO",
+      "expected_time_ms": 30000,
+      "tags": [
+        "higher-order",
+        "operator",
+        "sorted"
+      ]
+    },
+    {
+      "id": "q020203016",
+      "skill_id": "sk020203",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Completa el nombre de la función incorporada que indica si un objeto puede invocarse como una función (devuelve `True` para funciones, lambdas y clases; `False` para un entero):\n```python\nprint(____(len), ____(42))  # True False\n```",
+      "question_en": "Fill in the name of the built-in that reports whether an object can be called like a function (`True` for functions, lambdas and classes; `False` for an integer):\n```python\nprint(____(len), ____(42))  # True False\n```",
+      "correct_answer_es": "callable",
+      "correct_answer_en": "callable",
+      "explanation_es": "`callable(obj)` comprueba si el tipo del objeto define `__call__`. Es la herramienta habitual para validar un argumento que se espera invocable en una función de orden superior, y recuerda que «ser función» no es un tipo sino un protocolo: cualquier instancia con `__call__` lo cumple.",
+      "explanation_en": "`callable(obj)` checks whether the object's type defines `__call__`. It is the usual way to validate an argument expected to be callable in a higher-order function, and a reminder that \"being a function\" is a protocol rather than a type: any instance with `__call__` qualifies.",
+      "source": "CPython docs 3.13 — Built-in Functions: callable",
+      "expected_time_ms": 24000,
+      "tags": [
+        "higher-order",
+        "first-class",
+        "callable"
+      ]
+    },
+    {
+      "id": "q020203017",
+      "skill_id": "sk020203",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef componer(f, g):\n    return lambda x: f(g(x))\n\nh = componer(len, str.strip)\nprint(h(\"  abc  \"))\n```",
+      "question_en": "What does the following code print?\n```python\ndef compose(f, g):\n    return lambda x: f(g(x))\n\nh = compose(len, str.strip)\nprint(h(\"  abc  \"))\n```",
+      "options_es": [
+        "7",
+        "La función `h`, porque falta llamarla",
+        "3",
+        "TypeError: `str.strip` no puede usarse como función suelta"
+      ],
+      "options_en": [
+        "7",
+        "The function `h`, because it was never called",
+        "3",
+        "TypeError: `str.strip` cannot be used as a standalone function"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`componer` devuelve una función nueva que aplica primero `g` (`strip` → `\"abc\"`) y luego `f` (`len` → `3`). El `7` es la longitud de la cadena *sin* recortar, el error de quien invierte el orden de composición. Y `str.strip` sí es un objeto de primera clase perfectamente válido: al llamarlo con la cadena, esta ocupa el lugar de `self`.",
+      "explanation_en": "`compose` returns a new function that applies `g` first (`strip` → `\"abc\"`) and then `f` (`len` → `3`). The `7` is the length of the *un*stripped string, the answer you get by reversing the composition order. And `str.strip` is a perfectly valid first-class object: calling it with the string puts that string in the `self` slot.",
+      "source": "CPython docs 3.13 — Data model: instance methods / Built-in Functions",
+      "expected_time_ms": 30000,
+      "tags": [
+        "higher-order",
+        "composition",
+        "first-class"
+      ]
+    },
+    {
+      "id": "q020204010",
+      "skill_id": "sk020204",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom functools import partial\n\ndef potencia(base, exp):\n    return base ** exp\n\ncuadrado = partial(potencia, 2)\nprint(cuadrado(3))\n```",
+      "question_en": "What does the following code print?\n```python\nfrom functools import partial\n\ndef power(base, exp):\n    return base ** exp\n\nsquare = partial(power, 2)\nprint(square(3))\n```",
+      "options_es": [
+        "9",
+        "8",
+        "6",
+        "TypeError: se dieron dos valores para el argumento 'base'"
+      ],
+      "options_en": [
+        "9",
+        "8",
+        "6",
+        "TypeError: got multiple values for argument 'base'"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`partial` fija los argumentos posicionales *por la izquierda*, así que el `2` ocupa `base` y el `3` de la llamada ocupa `exp`: `2 ** 3 = 8`. Quien responde `9` se ha fiado del nombre `cuadrado`, que aquí miente sobre lo que hace la función. No hay TypeError porque ningún argumento se recibe dos veces: solo se completan los que faltaban.",
+      "explanation_en": "`partial` freezes positional arguments *from the left*, so the `2` fills `base` and the call's `3` fills `exp`: `2 ** 3 = 8`. Answering `9` means trusting the name `square`, which here lies about what the function does. There is no TypeError because no argument is supplied twice: the call only fills in what was missing.",
+      "source": "CPython docs 3.13 — functools.partial",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functools",
+        "partial",
+        "arguments"
+      ]
+    },
+    {
+      "id": "q020204011",
+      "skill_id": "sk020204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Dada `def potencia(base, exp)`, ¿cómo se construye con `functools.partial` una función que reciba `base` y devuelva `base ** 2`?",
+      "question_en": "Given `def power(base, exp)`, how do you build a function with `functools.partial` that takes `base` and returns `base ** 2`?",
+      "options_es": [
+        "`partial(potencia, exp=2)`",
+        "`partial(potencia, 2)`",
+        "`partial(potencia, base=2)`",
+        "`partial(2, potencia)`"
+      ],
+      "options_en": [
+        "`partial(power, exp=2)`",
+        "`partial(power, 2)`",
+        "`partial(power, base=2)`",
+        "`partial(2, power)`"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con palabra clave puedes fijar cualquier parámetro, no solo los de la izquierda. `partial(potencia, 2)` fijaría `base` y daría `2 ** base`. `partial(potencia, base=2)` fija el parámetro equivocado y además inutiliza la llamada posicional: `f(3)` intentaría dar `base` dos veces y lanzaría TypeError. La última opción invierte los papeles: el primer argumento de `partial` debe ser el invocable.",
+      "explanation_en": "A keyword lets you pin any parameter, not just the leftmost ones. `partial(power, 2)` would pin `base` and give you `2 ** base`. `partial(power, base=2)` pins the wrong parameter and also breaks positional calling: `f(3)` would try to supply `base` twice and raise TypeError. The last option swaps the roles: `partial`'s first argument must be the callable.",
+      "source": "CPython docs 3.13 — functools.partial",
+      "expected_time_ms": 30000,
+      "tags": [
+        "functools",
+        "partial",
+        "keyword-arguments"
+      ]
+    },
+    {
+      "id": "q020204012",
+      "skill_id": "sk020204",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=2)\ndef f(n):\n    return n\n\nf(1); f(2); f(3); f(1)\nprint(f.cache_info().hits, f.cache_info().misses)\n```",
+      "question_en": "What does the following code print?\n```python\nfrom functools import lru_cache\n\n@lru_cache(maxsize=2)\ndef f(n):\n    return n\n\nf(1); f(2); f(3); f(1)\nprint(f.cache_info().hits, f.cache_info().misses)\n```",
+      "options_es": [
+        "1 3",
+        "1 4",
+        "2 2",
+        "0 4"
+      ],
+      "options_en": [
+        "1 3",
+        "1 4",
+        "2 2",
+        "0 4"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Con `maxsize=2` la caché solo retiene dos entradas. Al llegar `f(3)` se desaloja la usada menos recientemente, que es `f(1)`; por eso la segunda llamada a `f(1)` tampoco encuentra nada. Son cuatro fallos y ningún acierto. `1 3` es la respuesta de quien ignora el desalojo y asume una caché ilimitada, que es precisamente lo que el sufijo *LRU* del nombre está advirtiendo.",
+      "explanation_en": "With `maxsize=2` the cache holds only two entries. When `f(3)` arrives, the least recently used entry, `f(1)`, is evicted; that is why the second `f(1)` call finds nothing either. Four misses, zero hits. `1 3` is the answer you get by ignoring eviction and assuming an unbounded cache, which is exactly what the *LRU* in the name is warning about.",
+      "source": "CPython docs 3.13 — functools.lru_cache (cache_info)",
+      "expected_time_ms": 42000,
+      "tags": [
+        "functools",
+        "lru_cache",
+        "eviction"
+      ]
+    },
+    {
+      "id": "q020204013",
+      "skill_id": "sk020204",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Desde Python 3.8, `@lru_cache` puede aplicarse directamente sobre la función, sin paréntesis, y equivale a `@lru_cache(maxsize=128)`.",
+      "question_en": "Since Python 3.8, `@lru_cache` can be applied straight to the function, without parentheses, and is equivalent to `@lru_cache(maxsize=128)`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Python 3.8 añadió la forma de *user function*: si el primer argumento es invocable, `lru_cache` lo trata como la función a decorar y usa el `maxsize` por defecto de 128. Antes de 3.8 escribir `@lru_cache` sin paréntesis pasaba la función como `maxsize` y producía un envoltorio roto, de ahí que tanto código antiguo lleve `@lru_cache()` con paréntesis vacíos.",
+      "explanation_en": "Python 3.8 added the user-function form: if the first argument is callable, `lru_cache` treats it as the function to decorate and uses the default `maxsize` of 128. Before 3.8, writing `@lru_cache` without parentheses passed the function in as `maxsize` and produced a broken wrapper, which is why so much older code carries `@lru_cache()` with empty parentheses.",
+      "source": "CPython docs 3.13 — functools.lru_cache (Changed in version 3.8)",
+      "expected_time_ms": 26000,
+      "tags": [
+        "functools",
+        "lru_cache",
+        "versions"
+      ]
+    },
+    {
+      "id": "q020204014",
+      "skill_id": "sk020204",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Completa el decorador de `functools` que copia `__name__`, `__doc__` y `__wrapped__` de la función original al envoltorio, para que el decorador no borre la identidad de lo que envuelve:\n```python\nimport functools\n\ndef log(fn):\n    @functools.____(fn)\n    def wrapper(*args, **kwargs):\n        return fn(*args, **kwargs)\n    return wrapper\n```",
+      "question_en": "Fill in the `functools` decorator that copies `__name__`, `__doc__` and `__wrapped__` from the original function onto the wrapper, so the decorator does not erase the identity of what it wraps:\n```python\nimport functools\n\ndef log(fn):\n    @functools.____(fn)\n    def wrapper(*args, **kwargs):\n        return fn(*args, **kwargs)\n    return wrapper\n```",
+      "correct_answer_es": "wraps",
+      "correct_answer_en": "wraps",
+      "explanation_es": "`functools.wraps` es azúcar sobre `functools.update_wrapper`. Sin él, la función decorada pasa a llamarse `wrapper` en los trazados de error, `help()` muestra la documentación equivocada y herramientas como `inspect.signature` o `pickle` dejan de encontrar el original, que es justo lo que `__wrapped__` permite recuperar.",
+      "explanation_en": "`functools.wraps` is sugar over `functools.update_wrapper`. Without it the decorated function is called `wrapper` in tracebacks, `help()` shows the wrong docstring, and tools such as `inspect.signature` or `pickle` can no longer find the original, which is exactly what `__wrapped__` lets them recover.",
+      "source": "CPython docs 3.13 — functools.wraps / functools.update_wrapper",
+      "expected_time_ms": 28000,
+      "tags": [
+        "functools",
+        "wraps",
+        "decorators"
+      ]
+    },
+    {
+      "id": "q020204015",
+      "skill_id": "sk020204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué permite `@functools.singledispatch`?",
+      "question_en": "What does `@functools.singledispatch` let you do?",
+      "options_es": [
+        "Cachear el resultado de la función según el tipo de sus argumentos",
+        "Convertir una función suelta en método de instancia de una clase",
+        "Escribir una función genérica cuya implementación se elige según el tipo del primer argumento, registrando variantes con `@fn.register`",
+        "Despachar según los tipos de todos los argumentos, como la sobrecarga de C++"
+      ],
+      "options_en": [
+        "Cache the function's result according to the types of its arguments",
+        "Turn a standalone function into an instance method of a class",
+        "Write a generic function whose implementation is chosen by the type of the first argument, registering variants with `@fn.register`",
+        "Dispatch on the types of all arguments, like C++ overloading"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Es despacho *simple*: solo el primer argumento decide qué implementación se ejecuta, y de ahí el «single» del nombre. El despacho múltiple al estilo C++ es justamente lo que no hace, y es la confusión más frecuente al leer el nombre por encima. Para métodos de instancia existe `singledispatchmethod`, añadido en 3.8; y no tiene nada que ver con cachear.",
+      "explanation_en": "It is *single* dispatch: only the first argument decides which implementation runs, hence the \"single\" in the name. C++-style multiple dispatch is precisely what it does not do, and that is the most frequent confusion from skimming the name. For instance methods there is `singledispatchmethod`, added in 3.8; and none of this has anything to do with caching.",
+      "source": "PEP 443 — Single-dispatch generic functions",
+      "expected_time_ms": 32000,
+      "tags": [
+        "functools",
+        "singledispatch",
+        "generic-functions"
+      ]
+    },
+    {
+      "id": "q020204016",
+      "skill_id": "sk020204",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom functools import partial\n\ndesc = partial(sorted, reverse=True)\nprint(desc([1, 3, 2]))\nprint(desc([1, 3, 2], reverse=False))\n```",
+      "question_en": "What does the following code print?\n```python\nfrom functools import partial\n\ndesc = partial(sorted, reverse=True)\nprint(desc([1, 3, 2]))\nprint(desc([1, 3, 2], reverse=False))\n```",
+      "options_es": [
+        "`[3, 2, 1]` y luego `[1, 2, 3]`",
+        "`[3, 2, 1]` y luego `[3, 2, 1]`",
+        "`[3, 2, 1]` y luego `TypeError: se dieron dos valores para 'reverse'`",
+        "`[1, 2, 3]` y luego `[1, 2, 3]`"
+      ],
+      "options_en": [
+        "`[3, 2, 1]` then `[1, 2, 3]`",
+        "`[3, 2, 1]` then `[3, 2, 1]`",
+        "`[3, 2, 1]` then `TypeError: got multiple values for 'reverse'`",
+        "`[1, 2, 3]` then `[1, 2, 3]`"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las palabras clave guardadas en un `partial` funcionan como valores por defecto: la llamada puede sobrescribirlas sin más. Solo los argumentos *posicionales* fijados quedan inamovibles. La opción del TypeError es el error clásico de esperar aquí el mismo conflicto que sí ocurre cuando un posicional fijado choca con otro posicional de la llamada.",
+      "explanation_en": "Keywords stored in a `partial` act as defaults: the call can simply override them. Only the *positional* arguments you freeze are immovable. The TypeError option is the classic slip of expecting the same clash that does happen when a frozen positional collides with another positional at call time.",
+      "source": "CPython docs 3.13 — functools.partial",
+      "expected_time_ms": 38000,
+      "tags": [
+        "functools",
+        "partial",
+        "keyword-arguments"
+      ]
+    },
+    {
+      "id": "q020204017",
+      "skill_id": "sk020204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es el principal riesgo de poner `@lru_cache` sobre un método de instancia?",
+      "question_en": "What is the main risk of putting `@lru_cache` on an instance method?",
+      "options_es": [
+        "La caché es independiente para cada instancia, así que nunca llega a acertar",
+        "`self` forma parte de la clave, así que la caché mantiene vivas las instancias y filtra memoria",
+        "Los métodos no pueden decorarse así: lanza TypeError al definir la clase",
+        "La caché ignora `self` y puede devolver el resultado calculado para otra instancia"
+      ],
+      "options_en": [
+        "The cache is separate per instance, so it never actually hits",
+        "`self` is part of the key, so the cache keeps instances alive and leaks memory",
+        "Methods cannot be decorated this way: it raises TypeError at class definition",
+        "The cache ignores `self` and may return the result computed for another instance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La caché vive en el objeto función, compartida por todas las instancias, y guarda `self` como parte de la clave junto con el resto de argumentos. Mientras la clase exista, ninguna instancia cacheada puede recolectarse. No ignora `self` (esa sería la opción de resultados cruzados, que sería un bug mucho más ruidoso y fácil de detectar) ni falla al definir la clase. Las alternativas son `functools.cached_property` o una caché por instancia.",
+      "explanation_en": "The cache lives on the function object, shared by every instance, and stores `self` as part of the key alongside the other arguments. As long as the class exists, no cached instance can be collected. It does not ignore `self` (that would be the cross-instance option, a far noisier and easier bug to catch) and it does not fail at class definition. The alternatives are `functools.cached_property` or a per-instance cache.",
+      "source": "CPython docs 3.13 — functools.lru_cache (note: the cache keeps references to arguments and return values)",
+      "expected_time_ms": 34000,
+      "tags": [
+        "functools",
+        "lru_cache",
+        "memory"
+      ]
+    }
+  ]
+}

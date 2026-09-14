@@ -1,0 +1,555 @@
+{
+  "questions": [
+    {
+      "id": "q020601010",
+      "skill_id": "sk020601",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Rango:\n    def __init__(self, n): self.n = n\n    def __iter__(self): return iter(range(self.n))\n\nr = Rango(3)\nprint(list(r), list(r))\n```",
+      "question_en": "What does the following code print?\n```python\nclass Rango:\n    def __init__(self, n): self.n = n\n    def __iter__(self): return iter(range(self.n))\n\nr = Rango(3)\nprint(list(r), list(r))\n```",
+      "options_es": [
+        "[0, 1, 2] []",
+        "[1, 2, 3] [1, 2, 3]",
+        "[0, 1, 2] [0, 1, 2]",
+        "TypeError: 'Rango' object is not an iterator"
+      ],
+      "options_en": [
+        "[0, 1, 2] []",
+        "[1, 2, 3] [1, 2, 3]",
+        "[0, 1, 2] [0, 1, 2]",
+        "TypeError: 'Rango' object is not an iterator"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`Rango` es un iterable, no un iterador: cada llamada a `__iter__` fabrica un iterador nuevo, así que se puede recorrer tantas veces como se quiera. La opción `[0, 1, 2] []` es exactamente lo que pasaría si `__iter__` devolviera `self` y el estado del recorrido viviera en la instancia; ahí sí el segundo recorrido saldría vacío. No hay TypeError: para el `for` y para `list()` basta con tener `__iter__`.",
+      "explanation_en": "`Rango` is an iterable, not an iterator: every call to `__iter__` builds a brand-new iterator, so it can be traversed as many times as you like. The `[0, 1, 2] []` option is exactly what you would get if `__iter__` returned `self` and the traversal state lived on the instance — then the second pass really would come back empty. There is no TypeError: `for` and `list()` only need `__iter__`.",
+      "source": "CPython docs 3.13 — Glossary: iterable / iterator",
+      "expected_time_ms": 35000,
+      "tags": ["iterators", "iterable", "reuse"]
+    },
+    {
+      "id": "q020601011",
+      "skill_id": "sk020601",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ng = (x * 2 for x in [1, 2, 3])\nprint(iter(g) is g, next(g), list(g))\n```",
+      "question_en": "What does the following code print?\n```python\ng = (x * 2 for x in [1, 2, 3])\nprint(iter(g) is g, next(g), list(g))\n```",
+      "options_es": [
+        "True 2 [4, 6]",
+        "False 2 [4, 6]",
+        "True 2 [2, 4, 6]",
+        "True 1 [2, 3]"
+      ],
+      "options_en": [
+        "True 2 [4, 6]",
+        "False 2 [4, 6]",
+        "True 2 [2, 4, 6]",
+        "True 1 [2, 3]"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un generador es su propio iterador: su `__iter__` devuelve `self`, por eso `iter(g) is g` da `True` (y por eso llamar a `iter()` sobre un generador ni lo reinicia ni lo copia). Los argumentos se evalúan de izquierda a derecha, así que `next(g)` consume el primer valor (2) y `list(g)` recoge sólo lo que queda: `[4, 6]`. Quien responde `[2, 4, 6]` supone que `list()` vuelve al principio; quien responde `False` confunde el generador con una lista, cuyo `iter()` sí devuelve un objeto distinto.",
+      "explanation_en": "A generator is its own iterator: its `__iter__` returns `self`, which is why `iter(g) is g` is `True` (and why calling `iter()` on a generator neither rewinds nor copies it). Arguments are evaluated left to right, so `next(g)` eats the first value (2) and `list(g)` collects only what is left: `[4, 6]`. Answering `[2, 4, 6]` assumes `list()` starts over; answering `False` confuses a generator with a list, where `iter()` really does hand back a different object.",
+      "source": "PEP 255 — Simple Generators",
+      "expected_time_ms": 40000,
+      "tags": ["generators", "iterators", "exhaustion"]
+    },
+    {
+      "id": "q020601012",
+      "skill_id": "sk020601",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Serie:\n    def __getitem__(self, i):\n        if i > 2:\n            raise IndexError\n        return i * 10\n\nprint(list(Serie()))\n```",
+      "question_en": "What does the following code print?\n```python\nclass Serie:\n    def __getitem__(self, i):\n        if i > 2:\n            raise IndexError\n        return i * 10\n\nprint(list(Serie()))\n```",
+      "options_es": [
+        "TypeError: 'Serie' object is not iterable",
+        "[0, 10, 20]",
+        "[10, 20]",
+        "El IndexError se propaga y el programa termina"
+      ],
+      "options_en": [
+        "TypeError: 'Serie' object is not iterable",
+        "[0, 10, 20]",
+        "[10, 20]",
+        "The IndexError propagates and the program stops"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Si una clase no define `__iter__`, Python recurre al viejo protocolo de secuencia: llama a `__getitem__` con 0, 1, 2... y trata el `IndexError` como la señal de fin de la iteración. Por eso sale `[0, 10, 20]` y la excepción nunca llega al programa. El TypeError sólo aparecería si faltaran los dos, `__iter__` y `__getitem__`; `[10, 20]` supone que los índices empiezan en 1.",
+      "explanation_en": "When a class defines no `__iter__`, Python falls back to the old sequence protocol: it calls `__getitem__` with 0, 1, 2... and treats `IndexError` as the end-of-iteration signal. Hence `[0, 10, 20]`, and the exception never reaches your program. A TypeError would only appear if both `__iter__` and `__getitem__` were missing; `[10, 20]` assumes indexing starts at 1.",
+      "source": "PEP 234 — Iterators",
+      "expected_time_ms": 45000,
+      "tags": ["iterators", "protocol", "getitem"]
+    },
+    {
+      "id": "q020601013",
+      "skill_id": "sk020601",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué hace la forma de dos argumentos `iter(f, centinela)`?",
+      "question_en": "What does the two-argument form `iter(f, sentinel)` do?",
+      "options_es": [
+        "Llama a f una sola vez y devuelve un iterador sobre su resultado, ignorando el centinela",
+        "Recorre f como iterable y se detiene cuando el índice llega al centinela",
+        "Devuelve un iterador infinito sobre f; el centinela sólo fija el valor inicial",
+        "Llama a f() una y otra vez y corta la iteración cuando el valor devuelto es igual al centinela"
+      ],
+      "options_en": [
+        "Calls f once and returns an iterator over its result, ignoring the sentinel",
+        "Iterates over f as an iterable and stops when the index reaches the sentinel",
+        "Returns an infinite iterator over f; the sentinel only sets the starting value",
+        "Calls f() over and over and stops the iteration when the returned value equals the sentinel"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`iter(callable, centinela)` construye un iterador que invoca el callable sin argumentos en cada `next()` y lanza `StopIteration` en cuanto el resultado es igual al centinela. Es el idioma clásico de `iter(lambda: f.read(4096), b'')` para leer un archivo por bloques. Las otras opciones tratan a `f` como un iterable normal, que es la lectura instintiva si sólo se conoce la forma de un argumento.",
+      "explanation_en": "`iter(callable, sentinel)` builds an iterator that calls the callable with no arguments on each `next()` and raises `StopIteration` as soon as the result equals the sentinel. It is the classic `iter(lambda: f.read(4096), b'')` idiom for reading a file block by block. The other options treat `f` as an ordinary iterable, which is the instinctive reading if you only know the one-argument form.",
+      "source": "CPython docs 3.13 — Built-in Functions: iter",
+      "expected_time_ms": 30000,
+      "tags": ["iterators", "iter", "sentinel"]
+    },
+    {
+      "id": "q020601014",
+      "skill_id": "sk020601",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una clase implementa `__next__` correctamente, pero su `__iter__` devuelve `iter([])` en lugar de `self`. ¿Qué ocurre al usar una instancia en un bucle `for`?",
+      "question_en": "A class implements `__next__` correctly, but its `__iter__` returns `iter([])` instead of `self`. What happens when an instance is used in a `for` loop?",
+      "options_es": [
+        "El bucle no da ni una vuelta: `for` llama primero a `__iter__` y recorre el iterador vacío que recibe",
+        "El bucle recorre los valores de `__next__`, porque `for` llama directamente al `__next__` del objeto",
+        "Python lanza TypeError, porque el intérprete exige que el `__iter__` de un iterador devuelva `self`",
+        "El bucle alterna entre `__iter__` y `__next__` y produce cada valor dos veces"
+      ],
+      "options_en": [
+        "The loop runs zero iterations: `for` calls `__iter__` first and walks the empty iterator it gets back",
+        "The loop walks the values from `__next__`, because `for` calls the object's `__next__` directly",
+        "Python raises TypeError, because the interpreter requires an iterator's `__iter__` to return `self`",
+        "The loop alternates between `__iter__` and `__next__` and produces every value twice"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`for` siempre empieza llamando a `iter(obj)` y después itera sobre lo que recibe, no sobre el objeto original. Como aquí recibe un iterador vacío, el cuerpo del bucle no se ejecuta nunca. Que un iterador devuelva `self` desde `__iter__` es una convención del protocolo que Python no comprueba: por eso no hay TypeError y el fallo es silencioso, que es lo peor que le puede pasar a un bug.",
+      "explanation_en": "`for` always starts by calling `iter(obj)` and then iterates over whatever comes back, not over the original object. Here it gets an empty iterator, so the loop body never runs. An iterator returning `self` from `__iter__` is a protocol convention that Python does not enforce: that is why there is no TypeError and the failure is silent — the worst thing a bug can be.",
+      "source": "CPython docs 3.13 — Data model: Iterator types",
+      "expected_time_ms": 40000,
+      "tags": ["iterators", "protocol", "for"]
+    },
+    {
+      "id": "q020601015",
+      "skill_id": "sk020601",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Un iterador ya lanzó `StopIteration`. ¿Qué ocurre si se vuelve a llamar a `next()` sobre él?",
+      "question_en": "An iterator has already raised `StopIteration`. What happens if you call `next()` on it again?",
+      "options_es": [
+        "Vuelve a empezar desde el primer elemento",
+        "Lanza `StopIteration` otra vez: un iterador agotado se queda agotado",
+        "Devuelve `None` en lugar de lanzar una excepción",
+        "Lanza `RuntimeError` por reutilizar un iterador agotado"
+      ],
+      "options_en": [
+        "It starts over from the first element",
+        "It raises `StopIteration` again: an exhausted iterator stays exhausted",
+        "It returns `None` instead of raising an exception",
+        "It raises `RuntimeError` for reusing an exhausted iterator"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El protocolo exige que, una vez agotado, el iterador siga lanzando `StopIteration` en cada llamada. No se rebobina: si hace falta recorrer los datos otra vez hay que pedirle un iterador nuevo al iterable. El `None` sólo aparece si se pasa explícitamente como valor por defecto, `next(it, None)`.",
+      "explanation_en": "The protocol requires that, once exhausted, an iterator keeps raising `StopIteration` on every call. It does not rewind: if you need a second pass you must ask the iterable for a fresh iterator. `None` only shows up if you explicitly pass it as the default, `next(it, None)`.",
+      "source": "PEP 234 — Iterators",
+      "expected_time_ms": 20000,
+      "tags": ["iterators", "exhaustion", "stopiteration"]
+    },
+    {
+      "id": "q020601016",
+      "skill_id": "sk020601",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un objeto que implementa `__next__` pero no `__iter__` no puede usarse directamente en un bucle `for`.",
+      "question_en": "An object that implements `__next__` but not `__iter__` cannot be used directly in a `for` loop.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El `for` no llama a `__next__` sobre el objeto: primero llama a `iter(obj)`, que necesita `__iter__` (o, como respaldo, `__getitem__`). Sin ninguno de los dos se obtiene `TypeError: object is not iterable`, por muy bien escrito que esté `__next__`. Eso sí, se puede seguir usando a mano con `next(obj)`.",
+      "explanation_en": "True. `for` does not call `__next__` on the object: it first calls `iter(obj)`, which needs `__iter__` (or `__getitem__` as a fallback). With neither, you get `TypeError: object is not iterable`, no matter how correct `__next__` is. You can still drive it by hand with `next(obj)`.",
+      "source": "CPython docs 3.13 — Data model: Iterator types",
+      "expected_time_ms": 25000,
+      "tags": ["iterators", "protocol", "for"]
+    },
+    {
+      "id": "q020601017",
+      "skill_id": "sk020601",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Completa el método especial que una clase debe definir para que la función incorporada `reversed()` funcione sobre sus instancias: `def ___(self):`",
+      "question_en": "Complete the special method a class must define for the built-in `reversed()` to work on its instances: `def ___(self):`",
+      "correct_answer_es": "__reversed__",
+      "correct_answer_en": "__reversed__",
+      "explanation_es": "`reversed(obj)` busca `__reversed__` y, si no existe, el par `__len__` + `__getitem__`. Tener `__iter__`/`__next__` no basta: por eso `reversed(g)` sobre un generador lanza `TypeError`, un tropiezo clásico. Un iterador sólo sabe avanzar; recorrerlo al revés exigiría conocer su longitud o materializarlo con `list()`.",
+      "explanation_en": "`reversed(obj)` looks for `__reversed__` and, failing that, for the `__len__` + `__getitem__` pair. Having `__iter__`/`__next__` is not enough: that is why `reversed(g)` on a generator raises `TypeError`, a classic stumble. An iterator only knows how to move forward; walking it backwards would require knowing its length or materialising it with `list()`.",
+      "source": "CPython docs 3.13 — Built-in Functions: reversed",
+      "expected_time_ms": 35000,
+      "tags": ["iterators", "reversed", "protocol"]
+    },
+    {
+      "id": "q020602010",
+      "skill_id": "sk020602",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom itertools import accumulate\nprint(list(accumulate([1, 2, 3, 4])))\n```",
+      "question_en": "What does the following code print?\n```python\nfrom itertools import accumulate\nprint(list(accumulate([1, 2, 3, 4])))\n```",
+      "options_es": [
+        "[10]",
+        "[1, 2, 3, 4]",
+        "[0, 1, 3, 6]",
+        "[1, 3, 6, 10]"
+      ],
+      "options_en": [
+        "[10]",
+        "[1, 2, 3, 4]",
+        "[0, 1, 3, 6]",
+        "[1, 3, 6, 10]"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`accumulate` va emitiendo los totales parciales: 1, 1+2, 1+2+3, 1+2+3+4. Devuelve tantos elementos como la entrada, no uno solo: quien responde `[10]` lo confunde con `sum()`. `[0, 1, 3, 6]` sería el resultado si empezara en cero, cosa que sólo ocurre pasando `initial=0`.",
+      "explanation_en": "`accumulate` emits the running totals: 1, 1+2, 1+2+3, 1+2+3+4. It returns as many items as the input, not a single one: answering `[10]` confuses it with `sum()`. `[0, 1, 3, 6]` would be the result if it started at zero, which only happens if you pass `initial=0`.",
+      "source": "CPython docs 3.13 — itertools.accumulate",
+      "expected_time_ms": 25000,
+      "tags": ["itertools", "accumulate"]
+    },
+    {
+      "id": "q020602011",
+      "skill_id": "sk020602",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom itertools import tee\na, b = tee(iter([1, 2, 3]), 2)\nprint(next(a), next(a), next(b))\n```",
+      "question_en": "What does the following code print?\n```python\nfrom itertools import tee\na, b = tee(iter([1, 2, 3]), 2)\nprint(next(a), next(a), next(b))\n```",
+      "options_es": [
+        "1 2 3",
+        "1 2 2",
+        "1 2 1",
+        "1 3 2"
+      ],
+      "options_en": [
+        "1 2 3",
+        "1 2 2",
+        "1 2 1",
+        "1 3 2"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`tee` no reparte los elementos entre las copias: entrega n iteradores independientes que recorren toda la secuencia, cada uno con su propia posición, así que `b` empieza de nuevo por el 1. La respuesta `1 2 3` es justo la idea equivocada de que las copias se turnan el original. El precio de esa independencia es memoria: `tee` guarda en un buffer todo lo que el iterador más adelantado ya consumió, hasta que el más lento lo alcance.",
+      "explanation_en": "`tee` does not divide the elements among the copies: it returns n independent iterators that each walk the whole sequence with their own position, so `b` starts again at 1. The `1 2 3` answer is exactly the mistaken idea that the copies take turns on the original. The price of that independence is memory: `tee` buffers everything the fastest iterator has consumed until the slowest catches up.",
+      "source": "CPython docs 3.13 — itertools.tee",
+      "expected_time_ms": 40000,
+      "tags": ["itertools", "tee", "memory"]
+    },
+    {
+      "id": "q020602012",
+      "skill_id": "sk020602",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom itertools import zip_longest\nprint(list(zip_longest('ab', [1, 2, 3], fillvalue=0)))\n```",
+      "question_en": "What does the following code print?\n```python\nfrom itertools import zip_longest\nprint(list(zip_longest('ab', [1, 2, 3], fillvalue=0)))\n```",
+      "options_es": [
+        "[('a', 1), ('b', 2)]",
+        "[('a', 1), ('b', 2), (0, 3)]",
+        "[('a', 1), ('b', 2), (3, 0)]",
+        "[('a', 1), ('b', 2), (None, 3)]"
+      ],
+      "options_en": [
+        "[('a', 1), ('b', 2)]",
+        "[('a', 1), ('b', 2), (0, 3)]",
+        "[('a', 1), ('b', 2), (3, 0)]",
+        "[('a', 1), ('b', 2), (None, 3)]"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`zip_longest` se detiene con el iterable más largo y rellena los huecos del más corto con `fillvalue`. La cadena `'ab'` se agota primero, así que el hueco está en la primera posición de la última tupla: `(0, 3)`. La opción sin tercera tupla es el comportamiento de `zip()`, que trunca; la de `(None, 3)` olvida que se pasó `fillvalue=0` y usa el valor por defecto.",
+      "explanation_en": "`zip_longest` runs until the longest iterable is done and pads the shorter one with `fillvalue`. The string `'ab'` runs out first, so the gap sits in the first slot of the last tuple: `(0, 3)`. The option without a third tuple is what plain `zip()` does — it truncates; the `(None, 3)` option forgets that `fillvalue=0` was passed and falls back to the default.",
+      "source": "CPython docs 3.13 — itertools.zip_longest",
+      "expected_time_ms": 30000,
+      "tags": ["itertools", "zip_longest"]
+    },
+    {
+      "id": "q020602013",
+      "skill_id": "sk020602",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom itertools import dropwhile\nprint(list(dropwhile(lambda x: x < 3, [1, 2, 3, 1, 2])))\n```",
+      "question_en": "What does the following code print?\n```python\nfrom itertools import dropwhile\nprint(list(dropwhile(lambda x: x < 3, [1, 2, 3, 1, 2])))\n```",
+      "options_es": [
+        "[3, 1, 2]",
+        "[3]",
+        "[1, 2, 1, 2]",
+        "[1, 2]"
+      ],
+      "options_en": [
+        "[3, 1, 2]",
+        "[3]",
+        "[1, 2, 1, 2]",
+        "[1, 2]"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`dropwhile` descarta elementos sólo mientras el predicado sea verdadero; en cuanto falla una vez (con el 3) deja de evaluarlo y entrega todo lo que queda, incluidos el 1 y el 2 finales. La respuesta `[3]` es la confusión con `filter(lambda x: x >= 3, ...)`, que sí comprueba cada elemento; `[1, 2]` intercambia los papeles de `dropwhile` y `takewhile`.",
+      "explanation_en": "`dropwhile` discards elements only while the predicate holds; the moment it fails once (at 3) it stops testing and yields everything that remains, trailing 1 and 2 included. The `[3]` answer is the confusion with `filter(lambda x: x >= 3, ...)`, which does test every element; `[1, 2]` swaps the roles of `dropwhile` and `takewhile`.",
+      "source": "CPython docs 3.13 — itertools.dropwhile",
+      "expected_time_ms": 40000,
+      "tags": ["itertools", "dropwhile", "predicates"]
+    },
+    {
+      "id": "q020602014",
+      "skill_id": "sk020602",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Se hace `a, b = tee(it, 2)` y se consume `a` por completo antes de tocar `b`. ¿Cuál es el coste real?",
+      "question_en": "You do `a, b = tee(it, 2)` and consume `a` completely before touching `b`. What does that really cost?",
+      "options_es": [
+        "Ninguno: `tee` sólo guarda dos punteros al iterable original",
+        "Duplica el tiempo de CPU pero no la memoria, porque recalcula cada elemento dos veces",
+        "`tee` guarda en un buffer todos los elementos ya consumidos por el más rápido hasta que el otro los lea: el buffer llega a pesar tanto como la secuencia entera",
+        "Lanza `RuntimeError` si un iterador se adelanta más de 64 elementos al otro"
+      ],
+      "options_en": [
+        "Nothing: `tee` only keeps two pointers into the original iterable",
+        "It doubles CPU time but not memory, because it recomputes every element twice",
+        "`tee` buffers every element already consumed by the fastest iterator until the other reads it: the buffer can grow as large as the whole sequence",
+        "It raises `RuntimeError` if one iterator gets more than 64 elements ahead of the other"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un iterador no se puede rebobinar, así que la única manera de que `b` vea lo que `a` ya consumió es guardarlo. Al agotar `a` primero, el buffer interno acaba conteniendo la secuencia entera y la ventaja de memoria de trabajar perezosamente desaparece. Los punteros de la primera opción no bastarían ni con un iterable reiniciable, y `tee` no puede recalcular nada (opción 2) porque no sabe cómo se produjo cada valor. La regla práctica de la documentación: si vas a consumir una copia entera antes que la otra, usa `list()`.",
+      "explanation_en": "An iterator cannot be rewound, so the only way for `b` to see what `a` already consumed is to store it. Draining `a` first leaves the internal buffer holding the entire sequence, and the memory advantage of working lazily is gone. The pointers in the first option would not be enough even with a restartable iterable, and `tee` cannot recompute anything (option 2) because it has no idea how each value was produced. The docs' rule of thumb: if one copy will be consumed fully before the other, just use `list()`.",
+      "source": "CPython docs 3.13 — itertools.tee",
+      "expected_time_ms": 40000,
+      "tags": ["itertools", "tee", "memory"]
+    },
+    {
+      "id": "q020602015",
+      "skill_id": "sk020602",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "`gen` es un generador que produce listas. ¿Por qué conviene `chain.from_iterable(gen)` en lugar de `chain(*gen)`?",
+      "question_en": "`gen` is a generator that yields lists. Why prefer `chain.from_iterable(gen)` over `chain(*gen)`?",
+      "options_es": [
+        "Porque `chain(*gen)` sólo acepta listas y `from_iterable` acepta cualquier iterable",
+        "Porque `from_iterable` devuelve una lista ya materializada y `chain(*gen)` un iterador",
+        "Son equivalentes; `from_iterable` existe sólo por compatibilidad con Python 2",
+        "Porque `chain(*gen)` desempaqueta el generador entero en memoria antes de empezar, mientras que `from_iterable` lo consume perezosamente"
+      ],
+      "options_en": [
+        "Because `chain(*gen)` only accepts lists while `from_iterable` accepts any iterable",
+        "Because `from_iterable` returns an already-materialised list and `chain(*gen)` an iterator",
+        "They are equivalent; `from_iterable` exists only for Python 2 compatibility",
+        "Because `chain(*gen)` unpacks the whole generator into memory before it starts, while `from_iterable` consumes it lazily"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El `*` obliga a agotar `gen` para construir la tupla de argumentos: con un generador infinito el programa se cuelga, y con uno grande se paga toda la memoria antes de emitir el primer elemento. `from_iterable` recibe el generador tal cual y pide una sublista sólo cuando la necesita. Una vez construidas, ambas formas devuelven un iterador perezoso (por eso la opción 2 es falsa) y ambas aceptan cualquier iterable.",
+      "explanation_en": "The `*` forces `gen` to be drained to build the argument tuple: with an infinite generator the program hangs, and with a large one you pay the full memory cost before a single element comes out. `from_iterable` takes the generator as it is and pulls a sublist only when it needs one. Once built, both forms return a lazy iterator (which is why option 2 is false) and both accept any iterable.",
+      "source": "CPython docs 3.13 — itertools.chain.from_iterable",
+      "expected_time_ms": 45000,
+      "tags": ["itertools", "chain", "laziness"]
+    },
+    {
+      "id": "q020602016",
+      "skill_id": "sk020602",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`itertools.islice` admite índices negativos igual que el slicing de listas, así que `islice(it, -3, None)` devuelve los tres últimos elementos.",
+      "question_en": "`itertools.islice` accepts negative indices just like list slicing, so `islice(it, -3, None)` returns the last three elements.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso: `islice` exige valores no negativos y lanza `ValueError` con índices negativos. La razón es de fondo, no un capricho de la API: un índice negativo obliga a conocer la longitud total, y `islice` trabaja sobre iteradores que pueden ser infinitos y por los que no se puede volver atrás. Para quedarse con los últimos n elementos se usa `collections.deque(it, maxlen=n)`.",
+      "explanation_en": "False: `islice` requires non-negative values and raises `ValueError` on negative indices. The reason is fundamental rather than an API quirk: a negative index requires knowing the total length, and `islice` works over iterators that may be infinite and cannot be walked backwards. To keep the last n elements, use `collections.deque(it, maxlen=n)`.",
+      "source": "CPython docs 3.13 — itertools.islice",
+      "expected_time_ms": 30000,
+      "tags": ["itertools", "islice", "laziness"]
+    },
+    {
+      "id": "q020602017",
+      "skill_id": "sk020602",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Completa la función de itertools que produce todas las ordenaciones posibles de longitud r, donde el orden sí importa: `itertools.___(iterable, r)`",
+      "question_en": "Complete the itertools function that produces every possible arrangement of length r, where order does matter: `itertools.___(iterable, r)`",
+      "correct_answer_es": "permutations",
+      "correct_answer_en": "permutations",
+      "explanation_es": "`permutations('abc', 2)` da 6 resultados porque `('a', 'b')` y `('b', 'a')` cuentan como distintos. `combinations` daría sólo 3: ahí el orden es irrelevante y cada par aparece una vez. `product` tampoco sirve, porque repite elementos (`('a', 'a')`) al no consumir posiciones del iterable.",
+      "explanation_en": "`permutations('abc', 2)` yields 6 results because `('a', 'b')` and `('b', 'a')` count as different. `combinations` would yield only 3: there order is irrelevant and each pair shows up once. `product` is no substitute either, since it repeats elements (`('a', 'a')`) instead of consuming positions from the iterable.",
+      "source": "CPython docs 3.13 — itertools.permutations",
+      "expected_time_ms": 35000,
+      "tags": ["itertools", "permutations", "combinatorics"]
+    },
+    {
+      "id": "q020603010",
+      "skill_id": "sk020603",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef g():\n    yield 1\n    return 'fin'\n\nit = g()\nnext(it)\ntry:\n    next(it)\nexcept StopIteration as e:\n    print(e.value)\n```",
+      "question_en": "What does the following code print?\n```python\ndef g():\n    yield 1\n    return 'fin'\n\nit = g()\nnext(it)\ntry:\n    next(it)\nexcept StopIteration as e:\n    print(e.value)\n```",
+      "options_es": [
+        "None",
+        "fin",
+        "Nada: un `return` con valor dentro de un generador es un SyntaxError",
+        "1"
+      ],
+      "options_en": [
+        "None",
+        "fin",
+        "Nothing: a `return` with a value inside a generator is a SyntaxError",
+        "1"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Desde PEP 380, un `return valor` dentro de un generador es legal y ese valor viaja en el atributo `value` de la `StopIteration` que se lanza al terminar. No se emite como un elemento más de la iteración: por eso `list(g())` sería `[1]` y quien nunca captura la excepción jamás ve `'fin'`. `None` es lo que valdría `e.value` con un `return` sin argumento o al caer por el final de la función.",
+      "explanation_en": "Since PEP 380, `return value` inside a generator is legal, and that value travels in the `value` attribute of the `StopIteration` raised when it finishes. It is not emitted as another item of the iteration: that is why `list(g())` would be `[1]`, and anyone who never catches the exception never sees `'fin'`. `None` is what `e.value` would hold for a bare `return` or for falling off the end of the function.",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "expected_time_ms": 40000,
+      "tags": ["generators", "return", "stopiteration"]
+    },
+    {
+      "id": "q020603011",
+      "skill_id": "sk020603",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef sub():\n    yield 1\n    return 10\n\ndef main():\n    r = yield from sub()\n    yield r\n\nprint(list(main()))\n```",
+      "question_en": "What does the following code print?\n```python\ndef sub():\n    yield 1\n    return 10\n\ndef main():\n    r = yield from sub()\n    yield r\n\nprint(list(main()))\n```",
+      "options_es": [
+        "[1]",
+        "[1, None]",
+        "[1, 10, 10]",
+        "[1, 10]"
+      ],
+      "options_en": [
+        "[1]",
+        "[1, None]",
+        "[1, 10, 10]",
+        "[1, 10]"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`yield from` hace dos cosas: reenvía al llamador cada valor del subgenerador (el 1) y, cuando éste se agota, se evalúa como su valor de retorno (el 10), que aquí se asigna a `r` y se emite con un `yield` propio. La opción `[1, None]` es la creencia de que el `return` de un subgenerador se pierde; `[1, 10, 10]` supone que el valor de retorno se emite además automáticamente, cosa que no ocurre.",
+      "explanation_en": "`yield from` does two things: it forwards every value from the subgenerator to the caller (the 1) and, once the subgenerator is done, evaluates to its return value (the 10), which is assigned to `r` here and emitted by an explicit `yield`. The `[1, None]` option is the belief that a subgenerator's `return` is lost; `[1, 10, 10]` assumes the return value is also emitted automatically, which it is not.",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "expected_time_ms": 45000,
+      "tags": ["generators", "yield-from", "delegation"]
+    },
+    {
+      "id": "q020603012",
+      "skill_id": "sk020603",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef eco(salida):\n    while True:\n        salida.append((yield))\n\nregistro = []\nc = eco(registro)\nnext(c)\nc.send('a')\nc.send('b')\nprint(registro)\n```",
+      "question_en": "What does the following code print?\n```python\ndef eco(salida):\n    while True:\n        salida.append((yield))\n\nregistro = []\nc = eco(registro)\nnext(c)\nc.send('a')\nc.send('b')\nprint(registro)\n```",
+      "options_es": [
+        "['a', 'b']",
+        "[None, 'a', 'b']",
+        "['a']",
+        "[]"
+      ],
+      "options_en": [
+        "['a', 'b']",
+        "[None, 'a', 'b']",
+        "['a']",
+        "[]"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El `next(c)` inicial sólo ceba la corrutina: la lleva hasta el primer `yield` y la deja suspendida ahí sin haber añadido nada, porque el `yield` todavía no ha producido ningún valor que asignar. Cada `send` la reanuda, el valor enviado se convierte en el resultado de la expresión `yield` y se añade a la lista. `[None, 'a', 'b']` es la idea equivocada de que el cebado guarda un `None`; y saltarse ese `next(c)` no daría `[]`, sino `TypeError: can't send non-None value to a just-started generator`.",
+      "explanation_en": "The initial `next(c)` merely primes the coroutine: it runs to the first `yield` and leaves it suspended there, having appended nothing, because the `yield` has not produced a value to assign yet. Each `send` resumes it, the sent value becomes the result of the `yield` expression and is appended. `[None, 'a', 'b']` is the mistaken idea that priming stores a `None`; and skipping that `next(c)` would not give `[]` but `TypeError: can't send non-None value to a just-started generator`.",
+      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "expected_time_ms": 40000,
+      "tags": ["coroutines", "send", "priming"]
+    },
+    {
+      "id": "q020603013",
+      "skill_id": "sk020603",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué hace `g.close()` sobre un generador suspendido en un `yield`?",
+      "question_en": "What does `g.close()` do to a generator suspended at a `yield`?",
+      "options_es": [
+        "Marca el generador como agotado sin ejecutar nada más: el código posterior al `yield` nunca corre",
+        "Lanza `StopIteration` en el punto del `yield`, que el generador puede capturar para seguir produciendo valores",
+        "Lanza `GeneratorExit` en el punto del `yield`, de modo que los bloques `finally` sí se ejecutan; si el generador vuelve a hacer `yield`, Python lanza `RuntimeError`",
+        "Cierra los archivos abiertos dentro del generador y reinicia su estado para poder recorrerlo otra vez"
+      ],
+      "options_en": [
+        "Marks the generator as exhausted without running anything else: the code after the `yield` never runs",
+        "Raises `StopIteration` at the `yield`, which the generator can catch to keep producing values",
+        "Raises `GeneratorExit` at the `yield`, so `finally` blocks do run; if the generator yields again, Python raises `RuntimeError`",
+        "Closes the files opened inside the generator and resets its state so it can be traversed again"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`close()` inyecta `GeneratorExit` justo donde el generador está suspendido, precisamente para que se ejecuten los `finally` y se liberen los recursos: eso es lo que hace fiable el patrón `try/finally` alrededor de un `yield`. La primera opción describe un cierre bruto que se saltaría esa limpieza. Resistirse a morir con otro `yield` no está permitido: Python lo castiga con `RuntimeError: generator ignored GeneratorExit`.",
+      "explanation_en": "`close()` injects `GeneratorExit` exactly where the generator is suspended, precisely so that `finally` blocks run and resources are released: that is what makes the `try/finally`-around-a-`yield` pattern reliable. The first option describes a brute-force close that would skip that cleanup. Refusing to die by yielding again is not allowed: Python punishes it with `RuntimeError: generator ignored GeneratorExit`.",
+      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "expected_time_ms": 40000,
+      "tags": ["coroutines", "close", "generatorexit"]
+    },
+    {
+      "id": "q020603014",
+      "skill_id": "sk020603",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué hace `g.throw(ValueError)` sobre un generador suspendido?",
+      "question_en": "What does `g.throw(ValueError)` do to a suspended generator?",
+      "options_es": [
+        "Lanza `ValueError` en el código que llama a `throw`, sin llegar a afectar al generador",
+        "Guarda la excepción para lanzarla en la siguiente llamada a `next()`",
+        "Lanza `ValueError` en el punto donde el generador está suspendido; si un `try/except` interno la captura, el generador puede devolver otro valor con `yield`",
+        "Es un alias de `close()` que permite elegir con qué excepción se cierra el generador"
+      ],
+      "options_en": [
+        "Raises `ValueError` in the code that calls `throw`, never reaching the generator",
+        "Stores the exception to raise it on the next call to `next()`",
+        "Raises `ValueError` at the point where the generator is suspended; if an internal `try/except` catches it, the generator can hand back another value with `yield`",
+        "Is an alias for `close()` that lets you choose which exception the generator is closed with"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`throw()` es la otra mitad del canal bidireccional que PEP 342 abrió con `send()`: a una corrutina no sólo se le pueden mandar datos, también errores. La excepción aparece en la línea del `yield` donde está detenida, y lo que devuelve `throw()` es el siguiente valor emitido si el generador la maneja y continúa. Si nadie la captura, sube al llamador, y ese caso es el que hace parecer correcta la opción 1. Tampoco es un `close()` con otro nombre: un generador puede sobrevivir a un `throw()`, nunca a un `GeneratorExit` ignorado.",
+      "explanation_en": "`throw()` is the other half of the two-way channel PEP 342 opened with `send()`: you can push not just data into a coroutine but errors too. The exception surfaces at the `yield` line where it is paused, and what `throw()` returns is the next value yielded if the generator handles it and carries on. If nobody catches it, it propagates to the caller — the case that makes option 1 look right. Nor is it `close()` under another name: a generator can survive a `throw()`, never an ignored `GeneratorExit`.",
+      "source": "PEP 342 — Coroutines via Enhanced Generators",
+      "expected_time_ms": 40000,
+      "tags": ["coroutines", "throw", "two-way"]
+    },
+    {
+      "id": "q020603015",
+      "skill_id": "sk020603",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Recorrer con un `for` un generador que ya se consumió provoca un `StopIteration` que interrumpe el programa.",
+      "question_en": "Looping with `for` over a generator that has already been consumed raises a `StopIteration` that breaks the program.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso, y de ahí viene el peligro. El `for` captura `StopIteration` como señal normal de fin, así que sobre un generador agotado simplemente no da ninguna vuelta: ni error ni aviso. Un segundo `for x in datos` después de un `sum(datos)` no falla, sólo produce cero resultados en silencio. Si hacen falta dos pasadas, hay que materializar con `list()` o crear el generador de nuevo.",
+      "explanation_en": "False, and that is exactly where the danger lies. `for` catches `StopIteration` as the normal end-of-iteration signal, so over an exhausted generator it simply runs zero iterations: no error, no warning. A second `for x in data` after a `sum(data)` does not fail, it just silently produces nothing. If you need two passes, materialise with `list()` or build the generator again.",
+      "source": "CPython docs 3.13 — Compound statements: The for statement",
+      "expected_time_ms": 30000,
+      "tags": ["generators", "exhaustion", "for"]
+    },
+    {
+      "id": "q020603016",
+      "skill_id": "sk020603",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`yield from` no sólo reenvía los valores del subgenerador: también le propaga los `send()` y los `throw()` que reciba el generador exterior.",
+      "question_en": "`yield from` does more than forward the subgenerator's values: it also passes on any `send()` and `throw()` the outer generator receives.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Esa transparencia es justo la razón de ser de PEP 380: mientras dura la delegación, el subgenerador queda conectado directamente con el llamador, y los valores enviados, las excepciones lanzadas y el `close()` le llegan a él. Un bucle manual `for v in sub(): yield v` sí reenvía los valores, pero se come los `send()` y no propaga bien el cierre; por eso no es un sustituto.",
+      "explanation_en": "True. That transparency is the whole point of PEP 380: while the delegation lasts, the subgenerator is wired straight to the caller, and sent values, thrown exceptions and `close()` all reach it. A manual `for v in sub(): yield v` loop does forward the values, but it swallows `send()` and does not propagate closing properly, which is why it is not a substitute.",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "expected_time_ms": 30000,
+      "tags": ["generators", "yield-from", "send"]
+    },
+    {
+      "id": "q020603017",
+      "skill_id": "sk020603",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Completa el atributo de la excepción `StopIteration` que transporta el valor devuelto por un `return` dentro de un generador: `exc.___`",
+      "question_en": "Complete the attribute of the `StopIteration` exception that carries the value returned by a `return` inside a generator: `exc.___`",
+      "correct_answer_es": "value",
+      "correct_answer_en": "value",
+      "explanation_es": "`StopIteration.value` guarda lo que devolvió el `return` del generador, o `None` si no devolvió nada. Es el mecanismo exacto que usa `yield from` para evaluarse como el valor de retorno del subgenerador, así que entender este atributo es entender la delegación por dentro.",
+      "explanation_en": "`StopIteration.value` holds whatever the generator's `return` produced, or `None` if it returned nothing. It is the very mechanism `yield from` uses to evaluate to the subgenerator's return value, so understanding this attribute is understanding delegation from the inside.",
+      "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
+      "expected_time_ms": 35000,
+      "tags": ["generators", "stopiteration", "return"]
+    }
+  ]
+}

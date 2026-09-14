@@ -1,0 +1,926 @@
+{
+  "questions": [
+    {
+      "id": "q020301010",
+      "skill_id": "sk020301",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef outer():\n    x = 10\n    def inner():\n        return x\n    return inner\nf = outer()\nprint(f.__closure__[0].cell_contents)\n```",
+      "question_en": "What does the following code print?\n```python\ndef outer():\n    x = 10\n    def inner():\n        return x\n    return inner\nf = outer()\nprint(f.__closure__[0].cell_contents)\n```",
+      "options_es": [
+        "10",
+        "None",
+        "<cell at 0x...: int object>",
+        "TypeError: 'NoneType' object is not subscriptable"
+      ],
+      "options_en": [
+        "10",
+        "None",
+        "<cell at 0x...: int object>",
+        "TypeError: 'NoneType' object is not subscriptable"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`inner` referencia `x`, así que `x` es una variable libre y el compilador la guarda en una celda. `f.__closure__` es una tupla de celdas y `cell_contents` devuelve el valor guardado, `10`. La tercera opción confunde la celda con su contenido: `f.__closure__[0]` sí muestra un `<cell ...>`, pero `.cell_contents` lo abre. La cuarta sería correcta solo si `inner` no capturara nada, porque entonces `__closure__` valdría `None`.",
+      "explanation_en": "`inner` references `x`, so `x` is a free variable and the compiler stores it in a cell. `f.__closure__` is a tuple of cells, and `cell_contents` gives back the stored value, `10`. The third option mistakes the cell for its contents: `f.__closure__[0]` does display as `<cell ...>`, but `.cell_contents` unwraps it. The fourth would only be right if `inner` captured nothing, because then `__closure__` would be `None`.",
+      "source": "CPython docs 3.13 — Language Reference, The standard type hierarchy (user-defined functions, __closure__)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "closures",
+        "cell",
+        "introspection"
+      ]
+    },
+    {
+      "id": "q020301011",
+      "skill_id": "sk020301",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef make():\n    msgs = []\n    def add(m):\n        msgs.append(m)\n        return len(msgs)\n    return add\na = make()\nb = make()\nprint(a(\"x\"), a(\"y\"), b(\"z\"))\n```",
+      "question_en": "What does the following code print?\n```python\ndef make():\n    msgs = []\n    def add(m):\n        msgs.append(m)\n        return len(msgs)\n    return add\na = make()\nb = make()\nprint(a(\"x\"), a(\"y\"), b(\"z\"))\n```",
+      "options_es": [
+        "1 2 3",
+        "1 2 1",
+        "1 1 1",
+        "3 3 3"
+      ],
+      "options_en": [
+        "1 2 3",
+        "1 2 1",
+        "1 1 1",
+        "3 3 3"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cada llamada a `make()` crea un marco nuevo y, con él, una lista `msgs` nueva: `a` y `b` son closures independientes. Por eso `a` cuenta 1 y 2, mientras `b` empieza otra vez en 1. La opción `1 2 3` es la trampa clásica de suponer que `msgs` se comparte, como ocurriría con una variable global o con un argumento por defecto mutable. Fíjate también en que `msgs.append` no reasigna `msgs`, así que aquí no hace falta `nonlocal`.",
+      "explanation_en": "Every call to `make()` builds a fresh frame and with it a fresh `msgs` list: `a` and `b` are independent closures. That is why `a` counts 1 and 2 while `b` starts over at 1. The `1 2 3` option is the classic trap of assuming `msgs` is shared, which is what would happen with a global or with a mutable default argument. Note too that `msgs.append` mutates rather than rebinds `msgs`, so no `nonlocal` is needed here.",
+      "source": "Fluent Python 2e (Ramalho), ch. 9 — Closures",
+      "expected_time_ms": 35000,
+      "tags": [
+        "closures",
+        "state",
+        "mutation"
+      ]
+    },
+    {
+      "id": "q020301012",
+      "skill_id": "sk020301",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef outer():\n    n = 1\n    def inner():\n        return n\n    n = 99\n    return inner\nprint(outer()())\n```",
+      "question_en": "What does the following code print?\n```python\ndef outer():\n    n = 1\n    def inner():\n        return n\n    n = 99\n    return inner\nprint(outer()())\n```",
+      "options_es": [
+        "1",
+        "None",
+        "99",
+        "NameError: name 'n' is not defined"
+      ],
+      "options_en": [
+        "1",
+        "None",
+        "99",
+        "NameError: name 'n' is not defined"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El closure captura la VARIABLE, no una copia de su valor en el momento de definir `inner`. La celda de `n` se comparte, y cuando `inner` se ejecuta ya vale `99`. La respuesta `1` es la intuición errónea de que el valor queda congelado al definir la función anidada: es la misma confusión que produce el problema de la vinculación tardía en los bucles. La búsqueda se resuelve al llamar, no al definir.",
+      "explanation_en": "The closure captures the VARIABLE, not a snapshot of its value at the time `inner` was defined. The cell for `n` is shared, and by the time `inner` runs it already holds `99`. Answering `1` is the wrong intuition that the value is frozen when the nested function is defined — the same confusion behind the late-binding-in-a-loop problem. The lookup happens at call time, not at definition time.",
+      "source": "CPython docs 3.13 — Language Reference, Execution model (naming and binding)",
+      "expected_time_ms": 40000,
+      "tags": [
+        "closures",
+        "late-binding",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q020301013",
+      "skill_id": "sk020301",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nx = \"global\"\ndef outer():\n    x = \"outer\"\n    def inner():\n        global x\n        x = \"inner\"\n    inner()\n    return x\nprint(outer(), x)\n```",
+      "question_en": "What does the following code print?\n```python\nx = \"global\"\ndef outer():\n    x = \"outer\"\n    def inner():\n        global x\n        x = \"inner\"\n    inner()\n    return x\nprint(outer(), x)\n```",
+      "options_es": [
+        "inner inner",
+        "inner global",
+        "outer global",
+        "outer inner"
+      ],
+      "options_en": [
+        "inner inner",
+        "inner global",
+        "outer global",
+        "outer inner"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`global x` salta el ámbito envolvente por completo y va directo al módulo: reasigna la `x` global a `\"inner\"` y deja intacta la `x` local de `outer`, que sigue valiendo `\"outer\"`. La opción `inner inner` sería la respuesta si la palabra clave fuera `nonlocal`, que es justo la que la mayoría espera aquí. `outer global` supone erróneamente que la asignación dentro de `inner` no sale de su propio ámbito.",
+      "explanation_en": "`global x` skips the enclosing scope entirely and goes straight to module level: it rebinds the global `x` to `\"inner\"` and leaves `outer`'s local `x` untouched, still `\"outer\"`. The `inner inner` option is what you would get with `nonlocal`, which is exactly the keyword most people expect here. `outer global` wrongly assumes the assignment inside `inner` never escapes its own scope.",
+      "source": "CPython docs 3.13 — Language Reference, The global statement and The nonlocal statement",
+      "expected_time_ms": 50000,
+      "tags": [
+        "closures",
+        "global",
+        "nonlocal",
+        "scope"
+      ]
+    },
+    {
+      "id": "q020301014",
+      "skill_id": "sk020301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Una función anidada `inner` solo usa sus propios parámetros y variables locales, sin tocar nada del ámbito que la contiene. ¿Qué vale `inner.__closure__`?",
+      "question_en": "A nested function `inner` only uses its own parameters and local variables, touching nothing from the enclosing scope. What is `inner.__closure__`?",
+      "options_es": [
+        "`None`",
+        "Una tupla vacía, `()`",
+        "Una tupla con una celda cuyo `cell_contents` es `None`",
+        "Nada: acceder al atributo lanza `AttributeError`"
+      ],
+      "options_en": [
+        "`None`",
+        "An empty tuple, `()`",
+        "A one-element tuple whose cell's `cell_contents` is `None`",
+        "Nothing: accessing the attribute raises `AttributeError`"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sin variables libres no hay celdas que guardar, y CPython deja `__closure__` en `None`. La tupla vacía es la suposición más razonable y por eso la más tentadora, pero el atributo distingue \"no es un closure\" (`None`) de \"es un closure\" (tupla de celdas), y esa distinción es la que permite comprobar con una sola condición si una función captura estado. El `AttributeError` tampoco ocurre: toda función definida por el usuario expone `__closure__`. Anidar una función no basta para crear un closure; hace falta referenciar un nombre del ámbito envolvente.",
+      "explanation_en": "With no free variables there are no cells to store, and CPython leaves `__closure__` as `None`. The empty tuple is the reasonable guess and therefore the tempting one, but the attribute deliberately distinguishes \"not a closure\" (`None`) from \"a closure\" (a tuple of cells), and that distinction is what lets you test in one condition whether a function captures state. `AttributeError` does not happen either: every user-defined function exposes `__closure__`. Nesting alone does not make a closure; you have to reference a name from the enclosing scope.",
+      "source": "CPython docs 3.13 — Language Reference, The standard type hierarchy (user-defined functions)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "closures",
+        "introspection"
+      ]
+    },
+    {
+      "id": "q020301015",
+      "skill_id": "sk020301",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál de estas funciones internas NO forma un closure?",
+      "question_en": "Which of these inner functions does NOT form a closure?",
+      "options_es": [
+        "Una que lee una variable definida en el cuerpo de la función que la contiene",
+        "Una que solo usa sus propios parámetros y sus variables locales",
+        "Una que reasigna, con `nonlocal`, una variable de la función que la contiene",
+        "Una que lee un parámetro de la función que la contiene"
+      ],
+      "options_en": [
+        "One that reads a variable defined in the body of the enclosing function",
+        "One that only uses its own parameters and local variables",
+        "One that rebinds, via `nonlocal`, a variable of the enclosing function",
+        "One that reads a parameter of the enclosing function"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un closure existe cuando la función interna referencia al menos un nombre del ámbito envolvente: da igual que sea una variable local, un parámetro, que se lea o que se reasigne con `nonlocal`. Si la función interna se basta con lo suyo, es simplemente una función anidada. El error habitual es creer que toda función definida dentro de otra ya es un closure, o que hace falta `nonlocal` para que lo sea. Nota aparte: leer una variable GLOBAL tampoco crea un closure, porque se resuelve en el espacio de nombres del módulo, no en celdas.",
+      "explanation_en": "A closure exists when the inner function references at least one name from the enclosing scope — it makes no difference whether that name is a local, a parameter, read-only, or rebound with `nonlocal`. If the inner function needs nothing from outside, it is just a nested function. The common error is believing that any function defined inside another is already a closure, or that `nonlocal` is required for one. Side note: reading a GLOBAL does not create a closure either, because it resolves through the module namespace rather than through cells.",
+      "source": "CPython docs 3.13 — Glossary, closure; Language Reference, Execution model",
+      "expected_time_ms": 25000,
+      "tags": [
+        "closures",
+        "definition"
+      ]
+    },
+    {
+      "id": "q020301016",
+      "skill_id": "sk020301",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una función anidada que solo LEE una variable del ámbito envolvente, sin declarar `nonlocal`, ya es un closure: esa variable aparece como celda en `__closure__`.",
+      "question_en": "A nested function that merely READS a variable from the enclosing scope, without declaring `nonlocal`, is already a closure: that variable shows up as a cell in `__closure__`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Leer basta. En cuanto la función interna referencia un nombre del ámbito envolvente, el compilador lo marca como variable libre y crea una celda; la palabra clave `nonlocal` solo hace falta para REASIGNAR ese nombre, no para acceder a él. Quien contesta \"Falso\" suele haber aprendido `nonlocal` a la vez que los closures y los da por inseparables, o confunde este caso con el de las variables globales, que efectivamente no se capturan en celdas.",
+      "explanation_en": "Reading is enough. As soon as the inner function references a name from the enclosing scope, the compiler marks it as a free variable and creates a cell; the `nonlocal` keyword is needed only to REBIND that name, not to read it. People who answer \"False\" usually learned `nonlocal` alongside closures and treat them as inseparable, or confuse this with the global case, where no cell is created.",
+      "source": "CPython docs 3.13 — Language Reference, Naming and binding (free variables)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "closures",
+        "nonlocal",
+        "scope"
+      ]
+    },
+    {
+      "id": "q020301017",
+      "skill_id": "sk020301",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Completa el nombre del atributo de una función que contiene la tupla de celdas con sus variables libres: `f.___`",
+      "question_en": "Complete the name of the function attribute holding the tuple of cells for its free variables: `f.___`",
+      "options_es": null,
+      "options_en": null,
+      "correct_answer_es": "__closure__",
+      "correct_answer_en": "__closure__",
+      "explanation_es": "`f.__closure__` es `None` si la función no captura nada, o una tupla de objetos `cell` alineada con `f.__code__.co_freevars`, de modo que `f.__closure__[i].cell_contents` da el valor capturado para `co_freevars[i]`. Es la vía directa para comprobar qué ha capturado realmente una función en lugar de suponerlo.",
+      "explanation_en": "`f.__closure__` is `None` when the function captures nothing, or a tuple of `cell` objects aligned with `f.__code__.co_freevars`, so that `f.__closure__[i].cell_contents` gives the captured value for `co_freevars[i]`. It is the direct way to check what a function actually captured instead of assuming it.",
+      "source": "CPython docs 3.13 — Language Reference, The standard type hierarchy (user-defined functions)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "closures",
+        "introspection",
+        "cell"
+      ]
+    },
+
+    {
+      "id": "q020302010",
+      "skill_id": "sk020302",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef deco(func):\n    print(\"decorando\")\n    return func\n@deco\ndef f():\n    print(\"llamando\")\nprint(\"listo\")\nf()\n```",
+      "question_en": "What does the following code print?\n```python\ndef deco(func):\n    print(\"decorating\")\n    return func\n@deco\ndef f():\n    print(\"calling\")\nprint(\"ready\")\nf()\n```",
+      "options_es": [
+        "listo\\ndecorando\\nllamando",
+        "listo\\nllamando",
+        "decorando\\nlisto\\nllamando",
+        "decorando\\nllamando\\nlisto"
+      ],
+      "options_en": [
+        "ready\\ndecorating\\ncalling",
+        "ready\\ncalling",
+        "decorating\\nready\\ncalling",
+        "decorating\\ncalling\\nready"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El decorador se APLICA al definir la función, no al llamarla: `deco(f)` se ejecuta en cuanto el intérprete llega a `def f`, antes que cualquier línea posterior. Por eso `decorando` sale primero, luego `listo` y solo al final `llamando`. Las opciones que ponen `listo` en primer lugar asumen el modelo mental equivocado de que `@deco` es perezoso y se dispara en la llamada. La cuarta invierte las dos últimas líneas y olvida que `f()` está después de `print(\"listo\")`.",
+      "explanation_en": "The decorator is APPLIED at definition time, not at call time: `deco(f)` runs the moment the interpreter reaches `def f`, before any later line. So `decorating` comes first, then `ready`, and only at the end `calling`. The options that put `ready` first assume the wrong mental model in which `@deco` is lazy and fires on the call. The fourth swaps the last two lines and forgets that `f()` comes after `print(\"ready\")`.",
+      "source": "PEP 318 — Decorators for Functions and Methods",
+      "expected_time_ms": 35000,
+      "tags": [
+        "decorators",
+        "definition-time",
+        "execution-order"
+      ]
+    },
+    {
+      "id": "q020302011",
+      "skill_id": "sk020302",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef deco(func):\n    def wrapper(*a, **k):\n        func(*a, **k)\n    return wrapper\n@deco\ndef add(a, b):\n    return a + b\nprint(add(2, 3))\n```",
+      "question_en": "What does the following code print?\n```python\ndef deco(func):\n    def wrapper(*a, **k):\n        func(*a, **k)\n    return wrapper\n@deco\ndef add(a, b):\n    return a + b\nprint(add(2, 3))\n```",
+      "options_es": [
+        "5",
+        "23",
+        "TypeError: wrapper() takes 0 positional arguments but 2 were given",
+        "None"
+      ],
+      "options_en": [
+        "5",
+        "23",
+        "TypeError: wrapper() takes 0 positional arguments but 2 were given",
+        "None"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El wrapper llama a `func(*a, **k)` pero NO devuelve su resultado, y una función sin `return` devuelve `None`. El decorador funciona, recibe bien los argumentos y calcula el 5: simplemente lo tira. Contestar `5` es el error más frecuente al escribir decoradores propios, porque el código se lee como correcto y el fallo solo aparece con funciones que devuelven algo. El `TypeError` sería la respuesta si el wrapper se hubiera definido como `def wrapper()`, sin `*a, **k`.",
+      "explanation_en": "The wrapper calls `func(*a, **k)` but does NOT return its result, and a function without a `return` returns `None`. The decorator works, forwards the arguments correctly and computes the 5 — it just throws it away. Answering `5` is the single most common bug when writing your own decorators, because the code reads as correct and the failure only shows up with functions that return something. The `TypeError` would be the answer if the wrapper had been written `def wrapper()` with no `*a, **k`.",
+      "source": "Effective Python 2e (Slatkin), Item 26 — Define Function Decorators with functools.wraps",
+      "expected_time_ms": 40000,
+      "tags": [
+        "decorators",
+        "wrapper",
+        "return",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q020302012",
+      "skill_id": "sk020302",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef a(f):\n    def w():\n        return \"a(\" + f() + \")\"\n    return w\ndef b(f):\n    def w():\n        return \"b(\" + f() + \")\"\n    return w\n@a\n@b\ndef base():\n    return \"base\"\nprint(base())\n```",
+      "question_en": "What does the following code print?\n```python\ndef a(f):\n    def w():\n        return \"a(\" + f() + \")\"\n    return w\ndef b(f):\n    def w():\n        return \"b(\" + f() + \")\"\n    return w\n@a\n@b\ndef base():\n    return \"base\"\nprint(base())\n```",
+      "options_es": [
+        "a(b(base))",
+        "b(a(base))",
+        "a(base)",
+        "base"
+      ],
+      "options_en": [
+        "a(b(base))",
+        "b(a(base))",
+        "a(base)",
+        "base"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los decoradores apilados se aplican de abajo arriba: primero `base = b(base)` y después `base = a(base)`, es decir `base = a(b(base))`. En la EJECUCIÓN, en cambio, el flujo entra por el más externo, así que `a` añade su paréntesis primero y `b` queda dentro. La opción `b(a(base))` es la que sale de leer los decoradores de arriba abajo, el orden equivocado. Recordar la equivalencia textual `a(b(base))` es la forma más fiable de no dudar.",
+      "explanation_en": "Stacked decorators are applied bottom-up: first `base = b(base)`, then `base = a(base)`, i.e. `base = a(b(base))`. At RUN time, though, control enters through the outermost one, so `a` adds its parentheses first and `b` ends up inside. The `b(a(base))` option is what you get from reading the decorators top-down, which is the wrong order. Remembering the textual equivalence `a(b(base))` is the most reliable way not to hesitate.",
+      "source": "PEP 318 — Decorators for Functions and Methods",
+      "expected_time_ms": 45000,
+      "tags": [
+        "decorators",
+        "stacking",
+        "order"
+      ]
+    },
+    {
+      "id": "q020302013",
+      "skill_id": "sk020302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un decorador cuyo wrapper se declara `def wrapper(*args, **kwargs)` se aplica a un método de instancia. Al llamar `obj.metodo()`, ¿qué contiene `args[0]`?",
+      "question_en": "A decorator whose wrapper is declared `def wrapper(*args, **kwargs)` is applied to an instance method. When `obj.method()` is called, what does `args[0]` hold?",
+      "options_es": [
+        "El nombre del método, como cadena",
+        "La instancia `obj`, es decir el `self` del método",
+        "Nada: `args` llega vacía y `self` viaja siempre en `kwargs`",
+        "La clase de `obj`, no la instancia"
+      ],
+      "options_en": [
+        "The method name, as a string",
+        "The instance `obj`, that is, the method's `self`",
+        "Nothing: `args` arrives empty and `self` always travels in `kwargs`",
+        "The class of `obj`, not the instance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El decorador se aplica a una función corriente dentro del cuerpo de la clase, antes de que exista ninguna instancia. Quien acaba guardado en la clase es el `wrapper`, y es él quien se convierte en método: al llamar `obj.metodo()` el protocolo de descriptores inyecta la instancia como primer argumento posicional del wrapper. Por eso `args[0] is obj`. La opción de `kwargs` refleja la idea errónea de que `self` recibe un trato especial y separado; la de la clase confunde este caso con `@classmethod`, donde lo que llega es `cls`. Consecuencia práctica: un decorador escrito con `*args, **kwargs` sirve igual para funciones y para métodos.",
+      "explanation_en": "The decorator is applied to an ordinary function inside the class body, before any instance exists. What ends up stored on the class is the `wrapper`, and it is the wrapper that becomes the method: calling `obj.method()` makes the descriptor protocol inject the instance as the wrapper's first positional argument. Hence `args[0] is obj`. The `kwargs` option reflects the mistaken idea that `self` gets special, separate handling; the class option confuses this with `@classmethod`, where `cls` is what arrives. Practical upshot: a decorator written with `*args, **kwargs` works for plain functions and methods alike.",
+      "source": "CPython docs 3.13 — Language Reference, The standard type hierarchy (instance methods) and Implementing descriptors",
+      "expected_time_ms": 45000,
+      "tags": [
+        "decorators",
+        "methods",
+        "self",
+        "descriptors"
+      ]
+    },
+    {
+      "id": "q020302014",
+      "skill_id": "sk020302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Desde Python 3.9 (PEP 614), ¿qué expresiones admite la gramática después de `@` en una línea de decorador?",
+      "question_en": "Since Python 3.9 (PEP 614), what expressions does the grammar allow after `@` on a decorator line?",
+      "options_es": [
+        "Solo un nombre simple, sin puntos ni llamadas",
+        "Solo un nombre punteado, opcionalmente seguido de una llamada",
+        "Cualquier expresión válida, por ejemplo `@botones[i].callback` o `@deco_a if flag else deco_b`",
+        "Cualquier expresión, siempre que se encierre entre paréntesis"
+      ],
+      "options_en": [
+        "Only a plain name, with no dots or calls",
+        "Only a dotted name, optionally followed by a call",
+        "Any valid expression, for example `@buttons[i].callback` or `@deco_a if flag else deco_b`",
+        "Any expression, as long as it is wrapped in parentheses"
+      ],
+      "correct_index": 2,
+      "explanation_es": "PEP 614 eliminó la restricción sintáctica: hoy tras `@` cabe cualquier expresión, y el único requisito real es que el resultado sea invocable con un argumento. La segunda opción describe con precisión la regla ANTERIOR a 3.9 (`dotted_name` con llamada opcional), y por eso es la más tentadora para quien aprendió decoradores antes y recuerda haber tenido que crear una variable auxiliar. La cuarta inventa una obligación de paréntesis que nunca existió.",
+      "explanation_en": "PEP 614 removed the syntactic restriction: today any expression may follow `@`, and the only real requirement is that the result be callable with one argument. The second option describes precisely the PRE-3.9 rule (a dotted name with an optional call), which is why it is the tempting one for anyone who learned decorators earlier and remembers having to introduce a helper variable. The fourth invents a parenthesis requirement that never existed.",
+      "source": "PEP 614 — Relaxing Grammar Restrictions On Decorators",
+      "expected_time_ms": 30000,
+      "tags": [
+        "decorators",
+        "syntax",
+        "pep614"
+      ]
+    },
+    {
+      "id": "q020302015",
+      "skill_id": "sk020302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Al combinar un decorador propio con `@staticmethod` sobre el mismo método, ¿cuál es el orden correcto y por qué?",
+      "question_en": "When combining your own decorator with `@staticmethod` on the same method, what is the correct order and why?",
+      "options_es": [
+        "`@mi_deco` arriba y `@staticmethod` debajo, para que tu decorador reciba ya el descriptor",
+        "El orden es indiferente, porque `staticmethod` no modifica la función",
+        "Nunca deben combinarse: hay que convertir el método en función de módulo",
+        "`@staticmethod` arriba y `@mi_deco` debajo, para que tu decorador envuelva la función normal y `staticmethod` se aplique al resultado"
+      ],
+      "options_en": [
+        "`@my_deco` on top and `@staticmethod` below, so your decorator receives the descriptor",
+        "The order does not matter, because `staticmethod` does not modify the function",
+        "They should never be combined: turn the method into a module-level function instead",
+        "`@staticmethod` on top and `@my_deco` below, so your decorator wraps the plain function and `staticmethod` is applied to the result"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los decoradores se aplican de abajo arriba, así que `@staticmethod` colocado arriba es el último en aplicarse y lo que queda guardado en la clase es el descriptor: exactamente lo que hace falta para que `Clase.metodo()` funcione sin `self`. Si `@staticmethod` fuera el de abajo, tu decorador recibiría un objeto `staticmethod` en lugar de una función y, sobre todo, en la clase quedaría tu `wrapper`, una función corriente que volvería a comportarse como método de instancia. La opción de que el orden da igual es la más tentadora porque el código a veces parece funcionar al llamar desde la clase, y falla al llamar desde una instancia.",
+      "explanation_en": "Decorators apply bottom-up, so `@staticmethod` placed on top is applied last and what ends up stored on the class is the descriptor — exactly what `Class.method()` needs in order to work without `self`. If `@staticmethod` were the lower one, your decorator would receive a `staticmethod` object rather than a function and, more importantly, the class would hold your `wrapper`, an ordinary function that behaves as an instance method again. The \"order does not matter\" option is tempting because the code sometimes appears to work when called on the class and only breaks when called on an instance.",
+      "source": "CPython docs 3.13 — Built-in Functions, staticmethod",
+      "expected_time_ms": 45000,
+      "tags": [
+        "decorators",
+        "staticmethod",
+        "stacking",
+        "methods"
+      ]
+    },
+    {
+      "id": "q020302016",
+      "skill_id": "sk020302",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Aunque el wrapper no lleve `@functools.wraps(func)`, `help(f)` sigue mostrando el docstring de la función original, porque el wrapper la llama por dentro.",
+      "question_en": "Even without `@functools.wraps(func)` on the wrapper, `help(f)` still shows the original function's docstring, because the wrapper calls it internally.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. Tras decorar, el nombre `f` está ligado al `wrapper`, e `help()` lee el `__doc__` y el `__name__` de ese objeto, no de lo que se ejecute dentro. Sin `functools.wraps` verás el docstring del wrapper o ninguno, además de un `__name__` igual a `\"wrapper\"` y una firma `(*args, **kwargs)` inútil. El razonamiento \"pero si al final llama a la original\" es justo la trampa: llamar no es lo mismo que heredar metadatos. `functools.wraps` copia `__name__`, `__doc__`, `__module__`, `__qualname__` y `__dict__`, y añade `__wrapped__`.",
+      "explanation_en": "False. After decoration the name `f` is bound to the `wrapper`, and `help()` reads that object's `__doc__` and `__name__`, not those of whatever runs inside. Without `functools.wraps` you get the wrapper's docstring or none at all, plus a `__name__` of `\"wrapper\"` and a useless `(*args, **kwargs)` signature. The reasoning \"but it calls the original in the end\" is precisely the trap: calling is not inheriting metadata. `functools.wraps` copies `__name__`, `__doc__`, `__module__`, `__qualname__` and `__dict__`, and adds `__wrapped__`.",
+      "source": "CPython docs 3.13 — functools.wraps",
+      "expected_time_ms": 30000,
+      "tags": [
+        "decorators",
+        "functools",
+        "wraps",
+        "metadata"
+      ]
+    },
+    {
+      "id": "q020302017",
+      "skill_id": "sk020302",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Tras aplicar `@functools.wraps(func)`, el wrapper expone un atributo que apunta a la función original sin decorar. Completa su nombre: `wrapper.___`",
+      "question_en": "After applying `@functools.wraps(func)`, the wrapper exposes an attribute pointing back at the original undecorated function. Complete its name: `wrapper.___`",
+      "options_es": null,
+      "options_en": null,
+      "correct_answer_es": "__wrapped__",
+      "correct_answer_en": "__wrapped__",
+      "explanation_es": "`functools.wraps` añade `wrapper.__wrapped__ = func`, lo que permite recuperar la función sin decorar para inspeccionarla o llamarla saltándose la capa del decorador. Es también lo que hace que `inspect.signature(wrapper)` devuelva la firma real de la función original en vez de `(*args, **kwargs)`, ya que sigue la cadena de `__wrapped__` salvo que se pase `follow_wrapped=False`.",
+      "explanation_en": "`functools.wraps` sets `wrapper.__wrapped__ = func`, which lets you recover the undecorated function to inspect it or to call it bypassing the decorator layer. It is also what makes `inspect.signature(wrapper)` report the original function's real signature instead of `(*args, **kwargs)`, since it follows the `__wrapped__` chain unless `follow_wrapped=False` is passed.",
+      "source": "CPython docs 3.13 — functools.wraps and inspect.signature",
+      "expected_time_ms": 50000,
+      "tags": [
+        "decorators",
+        "functools",
+        "wraps",
+        "introspection"
+      ]
+    },
+
+    {
+      "id": "q020303010",
+      "skill_id": "sk020303",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué ocurre al ejecutar el siguiente código?\n```python\ndef repeat(n):\n    def deco(func):\n        def wrapper():\n            for _ in range(n):\n                func()\n        return wrapper\n    return deco\n@repeat\ndef hello():\n    print(\"hi\")\nhello()\n```",
+      "question_en": "What happens when the following code runs?\n```python\ndef repeat(n):\n    def deco(func):\n        def wrapper():\n            for _ in range(n):\n                func()\n        return wrapper\n    return deco\n@repeat\ndef hello():\n    print(\"hi\")\nhello()\n```",
+      "options_es": [
+        "Lanza `TypeError: deco() missing 1 required positional argument: 'func'`",
+        "Imprime `hi` una sola vez",
+        "Lanza `TypeError: 'function' object cannot be interpreted as an integer` dentro de `range`",
+        "No imprime nada y termina sin error"
+      ],
+      "options_en": [
+        "Raises `TypeError: deco() missing 1 required positional argument: 'func'`",
+        "Prints `hi` once",
+        "Raises `TypeError: 'function' object cannot be interpreted as an integer` inside `range`",
+        "Prints nothing and finishes without error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Falta el par de paréntesis: con `@repeat` (en vez de `@repeat(3)`) la función se pasa como si fuera `n`, así que `repeat(hello)` devuelve `deco` y el nombre `hello` queda ligado a `deco`. El fallo no aparece en la definición sino en la llamada: `hello()` es en realidad `deco()` sin su argumento `func`. La tercera opción es la respuesta más razonada y aun así falsa: nunca se llega a `range(n)`, porque `wrapper` jamás se construye. Este desfase entre dónde está el error y dónde estalla es lo que hace tan difícil de diagnosticar el olvido de los paréntesis.",
+      "explanation_en": "The parentheses are missing: with `@repeat` instead of `@repeat(3)`, the function itself is passed as `n`, so `repeat(hello)` returns `deco` and the name `hello` is bound to `deco`. The failure surfaces not at definition but at the call: `hello()` is really `deco()` with its `func` argument missing. The third option is the best-reasoned wrong answer: `range(n)` is never reached, because `wrapper` is never built. That gap between where the mistake is and where it blows up is what makes the missing parentheses so hard to diagnose.",
+      "source": "PEP 318 — Decorators for Functions and Methods",
+      "expected_time_ms": 45000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "gotcha",
+        "parentheses"
+      ]
+    },
+    {
+      "id": "q020303011",
+      "skill_id": "sk020303",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef factory(tag):\n    print(\"factory\", tag)\n    def deco(func):\n        print(\"deco\", tag)\n        def wrapper():\n            print(\"wrapper\", tag)\n            return func()\n        return wrapper\n    return deco\n@factory(\"A\")\ndef f():\n    print(\"f\")\nprint(\"---\")\nf()\n```",
+      "question_en": "What does the following code print?\n```python\ndef factory(tag):\n    print(\"factory\", tag)\n    def deco(func):\n        print(\"deco\", tag)\n        def wrapper():\n            print(\"wrapper\", tag)\n            return func()\n        return wrapper\n    return deco\n@factory(\"A\")\ndef f():\n    print(\"f\")\nprint(\"---\")\nf()\n```",
+      "options_es": [
+        "---\\nfactory A\\ndeco A\\nwrapper A\\nf",
+        "factory A\\ndeco A\\n---\\nwrapper A\\nf",
+        "factory A\\n---\\ndeco A\\nwrapper A\\nf",
+        "deco A\\nfactory A\\n---\\nwrapper A\\nf"
+      ],
+      "options_en": [
+        "---\\nfactory A\\ndeco A\\nwrapper A\\nf",
+        "factory A\\ndeco A\\n---\\nwrapper A\\nf",
+        "factory A\\n---\\ndeco A\\nwrapper A\\nf",
+        "deco A\\nfactory A\\n---\\nwrapper A\\nf"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los dos primeros niveles se ejecutan al definir `f`: primero `factory(\"A\")` para obtener el decorador, e inmediatamente después `deco(f)` para aplicarlo. Solo el tercer nivel, `wrapper`, espera a la llamada. De ahí el orden `factory A`, `deco A`, `---`, `wrapper A`, `f`. La opción que sitúa `---` entre `factory` y `deco` es la más fina: separa correctamente los niveles pero supone que la aplicación del decorador se retrasa, cuando `factory(\"A\")(f)` ocurre entero en la misma línea `@`. La cuarta invierte factory y deco, que es leer el anidamiento al revés.",
+      "explanation_en": "The first two levels run when `f` is defined: `factory(\"A\")` first, to obtain the decorator, then immediately `deco(f)` to apply it. Only the third level, `wrapper`, waits for the call. Hence the order `factory A`, `deco A`, `---`, `wrapper A`, `f`. The option that puts `---` between `factory` and `deco` is the subtlest: it separates the levels correctly but assumes the application is deferred, when `factory(\"A\")(f)` happens in full on the same `@` line. The fourth swaps factory and deco, which is reading the nesting backwards.",
+      "source": "PEP 318 — Decorators for Functions and Methods",
+      "expected_time_ms": 50000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "execution-order",
+        "definition-time"
+      ]
+    },
+    {
+      "id": "q020303012",
+      "skill_id": "sk020303",
+      "type": "code_output",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef mul(n):\n    def deco(func):\n        def wrapper(x):\n            return func(x) * n\n        return wrapper\n    return deco\n@mul(2)\n@mul(3)\ndef val(x):\n    return x + 1\nprint(val(1))\n```",
+      "question_en": "What does the following code print?\n```python\ndef mul(n):\n    def deco(func):\n        def wrapper(x):\n            return func(x) * n\n        return wrapper\n    return deco\n@mul(2)\n@mul(3)\ndef val(x):\n    return x + 1\nprint(val(1))\n```",
+      "options_es": [
+        "8",
+        "7",
+        "12",
+        "6"
+      ],
+      "options_en": [
+        "8",
+        "7",
+        "12",
+        "6"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`val` queda como `mul(2)(mul(3)(val))`. Al llamar `val(1)`: el wrapper externo (n=2) llama al interno (n=3), que llama a la función original y obtiene `1 + 1 = 2`; el interno devuelve `2 * 3 = 6` y el externo `6 * 2 = 12`. `6` sale de aplicar solo el decorador interno y olvidar el externo; `7`, de multiplicar el ARGUMENTO en vez del resultado (`1*3*2 = 6`, y sumar el `1` al final); `8`, de sumar en el nivel externo en lugar de multiplicar (`6 + 2`). Como aquí ambos factores se multiplican, el orden no cambia el resultado, pero sí lo cambiaría con operaciones no conmutativas.",
+      "explanation_en": "`val` becomes `mul(2)(mul(3)(val))`. Calling `val(1)`: the outer wrapper (n=2) calls the inner one (n=3), which calls the original function and gets `1 + 1 = 2`; the inner returns `2 * 3 = 6` and the outer `6 * 2 = 12`. `6` comes from applying only the inner decorator and forgetting the outer one; `7`, from multiplying the ARGUMENT instead of the result (`1*3*2 = 6`, then adding the `1` last); `8`, from adding at the outer level instead of multiplying (`6 + 2`). Because both factors are multiplications here the order does not change the result, but it would with non-commutative operations.",
+      "source": "Fluent Python 2e (Ramalho), ch. 9 — Parameterized decorators",
+      "expected_time_ms": 55000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "stacking"
+      ]
+    },
+    {
+      "id": "q020303013",
+      "skill_id": "sk020303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se escribe un decorador que funcione tanto en la forma `@cache` como en la forma `@cache(ttl=60)`?",
+      "question_en": "How do you write a decorator that works both as `@cache` and as `@cache(ttl=60)`?",
+      "options_es": [
+        "No se puede: hay que publicar dos decoradores distintos",
+        "Envolviendo el decorador con `@functools.wraps`, que distingue los dos casos",
+        "Añadiendo un cuarto nivel de anidamiento a la fábrica",
+        "Con la firma `def cache(func=None, *, ttl=0)`: si `func` es `None` se devuelve `functools.partial(cache, ttl=ttl)`, y si no, se decora directamente"
+      ],
+      "options_en": [
+        "You cannot: you have to ship two separate decorators",
+        "By wrapping the decorator in `@functools.wraps`, which tells the two cases apart",
+        "By adding a fourth level of nesting to the factory",
+        "With the signature `def cache(func=None, *, ttl=0)`: if `func` is `None`, return `functools.partial(cache, ttl=ttl)`; otherwise decorate directly"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La clave es que en la forma sin paréntesis Python pasa la función como primer argumento posicional, y en la forma con paréntesis no pasa nada posicional. Hacer `func` opcional y los ajustes solo por palabra clave (`*`) permite distinguir los dos casos y devolver una `partial` preconfigurada en el segundo. `functools.wraps` no interviene en esto: solo copia metadatos. Un cuarto nivel de anidamiento no resuelve nada, porque el problema no es la profundidad sino cómo llega el primer argumento. Es exactamente el mecanismo por el que `functools.lru_cache` admite las dos formas desde Python 3.8.",
+      "explanation_en": "The key is that in the bare form Python passes the function as the first positional argument, while in the called form nothing positional is passed. Making `func` optional and the settings keyword-only (`*`) lets you tell the two cases apart and return a preconfigured `partial` in the second. `functools.wraps` plays no part here: it only copies metadata. A fourth nesting level solves nothing, because the problem is not depth but how the first argument arrives. This is exactly the mechanism by which `functools.lru_cache` accepts both forms since Python 3.8.",
+      "source": "Python Cookbook 3e (Beazley & Jones), ch. 9 — Metaprogramming",
+      "expected_time_ms": 50000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "optional-parentheses",
+        "partial"
+      ]
+    },
+    {
+      "id": "q020303014",
+      "skill_id": "sk020303",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En Python 3.13, ¿qué diferencia hay entre escribir `@functools.lru_cache` y `@functools.lru_cache()`?",
+      "question_en": "In Python 3.13, what is the difference between writing `@functools.lru_cache` and `@functools.lru_cache()`?",
+      "options_es": [
+        "Ninguna en la práctica: desde Python 3.8 la forma sin paréntesis está admitida y equivale a `maxsize=128`",
+        "Sin paréntesis el caché es ilimitado; con paréntesis se queda en 128 entradas",
+        "Sin paréntesis lanza `TypeError`, porque la función acaba donde se espera `maxsize`",
+        "Sin paréntesis el caché se comparte entre todas las funciones decoradas"
+      ],
+      "options_en": [
+        "None in practice: since Python 3.8 the bare form is supported and is equivalent to `maxsize=128`",
+        "Bare, the cache is unbounded; with parentheses it is capped at 128 entries",
+        "Bare it raises `TypeError`, because the function lands where `maxsize` is expected",
+        "Bare, the cache is shared across every decorated function"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`lru_cache` está escrito para aceptar las dos formas: si su primer argumento es invocable, lo trata como la función a decorar; si no, actúa como fábrica. Ambas dejan el `maxsize` por defecto de 128. La opción del `TypeError` describe lo que SÍ pasaría con una fábrica escrita a mano que no contemple ese caso, y por eso es tan tentadora: es el comportamiento normal de un decorador con argumentos. El caché nunca se comparte: cada función decorada tiene el suyo, con sus propios `cache_info()` y `cache_clear()`.",
+      "explanation_en": "`lru_cache` is written to accept both forms: if its first argument is callable, it treats it as the function to decorate; otherwise it acts as a factory. Either way `maxsize` keeps its default of 128. The `TypeError` option describes what WOULD happen with a hand-written factory that does not special-case this, which is why it is so tempting: that is the normal behaviour of a decorator with arguments. The cache is never shared: each decorated function gets its own, with its own `cache_info()` and `cache_clear()`.",
+      "source": "CPython docs 3.13 — functools.lru_cache",
+      "expected_time_ms": 35000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "functools",
+        "lru_cache"
+      ]
+    },
+    {
+      "id": "q020303015",
+      "skill_id": "sk020303",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En `def repeat(n): def deco(func): def wrapper(): ...`, el parámetro `n` es una variable libre capturada por closure y sigue disponible dentro de `wrapper` mucho después de que `repeat` haya terminado.",
+      "question_en": "In `def repeat(n): def deco(func): def wrapper(): ...`, the parameter `n` is a free variable captured by closure and remains available inside `wrapper` long after `repeat` has returned.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Ese es precisamente el motivo de los tres niveles: un decorador con argumentos no es más que un closure sobre sus parámetros. `repeat` devuelve y su marco desaparece, pero la celda que guarda `n` sigue viva porque `wrapper` la referencia, y se puede comprobar con `wrapper.__closure__`. Lo mismo vale para `func`, capturado en el segundo nivel. Sin closures habría que guardar la configuración en un atributo de la función o en una variable global, que es exactamente lo que este patrón evita.",
+      "explanation_en": "That is precisely why there are three levels: a decorator with arguments is nothing more than a closure over its parameters. `repeat` returns and its frame is gone, but the cell holding `n` stays alive because `wrapper` references it, as you can verify with `wrapper.__closure__`. The same goes for `func`, captured at the second level. Without closures you would have to stash the configuration on a function attribute or a global, which is exactly what this pattern avoids.",
+      "source": "Fluent Python 2e (Ramalho), ch. 9 — Parameterized decorators",
+      "expected_time_ms": 30000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "closures"
+      ]
+    },
+    {
+      "id": "q020303016",
+      "skill_id": "sk020303",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Un decorador que acepta argumentos necesita exactamente dos niveles de funciones anidadas.",
+      "question_en": "A decorator that takes arguments needs exactly two levels of nested functions.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso: hacen falta tres. El nivel exterior (`repeat(n)`) recibe los argumentos del decorador y devuelve el decorador de verdad; el intermedio (`deco(func)`) recibe la función y devuelve el envoltorio; el interior (`wrapper`) es el que sustituye a la función y se ejecuta en cada llamada. Contar dos es el error típico de trasladar el esquema del decorador sin argumentos, que sí tiene dos niveles; olvidar el tercero produce el fallo de que la función decorada acaba ligada al decorador en lugar de al envoltorio.",
+      "explanation_en": "False: three are needed. The outer level (`repeat(n)`) takes the decorator's arguments and returns the actual decorator; the middle one (`deco(func)`) takes the function and returns the wrapper; the inner one (`wrapper`) is what replaces the function and runs on every call. Counting two is the classic slip of carrying over the argument-less decorator shape, which does have two levels; dropping the third leaves the decorated function bound to the decorator instead of to the wrapper.",
+      "source": "PEP 318 — Decorators for Functions and Methods",
+      "expected_time_ms": 25000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "nesting"
+      ]
+    },
+    {
+      "id": "q020303017",
+      "skill_id": "sk020303",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Para que `@functools.lru_cache` guarde un número ilimitado de resultados, hay que pasarle `maxsize=___`",
+      "question_en": "To make `@functools.lru_cache` keep an unbounded number of results, you pass it `maxsize=___`",
+      "options_es": null,
+      "options_en": null,
+      "correct_answer_es": "None",
+      "correct_answer_en": "None",
+      "explanation_es": "`maxsize=None` desactiva el desalojo LRU y el caché crece sin límite, lo que es más rápido porque desaparece la contabilidad de uso reciente. Es lo mismo que hace `@functools.cache`, añadido en Python 3.9 como atajo de `lru_cache(maxsize=None)`. Cuidado: sin límite, el caché retiene referencias a los argumentos y a los resultados durante toda la vida del proceso.",
+      "explanation_en": "`maxsize=None` disables LRU eviction and lets the cache grow without bound, which is also faster because the recency bookkeeping disappears. It is exactly what `@functools.cache` does, added in Python 3.9 as a shorthand for `lru_cache(maxsize=None)`. Beware: unbounded, the cache holds references to arguments and results for the lifetime of the process.",
+      "source": "CPython docs 3.13 — functools.lru_cache and functools.cache",
+      "expected_time_ms": 30000,
+      "tags": [
+        "decorators",
+        "arguments",
+        "functools",
+        "lru_cache"
+      ]
+    },
+
+    {
+      "id": "q020304010",
+      "skill_id": "sk020304",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef deco(cls):\n    def factory(*args, **kwargs):\n        print(\"creando\")\n        return cls(*args, **kwargs)\n    return factory\n@deco\nclass A:\n    pass\na = A()\nprint(type(a).__name__)\n```",
+      "question_en": "What does the following code print?\n```python\ndef deco(cls):\n    def factory(*args, **kwargs):\n        print(\"creating\")\n        return cls(*args, **kwargs)\n    return factory\n@deco\nclass A:\n    pass\na = A()\nprint(type(a).__name__)\n```",
+      "options_es": [
+        "creando\\nfactory",
+        "creando\\nA",
+        "A",
+        "TypeError: 'function' object is not callable"
+      ],
+      "options_en": [
+        "creating\\nfactory",
+        "creating\\nA",
+        "A",
+        "TypeError: 'function' object is not callable"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Un decorador de clase puede devolver cualquier objeto: aquí el nombre `A` queda ligado a la función `factory`, no a la clase. `A()` llama a `factory`, que imprime `creando` y construye una instancia de la clase original, así que `type(a).__name__` es `\"A\"`. La primera opción confunde el tipo de la instancia con el nombre al que está ligado el constructor. Este patrón funciona, pero rompe `isinstance(x, A)` y la herencia (`class B(A)` fallaría), que es la razón por la que normalmente conviene devolver la clase.",
+      "explanation_en": "A class decorator may return any object: here the name `A` is bound to the `factory` function, not to the class. `A()` calls `factory`, which prints `creating` and builds an instance of the original class, so `type(a).__name__` is `\"A\"`. The first option confuses the instance's type with the name the constructor is bound to. The pattern works, but it breaks `isinstance(x, A)` and subclassing (`class B(A)` would fail), which is why returning the class is usually the right call.",
+      "source": "PEP 3129 — Class Decorators",
+      "expected_time_ms": 40000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "factory"
+      ]
+    },
+    {
+      "id": "q020304011",
+      "skill_id": "sk020304",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\ndef deco(cls):\n    print(\"deco\", cls.__name__)\n    return cls\n@deco\nclass A:\n    print(\"cuerpo\")\n@deco\nclass B(A):\n    pass\nprint(\"fin\")\n```",
+      "question_en": "What does the following code print?\n```python\ndef deco(cls):\n    print(\"deco\", cls.__name__)\n    return cls\n@deco\nclass A:\n    print(\"body\")\n@deco\nclass B(A):\n    pass\nprint(\"end\")\n```",
+      "options_es": [
+        "deco A\\ncuerpo\\ndeco B\\nfin",
+        "cuerpo\\ndeco A\\ndeco B\\ndeco B\\nfin",
+        "cuerpo\\ndeco A\\ndeco B\\nfin",
+        "cuerpo\\ndeco A\\nfin"
+      ],
+      "options_en": [
+        "deco A\\nbody\\ndeco B\\nend",
+        "body\\ndeco A\\ndeco B\\ndeco B\\nend",
+        "body\\ndeco A\\ndeco B\\nend",
+        "body\\ndeco A\\nend"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El cuerpo de la clase se ejecuta primero, como un bloque de código normal, y solo cuando la clase ya existe se le aplica el decorador: de ahí `cuerpo` antes que `deco A`. La primera opción invierte ese orden, que es el error más común. La segunda supone que heredar de una clase decorada vuelve a disparar el decorador sobre la base, algo que no ocurre: `deco` se ejecuta una vez por cada `@`, ni una más. La cuarta olvida que `B` también está decorada.",
+      "explanation_en": "The class body runs first, as an ordinary block of code, and only once the class exists is the decorator applied: hence `body` before `deco A`. The first option flips that order, which is the most common mistake. The second assumes that subclassing a decorated class re-fires the decorator on the base, which does not happen: `deco` runs once per `@`, no more. The fourth forgets that `B` is decorated too.",
+      "source": "PEP 3129 — Class Decorators",
+      "expected_time_ms": 45000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "execution-order",
+        "inheritance"
+      ]
+    },
+    {
+      "id": "q020304012",
+      "skill_id": "sk020304",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom dataclasses import dataclass\n@dataclass(frozen=True)\nclass P:\n    x: int\np = P(1)\ntry:\n    p.x = 2\nexcept Exception as e:\n    print(type(e).__name__)\n```",
+      "question_en": "What does the following code print?\n```python\nfrom dataclasses import dataclass\n@dataclass(frozen=True)\nclass P:\n    x: int\np = P(1)\ntry:\n    p.x = 2\nexcept Exception as e:\n    print(type(e).__name__)\n```",
+      "options_es": [
+        "TypeError",
+        "ValueError",
+        "No imprime nada: la asignación se ignora en silencio",
+        "FrozenInstanceError"
+      ],
+      "options_en": [
+        "TypeError",
+        "ValueError",
+        "Nothing is printed: the assignment is silently ignored",
+        "FrozenInstanceError"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`@dataclass(frozen=True)` genera `__setattr__` y `__delattr__` que lanzan `dataclasses.FrozenInstanceError`. `TypeError` es la respuesta tentadora porque es lo que lanzan las tuplas y otros inmutables del núcleo, pero aquí el error es propio del módulo; de hecho `FrozenInstanceError` hereda de `AttributeError`, así que `except AttributeError` también lo capturaría. La opción del silencio es la que descarta cualquiera que haya probado un `frozen` alguna vez: la inmutabilidad se hace cumplir de forma ruidosa, no ignorando la escritura.",
+      "explanation_en": "`@dataclass(frozen=True)` generates `__setattr__` and `__delattr__` that raise `dataclasses.FrozenInstanceError`. `TypeError` is the tempting answer because that is what tuples and other core immutables raise, but here the error belongs to the module; in fact `FrozenInstanceError` subclasses `AttributeError`, so `except AttributeError` would catch it too. The silent option is the one anyone who has ever tried `frozen` rules out: immutability is enforced loudly, not by ignoring the write.",
+      "source": "CPython docs 3.13 — dataclasses.dataclass (frozen) and dataclasses.FrozenInstanceError",
+      "expected_time_ms": 45000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "dataclasses",
+        "frozen"
+      ]
+    },
+    {
+      "id": "q020304013",
+      "skill_id": "sk020304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Dado `@a` sobre `@b` sobre `class C: ...`, ¿a qué equivale la definición?",
+      "question_en": "Given `@a` above `@b` above `class C: ...`, what is the definition equivalent to?",
+      "options_es": [
+        "`C = a(b(C))`",
+        "`C = b(a(C))`",
+        "`a` y `b` reciben cada uno la clase original por separado, y `C` queda ligada al resultado de `b`",
+        "Nada: sobre una clase solo se admite un decorador"
+      ],
+      "options_en": [
+        "`C = a(b(C))`",
+        "`C = b(a(C))`",
+        "`a` and `b` each receive the original class independently, and `C` is bound to `b`'s result",
+        "Nothing: only one decorator is allowed on a class"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Los decoradores de clase se apilan igual que los de función: de abajo arriba, así que el más cercano al `class` se aplica primero y su resultado alimenta al siguiente. La opción `b(a(C))` es la que sale de leerlos de arriba abajo. La tercera describe un modelo mental frecuente, el de dos transformaciones paralelas sobre la clase original, que llevaría a perder los cambios de `a`; en realidad se encadenan, y por eso importa que cada decorador devuelva algo utilizable por el siguiente.",
+      "explanation_en": "Class decorators stack exactly like function decorators: bottom-up, so the one nearest the `class` is applied first and its result feeds the next. The `b(a(C))` option is what reading them top-down gives you. The third describes a common mental model — two parallel transformations of the original class — which would lose `a`'s changes; in reality they are chained, which is why it matters that each decorator returns something the next one can use.",
+      "source": "PEP 3129 — Class Decorators",
+      "expected_time_ms": 35000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "stacking",
+        "order"
+      ]
+    },
+    {
+      "id": "q020304014",
+      "skill_id": "sk020304",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cuál es la diferencia práctica principal entre un decorador de clase y una metaclase?",
+      "question_en": "What is the main practical difference between a class decorator and a metaclass?",
+      "options_es": [
+        "El decorador de clase se ejecuta antes de que se evalúe el cuerpo de la clase; la metaclase, después",
+        "El decorador solo afecta a la clase decorada y no se hereda; la metaclase se propaga a todas las subclases",
+        "Solo la metaclase puede añadir o sustituir atributos de la clase",
+        "El decorador de clase sustituye a `__init_subclass__`, que quedó obsoleto"
+      ],
+      "options_en": [
+        "The class decorator runs before the class body is evaluated; the metaclass runs after",
+        "The decorator affects only the decorated class and is not inherited; the metaclass propagates to every subclass",
+        "Only a metaclass can add or replace class attributes",
+        "The class decorator replaces `__init_subclass__`, which is deprecated"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es justo la motivación de PEP 3129: para muchos ajustes de una sola clase, la metaclase es demasiado, porque se hereda y contamina toda la jerarquía (además de provocar conflictos si dos bases tienen metaclases distintas). El decorador actúa una vez, sobre esa clase, y punto. La primera opción invierte los tiempos y además es doblemente falsa: la metaclase participa en la CREACIÓN de la clase y el decorador actúa después, con la clase ya construida. La tercera es tentadora por la fama de la metaclase, pero un decorador también puede añadir, sustituir o envolver atributos. `__init_subclass__` sigue vigente y es la tercera vía, más ligera que la metaclase.",
+      "explanation_en": "This is exactly PEP 3129's motivation: for many one-off class tweaks a metaclass is overkill, because it is inherited and contaminates the whole hierarchy (and causes conflicts when two bases have different metaclasses). A decorator acts once, on that class, and stops there. The first option reverses the timing and is doubly wrong: the metaclass takes part in CREATING the class, while the decorator acts afterwards, on the finished class. The third is tempting given the metaclass's reputation, but a decorator can add, replace and wrap attributes just as well. `__init_subclass__` is alive and well, and is the third, lighter option.",
+      "source": "PEP 3129 — Class Decorators",
+      "expected_time_ms": 55000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "metaclass",
+        "inheritance"
+      ]
+    },
+    {
+      "id": "q020304015",
+      "skill_id": "sk020304",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál de estos NO es un decorador de clase, es decir, algo pensado para colocarse sobre una línea `class ...`?",
+      "question_en": "Which of these is NOT a class decorator, that is, something meant to sit on top of a `class ...` line?",
+      "options_es": [
+        "`@dataclasses.dataclass`",
+        "`@functools.total_ordering`",
+        "`@classmethod`",
+        "`@enum.unique`"
+      ],
+      "options_en": [
+        "`@dataclasses.dataclass`",
+        "`@functools.total_ordering`",
+        "`@classmethod`",
+        "`@enum.unique`"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`@classmethod` decora un MÉTODO dentro del cuerpo de una clase y devuelve un descriptor; el nombre engaña porque menciona la clase, pero no recibe ninguna. Los otros tres reciben una clase y devuelven una clase: `dataclass` genera `__init__`, `__repr__` y `__eq__`; `total_ordering` completa los operadores de comparación; `unique` comprueba que una enumeración no tenga alias. La regla para distinguirlos es sencilla: mira qué recibe el decorador, no dónde aparece la palabra \"class\" en su nombre.",
+      "explanation_en": "`@classmethod` decorates a METHOD inside a class body and returns a descriptor; the name misleads because it mentions the class, but it never receives one. The other three take a class and return a class: `dataclass` generates `__init__`, `__repr__` and `__eq__`; `total_ordering` fills in the comparison operators; `unique` checks that an enumeration has no aliases. The rule for telling them apart is simple: look at what the decorator receives, not at where the word \"class\" appears in its name.",
+      "source": "CPython docs 3.13 — Built-in Functions (classmethod) and PEP 3129 — Class Decorators",
+      "expected_time_ms": 25000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "classmethod"
+      ]
+    },
+    {
+      "id": "q020304016",
+      "skill_id": "sk020304",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Al definir una subclase de una clase decorada, el decorador de clase se vuelve a ejecutar automáticamente sobre la subclase.",
+      "question_en": "When you define a subclass of a decorated class, the class decorator automatically runs again on the subclass.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso: el decorador se ejecuta una sola vez, donde está escrita la `@`. Lo que engaña es que la subclase HEREDA los atributos que el decorador añadió a la base, así que `hasattr(Sub, \"algo\")` puede dar `True` y parecer que el decorador actuó; pero su código no vuelve a correr, y todo lo que dependa de la subclase concreta (registrarla, leer sus anotaciones, generar un `__init__` a su medida) no ocurre. Por eso hay que repetir la `@` en cada subclase, o recurrir a `__init_subclass__` o a una metaclase, que sí se propagan.",
+      "explanation_en": "False: the decorator runs exactly once, where the `@` is written. What misleads is that the subclass INHERITS the attributes the decorator added to the base, so `hasattr(Sub, \"something\")` may be `True` and look like the decorator ran; but its code does not run again, and anything that depends on the concrete subclass (registering it, reading its annotations, generating a tailored `__init__`) never happens. That is why you repeat the `@` on each subclass, or reach for `__init_subclass__` or a metaclass, which do propagate.",
+      "source": "PEP 3129 — Class Decorators",
+      "expected_time_ms": 40000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "inheritance",
+        "gotcha"
+      ]
+    },
+    {
+      "id": "q020304017",
+      "skill_id": "sk020304",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "Completa el nombre del decorador de clase de `functools` que, partiendo de `__eq__` y de un único operador de orden, genera los tres restantes: `@functools.___`",
+      "question_en": "Complete the name of the `functools` class decorator that, given `__eq__` and a single ordering operator, fills in the remaining three: `@functools.___`",
+      "options_es": null,
+      "options_en": null,
+      "correct_answer_es": "total_ordering",
+      "correct_answer_en": "total_ordering",
+      "explanation_es": "`@functools.total_ordering` inspecciona la clase, encuentra el operador de orden que hayas definido (`__lt__`, `__le__`, `__gt__` o `__ge__`) y añade los otros tres derivándolos de él y de `__eq__`. Ahorra código repetitivo a cambio de comparaciones algo más lentas que las escritas a mano. Es también un ejemplo limpio de decorador de clase de la biblioteca estándar: recibe la clase, le añade métodos y la devuelve.",
+      "explanation_en": "`@functools.total_ordering` inspects the class, finds whichever ordering operator you defined (`__lt__`, `__le__`, `__gt__` or `__ge__`) and adds the other three by deriving them from it and from `__eq__`. It saves boilerplate at the cost of comparisons slightly slower than hand-written ones. It is also a clean example of a standard-library class decorator: it takes the class, adds methods to it, and returns it.",
+      "source": "CPython docs 3.13 — functools.total_ordering",
+      "expected_time_ms": 40000,
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "functools",
+        "total_ordering"
+      ]
+    }
+  ]
+}
