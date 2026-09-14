@@ -10,6 +10,7 @@ from app.api.v1.endpoints import (
     billing,
     content,
     duels,
+    exams,
     export,
     glossary,
     ml,
@@ -32,6 +33,7 @@ api_router.include_router(glossary.router, prefix="/glossary", tags=["glossary"]
 api_router.include_router(tutor.router, prefix="/tutor", tags=["tutor"])
 api_router.include_router(social.router, tags=["social"])
 api_router.include_router(duels.router, prefix="/duels", tags=["duels"])
+api_router.include_router(exams.router, prefix="/exams", tags=["exams"])
 api_router.include_router(reports.router, prefix="/reports", tags=["reports"])
 api_router.include_router(export.router, prefix="/export", tags=["export"])
 api_router.include_router(ml.router, prefix="/ml", tags=["ml"])
