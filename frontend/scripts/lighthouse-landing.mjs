@@ -15,19 +15,26 @@
  * Pinned to an exact Lighthouse version and run through npx, so it stays
  * reproducible without adding ~50 MB of devDependency to every CI install.
  *
- * MEASURE THE TRAILING SLASH (task 12.10). The prerendered hero that 11.11
- * produces lives at `dist/landing/index.html`, and `vite preview` serves it for
- * `/landing/` but NOT for `/landing` — the bare path falls through to the SPA
- * shell, which paints the hero only once the JS bundle boots. The difference is
- * not subtle: 2.878 ms vs 1.606 ms of mobile LCP on the same build. Every local
- * measurement taken through this script before 12.10 used the bare path, so it
- * measured the un-prerendered route while reporting on the prerendered one. To
- * make that unrepeatable, the script now fetches the URL first and refuses to
- * run if the response does not already contain the hero.
+ * CHECK WHAT YOU ARE MEASURING (task 12.10). Lighthouse will happily report a
+ * number for a page that is not the one you think you are measuring, and the
+ * number looks entirely plausible. The landing has two shapes: the prerendered
+ * `dist/landing/index.html` that 11.11 produces, whose hero paints with the
+ * HTML response, and the plain SPA shell, whose hero paints only once the JS
+ * bundle boots. Measuring the second while reporting on the first costs about
+ * 1.3 s of mobile LCP and nothing warns you.
+ *
+ * That is not hypothetical — it happened twice in one session, for two
+ * unrelated reasons: a `vite preview` process left running across many rebuilds
+ * had gone stale and was serving the shell for `/landing` (a freshly started
+ * one serves the prerender correctly, via cloudflarePrettyUrlsPreviewPlugin in
+ * vite.config.ts), and production was serving a build predating 11.11
+ * altogether (task 12.2 / H.11). So this script now fetches the URL and refuses
+ * to measure if the response does not already contain the hero, whatever the
+ * reason. Refusing is the point: a wrong number is worse than no number.
  *
  * Usage:
  *   npm run lighthouse:landing                      # against production
- *   npm run lighthouse:landing -- http://localhost:4188/landing/
+ *   npm run lighthouse:landing -- http://localhost:4188/landing
  *
  * Needs a Chrome; set CHROME_PATH if it is not on the default install path.
  */
@@ -37,7 +44,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const LIGHTHOUSE_VERSION = '13.4.1';
-const DEFAULT_URL = 'https://whetzy.com/landing/';
+const DEFAULT_URL = 'https://whetzy.com/landing'; // the canonical URL, i.e. what index.html declares
 const HERO_MARKER = 'lnd-hero__h1'; // must be in the HTML *response*, not painted later by JS
 const LCP_BUDGET_MS = 2500;
 
@@ -99,12 +106,17 @@ async function assertPrerenderedHero(target) {
   }
   if (html.includes(HERO_MARKER)) return;
 
-  const withSlash = target.endsWith('/') ? null : `${target}/`;
+  const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)[:/]/.test(target);
   throw new Error(
     `${target} responded without ${JSON.stringify(HERO_MARKER)} in its HTML.\n` +
-      '  That is the SPA shell, not the prerendered landing: the hero would paint only after\n' +
-      '  the JS boots, so the LCP measured here is not the page being reported on.\n' +
-      (withSlash ? `  Try the trailing slash — ${withSlash} — which is where the prerender is served.\n` : '') +
+      '  That is the SPA shell, not the prerendered landing: its hero paints only after the JS\n' +
+      '  boots, so any LCP measured here would not describe the page being reported on.\n' +
+      (isLocal
+        ? '  Locally this usually means a stale `vite preview` left running across rebuilds, or a\n' +
+          '  build made with `npx vite build` (which skips the prerender). Rebuild with\n' +
+          '  `npm run build`, restart the preview, and check `node scripts/check-prerender.mjs`.\n'
+        : '  For a deployed URL this means the deployed build predates the prerender — see task\n' +
+          '  12.2 / H.11 in docs/AUTONOMOUS_STATE.md.\n') +
       '  See task 12.10 in docs/AUTONOMOUS_STATE.md.',
   );
 }
