@@ -8,23 +8,27 @@
       "question_es": "¿Qué es el GIL (Global Interpreter Lock) en CPython?",
       "question_en": "What is the GIL (Global Interpreter Lock) in CPython?",
       "options_es": [
-        "Un mutex que permite que solo un hilo ejecute bytecode de Python a la vez",
+        "Una caché global de objetos",
         "Un recolector de basura global",
         "Un bloqueo de archivos entre procesos",
-        "Una caché global de objetos"
+        "Un mutex que permite que solo un hilo ejecute bytecode de Python a la vez"
       ],
       "options_en": [
-        "A mutex that allows only one thread to execute Python bytecode at a time",
+        "A global object cache",
         "A global garbage collector",
         "A cross-process file lock",
-        "A global object cache"
+        "A mutex that allows only one thread to execute Python bytecode at a time"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El GIL es un mutex que protege el acceso a los objetos de Python, permitiendo que un solo hilo ejecute bytecode a la vez en CPython. Simplifica la gestión de memoria (conteo de referencias) pero impide el paralelismo real de hilos en tareas de CPU.",
       "explanation_en": "The GIL is a mutex that protects access to Python objects, allowing only one thread to execute bytecode at a time in CPython. It simplifies memory management (reference counting) but prevents true thread parallelism for CPU-bound tasks.",
       "source": "CPython docs 3.13 — Glossary: global interpreter lock",
       "expected_time_ms": 22000,
-      "tags": ["cpython", "gil", "threading"]
+      "tags": [
+        "cpython",
+        "gil",
+        "threading"
+      ]
     },
     {
       "id": "q030101002",
@@ -33,14 +37,25 @@
       "difficulty_tier": "medium",
       "question_es": "Debido al GIL, usar múltiples hilos (threading) en CPython acelera las tareas intensivas en CPU (CPU-bound).",
       "question_en": "Because of the GIL, using multiple threads (threading) in CPython speeds up CPU-bound tasks.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Como el GIL solo deja ejecutar bytecode a un hilo a la vez, las tareas de CPU no ganan (incluso pueden ir más lentas por el cambio de contexto). Los hilos SÍ ayudan en tareas I/O-bound, donde el GIL se libera durante la espera. Para CPU real se usa `multiprocessing`.",
       "explanation_en": "False. Since the GIL lets only one thread run bytecode at a time, CPU-bound tasks don't benefit (they can even slow down from context switching). Threads DO help with I/O-bound tasks, where the GIL is released during waits. For real CPU parallelism use `multiprocessing`.",
       "source": "CPython docs 3.13 — threading / GIL notes",
       "expected_time_ms": 25000,
-      "tags": ["cpython", "gil", "cpu-bound", "gotcha"]
+      "tags": [
+        "cpython",
+        "gil",
+        "cpu-bound",
+        "gotcha"
+      ]
     },
     {
       "id": "q030101003",
@@ -66,7 +81,11 @@
       "explanation_en": "Threads shine on I/O-bound tasks: while waiting on network or disk, CPython releases the GIL and another thread proceeds. The other three options are pure CPU-bound work, where the GIL serializes execution and threads don't help.",
       "source": "CPython docs 3.13 — threading; I/O vs CPU bound",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "gil", "io-bound"]
+      "tags": [
+        "cpython",
+        "gil",
+        "io-bound"
+      ]
     },
     {
       "id": "q030101004",
@@ -75,14 +94,25 @@
       "difficulty_tier": "hard",
       "question_es": "Python 3.13 introdujo una compilación experimental 'free-threaded' (sin GIL) descrita en la PEP 703.",
       "question_en": "Python 3.13 introduced an experimental 'free-threaded' (GIL-less) build described in PEP 703.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Python 3.13 incluye una compilación experimental opcional sin GIL (PEP 703) que permite paralelismo real de hilos. No es la construcción por defecto y aún tiene coste de rendimiento en código de un solo hilo; es un cambio a largo plazo.",
       "explanation_en": "True. Python 3.13 includes an optional experimental GIL-less build (PEP 703) enabling true thread parallelism. It is not the default build and still carries single-threaded performance cost; it's a long-term change.",
       "source": "PEP 703 — Making the Global Interpreter Lock Optional in CPython",
       "expected_time_ms": 28000,
-      "tags": ["cpython", "gil", "pep703", "free-threading"]
+      "tags": [
+        "cpython",
+        "gil",
+        "pep703",
+        "free-threading"
+      ]
     },
     {
       "id": "q030101005",
@@ -92,23 +122,28 @@
       "question_es": "¿Qué mecanismo permite a extensiones en C (como NumPy) hacer trabajo intensivo en paralelo pese al GIL?",
       "question_en": "What mechanism lets C extensions (like NumPy) do heavy work in parallel despite the GIL?",
       "options_es": [
-        "Liberar el GIL durante operaciones largas en C que no tocan objetos Python",
-        "Ignorar el GIL por completo desde Python",
         "Ejecutar cada operación en un proceso separado automáticamente",
+        "Ignorar el GIL por completo desde Python",
+        "Liberar el GIL durante operaciones largas en C que no tocan objetos Python",
         "Convertir los hilos en corrutinas"
       ],
       "options_en": [
-        "Releasing the GIL during long C operations that don't touch Python objects",
-        "Ignoring the GIL entirely from Python",
         "Automatically running each operation in a separate process",
+        "Ignoring the GIL entirely from Python",
+        "Releasing the GIL during long C operations that don't touch Python objects",
         "Turning threads into coroutines"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Las extensiones en C pueden liberar el GIL (con `Py_BEGIN_ALLOW_THREADS`) mientras ejecutan cómputo pesado que no manipula objetos Python, permitiendo que otros hilos avancen. Por eso operaciones de NumPy sobre arrays grandes pueden paralelizarse aunque el código Python esté sujeto al GIL.",
       "explanation_en": "C extensions can release the GIL (via `Py_BEGIN_ALLOW_THREADS`) while running heavy computation that doesn't touch Python objects, letting other threads proceed. That's why NumPy operations on large arrays can parallelize even though Python code is GIL-bound.",
       "source": "CPython docs 3.13 — C API: Thread State and the GIL",
       "expected_time_ms": 35000,
-      "tags": ["cpython", "gil", "c-extensions", "numpy"]
+      "tags": [
+        "cpython",
+        "gil",
+        "c-extensions",
+        "numpy"
+      ]
     },
     {
       "id": "q030101006",
@@ -126,7 +161,11 @@
       "explanation_en": "`multiprocessing` spawns separate processes, each with its own interpreter and its own GIL, achieving true parallelism across cores. The cost is process startup overhead and inter-process communication (data serialization).",
       "source": "CPython docs 3.13 — multiprocessing",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "gil", "multiprocessing"]
+      "tags": [
+        "cpython",
+        "gil",
+        "multiprocessing"
+      ]
     },
     {
       "id": "q030102001",
@@ -152,7 +191,11 @@
       "explanation_en": "CPython primarily uses reference counting: each object tracks how many references point to it and is freed immediately when the count reaches zero. A complementary cyclic collector detects and frees reference cycles that counting alone cannot.",
       "source": "CPython docs 3.13 — Memory Management / gc",
       "expected_time_ms": 22000,
-      "tags": ["cpython", "memory", "refcount"]
+      "tags": [
+        "cpython",
+        "memory",
+        "refcount"
+      ]
     },
     {
       "id": "q030102002",
@@ -161,14 +204,29 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime aproximadamente el siguiente código?\n```python\nimport sys\na = []\nb = a\nprint(sys.getrefcount(a) >= 3)\n```",
       "question_en": "What does the following code print (approximately)?\n```python\nimport sys\na = []\nb = a\nprint(sys.getrefcount(a) >= 3)\n```",
-      "options_es": ["True", "False", "2", "Error"],
-      "options_en": ["True", "False", "2", "Error"],
+      "options_es": [
+        "True",
+        "False",
+        "2",
+        "Error"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "2",
+        "Error"
+      ],
       "correct_index": 0,
       "explanation_es": "`a` y `b` apuntan al mismo objeto lista (2 referencias) y `getrefcount` añade una temporal más al pasarlo como argumento, así que el conteo es al menos 3. `sys.getrefcount` expone directamente el conteo de referencias de CPython.",
       "explanation_en": "`a` and `b` point to the same list object (2 references) and `getrefcount` adds one temporary reference when it receives the argument, so the count is at least 3. `sys.getrefcount` directly exposes CPython's reference count.",
       "source": "CPython docs 3.13 — sys.getrefcount",
       "expected_time_ms": 35000,
-      "tags": ["cpython", "memory", "refcount", "getrefcount"]
+      "tags": [
+        "cpython",
+        "memory",
+        "refcount",
+        "getrefcount"
+      ]
     },
     {
       "id": "q030102003",
@@ -178,23 +236,28 @@
       "question_es": "¿Por qué CPython necesita un recolector de basura ADICIONAL al conteo de referencias?",
       "question_en": "Why does CPython need a garbage collector IN ADDITION to reference counting?",
       "options_es": [
-        "Para liberar ciclos de referencias (objetos que se apuntan entre sí) que el conteo nunca lleva a cero",
-        "Porque el conteo de referencias no existe en Python",
         "Para acelerar la creación de objetos",
+        "Porque el conteo de referencias no existe en Python",
+        "Para liberar ciclos de referencias (objetos que se apuntan entre sí) que el conteo nunca lleva a cero",
         "Para gestionar la memoria de la pila (stack)"
       ],
       "options_en": [
-        "To free reference cycles (objects referencing each other) that counting never brings to zero",
-        "Because reference counting doesn't exist in Python",
         "To speed up object creation",
+        "Because reference counting doesn't exist in Python",
+        "To free reference cycles (objects referencing each other) that counting never brings to zero",
         "To manage stack memory"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Si dos objetos se referencian mutuamente (un ciclo), su conteo nunca llega a cero aunque nada externo los use, y quedarían como fuga de memoria. El recolector cíclico del módulo `gc` detecta esos ciclos inalcanzables y los libera.",
       "explanation_en": "If two objects reference each other (a cycle), their counts never reach zero even when nothing external uses them, leaking memory. The cyclic collector in the `gc` module detects those unreachable cycles and frees them.",
       "source": "CPython docs 3.13 — gc module: cyclic garbage collection",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "memory", "gc", "cycles"]
+      "tags": [
+        "cpython",
+        "memory",
+        "gc",
+        "cycles"
+      ]
     },
     {
       "id": "q030102004",
@@ -203,14 +266,25 @@
       "difficulty_tier": "hard",
       "question_es": "El recolector cíclico de CPython es generacional: agrupa los objetos en generaciones y revisa con más frecuencia los más jóvenes.",
       "question_en": "CPython's cyclic collector is generational: it groups objects into generations and inspects younger ones more frequently.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El `gc` usa tres generaciones basándose en la hipótesis generacional: la mayoría de los objetos mueren jóvenes. Los objetos que sobreviven a una recolección 'ascienden' de generación y se revisan con menos frecuencia, reduciendo el coste.",
       "explanation_en": "True. The `gc` uses three generations based on the generational hypothesis: most objects die young. Objects that survive a collection are 'promoted' to an older generation and inspected less often, reducing cost.",
       "source": "CPython docs 3.13 — gc: generational collection",
       "expected_time_ms": 28000,
-      "tags": ["cpython", "memory", "gc", "generational"]
+      "tags": [
+        "cpython",
+        "memory",
+        "gc",
+        "generational"
+      ]
     },
     {
       "id": "q030102005",
@@ -219,14 +293,30 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\na = 256\nb = 256\nc = 257\nd = 257\nprint(a is b, c is d)\n```",
       "question_en": "What does the following code print?\n```python\na = 256\nb = 256\nc = 257\nd = 257\nprint(a is b, c is d)\n```",
-      "options_es": ["True False", "True True", "False False", "False True"],
-      "options_en": ["True False", "True True", "False False", "False True"],
-      "correct_index": 0,
+      "options_es": [
+        "False True",
+        "True True",
+        "False False",
+        "True False"
+      ],
+      "options_en": [
+        "False True",
+        "True True",
+        "False False",
+        "True False"
+      ],
+      "correct_index": 3,
       "explanation_es": "CPython precachea los enteros pequeños de -5 a 256, así que `a` y `b` son el MISMO objeto (`a is b` → True). Para `257`, fuera de ese rango, `c` y `d` pueden ser objetos distintos según el contexto (`c is d` → False típicamente). Es un detalle de implementación; nunca compares valores con `is`.",
       "explanation_en": "CPython caches small integers from -5 to 256, so `a` and `b` are the SAME object (`a is b` → True). For `257`, outside that range, `c` and `d` may be distinct objects depending on context (`c is d` → typically False). It's an implementation detail; never compare values with `is`.",
       "source": "CPython docs 3.13 — Integer object caching (implementation detail)",
       "expected_time_ms": 40000,
-      "tags": ["cpython", "memory", "int-caching", "is", "gotcha"]
+      "tags": [
+        "cpython",
+        "memory",
+        "int-caching",
+        "is",
+        "gotcha"
+      ]
     },
     {
       "id": "q030102006",
@@ -244,7 +334,11 @@
       "explanation_en": "The `gc` module exposes the cyclic collector: `gc.collect()` forces a collection, `gc.disable()`/`gc.enable()` turn it off/on, and `gc.get_stats()` gives metrics. Temporarily disabling it can speed up bulk loads of cycle-free objects.",
       "source": "CPython docs 3.13 — gc module",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "memory", "gc"]
+      "tags": [
+        "cpython",
+        "memory",
+        "gc"
+      ]
     },
     {
       "id": "q030103001",
@@ -270,7 +364,11 @@
       "explanation_en": "Every Python object has an identity (its address, given by `id()`), a type (given by `type()`) that never changes, and a value. Identity never changes after creation; the value may change if the object is mutable.",
       "source": "CPython docs 3.13 — Data model: Objects, values and types",
       "expected_time_ms": 22000,
-      "tags": ["cpython", "object-model", "identity"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "identity"
+      ]
     },
     {
       "id": "q030103002",
@@ -279,14 +377,29 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nx = 5\nprint(type(type(x)))\n```",
       "question_en": "What does the following code print?\n```python\nx = 5\nprint(type(type(x)))\n```",
-      "options_es": ["<class 'type'>", "<class 'int'>", "<class 'object'>", "5"],
-      "options_en": ["<class 'type'>", "<class 'int'>", "<class 'object'>", "5"],
-      "correct_index": 0,
+      "options_es": [
+        "<class 'int'>",
+        "<class 'type'>",
+        "<class 'object'>",
+        "5"
+      ],
+      "options_en": [
+        "<class 'int'>",
+        "<class 'type'>",
+        "<class 'object'>",
+        "5"
+      ],
+      "correct_index": 1,
       "explanation_es": "`type(x)` es `int`, y `type(int)` es `type`: la metaclase de la que descienden todas las clases. En Python, las clases también son objetos, y el tipo de una clase es su metaclase (por defecto `type`).",
       "explanation_en": "`type(x)` is `int`, and `type(int)` is `type`: the metaclass from which all classes descend. In Python, classes are objects too, and the type of a class is its metaclass (by default `type`).",
       "source": "CPython docs 3.13 — Data model: The standard type hierarchy",
       "expected_time_ms": 35000,
-      "tags": ["cpython", "object-model", "type", "metaclass"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "type",
+        "metaclass"
+      ]
     },
     {
       "id": "q030103003",
@@ -295,14 +408,24 @@
       "difficulty_tier": "medium",
       "question_es": "En Python, absolutamente todo (números, funciones, clases, módulos) es un objeto de primera clase.",
       "question_en": "In Python, absolutely everything (numbers, functions, classes, modules) is a first-class object.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. En Python todo es un objeto: enteros, funciones, clases, módulos, incluso los tipos. Todos pueden asignarse a variables, pasarse como argumentos y tener atributos. Esta uniformidad es central en el modelo de objetos del lenguaje.",
       "explanation_en": "True. In Python everything is an object: integers, functions, classes, modules, even types. All can be assigned to variables, passed as arguments, and carry attributes. This uniformity is central to the language's object model.",
       "source": "CPython docs 3.13 — Data model: Objects, values and types",
       "expected_time_ms": 22000,
-      "tags": ["cpython", "object-model", "first-class"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "first-class"
+      ]
     },
     {
       "id": "q030103004",
@@ -311,14 +434,29 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass C:\n    __slots__ = ('x',)\nc = C()\nc.x = 1\ntry:\n    c.y = 2\n    print(\"ok\")\nexcept AttributeError:\n    print(\"no y\")\n```",
       "question_en": "What does the following code print?\n```python\nclass C:\n    __slots__ = ('x',)\nc = C()\nc.x = 1\ntry:\n    c.y = 2\n    print(\"ok\")\nexcept AttributeError:\n    print(\"no y\")\n```",
-      "options_es": ["no y", "ok", "1", "2"],
-      "options_en": ["no y", "ok", "1", "2"],
-      "correct_index": 0,
+      "options_es": [
+        "2",
+        "ok",
+        "1",
+        "no y"
+      ],
+      "options_en": [
+        "2",
+        "ok",
+        "1",
+        "no y"
+      ],
+      "correct_index": 3,
       "explanation_es": "`__slots__` reemplaza el `__dict__` por atributo por un almacenamiento fijo, ahorrando memoria e impidiendo crear atributos no declarados. Asignar `c.y` (no está en slots) lanza `AttributeError`, así que se imprime `no y`.",
       "explanation_en": "`__slots__` replaces the per-attribute `__dict__` with fixed storage, saving memory and preventing creation of undeclared attributes. Assigning `c.y` (not in slots) raises `AttributeError`, so it prints `no y`.",
       "source": "CPython docs 3.13 — Data model: __slots__",
       "expected_time_ms": 40000,
-      "tags": ["cpython", "object-model", "slots", "memory"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "slots",
+        "memory"
+      ]
     },
     {
       "id": "q030103005",
@@ -328,23 +466,27 @@
       "question_es": "¿Dónde almacena por defecto un objeto Python sus atributos de instancia?",
       "question_en": "Where does a Python object store its instance attributes by default?",
       "options_es": [
-        "En su diccionario __dict__",
-        "En una lista __attrs__",
         "En la clase, compartidos por todas las instancias",
+        "En una lista __attrs__",
+        "En su diccionario __dict__",
         "En variables globales"
       ],
       "options_en": [
-        "In its __dict__ dictionary",
-        "In an __attrs__ list",
         "In the class, shared by all instances",
+        "In an __attrs__ list",
+        "In its __dict__ dictionary",
         "In global variables"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Por defecto los atributos de instancia viven en el diccionario `__dict__` del objeto, lo que da flexibilidad (añadir atributos al vuelo) a costa de memoria. `__slots__` es la alternativa que elimina ese `__dict__` para objetos numerosos.",
       "explanation_en": "By default, instance attributes live in the object's `__dict__` dictionary, giving flexibility (adding attributes on the fly) at a memory cost. `__slots__` is the alternative that removes that `__dict__` for numerous objects.",
       "source": "CPython docs 3.13 — Data model: __dict__",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "object-model", "dict"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "dict"
+      ]
     },
     {
       "id": "q030103006",
@@ -362,7 +504,12 @@
       "explanation_en": "`id(obj)` returns an integer that uniquely identifies the object during its lifetime. The `is` operator compares exactly identities (`a is b` equals `id(a) == id(b)`). In CPython that value is the memory address, but that's an implementation detail.",
       "source": "CPython docs 3.13 — Built-in Functions: id",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "object-model", "id", "identity"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "id",
+        "identity"
+      ]
     },
     {
       "id": "q030104001",
@@ -371,14 +518,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué módulo de la librería estándar desensambla el bytecode de Python en instrucciones legibles?",
       "question_en": "Which standard-library module disassembles Python bytecode into readable instructions?",
-      "options_es": ["dis", "byte", "asm", "compile"],
-      "options_en": ["dis", "byte", "asm", "compile"],
-      "correct_index": 0,
+      "options_es": [
+        "byte",
+        "dis",
+        "asm",
+        "compile"
+      ],
+      "options_en": [
+        "byte",
+        "dis",
+        "asm",
+        "compile"
+      ],
+      "correct_index": 1,
       "explanation_es": "El módulo `dis` (disassembler) muestra las instrucciones de bytecode que ejecuta la máquina virtual de CPython. `dis.dis(func)` imprime el desensamblado, útil para entender optimizaciones y el coste de distintas construcciones.",
       "explanation_en": "The `dis` (disassembler) module shows the bytecode instructions the CPython virtual machine executes. `dis.dis(func)` prints the disassembly, useful for understanding optimizations and the cost of different constructs.",
       "source": "CPython docs 3.13 — dis — Disassembler for Python bytecode",
       "expected_time_ms": 20000,
-      "tags": ["cpython", "bytecode", "dis"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "dis"
+      ]
     },
     {
       "id": "q030104002",
@@ -387,14 +548,25 @@
       "difficulty_tier": "medium",
       "question_es": "CPython compila el código fuente a bytecode, que luego ejecuta una máquina virtual; los archivos .pyc guardan ese bytecode en caché.",
       "question_en": "CPython compiles source code to bytecode, which a virtual machine then executes; .pyc files cache that bytecode.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. CPython no interpreta el texto fuente directamente: primero lo compila a bytecode (una representación intermedia) que ejecuta la máquina virtual. Los `.pyc` en `__pycache__` cachean ese bytecode para evitar recompilar módulos sin cambios.",
       "explanation_en": "True. CPython doesn't interpret source text directly: it first compiles it to bytecode (an intermediate representation) that the virtual machine executes. The `.pyc` files in `__pycache__` cache that bytecode to avoid recompiling unchanged modules.",
       "source": "CPython docs 3.13 — Compiled Python files / dis",
       "expected_time_ms": 25000,
-      "tags": ["cpython", "bytecode", "pyc", "vm"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "pyc",
+        "vm"
+      ]
     },
     {
       "id": "q030104003",
@@ -404,23 +576,27 @@
       "question_es": "¿Qué tipo de máquina virtual utiliza CPython para ejecutar el bytecode?",
       "question_en": "What kind of virtual machine does CPython use to execute bytecode?",
       "options_es": [
-        "Una máquina basada en pila (stack-based)",
         "Una máquina basada en registros (register-based)",
+        "Una máquina basada en pila (stack-based)",
         "Un compilador JIT nativo por defecto",
         "Un intérprete de árbol de sintaxis (AST) directo"
       ],
       "options_en": [
-        "A stack-based machine",
         "A register-based machine",
+        "A stack-based machine",
         "A native JIT compiler by default",
         "A direct AST tree interpreter"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "La VM de CPython es basada en pila: las instrucciones de bytecode empujan y sacan valores de una pila de evaluación (por eso verás `LOAD_FAST`, `BINARY_OP`, etc.). No es basada en registros ni usa JIT por defecto (aunque 3.13 introdujo un JIT experimental muy limitado).",
       "explanation_en": "CPython's VM is stack-based: bytecode instructions push and pop values on an evaluation stack (hence `LOAD_FAST`, `BINARY_OP`, etc.). It is not register-based and doesn't JIT by default (though 3.13 introduced a very limited experimental JIT).",
       "source": "CPython docs 3.13 — dis: bytecode instructions",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "bytecode", "stack-machine"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "stack-machine"
+      ]
     },
     {
       "id": "q030104004",
@@ -430,23 +606,27 @@
       "question_es": "¿Qué representa la primera columna de números en la salida de `dis.dis(func)`?",
       "question_en": "What does the first column of numbers in `dis.dis(func)` output represent?",
       "options_es": [
-        "El número de línea del código fuente correspondiente",
-        "El identificador único de cada objeto",
         "El conteo de referencias",
+        "El identificador único de cada objeto",
+        "El número de línea del código fuente correspondiente",
         "La dirección de memoria de la función"
       ],
       "options_en": [
-        "The source-code line number for the instruction",
-        "The unique id of each object",
         "The reference count",
+        "The unique id of each object",
+        "The source-code line number for the instruction",
         "The function's memory address"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "En la salida de `dis`, la primera columna es el número de línea del código fuente que originó ese grupo de instrucciones; le siguen el offset del bytecode, el nombre de la instrucción (opname) y sus argumentos. Ayuda a mapear bytecode a fuente.",
       "explanation_en": "In `dis` output, the first column is the source-code line number that produced that group of instructions; it's followed by the bytecode offset, the instruction name (opname), and its arguments. It helps map bytecode back to source.",
       "source": "CPython docs 3.13 — dis: output format",
       "expected_time_ms": 35000,
-      "tags": ["cpython", "bytecode", "dis"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "dis"
+      ]
     },
     {
       "id": "q030104005",
@@ -472,7 +652,12 @@
       "explanation_en": "`dis` is an analysis tool: it reveals compiler optimizations (like constant folding) and why, for example, `''.join(list)` produces fewer operations than concatenating in a loop. It does not modify the interpreter or translate to C.",
       "source": "CPython docs 3.13 — dis module use cases",
       "expected_time_ms": 35000,
-      "tags": ["cpython", "bytecode", "dis", "optimization"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "dis",
+        "optimization"
+      ]
     },
     {
       "id": "q030104006",
@@ -490,7 +675,11 @@
       "explanation_en": "`compile(source, filename, mode)` compiles source into a `code` object (holding the bytecode), which can then be run with `exec` or `eval`. It's the same mechanism CPython uses internally before running any module.",
       "source": "CPython docs 3.13 — Built-in Functions: compile",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "bytecode", "compile"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "compile"
+      ]
     }
   ]
 }

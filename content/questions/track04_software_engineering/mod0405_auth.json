@@ -9,22 +9,25 @@
       "question_en": "In session-based authentication, where is the user's session state typically stored?",
       "options_es": [
         "Únicamente en la URL",
-        "En el servidor (memoria, BD o cache), y el cliente guarda solo un identificador de sesión en una cookie",
+        "En el código fuente de la aplicación",
         "Completamente en el cliente, sin nada en el servidor",
-        "En el código fuente de la aplicación"
+        "En el servidor (memoria, BD o cache), y el cliente guarda solo un identificador de sesión en una cookie"
       ],
       "options_en": [
         "Only in the URL",
-        "On the server (memory, DB, or cache), while the client keeps only a session identifier in a cookie",
+        "In the application's source code",
         "Entirely on the client, with nothing on the server",
-        "In the application's source code"
+        "On the server (memory, DB, or cache), while the client keeps only a session identifier in a cookie"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "En sesiones, el servidor guarda el estado y entrega al cliente un ID de sesión opaco (normalmente en una cookie). En cada petición, el cliente envía la cookie y el servidor recupera la sesión asociada. Esto es 'stateful' en el servidor, a diferencia de los tokens autocontenidos como JWT.",
       "explanation_en": "With sessions, the server stores the state and hands the client an opaque session ID (usually in a cookie). On each request, the client sends the cookie and the server looks up the associated session. This is server-side 'stateful', unlike self-contained tokens like JWT.",
       "source": "OWASP — Session Management Cheat Sheet",
       "expected_time_ms": 20000,
-      "tags": ["auth", "sessions"]
+      "tags": [
+        "auth",
+        "sessions"
+      ]
     },
     {
       "id": "q040501002",
@@ -33,14 +36,24 @@
       "difficulty_tier": "medium",
       "question_es": "Marcar una cookie de sesión con los atributos `HttpOnly` y `Secure` ayuda a mitigar ataques de robo de sesión.",
       "question_en": "Marking a session cookie with the `HttpOnly` and `Secure` attributes helps mitigate session-hijacking attacks.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "`HttpOnly` impide que JavaScript lea la cookie, mitigando el robo vía XSS. `Secure` obliga a enviarla solo por HTTPS, evitando su intercepción en texto plano. Añadir `SameSite` ayuda además contra CSRF. Son defensas en capas para proteger el ID de sesión.",
       "explanation_en": "`HttpOnly` prevents JavaScript from reading the cookie, mitigating theft via XSS. `Secure` forces it to be sent only over HTTPS, preventing plaintext interception. Adding `SameSite` also helps against CSRF. These are layered defenses to protect the session ID.",
       "source": "OWASP — Session Management Cheat Sheet (cookies)",
       "expected_time_ms": 24000,
-      "tags": ["auth", "sessions", "cookies"]
+      "tags": [
+        "auth",
+        "sessions",
+        "cookies"
+      ]
     },
     {
       "id": "q040501003",
@@ -66,7 +79,11 @@
       "explanation_en": "In CSRF, a malicious site induces the victim's browser to make a request to another site where they're authenticated; since the browser automatically attaches cookies, the action runs under their identity. It's mitigated with anti-CSRF tokens, the `SameSite` cookie attribute, and origin checks.",
       "source": "OWASP — CSRF Prevention Cheat Sheet",
       "expected_time_ms": 26000,
-      "tags": ["auth", "csrf", "security"]
+      "tags": [
+        "auth",
+        "csrf",
+        "security"
+      ]
     },
     {
       "id": "q040501004",
@@ -75,14 +92,24 @@
       "difficulty_tier": "hard",
       "question_es": "Tras un inicio de sesión exitoso, regenerar el identificador de sesión ayuda a prevenir ataques de fijación de sesión (session fixation).",
       "question_en": "After a successful login, regenerating the session identifier helps prevent session fixation attacks.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "En la fijación de sesión, el atacante fuerza a la víctima a usar un ID de sesión conocido por él antes del login; si ese ID sigue siendo válido tras autenticarse, el atacante lo reutiliza. Regenerar el ID de sesión al autenticarse invalida el antiguo y neutraliza el ataque.",
       "explanation_en": "In session fixation, the attacker forces the victim to use a session ID known to the attacker before login; if that ID stays valid after authentication, the attacker reuses it. Regenerating the session ID upon authentication invalidates the old one and neutralizes the attack.",
       "source": "OWASP — Session Management (session fixation)",
       "expected_time_ms": 28000,
-      "tags": ["auth", "sessions", "session-fixation"]
+      "tags": [
+        "auth",
+        "sessions",
+        "session-fixation"
+      ]
     },
     {
       "id": "q040501005",
@@ -92,23 +119,27 @@
       "question_es": "¿Cuál es una desventaja de la autenticación por sesiones en el servidor frente a los tokens autocontenidos, en un sistema distribuido con muchos servidores?",
       "question_en": "What is a drawback of server-side session authentication versus self-contained tokens, in a distributed system with many servers?",
       "options_es": [
-        "Las sesiones son inseguras por definición",
         "El estado de sesión debe compartirse/consultarse entre servidores (por ejemplo, con un store común como Redis), lo que añade complejidad al escalar horizontalmente",
+        "Las sesiones son inseguras por definición",
         "Las sesiones no funcionan con HTTPS",
         "Las sesiones no permiten cerrar sesión"
       ],
       "options_en": [
-        "Sessions are insecure by definition",
         "Session state must be shared/looked up across servers (e.g. via a common store like Redis), which adds complexity when scaling horizontally",
+        "Sessions are insecure by definition",
         "Sessions don't work with HTTPS",
         "Sessions don't allow logging out"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Como el servidor guarda el estado, al balancear peticiones entre varios servidores todos deben poder acceder a la misma sesión: se necesita un store compartido (Redis, BD) o sesiones 'pegajosas' (sticky). Los tokens autocontenidos (JWT) evitan esa consulta de estado, aunque a cambio son más difíciles de revocar.",
       "explanation_en": "Since the server holds the state, when balancing requests across multiple servers they all must access the same session: you need a shared store (Redis, DB) or sticky sessions. Self-contained tokens (JWT) avoid that state lookup, but in exchange are harder to revoke.",
       "source": "OWASP — Session Management / scaling considerations",
       "expected_time_ms": 30000,
-      "tags": ["auth", "sessions", "scaling"]
+      "tags": [
+        "auth",
+        "sessions",
+        "scaling"
+      ]
     },
     {
       "id": "q040501006",
@@ -126,7 +157,11 @@
       "explanation_en": "The `SameSite` attribute controls sending the cookie in cross-site contexts: `Strict` withholds it on any navigation from another site, `Lax` (the default in modern browsers) allows some top-level navigation cases, and `None` (which requires `Secure`) always sends it. It's an important CSRF defense.",
       "source": "OWASP — SameSite cookie attribute / MDN",
       "expected_time_ms": 30000,
-      "tags": ["auth", "cookies", "samesite"]
+      "tags": [
+        "auth",
+        "cookies",
+        "samesite"
+      ]
     },
     {
       "id": "q040502001",
@@ -137,22 +172,25 @@
       "question_en": "What are the three parts of a JSON Web Token (JWT), separated by dots?",
       "options_es": [
         "Usuario, contraseña y rol",
-        "Header (cabecera), Payload (carga) y Signature (firma)",
         "Inicio, medio y fin",
+        "Header (cabecera), Payload (carga) y Signature (firma)",
         "Clave pública, clave privada y certificado"
       ],
       "options_en": [
         "Username, password, and role",
-        "Header, Payload, and Signature",
         "Start, middle, and end",
+        "Header, Payload, and Signature",
         "Public key, private key, and certificate"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un JWT tiene tres partes codificadas en Base64URL y unidas por puntos: el header (algoritmo y tipo), el payload (los claims/afirmaciones, como `sub` y `exp`) y la firma, que valida que el token no fue alterado. Header y payload NO están cifrados, solo codificados: cualquiera puede leerlos.",
       "explanation_en": "A JWT has three Base64URL-encoded parts joined by dots: the header (algorithm and type), the payload (the claims, like `sub` and `exp`), and the signature, which validates that the token wasn't altered. Header and payload are NOT encrypted, only encoded: anyone can read them.",
       "source": "RFC 7519 — JSON Web Token (JWT)",
       "expected_time_ms": 20000,
-      "tags": ["auth", "jwt"]
+      "tags": [
+        "auth",
+        "jwt"
+      ]
     },
     {
       "id": "q040502002",
@@ -161,14 +199,24 @@
       "difficulty_tier": "medium",
       "question_es": "El payload de un JWT firmado (no cifrado) puede ser leído por cualquiera que intercepte el token, por lo que no debe contener información sensible como contraseñas.",
       "question_en": "The payload of a signed (not encrypted) JWT can be read by anyone who intercepts the token, so it must not contain sensitive information such as passwords.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La firma de un JWT garantiza integridad y autenticidad (que no fue modificado), pero NO confidencialidad: el payload solo está codificado en Base64URL, no cifrado, y cualquiera puede decodificarlo. Por eso nunca se guardan secretos (contraseñas, datos sensibles) en el payload de un JWT firmado.",
       "explanation_en": "A JWT's signature guarantees integrity and authenticity (that it wasn't modified), but NOT confidentiality: the payload is only Base64URL-encoded, not encrypted, and anyone can decode it. That's why you never store secrets (passwords, sensitive data) in a signed JWT's payload.",
       "source": "RFC 7519 §11 / OWASP JWT Cheat Sheet",
       "expected_time_ms": 24000,
-      "tags": ["auth", "jwt", "confidentiality"]
+      "tags": [
+        "auth",
+        "jwt",
+        "confidentiality"
+      ]
     },
     {
       "id": "q040502003",
@@ -194,7 +242,11 @@
       "explanation_en": "`exp` (expiration time) is a standard claim setting when the token expires; the server rejects expired tokens. Limiting the token's lifetime reduces the abuse window if it leaks. The username usually goes in `sub` (subject) and the algorithm in the header (`alg`).",
       "source": "RFC 7519 §4.1.4 (exp claim)",
       "expected_time_ms": 22000,
-      "tags": ["auth", "jwt", "claims"]
+      "tags": [
+        "auth",
+        "jwt",
+        "claims"
+      ]
     },
     {
       "id": "q040502004",
@@ -204,23 +256,28 @@
       "question_es": "¿Por qué un servidor debe rechazar explícitamente tokens JWT con el algoritmo `alg: none` o forzar un algoritmo esperado al verificar?",
       "question_en": "Why must a server explicitly reject JWTs with the `alg: none` algorithm, or enforce an expected algorithm on verification?",
       "options_es": [
-        "Porque `none` hace el token más grande",
         "Porque aceptar `alg: none` (o dejar que el token elija el algoritmo) permite a un atacante forjar tokens sin firma válida, saltándose la verificación",
+        "Porque `none` hace el token más grande",
         "Porque `none` no es compatible con JSON",
         "No es necesario; cualquier valor de alg es seguro"
       ],
       "options_en": [
-        "Because `none` makes the token larger",
         "Because accepting `alg: none` (or letting the token pick the algorithm) allows an attacker to forge tokens with no valid signature, bypassing verification",
+        "Because `none` makes the token larger",
         "Because `none` is incompatible with JSON",
         "It's not necessary; any alg value is safe"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El ataque `alg: none` explota implementaciones que confían en el algoritmo declarado en el header del propio token: un atacante lo pone en `none`, elimina la firma y el servidor mal configurado acepta el token como válido. La defensa es fijar en el servidor el algoritmo esperado y nunca aceptar `none`. Una variante relacionada es la confusión RS256/HS256.",
       "explanation_en": "The `alg: none` attack exploits implementations that trust the algorithm declared in the token's own header: an attacker sets it to `none`, strips the signature, and a misconfigured server accepts the token as valid. The defense is to pin the expected algorithm server-side and never accept `none`. A related variant is the RS256/HS256 confusion.",
       "source": "OWASP — JWT Cheat Sheet (algorithm confusion)",
       "expected_time_ms": 32000,
-      "tags": ["auth", "jwt", "security", "alg-none"]
+      "tags": [
+        "auth",
+        "jwt",
+        "security",
+        "alg-none"
+      ]
     },
     {
       "id": "q040502005",
@@ -229,14 +286,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un patrón común es usar un 'access token' de vida corta junto con un 'refresh token' de vida más larga para obtener nuevos access tokens sin volver a pedir credenciales.",
       "question_en": "A common pattern is to use a short-lived 'access token' alongside a longer-lived 'refresh token' to obtain new access tokens without re-entering credentials.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El patrón access/refresh equilibra seguridad y usabilidad: el access token vive poco (minutos) para limitar el daño si se filtra, mientras el refresh token, guardado de forma más segura, permite renovar el acceso. El refresh token sí puede revocarse en el servidor, mitigando la dificultad de revocar JWTs autocontenidos.",
       "explanation_en": "The access/refresh pattern balances security and usability: the access token lives briefly (minutes) to limit damage if leaked, while the refresh token, stored more securely, allows renewing access. The refresh token can be revoked server-side, mitigating the difficulty of revoking self-contained JWTs.",
       "source": "OAuth 2.0 (RFC 6749 §1.5) / OWASP JWT Cheat Sheet",
       "expected_time_ms": 28000,
-      "tags": ["auth", "jwt", "refresh-token"]
+      "tags": [
+        "auth",
+        "jwt",
+        "refresh-token"
+      ]
     },
     {
       "id": "q040502006",
@@ -254,7 +321,11 @@
       "explanation_en": "`sub` (subject) is the registered claim identifying the token's principal, typically the authenticated user's id. Other standard claims include `iss` (issuer), `aud` (audience), `iat` (issued at), and `exp` (expiration). Validating `iss` and `aud` is as important as validating the signature.",
       "source": "RFC 7519 §4.1.2 (sub claim)",
       "expected_time_ms": 30000,
-      "tags": ["auth", "jwt", "sub"]
+      "tags": [
+        "auth",
+        "jwt",
+        "sub"
+      ]
     },
     {
       "id": "q040503001",
@@ -265,22 +336,25 @@
       "question_en": "What problem does OAuth 2.0 primarily solve?",
       "options_es": [
         "Cifrar el disco duro del servidor",
-        "Permitir que una aplicación acceda a recursos de un usuario en otro servicio SIN que el usuario comparta su contraseña con esa aplicación (autorización delegada)",
+        "Acelerar las consultas SQL",
         "Comprimir imágenes",
-        "Acelerar las consultas SQL"
+        "Permitir que una aplicación acceda a recursos de un usuario en otro servicio SIN que el usuario comparta su contraseña con esa aplicación (autorización delegada)"
       ],
       "options_en": [
         "Encrypting the server's hard drive",
-        "Letting an application access a user's resources on another service WITHOUT the user sharing their password with that application (delegated authorization)",
+        "Speeding up SQL queries",
         "Compressing images",
-        "Speeding up SQL queries"
+        "Letting an application access a user's resources on another service WITHOUT the user sharing their password with that application (delegated authorization)"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "OAuth 2.0 es un marco de AUTORIZACIÓN delegada: permite que una app obtenga acceso limitado a recursos del usuario (por ejemplo, 'iniciar sesión con Google' o acceder a tus fotos) mediante tokens, sin que la app vea tu contraseña del proveedor. No es un protocolo de autenticación por sí solo; para identidad se usa OpenID Connect encima.",
       "explanation_en": "OAuth 2.0 is a delegated AUTHORIZATION framework: it lets an app get limited access to a user's resources (e.g. 'sign in with Google' or access your photos) via tokens, without the app seeing your provider password. It's not an authentication protocol by itself; for identity, OpenID Connect is layered on top.",
       "source": "RFC 6749 — OAuth 2.0 Authorization Framework",
       "expected_time_ms": 22000,
-      "tags": ["auth", "oauth2"]
+      "tags": [
+        "auth",
+        "oauth2"
+      ]
     },
     {
       "id": "q040503002",
@@ -289,14 +363,24 @@
       "difficulty_tier": "medium",
       "question_es": "OAuth 2.0 es un protocolo de autorización, mientras que la autenticación de identidad ('quién eres') la aporta la capa OpenID Connect (OIDC) construida encima de OAuth 2.0.",
       "question_en": "OAuth 2.0 is an authorization protocol, while identity authentication ('who you are') is provided by the OpenID Connect (OIDC) layer built on top of OAuth 2.0.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Una confusión frecuente es tratar OAuth 2.0 como sistema de login. OAuth 2.0 concede autorización (acceso a recursos), no identidad. OpenID Connect añade una capa de autenticación estandarizada (con el `id_token`, un JWT) sobre OAuth 2.0, y es lo que hace posible el 'inicia sesión con...' de forma segura.",
       "explanation_en": "A frequent confusion is treating OAuth 2.0 as a login system. OAuth 2.0 grants authorization (access to resources), not identity. OpenID Connect adds a standardized authentication layer (with the `id_token`, a JWT) on top of OAuth 2.0, and it's what makes 'sign in with...' possible securely.",
       "source": "OpenID Connect Core 1.0 / RFC 6749",
       "expected_time_ms": 24000,
-      "tags": ["auth", "oauth2", "oidc"]
+      "tags": [
+        "auth",
+        "oauth2",
+        "oidc"
+      ]
     },
     {
       "id": "q040503003",
@@ -307,22 +391,26 @@
       "question_en": "In OAuth 2.0 terminology, what is the 'resource owner'?",
       "options_es": [
         "El servidor que aloja la base de datos",
-        "El usuario final que posee los datos y concede permiso para que una aplicación acceda a ellos",
         "La aplicación que solicita acceso",
+        "El usuario final que posee los datos y concede permiso para que una aplicación acceda a ellos",
         "El proveedor de internet"
       ],
       "options_en": [
         "The server hosting the database",
-        "The end user who owns the data and grants permission for an application to access it",
         "The application requesting access",
+        "The end user who owns the data and grants permission for an application to access it",
         "The internet provider"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El resource owner es normalmente el usuario final, dueño de los datos protegidos, que autoriza el acceso. Los otros roles son: el client (la app que pide acceso), el authorization server (emite tokens tras el consentimiento) y el resource server (aloja y sirve los recursos protegidos).",
       "explanation_en": "The resource owner is normally the end user, owner of the protected data, who authorizes access. The other roles are: the client (the app requesting access), the authorization server (issues tokens after consent), and the resource server (hosts and serves the protected resources).",
       "source": "RFC 6749 §1.1 (Roles)",
       "expected_time_ms": 24000,
-      "tags": ["auth", "oauth2", "roles"]
+      "tags": [
+        "auth",
+        "oauth2",
+        "roles"
+      ]
     },
     {
       "id": "q040503004",
@@ -348,7 +436,11 @@
       "explanation_en": "The Authorization Code flow with PKCE (Proof Key for Code Exchange) is today's recommendation for public clients (SPAs, mobile): PKCE adds a 'code verifier/challenge' that stops an attacker who intercepts the authorization code from exchanging it. The Implicit and password-credentials flows are discouraged in OAuth 2.1 due to their risks.",
       "source": "RFC 7636 (PKCE) / OAuth 2.1 draft",
       "expected_time_ms": 32000,
-      "tags": ["auth", "oauth2", "pkce"]
+      "tags": [
+        "auth",
+        "oauth2",
+        "pkce"
+      ]
     },
     {
       "id": "q040503005",
@@ -357,14 +449,24 @@
       "difficulty_tier": "hard",
       "question_es": "El 'scope' en OAuth 2.0 permite limitar los permisos que se conceden a la aplicación cliente (por ejemplo, solo lectura del perfil, sin acceso a escritura).",
       "question_en": "The 'scope' in OAuth 2.0 lets you limit the permissions granted to the client application (e.g. read-only profile access, no write access).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Los scopes definen el alcance del acceso concedido (por ejemplo, `read:profile`, `write:posts`). Aplicando el principio de mínimo privilegio, la app solo debe pedir los scopes que necesita, y el usuario ve y consiente esos permisos concretos. Un token con scopes limitados reduce el daño potencial si se ve comprometido.",
       "explanation_en": "Scopes define the extent of the granted access (e.g. `read:profile`, `write:posts`). Applying least privilege, the app should request only the scopes it needs, and the user sees and consents to those specific permissions. A token with limited scopes reduces potential damage if compromised.",
       "source": "RFC 6749 §3.3 (Access Token Scope)",
       "expected_time_ms": 26000,
-      "tags": ["auth", "oauth2", "scope"]
+      "tags": [
+        "auth",
+        "oauth2",
+        "scope"
+      ]
     },
     {
       "id": "q040503006",
@@ -382,7 +484,11 @@
       "explanation_en": "PKCE (Proof Key for Code Exchange, RFC 7636, pronounced 'pixy') generates a random secret (code verifier) from which a challenge is derived and sent at the start of the flow. When exchanging the code, the client must present the original verifier, preventing an attacker who steals the authorization code from using it. It's mandatory in OAuth 2.1 for public clients.",
       "source": "RFC 7636 — Proof Key for Code Exchange",
       "expected_time_ms": 30000,
-      "tags": ["auth", "oauth2", "pkce"]
+      "tags": [
+        "auth",
+        "oauth2",
+        "pkce"
+      ]
     },
     {
       "id": "q040504001",
@@ -393,22 +499,26 @@
       "question_en": "Why should passwords never be stored in plaintext in the database?",
       "options_es": [
         "Porque ocupan mucho espacio",
-        "Porque si la base de datos se filtra o es robada, todas las contraseñas quedan expuestas directamente, comprometiendo a los usuarios (que además suelen reutilizarlas)",
         "Porque el texto plano no es compatible con SQL",
+        "Porque si la base de datos se filtra o es robada, todas las contraseñas quedan expuestas directamente, comprometiendo a los usuarios (que además suelen reutilizarlas)",
         "Porque ralentiza el inicio de sesión"
       ],
       "options_en": [
         "Because they take up a lot of space",
-        "Because if the database leaks or is stolen, all passwords are directly exposed, compromising users (who also tend to reuse them)",
         "Because plaintext is incompatible with SQL",
+        "Because if the database leaks or is stolen, all passwords are directly exposed, compromising users (who also tend to reuse them)",
         "Because it slows down login"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Almacenar contraseñas en texto plano significa que una sola filtración expone todas las credenciales de inmediato, con impacto agravado por la reutilización de contraseñas entre servicios. La práctica correcta es guardar solo un hash resistente derivado de la contraseña, nunca la contraseña en sí.",
       "explanation_en": "Storing passwords in plaintext means a single breach exposes all credentials immediately, with impact worsened by password reuse across services. The correct practice is to store only a resistant hash derived from the password, never the password itself.",
       "source": "OWASP — Password Storage Cheat Sheet",
       "expected_time_ms": 20000,
-      "tags": ["auth", "password", "hashing"]
+      "tags": [
+        "auth",
+        "password",
+        "hashing"
+      ]
     },
     {
       "id": "q040504002",
@@ -417,14 +527,24 @@
       "difficulty_tier": "medium",
       "question_es": "Añadir un 'salt' (sal) único por usuario al hashear contraseñas evita que dos usuarios con la misma contraseña tengan el mismo hash y frustra los ataques con tablas precalculadas (rainbow tables).",
       "question_en": "Adding a unique per-user 'salt' when hashing passwords prevents two users with the same password from having the same hash and defeats precomputed-table (rainbow table) attacks.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El salt es un valor aleatorio único que se combina con la contraseña antes de hashear. Al ser distinto por usuario, dos contraseñas iguales producen hashes distintos, y las rainbow tables (precalculadas sin salt) dejan de servir, ya que el atacante tendría que recalcular por cada salt. Los algoritmos modernos generan y almacenan el salt automáticamente.",
       "explanation_en": "The salt is a unique random value combined with the password before hashing. Being unique per user, two equal passwords produce different hashes, and rainbow tables (precomputed without salt) become useless, since the attacker would have to recompute per salt. Modern algorithms generate and store the salt automatically.",
       "source": "OWASP — Password Storage Cheat Sheet (salting)",
       "expected_time_ms": 26000,
-      "tags": ["auth", "password", "salt"]
+      "tags": [
+        "auth",
+        "password",
+        "salt"
+      ]
     },
     {
       "id": "q040504003",
@@ -450,7 +570,11 @@
       "explanation_en": "MD5/SHA-256 are general-purpose hashes designed to be fast, exactly the opposite of what you want for passwords. Their speed enables massive brute-force attacks. For passwords you use deliberately slow, cost-tunable functions (bcrypt, scrypt, Argon2) that make trying trillions of candidates infeasible.",
       "source": "OWASP — Password Storage (do not use fast hashes)",
       "expected_time_ms": 26000,
-      "tags": ["auth", "password", "hashing"]
+      "tags": [
+        "auth",
+        "password",
+        "hashing"
+      ]
     },
     {
       "id": "q040504004",
@@ -459,14 +583,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué algoritmo de hashing de contraseñas ganó la Password Hashing Competition y es hoy la recomendación por defecto de OWASP para nuevas aplicaciones?",
       "question_en": "Which password-hashing algorithm won the Password Hashing Competition and is today OWASP's default recommendation for new applications?",
-      "options_es": ["SHA-1", "Argon2 (Argon2id)", "MD5", "Base64"],
-      "options_en": ["SHA-1", "Argon2 (Argon2id)", "MD5", "Base64"],
+      "options_es": [
+        "SHA-1",
+        "Argon2 (Argon2id)",
+        "MD5",
+        "Base64"
+      ],
+      "options_en": [
+        "SHA-1",
+        "Argon2 (Argon2id)",
+        "MD5",
+        "Base64"
+      ],
       "correct_index": 1,
       "explanation_es": "Argon2 (concretamente Argon2id) ganó la Password Hashing Competition en 2015 y es la recomendación por defecto de OWASP: es resistente a ataques con GPU y ASIC por ser 'memory-hard' (consume mucha memoria configurable). bcrypt sigue siendo aceptable. Base64 no es un hash (solo codificación) y MD5/SHA-1 están rotos para este uso.",
       "explanation_en": "Argon2 (specifically Argon2id) won the Password Hashing Competition in 2015 and is OWASP's default recommendation: it resists GPU and ASIC attacks by being 'memory-hard' (consuming a lot of configurable memory). bcrypt remains acceptable. Base64 is not a hash (just encoding) and MD5/SHA-1 are broken for this use.",
       "source": "OWASP — Password Storage / RFC 9106 (Argon2)",
       "expected_time_ms": 30000,
-      "tags": ["auth", "password", "argon2"]
+      "tags": [
+        "auth",
+        "password",
+        "argon2"
+      ]
     },
     {
       "id": "q040504005",
@@ -475,14 +613,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un 'work factor' o 'cost factor' configurable (como las rondas de bcrypt) permite aumentar la dificultad del hashing con el tiempo, para seguir el ritmo del hardware cada vez más potente.",
       "question_en": "A configurable 'work factor' or 'cost factor' (like bcrypt's rounds) lets you increase hashing difficulty over time, keeping pace with increasingly powerful hardware.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El factor de coste controla cuántas iteraciones (o cuánta memoria/paralelismo en Argon2) consume el hashing. Al subir el hardware su capacidad, se incrementa el factor para mantener un tiempo por hash suficientemente alto que frene la fuerza bruta, sin degradar demasiado la experiencia del usuario legítimo (unas pocas décimas de segundo).",
       "explanation_en": "The cost factor controls how many iterations (or how much memory/parallelism in Argon2) the hashing consumes. As hardware capability rises, you increase the factor to keep the per-hash time high enough to slow brute force, without degrading the legitimate user's experience too much (a few tenths of a second).",
       "source": "OWASP — Password Storage (work factor)",
       "expected_time_ms": 28000,
-      "tags": ["auth", "password", "work-factor"]
+      "tags": [
+        "auth",
+        "password",
+        "work-factor"
+      ]
     },
     {
       "id": "q040504006",
@@ -500,7 +648,11 @@
       "explanation_en": "A 'memory-hard' algorithm forces the use of a lot of memory (not just CPU) to compute, which massively raises the cost of attacks with specialized hardware (GPUs, ASICs), strong in computation but limited in per-core memory. Argon2id combines resistance to side-channel attacks and to time-memory trade-offs.",
       "source": "RFC 9106 — Argon2 (memory-hardness)",
       "expected_time_ms": 30000,
-      "tags": ["auth", "password", "memory-hard"]
+      "tags": [
+        "auth",
+        "password",
+        "memory-hard"
+      ]
     }
   ]
 }

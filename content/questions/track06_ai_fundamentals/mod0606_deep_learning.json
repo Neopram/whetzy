@@ -24,7 +24,10 @@
       "explanation_en": "The perceptron (McCulloch-Pitts / Rosenblatt) is the elementary artificial neuron: it multiplies each input by a weight, adds a bias, and passes the result through an activation function (originally a step). Stacking and connecting many perceptrons in layers builds modern neural networks.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.1; Rosenblatt (1958)",
       "expected_time_ms": 22000,
-      "tags": ["perceptron", "neuron"]
+      "tags": [
+        "perceptron",
+        "neuron"
+      ]
     },
     {
       "id": "q060601002",
@@ -33,14 +36,24 @@
       "difficulty_tier": "medium",
       "question_es": "Un perceptrón simple (de una sola capa) no puede aprender la función lógica XOR porque esta no es linealmente separable.",
       "question_en": "A simple (single-layer) perceptron cannot learn the XOR logic function because it is not linearly separable.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Un perceptrón de una capa solo puede trazar una frontera de decisión lineal, y XOR no se puede separar con una única recta. Esta limitación (señalada por Minsky y Papert en 1969) se supera con un perceptrón multicapa (MLP): añadir una capa oculta con activaciones no lineales permite representar XOR y, en general, fronteras no lineales.",
       "explanation_en": "A single-layer perceptron can only draw a linear decision boundary, and XOR cannot be separated with a single line. This limitation (pointed out by Minsky and Papert in 1969) is overcome with a multilayer perceptron (MLP): adding a hidden layer with non-linear activations allows representing XOR and, in general, non-linear boundaries.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.1: Example — Learning XOR",
       "expected_time_ms": 26000,
-      "tags": ["perceptron", "xor", "linear-separability"]
+      "tags": [
+        "perceptron",
+        "xor",
+        "linear-separability"
+      ]
     },
     {
       "id": "q060601003",
@@ -66,7 +79,11 @@
       "explanation_en": "The bias is a learnable parameter added to the weighted combination of inputs: `z = w·x + b`. It acts like a line's intercept, letting the activation threshold shift independently of the inputs. Without a bias, the boundary would always pass through the origin, limiting what the neuron can represent. It is trained together with the weights.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3",
       "expected_time_ms": 28000,
-      "tags": ["perceptron", "bias", "parameters"]
+      "tags": [
+        "perceptron",
+        "bias",
+        "parameters"
+      ]
     },
     {
       "id": "q060601004",
@@ -77,22 +94,26 @@
       "question_en": "What is a multilayer perceptron (MLP) and what gives it its expressive power over a simple perceptron?",
       "options_es": [
         "Es un perceptrón con más entradas; su poder viene de tener más features",
-        "Es una red con una o más capas ocultas entre entrada y salida; las funciones de activación NO lineales entre capas le permiten aproximar funciones complejas no lineales",
         "Es un conjunto de perceptrones que votan como un Random Forest",
+        "Es una red con una o más capas ocultas entre entrada y salida; las funciones de activación NO lineales entre capas le permiten aproximar funciones complejas no lineales",
         "Es un perceptrón que se entrena sin datos"
       ],
       "options_en": [
         "It is a perceptron with more inputs; its power comes from having more features",
-        "It is a network with one or more hidden layers between input and output; the NON-linear activation functions between layers let it approximate complex non-linear functions",
         "It is a set of perceptrons that vote like a Random Forest",
+        "It is a network with one or more hidden layers between input and output; the NON-linear activation functions between layers let it approximate complex non-linear functions",
         "It is a perceptron trained without data"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un MLP apila capas de neuronas; la clave es que entre capas hay funciones de activación no lineales. Sin ellas, componer capas lineales seguiría dando una única transformación lineal, sin ganancia. Las no linealidades permiten que el MLP represente fronteras y funciones arbitrariamente complejas (teorema de aproximación universal). Se entrena con backpropagation.",
       "explanation_en": "An MLP stacks layers of neurons; the key is that between layers there are non-linear activation functions. Without them, composing linear layers would still yield a single linear transformation, with no gain. The non-linearities let the MLP represent arbitrarily complex boundaries and functions (universal approximation theorem). It is trained with backpropagation.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6: Deep Feedforward Networks",
       "expected_time_ms": 32000,
-      "tags": ["perceptron", "mlp", "universal-approximation"]
+      "tags": [
+        "perceptron",
+        "mlp",
+        "universal-approximation"
+      ]
     },
     {
       "id": "q060601005",
@@ -101,14 +122,28 @@
       "difficulty_tier": "medium",
       "question_es": "Una neurona tiene pesos `w = [0.5, -1.0]`, sesgo `b = 1.0` y entradas `x = [2.0, 1.0]`. ¿Cuál es el valor de la suma ponderada `z = w·x + b` (antes de la activación)?",
       "question_en": "A neuron has weights `w = [0.5, -1.0]`, bias `b = 1.0`, and inputs `x = [2.0, 1.0]`. What is the value of the weighted sum `z = w·x + b` (before activation)?",
-      "options_es": ["1.0", "0.0", "2.0", "-0.5"],
-      "options_en": ["1.0", "0.0", "2.0", "-0.5"],
-      "correct_index": 0,
+      "options_es": [
+        "-0.5",
+        "0.0",
+        "2.0",
+        "1.0"
+      ],
+      "options_en": [
+        "-0.5",
+        "0.0",
+        "2.0",
+        "1.0"
+      ],
+      "correct_index": 3,
       "explanation_es": "`z = (0.5*2.0) + (-1.0*1.0) + 1.0 = 1.0 - 1.0 + 1.0 = 1.0`. Primero se hace el producto punto de pesos y entradas (`1.0 - 1.0 = 0.0`) y luego se suma el sesgo (`+1.0`). Olvidar el sesgo daría 0.0, un error común.",
       "explanation_en": "`z = (0.5*2.0) + (-1.0*1.0) + 1.0 = 1.0 - 1.0 + 1.0 = 1.0`. First take the dot product of weights and inputs (`1.0 - 1.0 = 0.0`), then add the bias (`+1.0`). Forgetting the bias would give 0.0, a common mistake.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.1",
       "expected_time_ms": 26000,
-      "tags": ["perceptron", "weighted-sum", "computation"]
+      "tags": [
+        "perceptron",
+        "weighted-sum",
+        "computation"
+      ]
     },
     {
       "id": "q060601006",
@@ -126,7 +161,11 @@
       "explanation_en": "The universal approximation theorem (Cybenko 1989, Hornik 1991) proves that a feedforward network with one hidden layer and a suitable non-linear activation can approximate any continuous function as closely as desired, given enough neurons. It is an existence result: it guarantees the network CAN represent the function, but not how to train it or how many neurons are needed, and deep networks usually achieve it with far fewer parameters than a single very wide layer.",
       "source": "Cybenko (1989); Hornik (1991); Goodfellow et al., Deep Learning, Ch. 6.4.1",
       "expected_time_ms": 32000,
-      "tags": ["perceptron", "universal-approximation", "theory"]
+      "tags": [
+        "perceptron",
+        "universal-approximation",
+        "theory"
+      ]
     },
     {
       "id": "q060602001",
@@ -137,22 +176,25 @@
       "question_en": "What is a non-linear activation function for in a neural network?",
       "options_es": [
         "Para acelerar la lectura de los datos",
-        "Para introducir no linealidad, permitiendo que la red aprenda relaciones complejas; sin ella, apilar capas equivaldría a una única transformación lineal",
+        "Para eliminar los pesos negativos",
         "Para reducir el número de capas necesarias a una",
-        "Para eliminar los pesos negativos"
+        "Para introducir no linealidad, permitiendo que la red aprenda relaciones complejas; sin ella, apilar capas equivaldría a una única transformación lineal"
       ],
       "options_en": [
         "To speed up data loading",
-        "To introduce non-linearity, letting the network learn complex relationships; without it, stacking layers would be equivalent to a single linear transformation",
+        "To remove negative weights",
         "To reduce the number of layers needed to one",
-        "To remove negative weights"
+        "To introduce non-linearity, letting the network learn complex relationships; without it, stacking layers would be equivalent to a single linear transformation"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Si todas las capas fueran lineales, su composición seguiría siendo una función lineal, por muchas capas que hubiera. Las funciones de activación no lineales (ReLU, sigmoide, tanh) rompen esa linealidad y dan a la red la capacidad de aproximar funciones arbitrariamente complejas. Son el ingrediente que hace útil la profundidad.",
       "explanation_en": "If all layers were linear, their composition would still be a linear function, no matter how many layers there were. Non-linear activation functions (ReLU, sigmoid, tanh) break that linearity and give the network the ability to approximate arbitrarily complex functions. They are the ingredient that makes depth useful.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3: Hidden Units",
       "expected_time_ms": 22000,
-      "tags": ["activation-functions", "non-linearity"]
+      "tags": [
+        "activation-functions",
+        "non-linearity"
+      ]
     },
     {
       "id": "q060602002",
@@ -162,23 +204,26 @@
       "question_es": "¿Qué hace la función de activación ReLU (Rectified Linear Unit)?",
       "question_en": "What does the ReLU (Rectified Linear Unit) activation function do?",
       "options_es": [
-        "Devuelve un valor entre 0 y 1 siempre",
         "Devuelve la entrada si es positiva y 0 si es negativa: f(x) = max(0, x)",
+        "Devuelve un valor entre 0 y 1 siempre",
         "Devuelve el cuadrado de la entrada",
         "Normaliza la entrada para que sume 1"
       ],
       "options_en": [
-        "It always returns a value between 0 and 1",
         "It returns the input if positive and 0 if negative: f(x) = max(0, x)",
+        "It always returns a value between 0 and 1",
         "It returns the square of the input",
         "It normalizes the input to sum to 1"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "ReLU `f(x) = max(0, x)` deja pasar los valores positivos sin cambios y anula los negativos. Es la activación más usada en capas ocultas por ser barata de calcular y por mitigar el desvanecimiento del gradiente (su derivada es 1 para x>0, no se satura como la sigmoide). Su desventaja es el problema de las 'neuronas muertas' (dying ReLU) cuando quedan atrapadas en la zona negativa.",
       "explanation_en": "ReLU `f(x) = max(0, x)` passes positive values unchanged and zeros out negative ones. It is the most used activation in hidden layers because it is cheap to compute and mitigates vanishing gradients (its derivative is 1 for x>0, it does not saturate like the sigmoid). Its downside is the 'dying ReLU' problem, when neurons get stuck in the negative region.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3.1: Rectified Linear Units",
       "expected_time_ms": 28000,
-      "tags": ["activation-functions", "relu"]
+      "tags": [
+        "activation-functions",
+        "relu"
+      ]
     },
     {
       "id": "q060602003",
@@ -189,22 +234,26 @@
       "question_en": "Why can the sigmoid function cause the vanishing gradient problem in deep networks?",
       "options_es": [
         "Porque devuelve valores negativos",
-        "Porque para entradas muy grandes o muy pequeñas se satura (su salida se aplana) y su derivada tiende a 0; al multiplicar muchas derivadas pequeñas durante backpropagation, el gradiente se vuelve minúsculo en las primeras capas y estas casi no aprenden",
+        "Porque no tiene derivada",
         "Porque es demasiado rápida de calcular",
-        "Porque no tiene derivada"
+        "Porque para entradas muy grandes o muy pequeñas se satura (su salida se aplana) y su derivada tiende a 0; al multiplicar muchas derivadas pequeñas durante backpropagation, el gradiente se vuelve minúsculo en las primeras capas y estas casi no aprenden"
       ],
       "options_en": [
         "Because it returns negative values",
-        "Because for very large or very small inputs it saturates (its output flattens) and its derivative tends to 0; multiplying many small derivatives during backpropagation makes the gradient tiny in the early layers, which then barely learn",
+        "Because it has no derivative",
         "Because it is too fast to compute",
-        "Because it has no derivative"
+        "Because for very large or very small inputs it saturates (its output flattens) and its derivative tends to 0; multiplying many small derivatives during backpropagation makes the gradient tiny in the early layers, which then barely learn"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La derivada de la sigmoide es como máximo 0.25 y se acerca a 0 en las colas. Como backpropagation multiplica las derivadas capa por capa (regla de la cadena), en redes profundas el producto de muchos números pequeños hace que el gradiente que llega a las primeras capas se desvanezca, frenando su aprendizaje. Por eso ReLU (derivada 1 en la zona positiva) se prefiere en capas ocultas profundas.",
       "explanation_en": "The sigmoid's derivative is at most 0.25 and approaches 0 in the tails. Since backpropagation multiplies the derivatives layer by layer (chain rule), in deep networks the product of many small numbers makes the gradient reaching the early layers vanish, stalling their learning. That is why ReLU (derivative 1 in the positive region) is preferred in deep hidden layers.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3, Ch. 8; Hochreiter (1991)",
       "expected_time_ms": 35000,
-      "tags": ["activation-functions", "vanishing-gradient", "sigmoid"]
+      "tags": [
+        "activation-functions",
+        "vanishing-gradient",
+        "sigmoid"
+      ]
     },
     {
       "id": "q060602004",
@@ -215,22 +264,26 @@
       "question_en": "Which activation function is typically used in the output layer of a network for multiclass classification (a single correct class)?",
       "options_es": [
         "ReLU",
-        "Softmax, que convierte las puntuaciones en una distribución de probabilidad sobre las clases que suma 1",
+        "La función escalón",
         "Una función lineal (identidad)",
-        "La función escalón"
+        "Softmax, que convierte las puntuaciones en una distribución de probabilidad sobre las clases que suma 1"
       ],
       "options_en": [
         "ReLU",
-        "Softmax, which turns the scores into a probability distribution over the classes that sums to 1",
+        "The step function",
         "A linear (identity) function",
-        "The step function"
+        "Softmax, which turns the scores into a probability distribution over the classes that sums to 1"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Softmax en la capa de salida produce probabilidades no negativas que suman 1, adecuadas para elegir una entre varias clases mutuamente excluyentes, y se combina con la entropía cruzada categórica. En cambio, para clasificación binaria se usa una sigmoide, para regresión una activación lineal, y ReLU es propia de capas ocultas, no de la salida de clasificación.",
       "explanation_en": "Softmax in the output layer produces non-negative probabilities that sum to 1, suitable for choosing one among several mutually exclusive classes, and it is combined with categorical cross-entropy. By contrast, binary classification uses a sigmoid, regression uses a linear activation, and ReLU belongs to hidden layers, not the classification output.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.2.2: Softmax Units for Multinoulli Output",
       "expected_time_ms": 28000,
-      "tags": ["activation-functions", "softmax", "output-layer"]
+      "tags": [
+        "activation-functions",
+        "softmax",
+        "output-layer"
+      ]
     },
     {
       "id": "q060602005",
@@ -239,14 +292,24 @@
       "difficulty_tier": "hard",
       "question_es": "La función tanh está centrada en cero (su salida va de -1 a 1), mientras que la sigmoide va de 0 a 1; por eso tanh suele facilitar el entrenamiento respecto a la sigmoide en capas ocultas.",
       "question_en": "The tanh function is zero-centered (its output ranges from -1 to 1), while the sigmoid ranges from 0 to 1; this is why tanh often eases training relative to the sigmoid in hidden layers.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Al estar centrada en cero, la salida de tanh tiene media cercana a 0, lo que ayuda a que los gradientes de las capas siguientes estén mejor condicionados y la optimización sea más estable que con la sigmoide (cuya salida siempre positiva introduce un sesgo en las actualizaciones). Aun así, tanh también se satura en los extremos y sufre desvanecimiento del gradiente, por lo que ReLU y variantes suelen preferirse en redes profundas.",
       "explanation_en": "Being zero-centered, tanh's output has a mean near 0, which helps the gradients of subsequent layers be better conditioned and makes optimization more stable than with the sigmoid (whose always-positive output introduces a bias into the updates). Still, tanh also saturates at the extremes and suffers from vanishing gradients, so ReLU and its variants are usually preferred in deep networks.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3; LeCun et al., 'Efficient BackProp' (1998)",
       "expected_time_ms": 30000,
-      "tags": ["activation-functions", "tanh", "sigmoid"]
+      "tags": [
+        "activation-functions",
+        "tanh",
+        "sigmoid"
+      ]
     },
     {
       "id": "q060602006",
@@ -264,7 +327,11 @@
       "explanation_en": "Leaky ReLU `f(x) = x if x>0, else α*x` (with small α, e.g. 0.01) allows a small gradient in the negative region, preventing neurons from becoming 'dead' (with a permanent zero gradient) as can happen with standard ReLU. Variants like PReLU learn α, and ELU/GELU are other smooth alternatives used in modern architectures.",
       "source": "Maas et al. (2013); Goodfellow et al., Deep Learning, Ch. 6.3.1",
       "expected_time_ms": 32000,
-      "tags": ["activation-functions", "leaky-relu", "dying-relu"]
+      "tags": [
+        "activation-functions",
+        "leaky-relu",
+        "dying-relu"
+      ]
     },
     {
       "id": "q060603001",
@@ -290,7 +357,10 @@
       "explanation_en": "Backpropagation is the efficient method to compute how the loss changes with respect to each weight. After the forward pass that produces the prediction and error, it propagates that error backward layer by layer applying the chain rule, obtaining all gradients. An optimizer (like SGD or Adam) then uses those gradients to update the weights.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5: Back-Propagation; Rumelhart et al. (1986)",
       "expected_time_ms": 24000,
-      "tags": ["backpropagation", "gradients"]
+      "tags": [
+        "backpropagation",
+        "gradients"
+      ]
     },
     {
       "id": "q060603002",
@@ -301,22 +371,26 @@
       "question_en": "What is the relationship between the forward pass and the backward pass in training a network?",
       "options_es": [
         "Son procesos independientes que no comparten información",
-        "El forward pass calcula la salida y la pérdida guardando valores intermedios; el backward pass usa esos valores para calcular los gradientes de la pérdida respecto a los pesos",
+        "Solo se necesita el backward pass",
         "El backward pass ocurre antes del forward pass",
-        "Solo se necesita el backward pass"
+        "El forward pass calcula la salida y la pérdida guardando valores intermedios; el backward pass usa esos valores para calcular los gradientes de la pérdida respecto a los pesos"
       ],
       "options_en": [
         "They are independent processes that share no information",
-        "The forward pass computes the output and loss while storing intermediate values; the backward pass uses those values to compute the gradients of the loss with respect to the weights",
+        "Only the backward pass is needed",
         "The backward pass happens before the forward pass",
-        "Only the backward pass is needed"
+        "The forward pass computes the output and loss while storing intermediate values; the backward pass uses those values to compute the gradients of the loss with respect to the weights"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Primero el forward pass propaga la entrada por la red para producir la predicción y evaluar la pérdida, almacenando las activaciones intermedias. Luego el backward pass reutiliza esas activaciones para aplicar la regla de la cadena de salida a entrada y obtener el gradiente de cada peso. Un ciclo forward+backward+actualización constituye un paso de entrenamiento.",
       "explanation_en": "First the forward pass propagates the input through the network to produce the prediction and evaluate the loss, storing the intermediate activations. Then the backward pass reuses those activations to apply the chain rule from output to input and obtain each weight's gradient. One forward+backward+update cycle constitutes a training step.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5",
       "expected_time_ms": 28000,
-      "tags": ["backpropagation", "forward-pass", "backward-pass"]
+      "tags": [
+        "backpropagation",
+        "forward-pass",
+        "backward-pass"
+      ]
     },
     {
       "id": "q060603003",
@@ -325,14 +399,23 @@
       "difficulty_tier": "medium",
       "question_es": "Backpropagation es simplemente una aplicación eficiente y sistemática de la regla de la cadena del cálculo.",
       "question_en": "Backpropagation is simply an efficient and systematic application of the chain rule from calculus.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Backpropagation aplica la regla de la cadena para descomponer la derivada de la pérdida respecto a un peso en un producto de derivadas locales, reutilizando cálculos intermedios (mediante programación dinámica) para no recalcularlos. Esa reutilización es lo que lo hace eficiente comparado con calcular cada derivada por separado. No es un algoritmo de optimización en sí; solo entrega los gradientes que usa el optimizador.",
       "explanation_en": "Backpropagation applies the chain rule to decompose the derivative of the loss with respect to a weight into a product of local derivatives, reusing intermediate computations (via dynamic programming) to avoid recomputing them. That reuse is what makes it efficient compared to computing each derivative separately. It is not an optimization algorithm itself; it just provides the gradients the optimizer uses.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5.2: Chain Rule of Calculus",
       "expected_time_ms": 26000,
-      "tags": ["backpropagation", "chain-rule"]
+      "tags": [
+        "backpropagation",
+        "chain-rule"
+      ]
     },
     {
       "id": "q060603004",
@@ -343,22 +426,27 @@
       "question_en": "What is an 'epoch' versus a 'batch' and a 'step' (iteration) in neural network training?",
       "options_es": [
         "Son tres nombres para lo mismo",
-        "Una época es una pasada completa por todo el conjunto de entrenamiento; el batch es el subconjunto de ejemplos procesado en cada paso, y un paso es una actualización de pesos; una época consta de (nº ejemplos / tamaño de batch) pasos",
+        "Un paso procesa todo el dataset y una época solo un ejemplo",
         "Un batch es más grande que una época",
-        "Un paso procesa todo el dataset y una época solo un ejemplo"
+        "Una época es una pasada completa por todo el conjunto de entrenamiento; el batch es el subconjunto de ejemplos procesado en cada paso, y un paso es una actualización de pesos; una época consta de (nº ejemplos / tamaño de batch) pasos"
       ],
       "options_en": [
         "They are three names for the same thing",
-        "An epoch is one full pass over the entire training set; the batch is the subset of examples processed in each step, and a step is one weight update; an epoch consists of (number of examples / batch size) steps",
+        "A step processes the whole dataset and an epoch just one example",
         "A batch is larger than an epoch",
-        "A step processes the whole dataset and an epoch just one example"
+        "An epoch is one full pass over the entire training set; the batch is the subset of examples processed in each step, and a step is one weight update; an epoch consists of (number of examples / batch size) steps"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "En mini-batch gradient descent los datos se dividen en batches; por cada batch se hace forward, backward y una actualización de pesos (un paso/iteración). Cuando se han recorrido todos los batches, se ha completado una época. Por ejemplo, con 10.000 ejemplos y batch de 100 hay 100 pasos por época. Se suele entrenar durante muchas épocas.",
       "explanation_en": "In mini-batch gradient descent the data is split into batches; for each batch a forward, backward, and one weight update (a step/iteration) is done. When all batches have been processed, one epoch is complete. For example, with 10,000 examples and a batch of 100 there are 100 steps per epoch. Training usually runs for many epochs.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
       "expected_time_ms": 35000,
-      "tags": ["backpropagation", "epoch", "batch", "training"]
+      "tags": [
+        "backpropagation",
+        "epoch",
+        "batch",
+        "training"
+      ]
     },
     {
       "id": "q060603005",
@@ -369,22 +457,26 @@
       "question_en": "What problem can arise in the backward pass of very deep or recurrent networks when gradients become larger and larger as they propagate, and how is it mitigated?",
       "options_es": [
         "El desvanecimiento del gradiente; se mitiga bajando la tasa de aprendizaje",
-        "La explosión del gradiente (exploding gradients), que causa actualizaciones enormes e inestables (NaN); se mitiga con recorte de gradiente (gradient clipping), inicialización adecuada y normalización",
         "El sobreajuste; se mitiga con más datos",
+        "La explosión del gradiente (exploding gradients), que causa actualizaciones enormes e inestables (NaN); se mitiga con recorte de gradiente (gradient clipping), inicialización adecuada y normalización",
         "La fuga de datos; se mitiga con validación cruzada"
       ],
       "options_en": [
         "Vanishing gradient; mitigated by lowering the learning rate",
-        "Exploding gradients, which cause huge, unstable updates (NaN); mitigated with gradient clipping, proper initialization, and normalization",
         "Overfitting; mitigated with more data",
+        "Exploding gradients, which cause huge, unstable updates (NaN); mitigated with gradient clipping, proper initialization, and normalization",
         "Data leakage; mitigated with cross-validation"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Cuando el producto de derivadas y pesos durante la retropropagación crece sin control (por ejemplo en RNN sobre secuencias largas), los gradientes 'explotan', produciendo actualizaciones gigantescas que desestabilizan el entrenamiento o dan NaN. El recorte de gradiente (limitar su norma máxima) es la solución estándar, junto con una buena inicialización de pesos y técnicas de normalización. Es el fenómeno opuesto al desvanecimiento del gradiente.",
       "explanation_en": "When the product of derivatives and weights during backpropagation grows uncontrollably (e.g. in RNNs over long sequences), gradients 'explode', producing gigantic updates that destabilize training or yield NaN. Gradient clipping (capping their maximum norm) is the standard fix, along with good weight initialization and normalization techniques. It is the opposite phenomenon to vanishing gradients.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 10.11: Gradient Clipping; Pascanu et al. (2013)",
       "expected_time_ms": 35000,
-      "tags": ["backpropagation", "exploding-gradients", "gradient-clipping"]
+      "tags": [
+        "backpropagation",
+        "exploding-gradients",
+        "gradient-clipping"
+      ]
     },
     {
       "id": "q060603006",
@@ -402,7 +494,11 @@
       "explanation_en": "Adam (Adaptive Moment Estimation) keeps moving averages of the gradient (first moment, like momentum) and of its square (second moment), and adjusts each parameter's learning rate based on them. It usually converges quickly with little need to tune the learning rate, making it a common default for training deep networks. It combines ideas from Momentum and RMSProp.",
       "source": "Kingma & Ba, 'Adam: A Method for Stochastic Optimization' (2015); Goodfellow et al., Deep Learning, Ch. 8.5",
       "expected_time_ms": 30000,
-      "tags": ["backpropagation", "adam", "optimizer"]
+      "tags": [
+        "backpropagation",
+        "adam",
+        "optimizer"
+      ]
     },
     {
       "id": "q060604001",
@@ -428,7 +524,11 @@
       "explanation_en": "CNNs exploit that in images nearby pixels are correlated and patterns (edges, textures) can appear at any position. Their convolutional filters detect local patterns in a translation-invariant way, reusing the same weights across the whole image. This makes them far more efficient than a dense network for grid-structured data.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9: Convolutional Networks",
       "expected_time_ms": 22000,
-      "tags": ["cnn", "images", "spatial"]
+      "tags": [
+        "cnn",
+        "images",
+        "spatial"
+      ]
     },
     {
       "id": "q060604002",
@@ -439,22 +539,26 @@
       "question_en": "What does a convolutional layer do in a CNN?",
       "options_es": [
         "Conecta cada neurona con todas las de la capa anterior",
-        "Desliza filtros (kernels) pequeños sobre la entrada, calculando en cada posición un producto que detecta patrones locales (bordes, texturas) y produciendo mapas de características (feature maps)",
         "Ordena los píxeles por intensidad",
+        "Desliza filtros (kernels) pequeños sobre la entrada, calculando en cada posición un producto que detecta patrones locales (bordes, texturas) y produciendo mapas de características (feature maps)",
         "Elimina la mitad de la imagen aleatoriamente"
       ],
       "options_en": [
         "It connects each neuron to all neurons of the previous layer",
-        "It slides small filters (kernels) over the input, computing at each position a product that detects local patterns (edges, textures) and producing feature maps",
         "It sorts the pixels by intensity",
+        "It slides small filters (kernels) over the input, computing at each position a product that detects local patterns (edges, textures) and producing feature maps",
         "It randomly removes half the image"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Una capa convolucional aplica filtros aprendibles que se deslizan por la entrada; cada filtro se especializa en detectar un patrón (un borde en cierta orientación, una textura) y genera un mapa de características que indica dónde aparece ese patrón. Compartir los pesos del filtro por toda la imagen reduce drásticamente el número de parámetros frente a una capa densa y aporta invarianza a la traslación.",
       "explanation_en": "A convolutional layer applies learnable filters that slide over the input; each filter specializes in detecting a pattern (an edge in a certain orientation, a texture) and generates a feature map indicating where that pattern appears. Sharing the filter's weights across the whole image drastically reduces the number of parameters compared to a dense layer and provides translation invariance.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.1-9.2: The Convolution Operation",
       "expected_time_ms": 28000,
-      "tags": ["cnn", "convolution", "feature-maps"]
+      "tags": [
+        "cnn",
+        "convolution",
+        "feature-maps"
+      ]
     },
     {
       "id": "q060604003",
@@ -465,22 +569,26 @@
       "question_en": "What is the function of a pooling layer (e.g. max pooling) in a CNN?",
       "options_es": [
         "Aumentar la resolución de la imagen",
-        "Reducir las dimensiones espaciales de los mapas de características (submuestreo), disminuyendo el cómputo y aportando cierta invarianza a pequeñas traslaciones",
+        "Calcular la función de pérdida",
         "Añadir más filtros a la red",
-        "Calcular la función de pérdida"
+        "Reducir las dimensiones espaciales de los mapas de características (submuestreo), disminuyendo el cómputo y aportando cierta invarianza a pequeñas traslaciones"
       ],
       "options_en": [
         "Increasing the image resolution",
-        "Reducing the spatial dimensions of the feature maps (downsampling), lowering computation and adding some invariance to small translations",
+        "Computing the loss function",
         "Adding more filters to the network",
-        "Computing the loss function"
+        "Reducing the spatial dimensions of the feature maps (downsampling), lowering computation and adding some invariance to small translations"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El pooling resume regiones vecinas del mapa de características en un solo valor: el max pooling toma el máximo de cada ventana. Esto reduce la resolución espacial (menos cómputo y parámetros en capas siguientes) y hace la representación algo robusta a que un patrón se desplace unos píxeles. No tiene parámetros aprendibles.",
       "explanation_en": "Pooling summarizes neighboring regions of the feature map into a single value: max pooling takes the maximum of each window. This reduces spatial resolution (less computation and fewer parameters in later layers) and makes the representation somewhat robust to a pattern shifting a few pixels. It has no learnable parameters.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.3: Pooling",
       "expected_time_ms": 28000,
-      "tags": ["cnn", "pooling", "downsampling"]
+      "tags": [
+        "cnn",
+        "pooling",
+        "downsampling"
+      ]
     },
     {
       "id": "q060604004",
@@ -489,14 +597,24 @@
       "difficulty_tier": "hard",
       "question_es": "Compartir los pesos de un filtro en toda la imagen (weight sharing) reduce drásticamente el número de parámetros de una CNN respecto a una red totalmente conectada equivalente.",
       "question_en": "Sharing a filter's weights across the whole image (weight sharing) drastically reduces the number of parameters of a CNN compared to an equivalent fully connected network.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "En una capa densa, cada píxel de entrada tendría un peso propio hacia cada neurona, lo que para imágenes da millones de parámetros. En una convolución, un mismo filtro pequeño (por ejemplo 3x3) se reutiliza en todas las posiciones, así que solo se aprenden los pesos de ese filtro sin importar el tamaño de la imagen. Esto reduce enormemente los parámetros, mitiga el sobreajuste y aporta invarianza a la traslación.",
       "explanation_en": "In a dense layer, each input pixel would have its own weight to each neuron, which for images gives millions of parameters. In a convolution, the same small filter (e.g. 3x3) is reused at every position, so only that filter's weights are learned regardless of image size. This hugely reduces parameters, mitigates overfitting, and provides translation invariance.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.2: Motivation (parameter sharing)",
       "expected_time_ms": 30000,
-      "tags": ["cnn", "weight-sharing", "parameters"]
+      "tags": [
+        "cnn",
+        "weight-sharing",
+        "parameters"
+      ]
     },
     {
       "id": "q060604005",
@@ -506,23 +624,27 @@
       "question_es": "En una CNN típica para clasificación de imágenes, ¿qué tienden a aprender las capas iniciales frente a las capas profundas?",
       "question_en": "In a typical CNN for image classification, what do the early layers tend to learn versus the deep layers?",
       "options_es": [
-        "Las iniciales aprenden objetos completos y las profundas bordes",
         "Las capas iniciales aprenden patrones simples y locales (bordes, colores, texturas); las capas profundas combinan esos patrones en conceptos más abstractos y complejos (partes de objetos, objetos completos)",
+        "Las iniciales aprenden objetos completos y las profundas bordes",
         "Todas las capas aprenden exactamente lo mismo",
         "Las capas profundas no aprenden nada útil"
       ],
       "options_en": [
-        "The early ones learn whole objects and the deep ones edges",
         "The early layers learn simple, local patterns (edges, colors, textures); the deep layers combine those patterns into more abstract, complex concepts (object parts, whole objects)",
+        "The early ones learn whole objects and the deep ones edges",
         "All layers learn exactly the same thing",
         "The deep layers learn nothing useful"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Las CNN aprenden una jerarquía de características: las primeras capas detectan bordes y colores; las intermedias combinan bordes en formas y texturas; las profundas representan partes y objetos completos. Esta composición jerárquica de lo simple a lo abstracto es la base de la visión por computador moderna y de por qué las representaciones aprendidas son transferibles a otras tareas (transfer learning).",
       "explanation_en": "CNNs learn a hierarchy of features: the first layers detect edges and colors; the middle ones combine edges into shapes and textures; the deep ones represent parts and whole objects. This hierarchical composition from simple to abstract is the basis of modern computer vision and of why the learned representations are transferable to other tasks (transfer learning).",
       "source": "Zeiler & Fergus, 'Visualizing and Understanding Convolutional Networks' (2014); Goodfellow et al., Deep Learning, Ch. 9",
       "expected_time_ms": 32000,
-      "tags": ["cnn", "feature-hierarchy", "representation"]
+      "tags": [
+        "cnn",
+        "feature-hierarchy",
+        "representation"
+      ]
     },
     {
       "id": "q060604006",
@@ -540,7 +662,11 @@
       "explanation_en": "Transfer learning exploits that the low- and mid-level features a CNN learns on a huge dataset (edges, textures, shapes) are useful for many tasks. Those already-trained layers are reused and only the final part is fine-tuned for the new task, achieving good performance with far less data and compute than training from scratch. It is standard practice in computer vision.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 15.2: Transfer Learning; Yosinski et al. (2014)",
       "expected_time_ms": 32000,
-      "tags": ["cnn", "transfer-learning", "fine-tuning"]
+      "tags": [
+        "cnn",
+        "transfer-learning",
+        "fine-tuning"
+      ]
     },
     {
       "id": "q060605001",
@@ -551,22 +677,25 @@
       "question_en": "What type of data are recurrent neural networks (RNNs) especially suited for?",
       "options_es": [
         "Imágenes estáticas sin orden",
-        "Datos secuenciales donde el orden importa, como texto, series temporales o audio, ya que mantienen un estado interno que resume lo visto hasta el momento",
         "Datos tabulares sin relación temporal",
+        "Datos secuenciales donde el orden importa, como texto, series temporales o audio, ya que mantienen un estado interno que resume lo visto hasta el momento",
         "Grafos no dirigidos"
       ],
       "options_en": [
         "Static images with no order",
-        "Sequential data where order matters, like text, time series, or audio, since they keep an internal state summarizing what has been seen so far",
         "Tabular data with no temporal relation",
+        "Sequential data where order matters, like text, time series, or audio, since they keep an internal state summarizing what has been seen so far",
         "Undirected graphs"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Las RNN procesan la secuencia elemento a elemento manteniendo un estado oculto (memoria) que se actualiza en cada paso y captura el contexto previo. Esto las hace naturales para lenguaje, series temporales o audio, donde el significado de un elemento depende de los anteriores. A diferencia de una red feedforward, comparten parámetros a lo largo del tiempo.",
       "explanation_en": "RNNs process the sequence element by element while maintaining a hidden state (memory) that updates at each step and captures the prior context. This makes them natural for language, time series, or audio, where the meaning of an element depends on the previous ones. Unlike a feedforward network, they share parameters across time.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 10: Sequence Modeling — RNNs",
       "expected_time_ms": 22000,
-      "tags": ["rnn", "sequences"]
+      "tags": [
+        "rnn",
+        "sequences"
+      ]
     },
     {
       "id": "q060605002",
@@ -577,22 +706,26 @@
       "question_en": "What is the 'hidden state' in an RNN?",
       "options_es": [
         "Una capa que el usuario no puede ver",
-        "Un vector de memoria que la red actualiza en cada paso temporal y que resume la información relevante de los elementos anteriores de la secuencia",
         "El conjunto de pesos del modelo",
+        "Un vector de memoria que la red actualiza en cada paso temporal y que resume la información relevante de los elementos anteriores de la secuencia",
         "La salida final de la red"
       ],
       "options_en": [
         "A layer the user cannot see",
-        "A memory vector the network updates at each time step, summarizing the relevant information from the earlier elements of the sequence",
         "The set of the model's weights",
+        "A memory vector the network updates at each time step, summarizing the relevant information from the earlier elements of the sequence",
         "The network's final output"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El estado oculto `h_t` se calcula combinando la entrada actual `x_t` con el estado anterior `h_{t-1}`, actuando como memoria que arrastra el contexto a lo largo de la secuencia. Es lo que permite a la RNN 'recordar' información pasada al procesar el elemento actual. Los mismos pesos se aplican en cada paso (parameter sharing temporal).",
       "explanation_en": "The hidden state `h_t` is computed by combining the current input `x_t` with the previous state `h_{t-1}`, acting as memory that carries context along the sequence. It is what lets the RNN 'remember' past information when processing the current element. The same weights are applied at every step (temporal parameter sharing).",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 10.2: Recurrent Neural Networks",
       "expected_time_ms": 28000,
-      "tags": ["rnn", "hidden-state", "memory"]
+      "tags": [
+        "rnn",
+        "hidden-state",
+        "memory"
+      ]
     },
     {
       "id": "q060605003",
@@ -618,7 +751,11 @@
       "explanation_en": "In a simple RNN, the gradient vanishes (or explodes) when propagated over long sequences, so it struggles to relate distant elements (e.g. the beginning and end of a paragraph). LSTMs introduce a memory cell and gates that regulate what information to keep, forget, or output, letting the gradient flow without vanishing and capturing long-term dependencies.",
       "source": "Hochreiter & Schmidhuber, 'Long Short-Term Memory' (1997); Goodfellow et al., Deep Learning, Ch. 10.10",
       "expected_time_ms": 35000,
-      "tags": ["lstm", "long-term-dependencies", "vanishing-gradient"]
+      "tags": [
+        "lstm",
+        "long-term-dependencies",
+        "vanishing-gradient"
+      ]
     },
     {
       "id": "q060605004",
@@ -627,14 +764,24 @@
       "difficulty_tier": "medium",
       "question_es": "Una RNN aplica el mismo conjunto de pesos en cada paso temporal de la secuencia (comparte parámetros a lo largo del tiempo).",
       "question_en": "An RNN applies the same set of weights at every time step of the sequence (it shares parameters across time).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La RNN reutiliza los mismos pesos en cada paso temporal, lo que le permite procesar secuencias de longitud variable con un número fijo de parámetros y generalizar patrones independientemente de la posición en la secuencia. Este 'parameter sharing' temporal es análogo al que hacen las CNN en el espacio. El entrenamiento propaga el error a través del tiempo con 'backpropagation through time' (BPTT).",
       "explanation_en": "The RNN reuses the same weights at each time step, which lets it process variable-length sequences with a fixed number of parameters and generalize patterns regardless of position in the sequence. This temporal 'parameter sharing' is analogous to what CNNs do in space. Training propagates the error through time with 'backpropagation through time' (BPTT).",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 10.2: Parameter sharing; BPTT",
       "expected_time_ms": 26000,
-      "tags": ["rnn", "parameter-sharing", "bptt"]
+      "tags": [
+        "rnn",
+        "parameter-sharing",
+        "bptt"
+      ]
     },
     {
       "id": "q060605005",
@@ -645,22 +792,26 @@
       "question_en": "In an LSTM, what function do the 'gates' (forget, input, output) serve?",
       "options_es": [
         "Aumentar la resolución de la entrada",
-        "Regular con valores entre 0 y 1 (mediante sigmoides) qué información se elimina de la celda de memoria, cuánta información nueva se añade y qué parte del estado se expone como salida",
         "Contar el número de pasos temporales",
+        "Regular con valores entre 0 y 1 (mediante sigmoides) qué información se elimina de la celda de memoria, cuánta información nueva se añade y qué parte del estado se expone como salida",
         "Convertir la RNN en una CNN"
       ],
       "options_en": [
         "Increasing the input resolution",
-        "Regulating with values between 0 and 1 (via sigmoids) what information is removed from the memory cell, how much new information is added, and what part of the state is exposed as output",
         "Counting the number of time steps",
+        "Regulating with values between 0 and 1 (via sigmoids) what information is removed from the memory cell, how much new information is added, and what part of the state is exposed as output",
         "Turning the RNN into a CNN"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Las compuertas de la LSTM usan sigmoides que producen valores entre 0 y 1 actuando como 'filtros': la forget gate decide qué borrar de la celda de memoria, la input gate qué información nueva incorporar, y la output gate qué parte del estado emitir. Este control aprendido del flujo de información es lo que permite conservar contexto relevante durante muchos pasos y descartar lo irrelevante. Las GRU son una variante más simple con menos compuertas.",
       "explanation_en": "The LSTM's gates use sigmoids that produce values between 0 and 1 acting as 'filters': the forget gate decides what to erase from the memory cell, the input gate what new information to incorporate, and the output gate what part of the state to emit. This learned control of information flow is what allows keeping relevant context across many steps and discarding the irrelevant. GRUs are a simpler variant with fewer gates.",
       "source": "Hochreiter & Schmidhuber (1997); Goodfellow et al., Deep Learning, Ch. 10.10: The Long Short-Term Memory",
       "expected_time_ms": 35000,
-      "tags": ["lstm", "gates", "memory-cell"]
+      "tags": [
+        "lstm",
+        "gates",
+        "memory-cell"
+      ]
     },
     {
       "id": "q060605006",
@@ -678,7 +829,11 @@
       "explanation_en": "The Transformer (Vaswani et al., 2017, 'Attention Is All You Need') dispenses with recurrence and uses the self-attention mechanism to directly relate all elements of a sequence to each other, regardless of distance. This allows processing the sequence in parallel (much faster than RNNs, which are sequential) and capturing long dependencies easily. It is the base architecture of models like GPT and BERT.",
       "source": "Vaswani et al., 'Attention Is All You Need', NeurIPS (2017)",
       "expected_time_ms": 32000,
-      "tags": ["rnn", "transformer", "attention"]
+      "tags": [
+        "rnn",
+        "transformer",
+        "attention"
+      ]
     }
   ]
 }

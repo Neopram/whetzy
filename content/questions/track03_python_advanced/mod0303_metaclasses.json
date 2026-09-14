@@ -24,7 +24,11 @@
       "explanation_en": "`type(name, bases, namespace)` creates a class on the fly: the name, a tuple of base classes, and a dict of attributes/methods. It's exactly what the `class` statement does under the hood, since `type` is the default metaclass.",
       "source": "CPython docs 3.13 — Built-in Functions: type (3-argument form)",
       "expected_time_ms": 25000,
-      "tags": ["metaclasses", "type", "dynamic-class"]
+      "tags": [
+        "metaclasses",
+        "type",
+        "dynamic-class"
+      ]
     },
     {
       "id": "q030301002",
@@ -33,14 +37,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nDog = type(\"Dog\", (), {\"sound\": lambda self: \"woof\"})\nprint(Dog().sound())\n```",
       "question_en": "What does the following code print?\n```python\nDog = type(\"Dog\", (), {\"sound\": lambda self: \"woof\"})\nprint(Dog().sound())\n```",
-      "options_es": ["woof", "Dog", "<lambda>", "TypeError"],
-      "options_en": ["woof", "Dog", "<lambda>", "TypeError"],
-      "correct_index": 0,
+      "options_es": [
+        "Dog",
+        "woof",
+        "<lambda>",
+        "TypeError"
+      ],
+      "options_en": [
+        "Dog",
+        "woof",
+        "<lambda>",
+        "TypeError"
+      ],
+      "correct_index": 1,
       "explanation_es": "`type(...)` crea dinámicamente una clase `Dog` sin bases y con un método `sound`. `Dog()` la instancia y `.sound()` devuelve `\"woof\"`. Esto demuestra que la sentencia `class` es azúcar sobre una llamada a la metaclase `type`.",
       "explanation_en": "`type(...)` dynamically creates a class `Dog` with no bases and a `sound` method. `Dog()` instantiates it and `.sound()` returns `\"woof\"`. This shows the `class` statement is sugar over a call to the `type` metaclass.",
       "source": "CPython docs 3.13 — Built-in Functions: type",
       "expected_time_ms": 35000,
-      "tags": ["metaclasses", "type", "dynamic-class"]
+      "tags": [
+        "metaclasses",
+        "type",
+        "dynamic-class"
+      ]
     },
     {
       "id": "q030301003",
@@ -49,14 +67,24 @@
       "difficulty_tier": "medium",
       "question_es": "Escribir `class Foo: pass` es equivalente conceptualmente a `Foo = type('Foo', (), {})`.",
       "question_en": "Writing `class Foo: pass` is conceptually equivalent to `Foo = type('Foo', (), {})`.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. La sentencia `class` construye el namespace del cuerpo y luego llama a la metaclase (por defecto `type`) con nombre, bases y ese namespace. Por eso `class Foo: pass` produce lo mismo que la llamada directa a `type`.",
       "explanation_en": "True. The `class` statement builds the body namespace and then calls the metaclass (default `type`) with the name, bases, and that namespace. So `class Foo: pass` produces the same as the direct call to `type`.",
       "source": "CPython docs 3.13 — Data model: Creating the class object",
       "expected_time_ms": 25000,
-      "tags": ["metaclasses", "type", "class-statement"]
+      "tags": [
+        "metaclasses",
+        "type",
+        "class-statement"
+      ]
     },
     {
       "id": "q030301004",
@@ -66,23 +94,26 @@
       "question_es": "¿Qué es exactamente una metaclase?",
       "question_en": "What exactly is a metaclass?",
       "options_es": [
-        "La clase de una clase: controla cómo se crean y se comportan las clases",
-        "Una clase abstracta que no se puede instanciar",
         "Una clase con muchos métodos",
+        "Una clase abstracta que no se puede instanciar",
+        "La clase de una clase: controla cómo se crean y se comportan las clases",
         "El módulo donde vive una clase"
       ],
       "options_en": [
-        "The class of a class: it controls how classes are created and behave",
-        "An abstract class that can't be instantiated",
         "A class with many methods",
+        "An abstract class that can't be instantiated",
+        "The class of a class: it controls how classes are created and behave",
         "The module where a class lives"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Una metaclase es 'la clase de una clase'. Así como una clase define cómo se comportan sus instancias, una metaclase define cómo se comportan las clases (su creación, sus atributos). `type` es la metaclase por defecto; puedes crear metaclases propias heredando de `type`.",
       "explanation_en": "A metaclass is 'the class of a class'. Just as a class defines how its instances behave, a metaclass defines how classes behave (their creation, their attributes). `type` is the default metaclass; you can create custom metaclasses by subclassing `type`.",
       "source": "CPython docs 3.13 — Data model: Metaclasses",
       "expected_time_ms": 32000,
-      "tags": ["metaclasses", "definition"]
+      "tags": [
+        "metaclasses",
+        "definition"
+      ]
     },
     {
       "id": "q030301005",
@@ -91,14 +122,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nBase = type(\"Base\", (), {\"x\": 10})\nSub = type(\"Sub\", (Base,), {})\nprint(Sub().x)\n```",
       "question_en": "What does the following code print?\n```python\nBase = type(\"Base\", (), {\"x\": 10})\nSub = type(\"Sub\", (Base,), {})\nprint(Sub().x)\n```",
-      "options_es": ["10", "AttributeError", "None", "Base"],
-      "options_en": ["10", "AttributeError", "None", "Base"],
-      "correct_index": 0,
+      "options_es": [
+        "AttributeError",
+        "10",
+        "None",
+        "Base"
+      ],
+      "options_en": [
+        "AttributeError",
+        "10",
+        "None",
+        "Base"
+      ],
+      "correct_index": 1,
       "explanation_es": "`Base` se crea con atributo `x=10`. `Sub` se crea dinámicamente heredando de `Base` (nótese la tupla `(Base,)`). `Sub()` hereda `x`, así que `Sub().x` es `10`. La creación dinámica de clases respeta la herencia igual que la sentencia `class`.",
       "explanation_en": "`Base` is created with attribute `x=10`. `Sub` is created dynamically inheriting from `Base` (note the `(Base,)` tuple). `Sub()` inherits `x`, so `Sub().x` is `10`. Dynamic class creation respects inheritance just like the `class` statement.",
       "source": "CPython docs 3.13 — Built-in Functions: type",
       "expected_time_ms": 40000,
-      "tags": ["metaclasses", "type", "inheritance"]
+      "tags": [
+        "metaclasses",
+        "type",
+        "inheritance"
+      ]
     },
     {
       "id": "q030301006",
@@ -116,7 +161,11 @@
       "explanation_en": "A custom metaclass inherits from `type`: `class Meta(type): ...`. As a subclass of `type`, it can override `__new__` or `__init__` to intervene in the creation of classes that use it (via `class Foo(metaclass=Meta)`).",
       "source": "CPython docs 3.13 — Data model: Metaclasses",
       "expected_time_ms": 30000,
-      "tags": ["metaclasses", "type", "custom"]
+      "tags": [
+        "metaclasses",
+        "type",
+        "custom"
+      ]
     },
     {
       "id": "q030302001",
@@ -142,7 +191,11 @@
       "explanation_en": "The syntax is `class Foo(metaclass=Meta):`. Passing `Meta` as a base (`class Foo(Meta)`) would make `Foo` a SUBCLASS of Meta, not an instance of it. The keyword argument `metaclass=` is what changes the metaclass.",
       "source": "CPython docs 3.13 — Data model: Determining the appropriate metaclass",
       "expected_time_ms": 25000,
-      "tags": ["metaclasses", "custom", "syntax"]
+      "tags": [
+        "metaclasses",
+        "custom",
+        "syntax"
+      ]
     },
     {
       "id": "q030302002",
@@ -151,14 +204,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime al definirse la clase?\n```python\nclass Meta(type):\n    def __new__(mcs, name, bases, ns):\n        print(f\"creating {name}\")\n        return super().__new__(mcs, name, bases, ns)\nclass A(metaclass=Meta):\n    pass\n```",
       "question_en": "What is printed when the class is defined?\n```python\nclass Meta(type):\n    def __new__(mcs, name, bases, ns):\n        print(f\"creating {name}\")\n        return super().__new__(mcs, name, bases, ns)\nclass A(metaclass=Meta):\n    pass\n```",
-      "options_es": ["creating A", "creating Meta", "nada", "creating A dos veces"],
-      "options_en": ["creating A", "creating Meta", "nothing", "creating A twice"],
-      "correct_index": 0,
+      "options_es": [
+        "nada",
+        "creating Meta",
+        "creating A",
+        "creating A dos veces"
+      ],
+      "options_en": [
+        "nothing",
+        "creating Meta",
+        "creating A",
+        "creating A twice"
+      ],
+      "correct_index": 2,
       "explanation_es": "El `__new__` de la metaclase se ejecuta cuando se DEFINE la clase `A`, no cuando se instancia. Recibe el nombre `\"A\"`, así que imprime `creating A`. Es en ese punto donde una metaclase puede inspeccionar o modificar la clase que se está creando.",
       "explanation_en": "The metaclass's `__new__` runs when class `A` is DEFINED, not when it's instantiated. It receives the name `\"A\"`, so it prints `creating A`. That's the point where a metaclass can inspect or modify the class being created.",
       "source": "CPython docs 3.13 — Data model: Metaclasses",
       "expected_time_ms": 35000,
-      "tags": ["metaclasses", "custom", "new"]
+      "tags": [
+        "metaclasses",
+        "custom",
+        "new"
+      ]
     },
     {
       "id": "q030302003",
@@ -168,23 +235,27 @@
       "question_es": "¿Cuándo se ejecuta el código de una metaclase (su __new__/__init__)?",
       "question_en": "When does a metaclass's code (its __new__/__init__) run?",
       "options_es": [
-        "En el momento de DEFINIR la clase, una vez",
+        "Solo al importar el módulo por segunda vez",
         "Cada vez que se instancia la clase",
         "Cada vez que se llama a un método de la clase",
-        "Solo al importar el módulo por segunda vez"
+        "En el momento de DEFINIR la clase, una vez"
       ],
       "options_en": [
-        "When the class is DEFINED, once",
+        "Only on the second import of the module",
         "Every time the class is instantiated",
         "Every time a class method is called",
-        "Only on the second import of the module"
+        "When the class is DEFINED, once"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "La metaclase actúa en la creación de la CLASE (al ejecutar la sentencia `class`), típicamente una sola vez. No interviene en cada instancia; eso lo hace el `__init__`/`__new__` de la propia clase. Por eso las metaclases sirven para validar o registrar clases al definirlas.",
       "explanation_en": "The metaclass acts at CLASS creation (when the `class` statement runs), typically once. It doesn't intervene per instance; that's the class's own `__init__`/`__new__`. That's why metaclasses are used to validate or register classes at definition time.",
       "source": "CPython docs 3.13 — Data model: Metaclasses",
       "expected_time_ms": 30000,
-      "tags": ["metaclasses", "custom", "timing"]
+      "tags": [
+        "metaclasses",
+        "custom",
+        "timing"
+      ]
     },
     {
       "id": "q030302004",
@@ -194,23 +265,27 @@
       "question_es": "Según un famoso consejo de Tim Peters, ¿cuándo deberías usar metaclases?",
       "question_en": "Per Tim Peters's famous advice, when should you use metaclasses?",
       "options_es": [
-        "Casi nunca: si no sabes con certeza que las necesitas, no las necesitas; suele haber alternativas más simples",
-        "Siempre que definas una clase con más de tres métodos",
         "Para toda clase que use herencia",
+        "Siempre que definas una clase con más de tres métodos",
+        "Casi nunca: si no sabes con certeza que las necesitas, no las necesitas; suele haber alternativas más simples",
         "Cada vez que quieras validar atributos"
       ],
       "options_en": [
-        "Almost never: if you don't know for sure you need them, you don't; simpler alternatives usually exist",
-        "Whenever you define a class with more than three methods",
         "For any class that uses inheritance",
+        "Whenever you define a class with more than three methods",
+        "Almost never: if you don't know for sure you need them, you don't; simpler alternatives usually exist",
         "Every time you want to validate attributes"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "El consejo clásico es que las metaclases son 'magia más profunda de lo que el 99% de usuarios necesita'. Casi siempre hay soluciones más simples: decoradores de clase, `__init_subclass__`, o descriptors. Reserva las metaclases para frameworks que realmente controlan la creación de clases.",
       "explanation_en": "The classic advice is that metaclasses are 'deeper magic than 99% of users should ever worry about'. Simpler solutions almost always exist: class decorators, `__init_subclass__`, or descriptors. Reserve metaclasses for frameworks that genuinely control class creation.",
       "source": "Fluent Python 2e (Ramalho), ch. 24 — Metaclasses (Tim Peters's advice)",
       "expected_time_ms": 32000,
-      "tags": ["metaclasses", "custom", "best-practice"]
+      "tags": [
+        "metaclasses",
+        "custom",
+        "best-practice"
+      ]
     },
     {
       "id": "q030302005",
@@ -219,14 +294,24 @@
       "difficulty_tier": "hard",
       "question_es": "El hook __init_subclass__ permite personalizar la creación de subclases sin necesidad de escribir una metaclase completa.",
       "question_en": "The __init_subclass__ hook lets you customize subclass creation without writing a full metaclass.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. `__init_subclass__` (PEP 487, Python 3.6+) es un método de clase que se invoca cuando se define una subclase, cubriendo muchos casos que antes exigían una metaclase (registro, validación de subclases). Es más simple y componible, por eso se recomienda antes que una metaclase.",
       "explanation_en": "True. `__init_subclass__` (PEP 487, Python 3.6+) is a classmethod invoked when a subclass is defined, covering many cases that used to require a metaclass (registration, subclass validation). It's simpler and more composable, so it's recommended over a metaclass.",
       "source": "PEP 487 — Simpler customisation of class creation",
       "expected_time_ms": 30000,
-      "tags": ["metaclasses", "init_subclass", "pep487"]
+      "tags": [
+        "metaclasses",
+        "init_subclass",
+        "pep487"
+      ]
     },
     {
       "id": "q030302006",
@@ -244,7 +329,11 @@
       "explanation_en": "The hook is `__init_subclass__`, defined (implicitly as a classmethod) on the base class and run whenever a subclass appears. It lets you register or validate subclasses without a metaclass, solving the most common use case more cleanly.",
       "source": "PEP 487 — Simpler customisation of class creation",
       "expected_time_ms": 32000,
-      "tags": ["metaclasses", "init_subclass", "hook"]
+      "tags": [
+        "metaclasses",
+        "init_subclass",
+        "hook"
+      ]
     },
     {
       "id": "q030303001",
@@ -254,23 +343,27 @@
       "question_es": "¿Cuál es el papel de __new__ frente a __init__ en la creación de un objeto?",
       "question_en": "What is the role of __new__ versus __init__ in object creation?",
       "options_es": [
-        "__new__ crea y devuelve la instancia; __init__ la inicializa una vez creada",
-        "__init__ crea la instancia y __new__ la borra",
         "Son idénticos y solo hace falta uno",
+        "__init__ crea la instancia y __new__ la borra",
+        "__new__ crea y devuelve la instancia; __init__ la inicializa una vez creada",
         "__new__ se ejecuta después de __init__"
       ],
       "options_en": [
-        "__new__ creates and returns the instance; __init__ initializes it once created",
-        "__init__ creates the instance and __new__ deletes it",
         "They are identical and only one is needed",
+        "__init__ creates the instance and __new__ deletes it",
+        "__new__ creates and returns the instance; __init__ initializes it once created",
         "__new__ runs after __init__"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`__new__` es un método estático que CONSTRUYE y devuelve la nueva instancia (recibe la clase `cls`). Luego Python llama a `__init__` sobre esa instancia para INICIALIZARLA (recibe `self`). El orden es `__new__` primero, `__init__` después.",
       "explanation_en": "`__new__` is a static method that CONSTRUCTS and returns the new instance (it receives the class `cls`). Python then calls `__init__` on that instance to INITIALIZE it (it receives `self`). The order is `__new__` first, `__init__` after.",
       "source": "CPython docs 3.13 — Data model: object.__new__",
       "expected_time_ms": 25000,
-      "tags": ["metaclasses", "new", "init"]
+      "tags": [
+        "metaclasses",
+        "new",
+        "init"
+      ]
     },
     {
       "id": "q030303002",
@@ -279,14 +372,29 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass C:\n    def __new__(cls):\n        print(\"new\")\n        return super().__new__(cls)\n    def __init__(self):\n        print(\"init\")\nC()\n```",
       "question_en": "What does the following code print?\n```python\nclass C:\n    def __new__(cls):\n        print(\"new\")\n        return super().__new__(cls)\n    def __init__(self):\n        print(\"init\")\nC()\n```",
-      "options_es": ["new\\ninit", "init\\nnew", "new", "init"],
-      "options_en": ["new\\ninit", "init\\nnew", "new", "init"],
+      "options_es": [
+        "new\\ninit",
+        "init\\nnew",
+        "new",
+        "init"
+      ],
+      "options_en": [
+        "new\\ninit",
+        "init\\nnew",
+        "new",
+        "init"
+      ],
       "correct_index": 0,
       "explanation_es": "Al instanciar `C()`, primero se ejecuta `__new__` (imprime `new`) para crear el objeto, y luego `__init__` (imprime `init`) para inicializarlo. De ahí el orden `new` seguido de `init`.",
       "explanation_en": "When instantiating `C()`, `__new__` runs first (prints `new`) to create the object, then `__init__` (prints `init`) to initialize it. Hence the order `new` then `init`.",
       "source": "CPython docs 3.13 — Data model: object.__new__ / __init__",
       "expected_time_ms": 32000,
-      "tags": ["metaclasses", "new", "init", "order"]
+      "tags": [
+        "metaclasses",
+        "new",
+        "init",
+        "order"
+      ]
     },
     {
       "id": "q030303003",
@@ -295,14 +403,25 @@
       "difficulty_tier": "medium",
       "question_es": "Si __new__ no devuelve una instancia de la clase (o de una subclase), Python NO llamará a __init__.",
       "question_en": "If __new__ does not return an instance of the class (or a subclass), Python will NOT call __init__.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Python solo invoca `__init__` si el objeto devuelto por `__new__` es una instancia de la clase. Si `__new__` devuelve otra cosa (por ejemplo un objeto de otro tipo), `__init__` se omite. Esto es clave al implementar patrones como Singleton.",
       "explanation_en": "True. Python only invokes `__init__` if the object returned by `__new__` is an instance of the class. If `__new__` returns something else (e.g. an object of another type), `__init__` is skipped. This is key when implementing patterns like Singleton.",
       "source": "CPython docs 3.13 — Data model: object.__new__",
       "expected_time_ms": 28000,
-      "tags": ["metaclasses", "new", "init", "gotcha"]
+      "tags": [
+        "metaclasses",
+        "new",
+        "init",
+        "gotcha"
+      ]
     },
     {
       "id": "q030303004",
@@ -312,23 +431,28 @@
       "question_es": "¿Para qué caso de uso es apropiado sobrescribir __new__ en lugar de __init__?",
       "question_en": "For which use case is overriding __new__ appropriate instead of __init__?",
       "options_es": [
-        "Controlar la creación del objeto: subtipos inmutables, singletons, o devolver instancias cacheadas",
-        "Asignar valores por defecto a los atributos",
         "Validar los argumentos del constructor",
+        "Asignar valores por defecto a los atributos",
+        "Controlar la creación del objeto: subtipos inmutables, singletons, o devolver instancias cacheadas",
         "Imprimir un mensaje de log al crear el objeto"
       ],
       "options_en": [
-        "Controlling object creation: immutable subtypes, singletons, or returning cached instances",
-        "Assigning default values to attributes",
         "Validating constructor arguments",
+        "Assigning default values to attributes",
+        "Controlling object creation: immutable subtypes, singletons, or returning cached instances",
         "Printing a log message when the object is created"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`__new__` se sobrescribe cuando necesitas controlar la CREACIÓN del objeto en sí: subclasear tipos inmutables como `int`/`str`/`tuple` (que se fijan en `__new__`), implementar singletons, o devolver instancias reutilizadas. Para inicializar atributos normales basta con `__init__`.",
       "explanation_en": "`__new__` is overridden when you need to control the object's CREATION itself: subclassing immutable types like `int`/`str`/`tuple` (fixed in `__new__`), implementing singletons, or returning reused instances. For ordinary attribute setup, `__init__` suffices.",
       "source": "CPython docs 3.13 — Data model: object.__new__ (use cases)",
       "expected_time_ms": 35000,
-      "tags": ["metaclasses", "new", "immutable", "singleton"]
+      "tags": [
+        "metaclasses",
+        "new",
+        "immutable",
+        "singleton"
+      ]
     },
     {
       "id": "q030303005",
@@ -337,14 +461,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Singleton:\n    _inst = None\n    def __new__(cls):\n        if cls._inst is None:\n            cls._inst = super().__new__(cls)\n        return cls._inst\na = Singleton()\nb = Singleton()\nprint(a is b)\n```",
       "question_en": "What does the following code print?\n```python\nclass Singleton:\n    _inst = None\n    def __new__(cls):\n        if cls._inst is None:\n            cls._inst = super().__new__(cls)\n        return cls._inst\na = Singleton()\nb = Singleton()\nprint(a is b)\n```",
-      "options_es": ["True", "False", "None", "TypeError"],
-      "options_en": ["True", "False", "None", "TypeError"],
+      "options_es": [
+        "True",
+        "False",
+        "None",
+        "TypeError"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "None",
+        "TypeError"
+      ],
       "correct_index": 0,
       "explanation_es": "`__new__` guarda la primera instancia en `cls._inst` y la reutiliza en llamadas posteriores. Por eso `a` y `b` son EL MISMO objeto y `a is b` es `True`. Es la implementación clásica del patrón Singleton controlando la creación en `__new__`.",
       "explanation_en": "`__new__` stores the first instance in `cls._inst` and reuses it on later calls. So `a` and `b` are THE SAME object and `a is b` is `True`. It's the classic Singleton pattern controlling creation in `__new__`.",
       "source": "CPython docs 3.13 — Data model: object.__new__",
       "expected_time_ms": 45000,
-      "tags": ["metaclasses", "new", "singleton"]
+      "tags": [
+        "metaclasses",
+        "new",
+        "singleton"
+      ]
     },
     {
       "id": "q030303006",
@@ -362,7 +500,11 @@
       "explanation_en": "Inside your overridden `__new__`, `super().__new__(cls)` delegates the actual object construction to the base class implementation (ultimately `object.__new__`), which allocates the memory. Forgetting this delegation (or returning None) prevents the instance from being created properly.",
       "source": "CPython docs 3.13 — Data model: object.__new__",
       "expected_time_ms": 32000,
-      "tags": ["metaclasses", "new", "super"]
+      "tags": [
+        "metaclasses",
+        "new",
+        "super"
+      ]
     },
     {
       "id": "q030304001",
@@ -372,23 +514,26 @@
       "question_es": "¿Qué es un 'descriptor' en Python?",
       "question_en": "What is a 'descriptor' in Python?",
       "options_es": [
-        "Un objeto que define __get__, __set__ o __delete__ para controlar el acceso a un atributo",
+        "Un archivo que describe un módulo",
         "Un docstring de una clase",
         "Un tipo de anotación de tipos",
-        "Un archivo que describe un módulo"
+        "Un objeto que define __get__, __set__ o __delete__ para controlar el acceso a un atributo"
       ],
       "options_en": [
-        "An object defining __get__, __set__, or __delete__ to control attribute access",
+        "A file describing a module",
         "A class docstring",
         "A kind of type annotation",
-        "A file describing a module"
+        "An object defining __get__, __set__, or __delete__ to control attribute access"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un descriptor es un objeto, asignado como atributo de clase, que implementa al menos uno de `__get__`, `__set__` o `__delete__`. Estos métodos interceptan el acceso al atributo. `property`, los métodos y `classmethod`/`staticmethod` están implementados como descriptores.",
       "explanation_en": "A descriptor is an object, assigned as a class attribute, that implements at least one of `__get__`, `__set__`, or `__delete__`. These methods intercept attribute access. `property`, methods, and `classmethod`/`staticmethod` are all implemented as descriptors.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide",
       "expected_time_ms": 25000,
-      "tags": ["descriptors", "definition"]
+      "tags": [
+        "descriptors",
+        "definition"
+      ]
     },
     {
       "id": "q030304002",
@@ -398,23 +543,27 @@
       "question_es": "¿Cuál es la diferencia entre un descriptor de datos (data descriptor) y uno de no-datos (non-data)?",
       "question_en": "What is the difference between a data descriptor and a non-data descriptor?",
       "options_es": [
-        "El de datos define __set__ (o __delete__); el de no-datos solo __get__. El de datos tiene prioridad sobre el __dict__ de la instancia",
-        "El de datos guarda números y el de no-datos texto",
         "No hay diferencia real",
+        "El de datos guarda números y el de no-datos texto",
+        "El de datos define __set__ (o __delete__); el de no-datos solo __get__. El de datos tiene prioridad sobre el __dict__ de la instancia",
         "El de no-datos es más rápido siempre"
       ],
       "options_en": [
-        "A data descriptor defines __set__ (or __delete__); a non-data one only __get__. Data descriptors take precedence over the instance __dict__",
-        "A data descriptor stores numbers and a non-data one text",
         "There's no real difference",
+        "A data descriptor stores numbers and a non-data one text",
+        "A data descriptor defines __set__ (or __delete__); a non-data one only __get__. Data descriptors take precedence over the instance __dict__",
         "A non-data descriptor is always faster"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un data descriptor define `__set__` o `__delete__` (además de `__get__`) y tiene PRIORIDAD sobre el `__dict__` de la instancia. Un non-data descriptor solo tiene `__get__` y el `__dict__` de la instancia lo puede eclipsar. Esta precedencia explica por qué `property` (data) no puede sobrescribirse por instancia.",
       "explanation_en": "A data descriptor defines `__set__` or `__delete__` (plus `__get__`) and takes PRECEDENCE over the instance `__dict__`. A non-data descriptor has only `__get__` and can be shadowed by the instance `__dict__`. This precedence explains why `property` (data) can't be overridden per instance.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide: data vs non-data",
       "expected_time_ms": 35000,
-      "tags": ["descriptors", "data-descriptor", "precedence"]
+      "tags": [
+        "descriptors",
+        "data-descriptor",
+        "precedence"
+      ]
     },
     {
       "id": "q030304003",
@@ -423,14 +572,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Ten:\n    def __get__(self, obj, objtype=None):\n        return 10\nclass C:\n    x = Ten()\nprint(C().x)\n```",
       "question_en": "What does the following code print?\n```python\nclass Ten:\n    def __get__(self, obj, objtype=None):\n        return 10\nclass C:\n    x = Ten()\nprint(C().x)\n```",
-      "options_es": ["10", "<Ten object>", "None", "TypeError"],
-      "options_en": ["10", "<Ten object>", "None", "TypeError"],
-      "correct_index": 0,
+      "options_es": [
+        "TypeError",
+        "<Ten object>",
+        "None",
+        "10"
+      ],
+      "options_en": [
+        "TypeError",
+        "<Ten object>",
+        "None",
+        "10"
+      ],
+      "correct_index": 3,
       "explanation_es": "`x` es un descriptor (define `__get__`). Al acceder a `C().x`, Python invoca `Ten.__get__`, que devuelve `10`. No obtienes el objeto `Ten` en sí, sino lo que su `__get__` produce: así funcionan las properties por dentro.",
       "explanation_en": "`x` is a descriptor (it defines `__get__`). Accessing `C().x` invokes `Ten.__get__`, returning `10`. You don't get the `Ten` object itself but what its `__get__` produces: this is how properties work internally.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide",
       "expected_time_ms": 35000,
-      "tags": ["descriptors", "get"]
+      "tags": [
+        "descriptors",
+        "get"
+      ]
     },
     {
       "id": "q030304004",
@@ -439,14 +601,24 @@
       "difficulty_tier": "hard",
       "question_es": "Los métodos de instancia, classmethod, staticmethod y property están todos implementados internamente mediante el protocolo de descriptores.",
       "question_en": "Instance methods, classmethod, staticmethod, and property are all implemented internally via the descriptor protocol.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El protocolo de descriptores es el mecanismo unificador detrás del acceso a atributos: las funciones son descriptores non-data cuyo `__get__` produce el método enlazado, y `property`, `classmethod` y `staticmethod` también son descriptores. Entenderlos ilumina cómo funciona Python por dentro.",
       "explanation_en": "True. The descriptor protocol is the unifying mechanism behind attribute access: functions are non-data descriptors whose `__get__` produces the bound method, and `property`, `classmethod`, and `staticmethod` are descriptors too. Understanding them illuminates how Python works internally.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide: functions and methods",
       "expected_time_ms": 30000,
-      "tags": ["descriptors", "methods", "property"]
+      "tags": [
+        "descriptors",
+        "methods",
+        "property"
+      ]
     },
     {
       "id": "q030304005",
@@ -455,14 +627,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué método especial de un descriptor (Python 3.6+) recibe el nombre del atributo al que se asigna en la clase?",
       "question_en": "Which descriptor special method (Python 3.6+) receives the name of the attribute it's assigned to in the class?",
-      "options_es": ["__set_name__", "__get__", "__init__", "__set__"],
-      "options_en": ["__set_name__", "__get__", "__init__", "__set__"],
+      "options_es": [
+        "__set_name__",
+        "__get__",
+        "__init__",
+        "__set__"
+      ],
+      "options_en": [
+        "__set_name__",
+        "__get__",
+        "__init__",
+        "__set__"
+      ],
       "correct_index": 0,
       "explanation_es": "`__set_name__(self, owner, name)` se llama automáticamente al crear la clase, informando al descriptor de bajo qué nombre fue asignado. Esto permite que un descriptor sepa su propio nombre (por ejemplo para almacenar el valor en `obj.__dict__[name]`) sin repetirlo manualmente.",
       "explanation_en": "`__set_name__(self, owner, name)` is called automatically at class creation, telling the descriptor which name it was assigned to. This lets a descriptor know its own name (e.g. to store the value in `obj.__dict__[name]`) without repeating it manually.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide: __set_name__",
       "expected_time_ms": 35000,
-      "tags": ["descriptors", "set_name"]
+      "tags": [
+        "descriptors",
+        "set_name"
+      ]
     },
     {
       "id": "q030304006",
@@ -480,7 +665,11 @@
       "explanation_en": "`__get__(self, obj, objtype=None)` runs when reading the attribute managed by the descriptor. `obj` is the instance (or None if accessed from the class) and `objtype` is the class. Together with `__set__` and `__delete__` it forms the descriptor protocol.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide: __get__",
       "expected_time_ms": 32000,
-      "tags": ["descriptors", "get", "protocol"]
+      "tags": [
+        "descriptors",
+        "get",
+        "protocol"
+      ]
     }
   ]
 }

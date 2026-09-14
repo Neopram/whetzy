@@ -8,18 +8,18 @@
       "question_es": "¿Qué mide el 'método del codo' (elbow method) al elegir el número de clusters k en K-Means?",
       "question_en": "What does the 'elbow method' measure when choosing the number of clusters k in K-Means?",
       "options_es": [
-        "La inercia (suma de distancias al cuadrado dentro de cada cluster) en función de k, buscando el punto donde deja de disminuir mucho",
-        "La precisión de clasificación del modelo para distintos valores de k",
         "El tiempo de ejecución del algoritmo para cada k",
+        "La precisión de clasificación del modelo para distintos valores de k",
+        "La inercia (suma de distancias al cuadrado dentro de cada cluster) en función de k, buscando el punto donde deja de disminuir mucho",
         "La cantidad de memoria RAM usada por cada valor de k"
       ],
       "options_en": [
-        "Inertia (sum of squared within-cluster distances) as a function of k, looking for the point where it stops decreasing much",
-        "The classification accuracy of the model for different values of k",
         "The algorithm's running time for each k",
+        "The classification accuracy of the model for different values of k",
+        "Inertia (sum of squared within-cluster distances) as a function of k, looking for the point where it stops decreasing much",
         "The amount of RAM used for each value of k"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Se grafica la inercia (within-cluster sum of squares) frente a distintos valores de k. La inercia siempre baja al aumentar k, pero el 'codo' del gráfico —donde la mejora se vuelve marginal— sugiere un buen compromiso entre número de clusters y ajuste.",
       "explanation_en": "Inertia (within-cluster sum of squares) is plotted against different values of k. Inertia always decreases as k grows, but the 'elbow' of the curve—where improvement becomes marginal—suggests a good trade-off between number of clusters and fit.",
       "source": "scikit-learn User Guide – Selecting the number of clusters; Géron, Hands-On ML 2e, Ch. 9",
@@ -62,18 +62,18 @@
       "question_es": "¿Qué estructura visual se usa para representar el proceso de fusión de clusters en un clustering jerárquico aglomerativo?",
       "question_en": "What visual structure is used to represent the merging process of clusters in agglomerative hierarchical clustering?",
       "options_es": [
-        "Un dendrograma",
         "Un diagrama de dispersión",
+        "Un dendrograma",
         "Un histograma",
         "Una matriz de confusión"
       ],
       "options_en": [
-        "A dendrogram",
         "A scatter plot",
+        "A dendrogram",
         "A histogram",
         "A confusion matrix"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Un dendrograma es un diagrama en forma de árbol que muestra el orden y la distancia a la que se van fusionando los clusters (o los puntos individuales), desde hojas individuales hasta un único cluster raíz. Cortarlo a distinta altura produce distintos números de clusters.",
       "explanation_en": "A dendrogram is a tree-shaped diagram showing the order and distance at which clusters (or individual points) get merged, from individual leaves up to a single root cluster. Cutting it at different heights produces different numbers of clusters.",
       "source": "scikit-learn User Guide – Hierarchical clustering; SciPy dendrogram documentation",
@@ -141,18 +141,18 @@
       "question_es": "¿En qué principio se basa el algoritmo Isolation Forest para detectar anomalías?",
       "question_en": "What principle does the Isolation Forest algorithm rely on to detect anomalies?",
       "options_es": [
-        "Los puntos anómalos son más fáciles de 'aislar' con menos divisiones aleatorias que los puntos normales",
-        "Los puntos anómalos siempre están más lejos del centroide global de los datos",
         "Los puntos anómalos tienen valores faltantes en más columnas",
+        "Los puntos anómalos siempre están más lejos del centroide global de los datos",
+        "Los puntos anómalos son más fáciles de 'aislar' con menos divisiones aleatorias que los puntos normales",
         "Los puntos anómalos siempre pertenecen a la clase minoritaria en un problema de clasificación"
       ],
       "options_en": [
-        "Anomalous points are easier to 'isolate' with fewer random splits than normal points",
-        "Anomalous points are always farther from the global centroid of the data",
         "Anomalous points have missing values in more columns",
+        "Anomalous points are always farther from the global centroid of the data",
+        "Anomalous points are easier to 'isolate' with fewer random splits than normal points",
         "Anomalous points always belong to the minority class in a classification problem"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Isolation Forest construye árboles de división aleatoria; como los puntos anómalos suelen estar aislados y en regiones de baja densidad, en promedio requieren muchas menos divisiones para quedar aislados en su propia hoja que los puntos normales. Esa profundidad promedio más corta es la señal de anomalía.",
       "explanation_en": "Isolation Forest builds random-split trees; since anomalous points tend to be isolated in low-density regions, on average they require far fewer splits to be isolated into their own leaf than normal points. That shorter average path length is the anomaly signal.",
       "source": "Liu, Ting & Zhou, 'Isolation Forest' (2008); scikit-learn User Guide – IsolationForest",

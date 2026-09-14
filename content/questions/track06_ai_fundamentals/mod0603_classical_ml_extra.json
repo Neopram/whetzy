@@ -8,18 +8,18 @@
       "question_es": "¿Cuál es el propósito de usar un conjunto de validación (validation set) separado del conjunto de entrenamiento y del de prueba?",
       "question_en": "What is the purpose of using a validation set separate from the training and test sets?",
       "options_es": [
-        "Ajustar hiperparámetros y elegir el modelo sin tocar el conjunto de prueba, para tener una estimación honesta del rendimiento final",
         "Aumentar artificialmente el tamaño del conjunto de entrenamiento",
+        "Ajustar hiperparámetros y elegir el modelo sin tocar el conjunto de prueba, para tener una estimación honesta del rendimiento final",
         "Sustituir por completo la necesidad de un conjunto de prueba",
         "Entrenar el modelo más rápido"
       ],
       "options_en": [
-        "To tune hyperparameters and select a model without touching the test set, keeping an honest estimate of final performance",
         "To artificially increase the size of the training set",
+        "To tune hyperparameters and select a model without touching the test set, keeping an honest estimate of final performance",
         "To completely replace the need for a test set",
         "To make training faster"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Si se ajustan hiperparámetros mirando el rendimiento en el conjunto de prueba, esa evaluación deja de ser una estimación honesta del rendimiento en datos nuevos. El conjunto de validación permite iterar y comparar modelos, dejando el de prueba intacto para la evaluación final.",
       "explanation_en": "If hyperparameters are tuned while looking at test-set performance, that evaluation stops being an honest estimate of performance on new data. The validation set lets you iterate and compare models while keeping the test set untouched for the final evaluation.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 2",
@@ -91,18 +91,18 @@
       "question_es": "¿Cuál de las siguientes es la señal más característica de overfitting (sobreajuste) en un modelo?",
       "question_en": "Which of the following is the most characteristic sign of overfitting in a model?",
       "options_es": [
-        "Error de entrenamiento bajo pero error de validación/prueba considerablemente más alto",
+        "El modelo tarda mucho tiempo en entrenar",
         "Error de entrenamiento y de validación ambos altos y similares",
         "Error de entrenamiento alto pero error de validación bajo",
-        "El modelo tarda mucho tiempo en entrenar"
+        "Error de entrenamiento bajo pero error de validación/prueba considerablemente más alto"
       ],
       "options_en": [
-        "Low training error but a considerably higher validation/test error",
+        "The model takes a long time to train",
         "Both training and validation error are high and similar",
         "High training error but low validation error",
-        "The model takes a long time to train"
+        "Low training error but a considerably higher validation/test error"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El overfitting ocurre cuando el modelo memoriza patrones y ruido específicos del conjunto de entrenamiento en lugar de generalizar, lo que produce una gran brecha entre un error de entrenamiento muy bajo y un error de validación/prueba mucho más alto.",
       "explanation_en": "Overfitting happens when the model memorizes patterns and noise specific to the training set instead of generalizing, producing a large gap between a very low training error and a much higher validation/test error.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5: Machine Learning Basics",
@@ -141,18 +141,18 @@
       "question_es": "En k-fold cross-validation con k=5, ¿cuántas veces se entrena el modelo y qué fracción de los datos se usa para validar en cada iteración?",
       "question_en": "In 5-fold cross-validation, how many times is the model trained, and what fraction of the data is used for validation each time?",
       "options_es": [
-        "5 veces, usando el 20% de los datos para validar en cada una",
-        "1 vez, usando el 20% de los datos para validar",
         "5 veces, usando el 50% de los datos para validar en cada una",
+        "1 vez, usando el 20% de los datos para validar",
+        "5 veces, usando el 20% de los datos para validar en cada una",
         "10 veces, usando el 10% de los datos para validar en cada una"
       ],
       "options_en": [
-        "5 times, using 20% of the data for validation each time",
-        "1 time, using 20% of the data for validation",
         "5 times, using 50% of the data for validation each time",
+        "1 time, using 20% of the data for validation",
+        "5 times, using 20% of the data for validation each time",
         "10 times, using 10% of the data for validation each time"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Con k=5, los datos se dividen en 5 particiones (folds) iguales de 20% cada una. El modelo se entrena 5 veces, usando en cada iteración 4 folds (80%) para entrenar y el fold restante (20%) para validar, rotando cuál fold se usa para validación.",
       "explanation_en": "With k=5, the data is split into 5 equal folds of 20% each. The model is trained 5 times, each time using 4 folds (80%) for training and the remaining fold (20%) for validation, rotating which fold is held out.",
       "source": "scikit-learn User Guide – Cross-validation: evaluating estimator performance",
@@ -170,18 +170,18 @@
       "question_es": "Un modelo de clasificación binaria produce TP=40, FP=10, FN=5, TN=45. ¿Cuál es su precisión (precision)?",
       "question_en": "A binary classifier produces TP=40, FP=10, FN=5, TN=45. What is its precision?",
       "options_es": [
-        "0.8",
         "0.89",
+        "0.8",
         "0.5",
         "0.9"
       ],
       "options_en": [
-        "0.8",
         "0.89",
+        "0.8",
         "0.5",
         "0.9"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`precision = TP / (TP + FP) = 40 / (40 + 10) = 40/50 = 0.8`. La precisión mide, de todo lo que el modelo predijo como positivo, qué fracción era realmente positiva.",
       "explanation_en": "`precision = TP / (TP + FP) = 40 / (40 + 10) = 40/50 = 0.8`. Precision measures, of everything the model predicted positive, what fraction was actually positive.",
       "source": "scikit-learn User Guide – Precision, recall and F-measures",

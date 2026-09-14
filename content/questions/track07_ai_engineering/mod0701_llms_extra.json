@@ -8,18 +8,18 @@
       "question_es": "¿Qué mecanismo permite a un Transformer relacionar cada token de una secuencia con todos los demás tokens en paralelo, sin recurrencia?",
       "question_en": "Which mechanism allows a Transformer to relate every token in a sequence to every other token in parallel, without recurrence?",
       "options_es": [
-        "El self-attention (auto-atención)",
-        "El max pooling",
         "La convolución 1D",
+        "El max pooling",
+        "El self-attention (auto-atención)",
         "El batch normalization"
       ],
       "options_en": [
-        "Self-attention",
-        "Max pooling",
         "1D convolution",
+        "Max pooling",
+        "Self-attention",
         "Batch normalization"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "El self-attention calcula, para cada token, una combinación ponderada de todos los demás tokens de la secuencia (usando queries, keys y values), permitiendo capturar dependencias de largo alcance sin procesar la secuencia paso a paso como una RNN.",
       "explanation_en": "Self-attention computes, for each token, a weighted combination of every other token in the sequence (using queries, keys, and values), capturing long-range dependencies without processing the sequence step by step like an RNN.",
       "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017)",
@@ -62,18 +62,18 @@
       "question_es": "¿Por qué los LLMs modernos usan tokenización por subpalabras (como BPE) en lugar de tokenizar por palabras completas?",
       "question_en": "Why do modern LLMs use subword tokenization (like BPE) instead of tokenizing by whole words?",
       "options_es": [
-        "Permite manejar palabras raras o fuera de vocabulario dividiéndolas en subunidades conocidas, manteniendo un vocabulario de tamaño manejable",
-        "Hace que el modelo procese siempre exactamente una palabra por token",
         "Elimina por completo la necesidad de un vocabulario fijo",
+        "Hace que el modelo procese siempre exactamente una palabra por token",
+        "Permite manejar palabras raras o fuera de vocabulario dividiéndolas en subunidades conocidas, manteniendo un vocabulario de tamaño manejable",
         "Solo funciona para el idioma inglés"
       ],
       "options_en": [
-        "It handles rare or out-of-vocabulary words by splitting them into known subunits, keeping the vocabulary size manageable",
-        "It makes the model always process exactly one word per token",
         "It completely eliminates the need for a fixed vocabulary",
+        "It makes the model always process exactly one word per token",
+        "It handles rare or out-of-vocabulary words by splitting them into known subunits, keeping the vocabulary size manageable",
         "It only works for the English language"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Tokenizar por palabra completa obliga a un vocabulario enorme (o a tratar cualquier palabra desconocida como un token especial 'desconocido'). Byte-Pair Encoding (BPE) construye un vocabulario de subpalabras frecuentes, de modo que palabras raras o nunca vistas se pueden componer a partir de fragmentos conocidos.",
       "explanation_en": "Whole-word tokenization forces either a huge vocabulary or treating any unseen word as a special 'unknown' token. Byte-Pair Encoding (BPE) builds a vocabulary of frequent subword units, so rare or previously unseen words can be composed from known fragments.",
       "source": "Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (BPE, ACL 2016)",

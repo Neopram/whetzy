@@ -7,14 +7,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué prefijo debe tener por convención una función para que pytest la descubra y ejecute como test?",
       "question_en": "By convention, what prefix must a function have for pytest to discover and run it as a test?",
-      "options_es": ["test_", "check_", "assert_", "spec_"],
-      "options_en": ["test_", "check_", "assert_", "spec_"],
-      "correct_index": 0,
+      "options_es": [
+        "check_",
+        "test_",
+        "assert_",
+        "spec_"
+      ],
+      "options_en": [
+        "check_",
+        "test_",
+        "assert_",
+        "spec_"
+      ],
+      "correct_index": 1,
       "explanation_es": "pytest descubre automáticamente funciones cuyo nombre empieza por `test_` (en archivos `test_*.py` o `*_test.py`). No necesitas registrarlas ni heredar de ninguna clase base, a diferencia de unittest.",
       "explanation_en": "pytest automatically discovers functions whose name starts with `test_` (in `test_*.py` or `*_test.py` files). You don't need to register them or inherit from any base class, unlike unittest.",
       "source": "pytest docs — Conventions for Python test discovery",
       "expected_time_ms": 18000,
-      "tags": ["pytest", "discovery", "conventions"]
+      "tags": [
+        "pytest",
+        "discovery",
+        "conventions"
+      ]
     },
     {
       "id": "q020501002",
@@ -24,23 +38,26 @@
       "question_es": "¿Cómo se verifica una condición en un test de pytest?",
       "question_en": "How do you verify a condition in a pytest test?",
       "options_es": [
-        "Con la sentencia assert nativa de Python",
         "Con self.assertEqual como en unittest",
+        "Con la sentencia assert nativa de Python",
         "Con expect()",
         "Con return True/False"
       ],
       "options_en": [
-        "With Python's native assert statement",
         "With self.assertEqual like in unittest",
+        "With Python's native assert statement",
         "With expect()",
         "With return True/False"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "pytest usa el `assert` nativo de Python y reescribe su bytecode para mostrar mensajes de error detallados (los valores concretos que fallaron). Por eso no hace falta memorizar métodos como `assertEqual`, `assertTrue`, etc.",
       "explanation_en": "pytest uses Python's native `assert` and rewrites its bytecode to show detailed failure messages (the actual values that failed). That's why you don't need to memorize methods like `assertEqual`, `assertTrue`, etc.",
       "source": "pytest docs — Asserting with the assert statement",
       "expected_time_ms": 20000,
-      "tags": ["pytest", "assert"]
+      "tags": [
+        "pytest",
+        "assert"
+      ]
     },
     {
       "id": "q020501003",
@@ -66,7 +83,11 @@
       "explanation_en": "The test passes: `add(2, 3)` returns `5`, the assertion `5 == 5` is true and raises no `AssertionError`. A pytest test 'passes' if it raises no exceptions; it needn't import pytest or return anything.",
       "source": "pytest docs — Getting Started",
       "expected_time_ms": 25000,
-      "tags": ["pytest", "assert", "pass-fail"]
+      "tags": [
+        "pytest",
+        "assert",
+        "pass-fail"
+      ]
     },
     {
       "id": "q020501004",
@@ -76,23 +97,27 @@
       "question_es": "¿Cuál es una ventaja de pytest frente a unittest de la librería estándar?",
       "question_en": "What is an advantage of pytest over the standard library's unittest?",
       "options_es": [
-        "Menos código repetitivo: usa assert nativo, funciones simples y fixtures en vez de clases y métodos assertX",
         "Es parte de la librería estándar y unittest no",
+        "Menos código repetitivo: usa assert nativo, funciones simples y fixtures en vez de clases y métodos assertX",
         "Solo pytest puede medir cobertura",
         "unittest no permite ejecutar tests desde la terminal"
       ],
       "options_en": [
-        "Less boilerplate: plain assert, simple functions, and fixtures instead of classes and assertX methods",
         "It's part of the standard library and unittest isn't",
+        "Less boilerplate: plain assert, simple functions, and fixtures instead of classes and assertX methods",
         "Only pytest can measure coverage",
         "unittest can't run tests from the terminal"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "pytest reduce el código repetitivo: tests como funciones simples, `assert` nativo con introspección de fallos, y fixtures componibles. `unittest` (que SÍ es estándar) requiere clases que heredan de `TestCase` y métodos como `assertEqual`. La cobertura la aporta un plugin, no el núcleo.",
       "explanation_en": "pytest reduces boilerplate: tests as plain functions, native `assert` with failure introspection, and composable fixtures. `unittest` (which IS in the standard library) requires classes inheriting from `TestCase` and methods like `assertEqual`. Coverage comes from a plugin, not the core.",
       "source": "pytest docs — Why pytest?",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "unittest", "comparison"]
+      "tags": [
+        "pytest",
+        "unittest",
+        "comparison"
+      ]
     },
     {
       "id": "q020501005",
@@ -102,23 +127,27 @@
       "question_es": "¿Qué hace este test?\n```python\nimport pytest\ndef divide(a, b):\n    return a / b\ndef test_divide_by_zero():\n    with pytest.raises(ZeroDivisionError):\n        divide(1, 0)\n```",
       "question_en": "What does this test do?\n```python\nimport pytest\ndef divide(a, b):\n    return a / b\ndef test_divide_by_zero():\n    with pytest.raises(ZeroDivisionError):\n        divide(1, 0)\n```",
       "options_es": [
-        "Pasa si divide(1, 0) lanza ZeroDivisionError",
-        "Falla siempre porque hay una división por cero",
         "Pasa solo si divide devuelve 0",
+        "Falla siempre porque hay una división por cero",
+        "Pasa si divide(1, 0) lanza ZeroDivisionError",
         "Lanza el error sin capturarlo y el test falla"
       ],
       "options_en": [
-        "Passes if divide(1, 0) raises ZeroDivisionError",
-        "Always fails because there's a division by zero",
         "Passes only if divide returns 0",
+        "Always fails because there's a division by zero",
+        "Passes if divide(1, 0) raises ZeroDivisionError",
         "Raises the error uncaught and the test fails"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`pytest.raises(ZeroDivisionError)` afirma que el bloque DEBE lanzar esa excepción. El test pasa porque `divide(1, 0)` efectivamente lanza `ZeroDivisionError`. Si NO se lanzara la excepción esperada, el test fallaría.",
       "explanation_en": "`pytest.raises(ZeroDivisionError)` asserts that the block MUST raise that exception. The test passes because `divide(1, 0)` does raise `ZeroDivisionError`. If the expected exception were NOT raised, the test would fail.",
       "source": "pytest docs — Assertions about expected exceptions",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "raises", "exceptions"]
+      "tags": [
+        "pytest",
+        "raises",
+        "exceptions"
+      ]
     },
     {
       "id": "q020501006",
@@ -136,7 +165,11 @@
       "explanation_en": "`with pytest.raises(ValueError):` checks that the block raises `ValueError`. You can capture the exception object with `as exc_info` to inspect the message. It's the pytest equivalent of unittest's `assertRaises`.",
       "source": "pytest docs — pytest.raises",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "raises", "exceptions"]
+      "tags": [
+        "pytest",
+        "raises",
+        "exceptions"
+      ]
     },
     {
       "id": "q020502001",
@@ -146,23 +179,26 @@
       "question_es": "¿Qué es un 'fixture' en pytest?",
       "question_en": "What is a 'fixture' in pytest?",
       "options_es": [
-        "Una función que prepara datos o recursos y los inyecta en los tests que la solicitan",
         "Una aserción especial",
+        "Una función que prepara datos o recursos y los inyecta en los tests que la solicitan",
         "Un tipo de excepción",
         "Un archivo de configuración obligatorio"
       ],
       "options_en": [
-        "A function that sets up data or resources and injects them into tests that request it",
         "A special assertion",
+        "A function that sets up data or resources and injects them into tests that request it",
         "A type of exception",
         "A mandatory configuration file"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Un fixture (decorado con `@pytest.fixture`) provee un valor o recurso reutilizable (una conexión, datos de ejemplo, un objeto). Los tests lo reciben simplemente declarándolo como parámetro; pytest hace la inyección de dependencias por nombre.",
       "explanation_en": "A fixture (decorated with `@pytest.fixture`) provides a reusable value or resource (a connection, sample data, an object). Tests receive it simply by declaring it as a parameter; pytest performs dependency injection by name.",
       "source": "pytest docs — About fixtures",
       "expected_time_ms": 20000,
-      "tags": ["pytest", "fixtures"]
+      "tags": [
+        "pytest",
+        "fixtures"
+      ]
     },
     {
       "id": "q020502002",
@@ -172,23 +208,27 @@
       "question_es": "¿Este test pasa?\n```python\nimport pytest\n@pytest.fixture\ndef sample():\n    return [1, 2, 3]\ndef test_len(sample):\n    assert len(sample) == 3\n```",
       "question_en": "Does this test pass?\n```python\nimport pytest\n@pytest.fixture\ndef sample():\n    return [1, 2, 3]\ndef test_len(sample):\n    assert len(sample) == 3\n```",
       "options_es": [
-        "Sí: pytest inyecta el retorno del fixture (la lista) en el parámetro sample",
-        "No: hay que llamar a sample() dentro del test",
         "No: los fixtures no pueden devolver listas",
+        "No: hay que llamar a sample() dentro del test",
+        "Sí: pytest inyecta el retorno del fixture (la lista) en el parámetro sample",
         "No: falta pasar sample explícitamente al ejecutar"
       ],
       "options_en": [
-        "Yes: pytest injects the fixture's return value (the list) into the sample parameter",
-        "No: you must call sample() inside the test",
         "No: fixtures can't return lists",
+        "No: you must call sample() inside the test",
+        "Yes: pytest injects the fixture's return value (the list) into the sample parameter",
         "No: you must pass sample explicitly when running"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "pytest ve que `test_len` pide un parámetro llamado `sample`, ejecuta el fixture del mismo nombre y le pasa su valor de retorno (`[1, 2, 3]`). `len(sample) == 3` es verdadero, así que el test pasa. No se invoca el fixture manualmente.",
       "explanation_en": "pytest sees `test_len` requests a parameter named `sample`, runs the same-named fixture, and passes its return value (`[1, 2, 3]`). `len(sample) == 3` is true, so the test passes. The fixture is not called manually.",
       "source": "pytest docs — Requesting fixtures",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "fixtures", "injection"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "injection"
+      ]
     },
     {
       "id": "q020502003",
@@ -198,23 +238,28 @@
       "question_es": "En un fixture que usa `yield`, ¿qué papel juega el código que va DESPUÉS del yield?",
       "question_en": "In a fixture that uses `yield`, what role does the code AFTER the yield play?",
       "options_es": [
-        "Es el teardown: se ejecuta para limpiar recursos cuando el test termina",
-        "Es código muerto que nunca se ejecuta",
         "Se ejecuta antes que el test",
+        "Es código muerto que nunca se ejecuta",
+        "Es el teardown: se ejecuta para limpiar recursos cuando el test termina",
         "Define el valor de retorno del fixture"
       ],
       "options_en": [
-        "It's the teardown: it runs to clean up resources when the test finishes",
-        "It's dead code that never runs",
         "It runs before the test",
+        "It's dead code that never runs",
+        "It's the teardown: it runs to clean up resources when the test finishes",
         "It defines the fixture's return value"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "En un fixture con `yield`, lo anterior al `yield` es el setup, el valor entregado por `yield` es lo que recibe el test, y lo posterior al `yield` es el teardown (cerrar conexiones, borrar archivos temporales) que se ejecuta tras finalizar el test.",
       "explanation_en": "In a `yield` fixture, code before `yield` is setup, the value handed by `yield` is what the test receives, and code after `yield` is teardown (closing connections, deleting temp files) that runs after the test finishes.",
       "source": "pytest docs — Teardown/cleanup (yield fixtures)",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "fixtures", "yield", "teardown"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "yield",
+        "teardown"
+      ]
     },
     {
       "id": "q020502004",
@@ -224,23 +269,28 @@
       "question_es": "¿Qué imprime al ejecutarse el test con pytest -s?\n```python\nimport pytest\n@pytest.fixture\ndef resource():\n    print(\"setup\")\n    yield 42\n    print(\"teardown\")\ndef test_it(resource):\n    print(f\"test {resource}\")\n```",
       "question_en": "What is printed when the test runs with pytest -s?\n```python\nimport pytest\n@pytest.fixture\ndef resource():\n    print(\"setup\")\n    yield 42\n    print(\"teardown\")\ndef test_it(resource):\n    print(f\"test {resource}\")\n```",
       "options_es": [
-        "setup\\ntest 42\\nteardown",
         "test 42\\nsetup\\nteardown",
+        "setup\\ntest 42\\nteardown",
         "setup\\nteardown\\ntest 42",
         "test 42"
       ],
       "options_en": [
-        "setup\\ntest 42\\nteardown",
         "test 42\\nsetup\\nteardown",
+        "setup\\ntest 42\\nteardown",
         "setup\\nteardown\\ntest 42",
         "test 42"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "El orden es: setup (antes del yield) → el test recibe `42` e imprime `test 42` → teardown (después del yield) al terminar. De ahí `setup / test 42 / teardown`. El flag `-s` permite ver los `print`.",
       "explanation_en": "The order is: setup (before yield) → the test receives `42` and prints `test 42` → teardown (after yield) once done. Hence `setup / test 42 / teardown`. The `-s` flag lets the `print`s show.",
       "source": "pytest docs — Teardown/cleanup (yield fixtures)",
       "expected_time_ms": 40000,
-      "tags": ["pytest", "fixtures", "yield", "order"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "yield",
+        "order"
+      ]
     },
     {
       "id": "q020502005",
@@ -249,14 +299,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un fixture con scope='module' se ejecuta una sola vez y se comparte entre todos los tests de ese módulo, en lugar de recrearse por cada test.",
       "question_en": "A fixture with scope='module' runs once and is shared across all tests in that module, instead of being recreated for each test.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El `scope` controla la vida del fixture: `function` (por defecto) lo recrea en cada test; `module` lo crea una vez por módulo; existen también `class`, `package` y `session`. Un scope amplio es útil para recursos costosos como una conexión de base de datos.",
       "explanation_en": "True. The `scope` controls the fixture's lifetime: `function` (default) recreates it per test; `module` creates it once per module; there are also `class`, `package`, and `session`. A wider scope is useful for expensive resources like a database connection.",
       "source": "pytest docs — Fixture scopes",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "fixtures", "scope"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "scope"
+      ]
     },
     {
       "id": "q020502006",
@@ -274,7 +334,11 @@
       "explanation_en": "`conftest.py` holds fixtures (and hooks) that pytest makes available to all tests in the directory and subdirectories automatically, without importing them. It's the canonical place for project-wide reusable fixtures.",
       "source": "pytest docs — conftest.py: sharing fixtures",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "fixtures", "conftest"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "conftest"
+      ]
     },
     {
       "id": "q020503001",
@@ -284,23 +348,26 @@
       "question_es": "¿Qué objetivo principal tiene el 'mocking' en las pruebas?",
       "question_en": "What is the main purpose of 'mocking' in tests?",
       "options_es": [
-        "Reemplazar dependencias reales (APIs, DB, tiempo) por objetos simulados y controlados",
+        "Formatear el código antes de testear",
         "Hacer que todos los tests pasen automáticamente",
         "Medir la cobertura de código",
-        "Formatear el código antes de testear"
+        "Reemplazar dependencias reales (APIs, DB, tiempo) por objetos simulados y controlados"
       ],
       "options_en": [
-        "Replace real dependencies (APIs, DB, time) with controlled fake objects",
+        "Format the code before testing",
         "Make all tests pass automatically",
         "Measure code coverage",
-        "Format the code before testing"
+        "Replace real dependencies (APIs, DB, time) with controlled fake objects"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El mocking sustituye dependencias externas (una llamada de red, una base de datos, la hora actual) por dobles controlados. Así el test es rápido, determinista y aislado de sistemas externos, comprobando solo la unidad de código en cuestión.",
       "explanation_en": "Mocking replaces external dependencies (a network call, a database, the current time) with controlled doubles. This makes the test fast, deterministic, and isolated from external systems, checking only the unit of code under test.",
       "source": "CPython docs 3.13 — unittest.mock",
       "expected_time_ms": 20000,
-      "tags": ["pytest", "mocking"]
+      "tags": [
+        "pytest",
+        "mocking"
+      ]
     },
     {
       "id": "q020503002",
@@ -309,14 +376,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué fixture integrada de pytest permite modificar/reemplazar atributos y variables de entorno de forma segura durante un test?",
       "question_en": "Which built-in pytest fixture lets you safely modify/replace attributes and environment variables during a test?",
-      "options_es": ["monkeypatch", "capsys", "tmp_path", "request"],
-      "options_en": ["monkeypatch", "capsys", "tmp_path", "request"],
-      "correct_index": 0,
+      "options_es": [
+        "request",
+        "capsys",
+        "tmp_path",
+        "monkeypatch"
+      ],
+      "options_en": [
+        "request",
+        "capsys",
+        "tmp_path",
+        "monkeypatch"
+      ],
+      "correct_index": 3,
       "explanation_es": "`monkeypatch` permite sustituir atributos, métodos, entradas de dict y variables de entorno, y **revierte automáticamente** los cambios al terminar el test. `capsys` captura stdout/stderr y `tmp_path` da un directorio temporal.",
       "explanation_en": "`monkeypatch` lets you replace attributes, methods, dict entries, and environment variables, and **automatically reverts** the changes when the test ends. `capsys` captures stdout/stderr and `tmp_path` gives a temporary directory.",
       "source": "pytest docs — Monkeypatching/mocking",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "mocking", "monkeypatch"]
+      "tags": [
+        "pytest",
+        "mocking",
+        "monkeypatch"
+      ]
     },
     {
       "id": "q020503003",
@@ -325,14 +406,29 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom unittest.mock import Mock\nm = Mock()\nm.get_value.return_value = 10\nprint(m.get_value())\n```",
       "question_en": "What does the following code print?\n```python\nfrom unittest.mock import Mock\nm = Mock()\nm.get_value.return_value = 10\nprint(m.get_value())\n```",
-      "options_es": ["10", "<Mock object>", "None", "TypeError"],
-      "options_en": ["10", "<Mock object>", "None", "TypeError"],
-      "correct_index": 0,
+      "options_es": [
+        "TypeError",
+        "<Mock object>",
+        "None",
+        "10"
+      ],
+      "options_en": [
+        "TypeError",
+        "<Mock object>",
+        "None",
+        "10"
+      ],
+      "correct_index": 3,
       "explanation_es": "Un `Mock` crea atributos y métodos al vuelo. Al fijar `m.get_value.return_value = 10`, cualquier llamada a `m.get_value()` devuelve `10`. Sin fijar el `return_value`, devolvería otro objeto Mock, no `None`.",
       "explanation_en": "A `Mock` creates attributes and methods on the fly. Setting `m.get_value.return_value = 10` makes any call to `m.get_value()` return `10`. Without setting `return_value`, it would return another Mock object, not `None`.",
       "source": "CPython docs 3.13 — unittest.mock.Mock",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "mocking", "mock", "return_value"]
+      "tags": [
+        "pytest",
+        "mocking",
+        "mock",
+        "return_value"
+      ]
     },
     {
       "id": "q020503004",
@@ -341,14 +437,29 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom unittest.mock import Mock\nm = Mock()\nm.save(1)\nm.save(2)\nprint(m.save.call_count)\n```",
       "question_en": "What does the following code print?\n```python\nfrom unittest.mock import Mock\nm = Mock()\nm.save(1)\nm.save(2)\nprint(m.save.call_count)\n```",
-      "options_es": ["2", "1", "0", "None"],
-      "options_en": ["2", "1", "0", "None"],
-      "correct_index": 0,
+      "options_es": [
+        "None",
+        "1",
+        "0",
+        "2"
+      ],
+      "options_en": [
+        "None",
+        "1",
+        "0",
+        "2"
+      ],
+      "correct_index": 3,
       "explanation_es": "Un Mock registra cómo se le llama. Tras `m.save(1)` y `m.save(2)`, `m.save.call_count` es `2`. También puedes inspeccionar `call_args`, `called`, o usar `assert_called_with(...)` para verificar interacciones.",
       "explanation_en": "A Mock records how it's called. After `m.save(1)` and `m.save(2)`, `m.save.call_count` is `2`. You can also inspect `call_args`, `called`, or use `assert_called_with(...)` to verify interactions.",
       "source": "CPython docs 3.13 — unittest.mock: call_count",
       "expected_time_ms": 40000,
-      "tags": ["pytest", "mocking", "mock", "call_count"]
+      "tags": [
+        "pytest",
+        "mocking",
+        "mock",
+        "call_count"
+      ]
     },
     {
       "id": "q020503005",
@@ -358,23 +469,27 @@
       "question_es": "¿Cuál es la diferencia principal entre Mock y MagicMock?",
       "question_en": "What is the main difference between Mock and MagicMock?",
       "options_es": [
-        "MagicMock preconfigura los métodos mágicos (dunder) como __len__, __iter__, __enter__, etc.",
+        "No hay diferencia; MagicMock es un alias de Mock",
         "Mock es más rápido pero menos preciso",
         "MagicMock solo funciona con async",
-        "No hay diferencia; MagicMock es un alias de Mock"
+        "MagicMock preconfigura los métodos mágicos (dunder) como __len__, __iter__, __enter__, etc."
       ],
       "options_en": [
-        "MagicMock pre-configures magic (dunder) methods like __len__, __iter__, __enter__, etc.",
+        "There is no difference; MagicMock is an alias of Mock",
         "Mock is faster but less accurate",
         "MagicMock only works with async",
-        "There is no difference; MagicMock is an alias of Mock"
+        "MagicMock pre-configures magic (dunder) methods like __len__, __iter__, __enter__, etc."
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`MagicMock` es un `Mock` con soporte incorporado para los métodos mágicos, de modo que puede usarse en `len(m)`, `for x in m`, `with m:`, etc. Un `Mock` normal no implementa esos dunder y fallaría en esos contextos.",
       "explanation_en": "`MagicMock` is a `Mock` with built-in support for magic methods, so it can be used in `len(m)`, `for x in m`, `with m:`, etc. A plain `Mock` doesn't implement those dunders and would fail in those contexts.",
       "source": "CPython docs 3.13 — unittest.mock.MagicMock",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "mocking", "magicmock"]
+      "tags": [
+        "pytest",
+        "mocking",
+        "magicmock"
+      ]
     },
     {
       "id": "q020503006",
@@ -392,7 +507,12 @@
       "explanation_en": "`assert_called_once_with(data)` verifies the mock was called exactly once and with those arguments. Beware: if you misspell the method name, the Mock creates it on the fly and the assertion checks NOTHING — a dangerous silent failure.",
       "source": "CPython docs 3.13 — unittest.mock: assert_called_once_with",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "mocking", "assert", "gotcha"]
+      "tags": [
+        "pytest",
+        "mocking",
+        "assert",
+        "gotcha"
+      ]
     },
     {
       "id": "q020504001",
@@ -402,23 +522,26 @@
       "question_es": "¿Qué permite el decorador @pytest.mark.parametrize?",
       "question_en": "What does the @pytest.mark.parametrize decorator allow?",
       "options_es": [
-        "Ejecutar el mismo test varias veces con distintos conjuntos de datos de entrada y salida esperada",
+        "Ordenar la ejecución de los tests",
         "Marcar un test como lento",
         "Saltar un test condicionalmente",
-        "Ordenar la ejecución de los tests"
+        "Ejecutar el mismo test varias veces con distintos conjuntos de datos de entrada y salida esperada"
       ],
       "options_en": [
-        "Run the same test multiple times with different sets of input and expected-output data",
+        "Order the test execution",
         "Mark a test as slow",
         "Skip a test conditionally",
-        "Order the test execution"
+        "Run the same test multiple times with different sets of input and expected-output data"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`@pytest.mark.parametrize` genera una ejecución del test por cada tupla de datos, evitando duplicar código o escribir bucles. Cada caso aparece como un test independiente en el reporte, lo que facilita ver cuál falla.",
       "explanation_en": "`@pytest.mark.parametrize` generates one test run per data tuple, avoiding code duplication or loops. Each case appears as an independent test in the report, making it easy to see which one fails.",
       "source": "pytest docs — Parametrizing tests",
       "expected_time_ms": 20000,
-      "tags": ["pytest", "parametrize"]
+      "tags": [
+        "pytest",
+        "parametrize"
+      ]
     },
     {
       "id": "q020504002",
@@ -427,14 +550,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Cuántas veces se ejecuta test_double con este código?\n```python\nimport pytest\n@pytest.mark.parametrize(\"x,expected\", [(1, 2), (2, 4), (3, 6)])\ndef test_double(x, expected):\n    assert x * 2 == expected\n```",
       "question_en": "How many times does test_double run with this code?\n```python\nimport pytest\n@pytest.mark.parametrize(\"x,expected\", [(1, 2), (2, 4), (3, 6)])\ndef test_double(x, expected):\n    assert x * 2 == expected\n```",
-      "options_es": ["3 veces, una por cada tupla", "1 vez", "6 veces", "2 veces"],
-      "options_en": ["3 times, once per tuple", "1 time", "6 times", "2 times"],
+      "options_es": [
+        "3 veces, una por cada tupla",
+        "1 vez",
+        "6 veces",
+        "2 veces"
+      ],
+      "options_en": [
+        "3 times, once per tuple",
+        "1 time",
+        "6 times",
+        "2 times"
+      ],
       "correct_index": 0,
       "explanation_es": "Hay tres tuplas de datos, así que pytest ejecuta `test_double` tres veces: `(1,2)`, `(2,4)`, `(3,6)`. Todas pasan porque `x*2 == expected` en cada caso. Aparecerán como tres tests separados en la salida.",
       "explanation_en": "There are three data tuples, so pytest runs `test_double` three times: `(1,2)`, `(2,4)`, `(3,6)`. All pass because `x*2 == expected` in each case. They'll show as three separate tests in the output.",
       "source": "pytest docs — Parametrizing tests",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "parametrize", "cases"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "cases"
+      ]
     },
     {
       "id": "q020504003",
@@ -443,14 +580,24 @@
       "difficulty_tier": "medium",
       "question_es": "Con parametrize, si uno de los conjuntos de datos falla la aserción, los demás casos NO se ejecutan.",
       "question_en": "With parametrize, if one of the data sets fails the assertion, the other cases are NOT executed.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Cada conjunto de datos es un test independiente: si uno falla, los demás siguen ejecutándose y se reportan por separado. Esto es una ventaja frente a un bucle con `assert` dentro de un solo test, donde el primer fallo detendría el resto.",
       "explanation_en": "False. Each data set is an independent test: if one fails, the others still run and are reported separately. This is an advantage over a loop with `assert` inside a single test, where the first failure would stop the rest.",
       "source": "pytest docs — Parametrizing tests",
       "expected_time_ms": 25000,
-      "tags": ["pytest", "parametrize", "independence"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "independence"
+      ]
     },
     {
       "id": "q020504004",
@@ -459,14 +606,28 @@
       "difficulty_tier": "hard",
       "question_es": "Con este test parametrizado, ¿cuántos casos FALLAN?\n```python\nimport pytest\n@pytest.mark.parametrize(\"n,is_even\", [(2, True), (3, True), (4, True)])\ndef test_even(n, is_even):\n    assert (n % 2 == 0) == is_even\n```",
       "question_en": "With this parametrized test, how many cases FAIL?\n```python\nimport pytest\n@pytest.mark.parametrize(\"n,is_even\", [(2, True), (3, True), (4, True)])\ndef test_even(n, is_even):\n    assert (n % 2 == 0) == is_even\n```",
-      "options_es": ["1 (el caso n=3)", "0", "2", "3"],
-      "options_en": ["1 (the n=3 case)", "0", "2", "3"],
+      "options_es": [
+        "1 (el caso n=3)",
+        "0",
+        "2",
+        "3"
+      ],
+      "options_en": [
+        "1 (the n=3 case)",
+        "0",
+        "2",
+        "3"
+      ],
       "correct_index": 0,
       "explanation_es": "Para `n=2`: `True == True` pasa. Para `n=3`: `(3%2==0)` es `False`, pero se esperaba `True`, así que `False == True` falla. Para `n=4`: pasa. Solo falla 1 caso, el de `n=3`, y pytest lo reporta individualmente.",
       "explanation_en": "For `n=2`: `True == True` passes. For `n=3`: `(3%2==0)` is `False`, but `True` was expected, so `False == True` fails. For `n=4`: passes. Only 1 case fails, the `n=3` one, and pytest reports it individually.",
       "source": "pytest docs — Parametrizing tests",
       "expected_time_ms": 40000,
-      "tags": ["pytest", "parametrize", "failure"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "failure"
+      ]
     },
     {
       "id": "q020504005",
@@ -476,23 +637,28 @@
       "question_es": "¿Cómo se marca un caso individual dentro de parametrize como fallo esperado (xfail)?",
       "question_en": "How do you mark an individual case within parametrize as an expected failure (xfail)?",
       "options_es": [
-        "Envolviendo la tupla con pytest.param(..., marks=pytest.mark.xfail)",
-        "Con un comentario # xfail encima",
         "No es posible; xfail solo aplica a tests completos",
+        "Con un comentario # xfail encima",
+        "Envolviendo la tupla con pytest.param(..., marks=pytest.mark.xfail)",
         "Poniendo la tupla entre corchetes dobles"
       ],
       "options_en": [
-        "Wrapping the tuple with pytest.param(..., marks=pytest.mark.xfail)",
-        "With a # xfail comment above it",
         "It's not possible; xfail only applies to whole tests",
+        "With a # xfail comment above it",
+        "Wrapping the tuple with pytest.param(..., marks=pytest.mark.xfail)",
         "Putting the tuple in double brackets"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`pytest.param(valor1, valor2, marks=pytest.mark.xfail)` permite aplicar marcas (xfail, skip) a un caso concreto dentro de la lista de `parametrize`, sin afectar a los demás. Es útil para casos conocidos como problemáticos.",
       "explanation_en": "`pytest.param(value1, value2, marks=pytest.mark.xfail)` lets you apply marks (xfail, skip) to a specific case within the `parametrize` list, without affecting the others. It's useful for cases known to be problematic.",
       "source": "pytest docs — Set marks or test ID for individual parametrized tests",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "parametrize", "xfail", "param"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "xfail",
+        "param"
+      ]
     },
     {
       "id": "q020504006",
@@ -510,7 +676,11 @@
       "explanation_en": "The full decorator is `@pytest.mark.parametrize(...)`. The `pytest.mark` namespace groups the framework's marks (`parametrize`, `skip`, `xfail`, `skipif`, and custom marks registered in the config).",
       "source": "pytest docs — Marking test functions",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "parametrize", "mark"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "mark"
+      ]
     },
     {
       "id": "q020505001",
@@ -520,23 +690,26 @@
       "question_es": "¿Cuál es el ciclo del desarrollo guiado por pruebas (TDD)?",
       "question_en": "What is the cycle of test-driven development (TDD)?",
       "options_es": [
-        "Rojo (escribir un test que falla) → Verde (código mínimo para pasarlo) → Refactor",
+        "Diseñar → Codificar → Desplegar",
         "Escribir todo el código y luego todos los tests",
         "Refactor → Test → Documentar",
-        "Diseñar → Codificar → Desplegar"
+        "Rojo (escribir un test que falla) → Verde (código mínimo para pasarlo) → Refactor"
       ],
       "options_en": [
-        "Red (write a failing test) → Green (minimal code to pass) → Refactor",
+        "Design → Code → Deploy",
         "Write all the code, then all the tests",
         "Refactor → Test → Document",
-        "Design → Code → Deploy"
+        "Red (write a failing test) → Green (minimal code to pass) → Refactor"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El ciclo TDD es 'rojo-verde-refactor': primero escribes un test que falla (rojo), luego el mínimo código para que pase (verde), y finalmente mejoras el diseño manteniendo los tests en verde (refactor). El test se escribe ANTES que la implementación.",
       "explanation_en": "The TDD cycle is 'red-green-refactor': first write a failing test (red), then the minimal code to make it pass (green), and finally improve the design while keeping the tests green (refactor). The test is written BEFORE the implementation.",
       "source": "Effective Python 3e (Slatkin), chapter on testing and debugging",
       "expected_time_ms": 20000,
-      "tags": ["tdd", "cycle"]
+      "tags": [
+        "tdd",
+        "cycle"
+      ]
     },
     {
       "id": "q020505002",
@@ -545,14 +718,23 @@
       "difficulty_tier": "medium",
       "question_es": "En TDD, el primer paso es escribir un test que inicialmente falla porque el código aún no existe o no cumple el requisito.",
       "question_en": "In TDD, the first step is to write a test that initially fails because the code doesn't exist yet or doesn't meet the requirement.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Ver el test fallar primero (fase 'roja') confirma que el test realmente prueba algo y no pasa por accidente. Solo después se escribe el código mínimo para hacerlo pasar. Esto invierte el orden habitual de código-luego-test.",
       "explanation_en": "True. Seeing the test fail first (the 'red' phase) confirms the test actually checks something and doesn't pass by accident. Only then do you write the minimal code to make it pass. This inverts the usual code-then-test order.",
       "source": "Effective Python 3e (Slatkin), chapter on testing and debugging",
       "expected_time_ms": 22000,
-      "tags": ["tdd", "red"]
+      "tags": [
+        "tdd",
+        "red"
+      ]
     },
     {
       "id": "q020505003",
@@ -562,23 +744,26 @@
       "question_es": "¿Qué se hace en la fase 'refactor' del ciclo TDD?",
       "question_en": "What do you do in the 'refactor' phase of the TDD cycle?",
       "options_es": [
-        "Mejorar la estructura del código sin cambiar su comportamiento, manteniendo los tests en verde",
         "Añadir nuevas funcionalidades sin tests",
+        "Mejorar la estructura del código sin cambiar su comportamiento, manteniendo los tests en verde",
         "Borrar los tests que ya pasaron",
         "Escribir la documentación final"
       ],
       "options_en": [
-        "Improve the code's structure without changing its behavior, keeping the tests green",
         "Add new features without tests",
+        "Improve the code's structure without changing its behavior, keeping the tests green",
         "Delete the tests that already passed",
         "Write the final documentation"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "En 'refactor' limpias y mejoras el diseño (eliminar duplicación, renombrar, extraer funciones) SIN alterar el comportamiento observable. Los tests, que siguen en verde, actúan como red de seguridad que garantiza que no rompiste nada.",
       "explanation_en": "In 'refactor' you clean up and improve the design (remove duplication, rename, extract functions) WITHOUT altering observable behavior. The tests, still green, act as a safety net guaranteeing you broke nothing.",
       "source": "Effective Python 3e (Slatkin), chapter on testing and debugging",
       "expected_time_ms": 25000,
-      "tags": ["tdd", "refactor"]
+      "tags": [
+        "tdd",
+        "refactor"
+      ]
     },
     {
       "id": "q020505004",
@@ -588,23 +773,27 @@
       "question_es": "¿Cuál es un beneficio de diseño (no solo de calidad) que aporta practicar TDD?",
       "question_en": "What is a design benefit (not just a quality one) of practicing TDD?",
       "options_es": [
-        "Empuja a escribir código desacoplado y testeable, porque un código difícil de testear suele estar mal diseñado",
         "Garantiza cero bugs en producción",
+        "Empuja a escribir código desacoplado y testeable, porque un código difícil de testear suele estar mal diseñado",
         "Elimina la necesidad de revisión de código",
         "Hace innecesaria la documentación"
       ],
       "options_en": [
-        "It pushes toward decoupled, testable code, because hard-to-test code is usually poorly designed",
         "It guarantees zero bugs in production",
+        "It pushes toward decoupled, testable code, because hard-to-test code is usually poorly designed",
         "It eliminates the need for code review",
         "It makes documentation unnecessary"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Escribir el test primero te obliga a pensar en la interfaz y las dependencias antes que en la implementación, empujando hacia un diseño desacoplado y con responsabilidades claras. TDD no garantiza cero bugs ni sustituye la revisión de código.",
       "explanation_en": "Writing the test first forces you to think about the interface and dependencies before the implementation, pushing toward a decoupled design with clear responsibilities. TDD does not guarantee zero bugs nor replace code review.",
       "source": "Effective Python 3e (Slatkin), chapter on testing and debugging",
       "expected_time_ms": 35000,
-      "tags": ["tdd", "design", "decoupling"]
+      "tags": [
+        "tdd",
+        "design",
+        "decoupling"
+      ]
     },
     {
       "id": "q020505005",
@@ -613,14 +802,24 @@
       "difficulty_tier": "hard",
       "question_es": "Una alta cobertura de tests (por ejemplo 100%) garantiza que el código no tiene errores.",
       "question_en": "High test coverage (e.g. 100%) guarantees the code has no bugs.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. La cobertura mide qué líneas se ejecutan, no si las aserciones son correctas o si se cubren los casos límite adecuados. Puedes tener 100% de cobertura con tests débiles que no detectan errores reales. Es una métrica útil pero no una garantía de corrección.",
       "explanation_en": "False. Coverage measures which lines are executed, not whether the assertions are correct or the right edge cases are covered. You can have 100% coverage with weak tests that miss real bugs. It's a useful metric but not a correctness guarantee.",
       "source": "Effective Python 3e (Slatkin), chapter on testing and debugging",
       "expected_time_ms": 30000,
-      "tags": ["tdd", "coverage", "gotcha"]
+      "tags": [
+        "tdd",
+        "coverage",
+        "gotcha"
+      ]
     },
     {
       "id": "q020505006",
@@ -638,7 +837,11 @@
       "explanation_en": "DRY ('Don't Repeat Yourself') advocates that every piece of knowledge have a single representation in the system. The refactor phase of the TDD cycle is the natural time to remove duplication and apply DRY with the tests as a safety net.",
       "source": "The Pragmatic Programmer (Hunt & Thomas) — DRY principle",
       "expected_time_ms": 30000,
-      "tags": ["tdd", "dry", "principles"]
+      "tags": [
+        "tdd",
+        "dry",
+        "principles"
+      ]
     }
   ]
 }

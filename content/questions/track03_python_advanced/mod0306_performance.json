@@ -7,14 +7,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué módulo de la librería estándar mide el tiempo de ejecución de pequeños fragmentos de código de forma fiable?",
       "question_en": "Which standard-library module reliably measures the execution time of small code snippets?",
-      "options_es": ["timeit", "time", "datetime", "profile"],
-      "options_en": ["timeit", "time", "datetime", "profile"],
-      "correct_index": 0,
+      "options_es": [
+        "profile",
+        "time",
+        "datetime",
+        "timeit"
+      ],
+      "options_en": [
+        "profile",
+        "time",
+        "datetime",
+        "timeit"
+      ],
+      "correct_index": 3,
       "explanation_es": "`timeit` está diseñado para microbenchmarks: ejecuta el fragmento muchas veces, desactiva el recolector de basura durante la medición y evita errores comunes de temporización. `time.perf_counter` sirve para medir a mano, pero `timeit` da resultados más fiables para trozos pequeños.",
       "explanation_en": "`timeit` is designed for microbenchmarks: it runs the snippet many times, disables the garbage collector during measurement, and avoids common timing pitfalls. `time.perf_counter` works for manual measurement, but `timeit` gives more reliable results for small snippets.",
       "source": "CPython docs 3.13 — timeit",
       "expected_time_ms": 22000,
-      "tags": ["performance", "profiling", "timeit"]
+      "tags": [
+        "performance",
+        "profiling",
+        "timeit"
+      ]
     },
     {
       "id": "q030601002",
@@ -24,23 +38,27 @@
       "question_es": "¿Qué proporciona cProfile que no da timeit?",
       "question_en": "What does cProfile provide that timeit does not?",
       "options_es": [
-        "Un desglose por función: cuántas veces se llamó cada una y cuánto tiempo consumió",
         "Mayor precisión en un único fragmento",
+        "Un desglose por función: cuántas veces se llamó cada una y cuánto tiempo consumió",
         "Ejecución en paralelo del código",
         "Optimización automática del código"
       ],
       "options_en": [
-        "A per-function breakdown: how many times each was called and how much time it took",
         "Higher precision on a single snippet",
+        "A per-function breakdown: how many times each was called and how much time it took",
         "Parallel execution of the code",
         "Automatic code optimization"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`cProfile` es un profiler determinista: instrumenta todo el programa y reporta, por función, el número de llamadas y el tiempo acumulado/propio. Sirve para encontrar el cuello de botella real. `timeit` solo mide el tiempo total de un fragmento, sin desglose.",
       "explanation_en": "`cProfile` is a deterministic profiler: it instruments the whole program and reports, per function, the call count and cumulative/own time. It's for finding the real bottleneck. `timeit` only measures a snippet's total time, with no breakdown.",
       "source": "CPython docs 3.13 — The Python Profilers: cProfile",
       "expected_time_ms": 28000,
-      "tags": ["performance", "profiling", "cprofile"]
+      "tags": [
+        "performance",
+        "profiling",
+        "cprofile"
+      ]
     },
     {
       "id": "q030601003",
@@ -49,14 +67,24 @@
       "difficulty_tier": "medium",
       "question_es": "La regla de optimización recomendada es medir primero (perfilar) para localizar el cuello de botella real, antes de optimizar.",
       "question_en": "The recommended optimization rule is to measure first (profile) to locate the real bottleneck, before optimizing.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. 'Mide, no adivines': los cuellos de botella rara vez están donde uno cree. Optimizar sin perfilar suele malgastar esfuerzo en código que no importa. La cita clásica de Knuth advierte que 'la optimización prematura es la raíz de todos los males'.",
       "explanation_en": "True. 'Measure, don't guess': bottlenecks are rarely where you think. Optimizing without profiling usually wastes effort on code that doesn't matter. Knuth's classic quote warns that 'premature optimization is the root of all evil'.",
       "source": "CPython docs 3.13 — The Python Profilers (introduction)",
       "expected_time_ms": 25000,
-      "tags": ["performance", "profiling", "methodology"]
+      "tags": [
+        "performance",
+        "profiling",
+        "methodology"
+      ]
     },
     {
       "id": "q030601004",
@@ -82,7 +110,12 @@
       "explanation_en": "`tottime` (total time) is time spent ONLY within the function, excluding functions it calls. `cumtime` (cumulative) includes sub-call time. Sorting by `tottime` reveals functions expensive in themselves; by `cumtime`, expensive whole branches.",
       "source": "CPython docs 3.13 — cProfile: instant user's manual",
       "expected_time_ms": 35000,
-      "tags": ["performance", "profiling", "cprofile", "tottime"]
+      "tags": [
+        "performance",
+        "profiling",
+        "cprofile",
+        "tottime"
+      ]
     },
     {
       "id": "q030601005",
@@ -91,14 +124,25 @@
       "difficulty_tier": "hard",
       "question_es": "El propio acto de perfilar con cProfile añade sobrecarga, por lo que los tiempos absolutos medidos son mayores que en una ejecución normal.",
       "question_en": "The act of profiling with cProfile itself adds overhead, so the absolute times measured are higher than in a normal run.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. cProfile instrumenta cada llamada de función, lo que introduce sobrecarga y hace que los tiempos absolutos sean mayores que sin perfilar. Por eso se usa para comparar RELACIONES entre funciones (dónde está el cuello de botella), no como medida de rendimiento absoluto.",
       "explanation_en": "True. cProfile instruments every function call, introducing overhead that makes absolute times higher than without profiling. That's why it's used to compare RELATIVE costs between functions (where the bottleneck is), not as an absolute performance measure.",
       "source": "CPython docs 3.13 — The Python Profilers: overhead",
       "expected_time_ms": 30000,
-      "tags": ["performance", "profiling", "cprofile", "overhead"]
+      "tags": [
+        "performance",
+        "profiling",
+        "cprofile",
+        "overhead"
+      ]
     },
     {
       "id": "q030601006",
@@ -116,7 +160,11 @@
       "explanation_en": "`pstats` provides the `Stats` class to load cProfile data (saved with `dump_stats`) and sort/filter it: `Stats('out.prof').sort_stats('cumtime').print_stats(10)`. It's the standard way to analyze a large profile without reading it raw.",
       "source": "CPython docs 3.13 — pstats.Stats",
       "expected_time_ms": 32000,
-      "tags": ["performance", "profiling", "pstats"]
+      "tags": [
+        "performance",
+        "profiling",
+        "pstats"
+      ]
     },
     {
       "id": "q030602001",
@@ -126,23 +174,27 @@
       "question_es": "¿Qué describe la notación Big-O de un algoritmo?",
       "question_en": "What does an algorithm's Big-O notation describe?",
       "options_es": [
-        "Cómo crece el tiempo (o memoria) a medida que crece el tamaño de la entrada",
         "El tiempo exacto en segundos que tarda",
+        "Cómo crece el tiempo (o memoria) a medida que crece el tamaño de la entrada",
         "El número de líneas de código",
         "La cantidad de memoria física del ordenador"
       ],
       "options_en": [
-        "How the time (or memory) grows as the input size grows",
         "The exact time in seconds it takes",
+        "How the time (or memory) grows as the input size grows",
         "The number of lines of code",
         "The computer's physical memory amount"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Big-O describe el comportamiento asintótico: cómo escala el coste con el tamaño de la entrada `n`, ignorando constantes y términos menores. `O(n)` crece linealmente, `O(n²)` cuadráticamente. No da segundos exactos, sino la TENDENCIA de crecimiento, clave para comparar algoritmos.",
       "explanation_en": "Big-O describes asymptotic behavior: how cost scales with input size `n`, ignoring constants and lower-order terms. `O(n)` grows linearly, `O(n²)` quadratically. It doesn't give exact seconds but the growth TREND, key to comparing algorithms.",
       "source": "Effective Python 3e (Slatkin), chapter on performance",
       "expected_time_ms": 25000,
-      "tags": ["performance", "complexity", "big-o"]
+      "tags": [
+        "performance",
+        "complexity",
+        "big-o"
+      ]
     },
     {
       "id": "q030602002",
@@ -151,14 +203,29 @@
       "difficulty_tier": "medium",
       "question_es": "¿Cuál es la complejidad temporal promedio de comprobar `x in s` cuando s es un set?",
       "question_en": "What is the average time complexity of checking `x in s` when s is a set?",
-      "options_es": ["O(1)", "O(n)", "O(log n)", "O(n²)"],
-      "options_en": ["O(1)", "O(n)", "O(log n)", "O(n²)"],
-      "correct_index": 0,
+      "options_es": [
+        "O(n²)",
+        "O(n)",
+        "O(log n)",
+        "O(1)"
+      ],
+      "options_en": [
+        "O(n²)",
+        "O(n)",
+        "O(log n)",
+        "O(1)"
+      ],
+      "correct_index": 3,
       "explanation_es": "La pertenencia en un `set` (o claves de `dict`) es O(1) promedio porque usa una tabla hash. En cambio, `x in lista` es O(n) porque recorre la lista secuencialmente. Elegir la estructura adecuada suele mejorar el rendimiento más que microoptimizar.",
       "explanation_en": "Membership in a `set` (or `dict` keys) is average O(1) because it uses a hash table. In contrast, `x in list` is O(n) because it scans the list sequentially. Choosing the right structure often improves performance more than micro-optimizing.",
       "source": "CPython docs 3.13 — Time Complexity (wiki) / Built-in Types: set",
       "expected_time_ms": 28000,
-      "tags": ["performance", "complexity", "set", "membership"]
+      "tags": [
+        "performance",
+        "complexity",
+        "set",
+        "membership"
+      ]
     },
     {
       "id": "q030602003",
@@ -167,14 +234,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Cuál es la complejidad de este código respecto a n?\n```python\ndef f(items):  # len(items) == n\n    for a in items:\n        for b in items:\n            print(a, b)\n```",
       "question_en": "What is the complexity of this code with respect to n?\n```python\ndef f(items):  # len(items) == n\n    for a in items:\n        for b in items:\n            print(a, b)\n```",
-      "options_es": ["O(n²)", "O(n)", "O(2n)", "O(log n)"],
-      "options_en": ["O(n²)", "O(n)", "O(2n)", "O(log n)"],
-      "correct_index": 0,
+      "options_es": [
+        "O(2n)",
+        "O(n)",
+        "O(n²)",
+        "O(log n)"
+      ],
+      "options_en": [
+        "O(2n)",
+        "O(n)",
+        "O(n²)",
+        "O(log n)"
+      ],
+      "correct_index": 2,
       "explanation_es": "Dos bucles anidados sobre la misma colección de tamaño `n` ejecutan el cuerpo `n × n = n²` veces. Por tanto la complejidad es O(n²): cuadrática. Duplicar la entrada cuadruplica el trabajo, lo que degrada rápido con entradas grandes.",
       "explanation_en": "Two loops nested over the same size-`n` collection run the body `n × n = n²` times. Hence the complexity is O(n²): quadratic. Doubling the input quadruples the work, which degrades fast with large inputs.",
       "source": "Effective Python 3e (Slatkin), chapter on performance",
       "expected_time_ms": 30000,
-      "tags": ["performance", "complexity", "nested-loops"]
+      "tags": [
+        "performance",
+        "complexity",
+        "nested-loops"
+      ]
     },
     {
       "id": "q030602004",
@@ -183,14 +264,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un algoritmo O(n log n), como un buen ordenamiento, escala mejor que uno O(n²) para entradas grandes.",
       "question_en": "An O(n log n) algorithm, like a good sort, scales better than an O(n²) one for large inputs.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Para `n` grande, `n log n` crece mucho más lento que `n²`. Por ejemplo, con `n = 1.000.000`, `n²` es un billón de operaciones mientras `n log n` es unos 20 millones. Por eso los ordenamientos eficientes (como el Timsort de Python) son O(n log n).",
       "explanation_en": "True. For large `n`, `n log n` grows far slower than `n²`. For example, with `n = 1,000,000`, `n²` is a trillion operations while `n log n` is about 20 million. That's why efficient sorts (like Python's Timsort) are O(n log n).",
       "source": "CPython docs 3.13 — Sorting HOW TO (Timsort)",
       "expected_time_ms": 30000,
-      "tags": ["performance", "complexity", "sorting"]
+      "tags": [
+        "performance",
+        "complexity",
+        "sorting"
+      ]
     },
     {
       "id": "q030602005",
@@ -216,7 +307,12 @@
       "explanation_en": "A Python list is a contiguous dynamic array. Inserting at the front forces shifting the `n` existing elements one position, hence O(n). If you need O(1) inserts/pops at both ends, use `collections.deque`.",
       "source": "CPython docs 3.13 — collections.deque / list internals",
       "expected_time_ms": 35000,
-      "tags": ["performance", "complexity", "list", "deque"]
+      "tags": [
+        "performance",
+        "complexity",
+        "list",
+        "deque"
+      ]
     },
     {
       "id": "q030602006",
@@ -234,7 +330,11 @@
       "explanation_en": "Binary search is O(log n): each step discards half the search space, so it needs at most `log₂(n)` comparisons. The standard-library `bisect` module implements it over sorted lists.",
       "source": "CPython docs 3.13 — bisect module",
       "expected_time_ms": 30000,
-      "tags": ["performance", "complexity", "binary-search"]
+      "tags": [
+        "performance",
+        "complexity",
+        "binary-search"
+      ]
     },
     {
       "id": "q030603001",
@@ -243,14 +343,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué estructura de collections ofrece inserción y extracción O(1) en AMBOS extremos?",
       "question_en": "Which collections structure offers O(1) insertion and removal at BOTH ends?",
-      "options_es": ["deque", "list", "tuple", "frozenset"],
-      "options_en": ["deque", "list", "tuple", "frozenset"],
-      "correct_index": 0,
+      "options_es": [
+        "frozenset",
+        "list",
+        "tuple",
+        "deque"
+      ],
+      "options_en": [
+        "frozenset",
+        "list",
+        "tuple",
+        "deque"
+      ],
+      "correct_index": 3,
       "explanation_es": "`collections.deque` (double-ended queue) permite `append`/`appendleft` y `pop`/`popleft` en O(1). Una `list` es O(1) solo al final; operar al inicio es O(n). `deque` es ideal para colas, pilas y buffers deslizantes.",
       "explanation_en": "`collections.deque` (double-ended queue) allows `append`/`appendleft` and `pop`/`popleft` in O(1). A `list` is O(1) only at the end; operating at the front is O(n). `deque` is ideal for queues, stacks, and sliding buffers.",
       "source": "CPython docs 3.13 — collections.deque",
       "expected_time_ms": 25000,
-      "tags": ["performance", "data-structures", "deque"]
+      "tags": [
+        "performance",
+        "data-structures",
+        "deque"
+      ]
     },
     {
       "id": "q030603002",
@@ -259,14 +373,28 @@
       "difficulty_tier": "medium",
       "question_es": "Para contar la frecuencia de elementos en un iterable, ¿qué estructura es la más adecuada y eficiente?",
       "question_en": "To count element frequencies in an iterable, which structure is the most suitable and efficient?",
-      "options_es": ["collections.Counter", "una lista de pares", "un set", "una tupla"],
-      "options_en": ["collections.Counter", "a list of pairs", "a set", "a tuple"],
+      "options_es": [
+        "collections.Counter",
+        "una lista de pares",
+        "un set",
+        "una tupla"
+      ],
+      "options_en": [
+        "collections.Counter",
+        "a list of pairs",
+        "a set",
+        "a tuple"
+      ],
       "correct_index": 0,
       "explanation_es": "`collections.Counter` cuenta ocurrencias en una sola pasada O(n) y ofrece métodos como `most_common(k)`. Es más rápido y legible que mantener manualmente un dict de conteos o, peor, contar con listas (que sería O(n²)).",
       "explanation_en": "`collections.Counter` counts occurrences in a single O(n) pass and offers methods like `most_common(k)`. It's faster and more readable than manually maintaining a dict of counts or, worse, counting with lists (which would be O(n²)).",
       "source": "CPython docs 3.13 — collections.Counter",
       "expected_time_ms": 28000,
-      "tags": ["performance", "data-structures", "counter"]
+      "tags": [
+        "performance",
+        "data-structures",
+        "counter"
+      ]
     },
     {
       "id": "q030603003",
@@ -275,14 +403,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom collections import Counter\nc = Counter(\"abracadabra\")\nprint(c.most_common(1))\n```",
       "question_en": "What does the following code print?\n```python\nfrom collections import Counter\nc = Counter(\"abracadabra\")\nprint(c.most_common(1))\n```",
-      "options_es": ["[('a', 5)]", "('a', 5)", "[('a', 4)]", "{'a': 5}"],
-      "options_en": ["[('a', 5)]", "('a', 5)", "[('a', 4)]", "{'a': 5}"],
-      "correct_index": 0,
+      "options_es": [
+        "('a', 5)",
+        "[('a', 5)]",
+        "[('a', 4)]",
+        "{'a': 5}"
+      ],
+      "options_en": [
+        "('a', 5)",
+        "[('a', 5)]",
+        "[('a', 4)]",
+        "{'a': 5}"
+      ],
+      "correct_index": 1,
       "explanation_es": "En `\"abracadabra\"` la letra `a` aparece 5 veces. `Counter.most_common(1)` devuelve una LISTA con el par más frecuente: `[('a', 5)]`. Nota que devuelve una lista de tuplas, no una sola tupla ni un dict.",
       "explanation_en": "In `\"abracadabra\"` the letter `a` appears 5 times. `Counter.most_common(1)` returns a LIST with the most frequent pair: `[('a', 5)]`. Note it returns a list of tuples, not a single tuple or a dict.",
       "source": "CPython docs 3.13 — collections.Counter.most_common",
       "expected_time_ms": 32000,
-      "tags": ["performance", "data-structures", "counter"]
+      "tags": [
+        "performance",
+        "data-structures",
+        "counter"
+      ]
     },
     {
       "id": "q030603004",
@@ -292,23 +434,28 @@
       "question_es": "¿Por qué construir una cadena grande concatenando con += en un bucle es ineficiente, y qué se recomienda?",
       "question_en": "Why is building a large string by concatenating with += in a loop inefficient, and what is recommended?",
       "options_es": [
-        "Los str son inmutables, así que cada += crea una copia nueva (O(n²) total); mejor acumular en una lista y usar ''.join()",
+        "No es ineficiente; += es óptimo",
         "Porque += no funciona con strings",
         "Porque consume el GIL; mejor usar hilos",
-        "No es ineficiente; += es óptimo"
+        "Los str son inmutables, así que cada += crea una copia nueva (O(n²) total); mejor acumular en una lista y usar ''.join()"
       ],
       "options_en": [
-        "Strings are immutable, so each += creates a new copy (O(n²) total); better to collect in a list and use ''.join()",
+        "It isn't inefficient; += is optimal",
         "Because += doesn't work with strings",
         "Because it consumes the GIL; use threads instead",
-        "It isn't inefficient; += is optimal"
+        "Strings are immutable, so each += creates a new copy (O(n²) total); better to collect in a list and use ''.join()"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Como los `str` son inmutables, cada `+=` crea una cadena nueva copiando todo lo anterior, dando un coste O(n²) al construir en bucle. Lo idiomático es acumular las partes en una lista y unirlas al final con `''.join(partes)`, que es O(n).",
       "explanation_en": "Since `str` is immutable, each `+=` creates a new string copying everything before it, giving O(n²) cost when building in a loop. The idiomatic approach is to collect parts in a list and join at the end with `''.join(parts)`, which is O(n).",
       "source": "Effective Python 3e (Slatkin), Item on string concatenation",
       "expected_time_ms": 35000,
-      "tags": ["performance", "data-structures", "strings", "join"]
+      "tags": [
+        "performance",
+        "data-structures",
+        "strings",
+        "join"
+      ]
     },
     {
       "id": "q030603005",
@@ -317,14 +464,24 @@
       "difficulty_tier": "hard",
       "question_es": "collections.defaultdict evita comprobar si una clave existe antes de acumular en ella, simplificando y acelerando el código de agrupación.",
       "question_en": "collections.defaultdict avoids checking whether a key exists before accumulating into it, simplifying and speeding up grouping code.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. `defaultdict(list)` crea automáticamente una lista vacía la primera vez que se accede a una clave nueva, así puedes hacer `d[k].append(x)` sin comprobar antes si `k` existe. Elimina el patrón `if k not in d: d[k] = []` y es más eficiente y legible.",
       "explanation_en": "True. `defaultdict(list)` automatically creates an empty list the first time a new key is accessed, so you can do `d[k].append(x)` without first checking whether `k` exists. It removes the `if k not in d: d[k] = []` pattern and is more efficient and readable.",
       "source": "CPython docs 3.13 — collections.defaultdict",
       "expected_time_ms": 30000,
-      "tags": ["performance", "data-structures", "defaultdict"]
+      "tags": [
+        "performance",
+        "data-structures",
+        "defaultdict"
+      ]
     },
     {
       "id": "q030603006",
@@ -342,7 +499,11 @@
       "explanation_en": "`heapq` implements a binary min-heap over a plain list: `heappush` and `heappop` are O(log n), and `heap[0]` always gives the minimum in O(1). It's the go-to structure for priority queues, algorithms like Dijkstra, or finding the `k` smallest/largest with `nsmallest`/`nlargest`.",
       "source": "CPython docs 3.13 — heapq — Heap queue algorithm",
       "expected_time_ms": 32000,
-      "tags": ["performance", "data-structures", "heapq"]
+      "tags": [
+        "performance",
+        "data-structures",
+        "heapq"
+      ]
     },
     {
       "id": "q030604001",
@@ -352,23 +513,27 @@
       "question_es": "¿Qué es Cython?",
       "question_en": "What is Cython?",
       "options_es": [
-        "Un superconjunto de Python que se compila a C para acelerar código crítico",
         "Una versión más nueva de CPython",
+        "Un superconjunto de Python que se compila a C para acelerar código crítico",
         "Un formateador de código",
         "Un gestor de entornos virtuales"
       ],
       "options_en": [
-        "A superset of Python that compiles to C to speed up critical code",
         "A newer version of CPython",
+        "A superset of Python that compiles to C to speed up critical code",
         "A code formatter",
         "A virtual environment manager"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Cython es un lenguaje superconjunto de Python que se traduce a C y se compila a una extensión nativa. Añadiendo tipos estáticos (`cdef int`) puede acelerar bucles numéricos enormemente. Se usa para las partes críticas tras perfilar, no para todo el programa.",
       "explanation_en": "Cython is a Python superset language that transpiles to C and compiles to a native extension. By adding static types (`cdef int`) it can hugely speed up numeric loops. It's used for the critical parts after profiling, not the whole program.",
       "source": "Cython docs — Overview",
       "expected_time_ms": 25000,
-      "tags": ["performance", "cython", "native"]
+      "tags": [
+        "performance",
+        "cython",
+        "native"
+      ]
     },
     {
       "id": "q030604002",
@@ -377,14 +542,24 @@
       "difficulty_tier": "medium",
       "question_es": "Antes de reescribir código en C o Cython, conviene agotar las optimizaciones en Python puro (mejor algoritmo, estructuras adecuadas, vectorización con NumPy).",
       "question_en": "Before rewriting code in C or Cython, it's worth exhausting pure-Python optimizations (better algorithm, right data structures, vectorization with NumPy).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Un mejor algoritmo (bajar de O(n²) a O(n log n)), la estructura de datos adecuada o vectorizar con NumPy suelen dar más ganancia y menos complejidad que bajar a C. Cython/C es el último recurso para hotspots ya perfilados que no se pueden mejorar de otro modo.",
       "explanation_en": "True. A better algorithm (going from O(n²) to O(n log n)), the right data structure, or vectorizing with NumPy usually yield more gain and less complexity than dropping to C. Cython/C is the last resort for already-profiled hotspots that can't be improved otherwise.",
       "source": "Effective Python 3e (Slatkin), chapter on performance and C extensions",
       "expected_time_ms": 28000,
-      "tags": ["performance", "cython", "methodology"]
+      "tags": [
+        "performance",
+        "cython",
+        "methodology"
+      ]
     },
     {
       "id": "q030604003",
@@ -394,23 +569,27 @@
       "question_es": "¿Cómo acelera NumPy los cálculos numéricos frente a bucles Python puros?",
       "question_en": "How does NumPy speed up numeric computation compared to pure Python loops?",
       "options_es": [
-        "Vectoriza las operaciones ejecutándolas en C sobre arrays contiguos, evitando el bucle interpretado",
         "Usa múltiples procesos automáticamente",
+        "Vectoriza las operaciones ejecutándolas en C sobre arrays contiguos, evitando el bucle interpretado",
         "Comprime los datos en memoria",
         "Cachea todos los resultados"
       ],
       "options_en": [
-        "It vectorizes operations, running them in C over contiguous arrays, avoiding the interpreted loop",
         "It uses multiple processes automatically",
+        "It vectorizes operations, running them in C over contiguous arrays, avoiding the interpreted loop",
         "It compresses data in memory",
         "It caches all results"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "NumPy almacena datos en arrays contiguos de tipo homogéneo y ejecuta las operaciones vectorizadas en bucles compilados en C, evitando la sobrecarga del intérprete de Python por elemento. Por eso `a + b` sobre arrays grandes es mucho más rápido que un `for` elemento a elemento.",
       "explanation_en": "NumPy stores data in contiguous, homogeneously-typed arrays and runs vectorized operations in compiled C loops, avoiding Python's per-element interpreter overhead. That's why `a + b` over large arrays is far faster than an element-by-element `for` loop.",
       "source": "NumPy docs — Why is NumPy fast?",
       "expected_time_ms": 30000,
-      "tags": ["performance", "numpy", "vectorization"]
+      "tags": [
+        "performance",
+        "numpy",
+        "vectorization"
+      ]
     },
     {
       "id": "q030604004",
@@ -420,23 +599,28 @@
       "question_es": "¿Qué es un compilador JIT (como el de PyPy o Numba) y qué ventaja aporta?",
       "question_en": "What is a JIT compiler (like PyPy's or Numba's) and what advantage does it bring?",
       "options_es": [
-        "Compila el código a máquina en tiempo de ejecución, acelerando funciones que se ejecutan muchas veces",
+        "Comprueba los tipos estáticamente",
         "Compila el código a bytecode antes de ejecutar",
         "Traduce Python a JavaScript",
-        "Comprueba los tipos estáticamente"
+        "Compila el código a máquina en tiempo de ejecución, acelerando funciones que se ejecutan muchas veces"
       ],
       "options_en": [
-        "It compiles code to machine code at run time, speeding up functions that run many times",
+        "It checks types statically",
         "It compiles code to bytecode before running",
         "It translates Python to JavaScript",
-        "It checks types statically"
+        "It compiles code to machine code at run time, speeding up functions that run many times"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un compilador JIT (Just-In-Time) traduce partes 'calientes' del código a código máquina durante la ejecución, observando qué se ejecuta con frecuencia. PyPy lo hace para Python general y Numba para funciones numéricas (con `@jit`). Acelera especialmente bucles intensivos.",
       "explanation_en": "A JIT (Just-In-Time) compiler translates 'hot' parts of the code to machine code during execution, observing what runs frequently. PyPy does this for general Python and Numba for numeric functions (with `@jit`). It especially speeds up intensive loops.",
       "source": "Effective Python 3e (Slatkin), notes on PyPy/Numba",
       "expected_time_ms": 35000,
-      "tags": ["performance", "jit", "pypy", "numba"]
+      "tags": [
+        "performance",
+        "jit",
+        "pypy",
+        "numba"
+      ]
     },
     {
       "id": "q030604005",
@@ -445,14 +629,24 @@
       "difficulty_tier": "hard",
       "question_es": "En Cython, añadir declaraciones de tipos estáticos (por ejemplo cdef int i) a un bucle numérico puede acelerarlo en órdenes de magnitud frente al mismo bucle en Python puro.",
       "question_en": "In Cython, adding static type declarations (e.g. cdef int i) to a numeric loop can speed it up by orders of magnitude versus the same loop in pure Python.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Al declarar tipos estáticos con `cdef`, Cython genera código C que opera directamente sobre enteros/floats de máquina, evitando la sobrecarga de los objetos Python (creación, conteo de referencias) en cada iteración. En bucles numéricos densos las mejoras son de decenas o cientos de veces.",
       "explanation_en": "True. By declaring static types with `cdef`, Cython generates C code operating directly on machine ints/floats, avoiding Python-object overhead (creation, reference counting) each iteration. In dense numeric loops the improvements are tens to hundreds of times.",
       "source": "Cython docs — Faster code via static typing",
       "expected_time_ms": 30000,
-      "tags": ["performance", "cython", "static-typing"]
+      "tags": [
+        "performance",
+        "cython",
+        "static-typing"
+      ]
     },
     {
       "id": "q030604006",
@@ -470,7 +664,11 @@
       "explanation_en": "`cdef` declares variables and functions with static C types in Cython (`cdef int total = 0`), enabling fast C code without Python-object overhead. There's also `cpdef` for functions callable from both C and Python.",
       "source": "Cython docs — Language basics: cdef",
       "expected_time_ms": 32000,
-      "tags": ["performance", "cython", "cdef"]
+      "tags": [
+        "performance",
+        "cython",
+        "cdef"
+      ]
     }
   ]
 }

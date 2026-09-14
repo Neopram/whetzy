@@ -8,23 +8,27 @@
       "question_es": "¿Cómo importas solo la función `sqrt` del módulo `math`?",
       "question_en": "How do you import only the `sqrt` function from the `math` module?",
       "options_es": [
-        "from math import sqrt",
         "import sqrt from math",
+        "from math import sqrt",
         "import math.sqrt only",
         "include math.sqrt"
       ],
       "options_en": [
-        "from math import sqrt",
         "import sqrt from math",
+        "from math import sqrt",
         "import math.sqrt only",
         "include math.sqrt"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`from math import sqrt` trae solo `sqrt` al espacio de nombres actual, de modo que puedes llamarla como `sqrt(9)` sin el prefijo `math.`. El orden es `from MÓDULO import NOMBRE`.",
       "explanation_en": "`from math import sqrt` brings only `sqrt` into the current namespace, so you can call it as `sqrt(9)` without the `math.` prefix. The order is `from MODULE import NAME`.",
       "source": "CPython docs 3.13 — Modules: More on Modules",
       "expected_time_ms": 18000,
-      "tags": ["modules", "import", "from-import"]
+      "tags": [
+        "modules",
+        "import",
+        "from-import"
+      ]
     },
     {
       "id": "q010801002",
@@ -33,14 +37,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport math\nprint(math.sqrt(16))\n```",
       "question_en": "What does the following code print?\n```python\nimport math\nprint(math.sqrt(16))\n```",
-      "options_es": ["4.0", "4", "16", "Error"],
-      "options_en": ["4.0", "4", "16", "Error"],
+      "options_es": [
+        "4.0",
+        "4",
+        "16",
+        "Error"
+      ],
+      "options_en": [
+        "4.0",
+        "4",
+        "16",
+        "Error"
+      ],
       "correct_index": 0,
       "explanation_es": "`import math` importa el módulo completo, así que se accede como `math.sqrt`. `math.sqrt(16)` devuelve un `float`: `4.0` (las funciones de `math` devuelven floats).",
       "explanation_en": "`import math` imports the whole module, so you access it as `math.sqrt`. `math.sqrt(16)` returns a `float`: `4.0` (`math` functions return floats).",
       "source": "CPython docs 3.13 — math module",
       "expected_time_ms": 18000,
-      "tags": ["modules", "import", "math"]
+      "tags": [
+        "modules",
+        "import",
+        "math"
+      ]
     },
     {
       "id": "q010801003",
@@ -49,14 +67,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport math as m\nprint(m.pi > 3)\n```",
       "question_en": "What does the following code print?\n```python\nimport math as m\nprint(m.pi > 3)\n```",
-      "options_es": ["True", "False", "3.14", "Error"],
-      "options_en": ["True", "False", "3.14", "Error"],
-      "correct_index": 0,
+      "options_es": [
+        "Error",
+        "False",
+        "3.14",
+        "True"
+      ],
+      "options_en": [
+        "Error",
+        "False",
+        "3.14",
+        "True"
+      ],
+      "correct_index": 3,
       "explanation_es": "`import math as m` crea un alias: ahora el módulo se referencia como `m`. `m.pi` es aproximadamente 3.14159, que es mayor que 3, así que la comparación da `True`.",
       "explanation_en": "`import math as m` creates an alias: the module is now referenced as `m`. `m.pi` is approximately 3.14159, which is greater than 3, so the comparison gives `True`.",
       "source": "CPython docs 3.13 — Modules: More on Modules (aliasing)",
       "expected_time_ms": 22000,
-      "tags": ["modules", "import", "alias"]
+      "tags": [
+        "modules",
+        "import",
+        "alias"
+      ]
     },
     {
       "id": "q010801004",
@@ -67,22 +99,27 @@
       "question_en": "Why is `from module import *` discouraged?",
       "options_es": [
         "Porque es más lento en ejecución",
-        "Porque contamina el espacio de nombres y puede sobrescribir nombres existentes de forma no evidente",
+        "Porque solo importa funciones, no clases",
         "Porque no funciona en Python 3",
-        "Porque solo importa funciones, no clases"
+        "Porque contamina el espacio de nombres y puede sobrescribir nombres existentes de forma no evidente"
       ],
       "options_en": [
         "Because it is slower at runtime",
-        "Because it pollutes the namespace and can silently overwrite existing names",
+        "Because it only imports functions, not classes",
         "Because it doesn't work in Python 3",
-        "Because it only imports functions, not classes"
+        "Because it pollutes the namespace and can silently overwrite existing names"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`import *` trae todos los nombres públicos del módulo al espacio actual, lo que dificulta saber de dónde viene cada nombre y puede sobrescribir variables o funciones existentes sin avisar. PEP 8 lo desaconseja salvo casos muy concretos.",
       "explanation_en": "`import *` brings all of the module's public names into the current scope, making it hard to tell where each name comes from and possibly overwriting existing variables or functions silently. PEP 8 discourages it except in very specific cases.",
       "source": "PEP 8 — Imports; CPython docs — Modules",
       "expected_time_ms": 30000,
-      "tags": ["modules", "import", "best-practice", "wildcard"]
+      "tags": [
+        "modules",
+        "import",
+        "best-practice",
+        "wildcard"
+      ]
     },
     {
       "id": "q010801005",
@@ -108,7 +145,12 @@
       "explanation_en": "Python caches imported modules in `sys.modules`. The first import runs the module's top-level code; subsequent imports simply return the already-loaded reference without re-executing it. That's why top-level side effects happen only once.",
       "source": "CPython docs 3.13 — The import system: caching (sys.modules)",
       "expected_time_ms": 40000,
-      "tags": ["modules", "import", "caching", "sys-modules"]
+      "tags": [
+        "modules",
+        "import",
+        "caching",
+        "sys-modules"
+      ]
     },
     {
       "id": "q010801006",
@@ -118,23 +160,27 @@
       "question_es": "¿Qué contiene la variable `__name__` de un módulo cuando se ejecuta directamente con `python archivo.py`?",
       "question_en": "What does a module's `__name__` variable contain when it is run directly with `python file.py`?",
       "options_es": [
-        "El nombre del archivo sin extensión",
         "La cadena '__main__'",
+        "El nombre del archivo sin extensión",
         "El nombre del módulo importador",
         "None"
       ],
       "options_en": [
-        "The file name without extension",
         "The string '__main__'",
+        "The file name without extension",
         "The importing module's name",
         "None"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Cuando un archivo se ejecuta directamente, Python asigna a su `__name__` la cadena `'__main__'`. Cuando se importa, `__name__` es el nombre del módulo. Por eso el idioma `if __name__ == '__main__':` distingue 'ejecutado directamente' de 'importado'.",
       "explanation_en": "When a file is run directly, Python sets its `__name__` to the string `'__main__'`. When imported, `__name__` is the module's name. That's why the `if __name__ == '__main__':` idiom distinguishes 'run directly' from 'imported'.",
       "source": "CPython docs 3.13 — Modules: Executing modules as scripts",
       "expected_time_ms": 42000,
-      "tags": ["modules", "name-main", "entry-point"]
+      "tags": [
+        "modules",
+        "name-main",
+        "entry-point"
+      ]
     },
     {
       "id": "q010802001",
@@ -143,14 +189,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué módulo de la librería estándar usarías para generar números aleatorios?",
       "question_en": "Which standard-library module would you use to generate random numbers?",
-      "options_es": ["random", "math", "os", "sys"],
-      "options_en": ["random", "math", "os", "sys"],
-      "correct_index": 0,
+      "options_es": [
+        "sys",
+        "math",
+        "os",
+        "random"
+      ],
+      "options_en": [
+        "sys",
+        "math",
+        "os",
+        "random"
+      ],
+      "correct_index": 3,
       "explanation_es": "El módulo `random` provee funciones como `random()`, `randint()` y `choice()`. `math` es para funciones matemáticas deterministas, `os` para interactuar con el sistema operativo y `sys` para parámetros del intérprete.",
       "explanation_en": "The `random` module provides functions like `random()`, `randint()`, and `choice()`. `math` is for deterministic math functions, `os` for interacting with the operating system, and `sys` for interpreter parameters.",
       "source": "CPython docs 3.13 — random module",
       "expected_time_ms": 15000,
-      "tags": ["modules", "stdlib", "random"]
+      "tags": [
+        "modules",
+        "stdlib",
+        "random"
+      ]
     },
     {
       "id": "q010802002",
@@ -159,14 +219,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué módulo usarías para trabajar con rutas y directorios del sistema operativo?",
       "question_en": "Which module would you use to work with operating-system paths and directories?",
-      "options_es": ["os", "random", "json", "re"],
-      "options_en": ["os", "random", "json", "re"],
-      "correct_index": 0,
+      "options_es": [
+        "random",
+        "os",
+        "json",
+        "re"
+      ],
+      "options_en": [
+        "random",
+        "os",
+        "json",
+        "re"
+      ],
+      "correct_index": 1,
       "explanation_es": "El módulo `os` (y `os.path`) provee operaciones del sistema de archivos y del SO, como listar directorios o unir rutas. `json` es para JSON, `re` para expresiones regulares y `random` para aleatoriedad. La alternativa moderna orientada a objetos es `pathlib`.",
       "explanation_en": "The `os` module (and `os.path`) provides filesystem and OS operations, like listing directories or joining paths. `json` is for JSON, `re` for regular expressions, and `random` for randomness. The modern object-oriented alternative is `pathlib`.",
       "source": "CPython docs 3.13 — os module",
       "expected_time_ms": 18000,
-      "tags": ["modules", "stdlib", "os"]
+      "tags": [
+        "modules",
+        "stdlib",
+        "os"
+      ]
     },
     {
       "id": "q010802003",
@@ -175,14 +249,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport json\nd = {'a': 1}\nprint(json.dumps(d))\n```",
       "question_en": "What does the following code print?\n```python\nimport json\nd = {'a': 1}\nprint(json.dumps(d))\n```",
-      "options_es": ["{\"a\": 1}", "{'a': 1}", "a: 1", "Error"],
-      "options_en": ["{\"a\": 1}", "{'a': 1}", "a: 1", "Error"],
-      "correct_index": 0,
+      "options_es": [
+        "Error",
+        "{'a': 1}",
+        "a: 1",
+        "{\"a\": 1}"
+      ],
+      "options_en": [
+        "Error",
+        "{'a': 1}",
+        "a: 1",
+        "{\"a\": 1}"
+      ],
+      "correct_index": 3,
       "explanation_es": "`json.dumps` serializa un objeto Python a una **cadena** JSON. En JSON las claves y strings van con comillas dobles, por lo que el resultado es `{\"a\": 1}` (no comillas simples como en la repr de un dict). La operación inversa es `json.loads`.",
       "explanation_en": "`json.dumps` serializes a Python object to a JSON **string**. In JSON, keys and strings use double quotes, so the result is `{\"a\": 1}` (not single quotes as in a dict's repr). The inverse operation is `json.loads`.",
       "source": "CPython docs 3.13 — json module: json.dumps",
       "expected_time_ms": 28000,
-      "tags": ["modules", "stdlib", "json"]
+      "tags": [
+        "modules",
+        "stdlib",
+        "json"
+      ]
     },
     {
       "id": "q010802004",
@@ -191,14 +279,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué módulo usarías para manipular fechas y horas?",
       "question_en": "Which module would you use to manipulate dates and times?",
-      "options_es": ["datetime", "time.py", "calendar_only", "clock"],
-      "options_en": ["datetime", "time.py", "calendar_only", "clock"],
-      "correct_index": 0,
+      "options_es": [
+        "clock",
+        "time.py",
+        "calendar_only",
+        "datetime"
+      ],
+      "options_en": [
+        "clock",
+        "time.py",
+        "calendar_only",
+        "datetime"
+      ],
+      "correct_index": 3,
       "explanation_es": "El módulo `datetime` provee las clases `date`, `time`, `datetime` y `timedelta` para trabajar con fechas y horas. El módulo `time` existe pero es de más bajo nivel (marcas de tiempo, sleep); para aritmética de fechas se prefiere `datetime`.",
       "explanation_en": "The `datetime` module provides the `date`, `time`, `datetime`, and `timedelta` classes for working with dates and times. The `time` module exists but is lower-level (timestamps, sleep); for date arithmetic `datetime` is preferred.",
       "source": "CPython docs 3.13 — datetime module",
       "expected_time_ms": 25000,
-      "tags": ["modules", "stdlib", "datetime"]
+      "tags": [
+        "modules",
+        "stdlib",
+        "datetime"
+      ]
     },
     {
       "id": "q010802005",
@@ -207,14 +309,29 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom collections import Counter\nc = Counter('abracadabra')\nprint(c['a'])\n```",
       "question_en": "What does the following code print?\n```python\nfrom collections import Counter\nc = Counter('abracadabra')\nprint(c['a'])\n```",
-      "options_es": ["5", "4", "11", "1"],
-      "options_en": ["5", "4", "11", "1"],
-      "correct_index": 0,
+      "options_es": [
+        "4",
+        "5",
+        "11",
+        "1"
+      ],
+      "options_en": [
+        "4",
+        "5",
+        "11",
+        "1"
+      ],
+      "correct_index": 1,
       "explanation_es": "`Counter` cuenta las apariciones de cada elemento. En 'abracadabra', la letra 'a' aparece 5 veces (posiciones 0, 3, 5, 7, 10). `c['a']` devuelve ese conteo, `5`. Para claves ausentes, `Counter` devuelve 0 en lugar de lanzar `KeyError`.",
       "explanation_en": "`Counter` counts occurrences of each element. In 'abracadabra', the letter 'a' appears 5 times (positions 0, 3, 5, 7, 10). `c['a']` returns that count, `5`. For missing keys, `Counter` returns 0 instead of raising `KeyError`.",
       "source": "CPython docs 3.13 — collections.Counter",
       "expected_time_ms": 35000,
-      "tags": ["modules", "stdlib", "collections", "Counter"]
+      "tags": [
+        "modules",
+        "stdlib",
+        "collections",
+        "Counter"
+      ]
     },
     {
       "id": "q010802006",
@@ -232,7 +349,11 @@
       "explanation_en": "The `re` (regular expressions) module provides functions like `re.match`, `re.search`, `re.findall`, and `re.sub` for pattern-based text searching and manipulation. It's part of the standard library, no installation needed.",
       "source": "CPython docs 3.13 — re module",
       "expected_time_ms": 30000,
-      "tags": ["modules", "stdlib", "re"]
+      "tags": [
+        "modules",
+        "stdlib",
+        "re"
+      ]
     },
     {
       "id": "q010803001",
@@ -258,7 +379,10 @@
       "explanation_en": "The presence of an `__init__.py` file marks a directory as a 'regular' package. It can be empty or contain package initialization. (Since 3.3 there are also 'namespace packages' without `__init__.py`, but the explicit, common package uses it.)",
       "source": "CPython docs 3.13 — Modules: Packages",
       "expected_time_ms": 22000,
-      "tags": ["packages", "init-py"]
+      "tags": [
+        "packages",
+        "init-py"
+      ]
     },
     {
       "id": "q010803002",
@@ -268,23 +392,27 @@
       "question_es": "Dado un paquete `mipaquete` con un módulo `utils.py`, ¿cómo importas la función `helper` definida en él?",
       "question_en": "Given a package `mypackage` with a module `utils.py`, how do you import the `helper` function defined in it?",
       "options_es": [
-        "from mipaquete.utils import helper",
+        "include mipaquete.utils.helper",
         "from mipaquete import utils.helper",
         "import helper from mipaquete/utils",
-        "include mipaquete.utils.helper"
+        "from mipaquete.utils import helper"
       ],
       "options_en": [
-        "from mypackage.utils import helper",
+        "include mypackage.utils.helper",
         "from mypackage import utils.helper",
         "import helper from mypackage/utils",
-        "include mypackage.utils.helper"
+        "from mypackage.utils import helper"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Se usa la notación con puntos para navegar la jerarquía del paquete: `from mipaquete.utils import helper`. El punto separa paquete, subpaquete/módulo y, en el `import`, se nombra el objeto concreto a traer.",
       "explanation_en": "You use dotted notation to navigate the package hierarchy: `from mypackage.utils import helper`. The dot separates package, subpackage/module, and, in the `import`, you name the specific object to bring in.",
       "source": "CPython docs 3.13 — Modules: Packages",
       "expected_time_ms": 28000,
-      "tags": ["packages", "import", "dotted"]
+      "tags": [
+        "packages",
+        "import",
+        "dotted"
+      ]
     },
     {
       "id": "q010803003",
@@ -294,23 +422,26 @@
       "question_es": "¿Qué es una importación relativa como `from . import helpers`?",
       "question_en": "What is a relative import like `from . import helpers`?",
       "options_es": [
-        "Una importación desde el mismo paquete, usando el punto para indicar el paquete actual",
+        "Una forma obsoleta eliminada en Python 3",
         "Una importación desde el directorio raíz del sistema",
         "Una importación que solo funciona en el intérprete interactivo",
-        "Una forma obsoleta eliminada en Python 3"
+        "Una importación desde el mismo paquete, usando el punto para indicar el paquete actual"
       ],
       "options_en": [
-        "An import from the same package, using the dot to denote the current package",
+        "An obsolete form removed in Python 3",
         "An import from the system root directory",
         "An import that only works in the interactive interpreter",
-        "An obsolete form removed in Python 3"
+        "An import from the same package, using the dot to denote the current package"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un punto (`.`) se refiere al paquete actual y dos puntos (`..`) al paquete padre. `from . import helpers` importa el módulo `helpers` que está en el mismo paquete que el módulo actual. Las importaciones relativas solo funcionan dentro de paquetes, no en scripts ejecutados directamente.",
       "explanation_en": "A single dot (`.`) refers to the current package and two dots (`..`) to the parent package. `from . import helpers` imports the `helpers` module in the same package as the current module. Relative imports only work inside packages, not in directly-run scripts.",
       "source": "PEP 328 — Imports: Multi-Line and Absolute/Relative",
       "expected_time_ms": 32000,
-      "tags": ["packages", "relative-import"]
+      "tags": [
+        "packages",
+        "relative-import"
+      ]
     },
     {
       "id": "q010803004",
@@ -336,7 +467,11 @@
       "explanation_en": "`__all__` is a list of strings naming the public names exported when using `from package import *`. It gives explicit control over the package/module's public API. It doesn't affect explicit imports by name.",
       "source": "CPython docs 3.13 — Modules: Importing * From a Package",
       "expected_time_ms": 38000,
-      "tags": ["packages", "all", "public-api"]
+      "tags": [
+        "packages",
+        "all",
+        "public-api"
+      ]
     },
     {
       "id": "q010803005",
@@ -345,14 +480,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué archivo se usa hoy para declarar los metadatos y dependencias de un paquete Python distribuible?",
       "question_en": "Which file is used today to declare a distributable Python package's metadata and dependencies?",
-      "options_es": ["pyproject.toml", "requirements.lock", "module.cfg", "package.py"],
-      "options_en": ["pyproject.toml", "requirements.lock", "module.cfg", "package.py"],
+      "options_es": [
+        "pyproject.toml",
+        "requirements.lock",
+        "module.cfg",
+        "package.py"
+      ],
+      "options_en": [
+        "pyproject.toml",
+        "requirements.lock",
+        "module.cfg",
+        "package.py"
+      ],
       "correct_index": 0,
       "explanation_es": "El estándar moderno (PEP 517/518/621) usa `pyproject.toml` para declarar el sistema de construcción, los metadatos y las dependencias del proyecto. Sustituye en gran medida al antiguo `setup.py`.",
       "explanation_en": "The modern standard (PEP 517/518/621) uses `pyproject.toml` to declare the build system, metadata, and dependencies of a project. It largely replaces the old `setup.py`.",
       "source": "PEP 621 — Storing project metadata in pyproject.toml",
       "expected_time_ms": 35000,
-      "tags": ["packages", "pyproject", "packaging"]
+      "tags": [
+        "packages",
+        "pyproject",
+        "packaging"
+      ]
     },
     {
       "id": "q010803006",
@@ -370,7 +519,10 @@
       "explanation_en": "The `__init__.py` file marks a directory as a regular package and runs when the package is first imported. It can be empty or contain initialization code, define `__all__`, or re-export names from its submodules.",
       "source": "CPython docs 3.13 — Modules: Packages",
       "expected_time_ms": 35000,
-      "tags": ["packages", "init-py"]
+      "tags": [
+        "packages",
+        "init-py"
+      ]
     },
     {
       "id": "q010804001",
@@ -379,14 +531,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué herramienta se usa para instalar paquetes de terceros desde PyPI?",
       "question_en": "Which tool is used to install third-party packages from PyPI?",
-      "options_es": ["pip", "npm", "apt", "make"],
-      "options_en": ["pip", "npm", "apt", "make"],
-      "correct_index": 0,
+      "options_es": [
+        "npm",
+        "pip",
+        "apt",
+        "make"
+      ],
+      "options_en": [
+        "npm",
+        "pip",
+        "apt",
+        "make"
+      ],
+      "correct_index": 1,
       "explanation_es": "`pip` es el instalador de paquetes de Python: `pip install nombre` descarga e instala desde el Python Package Index (PyPI). `npm` es de Node.js, `apt` del sistema Debian/Ubuntu y `make` es una herramienta de compilación.",
       "explanation_en": "`pip` is Python's package installer: `pip install name` downloads and installs from the Python Package Index (PyPI). `npm` is for Node.js, `apt` for Debian/Ubuntu systems, and `make` is a build tool.",
       "source": "CPython docs 3.13 — Installing Python Modules (pip)",
       "expected_time_ms": 15000,
-      "tags": ["pip", "packaging", "pypi"]
+      "tags": [
+        "pip",
+        "packaging",
+        "pypi"
+      ]
     },
     {
       "id": "q010804002",
@@ -396,23 +562,27 @@
       "question_es": "¿Para qué sirve un entorno virtual (virtual environment)?",
       "question_en": "What is a virtual environment used for?",
       "options_es": [
-        "Para aislar las dependencias de un proyecto de las de otros y del Python del sistema",
+        "Para conectarse a servidores remotos",
         "Para ejecutar Python más rápido",
         "Para virtualizar el sistema operativo completo",
-        "Para conectarse a servidores remotos"
+        "Para aislar las dependencias de un proyecto de las de otros y del Python del sistema"
       ],
       "options_en": [
-        "To isolate a project's dependencies from other projects and the system Python",
+        "To connect to remote servers",
         "To run Python faster",
         "To virtualize the entire operating system",
-        "To connect to remote servers"
+        "To isolate a project's dependencies from other projects and the system Python"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un entorno virtual crea una instalación de Python aislada con sus propios paquetes, de modo que las dependencias de un proyecto no interfieran con las de otro ni con el Python del sistema. Se crea con `python -m venv nombre`.",
       "explanation_en": "A virtual environment creates an isolated Python installation with its own packages, so one project's dependencies don't interfere with another's or with the system Python. You create it with `python -m venv name`.",
       "source": "CPython docs 3.13 — venv module",
       "expected_time_ms": 22000,
-      "tags": ["venv", "isolation", "dependencies"]
+      "tags": [
+        "venv",
+        "isolation",
+        "dependencies"
+      ]
     },
     {
       "id": "q010804003",
@@ -422,23 +592,26 @@
       "question_es": "¿Qué comando crea un entorno virtual llamado `.venv`?",
       "question_en": "Which command creates a virtual environment called `.venv`?",
       "options_es": [
-        "python -m venv .venv",
+        "venv init .venv",
         "pip venv .venv",
         "python create venv .venv",
-        "venv init .venv"
+        "python -m venv .venv"
       ],
       "options_en": [
-        "python -m venv .venv",
+        "venv init .venv",
         "pip venv .venv",
         "python create venv .venv",
-        "venv init .venv"
+        "python -m venv .venv"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`python -m venv .venv` ejecuta el módulo `venv` de la librería estándar para crear el entorno en la carpeta `.venv`. Luego se activa (p. ej. `source .venv/bin/activate` en Unix) antes de instalar paquetes con `pip`.",
       "explanation_en": "`python -m venv .venv` runs the standard-library `venv` module to create the environment in the `.venv` folder. You then activate it (e.g. `source .venv/bin/activate` on Unix) before installing packages with `pip`.",
       "source": "CPython docs 3.13 — venv: Creating virtual environments",
       "expected_time_ms": 25000,
-      "tags": ["venv", "creation"]
+      "tags": [
+        "venv",
+        "creation"
+      ]
     },
     {
       "id": "q010804004",
@@ -447,14 +620,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué archivo lista convencionalmente las dependencias de un proyecto para instalarlas con `pip install -r`?",
       "question_en": "Which file conventionally lists a project's dependencies for installing with `pip install -r`?",
-      "options_es": ["requirements.txt", "deps.list", "packages.py", "pip.cfg"],
-      "options_en": ["requirements.txt", "deps.list", "packages.py", "pip.cfg"],
-      "correct_index": 0,
+      "options_es": [
+        "deps.list",
+        "requirements.txt",
+        "packages.py",
+        "pip.cfg"
+      ],
+      "options_en": [
+        "deps.list",
+        "requirements.txt",
+        "packages.py",
+        "pip.cfg"
+      ],
+      "correct_index": 1,
       "explanation_es": "`requirements.txt` contiene una lista de paquetes (opcionalmente con versiones fijadas). `pip install -r requirements.txt` instala todas esas dependencias de una vez, lo que facilita reproducir el entorno en otra máquina.",
       "explanation_en": "`requirements.txt` contains a list of packages (optionally with pinned versions). `pip install -r requirements.txt` installs all those dependencies at once, making it easy to reproduce the environment on another machine.",
       "source": "pip docs — Requirements Files",
       "expected_time_ms": 25000,
-      "tags": ["pip", "requirements", "dependencies"]
+      "tags": [
+        "pip",
+        "requirements",
+        "dependencies"
+      ]
     },
     {
       "id": "q010804005",
@@ -480,7 +667,12 @@
       "explanation_en": "Pinning exact versions makes installing the project on another machine or later produce the **same** set of dependencies, preventing a new version with breaking changes from breaking the code. It's key to reproducible builds and reliable deployments.",
       "source": "pip docs — Reproducible installs; 12-Factor App: Dependencies",
       "expected_time_ms": 38000,
-      "tags": ["pip", "pinning", "reproducibility", "best-practice"]
+      "tags": [
+        "pip",
+        "pinning",
+        "reproducibility",
+        "best-practice"
+      ]
     },
     {
       "id": "q010804006",
@@ -498,7 +690,11 @@
       "explanation_en": "`pip freeze` prints installed packages with their exact versions in `package==version` format. It's redirected to a file with `pip freeze > requirements.txt` to capture the environment's current state. (To separate direct from transitive dependencies, tools like pip-tools or uv are often used.)",
       "source": "pip docs — pip freeze",
       "expected_time_ms": 35000,
-      "tags": ["pip", "freeze", "requirements"]
+      "tags": [
+        "pip",
+        "freeze",
+        "requirements"
+      ]
     }
   ]
 }

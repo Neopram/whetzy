@@ -8,18 +8,18 @@
       "question_es": "Según la guía de Anthropic 'Building effective agents', ¿cuál es la diferencia principal entre un 'workflow' y un 'agente'?",
       "question_en": "According to Anthropic's 'Building effective agents' guide, what is the main difference between a 'workflow' and an 'agent'?",
       "options_es": [
-        "Un workflow sigue rutas de código predefinidas, mientras que un agente decide dinámicamente sus propios pasos y uso de herramientas mediante razonamiento del LLM",
+        "No hay diferencia real entre ambos términos",
         "Un workflow siempre usa más tokens que un agente",
         "Un agente nunca puede usar herramientas externas",
-        "No hay diferencia real entre ambos términos"
+        "Un workflow sigue rutas de código predefinidas, mientras que un agente decide dinámicamente sus propios pasos y uso de herramientas mediante razonamiento del LLM"
       ],
       "options_en": [
-        "A workflow follows predefined code paths, while an agent dynamically decides its own steps and tool use through the LLM's reasoning",
+        "There is no real difference between the two terms",
         "A workflow always uses more tokens than an agent",
         "An agent can never use external tools",
-        "There is no real difference between the two terms"
+        "A workflow follows predefined code paths, while an agent dynamically decides its own steps and tool use through the LLM's reasoning"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "En un workflow, los pasos y el orden de las llamadas al LLM y a las herramientas están definidos de antemano en el código. En un agente, es el propio LLM quien decide en tiempo de ejecución qué pasos dar, qué herramientas usar y cuándo detenerse, en un ciclo abierto guiado por su razonamiento.",
       "explanation_en": "In a workflow, the steps and the order of LLM and tool calls are predefined in code. In an agent, the LLM itself decides at runtime what steps to take, which tools to use, and when to stop, in an open-ended loop guided by its own reasoning.",
       "source": "Anthropic – 'Building effective agents' (2024), Workflows vs. agents",
@@ -62,18 +62,18 @@
       "question_es": "¿Qué debe incluir típicamente la definición de una herramienta (tool) que se expone a un LLM para function calling?",
       "question_en": "What must the definition of a tool exposed to an LLM for function calling typically include?",
       "options_es": [
-        "Un nombre, una descripción clara de su propósito, y un esquema (JSON schema) de los parámetros esperados",
-        "Únicamente el nombre de la función, sin más detalles",
         "El código fuente completo de la función en el prompt",
+        "Únicamente el nombre de la función, sin más detalles",
+        "Un nombre, una descripción clara de su propósito, y un esquema (JSON schema) de los parámetros esperados",
         "Una lista de todos los posibles valores de retorno"
       ],
       "options_en": [
-        "A name, a clear description of its purpose, and a schema (JSON schema) of the expected parameters",
-        "Only the function's name, with no further detail",
         "The function's full source code inside the prompt",
+        "Only the function's name, with no further detail",
+        "A name, a clear description of its purpose, and a schema (JSON schema) of the expected parameters",
         "A list of every possible return value"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "El modelo no ejecuta código directamente: decide si y cómo llamar a una herramienta basándose en su definición declarativa. Por eso la definición debe incluir un nombre, una descripción en lenguaje natural de qué hace y cuándo usarla, y un esquema de los parámetros (tipos, cuáles son obligatorios) que el modelo debe producir.",
       "explanation_en": "The model does not execute code directly: it decides whether and how to call a tool based on its declarative definition. That is why the definition must include a name, a natural-language description of what it does and when to use it, and a schema of the parameters (types, which are required) the model must produce.",
       "source": "OpenAI – Function calling guide; Anthropic – Tool use documentation",
@@ -91,18 +91,18 @@
       "question_es": "Un LLM que soporta tool use responde con `{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Lima\"}}`. ¿Qué debe hacer la aplicación cliente al recibir esta respuesta?",
       "question_en": "An LLM that supports tool use responds with `{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Lima\"}}`. What should the client application do upon receiving this response?",
       "options_es": [
-        "Ejecutar la función/API real `get_weather` con esos argumentos, y devolver el resultado al modelo en un turno posterior",
+        "Terminar la conversación inmediatamente",
         "Ignorar la respuesta, ya que el modelo no puede solicitar herramientas",
         "Reenviar el mismo JSON directamente al usuario final sin procesarlo",
-        "Terminar la conversación inmediatamente"
+        "Ejecutar la función/API real `get_weather` con esos argumentos, y devolver el resultado al modelo en un turno posterior"
       ],
       "options_en": [
-        "Execute the actual `get_weather` function/API with those arguments, and return the result to the model in a subsequent turn",
+        "End the conversation immediately",
         "Ignore the response, since the model cannot request tools",
         "Forward the same JSON directly to the end user without processing it",
-        "End the conversation immediately"
+        "Execute the actual `get_weather` function/API with those arguments, and return the result to the model in a subsequent turn"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El LLM nunca ejecuta la herramienta por sí mismo: solo produce la intención estructurada de llamarla. La aplicación cliente es responsable de interpretar esa llamada, ejecutar la función o API real correspondiente, y devolver el resultado de vuelta al modelo para que continúe generando su respuesta.",
       "explanation_en": "The LLM never executes the tool itself: it only produces the structured intent to call it. The client application is responsible for interpreting that call, executing the corresponding real function or API, and feeding the result back to the model so it can continue generating its response.",
       "source": "Anthropic – Tool use documentation (writing tool descriptions)",
@@ -120,18 +120,18 @@
       "question_es": "¿Qué pasos intercala el patrón ReAct en cada iteración del razonamiento de un agente?",
       "question_en": "What steps does the ReAct pattern interleave at each iteration of an agent's reasoning?",
       "options_es": [
-        "Un 'Thought' (razonamiento), seguido de una 'Action' (uso de herramienta) y una 'Observation' del resultado antes del siguiente paso",
         "Únicamente llamadas consecutivas a herramientas sin ningún razonamiento intermedio",
+        "Un 'Thought' (razonamiento), seguido de una 'Action' (uso de herramienta) y una 'Observation' del resultado antes del siguiente paso",
         "Una votación entre varios modelos distintos en paralelo",
         "Un resumen final generado antes de empezar a razonar"
       ],
       "options_en": [
-        "A 'Thought' (reasoning), followed by an 'Action' (tool use), and an 'Observation' of the result before the next step",
         "Only consecutive tool calls with no reasoning in between",
+        "A 'Thought' (reasoning), followed by an 'Action' (tool use), and an 'Observation' of the result before the next step",
         "A vote among several different models in parallel",
         "A final summary generated before starting to reason"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "ReAct ('Reasoning + Acting') alterna explícitamente pasos de razonamiento en lenguaje natural ('Thought') con acciones concretas ('Action', como una llamada a herramienta o búsqueda), observando el resultado ('Observation') antes de decidir el siguiente pensamiento, lo que mejora tanto la interpretabilidad como el desempeño frente a solo razonar o solo actuar.",
       "explanation_en": "ReAct ('Reasoning + Acting') explicitly alternates natural-language reasoning steps ('Thought') with concrete actions ('Action', like a tool call or search), observing the result ('Observation') before deciding the next thought, which improves both interpretability and performance compared to reasoning-only or acting-only approaches.",
       "source": "Yao et al., 'ReAct' (ICLR 2023)",
@@ -150,18 +150,18 @@
       "question_es": "En el patrón 'orchestrator-workers' para sistemas multi-agente, ¿qué rol cumple el agente orquestador?",
       "question_en": "In the 'orchestrator-workers' pattern for multi-agent systems, what role does the orchestrator agent play?",
       "options_es": [
-        "Descompone la tarea principal, delega subtareas a agentes trabajadores especializados y combina sus resultados",
         "Ejecuta directamente todas las subtareas sin delegar nada",
+        "Descompone la tarea principal, delega subtareas a agentes trabajadores especializados y combina sus resultados",
         "Solo se encarga de medir la latencia de los agentes trabajadores",
         "Reemplaza completamente a los agentes trabajadores tras la primera iteración"
       ],
       "options_en": [
-        "It decomposes the main task, delegates subtasks to specialized worker agents, and combines their results",
         "It executes all subtasks directly without delegating anything",
+        "It decomposes the main task, delegates subtasks to specialized worker agents, and combines their results",
         "It only measures the latency of the worker agents",
         "It completely replaces the worker agents after the first iteration"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "El orquestador actúa como coordinador central: analiza la tarea, la divide en subtareas más pequeñas, las asigna a agentes trabajadores especializados (que pueden ejecutarse en paralelo), y luego integra sus salidas en un resultado final coherente.",
       "explanation_en": "The orchestrator acts as a central coordinator: it analyzes the task, breaks it into smaller subtasks, assigns them to specialized worker agents (which may run in parallel), and then integrates their outputs into a coherent final result.",
       "source": "Anthropic – 'Building effective agents' (2024), orchestrator-workers pattern",

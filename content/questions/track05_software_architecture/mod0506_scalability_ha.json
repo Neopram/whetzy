@@ -9,22 +9,25 @@
       "question_en": "What is the difference between data replication and partitioning (sharding)?",
       "options_es": [
         "Son lo mismo",
-        "La replicación mantiene copias de los MISMOS datos en varios nodos (redundancia); el sharding reparte DISTINTOS subconjuntos de los datos entre nodos (para escalar volumen)",
+        "El sharding solo sirve para copias de seguridad",
         "La replicación borra datos y el sharding los cifra",
-        "El sharding solo sirve para copias de seguridad"
+        "La replicación mantiene copias de los MISMOS datos en varios nodos (redundancia); el sharding reparte DISTINTOS subconjuntos de los datos entre nodos (para escalar volumen)"
       ],
       "options_en": [
         "They are the same",
-        "Replication keeps copies of the SAME data on several nodes (redundancy); sharding spreads DIFFERENT subsets of the data across nodes (to scale volume)",
+        "Sharding is only for backups",
         "Replication deletes data and sharding encrypts it",
-        "Sharding is only for backups"
+        "Replication keeps copies of the SAME data on several nodes (redundancy); sharding spreads DIFFERENT subsets of the data across nodes (to scale volume)"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Replicación = copiar los mismos datos en varios nodos, para tolerancia a fallos y escalar lecturas. Sharding = dividir los datos en partes distintas repartidas en nodos, para escalar volumen y escrituras. Son ortogonales y suelen combinarse: cada shard, a su vez, se replica para no perder su porción si un nodo cae.",
       "explanation_en": "Replication = copying the same data onto several nodes, for fault tolerance and to scale reads. Sharding = splitting data into distinct parts spread across nodes, to scale volume and writes. They're orthogonal and usually combined: each shard is itself replicated so its portion isn't lost if a node fails.",
       "source": "Kleppmann, M. — DDIA Cap. 5 y 6",
       "expected_time_ms": 24000,
-      "tags": ["replication", "sharding"]
+      "tags": [
+        "replication",
+        "sharding"
+      ]
     },
     {
       "id": "q050601002",
@@ -34,23 +37,27 @@
       "question_es": "En la replicación primario-réplica (leader-follower), ¿qué es el 'replication lag' (retardo de replicación)?",
       "question_en": "In leader-follower (primary-replica) replication, what is 'replication lag'?",
       "options_es": [
-        "El tiempo que tarda en arrancar el servidor",
         "El retardo entre que el primario aplica una escritura y las réplicas la reflejan; durante ese lapso una réplica puede devolver datos desactualizados",
+        "El tiempo que tarda en arrancar el servidor",
         "La latencia de red del usuario",
         "El tiempo que tarda en compilar el código"
       ],
       "options_en": [
-        "The time it takes the server to boot",
         "The delay between the primary applying a write and replicas reflecting it; during that window a replica can return stale data",
+        "The time it takes the server to boot",
         "The user's network latency",
         "The time it takes to compile the code"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "En replicación asíncrona, las réplicas van ligeramente por detrás del primario mientras propagan los cambios: ese desfase es el replication lag. Provoca consistencia eventual, y puede dar lugar a anomalías como 'leo mi propia escritura y no aparece' si la lectura va a una réplica atrasada. Se mitiga con lecturas del primario para datos críticos o técnicas de 'read-your-writes'.",
       "explanation_en": "In asynchronous replication, replicas fall slightly behind the primary while propagating changes: that gap is replication lag. It causes eventual consistency and can produce anomalies like 'I read my own write and it's not there' if the read goes to a lagging replica. It's mitigated by reading from the primary for critical data or 'read-your-writes' techniques.",
       "source": "Kleppmann, M. — DDIA Cap. 5 (replication lag)",
       "expected_time_ms": 28000,
-      "tags": ["replication", "lag", "consistency"]
+      "tags": [
+        "replication",
+        "lag",
+        "consistency"
+      ]
     },
     {
       "id": "q050601003",
@@ -59,14 +66,23 @@
       "difficulty_tier": "medium",
       "question_es": "La replicación mejora la disponibilidad y la capacidad de lectura, pero no aumenta por sí sola la capacidad de escritura, ya que (en leader-follower) todas las escrituras siguen pasando por el primario.",
       "question_en": "Replication improves availability and read capacity, but does not by itself increase write capacity, since (in leader-follower) all writes still go through the primary.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "En leader-follower, las lecturas se reparten entre réplicas (escala lecturas) y la redundancia mejora disponibilidad, pero todas las escrituras van al primario, que sigue siendo el cuello de botella de escritura. Para escalar escrituras se necesita sharding (repartir datos) o replicación multi-líder/sin líder, cada una con sus propios retos de consistencia y conflictos.",
       "explanation_en": "In leader-follower, reads are spread across replicas (scaling reads) and redundancy improves availability, but all writes go to the primary, which remains the write bottleneck. To scale writes you need sharding (splitting data) or multi-leader/leaderless replication, each with its own consistency and conflict challenges.",
       "source": "Kleppmann, M. — DDIA Cap. 5",
       "expected_time_ms": 26000,
-      "tags": ["replication", "write-scaling"]
+      "tags": [
+        "replication",
+        "write-scaling"
+      ]
     },
     {
       "id": "q050601004",
@@ -76,23 +92,27 @@
       "question_es": "¿Qué reto principal introduce la replicación multi-líder (multi-leader), donde varios nodos aceptan escrituras?",
       "question_en": "What main challenge does multi-leader replication, where several nodes accept writes, introduce?",
       "options_es": [
-        "Que no se pueden hacer lecturas",
         "La resolución de conflictos de escritura: dos líderes pueden modificar el mismo dato a la vez, y hay que decidir cómo reconciliar esas versiones divergentes",
+        "Que no se pueden hacer lecturas",
         "Que se pierde toda la disponibilidad",
         "Que solo funciona con un usuario"
       ],
       "options_en": [
-        "That reads become impossible",
         "Write-conflict resolution: two leaders may modify the same datum at once, and you must decide how to reconcile those divergent versions",
+        "That reads become impossible",
         "That all availability is lost",
         "That it only works with one user"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Con varios líderes aceptando escrituras (útil para multi-región o trabajo offline), dos pueden cambiar el mismo dato concurrentemente, creando conflictos que hay que resolver: last-write-wins (arriesga pérdida), reglas de negocio, fusión personalizada o estructuras como CRDTs. La resolución de conflictos es el problema central y más difícil del multi-líder.",
       "explanation_en": "With several leaders accepting writes (useful for multi-region or offline work), two can change the same datum concurrently, creating conflicts that must be resolved: last-write-wins (risks loss), business rules, custom merging, or structures like CRDTs. Conflict resolution is the central and hardest problem of multi-leader replication.",
       "source": "Kleppmann, M. — DDIA Cap. 5 (multi-leader conflicts)",
       "expected_time_ms": 32000,
-      "tags": ["replication", "multi-leader", "conflicts"]
+      "tags": [
+        "replication",
+        "multi-leader",
+        "conflicts"
+      ]
     },
     {
       "id": "q050601005",
@@ -101,14 +121,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un factor de replicación de 3 (tres copias de cada dato) permite que el sistema tolere la pérdida de hasta dos réplicas de ese dato sin perderlo por completo.",
       "question_en": "A replication factor of 3 (three copies of each datum) lets the system tolerate the loss of up to two replicas of that datum without losing it entirely.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Con N=3 copias, el dato sobrevive mientras al menos una réplica siga viva, es decir, tolera perder hasta 2. En sistemas de quórum se combina con parámetros de lectura/escritura (W+R>N) para garantizar consistencia: por ejemplo, N=3, W=2, R=2 asegura que lecturas y escrituras se solapan en al menos una réplica actualizada. El factor de replicación balancea durabilidad, disponibilidad y coste.",
       "explanation_en": "With N=3 copies, the datum survives as long as at least one replica remains alive, i.e. it tolerates losing up to 2. In quorum systems this combines with read/write parameters (W+R>N) to guarantee consistency: e.g. N=3, W=2, R=2 ensures reads and writes overlap on at least one up-to-date replica. The replication factor balances durability, availability, and cost.",
       "source": "Kleppmann, M. — DDIA Cap. 5 (quorums)",
       "expected_time_ms": 30000,
-      "tags": ["replication", "quorum", "replication-factor"]
+      "tags": [
+        "replication",
+        "quorum",
+        "replication-factor"
+      ]
     },
     {
       "id": "q050601006",
@@ -126,7 +156,11 @@
       "explanation_en": "'Failover' detects the primary's failure and promotes a replica to new primary to restore write service. It's delicate: it requires reliably detecting the failure (avoiding false positives), choosing the most up-to-date replica, and reconfiguring clients. A botched failover can cause 'split-brain' (two primaries) or loss of unreplicated writes.",
       "source": "Kleppmann, M. — DDIA Cap. 5 (failover)",
       "expected_time_ms": 30000,
-      "tags": ["replication", "failover", "ha"]
+      "tags": [
+        "replication",
+        "failover",
+        "ha"
+      ]
     },
     {
       "id": "q050602001",
@@ -137,22 +171,25 @@
       "question_en": "What does it mean for a system to have 'fault tolerance'?",
       "options_es": [
         "Que nunca tiene errores en el código",
-        "Que puede seguir funcionando (quizá degradado) a pesar de que algunos de sus componentes fallen",
         "Que ignora todos los errores silenciosamente",
+        "Que puede seguir funcionando (quizá degradado) a pesar de que algunos de sus componentes fallen",
         "Que solo funciona si todo está perfecto"
       ],
       "options_en": [
         "That it never has bugs in the code",
-        "That it can keep functioning (perhaps degraded) despite some of its components failing",
         "That it silently ignores all errors",
+        "That it can keep functioning (perhaps degraded) despite some of its components failing",
         "That it only works if everything is perfect"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Tolerancia a fallos es la capacidad del sistema de seguir prestando servicio (posiblemente con funcionalidad degradada) cuando fallan componentes individuales. Kleppmann distingue 'fault' (un componente se desvía de su especificación) de 'failure' (el sistema completo deja de dar servicio): el objetivo es evitar que los faults se conviertan en failures.",
       "explanation_en": "Fault tolerance is the system's ability to keep providing service (possibly with degraded functionality) when individual components fail. Kleppmann distinguishes a 'fault' (a component deviating from its spec) from a 'failure' (the whole system ceasing to provide service): the goal is to prevent faults from becoming failures.",
       "source": "Kleppmann, M. — DDIA Cap. 1 (Reliability, faults vs failures)",
       "expected_time_ms": 24000,
-      "tags": ["fault-tolerance", "reliability"]
+      "tags": [
+        "fault-tolerance",
+        "reliability"
+      ]
     },
     {
       "id": "q050602002",
@@ -161,14 +198,24 @@
       "difficulty_tier": "medium",
       "question_es": "Eliminar los puntos únicos de fallo (single points of failure) mediante redundancia es una estrategia central para lograr alta disponibilidad.",
       "question_en": "Eliminating single points of failure through redundancy is a central strategy for achieving high availability.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Un punto único de fallo (SPOF) es un componente cuyo fallo tumba todo el sistema. La alta disponibilidad se basa en identificarlos y eliminarlos con redundancia: múltiples instancias de servidores, balanceadores redundantes, réplicas de BD, varias zonas de disponibilidad. Si cualquier componente único puede detener el servicio, ahí está el eslabón débil a reforzar.",
       "explanation_en": "A single point of failure (SPOF) is a component whose failure brings down the whole system. High availability rests on identifying and eliminating them with redundancy: multiple server instances, redundant balancers, DB replicas, several availability zones. If any single component can stop the service, that's the weak link to reinforce.",
       "source": "Kleppmann / Google SRE — eliminating SPOFs",
       "expected_time_ms": 24000,
-      "tags": ["fault-tolerance", "spof", "redundancy"]
+      "tags": [
+        "fault-tolerance",
+        "spof",
+        "redundancy"
+      ]
     },
     {
       "id": "q050602003",
@@ -178,23 +225,27 @@
       "question_es": "Aproximadamente, ¿cuánto tiempo de inactividad al año permite una disponibilidad de 'tres nueves' (99.9%)?",
       "question_en": "Approximately how much downtime per year does 'three nines' (99.9%) availability allow?",
       "options_es": [
-        "Unos 8.76 horas al año",
         "Unos 5 minutos al año",
+        "Unos 8.76 horas al año",
         "Cero, es imposible que caiga",
         "Unos 36 días al año"
       ],
       "options_en": [
-        "About 8.76 hours per year",
         "About 5 minutes per year",
+        "About 8.76 hours per year",
         "Zero, it can never go down",
         "About 36 days per year"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "99.9% de 8760 horas/año = ~8.76 horas de inactividad permitida al año. Cada 'nueve' extra reduce el tiempo por ~10×: 99.99% ('cuatro nueves') ≈ 52 minutos/año, y 99.999% ('cinco nueves') ≈ 5 minutos/año. Subir de nivel es exponencialmente más caro, por eso el objetivo de disponibilidad debe fijarse según el valor de negocio, no maximizarse ciegamente.",
       "explanation_en": "99.9% of 8760 hours/year = ~8.76 hours of allowed downtime per year. Each extra 'nine' cuts the time by ~10×: 99.99% ('four nines') ≈ 52 minutes/year, and 99.999% ('five nines') ≈ 5 minutes/year. Going up a level is exponentially more expensive, so the availability target should be set by business value, not maximized blindly.",
       "source": "Google SRE Book — availability tables",
       "expected_time_ms": 28000,
-      "tags": ["fault-tolerance", "availability", "nines"]
+      "tags": [
+        "fault-tolerance",
+        "availability",
+        "nines"
+      ]
     },
     {
       "id": "q050602004",
@@ -205,22 +256,25 @@
       "question_en": "What does 'graceful degradation' in the face of a partial failure consist of?",
       "options_es": [
         "Apagar todo el sistema ante cualquier error",
-        "Seguir ofreciendo la funcionalidad esencial aunque una parte no esencial falle (p. ej. mostrar el catálogo sin recomendaciones si el servicio de recomendaciones cae)",
+        "Ocultar el error y devolver datos falsos",
         "Borrar los datos para liberar recursos",
-        "Ocultar el error y devolver datos falsos"
+        "Seguir ofreciendo la funcionalidad esencial aunque una parte no esencial falle (p. ej. mostrar el catálogo sin recomendaciones si el servicio de recomendaciones cae)"
       ],
       "options_en": [
         "Shutting down the entire system on any error",
-        "Keeping essential functionality available even if a non-essential part fails (e.g. showing the catalog without recommendations if the recommendation service is down)",
+        "Hiding the error and returning fake data",
         "Deleting data to free resources",
-        "Hiding the error and returning fake data"
+        "Keeping essential functionality available even if a non-essential part fails (e.g. showing the catalog without recommendations if the recommendation service is down)"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La degradación elegante prioriza mantener lo esencial funcionando aunque se pierdan características secundarias: si el servicio de recomendaciones falla, la tienda sigue vendiendo mostrando el catálogo sin recomendaciones, en vez de caerse entera. Requiere diseñar dependencias como 'opcionales' donde sea posible y definir fallbacks, mejorando la resiliencia percibida por el usuario.",
       "explanation_en": "Graceful degradation prioritizes keeping the essentials working even if secondary features are lost: if the recommendation service fails, the store keeps selling by showing the catalog without recommendations, instead of crashing entirely. It requires designing dependencies as 'optional' where possible and defining fallbacks, improving the resilience perceived by the user.",
       "source": "Nygard, M. — Release It! (graceful degradation)",
       "expected_time_ms": 30000,
-      "tags": ["fault-tolerance", "graceful-degradation"]
+      "tags": [
+        "fault-tolerance",
+        "graceful-degradation"
+      ]
     },
     {
       "id": "q050602005",
@@ -229,14 +283,23 @@
       "difficulty_tier": "hard",
       "question_es": "La 'ingeniería del caos' (chaos engineering), como inyectar fallos deliberadamente en producción (al estilo de Chaos Monkey), sirve para descubrir debilidades antes de que causen incidentes reales.",
       "question_en": "'Chaos engineering', like deliberately injecting failures in production (Chaos Monkey style), serves to discover weaknesses before they cause real incidents.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La ingeniería del caos prueba la resiliencia inyectando fallos controlados (apagar instancias, introducir latencia, cortar dependencias) para verificar que el sistema los tolera como se espera y descubrir suposiciones frágiles antes de que un fallo real las revele. Netflix popularizó la práctica con 'Chaos Monkey'. Se hace con hipótesis, medición y radio de impacto acotado.",
       "explanation_en": "Chaos engineering tests resilience by injecting controlled failures (killing instances, introducing latency, cutting dependencies) to verify the system tolerates them as expected and to uncover fragile assumptions before a real failure reveals them. Netflix popularized the practice with 'Chaos Monkey'. It's done with hypotheses, measurement, and a bounded blast radius.",
       "source": "Principles of Chaos Engineering / Netflix",
       "expected_time_ms": 28000,
-      "tags": ["fault-tolerance", "chaos-engineering"]
+      "tags": [
+        "fault-tolerance",
+        "chaos-engineering"
+      ]
     },
     {
       "id": "q050602006",
@@ -254,7 +317,11 @@
       "explanation_en": "The 'bulkhead' pattern isolates resources (e.g. separate connection or thread pools per dependency) so that a saturated or failed part doesn't exhaust the rest's resources. Just as a ship's watertight bulkheads prevent one leak from sinking the whole vessel, this pattern contains the failure to one compartment, preventing cascading resource exhaustion.",
       "source": "Nygard, M. — Release It! (Bulkhead)",
       "expected_time_ms": 32000,
-      "tags": ["fault-tolerance", "bulkhead", "resilience"]
+      "tags": [
+        "fault-tolerance",
+        "bulkhead",
+        "resilience"
+      ]
     },
     {
       "id": "q050603001",
@@ -264,23 +331,26 @@
       "question_es": "¿Qué hace el patrón 'circuit breaker' (cortacircuitos)?",
       "question_en": "What does the 'circuit breaker' pattern do?",
       "options_es": [
-        "Apaga físicamente el servidor",
         "Detecta cuando un servicio dependiente falla repetidamente y 'abre el circuito', cortando temporalmente las llamadas para no seguir insistiendo sobre algo caído y dar tiempo a recuperarse",
+        "Apaga físicamente el servidor",
         "Cifra las llamadas de red",
         "Acelera las peticiones exitosas"
       ],
       "options_en": [
-        "Physically shuts down the server",
         "Detects when a dependent service fails repeatedly and 'opens the circuit', temporarily cutting off calls to stop hammering something that's down and give it time to recover",
+        "Physically shuts down the server",
         "Encrypts network calls",
         "Speeds up successful requests"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El circuit breaker monitorea los fallos hacia una dependencia; si superan un umbral, 'abre' el circuito y rechaza las llamadas de inmediato (fallando rápido con un fallback) en lugar de seguir esperando timeouts. Tras un tiempo pasa a 'semiabierto' para probar si el servicio se recuperó. Evita agotar recursos esperando a un servicio caído y previene fallos en cascada.",
       "explanation_en": "The circuit breaker monitors failures toward a dependency; if they exceed a threshold, it 'opens' the circuit and rejects calls immediately (failing fast with a fallback) instead of continuing to wait on timeouts. After a while it goes 'half-open' to test whether the service recovered. It avoids exhausting resources waiting on a down service and prevents cascading failures.",
       "source": "Nygard, M. — Release It! (Circuit Breaker)",
       "expected_time_ms": 26000,
-      "tags": ["resilience", "circuit-breaker"]
+      "tags": [
+        "resilience",
+        "circuit-breaker"
+      ]
     },
     {
       "id": "q050603002",
@@ -306,7 +376,11 @@
       "explanation_en": "Closed: calls flow normally and failures are counted. Open: after exceeding the threshold, calls are rejected immediately for a while. Half-open: after that time, a few test calls are allowed through; if they succeed, it returns to closed; if they fail, it returns to open. This cycle allows recovery without hammering the dependent service.",
       "source": "Nygard, M. — Release It! / Fowler CircuitBreaker",
       "expected_time_ms": 28000,
-      "tags": ["resilience", "circuit-breaker", "states"]
+      "tags": [
+        "resilience",
+        "circuit-breaker",
+        "states"
+      ]
     },
     {
       "id": "q050603003",
@@ -315,14 +389,24 @@
       "difficulty_tier": "medium",
       "question_es": "Al reintentar una operación fallida, usar 'exponential backoff' con 'jitter' (esperas crecientes y aleatorizadas) evita que muchos clientes reintenten al unísono y saturen aún más al servicio.",
       "question_en": "When retrying a failed operation, using 'exponential backoff' with 'jitter' (growing, randomized waits) prevents many clients from retrying in unison and overwhelming the service further.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Reintentar inmediatamente y a la vez puede empeorar una sobrecarga (efecto 'thundering herd'). El backoff exponencial aumenta la espera entre reintentos (1s, 2s, 4s...) y el jitter añade aleatoriedad para desincronizar a los clientes, repartiendo los reintentos en el tiempo. Además, solo se debe reintentar operaciones idempotentes o seguras para no duplicar efectos.",
       "explanation_en": "Retrying immediately and simultaneously can worsen an overload (the 'thundering herd' effect). Exponential backoff increases the wait between retries (1s, 2s, 4s...) and jitter adds randomness to desynchronize clients, spreading retries over time. Also, you should only retry idempotent or safe operations to avoid duplicating effects.",
       "source": "AWS Architecture Blog — Exponential Backoff and Jitter",
       "expected_time_ms": 28000,
-      "tags": ["resilience", "retry", "backoff"]
+      "tags": [
+        "resilience",
+        "retry",
+        "backoff"
+      ]
     },
     {
       "id": "q050603004",
@@ -333,22 +417,25 @@
       "question_en": "What is a 'cascading failure' and how do resilience patterns help prevent it?",
       "options_es": [
         "Un fallo que solo afecta a un archivo",
-        "Cuando el fallo o la lentitud de un componente propaga la sobrecarga a otros (por reintentos y esperas), tumbándolos en secuencia; circuit breakers, bulkheads y timeouts contienen la propagación",
+        "Un fallo que se arregla solo siempre",
         "Un error de sintaxis en cascada CSS",
-        "Un fallo que se arregla solo siempre"
+        "Cuando el fallo o la lentitud de un componente propaga la sobrecarga a otros (por reintentos y esperas), tumbándolos en secuencia; circuit breakers, bulkheads y timeouts contienen la propagación"
       ],
       "options_en": [
         "A failure affecting only one file",
-        "When one component's failure or slowness propagates overload to others (via retries and waits), knocking them down in sequence; circuit breakers, bulkheads, and timeouts contain the propagation",
+        "A failure that always fixes itself",
         "A CSS cascade syntax error",
-        "A failure that always fixes itself"
+        "When one component's failure or slowness propagates overload to others (via retries and waits), knocking them down in sequence; circuit breakers, bulkheads, and timeouts contain the propagation"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Un fallo en cascada ocurre cuando un componente lento o caído hace que sus llamadores acumulen hilos/conexiones esperando (y reintentando), agotando sus recursos y cayendo también, propagando el colapso por todo el sistema. Timeouts (no esperar indefinidamente), circuit breakers (dejar de llamar a lo caído) y bulkheads (aislar recursos) cortan esta propagación en su origen.",
       "explanation_en": "A cascading failure happens when a slow or down component causes its callers to pile up threads/connections waiting (and retrying), exhausting their resources and falling too, propagating the collapse across the whole system. Timeouts (not waiting indefinitely), circuit breakers (stop calling what's down), and bulkheads (isolate resources) cut this propagation at its source.",
       "source": "Nygard, M. — Release It! / Google SRE (cascading failures)",
       "expected_time_ms": 32000,
-      "tags": ["resilience", "cascading-failure"]
+      "tags": [
+        "resilience",
+        "cascading-failure"
+      ]
     },
     {
       "id": "q050603005",
@@ -357,14 +444,23 @@
       "difficulty_tier": "hard",
       "question_es": "Establecer timeouts en las llamadas a servicios externos es esencial, porque esperar indefinidamente una respuesta puede agotar los recursos (hilos, conexiones) del que llama.",
       "question_en": "Setting timeouts on calls to external services is essential, because waiting indefinitely for a response can exhaust the caller's resources (threads, connections).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Sin timeout, una llamada a un servicio lento o colgado retiene un hilo/conexión hasta que responda (quizá nunca), y bajo carga esos recursos bloqueados se agotan, tumbando al llamador: es un vector clásico de fallo en cascada. Un timeout ajustado libera el recurso y permite fallar rápido (y aplicar fallback/reintento). 'Sin timeout' es un valor por defecto peligroso en muchas librerías.",
       "explanation_en": "Without a timeout, a call to a slow or hung service holds a thread/connection until it responds (maybe never), and under load those blocked resources exhaust, taking down the caller: it's a classic cascading-failure vector. A tuned timeout frees the resource and allows failing fast (and applying a fallback/retry). 'No timeout' is a dangerous default in many libraries.",
       "source": "Nygard, M. — Release It! (Timeouts)",
       "expected_time_ms": 28000,
-      "tags": ["resilience", "timeout"]
+      "tags": [
+        "resilience",
+        "timeout"
+      ]
     },
     {
       "id": "q050603006",
@@ -382,7 +478,10 @@
       "explanation_en": "'Rate limiting' restricts how many requests are accepted from a client in a time window (e.g. 100/minute), protecting the service from abuse, attacks, and overload, and ensuring fair capacity sharing. Common algorithms: token bucket, leaky bucket, and sliding window. It relates to 'load shedding' (dropping excess load to preserve system health).",
       "source": "Google SRE / Nygard — rate limiting & load shedding",
       "expected_time_ms": 30000,
-      "tags": ["resilience", "rate-limiting"]
+      "tags": [
+        "resilience",
+        "rate-limiting"
+      ]
     },
     {
       "id": "q050604001",
@@ -408,7 +507,10 @@
       "explanation_en": "The three classic pillars of observability are: logs (discrete events with detail), metrics (numeric values aggregated over time, like latency or error rate), and traces (a request's journey across multiple services). Combined, they let you understand what the system does internally from its external outputs, especially in distributed architectures.",
       "source": "Google SRE / OpenTelemetry docs — three pillars",
       "expected_time_ms": 24000,
-      "tags": ["observability", "pillars"]
+      "tags": [
+        "observability",
+        "pillars"
+      ]
     },
     {
       "id": "q050604002",
@@ -419,22 +521,25 @@
       "question_en": "What is the difference between 'monitoring' and 'observability'?",
       "options_es": [
         "Son exactamente lo mismo",
-        "El monitoreo vigila métricas y condiciones conocidas de antemano (alertas para fallos previstos); la observabilidad busca poder explorar y entender estados inesperados que no se anticiparon",
         "La observabilidad solo mide la CPU",
+        "El monitoreo vigila métricas y condiciones conocidas de antemano (alertas para fallos previstos); la observabilidad busca poder explorar y entender estados inesperados que no se anticiparon",
         "El monitoreo no usa métricas"
       ],
       "options_en": [
         "They are exactly the same",
-        "Monitoring watches metrics and conditions known in advance (alerts for anticipated failures); observability aims to explore and understand unexpected states that weren't anticipated",
         "Observability only measures CPU",
+        "Monitoring watches metrics and conditions known in advance (alerts for anticipated failures); observability aims to explore and understand unexpected states that weren't anticipated",
         "Monitoring doesn't use metrics"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El monitoreo responde a preguntas que sabías que ibas a hacer (dashboards y alertas sobre 'known unknowns'). La observabilidad busca dotar al sistema de suficiente instrumentación para investigar problemas nuevos e imprevistos ('unknown unknowns'), haciendo preguntas ad-hoc a los datos sin haber tenido que preverlas. Se solapan, pero la observabilidad enfatiza la capacidad de exploración.",
       "explanation_en": "Monitoring answers questions you knew you'd ask (dashboards and alerts on 'known unknowns'). Observability aims to give the system enough instrumentation to investigate new, unforeseen problems ('unknown unknowns'), asking ad-hoc questions of the data without having had to anticipate them. They overlap, but observability emphasizes the ability to explore.",
       "source": "Honeycomb / Google SRE — monitoring vs observability",
       "expected_time_ms": 28000,
-      "tags": ["observability", "monitoring"]
+      "tags": [
+        "observability",
+        "monitoring"
+      ]
     },
     {
       "id": "q050604003",
@@ -443,14 +548,24 @@
       "difficulty_tier": "medium",
       "question_es": "El trazado distribuido (distributed tracing) propaga un identificador de correlación (trace id) a través de los servicios para reconstruir el recorrido completo de una petición.",
       "question_en": "Distributed tracing propagates a correlation identifier (trace id) across services to reconstruct a request's complete journey.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "En sistemas distribuidos, una petición atraviesa muchos servicios. El trazado distribuido asigna un 'trace id' al inicio y lo propaga en cada llamada (junto a 'span ids' por operación), permitiendo unir todos los tramos y visualizar el recorrido y la latencia de cada paso. Es esencial para diagnosticar dónde se va el tiempo o dónde falla una petición en microservicios.",
       "explanation_en": "In distributed systems, a request traverses many services. Distributed tracing assigns a 'trace id' at the start and propagates it on each call (along with per-operation 'span ids'), allowing all segments to be stitched together and the journey and per-step latency to be visualized. It's essential for diagnosing where time goes or where a request fails in microservices.",
       "source": "OpenTelemetry docs — Traces / context propagation",
       "expected_time_ms": 26000,
-      "tags": ["observability", "tracing", "trace-id"]
+      "tags": [
+        "observability",
+        "tracing",
+        "trace-id"
+      ]
     },
     {
       "id": "q050604004",
@@ -476,7 +591,11 @@
       "explanation_en": "An SLO sets the reliability target measured over indicators (SLIs), e.g. 99.9% of requests under a certain latency. The error budget is 100% minus the SLO: the tolerable failure margin. It's used to balance reliability and innovation: if budget remains, the team can take risks and deploy fast; if it's exhausted, risk is frozen and stabilizing is prioritized. It turns reliability into a data-driven decision, not an opinion-driven one.",
       "source": "Google SRE Book — SLOs and Error Budgets",
       "expected_time_ms": 34000,
-      "tags": ["observability", "slo", "error-budget"]
+      "tags": [
+        "observability",
+        "slo",
+        "error-budget"
+      ]
     },
     {
       "id": "q050604005",
@@ -485,14 +604,24 @@
       "difficulty_tier": "hard",
       "question_es": "Las métricas son eficientes para tendencias agregadas y alertas, pero suelen carecer del detalle por-petición (alta cardinalidad) que a veces aportan mejor los logs estructurados o las trazas.",
       "question_en": "Metrics are efficient for aggregate trends and alerts, but usually lack the per-request detail (high cardinality) that structured logs or traces sometimes provide better.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Las métricas agregan valores (p. ej. latencia p99 por minuto), lo que es barato de almacenar y perfecto para dashboards y alertas, pero pierden el detalle individual y sufren con dimensiones de alta cardinalidad (p. ej. por user_id). Para investigar un caso concreto, los logs estructurados (con contexto) y las trazas (recorrido de esa petición) suelen ser más útiles. Por eso los tres pilares se complementan.",
       "explanation_en": "Metrics aggregate values (e.g. p99 latency per minute), which is cheap to store and perfect for dashboards and alerts, but they lose individual detail and struggle with high-cardinality dimensions (e.g. per user_id). To investigate a specific case, structured logs (with context) and traces (that request's journey) are usually more useful. That's why the three pillars complement each other.",
       "source": "Google SRE / OpenTelemetry — metrics vs logs/traces",
       "expected_time_ms": 30000,
-      "tags": ["observability", "metrics", "cardinality"]
+      "tags": [
+        "observability",
+        "metrics",
+        "cardinality"
+      ]
     },
     {
       "id": "q050604006",
@@ -510,7 +639,10 @@
       "explanation_en": "OpenTelemetry (OTel) is a standard and set of SDKs/APIs, backed by the CNCF, for instrumenting applications and emitting traces, metrics, and logs in a vendor-neutral way. By using a common API and protocol (OTLP), it avoids vendor lock-in: you can change the observability backend (Jaeger, Prometheus, commercial) without re-instrumenting the code. It has become the de-facto standard.",
       "source": "OpenTelemetry docs (opentelemetry.io) / CNCF",
       "expected_time_ms": 30000,
-      "tags": ["observability", "opentelemetry"]
+      "tags": [
+        "observability",
+        "opentelemetry"
+      ]
     }
   ]
 }

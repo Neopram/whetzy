@@ -8,18 +8,18 @@
       "question_es": "Uno de los principios centrales de una arquitectura de microservicios es que cada servicio debe:",
       "question_en": "One of the core principles of a microservices architecture is that each service should:",
       "options_es": [
-        "poseer su propio modelo de datos y ser desplegable de forma independiente de los demás servicios",
-        "compartir una única base de datos con todos los demás servicios para mantener consistencia",
         "ejecutarse siempre en el mismo proceso que los demás servicios",
+        "compartir una única base de datos con todos los demás servicios para mantener consistencia",
+        "poseer su propio modelo de datos y ser desplegable de forma independiente de los demás servicios",
         "depender de que todos los demás servicios estén disponibles para arrancar"
       ],
       "options_en": [
-        "own its own data model and be independently deployable from the other services",
-        "share a single database with all other services to maintain consistency",
         "always run in the same process as the other services",
+        "share a single database with all other services to maintain consistency",
+        "own its own data model and be independently deployable from the other services",
         "depend on every other service being available in order to start"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Los microservicios se organizan en torno a capacidades de negocio, con su propio almacenamiento de datos y ciclo de despliegue independiente, permitiendo escalar y evolucionar cada servicio por separado.",
       "explanation_en": "Microservices are organized around business capabilities, with their own data storage and independent deployment cycle, allowing each service to scale and evolve separately.",
       "expected_time_ms": 15000,
@@ -62,18 +62,18 @@
       "question_es": "¿Cuál es la principal desventaja de la comunicación síncrona (p.ej. REST/gRPC petición-respuesta) entre microservicios frente a la comunicación asíncrona vía mensajería?",
       "question_en": "What is the main drawback of synchronous communication (e.g. REST/gRPC request-response) between microservices compared to asynchronous messaging?",
       "options_es": [
-        "Acopla temporalmente a los servicios: si el servicio llamado está caído o lento, el llamador también se bloquea o falla, propagando el problema en cascada",
+        "Requiere obligatoriamente un balanceador de carga",
         "Es imposible de implementar con HTTP/2",
         "No permite pasar datos estructurados como JSON",
-        "Requiere obligatoriamente un balanceador de carga"
+        "Acopla temporalmente a los servicios: si el servicio llamado está caído o lento, el llamador también se bloquea o falla, propagando el problema en cascada"
       ],
       "options_en": [
-        "It temporally couples the services: if the called service is down or slow, the caller also blocks or fails, propagating the problem in cascade",
+        "It mandatorily requires a load balancer",
         "It's impossible to implement over HTTP/2",
         "It cannot pass structured data like JSON",
-        "It mandatorily requires a load balancer"
+        "It temporally couples the services: if the called service is down or slow, the caller also blocks or fails, propagating the problem in cascade"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "En llamadas síncronas el cliente espera la respuesta, por lo que la indisponibilidad o lentitud de un servicio se propaga directamente al llamador (y potencialmente en cascada). La mensajería asíncrona desacopla temporalmente a los servicios.",
       "explanation_en": "In synchronous calls the client waits for the response, so a service's unavailability or slowness propagates directly to the caller (and potentially cascades). Asynchronous messaging temporally decouples the services.",
       "expected_time_ms": 18000,
@@ -145,18 +145,18 @@
       "question_es": "En \"client-side service discovery\", ¿quién es responsable de consultar el registro de servicios y elegir una instancia concreta a la que llamar?",
       "question_en": "In \"client-side service discovery\", who is responsible for querying the service registry and choosing a specific instance to call?",
       "options_es": [
-        "El propio cliente (o su librería de comunicación), que consulta el registro y aplica balanceo de carga",
         "Un proxy de red externo, sin que el cliente lo sepa",
+        "El propio cliente (o su librería de comunicación), que consulta el registro y aplica balanceo de carga",
         "El sistema operativo del host",
         "La base de datos del servicio destino"
       ],
       "options_en": [
-        "The client itself (or its communication library), which queries the registry and applies load balancing",
         "An external network proxy, without the client's knowledge",
+        "The client itself (or its communication library), which queries the registry and applies load balancing",
         "The host's operating system",
         "The target service's database"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "En client-side discovery, el cliente consulta directamente el registro de servicios (p.ej. Eureka, Consul) y decide con qué instancia comunicarse, a menudo aplicando balanceo de carga en el propio cliente.",
       "explanation_en": "In client-side discovery, the client directly queries the service registry (e.g. Eureka, Consul) and decides which instance to talk to, often applying load balancing on the client itself.",
       "expected_time_ms": 15000,

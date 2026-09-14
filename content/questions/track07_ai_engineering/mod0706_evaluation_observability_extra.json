@@ -92,18 +92,18 @@
       "question_es": "¿En qué principio se basa SelfCheckGPT para detectar posibles alucinaciones sin necesitar acceso a los datos de entrenamiento del modelo?",
       "question_en": "What principle does SelfCheckGPT rely on to detect possible hallucinations without needing access to the model's training data?",
       "options_es": [
-        "Muestrea varias respuestas distintas para el mismo prompt y comprueba su consistencia entre sí: mayor inconsistencia sugiere mayor probabilidad de alucinación",
-        "Compara la respuesta contra una base de datos de hechos verificados manualmente",
         "Mide el tiempo de latencia de la respuesta del modelo",
+        "Compara la respuesta contra una base de datos de hechos verificados manualmente",
+        "Muestrea varias respuestas distintas para el mismo prompt y comprueba su consistencia entre sí: mayor inconsistencia sugiere mayor probabilidad de alucinación",
         "Requiere acceso a los logits internos del modelo durante el entrenamiento"
       ],
       "options_en": [
-        "It samples several different responses to the same prompt and checks their consistency with one another: greater inconsistency suggests a higher likelihood of hallucination",
-        "It compares the response against a manually fact-checked database",
         "It measures the latency of the model's response",
+        "It compares the response against a manually fact-checked database",
+        "It samples several different responses to the same prompt and checks their consistency with one another: greater inconsistency suggests a higher likelihood of hallucination",
         "It requires access to the model's internal logits during training"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "La idea de SelfCheckGPT es que, si un modelo realmente 'sabe' un hecho, sus muestras repetidas (con algo de aleatoriedad) tenderán a coincidir; si está alucinando, las distintas muestras tenderán a contradecirse entre sí. Esto permite estimar la probabilidad de alucinación sin necesitar una fuente externa de verdad ni acceso a los pesos del modelo.",
       "explanation_en": "The idea behind SelfCheckGPT is that if a model truly 'knows' a fact, its repeated samples (with some randomness) will tend to agree; if it is hallucinating, the different samples will tend to contradict each other. This allows estimating hallucination likelihood without needing an external ground truth or access to the model's weights.",
       "source": "Manakul et al., 'SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection' (EMNLP 2023)",

@@ -8,18 +8,18 @@
       "question_es": "En una arquitectura orientada a eventos, un \"evento\" representa típicamente:",
       "question_en": "In an event-driven architecture, an \"event\" typically represents:",
       "options_es": [
-        "un hecho inmutable que ya ocurrió en el pasado (p.ej. \"OrderPlaced\"), al que otros componentes pueden reaccionar de forma desacoplada",
-        "un comando que otro servicio debe ejecutar obligatoriamente",
         "una tabla de la base de datos compartida",
+        "un comando que otro servicio debe ejecutar obligatoriamente",
+        "un hecho inmutable que ya ocurrió en el pasado (p.ej. \"OrderPlaced\"), al que otros componentes pueden reaccionar de forma desacoplada",
         "una llamada RPC síncrona"
       ],
       "options_en": [
-        "an immutable fact that already happened in the past (e.g. \"OrderPlaced\"), which other components can react to in a decoupled way",
-        "a command that another service must mandatorily execute",
         "a shared database table",
+        "a command that another service must mandatorily execute",
+        "an immutable fact that already happened in the past (e.g. \"OrderPlaced\"), which other components can react to in a decoupled way",
         "a synchronous RPC call"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un evento describe algo que ya sucedió (hecho consumado, generalmente nombrado en pasado); los consumidores deciden de forma autónoma y desacoplada cómo reaccionar, a diferencia de un comando, que es una orden dirigida a un receptor específico.",
       "explanation_en": "An event describes something that already happened (a completed fact, usually named in the past tense); consumers autonomously and independently decide how to react, unlike a command, which is an order directed at a specific receiver.",
       "expected_time_ms": 15000,
@@ -37,18 +37,18 @@
       "question_es": "¿Qué garantiza principalmente una cola de mensajes punto a punto (point-to-point) como las colas clásicas de RabbitMQ?",
       "question_en": "What does a point-to-point message queue (like classic RabbitMQ queues) primarily guarantee?",
       "options_es": [
-        "Que cada mensaje sea consumido por UN único consumidor entre los que compiten por la cola (competing consumers)",
+        "Que no haga falta un broker intermedio",
         "Que todos los consumidores suscritos reciban una copia de cada mensaje",
         "Que los mensajes se procesen siempre en orden estrictamente global entre múltiples consumidores",
-        "Que no haga falta un broker intermedio"
+        "Que cada mensaje sea consumido por UN único consumidor entre los que compiten por la cola (competing consumers)"
       ],
       "options_en": [
-        "That each message is consumed by ONE single consumer among those competing for the queue (competing consumers)",
+        "That no intermediary broker is needed",
         "That all subscribed consumers receive a copy of each message",
         "That messages are always processed in strict global order across multiple consumers",
-        "That no intermediary broker is needed"
+        "That each message is consumed by ONE single consumer among those competing for the queue (competing consumers)"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "En el patrón punto a punto, varios consumidores compiten por los mensajes de una misma cola, pero cada mensaje se entrega y procesa por un único consumidor, lo que permite repartir la carga de trabajo.",
       "explanation_en": "In the point-to-point pattern, several consumers compete for messages from the same queue, but each message is delivered to and processed by a single consumer, allowing work to be distributed.",
       "expected_time_ms": 18000,
@@ -91,18 +91,18 @@
       "question_es": "¿En qué se diferencia el patrón publicación/suscripción (pub/sub) de una cola punto a punto?",
       "question_en": "How does the publish/subscribe (pub/sub) pattern differ from a point-to-point queue?",
       "options_es": [
-        "En pub/sub, cada mensaje publicado en un topic puede ser entregado a MÚLTIPLES suscriptores independientes, en lugar de a un único consumidor",
-        "En pub/sub no existe un broker de mensajería",
         "En pub/sub los mensajes nunca pueden persistirse",
+        "En pub/sub no existe un broker de mensajería",
+        "En pub/sub, cada mensaje publicado en un topic puede ser entregado a MÚLTIPLES suscriptores independientes, en lugar de a un único consumidor",
         "Pub/sub solo funciona con HTTP, nunca con TCP"
       ],
       "options_en": [
-        "In pub/sub, each message published to a topic can be delivered to MULTIPLE independent subscribers, instead of a single consumer",
-        "In pub/sub there is no messaging broker",
         "In pub/sub messages can never be persisted",
+        "In pub/sub there is no messaging broker",
+        "In pub/sub, each message published to a topic can be delivered to MULTIPLE independent subscribers, instead of a single consumer",
         "Pub/sub only works over HTTP, never over TCP"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "En pub/sub, los publicadores envían mensajes a un topic sin conocer a los suscriptores; cada suscriptor interesado recibe su propia copia del mensaje, a diferencia del modelo punto a punto donde los consumidores compiten por un mismo mensaje.",
       "explanation_en": "In pub/sub, publishers send messages to a topic without knowing the subscribers; each interested subscriber receives its own copy of the message, unlike the point-to-point model where consumers compete for the same message.",
       "expected_time_ms": 15000,
@@ -120,18 +120,18 @@
       "question_es": "En Event Sourcing, el estado actual de un agregado se obtiene:",
       "question_en": "In Event Sourcing, the current state of an aggregate is obtained by:",
       "options_es": [
-        "reproduciendo (replay) la secuencia completa de eventos almacenados que le han ocurrido, desde el principio (o desde el último snapshot)",
-        "leyendo directamente una fila de una tabla que representa su estado actual, sin histórico",
         "consultando una caché en memoria que nunca se persiste",
+        "leyendo directamente una fila de una tabla que representa su estado actual, sin histórico",
+        "reproduciendo (replay) la secuencia completa de eventos almacenados que le han ocurrido, desde el principio (o desde el último snapshot)",
         "promediando los valores de todos los eventos"
       ],
       "options_en": [
-        "replaying the full sequence of stored events that happened to it, from the beginning (or from the last snapshot)",
-        "reading directly a row from a table representing its current state, with no history",
         "querying an in-memory cache that is never persisted",
+        "reading directly a row from a table representing its current state, with no history",
+        "replaying the full sequence of stored events that happened to it, from the beginning (or from the last snapshot)",
         "averaging the values of all the events"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Event Sourcing persiste la secuencia inmutable de eventos como fuente de verdad; el estado actual se reconstruye reproduciendo esos eventos (opcionalmente acelerado con snapshots periódicos), en lugar de guardar directamente el estado mutable.",
       "explanation_en": "Event Sourcing persists the immutable sequence of events as the source of truth; current state is rebuilt by replaying those events (optionally sped up with periodic snapshots), instead of directly storing mutable state.",
       "expected_time_ms": 22000,

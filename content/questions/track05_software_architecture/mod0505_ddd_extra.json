@@ -8,18 +8,18 @@
       "question_es": "¿Por qué dos Bounded Contexts distintos pueden usar el mismo término (p.ej. \"Cliente\") con significados diferentes?",
       "question_en": "Why can two different Bounded Contexts use the same term (e.g. \"Customer\") with different meanings?",
       "options_es": [
-        "Porque cada Bounded Context define su propio modelo, consistente internamente, adaptado a las necesidades de ese subdominio concreto, aunque comparta nombres con otros contextos",
-        "Porque DDD prohíbe reutilizar nombres entre módulos",
         "Porque es un error de diseño que siempre debe evitarse",
+        "Porque DDD prohíbe reutilizar nombres entre módulos",
+        "Porque cada Bounded Context define su propio modelo, consistente internamente, adaptado a las necesidades de ese subdominio concreto, aunque comparta nombres con otros contextos",
         "Porque las bases de datos no permiten nombres de tabla duplicados"
       ],
       "options_en": [
-        "Because each Bounded Context defines its own internally consistent model, tailored to that specific subdomain's needs, even if it shares names with other contexts",
-        "Because DDD forbids reusing names across modules",
         "Because it's a design mistake that must always be avoided",
+        "Because DDD forbids reusing names across modules",
+        "Because each Bounded Context defines its own internally consistent model, tailored to that specific subdomain's needs, even if it shares names with other contexts",
         "Because databases don't allow duplicate table names"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un Bounded Context delimita el alcance donde un modelo (y su lenguaje ubicuo) es válido y consistente; el mismo término puede significar algo distinto en otro contexto sin que eso sea un problema, siempre que el límite esté explícito.",
       "explanation_en": "A Bounded Context delimits the scope where a model (and its ubiquitous language) is valid and consistent; the same term can mean something different in another context without being a problem, as long as the boundary is explicit.",
       "expected_time_ms": 15000,
@@ -62,18 +62,18 @@
       "question_es": "¿Qué distingue fundamentalmente a una Entidad de un Value Object en DDD?",
       "question_en": "What fundamentally distinguishes an Entity from a Value Object in DDD?",
       "options_es": [
-        "La Entidad se define por una identidad continua a lo largo del tiempo, aunque sus atributos cambien; el Value Object se define únicamente por sus atributos y es intercambiable si son iguales",
         "Las Entidades nunca pueden persistirse en base de datos",
+        "La Entidad se define por una identidad continua a lo largo del tiempo, aunque sus atributos cambien; el Value Object se define únicamente por sus atributos y es intercambiable si son iguales",
         "Los Value Objects siempre son mutables",
         "Solo las Entidades pueden tener métodos"
       ],
       "options_en": [
-        "An Entity is defined by a continuous identity over time, even as its attributes change; a Value Object is defined solely by its attributes and is interchangeable if equal",
         "Entities can never be persisted to a database",
+        "An Entity is defined by a continuous identity over time, even as its attributes change; a Value Object is defined solely by its attributes and is interchangeable if equal",
         "Value Objects are always mutable",
         "Only Entities can have methods"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Una Entidad (p.ej. un Pedido con un ID) mantiene su identidad aunque sus atributos cambien con el tiempo. Un Value Object (p.ej. una Dirección o un Dinero) no tiene identidad propia: dos instancias con los mismos atributos son intercambiables, y suelen modelarse como inmutables.",
       "explanation_en": "An Entity (e.g. an Order with an ID) keeps its identity even as its attributes change over time. A Value Object (e.g. an Address or Money) has no identity of its own: two instances with the same attributes are interchangeable, and are usually modeled as immutable.",
       "expected_time_ms": 15000,
@@ -91,18 +91,18 @@
       "question_es": "¿Cuál es el rol de la \"raíz del agregado\" (Aggregate Root) en DDD?",
       "question_en": "What is the role of the \"Aggregate Root\" in DDD?",
       "options_es": [
-        "Es la única entidad del agregado accesible desde fuera; toda referencia y modificación al agregado debe pasar por ella, garantizando sus invariantes",
-        "Es simplemente la primera entidad creada cronológicamente",
         "Es una tabla física obligatoria en la base de datos",
+        "Es simplemente la primera entidad creada cronológicamente",
+        "Es la única entidad del agregado accesible desde fuera; toda referencia y modificación al agregado debe pasar por ella, garantizando sus invariantes",
         "Es un patrón exclusivo de bases de datos NoSQL"
       ],
       "options_en": [
-        "It's the only entity of the aggregate accessible from outside; every reference and modification to the aggregate must go through it, guaranteeing its invariants",
-        "It's simply the first entity created chronologically",
         "It's a mandatory physical table in the database",
+        "It's simply the first entity created chronologically",
+        "It's the only entity of the aggregate accessible from outside; every reference and modification to the aggregate must go through it, guaranteeing its invariants",
         "It's a pattern exclusive to NoSQL databases"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "La Aggregate Root actúa como punto de entrada único al agregado: el código externo solo referencia y modifica el agregado a través de ella, lo que le permite mantener consistentes sus invariantes internos.",
       "explanation_en": "The Aggregate Root acts as the single entry point to the aggregate: external code only references and modifies the aggregate through it, which lets it keep its internal invariants consistent.",
       "expected_time_ms": 15000,

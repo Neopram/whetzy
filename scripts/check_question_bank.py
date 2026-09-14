@@ -45,6 +45,7 @@ def load() -> list[tuple[Path, dict]]:
 def main() -> int:
     items = load()
     problems: list[str] = []
+    warnings: list[str] = []
 
     def fail(path: Path, qid: str, msg: str) -> None:
         problems.append(f"{path.relative_to(ROOT).as_posix()} [{qid}] {msg}")
@@ -81,13 +82,23 @@ def main() -> int:
             fail(path, qid, f"correct_index {ci!r} out of range for {len(opts_es)} options")
 
     # --- answer position skew, per track ---
+    #
+    # true_false is measured separately below. Its two options are
+    # Verdadero/Falso, so a lopsided distribution there is not a position
+    # problem to be fixed by reordering (rendering "Falso, Verdadero" is just
+    # odd) - it means too many statements were written to be true, which needs
+    # rewriting. Mixing the two into one number hides both.
     by_track: dict[str, Counter] = defaultdict(Counter)
+    tf_track: dict[str, Counter] = defaultdict(Counter)
     for path, q in items:
         ci = q.get("correct_index")
         opts = q.get("options_es")
         if ci is None or not opts:
             continue
-        by_track[path.parent.name][ci] += 1
+        if q.get("type") == "true_false":
+            tf_track[path.parent.name][ci] += 1
+        else:
+            by_track[path.parent.name][ci] += 1
 
     for track, dist in sorted(by_track.items()):
         total = sum(dist.values())
@@ -97,8 +108,23 @@ def main() -> int:
         share = count / total
         if share > SKEW_MAX_SHARE:
             problems.append(
-                f"{track}: {share:.0%} of answers sit at position {worst} "
-                f"({count}/{total}) - guessable without knowing the material"
+                f"{track}: {share:.0%} of multi-option answers sit at position {worst} "
+                f"({count}/{total}) - guessable without knowing the material. "
+                "Run scripts/rebalance_answer_positions.py"
+            )
+
+    # --- true/false balance, reported but not failed on ---
+    tf_total = sum(sum(c.values()) for c in tf_track.values())
+    if tf_total:
+        tf_all = Counter()
+        for c in tf_track.values():
+            tf_all.update(c)
+        share_true = tf_all[0] / tf_total
+        if not 0.35 <= share_true <= 0.65:
+            warnings.append(
+                f"true/false questions are {share_true:.0%} \"true\" "
+                f"({tf_all[0]}/{tf_total}) - always answering true scores that much. "
+                "Fixing it means rewriting statements, not reordering options"
             )
 
     # --- per-skill floor ---
@@ -113,6 +139,12 @@ def main() -> int:
         total = sum(dist.values())
         spread = "/".join(str(dist[i]) for i in range(4))
         print(f"  {track:<38} {total:>5} Q   positions {spread}")
+
+    # Warnings are real findings that this tool is the wrong place to fail on:
+    # they need authoring work, not a mechanical fix, so blocking CI on them
+    # would just teach people to silence the tool.
+    for w in warnings:
+        print(f"\n  WARN  {w}")
 
     if problems:
         print(f"\n[bank] FAIL - {len(problems)} problem(s):\n")

@@ -8,18 +8,18 @@
       "question_es": "¿Qué comando de Git muestra las diferencias entre el directorio de trabajo y el área de staging (index)?",
       "question_en": "Which Git command shows the differences between the working directory and the staging area (index)?",
       "options_es": [
-        "git diff",
-        "git diff --staged",
         "git status",
+        "git diff --staged",
+        "git diff",
         "git log -p"
       ],
       "options_en": [
-        "git diff",
-        "git diff --staged",
         "git status",
+        "git diff --staged",
+        "git diff",
         "git log -p"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`git diff` sin argumentos compara el directorio de trabajo contra el índice. `git diff --staged` (o `--cached`) compara el índice contra el último commit.",
       "explanation_en": "`git diff` with no arguments compares the working directory against the index. `git diff --staged` (or `--cached`) compares the index against the last commit.",
       "expected_time_ms": 15000,
@@ -62,18 +62,18 @@
       "question_es": "¿Cuál es la principal razón para NO hacer rebase de una rama pública que otros ya han clonado?",
       "question_en": "What is the main reason NOT to rebase a public branch that others have already cloned?",
       "options_es": [
-        "Rebase reescribe el historial y cambia los hashes de commit, rompiendo el trabajo de quienes ya basaron cambios en los commits antiguos",
+        "Rebase no soporta ramas con más de 50 commits",
         "Rebase borra archivos del directorio de trabajo",
         "Rebase requiere conexión a internet",
-        "Rebase no soporta ramas con más de 50 commits"
+        "Rebase reescribe el historial y cambia los hashes de commit, rompiendo el trabajo de quienes ya basaron cambios en los commits antiguos"
       ],
       "options_en": [
-        "Rebase rewrites history and changes commit hashes, breaking the work of anyone who already based changes on the old commits",
+        "Rebase doesn't support branches with more than 50 commits",
         "Rebase deletes files from the working directory",
         "Rebase requires an internet connection",
-        "Rebase doesn't support branches with more than 50 commits"
+        "Rebase rewrites history and changes commit hashes, breaking the work of anyone who already based changes on the old commits"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Rebase reescribe commits con nuevos hashes; si otros ya tienen la rama original, sus historiales divergen del reescrito, causando duplicados y conflictos dolorosos al sincronizar. Es la 'Golden Rule of Rebasing'.",
       "explanation_en": "Rebase rewrites commits with new hashes; if others already have the original branch, their histories diverge from the rewritten one, causing duplicates and painful conflicts when syncing. This is the 'Golden Rule of Rebasing'.",
       "expected_time_ms": 22000,
@@ -91,18 +91,18 @@
       "question_es": "Durante un conflicto de merge, ¿qué marca usa Git para delimitar el inicio del bloque en conflicto proveniente de la rama actual (HEAD)?",
       "question_en": "During a merge conflict, which marker does Git use to delimit the start of the conflicting block from the current branch (HEAD)?",
       "options_es": [
-        "<<<<<<< HEAD",
         "=======",
+        "<<<<<<< HEAD",
         ">>>>>>>",
         "### CONFLICT"
       ],
       "options_en": [
-        "<<<<<<< HEAD",
         "=======",
+        "<<<<<<< HEAD",
         ">>>>>>>",
         "### CONFLICT"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Git delimita el bloque conflictivo con `<<<<<<< HEAD` (versión actual), `=======` (separador) y `>>>>>>> <rama>` (versión entrante).",
       "explanation_en": "Git delimits the conflicting block with `<<<<<<< HEAD` (current version), `=======` (separator) and `>>>>>>> <branch>` (incoming version).",
       "expected_time_ms": 15000,

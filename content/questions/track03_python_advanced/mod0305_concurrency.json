@@ -24,7 +24,11 @@
       "explanation_en": "Because of the GIL, CPython threads don't give CPU parallelism, but they do help with I/O-bound tasks: while one thread waits on network or disk, the GIL is released and another thread proceeds. For heavy computation use `multiprocessing`.",
       "source": "CPython docs 3.13 — threading",
       "expected_time_ms": 25000,
-      "tags": ["concurrency", "threading", "io-bound"]
+      "tags": [
+        "concurrency",
+        "threading",
+        "io-bound"
+      ]
     },
     {
       "id": "q030501002",
@@ -33,14 +37,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport threading\nresults = []\ndef work(n):\n    results.append(n * 2)\nts = [threading.Thread(target=work, args=(i,)) for i in range(3)]\nfor t in ts: t.start()\nfor t in ts: t.join()\nprint(sorted(results))\n```",
       "question_en": "What does the following code print?\n```python\nimport threading\nresults = []\ndef work(n):\n    results.append(n * 2)\nts = [threading.Thread(target=work, args=(i,)) for i in range(3)]\nfor t in ts: t.start()\nfor t in ts: t.join()\nprint(sorted(results))\n```",
-      "options_es": ["[0, 2, 4]", "[0, 1, 2]", "[]", "[2, 4, 6]"],
-      "options_en": ["[0, 2, 4]", "[0, 1, 2]", "[]", "[2, 4, 6]"],
-      "correct_index": 0,
+      "options_es": [
+        "[0, 1, 2]",
+        "[0, 2, 4]",
+        "[]",
+        "[2, 4, 6]"
+      ],
+      "options_en": [
+        "[0, 1, 2]",
+        "[0, 2, 4]",
+        "[]",
+        "[2, 4, 6]"
+      ],
+      "correct_index": 1,
       "explanation_es": "Se crean 3 hilos que calculan `n*2` para n = 0, 1, 2 → 0, 2, 4. `join()` espera a que todos terminen antes de imprimir. Como el orden de ejecución de los hilos no está garantizado, se usa `sorted` para un resultado determinista: `[0, 2, 4]`.",
       "explanation_en": "Three threads compute `n*2` for n = 0, 1, 2 → 0, 2, 4. `join()` waits for all to finish before printing. Since thread execution order isn't guaranteed, `sorted` is used for a deterministic result: `[0, 2, 4]`.",
       "source": "CPython docs 3.13 — threading.Thread",
       "expected_time_ms": 40000,
-      "tags": ["concurrency", "threading", "join"]
+      "tags": [
+        "concurrency",
+        "threading",
+        "join"
+      ]
     },
     {
       "id": "q030501003",
@@ -50,23 +68,27 @@
       "question_es": "¿Qué hace el método join() de un hilo?",
       "question_en": "What does a thread's join() method do?",
       "options_es": [
-        "Bloquea al hilo que llama hasta que el hilo objetivo termine",
+        "Cancela el hilo inmediatamente",
         "Une dos hilos en uno solo",
         "Inicia el hilo",
-        "Cancela el hilo inmediatamente"
+        "Bloquea al hilo que llama hasta que el hilo objetivo termine"
       ],
       "options_en": [
-        "Blocks the calling thread until the target thread finishes",
+        "Cancels the thread immediately",
         "Merges two threads into one",
         "Starts the thread",
-        "Cancels the thread immediately"
+        "Blocks the calling thread until the target thread finishes"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`t.join()` hace que el hilo actual espere hasta que `t` termine su ejecución. Es esencial para asegurar que los resultados de los hilos estén listos antes de usarlos. Sin `join`, el programa principal podría continuar (o terminar) antes de que los hilos acaben.",
       "explanation_en": "`t.join()` makes the current thread wait until `t` finishes executing. It's essential to ensure thread results are ready before using them. Without `join`, the main program could continue (or exit) before the threads complete.",
       "source": "CPython docs 3.13 — threading.Thread.join",
       "expected_time_ms": 25000,
-      "tags": ["concurrency", "threading", "join"]
+      "tags": [
+        "concurrency",
+        "threading",
+        "join"
+      ]
     },
     {
       "id": "q030501004",
@@ -75,14 +97,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un hilo marcado como daemon (daemon=True) no impide que el programa principal termine, y se cierra abruptamente al salir el proceso.",
       "question_en": "A thread marked as daemon (daemon=True) does not prevent the main program from exiting, and is killed abruptly when the process exits.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Los hilos daemon son 'de fondo': el intérprete no espera por ellos al terminar y los mata sin ejecutar su limpieza. Sirven para tareas auxiliares (monitores, heartbeats) que no deben mantener vivo el proceso. Los hilos no-daemon sí bloquean la salida hasta terminar.",
       "explanation_en": "True. Daemon threads are 'background': the interpreter doesn't wait for them on exit and kills them without running cleanup. They suit auxiliary tasks (monitors, heartbeats) that shouldn't keep the process alive. Non-daemon threads do block exit until they finish.",
       "source": "CPython docs 3.13 — threading: Daemon threads",
       "expected_time_ms": 30000,
-      "tags": ["concurrency", "threading", "daemon"]
+      "tags": [
+        "concurrency",
+        "threading",
+        "daemon"
+      ]
     },
     {
       "id": "q030501005",
@@ -92,23 +124,27 @@
       "question_es": "¿Por qué compartir estado mutable entre hilos sin sincronización es peligroso?",
       "question_en": "Why is sharing mutable state between threads without synchronization dangerous?",
       "options_es": [
-        "Puede producir condiciones de carrera: operaciones que parecen atómicas se entrelazan y corrompen el estado",
+        "Porque cada hilo tiene su propia copia de la memoria",
         "Porque los hilos no pueden acceder a variables globales",
         "Porque el GIL hace todo el código thread-safe automáticamente",
-        "Porque cada hilo tiene su propia copia de la memoria"
+        "Puede producir condiciones de carrera: operaciones que parecen atómicas se entrelazan y corrompen el estado"
       ],
       "options_en": [
-        "It can cause race conditions: seemingly atomic operations interleave and corrupt state",
+        "Because each thread has its own copy of memory",
         "Because threads can't access global variables",
         "Because the GIL makes all code thread-safe automatically",
-        "Because each thread has its own copy of memory"
+        "It can cause race conditions: seemingly atomic operations interleave and corrupt state"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Aunque el GIL serializa el bytecode, operaciones como `x += 1` no son atómicas (leen, suman y escriben en varios pasos de bytecode) y pueden entrelazarse entre hilos, perdiendo actualizaciones. Esa es una condición de carrera; por eso se necesitan locks u operaciones atómicas.",
       "explanation_en": "Even though the GIL serializes bytecode, operations like `x += 1` aren't atomic (they read, add, and write over several bytecode steps) and can interleave across threads, losing updates. That's a race condition; hence you need locks or atomic operations.",
       "source": "CPython docs 3.13 — threading: race conditions",
       "expected_time_ms": 35000,
-      "tags": ["concurrency", "threading", "race-condition"]
+      "tags": [
+        "concurrency",
+        "threading",
+        "race-condition"
+      ]
     },
     {
       "id": "q030501006",
@@ -126,7 +162,12 @@
       "explanation_en": "`t.start()` launches the thread, running its `run()` on a new OS thread. A common mistake is calling `t.run()` directly, which executes the work on the CURRENT thread (no concurrency). Always use `start()` to launch real concurrency.",
       "source": "CPython docs 3.13 — threading.Thread.start",
       "expected_time_ms": 30000,
-      "tags": ["concurrency", "threading", "start", "gotcha"]
+      "tags": [
+        "concurrency",
+        "threading",
+        "start",
+        "gotcha"
+      ]
     },
     {
       "id": "q030502001",
@@ -136,23 +177,27 @@
       "question_es": "¿Qué ventaja principal ofrece multiprocessing frente a threading en CPython?",
       "question_en": "What key advantage does multiprocessing offer over threading in CPython?",
       "options_es": [
-        "Paralelismo real de CPU: cada proceso tiene su propio intérprete y GIL",
-        "Menor uso de memoria",
         "Comunicación más rápida entre tareas",
+        "Menor uso de memoria",
+        "Paralelismo real de CPU: cada proceso tiene su propio intérprete y GIL",
         "No necesita importar nada"
       ],
       "options_en": [
-        "True CPU parallelism: each process has its own interpreter and GIL",
-        "Lower memory usage",
         "Faster communication between tasks",
+        "Lower memory usage",
+        "True CPU parallelism: each process has its own interpreter and GIL",
         "No imports needed"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`multiprocessing` crea procesos independientes, cada uno con su propio intérprete y GIL, por lo que pueden ejecutar bytecode en paralelo en varios núcleos: ideal para tareas CPU-bound. El coste es más memoria y comunicación entre procesos (que requiere serialización).",
       "explanation_en": "`multiprocessing` creates independent processes, each with its own interpreter and GIL, so they can execute bytecode in parallel across cores: ideal for CPU-bound tasks. The cost is more memory and inter-process communication (which requires serialization).",
       "source": "CPython docs 3.13 — multiprocessing",
       "expected_time_ms": 25000,
-      "tags": ["concurrency", "multiprocessing", "cpu-bound"]
+      "tags": [
+        "concurrency",
+        "multiprocessing",
+        "cpu-bound"
+      ]
     },
     {
       "id": "q030502002",
@@ -161,14 +206,25 @@
       "difficulty_tier": "medium",
       "question_es": "Los procesos creados con multiprocessing comparten el mismo espacio de memoria que el proceso padre por defecto.",
       "question_en": "Processes created with multiprocessing share the same memory space as the parent process by default.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Cada proceso tiene su PROPIO espacio de memoria aislado, a diferencia de los hilos que comparten memoria. Por eso compartir datos entre procesos requiere mecanismos explícitos (`Queue`, `Pipe`, `Value`, `shared_memory`) y los datos se serializan al pasarlos.",
       "explanation_en": "False. Each process has its OWN isolated memory space, unlike threads that share memory. That's why sharing data between processes requires explicit mechanisms (`Queue`, `Pipe`, `Value`, `shared_memory`) and the data is serialized when passed.",
       "source": "CPython docs 3.13 — multiprocessing: process memory",
       "expected_time_ms": 28000,
-      "tags": ["concurrency", "multiprocessing", "memory", "gotcha"]
+      "tags": [
+        "concurrency",
+        "multiprocessing",
+        "memory",
+        "gotcha"
+      ]
     },
     {
       "id": "q030502003",
@@ -178,23 +234,27 @@
       "question_es": "¿Por qué los datos enviados a un proceso hijo con multiprocessing deben ser 'picklables' (serializables)?",
       "question_en": "Why must data sent to a child process with multiprocessing be 'picklable' (serializable)?",
       "options_es": [
-        "Porque se serializan con pickle para cruzar la frontera entre procesos (memorias separadas)",
-        "Porque pickle es más rápido que copiar en memoria",
         "Por seguridad frente a inyección de código",
+        "Porque pickle es más rápido que copiar en memoria",
+        "Porque se serializan con pickle para cruzar la frontera entre procesos (memorias separadas)",
         "Para reducir el tamaño en disco"
       ],
       "options_en": [
-        "Because they're serialized with pickle to cross the boundary between processes (separate memories)",
-        "Because pickle is faster than copying in memory",
         "For security against code injection",
+        "Because pickle is faster than copying in memory",
+        "Because they're serialized with pickle to cross the boundary between processes (separate memories)",
         "To reduce disk size"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Como los procesos no comparten memoria, los argumentos y resultados se serializan con `pickle` para transferirse entre procesos. Por eso los objetos deben ser picklables: funciones lambda, closures o conexiones abiertas no lo son y provocan errores al pasarlos.",
       "explanation_en": "Since processes don't share memory, arguments and results are serialized with `pickle` to transfer between processes. That's why objects must be picklable: lambdas, closures, or open connections aren't, and cause errors when passed.",
       "source": "CPython docs 3.13 — multiprocessing: pickling restrictions",
       "expected_time_ms": 32000,
-      "tags": ["concurrency", "multiprocessing", "pickle"]
+      "tags": [
+        "concurrency",
+        "multiprocessing",
+        "pickle"
+      ]
     },
     {
       "id": "q030502004",
@@ -203,14 +263,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué clase de multiprocessing distribuye trabajo entre un grupo fijo de procesos worker?",
       "question_en": "Which multiprocessing class distributes work across a fixed group of worker processes?",
-      "options_es": ["Pool", "Lock", "Queue", "Event"],
-      "options_en": ["Pool", "Lock", "Queue", "Event"],
-      "correct_index": 0,
+      "options_es": [
+        "Queue",
+        "Lock",
+        "Pool",
+        "Event"
+      ],
+      "options_en": [
+        "Queue",
+        "Lock",
+        "Pool",
+        "Event"
+      ],
+      "correct_index": 2,
       "explanation_es": "`multiprocessing.Pool` gestiona un grupo de procesos worker y reparte tareas entre ellos con métodos como `map` y `apply_async`. Reutilizar procesos amortiza el coste de crearlos. `Queue` es para pasar mensajes y `Lock`/`Event` para sincronización.",
       "explanation_en": "`multiprocessing.Pool` manages a group of worker processes and distributes tasks among them with methods like `map` and `apply_async`. Reusing processes amortizes their creation cost. `Queue` is for message passing and `Lock`/`Event` for synchronization.",
       "source": "CPython docs 3.13 — multiprocessing.pool.Pool",
       "expected_time_ms": 32000,
-      "tags": ["concurrency", "multiprocessing", "pool"]
+      "tags": [
+        "concurrency",
+        "multiprocessing",
+        "pool"
+      ]
     },
     {
       "id": "q030502005",
@@ -219,14 +293,25 @@
       "difficulty_tier": "hard",
       "question_es": "En Windows y macOS (método 'spawn'), el código que lanza procesos debe protegerse con if __name__ == '__main__': para evitar recursión infinita.",
       "question_en": "On Windows and macOS ('spawn' method), the code launching processes must be guarded with if __name__ == '__main__': to avoid infinite recursion.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Con el método 'spawn' (por defecto en Windows y macOS), cada proceso hijo reimporta el módulo principal. Si el código que crea procesos no está bajo `if __name__ == '__main__':`, cada hijo volvería a lanzar procesos, causando recursión infinita. Es un requisito clásico de multiprocessing.",
       "explanation_en": "True. With the 'spawn' method (default on Windows and macOS), each child process re-imports the main module. If the process-creating code isn't under `if __name__ == '__main__':`, each child would launch processes again, causing infinite recursion. It's a classic multiprocessing requirement.",
       "source": "CPython docs 3.13 — multiprocessing: Safe importing of main module",
       "expected_time_ms": 32000,
-      "tags": ["concurrency", "multiprocessing", "spawn", "gotcha"]
+      "tags": [
+        "concurrency",
+        "multiprocessing",
+        "spawn",
+        "gotcha"
+      ]
     },
     {
       "id": "q030502006",
@@ -244,7 +329,12 @@
       "explanation_en": "`pool.map(func, items)` distributes the items across worker processes, applies `func` to each in parallel, and returns the results in order, just like the built-in `map` but run across multiple processes. It's the simplest way to parallelize a CPU-bound computation.",
       "source": "CPython docs 3.13 — multiprocessing.pool.Pool.map",
       "expected_time_ms": 30000,
-      "tags": ["concurrency", "multiprocessing", "pool", "map"]
+      "tags": [
+        "concurrency",
+        "multiprocessing",
+        "pool",
+        "map"
+      ]
     },
     {
       "id": "q030503001",
@@ -254,23 +344,27 @@
       "question_es": "¿Qué ofrece el módulo concurrent.futures?",
       "question_en": "What does the concurrent.futures module offer?",
       "options_es": [
-        "Una interfaz de alto nivel para ejecutar tareas con pools de hilos o procesos (Executor)",
-        "Un nuevo tipo de dato para fechas futuras",
         "Un planificador de tareas periódicas",
+        "Un nuevo tipo de dato para fechas futuras",
+        "Una interfaz de alto nivel para ejecutar tareas con pools de hilos o procesos (Executor)",
         "Un sistema de colas de mensajes distribuido"
       ],
       "options_en": [
-        "A high-level interface to run tasks with thread or process pools (Executor)",
-        "A new data type for future dates",
         "A scheduler for periodic tasks",
+        "A new data type for future dates",
+        "A high-level interface to run tasks with thread or process pools (Executor)",
         "A distributed message-queue system"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`concurrent.futures` abstrae la ejecución concurrente con `ThreadPoolExecutor` (hilos, para I/O) y `ProcessPoolExecutor` (procesos, para CPU) tras una misma API. `submit()` devuelve un `Future` que representa el resultado pendiente. Es más simple que gestionar hilos/procesos a mano.",
       "explanation_en": "`concurrent.futures` abstracts concurrent execution with `ThreadPoolExecutor` (threads, for I/O) and `ProcessPoolExecutor` (processes, for CPU) behind one API. `submit()` returns a `Future` representing the pending result. It's simpler than managing threads/processes by hand.",
       "source": "CPython docs 3.13 — concurrent.futures",
       "expected_time_ms": 25000,
-      "tags": ["concurrency", "futures", "executor"]
+      "tags": [
+        "concurrency",
+        "futures",
+        "executor"
+      ]
     },
     {
       "id": "q030503002",
@@ -280,23 +374,27 @@
       "question_es": "¿Qué representa un objeto Future en concurrent.futures?",
       "question_en": "What does a Future object represent in concurrent.futures?",
       "options_es": [
-        "Un resultado que aún puede no estar listo; se consulta con .result()",
-        "Una tarea que se ejecutará mañana",
         "Un hilo del sistema operativo",
+        "Una tarea que se ejecutará mañana",
+        "Un resultado que aún puede no estar listo; se consulta con .result()",
         "Una excepción capturada"
       ],
       "options_en": [
-        "A result that may not be ready yet; queried with .result()",
-        "A task to run tomorrow",
         "An OS thread",
+        "A task to run tomorrow",
+        "A result that may not be ready yet; queried with .result()",
         "A caught exception"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un `Future` es un marcador de posición para un resultado que se está computando de forma asíncrona. `future.result()` bloquea hasta que esté listo (o relanza la excepción que ocurriera). También expone `.done()`, `.cancel()` y callbacks con `add_done_callback`.",
       "explanation_en": "A `Future` is a placeholder for a result being computed asynchronously. `future.result()` blocks until it's ready (or re-raises any exception that occurred). It also exposes `.done()`, `.cancel()`, and callbacks via `add_done_callback`.",
       "source": "CPython docs 3.13 — concurrent.futures.Future",
       "expected_time_ms": 28000,
-      "tags": ["concurrency", "futures", "future"]
+      "tags": [
+        "concurrency",
+        "futures",
+        "future"
+      ]
     },
     {
       "id": "q030503003",
@@ -305,14 +403,29 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom concurrent.futures import ThreadPoolExecutor\ndef sq(x): return x * x\nwith ThreadPoolExecutor() as ex:\n    results = list(ex.map(sq, [1, 2, 3, 4]))\nprint(results)\n```",
       "question_en": "What does the following code print?\n```python\nfrom concurrent.futures import ThreadPoolExecutor\ndef sq(x): return x * x\nwith ThreadPoolExecutor() as ex:\n    results = list(ex.map(sq, [1, 2, 3, 4]))\nprint(results)\n```",
-      "options_es": ["[1, 4, 9, 16]", "[16, 9, 4, 1]", "[1, 2, 3, 4]", "10"],
-      "options_en": ["[1, 4, 9, 16]", "[16, 9, 4, 1]", "[1, 2, 3, 4]", "10"],
-      "correct_index": 0,
+      "options_es": [
+        "10",
+        "[16, 9, 4, 1]",
+        "[1, 2, 3, 4]",
+        "[1, 4, 9, 16]"
+      ],
+      "options_en": [
+        "10",
+        "[16, 9, 4, 1]",
+        "[1, 2, 3, 4]",
+        "[1, 4, 9, 16]"
+      ],
+      "correct_index": 3,
       "explanation_es": "`ex.map(sq, [1,2,3,4])` ejecuta `sq` sobre cada elemento en el pool de hilos y devuelve los resultados EN ORDEN de entrada: `[1, 4, 9, 16]`. El `with` cierra el executor limpiamente al salir, esperando a que terminen las tareas.",
       "explanation_en": "`ex.map(sq, [1,2,3,4])` runs `sq` over each item in the thread pool and returns results IN input order: `[1, 4, 9, 16]`. The `with` cleanly shuts down the executor on exit, waiting for the tasks to finish.",
       "source": "CPython docs 3.13 — concurrent.futures.Executor.map",
       "expected_time_ms": 35000,
-      "tags": ["concurrency", "futures", "executor", "map"]
+      "tags": [
+        "concurrency",
+        "futures",
+        "executor",
+        "map"
+      ]
     },
     {
       "id": "q030503004",
@@ -322,23 +435,28 @@
       "question_es": "Si tu tarea es CPU-bound (cálculo pesado), ¿qué executor de concurrent.futures deberías usar?",
       "question_en": "If your task is CPU-bound (heavy computation), which concurrent.futures executor should you use?",
       "options_es": [
-        "ProcessPoolExecutor, para saltar el GIL con procesos separados",
         "ThreadPoolExecutor, siempre es mejor",
+        "ProcessPoolExecutor, para saltar el GIL con procesos separados",
         "Cualquiera, dan el mismo rendimiento",
         "Ninguno; concurrent.futures no sirve para CPU"
       ],
       "options_en": [
-        "ProcessPoolExecutor, to bypass the GIL with separate processes",
         "ThreadPoolExecutor, it's always better",
+        "ProcessPoolExecutor, to bypass the GIL with separate processes",
         "Either, they give the same performance",
         "Neither; concurrent.futures isn't for CPU"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Para CPU-bound se usa `ProcessPoolExecutor`: al usar procesos separados evita el GIL y logra paralelismo real. `ThreadPoolExecutor` no ayudaría porque el GIL serializaría el cómputo. La misma API sirve para ambos, solo cambia el executor que eliges.",
       "explanation_en": "For CPU-bound work use `ProcessPoolExecutor`: using separate processes bypasses the GIL and achieves real parallelism. `ThreadPoolExecutor` wouldn't help because the GIL would serialize the computation. The same API serves both; you just choose the executor.",
       "source": "CPython docs 3.13 — concurrent.futures: ThreadPool vs ProcessPool",
       "expected_time_ms": 32000,
-      "tags": ["concurrency", "futures", "processpool", "cpu-bound"]
+      "tags": [
+        "concurrency",
+        "futures",
+        "processpool",
+        "cpu-bound"
+      ]
     },
     {
       "id": "q030503005",
@@ -347,14 +465,25 @@
       "difficulty_tier": "hard",
       "question_es": "Si una tarea enviada a un Executor lanza una excepción, esta se relanza cuando llamas a future.result().",
       "question_en": "If a task submitted to an Executor raises an exception, it is re-raised when you call future.result().",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. La excepción no desaparece: se captura y se guarda en el `Future`, y se relanza al llamar a `future.result()`. Por eso hay que envolver `result()` en try/except. Un error común es ignorar los futures y perder silenciosamente las excepciones de las tareas.",
       "explanation_en": "True. The exception doesn't vanish: it's captured and stored in the `Future`, then re-raised when you call `future.result()`. That's why you wrap `result()` in try/except. A common mistake is ignoring the futures and silently losing task exceptions.",
       "source": "CPython docs 3.13 — concurrent.futures.Future.result",
       "expected_time_ms": 30000,
-      "tags": ["concurrency", "futures", "exceptions", "gotcha"]
+      "tags": [
+        "concurrency",
+        "futures",
+        "exceptions",
+        "gotcha"
+      ]
     },
     {
       "id": "q030503006",
@@ -372,7 +501,11 @@
       "explanation_en": "`ex.submit(func, arg)` schedules a single call and immediately returns a `Future`. Unlike `map` (which processes an iterable in order), `submit` gives fine control: you can combine it with `concurrent.futures.as_completed` to process results as they finish.",
       "source": "CPython docs 3.13 — concurrent.futures.Executor.submit",
       "expected_time_ms": 30000,
-      "tags": ["concurrency", "futures", "submit"]
+      "tags": [
+        "concurrency",
+        "futures",
+        "submit"
+      ]
     },
     {
       "id": "q030504001",
@@ -398,7 +531,11 @@
       "explanation_en": "A race condition happens when the correct result depends on the sequence or timing with which threads/processes access shared data, which isn't guaranteed. They cause intermittent, hard-to-reproduce bugs. They're avoided with synchronization (locks) or by avoiding shared mutable state.",
       "source": "CPython docs 3.13 — threading: synchronization primitives",
       "expected_time_ms": 25000,
-      "tags": ["concurrency", "race-condition", "locks"]
+      "tags": [
+        "concurrency",
+        "race-condition",
+        "locks"
+      ]
     },
     {
       "id": "q030504002",
@@ -408,23 +545,27 @@
       "question_es": "¿Qué hace un Lock (mutex) en programación concurrente?",
       "question_en": "What does a Lock (mutex) do in concurrent programming?",
       "options_es": [
-        "Garantiza que solo un hilo a la vez ejecute la sección crítica protegida",
-        "Bloquea el acceso a archivos del disco",
         "Impide que se creen nuevos hilos",
+        "Bloquea el acceso a archivos del disco",
+        "Garantiza que solo un hilo a la vez ejecute la sección crítica protegida",
         "Cifra los datos compartidos"
       ],
       "options_en": [
-        "Ensures only one thread at a time executes the protected critical section",
-        "Locks access to disk files",
         "Prevents new threads from being created",
+        "Locks access to disk files",
+        "Ensures only one thread at a time executes the protected critical section",
         "Encrypts shared data"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un `Lock` (mutex) asegura la exclusión mutua: solo un hilo puede tener el lock a la vez, así que la sección crítica (donde se toca el estado compartido) se ejecuta sin entrelazado. Se usa idiomáticamente con `with lock:` para adquirir y liberar automáticamente.",
       "explanation_en": "A `Lock` (mutex) ensures mutual exclusion: only one thread can hold the lock at a time, so the critical section (where shared state is touched) runs without interleaving. It's used idiomatically with `with lock:` to acquire and release automatically.",
       "source": "CPython docs 3.13 — threading.Lock",
       "expected_time_ms": 28000,
-      "tags": ["concurrency", "lock", "mutex"]
+      "tags": [
+        "concurrency",
+        "lock",
+        "mutex"
+      ]
     },
     {
       "id": "q030504003",
@@ -450,7 +591,12 @@
       "explanation_en": "`with lock:` uses the context-manager protocol: it acquires the lock on entry and releases it on exit ALWAYS, even if an exception occurs. Manual `acquire()`/`release()` is prone to forgetting the release (or skipping it on an exception), causing deadlocks.",
       "source": "CPython docs 3.13 — threading.Lock as context manager",
       "expected_time_ms": 30000,
-      "tags": ["concurrency", "lock", "with", "best-practice"]
+      "tags": [
+        "concurrency",
+        "lock",
+        "with",
+        "best-practice"
+      ]
     },
     {
       "id": "q030504004",
@@ -476,7 +622,11 @@
       "explanation_en": "A deadlock occurs when thread A holds lock 1 and waits for lock 2, while thread B holds lock 2 and waits for lock 1: neither yields and both hang forever. It's prevented by always acquiring locks in the same order, or using timeouts.",
       "source": "CPython docs 3.13 — threading: deadlock avoidance",
       "expected_time_ms": 32000,
-      "tags": ["concurrency", "deadlock", "locks"]
+      "tags": [
+        "concurrency",
+        "deadlock",
+        "locks"
+      ]
     },
     {
       "id": "q030504005",
@@ -485,14 +635,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un RLock (lock reentrante) puede ser adquirido varias veces por el MISMO hilo sin bloquearse a sí mismo.",
       "question_en": "An RLock (reentrant lock) can be acquired multiple times by the SAME thread without blocking itself.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Un `RLock` permite que el hilo que ya lo posee vuelva a adquirirlo (lleva un contador), útil cuando una función con lock llama a otra que también lo necesita. Un `Lock` normal se bloquearía a sí mismo en ese caso, provocando un deadlock del propio hilo.",
       "explanation_en": "True. An `RLock` lets the thread that already holds it acquire it again (it keeps a counter), useful when a locked function calls another that also needs the lock. A plain `Lock` would block itself in that case, causing a self-deadlock.",
       "source": "CPython docs 3.13 — threading.RLock",
       "expected_time_ms": 30000,
-      "tags": ["concurrency", "rlock", "reentrant"]
+      "tags": [
+        "concurrency",
+        "rlock",
+        "reentrant"
+      ]
     },
     {
       "id": "q030504006",
@@ -510,7 +670,11 @@
       "explanation_en": "`queue.Queue` is a thread-safe FIFO queue: it handles synchronization internally, so you can `put()` and `get()` from multiple threads without manual locks. It's the recommended mechanism for the producer-consumer pattern, avoiding race conditions.",
       "source": "CPython docs 3.13 — queue.Queue",
       "expected_time_ms": 32000,
-      "tags": ["concurrency", "queue", "producer-consumer"]
+      "tags": [
+        "concurrency",
+        "queue",
+        "producer-consumer"
+      ]
     }
   ]
 }

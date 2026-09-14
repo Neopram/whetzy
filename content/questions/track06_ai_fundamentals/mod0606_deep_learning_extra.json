@@ -38,18 +38,18 @@
       "question_es": "Un perceptrón calcula `z = w·x + b`. Con `w = [0.5, -0.5]`, `x = [2, 4]` y `b = 1`, ¿cuál es el valor de z antes de aplicar la función de activación?",
       "question_en": "A perceptron computes `z = w·x + b`. With `w = [0.5, -0.5]`, `x = [2, 4]` and `b = 1`, what is the value of z before applying the activation function?",
       "options_es": [
-        "0",
-        "1",
         "2",
+        "1",
+        "0",
         "-1"
       ],
       "options_en": [
-        "0",
-        "1",
         "2",
+        "1",
+        "0",
         "-1"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`z = (0.5*2) + (-0.5*4) + 1 = 1 - 2 + 1 = 0`. El producto punto `w·x` combina las entradas ponderadas y se le suma el sesgo (bias) `b` antes de pasar por la función de activación.",
       "explanation_en": "`z = (0.5*2) + (-0.5*4) + 1 = 1 - 2 + 1 = 0`. The dot product `w·x` combines the weighted inputs, and the bias `b` is added before passing through the activation function.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.1",
@@ -67,18 +67,18 @@
       "question_es": "¿Cuál es la principal ventaja de ReLU frente a sigmoid como función de activación en redes profundas?",
       "question_en": "What is the main advantage of ReLU over sigmoid as an activation function in deep networks?",
       "options_es": [
-        "Mitiga el problema del gradiente desvanecido para entradas positivas y es más barata de calcular",
         "Siempre produce salidas entre 0 y 1, lo cual es necesario para clasificación",
+        "Mitiga el problema del gradiente desvanecido para entradas positivas y es más barata de calcular",
         "Es una función suave y diferenciable en todos sus puntos",
         "Nunca produce neuronas 'muertas' (dead neurons)"
       ],
       "options_en": [
-        "It mitigates the vanishing gradient problem for positive inputs and is cheaper to compute",
         "It always produces outputs between 0 and 1, which is required for classification",
+        "It mitigates the vanishing gradient problem for positive inputs and is cheaper to compute",
         "It is a smooth function, differentiable everywhere",
         "It never produces 'dead' neurons"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "La derivada de sigmoid se satura y tiende a 0 para valores muy positivos o negativos, dificultando el entrenamiento de redes profundas (vanishing gradient). ReLU tiene derivada constante igual a 1 para entradas positivas y es mucho más barata de computar, aunque puede sufrir el problema de 'neuronas muertas' para entradas negativas.",
       "explanation_en": "Sigmoid's derivative saturates and tends to 0 for very positive or negative values, hindering the training of deep networks (vanishing gradient). ReLU has a constant derivative of 1 for positive inputs and is much cheaper to compute, though it can suffer from the 'dead neuron' problem for negative inputs.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3.1: Rectified Linear Units",
@@ -97,18 +97,18 @@
       "question_es": "¿En qué regla matemática se basa fundamentalmente el algoritmo de backpropagation para calcular los gradientes en una red multicapa?",
       "question_en": "What mathematical rule does the backpropagation algorithm fundamentally rely on to compute gradients in a multilayer network?",
       "options_es": [
-        "La regla de la cadena del cálculo diferencial",
+        "El teorema del límite central",
         "El teorema de Bayes",
         "La descomposición en valores singulares (SVD)",
-        "El teorema del límite central"
+        "La regla de la cadena del cálculo diferencial"
       ],
       "options_en": [
-        "The chain rule of differential calculus",
+        "The central limit theorem",
         "Bayes' theorem",
         "Singular value decomposition (SVD)",
-        "The central limit theorem"
+        "The chain rule of differential calculus"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Backpropagation aplica repetidamente la regla de la cadena para propagar el gradiente del error desde la capa de salida hacia las capas anteriores, multiplicando las derivadas parciales capa por capa hasta obtener el gradiente respecto a cada peso de la red.",
       "explanation_en": "Backpropagation repeatedly applies the chain rule to propagate the error gradient from the output layer back through earlier layers, multiplying partial derivatives layer by layer to obtain the gradient with respect to every weight in the network.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5.2: Chain Rule of Calculus",

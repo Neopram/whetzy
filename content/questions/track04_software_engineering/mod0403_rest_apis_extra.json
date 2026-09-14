@@ -8,18 +8,18 @@
       "question_es": "La restricción REST de \"sistema en capas\" (layered system) permite que:",
       "question_en": "The REST \"layered system\" constraint allows:",
       "options_es": [
-        "intermediarios como proxies o gateways se inserten entre cliente y servidor sin que el cliente necesite saberlo",
         "el cliente y el servidor compartan la misma base de datos",
+        "intermediarios como proxies o gateways se inserten entre cliente y servidor sin que el cliente necesite saberlo",
         "el servidor mantenga el estado de sesión del cliente entre peticiones",
         "los mensajes deban ser binarios en vez de texto"
       ],
       "options_en": [
-        "intermediaries like proxies or gateways to be inserted between client and server without the client needing to know",
         "the client and server to share the same database",
+        "intermediaries like proxies or gateways to be inserted between client and server without the client needing to know",
         "the server to keep the client's session state between requests",
         "messages to be binary instead of text"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "La restricción de sistema en capas permite componentes intermediarios (proxies, gateways, balanceadores) sin que el cliente sepa si habla directamente con el servidor final, mejorando escalabilidad y seguridad.",
       "explanation_en": "The layered system constraint allows intermediary components (proxies, gateways, load balancers) without the client knowing whether it's talking directly to the final server, improving scalability and security.",
       "expected_time_ms": 18000,
@@ -62,18 +62,18 @@
       "question_es": "¿Qué característica distingue a PUT de PATCH según la semántica HTTP?",
       "question_en": "What characteristic distinguishes PUT from PATCH according to HTTP semantics?",
       "options_es": [
-        "PUT reemplaza el recurso completo con la representación enviada; PATCH aplica una modificación parcial",
+        "PATCH requiere autenticación y PUT no",
         "PUT es idempotente y PATCH nunca lo es",
         "PUT no puede usarse para crear recursos",
-        "PATCH requiere autenticación y PUT no"
+        "PUT reemplaza el recurso completo con la representación enviada; PATCH aplica una modificación parcial"
       ],
       "options_en": [
-        "PUT replaces the entire resource with the sent representation; PATCH applies a partial modification",
+        "PATCH requires authentication and PUT does not",
         "PUT is idempotent and PATCH never is",
         "PUT cannot be used to create resources",
-        "PATCH requires authentication and PUT does not"
+        "PUT replaces the entire resource with the sent representation; PATCH applies a partial modification"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "PUT sustituye el recurso completo por la representación del cuerpo; PATCH aplica un conjunto parcial de cambios. PUT es idempotente por definición; PATCH puede serlo o no según su implementación.",
       "explanation_en": "PUT replaces the whole resource with the body's representation; PATCH applies a partial set of changes. PUT is idempotent by definition; PATCH may or may not be depending on its implementation.",
       "expected_time_ms": 18000,
@@ -91,18 +91,18 @@
       "question_es": "Siguiendo buenas prácticas de diseño de endpoints REST, ¿cuál de las siguientes rutas es la más idiomática para obtener los pedidos de un cliente específico?",
       "question_en": "Following REST endpoint design best practices, which of the following routes is the most idiomatic for retrieving orders belonging to a specific customer?",
       "options_es": [
-        "GET /customers/{id}/orders",
-        "GET /getOrdersByCustomer?id={id}",
         "POST /orders/search",
+        "GET /getOrdersByCustomer?id={id}",
+        "GET /customers/{id}/orders",
         "GET /orders/all/customer/{id}"
       ],
       "options_en": [
-        "GET /customers/{id}/orders",
-        "GET /getOrdersByCustomer?id={id}",
         "POST /orders/search",
+        "GET /getOrdersByCustomer?id={id}",
+        "GET /customers/{id}/orders",
         "GET /orders/all/customer/{id}"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Las convenciones REST favorecen sustantivos en plural y jerarquías de recursos anidados (`/customers/{id}/orders`) en lugar de verbos en la URL, propios de RPC.",
       "explanation_en": "REST conventions favor plural nouns and nested resource hierarchies (`/customers/{id}/orders`) instead of verbs in the URL, which are typical of RPC.",
       "expected_time_ms": 15000,
@@ -120,18 +120,18 @@
       "question_es": "En la especificación OpenAPI, ¿en qué sección se definen estructuras de datos reutilizables (como esquemas de request/response) para evitar duplicación?",
       "question_en": "In the OpenAPI specification, which section defines reusable data structures (like request/response schemas) to avoid duplication?",
       "options_es": [
-        "components/schemas",
-        "paths",
         "info",
+        "paths",
+        "components/schemas",
         "servers"
       ],
       "options_en": [
-        "components/schemas",
-        "paths",
         "info",
+        "paths",
+        "components/schemas",
         "servers"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`components/schemas` (antes `definitions` en Swagger 2.0) permite declarar esquemas reutilizables que se referencian con `$ref` desde múltiples operaciones en `paths`.",
       "explanation_en": "`components/schemas` (formerly `definitions` in Swagger 2.0) lets you declare reusable schemas referenced with `$ref` from multiple operations in `paths`.",
       "expected_time_ms": 15000,

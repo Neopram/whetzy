@@ -8,18 +8,18 @@
       "question_es": "¿Cuál es la diferencia fundamental entre una imagen Docker y un contenedor?",
       "question_en": "What is the fundamental difference between a Docker image and a container?",
       "options_es": [
-        "La imagen es una plantilla inmutable de solo lectura; el contenedor es una instancia en ejecución de esa imagen, con una capa de escritura adicional",
         "Son sinónimos exactos",
+        "La imagen es una plantilla inmutable de solo lectura; el contenedor es una instancia en ejecución de esa imagen, con una capa de escritura adicional",
         "La imagen se ejecuta en el host; el contenedor solo existe en el registro",
         "El contenedor no puede detenerse una vez iniciado"
       ],
       "options_en": [
-        "The image is an immutable, read-only template; the container is a running instance of that image, with an added writable layer",
         "They are exact synonyms",
+        "The image is an immutable, read-only template; the container is a running instance of that image, with an added writable layer",
         "The image runs on the host; the container only exists in the registry",
         "The container cannot be stopped once started"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Una imagen es una plantilla estática e inmutable compuesta por capas; un contenedor es un proceso en ejecución creado a partir de esa imagen, con una capa de escritura efímera encima.",
       "explanation_en": "An image is a static, immutable template made of layers; a container is a running process created from that image, with an ephemeral writable layer on top.",
       "expected_time_ms": 15000,
@@ -62,18 +62,18 @@
       "question_es": "¿Por qué se recomienda copiar primero el archivo de dependencias (p.ej. `requirements.txt`) e instalar dependencias ANTES de copiar el resto del código fuente en un Dockerfile?",
       "question_en": "Why is it recommended to copy the dependency file (e.g. `requirements.txt`) and install dependencies BEFORE copying the rest of the source code in a Dockerfile?",
       "options_es": [
-        "Para aprovechar la cache de capas de Docker: si el código cambia pero las dependencias no, la capa de instalación se reutiliza y el build es más rápido",
         "Porque Docker no permite copiar código después de instalar paquetes",
+        "Para aprovechar la cache de capas de Docker: si el código cambia pero las dependencias no, la capa de instalación se reutiliza y el build es más rápido",
         "Para reducir el tamaño de la imagen final a la mitad siempre",
         "Porque `pip install` requiere que no exista código fuente en el contexto de build"
       ],
       "options_en": [
-        "To take advantage of Docker's layer cache: if the code changes but the dependencies don't, the install layer is reused and the build is faster",
         "Because Docker doesn't allow copying code after installing packages",
+        "To take advantage of Docker's layer cache: if the code changes but the dependencies don't, the install layer is reused and the build is faster",
         "To always cut the final image size in half",
         "Because `pip install` requires no source code to exist in the build context"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Docker cachea cada capa (instrucción) del Dockerfile; ordenar las instrucciones que cambian con menos frecuencia (dependencias) antes que las que cambian a menudo (código fuente) evita reinstalar dependencias en cada build cuando solo cambia el código.",
       "explanation_en": "Docker caches each layer (instruction) of the Dockerfile; ordering instructions that change less often (dependencies) before those that change frequently (source code) avoids reinstalling dependencies on every build when only the code changes.",
       "expected_time_ms": 18000,
@@ -91,18 +91,18 @@
       "question_es": "En un archivo `docker-compose.yml`, ¿qué hace la directiva `depends_on` respecto al orden de arranque de los servicios?",
       "question_en": "In a `docker-compose.yml` file, what does the `depends_on` directive do regarding service startup order?",
       "options_es": [
-        "Controla el orden en que se inician/detienen los contenedores, pero por defecto no espera a que el servicio dependiente esté realmente \"listo\" (solo a que arranque), salvo que se combine con `condition: service_healthy`",
+        "Fusiona los volúmenes de ambos servicios",
         "Ejecuta automáticamente las migraciones de base de datos",
         "Comparte la red del servicio host directamente",
-        "Fusiona los volúmenes de ambos servicios"
+        "Controla el orden en que se inician/detienen los contenedores, pero por defecto no espera a que el servicio dependiente esté realmente \"listo\" (solo a que arranque), salvo que se combine con `condition: service_healthy`"
       ],
       "options_en": [
-        "It controls the order in which containers start/stop, but by default doesn't wait for the dependency to actually be \"ready\" (only to start), unless combined with `condition: service_healthy`",
+        "It merges the volumes of both services",
         "It automatically runs database migrations",
         "It directly shares the host service's network",
-        "It merges the volumes of both services"
+        "It controls the order in which containers start/stop, but by default doesn't wait for the dependency to actually be \"ready\" (only to start), unless combined with `condition: service_healthy`"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`depends_on` garantiza el orden de arranque/parada, pero no espera a que la aplicación dentro del contenedor esté lista para aceptar conexiones, a menos que se use `condition: service_healthy` junto con un `healthcheck` definido en el servicio dependido.",
       "explanation_en": "`depends_on` guarantees startup/shutdown order, but doesn't wait for the application inside the container to be ready to accept connections, unless `condition: service_healthy` is used together with a `healthcheck` defined on the dependency.",
       "expected_time_ms": 18000,

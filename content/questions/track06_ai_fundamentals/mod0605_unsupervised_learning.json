@@ -9,22 +9,25 @@
       "question_en": "What is the goal of the K-Means algorithm?",
       "options_es": [
         "Predecir una etiqueta conocida para cada punto",
-        "Particionar los datos en K grupos (clusters) de forma que cada punto pertenezca al cluster cuyo centroide está más cerca, minimizando la varianza dentro de los clusters",
+        "Ordenar los datos de menor a mayor",
         "Reducir el número de features a K",
-        "Ordenar los datos de menor a mayor"
+        "Particionar los datos en K grupos (clusters) de forma que cada punto pertenezca al cluster cuyo centroide está más cerca, minimizando la varianza dentro de los clusters"
       ],
       "options_en": [
         "Predicting a known label for each point",
-        "Partitioning the data into K groups (clusters) so each point belongs to the cluster whose centroid is closest, minimizing within-cluster variance",
+        "Sorting the data from smallest to largest",
         "Reducing the number of features to K",
-        "Sorting the data from smallest to largest"
+        "Partitioning the data into K groups (clusters) so each point belongs to the cluster whose centroid is closest, minimizing within-cluster variance"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "K-Means es un método de clustering no supervisado: agrupa los datos en K clusters minimizando la inercia (suma de distancias al cuadrado de cada punto a su centroide). No usa etiquetas; descubre estructura por proximidad. Requiere fijar K de antemano.",
       "explanation_en": "K-Means is an unsupervised clustering method: it groups data into K clusters by minimizing inertia (the sum of squared distances from each point to its centroid). It uses no labels; it discovers structure by proximity. It requires setting K in advance.",
       "source": "scikit-learn User Guide — Clustering: K-Means; Géron, Hands-On ML 2e, Ch. 9",
       "expected_time_ms": 22000,
-      "tags": ["kmeans", "clustering"]
+      "tags": [
+        "kmeans",
+        "clustering"
+      ]
     },
     {
       "id": "q060501002",
@@ -35,22 +38,26 @@
       "question_en": "What are the two steps K-Means repeats iteratively until convergence?",
       "options_es": [
         "Barajar los datos y dividirlos en train/test",
-        "Asignar cada punto al centroide más cercano, y luego recalcular cada centroide como la media de los puntos asignados a él",
+        "Añadir y eliminar features",
         "Calcular la derivada y actualizar los pesos",
-        "Añadir y eliminar features"
+        "Asignar cada punto al centroide más cercano, y luego recalcular cada centroide como la media de los puntos asignados a él"
       ],
       "options_en": [
         "Shuffling the data and splitting into train/test",
-        "Assigning each point to the nearest centroid, then recomputing each centroid as the mean of the points assigned to it",
+        "Adding and removing features",
         "Computing the derivative and updating the weights",
-        "Adding and removing features"
+        "Assigning each point to the nearest centroid, then recomputing each centroid as the mean of the points assigned to it"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "K-Means alterna dos pasos (algoritmo de Lloyd): (1) asignación, cada punto va al centroide más cercano; (2) actualización, cada centroide se mueve a la media de sus puntos. Se repite hasta que las asignaciones dejan de cambiar. Este esquema minimiza la inercia pero puede converger a un óptimo local, por eso se ejecuta varias veces con inicializaciones distintas.",
       "explanation_en": "K-Means alternates two steps (Lloyd's algorithm): (1) assignment, each point goes to the nearest centroid; (2) update, each centroid moves to the mean of its points. This repeats until assignments stop changing. The scheme minimizes inertia but can converge to a local optimum, which is why it is run several times with different initializations.",
       "source": "scikit-learn User Guide — K-Means (Lloyd's algorithm); Géron, Hands-On ML 2e, Ch. 9",
       "expected_time_ms": 28000,
-      "tags": ["kmeans", "lloyd", "iteration"]
+      "tags": [
+        "kmeans",
+        "lloyd",
+        "iteration"
+      ]
     },
     {
       "id": "q060501003",
@@ -61,22 +68,26 @@
       "question_en": "What is the 'elbow method' in K-Means?",
       "options_es": [
         "Una forma de inicializar los centroides",
-        "Una heurística para elegir K: se grafica la inercia frente a distintos valores de K y se busca el 'codo' donde añadir más clusters deja de reducir sustancialmente la inercia",
+        "Una técnica de escalado de features",
         "Un método para eliminar outliers",
-        "Una técnica de escalado de features"
+        "Una heurística para elegir K: se grafica la inercia frente a distintos valores de K y se busca el 'codo' donde añadir más clusters deja de reducir sustancialmente la inercia"
       ],
       "options_en": [
         "A way to initialize the centroids",
-        "A heuristic to choose K: plot the inertia against different K values and look for the 'elbow' where adding more clusters stops substantially reducing inertia",
+        "A feature-scaling technique",
         "A method to remove outliers",
-        "A feature-scaling technique"
+        "A heuristic to choose K: plot the inertia against different K values and look for the 'elbow' where adding more clusters stops substantially reducing inertia"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La inercia siempre baja al aumentar K (con K = número de puntos sería 0), así que no se puede elegir K minimizándola sin más. El método del codo busca el punto de rendimientos decrecientes: donde la curva se 'dobla', añadir clusters ya no compensa. Es subjetivo; alternativas más formales son el coeficiente de silueta o el estadístico gap.",
       "explanation_en": "Inertia always decreases as K grows (with K = number of points it would be 0), so K cannot be chosen by simply minimizing it. The elbow method looks for the point of diminishing returns: where the curve 'bends', adding clusters no longer pays off. It is subjective; more formal alternatives are the silhouette coefficient or the gap statistic.",
       "source": "scikit-learn User Guide — Selecting the number of clusters; Géron, Hands-On ML 2e, Ch. 9",
       "expected_time_ms": 32000,
-      "tags": ["kmeans", "elbow-method", "choosing-k"]
+      "tags": [
+        "kmeans",
+        "elbow-method",
+        "choosing-k"
+      ]
     },
     {
       "id": "q060501004",
@@ -85,14 +96,25 @@
       "difficulty_tier": "hard",
       "question_es": "K-Means garantiza siempre encontrar la partición óptima global de los datos, sin importar la inicialización de los centroides.",
       "question_en": "K-Means always guarantees finding the globally optimal partition of the data, regardless of the centroid initialization.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Es falso: K-Means solo garantiza converger a un óptimo local, y el resultado depende de la inicialización de los centroides. Una mala inicialización puede dar clusters pobres. Por eso se ejecuta varias veces (`n_init`) con semillas distintas y se elige la de menor inercia, y se usa la inicialización inteligente K-Means++ para mejorar los puntos de partida.",
       "explanation_en": "False: K-Means only guarantees convergence to a local optimum, and the result depends on the centroid initialization. A poor initialization can yield poor clusters. That is why it is run several times (`n_init`) with different seeds and the lowest-inertia run is chosen, and the smart K-Means++ initialization is used to improve the starting points.",
       "source": "scikit-learn User Guide — K-Means: initialization (k-means++); Arthur & Vassilvitskii (2007)",
       "expected_time_ms": 28000,
-      "tags": ["kmeans", "local-optimum", "initialization", "gotcha"]
+      "tags": [
+        "kmeans",
+        "local-optimum",
+        "initialization",
+        "gotcha"
+      ]
     },
     {
       "id": "q060501005",
@@ -118,7 +140,11 @@
       "explanation_en": "Because it assigns points by Euclidean distance to the centroid, K-Means implicitly assumes compact, roughly spherical clusters of similar size. With crescent-shaped, elongated, or unevenly dense clusters, it fails. In those cases algorithms like DBSCAN (density-based) or spectral clustering usually work better.",
       "source": "scikit-learn User Guide — Clustering: Overview of methods and limitations",
       "expected_time_ms": 28000,
-      "tags": ["kmeans", "limitations", "cluster-shape"]
+      "tags": [
+        "kmeans",
+        "limitations",
+        "cluster-shape"
+      ]
     },
     {
       "id": "q060501006",
@@ -136,7 +162,11 @@
       "explanation_en": "A point's silhouette coefficient is `(b - a) / max(a, b)`, where `a` is the mean distance to points in its own cluster and `b` the mean distance to the nearest neighboring cluster. Near 1 means the point is well clustered; near 0 that it is on the boundary; negative that it is probably misassigned. Its average helps compare clusterings and choose K more objectively than the elbow.",
       "source": "scikit-learn User Guide — Clustering: Silhouette Coefficient; Rousseeuw (1987)",
       "expected_time_ms": 32000,
-      "tags": ["kmeans", "silhouette", "evaluation"]
+      "tags": [
+        "kmeans",
+        "silhouette",
+        "evaluation"
+      ]
     },
     {
       "id": "q060502001",
@@ -147,22 +177,26 @@
       "question_en": "What does agglomerative hierarchical clustering produce?",
       "options_es": [
         "Un único número que resume los datos",
-        "Una jerarquía de clusters (representable como un dendrograma) construida fusionando repetidamente los dos clusters más cercanos, empezando con cada punto como su propio cluster",
+        "Una lista de features importantes",
         "Una recta de regresión",
-        "Una lista de features importantes"
+        "Una jerarquía de clusters (representable como un dendrograma) construida fusionando repetidamente los dos clusters más cercanos, empezando con cada punto como su propio cluster"
       ],
       "options_en": [
         "A single number summarizing the data",
-        "A hierarchy of clusters (representable as a dendrogram) built by repeatedly merging the two closest clusters, starting with each point as its own cluster",
+        "A list of important features",
         "A regression line",
-        "A list of important features"
+        "A hierarchy of clusters (representable as a dendrogram) built by repeatedly merging the two closest clusters, starting with each point as its own cluster"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El clustering aglomerativo empieza con cada punto como un cluster y va fusionando los dos más cercanos hasta que todo queda en uno solo, generando un árbol de fusiones (dendrograma). Cortando el dendrograma a una altura dada se obtiene un número concreto de clusters. A diferencia de K-Means, no exige fijar K de antemano.",
       "explanation_en": "Agglomerative clustering starts with each point as a cluster and merges the two closest ones until everything is in a single cluster, generating a tree of merges (dendrogram). Cutting the dendrogram at a given height yields a specific number of clusters. Unlike K-Means, it does not require setting K in advance.",
       "source": "scikit-learn User Guide — Hierarchical clustering (Agglomerative)",
       "expected_time_ms": 24000,
-      "tags": ["hierarchical-clustering", "dendrogram", "agglomerative"]
+      "tags": [
+        "hierarchical-clustering",
+        "dendrogram",
+        "agglomerative"
+      ]
     },
     {
       "id": "q060502002",
@@ -172,23 +206,27 @@
       "question_es": "En un dendrograma, ¿qué representa la altura a la que se fusionan dos clusters?",
       "question_en": "In a dendrogram, what does the height at which two clusters merge represent?",
       "options_es": [
-        "El número de puntos en el cluster",
         "La distancia (disimilitud) entre los clusters que se fusionan; fusiones a mayor altura indican grupos más distintos entre sí",
+        "El número de puntos en el cluster",
         "El orden alfabético de las etiquetas",
         "La cantidad de features usadas"
       ],
       "options_en": [
-        "The number of points in the cluster",
         "The distance (dissimilarity) between the clusters being merged; higher merges indicate more dissimilar groups",
+        "The number of points in the cluster",
         "The alphabetical order of the labels",
         "The number of features used"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El eje vertical del dendrograma mide la distancia a la que ocurre cada fusión. Fusiones bajas unen puntos o grupos muy similares; fusiones altas unen grupos ya bastante distintos. Cortar el dendrograma con una línea horizontal a cierta altura define cuántos clusters se obtienen, buscando 'saltos' grandes de altura como indicio de una separación natural.",
       "explanation_en": "The dendrogram's vertical axis measures the distance at which each merge occurs. Low merges join very similar points or groups; high merges join already quite dissimilar groups. Cutting the dendrogram with a horizontal line at a certain height defines how many clusters result, looking for large height 'jumps' as a sign of a natural separation.",
       "source": "scikit-learn User Guide — Hierarchical clustering; SciPy dendrogram documentation",
       "expected_time_ms": 28000,
-      "tags": ["hierarchical-clustering", "dendrogram", "distance"]
+      "tags": [
+        "hierarchical-clustering",
+        "dendrogram",
+        "distance"
+      ]
     },
     {
       "id": "q060502003",
@@ -214,7 +252,11 @@
       "explanation_en": "Linkage defines the distance between clusters from the distances between their points. Single linkage uses the closest pair (tends to 'chain' elongated clusters); complete linkage the farthest pair (compact, small-diameter clusters); average linkage uses the mean, and Ward's minimizes the increase in within-cluster variance. The choice greatly changes the shape of the resulting clusters.",
       "source": "scikit-learn User Guide — Hierarchical clustering: Different linkage types",
       "expected_time_ms": 35000,
-      "tags": ["hierarchical-clustering", "linkage", "complete-linkage"]
+      "tags": [
+        "hierarchical-clustering",
+        "linkage",
+        "complete-linkage"
+      ]
     },
     {
       "id": "q060502004",
@@ -223,14 +265,23 @@
       "difficulty_tier": "medium",
       "question_es": "Una ventaja del clustering jerárquico frente a K-Means es que no requiere especificar el número de clusters antes de ejecutarlo.",
       "question_en": "An advantage of hierarchical clustering over K-Means is that it does not require specifying the number of clusters before running it.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El clustering jerárquico construye el árbol completo de fusiones sin necesidad de fijar K; el número de clusters se decide después, cortando el dendrograma a la altura deseada. Esto da flexibilidad para explorar distintas granularidades. Su desventaja es el coste computacional: es típicamente O(n²) o peor, lo que lo hace poco práctico para datasets muy grandes.",
       "explanation_en": "Hierarchical clustering builds the full tree of merges without needing to fix K; the number of clusters is decided afterward by cutting the dendrogram at the desired height. This gives flexibility to explore different granularities. Its drawback is computational cost: it is typically O(n²) or worse, making it impractical for very large datasets.",
       "source": "scikit-learn User Guide — Hierarchical clustering; Géron, Hands-On ML 2e, Ch. 9",
       "expected_time_ms": 26000,
-      "tags": ["hierarchical-clustering", "advantages"]
+      "tags": [
+        "hierarchical-clustering",
+        "advantages"
+      ]
     },
     {
       "id": "q060502005",
@@ -240,23 +291,26 @@
       "question_es": "¿Qué caracteriza al enlace de Ward (Ward's linkage), muy usado en la práctica?",
       "question_en": "What characterizes Ward's linkage, widely used in practice?",
       "options_es": [
-        "Fusiona siempre los clusters más grandes primero",
         "En cada paso fusiona el par de clusters cuya unión produce el menor incremento de la varianza (inercia) total dentro de los clusters, tendiendo a formar grupos de tamaño equilibrado",
+        "Fusiona siempre los clusters más grandes primero",
         "Usa exclusivamente la distancia de Manhattan",
         "No permite construir un dendrograma"
       ],
       "options_en": [
-        "It always merges the largest clusters first",
         "At each step it merges the pair of clusters whose union produces the smallest increase in total within-cluster variance (inertia), tending to form balanced-size groups",
+        "It always merges the largest clusters first",
         "It uses exclusively Manhattan distance",
         "It cannot build a dendrogram"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El método de Ward elige en cada fusión el par que menos aumenta la suma de cuadrados intra-cluster, un criterio análogo al objetivo de K-Means. Tiende a producir clusters compactos y de tamaños similares, y suele dar dendrogramas interpretables. Por su naturaleza (basada en varianza) requiere distancia euclidiana.",
       "explanation_en": "Ward's method chooses at each merge the pair that least increases the within-cluster sum of squares, a criterion analogous to K-Means' objective. It tends to produce compact, similarly sized clusters and usually yields interpretable dendrograms. By its nature (variance-based) it requires Euclidean distance.",
       "source": "scikit-learn User Guide — Hierarchical clustering: Ward; Ward (1963)",
       "expected_time_ms": 32000,
-      "tags": ["hierarchical-clustering", "ward-linkage"]
+      "tags": [
+        "hierarchical-clustering",
+        "ward-linkage"
+      ]
     },
     {
       "id": "q060502006",
@@ -274,7 +328,10 @@
       "explanation_en": "The dendrogram is a tree diagram where the leaves are the individual points and each merge is drawn at the height corresponding to the distance between the merged clusters. It lets you visualize the full hierarchical structure and decide the number of clusters by cutting it at a height; large vertical jumps suggest natural cut points.",
       "source": "scikit-learn User Guide — Plotting dendrograms; SciPy cluster.hierarchy",
       "expected_time_ms": 28000,
-      "tags": ["hierarchical-clustering", "dendrogram"]
+      "tags": [
+        "hierarchical-clustering",
+        "dendrogram"
+      ]
     },
     {
       "id": "q060503001",
@@ -285,22 +342,25 @@
       "question_en": "What is the main goal of Principal Component Analysis (PCA)?",
       "options_es": [
         "Clasificar puntos en categorías",
-        "Reducir la dimensionalidad de los datos proyectándolos sobre un número menor de nuevas variables (componentes) que conservan la mayor varianza posible",
+        "Eliminar los valores faltantes",
         "Aumentar el número de features",
-        "Eliminar los valores faltantes"
+        "Reducir la dimensionalidad de los datos proyectándolos sobre un número menor de nuevas variables (componentes) que conservan la mayor varianza posible"
       ],
       "options_en": [
         "Classifying points into categories",
-        "Reducing the dimensionality of the data by projecting it onto a smaller number of new variables (components) that retain as much variance as possible",
+        "Removing missing values",
         "Increasing the number of features",
-        "Removing missing values"
+        "Reducing the dimensionality of the data by projecting it onto a smaller number of new variables (components) that retain as much variance as possible"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "PCA encuentra nuevas direcciones (componentes principales) que son combinaciones lineales de las features originales, ordenadas por cuánta varianza capturan. Quedándose con las primeras se reduce la dimensionalidad perdiendo la mínima información posible, lo que ayuda a visualizar, comprimir y mitigar la maldición de la dimensionalidad. Es una técnica no supervisada.",
       "explanation_en": "PCA finds new directions (principal components) that are linear combinations of the original features, ordered by how much variance they capture. Keeping the first ones reduces dimensionality while losing the least possible information, which helps visualize, compress, and mitigate the curse of dimensionality. It is an unsupervised technique.",
       "source": "scikit-learn User Guide — Decomposition: PCA; Bishop, PRML, Ch. 12.1",
       "expected_time_ms": 22000,
-      "tags": ["pca", "dimensionality-reduction"]
+      "tags": [
+        "pca",
+        "dimensionality-reduction"
+      ]
     },
     {
       "id": "q060503002",
@@ -311,22 +371,26 @@
       "question_en": "What does the first principal component represent in PCA?",
       "options_es": [
         "La feature original con el nombre alfabéticamente menor",
-        "La dirección (eje) a lo largo de la cual los datos tienen la máxima varianza",
+        "La feature con más valores faltantes",
         "El punto medio de los datos",
-        "La feature con más valores faltantes"
+        "La dirección (eje) a lo largo de la cual los datos tienen la máxima varianza"
       ],
       "options_en": [
         "The original feature with the alphabetically smallest name",
-        "The direction (axis) along which the data has maximum variance",
+        "The feature with the most missing values",
         "The mean point of the data",
-        "The feature with the most missing values"
+        "The direction (axis) along which the data has maximum variance"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La primera componente principal es la dirección de máxima varianza de los datos; la segunda es la dirección de máxima varianza restante que además es ortogonal a la primera, y así sucesivamente. Cada componente es un autovector de la matriz de covarianza, y su autovalor mide la varianza que explica. Proyectar sobre las primeras componentes conserva la mayor 'información' (varianza).",
       "explanation_en": "The first principal component is the direction of maximum variance in the data; the second is the direction of maximum remaining variance that is also orthogonal to the first, and so on. Each component is an eigenvector of the covariance matrix, and its eigenvalue measures the variance it explains. Projecting onto the first components preserves the most 'information' (variance).",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 12.1: Principal Component Analysis",
       "expected_time_ms": 28000,
-      "tags": ["pca", "principal-component", "variance"]
+      "tags": [
+        "pca",
+        "principal-component",
+        "variance"
+      ]
     },
     {
       "id": "q060503003",
@@ -335,14 +399,24 @@
       "difficulty_tier": "hard",
       "question_es": "Es importante estandarizar (o al menos centrar) las features antes de aplicar PCA, porque PCA es sensible a la escala de las variables.",
       "question_en": "It is important to standardize (or at least center) the features before applying PCA, because PCA is sensitive to the scale of the variables.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "PCA busca direcciones de máxima varianza, así que una feature con valores en un rango mucho mayor (por ejemplo salario en miles) tendría una varianza enorme y dominaría las primeras componentes solo por su escala, no por su importancia real. Estandarizar (media 0, desviación 1) pone a todas las variables en pie de igualdad. PCA además siempre centra los datos (les resta la media) antes de calcular las componentes.",
       "explanation_en": "PCA seeks directions of maximum variance, so a feature with values in a much larger range (e.g. salary in thousands) would have huge variance and dominate the first components solely because of its scale, not its actual importance. Standardizing (mean 0, std 1) puts all variables on equal footing. PCA also always centers the data (subtracting the mean) before computing the components.",
       "source": "scikit-learn User Guide — PCA and scaling; Importance of Feature Scaling",
       "expected_time_ms": 28000,
-      "tags": ["pca", "scaling", "standardization"]
+      "tags": [
+        "pca",
+        "scaling",
+        "standardization"
+      ]
     },
     {
       "id": "q060503004",
@@ -352,23 +426,27 @@
       "question_es": "¿Qué mide la 'varianza explicada' (explained variance ratio) de cada componente principal?",
       "question_en": "What does the 'explained variance ratio' of each principal component measure?",
       "options_es": [
-        "El error de clasificación del modelo",
         "La fracción de la varianza total de los datos que captura esa componente; sumando las de las componentes retenidas se sabe cuánta información se conserva tras la reducción",
+        "El error de clasificación del modelo",
         "El número de puntos proyectados sobre esa componente",
         "La correlación entre dos features originales"
       ],
       "options_en": [
-        "The model's classification error",
         "The fraction of the data's total variance captured by that component; summing those of the retained components tells you how much information is preserved after the reduction",
+        "The model's classification error",
         "The number of points projected onto that component",
         "The correlation between two original features"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "La varianza explicada de una componente es su autovalor dividido por la suma de todos los autovalores. Permite decidir cuántas componentes retener: por ejemplo, elegir las mínimas necesarias para acumular el 95% de la varianza. Es la forma cuantitativa de balancear compresión frente a pérdida de información en PCA.",
       "explanation_en": "A component's explained variance is its eigenvalue divided by the sum of all eigenvalues. It lets you decide how many components to keep: for example, choosing the fewest needed to accumulate 95% of the variance. It is the quantitative way to balance compression against information loss in PCA.",
       "source": "scikit-learn User Guide — PCA: explained_variance_ratio_",
       "expected_time_ms": 32000,
-      "tags": ["pca", "explained-variance", "choosing-components"]
+      "tags": [
+        "pca",
+        "explained-variance",
+        "choosing-components"
+      ]
     },
     {
       "id": "q060503005",
@@ -378,23 +456,27 @@
       "question_es": "¿Cuál es una desventaja de PCA en cuanto a la interpretabilidad de los resultados?",
       "question_en": "What is a disadvantage of PCA regarding the interpretability of the results?",
       "options_es": [
-        "PCA elimina siempre la mitad de los datos",
         "Las componentes principales son combinaciones lineales de todas las features originales, así que suelen perder el significado directo y son más difíciles de interpretar que las variables originales",
+        "PCA elimina siempre la mitad de los datos",
         "PCA solo funciona con dos features",
         "PCA requiere etiquetas para funcionar"
       ],
       "options_en": [
-        "PCA always removes half the data",
         "The principal components are linear combinations of all the original features, so they usually lose direct meaning and are harder to interpret than the original variables",
+        "PCA always removes half the data",
         "PCA only works with two features",
         "PCA requires labels to work"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Cada componente principal mezcla todas las features originales con distintos pesos, por lo que 'PC1' no corresponde a una variable con significado claro (como 'edad' o 'ingreso'), sino a una combinación abstracta. Esto complica explicar el modelo a stakeholders. Es el precio de la compresión: se gana en dimensionalidad y varianza retenida, se pierde en interpretabilidad directa.",
       "explanation_en": "Each principal component mixes all original features with different weights, so 'PC1' does not correspond to a clearly meaningful variable (like 'age' or 'income') but to an abstract combination. This complicates explaining the model to stakeholders. It is the price of compression: you gain in dimensionality and retained variance, you lose in direct interpretability.",
       "source": "scikit-learn User Guide — PCA; Géron, Hands-On ML 2e, Ch. 8: Dimensionality Reduction",
       "expected_time_ms": 28000,
-      "tags": ["pca", "interpretability", "limitations"]
+      "tags": [
+        "pca",
+        "interpretability",
+        "limitations"
+      ]
     },
     {
       "id": "q060503006",
@@ -412,7 +494,11 @@
       "explanation_en": "t-SNE (t-distributed Stochastic Neighbor Embedding) is a non-linear technique that preserves local neighborhood relationships, ideal for visualizing clusters of high-dimensional data in 2D or 3D. Unlike PCA (linear and deterministic), t-SNE captures non-linear structure, but it is stochastic, slower, and its global distances and cluster sizes should not be interpreted literally. UMAP is a similar, faster modern alternative.",
       "source": "van der Maaten & Hinton, 'Visualizing Data using t-SNE', JMLR (2008); scikit-learn — Manifold learning",
       "expected_time_ms": 32000,
-      "tags": ["dimensionality-reduction", "t-sne", "visualization"]
+      "tags": [
+        "dimensionality-reduction",
+        "t-sne",
+        "visualization"
+      ]
     },
     {
       "id": "q060504001",
@@ -438,7 +524,10 @@
       "explanation_en": "Anomaly (or outlier) detection looks for the 'rare' points that do not fit the usual behavior. It is used in fraud detection, predictive maintenance, cybersecurity, and quality control. It is usually a highly imbalanced problem (few anomalies) and is often tackled in an unsupervised or semi-supervised way.",
       "source": "scikit-learn User Guide — Novelty and Outlier Detection",
       "expected_time_ms": 22000,
-      "tags": ["anomaly-detection", "outliers"]
+      "tags": [
+        "anomaly-detection",
+        "outliers"
+      ]
     },
     {
       "id": "q060504002",
@@ -464,7 +553,11 @@
       "explanation_en": "Enough labeled anomaly examples are rarely available, and future anomalies may be of types never seen before (a new fraud, an unprecedented failure). That is why many approaches model only what is 'normal' and flag as anomalous whatever departs from that model, without needing labels for the rare class. A supervised classifier trained only on known anomalies would fail on new ones.",
       "source": "scikit-learn User Guide — Outlier Detection; Chandola et al., 'Anomaly Detection: A Survey' (2009)",
       "expected_time_ms": 30000,
-      "tags": ["anomaly-detection", "unsupervised", "imbalanced"]
+      "tags": [
+        "anomaly-detection",
+        "unsupervised",
+        "imbalanced"
+      ]
     },
     {
       "id": "q060504003",
@@ -475,22 +568,25 @@
       "question_en": "What is the Isolation Forest algorithm based on to detect anomalies?",
       "options_es": [
         "En calcular la media y desviación de cada feature",
-        "En que las anomalías, al ser escasas y diferentes, se 'aíslan' con menos divisiones aleatorias que los puntos normales; los puntos que quedan aislados a poca profundidad en árboles aleatorios se marcan como anómalos",
+        "En ajustar una regresión logística",
         "En agrupar los datos con K-Means",
-        "En ajustar una regresión logística"
+        "En que las anomalías, al ser escasas y diferentes, se 'aíslan' con menos divisiones aleatorias que los puntos normales; los puntos que quedan aislados a poca profundidad en árboles aleatorios se marcan como anómalos"
       ],
       "options_en": [
         "On computing the mean and standard deviation of each feature",
-        "On the idea that anomalies, being scarce and different, are 'isolated' with fewer random splits than normal points; points isolated at shallow depth in random trees are flagged as anomalous",
+        "On fitting a logistic regression",
         "On grouping the data with K-Means",
-        "On fitting a logistic regression"
+        "On the idea that anomalies, being scarce and different, are 'isolated' with fewer random splits than normal points; points isolated at shallow depth in random trees are flagged as anomalous"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Isolation Forest construye árboles con divisiones aleatorias y mide cuántas divisiones hacen falta para aislar cada punto. Como las anomalías están en regiones poco pobladas y son distintas, tienden a separarse del resto con muy pocos cortes, quedando a poca profundidad (camino corto); ese camino corto promedio es la señal de anomalía. Es eficiente y escala bien a datos grandes y de alta dimensión.",
       "explanation_en": "Isolation Forest builds trees with random splits and measures how many splits it takes to isolate each point. Since anomalies lie in sparse regions and are different, they tend to separate from the rest with very few cuts, ending up at shallow depth (short path); that short average path is the anomaly signal. It is efficient and scales well to large, high-dimensional data.",
       "source": "Liu, Ting & Zhou, 'Isolation Forest' (2008); scikit-learn User Guide — IsolationForest",
       "expected_time_ms": 35000,
-      "tags": ["anomaly-detection", "isolation-forest"]
+      "tags": [
+        "anomaly-detection",
+        "isolation-forest"
+      ]
     },
     {
       "id": "q060504004",
@@ -499,14 +595,24 @@
       "difficulty_tier": "medium",
       "question_es": "En detección de anomalías con clases muy desbalanceadas, la exactitud (accuracy) es una métrica poco fiable para evaluar el modelo.",
       "question_en": "In anomaly detection with highly imbalanced classes, accuracy is an unreliable metric for evaluating the model.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Con, por ejemplo, un 0.1% de anomalías, un modelo que las ignore todas y prediga siempre 'normal' obtiene 99.9% de accuracy sin detectar ni una sola anomalía. La accuracy oculta el fracaso en la clase que importa. Se deben usar precisión, recall, F1 sobre la clase anómala, o el área bajo la curva Precision-Recall, que sí reflejan la capacidad real de detección.",
       "explanation_en": "With, say, 0.1% anomalies, a model that ignores them all and always predicts 'normal' gets 99.9% accuracy without detecting a single anomaly. Accuracy hides the failure on the class that matters. You should use precision, recall, F1 on the anomalous class, or the area under the Precision-Recall curve, which do reflect real detection ability.",
       "source": "scikit-learn User Guide — Metrics for imbalanced classification; Outlier Detection",
       "expected_time_ms": 26000,
-      "tags": ["anomaly-detection", "metrics", "imbalanced"]
+      "tags": [
+        "anomaly-detection",
+        "metrics",
+        "imbalanced"
+      ]
     },
     {
       "id": "q060504005",
@@ -532,7 +638,11 @@
       "explanation_en": "By the empirical rule, ~99.7% of a normal distribution lies within ±3 standard deviations of the mean, so values outside that range are statistically rare and candidate outliers. It is fast but assumes normality and uses the mean/std, which are themselves sensitive to outliers; robust alternatives use the median and the interquartile range (IQR).",
       "source": "Wasserman, All of Statistics (2004); scikit-learn — Outlier detection methods",
       "expected_time_ms": 32000,
-      "tags": ["anomaly-detection", "3-sigma", "statistics"]
+      "tags": [
+        "anomaly-detection",
+        "3-sigma",
+        "statistics"
+      ]
     },
     {
       "id": "q060504006",
@@ -550,7 +660,11 @@
       "explanation_en": "A false positive is a normal observation classified as an anomaly (a false alarm). In anomaly detection you must balance false positives against false negatives (real anomalies missed): a very sensitive threshold reduces false negatives but triggers many false positives, overwhelming analysts with useless alarms. The optimal point depends on the relative cost of each error type.",
       "source": "scikit-learn User Guide — Outlier Detection; classification error types",
       "expected_time_ms": 28000,
-      "tags": ["anomaly-detection", "false-positive", "errors"]
+      "tags": [
+        "anomaly-detection",
+        "false-positive",
+        "errors"
+      ]
     }
   ]
 }

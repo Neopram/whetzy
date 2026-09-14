@@ -9,22 +9,26 @@
       "question_en": "Why is a NumPy array usually much faster than a Python list for numerical operations?",
       "options_es": [
         "Porque NumPy usa varios hilos de CPU automáticamente para cada operación",
-        "Porque almacena datos homogéneos en memoria contigua y ejecuta operaciones vectorizadas en bucles compilados en C, evitando el overhead del intérprete",
         "Porque comprime los datos para que ocupen menos espacio",
+        "Porque almacena datos homogéneos en memoria contigua y ejecuta operaciones vectorizadas en bucles compilados en C, evitando el overhead del intérprete",
         "Porque las listas de Python no pueden contener números"
       ],
       "options_en": [
         "Because NumPy automatically uses multiple CPU threads for every operation",
-        "Because it stores homogeneous data in contiguous memory and runs vectorized operations in compiled C loops, avoiding interpreter overhead",
         "Because it compresses the data so it takes less space",
+        "Because it stores homogeneous data in contiguous memory and runs vectorized operations in compiled C loops, avoiding interpreter overhead",
         "Because Python lists cannot contain numbers"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un ndarray guarda elementos del mismo tipo (dtype) en un bloque de memoria contiguo, lo que permite recorrerlos con bucles en C altamente optimizados y usar instrucciones SIMD. Una lista de Python guarda punteros a objetos dispersos, y cada operación pasa por el intérprete. NumPy no paraleliza en hilos por defecto: la ganancia viene de la vectorización, no del multihilo.",
       "explanation_en": "An ndarray stores same-typed elements (dtype) in a contiguous memory block, allowing highly optimized C loops and SIMD instructions. A Python list stores pointers to scattered objects, and each operation goes through the interpreter. NumPy does not thread by default: the gain comes from vectorization, not multithreading.",
       "source": "Harris et al., 'Array programming with NumPy', Nature 585 (2020); NumPy User Guide — What is NumPy?",
       "expected_time_ms": 20000,
-      "tags": ["numpy", "vectorization", "performance"]
+      "tags": [
+        "numpy",
+        "vectorization",
+        "performance"
+      ]
     },
     {
       "id": "q060201002",
@@ -33,14 +37,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué imprime `import numpy as np; print(np.arange(6).reshape(2, 3).shape)`?",
       "question_en": "What does `import numpy as np; print(np.arange(6).reshape(2, 3).shape)` print?",
-      "options_es": ["(6,)", "(2, 3)", "(3, 2)", "[2, 3]"],
-      "options_en": ["(6,)", "(2, 3)", "(3, 2)", "[2, 3]"],
-      "correct_index": 1,
+      "options_es": [
+        "(6,)",
+        "(3, 2)",
+        "(2, 3)",
+        "[2, 3]"
+      ],
+      "options_en": [
+        "(6,)",
+        "(3, 2)",
+        "(2, 3)",
+        "[2, 3]"
+      ],
+      "correct_index": 2,
       "explanation_es": "`np.arange(6)` crea `[0, 1, 2, 3, 4, 5]`, y `.reshape(2, 3)` lo reorganiza en 2 filas y 3 columnas. El atributo `.shape` devuelve una tupla `(filas, columnas) = (2, 3)`. Es una tupla, no una lista.",
       "explanation_en": "`np.arange(6)` builds `[0, 1, 2, 3, 4, 5]`, and `.reshape(2, 3)` rearranges it into 2 rows and 3 columns. The `.shape` attribute returns a tuple `(rows, columns) = (2, 3)`. It is a tuple, not a list.",
       "source": "NumPy User Guide — The N-dimensional array (ndarray); numpy.reshape reference",
       "expected_time_ms": 22000,
-      "tags": ["numpy", "reshape", "shape"]
+      "tags": [
+        "numpy",
+        "reshape",
+        "shape"
+      ]
     },
     {
       "id": "q060201003",
@@ -51,22 +69,25 @@
       "question_en": "What is 'broadcasting' in NumPy?",
       "options_es": [
         "Enviar un array a través de la red a otros procesos",
-        "Un conjunto de reglas que permite operar entre arrays de formas distintas estirando (virtualmente) la dimensión de tamaño 1 para que coincidan, sin copiar los datos",
         "Convertir automáticamente todos los arrays a tipo float64",
+        "Un conjunto de reglas que permite operar entre arrays de formas distintas estirando (virtualmente) la dimensión de tamaño 1 para que coincidan, sin copiar los datos",
         "Duplicar físicamente el array más pequeño en memoria antes de operar"
       ],
       "options_en": [
         "Sending an array over the network to other processes",
-        "A set of rules that lets you operate on arrays of different shapes by (virtually) stretching the size-1 dimension so they match, without copying the data",
         "Automatically converting all arrays to float64",
+        "A set of rules that lets you operate on arrays of different shapes by (virtually) stretching the size-1 dimension so they match, without copying the data",
         "Physically duplicating the smaller array in memory before operating"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El broadcasting compara las formas dimensión por dimensión de derecha a izquierda; dos dimensiones son compatibles si son iguales o si una de ellas es 1. La dimensión de tamaño 1 se 'estira' conceptualmente sin materializar copias, por eso `np.array([1,2,3]) + 10` suma 10 a cada elemento eficientemente.",
       "explanation_en": "Broadcasting compares shapes dimension by dimension from right to left; two dimensions are compatible if they are equal or if one of them is 1. The size-1 dimension is conceptually 'stretched' without materializing copies, which is why `np.array([1,2,3]) + 10` efficiently adds 10 to each element.",
       "source": "NumPy User Guide — Broadcasting",
       "expected_time_ms": 28000,
-      "tags": ["numpy", "broadcasting"]
+      "tags": [
+        "numpy",
+        "broadcasting"
+      ]
     },
     {
       "id": "q060201004",
@@ -75,14 +96,28 @@
       "difficulty_tier": "medium",
       "question_es": "Dado `a = np.array([[1, 2], [3, 4]])`, ¿qué devuelve `a.sum(axis=0)`?",
       "question_en": "Given `a = np.array([[1, 2], [3, 4]])`, what does `a.sum(axis=0)` return?",
-      "options_es": ["array([3, 7])", "array([4, 6])", "10", "array([1, 2, 3, 4])"],
-      "options_en": ["array([3, 7])", "array([4, 6])", "10", "array([1, 2, 3, 4])"],
-      "correct_index": 1,
+      "options_es": [
+        "array([3, 7])",
+        "10",
+        "array([4, 6])",
+        "array([1, 2, 3, 4])"
+      ],
+      "options_en": [
+        "array([3, 7])",
+        "10",
+        "array([4, 6])",
+        "array([1, 2, 3, 4])"
+      ],
+      "correct_index": 2,
       "explanation_es": "`axis=0` colapsa las filas, sumando a lo largo del eje vertical (columna por columna): columna 0 = 1+3 = 4, columna 1 = 2+4 = 6, dando `[4, 6]`. Un error común es pensar que `axis=0` suma cada fila; eso sería `axis=1`, que daría `[3, 7]`.",
       "explanation_en": "`axis=0` collapses the rows, summing along the vertical axis (column by column): column 0 = 1+3 = 4, column 1 = 2+4 = 6, giving `[4, 6]`. A common mistake is thinking `axis=0` sums each row; that would be `axis=1`, yielding `[3, 7]`.",
       "source": "NumPy User Guide — numpy.sum reference; axis conventions",
       "expected_time_ms": 30000,
-      "tags": ["numpy", "axis", "aggregation"]
+      "tags": [
+        "numpy",
+        "axis",
+        "aggregation"
+      ]
     },
     {
       "id": "q060201005",
@@ -91,14 +126,25 @@
       "difficulty_tier": "hard",
       "question_es": "Un slice básico de un array de NumPy (por ejemplo `b = a[1:3]`) devuelve una vista (view) de los datos originales, de modo que modificar `b` también modifica `a`.",
       "question_en": "A basic slice of a NumPy array (e.g. `b = a[1:3]`) returns a view of the original data, so modifying `b` also modifies `a`.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El slicing básico de NumPy NO copia los datos: devuelve una vista que comparte el mismo buffer de memoria, así que escribir en `b[0]` cambia el elemento correspondiente de `a`. Esto difiere de las listas de Python, donde el slicing sí crea una copia superficial. Para obtener una copia independiente en NumPy hay que usar `a[1:3].copy()`. La indexación 'fancy' (con listas de índices o máscaras booleanas), en cambio, sí devuelve copias.",
       "explanation_en": "Basic NumPy slicing does NOT copy the data: it returns a view sharing the same memory buffer, so writing to `b[0]` changes the corresponding element of `a`. This differs from Python lists, where slicing creates a shallow copy. To get an independent copy in NumPy you must use `a[1:3].copy()`. 'Fancy' indexing (with index lists or boolean masks), by contrast, does return copies.",
       "source": "NumPy User Guide — Copies and views; Indexing on ndarrays",
       "expected_time_ms": 30000,
-      "tags": ["numpy", "views", "slicing", "gotcha"]
+      "tags": [
+        "numpy",
+        "views",
+        "slicing",
+        "gotcha"
+      ]
     },
     {
       "id": "q060201006",
@@ -116,7 +162,10 @@
       "explanation_en": "The `dtype` attribute defines how each element's bytes are interpreted and stored (integer, float, boolean, etc.) and its size in bits. Because the ndarray is homogeneous, all elements share the same `dtype`; choosing an appropriate one (e.g. `float32` instead of `float64`) can halve memory usage, which is critical when training large models.",
       "source": "NumPy User Guide — Data types (dtype)",
       "expected_time_ms": 28000,
-      "tags": ["numpy", "dtype"]
+      "tags": [
+        "numpy",
+        "dtype"
+      ]
     },
     {
       "id": "q060202001",
@@ -127,22 +176,26 @@
       "question_en": "In pandas, what is a DataFrame?",
       "options_es": [
         "Una sola columna de datos etiquetada",
-        "Una estructura de datos tabular bidimensional con filas y columnas etiquetadas, donde cada columna puede tener un tipo de dato distinto",
         "Un archivo CSV en disco",
+        "Una estructura de datos tabular bidimensional con filas y columnas etiquetadas, donde cada columna puede tener un tipo de dato distinto",
         "Una función para graficar datos"
       ],
       "options_en": [
         "A single labeled column of data",
-        "A two-dimensional tabular data structure with labeled rows and columns, where each column can have a different data type",
         "A CSV file on disk",
+        "A two-dimensional tabular data structure with labeled rows and columns, where each column can have a different data type",
         "A function for plotting data"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un DataFrame es la estructura central de pandas: una tabla 2D con un índice de filas y columnas nombradas, donde cada columna es una Serie (Series) y puede tener su propio tipo (números, texto, fechas). Una única columna etiquetada es una Series, no un DataFrame.",
       "explanation_en": "A DataFrame is pandas' central structure: a 2D table with a row index and named columns, where each column is a Series and can have its own type (numbers, text, dates). A single labeled column is a Series, not a DataFrame.",
       "source": "pandas documentation — Intro to data structures; 10 minutes to pandas",
       "expected_time_ms": 18000,
-      "tags": ["pandas", "dataframe", "series"]
+      "tags": [
+        "pandas",
+        "dataframe",
+        "series"
+      ]
     },
     {
       "id": "q060202002",
@@ -153,22 +206,27 @@
       "question_en": "What is the main difference between `.loc[]` and `.iloc[]` in pandas?",
       "options_es": [
         "`.loc[]` es más rápido; `.iloc[]` es más lento",
-        "`.loc[]` selecciona por etiquetas (nombres del índice/columnas); `.iloc[]` selecciona por posición entera (0, 1, 2, ...)",
         "`.loc[]` solo funciona con filas y `.iloc[]` solo con columnas",
+        "`.loc[]` selecciona por etiquetas (nombres del índice/columnas); `.iloc[]` selecciona por posición entera (0, 1, 2, ...)",
         "No hay ninguna diferencia, son alias del mismo método"
       ],
       "options_en": [
         "`.loc[]` is faster; `.iloc[]` is slower",
-        "`.loc[]` selects by labels (index/column names); `.iloc[]` selects by integer position (0, 1, 2, ...)",
         "`.loc[]` only works on rows and `.iloc[]` only on columns",
+        "`.loc[]` selects by labels (index/column names); `.iloc[]` selects by integer position (0, 1, 2, ...)",
         "There is no difference; they are aliases for the same method"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`.loc[]` usa las etiquetas del índice y de las columnas (por ejemplo `df.loc['2020-01', 'precio']`), mientras que `.iloc[]` usa posiciones enteras (por ejemplo `df.iloc[0, 2]`). Un detalle importante: con `.loc[]` el rango es inclusivo en ambos extremos, mientras que con `.iloc[]` (y el slicing de Python) el extremo final es exclusivo.",
       "explanation_en": "`.loc[]` uses index and column labels (e.g. `df.loc['2020-01', 'price']`), while `.iloc[]` uses integer positions (e.g. `df.iloc[0, 2]`). One important detail: with `.loc[]` the range is inclusive on both ends, whereas with `.iloc[]` (and Python slicing) the end is exclusive.",
       "source": "pandas User Guide — Indexing and selecting data (.loc / .iloc)",
       "expected_time_ms": 28000,
-      "tags": ["pandas", "loc", "iloc", "indexing"]
+      "tags": [
+        "pandas",
+        "loc",
+        "iloc",
+        "indexing"
+      ]
     },
     {
       "id": "q060202003",
@@ -194,7 +252,11 @@
       "explanation_en": "`groupby` implements split-apply-combine: it first partitions the data into groups by key (e.g. `df.groupby('city')`), then applies an operation to each group (`.mean()`, `.count()`, a custom function), and finally combines the results. Joining DataFrames is `merge`/`join`, and removing duplicates is `drop_duplicates`.",
       "source": "pandas User Guide — Group by: split-apply-combine",
       "expected_time_ms": 28000,
-      "tags": ["pandas", "groupby", "split-apply-combine"]
+      "tags": [
+        "pandas",
+        "groupby",
+        "split-apply-combine"
+      ]
     },
     {
       "id": "q060202004",
@@ -203,14 +265,28 @@
       "difficulty_tier": "hard",
       "question_es": "Dado `df = pd.DataFrame({'a': [1, 2, 3]})`, ¿qué produce `df['b'] = df['a'] * 2; print(df['b'].tolist())`?",
       "question_en": "Given `df = pd.DataFrame({'a': [1, 2, 3]})`, what does `df['b'] = df['a'] * 2; print(df['b'].tolist())` produce?",
-      "options_es": ["[1, 2, 3]", "[2, 4, 6]", "[1, 2, 3, 1, 2, 3]", "Un error, no se puede crear una columna así"],
-      "options_en": ["[1, 2, 3]", "[2, 4, 6]", "[1, 2, 3, 1, 2, 3]", "An error, you cannot create a column that way"],
-      "correct_index": 1,
+      "options_es": [
+        "[1, 2, 3]",
+        "[1, 2, 3, 1, 2, 3]",
+        "[2, 4, 6]",
+        "Un error, no se puede crear una columna así"
+      ],
+      "options_en": [
+        "[1, 2, 3]",
+        "[1, 2, 3, 1, 2, 3]",
+        "[2, 4, 6]",
+        "An error, you cannot create a column that way"
+      ],
+      "correct_index": 2,
       "explanation_es": "Multiplicar una Series por un escalar es una operación vectorizada elemento a elemento: `[1, 2, 3] * 2 = [2, 4, 6]`. Asignar a `df['b']` crea (o reemplaza) esa columna. A diferencia de una lista de Python, donde `[1,2,3]*2` repite los elementos, aquí `*` opera numéricamente sobre cada valor.",
       "explanation_en": "Multiplying a Series by a scalar is a vectorized element-wise operation: `[1, 2, 3] * 2 = [2, 4, 6]`. Assigning to `df['b']` creates (or replaces) that column. Unlike a Python list, where `[1,2,3]*2` repeats the elements, here `*` operates numerically on each value.",
       "source": "pandas User Guide — Essential basic functionality; vectorized operations",
       "expected_time_ms": 30000,
-      "tags": ["pandas", "vectorization", "columns"]
+      "tags": [
+        "pandas",
+        "vectorization",
+        "columns"
+      ]
     },
     {
       "id": "q060202005",
@@ -219,14 +295,24 @@
       "difficulty_tier": "hard",
       "question_es": "En pandas, encadenar indexaciones como `df[df['a'] > 0]['b'] = 5` es una forma fiable de asignar valores y siempre modifica el DataFrame original.",
       "question_en": "In pandas, chained indexing like `df[df['a'] > 0]['b'] = 5` is a reliable way to assign values and always modifies the original DataFrame.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "El 'chained indexing' (`df[...][...] = ...`) es poco fiable porque puede operar sobre una copia temporal en lugar del DataFrame original, y pandas suele lanzar un 'SettingWithCopyWarning'. La forma correcta y segura es usar `.loc` en una sola operación: `df.loc[df['a'] > 0, 'b'] = 5`. Esto garantiza que la asignación afecte al objeto original.",
       "explanation_en": "Chained indexing (`df[...][...] = ...`) is unreliable because it may operate on a temporary copy instead of the original DataFrame, and pandas usually raises a 'SettingWithCopyWarning'. The correct and safe way is to use `.loc` in a single operation: `df.loc[df['a'] > 0, 'b'] = 5`. This guarantees the assignment affects the original object.",
       "source": "pandas User Guide — Returning a view versus a copy (SettingWithCopyWarning)",
       "expected_time_ms": 32000,
-      "tags": ["pandas", "chained-indexing", "gotcha"]
+      "tags": [
+        "pandas",
+        "chained-indexing",
+        "gotcha"
+      ]
     },
     {
       "id": "q060202006",
@@ -244,7 +330,11 @@
       "explanation_en": "`pd.merge(df1, df2, on='key', how='inner')` combines rows where the key column values match, with `how` strategies like inner, left, right, or outer, just like SQL JOINs. It differs from `concat`, which stacks DataFrames along an axis without matching on a key.",
       "source": "pandas User Guide — Merge, join, concatenate and compare",
       "expected_time_ms": 28000,
-      "tags": ["pandas", "merge", "join"]
+      "tags": [
+        "pandas",
+        "merge",
+        "join"
+      ]
     },
     {
       "id": "q060203001",
@@ -270,7 +360,11 @@
       "explanation_en": "`NaN` ('Not a Number') is pandas' standard marker for missing data in numeric columns. It is not equal to zero or an empty string: `0` is a valid value, while `NaN` indicates the absence of a value. It is detected with `df.isna()` and handled with `dropna()` or `fillna()`.",
       "source": "pandas User Guide — Working with missing data",
       "expected_time_ms": 18000,
-      "tags": ["data-cleaning", "missing-values", "nan"]
+      "tags": [
+        "data-cleaning",
+        "missing-values",
+        "nan"
+      ]
     },
     {
       "id": "q060203002",
@@ -281,22 +375,26 @@
       "question_en": "When imputing missing values in a numeric column with marked outliers, why is imputing with the median often preferred over the mean?",
       "options_es": [
         "La mediana siempre es más grande que la media",
-        "La mediana es robusta frente a valores extremos, por lo que refleja mejor el valor 'típico' cuando la distribución es asimétrica o tiene outliers",
+        "Imputar con la mediana elimina los outliers automáticamente",
         "La media no se puede calcular si hay valores faltantes",
-        "Imputar con la mediana elimina los outliers automáticamente"
+        "La mediana es robusta frente a valores extremos, por lo que refleja mejor el valor 'típico' cuando la distribución es asimétrica o tiene outliers"
       ],
       "options_en": [
         "The median is always larger than the mean",
-        "The median is robust to extreme values, so it better reflects the 'typical' value when the distribution is skewed or has outliers",
+        "Imputing with the median automatically removes outliers",
         "The mean cannot be computed when there are missing values",
-        "Imputing with the median automatically removes outliers"
+        "The median is robust to extreme values, so it better reflects the 'typical' value when the distribution is skewed or has outliers"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La media se ve arrastrada por los outliers, así que imputar con ella puede introducir un sesgo hacia valores poco representativos. La mediana depende solo del orden y es robusta a los extremos, por lo que preserva mejor el centro de la distribución. La media sí puede calcularse ignorando NaN (`skipna=True`), pero no es la mejor opción con datos asimétricos.",
       "explanation_en": "The mean is dragged by outliers, so imputing with it can introduce bias toward unrepresentative values. The median depends only on ordering and is robust to extremes, so it better preserves the center of the distribution. The mean can indeed be computed while ignoring NaN (`skipna=True`), but it is not the best choice with skewed data.",
       "source": "McKinney, Python for Data Analysis, 2e (2017), Ch. 7: Data Cleaning and Preparation",
       "expected_time_ms": 28000,
-      "tags": ["data-cleaning", "imputation", "median"]
+      "tags": [
+        "data-cleaning",
+        "imputation",
+        "median"
+      ]
     },
     {
       "id": "q060203003",
@@ -305,14 +403,28 @@
       "difficulty_tier": "medium",
       "question_es": "Dado un DataFrame `df` con una columna 'x' que contiene `[1, 1, 2, NaN]`, ¿cuántas filas quedan tras `df.dropna()` si 'x' es la única columna?",
       "question_en": "Given a DataFrame `df` with a column 'x' containing `[1, 1, 2, NaN]`, how many rows remain after `df.dropna()` if 'x' is the only column?",
-      "options_es": ["4", "3", "2", "0"],
-      "options_en": ["4", "3", "2", "0"],
-      "correct_index": 1,
+      "options_es": [
+        "3",
+        "4",
+        "2",
+        "0"
+      ],
+      "options_en": [
+        "3",
+        "4",
+        "2",
+        "0"
+      ],
+      "correct_index": 0,
       "explanation_es": "`dropna()` elimina las filas que contienen al menos un valor faltante. Solo la última fila (con `NaN`) se descarta, dejando 3 filas: `[1, 1, 2]`. Nótese que `dropna()` no elimina duplicados; los dos valores `1` se conservan.",
       "explanation_en": "`dropna()` removes rows containing at least one missing value. Only the last row (with `NaN`) is dropped, leaving 3 rows: `[1, 1, 2]`. Note that `dropna()` does not remove duplicates; both `1` values are kept.",
       "source": "pandas User Guide — Working with missing data (dropna)",
       "expected_time_ms": 26000,
-      "tags": ["data-cleaning", "dropna", "missing-values"]
+      "tags": [
+        "data-cleaning",
+        "dropna",
+        "missing-values"
+      ]
     },
     {
       "id": "q060203004",
@@ -321,14 +433,25 @@
       "difficulty_tier": "hard",
       "question_es": "Al normalizar/escalar los datos, ajustar el escalador (fit) usando todo el conjunto de datos antes de dividir en train y test es una buena práctica que no causa ningún problema.",
       "question_en": "When normalizing/scaling data, fitting the scaler on the entire dataset before splitting into train and test is a good practice that causes no problems.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Es falso: ajustar el escalador con todo el dataset (incluido el test) provoca fuga de datos (data leakage), porque estadísticas del conjunto de prueba (media, desviación, mínimo/máximo) se filtran al entrenamiento. Lo correcto es hacer `fit` solo con el conjunto de entrenamiento y luego `transform` en train y test por separado (por ejemplo con `Pipeline` de scikit-learn), para que la evaluación sea honesta.",
       "explanation_en": "False: fitting the scaler on the whole dataset (including the test set) causes data leakage, because test-set statistics (mean, std, min/max) bleed into training. The correct approach is to `fit` only on the training set and then `transform` train and test separately (e.g. with scikit-learn's `Pipeline`), so evaluation is honest.",
       "source": "scikit-learn User Guide — Common pitfalls: Data leakage; Preprocessing data",
       "expected_time_ms": 32000,
-      "tags": ["data-cleaning", "scaling", "data-leakage", "gotcha"]
+      "tags": [
+        "data-cleaning",
+        "scaling",
+        "data-leakage",
+        "gotcha"
+      ]
     },
     {
       "id": "q060203005",
@@ -339,22 +462,26 @@
       "question_en": "What is one-hot encoding and when is it used?",
       "options_es": [
         "Convertir texto a minúsculas antes de procesarlo",
-        "Representar una variable categórica sin orden creando una columna binaria (0/1) por cada categoría, evitando imponer un orden numérico artificial entre categorías",
+        "Reemplazar los valores faltantes por el más frecuente",
         "Escalar los valores numéricos al rango [0, 1]",
-        "Reemplazar los valores faltantes por el más frecuente"
+        "Representar una variable categórica sin orden creando una columna binaria (0/1) por cada categoría, evitando imponer un orden numérico artificial entre categorías"
       ],
       "options_en": [
         "Converting text to lowercase before processing it",
-        "Representing an unordered categorical variable by creating one binary (0/1) column per category, avoiding imposing an artificial numeric order between categories",
+        "Replacing missing values with the most frequent one",
         "Scaling numeric values to the range [0, 1]",
-        "Replacing missing values with the most frequent one"
+        "Representing an unordered categorical variable by creating one binary (0/1) column per category, avoiding imposing an artificial numeric order between categories"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "One-hot encoding transforma una categoría como 'color' (rojo, verde, azul) en columnas binarias separadas. Se prefiere sobre asignar enteros (rojo=0, verde=1, azul=2) para variables nominales, porque los enteros harían que el modelo interprete un orden y una distancia inexistentes entre categorías. Escalar a [0,1] es normalización (min-max), no one-hot.",
       "explanation_en": "One-hot encoding turns a category like 'color' (red, green, blue) into separate binary columns. It is preferred over assigning integers (red=0, green=1, blue=2) for nominal variables, because integers would make the model interpret a nonexistent order and distance between categories. Scaling to [0,1] is normalization (min-max), not one-hot.",
       "source": "scikit-learn User Guide — Preprocessing data: Encoding categorical features (OneHotEncoder)",
       "expected_time_ms": 30000,
-      "tags": ["data-cleaning", "one-hot", "categorical"]
+      "tags": [
+        "data-cleaning",
+        "one-hot",
+        "categorical"
+      ]
     },
     {
       "id": "q060203006",
@@ -372,7 +499,10 @@
       "explanation_en": "Data leakage occurs when the model has access, directly or indirectly, to information that would not be available in production: for example scaling or imputing using statistics from the whole dataset, or including a feature that is a consequence of the target. The classic symptom is excellent validation performance that collapses on real data.",
       "source": "scikit-learn User Guide — Common pitfalls and recommended practices: Data leakage",
       "expected_time_ms": 30000,
-      "tags": ["data-cleaning", "data-leakage"]
+      "tags": [
+        "data-cleaning",
+        "data-leakage"
+      ]
     },
     {
       "id": "q060204001",
@@ -398,7 +528,11 @@
       "explanation_en": "A histogram groups values into bins and shows how many observations fall in each, revealing the distribution's shape (symmetry, skew, modes). A scatter plot relates two variables, a line chart is for time series, and a pie chart is for category proportions.",
       "source": "matplotlib documentation — Histograms; McKinney, Python for Data Analysis, 2e, Ch. 9",
       "expected_time_ms": 18000,
-      "tags": ["visualization", "histogram", "distribution"]
+      "tags": [
+        "visualization",
+        "histogram",
+        "distribution"
+      ]
     },
     {
       "id": "q060204002",
@@ -409,22 +543,26 @@
       "question_en": "You want to visualize the relationship between two continuous numeric variables (e.g. study hours and grade). Which chart is most suitable?",
       "options_es": [
         "Un gráfico de barras",
-        "Un diagrama de dispersión (scatter plot)",
         "Un histograma",
+        "Un diagrama de dispersión (scatter plot)",
         "Un gráfico de pastel"
       ],
       "options_en": [
         "A bar chart",
-        "A scatter plot",
         "A histogram",
+        "A scatter plot",
         "A pie chart"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El scatter plot coloca cada observación como un punto según sus dos valores, lo que permite ver patrones de relación (lineal, no lineal), la fuerza de la correlación y posibles outliers. Las barras comparan categorías, el histograma describe una sola variable, y el pastel muestra proporciones.",
       "explanation_en": "A scatter plot places each observation as a point according to its two values, letting you see relationship patterns (linear, non-linear), correlation strength, and possible outliers. Bar charts compare categories, histograms describe a single variable, and pie charts show proportions.",
       "source": "matplotlib documentation — Scatter plots; McKinney, Python for Data Analysis, 2e, Ch. 9",
       "expected_time_ms": 22000,
-      "tags": ["visualization", "scatter", "correlation"]
+      "tags": [
+        "visualization",
+        "scatter",
+        "correlation"
+      ]
     },
     {
       "id": "q060204003",
@@ -434,23 +572,27 @@
       "question_es": "¿Qué información resume un diagrama de caja (box plot)?",
       "question_en": "What information does a box plot summarize?",
       "options_es": [
-        "La evolución de una variable en el tiempo",
         "Los cuartiles (mediana, Q1, Q3), el rango intercuartílico y los posibles valores atípicos de una distribución",
+        "La evolución de una variable en el tiempo",
         "La correlación exacta entre dos variables",
         "El porcentaje que representa cada categoría"
       ],
       "options_en": [
-        "The evolution of a variable over time",
         "The quartiles (median, Q1, Q3), the interquartile range, and possible outliers of a distribution",
+        "The evolution of a variable over time",
         "The exact correlation between two variables",
         "The percentage each category represents"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El box plot muestra la mediana (línea central), la caja entre el primer cuartil (Q1) y el tercero (Q3) —el rango intercuartílico IQR—, y los 'bigotes' que se extienden hasta 1.5*IQR; los puntos fuera de ese rango se marcan como posibles outliers. Es ideal para comparar la dispersión de varios grupos de un vistazo.",
       "explanation_en": "A box plot shows the median (central line), the box between the first quartile (Q1) and the third (Q3) —the interquartile range IQR—, and 'whiskers' extending up to 1.5*IQR; points beyond that range are flagged as possible outliers. It is ideal for comparing the spread of several groups at a glance.",
       "source": "matplotlib documentation — Box plots; McKinney, Python for Data Analysis, 2e, Ch. 9",
       "expected_time_ms": 26000,
-      "tags": ["visualization", "boxplot", "quartiles"]
+      "tags": [
+        "visualization",
+        "boxplot",
+        "quartiles"
+      ]
     },
     {
       "id": "q060204004",
@@ -459,14 +601,24 @@
       "difficulty_tier": "hard",
       "question_es": "Truncar el eje Y de un gráfico de barras para que no empiece en cero puede exagerar visualmente las diferencias entre valores y considerarse engañoso.",
       "question_en": "Truncating the Y axis of a bar chart so it does not start at zero can visually exaggerate the differences between values and be considered misleading.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "En un gráfico de barras la longitud de la barra codifica el valor, así que empezar el eje en un número distinto de cero distorsiona esa proporción visual y puede exagerar diferencias pequeñas. Por eso las barras deben partir de cero. (En cambio, en gráficos de líneas donde interesa la tendencia y no la magnitud absoluta, a veces se justifica un eje que no arranque en cero.)",
       "explanation_en": "In a bar chart the bar's length encodes the value, so starting the axis at a number other than zero distorts that visual proportion and can exaggerate small differences. That is why bars should start at zero. (By contrast, in line charts where the trend matters more than absolute magnitude, a non-zero-based axis is sometimes justified.)",
       "source": "Matplotlib docs — Axis limits; Tufte, The Visual Display of Quantitative Information (1983)",
       "expected_time_ms": 30000,
-      "tags": ["visualization", "misleading-charts", "ethics"]
+      "tags": [
+        "visualization",
+        "misleading-charts",
+        "ethics"
+      ]
     },
     {
       "id": "q060204005",
@@ -477,22 +629,27 @@
       "question_en": "In exploratory data analysis (EDA), what is a heatmap of the correlation matrix used for?",
       "options_es": [
         "Para mostrar la ubicación geográfica de los datos",
-        "Para visualizar de un vistazo la fuerza y dirección de la correlación lineal entre todos los pares de variables numéricas mediante color",
         "Para contar cuántos valores faltantes hay por columna",
+        "Para visualizar de un vistazo la fuerza y dirección de la correlación lineal entre todos los pares de variables numéricas mediante color",
         "Para entrenar automáticamente un modelo de regresión"
       ],
       "options_en": [
         "To show the geographic location of the data",
-        "To visualize at a glance the strength and direction of the linear correlation between all pairs of numeric variables using color",
         "To count how many missing values there are per column",
+        "To visualize at a glance the strength and direction of the linear correlation between all pairs of numeric variables using color",
         "To automatically train a regression model"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El heatmap de correlación codifica con color cada coeficiente de la matriz (por ejemplo de -1 a 1), permitiendo detectar rápidamente pares de variables muy correlacionadas (útil para detectar multicolinealidad o features redundantes). Recuerda que correlación mide relación lineal y no implica causalidad.",
       "explanation_en": "A correlation heatmap color-codes each coefficient of the matrix (e.g. from -1 to 1), letting you quickly spot highly correlated variable pairs (useful for detecting multicollinearity or redundant features). Remember that correlation measures linear relationship and does not imply causation.",
       "source": "seaborn documentation — heatmap; pandas User Guide — DataFrame.corr",
       "expected_time_ms": 30000,
-      "tags": ["visualization", "heatmap", "correlation", "eda"]
+      "tags": [
+        "visualization",
+        "heatmap",
+        "correlation",
+        "eda"
+      ]
     },
     {
       "id": "q060204006",
@@ -510,7 +667,11 @@
       "explanation_en": "Anscombe's quartet (1973) is four sets of points sharing nearly identical mean, variance, correlation, and regression line, but which reveal completely different shapes when plotted (a line, a curve, an extreme outlier). It is the classic argument that summary statistics are not enough and visualization is essential in EDA.",
       "source": "Anscombe, F.J., 'Graphs in Statistical Analysis', The American Statistician 27 (1973)",
       "expected_time_ms": 30000,
-      "tags": ["visualization", "anscombe", "eda"]
+      "tags": [
+        "visualization",
+        "anscombe",
+        "eda"
+      ]
     }
   ]
 }

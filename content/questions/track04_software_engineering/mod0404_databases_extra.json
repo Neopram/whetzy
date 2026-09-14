@@ -8,18 +8,18 @@
       "question_es": "¿Qué cláusula SQL se usa para filtrar grupos después de aplicar `GROUP BY`, a diferencia de `WHERE`, que filtra filas antes de agrupar?",
       "question_en": "Which SQL clause is used to filter groups after applying `GROUP BY`, as opposed to `WHERE`, which filters rows before grouping?",
       "options_es": [
-        "HAVING",
         "FILTER",
+        "HAVING",
         "ORDER BY",
         "LIMIT"
       ],
       "options_en": [
-        "HAVING",
         "FILTER",
+        "HAVING",
         "ORDER BY",
         "LIMIT"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`HAVING` filtra los grupos resultantes de `GROUP BY` (p.ej. `HAVING COUNT(*) > 5`), mientras que `WHERE` filtra filas individuales antes de que se formen los grupos.",
       "explanation_en": "`HAVING` filters the groups resulting from `GROUP BY` (e.g. `HAVING COUNT(*) > 5`), while `WHERE` filters individual rows before groups are formed.",
       "expected_time_ms": 15000,
@@ -37,18 +37,18 @@
       "question_es": "Una tabla está en Tercera Forma Normal (3FN) si cumple 2FN y además:",
       "question_en": "A table is in Third Normal Form (3NF) if it satisfies 2NF and additionally:",
       "options_es": [
-        "no tiene dependencias transitivas de atributos no clave respecto a la clave primaria",
+        "no permite valores NULL",
         "todos sus atributos son de tipo texto",
         "tiene al menos una clave foránea",
-        "no permite valores NULL"
+        "no tiene dependencias transitivas de atributos no clave respecto a la clave primaria"
       ],
       "options_en": [
-        "it has no transitive dependencies of non-key attributes on the primary key",
+        "it does not allow NULL values",
         "all its attributes are of text type",
         "it has at least one foreign key",
-        "it does not allow NULL values"
+        "it has no transitive dependencies of non-key attributes on the primary key"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "3FN elimina las dependencias transitivas: ningún atributo no clave puede depender de otro atributo no clave, solo de la clave primaria.",
       "explanation_en": "3NF eliminates transitive dependencies: no non-key attribute may depend on another non-key attribute, only on the primary key.",
       "expected_time_ms": 18000,
@@ -121,18 +121,18 @@
       "question_es": "En SQLAlchemy, ¿qué problema de rendimiento describe el patrón \"N+1 queries\"?",
       "question_en": "In SQLAlchemy, what performance problem does the \"N+1 queries\" pattern describe?",
       "options_es": [
-        "Ejecutar una consulta para obtener N objetos padre y luego una consulta adicional por cada uno de ellos para cargar sus relaciones, en vez de usar carga ansiosa (eager loading)",
+        "Definir N+1 columnas en un modelo",
         "Ejecutar N+1 migraciones seguidas",
         "Usar N+1 conexiones simultáneas a la base de datos",
-        "Definir N+1 columnas en un modelo"
+        "Ejecutar una consulta para obtener N objetos padre y luego una consulta adicional por cada uno de ellos para cargar sus relaciones, en vez de usar carga ansiosa (eager loading)"
       ],
       "options_en": [
-        "Running one query to fetch N parent objects and then one additional query per each of them to load their relationships, instead of using eager loading",
+        "Defining N+1 columns in a model",
         "Running N+1 migrations in a row",
         "Using N+1 simultaneous database connections",
-        "Defining N+1 columns in a model"
+        "Running one query to fetch N parent objects and then one additional query per each of them to load their relationships, instead of using eager loading"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El problema N+1 ocurre al acceder perezosamente (lazy loading) a una relación dentro de un bucle: 1 consulta inicial + N consultas adicionales. SQLAlchemy lo mitiga con `joinedload`, `selectinload` u otras estrategias de carga ansiosa.",
       "explanation_en": "The N+1 problem occurs when lazily accessing a relationship inside a loop: 1 initial query + N additional queries. SQLAlchemy mitigates it with `joinedload`, `selectinload` or other eager loading strategies.",
       "expected_time_ms": 18000,

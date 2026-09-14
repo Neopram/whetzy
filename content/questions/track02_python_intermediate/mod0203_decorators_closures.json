@@ -8,23 +8,26 @@
       "question_es": "¿Qué es un 'closure' en Python?",
       "question_en": "What is a 'closure' in Python?",
       "options_es": [
-        "Una función anidada que recuerda y accede a variables del ámbito donde fue creada",
-        "Una función que se cierra a sí misma tras ejecutarse",
         "Un bloque try/finally",
+        "Una función que se cierra a sí misma tras ejecutarse",
+        "Una función anidada que recuerda y accede a variables del ámbito donde fue creada",
         "Una clase sin métodos"
       ],
       "options_en": [
-        "A nested function that remembers and accesses variables from the scope where it was created",
-        "A function that closes itself after running",
         "A try/finally block",
+        "A function that closes itself after running",
+        "A nested function that remembers and accesses variables from the scope where it was created",
         "A class with no methods"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un closure es una función interna que 'captura' variables del ámbito envolvente y las mantiene vivas aunque la función externa ya haya terminado. Esas variables libres se guardan en las celdas de `__closure__`.",
       "explanation_en": "A closure is an inner function that 'captures' variables from the enclosing scope and keeps them alive even after the outer function has returned. Those free variables are stored in the cells of `__closure__`.",
       "source": "Fluent Python 2e (Ramalho), ch. 9 — Closures",
       "expected_time_ms": 20000,
-      "tags": ["closures", "scope"]
+      "tags": [
+        "closures",
+        "scope"
+      ]
     },
     {
       "id": "q020301002",
@@ -33,14 +36,28 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef counter():\n    count = 0\n    def inc():\n        nonlocal count\n        count += 1\n        return count\n    return inc\nc = counter()\nprint(c(), c(), c())\n```",
       "question_en": "What does the following code print?\n```python\ndef counter():\n    count = 0\n    def inc():\n        nonlocal count\n        count += 1\n        return count\n    return inc\nc = counter()\nprint(c(), c(), c())\n```",
-      "options_es": ["1 2 3", "1 1 1", "0 1 2", "3 3 3"],
-      "options_en": ["1 2 3", "1 1 1", "0 1 2", "3 3 3"],
-      "correct_index": 0,
+      "options_es": [
+        "1 1 1",
+        "1 2 3",
+        "0 1 2",
+        "3 3 3"
+      ],
+      "options_en": [
+        "1 1 1",
+        "1 2 3",
+        "0 1 2",
+        "3 3 3"
+      ],
+      "correct_index": 1,
       "explanation_es": "El closure `inc` mantiene `count` entre llamadas gracias a `nonlocal`, que permite reasignar la variable del ámbito envolvente. Cada llamada incrementa y devuelve: `1`, `2`, `3`.",
       "explanation_en": "The closure `inc` keeps `count` alive across calls thanks to `nonlocal`, which allows reassigning the enclosing-scope variable. Each call increments and returns: `1`, `2`, `3`.",
       "source": "CPython docs 3.13 — The nonlocal statement",
       "expected_time_ms": 30000,
-      "tags": ["closures", "nonlocal", "state"]
+      "tags": [
+        "closures",
+        "nonlocal",
+        "state"
+      ]
     },
     {
       "id": "q020301003",
@@ -50,23 +67,28 @@
       "question_es": "¿Qué ocurre al ejecutar el siguiente código?\n```python\ndef counter():\n    count = 0\n    def inc():\n        count += 1\n        return count\n    return inc\nc = counter()\nprint(c())\n```",
       "question_en": "What happens when you run the following code?\n```python\ndef counter():\n    count = 0\n    def inc():\n        count += 1\n        return count\n    return inc\nc = counter()\nprint(c())\n```",
       "options_es": [
-        "Lanza UnboundLocalError",
         "Imprime 1",
+        "Lanza UnboundLocalError",
         "Imprime 0",
         "Imprime None"
       ],
       "options_en": [
-        "Raises UnboundLocalError",
         "Prints 1",
+        "Raises UnboundLocalError",
         "Prints 0",
         "Prints None"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Sin `nonlocal`, la asignación `count += 1` hace que Python trate `count` como variable **local** de `inc`. Al intentar leerla antes de asignarla (por el `+=`), lanza `UnboundLocalError`. La solución es declarar `nonlocal count`.",
       "explanation_en": "Without `nonlocal`, the assignment `count += 1` makes Python treat `count` as a **local** variable of `inc`. Trying to read it before assigning (because of `+=`) raises `UnboundLocalError`. The fix is to declare `nonlocal count`.",
       "source": "CPython docs 3.13 — The nonlocal statement",
       "expected_time_ms": 35000,
-      "tags": ["closures", "nonlocal", "unboundlocal", "gotcha"]
+      "tags": [
+        "closures",
+        "nonlocal",
+        "unboundlocal",
+        "gotcha"
+      ]
     },
     {
       "id": "q020301004",
@@ -75,14 +97,29 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfuncs = []\nfor i in range(3):\n    funcs.append(lambda: i)\nprint([f() for f in funcs])\n```",
       "question_en": "What does the following code print?\n```python\nfuncs = []\nfor i in range(3):\n    funcs.append(lambda: i)\nprint([f() for f in funcs])\n```",
-      "options_es": ["[2, 2, 2]", "[0, 1, 2]", "[0, 0, 0]", "[3, 3, 3]"],
-      "options_en": ["[2, 2, 2]", "[0, 1, 2]", "[0, 0, 0]", "[3, 3, 3]"],
+      "options_es": [
+        "[2, 2, 2]",
+        "[0, 1, 2]",
+        "[0, 0, 0]",
+        "[3, 3, 3]"
+      ],
+      "options_en": [
+        "[2, 2, 2]",
+        "[0, 1, 2]",
+        "[0, 0, 0]",
+        "[3, 3, 3]"
+      ],
       "correct_index": 0,
       "explanation_es": "Las lambdas capturan la **variable** `i`, no su valor en cada iteración (enlace tardío / late binding). Cuando se ejecutan, el bucle ya terminó con `i == 2`, así que las tres devuelven `2`. La solución habitual es un argumento por defecto: `lambda i=i: i`.",
       "explanation_en": "The lambdas capture the **variable** `i`, not its value at each iteration (late binding). By the time they run, the loop has finished with `i == 2`, so all three return `2`. The usual fix is a default argument: `lambda i=i: i`.",
       "source": "Effective Python 3e (Slatkin), Item on closures and loop variables",
       "expected_time_ms": 45000,
-      "tags": ["closures", "late-binding", "loop", "gotcha"]
+      "tags": [
+        "closures",
+        "late-binding",
+        "loop",
+        "gotcha"
+      ]
     },
     {
       "id": "q020301005",
@@ -91,14 +128,29 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfuncs = []\nfor i in range(3):\n    funcs.append(lambda i=i: i)\nprint([f() for f in funcs])\n```",
       "question_en": "What does the following code print?\n```python\nfuncs = []\nfor i in range(3):\n    funcs.append(lambda i=i: i)\nprint([f() for f in funcs])\n```",
-      "options_es": ["[0, 1, 2]", "[2, 2, 2]", "[0, 0, 0]", "[3, 3, 3]"],
-      "options_en": ["[0, 1, 2]", "[2, 2, 2]", "[0, 0, 0]", "[3, 3, 3]"],
-      "correct_index": 0,
+      "options_es": [
+        "[0, 0, 0]",
+        "[2, 2, 2]",
+        "[0, 1, 2]",
+        "[3, 3, 3]"
+      ],
+      "options_en": [
+        "[0, 0, 0]",
+        "[2, 2, 2]",
+        "[0, 1, 2]",
+        "[3, 3, 3]"
+      ],
+      "correct_index": 2,
       "explanation_es": "El argumento por defecto `i=i` se evalúa en el momento de crear cada lambda, capturando el valor actual de `i` (0, 1, 2). Así cada función recuerda su propio número y el resultado es `[0, 1, 2]`. Es el arreglo idiomático del late binding.",
       "explanation_en": "The default argument `i=i` is evaluated when each lambda is created, capturing the current value of `i` (0, 1, 2). So each function remembers its own number and the result is `[0, 1, 2]`. This is the idiomatic fix for late binding.",
       "source": "Effective Python 3e (Slatkin), Item on closures and loop variables",
       "expected_time_ms": 40000,
-      "tags": ["closures", "late-binding", "default-arg", "best-practice"]
+      "tags": [
+        "closures",
+        "late-binding",
+        "default-arg",
+        "best-practice"
+      ]
     },
     {
       "id": "q020301006",
@@ -116,7 +168,11 @@
       "explanation_en": "`nonlocal x` states that `x` refers to a variable in the enclosing (not global) scope, allowing reassignment from the nested function. Without it, any assignment would create a new local variable. `global`, by contrast, refers to module scope.",
       "source": "CPython docs 3.13 — The nonlocal statement",
       "expected_time_ms": 30000,
-      "tags": ["closures", "nonlocal", "scope"]
+      "tags": [
+        "closures",
+        "nonlocal",
+        "scope"
+      ]
     },
     {
       "id": "q020302001",
@@ -142,7 +198,10 @@
       "explanation_en": "The `@decorator` is syntactic sugar: it takes the function `f`, passes it to the decorator, and rebinds `f` to whatever it returns. That is, `f = decorator(f)`. So a decorator is just a function that takes and returns functions.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 20000,
-      "tags": ["decorators", "syntax"]
+      "tags": [
+        "decorators",
+        "syntax"
+      ]
     },
     {
       "id": "q020302002",
@@ -151,14 +210,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef shout(func):\n    def wrapper():\n        return func().upper()\n    return wrapper\n@shout\ndef greet():\n    return \"hola\"\nprint(greet())\n```",
       "question_en": "What does the following code print?\n```python\ndef shout(func):\n    def wrapper():\n        return func().upper()\n    return wrapper\n@shout\ndef greet():\n    return \"hola\"\nprint(greet())\n```",
-      "options_es": ["HOLA", "hola", "wrapper", "None"],
-      "options_en": ["HOLA", "hola", "wrapper", "None"],
-      "correct_index": 0,
+      "options_es": [
+        "hola",
+        "HOLA",
+        "wrapper",
+        "None"
+      ],
+      "options_en": [
+        "hola",
+        "HOLA",
+        "wrapper",
+        "None"
+      ],
+      "correct_index": 1,
       "explanation_es": "`@shout` reemplaza `greet` por `wrapper`. Al llamar `greet()`, se ejecuta `wrapper`, que llama al `greet` original (`\"hola\"`) y le aplica `.upper()`, devolviendo `\"HOLA\"`.",
       "explanation_en": "`@shout` replaces `greet` with `wrapper`. Calling `greet()` runs `wrapper`, which calls the original `greet` (`\"hola\"`) and applies `.upper()`, returning `\"HOLA\"`.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 35000,
-      "tags": ["decorators", "wrapper"]
+      "tags": [
+        "decorators",
+        "wrapper"
+      ]
     },
     {
       "id": "q020302003",
@@ -167,14 +239,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef deco(func):\n    def wrapper(*args, **kwargs):\n        return func(*args, **kwargs) * 2\n    return wrapper\n@deco\ndef add(a, b):\n    return a + b\nprint(add(3, 4))\n```",
       "question_en": "What does the following code print?\n```python\ndef deco(func):\n    def wrapper(*args, **kwargs):\n        return func(*args, **kwargs) * 2\n    return wrapper\n@deco\ndef add(a, b):\n    return a + b\nprint(add(3, 4))\n```",
-      "options_es": ["14", "7", "34", "TypeError"],
-      "options_en": ["14", "7", "34", "TypeError"],
-      "correct_index": 0,
+      "options_es": [
+        "34",
+        "7",
+        "14",
+        "TypeError"
+      ],
+      "options_en": [
+        "34",
+        "7",
+        "14",
+        "TypeError"
+      ],
+      "correct_index": 2,
       "explanation_es": "El `wrapper` usa `*args, **kwargs` para aceptar cualquier firma. Llama a `add(3, 4)` = `7` y lo multiplica por 2 = `14`. Usar `*args, **kwargs` es la forma correcta de escribir decoradores genéricos.",
       "explanation_en": "The `wrapper` uses `*args, **kwargs` to accept any signature. It calls `add(3, 4)` = `7` and multiplies by 2 = `14`. Using `*args, **kwargs` is the correct way to write generic decorators.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 35000,
-      "tags": ["decorators", "args", "kwargs"]
+      "tags": [
+        "decorators",
+        "args",
+        "kwargs"
+      ]
     },
     {
       "id": "q020302004",
@@ -184,23 +270,28 @@
       "question_es": "¿Para qué sirve `@functools.wraps(func)` dentro del wrapper de un decorador?",
       "question_en": "What is the purpose of `@functools.wraps(func)` inside a decorator's wrapper?",
       "options_es": [
-        "Copiar los metadatos de func (nombre, docstring, etc.) al wrapper para no perderlos",
-        "Ejecutar func dos veces",
         "Hacer el decorador más rápido",
+        "Ejecutar func dos veces",
+        "Copiar los metadatos de func (nombre, docstring, etc.) al wrapper para no perderlos",
         "Convertir func en un método estático"
       ],
       "options_en": [
-        "Copy func's metadata (name, docstring, etc.) onto the wrapper so they aren't lost",
-        "Run func twice",
         "Make the decorator faster",
+        "Run func twice",
+        "Copy func's metadata (name, docstring, etc.) onto the wrapper so they aren't lost",
         "Turn func into a static method"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Sin `functools.wraps`, la función decorada mostraría el nombre y docstring del `wrapper` (`wrapper.__name__ == 'wrapper'`), rompiendo la introspección y las herramientas de documentación. `@wraps(func)` copia `__name__`, `__doc__`, `__wrapped__`, etc.",
       "explanation_en": "Without `functools.wraps`, the decorated function would show the `wrapper`'s name and docstring (`wrapper.__name__ == 'wrapper'`), breaking introspection and documentation tools. `@wraps(func)` copies `__name__`, `__doc__`, `__wrapped__`, etc.",
       "source": "CPython docs 3.13 — functools.wraps",
       "expected_time_ms": 35000,
-      "tags": ["decorators", "functools", "wraps", "introspection"]
+      "tags": [
+        "decorators",
+        "functools",
+        "wraps",
+        "introspection"
+      ]
     },
     {
       "id": "q020302005",
@@ -209,14 +300,29 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef deco(func):\n    def wrapper():\n        \"\"\"wrapper doc\"\"\"\n        return func()\n    return wrapper\n@deco\ndef hello():\n    \"\"\"hello doc\"\"\"\n    return 1\nprint(hello.__name__)\n```",
       "question_en": "What does the following code print?\n```python\ndef deco(func):\n    def wrapper():\n        \"\"\"wrapper doc\"\"\"\n        return func()\n    return wrapper\n@deco\ndef hello():\n    \"\"\"hello doc\"\"\"\n    return 1\nprint(hello.__name__)\n```",
-      "options_es": ["wrapper", "hello", "deco", "None"],
-      "options_en": ["wrapper", "hello", "deco", "None"],
+      "options_es": [
+        "wrapper",
+        "hello",
+        "deco",
+        "None"
+      ],
+      "options_en": [
+        "wrapper",
+        "hello",
+        "deco",
+        "None"
+      ],
       "correct_index": 0,
       "explanation_es": "Como el decorador NO usa `functools.wraps`, `hello` ahora apunta al `wrapper`, y `hello.__name__` es `\"wrapper\"`. Esto ilustra por qué se recomienda `@wraps(func)`: sin él se pierde la identidad de la función original.",
       "explanation_en": "Since the decorator does NOT use `functools.wraps`, `hello` now points to `wrapper`, and `hello.__name__` is `\"wrapper\"`. This illustrates why `@wraps(func)` is recommended: without it, the original function's identity is lost.",
       "source": "CPython docs 3.13 — functools.wraps",
       "expected_time_ms": 40000,
-      "tags": ["decorators", "functools", "wraps", "gotcha"]
+      "tags": [
+        "decorators",
+        "functools",
+        "wraps",
+        "gotcha"
+      ]
     },
     {
       "id": "q020302006",
@@ -234,7 +340,11 @@
       "explanation_en": "`from functools import wraps` imports the `wraps` decorator, applied to the inner `wrapper` with `@wraps(func)` to copy `__name__`, `__doc__`, and other metadata from the original function.",
       "source": "CPython docs 3.13 — functools.wraps",
       "expected_time_ms": 25000,
-      "tags": ["decorators", "functools", "wraps"]
+      "tags": [
+        "decorators",
+        "functools",
+        "wraps"
+      ]
     },
     {
       "id": "q020303001",
@@ -244,23 +354,27 @@
       "question_es": "Un decorador que acepta argumentos, como `@repeat(3)`, requiere:",
       "question_en": "A decorator that takes arguments, like `@repeat(3)`, requires:",
       "options_es": [
-        "Un nivel extra de anidamiento: una función que recibe los argumentos y devuelve el decorador real",
+        "No es posible; los decoradores no aceptan argumentos",
         "Usar obligatoriamente una clase",
         "Que la función decorada tenga *args",
-        "No es posible; los decoradores no aceptan argumentos"
+        "Un nivel extra de anidamiento: una función que recibe los argumentos y devuelve el decorador real"
       ],
       "options_en": [
-        "An extra level of nesting: a function that takes the arguments and returns the actual decorator",
+        "It's not possible; decorators can't take arguments",
         "Mandatory use of a class",
         "That the decorated function has *args",
-        "It's not possible; decorators can't take arguments"
+        "An extra level of nesting: a function that takes the arguments and returns the actual decorator"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`@repeat(3)` se evalúa primero: `repeat(3)` debe **devolver** un decorador, que a su vez recibe la función. Por eso hay tres niveles: la fábrica (recibe args) → el decorador (recibe func) → el wrapper (recibe los args de la llamada).",
       "explanation_en": "`@repeat(3)` is evaluated first: `repeat(3)` must **return** a decorator, which in turn receives the function. Hence three levels: the factory (takes args) → the decorator (takes func) → the wrapper (takes call args).",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 22000,
-      "tags": ["decorators", "arguments", "factory"]
+      "tags": [
+        "decorators",
+        "arguments",
+        "factory"
+      ]
     },
     {
       "id": "q020303002",
@@ -269,14 +383,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef repeat(n):\n    def deco(func):\n        def wrapper():\n            for _ in range(n):\n                func()\n        return wrapper\n    return deco\n@repeat(3)\ndef hi():\n    print(\"hi\")\nhi()\n```",
       "question_en": "What does the following code print?\n```python\ndef repeat(n):\n    def deco(func):\n        def wrapper():\n            for _ in range(n):\n                func()\n        return wrapper\n    return deco\n@repeat(3)\ndef hi():\n    print(\"hi\")\nhi()\n```",
-      "options_es": ["hi\\nhi\\nhi", "hi", "3", "hi\\nhi"],
-      "options_en": ["hi\\nhi\\nhi", "hi", "3", "hi\\nhi"],
-      "correct_index": 0,
+      "options_es": [
+        "hi",
+        "hi\\nhi\\nhi",
+        "3",
+        "hi\\nhi"
+      ],
+      "options_en": [
+        "hi",
+        "hi\\nhi\\nhi",
+        "3",
+        "hi\\nhi"
+      ],
+      "correct_index": 1,
       "explanation_es": "`repeat(3)` devuelve `deco`, que envuelve `hi`. El `wrapper` ejecuta la función original 3 veces, imprimiendo `hi` tres veces. Los tres niveles de anidamiento permiten parametrizar el comportamiento del decorador.",
       "explanation_en": "`repeat(3)` returns `deco`, which wraps `hi`. The `wrapper` runs the original function 3 times, printing `hi` three times. The three levels of nesting let you parameterize the decorator's behavior.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 35000,
-      "tags": ["decorators", "arguments", "repeat"]
+      "tags": [
+        "decorators",
+        "arguments",
+        "repeat"
+      ]
     },
     {
       "id": "q020303003",
@@ -285,14 +413,24 @@
       "difficulty_tier": "medium",
       "question_es": "En `@repeat(3)`, la expresión `repeat(3)` se ejecuta en el momento de definir la función decorada, no cada vez que se la llama.",
       "question_en": "In `@repeat(3)`, the expression `repeat(3)` runs when the decorated function is defined, not every time it is called.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. La línea `@repeat(3)` se evalúa una sola vez, al definir la función: `repeat(3)` produce el decorador y este envuelve la función. Lo que se ejecuta en cada llamada es el `wrapper`, no la fábrica de decoradores.",
       "explanation_en": "True. The `@repeat(3)` line is evaluated once, when the function is defined: `repeat(3)` produces the decorator, which wraps the function. What runs on each call is the `wrapper`, not the decorator factory.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 25000,
-      "tags": ["decorators", "arguments", "evaluation"]
+      "tags": [
+        "decorators",
+        "arguments",
+        "evaluation"
+      ]
     },
     {
       "id": "q020303004",
@@ -301,14 +439,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef tag(name):\n    def deco(func):\n        def wrapper(*a, **k):\n            return f\"<{name}>{func(*a, **k)}</{name}>\"\n        return wrapper\n    return deco\n@tag(\"b\")\ndef text():\n    return \"hola\"\nprint(text())\n```",
       "question_en": "What does the following code print?\n```python\ndef tag(name):\n    def deco(func):\n        def wrapper(*a, **k):\n            return f\"<{name}>{func(*a, **k)}</{name}>\"\n        return wrapper\n    return deco\n@tag(\"b\")\ndef text():\n    return \"hola\"\nprint(text())\n```",
-      "options_es": ["<b>hola</b>", "hola", "<b></b>", "<tag>hola</tag>"],
-      "options_en": ["<b>hola</b>", "hola", "<b></b>", "<tag>hola</tag>"],
-      "correct_index": 0,
+      "options_es": [
+        "hola",
+        "<b>hola</b>",
+        "<b></b>",
+        "<tag>hola</tag>"
+      ],
+      "options_en": [
+        "hola",
+        "<b>hola</b>",
+        "<b></b>",
+        "<tag>hola</tag>"
+      ],
+      "correct_index": 1,
       "explanation_es": "`tag(\"b\")` captura `name=\"b\"` y devuelve un decorador que envuelve el resultado de `text()` (`\"hola\"`) entre etiquetas `<b>...</b>`, produciendo `<b>hola</b>`. El argumento del decorador queda disponible por closure en el `wrapper`.",
       "explanation_en": "`tag(\"b\")` captures `name=\"b\"` and returns a decorator that wraps `text()`'s result (`\"hola\"`) in `<b>...</b>` tags, producing `<b>hola</b>`. The decorator argument is available to the `wrapper` via closure.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 40000,
-      "tags": ["decorators", "arguments", "closure"]
+      "tags": [
+        "decorators",
+        "arguments",
+        "closure"
+      ]
     },
     {
       "id": "q020303005",
@@ -318,23 +470,27 @@
       "question_es": "¿Qué diferencia hay entre `@deco` y `@deco()` al decorar una función?",
       "question_en": "What is the difference between `@deco` and `@deco()` when decorating a function?",
       "options_es": [
-        "@deco pasa la función directamente a deco; @deco() primero llama a deco() y usa su valor de retorno como decorador",
+        "@deco() ejecuta la función decorada inmediatamente",
         "Son idénticas en todos los casos",
         "@deco() es un error de sintaxis",
-        "@deco() ejecuta la función decorada inmediatamente"
+        "@deco pasa la función directamente a deco; @deco() primero llama a deco() y usa su valor de retorno como decorador"
       ],
       "options_en": [
-        "@deco passes the function directly to deco; @deco() first calls deco() and uses its return value as the decorator",
+        "@deco() runs the decorated function immediately",
         "They are identical in all cases",
         "@deco() is a syntax error",
-        "@deco() runs the decorated function immediately"
+        "@deco passes the function directly to deco; @deco() first calls deco() and uses its return value as the decorator"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`@deco` equivale a `f = deco(f)`. `@deco()` equivale a `f = deco()(f)`: primero invoca `deco()` (una fábrica que devuelve un decorador) y ese resultado envuelve la función. Confundirlos es un error común: usar `@deco()` con un decorador simple suele fallar.",
       "explanation_en": "`@deco` equals `f = deco(f)`. `@deco()` equals `f = deco()(f)`: it first calls `deco()` (a factory returning a decorator), and that result wraps the function. Confusing them is a common mistake: using `@deco()` with a plain decorator usually fails.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 40000,
-      "tags": ["decorators", "arguments", "gotcha"]
+      "tags": [
+        "decorators",
+        "arguments",
+        "gotcha"
+      ]
     },
     {
       "id": "q020303006",
@@ -343,14 +499,29 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef power(exp):\n    def deco(func):\n        def wrapper(x):\n            return func(x) ** exp\n        return wrapper\n    return deco\n@power(2)\n@power(3)\ndef ident(x):\n    return x\nprint(ident(2))\n```",
       "question_en": "What does the following code print?\n```python\ndef power(exp):\n    def deco(func):\n        def wrapper(x):\n            return func(x) ** exp\n        return wrapper\n    return deco\n@power(2)\n@power(3)\ndef ident(x):\n    return x\nprint(ident(2))\n```",
-      "options_es": ["64", "512", "36", "6"],
-      "options_en": ["64", "512", "36", "6"],
+      "options_es": [
+        "64",
+        "512",
+        "36",
+        "6"
+      ],
+      "options_en": [
+        "64",
+        "512",
+        "36",
+        "6"
+      ],
       "correct_index": 0,
       "explanation_es": "Los decoradores se aplican de abajo hacia arriba: primero `@power(3)` envuelve `ident` (eleva al cubo), luego `@power(2)` envuelve ese resultado (eleva al cuadrado). Con `x=2`: `ident(2)=2`, `2**3=8`, `8**2=64`.",
       "explanation_en": "Decorators apply bottom-up: first `@power(3)` wraps `ident` (cubes), then `@power(2)` wraps that result (squares). With `x=2`: `ident(2)=2`, `2**3=8`, `8**2=64`.",
       "source": "PEP 318 — Decorators for Functions and Methods",
       "expected_time_ms": 50000,
-      "tags": ["decorators", "stacking", "order", "gotcha"]
+      "tags": [
+        "decorators",
+        "stacking",
+        "order",
+        "gotcha"
+      ]
     },
     {
       "id": "q020304001",
@@ -360,23 +531,26 @@
       "question_es": "¿Qué es un decorador de clase?",
       "question_en": "What is a class decorator?",
       "options_es": [
-        "Una función (o clase) que recibe una clase y devuelve una clase, posiblemente modificada",
-        "Un método marcado con @classmethod",
         "Una clase que hereda de otra",
+        "Un método marcado con @classmethod",
+        "Una función (o clase) que recibe una clase y devuelve una clase, posiblemente modificada",
         "El método __init__ de una clase"
       ],
       "options_en": [
-        "A function (or class) that receives a class and returns a class, possibly modified",
-        "A method marked with @classmethod",
         "A class that inherits from another",
+        "A method marked with @classmethod",
+        "A function (or class) that receives a class and returns a class, possibly modified",
         "A class's __init__ method"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un decorador de clase aplica `@deco` justo encima de `class Foo:`, equivalente a `Foo = deco(Foo)`. Puede añadir métodos, registrar la clase, o envolverla. No confundir con `@classmethod`, que decora métodos dentro de una clase.",
       "explanation_en": "A class decorator applies `@deco` right above `class Foo:`, equivalent to `Foo = deco(Foo)`. It can add methods, register the class, or wrap it. Not to be confused with `@classmethod`, which decorates methods inside a class.",
       "source": "PEP 3129 — Class Decorators",
       "expected_time_ms": 20000,
-      "tags": ["decorators", "class-decorator"]
+      "tags": [
+        "decorators",
+        "class-decorator"
+      ]
     },
     {
       "id": "q020304002",
@@ -385,14 +559,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef add_greeting(cls):\n    cls.greet = lambda self: \"hi\"\n    return cls\n@add_greeting\nclass Person:\n    pass\nprint(Person().greet())\n```",
       "question_en": "What does the following code print?\n```python\ndef add_greeting(cls):\n    cls.greet = lambda self: \"hi\"\n    return cls\n@add_greeting\nclass Person:\n    pass\nprint(Person().greet())\n```",
-      "options_es": ["hi", "None", "AttributeError", "greet"],
-      "options_en": ["hi", "None", "AttributeError", "greet"],
-      "correct_index": 0,
+      "options_es": [
+        "None",
+        "hi",
+        "AttributeError",
+        "greet"
+      ],
+      "options_en": [
+        "None",
+        "hi",
+        "AttributeError",
+        "greet"
+      ],
+      "correct_index": 1,
       "explanation_es": "El decorador de clase `add_greeting` recibe `Person`, le añade un método `greet` y devuelve la clase modificada. Así `Person().greet()` devuelve `\"hi\"`. Es una forma de inyectar comportamiento sin usar herencia.",
       "explanation_en": "The class decorator `add_greeting` receives `Person`, adds a `greet` method, and returns the modified class. So `Person().greet()` returns `\"hi\"`. It's a way to inject behavior without using inheritance.",
       "source": "PEP 3129 — Class Decorators",
       "expected_time_ms": 35000,
-      "tags": ["decorators", "class-decorator", "injection"]
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "injection"
+      ]
     },
     {
       "id": "q020304003",
@@ -401,14 +589,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Cuál de estos decoradores de la librería estándar genera automáticamente __init__, __repr__ y __eq__ para una clase?",
       "question_en": "Which of these standard-library decorators automatically generates __init__, __repr__, and __eq__ for a class?",
-      "options_es": ["@dataclass", "@property", "@staticmethod", "@abstractmethod"],
-      "options_en": ["@dataclass", "@property", "@staticmethod", "@abstractmethod"],
-      "correct_index": 0,
+      "options_es": [
+        "@staticmethod",
+        "@property",
+        "@dataclass",
+        "@abstractmethod"
+      ],
+      "options_en": [
+        "@staticmethod",
+        "@property",
+        "@dataclass",
+        "@abstractmethod"
+      ],
+      "correct_index": 2,
       "explanation_es": "`@dataclass` (del módulo `dataclasses`) es un decorador de clase que genera `__init__`, `__repr__`, `__eq__` y otros a partir de las anotaciones de campos, reduciendo el código repetitivo. Es el ejemplo más usado de decorador de clase.",
       "explanation_en": "`@dataclass` (from the `dataclasses` module) is a class decorator that generates `__init__`, `__repr__`, `__eq__`, and others from field annotations, cutting boilerplate. It's the most widely used class-decorator example.",
       "source": "CPython docs 3.13 — dataclasses.dataclass",
       "expected_time_ms": 25000,
-      "tags": ["decorators", "class-decorator", "dataclass"]
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "dataclass"
+      ]
     },
     {
       "id": "q020304004",
@@ -417,14 +619,29 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom dataclasses import dataclass\n@dataclass\nclass Point:\n    x: int\n    y: int\nprint(Point(1, 2) == Point(1, 2))\n```",
       "question_en": "What does the following code print?\n```python\nfrom dataclasses import dataclass\n@dataclass\nclass Point:\n    x: int\n    y: int\nprint(Point(1, 2) == Point(1, 2))\n```",
-      "options_es": ["True", "False", "TypeError", "None"],
-      "options_en": ["True", "False", "TypeError", "None"],
-      "correct_index": 0,
+      "options_es": [
+        "None",
+        "False",
+        "TypeError",
+        "True"
+      ],
+      "options_en": [
+        "None",
+        "False",
+        "TypeError",
+        "True"
+      ],
+      "correct_index": 3,
       "explanation_es": "`@dataclass` genera un `__eq__` que compara los campos por valor. Como ambos puntos tienen `x=1, y=2`, son iguales y devuelve `True`. Sin `@dataclass`, dos instancias distintas se compararían por identidad y darían `False`.",
       "explanation_en": "`@dataclass` generates an `__eq__` that compares fields by value. Since both points have `x=1, y=2`, they are equal and it returns `True`. Without `@dataclass`, two distinct instances would compare by identity and give `False`.",
       "source": "CPython docs 3.13 — dataclasses.dataclass",
       "expected_time_ms": 40000,
-      "tags": ["decorators", "class-decorator", "dataclass", "eq"]
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "dataclass",
+        "eq"
+      ]
     },
     {
       "id": "q020304005",
@@ -433,14 +650,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nregistry = []\ndef register(cls):\n    registry.append(cls.__name__)\n    return cls\n@register\nclass A: pass\n@register\nclass B: pass\nprint(registry)\n```",
       "question_en": "What does the following code print?\n```python\nregistry = []\ndef register(cls):\n    registry.append(cls.__name__)\n    return cls\n@register\nclass A: pass\n@register\nclass B: pass\nprint(registry)\n```",
-      "options_es": ["['A', 'B']", "['B', 'A']", "[]", "['register', 'register']"],
-      "options_en": ["['A', 'B']", "['B', 'A']", "[]", "['register', 'register']"],
-      "correct_index": 0,
+      "options_es": [
+        "[]",
+        "['B', 'A']",
+        "['A', 'B']",
+        "['register', 'register']"
+      ],
+      "options_en": [
+        "[]",
+        "['B', 'A']",
+        "['A', 'B']",
+        "['register', 'register']"
+      ],
+      "correct_index": 2,
       "explanation_es": "Cada `@register` se ejecuta al definir la clase, añadiendo su nombre al `registry` en orden: primero `A`, luego `B`. El patrón de registro por decorador es habitual en frameworks (plugins, rutas, comandos).",
       "explanation_en": "Each `@register` runs when the class is defined, appending its name to `registry` in order: first `A`, then `B`. The decorator-registration pattern is common in frameworks (plugins, routes, commands).",
       "source": "PEP 3129 — Class Decorators",
       "expected_time_ms": 40000,
-      "tags": ["decorators", "class-decorator", "registry"]
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "registry"
+      ]
     },
     {
       "id": "q020304006",
@@ -449,14 +680,25 @@
       "difficulty_tier": "expert",
       "question_es": "Un decorador de clase debe devolver una clase; si devuelve None, el nombre decorado quedará ligado a None.",
       "question_en": "A class decorator must return a class; if it returns None, the decorated name will be bound to None.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Como `@deco` sobre `class Foo` equivale a `Foo = deco(Foo)`, si el decorador olvida el `return cls` (devolviendo `None` implícitamente), `Foo` pasa a ser `None` y usarla luego lanza `TypeError`. Es un error clásico al escribir decoradores.",
       "explanation_en": "True. Since `@deco` on `class Foo` equals `Foo = deco(Foo)`, if the decorator forgets the `return cls` (implicitly returning `None`), `Foo` becomes `None` and using it later raises `TypeError`. This is a classic decorator-writing mistake.",
       "source": "PEP 3129 — Class Decorators",
       "expected_time_ms": 30000,
-      "tags": ["decorators", "class-decorator", "return", "gotcha"]
+      "tags": [
+        "decorators",
+        "class-decorator",
+        "return",
+        "gotcha"
+      ]
     }
   ]
 }

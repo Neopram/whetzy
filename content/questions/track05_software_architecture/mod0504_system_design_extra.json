@@ -8,18 +8,18 @@
       "question_es": "¿Cuál es la principal limitación del escalado vertical (scale up) frente al horizontal (scale out)?",
       "question_en": "What is the main limitation of vertical scaling (scale up) compared to horizontal scaling (scale out)?",
       "options_es": [
-        "Existe un límite físico/económico en el hardware de una sola máquina, y además crea un único punto de fallo",
-        "El escalado vertical siempre es más barato a cualquier escala",
         "El escalado vertical requiere obligatoriamente contenedores",
+        "El escalado vertical siempre es más barato a cualquier escala",
+        "Existe un límite físico/económico en el hardware de una sola máquina, y además crea un único punto de fallo",
         "No se puede combinar con balanceo de carga"
       ],
       "options_en": [
-        "There is a physical/economic limit on a single machine's hardware, and it also creates a single point of failure",
-        "Vertical scaling is always cheaper at any scale",
         "Vertical scaling mandatorily requires containers",
+        "Vertical scaling is always cheaper at any scale",
+        "There is a physical/economic limit on a single machine's hardware, and it also creates a single point of failure",
         "It cannot be combined with load balancing"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Escalar verticalmente (más CPU/RAM en una sola máquina) tiene un techo físico y de coste creciente, y esa máquina sigue siendo un único punto de fallo. Escalar horizontalmente distribuye tanto la carga como el riesgo, aunque añade complejidad de coordinación.",
       "explanation_en": "Scaling vertically (more CPU/RAM on a single machine) has a physical ceiling and rising cost, and that machine remains a single point of failure. Scaling horizontally distributes both load and risk, though it adds coordination complexity.",
       "expected_time_ms": 15000,
@@ -37,18 +37,18 @@
       "question_es": "El algoritmo de balanceo de carga \"round robin\" distribuye las peticiones:",
       "question_en": "The \"round robin\" load balancing algorithm distributes requests:",
       "options_es": [
-        "secuencialmente entre los servidores disponibles, uno tras otro, en un ciclo, sin considerar su carga actual",
         "siempre al servidor con menor latencia medida en tiempo real",
+        "secuencialmente entre los servidores disponibles, uno tras otro, en un ciclo, sin considerar su carga actual",
         "únicamente al servidor primario, usando los demás solo como respaldo pasivo",
         "según un hash del contenido del cuerpo de la petición"
       ],
       "options_en": [
-        "sequentially among the available servers, one after another in a cycle, without considering their current load",
         "always to the server with the lowest real-time measured latency",
+        "sequentially among the available servers, one after another in a cycle, without considering their current load",
         "only to the primary server, using the others solely as passive backup",
         "based on a hash of the request body's content"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Round robin asigna cada nueva petición al siguiente servidor de una lista de forma cíclica, de manera simple pero sin tener en cuenta la carga real de cada servidor (a diferencia de algoritmos como \"least connections\").",
       "explanation_en": "Round robin assigns each new request to the next server in a list cyclically, simply but without accounting for each server's actual load (unlike algorithms like \"least connections\").",
       "expected_time_ms": 15000,

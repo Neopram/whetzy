@@ -8,23 +8,26 @@
       "question_es": "¿Cuál es la diferencia entre escalado vertical y escalado horizontal?",
       "question_en": "What is the difference between vertical scaling and horizontal scaling?",
       "options_es": [
-        "El vertical añade más máquinas y el horizontal las quita",
         "El vertical (scale up) da más recursos a una sola máquina (más CPU/RAM); el horizontal (scale out) añade más máquinas que reparten la carga",
+        "El vertical añade más máquinas y el horizontal las quita",
         "Son términos equivalentes",
         "El horizontal solo aplica a bases de datos"
       ],
       "options_en": [
-        "Vertical adds more machines and horizontal removes them",
         "Vertical (scale up) gives more resources to a single machine (more CPU/RAM); horizontal (scale out) adds more machines that share the load",
+        "Vertical adds more machines and horizontal removes them",
         "They are equivalent terms",
         "Horizontal only applies to databases"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Escalar verticalmente es hacer más potente una máquina (más CPU, RAM); es simple pero tiene un techo físico y un único punto de fallo. Escalar horizontalmente es añadir más máquinas que trabajan en paralelo; es más complejo (requiere balanceo, coordinación, estado distribuido) pero permite crecer casi sin límite y mejora la tolerancia a fallos.",
       "explanation_en": "Vertical scaling is making one machine more powerful (more CPU, RAM); it's simple but has a physical ceiling and a single point of failure. Horizontal scaling is adding more machines that work in parallel; it's more complex (requires balancing, coordination, distributed state) but allows near-unlimited growth and improves fault tolerance.",
       "source": "Kleppmann, M. — DDIA Cap. 1 (Scalability)",
       "expected_time_ms": 24000,
-      "tags": ["scalability", "vertical-horizontal"]
+      "tags": [
+        "scalability",
+        "vertical-horizontal"
+      ]
     },
     {
       "id": "q050401002",
@@ -33,14 +36,23 @@
       "difficulty_tier": "medium",
       "question_es": "Para escalar horizontalmente con facilidad, es muy conveniente que los servidores de aplicación sean 'stateless' (sin estado de sesión local), de modo que cualquier instancia pueda atender cualquier petición.",
       "question_en": "To scale horizontally easily, it's very convenient for application servers to be 'stateless' (no local session state), so any instance can handle any request.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Si el estado de sesión vive en la memoria de una instancia concreta, las peticiones de un usuario deben ir siempre a esa instancia (sticky sessions), lo que complica el balanceo y la resiliencia. Con servidores stateless (el estado se externaliza a una cache/BD compartida), cualquier instancia atiende cualquier petición, y añadir/quitar instancias es trivial.",
       "explanation_en": "If session state lives in a specific instance's memory, a user's requests must always go to that instance (sticky sessions), complicating balancing and resilience. With stateless servers (state externalized to a shared cache/DB), any instance handles any request, and adding/removing instances is trivial.",
       "source": "Kleppmann, M. — DDIA / 12-Factor App (statelessness)",
       "expected_time_ms": 26000,
-      "tags": ["scalability", "stateless"]
+      "tags": [
+        "scalability",
+        "stateless"
+      ]
     },
     {
       "id": "q050401003",
@@ -51,22 +63,25 @@
       "question_en": "What does a system's 'scalability' describe?",
       "options_es": [
         "Lo bonito que es su código",
-        "Su capacidad de manejar un aumento de carga (más usuarios, datos o tráfico) añadiendo recursos de forma razonable, manteniendo un rendimiento aceptable",
         "El número de lenguajes que usa",
+        "Su capacidad de manejar un aumento de carga (más usuarios, datos o tráfico) añadiendo recursos de forma razonable, manteniendo un rendimiento aceptable",
         "Cuántos bugs tiene"
       ],
       "options_en": [
         "How pretty its code is",
-        "Its ability to handle increased load (more users, data, or traffic) by adding resources reasonably, while maintaining acceptable performance",
         "The number of languages it uses",
+        "Its ability to handle increased load (more users, data, or traffic) by adding resources reasonably, while maintaining acceptable performance",
         "How many bugs it has"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "La escalabilidad no es una etiqueta binaria ('es escalable'), sino la capacidad de afrontar el crecimiento de carga con un coste de recursos razonable, manteniendo métricas de rendimiento (latencia, throughput) dentro de lo aceptable. Kleppmann insiste en definir la carga con parámetros concretos y medir percentiles (p95, p99), no solo promedios.",
       "explanation_en": "Scalability isn't a binary label ('it's scalable') but the ability to cope with growing load at a reasonable resource cost, keeping performance metrics (latency, throughput) within acceptable bounds. Kleppmann stresses defining load with concrete parameters and measuring percentiles (p95, p99), not just averages.",
       "source": "Kleppmann, M. — DDIA Cap. 1 (describing load/performance)",
       "expected_time_ms": 26000,
-      "tags": ["scalability", "definition"]
+      "tags": [
+        "scalability",
+        "definition"
+      ]
     },
     {
       "id": "q050401004",
@@ -77,22 +92,26 @@
       "question_en": "When measuring a service's latency, why is it usually more informative to look at high percentiles (p95, p99) than the mean?",
       "options_es": [
         "Porque la media es imposible de calcular",
-        "Porque la media oculta la 'cola' de peticiones lentas; los percentiles altos reflejan la experiencia de los usuarios peor servidos, que a menudo son los más valiosos o los más afectados",
         "Porque los percentiles siempre son más bajos que la media",
+        "Porque la media oculta la 'cola' de peticiones lentas; los percentiles altos reflejan la experiencia de los usuarios peor servidos, que a menudo son los más valiosos o los más afectados",
         "Porque la latencia no importa"
       ],
       "options_en": [
         "Because the mean is impossible to compute",
-        "Because the mean hides the 'tail' of slow requests; high percentiles reflect the experience of the worst-served users, who are often the most valuable or most affected",
         "Because percentiles are always lower than the mean",
+        "Because the mean hides the 'tail' of slow requests; high percentiles reflect the experience of the worst-served users, who are often the most valuable or most affected",
         "Because latency doesn't matter"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "La media puede verse dominada por muchas respuestas rápidas y esconder que un 1-5% de peticiones son muy lentas. Los percentiles de cola (p95, p99, p999) capturan esa experiencia peor, que suele afectar a los usuarios con más datos o actividad. Además, en una página que hace muchas llamadas, la probabilidad de encontrar al menos una respuesta lenta crece (tail latency amplification).",
       "explanation_en": "The mean can be dominated by many fast responses and hide that 1-5% of requests are very slow. Tail percentiles (p95, p99, p999) capture that worst experience, which often affects users with the most data or activity. Also, on a page making many calls, the chance of hitting at least one slow response grows (tail latency amplification).",
       "source": "Kleppmann, M. — DDIA Cap. 1 (percentiles, tail latency)",
       "expected_time_ms": 32000,
-      "tags": ["scalability", "percentiles", "tail-latency"]
+      "tags": [
+        "scalability",
+        "percentiles",
+        "tail-latency"
+      ]
     },
     {
       "id": "q050401005",
@@ -101,14 +120,23 @@
       "difficulty_tier": "hard",
       "question_es": "La Ley de Amdahl implica que la porción secuencial (no paralelizable) de un programa limita la aceleración máxima que se puede lograr añadiendo más recursos de cómputo.",
       "question_en": "Amdahl's Law implies that the sequential (non-parallelizable) portion of a program limits the maximum speedup achievable by adding more compute resources.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La Ley de Amdahl dice que si una fracción del trabajo es inherentemente secuencial, la aceleración total está acotada por ella por mucho que paralelices el resto: si el 10% es secuencial, el máximo teórico es 10x aunque tengas infinitas CPUs. Es un recordatorio de que escalar horizontalmente tiene rendimientos decrecientes cuando hay cuellos de botella no paralelizables.",
       "explanation_en": "Amdahl's Law states that if a fraction of the work is inherently sequential, total speedup is bounded by it no matter how much you parallelize the rest: if 10% is sequential, the theoretical max is 10x even with infinite CPUs. It's a reminder that horizontal scaling has diminishing returns when there are non-parallelizable bottlenecks.",
       "source": "Amdahl's Law (arquitectura de computadores)",
       "expected_time_ms": 28000,
-      "tags": ["scalability", "amdahl"]
+      "tags": [
+        "scalability",
+        "amdahl"
+      ]
     },
     {
       "id": "q050401006",
@@ -126,7 +154,10 @@
       "explanation_en": "'Sticky' sessions (or session affinity) tie each user to a specific instance, usually because their state is in that instance's memory. They work, but complicate scaling and resilience (if that instance dies, the session is lost, and load distribution becomes uneven). The preferred alternative is to make servers stateless and externalize the state.",
       "source": "Kleppmann / load balancer docs — session affinity",
       "expected_time_ms": 30000,
-      "tags": ["scalability", "sticky-sessions"]
+      "tags": [
+        "scalability",
+        "sticky-sessions"
+      ]
     },
     {
       "id": "q050402001",
@@ -137,22 +168,25 @@
       "question_en": "What is the function of a load balancer?",
       "options_es": [
         "Almacenar la base de datos principal",
-        "Distribuir las peticiones entrantes entre varias instancias de servidor, mejorando el rendimiento, la disponibilidad y evitando sobrecargar a una sola",
         "Compilar el código de la aplicación",
+        "Distribuir las peticiones entrantes entre varias instancias de servidor, mejorando el rendimiento, la disponibilidad y evitando sobrecargar a una sola",
         "Cifrar los discos duros"
       ],
       "options_en": [
         "Storing the main database",
-        "Distributing incoming requests across several server instances, improving performance and availability and avoiding overloading a single one",
         "Compiling the application code",
+        "Distributing incoming requests across several server instances, improving performance and availability and avoiding overloading a single one",
         "Encrypting hard drives"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un balanceador reparte el tráfico entrante entre un grupo de instancias sanas según un algoritmo, evitando que una se sature mientras otras están ociosas. Mejora el rendimiento (paralelismo), la disponibilidad (si una instancia cae, redirige a las demás) y permite escalar horizontalmente de forma transparente para el cliente.",
       "explanation_en": "A load balancer spreads incoming traffic across a pool of healthy instances per an algorithm, preventing one from being overwhelmed while others are idle. It improves performance (parallelism), availability (if an instance dies, it reroutes to the others), and enables horizontal scaling transparently to the client.",
       "source": "Kleppmann / NGINX docs — load balancing",
       "expected_time_ms": 22000,
-      "tags": ["load-balancing", "fundamentals"]
+      "tags": [
+        "load-balancing",
+        "fundamentals"
+      ]
     },
     {
       "id": "q050402002",
@@ -162,23 +196,26 @@
       "question_es": "¿Cómo funciona el algoritmo de balanceo 'round-robin'?",
       "question_en": "How does the 'round-robin' balancing algorithm work?",
       "options_es": [
-        "Envía todas las peticiones a la instancia más rápida",
         "Reparte las peticiones de forma cíclica y equitativa entre las instancias, una tras otra en orden",
+        "Envía todas las peticiones a la instancia más rápida",
         "Elige una instancia al azar cada 24 horas",
         "Envía todo a la primera instancia hasta que se caiga"
       ],
       "options_en": [
-        "Sends all requests to the fastest instance",
         "Distributes requests cyclically and evenly across instances, one after another in order",
+        "Sends all requests to the fastest instance",
         "Picks a random instance every 24 hours",
         "Sends everything to the first instance until it crashes"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Round-robin rota las peticiones entre las instancias por turnos (1, 2, 3, 1, 2, 3...), repartiendo de forma uniforme sin considerar la carga real de cada una. Es simple y funciona bien si las instancias son homogéneas y las peticiones similares; si no, algoritmos como 'least connections' (menos conexiones activas) o ponderados reparten mejor.",
       "explanation_en": "Round-robin rotates requests among instances in turns (1, 2, 3, 1, 2, 3...), distributing evenly without considering each one's actual load. It's simple and works well if instances are homogeneous and requests similar; otherwise, algorithms like 'least connections' or weighted ones distribute better.",
       "source": "NGINX docs — load balancing algorithms",
       "expected_time_ms": 26000,
-      "tags": ["load-balancing", "round-robin"]
+      "tags": [
+        "load-balancing",
+        "round-robin"
+      ]
     },
     {
       "id": "q050402003",
@@ -187,14 +224,23 @@
       "difficulty_tier": "medium",
       "question_es": "Un balanceador de carga usa health checks para dejar de enviar tráfico a las instancias que no responden correctamente.",
       "question_en": "A load balancer uses health checks to stop sending traffic to instances that are not responding correctly.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El balanceador sondea periódicamente la salud de cada instancia (p. ej. un endpoint `/health`) y saca del pool a las que fallan, redirigiendo su tráfico a las sanas. Cuando una instancia vuelve a responder bien, la reincorpora. Esto es clave para la alta disponibilidad: aísla automáticamente las instancias caídas o degradadas sin intervención manual.",
       "explanation_en": "The balancer periodically probes each instance's health (e.g. a `/health` endpoint) and removes failing ones from the pool, redirecting their traffic to healthy ones. When an instance responds well again, it re-adds it. This is key for high availability: it automatically isolates down or degraded instances without manual intervention.",
       "source": "NGINX / AWS ELB docs — health checks",
       "expected_time_ms": 24000,
-      "tags": ["load-balancing", "health-check"]
+      "tags": [
+        "load-balancing",
+        "health-check"
+      ]
     },
     {
       "id": "q050402004",
@@ -204,23 +250,26 @@
       "question_es": "¿Cuál es la diferencia entre un balanceador de capa 4 (L4) y uno de capa 7 (L7)?",
       "question_en": "What is the difference between a Layer 4 (L4) and a Layer 7 (L7) load balancer?",
       "options_es": [
-        "L4 es más nuevo que L7",
         "L4 balancea según información de transporte (IP y puerto TCP/UDP), sin mirar el contenido; L7 entiende el protocolo de aplicación (HTTP) y puede enrutar según URL, cabeceras o cookies",
+        "L4 es más nuevo que L7",
         "L7 no puede usar HTTPS",
         "No hay diferencia funcional"
       ],
       "options_en": [
-        "L4 is newer than L7",
         "L4 balances based on transport info (IP and TCP/UDP port), without inspecting content; L7 understands the application protocol (HTTP) and can route by URL, headers, or cookies",
+        "L4 is newer than L7",
         "L7 can't use HTTPS",
         "There is no functional difference"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Un balanceador L4 opera en la capa de transporte: reparte conexiones por IP/puerto sin inspeccionar el contenido, siendo muy rápido y ligero. Un balanceador L7 opera en la capa de aplicación: 'entiende' HTTP y puede tomar decisiones ricas (enrutar `/api` a un grupo y `/static` a otro, por cabecera, cookie o path), a costa de más overhead. La elección depende de si se necesita enrutado por contenido.",
       "explanation_en": "An L4 balancer operates at the transport layer: it distributes connections by IP/port without inspecting content, being very fast and lightweight. An L7 balancer operates at the application layer: it 'understands' HTTP and can make rich decisions (route `/api` to one pool and `/static` to another, by header, cookie, or path), at the cost of more overhead. The choice depends on whether content-based routing is needed.",
       "source": "Kleppmann / NGINX & AWS docs — L4 vs L7",
       "expected_time_ms": 32000,
-      "tags": ["load-balancing", "l4-l7"]
+      "tags": [
+        "load-balancing",
+        "l4-l7"
+      ]
     },
     {
       "id": "q050402005",
@@ -229,14 +278,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un único balanceador de carga puede convertirse en un punto único de fallo, por lo que en sistemas de alta disponibilidad se despliega de forma redundante (por ejemplo, en pareja activo/pasivo o con múltiples nodos).",
       "question_en": "A single load balancer can become a single point of failure, so in high-availability systems it is deployed redundantly (e.g. active/passive pair or multiple nodes).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Si todo el tráfico pasa por un solo balanceador y este cae, cae el servicio: es un punto único de fallo. Por eso se replica (par activo/pasivo con failover, o varios activos), a menudo combinado con DNS o IPs virtuales flotantes para redirigir si uno falla. Eliminar los puntos únicos de fallo es un principio central de la alta disponibilidad.",
       "explanation_en": "If all traffic passes through a single balancer and it goes down, the service goes down: it's a single point of failure. That's why it's replicated (active/passive pair with failover, or several active), often combined with DNS or floating virtual IPs to redirect if one fails. Eliminating single points of failure is a core high-availability principle.",
       "source": "Kleppmann / HA architecture — redundant load balancers",
       "expected_time_ms": 26000,
-      "tags": ["load-balancing", "spof", "ha"]
+      "tags": [
+        "load-balancing",
+        "spof",
+        "ha"
+      ]
     },
     {
       "id": "q050402006",
@@ -254,7 +313,10 @@
       "explanation_en": "'Least connections' routes each request to the instance with the fewest open connections at that moment, adapting better than round-robin when requests have highly variable durations (some long, some short), since it avoids overloading an instance still handling slow requests. A capacity-weighted variant also exists.",
       "source": "NGINX docs — least_conn",
       "expected_time_ms": 30000,
-      "tags": ["load-balancing", "least-connections"]
+      "tags": [
+        "load-balancing",
+        "least-connections"
+      ]
     },
     {
       "id": "q050403001",
@@ -280,7 +342,10 @@
       "explanation_en": "CAP: Consistency (all nodes see the same data at once), Availability (every request gets a response), and Partition tolerance (the system keeps operating despite the network splitting between nodes). The theorem (Brewer) states that during a partition you must sacrifice C or A.",
       "source": "Brewer, E. — CAP theorem / Kleppmann DDIA Cap. 9",
       "expected_time_ms": 22000,
-      "tags": ["cap", "distributed"]
+      "tags": [
+        "cap",
+        "distributed"
+      ]
     },
     {
       "id": "q050403002",
@@ -289,14 +354,23 @@
       "difficulty_tier": "medium",
       "question_es": "Dado que las particiones de red son inevitables en un sistema distribuido real, en la práctica la elección de CAP es entre consistencia y disponibilidad DURANTE una partición.",
       "question_en": "Since network partitions are unavoidable in a real distributed system, in practice the CAP choice is between consistency and availability DURING a partition.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La 'P' no es opcional: en cualquier sistema distribuido real las particiones de red ocurren. Por eso el famoso 'elige 2 de 3' es engañoso; la decisión real es qué hacer cuando hay partición: rechazar peticiones para no divergir (elegir C, sacrificar A) o seguir respondiendo aceptando posible divergencia (elegir A, sacrificar C).",
       "explanation_en": "The 'P' is not optional: in any real distributed system, network partitions happen. That's why the famous 'pick 2 of 3' is misleading; the real decision is what to do when a partition occurs: reject requests to avoid diverging (choose C, sacrifice A) or keep responding accepting possible divergence (choose A, sacrifice C).",
       "source": "Kleppmann, M. — DDIA Cap. 9 (CAP critique)",
       "expected_time_ms": 26000,
-      "tags": ["cap", "partition"]
+      "tags": [
+        "cap",
+        "partition"
+      ]
     },
     {
       "id": "q050403003",
@@ -307,22 +381,25 @@
       "question_en": "What is 'strong consistency' versus 'eventual consistency'?",
       "options_es": [
         "La fuerte usa más CPU",
-        "La fuerte garantiza que una lectura tras una escritura devuelve siempre el valor más reciente; la eventual permite lecturas temporalmente desactualizadas que convergen con el tiempo",
+        "No hay diferencia práctica",
         "La eventual es siempre más lenta",
-        "No hay diferencia práctica"
+        "La fuerte garantiza que una lectura tras una escritura devuelve siempre el valor más reciente; la eventual permite lecturas temporalmente desactualizadas que convergen con el tiempo"
       ],
       "options_en": [
         "Strong uses more CPU",
-        "Strong guarantees a read after a write always returns the most recent value; eventual allows temporarily stale reads that converge over time",
+        "There's no practical difference",
         "Eventual is always slower",
-        "There's no practical difference"
+        "Strong guarantees a read after a write always returns the most recent value; eventual allows temporarily stale reads that converge over time"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Con consistencia fuerte, tras confirmar una escritura, cualquier lectura posterior ve ese valor (como si hubiera una sola copia). Con consistencia eventual, las réplicas pueden devolver valores viejos durante un tiempo, pero convergen si cesan las escrituras. La fuerte es más fácil de razonar pero cuesta latencia/disponibilidad; la eventual escala y está disponible pero traslada complejidad a la aplicación.",
       "explanation_en": "With strong consistency, after a write is acknowledged, any later read sees that value (as if there were a single copy). With eventual consistency, replicas may return old values for a while, but converge if writes stop. Strong is easier to reason about but costs latency/availability; eventual scales and stays available but pushes complexity to the application.",
       "source": "Kleppmann, M. — DDIA Cap. 5/9 (consistency models)",
       "expected_time_ms": 28000,
-      "tags": ["cap", "consistency-models"]
+      "tags": [
+        "cap",
+        "consistency-models"
+      ]
     },
     {
       "id": "q050403004",
@@ -333,22 +410,26 @@
       "question_en": "The PACELC model extends CAP. What does it add about behavior when there is NO partition?",
       "options_es": [
         "Nada, es idéntico a CAP",
-        "Que incluso sin partición (Else) hay una disyuntiva entre Latencia (L) y Consistencia (C): más consistencia suele costar más latencia",
+        "Que las particiones nunca ocurren",
         "Que sin partición todo es siempre consistente y rápido",
-        "Que las particiones nunca ocurren"
+        "Que incluso sin partición (Else) hay una disyuntiva entre Latencia (L) y Consistencia (C): más consistencia suele costar más latencia"
       ],
       "options_en": [
         "Nothing, it's identical to CAP",
-        "That even without a partition (Else) there's a trade-off between Latency (L) and Consistency (C): more consistency usually costs more latency",
+        "That partitions never happen",
         "That without a partition everything is always consistent and fast",
-        "That partitions never happen"
+        "That even without a partition (Else) there's a trade-off between Latency (L) and Consistency (C): more consistency usually costs more latency"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "PACELC (Abadi) dice: si hay Partición (P), elige entre Availability y Consistencia (A/C, como CAP); en caso contrario (Else), elige entre Latencia y Consistencia (L/C). Captura que la disyuntiva consistencia-vs-rendimiento existe SIEMPRE, no solo durante fallos: garantizar consistencia fuerte (p. ej. coordinar réplicas) añade latencia incluso en operación normal.",
       "explanation_en": "PACELC (Abadi) states: if there's a Partition (P), choose between Availability and Consistency (A/C, as in CAP); Else, choose between Latency and Consistency (L/C). It captures that the consistency-vs-performance trade-off ALWAYS exists, not only during failures: guaranteeing strong consistency (e.g. coordinating replicas) adds latency even in normal operation.",
       "source": "Abadi, D. — PACELC theorem",
       "expected_time_ms": 34000,
-      "tags": ["cap", "pacelc", "latency"]
+      "tags": [
+        "cap",
+        "pacelc",
+        "latency"
+      ]
     },
     {
       "id": "q050403005",
@@ -357,14 +438,23 @@
       "difficulty_tier": "hard",
       "question_es": "La 'linealizabilidad' (linearizability) es una garantía de consistencia fuerte que hace que el sistema se comporte como si hubiera una única copia de los datos, con operaciones que toman efecto de forma instantánea y en un orden único.",
       "question_en": "'Linearizability' is a strong consistency guarantee that makes the system behave as if there were a single copy of the data, with operations taking effect instantaneously and in a single order.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La linealizabilidad es el modelo de consistencia fuerte más citado: da la ilusión de una única copia con un orden total de operaciones, de modo que en cuanto una escritura se completa, todas las lecturas posteriores la ven. Es muy intuitiva pero cara: requiere coordinación entre réplicas (consenso), lo que impacta latencia y, ante particiones, disponibilidad.",
       "explanation_en": "Linearizability is the most-cited strong consistency model: it gives the illusion of a single copy with a total order of operations, so once a write completes, all later reads see it. It's very intuitive but costly: it requires coordination between replicas (consensus), impacting latency and, during partitions, availability.",
       "source": "Kleppmann, M. — DDIA Cap. 9 (Linearizability)",
       "expected_time_ms": 30000,
-      "tags": ["cap", "linearizability"]
+      "tags": [
+        "cap",
+        "linearizability"
+      ]
     },
     {
       "id": "q050403006",
@@ -382,7 +472,11 @@
       "explanation_en": "BASE (Basically Available, Soft state, Eventual consistency) is the opposite approach to ACID: instead of strong consistency and isolation, it prioritizes availability and scalability, accepting eventual consistency and 'soft' state (which may change over time even without writes, as replicas converge). The acid/base wordplay reflects the trade-off between strong guarantees and availability.",
       "source": "Kleppmann / Brewer — BASE vs ACID",
       "expected_time_ms": 30000,
-      "tags": ["cap", "base", "acid"]
+      "tags": [
+        "cap",
+        "base",
+        "acid"
+      ]
     },
     {
       "id": "q050404001",
@@ -393,22 +487,25 @@
       "question_en": "In a large-scale system design interview, why does one usually start by clarifying requirements and estimating scale (users, QPS, storage)?",
       "options_es": [
         "Para rellenar tiempo",
-        "Porque el diseño correcto depende de la escala y las restricciones: sin acotar el problema (funcionales y no funcionales), no se pueden tomar decisiones de arquitectura fundamentadas",
+        "Porque la escala nunca cambia el diseño",
         "Porque siempre se usa la misma arquitectura",
-        "Porque la escala nunca cambia el diseño"
+        "Porque el diseño correcto depende de la escala y las restricciones: sin acotar el problema (funcionales y no funcionales), no se pueden tomar decisiones de arquitectura fundamentadas"
       ],
       "options_en": [
         "To fill time",
-        "Because the right design depends on scale and constraints: without bounding the problem (functional and non-functional), you can't make well-grounded architecture decisions",
+        "Because scale never changes the design",
         "Because the same architecture is always used",
-        "Because scale never changes the design"
+        "Because the right design depends on scale and constraints: without bounding the problem (functional and non-functional), you can't make well-grounded architecture decisions"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "No hay una arquitectura universal: la solución para mil usuarios difiere radicalmente de la de mil millones. Aclarar requisitos funcionales, restricciones no funcionales (latencia, disponibilidad) y estimar la escala (usuarios, peticiones por segundo, volumen de datos) permite dimensionar componentes y justificar decisiones (cache, sharding, colas) en vez de sobre-diseñar o quedarse corto.",
       "explanation_en": "There's no universal architecture: the solution for a thousand users differs radically from one for a billion. Clarifying functional requirements, non-functional constraints (latency, availability), and estimating scale (users, requests per second, data volume) lets you size components and justify decisions (cache, sharding, queues) instead of over-designing or falling short.",
       "source": "Xu, A. — System Design Interview / Kleppmann",
       "expected_time_ms": 26000,
-      "tags": ["system-design", "requirements"]
+      "tags": [
+        "system-design",
+        "requirements"
+      ]
     },
     {
       "id": "q050404002",
@@ -417,14 +514,23 @@
       "difficulty_tier": "medium",
       "question_es": "Separar las lecturas (usando réplicas de solo lectura) de las escrituras (al nodo primario) es una técnica común para escalar bases de datos en cargas con muchas más lecturas que escrituras.",
       "question_en": "Separating reads (using read replicas) from writes (to the primary node) is a common technique to scale databases in workloads with far more reads than writes.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La replicación primario-réplica permite dirigir las escrituras al primario y repartir las lecturas entre varias réplicas, escalando la capacidad de lectura (típica en apps con ratio lectura/escritura alto). El coste es el retardo de replicación: las réplicas pueden ir ligeramente por detrás (consistencia eventual), lo que hay que tener en cuenta para lecturas que exigen ver la última escritura.",
       "explanation_en": "Primary-replica replication lets you direct writes to the primary and spread reads across several replicas, scaling read capacity (typical in apps with a high read/write ratio). The cost is replication lag: replicas may be slightly behind (eventual consistency), which must be considered for reads that require seeing the latest write.",
       "source": "Kleppmann, M. — DDIA Cap. 5 (Replication)",
       "expected_time_ms": 26000,
-      "tags": ["system-design", "read-replicas"]
+      "tags": [
+        "system-design",
+        "read-replicas"
+      ]
     },
     {
       "id": "q050404003",
@@ -435,22 +541,25 @@
       "question_en": "What is database 'sharding' (horizontal partitioning)?",
       "options_es": [
         "Hacer una copia de seguridad",
-        "Dividir los datos en particiones (shards) repartidas en varios nodos, cada uno con un subconjunto de los datos, para escalar más allá de la capacidad de una sola máquina",
+        "Eliminar columnas innecesarias",
         "Cifrar la base de datos",
-        "Eliminar columnas innecesarias"
+        "Dividir los datos en particiones (shards) repartidas en varios nodos, cada uno con un subconjunto de los datos, para escalar más allá de la capacidad de una sola máquina"
       ],
       "options_en": [
         "Making a backup",
-        "Splitting data into partitions (shards) spread across multiple nodes, each holding a subset of the data, to scale beyond a single machine's capacity",
+        "Removing unnecessary columns",
         "Encrypting the database",
-        "Removing unnecessary columns"
+        "Splitting data into partitions (shards) spread across multiple nodes, each holding a subset of the data, to scale beyond a single machine's capacity"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El sharding reparte las filas de una tabla (o el dataset) entre varios nodos según una clave de particionado, de modo que cada shard almacena y sirve solo su porción. Permite escalar horizontalmente el almacenamiento y el rendimiento de escritura. La dificultad está en elegir una buena clave (para repartir uniforme y evitar 'hot spots') y en las consultas que cruzan shards.",
       "explanation_en": "Sharding spreads a table's rows (or the dataset) across several nodes based on a partition key, so each shard stores and serves only its portion. It enables horizontal scaling of storage and write throughput. The difficulty lies in choosing a good key (to distribute evenly and avoid 'hot spots') and in queries that span shards.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (Partitioning)",
       "expected_time_ms": 28000,
-      "tags": ["system-design", "sharding"]
+      "tags": [
+        "system-design",
+        "sharding"
+      ]
     },
     {
       "id": "q050404004",
@@ -460,23 +569,27 @@
       "question_es": "Al elegir una clave de particionado (sharding key) mala, ¿qué problema típico puede surgir?",
       "question_en": "When choosing a bad partition (sharding) key, what typical problem can arise?",
       "options_es": [
-        "El código no compila",
         "'Hot spots': una partición recibe una proporción desmesurada de la carga (p. ej. particionar por país y que un país domine), anulando el beneficio del reparto",
+        "El código no compila",
         "Se duplica automáticamente toda la base de datos",
         "Desaparecen los índices"
       ],
       "options_en": [
-        "The code won't compile",
         "'Hot spots': one partition receives a disproportionate share of the load (e.g. partitioning by country and one country dominates), negating the benefit of distribution",
+        "The code won't compile",
         "The whole database is automatically duplicated",
         "Indexes disappear"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Una mala clave produce un reparto desigual: un 'hot spot' donde una partición concentra la mayoría de los accesos o datos, saturándose mientras las demás están ociosas, lo que reintroduce el cuello de botella que el sharding pretendía eliminar. Por eso se busca una clave de alta cardinalidad y distribución uniforme (a veces con hashing), evitando claves sesgadas como una marca de tiempo secuencial.",
       "explanation_en": "A bad key produces uneven distribution: a 'hot spot' where one partition concentrates most accesses or data, saturating while the others sit idle, reintroducing the bottleneck sharding was meant to remove. That's why you seek a high-cardinality, evenly distributed key (sometimes with hashing), avoiding skewed keys like a sequential timestamp.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (skewed workloads, hot spots)",
       "expected_time_ms": 32000,
-      "tags": ["system-design", "sharding", "hot-spot"]
+      "tags": [
+        "system-design",
+        "sharding",
+        "hot-spot"
+      ]
     },
     {
       "id": "q050404005",
@@ -485,14 +598,23 @@
       "difficulty_tier": "hard",
       "question_es": "Un buen diseño a gran escala suele combinar varias técnicas en capas (CDN, cache, réplicas de lectura, colas asíncronas, sharding), en lugar de depender de una sola solución mágica.",
       "question_en": "A good large-scale design usually combines several layered techniques (CDN, cache, read replicas, async queues, sharding), rather than relying on a single magic solution.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "No existe una bala de plata: los sistemas a gran escala aplican defensa en capas: CDN para estáticos, cache para lecturas calientes, réplicas para repartir lecturas, colas para desacoplar y absorber picos, y sharding para escalar escrituras/almacenamiento. Cada capa ataca un cuello de botella distinto, y la clave es medir dónde está el límite real antes de añadir complejidad.",
       "explanation_en": "There's no silver bullet: large-scale systems apply defense in layers: CDN for statics, cache for hot reads, replicas to spread reads, queues to decouple and absorb spikes, and sharding to scale writes/storage. Each layer attacks a different bottleneck, and the key is to measure where the real limit is before adding complexity.",
       "source": "Xu, A. — System Design Interview / Kleppmann",
       "expected_time_ms": 26000,
-      "tags": ["system-design", "layered"]
+      "tags": [
+        "system-design",
+        "layered"
+      ]
     },
     {
       "id": "q050404006",
@@ -510,7 +632,11 @@
       "explanation_en": "'Consistent hashing' places nodes and keys on a hash ring; each key is served by the next node on the ring. When a node is added or removed, only the keys in one arc of the ring (approx. 1/N) are reassigned, instead of nearly all as with `hash(key) % N` when N changes. It's fundamental in distributed systems like caches and key-value stores (Dynamo, Cassandra).",
       "source": "Kleppmann / Amazon Dynamo paper — consistent hashing",
       "expected_time_ms": 32000,
-      "tags": ["system-design", "consistent-hashing", "sharding"]
+      "tags": [
+        "system-design",
+        "consistent-hashing",
+        "sharding"
+      ]
     }
   ]
 }

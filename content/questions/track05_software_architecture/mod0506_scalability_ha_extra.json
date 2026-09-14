@@ -37,18 +37,18 @@
       "question_es": "¿Cuál es la diferencia entre un \"fault\" (fallo) y una \"failure\" (avería) según Kleppmann en DDIA?",
       "question_en": "What is the difference between a \"fault\" and a \"failure\" according to Kleppmann in DDIA?",
       "options_es": [
-        "Un fault es que un componente individual se desvíe de su especificación (p.ej. un disco falla); una failure es que el SISTEMA COMPLETO deje de proveer el servicio requerido al usuario",
-        "Son términos idénticos usados indistintamente",
         "Un fault solo ocurre en hardware, una failure solo en software",
+        "Son términos idénticos usados indistintamente",
+        "Un fault es que un componente individual se desvíe de su especificación (p.ej. un disco falla); una failure es que el SISTEMA COMPLETO deje de proveer el servicio requerido al usuario",
         "Una failure siempre precede a un fault"
       ],
       "options_en": [
-        "A fault is an individual component deviating from its spec (e.g. a disk fails); a failure is the WHOLE SYSTEM ceasing to provide the required service to the user",
-        "They are identical terms used interchangeably",
         "A fault only happens in hardware, a failure only in software",
+        "They are identical terms used interchangeably",
+        "A fault is an individual component deviating from its spec (e.g. a disk fails); a failure is the WHOLE SYSTEM ceasing to provide the required service to the user",
         "A failure always precedes a fault"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Kleppmann distingue: un \"fault\" es la desviación de un componente respecto a su spec; una \"failure\" es que el sistema en su conjunto deja de funcionar para el usuario. La ingeniería de tolerancia a fallos busca que faults individuales no se conviertan en failures.",
       "explanation_en": "Kleppmann distinguishes: a \"fault\" is a component's deviation from its spec; a \"failure\" is the system as a whole ceasing to work for the user. Fault-tolerance engineering aims to prevent individual faults from becoming failures.",
       "expected_time_ms": 18000,
@@ -91,18 +91,18 @@
       "question_es": "¿Cómo funciona el patrón Circuit Breaker para evitar fallos en cascada?",
       "question_en": "How does the Circuit Breaker pattern work to prevent cascading failures?",
       "options_es": [
-        "Tras detectar una tasa de fallos que supera un umbral al llamar a un servicio, el circuito se \"abre\" y las siguientes llamadas fallan rápido sin intentar la llamada real, dando tiempo al servicio dependido a recuperarse",
+        "Aumenta automáticamente los recursos del servidor que falla",
         "Reintenta indefinidamente cada petición fallida hasta que tenga éxito",
         "Cierra permanentemente la conexión de red tras el primer error",
-        "Aumenta automáticamente los recursos del servidor que falla"
+        "Tras detectar una tasa de fallos que supera un umbral al llamar a un servicio, el circuito se \"abre\" y las siguientes llamadas fallan rápido sin intentar la llamada real, dando tiempo al servicio dependido a recuperarse"
       ],
       "options_en": [
-        "After detecting a failure rate above a threshold when calling a service, the circuit \"opens\" and subsequent calls fail fast without attempting the real call, giving the dependency time to recover",
+        "It automatically increases the resources of the failing server",
         "It retries every failed request indefinitely until it succeeds",
         "It permanently closes the network connection after the first error",
-        "It automatically increases the resources of the failing server"
+        "After detecting a failure rate above a threshold when calling a service, the circuit \"opens\" and subsequent calls fail fast without attempting the real call, giving the dependency time to recover"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El Circuit Breaker monitoriza los fallos de las llamadas a un servicio; al superar un umbral, \"abre\" el circuito y las llamadas posteriores fallan inmediatamente (fail fast) sin intentar la llamada real, evitando saturar aún más al servicio con problemas y dando tiempo a que se recupere. Periódicamente prueba en modo \"half-open\" si el servicio ya responde.",
       "explanation_en": "The Circuit Breaker monitors failures of calls to a service; once a threshold is exceeded, it \"opens\" the circuit and subsequent calls fail immediately (fail fast) without attempting the real call, avoiding further overloading the troubled service and giving it time to recover. It periodically probes in \"half-open\" mode to see if the service responds again.",
       "expected_time_ms": 22000,

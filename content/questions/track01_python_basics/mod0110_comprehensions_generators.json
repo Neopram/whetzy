@@ -7,14 +7,27 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nprint([x * 2 for x in range(4)])\n```",
       "question_en": "What does the following code print?\n```python\nprint([x * 2 for x in range(4)])\n```",
-      "options_es": ["[0, 2, 4, 6]", "[2, 4, 6, 8]", "[0, 1, 2, 3]", "[0, 2, 4, 6, 8]"],
-      "options_en": ["[0, 2, 4, 6]", "[2, 4, 6, 8]", "[0, 1, 2, 3]", "[0, 2, 4, 6, 8]"],
-      "correct_index": 0,
+      "options_es": [
+        "[0, 1, 2, 3]",
+        "[2, 4, 6, 8]",
+        "[0, 2, 4, 6]",
+        "[0, 2, 4, 6, 8]"
+      ],
+      "options_en": [
+        "[0, 1, 2, 3]",
+        "[2, 4, 6, 8]",
+        "[0, 2, 4, 6]",
+        "[0, 2, 4, 6, 8]"
+      ],
+      "correct_index": 2,
       "explanation_es": "`range(4)` produce 0, 1, 2, 3. Multiplicando cada uno por 2 se obtiene `[0, 2, 4, 6]`. Una comprensión de lista aplica una expresión a cada elemento del iterable.",
       "explanation_en": "`range(4)` yields 0, 1, 2, 3. Multiplying each by 2 gives `[0, 2, 4, 6]`. A list comprehension applies an expression to each element of the iterable.",
       "source": "CPython docs 3.13 — Data Structures: List Comprehensions",
       "expected_time_ms": 18000,
-      "tags": ["comprehensions", "list"]
+      "tags": [
+        "comprehensions",
+        "list"
+      ]
     },
     {
       "id": "q011001002",
@@ -23,14 +36,27 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nprint([x for x in range(10) if x % 3 == 0])\n```",
       "question_en": "What does the following code print?\n```python\nprint([x for x in range(10) if x % 3 == 0])\n```",
-      "options_es": ["[0, 3, 6, 9]", "[3, 6, 9]", "[0, 3, 6]", "[1, 4, 7]"],
-      "options_en": ["[0, 3, 6, 9]", "[3, 6, 9]", "[0, 3, 6]", "[1, 4, 7]"],
-      "correct_index": 0,
+      "options_es": [
+        "[0, 3, 6]",
+        "[3, 6, 9]",
+        "[0, 3, 6, 9]",
+        "[1, 4, 7]"
+      ],
+      "options_en": [
+        "[0, 3, 6]",
+        "[3, 6, 9]",
+        "[0, 3, 6, 9]",
+        "[1, 4, 7]"
+      ],
+      "correct_index": 2,
       "explanation_es": "El `if` al final filtra: solo pasan los múltiplos de 3 en `range(10)` (0..9), que son 0, 3, 6 y 9. El 0 cuenta porque `0 % 3 == 0`.",
       "explanation_en": "The trailing `if` filters: only multiples of 3 in `range(10)` (0..9) pass, which are 0, 3, 6, and 9. Zero counts because `0 % 3 == 0`.",
       "source": "CPython docs 3.13 — Data Structures: List Comprehensions",
       "expected_time_ms": 22000,
-      "tags": ["comprehensions", "filter"]
+      "tags": [
+        "comprehensions",
+        "filter"
+      ]
     },
     {
       "id": "q011001003",
@@ -40,23 +66,27 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nprint(['par' if x % 2 == 0 else 'impar' for x in range(3)])\n```",
       "question_en": "What does the following code print?\n```python\nprint(['even' if x % 2 == 0 else 'odd' for x in range(3)])\n```",
       "options_es": [
-        "['par', 'impar', 'par']",
         "['impar', 'par', 'impar']",
+        "['par', 'impar', 'par']",
         "['par', 'par', 'par']",
         "Error de sintaxis"
       ],
       "options_en": [
-        "['even', 'odd', 'even']",
         "['odd', 'even', 'odd']",
+        "['even', 'odd', 'even']",
         "['even', 'even', 'even']",
         "Syntax error"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Aquí el condicional es una expresión ternaria que va **antes** del `for`, eligiendo el valor por elemento: 0→'par', 1→'impar', 2→'par'. Es distinto del `if` de filtro (que va al final y elimina elementos).",
       "explanation_en": "Here the conditional is a ternary expression placed **before** the `for`, choosing the value per element: 0→'even', 1→'odd', 2→'even'. This differs from the filtering `if` (which goes at the end and removes elements).",
       "source": "CPython docs 3.13 — Expressions: Conditional expressions",
       "expected_time_ms": 30000,
-      "tags": ["comprehensions", "ternary", "conditional-expression"]
+      "tags": [
+        "comprehensions",
+        "ternary",
+        "conditional-expression"
+      ]
     },
     {
       "id": "q011001004",
@@ -82,7 +112,11 @@
       "explanation_en": "Two `for` clauses in a comprehension are equivalent to nested loops: for each `x`, all `y` are iterated. This yields the Cartesian product: `[(1,'a'), (1,'b'), (2,'a'), (2,'b')]`.",
       "source": "CPython docs 3.13 — Data Structures: Nested list comprehensions",
       "expected_time_ms": 32000,
-      "tags": ["comprehensions", "nested", "cartesian"]
+      "tags": [
+        "comprehensions",
+        "nested",
+        "cartesian"
+      ]
     },
     {
       "id": "q011001005",
@@ -92,23 +126,27 @@
       "question_es": "En Python 3, ¿qué ocurre con la variable de bucle de una comprensión, como `x` en `[x for x in range(3)]`, después de ejecutarla?",
       "question_en": "In Python 3, what happens to a comprehension's loop variable, like `x` in `[x for x in range(3)]`, after it runs?",
       "options_es": [
-        "No se filtra al ámbito exterior: `x` no existe fuera de la comprensión",
-        "Queda con el valor 2 en el ámbito exterior",
         "Se convierte en global automáticamente",
+        "Queda con el valor 2 en el ámbito exterior",
+        "No se filtra al ámbito exterior: `x` no existe fuera de la comprensión",
         "Queda con el valor 3"
       ],
       "options_en": [
-        "It doesn't leak to the outer scope: `x` doesn't exist outside the comprehension",
-        "It remains with value 2 in the outer scope",
         "It automatically becomes global",
+        "It remains with value 2 in the outer scope",
+        "It doesn't leak to the outer scope: `x` doesn't exist outside the comprehension",
         "It remains with value 3"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "En Python 3, las comprensiones tienen su **propio ámbito**: la variable de bucle no se filtra al exterior (a diferencia de un `for` normal, y a diferencia de Python 2). Acceder a `x` tras la comprensión da `NameError` si no estaba definida antes.",
       "explanation_en": "In Python 3, comprehensions have their **own scope**: the loop variable doesn't leak outside (unlike a plain `for`, and unlike Python 2). Accessing `x` after the comprehension gives `NameError` if it wasn't defined before.",
       "source": "CPython docs 3.13 — Expressions: Displays for lists, sets and dictionaries (scope)",
       "expected_time_ms": 40000,
-      "tags": ["comprehensions", "scope", "leak"]
+      "tags": [
+        "comprehensions",
+        "scope",
+        "leak"
+      ]
     },
     {
       "id": "q011001006",
@@ -134,7 +172,11 @@
       "explanation_en": "Comprehensions shine for concise transform/filter logic. When you need multiple statements, exception handling, or side effects (like writing to disk), forcing it into a comprehension hurts readability; an explicit `for` is preferable. Conciseness shouldn't sacrifice clarity.",
       "source": "Effective Python 3e (Slatkin), Item on avoiding overly complex comprehensions",
       "expected_time_ms": 42000,
-      "tags": ["comprehensions", "best-practice", "readability"]
+      "tags": [
+        "comprehensions",
+        "best-practice",
+        "readability"
+      ]
     },
     {
       "id": "q011002001",
@@ -144,23 +186,26 @@
       "question_es": "¿Qué diferencia sintáctica hay entre una comprensión de lista y una expresión generadora?",
       "question_en": "What syntactic difference is there between a list comprehension and a generator expression?",
       "options_es": [
-        "La generadora usa paréntesis () en lugar de corchetes []",
         "La generadora usa llaves {}",
+        "La generadora usa paréntesis () en lugar de corchetes []",
         "No hay diferencia sintáctica",
         "La generadora necesita la palabra clave gen"
       ],
       "options_en": [
-        "The generator uses parentheses () instead of brackets []",
         "The generator uses braces {}",
+        "The generator uses parentheses () instead of brackets []",
         "There's no syntactic difference",
         "The generator needs the keyword gen"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`[x for x in it]` es una comprensión de lista (construye la lista completa en memoria); `(x for x in it)` es una expresión generadora (produce los valores perezosamente, uno a uno). El cambio de corchetes por paréntesis lo cambia todo respecto al uso de memoria.",
       "explanation_en": "`[x for x in it]` is a list comprehension (builds the whole list in memory); `(x for x in it)` is a generator expression (produces values lazily, one at a time). Swapping brackets for parentheses changes everything about memory use.",
       "source": "CPython docs 3.13 — Expressions: Generator expressions",
       "expected_time_ms": 22000,
-      "tags": ["generators", "syntax"]
+      "tags": [
+        "generators",
+        "syntax"
+      ]
     },
     {
       "id": "q011002002",
@@ -169,14 +214,27 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ng = (x * x for x in range(3))\nprint(sum(g))\n```",
       "question_en": "What does the following code print?\n```python\ng = (x * x for x in range(3))\nprint(sum(g))\n```",
-      "options_es": ["5", "6", "9", "0"],
-      "options_en": ["5", "6", "9", "0"],
+      "options_es": [
+        "5",
+        "6",
+        "9",
+        "0"
+      ],
+      "options_en": [
+        "5",
+        "6",
+        "9",
+        "0"
+      ],
       "correct_index": 0,
       "explanation_es": "La generadora produce 0, 1, 4 (los cuadrados de 0, 1, 2). `sum(g)` los suma: 0 + 1 + 4 = 5. Muchas funciones (`sum`, `max`, `any`) consumen generadores directamente sin necesidad de materializar una lista.",
       "explanation_en": "The generator yields 0, 1, 4 (squares of 0, 1, 2). `sum(g)` adds them: 0 + 1 + 4 = 5. Many functions (`sum`, `max`, `any`) consume generators directly without materializing a list.",
       "source": "CPython docs 3.13 — Expressions: Generator expressions",
       "expected_time_ms": 25000,
-      "tags": ["generators", "sum"]
+      "tags": [
+        "generators",
+        "sum"
+      ]
     },
     {
       "id": "q011002003",
@@ -185,14 +243,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ng = (x for x in range(3))\nprint(list(g))\nprint(list(g))\n```",
       "question_en": "What does the following code print?\n```python\ng = (x for x in range(3))\nprint(list(g))\nprint(list(g))\n```",
-      "options_es": ["[0, 1, 2]\\n[]", "[0, 1, 2]\\n[0, 1, 2]", "[]\\n[]", "Error"],
-      "options_en": ["[0, 1, 2]\\n[]", "[0, 1, 2]\\n[0, 1, 2]", "[]\\n[]", "Error"],
-      "correct_index": 0,
+      "options_es": [
+        "[0, 1, 2]\\n[0, 1, 2]",
+        "[0, 1, 2]\\n[]",
+        "[]\\n[]",
+        "Error"
+      ],
+      "options_en": [
+        "[0, 1, 2]\\n[0, 1, 2]",
+        "[0, 1, 2]\\n[]",
+        "[]\\n[]",
+        "Error"
+      ],
+      "correct_index": 1,
       "explanation_es": "Los generadores se consumen **una sola vez**. El primer `list(g)` agota el generador dando `[0, 1, 2]`; el segundo encuentra el generador ya exhausto y produce `[]`. Este agotamiento es una fuente frecuente de bugs.",
       "explanation_en": "Generators are consumed **only once**. The first `list(g)` exhausts the generator giving `[0, 1, 2]`; the second finds it already exhausted and produces `[]`. This exhaustion is a frequent source of bugs.",
       "source": "CPython docs 3.13 — Glossary: generator; Fluent Python 2e, ch. 17",
       "expected_time_ms": 35000,
-      "tags": ["generators", "exhaustion", "gotcha"]
+      "tags": [
+        "generators",
+        "exhaustion",
+        "gotcha"
+      ]
     },
     {
       "id": "q011002004",
@@ -202,23 +274,27 @@
       "question_es": "¿Por qué usar una expresión generadora en `sum(x*x for x in range(1000000))` en vez de una lista?",
       "question_en": "Why use a generator expression in `sum(x*x for x in range(1000000))` instead of a list?",
       "options_es": [
-        "Porque no materializa el millón de valores en memoria: los produce y suma uno a uno",
-        "Porque el resultado es distinto",
         "Porque las listas no admiten sum()",
+        "Porque el resultado es distinto",
+        "Porque no materializa el millón de valores en memoria: los produce y suma uno a uno",
         "Porque es la única sintaxis válida"
       ],
       "options_en": [
-        "Because it doesn't materialize the million values in memory: it produces and sums them one at a time",
-        "Because the result is different",
         "Because lists don't support sum()",
+        "Because the result is different",
+        "Because it doesn't materialize the million values in memory: it produces and sums them one at a time",
         "Because it's the only valid syntax"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "La generadora evalúa perezosamente: nunca existe la lista completa de un millón de cuadrados en memoria a la vez, solo un valor cada vez. El resultado numérico es idéntico, pero el consumo de memoria es O(1) en lugar de O(n). Además, se puede omitir los paréntesis extra cuando la generadora es el único argumento.",
       "explanation_en": "The generator evaluates lazily: the full list of a million squares never exists in memory at once, only one value at a time. The numeric result is identical, but memory use is O(1) instead of O(n). Also, the extra parentheses can be omitted when the generator is the sole argument.",
       "source": "Effective Python 3e (Slatkin), Item on generator expressions for large inputs",
       "expected_time_ms": 35000,
-      "tags": ["generators", "memory", "lazy"]
+      "tags": [
+        "generators",
+        "memory",
+        "lazy"
+      ]
     },
     {
       "id": "q011002005",
@@ -227,14 +303,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ng = (x for x in range(5))\nfirst = next(g)\nsecond = next(g)\nprint(first, second, list(g))\n```",
       "question_en": "What does the following code print?\n```python\ng = (x for x in range(5))\nfirst = next(g)\nsecond = next(g)\nprint(first, second, list(g))\n```",
-      "options_es": ["0 1 [2, 3, 4]", "0 1 [0, 1, 2, 3, 4]", "1 2 [3, 4]", "0 1 []"],
-      "options_en": ["0 1 [2, 3, 4]", "0 1 [0, 1, 2, 3, 4]", "1 2 [3, 4]", "0 1 []"],
-      "correct_index": 0,
+      "options_es": [
+        "0 1 [0, 1, 2, 3, 4]",
+        "0 1 [2, 3, 4]",
+        "1 2 [3, 4]",
+        "0 1 []"
+      ],
+      "options_en": [
+        "0 1 [0, 1, 2, 3, 4]",
+        "0 1 [2, 3, 4]",
+        "1 2 [3, 4]",
+        "0 1 []"
+      ],
+      "correct_index": 1,
       "explanation_es": "`next(g)` avanza el generador un paso: el primero da 0, el segundo da 1. El generador queda posicionado tras el 1, así que `list(g)` recoge lo restante: `[2, 3, 4]`. El generador recuerda su posición entre llamadas.",
       "explanation_en": "`next(g)` advances the generator one step: the first gives 0, the second gives 1. The generator is now positioned after 1, so `list(g)` collects the rest: `[2, 3, 4]`. The generator remembers its position between calls.",
       "source": "CPython docs 3.13 — Built-in Functions: next",
       "expected_time_ms": 40000,
-      "tags": ["generators", "next", "state"]
+      "tags": [
+        "generators",
+        "next",
+        "state"
+      ]
     },
     {
       "id": "q011002006",
@@ -244,23 +334,27 @@
       "question_es": "¿Qué devuelve `next(g)` cuando el generador `g` ya está agotado y no se pasa un valor por defecto?",
       "question_en": "What does `next(g)` return when generator `g` is already exhausted and no default is given?",
       "options_es": [
-        "Lanza StopIteration",
         "Devuelve None",
+        "Lanza StopIteration",
         "Devuelve el último valor otra vez",
         "Reinicia el generador desde el principio"
       ],
       "options_en": [
-        "It raises StopIteration",
         "It returns None",
+        "It raises StopIteration",
         "It returns the last value again",
         "It restarts the generator from the beginning"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Cuando un generador se agota, `next(g)` lanza `StopIteration`. Los bucles `for` capturan esta excepción internamente para terminar limpiamente. Puedes evitar la excepción pasando un valor por defecto: `next(g, None)` devuelve `None` en vez de lanzar.",
       "explanation_en": "When a generator is exhausted, `next(g)` raises `StopIteration`. `for` loops catch this exception internally to end cleanly. You can avoid the exception by passing a default: `next(g, None)` returns `None` instead of raising.",
       "source": "CPython docs 3.13 — Built-in Functions: next; StopIteration",
       "expected_time_ms": 42000,
-      "tags": ["generators", "StopIteration", "next"]
+      "tags": [
+        "generators",
+        "StopIteration",
+        "next"
+      ]
     },
     {
       "id": "q011003001",
@@ -269,14 +363,27 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué palabra clave convierte una función normal en una función generadora?",
       "question_en": "Which keyword turns a normal function into a generator function?",
-      "options_es": ["yield", "return", "generate", "async"],
-      "options_en": ["yield", "return", "generate", "async"],
-      "correct_index": 0,
+      "options_es": [
+        "return",
+        "yield",
+        "generate",
+        "async"
+      ],
+      "options_en": [
+        "return",
+        "yield",
+        "generate",
+        "async"
+      ],
+      "correct_index": 1,
       "explanation_es": "La presencia de `yield` en el cuerpo hace que la función sea generadora: al llamarla, no ejecuta el cuerpo, sino que devuelve un objeto generador. `return` termina una función normal; `yield` produce un valor y **pausa** manteniendo el estado.",
       "explanation_en": "The presence of `yield` in the body makes the function a generator: calling it doesn't run the body but returns a generator object. `return` ends a normal function; `yield` produces a value and **pauses**, keeping the state.",
       "source": "CPython docs 3.13 — Expressions: Yield expressions",
       "expected_time_ms": 18000,
-      "tags": ["generators", "yield"]
+      "tags": [
+        "generators",
+        "yield"
+      ]
     },
     {
       "id": "q011003002",
@@ -285,14 +392,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef gen():\n    yield 1\n    yield 2\n    yield 3\nprint(list(gen()))\n```",
       "question_en": "What does the following code print?\n```python\ndef gen():\n    yield 1\n    yield 2\n    yield 3\nprint(list(gen()))\n```",
-      "options_es": ["[1, 2, 3]", "1", "3", "[3]"],
-      "options_en": ["[1, 2, 3]", "1", "3", "[3]"],
-      "correct_index": 0,
+      "options_es": [
+        "[3]",
+        "1",
+        "3",
+        "[1, 2, 3]"
+      ],
+      "options_en": [
+        "[3]",
+        "1",
+        "3",
+        "[1, 2, 3]"
+      ],
+      "correct_index": 3,
       "explanation_es": "Cada `yield` produce un valor sucesivo. Al convertir el generador en lista, se recogen todos: `[1, 2, 3]`. La función se pausa en cada `yield` y reanuda desde ahí en la siguiente iteración.",
       "explanation_en": "Each `yield` produces a successive value. Converting the generator to a list collects them all: `[1, 2, 3]`. The function pauses at each `yield` and resumes from there on the next iteration.",
       "source": "CPython docs 3.13 — Expressions: Yield expressions",
       "expected_time_ms": 25000,
-      "tags": ["generators", "yield", "multiple"]
+      "tags": [
+        "generators",
+        "yield",
+        "multiple"
+      ]
     },
     {
       "id": "q011003003",
@@ -301,14 +422,29 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef contar():\n    print('inicio')\n    yield 1\ng = contar()\nprint('creado')\nnext(g)\n```",
       "question_en": "What does the following code print?\n```python\ndef count():\n    print('start')\n    yield 1\ng = count()\nprint('created')\nnext(g)\n```",
-      "options_es": ["creado\\ninicio", "inicio\\ncreado", "inicio", "creado"],
-      "options_en": ["created\\nstart", "start\\ncreated", "start", "created"],
+      "options_es": [
+        "creado\\ninicio",
+        "inicio\\ncreado",
+        "inicio",
+        "creado"
+      ],
+      "options_en": [
+        "created\\nstart",
+        "start\\ncreated",
+        "start",
+        "created"
+      ],
       "correct_index": 0,
       "explanation_es": "Llamar a una función generadora **no ejecuta** su cuerpo, solo crea el generador; por eso 'inicio' no se imprime aún y sí 'creado'. El cuerpo empieza a ejecutarse con el primer `next(g)`, imprimiendo entonces 'inicio'. La ejecución es perezosa.",
       "explanation_en": "Calling a generator function does **not** run its body, it only creates the generator; that's why 'start' isn't printed yet but 'created' is. The body begins executing on the first `next(g)`, printing 'start' then. Execution is lazy.",
       "source": "CPython docs 3.13 — Glossary: generator; Yield expressions",
       "expected_time_ms": 35000,
-      "tags": ["generators", "yield", "lazy", "gotcha"]
+      "tags": [
+        "generators",
+        "yield",
+        "lazy",
+        "gotcha"
+      ]
     },
     {
       "id": "q011003004",
@@ -318,23 +454,28 @@
       "question_es": "¿Cuál es la principal ventaja de una función generadora frente a construir y devolver una lista completa?",
       "question_en": "What is the main advantage of a generator function over building and returning a full list?",
       "options_es": [
-        "Produce los valores bajo demanda, con memoria constante, apto para secuencias grandes o infinitas",
-        "Se ejecuta en paralelo automáticamente",
         "Siempre es más rápido en CPU",
+        "Se ejecuta en paralelo automáticamente",
+        "Produce los valores bajo demanda, con memoria constante, apto para secuencias grandes o infinitas",
         "Permite modificar los valores ya producidos"
       ],
       "options_en": [
-        "It produces values on demand, with constant memory, suitable for large or infinite sequences",
-        "It runs in parallel automatically",
         "It is always faster on CPU",
+        "It runs in parallel automatically",
+        "It produces values on demand, with constant memory, suitable for large or infinite sequences",
         "It lets you modify already-produced values"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un generador produce cada valor solo cuando se le pide y no guarda todos a la vez, así que usa memoria constante y puede representar secuencias enormes o incluso infinitas (p. ej. un contador sin fin). Una lista, en cambio, debe caber entera en memoria.",
       "explanation_en": "A generator produces each value only when requested and doesn't hold them all at once, so it uses constant memory and can represent huge or even infinite sequences (e.g. an endless counter). A list, by contrast, must fit entirely in memory.",
       "source": "Fluent Python 2e (Ramalho), ch. 17 — Generators",
       "expected_time_ms": 38000,
-      "tags": ["generators", "memory", "lazy", "infinite"]
+      "tags": [
+        "generators",
+        "memory",
+        "lazy",
+        "infinite"
+      ]
     },
     {
       "id": "q011003005",
@@ -343,14 +484,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código en Python 3.3+?\n```python\ndef gen():\n    yield from [1, 2]\n    yield from [3, 4]\nprint(list(gen()))\n```",
       "question_en": "What does the following code print in Python 3.3+?\n```python\ndef gen():\n    yield from [1, 2]\n    yield from [3, 4]\nprint(list(gen()))\n```",
-      "options_es": ["[1, 2, 3, 4]", "[[1, 2], [3, 4]]", "[1, 3]", "[4]"],
-      "options_en": ["[1, 2, 3, 4]", "[[1, 2], [3, 4]]", "[1, 3]", "[4]"],
-      "correct_index": 0,
+      "options_es": [
+        "[[1, 2], [3, 4]]",
+        "[1, 2, 3, 4]",
+        "[1, 3]",
+        "[4]"
+      ],
+      "options_en": [
+        "[[1, 2], [3, 4]]",
+        "[1, 2, 3, 4]",
+        "[1, 3]",
+        "[4]"
+      ],
+      "correct_index": 1,
       "explanation_es": "`yield from iterable` produce cada elemento del iterable como si hubiera varios `yield` individuales. Los dos `yield from` encadenan sus elementos, dando `[1, 2, 3, 4]`. Es útil para delegar a subgeneradores o aplanar.",
       "explanation_en": "`yield from iterable` yields each element of the iterable as if there were several individual `yield`s. The two `yield from` chain their elements, giving `[1, 2, 3, 4]`. It's useful for delegating to subgenerators or flattening.",
       "source": "PEP 380 — Syntax for Delegating to a Subgenerator",
       "expected_time_ms": 40000,
-      "tags": ["generators", "yield-from", "delegation"]
+      "tags": [
+        "generators",
+        "yield-from",
+        "delegation"
+      ]
     },
     {
       "id": "q011003006",
@@ -368,7 +523,11 @@
       "explanation_en": "`yield` produces a value to the consumer and suspends the function; on the next `next()` execution resumes right after the `yield`, with all local variables intact. That pause/resume capability is what distinguishes a generator from a normal function with `return`.",
       "source": "CPython docs 3.13 — Expressions: Yield expressions",
       "expected_time_ms": 35000,
-      "tags": ["generators", "yield", "keyword"]
+      "tags": [
+        "generators",
+        "yield",
+        "keyword"
+      ]
     },
     {
       "id": "q011004001",
@@ -377,14 +536,27 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué función incorporada obtiene el siguiente elemento de un iterador?",
       "question_en": "Which built-in function gets the next element from an iterator?",
-      "options_es": ["next()", "iter()", "get()", "advance()"],
-      "options_en": ["next()", "iter()", "get()", "advance()"],
+      "options_es": [
+        "next()",
+        "iter()",
+        "get()",
+        "advance()"
+      ],
+      "options_en": [
+        "next()",
+        "iter()",
+        "get()",
+        "advance()"
+      ],
       "correct_index": 0,
       "explanation_es": "`next(it)` avanza el iterador y devuelve el siguiente valor. `iter(obj)` hace lo complementario: obtiene un iterador a partir de un iterable. Juntos forman el protocolo de iteración.",
       "explanation_en": "`next(it)` advances the iterator and returns the next value. `iter(obj)` does the complement: it gets an iterator from an iterable. Together they form the iteration protocol.",
       "source": "CPython docs 3.13 — Built-in Functions: next, iter",
       "expected_time_ms": 18000,
-      "tags": ["iterators", "next"]
+      "tags": [
+        "iterators",
+        "next"
+      ]
     },
     {
       "id": "q011004002",
@@ -394,23 +566,27 @@
       "question_es": "¿Cuál es la diferencia entre un iterable y un iterador?",
       "question_en": "What is the difference between an iterable and an iterator?",
       "options_es": [
-        "Un iterable puede producir un iterador (con iter()); el iterador mantiene la posición y da valores con next()",
         "Son sinónimos exactos",
+        "Un iterable puede producir un iterador (con iter()); el iterador mantiene la posición y da valores con next()",
         "Un iterador no puede recorrerse con for",
         "Un iterable solo puede ser una lista"
       ],
       "options_en": [
-        "An iterable can produce an iterator (via iter()); the iterator holds the position and yields values with next()",
         "They are exact synonyms",
+        "An iterable can produce an iterator (via iter()); the iterator holds the position and yields values with next()",
         "An iterator cannot be traversed with for",
         "An iterable can only be a list"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Un **iterable** (lista, tupla, dict, str…) implementa `__iter__` y sabe crear un iterador. Un **iterador** implementa `__next__` (y `__iter__` devolviéndose a sí mismo) y recuerda por dónde va. Un `for` llama a `iter()` sobre el iterable y luego a `next()` repetidamente sobre el iterador resultante.",
       "explanation_en": "An **iterable** (list, tuple, dict, str…) implements `__iter__` and knows how to create an iterator. An **iterator** implements `__next__` (and `__iter__` returning itself) and remembers its position. A `for` calls `iter()` on the iterable and then `next()` repeatedly on the resulting iterator.",
       "source": "CPython docs 3.13 — Glossary: iterable, iterator",
       "expected_time_ms": 35000,
-      "tags": ["iterators", "iterables", "protocol"]
+      "tags": [
+        "iterators",
+        "iterables",
+        "protocol"
+      ]
     },
     {
       "id": "q011004003",
@@ -419,14 +595,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n```python\nit = iter([10, 20, 30])\nprint(next(it))\nprint(next(it))\n```",
       "question_en": "What does the following code print?\n```python\nit = iter([10, 20, 30])\nprint(next(it))\nprint(next(it))\n```",
-      "options_es": ["10\\n20", "10\\n10", "20\\n30", "[10, 20, 30]"],
-      "options_en": ["10\\n20", "10\\n10", "20\\n30", "[10, 20, 30]"],
-      "correct_index": 0,
+      "options_es": [
+        "10\\n10",
+        "10\\n20",
+        "20\\n30",
+        "[10, 20, 30]"
+      ],
+      "options_en": [
+        "10\\n10",
+        "10\\n20",
+        "20\\n30",
+        "[10, 20, 30]"
+      ],
+      "correct_index": 1,
       "explanation_es": "`iter([10, 20, 30])` crea un iterador sobre la lista. Cada `next(it)` avanza: el primero da 10, el segundo 20. El iterador recuerda su posición entre llamadas.",
       "explanation_en": "`iter([10, 20, 30])` creates an iterator over the list. Each `next(it)` advances: the first gives 10, the second 20. The iterator remembers its position between calls.",
       "source": "CPython docs 3.13 — Built-in Functions: iter, next",
       "expected_time_ms": 28000,
-      "tags": ["iterators", "iter", "next"]
+      "tags": [
+        "iterators",
+        "iter",
+        "next"
+      ]
     },
     {
       "id": "q011004004",
@@ -436,23 +626,27 @@
       "question_es": "¿Qué métodos especiales debe implementar una clase para ser un iterador?",
       "question_en": "Which special methods must a class implement to be an iterator?",
       "options_es": [
-        "__iter__ (que devuelve self) y __next__",
         "solo __next__",
+        "__iter__ (que devuelve self) y __next__",
         "__iter__ y __getitem__",
         "__start__ y __end__"
       ],
       "options_en": [
-        "__iter__ (returning self) and __next__",
         "only __next__",
+        "__iter__ (returning self) and __next__",
         "__iter__ and __getitem__",
         "__start__ and __end__"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Un iterador implementa `__next__` (devuelve el siguiente valor o lanza `StopIteration` al terminar) y `__iter__` (devolviendo `self`, para poder usarse en un `for`). El `__iter__` que se devuelve a sí mismo es lo que distingue a un iterador de un mero iterable.",
       "explanation_en": "An iterator implements `__next__` (returns the next value or raises `StopIteration` when done) and `__iter__` (returning `self`, so it can be used in a `for`). The self-returning `__iter__` is what distinguishes an iterator from a mere iterable.",
       "source": "CPython docs 3.13 — Data model: Iterator Types",
       "expected_time_ms": 40000,
-      "tags": ["iterators", "protocol", "dunder"]
+      "tags": [
+        "iterators",
+        "protocol",
+        "dunder"
+      ]
     },
     {
       "id": "q011004005",
@@ -462,23 +656,27 @@
       "question_es": "¿Por qué se dice que un generador es un iterador?",
       "question_en": "Why is a generator said to be an iterator?",
       "options_es": [
-        "Porque implementa automáticamente __iter__ y __next__, por lo que puede consumirse con next() y for",
-        "Porque siempre devuelve una lista",
         "Porque no puede pausarse",
+        "Porque siempre devuelve una lista",
+        "Porque implementa automáticamente __iter__ y __next__, por lo que puede consumirse con next() y for",
         "Porque solo funciona con números"
       ],
       "options_en": [
-        "Because it automatically implements __iter__ and __next__, so it can be consumed with next() and for",
-        "Because it always returns a list",
         "Because it cannot be paused",
+        "Because it always returns a list",
+        "Because it automatically implements __iter__ and __next__, so it can be consumed with next() and for",
         "Because it only works with numbers"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Los generadores (creados con `yield` o con una expresión generadora) implementan el protocolo de iterador de forma gratuita: tienen `__next__` (avanza hasta el siguiente `yield`) y `__iter__` (se devuelven a sí mismos). Por eso pueden usarse en `for`, `next()`, `sum()`, etc., sin escribir una clase.",
       "explanation_en": "Generators (created with `yield` or a generator expression) implement the iterator protocol for free: they have `__next__` (advances to the next `yield`) and `__iter__` (returns themselves). That's why they can be used in `for`, `next()`, `sum()`, etc., without writing a class.",
       "source": "CPython docs 3.13 — Glossary: generator iterator",
       "expected_time_ms": 40000,
-      "tags": ["iterators", "generators", "protocol"]
+      "tags": [
+        "iterators",
+        "generators",
+        "protocol"
+      ]
     },
     {
       "id": "q011004006",
@@ -496,7 +694,11 @@
       "explanation_en": "When an iterator is exhausted, its `__next__` must raise `StopIteration`. `for` loops catch this exception internally to end cleanly without the programmer seeing it. In a generator function, reaching the end (or a `return`) raises `StopIteration` automatically.",
       "source": "CPython docs 3.13 — Data model: Iterator Types; StopIteration",
       "expected_time_ms": 40000,
-      "tags": ["iterators", "StopIteration", "protocol"]
+      "tags": [
+        "iterators",
+        "StopIteration",
+        "protocol"
+      ]
     }
   ]
 }

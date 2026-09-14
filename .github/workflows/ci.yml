@@ -47,6 +47,14 @@ jobs:
             --ignore-vuln PYSEC-2026-2280 \
             --ignore-vuln PYSEC-2026-1325
 
+      # Runs from the repo root, not backend/: it validates content/, which is
+      # shared. No network, so a docs-site outage cannot turn the build red -
+      # the URL-fetching counterpart (scripts/check_content_sources.py) is
+      # deliberately manual for that reason.
+      - name: Question bank structure (10.3)
+        working-directory: .
+        run: python scripts/check_question_bank.py
+
       - name: Lint (ruff)
         run: ruff check app tests
 

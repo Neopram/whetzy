@@ -7,14 +7,27 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué cláusula SQL se usa para filtrar filas según una condición?",
       "question_en": "Which SQL clause is used to filter rows based on a condition?",
-      "options_es": ["SELECT", "WHERE", "ORDER BY", "GROUP BY"],
-      "options_en": ["SELECT", "WHERE", "ORDER BY", "GROUP BY"],
+      "options_es": [
+        "SELECT",
+        "WHERE",
+        "ORDER BY",
+        "GROUP BY"
+      ],
+      "options_en": [
+        "SELECT",
+        "WHERE",
+        "ORDER BY",
+        "GROUP BY"
+      ],
       "correct_index": 1,
       "explanation_es": "`WHERE` filtra las filas que cumplen una condición antes de agrupar. `SELECT` elige columnas, `ORDER BY` ordena el resultado y `GROUP BY` agrupa filas para agregaciones. Para filtrar sobre resultados ya agregados se usa `HAVING`, no `WHERE`.",
       "explanation_en": "`WHERE` filters the rows meeting a condition before grouping. `SELECT` chooses columns, `ORDER BY` sorts the result, and `GROUP BY` groups rows for aggregations. To filter on already-aggregated results you use `HAVING`, not `WHERE`.",
       "source": "PostgreSQL 16 docs — SELECT (WHERE clause)",
       "expected_time_ms": 12000,
-      "tags": ["sql", "where"]
+      "tags": [
+        "sql",
+        "where"
+      ]
     },
     {
       "id": "q040401002",
@@ -25,22 +38,25 @@
       "question_en": "What is the difference between an INNER JOIN and a LEFT JOIN?",
       "options_es": [
         "No hay diferencia; son sinónimos",
-        "INNER JOIN devuelve solo las filas con coincidencia en ambas tablas; LEFT JOIN devuelve todas las filas de la tabla izquierda, con NULL donde no hay coincidencia en la derecha",
+        "INNER JOIN solo funciona con dos tablas y LEFT JOIN con más",
         "LEFT JOIN es más rápido siempre",
-        "INNER JOIN solo funciona con dos tablas y LEFT JOIN con más"
+        "INNER JOIN devuelve solo las filas con coincidencia en ambas tablas; LEFT JOIN devuelve todas las filas de la tabla izquierda, con NULL donde no hay coincidencia en la derecha"
       ],
       "options_en": [
         "There is no difference; they are synonyms",
-        "INNER JOIN returns only rows with a match in both tables; LEFT JOIN returns all rows from the left table, with NULL where there's no match on the right",
+        "INNER JOIN only works with two tables and LEFT JOIN with more",
         "LEFT JOIN is always faster",
-        "INNER JOIN only works with two tables and LEFT JOIN with more"
+        "INNER JOIN returns only rows with a match in both tables; LEFT JOIN returns all rows from the left table, with NULL where there's no match on the right"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "INNER JOIN devuelve la intersección: solo filas con coincidencia en ambos lados. LEFT (OUTER) JOIN conserva todas las filas de la tabla izquierda aunque no tengan coincidencia, rellenando con NULL las columnas de la derecha. Es clave para no perder filas 'huérfanas' al reportar.",
       "explanation_en": "INNER JOIN returns the intersection: only rows with a match on both sides. LEFT (OUTER) JOIN keeps all rows from the left table even without a match, filling the right-side columns with NULL. It's key for not dropping 'orphan' rows when reporting.",
       "source": "PostgreSQL 16 docs — Table Expressions (Joins)",
       "expected_time_ms": 26000,
-      "tags": ["sql", "joins"]
+      "tags": [
+        "sql",
+        "joins"
+      ]
     },
     {
       "id": "q040401003",
@@ -49,14 +65,23 @@
       "difficulty_tier": "medium",
       "question_es": "En SQL, la comparación `columna = NULL` devuelve TRUE para las filas cuyo valor es NULL.",
       "question_en": "In SQL, the comparison `column = NULL` returns TRUE for rows whose value is NULL.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "NULL representa un valor desconocido, y cualquier comparación con `=` frente a NULL da UNKNOWN (no TRUE), por lo que la fila no se selecciona. Para comprobar nulos se debe usar `IS NULL` o `IS NOT NULL`. Es uno de los errores más comunes en SQL.",
       "explanation_en": "NULL represents an unknown value, and any `=` comparison against NULL yields UNKNOWN (not TRUE), so the row isn't selected. To test for nulls you must use `IS NULL` or `IS NOT NULL`. It's one of the most common SQL mistakes.",
       "source": "PostgreSQL 16 docs — Comparison / NULL semantics",
       "expected_time_ms": 22000,
-      "tags": ["sql", "null"]
+      "tags": [
+        "sql",
+        "null"
+      ]
     },
     {
       "id": "q040401004",
@@ -66,23 +91,27 @@
       "question_es": "Dada una tabla `ventas(region, monto)`, ¿qué consulta devuelve el total de `monto` por cada `region`?",
       "question_en": "Given a table `sales(region, amount)`, which query returns the total `amount` per `region`?",
       "options_es": [
-        "SELECT region, SUM(monto) FROM ventas",
         "SELECT region, SUM(monto) FROM ventas GROUP BY region",
+        "SELECT region, SUM(monto) FROM ventas",
         "SELECT region, monto FROM ventas ORDER BY region",
         "SELECT SUM(monto) FROM ventas WHERE region"
       ],
       "options_en": [
-        "SELECT region, SUM(amount) FROM sales",
         "SELECT region, SUM(amount) FROM sales GROUP BY region",
+        "SELECT region, SUM(amount) FROM sales",
         "SELECT region, amount FROM sales ORDER BY region",
         "SELECT SUM(amount) FROM sales WHERE region"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Para agregar por grupo se necesita `GROUP BY region`, de modo que `SUM(monto)` se calcule por cada valor distinto de región. Sin `GROUP BY`, mezclar una columna no agregada (`region`) con una función de agregación (`SUM`) es un error en SQL estándar/PostgreSQL.",
       "explanation_en": "To aggregate per group you need `GROUP BY region`, so `SUM(amount)` is computed for each distinct region value. Without `GROUP BY`, mixing a non-aggregated column (`region`) with an aggregate function (`SUM`) is an error in standard SQL/PostgreSQL.",
       "source": "PostgreSQL 16 docs — GROUP BY and aggregation",
       "expected_time_ms": 26000,
-      "tags": ["sql", "group-by", "aggregation"]
+      "tags": [
+        "sql",
+        "group-by",
+        "aggregation"
+      ]
     },
     {
       "id": "q040401005",
@@ -93,22 +122,25 @@
       "question_en": "In what logical order does the SQL engine process the main clauses of a SELECT query?",
       "options_es": [
         "SELECT → FROM → WHERE → GROUP BY → ORDER BY",
-        "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY",
+        "ORDER BY → SELECT → WHERE → FROM",
         "WHERE → FROM → SELECT → ORDER BY → GROUP BY",
-        "ORDER BY → SELECT → WHERE → FROM"
+        "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY"
       ],
       "options_en": [
         "SELECT → FROM → WHERE → GROUP BY → ORDER BY",
-        "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY",
+        "ORDER BY → SELECT → WHERE → FROM",
         "WHERE → FROM → SELECT → ORDER BY → GROUP BY",
-        "ORDER BY → SELECT → WHERE → FROM"
+        "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Aunque escribimos SELECT primero, el orden lógico de evaluación es: FROM (y JOINs) → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT. Por eso no puedes usar un alias definido en SELECT dentro de WHERE (WHERE se evalúa antes), pero sí en ORDER BY.",
       "explanation_en": "Although we write SELECT first, the logical evaluation order is: FROM (and JOINs) → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT. That's why you can't use an alias defined in SELECT inside WHERE (WHERE is evaluated first), but you can in ORDER BY.",
       "source": "SQL:2016 standard — logical processing order",
       "expected_time_ms": 30000,
-      "tags": ["sql", "logical-order"]
+      "tags": [
+        "sql",
+        "logical-order"
+      ]
     },
     {
       "id": "q040401006",
@@ -126,7 +158,10 @@
       "explanation_en": "`HAVING` filters groups after aggregation, whereas `WHERE` filters rows before grouping. For example, `SELECT region, COUNT(*) FROM sales GROUP BY region HAVING COUNT(*) > 5` returns only regions with more than 5 sales. You cannot use an aggregate function in `WHERE`.",
       "source": "PostgreSQL 16 docs — HAVING clause",
       "expected_time_ms": 30000,
-      "tags": ["sql", "having"]
+      "tags": [
+        "sql",
+        "having"
+      ]
     },
     {
       "id": "q040402001",
@@ -136,23 +171,26 @@
       "question_es": "¿Qué es una clave foránea (foreign key) en un modelo relacional?",
       "question_en": "What is a foreign key in a relational model?",
       "options_es": [
-        "Una columna que identifica de forma única cada fila de su propia tabla",
         "Una columna que referencia la clave primaria de otra tabla, estableciendo una relación e integridad referencial entre ambas",
+        "Una columna que identifica de forma única cada fila de su propia tabla",
         "Una clave usada para cifrar la tabla",
         "El nombre de la base de datos externa"
       ],
       "options_en": [
-        "A column that uniquely identifies each row in its own table",
         "A column that references another table's primary key, establishing a relationship and referential integrity between the two",
+        "A column that uniquely identifies each row in its own table",
         "A key used to encrypt the table",
         "The name of the external database"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Una clave foránea es una columna (o conjunto) que apunta a la clave primaria de otra tabla, modelando relaciones (por ejemplo, `pedidos.cliente_id` → `clientes.id`). El motor puede imponer integridad referencial: impide insertar un pedido con un `cliente_id` inexistente. La descripción de identificar únicamente su propia tabla corresponde a la clave primaria.",
       "explanation_en": "A foreign key is a column (or set) pointing to another table's primary key, modeling relationships (e.g. `orders.customer_id` → `customers.id`). The engine can enforce referential integrity: it prevents inserting an order with a nonexistent `customer_id`. Uniquely identifying its own table describes the primary key.",
       "source": "PostgreSQL 16 docs — Constraints (Foreign Keys)",
       "expected_time_ms": 20000,
-      "tags": ["modeling", "foreign-key"]
+      "tags": [
+        "modeling",
+        "foreign-key"
+      ]
     },
     {
       "id": "q040402002",
@@ -162,23 +200,26 @@
       "question_es": "En modelado relacional, ¿cómo se implementa típicamente una relación muchos-a-muchos (por ejemplo, estudiantes y cursos)?",
       "question_en": "In relational modeling, how is a many-to-many relationship (e.g. students and courses) typically implemented?",
       "options_es": [
-        "Con una sola columna que contiene una lista separada por comas",
         "Con una tabla intermedia (de unión/junction) que contiene claves foráneas a ambas tablas",
+        "Con una sola columna que contiene una lista separada por comas",
         "Duplicando la tabla de estudiantes por cada curso",
         "No es posible representar muchos-a-muchos en bases relacionales"
       ],
       "options_en": [
-        "With a single column holding a comma-separated list",
         "With an intermediate (junction/join) table holding foreign keys to both tables",
+        "With a single column holding a comma-separated list",
         "By duplicating the students table for each course",
         "It's not possible to represent many-to-many in relational databases"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Una relación muchos-a-muchos se descompone en una tabla intermedia (por ejemplo, `inscripciones(estudiante_id, curso_id)`) con dos claves foráneas. Guardar listas separadas por comas en una columna viola la primera forma normal (valores atómicos) y hace imposible consultar e imponer integridad eficientemente.",
       "explanation_en": "A many-to-many relationship is decomposed into a junction table (e.g. `enrollments(student_id, course_id)`) with two foreign keys. Storing comma-separated lists in a column violates first normal form (atomic values) and makes efficient querying and integrity enforcement impossible.",
       "source": "Date, C.J. — An Introduction to Database Systems",
       "expected_time_ms": 26000,
-      "tags": ["modeling", "many-to-many"]
+      "tags": [
+        "modeling",
+        "many-to-many"
+      ]
     },
     {
       "id": "q040402003",
@@ -187,14 +228,23 @@
       "difficulty_tier": "medium",
       "question_es": "La normalización de bases de datos busca reducir la redundancia de datos y las anomalías de inserción, actualización y borrado.",
       "question_en": "Database normalization aims to reduce data redundancy and insertion, update, and deletion anomalies.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La normalización organiza los datos en tablas según formas normales (1FN, 2FN, 3FN...) para eliminar redundancia y las anomalías que provoca (por ejemplo, tener que actualizar el mismo dato en muchos sitios). El precio es a veces más JOINs; en escenarios de lectura intensiva se desnormaliza deliberadamente.",
       "explanation_en": "Normalization organizes data into tables according to normal forms (1NF, 2NF, 3NF...) to eliminate redundancy and the anomalies it causes (e.g. having to update the same datum in many places). The cost is sometimes more JOINs; in read-heavy scenarios you deliberately denormalize.",
       "source": "Codd, E.F. / Date — Normalization theory",
       "expected_time_ms": 24000,
-      "tags": ["modeling", "normalization"]
+      "tags": [
+        "modeling",
+        "normalization"
+      ]
     },
     {
       "id": "q040402004",
@@ -205,22 +255,25 @@
       "question_en": "A table has columns `(order_id, product_id, product_name, product_price)` with primary key `(order_id, product_id)`. What normalization problem does it have?",
       "options_es": [
         "Ninguno; está perfectamente normalizada",
-        "Viola la 2FN: `nombre_producto` y `precio_producto` dependen solo de `producto_id` (parte de la clave), no de la clave completa",
+        "Tiene demasiadas columnas",
         "Viola la 1FN por tener valores no atómicos",
-        "Tiene demasiadas columnas"
+        "Viola la 2FN: `nombre_producto` y `precio_producto` dependen solo de `producto_id` (parte de la clave), no de la clave completa"
       ],
       "options_en": [
         "None; it's perfectly normalized",
-        "It violates 2NF: `product_name` and `product_price` depend only on `product_id` (part of the key), not on the whole key",
+        "It has too many columns",
         "It violates 1NF by having non-atomic values",
-        "It has too many columns"
+        "It violates 2NF: `product_name` and `product_price` depend only on `product_id` (part of the key), not on the whole key"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La segunda forma normal exige que ningún atributo no clave dependa solo de PARTE de una clave primaria compuesta. Aquí `nombre_producto` y `precio_producto` dependen únicamente de `producto_id`, no de `(pedido_id, producto_id)`. La solución: mover esos atributos a una tabla `productos` propia.",
       "explanation_en": "Second normal form requires that no non-key attribute depend on only PART of a composite primary key. Here `product_name` and `product_price` depend solely on `product_id`, not on `(order_id, product_id)`. The fix: move those attributes to their own `products` table.",
       "source": "Date, C.J. — Second Normal Form (2NF)",
       "expected_time_ms": 32000,
-      "tags": ["modeling", "2nf"]
+      "tags": [
+        "modeling",
+        "2nf"
+      ]
     },
     {
       "id": "q040402005",
@@ -229,14 +282,23 @@
       "difficulty_tier": "hard",
       "question_es": "La desnormalización (introducir redundancia deliberadamente) nunca está justificada en un sistema de producción.",
       "question_en": "Denormalization (deliberately introducing redundancy) is never justified in a production system.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "La desnormalización es una técnica legítima de optimización cuando el rendimiento de lectura es crítico: se acepta redundancia controlada para evitar JOINs costosos o agregaciones repetidas (por ejemplo, guardar un `total` precalculado). El coste es mantener la consistencia de los datos duplicados, por lo que se aplica con criterio, no por defecto.",
       "explanation_en": "Denormalization is a legitimate optimization technique when read performance is critical: controlled redundancy is accepted to avoid costly JOINs or repeated aggregations (e.g. storing a precomputed `total`). The cost is keeping the duplicated data consistent, so it's applied judiciously, not by default.",
       "source": "Kleppmann, M. — Designing Data-Intensive Applications",
       "expected_time_ms": 26000,
-      "tags": ["modeling", "denormalization"]
+      "tags": [
+        "modeling",
+        "denormalization"
+      ]
     },
     {
       "id": "q040402006",
@@ -254,7 +316,11 @@
       "explanation_en": "Atomicity guarantees a transaction is indivisible: if something fails midway, it's rolled back and the database is left as if nothing happened. Together with Consistency, Isolation, and Durability it forms ACID, the guarantees of traditional relational databases.",
       "source": "Kleppmann — DDIA Ch.7 / PostgreSQL Transactions",
       "expected_time_ms": 30000,
-      "tags": ["modeling", "acid", "transactions"]
+      "tags": [
+        "modeling",
+        "acid",
+        "transactions"
+      ]
     },
     {
       "id": "q040403001",
@@ -264,23 +330,26 @@
       "question_es": "¿Para qué sirve principalmente un índice en una base de datos?",
       "question_en": "What is a database index primarily for?",
       "options_es": [
-        "Para cifrar los datos de una columna",
         "Para acelerar la búsqueda y recuperación de filas, evitando escanear la tabla completa",
+        "Para cifrar los datos de una columna",
         "Para hacer copias de seguridad automáticas",
         "Para reducir el tamaño en disco de la tabla"
       ],
       "options_en": [
-        "To encrypt a column's data",
         "To speed up searching and retrieving rows, avoiding a full table scan",
+        "To encrypt a column's data",
         "To make automatic backups",
         "To reduce the table's on-disk size"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Un índice es una estructura de datos auxiliar (típicamente un B-tree) que permite localizar filas rápidamente por el valor de ciertas columnas, sin recorrer toda la tabla. Acelera las lecturas, pero ocupa espacio adicional y ralentiza ligeramente las escrituras (hay que mantener el índice).",
       "explanation_en": "An index is an auxiliary data structure (typically a B-tree) that lets you locate rows quickly by the value of certain columns, without scanning the whole table. It speeds up reads but takes extra space and slightly slows writes (the index must be maintained).",
       "source": "PostgreSQL 16 docs — Indexes (Introduction)",
       "expected_time_ms": 18000,
-      "tags": ["indexes", "performance"]
+      "tags": [
+        "indexes",
+        "performance"
+      ]
     },
     {
       "id": "q040403002",
@@ -289,14 +358,23 @@
       "difficulty_tier": "medium",
       "question_es": "Añadir índices a todas las columnas de una tabla siempre mejora el rendimiento general del sistema.",
       "question_en": "Adding indexes to every column of a table always improves the system's overall performance.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Los índices aceleran lecturas pero penalizan escrituras: cada INSERT/UPDATE/DELETE debe actualizar todos los índices afectados. Índices en exceso consumen espacio, ralentizan las escrituras y el planificador debe evaluar más opciones. Los índices se diseñan según los patrones de consulta reales, no indiscriminadamente.",
       "explanation_en": "Indexes speed up reads but penalize writes: every INSERT/UPDATE/DELETE must update all affected indexes. Excess indexes consume space, slow writes, and force the planner to evaluate more options. Indexes are designed around actual query patterns, not indiscriminately.",
       "source": "PostgreSQL 16 docs — Indexes and write cost",
       "expected_time_ms": 24000,
-      "tags": ["indexes", "trade-offs"]
+      "tags": [
+        "indexes",
+        "trade-offs"
+      ]
     },
     {
       "id": "q040403003",
@@ -305,14 +383,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué comando de PostgreSQL muestra el plan de ejecución que el planificador elige para una consulta?",
       "question_en": "Which PostgreSQL command shows the execution plan the planner chooses for a query?",
-      "options_es": ["DESCRIBE", "EXPLAIN", "SHOW PLAN", "ANALYZE TABLE"],
-      "options_en": ["DESCRIBE", "EXPLAIN", "SHOW PLAN", "ANALYZE TABLE"],
-      "correct_index": 1,
+      "options_es": [
+        "EXPLAIN",
+        "DESCRIBE",
+        "SHOW PLAN",
+        "ANALYZE TABLE"
+      ],
+      "options_en": [
+        "EXPLAIN",
+        "DESCRIBE",
+        "SHOW PLAN",
+        "ANALYZE TABLE"
+      ],
+      "correct_index": 0,
       "explanation_es": "`EXPLAIN` muestra el plan estimado (qué índices usa, tipos de join, coste estimado). `EXPLAIN ANALYZE` además ejecuta la consulta y muestra tiempos y filas reales, revelando por ejemplo si hace un 'Seq Scan' (escaneo secuencial) en lugar de usar un índice. Es la herramienta clave para diagnosticar consultas lentas.",
       "explanation_en": "`EXPLAIN` shows the estimated plan (which indexes it uses, join types, estimated cost). `EXPLAIN ANALYZE` additionally runs the query and shows real times and rows, revealing for example whether it does a 'Seq Scan' instead of using an index. It's the key tool for diagnosing slow queries.",
       "source": "PostgreSQL 16 docs — EXPLAIN",
       "expected_time_ms": 24000,
-      "tags": ["indexes", "explain", "query-plan"]
+      "tags": [
+        "indexes",
+        "explain",
+        "query-plan"
+      ]
     },
     {
       "id": "q040403004",
@@ -338,7 +430,11 @@
       "explanation_en": "A composite index can be used to filter by a left-to-right prefix of its columns: `(last_name)` or `(last_name, first_name)`, but not by filtering only on `first_name` (the second column). Also, applying a function like `UPPER(last_name)` normally prevents index use, unless a functional index exists on that expression.",
       "source": "PostgreSQL 16 docs — Multicolumn Indexes",
       "expected_time_ms": 32000,
-      "tags": ["indexes", "composite", "prefix"]
+      "tags": [
+        "indexes",
+        "composite",
+        "prefix"
+      ]
     },
     {
       "id": "q040403005",
@@ -347,14 +443,24 @@
       "difficulty_tier": "hard",
       "question_es": "El problema de consultas 'N+1' ocurre cuando, para cargar una lista de N entidades y sus relaciones, se ejecuta 1 consulta para la lista más N consultas adicionales (una por cada entidad).",
       "question_en": "The 'N+1' query problem occurs when, to load a list of N entities and their relations, 1 query is run for the list plus N additional queries (one per entity).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El problema N+1, típico de ORMs con carga perezosa (lazy loading), dispara una consulta por cada entidad para traer sus relaciones, resultando en N+1 consultas en vez de 1 o 2. Se resuelve con carga anticipada (eager loading): `JOIN` o, en SQLAlchemy, `joinedload`/`selectinload`.",
       "explanation_en": "The N+1 problem, typical of ORMs with lazy loading, fires one query per entity to fetch its relations, resulting in N+1 queries instead of 1 or 2. It's solved with eager loading: a `JOIN` or, in SQLAlchemy, `joinedload`/`selectinload`.",
       "source": "SQLAlchemy 2.0 docs — Relationship Loading Techniques",
       "expected_time_ms": 28000,
-      "tags": ["indexes", "n-plus-one", "orm"]
+      "tags": [
+        "indexes",
+        "n-plus-one",
+        "orm"
+      ]
     },
     {
       "id": "q040403006",
@@ -372,7 +478,10 @@
       "explanation_en": "The B-tree (in PostgreSQL, technically a B+tree) is the default index: it keeps keys ordered and balanced, serving both equality and ranges (`<`, `>`, `BETWEEN`) and `ORDER BY`. Other types like hash, GIN, or GiST serve special cases (exact equality, text search, geospatial data).",
       "source": "PostgreSQL 16 docs — Index Types (B-tree)",
       "expected_time_ms": 30000,
-      "tags": ["indexes", "b-tree"]
+      "tags": [
+        "indexes",
+        "b-tree"
+      ]
     },
     {
       "id": "q040404001",
@@ -383,22 +492,25 @@
       "question_en": "What is an ORM (Object-Relational Mapper) like SQLAlchemy?",
       "options_es": [
         "Un motor de base de datos propio",
-        "Una capa que mapea filas de tablas a objetos del lenguaje, permitiendo trabajar con la BD usando código orientado a objetos en lugar de SQL crudo",
         "Un formato de archivo para exportar datos",
+        "Una capa que mapea filas de tablas a objetos del lenguaje, permitiendo trabajar con la BD usando código orientado a objetos en lugar de SQL crudo",
         "Un servidor web"
       ],
       "options_en": [
         "Its own database engine",
-        "A layer that maps table rows to language objects, letting you work with the DB using object-oriented code instead of raw SQL",
         "A file format for exporting data",
+        "A layer that maps table rows to language objects, letting you work with the DB using object-oriented code instead of raw SQL",
         "A web server"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un ORM traduce entre el mundo de objetos (clases, instancias) y el relacional (tablas, filas). SQLAlchemy permite definir modelos como clases Python y consultar con una API en lugar de escribir SQL a mano, aunque también deja ejecutar SQL crudo cuando conviene. No es un motor de BD: se conecta a uno (PostgreSQL, SQLite, etc.).",
       "explanation_en": "An ORM translates between the object world (classes, instances) and the relational one (tables, rows). SQLAlchemy lets you define models as Python classes and query with an API instead of writing SQL by hand, while still allowing raw SQL when useful. It's not a DB engine: it connects to one (PostgreSQL, SQLite, etc.).",
       "source": "SQLAlchemy 2.0 docs — ORM Overview",
       "expected_time_ms": 20000,
-      "tags": ["orm", "sqlalchemy"]
+      "tags": [
+        "orm",
+        "sqlalchemy"
+      ]
     },
     {
       "id": "q040404002",
@@ -407,14 +519,24 @@
       "difficulty_tier": "medium",
       "question_es": "En SQLAlchemy ORM, los cambios que haces a los objetos no se envían a la base de datos hasta que se hace 'flush'/'commit' de la sesión (unidad de trabajo).",
       "question_en": "In SQLAlchemy ORM, changes you make to objects are not sent to the database until the session (unit of work) is flushed/committed.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "SQLAlchemy implementa el patrón 'Unit of Work': la sesión acumula los cambios pendientes (objetos nuevos, modificados, borrados) y los sincroniza con la BD al hacer `flush` (envía el SQL) o `commit` (confirma la transacción). Esto permite agrupar operaciones y ordenar el SQL de forma eficiente.",
       "explanation_en": "SQLAlchemy implements the 'Unit of Work' pattern: the session accumulates pending changes (new, modified, deleted objects) and synchronizes them with the DB on `flush` (emits the SQL) or `commit` (confirms the transaction). This lets it batch operations and order the SQL efficiently.",
       "source": "SQLAlchemy 2.0 docs — Session / Unit of Work",
       "expected_time_ms": 24000,
-      "tags": ["orm", "sqlalchemy", "session"]
+      "tags": [
+        "orm",
+        "sqlalchemy",
+        "session"
+      ]
     },
     {
       "id": "q040404003",
@@ -440,7 +562,11 @@
       "explanation_en": "Using bind parameters, user values never mix with the SQL syntax, preventing SQL injection. Concatenating user strings into a query is the classic cause of that vulnerability. Note: an ORM doesn't guarantee faster SQL; it sometimes generates suboptimal queries that need tuning.",
       "source": "OWASP — SQL Injection Prevention / SQLAlchemy docs",
       "expected_time_ms": 26000,
-      "tags": ["orm", "sql-injection", "security"]
+      "tags": [
+        "orm",
+        "sql-injection",
+        "security"
+      ]
     },
     {
       "id": "q040404004",
@@ -450,23 +576,26 @@
       "question_es": "¿Qué describe mejor el 'object-relational impedance mismatch' (desajuste de impedancia objeto-relacional)?",
       "question_en": "What best describes the 'object-relational impedance mismatch'?",
       "options_es": [
-        "Un error eléctrico en el servidor de base de datos",
         "Las diferencias conceptuales entre el modelo de objetos (herencia, referencias, encapsulación) y el modelo relacional (tablas, filas, claves) que un ORM debe reconciliar",
+        "Un error eléctrico en el servidor de base de datos",
         "La latencia de red entre cliente y servidor",
         "Un tipo de índice especial"
       ],
       "options_en": [
-        "An electrical fault in the database server",
         "The conceptual differences between the object model (inheritance, references, encapsulation) and the relational model (tables, rows, keys) that an ORM must reconcile",
+        "An electrical fault in the database server",
         "The network latency between client and server",
         "A special kind of index"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El desajuste de impedancia se refiere a que los objetos y las tablas relacionales representan la información de forma diferente (por ejemplo, la herencia no existe en SQL, y las referencias entre objetos se traducen a claves foráneas). El ORM oculta gran parte de esa fricción, pero entenderla ayuda a diagnosticar problemas como el N+1.",
       "explanation_en": "The impedance mismatch refers to objects and relational tables representing information differently (e.g. inheritance doesn't exist in SQL, and references between objects translate to foreign keys). The ORM hides much of that friction, but understanding it helps diagnose problems like N+1.",
       "source": "Fowler, M. — Patterns of Enterprise Application Architecture",
       "expected_time_ms": 30000,
-      "tags": ["orm", "impedance-mismatch"]
+      "tags": [
+        "orm",
+        "impedance-mismatch"
+      ]
     },
     {
       "id": "q040404005",
@@ -475,14 +604,23 @@
       "difficulty_tier": "hard",
       "question_es": "Usar un ORM significa que nunca es necesario saber SQL ni entender lo que ocurre en la base de datos.",
       "question_en": "Using an ORM means you never need to know SQL or understand what happens in the database.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Un ORM es una abstracción 'con fugas' (leaky abstraction): oculta el SQL en casos simples, pero para diagnosticar rendimiento (N+1, índices, planes de ejecución) o escribir consultas complejas necesitas entender el SQL que genera. Los buenos desarrolladores saben cuándo bajar al SQL crudo o revisar el `EXPLAIN`.",
       "explanation_en": "An ORM is a leaky abstraction: it hides SQL in simple cases, but to diagnose performance (N+1, indexes, execution plans) or write complex queries you need to understand the SQL it generates. Good developers know when to drop to raw SQL or inspect the `EXPLAIN`.",
       "source": "SQLAlchemy 2.0 docs — cuando usar SQL crudo",
       "expected_time_ms": 26000,
-      "tags": ["orm", "leaky-abstraction"]
+      "tags": [
+        "orm",
+        "leaky-abstraction"
+      ]
     },
     {
       "id": "q040404006",
@@ -500,7 +638,11 @@
       "explanation_en": "Alembic (created by SQLAlchemy's author) manages schema migrations as a series of versioned, applyable/reversible revisions. It's the recommended alternative to `create_all()` in production, which only creates new tables and doesn't manage the evolution of the existing schema.",
       "source": "Alembic docs (alembic.sqlalchemy.org)",
       "expected_time_ms": 30000,
-      "tags": ["orm", "alembic", "migrations"]
+      "tags": [
+        "orm",
+        "alembic",
+        "migrations"
+      ]
     },
     {
       "id": "q040405001",
@@ -510,23 +652,26 @@
       "question_es": "¿Qué caracteriza a una base de datos NoSQL de tipo documento (como MongoDB)?",
       "question_en": "What characterizes a document-type NoSQL database (like MongoDB)?",
       "options_es": [
-        "Solo almacena números",
         "Almacena datos como documentos flexibles (por ejemplo, JSON/BSON) sin un esquema rígido fijo por adelantado",
+        "Solo almacena números",
         "Requiere definir todas las tablas y columnas antes de insertar datos",
         "No puede almacenar más de 1000 registros"
       ],
       "options_en": [
-        "It only stores numbers",
         "It stores data as flexible documents (e.g. JSON/BSON) without a rigid schema fixed in advance",
+        "It only stores numbers",
         "It requires defining all tables and columns before inserting data",
         "It cannot store more than 1000 records"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Las bases documentales guardan registros como documentos semiestructurados (JSON/BSON), permitiendo esquemas flexibles: distintos documentos de la misma colección pueden tener campos diferentes. Esto ofrece agilidad, pero traslada parte de la responsabilidad de la consistencia del esquema a la aplicación.",
       "explanation_en": "Document databases store records as semi-structured documents (JSON/BSON), allowing flexible schemas: different documents in the same collection can have different fields. This offers agility but shifts part of the schema-consistency responsibility to the application.",
       "source": "MongoDB Manual — Documents / Data Modeling",
       "expected_time_ms": 20000,
-      "tags": ["nosql", "document"]
+      "tags": [
+        "nosql",
+        "document"
+      ]
     },
     {
       "id": "q040405002",
@@ -535,14 +680,23 @@
       "difficulty_tier": "medium",
       "question_es": "'NoSQL' significa que estas bases de datos no pueden almacenar relaciones entre datos de ninguna forma.",
       "question_en": "'NoSQL' means these databases cannot store relationships between data in any way.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "'NoSQL' suele interpretarse como 'Not Only SQL', no como 'sin relaciones'. Existen bases de grafos (Neo4j) especializadas justamente en relaciones, y las documentales modelan relaciones mediante incrustación (embedding) o referencias. Lo que cambia es CÓMO se modelan y qué garantías (consistencia, joins) ofrecen.",
       "explanation_en": "'NoSQL' is usually read as 'Not Only SQL', not 'no relationships'. Graph databases (Neo4j) specialize precisely in relationships, and document databases model relationships via embedding or references. What changes is HOW they're modeled and what guarantees (consistency, joins) are offered.",
       "source": "Kleppmann — DDIA Ch.2 (Data Models)",
       "expected_time_ms": 24000,
-      "tags": ["nosql", "relationships"]
+      "tags": [
+        "nosql",
+        "relationships"
+      ]
     },
     {
       "id": "q040405003",
@@ -553,22 +707,25 @@
       "question_en": "When is a relational (SQL) database usually preferable to a NoSQL one?",
       "options_es": [
         "Nunca; NoSQL siempre es mejor",
-        "Cuando los datos están altamente estructurados y relacionados, y se necesitan transacciones ACID fuertes y consultas complejas con JOINs",
         "Solo cuando hay menos de 10 usuarios",
+        "Cuando los datos están altamente estructurados y relacionados, y se necesitan transacciones ACID fuertes y consultas complejas con JOINs",
         "Cuando no se conoce nada sobre los datos"
       ],
       "options_en": [
         "Never; NoSQL is always better",
-        "When data is highly structured and related, and you need strong ACID transactions and complex queries with JOINs",
         "Only when there are fewer than 10 users",
+        "When data is highly structured and related, and you need strong ACID transactions and complex queries with JOINs",
         "When nothing is known about the data"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "SQL brilla con datos estructurados y relacionados que requieren integridad referencial, transacciones ACID y consultas ad-hoc complejas (JOINs, agregaciones). NoSQL suele elegirse por escalabilidad horizontal masiva, esquemas flexibles o cargas específicas. La elección depende del caso de uso, no de una superioridad universal.",
       "explanation_en": "SQL shines with structured, related data requiring referential integrity, ACID transactions, and complex ad-hoc queries (JOINs, aggregations). NoSQL is often chosen for massive horizontal scalability, flexible schemas, or specific workloads. The choice depends on the use case, not universal superiority.",
       "source": "Kleppmann — DDIA (trade-offs SQL vs NoSQL)",
       "expected_time_ms": 26000,
-      "tags": ["nosql", "sql-vs-nosql"]
+      "tags": [
+        "nosql",
+        "sql-vs-nosql"
+      ]
     },
     {
       "id": "q040405004",
@@ -594,7 +751,11 @@
       "explanation_en": "The CAP theorem says that when a network partition occurs (inevitable in distributed systems), you must sacrifice consistency or availability. It's not 'pick 2 of 3 always': P is mandatory, so the real decision is C vs A during partitions. Many NoSQL systems prioritize availability with eventual consistency.",
       "source": "Kleppmann — DDIA Ch.9 / Brewer's CAP theorem",
       "expected_time_ms": 32000,
-      "tags": ["nosql", "cap-theorem", "distributed"]
+      "tags": [
+        "nosql",
+        "cap-theorem",
+        "distributed"
+      ]
     },
     {
       "id": "q040405005",
@@ -603,14 +764,23 @@
       "difficulty_tier": "hard",
       "question_es": "La 'consistencia eventual' (eventual consistency) garantiza que, en ausencia de nuevas escrituras, todas las réplicas convergerán al mismo valor con el tiempo.",
       "question_en": "'Eventual consistency' guarantees that, in the absence of new writes, all replicas will eventually converge to the same value over time.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La consistencia eventual es un modelo débil: distintas réplicas pueden mostrar valores desactualizados temporalmente, pero si cesan las escrituras, terminarán convergiendo al mismo estado. Es un compromiso para ganar disponibilidad y latencia baja en sistemas distribuidos, aceptando lecturas potencialmente obsoletas a corto plazo.",
       "explanation_en": "Eventual consistency is a weak model: different replicas may temporarily show stale values, but if writes stop, they will eventually converge to the same state. It's a trade-off to gain availability and low latency in distributed systems, accepting potentially stale reads in the short term.",
       "source": "Kleppmann — DDIA Ch.5 (Replication)",
       "expected_time_ms": 28000,
-      "tags": ["nosql", "eventual-consistency"]
+      "tags": [
+        "nosql",
+        "eventual-consistency"
+      ]
     },
     {
       "id": "q040405006",
@@ -628,7 +798,11 @@
       "explanation_en": "A key-value store maps unique keys to values, offering very fast reads/writes by key but no complex queries over the value's content. Redis is the best-known example, widely used for caching, sessions, and queues. Other NoSQL families are document, wide-column, and graph.",
       "source": "Redis docs / Kleppmann — DDIA Ch.2",
       "expected_time_ms": 30000,
-      "tags": ["nosql", "key-value", "redis"]
+      "tags": [
+        "nosql",
+        "key-value",
+        "redis"
+      ]
     }
   ]
 }

@@ -9,22 +9,25 @@
       "question_en": "What is the primary goal of a cache?",
       "options_es": [
         "Cifrar los datos sensibles",
-        "Almacenar temporalmente datos de acceso frecuente o costoso de obtener, en un medio más rápido, para reducir latencia y carga sobre el origen",
         "Hacer copias de seguridad permanentes",
+        "Almacenar temporalmente datos de acceso frecuente o costoso de obtener, en un medio más rápido, para reducir latencia y carga sobre el origen",
         "Eliminar la necesidad de una base de datos"
       ],
       "options_en": [
         "Encrypting sensitive data",
-        "Temporarily storing frequently accessed or expensive-to-fetch data in a faster medium, to reduce latency and load on the origin",
         "Making permanent backups",
+        "Temporarily storing frequently accessed or expensive-to-fetch data in a faster medium, to reduce latency and load on the origin",
         "Eliminating the need for a database"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Una cache guarda copias de datos costosos de recalcular u obtener (una query pesada, una llamada a otro servicio) en un almacén rápido (memoria), de modo que peticiones futuras se sirvan desde ahí. Reduce latencia y descarga el origen. Es temporal y derivada: no es la fuente de verdad, por lo que debe tolerarse su pérdida.",
       "explanation_en": "A cache stores copies of data that's expensive to recompute or fetch (a heavy query, a call to another service) in a fast store (memory), so future requests are served from there. It reduces latency and offloads the origin. It's temporary and derived: not the source of truth, so its loss must be tolerable.",
       "source": "AWS — Caching Overview / Kleppmann DDIA",
       "expected_time_ms": 22000,
-      "tags": ["caching", "fundamentals"]
+      "tags": [
+        "caching",
+        "fundamentals"
+      ]
     },
     {
       "id": "q050301002",
@@ -34,23 +37,26 @@
       "question_es": "¿Cómo funciona la estrategia de cache 'cache-aside' (lazy loading)?",
       "question_en": "How does the 'cache-aside' (lazy loading) caching strategy work?",
       "options_es": [
-        "La aplicación siempre lee de la base de datos e ignora la cache",
         "La aplicación consulta primero la cache; si falla (miss), lee del origen, guarda el resultado en la cache y lo devuelve",
+        "La aplicación siempre lee de la base de datos e ignora la cache",
         "La cache se llena por completo al arrancar y nunca cambia",
         "El origen escribe directamente en la cache sin intervención de la app"
       ],
       "options_en": [
-        "The application always reads from the database and ignores the cache",
         "The application checks the cache first; on a miss, it reads from the origin, stores the result in the cache, and returns it",
+        "The application always reads from the database and ignores the cache",
         "The cache is fully populated at startup and never changes",
         "The origin writes directly into the cache without the app's involvement"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "En cache-aside, la aplicación gestiona la cache: mira la cache, y si no está el dato (miss), lo carga del origen, lo escribe en la cache y lo devuelve. Solo se cachea lo que realmente se pide (lazy). Su inconveniente es que el primer acceso siempre es un miss (más lento) y que puede servir datos algo obsoletos hasta que expiren.",
       "explanation_en": "In cache-aside, the application manages the cache: it checks the cache, and if the data isn't there (miss), it loads it from the origin, writes it to the cache, and returns it. Only what's actually requested is cached (lazy). Its downsides are that the first access is always a miss (slower) and it may serve somewhat stale data until entries expire.",
       "source": "AWS — Caching strategies (Cache-Aside)",
       "expected_time_ms": 28000,
-      "tags": ["caching", "cache-aside"]
+      "tags": [
+        "caching",
+        "cache-aside"
+      ]
     },
     {
       "id": "q050301003",
@@ -61,22 +67,26 @@
       "question_en": "What is the difference between the 'write-through' and 'write-back' (write-behind) write strategies?",
       "options_es": [
         "No hay diferencia",
-        "Write-through escribe en cache y origen de forma síncrona (consistente pero más lento); write-back escribe primero en cache y persiste al origen de forma asíncrona (más rápido, pero riesgo de pérdida si la cache cae antes de persistir)",
         "Write-through nunca toca el origen",
+        "Write-through escribe en cache y origen de forma síncrona (consistente pero más lento); write-back escribe primero en cache y persiste al origen de forma asíncrona (más rápido, pero riesgo de pérdida si la cache cae antes de persistir)",
         "Write-back solo funciona con datos de solo lectura"
       ],
       "options_en": [
         "There is no difference",
-        "Write-through writes to cache and origin synchronously (consistent but slower); write-back writes to the cache first and persists to the origin asynchronously (faster, but risk of loss if the cache fails before persisting)",
         "Write-through never touches the origin",
+        "Write-through writes to cache and origin synchronously (consistent but slower); write-back writes to the cache first and persists to the origin asynchronously (faster, but risk of loss if the cache fails before persisting)",
         "Write-back only works with read-only data"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Write-through mantiene cache y origen sincronizados en cada escritura (la escritura no termina hasta persistir en ambos): más consistente pero con mayor latencia de escritura. Write-back confirma la escritura en la cache y persiste al origen después, de forma asíncrona: menor latencia y más rendimiento, a costa de arriesgar pérdida de datos si la cache falla antes de volcarlos.",
       "explanation_en": "Write-through keeps cache and origin in sync on every write (the write doesn't complete until both persist): more consistent but higher write latency. Write-back acknowledges the write in the cache and persists to the origin afterward, asynchronously: lower latency and more throughput, at the cost of risking data loss if the cache fails before flushing.",
       "source": "AWS — Caching strategies (Write-Through / Write-Back)",
       "expected_time_ms": 30000,
-      "tags": ["caching", "write-through", "write-back"]
+      "tags": [
+        "caching",
+        "write-through",
+        "write-back"
+      ]
     },
     {
       "id": "q050301004",
@@ -87,22 +97,26 @@
       "question_en": "What is a 'cache stampede' (or 'thundering herd') and how is it mitigated?",
       "options_es": [
         "Un ataque de denegación de servicio contra la cache",
-        "Cuando una entrada popular expira y muchas peticiones concurrentes fallan a la vez, golpeando todas el origen simultáneamente; se mitiga con locks/'single-flight', expiración escalonada (jitter) o recálculo anticipado",
         "Cuando la cache se llena de datos inútiles",
+        "Cuando una entrada popular expira y muchas peticiones concurrentes fallan a la vez, golpeando todas el origen simultáneamente; se mitiga con locks/'single-flight', expiración escalonada (jitter) o recálculo anticipado",
         "Un error de sintaxis en la clave de cache"
       ],
       "options_en": [
         "A denial-of-service attack against the cache",
-        "When a popular entry expires and many concurrent requests miss at once, all hitting the origin simultaneously; mitigated with locks/'single-flight', staggered expiration (jitter), or early recomputation",
         "When the cache fills with useless data",
+        "When a popular entry expires and many concurrent requests miss at once, all hitting the origin simultaneously; mitigated with locks/'single-flight', staggered expiration (jitter), or early recomputation",
         "A syntax error in the cache key"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El cache stampede ocurre cuando expira una clave muy solicitada y una avalancha de peticiones simultáneas la encuentra vacía, cayendo todas sobre el origen a la vez y pudiendo tumbarlo. Mitigaciones: un lock para que solo una petición recalculue mientras las demás esperan ('single-flight'), añadir jitter a los TTL para que no expiren todas a la vez, o refrescar la entrada antes de que caduque.",
       "explanation_en": "A cache stampede happens when a heavily requested key expires and an avalanche of simultaneous requests finds it empty, all hitting the origin at once and potentially overwhelming it. Mitigations: a lock so only one request recomputes while others wait ('single-flight'), adding jitter to TTLs so they don't all expire together, or refreshing the entry before it expires.",
       "source": "Redis docs / Fowler — cache stampede mitigation",
       "expected_time_ms": 34000,
-      "tags": ["caching", "stampede", "thundering-herd"]
+      "tags": [
+        "caching",
+        "stampede",
+        "thundering-herd"
+      ]
     },
     {
       "id": "q050301005",
@@ -111,14 +125,24 @@
       "difficulty_tier": "hard",
       "question_es": "Cachear puede introducir bugs difíciles porque sirve datos potencialmente obsoletos; por eso se dice que 'invalidar la cache' es uno de los problemas difíciles de la informática.",
       "question_en": "Caching can introduce hard bugs because it serves potentially stale data; that's why 'cache invalidation' is said to be one of the hard problems in computer science.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Toda cache introduce el riesgo de servir datos que ya cambiaron en el origen (staleness). Decidir cuándo y cómo invalidar o refrescar es genuinamente difícil, de ahí la famosa cita atribuida a Phil Karlton: 'solo hay dos cosas difíciles en informática: la invalidación de cache y nombrar cosas'. El equilibrio es entre frescura de datos y beneficio de rendimiento.",
       "explanation_en": "Every cache introduces the risk of serving data that has already changed at the origin (staleness). Deciding when and how to invalidate or refresh is genuinely hard, hence the famous quip attributed to Phil Karlton: 'there are only two hard things in computer science: cache invalidation and naming things'. The balance is between data freshness and performance benefit.",
       "source": "Phil Karlton (atribuido) / Fowler",
       "expected_time_ms": 24000,
-      "tags": ["caching", "staleness", "invalidation"]
+      "tags": [
+        "caching",
+        "staleness",
+        "invalidation"
+      ]
     },
     {
       "id": "q050301006",
@@ -136,7 +160,11 @@
       "explanation_en": "The 'cache hit ratio' (or hit rate) = hits / (hits + misses). A high ratio means most requests are served from the cache, maximizing the benefit; a low ratio indicates the cache adds little (badly sized, poorly reused keys, or too-short TTL). It's the key metric for evaluating a cache's effectiveness.",
       "source": "AWS / Redis docs — cache hit ratio",
       "expected_time_ms": 28000,
-      "tags": ["caching", "hit-ratio", "metrics"]
+      "tags": [
+        "caching",
+        "hit-ratio",
+        "metrics"
+      ]
     },
     {
       "id": "q050302001",
@@ -162,7 +190,10 @@
       "explanation_en": "Redis (REmote DIctionary Server) keeps data in memory, giving it sub-millisecond latencies. It supports rich structures (strings, lists, hashes, sets, sorted sets, streams) and is used as a cache, key-value store, queue/broker, and for rankings, counters, and sessions. It offers optional persistence (RDB/AOF) to avoid losing everything on a restart.",
       "source": "Redis docs — Introduction to Redis",
       "expected_time_ms": 22000,
-      "tags": ["redis", "in-memory"]
+      "tags": [
+        "redis",
+        "in-memory"
+      ]
     },
     {
       "id": "q050302002",
@@ -171,14 +202,24 @@
       "difficulty_tier": "medium",
       "question_es": "Redis permite asignar un tiempo de expiración (TTL) a las claves, tras el cual se eliminan automáticamente.",
       "question_en": "Redis allows assigning an expiration time (TTL) to keys, after which they are automatically removed.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Con comandos como `EXPIRE clave segundos` o `SET clave valor EX segundos`, Redis elimina la clave al vencer su TTL, lo que es ideal para caches (los datos se autolimpian) y para sesiones o tokens con caducidad. Redis combina expiración perezosa (al acceder) y activa (muestreo periódico) para liberar memoria de claves vencidas.",
       "explanation_en": "With commands like `EXPIRE key seconds` or `SET key value EX seconds`, Redis removes the key when its TTL elapses, which is ideal for caches (data self-cleans) and for sessions or tokens with expiry. Redis combines lazy expiration (on access) and active expiration (periodic sampling) to free memory from expired keys.",
       "source": "Redis docs — Key expiration (EXPIRE / TTL)",
       "expected_time_ms": 24000,
-      "tags": ["redis", "ttl", "expiration"]
+      "tags": [
+        "redis",
+        "ttl",
+        "expiration"
+      ]
     },
     {
       "id": "q050302003",
@@ -187,14 +228,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué estructura de datos de Redis es la más adecuada para implementar un ranking (leaderboard) ordenado por puntuación?",
       "question_en": "Which Redis data structure is best suited to implement a leaderboard ordered by score?",
-      "options_es": ["List", "Sorted Set (ZSET)", "Hash", "String"],
-      "options_en": ["List", "Sorted Set (ZSET)", "Hash", "String"],
-      "correct_index": 1,
+      "options_es": [
+        "List",
+        "String",
+        "Hash",
+        "Sorted Set (ZSET)"
+      ],
+      "options_en": [
+        "List",
+        "String",
+        "Hash",
+        "Sorted Set (ZSET)"
+      ],
+      "correct_index": 3,
       "explanation_es": "El Sorted Set (ZSET) asocia a cada miembro una puntuación (score) y mantiene los elementos ordenados por ella, permitiendo consultas por rango y posición (rank) en tiempo logarítmico (`ZADD`, `ZRANGE`, `ZREVRANK`). Es la estructura idónea para leaderboards. Una List mantiene orden de inserción pero no por puntuación, y un Hash mapea campos sin orden.",
       "explanation_en": "The Sorted Set (ZSET) associates a score with each member and keeps elements ordered by it, allowing range and rank queries in logarithmic time (`ZADD`, `ZRANGE`, `ZREVRANK`). It's the ideal structure for leaderboards. A List keeps insertion order but not by score, and a Hash maps fields with no ordering.",
       "source": "Redis docs — Sorted Sets",
       "expected_time_ms": 26000,
-      "tags": ["redis", "sorted-set", "leaderboard"]
+      "tags": [
+        "redis",
+        "sorted-set",
+        "leaderboard"
+      ]
     },
     {
       "id": "q050302004",
@@ -220,7 +275,11 @@
       "explanation_en": "By executing commands on a single thread, Redis processes them sequentially: each command is atomic and there are no races between commands, which simplifies reasoning. The trade-off is that a slow, blocking command (like `KEYS *`, or a heavy Lua script) halts processing of all others. That's why large O(n) operations are avoided in production (`SCAN` is preferred).",
       "source": "Redis docs — Redis single-threaded model / KEYS vs SCAN",
       "expected_time_ms": 32000,
-      "tags": ["redis", "single-threaded", "atomicity"]
+      "tags": [
+        "redis",
+        "single-threaded",
+        "atomicity"
+      ]
     },
     {
       "id": "q050302005",
@@ -229,14 +288,24 @@
       "difficulty_tier": "hard",
       "question_es": "Aunque Redis es principalmente en memoria, ofrece mecanismos de persistencia (RDB por snapshots y AOF por log de operaciones) para poder recuperar datos tras un reinicio.",
       "question_en": "Although Redis is primarily in-memory, it offers persistence mechanisms (RDB snapshots and AOF operation log) to recover data after a restart.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Redis puede persistir con RDB (snapshots periódicos del dataset, compactos y rápidos de restaurar, pero pueden perder los cambios desde el último snapshot) y con AOF (append-only file que registra cada operación de escritura, más duradero pero con archivos mayores). Se pueden combinar. Aun así, como cache, su pérdida debe tolerarse; como base de datos, la persistencia importa.",
       "explanation_en": "Redis can persist with RDB (periodic snapshots of the dataset, compact and fast to restore, but can lose changes since the last snapshot) and with AOF (append-only file logging every write operation, more durable but with larger files). They can be combined. Even so, as a cache its loss should be tolerable; as a database, persistence matters.",
       "source": "Redis docs — Persistence (RDB and AOF)",
       "expected_time_ms": 28000,
-      "tags": ["redis", "persistence", "rdb-aof"]
+      "tags": [
+        "redis",
+        "persistence",
+        "rdb-aof"
+      ]
     },
     {
       "id": "q050302006",
@@ -254,7 +323,11 @@
       "explanation_en": "`SCAN` walks the keyspace in small batches using a cursor, without blocking the server, unlike `KEYS *`, which returns all keys at once and blocks Redis (single-threaded) for the whole operation —disastrous on large datasets. Variants `HSCAN`, `SSCAN`, `ZSCAN` exist to iterate within specific structures.",
       "source": "Redis docs — SCAN",
       "expected_time_ms": 30000,
-      "tags": ["redis", "scan", "keys"]
+      "tags": [
+        "redis",
+        "scan",
+        "keys"
+      ]
     },
     {
       "id": "q050303001",
@@ -264,23 +337,26 @@
       "question_es": "¿Qué es la 'invalidación de cache'?",
       "question_en": "What is 'cache invalidation'?",
       "options_es": [
-        "Borrar la base de datos",
         "El proceso de eliminar o marcar como obsoletas las entradas de la cache cuando los datos subyacentes cambian, para no seguir sirviendo información desactualizada",
+        "Borrar la base de datos",
         "Cifrar las entradas de la cache",
         "Aumentar el tamaño de la cache"
       ],
       "options_en": [
-        "Deleting the database",
         "The process of removing or marking cache entries as stale when the underlying data changes, to stop serving outdated information",
+        "Deleting the database",
         "Encrypting cache entries",
         "Increasing the cache size"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Invalidar la cache es retirar o marcar como caducadas las entradas cuyos datos de origen han cambiado, para que la próxima lectura obtenga el valor fresco en lugar del obsoleto. Es difícil porque hay que saber qué entradas se ven afectadas por un cambio y hacerlo de forma consistente y a tiempo, equilibrando frescura y rendimiento.",
       "explanation_en": "Cache invalidation is removing or marking as expired the entries whose origin data has changed, so the next read gets the fresh value instead of the stale one. It's hard because you must know which entries a change affects and do it consistently and in time, balancing freshness and performance.",
       "source": "AWS / Fowler — cache invalidation",
       "expected_time_ms": 22000,
-      "tags": ["invalidation", "staleness"]
+      "tags": [
+        "invalidation",
+        "staleness"
+      ]
     },
     {
       "id": "q050303002",
@@ -290,23 +366,26 @@
       "question_es": "¿Qué es un TTL (Time To Live) aplicado a una entrada de cache?",
       "question_en": "What is a TTL (Time To Live) applied to a cache entry?",
       "options_es": [
-        "El tiempo que tarda en crearse la entrada",
         "La duración tras la cual la entrada se considera caducada y se elimina o se refresca, una forma simple de invalidación basada en tiempo",
+        "El tiempo que tarda en crearse la entrada",
         "El tamaño máximo de la entrada",
         "El número de veces que se puede leer"
       ],
       "options_en": [
-        "The time it takes to create the entry",
         "The duration after which the entry is considered expired and is removed or refreshed, a simple time-based form of invalidation",
+        "The time it takes to create the entry",
         "The maximum size of the entry",
         "The number of times it can be read"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El TTL es la vida útil de una entrada: al expirar, se elimina o se recarga del origen. Es la forma más simple de invalidación (basada en tiempo): no requiere detectar cambios, solo aceptar que el dato puede estar obsoleto como máximo durante el TTL. Un TTL corto da más frescura pero menos aciertos; uno largo, lo contrario.",
       "explanation_en": "The TTL is an entry's lifespan: on expiry, it's removed or reloaded from the origin. It's the simplest form of (time-based) invalidation: it requires no change detection, only accepting that the data may be stale for at most the TTL. A short TTL gives more freshness but fewer hits; a long one, the opposite.",
       "source": "AWS — TTL-based invalidation",
       "expected_time_ms": 24000,
-      "tags": ["invalidation", "ttl"]
+      "tags": [
+        "invalidation",
+        "ttl"
+      ]
     },
     {
       "id": "q050303003",
@@ -315,14 +394,24 @@
       "difficulty_tier": "medium",
       "question_es": "La invalidación basada en eventos (borrar/actualizar la entrada de cache justo cuando el dato cambia) suele dar datos más frescos que confiar solo en un TTL, pero es más compleja de implementar correctamente.",
       "question_en": "Event-based invalidation (deleting/updating the cache entry right when the data changes) usually gives fresher data than relying only on a TTL, but is more complex to implement correctly.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Invalidar por evento (en el momento de la escritura al origen) minimiza el tiempo de datos obsoletos, pero exige detectar de forma fiable qué claves afecta cada cambio y ejecutar la invalidación sin fallos ni condiciones de carrera. El TTL es más simple pero admite un rango de obsolescencia. En la práctica, se suelen combinar ambos.",
       "explanation_en": "Event-based invalidation (at the moment of writing to the origin) minimizes the stale-data window, but requires reliably detecting which keys each change affects and executing the invalidation without failures or race conditions. TTL is simpler but tolerates a staleness window. In practice, the two are usually combined.",
       "source": "AWS / Fowler — event-based vs TTL invalidation",
       "expected_time_ms": 26000,
-      "tags": ["invalidation", "event-based", "ttl"]
+      "tags": [
+        "invalidation",
+        "event-based",
+        "ttl"
+      ]
     },
     {
       "id": "q050303004",
@@ -348,7 +437,11 @@
       "explanation_en": "With per-instance local caches, invalidating one doesn't affect the others, which would keep returning the stale value. Solutions: use a central shared cache (e.g. a Redis cluster) to have a single copy, or propagate invalidation events to all instances (for example, via a pub/sub channel that all listen to).",
       "source": "Kleppmann / AWS — distributed cache invalidation",
       "expected_time_ms": 32000,
-      "tags": ["invalidation", "distributed", "consistency"]
+      "tags": [
+        "invalidation",
+        "distributed",
+        "consistency"
+      ]
     },
     {
       "id": "q050303005",
@@ -357,14 +450,24 @@
       "difficulty_tier": "hard",
       "question_es": "Una política de desalojo (eviction) como LRU decide qué entradas eliminar cuando la cache se queda sin espacio, y es distinta de la invalidación por obsolescencia de datos.",
       "question_en": "An eviction policy like LRU decides which entries to remove when the cache runs out of space, and is distinct from invalidation due to data staleness.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Hay que distinguir dos conceptos: la INVALIDACIÓN retira entradas porque el dato ya no es válido (cambió en el origen); el DESALOJO (eviction) retira entradas por falta de espacio, según una política como LRU (Least Recently Used), LFU o aleatoria, aunque el dato siguiera siendo válido. Ambos gestionan qué hay en la cache, pero por razones diferentes.",
       "explanation_en": "Two concepts must be distinguished: INVALIDATION removes entries because the data is no longer valid (it changed at the origin); EVICTION removes entries due to lack of space, per a policy like LRU (Least Recently Used), LFU, or random, even though the data was still valid. Both manage what's in the cache, but for different reasons.",
       "source": "Redis docs — eviction policies (maxmemory)",
       "expected_time_ms": 28000,
-      "tags": ["invalidation", "eviction", "lru"]
+      "tags": [
+        "invalidation",
+        "eviction",
+        "lru"
+      ]
     },
     {
       "id": "q050303006",
@@ -382,7 +485,11 @@
       "explanation_en": "LRU (Least Recently Used) evicts the entry not accessed for the longest time, assuming what was used recently will be used again soon (temporal locality). It's very common, but not always optimal: LFU (Least Frequently Used) prioritizes frequency, and there are variants depending on the access pattern. Redis offers several policies configurable via `maxmemory-policy`.",
       "source": "Redis docs — maxmemory-policy (LRU/LFU)",
       "expected_time_ms": 30000,
-      "tags": ["invalidation", "lru", "eviction"]
+      "tags": [
+        "invalidation",
+        "lru",
+        "eviction"
+      ]
     },
     {
       "id": "q050304001",
@@ -408,7 +515,10 @@
       "explanation_en": "A CDN distributes copies of content across many 'points of presence' (PoPs) around the world. When a user requests a resource, the nearest edge server serves it instead of the distant origin server, reducing latency and offloading the origin. It's ideal for static, cacheable content, and also accelerates dynamic content with edge techniques.",
       "source": "Cloudflare / MDN — What is a CDN?",
       "expected_time_ms": 22000,
-      "tags": ["cdn", "edge"]
+      "tags": [
+        "cdn",
+        "edge"
+      ]
     },
     {
       "id": "q050304002",
@@ -417,14 +527,23 @@
       "difficulty_tier": "medium",
       "question_es": "Servir contenido estático desde una CDN cercana al usuario reduce la latencia principalmente porque acorta la distancia física que deben recorrer los datos.",
       "question_en": "Serving static content from a CDN close to the user reduces latency mainly because it shortens the physical distance the data must travel.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La latencia de red está limitada, en última instancia, por la velocidad de la luz y el número de saltos: cuanta más distancia, más retardo (round-trip time). Al acercar el contenido al usuario mediante servidores edge, la CDN reduce esa distancia y los saltos, disminuyendo la latencia y mejorando la experiencia, además de descargar el origen.",
       "explanation_en": "Network latency is ultimately bounded by the speed of light and the number of hops: the greater the distance, the more delay (round-trip time). By bringing content closer to the user via edge servers, the CDN reduces that distance and hop count, lowering latency and improving experience, while also offloading the origin.",
       "source": "Cloudflare — How CDNs reduce latency",
       "expected_time_ms": 24000,
-      "tags": ["cdn", "latency"]
+      "tags": [
+        "cdn",
+        "latency"
+      ]
     },
     {
       "id": "q050304003",
@@ -450,7 +569,11 @@
       "explanation_en": "Purging manually invalidates content on the CDN's edges, forcing a reload from the origin on the next request. It's used after publishing a new version of a resource that still has a live TTL in the CDN. A common alternative for static files is 'cache busting': changing the file name/URL (e.g. `app.a1b2c3.js`) so it's a new entry.",
       "source": "Cloudflare / Fastly docs — cache purge",
       "expected_time_ms": 28000,
-      "tags": ["cdn", "purge", "cache-busting"]
+      "tags": [
+        "cdn",
+        "purge",
+        "cache-busting"
+      ]
     },
     {
       "id": "q050304004",
@@ -459,14 +582,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Cuál de las siguientes cabeceras HTTP controla directamente cómo cachean el contenido los navegadores y las CDNs?",
       "question_en": "Which of the following HTTP headers directly controls how browsers and CDNs cache content?",
-      "options_es": ["Authorization", "Cache-Control", "User-Agent", "Content-Encoding"],
-      "options_en": ["Authorization", "Cache-Control", "User-Agent", "Content-Encoding"],
-      "correct_index": 1,
+      "options_es": [
+        "Cache-Control",
+        "Authorization",
+        "User-Agent",
+        "Content-Encoding"
+      ],
+      "options_en": [
+        "Cache-Control",
+        "Authorization",
+        "User-Agent",
+        "Content-Encoding"
+      ],
+      "correct_index": 0,
       "explanation_es": "`Cache-Control` (con directivas como `max-age`, `public`/`private`, `no-cache`, `no-store`, `s-maxage`, `immutable`) es la cabecera principal que indica a navegadores y CDNs si y por cuánto tiempo pueden cachear una respuesta. `s-maxage` aplica específicamente a caches compartidas (como la CDN). `Authorization` es de autenticación y `User-Agent` identifica el cliente.",
       "explanation_en": "`Cache-Control` (with directives like `max-age`, `public`/`private`, `no-cache`, `no-store`, `s-maxage`, `immutable`) is the main header telling browsers and CDNs whether and for how long they may cache a response. `s-maxage` applies specifically to shared caches (like the CDN). `Authorization` is for authentication and `User-Agent` identifies the client.",
       "source": "RFC 9111 — HTTP Caching (Cache-Control)",
       "expected_time_ms": 30000,
-      "tags": ["cdn", "cache-control", "http"]
+      "tags": [
+        "cdn",
+        "cache-control",
+        "http"
+      ]
     },
     {
       "id": "q050304005",
@@ -475,14 +612,23 @@
       "difficulty_tier": "hard",
       "question_es": "El cómputo en el edge ('edge computing') permite ejecutar lógica (p. ej. funciones ligeras) en los servidores CDN cercanos al usuario, no solo servir contenido estático cacheado.",
       "question_en": "Edge computing lets you run logic (e.g. lightweight functions) on CDN servers close to the user, not just serve cached static content.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Las plataformas edge modernas (Cloudflare Workers, AWS Lambda@Edge, Fastly Compute) permiten ejecutar código en los PoPs cercanos al usuario: personalizar respuestas, autenticar, hacer A/B testing, redirigir o ensamblar contenido, con latencia mínima. La CDN pasa de ser solo una cache de estáticos a una plataforma de cómputo distribuido en el borde.",
       "explanation_en": "Modern edge platforms (Cloudflare Workers, AWS Lambda@Edge, Fastly Compute) let you run code at PoPs close to the user: personalize responses, authenticate, A/B test, redirect, or assemble content, with minimal latency. The CDN goes from being just a static cache to a distributed edge compute platform.",
       "source": "Cloudflare Workers / AWS Lambda@Edge docs",
       "expected_time_ms": 26000,
-      "tags": ["cdn", "edge-computing"]
+      "tags": [
+        "cdn",
+        "edge-computing"
+      ]
     },
     {
       "id": "q050304006",
@@ -500,7 +646,11 @@
       "explanation_en": "'Cache busting' changes the resource's URL on each version (typically embedding a content hash in the name), so a new version is a completely new cache key and is always downloaded, while old versions can be cached aggressively (even `immutable`, with a huge TTL). It's the standard way to combine long caching with frequent asset deployments.",
       "source": "web.dev / MDN — cache busting & fingerprinting",
       "expected_time_ms": 30000,
-      "tags": ["cdn", "cache-busting", "fingerprinting"]
+      "tags": [
+        "cdn",
+        "cache-busting",
+        "fingerprinting"
+      ]
     }
   ]
 }

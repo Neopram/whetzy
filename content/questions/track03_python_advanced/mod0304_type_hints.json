@@ -8,23 +8,26 @@
       "question_es": "¿Qué anotación de tipo indica que una función recibe un int y devuelve un str?",
       "question_en": "Which type annotation indicates a function takes an int and returns a str?",
       "options_es": [
-        "def f(x: int) -> str:",
         "def f(x = int) : str",
+        "def f(x: int) -> str:",
         "def f(int x) returns str:",
         "def f(x): int -> str"
       ],
       "options_en": [
-        "def f(x: int) -> str:",
         "def f(x = int) : str",
+        "def f(x: int) -> str:",
         "def f(int x) returns str:",
         "def f(x): int -> str"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "La sintaxis de type hints (PEP 484) es `param: Tipo` para parámetros y `-> Tipo` para el valor de retorno: `def f(x: int) -> str:`. Es solo una anotación; Python no la comprueba en ejecución, la usan herramientas como mypy.",
       "explanation_en": "The type-hint syntax (PEP 484) is `param: Type` for parameters and `-> Type` for the return value: `def f(x: int) -> str:`. It's only an annotation; Python doesn't check it at runtime, tools like mypy do.",
       "source": "PEP 484 — Type Hints",
       "expected_time_ms": 22000,
-      "tags": ["type-hints", "syntax"]
+      "tags": [
+        "type-hints",
+        "syntax"
+      ]
     },
     {
       "id": "q030401002",
@@ -33,14 +36,24 @@
       "difficulty_tier": "easy",
       "question_es": "Python verifica en tiempo de ejecución las anotaciones de tipo y lanza un error si pasas un tipo incorrecto.",
       "question_en": "Python checks type annotations at runtime and raises an error if you pass a wrong type.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Las anotaciones son informativas y NO se comprueban en ejecución: puedes pasar un str a un parámetro anotado como int y Python no protestará. Un verificador estático externo como mypy es el que detecta esas incongruencias antes de ejecutar.",
       "explanation_en": "False. Annotations are informational and are NOT checked at runtime: you can pass a str to a parameter annotated as int and Python won't complain. An external static checker like mypy is what catches such mismatches before running.",
       "source": "PEP 484 — Type Hints: Non-goals",
       "expected_time_ms": 25000,
-      "tags": ["type-hints", "runtime", "gotcha"]
+      "tags": [
+        "type-hints",
+        "runtime",
+        "gotcha"
+      ]
     },
     {
       "id": "q030401003",
@@ -49,14 +62,28 @@
       "difficulty_tier": "medium",
       "question_es": "En Python 3.10+, ¿cómo se anota un valor que puede ser int o None?",
       "question_en": "In Python 3.10+, how do you annotate a value that can be int or None?",
-      "options_es": ["int | None", "int or None", "Maybe[int]", "int?"],
-      "options_en": ["int | None", "int or None", "Maybe[int]", "int?"],
-      "correct_index": 0,
+      "options_es": [
+        "Maybe[int]",
+        "int or None",
+        "int | None",
+        "int?"
+      ],
+      "options_en": [
+        "Maybe[int]",
+        "int or None",
+        "int | None",
+        "int?"
+      ],
+      "correct_index": 2,
       "explanation_es": "Desde Python 3.10 (PEP 604) se usa la sintaxis de unión con `|`: `int | None`. Es equivalente al antiguo `Optional[int]` o `Union[int, None]` de `typing`. `or` es un operador booleano, no de tipos, y `int?` no existe en Python.",
       "explanation_en": "Since Python 3.10 (PEP 604) you use the union syntax with `|`: `int | None`. It's equivalent to the older `Optional[int]` or `Union[int, None]` from `typing`. `or` is a boolean operator, not a type one, and `int?` doesn't exist in Python.",
       "source": "PEP 604 — Allow writing union types as X | Y",
       "expected_time_ms": 28000,
-      "tags": ["type-hints", "optional", "union"]
+      "tags": [
+        "type-hints",
+        "optional",
+        "union"
+      ]
     },
     {
       "id": "q030401004",
@@ -65,14 +92,28 @@
       "difficulty_tier": "medium",
       "question_es": "En Python 3.9+, ¿cómo se anota una lista de enteros sin importar de typing?",
       "question_en": "In Python 3.9+, how do you annotate a list of integers without importing from typing?",
-      "options_es": ["list[int]", "List[int]", "list(int)", "int[]"],
-      "options_en": ["list[int]", "List[int]", "list(int)", "int[]"],
-      "correct_index": 0,
+      "options_es": [
+        "list(int)",
+        "List[int]",
+        "list[int]",
+        "int[]"
+      ],
+      "options_en": [
+        "list(int)",
+        "List[int]",
+        "list[int]",
+        "int[]"
+      ],
+      "correct_index": 2,
       "explanation_es": "Desde Python 3.9 (PEP 585) los tipos genéricos incorporados admiten subíndice directamente: `list[int]`, `dict[str, int]`, `tuple[int, ...]`. Ya no hace falta el antiguo `List` de `typing` (aunque sigue funcionando por compatibilidad).",
       "explanation_en": "Since Python 3.9 (PEP 585) built-in generic types support subscription directly: `list[int]`, `dict[str, int]`, `tuple[int, ...]`. The old `List` from `typing` is no longer needed (though it still works for compatibility).",
       "source": "PEP 585 — Type Hinting Generics In Standard Collections",
       "expected_time_ms": 28000,
-      "tags": ["type-hints", "generics", "collections"]
+      "tags": [
+        "type-hints",
+        "generics",
+        "collections"
+      ]
     },
     {
       "id": "q030401005",
@@ -98,7 +139,12 @@
       "explanation_en": "The annotation `name: str` does NOT prevent passing `42` (Python ignores it at runtime). The actual error occurs when running `\"hi \" + 42`, raising `TypeError` because you can't concatenate str with int. A static checker would warn earlier, but here it runs and fails at runtime.",
       "source": "PEP 484 — Type Hints: runtime behavior",
       "expected_time_ms": 40000,
-      "tags": ["type-hints", "runtime", "typeerror", "gotcha"]
+      "tags": [
+        "type-hints",
+        "runtime",
+        "typeerror",
+        "gotcha"
+      ]
     },
     {
       "id": "q030401006",
@@ -116,7 +162,11 @@
       "explanation_en": "`f.__annotations__` is a dict mapping parameter names (and `'return'`) to their annotations. Although Python doesn't check them, it does store them here, and libraries like pydantic or dataclasses read them to generate runtime validation or behavior.",
       "source": "CPython docs 3.13 — __annotations__ attributes",
       "expected_time_ms": 32000,
-      "tags": ["type-hints", "annotations", "introspection"]
+      "tags": [
+        "type-hints",
+        "annotations",
+        "introspection"
+      ]
     },
     {
       "id": "q030402001",
@@ -126,23 +176,27 @@
       "question_es": "¿Para qué sirve un TypeVar en las anotaciones de tipo?",
       "question_en": "What is a TypeVar used for in type annotations?",
       "options_es": [
-        "Definir un tipo genérico que preserva la relación entre entradas y salidas",
         "Declarar una variable global",
+        "Definir un tipo genérico que preserva la relación entre entradas y salidas",
         "Convertir tipos en tiempo de ejecución",
         "Crear una constante de tipo"
       ],
       "options_en": [
-        "Defining a generic type that preserves the relation between inputs and outputs",
         "Declaring a global variable",
+        "Defining a generic type that preserves the relation between inputs and outputs",
         "Converting types at runtime",
         "Creating a type constant"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Un `TypeVar` (ej. `T = TypeVar('T')`) representa un tipo genérico. Permite decir 'esta función recibe una lista de T y devuelve un T', de modo que el checker sabe que `first([1,2,3])` devuelve un `int`. Preserva la relación de tipos entre argumentos y retorno.",
       "explanation_en": "A `TypeVar` (e.g. `T = TypeVar('T')`) represents a generic type. It lets you say 'this function takes a list of T and returns a T', so the checker knows `first([1,2,3])` returns an `int`. It preserves the type relationship between arguments and return.",
       "source": "PEP 484 — Type Hints: Generics",
       "expected_time_ms": 25000,
-      "tags": ["type-hints", "typevar", "generics"]
+      "tags": [
+        "type-hints",
+        "typevar",
+        "generics"
+      ]
     },
     {
       "id": "q030402002",
@@ -152,23 +206,27 @@
       "question_es": "En Python 3.12+, ¿cuál es la nueva sintaxis para declarar una función genérica sin usar TypeVar explícito?",
       "question_en": "In Python 3.12+, what is the new syntax to declare a generic function without an explicit TypeVar?",
       "options_es": [
-        "def first[T](items: list[T]) -> T:",
         "def first<T>(items): -> T",
+        "def first[T](items: list[T]) -> T:",
         "def first(items: list[T=any]) -> T:",
         "generic def first(items): -> T"
       ],
       "options_en": [
-        "def first[T](items: list[T]) -> T:",
         "def first<T>(items): -> T",
+        "def first[T](items: list[T]) -> T:",
         "def first(items: list[T=any]) -> T:",
         "generic def first(items): -> T"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Python 3.12 (PEP 695) introdujo la sintaxis de parámetros de tipo entre corchetes: `def first[T](items: list[T]) -> T:`. Declara `T` inline sin necesidad de `TypeVar('T')`. Lo mismo aplica a clases: `class Stack[T]:`.",
       "explanation_en": "Python 3.12 (PEP 695) introduced the bracketed type-parameter syntax: `def first[T](items: list[T]) -> T:`. It declares `T` inline without needing `TypeVar('T')`. The same applies to classes: `class Stack[T]:`.",
       "source": "PEP 695 — Type Parameter Syntax",
       "expected_time_ms": 30000,
-      "tags": ["type-hints", "generics", "pep695"]
+      "tags": [
+        "type-hints",
+        "generics",
+        "pep695"
+      ]
     },
     {
       "id": "q030402003",
@@ -177,14 +235,24 @@
       "difficulty_tier": "medium",
       "question_es": "Para hacer que una clase sea genérica sobre un tipo T (pre-3.12) se hace que herede de typing.Generic[T].",
       "question_en": "To make a class generic over a type T (pre-3.12), you make it inherit from typing.Generic[T].",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Antes de 3.12, una clase genérica se declaraba `class Stack(Generic[T]):` con `T = TypeVar('T')`. Esto permite anotar `Stack[int]` y que el checker rastree el tipo del contenido. La sintaxis nueva `class Stack[T]:` de PEP 695 lo simplifica.",
       "explanation_en": "True. Before 3.12, a generic class was declared `class Stack(Generic[T]):` with `T = TypeVar('T')`. This allows annotating `Stack[int]` and lets the checker track the element type. PEP 695's new `class Stack[T]:` syntax simplifies it.",
       "source": "PEP 484 — Type Hints: Generic types",
       "expected_time_ms": 28000,
-      "tags": ["type-hints", "generics", "generic-class"]
+      "tags": [
+        "type-hints",
+        "generics",
+        "generic-class"
+      ]
     },
     {
       "id": "q030402004",
@@ -194,23 +262,27 @@
       "question_es": "¿Qué permite acotar un TypeVar con `bound`, por ejemplo `T = TypeVar('T', bound=Number)`?",
       "question_en": "What does bounding a TypeVar with `bound`, e.g. `T = TypeVar('T', bound=Number)`, allow?",
       "options_es": [
-        "Restringir T a Number o sus subtipos, garantizando que se pueden usar sus operaciones",
+        "Convertir T en un tipo opcional",
         "Fijar T a un único tipo concreto",
         "Permitir que T sea cualquier tipo sin restricción",
-        "Convertir T en un tipo opcional"
+        "Restringir T a Number o sus subtipos, garantizando que se pueden usar sus operaciones"
       ],
       "options_en": [
-        "Restrict T to Number or its subtypes, guaranteeing its operations are available",
+        "Make T an optional type",
         "Fix T to a single concrete type",
         "Allow T to be any type with no restriction",
-        "Make T an optional type"
+        "Restrict T to Number or its subtypes, guaranteeing its operations are available"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un `bound` limita el TypeVar a un tipo y sus subtipos: `bound=Number` significa 'T debe ser Number o algo que herede de él'. Esto le dice al checker que puede asumir las operaciones de Number sobre valores de tipo T, útil para funciones genéricas restringidas.",
       "explanation_en": "A `bound` limits the TypeVar to a type and its subtypes: `bound=Number` means 'T must be Number or something inheriting from it'. This tells the checker it can assume Number's operations on values of type T, useful for constrained generic functions.",
       "source": "PEP 484 — Type Hints: TypeVar with bound",
       "expected_time_ms": 35000,
-      "tags": ["type-hints", "typevar", "bound"]
+      "tags": [
+        "type-hints",
+        "typevar",
+        "bound"
+      ]
     },
     {
       "id": "q030402005",
@@ -219,14 +291,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué tipo especial de typing indica que una función nunca retorna normalmente (siempre lanza o entra en bucle infinito)?",
       "question_en": "Which special typing type indicates a function never returns normally (it always raises or loops forever)?",
-      "options_es": ["NoReturn (o Never en 3.11+)", "None", "Optional", "Any"],
-      "options_en": ["NoReturn (or Never in 3.11+)", "None", "Optional", "Any"],
-      "correct_index": 0,
+      "options_es": [
+        "None",
+        "NoReturn (o Never en 3.11+)",
+        "Optional",
+        "Any"
+      ],
+      "options_en": [
+        "None",
+        "NoReturn (or Never in 3.11+)",
+        "Optional",
+        "Any"
+      ],
+      "correct_index": 1,
       "explanation_es": "`NoReturn` (y su equivalente `Never` desde 3.11) anota funciones que nunca terminan devolviendo un valor, como una que siempre lanza una excepción. `None` significa que retorna, pero sin valor útil. El checker usa `NoReturn` para razonar sobre código inalcanzable.",
       "explanation_en": "`NoReturn` (and its equivalent `Never` since 3.11) annotates functions that never finish returning a value, such as one that always raises. `None` means it returns, but with no useful value. The checker uses `NoReturn` to reason about unreachable code.",
       "source": "PEP 484 / typing.NoReturn / typing.Never",
       "expected_time_ms": 35000,
-      "tags": ["type-hints", "noreturn", "never"]
+      "tags": [
+        "type-hints",
+        "noreturn",
+        "never"
+      ]
     },
     {
       "id": "q030402006",
@@ -244,7 +330,10 @@
       "explanation_en": "`Any` (from `typing`) is compatible with any type in both directions, effectively disabling checking for that value. It's a useful but dangerous escape hatch: overusing `Any` negates the benefits of static typing. Prefer `object` when you only need 'any object'.",
       "source": "PEP 484 — Type Hints: The Any type",
       "expected_time_ms": 30000,
-      "tags": ["type-hints", "any"]
+      "tags": [
+        "type-hints",
+        "any"
+      ]
     },
     {
       "id": "q030403001",
@@ -254,23 +343,27 @@
       "question_es": "¿Qué es un Protocol en el sistema de tipos de Python (typing)?",
       "question_en": "What is a Protocol in Python's typing system?",
       "options_es": [
-        "Una forma de duck typing estático: define métodos/atributos que un tipo debe tener, sin herencia explícita",
+        "Una anotación para funciones async",
         "Un protocolo de red",
         "Una clase abstracta que exige herencia directa",
-        "Una anotación para funciones async"
+        "Una forma de duck typing estático: define métodos/atributos que un tipo debe tener, sin herencia explícita"
       ],
       "options_en": [
-        "A form of static duck typing: it defines methods/attributes a type must have, without explicit inheritance",
+        "An annotation for async functions",
         "A network protocol",
         "An abstract class requiring direct inheritance",
-        "An annotation for async functions"
+        "A form of static duck typing: it defines methods/attributes a type must have, without explicit inheritance"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un `Protocol` (PEP 544) define una interfaz estructural: cualquier clase que tenga los métodos/atributos declarados 'encaja', sin necesidad de heredar del Protocol. Es duck typing verificado estáticamente: 'si tiene `.read()`, sirve como lector'.",
       "explanation_en": "A `Protocol` (PEP 544) defines a structural interface: any class that has the declared methods/attributes 'fits', without inheriting from the Protocol. It's statically-checked duck typing: 'if it has `.read()`, it counts as a reader'.",
       "source": "PEP 544 — Protocols: Structural subtyping",
       "expected_time_ms": 25000,
-      "tags": ["type-hints", "protocol", "structural"]
+      "tags": [
+        "type-hints",
+        "protocol",
+        "structural"
+      ]
     },
     {
       "id": "q030403002",
@@ -279,14 +372,25 @@
       "difficulty_tier": "medium",
       "question_es": "Con Protocol, una clase debe heredar explícitamente del Protocol para que el type checker la considere compatible.",
       "question_en": "With Protocol, a class must explicitly inherit from the Protocol for the type checker to consider it compatible.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. La gracia de los Protocols es el subtipado ESTRUCTURAL: basta con que la clase tenga los métodos/atributos requeridos, sin heredar del Protocol. Esto contrasta con las ABC, que usan subtipado NOMINAL (requieren herencia o registro explícito).",
       "explanation_en": "False. The point of Protocols is STRUCTURAL subtyping: it's enough for the class to have the required methods/attributes, without inheriting from the Protocol. This contrasts with ABCs, which use NOMINAL subtyping (requiring inheritance or explicit registration).",
       "source": "PEP 544 — Protocols: Structural subtyping",
       "expected_time_ms": 28000,
-      "tags": ["type-hints", "protocol", "structural", "gotcha"]
+      "tags": [
+        "type-hints",
+        "protocol",
+        "structural",
+        "gotcha"
+      ]
     },
     {
       "id": "q030403003",
@@ -312,7 +416,11 @@
       "explanation_en": "The distinction is structural vs nominal: a Protocol accepts any class with the right 'shape' (correct methods), without inheritance; an ABC requires the class to inherit from it or register. Protocols fit Python's duck-typing spirit better.",
       "source": "PEP 544 — Protocols vs ABCs",
       "expected_time_ms": 32000,
-      "tags": ["type-hints", "protocol", "abc"]
+      "tags": [
+        "type-hints",
+        "protocol",
+        "abc"
+      ]
     },
     {
       "id": "q030403004",
@@ -322,23 +430,27 @@
       "question_es": "¿Qué se necesita para poder usar isinstance() con un Protocol en tiempo de ejecución?",
       "question_en": "What is needed to use isinstance() with a Protocol at runtime?",
       "options_es": [
-        "Decorar el Protocol con @runtime_checkable",
-        "No es posible en absoluto",
         "Heredar del Protocol",
+        "No es posible en absoluto",
+        "Decorar el Protocol con @runtime_checkable",
         "Llamar a Protocol.register()"
       ],
       "options_en": [
-        "Decorate the Protocol with @runtime_checkable",
-        "It's not possible at all",
         "Inherit from the Protocol",
+        "It's not possible at all",
+        "Decorate the Protocol with @runtime_checkable",
         "Call Protocol.register()"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Por defecto los Protocols solo existen para el checker estático. Decorándolos con `@runtime_checkable` puedes usar `isinstance(obj, MiProtocol)`, aunque solo comprueba la PRESENCIA de los métodos (no sus firmas ni tipos). Sin el decorador, `isinstance` lanza `TypeError`.",
       "explanation_en": "By default Protocols exist only for the static checker. Decorating them with `@runtime_checkable` lets you use `isinstance(obj, MyProtocol)`, though it only checks the PRESENCE of methods (not their signatures or types). Without the decorator, `isinstance` raises `TypeError`.",
       "source": "PEP 544 — Protocols: runtime_checkable",
       "expected_time_ms": 35000,
-      "tags": ["type-hints", "protocol", "runtime_checkable"]
+      "tags": [
+        "type-hints",
+        "protocol",
+        "runtime_checkable"
+      ]
     },
     {
       "id": "q030403005",
@@ -348,23 +460,27 @@
       "question_es": "Con este código, ¿aceptaría un type checker la llamada describe(Dog())?\n```python\nfrom typing import Protocol\nclass Speaker(Protocol):\n    def speak(self) -> str: ...\nclass Dog:\n    def speak(self) -> str: return \"woof\"\ndef describe(s: Speaker) -> str:\n    return s.speak()\n```",
       "question_en": "With this code, would a type checker accept the call describe(Dog())?\n```python\nfrom typing import Protocol\nclass Speaker(Protocol):\n    def speak(self) -> str: ...\nclass Dog:\n    def speak(self) -> str: return \"woof\"\ndef describe(s: Speaker) -> str:\n    return s.speak()\n```",
       "options_es": [
-        "Sí: Dog tiene speak() con la firma correcta, así que satisface el Protocol estructuralmente",
-        "No: Dog no hereda de Speaker",
         "No: falta @runtime_checkable",
+        "No: Dog no hereda de Speaker",
+        "Sí: Dog tiene speak() con la firma correcta, así que satisface el Protocol estructuralmente",
         "No: Protocol no permite métodos"
       ],
       "options_en": [
-        "Yes: Dog has speak() with the right signature, so it satisfies the Protocol structurally",
-        "No: Dog doesn't inherit from Speaker",
         "No: @runtime_checkable is missing",
+        "No: Dog doesn't inherit from Speaker",
+        "Yes: Dog has speak() with the right signature, so it satisfies the Protocol structurally",
         "No: Protocol doesn't allow methods"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Sí. Aunque `Dog` no hereda de `Speaker`, tiene un método `speak(self) -> str` que coincide con lo que el Protocol exige. Por subtipado estructural, `Dog` es compatible con `Speaker` y el checker acepta `describe(Dog())`. No hace falta `@runtime_checkable` para el análisis estático.",
       "explanation_en": "Yes. Even though `Dog` doesn't inherit from `Speaker`, it has a `speak(self) -> str` method matching what the Protocol requires. By structural subtyping, `Dog` is compatible with `Speaker` and the checker accepts `describe(Dog())`. `@runtime_checkable` isn't needed for static analysis.",
       "source": "PEP 544 — Protocols: Structural subtyping",
       "expected_time_ms": 45000,
-      "tags": ["type-hints", "protocol", "structural"]
+      "tags": [
+        "type-hints",
+        "protocol",
+        "structural"
+      ]
     },
     {
       "id": "q030403006",
@@ -382,7 +498,10 @@
       "explanation_en": "`class Comparable(Protocol):` (importing `Protocol` from `typing`) defines a structural protocol. Any class with the declared methods will fit without inheriting from `Comparable`. It's the foundation of structural typing (static duck typing) in Python.",
       "source": "PEP 544 — Protocols",
       "expected_time_ms": 30000,
-      "tags": ["type-hints", "protocol"]
+      "tags": [
+        "type-hints",
+        "protocol"
+      ]
     },
     {
       "id": "q030404001",
@@ -392,23 +511,27 @@
       "question_es": "¿Qué es mypy?",
       "question_en": "What is mypy?",
       "options_es": [
-        "Un verificador de tipos estático que analiza las anotaciones sin ejecutar el código",
-        "Un formateador de código como black",
         "Un intérprete alternativo de Python",
+        "Un formateador de código como black",
+        "Un verificador de tipos estático que analiza las anotaciones sin ejecutar el código",
         "Un gestor de paquetes"
       ],
       "options_en": [
-        "A static type checker that analyzes annotations without running the code",
-        "A code formatter like black",
         "An alternative Python interpreter",
+        "A code formatter like black",
+        "A static type checker that analyzes annotations without running the code",
         "A package manager"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "mypy es la herramienta de referencia para comprobar tipos estáticamente: lee las anotaciones y reporta incongruencias (pasar un str donde se espera un int, atributos inexistentes, etc.) SIN ejecutar el programa. Detecta errores antes de que lleguen a producción.",
       "explanation_en": "mypy is the reference tool for static type checking: it reads the annotations and reports mismatches (passing a str where an int is expected, missing attributes, etc.) WITHOUT running the program. It catches errors before they reach production.",
       "source": "mypy docs — Introduction",
       "expected_time_ms": 22000,
-      "tags": ["type-hints", "mypy", "static-checking"]
+      "tags": [
+        "type-hints",
+        "mypy",
+        "static-checking"
+      ]
     },
     {
       "id": "q030404002",
@@ -417,14 +540,24 @@
       "difficulty_tier": "medium",
       "question_es": "mypy detecta los errores de tipo en tiempo de análisis (antes de ejecutar), no en tiempo de ejecución.",
       "question_en": "mypy detects type errors at analysis time (before running), not at runtime.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. mypy es estático: analiza el código fuente y sus anotaciones sin ejecutarlo, señalando problemas de tipo antes de correr el programa. Es complementario a los tests: los tests comprueban comportamiento en ejecución, mypy comprueba consistencia de tipos.",
       "explanation_en": "True. mypy is static: it analyzes the source and its annotations without running it, flagging type problems before the program runs. It complements tests: tests check runtime behavior, mypy checks type consistency.",
       "source": "mypy docs — Static typing",
       "expected_time_ms": 25000,
-      "tags": ["type-hints", "mypy", "static"]
+      "tags": [
+        "type-hints",
+        "mypy",
+        "static"
+      ]
     },
     {
       "id": "q030404003",
@@ -433,14 +566,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué comentario especial usa mypy para silenciar deliberadamente un error de tipo en una línea?",
       "question_en": "What special comment does mypy use to deliberately silence a type error on a line?",
-      "options_es": ["# type: ignore", "# noqa", "# pragma: no cover", "# mypy: skip"],
-      "options_en": ["# type: ignore", "# noqa", "# pragma: no cover", "# mypy: skip"],
-      "correct_index": 0,
+      "options_es": [
+        "# mypy: skip",
+        "# noqa",
+        "# pragma: no cover",
+        "# type: ignore"
+      ],
+      "options_en": [
+        "# mypy: skip",
+        "# noqa",
+        "# pragma: no cover",
+        "# type: ignore"
+      ],
+      "correct_index": 3,
       "explanation_es": "`# type: ignore` al final de una línea le dice a mypy que ignore los errores de tipo ahí. Se usa con moderación para casos donde el tipado es correcto pero el checker no puede probarlo. `# noqa` es de flake8 y `# pragma: no cover` de coverage.",
       "explanation_en": "`# type: ignore` at the end of a line tells mypy to ignore type errors there. Use it sparingly for cases where the typing is correct but the checker can't prove it. `# noqa` is for flake8 and `# pragma: no cover` for coverage.",
       "source": "mypy docs — Spurious errors and locally silencing the checker",
       "expected_time_ms": 30000,
-      "tags": ["type-hints", "mypy", "ignore"]
+      "tags": [
+        "type-hints",
+        "mypy",
+        "ignore"
+      ]
     },
     {
       "id": "q030404004",
@@ -466,7 +613,11 @@
       "explanation_en": "`--strict` turns on a bundle of strict flags: requiring all functions to be annotated, disallowing implicit `Any`, flagging returns that yield `Any`, etc. It's the recommended setting for new projects wanting maximum type safety.",
       "source": "mypy docs — The mypy command line: --strict",
       "expected_time_ms": 35000,
-      "tags": ["type-hints", "mypy", "strict"]
+      "tags": [
+        "type-hints",
+        "mypy",
+        "strict"
+      ]
     },
     {
       "id": "q030404005",
@@ -475,14 +626,24 @@
       "difficulty_tier": "hard",
       "question_es": "mypy puede inferir tipos aunque no todas las variables estén anotadas explícitamente.",
       "question_en": "mypy can infer types even when not all variables are explicitly annotated.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. mypy hace inferencia de tipos: de `x = 5` deduce que `x` es `int` sin anotación explícita. Las anotaciones son necesarias sobre todo en firmas de funciones y casos ambiguos (contenedores vacíos, etc.), pero mypy razona sobre gran parte del flujo por sí solo.",
       "explanation_en": "True. mypy performs type inference: from `x = 5` it deduces `x` is `int` with no explicit annotation. Annotations are needed mainly on function signatures and ambiguous cases (empty containers, etc.), but mypy reasons about much of the flow on its own.",
       "source": "mypy docs — Type inference and type annotations",
       "expected_time_ms": 30000,
-      "tags": ["type-hints", "mypy", "inference"]
+      "tags": [
+        "type-hints",
+        "mypy",
+        "inference"
+      ]
     },
     {
       "id": "q030404006",
@@ -500,7 +661,11 @@
       "explanation_en": "`reveal_type(x)` makes mypy print the type it has inferred for `x` during analysis. It's a debugging tool: it doesn't exist at runtime (running the code without removing it fails), only the checker understands it.",
       "source": "mypy docs — reveal_type",
       "expected_time_ms": 32000,
-      "tags": ["type-hints", "mypy", "reveal_type"]
+      "tags": [
+        "type-hints",
+        "mypy",
+        "reveal_type"
+      ]
     }
   ]
 }

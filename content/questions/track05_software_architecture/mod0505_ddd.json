@@ -9,22 +9,25 @@
       "question_en": "In Domain-Driven Design, what is a 'bounded context'?",
       "options_es": [
         "Un tipo de base de datos",
-        "Una frontera explícita dentro de la cual un modelo de dominio y su lenguaje tienen un significado específico y consistente",
+        "El nombre de un servidor",
         "Una función que valida entradas",
-        "El nombre de un servidor"
+        "Una frontera explícita dentro de la cual un modelo de dominio y su lenguaje tienen un significado específico y consistente"
       ],
       "options_en": [
         "A kind of database",
-        "An explicit boundary within which a domain model and its language have a specific, consistent meaning",
+        "The name of a server",
         "A function that validates inputs",
-        "The name of a server"
+        "An explicit boundary within which a domain model and its language have a specific, consistent meaning"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Un bounded context es una frontera lingüística y de modelo: dentro de él, cada término del dominio tiene un único significado preciso. El mismo concepto (p. ej. 'Cliente') puede modelarse distinto en contextos diferentes (Ventas vs Soporte). Delimitar contextos evita un 'modelo unificado' gigante e ambiguo, y suele alinearse con los límites de servicios/equipos.",
       "explanation_en": "A bounded context is a linguistic and model boundary: within it, each domain term has a single precise meaning. The same concept (e.g. 'Customer') may be modeled differently in different contexts (Sales vs Support). Bounding contexts avoids a giant, ambiguous 'unified model', and often aligns with service/team boundaries.",
       "source": "Evans, E. — Domain-Driven Design (Bounded Context)",
       "expected_time_ms": 24000,
-      "tags": ["ddd", "bounded-context"]
+      "tags": [
+        "ddd",
+        "bounded-context"
+      ]
     },
     {
       "id": "q050501002",
@@ -33,14 +36,23 @@
       "difficulty_tier": "medium",
       "question_es": "El mismo término (por ejemplo, 'Producto') puede tener modelos y atributos distintos en dos bounded contexts diferentes, y eso es aceptable en DDD.",
       "question_en": "The same term (e.g. 'Product') can have different models and attributes in two different bounded contexts, and that is acceptable in DDD.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "DDD acepta y fomenta que un mismo término tenga modelos distintos según el contexto: 'Producto' en el contexto de Catálogo (descripción, fotos) es diferente de 'Producto' en Inventario (stock, ubicación) o en Facturación (precio, impuestos). Forzar un único modelo compartido para todos crea acoplamiento y ambigüedad; cada contexto modela lo que necesita.",
       "explanation_en": "DDD accepts and encourages the same term having different models depending on context: 'Product' in the Catalog context (description, photos) differs from 'Product' in Inventory (stock, location) or Billing (price, taxes). Forcing a single shared model for all creates coupling and ambiguity; each context models what it needs.",
       "source": "Evans, E. — DDD (context-specific models)",
       "expected_time_ms": 26000,
-      "tags": ["ddd", "bounded-context"]
+      "tags": [
+        "ddd",
+        "bounded-context"
+      ]
     },
     {
       "id": "q050501003",
@@ -50,23 +62,26 @@
       "question_es": "¿Qué es un 'context map' (mapa de contextos) en DDD?",
       "question_en": "What is a 'context map' in DDD?",
       "options_es": [
-        "Un diagrama de la base de datos",
         "Una representación de los distintos bounded contexts y las relaciones/integraciones entre ellos (p. ej. cliente-proveedor, anti-corruption layer)",
+        "Un diagrama de la base de datos",
         "Un mapa geográfico de los servidores",
         "La lista de variables globales"
       ],
       "options_en": [
-        "A database diagram",
         "A representation of the different bounded contexts and the relationships/integrations between them (e.g. customer-supplier, anti-corruption layer)",
+        "A database diagram",
         "A geographic map of the servers",
         "The list of global variables"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El context map documenta cómo se relacionan los bounded contexts y sus equipos: quién depende de quién, patrones de integración (shared kernel, customer-supplier, conformist, anti-corruption layer). Hace visibles las fronteras y las traducciones necesarias entre modelos, ayudando a gestionar la complejidad estratégica de un sistema grande.",
       "explanation_en": "The context map documents how bounded contexts and their teams relate: who depends on whom, integration patterns (shared kernel, customer-supplier, conformist, anti-corruption layer). It makes boundaries and the translations needed between models visible, helping manage the strategic complexity of a large system.",
       "source": "Evans, E. — DDD (Context Map)",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "context-map"]
+      "tags": [
+        "ddd",
+        "context-map"
+      ]
     },
     {
       "id": "q050501004",
@@ -92,7 +107,10 @@
       "explanation_en": "The anti-corruption layer (ACL) is a translation layer that isolates your domain model from an external or legacy system's model. It converts the foreign structures and concepts into yours at the boundary, preventing the other system's quirks or poor design from leaking in and corrupting your clean model. It's key when integrating with legacy systems or extracting services.",
       "source": "Evans, E. — DDD (Anticorruption Layer)",
       "expected_time_ms": 32000,
-      "tags": ["ddd", "anti-corruption-layer"]
+      "tags": [
+        "ddd",
+        "anti-corruption-layer"
+      ]
     },
     {
       "id": "q050501005",
@@ -101,14 +119,24 @@
       "difficulty_tier": "hard",
       "question_es": "Los límites de un bounded context son un buen candidato para trazar los límites de los microservicios, porque agrupan conceptos cohesivos con un lenguaje consistente.",
       "question_en": "The boundaries of a bounded context are a good candidate for drawing microservice boundaries, because they group cohesive concepts with a consistent language.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Un bounded context encapsula un modelo cohesivo con su propio lenguaje y reglas, por lo que sus fronteras suelen ofrecer límites naturales de bajo acoplamiento para dividir microservicios. Dividir por contextos (capacidades de negocio) tiende a producir servicios más autónomos que dividir por capas técnicas. Es una de las guías más citadas para el diseño de microservicios.",
       "explanation_en": "A bounded context encapsulates a cohesive model with its own language and rules, so its boundaries often provide natural, low-coupling seams for splitting microservices. Splitting by contexts (business capabilities) tends to produce more autonomous services than splitting by technical layers. It's one of the most-cited guides for microservice design.",
       "source": "Newman, S. — Building Microservices (bounded contexts)",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "bounded-context", "microservices"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "microservices"
+      ]
     },
     {
       "id": "q050501006",
@@ -126,7 +154,10 @@
       "explanation_en": "The 'core domain' is the subdomain that provides the business's competitive advantage and where the best talent and most careful modeling should concentrate. Supporting subdomains (necessary but not differentiating) and generic ones (solvable with off-the-shelf solutions or by buying software) deserve less investment. This strategic prioritization avoids spending effort equally on everything.",
       "source": "Evans, E. — DDD (Core Domain, distillation)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "core-domain"]
+      "tags": [
+        "ddd",
+        "core-domain"
+      ]
     },
     {
       "id": "q050502001",
@@ -137,22 +168,26 @@
       "question_en": "In DDD, what distinguishes an 'entity' from a 'value object'?",
       "options_es": [
         "La entidad es más grande en memoria",
-        "La entidad tiene identidad propia y continuidad en el tiempo (importa CUÁL es, aunque cambien sus atributos); el value object se define solo por sus atributos y es intercambiable si estos coinciden",
         "El value object siempre se guarda en la nube",
+        "La entidad tiene identidad propia y continuidad en el tiempo (importa CUÁL es, aunque cambien sus atributos); el value object se define solo por sus atributos y es intercambiable si estos coinciden",
         "No hay diferencia conceptual"
       ],
       "options_en": [
         "The entity is larger in memory",
-        "An entity has its own identity and continuity over time (which one it is matters, even if its attributes change); a value object is defined only by its attributes and is interchangeable if they match",
         "A value object is always stored in the cloud",
+        "An entity has its own identity and continuity over time (which one it is matters, even if its attributes change); a value object is defined only by its attributes and is interchangeable if they match",
         "There is no conceptual difference"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Una entidad tiene identidad única y persistente: una 'Persona' sigue siendo la misma aunque cambie de nombre o dirección; se distingue por un id. Un value object se define íntegramente por sus valores (p. ej. un 'Dinero' de 10 EUR, o un 'Color'): dos con los mismos atributos son equivalentes e intercambiables, y suelen ser inmutables.",
       "explanation_en": "An entity has a unique, persistent identity: a 'Person' remains the same even if their name or address changes; it's distinguished by an id. A value object is fully defined by its values (e.g. a 'Money' of 10 EUR, or a 'Color'): two with the same attributes are equivalent and interchangeable, and they're usually immutable.",
       "source": "Evans, E. — DDD (Entities and Value Objects)",
       "expected_time_ms": 26000,
-      "tags": ["ddd", "entity", "value-object"]
+      "tags": [
+        "ddd",
+        "entity",
+        "value-object"
+      ]
     },
     {
       "id": "q050502002",
@@ -161,14 +196,24 @@
       "difficulty_tier": "medium",
       "question_es": "Los value objects suelen diseñarse como inmutables: para 'cambiarlos' se crea uno nuevo en lugar de mutar el existente.",
       "question_en": "Value objects are usually designed as immutable: to 'change' one you create a new one instead of mutating the existing one.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La inmutabilidad de los value objects evita errores por compartición (aliasing) y hace el código más predecible: si un value object representa 10 EUR, sumarle 5 produce un nuevo objeto de 15 EUR, no muta el original. Esto encaja con su naturaleza (se definen por su valor) y facilita razonar, cachear y compartirlos con seguridad.",
       "explanation_en": "Value object immutability avoids aliasing bugs and makes code more predictable: if a value object represents 10 EUR, adding 5 produces a new 15 EUR object, it doesn't mutate the original. This fits their nature (defined by their value) and makes them easier to reason about, cache, and safely share.",
       "source": "Evans / Vernon — Implementing DDD (immutability)",
       "expected_time_ms": 24000,
-      "tags": ["ddd", "value-object", "immutability"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "immutability"
+      ]
     },
     {
       "id": "q050502003",
@@ -194,7 +239,11 @@
       "explanation_en": "Modeling 'DateRange' as a value object bundles start and end into a named concept, encapsulates its validation (end >= start) and invariants, and gives it behavior (overlaps, duration). Versus two loose fields, it avoids scattering that logic and makes the model more expressive, aligned with the domain language. It reduces 'primitive obsession'.",
       "source": "Vernon, V. — Implementing DDD (Value Objects)",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "value-object", "primitive-obsession"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "primitive-obsession"
+      ]
     },
     {
       "id": "q050502004",
@@ -220,7 +269,11 @@
       "explanation_en": "`@dataclass(frozen=True)` automatically generates `__eq__` (two instances with the same fields are equal) and `__hash__` (usable in sets/dicts), and blocks attribute reassignment (raises `FrozenInstanceError`), achieving immutability. This idiomatically expresses a value object in Python: value equality + immutability, without writing boilerplate.",
       "source": "Python docs 3.13 — dataclasses (frozen)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "value-object", "dataclass"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "dataclass"
+      ]
     },
     {
       "id": "q050502005",
@@ -229,14 +282,24 @@
       "difficulty_tier": "hard",
       "question_es": "La identidad de una entidad debe basarse en un identificador estable (como un id generado), no en sus atributos de negocio (como el email), que pueden cambiar con el tiempo.",
       "question_en": "An entity's identity should be based on a stable identifier (like a generated id), not on its business attributes (like email), which can change over time.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Como la entidad tiene continuidad en el tiempo aunque cambien sus atributos, su identidad debe apoyarse en un identificador estable e inmutable (un id sintético/UUID) en lugar de en un atributo de negocio que podría cambiar (un usuario puede cambiar de email). Basar la identidad en atributos mutables provoca inconsistencias cuando estos cambian.",
       "explanation_en": "Since an entity has continuity over time even as its attributes change, its identity should rest on a stable, immutable identifier (a synthetic id/UUID) rather than on a business attribute that could change (a user can change email). Basing identity on mutable attributes causes inconsistencies when they change.",
       "source": "Evans / Vernon — Implementing DDD (entity identity)",
       "expected_time_ms": 26000,
-      "tags": ["ddd", "entity", "identity"]
+      "tags": [
+        "ddd",
+        "entity",
+        "identity"
+      ]
     },
     {
       "id": "q050502006",
@@ -254,7 +317,11 @@
       "explanation_en": "'Primitive obsession' is representing rich domain concepts (money, email, phone, coordinates) as loose strings or numbers, scattering validation and behavior throughout the code. Encapsulating them in value objects (e.g. an `Email` class that validates its format) centralizes rules, increases type safety, and makes the model more expressive.",
       "source": "Fowler, M. — Refactoring (Primitive Obsession smell)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "primitive-obsession", "value-object"]
+      "tags": [
+        "ddd",
+        "primitive-obsession",
+        "value-object"
+      ]
     },
     {
       "id": "q050503001",
@@ -265,22 +332,25 @@
       "question_en": "In DDD, what is an 'aggregate'?",
       "options_es": [
         "Una función que suma números",
-        "Un grupo de objetos de dominio (entidades y value objects) tratado como una unidad de consistencia, con una entidad raíz (aggregate root) como único punto de acceso",
         "Un tipo de índice de base de datos",
+        "Un grupo de objetos de dominio (entidades y value objects) tratado como una unidad de consistencia, con una entidad raíz (aggregate root) como único punto de acceso",
         "Una consulta SQL con GROUP BY"
       ],
       "options_en": [
         "A function that sums numbers",
-        "A cluster of domain objects (entities and value objects) treated as a single consistency unit, with a root entity (aggregate root) as the only access point",
         "A kind of database index",
+        "A cluster of domain objects (entities and value objects) treated as a single consistency unit, with a root entity (aggregate root) as the only access point",
         "A SQL query with GROUP BY"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un agregado agrupa objetos relacionados que deben mantenerse consistentes juntos, con una 'aggregate root' que es la única puerta de entrada: el código externo referencia y modifica el agregado solo a través de su raíz, que garantiza las invariantes internas. Por ejemplo, un 'Pedido' (raíz) con sus 'LíneasDePedido'.",
       "explanation_en": "An aggregate groups related objects that must stay consistent together, with an 'aggregate root' as the sole entry point: external code references and modifies the aggregate only through its root, which enforces the internal invariants. For example, an 'Order' (root) with its 'OrderLines'.",
       "source": "Evans, E. — DDD (Aggregates)",
       "expected_time_ms": 26000,
-      "tags": ["ddd", "aggregate"]
+      "tags": [
+        "ddd",
+        "aggregate"
+      ]
     },
     {
       "id": "q050503002",
@@ -289,14 +359,23 @@
       "difficulty_tier": "medium",
       "question_es": "Una regla de DDD es que el código externo solo debe referenciar y modificar un agregado a través de su raíz (aggregate root), no manipular directamente sus objetos internos.",
       "question_en": "A DDD rule is that external code should only reference and modify an aggregate through its root (aggregate root), not directly manipulate its internal objects.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La raíz del agregado es la guardiana de las invariantes: todo cambio pasa por sus métodos, que aseguran que el agregado quede en un estado válido. Si el código externo pudiera mutar objetos internos directamente (p. ej. una línea de pedido saltándose el pedido), se podrían violar reglas de negocio. Esta encapsulación es clave para la consistencia del modelo.",
       "explanation_en": "The aggregate root is the guardian of invariants: every change goes through its methods, which ensure the aggregate ends in a valid state. If external code could mutate internal objects directly (e.g. an order line bypassing the order), business rules could be violated. This encapsulation is key to the model's consistency.",
       "source": "Evans, E. — DDD (Aggregate invariants)",
       "expected_time_ms": 26000,
-      "tags": ["ddd", "aggregate-root"]
+      "tags": [
+        "ddd",
+        "aggregate-root"
+      ]
     },
     {
       "id": "q050503003",
@@ -307,22 +386,25 @@
       "question_en": "What is a 'repository's' responsibility in DDD?",
       "options_es": [
         "Almacenar el código fuente en Git",
-        "Abstraer la persistencia de los agregados, ofreciendo una interfaz tipo colección para recuperar y guardar agregados sin exponer los detalles de la base de datos",
         "Ejecutar los tests",
+        "Abstraer la persistencia de los agregados, ofreciendo una interfaz tipo colección para recuperar y guardar agregados sin exponer los detalles de la base de datos",
         "Renderizar la interfaz de usuario"
       ],
       "options_en": [
         "Storing source code in Git",
-        "Abstracting aggregate persistence, offering a collection-like interface to retrieve and save aggregates without exposing database details",
         "Running the tests",
+        "Abstracting aggregate persistence, offering a collection-like interface to retrieve and save aggregates without exposing database details",
         "Rendering the user interface"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un repositorio media entre el modelo de dominio y la persistencia, presentando los agregados como si fueran una colección en memoria (`add`, `get(id)`, `remove`). Oculta el almacén concreto (SQL, NoSQL) tras una interfaz del dominio, lo que mantiene el modelo puro y desacoplado de la infraestructura y facilita el testeo con dobles. Normalmente hay un repositorio por tipo de aggregate root.",
       "explanation_en": "A repository mediates between the domain model and persistence, presenting aggregates as if they were an in-memory collection (`add`, `get(id)`, `remove`). It hides the concrete store (SQL, NoSQL) behind a domain interface, keeping the model pure and decoupled from infrastructure and easing testing with doubles. Typically there's one repository per aggregate-root type.",
       "source": "Evans, E. — DDD (Repositories)",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "repository"]
+      "tags": [
+        "ddd",
+        "repository"
+      ]
     },
     {
       "id": "q050503004",
@@ -333,22 +415,26 @@
       "question_en": "Why is it recommended to keep aggregates small and to reference other aggregates by identity (id), not by direct object?",
       "options_es": [
         "Por moda, sin razón técnica",
-        "Para acotar los límites de consistencia y transacción: un agregado grande o con referencias directas a otros carga y bloquea demasiado, dificultando la escalabilidad y aumentando la contención",
         "Porque los ids son más bonitos",
+        "Para acotar los límites de consistencia y transacción: un agregado grande o con referencias directas a otros carga y bloquea demasiado, dificultando la escalabilidad y aumentando la contención",
         "Para que la base de datos sea más lenta"
       ],
       "options_en": [
         "For fashion, with no technical reason",
-        "To bound consistency and transaction limits: a large aggregate or one with direct references to others loads and locks too much, hurting scalability and increasing contention",
         "Because ids are prettier",
+        "To bound consistency and transaction limits: a large aggregate or one with direct references to others loads and locks too much, hurting scalability and increasing contention",
         "To make the database slower"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El agregado define el límite de una transacción de consistencia: modificar un agregado debe ser una operación atómica. Agregados enormes o que referencian directamente a otros obligan a cargar y bloquear grandes grafos de objetos, aumentando la contención y dificultando el sharding. Referenciar otros agregados por id (no por objeto) mantiene los límites nítidos y permite modificar cada uno en su propia transacción, aceptando consistencia eventual entre ellos.",
       "explanation_en": "The aggregate defines a consistency transaction boundary: modifying an aggregate should be an atomic operation. Huge aggregates, or ones directly referencing others, force loading and locking large object graphs, increasing contention and hindering sharding. Referencing other aggregates by id (not by object) keeps boundaries crisp and lets each be modified in its own transaction, accepting eventual consistency between them.",
       "source": "Vernon, V. — Effective Aggregate Design",
       "expected_time_ms": 34000,
-      "tags": ["ddd", "aggregate", "consistency-boundary"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "consistency-boundary"
+      ]
     },
     {
       "id": "q050503005",
@@ -357,14 +443,24 @@
       "difficulty_tier": "hard",
       "question_es": "Una guía práctica de DDD es modificar un solo agregado por transacción, y coordinar cambios entre varios agregados mediante consistencia eventual (por ejemplo, con eventos de dominio).",
       "question_en": "A practical DDD guideline is to modify a single aggregate per transaction, and coordinate changes across multiple aggregates via eventual consistency (e.g. with domain events).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Vernon recomienda 'una transacción, un agregado': dentro de una transacción se mantiene consistente un único agregado (consistencia inmediata), y cuando un cambio debe afectar a otros agregados, se propaga de forma asíncrona con eventos de dominio, aceptando consistencia eventual entre ellos. Esto reduce la contención, evita transacciones distribuidas y escala mejor.",
       "explanation_en": "Vernon recommends 'one transaction, one aggregate': within a transaction a single aggregate is kept consistent (immediate consistency), and when a change must affect other aggregates, it's propagated asynchronously with domain events, accepting eventual consistency between them. This reduces contention, avoids distributed transactions, and scales better.",
       "source": "Vernon, V. — Effective Aggregate Design (Rule: one transaction per aggregate)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "aggregate", "eventual-consistency"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "eventual-consistency"
+      ]
     },
     {
       "id": "q050503006",
@@ -382,7 +478,10 @@
       "explanation_en": "A 'domain service' models a domain operation (often involving several aggregates or entities) that doesn't naturally belong to any specific entity or value object: for example, a transfer between two accounts. It's stateless and expressed in the ubiquitous language. Note: it's distinct from an application service (which orchestrates use cases) or an infrastructure service.",
       "source": "Evans, E. — DDD (Services)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "domain-service"]
+      "tags": [
+        "ddd",
+        "domain-service"
+      ]
     },
     {
       "id": "q050504001",
@@ -408,7 +507,10 @@
       "explanation_en": "The ubiquitous language is a precise, shared vocabulary between the technical team and business experts, used equally when talking, modeling, and coding (class and method names). By eliminating 'translation' between the business language and the code's, it reduces misunderstandings and makes the code faithfully express the domain.",
       "source": "Evans, E. — DDD (Ubiquitous Language)",
       "expected_time_ms": 24000,
-      "tags": ["ddd", "ubiquitous-language"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language"
+      ]
     },
     {
       "id": "q050504002",
@@ -417,14 +519,24 @@
       "difficulty_tier": "medium",
       "question_es": "El lenguaje ubicuo debe reflejarse directamente en el código (nombres de clases, métodos, variables), no solo en la documentación o las conversaciones.",
       "question_en": "The ubiquitous language should be reflected directly in the code (class, method, variable names), not just in documentation or conversations.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El valor del lenguaje ubicuo está en que sea realmente ubicuo: si el negocio habla de 'reservar un asiento', el código debe tener `reservarAsiento()`, no `updateStatus(2)`. Cuando el código usa el mismo vocabulario que los expertos, se convierte en una fuente de verdad viva del dominio y facilita que técnicos y negocio se entiendan revisándolo juntos.",
       "explanation_en": "The value of the ubiquitous language is that it's genuinely ubiquitous: if the business talks about 'reserving a seat', the code should have `reserveSeat()`, not `updateStatus(2)`. When the code uses the same vocabulary as the experts, it becomes a living source of truth for the domain and helps techies and business understand each other by reviewing it together.",
       "source": "Evans, E. — DDD (language in the model and code)",
       "expected_time_ms": 26000,
-      "tags": ["ddd", "ubiquitous-language", "code"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "code"
+      ]
     },
     {
       "id": "q050504003",
@@ -434,23 +546,27 @@
       "question_es": "El lenguaje ubicuo, ¿es único para todo el sistema o específico de cada bounded context?",
       "question_en": "Is the ubiquitous language unique for the whole system, or specific to each bounded context?",
       "options_es": [
-        "Único y global para toda la empresa siempre",
         "Específico de cada bounded context: dentro de un contexto es consistente, pero un mismo término puede significar cosas distintas en contextos diferentes",
+        "Único y global para toda la empresa siempre",
         "No tiene relación con los bounded contexts",
         "Cambia cada día al azar"
       ],
       "options_en": [
-        "Unique and global for the whole company always",
         "Specific to each bounded context: within a context it's consistent, but the same term may mean different things in different contexts",
+        "Unique and global for the whole company always",
         "It has no relation to bounded contexts",
         "It changes randomly every day"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El lenguaje ubicuo es consistente DENTRO de un bounded context, no globalmente. Buscar un único lenguaje universal para toda la organización lleva a términos ambiguos y sobrecargados. Cada contexto tiene su propio lenguaje preciso; cuando dos contextos se comunican, se traducen los términos en la frontera (context map, anti-corruption layer).",
       "explanation_en": "The ubiquitous language is consistent WITHIN a bounded context, not globally. Seeking a single universal language for the whole organization leads to ambiguous, overloaded terms. Each context has its own precise language; when two contexts communicate, terms are translated at the boundary (context map, anti-corruption layer).",
       "source": "Evans, E. — DDD (language within a context)",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "ubiquitous-language", "bounded-context"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "bounded-context"
+      ]
     },
     {
       "id": "q050504004",
@@ -461,22 +577,26 @@
       "question_en": "If, while modeling, a mismatch appears between how domain experts speak and the terms in the model/code, what does DDD recommend?",
       "options_es": [
         "Ignorar a los expertos y quedarse con los términos técnicos",
-        "Refinar el modelo y el lenguaje de forma colaborativa hasta alinearlos; el desajuste suele señalar un modelo incompleto o un concepto del dominio no capturado",
+        "Dejar de hablar con los expertos",
         "Inventar términos nuevos que nadie use",
-        "Dejar de hablar con los expertos"
+        "Refinar el modelo y el lenguaje de forma colaborativa hasta alinearlos; el desajuste suele señalar un modelo incompleto o un concepto del dominio no capturado"
       ],
       "options_en": [
         "Ignore the experts and keep the technical terms",
-        "Refine the model and language collaboratively until aligned; the mismatch usually signals an incomplete model or an uncaptured domain concept",
+        "Stop talking to the experts",
         "Invent new terms nobody uses",
-        "Stop talking to the experts"
+        "Refine the model and language collaboratively until aligned; the mismatch usually signals an incomplete model or an uncaptured domain concept"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Un desajuste entre el lenguaje de los expertos y el modelo es una señal valiosa: indica que el modelo no captura bien el dominio. DDD lo trata como una oportunidad de aprendizaje: refinar el modelo y el lenguaje juntos (a menudo descubriendo un concepto implícito que merece hacerse explícito), en un proceso iterativo de destilación del conocimiento del dominio.",
       "explanation_en": "A mismatch between the experts' language and the model is a valuable signal: it indicates the model doesn't capture the domain well. DDD treats it as a learning opportunity: refine the model and language together (often uncovering an implicit concept worth making explicit), in an iterative process of distilling domain knowledge.",
       "source": "Evans, E. — DDD (knowledge crunching / refining the model)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "ubiquitous-language", "modeling"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "modeling"
+      ]
     },
     {
       "id": "q050504005",
@@ -485,14 +605,24 @@
       "difficulty_tier": "hard",
       "question_es": "Técnicas colaborativas como 'Event Storming' ayudan a construir el lenguaje ubicuo y descubrir el modelo reuniendo a expertos del dominio y desarrolladores alrededor de los eventos del negocio.",
       "question_en": "Collaborative techniques like 'Event Storming' help build the ubiquitous language and discover the model by bringing domain experts and developers together around business events.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Event Storming (de Alberto Brandolini) es un taller donde expertos del negocio y técnicos mapean colaborativamente los eventos del dominio (con notas adhesivas), revelando el flujo, los comandos, los agregados y las fronteras de contexto. Es una forma eficaz de forjar el lenguaje ubicuo compartido y descubrir el modelo directamente con quienes conocen el dominio.",
       "explanation_en": "Event Storming (by Alberto Brandolini) is a workshop where business experts and technical people collaboratively map the domain's events (with sticky notes), revealing the flow, commands, aggregates, and context boundaries. It's an effective way to forge the shared ubiquitous language and discover the model directly with those who know the domain.",
       "source": "Brandolini, A. — Event Storming / Vernon, Implementing DDD",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "event-storming", "ubiquitous-language"]
+      "tags": [
+        "ddd",
+        "event-storming",
+        "ubiquitous-language"
+      ]
     },
     {
       "id": "q050504006",
@@ -510,7 +640,11 @@
       "explanation_en": "'Tactical' design covers the model-building patterns within a context: entities, value objects, aggregates, repositories, domain services, and factories. 'Strategic' design operates at a larger scale: bounded contexts, context maps, core domain, and distillation. Many teams start with the tactical, but Evans emphasizes that the strategic is what drives success in large systems.",
       "source": "Evans, E. — DDD (strategic vs tactical design)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "tactical", "strategic"]
+      "tags": [
+        "ddd",
+        "tactical",
+        "strategic"
+      ]
     }
   ]
 }

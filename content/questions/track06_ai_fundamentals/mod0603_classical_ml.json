@@ -9,22 +9,26 @@
       "question_en": "What is the fundamental difference between supervised and unsupervised learning?",
       "options_es": [
         "El supervisado usa más datos que el no supervisado",
-        "El supervisado aprende de datos etiquetados (con la respuesta correcta conocida); el no supervisado busca estructura en datos sin etiquetas",
+        "El no supervisado siempre es más preciso",
         "El supervisado solo funciona con imágenes",
-        "El no supervisado siempre es más preciso"
+        "El supervisado aprende de datos etiquetados (con la respuesta correcta conocida); el no supervisado busca estructura en datos sin etiquetas"
       ],
       "options_en": [
         "Supervised uses more data than unsupervised",
-        "Supervised learns from labeled data (with the correct answer known); unsupervised finds structure in unlabeled data",
+        "Unsupervised is always more accurate",
         "Supervised only works with images",
-        "Unsupervised is always more accurate"
+        "Supervised learns from labeled data (with the correct answer known); unsupervised finds structure in unlabeled data"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "En el aprendizaje supervisado cada ejemplo de entrenamiento incluye la salida deseada (etiqueta), y el modelo aprende a predecirla (clasificación o regresión). En el no supervisado no hay etiquetas; el objetivo es descubrir patrones o agrupaciones intrínsecas (clustering, reducción de dimensionalidad). La cantidad de datos o el tipo de entrada no definen la categoría.",
       "explanation_en": "In supervised learning each training example includes the desired output (label), and the model learns to predict it (classification or regression). In unsupervised learning there are no labels; the goal is to discover intrinsic patterns or groupings (clustering, dimensionality reduction). The amount of data or type of input does not define the category.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 1: The Machine Learning Landscape",
       "expected_time_ms": 20000,
-      "tags": ["ml-workflow", "supervised", "unsupervised"]
+      "tags": [
+        "ml-workflow",
+        "supervised",
+        "unsupervised"
+      ]
     },
     {
       "id": "q060301002",
@@ -50,7 +54,11 @@
       "explanation_en": "If the model is evaluated on the same data it was trained on, the metric is overly optimistic (the model might be memorizing). Reserving a test set the model never saw during training lets you estimate how it will generalize to new data, which is what actually matters in production.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 2; scikit-learn — train_test_split",
       "expected_time_ms": 20000,
-      "tags": ["ml-workflow", "train-test-split", "generalization"]
+      "tags": [
+        "ml-workflow",
+        "train-test-split",
+        "generalization"
+      ]
     },
     {
       "id": "q060301003",
@@ -60,23 +68,27 @@
       "question_es": "¿Para qué sirve un conjunto de validación (validation set) separado del de prueba?",
       "question_en": "What is a validation set, separate from the test set, used for?",
       "options_es": [
-        "Para entrenar el modelo una segunda vez",
         "Para ajustar hiperparámetros y seleccionar el modelo sin 'contaminar' el conjunto de prueba, que se reserva para la estimación final e imparcial",
+        "Para entrenar el modelo una segunda vez",
         "Para almacenar los datos con errores",
         "Para reemplazar al conjunto de entrenamiento"
       ],
       "options_en": [
-        "To train the model a second time",
         "To tune hyperparameters and select the model without 'contaminating' the test set, which is reserved for the final, unbiased estimate",
+        "To train the model a second time",
         "To store the erroneous data",
         "To replace the training set"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Si se usaran los datos de prueba para elegir hiperparámetros, esas decisiones ajustarían el modelo a ese conjunto y la estimación final dejaría de ser imparcial. El conjunto de validación (o la validación cruzada) cumple ese papel intermedio, dejando el test set intacto para una única evaluación final honesta.",
       "explanation_en": "If the test data were used to choose hyperparameters, those decisions would fit the model to that set and the final estimate would no longer be unbiased. The validation set (or cross-validation) plays that intermediate role, leaving the test set untouched for a single honest final evaluation.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 2: End-to-End Machine Learning Project",
       "expected_time_ms": 28000,
-      "tags": ["ml-workflow", "validation-set", "hyperparameters"]
+      "tags": [
+        "ml-workflow",
+        "validation-set",
+        "hyperparameters"
+      ]
     },
     {
       "id": "q060301004",
@@ -85,14 +97,24 @@
       "difficulty_tier": "medium",
       "question_es": "En un problema de clasificación, siempre se debe entrenar el modelo con el 100% de los datos disponibles para maximizar la precisión.",
       "question_en": "In a classification problem, you should always train the model on 100% of the available data to maximize accuracy.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Es falso: si se usa todo el dato para entrenar, no queda un conjunto independiente para evaluar la generalización, y no se puede saber si el modelo memoriza o generaliza. Siempre se reserva una porción (test, y a menudo validación) que el modelo no ve durante el entrenamiento.",
       "explanation_en": "False: if all data is used for training, there is no independent set left to evaluate generalization, and you cannot tell whether the model memorizes or generalizes. You always reserve a portion (test, and often validation) that the model does not see during training.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 2",
       "expected_time_ms": 22000,
-      "tags": ["ml-workflow", "train-test-split", "gotcha"]
+      "tags": [
+        "ml-workflow",
+        "train-test-split",
+        "gotcha"
+      ]
     },
     {
       "id": "q060301005",
@@ -103,22 +125,25 @@
       "question_en": "You are building a model to predict house prices. In the typical ML workflow, in what order are these stages performed?",
       "options_es": [
         "Entrenar el modelo, luego recolectar datos, luego evaluar",
-        "Recolectar/explorar datos, preprocesar y dividir, entrenar el modelo, evaluar en test y ajustar, finalmente desplegar",
+        "Evaluar primero, entrenar después, recolectar datos al final",
         "Desplegar el modelo, entrenar, recolectar datos",
-        "Evaluar primero, entrenar después, recolectar datos al final"
+        "Recolectar/explorar datos, preprocesar y dividir, entrenar el modelo, evaluar en test y ajustar, finalmente desplegar"
       ],
       "options_en": [
         "Train the model, then collect data, then evaluate",
-        "Collect/explore data, preprocess and split, train the model, evaluate on test and tune, finally deploy",
+        "Evaluate first, then train, then collect data at the end",
         "Deploy the model, train, collect data",
-        "Evaluate first, then train, then collect data at the end"
+        "Collect/explore data, preprocess and split, train the model, evaluate on test and tune, finally deploy"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El flujo de ML sigue un orden lógico: definir el problema, recolectar y explorar (EDA) los datos, limpiarlos y transformarlos, dividir en train/test, entrenar, evaluar y ajustar hiperparámetros usando validación, y finalmente desplegar y monitorear. No se puede entrenar sin datos ni evaluar sin un modelo entrenado.",
       "explanation_en": "The ML workflow follows a logical order: define the problem, collect and explore (EDA) the data, clean and transform it, split into train/test, train, evaluate and tune hyperparameters using validation, and finally deploy and monitor. You cannot train without data or evaluate without a trained model.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 2: End-to-End Machine Learning Project",
       "expected_time_ms": 30000,
-      "tags": ["ml-workflow", "pipeline"]
+      "tags": [
+        "ml-workflow",
+        "pipeline"
+      ]
     },
     {
       "id": "q060301006",
@@ -136,7 +161,11 @@
       "explanation_en": "Stratified sampling divides the population into strata (e.g. each class) and samples proportionally from each, preserving the class distribution in train and test. It is especially important with imbalanced classes or small datasets, where a simple random split could leave a minority class poorly represented. In scikit-learn it is done with `stratify=y` in `train_test_split`.",
       "source": "scikit-learn User Guide — Cross-validation: Stratified splits; Géron, Hands-On ML 2e, Ch. 2",
       "expected_time_ms": 30000,
-      "tags": ["ml-workflow", "stratified-sampling", "imbalanced"]
+      "tags": [
+        "ml-workflow",
+        "stratified-sampling",
+        "imbalanced"
+      ]
     },
     {
       "id": "q060302001",
@@ -162,7 +191,10 @@
       "explanation_en": "Feature engineering means representing information better for the model: for example extracting the day of the week from a date, combining two columns, scaling values, or encoding categories. With classical models, good features often yield more gain than tuning hyperparameters or picking a more complex algorithm.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 2; scikit-learn — Preprocessing data",
       "expected_time_ms": 20000,
-      "tags": ["feature-engineering", "features"]
+      "tags": [
+        "feature-engineering",
+        "features"
+      ]
     },
     {
       "id": "q060302002",
@@ -172,23 +204,27 @@
       "question_es": "¿Por qué muchos algoritmos basados en distancias (como k-NN o SVM) requieren escalar las features numéricas a rangos comparables?",
       "question_en": "Why do many distance-based algorithms (like k-NN or SVM) require scaling numeric features to comparable ranges?",
       "options_es": [
-        "Para que el entrenamiento consuma menos memoria",
         "Porque una feature con rango mucho mayor (por ejemplo salario en miles) dominaría el cálculo de distancia frente a otra de rango pequeño (por ejemplo edad), sesgando el modelo",
+        "Para que el entrenamiento consuma menos memoria",
         "Porque los algoritmos no aceptan números negativos",
         "Porque el escalado convierte los datos en categóricos"
       ],
       "options_en": [
-        "So training uses less memory",
         "Because a feature with a much larger range (e.g. salary in thousands) would dominate the distance computation over one with a small range (e.g. age), biasing the model",
+        "So training uses less memory",
         "Because the algorithms do not accept negative numbers",
         "Because scaling turns the data into categorical values"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "En métodos basados en distancia euclidiana, una variable con valores grandes contribuye desproporcionadamente a la distancia, eclipsando a las demás. Estandarizar (media 0, desviación 1) o normalizar (rango [0,1]) pone todas las features en pie de igualdad. Los modelos basados en árboles (como Random Forest) no necesitan escalado porque usan umbrales por variable.",
       "explanation_en": "In Euclidean-distance methods, a variable with large values contributes disproportionately to the distance, overshadowing the others. Standardizing (mean 0, std 1) or normalizing (range [0,1]) puts all features on equal footing. Tree-based models (like Random Forest) do not need scaling because they use per-variable thresholds.",
       "source": "scikit-learn User Guide — Preprocessing data: Standardization; Géron, Hands-On ML 2e, Ch. 2",
       "expected_time_ms": 28000,
-      "tags": ["feature-engineering", "scaling", "distance"]
+      "tags": [
+        "feature-engineering",
+        "scaling",
+        "distance"
+      ]
     },
     {
       "id": "q060302003",
@@ -197,14 +233,24 @@
       "difficulty_tier": "medium",
       "question_es": "Añadir más features a un modelo siempre mejora su rendimiento, sin ningún riesgo.",
       "question_en": "Adding more features to a model always improves its performance, with no risk.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Es falso: añadir features irrelevantes o redundantes puede aumentar el sobreajuste, el ruido y el coste computacional, y agravar la 'maldición de la dimensionalidad'. A veces menos features bien elegidas (selección de características) generalizan mejor que muchas. Más no siempre es mejor.",
       "explanation_en": "False: adding irrelevant or redundant features can increase overfitting, noise, and computational cost, and worsen the 'curse of dimensionality'. Sometimes fewer well-chosen features (feature selection) generalize better than many. More is not always better.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019); Bishop, PRML (2006), Ch. 1: Curse of dimensionality",
       "expected_time_ms": 24000,
-      "tags": ["feature-engineering", "curse-of-dimensionality", "gotcha"]
+      "tags": [
+        "feature-engineering",
+        "curse-of-dimensionality",
+        "gotcha"
+      ]
     },
     {
       "id": "q060302004",
@@ -230,7 +276,10 @@
       "explanation_en": "In high-dimensional spaces, volume grows exponentially, so the available data becomes very sparse and almost all points end up roughly equidistant from each other. This degrades distance-based methods and requires exponentially more data to cover the space, motivating dimensionality reduction and feature selection.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 1.4: The Curse of Dimensionality",
       "expected_time_ms": 30000,
-      "tags": ["feature-engineering", "curse-of-dimensionality"]
+      "tags": [
+        "feature-engineering",
+        "curse-of-dimensionality"
+      ]
     },
     {
       "id": "q060302005",
@@ -241,22 +290,26 @@
       "question_en": "You have a column with the date and time of each transaction. What is a typical example of useful feature engineering on it?",
       "options_es": [
         "Convertir la fecha directamente en un único entero (timestamp) y usarlo como está",
-        "Extraer componentes con significado como el día de la semana, la hora del día o si es fin de semana, que pueden capturar patrones estacionales",
         "Eliminar la columna porque las fechas nunca son útiles",
+        "Extraer componentes con significado como el día de la semana, la hora del día o si es fin de semana, que pueden capturar patrones estacionales",
         "Convertir la fecha en texto y aplicar one-hot a cada valor único"
       ],
       "options_en": [
         "Converting the date directly into a single integer (timestamp) and using it as is",
-        "Extracting meaningful components like day of week, hour of day, or whether it is a weekend, which can capture seasonal patterns",
         "Removing the column because dates are never useful",
+        "Extracting meaningful components like day of week, hour of day, or whether it is a weekend, which can capture seasonal patterns",
         "Converting the date into text and one-hot encoding every unique value"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un timestamp crudo es monótono y esconde la ciclicidad; extraer día de la semana, mes, hora o indicadores de festivo expone patrones periódicos que el modelo puede aprovechar (por ejemplo, más ventas los fines de semana). Aplicar one-hot a cada fecha única generaría miles de columnas inútiles con una sola observación cada una.",
       "explanation_en": "A raw timestamp is monotonic and hides cyclicality; extracting day of week, month, hour, or holiday indicators exposes periodic patterns the model can exploit (e.g. more sales on weekends). One-hot encoding every unique date would generate thousands of useless columns with a single observation each.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 2; scikit-learn — Preprocessing",
       "expected_time_ms": 30000,
-      "tags": ["feature-engineering", "datetime", "temporal-features"]
+      "tags": [
+        "feature-engineering",
+        "datetime",
+        "temporal-features"
+      ]
     },
     {
       "id": "q060302006",
@@ -274,7 +327,11 @@
       "explanation_en": "Standardization (z-score) transforms `x` into `(x - mean) / std`, giving a variable with mean 0 and std 1. It differs from min-max normalization, which rescales to the range [0,1]. Standardization is less sensitive to outliers than min-max and is the default choice for many algorithms (SVM, regularized logistic regression). In scikit-learn it is `StandardScaler`.",
       "source": "scikit-learn User Guide — Preprocessing data: StandardScaler",
       "expected_time_ms": 30000,
-      "tags": ["feature-engineering", "standardization", "scaling"]
+      "tags": [
+        "feature-engineering",
+        "standardization",
+        "scaling"
+      ]
     },
     {
       "id": "q060303001",
@@ -285,22 +342,25 @@
       "question_en": "What is overfitting?",
       "options_es": [
         "Cuando el modelo es demasiado simple para capturar los patrones de los datos",
-        "Cuando el modelo aprende demasiado bien el conjunto de entrenamiento (incluido su ruido) y generaliza mal a datos nuevos",
         "Cuando el dataset tiene demasiadas filas",
+        "Cuando el modelo aprende demasiado bien el conjunto de entrenamiento (incluido su ruido) y generaliza mal a datos nuevos",
         "Cuando el entrenamiento tarda demasiado tiempo"
       ],
       "options_en": [
         "When the model is too simple to capture the patterns in the data",
-        "When the model learns the training set too well (including its noise) and generalizes poorly to new data",
         "When the dataset has too many rows",
+        "When the model learns the training set too well (including its noise) and generalizes poorly to new data",
         "When training takes too long"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El overfitting se manifiesta como un error muy bajo en entrenamiento pero alto en validación/prueba: el modelo memoriza detalles y ruido específicos en lugar de aprender el patrón general. Que el modelo sea demasiado simple es el problema opuesto, el subajuste (underfitting).",
       "explanation_en": "Overfitting shows up as very low training error but high validation/test error: the model memorizes specific details and noise rather than learning the general pattern. A model being too simple is the opposite problem, underfitting.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 1; Bishop, PRML, Ch. 1",
       "expected_time_ms": 20000,
-      "tags": ["overfitting", "generalization"]
+      "tags": [
+        "overfitting",
+        "generalization"
+      ]
     },
     {
       "id": "q060303002",
@@ -311,22 +371,25 @@
       "question_en": "A model has 98% accuracy on training but only 62% on test. What is happening?",
       "options_es": [
         "Subajuste (underfitting)",
-        "Sobreajuste (overfitting): el modelo memorizó el entrenamiento y no generaliza",
         "El modelo es perfecto",
+        "Sobreajuste (overfitting): el modelo memorizó el entrenamiento y no generaliza",
         "Los datos de prueba están mal etiquetados con seguridad"
       ],
       "options_en": [
         "Underfitting",
-        "Overfitting: the model memorized the training set and does not generalize",
         "The model is perfect",
+        "Overfitting: the model memorized the training set and does not generalize",
         "The test data is definitely mislabeled"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Una gran brecha entre un rendimiento de entrenamiento casi perfecto y uno de prueba mucho peor es la firma clásica del sobreajuste. Soluciones típicas: simplificar el modelo, añadir regularización, conseguir más datos o usar técnicas como dropout o early stopping. El subajuste, en cambio, daría rendimiento bajo tanto en train como en test.",
       "explanation_en": "A large gap between near-perfect training performance and much worse test performance is the classic signature of overfitting. Typical fixes: simplify the model, add regularization, get more data, or use techniques like dropout or early stopping. Underfitting, by contrast, would give low performance on both train and test.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Regularization",
       "expected_time_ms": 26000,
-      "tags": ["overfitting", "diagnosis"]
+      "tags": [
+        "overfitting",
+        "diagnosis"
+      ]
     },
     {
       "id": "q060303003",
@@ -352,7 +415,10 @@
       "explanation_en": "High bias means the model makes overly rigid assumptions and misses the signal (underfitting); high variance means the model adapts to training noise and changes a lot with different data (overfitting). Reducing one tends to increase the other; the goal is a middle point that minimizes total error on unseen data.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 3.2: The Bias-Variance Decomposition",
       "expected_time_ms": 30000,
-      "tags": ["overfitting", "bias-variance"]
+      "tags": [
+        "overfitting",
+        "bias-variance"
+      ]
     },
     {
       "id": "q060303004",
@@ -361,14 +427,24 @@
       "difficulty_tier": "hard",
       "question_es": "La regularización (por ejemplo L1 o L2) ayuda a combatir el sobreajuste penalizando la complejidad del modelo (magnitud de los pesos).",
       "question_en": "Regularization (e.g. L1 or L2) helps combat overfitting by penalizing model complexity (the magnitude of the weights).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La regularización añade a la función de pérdida un término que penaliza pesos grandes: L2 (Ridge) penaliza la suma de cuadrados y encoge los pesos; L1 (Lasso) penaliza la suma de valores absolutos y tiende a llevar algunos pesos exactamente a cero (selección de features). Al restringir la complejidad efectiva del modelo, reduce la varianza y mejora la generalización.",
       "explanation_en": "Regularization adds a term to the loss that penalizes large weights: L2 (Ridge) penalizes the sum of squares and shrinks weights; L1 (Lasso) penalizes the sum of absolute values and tends to drive some weights exactly to zero (feature selection). By constraining the model's effective complexity, it reduces variance and improves generalization.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4; Bishop, PRML, Ch. 3.1.4",
       "expected_time_ms": 30000,
-      "tags": ["overfitting", "regularization", "l1-l2"]
+      "tags": [
+        "overfitting",
+        "regularization",
+        "l1-l2"
+      ]
     },
     {
       "id": "q060303005",
@@ -379,22 +455,26 @@
       "question_en": "A model has high error on both training and test (e.g. 60% accuracy on both). What is the most likely diagnosis and a reasonable fix?",
       "options_es": [
         "Sobreajuste; añadir más regularización",
-        "Subajuste (underfitting); usar un modelo más complejo, mejores features o entrenar más tiempo",
+        "Hay demasiados datos; eliminar filas",
         "El modelo es óptimo; no hay que hacer nada",
-        "Hay demasiados datos; eliminar filas"
+        "Subajuste (underfitting); usar un modelo más complejo, mejores features o entrenar más tiempo"
       ],
       "options_en": [
         "Overfitting; add more regularization",
-        "Underfitting; use a more complex model, better features, or train longer",
+        "There is too much data; remove rows",
         "The model is optimal; nothing to do",
-        "There is too much data; remove rows"
+        "Underfitting; use a more complex model, better features, or train longer"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Rendimiento igualmente pobre en train y test indica subajuste: el modelo es demasiado simple o las features no capturan la relación. Soluciones: aumentar la capacidad del modelo, crear mejores features, reducir la regularización o entrenar más. Añadir regularización es lo contrario de lo que se necesita y empeoraría el subajuste.",
       "explanation_en": "Equally poor performance on train and test indicates underfitting: the model is too simple or the features do not capture the relationship. Fixes: increase model capacity, build better features, reduce regularization, or train longer. Adding regularization is the opposite of what is needed and would worsen underfitting.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Underfitting the Training Data",
       "expected_time_ms": 30000,
-      "tags": ["overfitting", "underfitting", "diagnosis"]
+      "tags": [
+        "overfitting",
+        "underfitting",
+        "diagnosis"
+      ]
     },
     {
       "id": "q060303006",
@@ -412,7 +492,11 @@
       "explanation_en": "Early stopping monitors the validation error during iterative training and halts the process when that error starts rising (even if training error keeps dropping), keeping the weights from the best-validation point. It is a cheap and widely used form of regularization in neural networks and boosting algorithms.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 7.8: Early Stopping",
       "expected_time_ms": 30000,
-      "tags": ["overfitting", "early-stopping", "regularization"]
+      "tags": [
+        "overfitting",
+        "early-stopping",
+        "regularization"
+      ]
     },
     {
       "id": "q060304001",
@@ -422,23 +506,26 @@
       "question_es": "¿Qué es la validación cruzada de k particiones (k-fold cross-validation)?",
       "question_en": "What is k-fold cross-validation?",
       "options_es": [
-        "Entrenar el modelo k veces con los mismos datos exactos",
         "Dividir los datos en k particiones (folds), entrenar k veces usando k-1 folds para entrenar y 1 distinto para validar cada vez, y promediar los resultados",
+        "Entrenar el modelo k veces con los mismos datos exactos",
         "Multiplicar el dataset por k para tener más datos",
         "Elegir el mejor de k modelos al azar"
       ],
       "options_en": [
-        "Training the model k times on the exact same data",
         "Splitting the data into k folds, training k times using k-1 folds for training and 1 different fold for validation each time, and averaging the results",
+        "Training the model k times on the exact same data",
         "Multiplying the dataset by k to have more data",
         "Randomly picking the best of k models"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "En k-fold CV cada fold sirve una vez como validación mientras los demás entrenan, así todos los datos se usan tanto para entrenar como para validar (en rondas distintas). Promediar las k métricas da una estimación más estable y menos dependiente de una única división aleatoria que un simple train/test split.",
       "explanation_en": "In k-fold CV each fold serves once as validation while the rest train, so all data is used both for training and validation (in different rounds). Averaging the k metrics gives a more stable estimate, less dependent on a single random split, than a simple train/test split.",
       "source": "scikit-learn User Guide — Cross-validation: evaluating estimator performance",
       "expected_time_ms": 24000,
-      "tags": ["cross-validation", "k-fold"]
+      "tags": [
+        "cross-validation",
+        "k-fold"
+      ]
     },
     {
       "id": "q060304002",
@@ -464,7 +551,11 @@
       "explanation_en": "A single split can give a misleading metric if that particular partition is unrepresentative. CV averages over several partitions, reducing the variance of the estimate and using all data for validation. The cost is training k times, so it is slower, not faster.",
       "source": "scikit-learn User Guide — Cross-validation; Géron, Hands-On ML 2e, Ch. 2",
       "expected_time_ms": 26000,
-      "tags": ["cross-validation", "variance", "estimation"]
+      "tags": [
+        "cross-validation",
+        "variance",
+        "estimation"
+      ]
     },
     {
       "id": "q060304003",
@@ -473,14 +564,24 @@
       "difficulty_tier": "medium",
       "question_es": "En una serie temporal, se puede usar validación cruzada k-fold estándar barajando (shuffle) las observaciones sin problema.",
       "question_en": "For a time series, you can use standard shuffled k-fold cross-validation on the observations with no problem.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Es falso: en series temporales barajar rompe el orden y permite que el modelo entrene con datos del 'futuro' para predecir el 'pasado', lo que causa fuga de datos y sobrestima el rendimiento. Se debe usar una validación que respete el tiempo, como `TimeSeriesSplit`, donde el entrenamiento siempre precede a la validación.",
       "explanation_en": "False: for time series, shuffling breaks the ordering and lets the model train on 'future' data to predict the 'past', causing data leakage and overestimating performance. You must use a time-aware scheme, such as `TimeSeriesSplit`, where training always precedes validation.",
       "source": "scikit-learn User Guide — Cross-validation: Time Series Split",
       "expected_time_ms": 28000,
-      "tags": ["cross-validation", "time-series", "gotcha"]
+      "tags": [
+        "cross-validation",
+        "time-series",
+        "gotcha"
+      ]
     },
     {
       "id": "q060304004",
@@ -491,22 +592,26 @@
       "question_en": "In a medical diagnosis dataset with highly imbalanced classes (5% sick), which cross-validation variant is most appropriate?",
       "options_es": [
         "k-fold estándar sin ninguna consideración especial",
-        "k-fold estratificado (StratifiedKFold), que mantiene la proporción de clases en cada fold",
+        "Leave-one-out siempre, sin excepción",
         "Un único train/test split del 50/50",
-        "Leave-one-out siempre, sin excepción"
+        "k-fold estratificado (StratifiedKFold), que mantiene la proporción de clases en cada fold"
       ],
       "options_en": [
         "Standard k-fold with no special consideration",
-        "Stratified k-fold (StratifiedKFold), which preserves the class proportion in each fold",
+        "Leave-one-out always, without exception",
         "A single 50/50 train/test split",
-        "Leave-one-out always, without exception"
+        "Stratified k-fold (StratifiedKFold), which preserves the class proportion in each fold"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Con clases desbalanceadas, un k-fold aleatorio podría dejar folds casi sin ejemplos de la clase minoritaria, dando métricas inestables o imposibles de calcular. El k-fold estratificado asegura que cada fold refleje la proporción global de clases (por ejemplo ~5% enfermos), produciendo estimaciones fiables. Es el comportamiento por defecto de `cross_val_score` para clasificación en scikit-learn.",
       "explanation_en": "With imbalanced classes, a random k-fold could leave folds with almost no minority-class examples, giving unstable or uncomputable metrics. Stratified k-fold ensures each fold reflects the global class proportion (e.g. ~5% sick), producing reliable estimates. It is the default behavior of `cross_val_score` for classification in scikit-learn.",
       "source": "scikit-learn User Guide — Cross-validation: Stratified k-fold",
       "expected_time_ms": 30000,
-      "tags": ["cross-validation", "stratified", "imbalanced"]
+      "tags": [
+        "cross-validation",
+        "stratified",
+        "imbalanced"
+      ]
     },
     {
       "id": "q060304005",
@@ -517,22 +622,25 @@
       "question_en": "What is leave-one-out cross-validation (LOOCV) and what is its main disadvantage?",
       "options_es": [
         "Dejar fuera la mitad de los datos; su desventaja es que usa pocos datos para entrenar",
-        "Un caso extremo de k-fold donde k = número de muestras (cada punto es un fold de validación); su desventaja es que es muy costoso computacionalmente al entrenar tantas veces como observaciones",
         "Entrenar dejando una feature fuera cada vez; su desventaja es que ignora columnas",
+        "Un caso extremo de k-fold donde k = número de muestras (cada punto es un fold de validación); su desventaja es que es muy costoso computacionalmente al entrenar tantas veces como observaciones",
         "Un método que no requiere entrenar el modelo"
       ],
       "options_en": [
         "Leaving out half the data; its disadvantage is that it uses little data to train",
-        "An extreme case of k-fold where k = number of samples (each point is a validation fold); its disadvantage is that it is very computationally expensive, training as many times as there are observations",
         "Training by leaving one feature out each time; its disadvantage is that it ignores columns",
+        "An extreme case of k-fold where k = number of samples (each point is a validation fold); its disadvantage is that it is very computationally expensive, training as many times as there are observations",
         "A method that does not require training the model"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "En LOOCV se entrena n veces (n = número de muestras), cada vez validando con un único ejemplo. Aprovecha casi todos los datos para entrenar y es casi insesgado, pero es muy caro con datasets grandes y su estimación puede tener alta varianza. Suele preferirse k-fold con k=5 o 10 como equilibrio entre coste y estabilidad.",
       "explanation_en": "In LOOCV you train n times (n = number of samples), each time validating on a single example. It uses almost all data for training and is nearly unbiased, but it is very expensive for large datasets and its estimate can have high variance. k-fold with k=5 or 10 is usually preferred as a balance between cost and stability.",
       "source": "scikit-learn User Guide — Cross-validation: Leave One Out (LOO)",
       "expected_time_ms": 32000,
-      "tags": ["cross-validation", "loocv"]
+      "tags": [
+        "cross-validation",
+        "loocv"
+      ]
     },
     {
       "id": "q060304006",
@@ -550,7 +658,11 @@
       "explanation_en": "Grid search tries every combination in a grid of hyperparameters, evaluating each with cross-validation and keeping the one with the best mean metric. In scikit-learn it is `GridSearchCV`. When the space is large, `RandomizedSearchCV` (random search) is often preferred, sampling combinations and typically finding good configurations with less computation.",
       "source": "scikit-learn User Guide — Tuning the hyper-parameters of an estimator (GridSearchCV)",
       "expected_time_ms": 30000,
-      "tags": ["cross-validation", "grid-search", "hyperparameters"]
+      "tags": [
+        "cross-validation",
+        "grid-search",
+        "hyperparameters"
+      ]
     },
     {
       "id": "q060305001",
@@ -576,7 +688,10 @@
       "explanation_en": "Accuracy is `(correct predictions) / (total predictions)`. It is intuitive but can be misleading with imbalanced classes: in a problem with 95% of one class, a model that always predicts that class reaches 95% accuracy without learning anything useful, so complementary metrics like precision, recall, or F1 are needed.",
       "source": "scikit-learn User Guide — Metrics and scoring: Classification metrics",
       "expected_time_ms": 20000,
-      "tags": ["evaluation-metrics", "accuracy"]
+      "tags": [
+        "evaluation-metrics",
+        "accuracy"
+      ]
     },
     {
       "id": "q060305002",
@@ -587,22 +702,26 @@
       "question_en": "What is the difference between precision and recall?",
       "options_es": [
         "Son sinónimos exactos",
-        "Precisión = de lo que el modelo predijo como positivo, cuánto lo era realmente (TP/(TP+FP)); Recall = de todos los positivos reales, cuántos detectó el modelo (TP/(TP+FN))",
+        "Recall siempre es mayor que la precisión",
         "Precisión mide la velocidad; recall mide la memoria usada",
-        "Recall siempre es mayor que la precisión"
+        "Precisión = de lo que el modelo predijo como positivo, cuánto lo era realmente (TP/(TP+FP)); Recall = de todos los positivos reales, cuántos detectó el modelo (TP/(TP+FN))"
       ],
       "options_en": [
         "They are exact synonyms",
-        "Precision = of what the model predicted as positive, how much actually was (TP/(TP+FP)); Recall = of all actual positives, how many the model caught (TP/(TP+FN))",
+        "Recall is always greater than precision",
         "Precision measures speed; recall measures memory used",
-        "Recall is always greater than precision"
+        "Precision = of what the model predicted as positive, how much actually was (TP/(TP+FP)); Recall = of all actual positives, how many the model caught (TP/(TP+FN))"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La precisión penaliza los falsos positivos (¿cuántas de mis alarmas eran ciertas?), mientras que el recall penaliza los falsos negativos (¿cuántos casos reales se me escaparon?). Hay un compromiso entre ambas: subir el umbral suele aumentar la precisión y bajar el recall. La elección depende del coste de cada tipo de error.",
       "explanation_en": "Precision penalizes false positives (how many of my alarms were true?), while recall penalizes false negatives (how many real cases did I miss?). There is a tradeoff between them: raising the threshold usually increases precision and lowers recall. The choice depends on the cost of each error type.",
       "source": "scikit-learn User Guide — Precision, recall and F-measures",
       "expected_time_ms": 30000,
-      "tags": ["evaluation-metrics", "precision", "recall"]
+      "tags": [
+        "evaluation-metrics",
+        "precision",
+        "recall"
+      ]
     },
     {
       "id": "q060305003",
@@ -628,7 +747,11 @@
       "explanation_en": "With highly imbalanced classes, accuracy is misleading. The recall of the minority class (sick) would be 0% because the model identifies no real sick person (all are false negatives). Metrics like recall, F1 on the positive class, or AUC-PR expose this uselessness that accuracy hides.",
       "source": "scikit-learn User Guide — Classification metrics; imbalanced classification",
       "expected_time_ms": 32000,
-      "tags": ["evaluation-metrics", "imbalanced", "recall"]
+      "tags": [
+        "evaluation-metrics",
+        "imbalanced",
+        "recall"
+      ]
     },
     {
       "id": "q060305004",
@@ -646,7 +769,10 @@
       "explanation_en": "The F1-score is `2 * (precision * recall) / (precision + recall)`, the harmonic mean of the two. By using the harmonic mean (not the arithmetic), it strongly penalizes either one being low, so it is only high when both precision and recall are good. It is especially useful with imbalanced classes.",
       "source": "scikit-learn User Guide — Precision, recall and F-measures (F1)",
       "expected_time_ms": 26000,
-      "tags": ["evaluation-metrics", "f1-score"]
+      "tags": [
+        "evaluation-metrics",
+        "f1-score"
+      ]
     },
     {
       "id": "q060305005",
@@ -672,7 +798,12 @@
       "explanation_en": "MSE averages `(predicted - actual)^2`. Squaring makes an error of 10 weigh 100 times more than one of 1, so a single large outlier dominates the metric; that is why MSE is more sensitive to outliers than MAE (which averages absolute values). RMSE is its square root, useful for being in the same units as the target.",
       "source": "scikit-learn User Guide — Regression metrics (MSE, MAE)",
       "expected_time_ms": 32000,
-      "tags": ["evaluation-metrics", "mse", "mae", "regression"]
+      "tags": [
+        "evaluation-metrics",
+        "mse",
+        "mae",
+        "regression"
+      ]
     },
     {
       "id": "q060305006",
@@ -683,22 +814,26 @@
       "question_en": "What does the area under the ROC curve (AUC-ROC) of a binary classifier represent?",
       "options_es": [
         "El porcentaje exacto de predicciones correctas con umbral 0.5",
-        "La probabilidad de que el modelo asigne una puntuación mayor a un positivo elegido al azar que a un negativo elegido al azar; 0.5 equivale a azar y 1.0 a separación perfecta, independientemente del umbral",
         "El número de falsos positivos totales",
+        "La probabilidad de que el modelo asigne una puntuación mayor a un positivo elegido al azar que a un negativo elegido al azar; 0.5 equivale a azar y 1.0 a separación perfecta, independientemente del umbral",
         "La velocidad de convergencia del entrenamiento"
       ],
       "options_en": [
         "The exact percentage of correct predictions at threshold 0.5",
-        "The probability that the model assigns a higher score to a randomly chosen positive than to a randomly chosen negative; 0.5 equals random and 1.0 perfect separation, independent of the threshold",
         "The total number of false positives",
+        "The probability that the model assigns a higher score to a randomly chosen positive than to a randomly chosen negative; 0.5 equals random and 1.0 perfect separation, independent of the threshold",
         "The training convergence speed"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "La curva ROC traza la tasa de verdaderos positivos frente a la de falsos positivos al variar el umbral; el AUC resume esa curva en un número que equivale a la probabilidad de ranking correcto entre un positivo y un negativo aleatorios. Al ser independiente del umbral, mide la capacidad discriminativa general. Con clases muy desbalanceadas, la curva Precision-Recall (AUC-PR) suele ser más informativa.",
       "explanation_en": "The ROC curve plots the true-positive rate against the false-positive rate as the threshold varies; the AUC summarizes that curve in a number equal to the probability of correct ranking between a random positive and a random negative. Being threshold-independent, it measures overall discriminative ability. With highly imbalanced classes, the Precision-Recall curve (AUC-PR) is usually more informative.",
       "source": "scikit-learn User Guide — Receiver operating characteristic (ROC); Fawcett, 'An introduction to ROC analysis' (2006)",
       "expected_time_ms": 40000,
-      "tags": ["evaluation-metrics", "auc-roc", "ranking"]
+      "tags": [
+        "evaluation-metrics",
+        "auc-roc",
+        "ranking"
+      ]
     }
   ]
 }

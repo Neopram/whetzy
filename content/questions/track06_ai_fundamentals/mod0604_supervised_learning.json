@@ -24,7 +24,10 @@
       "explanation_en": "Linear regression fits a line `y = w*x + b` (or a hyperplane with several features) that best predicts a continuous output. Predicting a categorical output is classification (e.g. logistic regression), and grouping unlabeled data is clustering.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Linear Regression",
       "expected_time_ms": 20000,
-      "tags": ["linear-regression", "regression"]
+      "tags": [
+        "linear-regression",
+        "regression"
+      ]
     },
     {
       "id": "q060401002",
@@ -34,23 +37,27 @@
       "question_es": "¿Qué función de costo minimiza típicamente la regresión lineal por mínimos cuadrados (OLS)?",
       "question_en": "What cost function does ordinary least squares (OLS) linear regression typically minimize?",
       "options_es": [
-        "La entropía cruzada",
         "La suma (o media) de los errores al cuadrado entre las predicciones y los valores reales",
+        "La entropía cruzada",
         "El número de clasificaciones incorrectas",
         "La distancia de Manhattan entre puntos"
       ],
       "options_en": [
-        "Cross-entropy",
         "The sum (or mean) of squared errors between predictions and actual values",
+        "Cross-entropy",
         "The number of misclassifications",
         "The Manhattan distance between points"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Mínimos cuadrados busca los coeficientes que minimizan la suma de los residuos al cuadrado `Σ(y_real - y_pred)^2`. Elevar al cuadrado penaliza más los errores grandes y da una solución cerrada (ecuación normal) o resoluble por descenso de gradiente. La entropía cruzada es la pérdida de clasificación, no de regresión lineal.",
       "explanation_en": "Least squares seeks the coefficients that minimize the sum of squared residuals `Σ(y_actual - y_pred)^2`. Squaring penalizes large errors more and yields a closed-form solution (normal equation) or one solvable by gradient descent. Cross-entropy is the classification loss, not linear regression's.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4; Bishop, PRML, Ch. 3.1",
       "expected_time_ms": 26000,
-      "tags": ["linear-regression", "least-squares", "loss"]
+      "tags": [
+        "linear-regression",
+        "least-squares",
+        "loss"
+      ]
     },
     {
       "id": "q060401003",
@@ -61,22 +68,26 @@
       "question_en": "In linear regression, what does the coefficient of determination R² represent?",
       "options_es": [
         "El error absoluto medio del modelo",
-        "La proporción de la varianza de la variable dependiente que el modelo explica; 1 es ajuste perfecto y 0 significa que no explica nada mejor que la media",
+        "La pendiente de la recta ajustada",
         "El número de features usadas",
-        "La pendiente de la recta ajustada"
+        "La proporción de la varianza de la variable dependiente que el modelo explica; 1 es ajuste perfecto y 0 significa que no explica nada mejor que la media"
       ],
       "options_en": [
         "The model's mean absolute error",
-        "The proportion of the dependent variable's variance explained by the model; 1 is a perfect fit and 0 means it explains nothing better than the mean",
+        "The slope of the fitted line",
         "The number of features used",
-        "The slope of the fitted line"
+        "The proportion of the dependent variable's variance explained by the model; 1 is a perfect fit and 0 means it explains nothing better than the mean"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "R² = 1 - (SS_residual / SS_total) indica qué fracción de la variabilidad del target captura el modelo. Un R² de 0.8 significa que explica el 80% de la varianza. Puede ser negativo si el modelo es peor que predecir siempre la media. Ojo: R² nunca baja al añadir features, por eso se usa el R² ajustado para comparar modelos con distinto número de variables.",
       "explanation_en": "R² = 1 - (SS_residual / SS_total) indicates what fraction of the target's variability the model captures. An R² of 0.8 means it explains 80% of the variance. It can be negative if the model is worse than always predicting the mean. Note: R² never decreases when adding features, which is why adjusted R² is used to compare models with different numbers of variables.",
       "source": "scikit-learn User Guide — Regression metrics (R² score); Bishop, PRML, Ch. 3",
       "expected_time_ms": 32000,
-      "tags": ["linear-regression", "r-squared", "evaluation"]
+      "tags": [
+        "linear-regression",
+        "r-squared",
+        "evaluation"
+      ]
     },
     {
       "id": "q060401004",
@@ -85,14 +96,24 @@
       "difficulty_tier": "hard",
       "question_es": "La regresión lineal asume una relación lineal entre las features y el target, por lo que no puede capturar bien relaciones curvas sin transformar las variables.",
       "question_en": "Linear regression assumes a linear relationship between features and target, so it cannot capture curved relationships well without transforming the variables.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La regresión lineal modela relaciones lineales en los parámetros; si la relación real es curva, un ajuste lineal simple tendrá sesgo alto (subajuste). Se puede extender creando features polinómicas (x², x³) o transformando variables (log, raíz), lo que se llama regresión polinómica: sigue siendo lineal en los coeficientes pero captura curvatura.",
       "explanation_en": "Linear regression models relationships that are linear in the parameters; if the true relationship is curved, a simple linear fit will have high bias (underfitting). It can be extended by creating polynomial features (x², x³) or transforming variables (log, sqrt), called polynomial regression: still linear in the coefficients but able to capture curvature.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Polynomial Regression",
       "expected_time_ms": 28000,
-      "tags": ["linear-regression", "assumptions", "polynomial"]
+      "tags": [
+        "linear-regression",
+        "assumptions",
+        "polynomial"
+      ]
     },
     {
       "id": "q060401005",
@@ -110,7 +131,11 @@
       "explanation_en": "Ridge regression adds the term `α * Σw²` (L2 penalty) to the loss, which shrinks coefficients toward zero (without reaching exactly zero), reducing variance and helping when there is multicollinearity. Its cousin Lasso uses an L1 penalty (`α * Σ|w|`) and can zero out coefficients, performing feature selection. Elastic Net combines both.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Regularized Linear Models (Ridge)",
       "expected_time_ms": 30000,
-      "tags": ["linear-regression", "ridge", "regularization"]
+      "tags": [
+        "linear-regression",
+        "ridge",
+        "regularization"
+      ]
     },
     {
       "id": "q060401006",
@@ -119,14 +144,27 @@
       "difficulty_tier": "medium",
       "question_es": "Un modelo de regresión lineal aprendió `y = 3*x + 2`. ¿Cuál es la predicción para `x = 5`?",
       "question_en": "A linear regression model learned `y = 3*x + 2`. What is the prediction for `x = 5`?",
-      "options_es": ["15", "17", "10", "5"],
-      "options_en": ["15", "17", "10", "5"],
-      "correct_index": 1,
+      "options_es": [
+        "15",
+        "10",
+        "17",
+        "5"
+      ],
+      "options_en": [
+        "15",
+        "10",
+        "17",
+        "5"
+      ],
+      "correct_index": 2,
       "explanation_es": "Sustituyendo en la ecuación: `y = 3*5 + 2 = 15 + 2 = 17`. El coeficiente 3 es la pendiente (cuánto cambia y por cada unidad de x) y el 2 es la intersección (bias). Olvidar el término independiente daría 15, un error común.",
       "explanation_en": "Substituting into the equation: `y = 3*5 + 2 = 15 + 2 = 17`. The coefficient 3 is the slope (how much y changes per unit of x) and 2 is the intercept (bias). Forgetting the intercept term would give 15, a common mistake.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4",
       "expected_time_ms": 20000,
-      "tags": ["linear-regression", "prediction"]
+      "tags": [
+        "linear-regression",
+        "prediction"
+      ]
     },
     {
       "id": "q060402001",
@@ -136,23 +174,26 @@
       "question_es": "A pesar de su nombre, ¿para qué tipo de problema se usa principalmente la regresión logística?",
       "question_en": "Despite its name, what type of problem is logistic regression mainly used for?",
       "options_es": [
-        "Regresión de valores continuos",
         "Clasificación (especialmente binaria): estima la probabilidad de que una observación pertenezca a una clase",
+        "Regresión de valores continuos",
         "Clustering no supervisado",
         "Reducción de dimensionalidad"
       ],
       "options_en": [
-        "Regression of continuous values",
         "Classification (especially binary): it estimates the probability that an observation belongs to a class",
+        "Regression of continuous values",
         "Unsupervised clustering",
         "Dimensionality reduction"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Aunque se llame 'regresión', la regresión logística es un modelo de clasificación: aplica la función sigmoide a una combinación lineal de las features para producir una probabilidad entre 0 y 1, y clasifica según un umbral (típicamente 0.5). El nombre viene de que modela el logaritmo de las probabilidades (log-odds) de forma lineal.",
       "explanation_en": "Although called 'regression', logistic regression is a classification model: it applies the sigmoid function to a linear combination of the features to produce a probability between 0 and 1, and classifies based on a threshold (typically 0.5). The name comes from modeling the log-odds linearly.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Logistic Regression",
       "expected_time_ms": 20000,
-      "tags": ["logistic-regression", "classification"]
+      "tags": [
+        "logistic-regression",
+        "classification"
+      ]
     },
     {
       "id": "q060402002",
@@ -162,23 +203,27 @@
       "question_es": "¿Qué papel cumple la función sigmoide en la regresión logística?",
       "question_en": "What role does the sigmoid function play in logistic regression?",
       "options_es": [
-        "Ordena las features por importancia",
         "Transforma cualquier número real (la salida lineal) en un valor entre 0 y 1, interpretable como una probabilidad",
+        "Ordena las features por importancia",
         "Calcula la distancia entre puntos",
         "Elimina los outliers automáticamente"
       ],
       "options_en": [
-        "It ranks the features by importance",
         "It transforms any real number (the linear output) into a value between 0 and 1, interpretable as a probability",
+        "It ranks the features by importance",
         "It computes the distance between points",
         "It automatically removes outliers"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "La sigmoide `σ(z) = 1 / (1 + e^(-z))` mapea la salida lineal `z = w·x + b` al intervalo (0, 1), dando una probabilidad. Valores grandes de z tienden a 1 y muy negativos a 0. Esa probabilidad se compara con un umbral para decidir la clase. Es la generalización binaria de la función softmax usada en clasificación multiclase.",
       "explanation_en": "The sigmoid `σ(z) = 1 / (1 + e^(-z))` maps the linear output `z = w·x + b` to the interval (0, 1), giving a probability. Large z values tend to 1 and very negative ones to 0. That probability is compared to a threshold to decide the class. It is the binary special case of the softmax function used in multiclass classification.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4: Estimating Probabilities",
       "expected_time_ms": 28000,
-      "tags": ["logistic-regression", "sigmoid", "probability"]
+      "tags": [
+        "logistic-regression",
+        "sigmoid",
+        "probability"
+      ]
     },
     {
       "id": "q060402003",
@@ -189,22 +234,26 @@
       "question_en": "What loss function is used to train logistic regression, and why is mean squared error not used?",
       "options_es": [
         "Se usa MSE, igual que en regresión lineal",
-        "Se usa la entropía cruzada binaria (log loss), porque con la sigmoide el MSE produce una superficie de pérdida no convexa con mínimos locales, mientras que la log loss es convexa y penaliza fuertemente las predicciones confiadas pero equivocadas",
         "Se usa la distancia euclidiana",
+        "Se usa la entropía cruzada binaria (log loss), porque con la sigmoide el MSE produce una superficie de pérdida no convexa con mínimos locales, mientras que la log loss es convexa y penaliza fuertemente las predicciones confiadas pero equivocadas",
         "No se usa ninguna función de pérdida"
       ],
       "options_en": [
         "MSE is used, just like in linear regression",
-        "Binary cross-entropy (log loss) is used, because with the sigmoid, MSE produces a non-convex loss surface with local minima, while log loss is convex and strongly penalizes confident but wrong predictions",
         "Euclidean distance is used",
+        "Binary cross-entropy (log loss) is used, because with the sigmoid, MSE produces a non-convex loss surface with local minima, while log loss is convex and strongly penalizes confident but wrong predictions",
         "No loss function is used"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "La entropía cruzada binaria `-[y log(p) + (1-y) log(1-p)]` es la pérdida natural derivada de la máxima verosimilitud para salidas probabilísticas. Es convexa respecto a los parámetros (facilita la optimización) y castiga muchísimo predecir con alta confianza la clase equivocada. Con MSE la combinación con la sigmoide no es convexa y complica el entrenamiento.",
       "explanation_en": "Binary cross-entropy `-[y log(p) + (1-y) log(1-p)]` is the natural loss derived from maximum likelihood for probabilistic outputs. It is convex with respect to the parameters (easing optimization) and heavily punishes confidently predicting the wrong class. With MSE, the combination with the sigmoid is non-convex and complicates training.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 4.3.2; Goodfellow et al., Deep Learning, Ch. 6.2",
       "expected_time_ms": 35000,
-      "tags": ["logistic-regression", "cross-entropy", "loss"]
+      "tags": [
+        "logistic-regression",
+        "cross-entropy",
+        "loss"
+      ]
     },
     {
       "id": "q060402004",
@@ -213,14 +262,24 @@
       "difficulty_tier": "medium",
       "question_es": "Cambiar el umbral de decisión de la regresión logística de 0.5 a 0.3 tenderá a aumentar el recall (detectar más positivos) a costa de bajar la precisión.",
       "question_en": "Changing the logistic regression decision threshold from 0.5 to 0.3 will tend to increase recall (detecting more positives) at the cost of lowering precision.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Bajar el umbral hace que más observaciones se clasifiquen como positivas (basta una probabilidad de 0.3), lo que captura más positivos reales (sube el recall) pero también genera más falsos positivos (baja la precisión). Ajustar el umbral es la palanca principal para mover el compromiso precisión-recall según el coste de cada tipo de error.",
       "explanation_en": "Lowering the threshold makes more observations be classified as positive (a probability of 0.3 suffices), which captures more real positives (recall goes up) but also generates more false positives (precision goes down). Tuning the threshold is the main lever to shift the precision-recall tradeoff according to the cost of each error type.",
       "source": "scikit-learn User Guide — Precision-Recall; Géron, Hands-On ML 2e, Ch. 3",
       "expected_time_ms": 28000,
-      "tags": ["logistic-regression", "threshold", "precision-recall"]
+      "tags": [
+        "logistic-regression",
+        "threshold",
+        "precision-recall"
+      ]
     },
     {
       "id": "q060402005",
@@ -238,7 +297,11 @@
       "explanation_en": "The softmax function takes a vector of logits and returns `e^(z_i) / Σ e^(z_j)` for each class, producing non-negative probabilities that sum to 1. It is used in the final layer of multiclass classifiers (multinomial logistic regression, neural networks) together with categorical cross-entropy. For two classes it reduces to the sigmoid.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.2.2: Softmax Units",
       "expected_time_ms": 30000,
-      "tags": ["logistic-regression", "softmax", "multiclass"]
+      "tags": [
+        "logistic-regression",
+        "softmax",
+        "multiclass"
+      ]
     },
     {
       "id": "q060402006",
@@ -249,22 +312,26 @@
       "question_en": "If a logistic regression model predicts a probability of 0.85 for the positive class and the threshold is 0.5, how does it classify the observation?",
       "options_es": [
         "Como clase negativa, porque 0.85 no es 1",
-        "Como clase positiva, porque 0.85 supera el umbral de 0.5",
+        "Como una tercera clase intermedia",
         "No la puede clasificar",
-        "Como una tercera clase intermedia"
+        "Como clase positiva, porque 0.85 supera el umbral de 0.5"
       ],
       "options_en": [
         "As the negative class, because 0.85 is not 1",
-        "As the positive class, because 0.85 exceeds the 0.5 threshold",
+        "As a third, intermediate class",
         "It cannot classify it",
-        "As a third, intermediate class"
+        "As the positive class, because 0.85 exceeds the 0.5 threshold"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La probabilidad estimada (0.85) se compara con el umbral (0.5); como 0.85 ≥ 0.5, se asigna la clase positiva. La probabilidad no necesita ser 1 para clasificar como positivo, solo superar el umbral. El 0.85 además indica una predicción con bastante confianza.",
       "explanation_en": "The estimated probability (0.85) is compared to the threshold (0.5); since 0.85 ≥ 0.5, the positive class is assigned. The probability does not need to be 1 to classify as positive, just to exceed the threshold. The 0.85 also indicates a fairly confident prediction.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 4",
       "expected_time_ms": 18000,
-      "tags": ["logistic-regression", "threshold", "classification"]
+      "tags": [
+        "logistic-regression",
+        "threshold",
+        "classification"
+      ]
     },
     {
       "id": "q060403001",
@@ -275,22 +342,25 @@
       "question_en": "How does a decision tree make decisions?",
       "options_es": [
         "Calculando la distancia a todos los puntos de entrenamiento",
-        "Haciendo una secuencia de preguntas sobre las features (divisiones binarias) que particionan los datos hasta llegar a una hoja con la predicción",
+        "Aplicando la función sigmoide",
         "Ajustando una recta a los datos",
-        "Aplicando la función sigmoide"
+        "Haciendo una secuencia de preguntas sobre las features (divisiones binarias) que particionan los datos hasta llegar a una hoja con la predicción"
       ],
       "options_en": [
         "By computing the distance to all training points",
-        "By asking a sequence of questions about the features (binary splits) that partition the data until reaching a leaf with the prediction",
+        "By applying the sigmoid function",
         "By fitting a line to the data",
-        "By applying the sigmoid function"
+        "By asking a sequence of questions about the features (binary splits) that partition the data until reaching a leaf with the prediction"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Un árbol de decisión divide recursivamente el espacio de features con umbrales (por ejemplo '¿edad > 30?'), eligiendo en cada nodo la división que mejor separa las clases (según criterios como Gini o entropía). Cada camino termina en una hoja que asigna una clase o valor. Es interpretable pero propenso al sobreajuste si crece sin límite.",
       "explanation_en": "A decision tree recursively splits the feature space with thresholds (e.g. 'age > 30?'), choosing at each node the split that best separates the classes (using criteria like Gini or entropy). Each path ends in a leaf that assigns a class or value. It is interpretable but prone to overfitting if grown without limit.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 6: Decision Trees",
       "expected_time_ms": 22000,
-      "tags": ["decision-trees", "splits"]
+      "tags": [
+        "decision-trees",
+        "splits"
+      ]
     },
     {
       "id": "q060403002",
@@ -300,23 +370,27 @@
       "question_es": "¿Qué es un Random Forest?",
       "question_en": "What is a Random Forest?",
       "options_es": [
-        "Un único árbol de decisión muy profundo",
         "Un ensamble (bagging) de muchos árboles de decisión entrenados sobre muestras aleatorias de datos y features, cuyas predicciones se combinan por voto mayoritario o promedio",
+        "Un único árbol de decisión muy profundo",
         "Una red neuronal con forma de árbol",
         "Un algoritmo de clustering jerárquico"
       ],
       "options_en": [
-        "A single very deep decision tree",
         "An ensemble (bagging) of many decision trees trained on random samples of data and features, whose predictions are combined by majority vote or averaging",
+        "A single very deep decision tree",
         "A tree-shaped neural network",
         "A hierarchical clustering algorithm"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Random Forest entrena muchos árboles sobre muestras bootstrap de los datos y, en cada división, considera solo un subconjunto aleatorio de features. Esa doble aleatoriedad descorrelaciona los árboles; al promediar (o votar) sus predicciones, reduce la varianza del árbol individual y suele generalizar mucho mejor sin apenas sobreajustar.",
       "explanation_en": "Random Forest trains many trees on bootstrap samples of the data and, at each split, considers only a random subset of features. This double randomness decorrelates the trees; averaging (or voting) their predictions reduces the individual tree's variance and usually generalizes much better with little overfitting.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 7: Random Forests; Breiman (2001)",
       "expected_time_ms": 28000,
-      "tags": ["ensembles", "random-forest", "bagging"]
+      "tags": [
+        "ensembles",
+        "random-forest",
+        "bagging"
+      ]
     },
     {
       "id": "q060403003",
@@ -342,7 +416,11 @@
       "explanation_en": "In bagging the models are independent and combined by averaging/voting, attacking mainly variance. In boosting each model is trained on the residuals or weighted errors of the previous ensemble, reducing mostly bias and building a strong predictor from many weak ones. XGBoost, LightGBM, and AdaBoost are examples of boosting.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 7: Ensemble Learning (Bagging vs Boosting)",
       "expected_time_ms": 35000,
-      "tags": ["ensembles", "bagging", "boosting"]
+      "tags": [
+        "ensembles",
+        "bagging",
+        "boosting"
+      ]
     },
     {
       "id": "q060403004",
@@ -351,14 +429,24 @@
       "difficulty_tier": "medium",
       "question_es": "Los árboles de decisión requieren que las features numéricas estén escaladas (por ejemplo estandarizadas) para funcionar correctamente.",
       "question_en": "Decision trees require numeric features to be scaled (e.g. standardized) to work correctly.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Es falso: los árboles dividen cada feature por umbrales (por ejemplo 'x > 5?'), y ese umbral es invariante a escalados monótonos, así que estandarizar o normalizar no cambia las divisiones ni el resultado. Por eso los métodos basados en árboles (árbol, Random Forest, Gradient Boosting) no necesitan escalado, a diferencia de los métodos basados en distancia como k-NN o SVM.",
       "explanation_en": "False: trees split each feature by thresholds (e.g. 'x > 5?'), and that threshold is invariant to monotonic scaling, so standardizing or normalizing does not change the splits or the result. That is why tree-based methods (tree, Random Forest, Gradient Boosting) do not need scaling, unlike distance-based methods such as k-NN or SVM.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 6: Decision Trees",
       "expected_time_ms": 26000,
-      "tags": ["decision-trees", "scaling", "gotcha"]
+      "tags": [
+        "decision-trees",
+        "scaling",
+        "gotcha"
+      ]
     },
     {
       "id": "q060403005",
@@ -368,23 +456,27 @@
       "question_es": "¿Cómo controla un árbol de decisión el sobreajuste?",
       "question_en": "How does a decision tree control overfitting?",
       "options_es": [
-        "No se puede controlar; los árboles siempre sobreajustan",
         "Limitando su crecimiento con hiperparámetros como profundidad máxima, mínimo de muestras por hoja o poda (pruning), para que no memorice ejemplos individuales",
+        "No se puede controlar; los árboles siempre sobreajustan",
         "Aumentando siempre la profundidad al máximo",
         "Eliminando la variable objetivo"
       ],
       "options_en": [
-        "It cannot be controlled; trees always overfit",
         "By limiting its growth with hyperparameters like max depth, minimum samples per leaf, or pruning, so it does not memorize individual examples",
+        "It cannot be controlled; trees always overfit",
         "By always maximizing the depth",
         "By removing the target variable"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Un árbol sin restricciones crece hasta clasificar perfectamente cada ejemplo de entrenamiento (hojas puras), lo que casi siempre es sobreajuste. Restringir `max_depth`, exigir un mínimo de muestras para dividir o por hoja (`min_samples_leaf`), o podar ramas poco útiles reduce la complejidad y mejora la generalización. Los ensambles como Random Forest atacan el mismo problema promediando muchos árboles.",
       "explanation_en": "An unconstrained tree grows until it perfectly classifies every training example (pure leaves), which is almost always overfitting. Restricting `max_depth`, requiring a minimum number of samples to split or per leaf (`min_samples_leaf`), or pruning unhelpful branches reduces complexity and improves generalization. Ensembles like Random Forest tackle the same problem by averaging many trees.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 6: Regularization Hyperparameters",
       "expected_time_ms": 30000,
-      "tags": ["decision-trees", "overfitting", "pruning"]
+      "tags": [
+        "decision-trees",
+        "overfitting",
+        "pruning"
+      ]
     },
     {
       "id": "q060403006",
@@ -402,7 +494,11 @@
       "explanation_en": "Gini impurity `1 - Σ p_i²` measures how mixed the classes are in a node: 0 means the node is pure (a single class) and it grows the more balanced the classes are. The tree chooses at each node the split that most reduces impurity (largest 'gain'). Entropy is an alternative criterion with very similar behavior.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 6: Gini Impurity or Entropy",
       "expected_time_ms": 32000,
-      "tags": ["decision-trees", "gini", "impurity"]
+      "tags": [
+        "decision-trees",
+        "gini",
+        "impurity"
+      ]
     },
     {
       "id": "q060404001",
@@ -412,23 +508,27 @@
       "question_es": "¿Cuál es la idea central de una máquina de vectores de soporte (SVM) para clasificación?",
       "question_en": "What is the core idea of a support vector machine (SVM) for classification?",
       "options_es": [
-        "Agrupar los datos en clusters",
         "Encontrar el hiperplano que separa las clases con el mayor margen posible entre ellas",
+        "Agrupar los datos en clusters",
         "Ajustar una curva sigmoide a los datos",
         "Promediar las predicciones de muchos árboles"
       ],
       "options_en": [
-        "Grouping the data into clusters",
         "Finding the hyperplane that separates the classes with the largest possible margin between them",
+        "Grouping the data into clusters",
         "Fitting a sigmoid curve to the data",
         "Averaging the predictions of many trees"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "La SVM busca el hiperplano de separación que maximiza el margen, es decir, la distancia a los puntos más cercanos de cada clase (los vectores de soporte). Un margen amplio suele generalizar mejor. Solo esos puntos frontera determinan el modelo, lo que hace a la SVM eficiente en memoria una vez entrenada.",
       "explanation_en": "The SVM seeks the separating hyperplane that maximizes the margin, i.e. the distance to the nearest points of each class (the support vectors). A wide margin usually generalizes better. Only those boundary points determine the model, which makes the SVM memory-efficient once trained.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 5: Support Vector Machines",
       "expected_time_ms": 22000,
-      "tags": ["svm", "margin", "hyperplane"]
+      "tags": [
+        "svm",
+        "margin",
+        "hyperplane"
+      ]
     },
     {
       "id": "q060404002",
@@ -454,7 +554,10 @@
       "explanation_en": "Support vectors are the observations lying on or inside the margin; they are the only ones that influence the hyperplane's position. Moving or removing a point that is not a support vector does not change the boundary. This dependence only on the critical points is what gives the method its name.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 5; Bishop, PRML, Ch. 7.1",
       "expected_time_ms": 26000,
-      "tags": ["svm", "support-vectors"]
+      "tags": [
+        "svm",
+        "support-vectors"
+      ]
     },
     {
       "id": "q060404003",
@@ -465,22 +568,26 @@
       "question_en": "What does the 'kernel trick' enable in SVMs?",
       "options_es": [
         "Entrenar sin ningún dato",
-        "Clasificar datos no separables linealmente calculando implícitamente productos internos en un espacio de mayor dimensión, sin transformar explícitamente los datos a ese espacio",
+        "Convertir la SVM en un árbol de decisión",
         "Reducir el número de features a uno",
-        "Convertir la SVM en un árbol de decisión"
+        "Clasificar datos no separables linealmente calculando implícitamente productos internos en un espacio de mayor dimensión, sin transformar explícitamente los datos a ese espacio"
       ],
       "options_en": [
         "Training without any data",
-        "Classifying non-linearly-separable data by implicitly computing inner products in a higher-dimensional space, without explicitly transforming the data into that space",
+        "Turning the SVM into a decision tree",
         "Reducing the number of features to one",
-        "Turning the SVM into a decision tree"
+        "Classifying non-linearly-separable data by implicitly computing inner products in a higher-dimensional space, without explicitly transforming the data into that space"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El kernel trick sustituye el producto interno por una función kernel (por ejemplo RBF o polinómica) que equivale a operar en un espacio de dimensión mucho mayor donde los datos sí son separables linealmente, pero sin calcular esa transformación explícitamente. Esto permite fronteras de decisión no lineales manteniendo un coste computacional razonable.",
       "explanation_en": "The kernel trick replaces the inner product with a kernel function (e.g. RBF or polynomial) equivalent to operating in a much higher-dimensional space where the data is linearly separable, but without explicitly computing that transformation. This enables non-linear decision boundaries while keeping computational cost reasonable.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 6-7; Géron, Hands-On ML 2e, Ch. 5",
       "expected_time_ms": 35000,
-      "tags": ["svm", "kernel-trick", "non-linear"]
+      "tags": [
+        "svm",
+        "kernel-trick",
+        "non-linear"
+      ]
     },
     {
       "id": "q060404004",
@@ -489,14 +596,23 @@
       "difficulty_tier": "medium",
       "question_es": "Las SVM basadas en distancia se benefician de escalar las features, ya que operan con distancias/productos internos sensibles a la escala.",
       "question_en": "Distance-based SVMs benefit from scaling the features, since they operate with scale-sensitive distances/inner products.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Las SVM son muy sensibles a la escala de las features: una variable con rango grande dominaría el cálculo del margen y de los kernels, distorsionando la frontera. Por eso se recomienda estandarizar antes de entrenar. Esto contrasta con los árboles, que son invariantes a la escala.",
       "explanation_en": "SVMs are very sensitive to feature scale: a variable with a large range would dominate the margin and kernel computations, distorting the boundary. That is why standardizing before training is recommended. This contrasts with trees, which are scale-invariant.",
       "source": "scikit-learn User Guide — SVM: Tips on Practical Use (scaling); Géron, Hands-On ML 2e, Ch. 5",
       "expected_time_ms": 26000,
-      "tags": ["svm", "scaling"]
+      "tags": [
+        "svm",
+        "scaling"
+      ]
     },
     {
       "id": "q060404005",
@@ -507,22 +623,26 @@
       "question_en": "In a soft-margin SVM, what does the hyperparameter C control?",
       "options_es": [
         "El número de clases",
-        "El compromiso entre maximizar el margen y minimizar los errores de clasificación: C alto penaliza mucho los errores (margen estrecho, riesgo de sobreajuste), C bajo tolera más errores (margen amplio, más regularización)",
+        "El número de vectores de soporte fijado de antemano",
         "La velocidad de aprendizaje",
-        "El número de vectores de soporte fijado de antemano"
+        "El compromiso entre maximizar el margen y minimizar los errores de clasificación: C alto penaliza mucho los errores (margen estrecho, riesgo de sobreajuste), C bajo tolera más errores (margen amplio, más regularización)"
       ],
       "options_en": [
         "The number of classes",
-        "The tradeoff between maximizing the margin and minimizing classification errors: high C heavily penalizes errors (narrow margin, overfitting risk), low C tolerates more errors (wide margin, more regularization)",
+        "The number of support vectors fixed in advance",
         "The learning rate",
-        "The number of support vectors fixed in advance"
+        "The tradeoff between maximizing the margin and minimizing classification errors: high C heavily penalizes errors (narrow margin, overfitting risk), low C tolerates more errors (wide margin, more regularization)"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El margen suave permite que algunos puntos violen el margen a cambio de una penalización controlada por C. Un C grande da poca tolerancia a errores y una frontera muy ajustada a los datos (más varianza); un C pequeño relaja la frontera, aceptando más violaciones a cambio de un margen más amplio y mejor generalización (más sesgo). Es el principal parámetro de regularización de la SVM.",
       "explanation_en": "The soft margin lets some points violate the margin in exchange for a penalty controlled by C. A large C gives little tolerance to errors and a boundary tightly fit to the data (more variance); a small C relaxes the boundary, accepting more violations in exchange for a wider margin and better generalization (more bias). It is the SVM's main regularization parameter.",
       "source": "Géron, Hands-On Machine Learning, 2e (2019), Ch. 5: Soft Margin Classification",
       "expected_time_ms": 35000,
-      "tags": ["svm", "soft-margin", "regularization"]
+      "tags": [
+        "svm",
+        "soft-margin",
+        "regularization"
+      ]
     },
     {
       "id": "q060404006",
@@ -540,7 +660,11 @@
       "explanation_en": "The RBF (Radial Basis Function, or Gaussian) kernel `exp(-gamma * ||x - x'||²)` measures similarity by distance between points: nearby ones give values near 1, distant ones near 0. Gamma controls the 'width': a high gamma makes influence very local (very wiggly boundaries, overfitting risk), a low gamma makes it smoother. It is the default kernel in scikit-learn's `SVC`.",
       "source": "scikit-learn User Guide — SVM: RBF kernel; Bishop, PRML, Ch. 6.2",
       "expected_time_ms": 32000,
-      "tags": ["svm", "rbf-kernel", "gamma"]
+      "tags": [
+        "svm",
+        "rbf-kernel",
+        "gamma"
+      ]
     },
     {
       "id": "q060405001",
@@ -566,7 +690,11 @@
       "explanation_en": "k-NN is an instance-based method: to classify, it looks at the k closest training examples (by a distance metric) and votes the most frequent class among them (for regression, it averages their values). It does not 'learn' a model during training; it just memorizes the data, which is why it is called 'lazy' learning.",
       "source": "scikit-learn User Guide — Nearest Neighbors; Géron, Hands-On ML 2e, Ch. 5",
       "expected_time_ms": 22000,
-      "tags": ["knn", "instance-based", "classification"]
+      "tags": [
+        "knn",
+        "instance-based",
+        "classification"
+      ]
     },
     {
       "id": "q060405002",
@@ -577,22 +705,26 @@
       "question_en": "What effect does choosing a very small k (e.g. k=1) have in k-NN?",
       "options_es": [
         "El modelo se vuelve muy simple y subajusta",
-        "El modelo es muy sensible al ruido y a outliers, con fronteras muy irregulares y tendencia al sobreajuste (baja sesgo, alta varianza)",
         "El modelo ignora los puntos cercanos",
+        "El modelo es muy sensible al ruido y a outliers, con fronteras muy irregulares y tendencia al sobreajuste (baja sesgo, alta varianza)",
         "No cambia nada respecto a un k grande"
       ],
       "options_en": [
         "The model becomes very simple and underfits",
-        "The model is very sensitive to noise and outliers, with very irregular boundaries and a tendency to overfit (low bias, high variance)",
         "The model ignores nearby points",
+        "The model is very sensitive to noise and outliers, with very irregular boundaries and a tendency to overfit (low bias, high variance)",
         "Nothing changes compared to a large k"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Con k=1 la predicción depende de un único vecino, así que un punto ruidoso o mal etiquetado altera la clasificación de su entorno: fronteras dentadas y alta varianza (sobreajuste). Aumentar k suaviza la frontera promediando más vecinos (más sesgo, menos varianza), pero un k demasiado grande diluye la señal local. Se suele elegir k por validación cruzada.",
       "explanation_en": "With k=1 the prediction depends on a single neighbor, so a noisy or mislabeled point alters the classification of its neighborhood: jagged boundaries and high variance (overfitting). Increasing k smooths the boundary by averaging more neighbors (more bias, less variance), but too large a k dilutes the local signal. k is usually chosen by cross-validation.",
       "source": "scikit-learn User Guide — Nearest Neighbors Classification; Géron, Hands-On ML 2e",
       "expected_time_ms": 28000,
-      "tags": ["knn", "k-value", "bias-variance"]
+      "tags": [
+        "knn",
+        "k-value",
+        "bias-variance"
+      ]
     },
     {
       "id": "q060405003",
@@ -601,14 +733,24 @@
       "difficulty_tier": "medium",
       "question_es": "En k-NN es importante escalar las features, porque el cálculo de distancias se ve dominado por las variables con rangos numéricos más grandes.",
       "question_en": "In k-NN it is important to scale the features, because the distance computation gets dominated by variables with larger numeric ranges.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "k-NN se basa por completo en distancias, así que una feature medida en miles (por ejemplo ingresos) eclipsaría a otra medida en unidades (por ejemplo edad) al calcular la distancia euclidiana, sesgando qué puntos son 'vecinos'. Estandarizar o normalizar pone todas las variables en la misma escala y es prácticamente obligatorio para que k-NN funcione bien.",
       "explanation_en": "k-NN relies entirely on distances, so a feature measured in thousands (e.g. income) would overshadow one measured in units (e.g. age) when computing Euclidean distance, biasing which points are 'neighbors'. Standardizing or normalizing puts all variables on the same scale and is practically mandatory for k-NN to work well.",
       "source": "scikit-learn User Guide — Nearest Neighbors; Preprocessing data",
       "expected_time_ms": 26000,
-      "tags": ["knn", "scaling", "distance"]
+      "tags": [
+        "knn",
+        "scaling",
+        "distance"
+      ]
     },
     {
       "id": "q060405004",
@@ -619,22 +761,26 @@
       "question_en": "Why is k-NN called a 'lazy' learning algorithm and what is its main cost?",
       "options_es": [
         "Porque entrena muy lentamente; su coste está en el entrenamiento",
-        "Porque no construye un modelo en el entrenamiento (solo almacena los datos); el coste se traslada a la predicción, que requiere calcular distancias a muchos puntos, siendo lenta y con alto uso de memoria en datasets grandes",
+        "Porque nunca alcanza buena precisión",
         "Porque solo usa una fracción de los datos",
-        "Porque nunca alcanza buena precisión"
+        "Porque no construye un modelo en el entrenamiento (solo almacena los datos); el coste se traslada a la predicción, que requiere calcular distancias a muchos puntos, siendo lenta y con alto uso de memoria en datasets grandes"
       ],
       "options_en": [
         "Because it trains very slowly; its cost is in training",
-        "Because it builds no model during training (it just stores the data); the cost shifts to prediction, which requires computing distances to many points, being slow and memory-heavy on large datasets",
+        "Because it never reaches good accuracy",
         "Because it only uses a fraction of the data",
-        "Because it never reaches good accuracy"
+        "Because it builds no model during training (it just stores the data); the cost shifts to prediction, which requires computing distances to many points, being slow and memory-heavy on large datasets"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "k-NN es 'perezoso' porque pospone todo el trabajo hasta la predicción: en el entrenamiento solo guarda los datos. Para clasificar un punto nuevo debe medir su distancia a (potencialmente) todo el conjunto de entrenamiento y ordenar, lo que es costoso en tiempo y memoria a gran escala. Estructuras como KD-Tree o Ball-Tree aceleran la búsqueda de vecinos en dimensiones moderadas.",
       "explanation_en": "k-NN is 'lazy' because it defers all the work to prediction time: during training it only stores the data. To classify a new point it must measure its distance to (potentially) the entire training set and sort, which is costly in time and memory at scale. Structures like KD-Tree or Ball-Tree speed up neighbor search in moderate dimensions.",
       "source": "scikit-learn User Guide — Nearest Neighbor Algorithms (KD-Tree, Ball-Tree)",
       "expected_time_ms": 32000,
-      "tags": ["knn", "lazy-learning", "complexity"]
+      "tags": [
+        "knn",
+        "lazy-learning",
+        "complexity"
+      ]
     },
     {
       "id": "q060405005",
@@ -645,22 +791,26 @@
       "question_en": "In a binary classification problem with k-NN, why is choosing an odd k usually recommended?",
       "options_es": [
         "Porque los números impares se calculan más rápido",
-        "Para evitar empates en el voto mayoritario entre las dos clases",
+        "Para reducir el uso de memoria",
         "Porque k debe ser siempre primo",
-        "Para reducir el uso de memoria"
+        "Para evitar empates en el voto mayoritario entre las dos clases"
       ],
       "options_en": [
         "Because odd numbers compute faster",
-        "To avoid ties in the majority vote between the two classes",
+        "To reduce memory usage",
         "Because k must always be prime",
-        "To reduce memory usage"
+        "To avoid ties in the majority vote between the two classes"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Con dos clases, un k par (por ejemplo k=4) puede producir un empate (2 vecinos de cada clase) que obliga a una regla de desempate arbitraria. Un k impar garantiza una mayoría estricta y evita ese problema. (Con más de dos clases un k impar ya no basta para descartar empates, y se recurre a desempates por distancia.)",
       "explanation_en": "With two classes, an even k (e.g. k=4) can produce a tie (2 neighbors of each class), forcing an arbitrary tie-break rule. An odd k guarantees a strict majority and avoids that problem. (With more than two classes an odd k no longer suffices to rule out ties, and distance-weighted tie-breaks are used.)",
       "source": "scikit-learn User Guide — Nearest Neighbors Classification",
       "expected_time_ms": 28000,
-      "tags": ["knn", "k-value", "ties"]
+      "tags": [
+        "knn",
+        "k-value",
+        "ties"
+      ]
     },
     {
       "id": "q060405006",
@@ -678,7 +828,11 @@
       "explanation_en": "Minkowski distance unifies several metrics through the parameter p: with p=1 it is Manhattan distance (sum of absolute differences), with p=2 it is Euclidean (root of the sum of squares), and as p→∞ it tends to Chebyshev. In scikit-learn, `KNeighborsClassifier` uses Minkowski with p=2 (Euclidean) by default, and changing p is a way to adapt the notion of 'closeness'.",
       "source": "scikit-learn User Guide — Nearest Neighbors: distance metrics (Minkowski)",
       "expected_time_ms": 32000,
-      "tags": ["knn", "minkowski", "distance-metric"]
+      "tags": [
+        "knn",
+        "minkowski",
+        "distance-metric"
+      ]
     }
   ]
 }
