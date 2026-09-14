@@ -514,7 +514,7 @@ class TestRealCorpus:
         stats = await load_content(db_session)
 
         assert stats["skipped"] == 0, f"orphaned content items: {stats}"
-        assert stats["tracks"] == 7
+        assert stats["tracks"] == 8  # 7 de aprendizaje + track08 (AWS CLF-C02, tarea 10.2)
         assert stats["questions"] >= 1253
         assert stats["glossary"] >= 70
 
