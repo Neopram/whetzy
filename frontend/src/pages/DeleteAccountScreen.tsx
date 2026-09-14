@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
 type Phase = 'login' | 'confirm' | 'done' | 'error';
 
 export function DeleteAccountScreen() {
+  const { t } = useTranslation();
   const [phase, setPhase] = useState<Phase>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,6 +14,10 @@ export function DeleteAccountScreen() {
   const [token, setToken] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Localised so an English user is not asked to type a Spanish word to
+  // confirm an irreversible action. Label, placeholder and check all read it.
+  const confirmWord = t('deleteAccount.confirmWord');
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -25,13 +31,13 @@ export function DeleteAccountScreen() {
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.detail || 'Credenciales incorrectas');
+        throw new Error(err.detail || t('deleteAccount.badCredentials'));
       }
       const data = await res.json();
       setToken(data.access_token);
       setPhase('confirm');
     } catch (err: unknown) {
-      setErrorMsg(err instanceof Error ? err.message : 'Error de red');
+      setErrorMsg(err instanceof Error ? err.message : t('deleteAccount.networkError'));
     } finally {
       setLoading(false);
     }
@@ -39,8 +45,8 @@ export function DeleteAccountScreen() {
 
   async function handleDelete(e: React.FormEvent) {
     e.preventDefault();
-    if (confirm !== 'CONFIRMAR') {
-      setErrorMsg('Escribe CONFIRMAR exactamente para continuar.');
+    if (confirm !== confirmWord) {
+      setErrorMsg(t('deleteAccount.confirmMismatch', { word: confirmWord }));
       return;
     }
     setLoading(true);
@@ -50,10 +56,10 @@ export function DeleteAccountScreen() {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error('Error al eliminar la cuenta');
+      if (!res.ok) throw new Error(t('deleteAccount.deleteFailed'));
       setPhase('done');
     } catch (err: unknown) {
-      setErrorMsg(err instanceof Error ? err.message : 'Error de red');
+      setErrorMsg(err instanceof Error ? err.message : t('deleteAccount.networkError'));
       setPhase('error');
     } finally {
       setLoading(false);
@@ -63,23 +69,23 @@ export function DeleteAccountScreen() {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <h1 style={styles.title}>Eliminar cuenta</h1>
+        <h1 style={styles.title}>{t('deleteAccount.title')}</h1>
 
         {phase === 'login' && (
           <form onSubmit={handleLogin} style={styles.form}>
             <p style={styles.desc}>
-              Inicia sesión para continuar con la eliminación de tu cuenta y todos tus datos.
+              {t('deleteAccount.loginDesc')}
             </p>
-            <label style={styles.label}>Email</label>
+            <label style={styles.label}>{t('deleteAccount.email')}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               style={styles.input}
-              placeholder="tu@email.com"
+              placeholder={t('deleteAccount.emailPlaceholder')}
             />
-            <label style={styles.label}>Contraseña</label>
+            <label style={styles.label}>{t('deleteAccount.password')}</label>
             <input
               type="password"
               value={password}
@@ -90,7 +96,7 @@ export function DeleteAccountScreen() {
             />
             {errorMsg && <p style={styles.error}>{errorMsg}</p>}
             <button type="submit" disabled={loading} style={styles.btnPrimary}>
-              {loading ? 'Verificando...' : 'Continuar'}
+              {loading ? t('deleteAccount.verifying') : t('deleteAccount.continue')}
             </button>
           </form>
         )}
@@ -98,30 +104,30 @@ export function DeleteAccountScreen() {
         {phase === 'confirm' && (
           <form onSubmit={handleDelete} style={styles.form}>
             <div style={styles.warning}>
-              <strong>Esto eliminará permanentemente:</strong>
+              <strong>{t('deleteAccount.willDelete')}</strong>
               <ul style={{ marginTop: 8, paddingLeft: 20 }}>
-                <li>Tu cuenta y datos de perfil</li>
-                <li>Tu historial de respuestas y progreso</li>
-                <li>Tus badges, ligas y rachas</li>
-                <li>Todas tus estadísticas de aprendizaje</li>
+                <li>{t('deleteAccount.d1')}</li>
+                <li>{t('deleteAccount.d2')}</li>
+                <li>{t('deleteAccount.d3')}</li>
+                <li>{t('deleteAccount.d4')}</li>
               </ul>
-              <p style={{ marginTop: 8 }}>La eliminación es permanente a los 30 días (RGPD).</p>
+              <p style={{ marginTop: 8 }}>{t('deleteAccount.gdprNote')}</p>
             </div>
-            <label style={styles.label}>Escribe CONFIRMAR para continuar</label>
+            <label style={styles.label}>{t('deleteAccount.confirmLabel', { word: confirmWord })}</label>
             <input
               type="text"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               required
               style={styles.input}
-              placeholder="CONFIRMAR"
+              placeholder={confirmWord}
             />
             {errorMsg && <p style={styles.error}>{errorMsg}</p>}
             <button type="submit" disabled={loading} style={styles.btnDanger}>
-              {loading ? 'Procesando...' : 'Eliminar mi cuenta y datos'}
+              {loading ? t('deleteAccount.processing') : t('deleteAccount.deleteCta')}
             </button>
             <button type="button" onClick={() => setPhase('login')} style={styles.btnSecondary}>
-              Cancelar
+              {t('deleteAccount.cancel')}
             </button>
           </form>
         )}
@@ -129,20 +135,19 @@ export function DeleteAccountScreen() {
         {phase === 'done' && (
           <div style={styles.form}>
             <p style={{ color: '#2ecc71', fontWeight: 700, fontSize: 16 }}>
-              Solicitud recibida.
+              {t('deleteAccount.doneTitle')}
             </p>
             <p style={styles.desc}>
-              Tu cuenta ha sido desactivada y será eliminada permanentemente en 30 días.
-              Si cambias de opinión, contacta con soporte antes de ese plazo.
+              {t('deleteAccount.doneBody')}
             </p>
           </div>
         )}
 
         {phase === 'error' && (
           <div style={styles.form}>
-            <p style={styles.error}>{errorMsg || 'Error inesperado. Inténtalo de nuevo.'}</p>
+            <p style={styles.error}>{errorMsg || t('deleteAccount.unexpected')}</p>
             <button onClick={() => setPhase('login')} style={styles.btnPrimary}>
-              Volver a intentar
+              {t('deleteAccount.retry')}
             </button>
           </div>
         )}

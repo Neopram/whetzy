@@ -484,7 +484,7 @@ Reemplazado en todos los archivos de código (NO docs/ ni content/):
 ```
 ENVIRONMENT=production
 SECRET_KEY=<python -c "import secrets; print(secrets.token_hex(32))">
-GROQ_API_KEY=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
+GROQ_API_KEY=<la clave de console.groq.com — NUNCA escribirla en un fichero versionado>
 GROQ_MODEL=qwen/qwen3.8-27b
 BACKEND_CORS_ORIGINS=https://whetzy.com,https://www.whetzy.com,https://*.pages.dev
 CONTENT_DIR=/app/content

@@ -1,3 +1,4 @@
+import { Trans, useTranslation } from 'react-i18next';
 import styles from './LegalScreen.module.css';
 
 interface Props {
@@ -5,86 +6,89 @@ interface Props {
 }
 
 export function LegalScreen({ doc }: Props) {
+  const { t } = useTranslation();
   return (
     <div className={styles.page}>
-      <button className={styles.back} onClick={() => history.back()}>← Volver</button>
+      <button className={styles.back} onClick={() => history.back()}>← {t('legal.back')}</button>
       {doc === 'privacy' ? <PrivacyContent /> : <TermsContent />}
     </div>
   );
 }
 
 function PrivacyContent() {
+  const { t } = useTranslation();
   return (
     <article className={styles.article}>
-      <h1>Política de Privacidad</h1>
-      <p className={styles.updated}>Última actualización: septiembre 2026</p>
+      <h1>{t('legal.privacyTitle')}</h1>
+      <p className={styles.updated}>{t('legal.updated')}</p>
 
-      <h2>1. Información que recopilamos</h2>
+      <h2>{t('legal.privacyH1')}</h2>
       <ul>
-        <li>Dirección de correo, nombre y avatar (datos de cuenta)</li>
-        <li>Respuestas a preguntas, puntuaciones y tiempos de sesión</li>
-        <li>Nivel de dominio por habilidad y datos de FSRS/Elo/BKT</li>
-        <li>Rachas, XP e historial de ligas</li>
-        <li>Idioma y preferencias de dispositivo</li>
+        <li>{t('legal.privacyL1')}</li>
+        <li>{t('legal.privacyL2')}</li>
+        <li>{t('legal.privacyL3')}</li>
+        <li>{t('legal.privacyL4')}</li>
+        <li>{t('legal.privacyL5')}</li>
       </ul>
 
-      <h2>2. Cómo usamos tus datos</h2>
+      <h2>{t('legal.privacyH2')}</h2>
       <ul>
-        <li>Personalizar la dificultad de preguntas y el orden de repaso</li>
-        <li>Calcular rachas, XP y posiciones en ligas</li>
-        <li>Mejorar la calidad del contenido y detectar errores</li>
-        <li>Cumplir obligaciones legales</li>
+        <li>{t('legal.privacyL6')}</li>
+        <li>{t('legal.privacyL7')}</li>
+        <li>{t('legal.privacyL8')}</li>
+        <li>{t('legal.privacyL9')}</li>
       </ul>
 
-      <h2>3. Base legal (RGPD)</h2>
-      <p>Tratamos tus datos sobre la base de <strong>ejecución de contrato</strong> (prestación del servicio) y <strong>interés legítimo</strong> (mejora del producto y seguridad).</p>
+      <h2>{t('legal.privacyH3')}</h2>
+      <p><Trans i18nKey="legal.privacyP3" components={{ 1: <strong />, 3: <strong /> }} /></p>
 
-      <h2>4. Retención de datos</h2>
-      <p>Conservamos tus datos mientras tu cuenta esté activa. Si la eliminas, los datos se borran en <strong>30 días</strong> salvo obligación legal de retención.</p>
+      <h2>{t('legal.privacyH4')}</h2>
+      <p><Trans i18nKey="legal.privacyP4" components={{ 1: <strong /> }} /></p>
 
-      <h2>5. Tus derechos</h2>
+      <h2>{t('legal.privacyH5')}</h2>
       <ul>
-        <li>Acceso, rectificación y portabilidad (exporta tus datos desde Perfil)</li>
-        <li>Eliminación (solicita el borrado desde Perfil → Eliminar cuenta)</li>
-        <li>Oposición y limitación del tratamiento</li>
+        <li>{t('legal.privacyL10')}</li>
+        <li>{t('legal.privacyL11')}</li>
+        <li>{t('legal.privacyL12')}</li>
       </ul>
-      <p>Para ejercer tus derechos: <a href="mailto:privacy@whetzy.com">privacy@whetzy.com</a></p>
+      <p>{t('legal.privacyRights')} <a href="mailto:privacy@whetzy.com">privacy@whetzy.com</a></p>
 
-      <h2>6. Contacto</h2>
+      <h2>{t('legal.privacyH6')}</h2>
       <p>Whetzy · <a href="mailto:privacy@whetzy.com">privacy@whetzy.com</a></p>
     </article>
   );
 }
 
 function TermsContent() {
+  const { t } = useTranslation();
   return (
     <article className={styles.article}>
-      <h1>Términos de Servicio</h1>
-      <p className={styles.updated}>Última actualización: septiembre 2026</p>
+      <h1>{t('legal.termsTitle')}</h1>
+      <p className={styles.updated}>{t('legal.updated')}</p>
 
-      <h2>1. Aceptación</h2>
-      <p>Al usar Whetzy aceptas estos Términos. Si no los aceptas, no uses el servicio.</p>
+      <h2>{t('legal.termsH1')}</h2>
+      <p>{t('legal.termsP1')}</p>
 
-      <h2>2. Uso aceptable</h2>
+      <h2>{t('legal.termsH2')}</h2>
       <ul>
-        <li>No automatices ni extraigas el contenido sin autorización</li>
-        <li>No compartas credenciales de acceso</li>
-        <li>No intentes vulnerar la seguridad del servicio</li>
+        <li>{t('legal.termsL1')}</li>
+        <li>{t('legal.termsL2')}</li>
+        <li>{t('legal.termsL3')}</li>
       </ul>
 
-      <h2>3. Propiedad intelectual</h2>
-      <p>El contenido educativo, algoritmos y diseño son propiedad de Whetzy. El código fuente de la plataforma está publicado bajo licencia MIT.</p>
+      <h2>{t('legal.termsH3')}</h2>
+      <p>{t('legal.termsP3')}</p>
 
-      <h2>4. Limitación de responsabilidad</h2>
-      <p>El servicio se proporciona "tal cual". No garantizamos resultados de aprendizaje específicos ni disponibilidad ininterrumpida.</p>
+      <h2>{t('legal.termsH4')}</h2>
+      <p>{t('legal.termsP4')}</p>
 
-      <h2>5. Modificaciones</h2>
-      <p>Podemos modificar estos Términos notificándote con 15 días de antelación. El uso continuado implica aceptación.</p>
+      <h2>{t('legal.termsH5')}</h2>
+      <p>{t('legal.termsP5')}</p>
 
-      <h2>6. Ley aplicable</h2>
-      <p>Estos Términos se rigen por la ley española y los tribunales competentes de Madrid.</p>
+      <h2>{t('legal.termsH6')}</h2>
+      <p>{t('legal.termsP6')}</p>
 
-      <h2>7. Contacto</h2>
+      <h2>{t('legal.termsH7')}</h2>
       <p>Whetzy · <a href="mailto:legal@whetzy.com">legal@whetzy.com</a></p>
     </article>
   );
