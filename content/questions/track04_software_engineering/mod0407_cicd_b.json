@@ -1,0 +1,840 @@
+{
+  "questions": [
+    {
+      "id": "q040701010",
+      "skill_id": "sk040701",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En Continuous Delivery, ¿qué es el *deployment pipeline* (canalización de despliegue)?",
+      "question_en": "In Continuous Delivery, what is the *deployment pipeline*?",
+      "options_es": [
+        "La manifestación automatizada del proceso que lleva un cambio desde el control de versiones hasta el usuario, dividida en etapas sucesivas que van ganando confianza y por las que un mismo artefacto avanza o es rechazado",
+        "El conjunto de servidores físicos sobre los que corre la aplicación en producción",
+        "El script de despliegue final que copia los archivos al servidor",
+        "La rama de integración donde se acumulan los cambios hasta la fecha de release"
+      ],
+      "options_en": [
+        "The automated manifestation of the process that takes a change from version control to the user, split into successive stages of increasing confidence, through which one same artifact either advances or is rejected",
+        "The set of physical servers the application runs on in production",
+        "The final deployment script that copies files to the server",
+        "The integration branch where changes accumulate until release day"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El pipeline es el modelo central del libro: un camino único y automatizado a producción cuyas etapas se ordenan de más rápidas y baratas a más lentas y costosas, para que los fallos más probables se detecten primero. Confundirlo con el script final de despliegue (tercera opción) es lo más común y deja fuera lo esencial: que el pipeline es también el mecanismo que *rechaza* candidatos y da visibilidad del estado de cada cambio.",
+      "explanation_en": "The pipeline is the book's central model: a single automated path to production whose stages are ordered from fast and cheap to slow and expensive, so the most likely failures are caught first. Mistaking it for the final deployment script (third option) is the most common error and misses the essential part: the pipeline is also the mechanism that *rejects* candidates and gives visibility into the state of every change.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 5 (Anatomy of the Deployment Pipeline)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "ci-cd",
+        "pipeline",
+        "fundamentals"
+      ]
+    },
+    {
+      "id": "q040701011",
+      "skill_id": "sk040701",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "La Integración Continua es compatible con que cada desarrollador trabaje en su propia rama durante las tres semanas que dura una funcionalidad y la fusione a la principal sólo cuando esté completamente terminada.",
+      "question_en": "Continuous Integration is compatible with each developer working on their own branch for the three weeks a feature takes and merging into mainline only when it is completely finished.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso: eso es exactamente lo contrario de integrar continuamente. La palabra clave de CI es *integración*, no *automatización*; el compromiso es que cada persona lleve su trabajo a la línea principal al menos una vez al día. Con ramas de tres semanas, el conflicto de fusión crece de forma no lineal, nadie sabe si el conjunto funciona hasta el final, y el riesgo se concentra en el peor momento posible. La afirmación resulta tentadora porque cada rama puede tener su build verde: pero un build verde sobre código que nadie ha integrado no dice nada del sistema completo. La alternativa para no exponer trabajo a medias no son las ramas largas, sino los feature flags y la mejora en pasos pequeños.",
+      "explanation_en": "False: that is the exact opposite of integrating continuously. The key word in CI is *integration*, not *automation*; the commitment is that every person brings their work to mainline at least once a day. With three-week branches, merge conflict grows non-linearly, nobody knows whether the whole thing works until the end, and risk piles up at the worst possible moment. The claim is tempting because each branch can have a green build: but a green build on code nobody has integrated says nothing about the complete system. The alternative to exposing half-done work is not long branches but feature flags and small incremental steps.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 3 (Continuous Integration) / ch. 14 (branching)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "ci-cd",
+        "continuous-integration",
+        "branching"
+      ]
+    },
+    {
+      "id": "q040701012",
+      "skill_id": "sk040701",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué Continuous Delivery insiste en que cualquier desarrollador pueda reproducir el build completo en su máquina con un solo comando?",
+      "question_en": "Why does Continuous Delivery insist that any developer be able to reproduce the full build on their own machine with a single command?",
+      "options_es": [
+        "Porque así se puede prescindir del servidor de CI y ahorrar su coste",
+        "Porque si el build sólo existe como una serie de pasos configurados a mano dentro del servidor de CI, ese proceso no está versionado, no se puede depurar localmente ni reconstruir si se pierde, y la diferencia entre 'en mi máquina funciona' y el pipeline deja de ser investigable",
+        "Porque la política de la mayoría de las empresas exige que los tests se ejecuten fuera de la nube",
+        "Porque ejecutar el build localmente es siempre más rápido que en el servidor de CI"
+      ],
+      "options_en": [
+        "So you can drop the CI server altogether and save its cost",
+        "Because if the build exists only as a series of hand-configured steps inside the CI server, that process is unversioned, cannot be debugged locally or rebuilt if lost, and the gap between 'works on my machine' and the pipeline stops being investigable",
+        "Because most company policies require tests to run outside the cloud",
+        "Because running the build locally is always faster than on the CI server"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El principio es que el script de build viva en el control de versiones junto al código, y que el servidor de CI se limite a invocarlo. Lo contrario —lógica de build encerrada en la interfaz del servidor— crea un componente crítico sin historial ni revisión, imposible de reproducir. La primera opción invierte el argumento: el objetivo no es eliminar el servidor de CI sino que lo que ejecuta sea el mismo proceso que ejecuta el desarrollador, para que un fallo del pipeline se pueda reproducir en un minuto en lugar de a base de commits de prueba.",
+      "explanation_en": "The principle is that the build script lives in version control alongside the code, and the CI server merely invokes it. The opposite — build logic locked inside the server's UI — creates a critical component with no history and no review, impossible to reproduce. The first option inverts the argument: the goal is not to eliminate the CI server but to make what it runs the same process the developer runs, so a pipeline failure can be reproduced in a minute instead of through a series of trial commits.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 6 (Build and Deployment Scripting)",
+      "expected_time_ms": 40000,
+      "tags": [
+        "ci-cd",
+        "build",
+        "reproducibility"
+      ]
+    },
+    {
+      "id": "q040701013",
+      "skill_id": "sk040701",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Esta es la etapa de commit de un pipeline. `ruff` encuentra un error y sale con código 1. ¿Qué ocurre?\n```bash\n#!/usr/bin/env bash\nset -e\nruff check .\npytest -q\necho \"commit stage OK\"\n```",
+      "question_en": "This is a pipeline's commit stage. `ruff` finds an error and exits with code 1. What happens?\n```bash\n#!/usr/bin/env bash\nset -e\nruff check .\npytest -q\necho \"commit stage OK\"\n```",
+      "options_es": [
+        "Se ejecuta todo y el script imprime `commit stage OK`, porque los linters sólo emiten avisos",
+        "El script continúa, ejecuta `pytest` y sólo falla si además fallan los tests",
+        "El script aborta en `ruff` por `set -e`: `pytest` no llega a ejecutarse, no se imprime nada más y el script termina con código distinto de cero, que es lo que hace fallar el job del pipeline",
+        "El script aborta pero termina con código 0, así que el pipeline queda en verde con un aviso"
+      ],
+      "options_en": [
+        "Everything runs and the script prints `commit stage OK`, because linters only emit warnings",
+        "The script continues, runs `pytest` and only fails if the tests fail too",
+        "The script aborts at `ruff` because of `set -e`: `pytest` never runs, nothing else is printed, and the script exits with a non-zero code, which is what makes the pipeline job fail",
+        "The script aborts but exits with code 0, so the pipeline stays green with a warning"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`set -e` hace que el script termine en cuanto un comando devuelve un código distinto de cero, y ese código se propaga como código de salida del script. Ése es el contrato que usa cualquier runner de CI para decidir si la etapa pasó. Sin `set -e` (segunda y cuarta opciones) el script seguiría hasta el final y saldría con el código del ÚLTIMO comando, es decir, el `echo`: el pipeline quedaría en verde con el linter roto. Es el fallo silencioso más frecuente al escribir etapas a mano, y la razón de que se recomiende `set -euo pipefail`.",
+      "explanation_en": "`set -e` makes the script exit as soon as a command returns a non-zero code, and that code propagates as the script's exit code. That is the contract every CI runner uses to decide whether the stage passed. Without `set -e` (second and fourth options) the script would run to the end and exit with the LAST command's code, that is, the `echo`: the pipeline would go green with a broken linter. It is the most frequent silent failure when writing stages by hand, and the reason `set -euo pipefail` is recommended.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 7 (The Commit Stage)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "ci-cd",
+        "commit-stage",
+        "shell",
+        "exit-codes"
+      ]
+    },
+    {
+      "id": "q040701014",
+      "skill_id": "sk040701",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "El modelo de ramificación en el que todo el equipo integra al menos una vez al día en una única línea principal, evitando ramas de larga duración, se llama desarrollo basado en ______ (una palabra en inglés, la que da nombre a 'trunk-based development').",
+      "question_en": "The branching model in which the whole team integrates at least daily into a single mainline, avoiding long-lived branches, is called ______-based development. (one word)",
+      "correct_answer_es": "trunk",
+      "correct_answer_en": "trunk",
+      "explanation_es": "El *trunk-based development* es la práctica de ramificación que hace posible la Integración Continua: una sola línea compartida, commits pequeños y ramas que viven horas, no semanas. No significa renunciar a la revisión de código ni desplegar lo que no está listo; significa separar 'integrar' de 'publicar', y para eso se usan feature flags y cambios en pasos pequeños. El malentendido habitual es creer que CI y las ramas de funcionalidad de larga duración pueden convivir sólo porque cada rama tenga su propio build verde.",
+      "explanation_en": "*Trunk-based development* is the branching practice that makes Continuous Integration possible: one shared line, small commits, and branches that live hours rather than weeks. It does not mean giving up code review or shipping what is not ready; it means separating 'integrate' from 'release', and feature flags plus small incremental changes are how that is done. The usual misunderstanding is believing CI and long-lived feature branches can coexist just because each branch has its own green build.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 14 (Advanced Version Control)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "ci-cd",
+        "trunk-based",
+        "branching"
+      ]
+    },
+    {
+      "id": "q040701015",
+      "skill_id": "sk040701",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué propone el principio de *shift-left* en calidad y seguridad?",
+      "question_en": "What does the *shift-left* principle propose for quality and security?",
+      "options_es": [
+        "Reasignar los testers a las fases finales del proyecto para que revisen el producto terminado",
+        "Ejecutar las pruebas en paralelo repartiéndolas entre varias máquinas para acortar el pipeline",
+        "Priorizar siempre las nuevas funcionalidades sobre la corrección de defectos",
+        "Mover las actividades de verificación (tests, análisis estático, revisión de dependencias, modelado de amenazas) lo más cerca posible del momento en que se escribe el código, porque el coste de corregir un defecto crece con el tiempo que tarda en descubrirse"
+      ],
+      "options_en": [
+        "Reassigning testers to the final phases of the project so they review the finished product",
+        "Running tests in parallel across several machines to shorten the pipeline",
+        "Always prioritising new features over defect fixing",
+        "Moving verification activities (tests, static analysis, dependency review, threat modelling) as close as possible to the moment the code is written, because the cost of fixing a defect grows with how long it takes to discover it"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Desplazar a la izquierda significa adelantar el descubrimiento del defecto en la línea temporal del cambio: un fallo que el desarrollador ve en su editor cuesta minutos; el mismo fallo encontrado en una auditoría de seguridad seis meses después cuesta un rediseño. La segunda opción describe la paralelización del pipeline, que acorta el reloj pero no cambia *dónde* se detecta el problema, y por eso es el distractor más fino: acelerar el feedback y adelantar la verificación son dos ideas complementarias, no la misma.",
+      "explanation_en": "Shifting left means moving defect discovery earlier along the change's timeline: a bug the developer sees in the editor costs minutes; the same bug found in a security audit six months later costs a redesign. The second option describes pipeline parallelisation, which shortens the clock but does not change *where* the problem is detected, and that makes it the subtlest distractor: speeding up feedback and moving verification earlier are complementary ideas, not the same one.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 1 (Introduction) / ch. 9 (Testing Nonfunctional Requirements)",
+      "expected_time_ms": 45000,
+      "tags": [
+        "ci-cd",
+        "shift-left",
+        "quality"
+      ]
+    },
+    {
+      "id": "q040701016",
+      "skill_id": "sk040701",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Un equipo que ha instalado un servidor de CI y tiene workflows que ejecutan los tests en cada push está, por definición, practicando Integración Continua.",
+      "question_en": "A team that has installed a CI server and has workflows running the tests on every push is, by definition, practising Continuous Integration.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. La herramienta no es la práctica. CI es un compromiso de comportamiento del equipo: integrar en la línea principal al menos a diario, mantener el build verde como prioridad por encima de cualquier otra tarea y arreglarlo de inmediato cuando se rompe. Un equipo puede tener el mejor servidor del mundo ejecutando tests sobre veinte ramas que nadie fusiona en semanas, y con el build de main roto desde el martes: eso no es CI. La afirmación convence porque el servidor es la parte visible y medible, mientras que la disciplina de integrar no aparece en ningún panel.",
+      "explanation_en": "False. The tool is not the practice. CI is a behavioural commitment by the team: integrate into mainline at least daily, keep the build green as the highest priority over any other task, and fix it immediately when it breaks. A team can have the finest server in the world running tests across twenty branches nobody has merged in weeks, with main's build broken since Tuesday: that is not CI. The claim is convincing because the server is the visible, measurable part, while the discipline of integrating shows up on no dashboard.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 3 (Continuous Integration: prerequisites and practices)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "ci-cd",
+        "continuous-integration",
+        "practice"
+      ]
+    },
+    {
+      "id": "q040702010",
+      "skill_id": "sk040702",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "En un paso (`step`) de GitHub Actions, ¿qué diferencia hay entre `run:` y `uses:`?",
+      "question_en": "In a GitHub Actions `step`, what is the difference between `run:` and `uses:`?",
+      "options_es": [
+        "`run:` ejecuta un comando de shell en el runner; `uses:` invoca una acción reutilizable publicada (propia, de GitHub o de terceros) con sus parámetros en `with:`",
+        "`run:` es para jobs de Linux y `uses:` para jobs de Windows",
+        "`uses:` ejecuta el comando y `run:` sólo lo registra en el log sin ejecutarlo",
+        "Son alias del mismo campo y se pueden intercambiar libremente"
+      ],
+      "options_en": [
+        "`run:` executes a shell command on the runner; `uses:` invokes a published reusable action (your own, GitHub's or a third party's) with its inputs in `with:`",
+        "`run:` is for Linux jobs and `uses:` for Windows jobs",
+        "`uses:` executes the command and `run:` merely logs it without running it",
+        "They are aliases of the same field and can be swapped freely"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un paso hace una de dos cosas: ejecuta un comando o usa una acción, y no puede hacer las dos a la vez en el mismo paso. La confusión con el sistema operativo (segunda opción) viene de que `run:` sí cambia de intérprete según el runner (bash en Linux/macOS, PowerShell en Windows) y a veces hace falta fijarlo con `shell:`, pero eso es otro asunto. Entender la diferencia importa porque cada `uses:` de terceros es código ajeno que corre con acceso a tu repositorio.",
+      "explanation_en": "A step does one of two things: it runs a command or it uses an action, and it cannot do both in the same step. The OS confusion (second option) comes from the fact that `run:` does change interpreter depending on the runner (bash on Linux/macOS, PowerShell on Windows) and sometimes needs pinning with `shell:`, but that is a separate matter. Understanding the difference matters because every third-party `uses:` is someone else's code running with access to your repository.",
+      "source": "GitHub Actions docs — Workflow syntax (jobs.<job_id>.steps)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "github-actions",
+        "workflow",
+        "steps"
+      ]
+    },
+    {
+      "id": "q040702011",
+      "skill_id": "sk040702",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el último paso de este job?\n```yaml\nsteps:\n  - run: export SALUDO=hola\n  - run: echo \"[$SALUDO]\"\n  - run: echo \"ADIOS=chao\" >> $GITHUB_ENV\n  - run: echo \"[$ADIOS]\"\n```",
+      "question_en": "What does the last step of this job print?\n```yaml\nsteps:\n  - run: export SALUDO=hola\n  - run: echo \"[$SALUDO]\"\n  - run: echo \"ADIOS=chao\" >> $GITHUB_ENV\n  - run: echo \"[$ADIOS]\"\n```",
+      "options_es": [
+        "`[hola]` en el segundo paso y `[chao]` en el cuarto: ambas formas son equivalentes",
+        "`[]` en el segundo paso y `[chao]` en el cuarto: cada `run` es un shell distinto, así que un `export` muere con su paso, mientras que escribir en el archivo `$GITHUB_ENV` sí propaga la variable a los pasos siguientes",
+        "`[hola]` en el segundo y `[]` en el cuarto, porque `$GITHUB_ENV` sólo funciona entre jobs distintos",
+        "El workflow falla: no se pueden usar variables de shell dentro de `run:`"
+      ],
+      "options_en": [
+        "`[hola]` in the second step and `[chao]` in the fourth: both forms are equivalent",
+        "`[]` in the second step and `[chao]` in the fourth: each `run` is a separate shell, so an `export` dies with its step, while writing to the `$GITHUB_ENV` file does propagate the variable to later steps",
+        "`[hola]` in the second and `[]` in the fourth, because `$GITHUB_ENV` only works across different jobs",
+        "The workflow fails: you cannot use shell variables inside `run:`"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cada `run:` arranca un proceso de shell nuevo; lo que se exporta en uno no existe en el siguiente, igual que ocurre entre dos `RUN` de un Dockerfile. GitHub Actions ofrece el archivo de entorno `$GITHUB_ENV` precisamente para cubrir ese hueco: lo que escribes allí se carga como variable de entorno en los pasos posteriores *del mismo job*. Para cruzar de un job a otro hace falta otra cosa (`outputs` o artefactos), que es lo que confunde la tercera opción. Creer que `export` persiste es la causa habitual de valores vacíos en mitad de un workflow.",
+      "explanation_en": "Each `run:` starts a fresh shell process; what one exports does not exist in the next, exactly as between two `RUN`s in a Dockerfile. GitHub Actions provides the `$GITHUB_ENV` environment file precisely to bridge that gap: what you write there is loaded as an environment variable in later steps *of the same job*. Crossing from one job to another needs something else (`outputs` or artifacts), which is what the third option confuses. Believing `export` persists is the usual cause of empty values halfway through a workflow.",
+      "source": "GitHub Actions docs — Workflow commands (setting an environment variable)",
+      "expected_time_ms": 45000,
+      "tags": [
+        "github-actions",
+        "environment",
+        "steps"
+      ]
+    },
+    {
+      "id": "q040702012",
+      "skill_id": "sk040702",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Para qué sirve `strategy: matrix:` en un job de GitHub Actions?",
+      "question_en": "What is `strategy: matrix:` for in a GitHub Actions job?",
+      "options_es": [
+        "Para definir el orden en que se ejecutan los pasos dentro del job",
+        "Para repartir los tests de una única suite entre varias máquinas y que termine antes",
+        "Para generar automáticamente una copia del job por cada combinación de las variables declaradas (por ejemplo, tres versiones de Python por dos sistemas operativos = seis jobs en paralelo) sin duplicar el YAML",
+        "Para reintentar el job automáticamente cuando falla, hasta el número de veces indicado"
+      ],
+      "options_en": [
+        "To define the order in which the steps inside the job run",
+        "To split a single test suite across several machines so it finishes sooner",
+        "To automatically generate one copy of the job per combination of the declared variables (for example, three Python versions times two operating systems = six parallel jobs) without duplicating the YAML",
+        "To automatically retry the job when it fails, up to the given number of times"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La matriz multiplica configuraciones: el mismo job se ejecuta entero en cada combinación, que es lo que permite probar una librería contra varias versiones del lenguaje. El distractor más fino es el del reparto de tests: eso es *sharding*, y aunque se implemente con una matriz de índices, no es lo que la matriz significa por defecto (con una matriz normal cada job ejecuta la suite COMPLETA, no un trozo). Conviene conocer también `fail-fast`, que por defecto cancela el resto de combinaciones en cuanto una falla.",
+      "explanation_en": "A matrix multiplies configurations: the same job runs in full for each combination, which is how you test a library against several language versions. The subtlest distractor is test splitting: that is *sharding*, and although it can be implemented with a matrix of shard indices, it is not what a matrix means by default (with a plain matrix each job runs the COMPLETE suite, not a slice). Worth knowing too is `fail-fast`, which by default cancels the remaining combinations as soon as one fails.",
+      "source": "GitHub Actions docs — Using a matrix for your jobs",
+      "expected_time_ms": 30000,
+      "tags": [
+        "github-actions",
+        "matrix",
+        "parallelism"
+      ]
+    },
+    {
+      "id": "q040702013",
+      "skill_id": "sk040702",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En un workflow disparado por el evento `pull_request` desde un fork de un colaborador externo, los secretos del repositorio están disponibles igual que en un push a una rama interna.",
+      "question_en": "In a workflow triggered by the `pull_request` event from an external contributor's fork, repository secrets are available just as they are on a push to an internal branch.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso, y es una protección deliberada. Un pull request desde un fork ejecuta código que el autor controla; si tuviera acceso a los secretos, bastaría con abrir un PR que imprima el token de despliegue para robarlo. Por eso GitHub no expone secretos a los workflows de `pull_request` desde forks y limita el `GITHUB_TOKEN` a permisos de lectura. La afirmación es tentadora porque el workflow se ve ejecutar con normalidad y el fallo aparece más tarde como un valor vacío. El corolario práctico: nunca uses `pull_request_target` para 'arreglar' esta limitación sin entenderla, porque ese evento sí da acceso a los secretos y ha sido la vía de ataques reales.",
+      "explanation_en": "False, and it is a deliberate protection. A pull request from a fork runs code the author controls; if it had access to secrets, opening a PR that prints the deployment token would be enough to steal it. That is why GitHub does not expose secrets to `pull_request` workflows from forks and limits the `GITHUB_TOKEN` to read permissions. The claim is tempting because the workflow appears to run normally and the failure shows up later as an empty value. The practical corollary: never reach for `pull_request_target` to 'fix' this limitation without understanding it, because that event does grant access to secrets and has been the route of real attacks.",
+      "source": "GitHub Actions docs — Using secrets / Security hardening for GitHub Actions",
+      "expected_time_ms": 40000,
+      "tags": [
+        "github-actions",
+        "secrets",
+        "security",
+        "forks"
+      ]
+    },
+    {
+      "id": "q040702014",
+      "skill_id": "sk040702",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "En un workflow de GitHub Actions, la clave que hace que un job espere a que otro termine con éxito antes de arrancar es ______. (una palabra)",
+      "question_en": "In a GitHub Actions workflow, the key that makes one job wait for another to finish successfully before starting is ______. (one word)",
+      "correct_answer_es": "needs",
+      "correct_answer_en": "needs",
+      "explanation_es": "Por defecto los jobs de un workflow corren en paralelo; `needs: [build]` crea la dependencia y, de paso, permite leer los `outputs` del job del que dependes. Un detalle que sorprende: si el job del que dependes falla, el dependiente no se ejecuta y aparece como *skipped*, no como *failed*, lo cual es correcto pero engaña al leer el resumen. Para ejecutarlo de todos modos hace falta una condición explícita como `if: always()`.",
+      "explanation_en": "By default the jobs in a workflow run in parallel; `needs: [build]` creates the dependency and, along the way, lets you read the `outputs` of the job you depend on. One surprising detail: if the job you depend on fails, the dependent one does not run and shows as *skipped*, not *failed*, which is correct but misleading when reading the summary. Running it anyway requires an explicit condition such as `if: always()`.",
+      "source": "GitHub Actions docs — Workflow syntax (jobs.<job_id>.needs)",
+      "expected_time_ms": 25000,
+      "tags": [
+        "github-actions",
+        "jobs",
+        "dependencies"
+      ]
+    },
+    {
+      "id": "q040702015",
+      "skill_id": "sk040702",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la diferencia entre `actions/cache` y `actions/upload-artifact`, y cuándo se usa cada uno?",
+      "question_en": "What is the difference between `actions/cache` and `actions/upload-artifact`, and when do you use each?",
+      "options_es": [
+        "Son lo mismo con nombres distintos; `cache` es la versión moderna",
+        "`cache` guarda archivos entre ejecuciones para no volver a descargar o compilar dependencias, y perderlo sólo cuesta tiempo; `upload-artifact` conserva resultados del build (binarios, informes de cobertura) para descargarlos o pasarlos a otro job, y perderlos rompe el pipeline",
+        "`cache` sirve para pasar archivos entre jobs del mismo workflow y `upload-artifact` para pasarlos entre workflows distintos",
+        "`upload-artifact` acelera el build y `cache` sólo sirve para depurar"
+      ],
+      "options_en": [
+        "They are the same thing under different names; `cache` is the modern version",
+        "`cache` stores files across runs so you do not re-download or recompile dependencies, and losing it only costs time; `upload-artifact` preserves build outputs (binaries, coverage reports) for download or for handing to another job, and losing them breaks the pipeline",
+        "`cache` is for passing files between jobs of the same workflow and `upload-artifact` for passing them between different workflows",
+        "`upload-artifact` speeds up the build and `cache` is only for debugging"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La distinción clave es que la caché es *prescindible*: si falla el acierto, el paso simplemente tarda más, y por eso nunca debe guardar nada que el build no pueda regenerar. El artefacto es el producto del build, el mismo binario que Continuous Delivery exige construir una vez y promover por todas las etapas. La tercera opción invierte los papeles y es la confusión más habitual: para pasar archivos entre jobs del mismo workflow lo correcto son los artefactos, no la caché, cuya clave podría no acertar.",
+      "explanation_en": "The key distinction is that the cache is *dispensable*: on a miss the step simply takes longer, which is why it must never hold anything the build cannot regenerate. The artifact is the build's product, the same binary Continuous Delivery requires you to build once and promote through every stage. The third option swaps the roles and is the most common confusion: to pass files between jobs of the same workflow the right tool is artifacts, not a cache whose key might miss.",
+      "source": "GitHub Actions docs — Caching dependencies / Storing workflow data as artifacts",
+      "expected_time_ms": 45000,
+      "tags": [
+        "github-actions",
+        "cache",
+        "artifacts"
+      ]
+    },
+    {
+      "id": "q040702016",
+      "skill_id": "sk040702",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "El primer paso falla. ¿Qué se imprime en el log del job?\n```yaml\nsteps:\n  - run: exit 1\n  - run: echo \"limpieza\"\n  - if: always()\n    run: echo \"siempre\"\n```",
+      "question_en": "The first step fails. What is printed in the job log?\n```yaml\nsteps:\n  - run: exit 1\n  - run: echo \"cleanup\"\n  - if: always()\n    run: echo \"always\"\n```",
+      "options_es": [
+        "Sólo `siempre`: tras un paso fallido los siguientes se omiten por defecto, y únicamente se ejecuta el que lleva una condición explícita `if: always()`",
+        "`limpieza` y `siempre`: un paso fallido no detiene el job",
+        "Nada: en cuanto un paso falla el runner cancela el job entero sin evaluar más condiciones",
+        "`limpieza` solamente, porque `always()` sólo aplica a jobs, no a pasos"
+      ],
+      "options_en": [
+        "Only `always`: after a failed step the following ones are skipped by default, and only the one with an explicit `if: always()` condition runs",
+        "`cleanup` and `always`: a failed step does not stop the job",
+        "Nothing: as soon as a step fails the runner cancels the whole job without evaluating further conditions",
+        "`cleanup` only, because `always()` applies to jobs, not to steps"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada paso lleva implícita la condición `success()`, así que el estado de fallo del job hace que se omitan los posteriores; el job termina en rojo de todas formas. `always()` es la vía para pasos que deben correr pase lo que pase: publicar informes de test, subir logs, liberar un entorno reservado. La segunda opción describe lo que haría `continue-on-error: true`, que además marca el paso como no bloqueante y es justamente lo que NO se quiere en una etapa de calidad.",
+      "explanation_en": "Every step carries an implicit `success()` condition, so the job's failed state makes later ones skip; the job ends red either way. `always()` is the route for steps that must run no matter what: publishing test reports, uploading logs, releasing a reserved environment. The second option describes what `continue-on-error: true` would do, which additionally marks the step as non-blocking and is exactly what you do NOT want in a quality stage.",
+      "source": "GitHub Actions docs — Workflow syntax (jobs.<job_id>.steps[*].if) / Expressions",
+      "expected_time_ms": 40000,
+      "tags": [
+        "github-actions",
+        "conditions",
+        "steps"
+      ]
+    },
+    {
+      "id": "q040702017",
+      "skill_id": "sk040702",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "La guía de endurecimiento de seguridad de GitHub Actions recomienda fijar las acciones de terceros a un hash de commit completo (`uses: org/action@a1b2c3...`) en lugar de a una etiqueta como `@v3`. ¿Por qué?",
+      "question_en": "The GitHub Actions security hardening guide recommends pinning third-party actions to a full commit SHA (`uses: org/action@a1b2c3...`) instead of a tag such as `@v3`. Why?",
+      "options_es": [
+        "Porque las etiquetas hacen que el workflow tarde más en resolverse y el hash se descarga antes",
+        "Porque GitHub cobra por cada resolución de etiqueta y los hashes son gratuitos",
+        "Porque las acciones fijadas por hash pueden acceder a secretos y las fijadas por etiqueta no",
+        "Porque una etiqueta de git es un puntero móvil: quien controle ese repositorio puede reapuntar `v3` a código nuevo, y ese código se ejecutaría en tu runner con acceso a tu repositorio y a tus secretos. Un hash de commit es inmutable"
+      ],
+      "options_en": [
+        "Because tags make the workflow slower to resolve and the SHA downloads faster",
+        "Because GitHub charges per tag resolution and SHAs are free",
+        "Because actions pinned by SHA can access secrets and tag-pinned ones cannot",
+        "Because a git tag is a movable pointer: whoever controls that repository can repoint `v3` at new code, and that code would run on your runner with access to your repository and your secrets. A commit SHA is immutable"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Es el mismo razonamiento que desaconseja `FROM imagen:latest` en un Dockerfile, elevado a problema de cadena de suministro: un `uses:` de terceros es código ajeno que se ejecuta dentro de tu pipeline, y una etiqueta no garantiza qué código es. El ataque no es hipotético: basta con que la cuenta del mantenedor se vea comprometida para que todos los repositorios que apuntan a `@v3` ejecuten la versión maliciosa en su siguiente build. La tercera opción es falsa: el acceso a secretos depende del evento y de los `permissions`, no de cómo fijes la versión.",
+      "explanation_en": "It is the same reasoning that discourages `FROM image:latest` in a Dockerfile, raised to a supply-chain problem: a third-party `uses:` is someone else's code executing inside your pipeline, and a tag is no guarantee of which code that is. The attack is not hypothetical: a compromised maintainer account is enough for every repository pointing at `@v3` to run the malicious version on its next build. The third option is false: access to secrets depends on the event and on `permissions`, not on how you pin the version.",
+      "source": "GitHub Actions docs — Security hardening for GitHub Actions (using third-party actions)",
+      "expected_time_ms": 50000,
+      "tags": [
+        "github-actions",
+        "security",
+        "supply-chain",
+        "pinning"
+      ]
+    },
+    {
+      "id": "q040703010",
+      "skill_id": "sk040703",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Se dice que los feature flags 'desacoplan el despliegue de la publicación'. ¿Qué significa exactamente?",
+      "question_en": "Feature flags are said to 'decouple deployment from release'. What exactly does that mean?",
+      "options_es": [
+        "Que el código de la funcionalidad puede estar ya instalado en producción (desplegado) pero apagado para los usuarios, de modo que activarlo pasa a ser una decisión de negocio en tiempo de ejecución, independiente del pipeline técnico",
+        "Que el despliegue se hace en horario nocturno y la publicación se anuncia por la mañana",
+        "Que cada funcionalidad se despliega en su propio servidor para poder publicarla por separado",
+        "Que se mantiene una rama por funcionalidad y sólo se fusiona la que se quiere publicar"
+      ],
+      "options_en": [
+        "That the feature's code can already be installed in production (deployed) but switched off for users, so turning it on becomes a runtime business decision, independent of the technical pipeline",
+        "That the deployment happens overnight and the release is announced in the morning",
+        "That each feature is deployed to its own server so it can be released separately",
+        "That you keep one branch per feature and only merge the one you want to release"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Desplegar es poner bits en un servidor; publicar es exponer una capacidad a los usuarios. Separarlos permite desplegar muchas veces al día con cambios pequeños y de bajo riesgo, y además apagar una funcionalidad problemática en segundos sin revertir el despliegue. La última opción es justo la alternativa que los flags vienen a sustituir: las ramas por funcionalidad retrasan la integración y concentran el riesgo, mientras que el flag permite integrar a diario código todavía incompleto. El coste que hay que reconocer es que cada flag es una bifurcación en el código que multiplica las combinaciones a probar y hay que retirarla cuando cumple su función.",
+      "explanation_en": "Deploying is putting bits on a server; releasing is exposing a capability to users. Separating them lets you deploy many times a day with small, low-risk changes, and also switch off a misbehaving feature in seconds without rolling back the deployment. The last option is precisely the alternative flags are meant to replace: feature branches delay integration and concentrate risk, whereas a flag lets you integrate still-incomplete code daily. The cost to acknowledge is that every flag is a branch in the code that multiplies the combinations to test, and it must be retired once it has done its job.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 10 (Deploying and Releasing Applications)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "ci-cd",
+        "feature-flags",
+        "release"
+      ]
+    },
+    {
+      "id": "q040703011",
+      "skill_id": "sk040703",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un rollback siempre es seguro: basta con volver a desplegar el artefacto de la versión anterior, sin importar qué cambios de esquema de base de datos se hayan aplicado ya.",
+      "question_en": "A rollback is always safe: just redeploy the previous version's artifact, regardless of which database schema changes have already been applied.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. El código es reversible; los datos no. Si la migración ya renombró o eliminó una columna, la versión anterior del código la sigue buscando y falla al arrancar; y si la nueva versión escribió datos en un formato que la anterior no entiende, revertir el binario deja registros inservibles. Ésa es la razón de existir de las migraciones en expansión y contracción: hacer que el esquema sea compatible con la versión anterior y con la nueva a la vez, y retrasar la eliminación de lo viejo hasta que revertir ya no sea una opción realista. La afirmación es tentadora porque el rollback del artefacto es efectivamente instantáneo; el problema vive en el estado que ese artefacto dejó atrás.",
+      "explanation_en": "False. Code is reversible; data is not. If the migration has already renamed or dropped a column, the previous code version still looks for it and fails on startup; and if the new version wrote data in a format the old one does not understand, reverting the binary leaves unusable records. That is the whole reason expand-and-contract migrations exist: to make the schema compatible with both the old and the new version at once, and to postpone removing the old shape until rolling back is no longer a realistic option. The claim is tempting because rolling back the artifact really is instant; the problem lives in the state that artifact left behind.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 12 (Managing Data) / ch. 10 (rollback)",
+      "expected_time_ms": 35000,
+      "tags": [
+        "ci-cd",
+        "rollback",
+        "database",
+        "migrations"
+      ]
+    },
+    {
+      "id": "q040703012",
+      "skill_id": "sk040703",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En un despliegue *rolling* (las instancias se reemplazan por tandas sin cortar el servicio), ¿qué restricción impone esa estrategia al cambio que se despliega?",
+      "question_en": "In a *rolling* deployment (instances are replaced in batches without downtime), what constraint does that strategy impose on the change being deployed?",
+      "options_es": [
+        "Ninguna: el balanceador garantiza que cada usuario hable siempre con la misma versión durante toda su sesión",
+        "Que el despliegue debe hacerse fuera del horario de mayor tráfico",
+        "Que durante la transición conviven en producción la versión antigua y la nueva atendiendo tráfico real, así que ambas deben ser compatibles entre sí y con el mismo esquema de datos, contratos de API y formato de sesión incluidos",
+        "Que hace falta el doble de capacidad de infraestructura mientras dura el despliegue"
+      ],
+      "options_en": [
+        "None: the load balancer guarantees each user always talks to the same version for their whole session",
+        "That the deployment must happen outside peak traffic hours",
+        "That during the transition the old and new versions coexist in production serving real traffic, so both must be compatible with each other and with the same data schema, API contracts and session format included",
+        "That you need double the infrastructure capacity for the duration of the deployment"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La compatibilidad hacia atrás no es una recomendación teórica en el rolling: es un requisito, porque durante unos minutos la misma petición puede ir a una instancia vieja y la siguiente a una nueva. Por eso este tipo de despliegue obliga a versionar contratos de API de forma aditiva y a migrar el esquema en expansión y contracción. La cuarta opción describe el blue-green, que evita la convivencia a cambio de duplicar la capacidad; la primera asume una afinidad de sesión que ni está garantizada ni resuelve el caso de peticiones de API sin sesión.",
+      "explanation_en": "Backward compatibility is not a theoretical nicety in rolling deployments: it is a requirement, because for a few minutes one request may hit an old instance and the next a new one. That is why this deployment style forces additive API contract versioning and expand-and-contract schema migration. The fourth option describes blue-green, which avoids coexistence at the cost of doubling capacity; the first assumes a session affinity that is neither guaranteed nor a solution for session-less API requests.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 10 (Deploying and Releasing Applications)",
+      "expected_time_ms": 45000,
+      "tags": [
+        "ci-cd",
+        "rolling-deploy",
+        "compatibility"
+      ]
+    },
+    {
+      "id": "q040703013",
+      "skill_id": "sk040703",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Se ha desplegado esta secuencia. ¿Qué ocurre si, DESPUÉS del despliegue 3, hay que revertir la aplicación a la v1?\n```sql\n-- despliegue 1 (expandir): la app v1 sigue usando \"name\"\nALTER TABLE users ADD COLUMN full_name TEXT;\n-- despliegue 2: la app v2 escribe en \"name\" y en \"full_name\"\n-- despliegue 3 (contraer): la app v3 sólo usa \"full_name\"\nALTER TABLE users DROP COLUMN name;\n```",
+      "question_en": "This sequence has been deployed. What happens if, AFTER deployment 3, you need to roll the application back to v1?\n```sql\n-- deployment 1 (expand): app v1 still uses \"name\"\nALTER TABLE users ADD COLUMN full_name TEXT;\n-- deployment 2: app v2 writes to both \"name\" and \"full_name\"\n-- deployment 3 (contract): app v3 only uses \"full_name\"\nALTER TABLE users DROP COLUMN name;\n```",
+      "options_es": [
+        "Funciona sin problemas: la v1 detecta que la columna no existe y usa `full_name` automáticamente",
+        "Funciona, pero los nombres aparecen vacíos hasta el siguiente despliegue",
+        "La base de datos revierte sola el `DROP COLUMN` al detectar una versión antigua de la aplicación",
+        "La v1 falla, porque consulta `name` y esa columna ya no existe: el paso de contracción es el punto a partir del cual revertir a la v1 deja de ser posible, y por eso se retrasa hasta tener confianza en la versión nueva"
+      ],
+      "options_en": [
+        "It works fine: v1 detects the column is gone and automatically uses `full_name`",
+        "It works, but names show up empty until the next deployment",
+        "The database automatically reverts the `DROP COLUMN` when it detects an old application version",
+        "v1 fails, because it queries `name` and that column no longer exists: the contract step is the point beyond which rolling back to v1 stops being possible, which is why it is postponed until the new version is trusted"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El valor del patrón expandir–contraer está en la ventana intermedia: entre el despliegue 1 y el 3, el esquema soporta las dos versiones de la aplicación y se puede ir y volver libremente. La contracción cierra esa ventana a propósito, y por eso se ejecuta días después y como un despliegue propio, no pegado al que introdujo el cambio. La segunda opción es el error de razonamiento más fino: suponer que una columna ausente devuelve vacío en lugar de romper la consulta.",
+      "explanation_en": "The value of the expand–contract pattern lies in the middle window: between deployment 1 and deployment 3 the schema supports both application versions and you can move back and forth freely. The contraction deliberately closes that window, which is why it is run days later and as a deployment of its own rather than glued to the one that introduced the change. The second option is the subtlest reasoning error: assuming a missing column returns empty rather than breaking the query.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 12 (Managing Data: incremental schema change)",
+      "expected_time_ms": 50000,
+      "tags": [
+        "ci-cd",
+        "migrations",
+        "expand-contract",
+        "rollback"
+      ]
+    },
+    {
+      "id": "q040703014",
+      "skill_id": "sk040703",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "La técnica que despliega la versión nueva en producción y le envía una copia del tráfico real para medir su comportamiento, DESCARTANDO sus respuestas y sirviendo al usuario las de la versión antigua, se conoce en inglés como ____ launching. (una palabra)",
+      "question_en": "The technique that deploys the new version to production and sends it a copy of real traffic to measure its behaviour, DISCARDING its responses and serving the user the old version's, is known as ____ launching. (one word)",
+      "correct_answer_es": "dark",
+      "correct_answer_en": "dark",
+      "explanation_es": "El *dark launching* (también llamado tráfico en sombra) permite validar rendimiento y corrección de la versión nueva con carga real antes de que un solo usuario dependa de ella; el riesgo para el usuario es cero porque sus respuestas se descartan. Se confunde a menudo con el despliegue canario, y la diferencia importa: en un canario un subconjunto de usuarios reales SÍ recibe las respuestas de la versión nueva y por tanto sufre sus fallos. La precaución obligatoria del dark launching es que el tráfico duplicado no puede provocar efectos secundarios reales: nada de cobrar dos veces ni de enviar el correo por duplicado.",
+      "explanation_en": "*Dark launching* (also called shadow traffic) lets you validate the new version's performance and correctness under real load before a single user depends on it; the risk to users is zero because their responses are discarded. It is often confused with canary releasing, and the difference matters: in a canary a subset of real users DOES receive the new version's responses and therefore suffers its failures. The mandatory precaution with dark launching is that duplicated traffic must not cause real side effects: no charging twice, no sending the email twice.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 10 (Deploying and Releasing Applications: dark launching)",
+      "expected_time_ms": 40000,
+      "tags": [
+        "ci-cd",
+        "dark-launching",
+        "release-strategies"
+      ]
+    },
+    {
+      "id": "q040703015",
+      "skill_id": "sk040703",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un equipo despliega a producción siguiendo un runbook manual de 40 pasos que documenta cuidadosamente y ejecuta bien desde hace dos años. ¿Cuál es el riesgo principal que Continuous Delivery señala?",
+      "question_en": "A team deploys to production following a carefully documented 40-step manual runbook that they have executed correctly for two years. What is the main risk Continuous Delivery points out?",
+      "options_es": [
+        "Que el proceso no es repetible ni verificable: no existe forma de ensayarlo de verdad, cada ejecución depende de las personas presentes ese día, no puede probarse antes en entornos previos y, al no poder ejecutarse a menudo, el despliegue se vuelve un acontecimiento raro, largo y por tanto arriesgado",
+        "Que documentar el proceso consume tiempo del equipo que podría dedicarse a funcionalidades",
+        "Ninguno significativo mientras el runbook esté actualizado y el equipo tenga experiencia",
+        "Que el runbook puede quedar desactualizado respecto a la versión del sistema operativo del servidor"
+      ],
+      "options_en": [
+        "That the process is neither repeatable nor verifiable: there is no way to genuinely rehearse it, every execution depends on who is in the room that day, it cannot be tested in earlier environments, and because it cannot be run often the deployment becomes a rare, long and therefore risky event",
+        "That documenting the process consumes team time that could go to features",
+        "None significant, as long as the runbook is up to date and the team is experienced",
+        "That the runbook may fall out of date with respect to the server's operating system version"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El argumento del libro es 'si duele, hazlo más a menudo', y su corolario: sólo se puede hacer a menudo lo que está automatizado. Un proceso manual no se puede ejecutar cien veces en entornos de prueba, así que la primera vez que de verdad se prueba es en producción. Además el conocimiento vive en las personas, no en el control de versiones, y el propio rollback suele ser otro procedimiento manual nunca ensayado. La tercera opción es la trampa: dos años sin incidentes no son evidencia de un proceso robusto, sino de que el fallo todavía no ha coincidido con el día en que falta la persona que sabe.",
+      "explanation_en": "The book's argument is 'if it hurts, do it more often', with its corollary: only what is automated can be done often. A manual process cannot be executed a hundred times in test environments, so the first time it is genuinely tested is in production. The knowledge also lives in people rather than in version control, and the rollback itself is usually another never-rehearsed manual procedure. The third option is the trap: two years without incidents is not evidence of a robust process, only that failure has not yet coincided with the day the person who knows is away.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 1 (Introduction: releasing software is too hard)",
+      "expected_time_ms": 50000,
+      "tags": [
+        "ci-cd",
+        "automation",
+        "deployment",
+        "risk"
+      ]
+    },
+    {
+      "id": "q040703016",
+      "skill_id": "sk040703",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Si el entorno de staging no se aprovisiona y se despliega con exactamente el mismo proceso automatizado que producción, deja de ser una prueba válida del despliegue.",
+      "question_en": "If the staging environment is not provisioned and deployed with exactly the same automated process as production, it stops being a valid test of the deployment.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El pipeline no sólo prueba la aplicación: prueba el propio mecanismo de despliegue. Si staging se configuró a mano hace un año y producción se toca con otro script, lo que se validó en staging no es lo que ocurrirá en producción, y las diferencias de versiones, permisos o variables de entorno aparecerán justo en el peor sitio. De ahí la práctica de tratar la infraestructura como código y usar el mismo script parametrizado por entorno: staging se convierte así en un ensayo real, y cada despliegue a staging es también una prueba del despliegue a producción.",
+      "explanation_en": "True. The pipeline does not only test the application: it tests the deployment mechanism itself. If staging was configured by hand a year ago and production is touched with a different script, what was validated in staging is not what will happen in production, and differences in versions, permissions or environment variables will surface in exactly the worst place. Hence the practice of treating infrastructure as code and using the same script parameterised per environment: staging then becomes a real rehearsal, and every deployment to staging is also a test of the deployment to production.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 11 (Managing Infrastructure and Environments)",
+      "expected_time_ms": 40000,
+      "tags": [
+        "ci-cd",
+        "staging",
+        "environments",
+        "iac"
+      ]
+    },
+    {
+      "id": "q040704010",
+      "skill_id": "sk040704",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué describe el antipatrón del 'cono de helado' (ice-cream cone) en una suite de pruebas?",
+      "question_en": "What does the 'ice-cream cone' anti-pattern describe in a test suite?",
+      "options_es": [
+        "La pirámide invertida: muchas pruebas de extremo a extremo y manuales, pocas de integración y casi ninguna unitaria. Son lentas, frágiles y señalan que algo falló sin decir dónde, así que el pipeline tarda horas y el equipo acaba desconfiando de él",
+        "Una suite en la que todas las pruebas son unitarias y no existe ninguna prueba de integración",
+        "Una suite cuyo tiempo de ejecución crece exponencialmente con el número de desarrolladores",
+        "El hábito de escribir las pruebas después de haber entregado la funcionalidad"
+      ],
+      "options_en": [
+        "The inverted pyramid: many end-to-end and manual tests, few integration tests and almost no unit tests. They are slow, brittle and tell you something broke without telling you where, so the pipeline takes hours and the team ends up distrusting it",
+        "A suite in which every test is a unit test and there are no integration tests at all",
+        "A suite whose execution time grows exponentially with the number of developers",
+        "The habit of writing tests after the feature has already shipped"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El cono de helado es lo que ocurre de forma natural cuando se prueba sólo por la interfaz: es la forma más intuitiva de verificar y da una sensación de cobertura realista, pero cada prueba cruza todo el sistema y basta un cambio de selector o una latencia de red para que falle sin motivo. El resultado no es sólo lentitud: es la pérdida de la localización del defecto (la propiedad que hace útil a una prueba unitaria) y la aparición de fallos intermitentes que erosionan la confianza en el pipeline.",
+      "explanation_en": "The ice-cream cone is what naturally happens when you test only through the UI: it is the most intuitive way to verify and gives a realistic sense of coverage, but every test crosses the whole system and a changed selector or a slow network is enough to fail it for no real reason. The result is not just slowness: it is the loss of defect localisation (the property that makes a unit test useful) and the appearance of intermittent failures that erode trust in the pipeline.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 4 (Implementing a Testing Strategy) / ch. 8",
+      "expected_time_ms": 35000,
+      "tags": [
+        "testing",
+        "test-pyramid",
+        "anti-pattern"
+      ]
+    },
+    {
+      "id": "q040704011",
+      "skill_id": "sk040704",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Alcanzar el 100 % de cobertura de código garantiza que la aplicación no tiene errores.",
+      "question_en": "Reaching 100% code coverage guarantees the application has no bugs.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. La cobertura mide qué líneas se *ejecutaron* durante las pruebas, no si alguien comprobó que el resultado era correcto: una suite sin una sola aserción puede alcanzar el 100 %. Además no dice nada de los casos que nunca se escribieron (la entrada vacía, el desbordamiento, la condición de carrera) ni de los requisitos que se entendieron mal, que no son bugs de código sino de especificación. La afirmación resulta tentadora porque la cobertura es la única métrica de calidad que es fácil de medir y de poner en un panel. Es útil en negativo: una cobertura baja señala con fiabilidad zonas sin probar; una cobertura alta no demuestra nada, y perseguir el 100 % como objetivo empuja a escribir pruebas triviales de getters mientras la lógica difícil sigue sin verificar.",
+      "explanation_en": "False. Coverage measures which lines were *executed* during the tests, not whether anyone checked the result was correct: a suite with no assertions at all can reach 100%. It also says nothing about the cases nobody wrote (the empty input, the overflow, the race condition) or about requirements that were misunderstood, which are specification bugs rather than code bugs. The claim is tempting because coverage is the one quality metric that is easy to measure and easy to put on a dashboard. It is useful in the negative: low coverage reliably flags untested areas; high coverage proves nothing, and chasing 100% as a target pushes people to write trivial getter tests while the hard logic stays unverified.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 4 (Implementing a Testing Strategy)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "testing",
+        "coverage",
+        "metrics"
+      ]
+    },
+    {
+      "id": "q040704012",
+      "skill_id": "sk040704",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Este test se añade al pipeline. ¿Qué comportamiento tendrá?\n```python\nimport datetime\n\ndef test_marca_de_tiempo():\n    ahora = datetime.datetime.now()\n    assert ahora.second != 0\n```",
+      "question_en": "This test is added to the pipeline. How will it behave?\n```python\nimport datetime\n\ndef test_timestamp():\n    now = datetime.datetime.now()\n    assert now.second != 0\n```",
+      "options_es": [
+        "Fallará siempre, porque `now()` no se puede usar dentro de un test",
+        "Pasará siempre: el segundo nunca puede ser exactamente 0 en una máquina real",
+        "Pasará aproximadamente 59 de cada 60 ejecuciones y fallará en la restante sin que nadie haya tocado el código: es un test *flaky*, y su coste real es que enseña al equipo a reintentar el pipeline en lugar de investigar los fallos",
+        "Fallará sólo en los runners de CI, porque su reloj está sincronizado por NTP al segundo exacto"
+      ],
+      "options_en": [
+        "It will always fail, because `now()` cannot be used inside a test",
+        "It will always pass: the second can never be exactly 0 on a real machine",
+        "It will pass roughly 59 runs out of 60 and fail on the remaining one with nobody having touched the code: it is a *flaky* test, and its real cost is teaching the team to retry the pipeline instead of investigating failures",
+        "It will fail only on CI runners, because their clock is NTP-synchronised to the exact second"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El test depende de un valor no determinista, así que su resultado es una lotería con muy buena cara: pasa casi siempre, lo justo para parecer correcto. El daño no es el 1,7 % de builds en rojo, sino lo que ese porcentaje le enseña al equipo: que un fallo del pipeline puede no significar nada. A partir de ahí, un fallo real se descarta también con un reintento. Cualquier dependencia del reloj, del orden de ejecución, de la red o de datos compartidos produce el mismo efecto; la corrección aquí es inyectar el tiempo como dependencia y fijarlo en el test.",
+      "explanation_en": "The test depends on a non-deterministic value, so its result is a lottery with very good odds: it passes almost always, just enough to look correct. The damage is not the 1.7% of red builds but what that percentage teaches the team: that a pipeline failure may mean nothing. From then on, a real failure gets dismissed with a retry too. Any dependence on the clock, on execution order, on the network or on shared data produces the same effect; the fix here is to inject time as a dependency and pin it in the test.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 4 / ch. 8 (Automated Acceptance Testing: non-determinism)",
+      "expected_time_ms": 40000,
+      "tags": [
+        "testing",
+        "flaky-tests",
+        "determinism"
+      ]
+    },
+    {
+      "id": "q040704013",
+      "skill_id": "sk040704",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué la etapa de commit ejecuta las pruebas unitarias y las de aceptación se dejan para una etapa posterior del pipeline, en lugar de ejecutarlo todo a la vez?",
+      "question_en": "Why does the commit stage run the unit tests while acceptance tests are left to a later pipeline stage, instead of running everything at once?",
+      "options_es": [
+        "Porque las pruebas de aceptación no pueden ejecutarse de forma automatizada y requieren intervención manual",
+        "Porque las etapas se ordenan por coste y probabilidad de fallo: las unitarias son rápidas y baratas y detectan la mayoría de los errores, así que dar feedback en minutos evita gastar veinte minutos de entorno desplegado en un candidato que ya se sabe roto",
+        "Porque las pruebas de aceptación sólo tienen sentido sobre la versión que ya está en producción",
+        "Porque ejecutar ambos tipos en el mismo job provoca conflictos de dependencias entre frameworks de test"
+      ],
+      "options_en": [
+        "Because acceptance tests cannot be automated and require manual intervention",
+        "Because stages are ordered by cost and probability of failure: unit tests are fast and cheap and catch most errors, so giving feedback in minutes avoids spending twenty minutes of a deployed environment on a candidate already known to be broken",
+        "Because acceptance tests only make sense against the version already in production",
+        "Because running both kinds in the same job causes dependency conflicts between test frameworks"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El pipeline es un filtro en cascada: cada etapa es más lenta y más cara que la anterior y sólo recibe candidatos que ya pasaron las baratas. La etapa de commit debe dar veredicto en pocos minutos, porque es la que el desarrollador espera mirando. Las pruebas de aceptación necesitan desplegar un entorno completo y tardan mucho más, así que ejecutarlas sobre código que no compila o que rompe una prueba unitaria es tiempo tirado. Importa además que la primera opción es falsa: las pruebas de aceptación de Continuous Delivery son automatizadas por definición; lo manual es la exploración, que ocupa otro lugar del pipeline.",
+      "explanation_en": "The pipeline is a cascading filter: each stage is slower and more expensive than the previous one and only receives candidates that already passed the cheap ones. The commit stage must return a verdict within minutes, because it is the one the developer waits on. Acceptance tests need a full environment deployed and take far longer, so running them against code that does not compile or breaks a unit test is wasted time. It also matters that the first option is false: Continuous Delivery's acceptance tests are automated by definition; what is manual is exploratory testing, which sits elsewhere in the pipeline.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 7 (The Commit Stage) / ch. 8 (Automated Acceptance Testing)",
+      "expected_time_ms": 45000,
+      "tags": [
+        "testing",
+        "pipeline",
+        "commit-stage"
+      ]
+    },
+    {
+      "id": "q040704014",
+      "skill_id": "sk040704",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "En el pipeline de despliegue, la primera etapa —la que compila, ejecuta las pruebas unitarias y el análisis estático, y debe dar veredicto en pocos minutos— se llama la etapa de ______. (una palabra)",
+      "question_en": "In the deployment pipeline, the first stage — the one that compiles, runs the unit tests and static analysis, and must return a verdict within minutes — is called the ______ stage. (one word)",
+      "correct_answer_es": "commit",
+      "correct_answer_en": "commit",
+      "explanation_es": "La etapa de commit es la puerta de entrada del pipeline y produce el artefacto binario que todas las etapas siguientes promueven sin volver a construirlo. Su contrato es el feedback rápido: si tarda más de unos diez minutos, la gente deja de esperarla, sigue trabajando encima y cuando llega el fallo ya hay commits nuevos apilados sobre él. Cuando crece demasiado, la respuesta correcta es paralelizarla o mover pruebas lentas a una etapa posterior, no relajar lo que comprueba.",
+      "explanation_en": "The commit stage is the pipeline's entry gate and produces the binary artifact that every later stage promotes without rebuilding it. Its contract is fast feedback: if it takes more than about ten minutes, people stop waiting for it, keep working on top, and by the time the failure arrives there are new commits stacked on it. When it grows too long, the right answer is to parallelise it or move slow tests to a later stage, not to relax what it checks.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 7 (The Commit Stage)",
+      "expected_time_ms": 30000,
+      "tags": [
+        "testing",
+        "pipeline",
+        "commit-stage"
+      ]
+    },
+    {
+      "id": "q040704015",
+      "skill_id": "sk040704",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Tres pruebas de la suite fallan de forma intermitente. El equipo configura el pipeline para reintentar automáticamente los tests fallidos hasta tres veces. ¿Por qué es una mala solución?",
+      "question_en": "Three tests in the suite fail intermittently. The team configures the pipeline to automatically retry failed tests up to three times. Why is that a bad solution?",
+      "options_es": [
+        "Porque los reintentos consumen minutos de runner y encarecen la factura del proveedor de CI",
+        "Porque el reintento automático no está soportado por la mayoría de los frameworks de test",
+        "Porque el reintento oculta el síntoma sin tocar la causa, y además silencia los fallos REALES e intermitentes (una condición de carrera, un recurso que se agota bajo carga) que son justo los defectos más caros de encontrar en producción. La respuesta adecuada es poner en cuarentena esas pruebas fuera del pipeline bloqueante, con un responsable y un plazo, y arreglarlas o borrarlas",
+        "Porque reintentar cambia el orden de ejecución de las pruebas y eso invalida la medición de cobertura"
+      ],
+      "options_en": [
+        "Because retries consume runner minutes and increase the CI provider's bill",
+        "Because automatic retries are not supported by most test frameworks",
+        "Because retrying hides the symptom without touching the cause, and on top of that it silences REAL intermittent failures (a race condition, a resource exhausted under load) which are exactly the most expensive defects to find in production. The right response is to quarantine those tests outside the blocking pipeline, with an owner and a deadline, and then fix or delete them",
+        "Because retrying changes the test execution order and that invalidates coverage measurement"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Un test intermitente es información: dice que algo del sistema o del test no es determinista, y a veces lo no determinista es el código de producción. El reintento convierte esa señal en silencio. La cuarentena es un compromiso honesto —se deja de bloquear al equipo, pero el problema sigue siendo visible y con dueño—, frente al reintento, que declara el problema resuelto. Y una prueba en cuarentena que nadie arregla en un mes debe borrarse: una prueba en la que nadie confía tiene valor negativo, porque consume tiempo y da falsa seguridad.",
+      "explanation_en": "An intermittent test is information: it says something in the system or in the test is non-deterministic, and sometimes the non-deterministic part is production code. Retrying turns that signal into silence. Quarantine is an honest compromise — the team stops being blocked, but the problem stays visible and owned — whereas a retry declares the problem solved. And a quarantined test nobody fixes within a month should be deleted: a test nobody trusts has negative value, because it costs time and gives false confidence.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 8 (Automated Acceptance Testing: managing non-determinism)",
+      "expected_time_ms": 45000,
+      "tags": [
+        "testing",
+        "flaky-tests",
+        "quarantine"
+      ]
+    },
+    {
+      "id": "q040704016",
+      "skill_id": "sk040704",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Si la suite de pruebas tarda 45 minutos, la solución correcta es dejar de ejecutarla en cada pull request y pasarla a una ejecución nocturna sobre la rama principal.",
+      "question_en": "If the test suite takes 45 minutes, the correct solution is to stop running it on every pull request and move it to a nightly run on the main branch.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso: eso arregla el reloj y rompe el mecanismo. Con una ejecución nocturna, el fallo se descubre a la mañana siguiente, mezclado con los commits de todo un día, y localizar cuál lo causó vuelve a ser trabajo de arqueología; además, main queda roto durante horas para todos. Las soluciones que sí atacan el problema son paralelizar la suite entre varios runners, dividir el pipeline en etapas (unitarias rápidas como barrera de entrada, aceptación después), sustituir pruebas lentas de extremo a extremo por unitarias donde la pirámide esté invertida y arreglar las que dependen de esperas fijas. La afirmación tienta porque el número visible —45 minutos— mejora de inmediato; lo que se pierde es la propiedad que hace útil a la CI, que un cambio no llegue a main sin estar verificado.",
+      "explanation_en": "False: that fixes the clock and breaks the mechanism. With a nightly run, the failure is discovered the next morning, mixed in with a whole day's commits, and working out which one caused it becomes archaeology again; on top of that, main stays broken for hours for everyone. The solutions that actually address the problem are parallelising the suite across runners, splitting the pipeline into stages (fast unit tests as the entry gate, acceptance later), replacing slow end-to-end tests with unit tests wherever the pyramid is inverted, and fixing the ones that rely on fixed sleeps. The claim tempts because the visible number — 45 minutes — improves immediately; what is lost is the property that makes CI useful, that no change reaches main unverified.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 3 (Continuous Integration) / ch. 7 (keeping the commit stage fast)",
+      "expected_time_ms": 40000,
+      "tags": [
+        "testing",
+        "pipeline",
+        "feedback"
+      ]
+    },
+    {
+      "id": "q040704017",
+      "skill_id": "sk040704",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Las pruebas de aceptación de tu pipeline comparten una base de datos común y empiezan a fallar de forma impredecible según el orden en que se ejecutan. ¿Cuál es el diagnóstico y el enfoque correcto?",
+      "question_en": "Your pipeline's acceptance tests share a common database and start failing unpredictably depending on the order in which they run. What is the diagnosis and the correct approach?",
+      "options_es": [
+        "Las pruebas comparten estado mutable: cada una asume datos que otra modifica, así que dejan de ser independientes. La solución es que cada prueba cree los datos que necesita y los deje en un estado conocido (o use su propio esquema o esquema efímero), no fijar el orden de ejecución",
+        "Es un problema de rendimiento de la base de datos: hay que aumentar el pool de conexiones y los timeouts",
+        "Hay que ejecutar las pruebas siempre en el mismo orden alfabético para que el resultado sea reproducible",
+        "Es inevitable en pruebas de aceptación; lo correcto es marcarlas como no bloqueantes del pipeline"
+      ],
+      "options_en": [
+        "The tests share mutable state: each assumes data that another modifies, so they stop being independent. The fix is for each test to create the data it needs and leave it in a known state (or use its own schema or an ephemeral one), not to pin the execution order",
+        "It is a database performance problem: increase the connection pool and the timeouts",
+        "You should always run the tests in the same alphabetical order so the result is reproducible",
+        "It is unavoidable in acceptance tests; the right thing is to mark them non-blocking for the pipeline"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La dependencia entre pruebas a través de datos compartidos es una de las fuentes clásicas de no determinismo, y la más traicionera porque la suite parece correcta mientras nadie cambie el orden o active la ejecución en paralelo. Fijar el orden (tercera opción) es el parche que más se intenta: hace que los fallos desaparezcan hoy y convierte la suite en un bloque rígido que no se puede paralelizar ni ejecutar parcialmente, y donde una prueba que falla deja a las siguientes en un estado sucio. La opción de marcarlas como no bloqueantes es la peor de todas: renuncia a la señal en el momento en que más falta hace.",
+      "explanation_en": "Inter-test dependency through shared data is one of the classic sources of non-determinism, and the most treacherous because the suite looks fine until someone changes the order or turns on parallel execution. Pinning the order (third option) is the most commonly attempted patch: it makes the failures disappear today and turns the suite into a rigid block that cannot be parallelised or run partially, and where one failing test leaves the following ones in a dirty state. Marking them non-blocking is the worst option of all: it discards the signal exactly when it is most needed.",
+      "source": "Humble & Farley — Continuous Delivery, ch. 12 (Managing Data: test data management)",
+      "expected_time_ms": 55000,
+      "tags": [
+        "testing",
+        "test-data",
+        "determinism",
+        "acceptance-tests"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1086 @@
+{
+  "questions": [
+    {
+      "id": "q020101007",
+      "skill_id": "sk020101",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué excepción lanza Python si la definición de una clase produce un orden de resolución de métodos inconsistente?",
+      "question_en": "What exception does Python raise if a class definition would produce an inconsistent method resolution order?",
+      "options_es": [
+        "ValueError",
+        "AttributeError",
+        "TypeError",
+        "ImportError"
+      ],
+      "options_en": [
+        "ValueError",
+        "AttributeError",
+        "TypeError",
+        "ImportError"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Python aplica C3 en el momento de la definición de la clase, no en tiempo de ejecución. Si no existe ningún orden de resolución consistente (por ejemplo, `class D(A, B)` cuando A y B tienen un ancestro común en orden inverso), Python lanza `TypeError` al definir la clase, antes de que se cree ninguna instancia.",
+      "explanation_en": "Python applies C3 at class-definition time, not at runtime. If no consistent resolution order exists (e.g. `class D(A, B)` where A and B share a common ancestor in reverse order), Python raises `TypeError` when the class is defined, before any instance is created.",
+      "source": "CPython docs 3.13 — The Python 2.3 Method Resolution Order; Fluent Python 2e (Ramalho), ch. 14",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "mro", "c3", "exception"]
+    },
+    {
+      "id": "q020101008",
+      "skill_id": "sk020101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Las clases `A`, `B` (hereda A) y `C` (hereda A) existen. `class Sub(B, C): pass` no define `__slots__`, pero tanto `B` como `C` definen `__slots__`. ¿Qué es cierto sobre las instancias de `Sub`?",
+      "question_en": "Classes `A`, `B` (inherits A) and `C` (inherits A) exist. `class Sub(B, C): pass` does not define `__slots__`, but both `B` and `C` define `__slots__`. What is true about instances of `Sub`?",
+      "options_es": [
+        "Las instancias solo tienen los slots heredados de B y C, sin __dict__",
+        "Las instancias tienen los slots de B y C más un __dict__",
+        "Python lanza TypeError al definir Sub porque combina dos clases con __slots__",
+        "Las instancias no tienen ningún atributo"
+      ],
+      "options_en": [
+        "Instances have only the slots inherited from B and C, no __dict__",
+        "Instances have both B's and C's slots plus a __dict__",
+        "Python raises TypeError when defining Sub because two __slots__ classes are combined",
+        "Instances have no attributes at all"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El `__dict__` lo aporta cualquier clase del MRO que no declare `__slots__`. `Sub` no declara `__slots__`, por lo que las instancias reciben `__dict__` de `Sub`, además de los slots heredados de `B` y `C`. Para eliminar completamente `__dict__`, cada clase de la cadena debe declarar `__slots__`.",
+      "explanation_en": "The `__dict__` is provided by any class in the MRO that does not declare `__slots__`. `Sub` does not declare `__slots__`, so instances get `__dict__` from `Sub` in addition to the inherited slots from `B` and `C`. To fully eliminate `__dict__`, every class in the chain must declare `__slots__`.",
+      "source": "CPython docs 3.13 — __slots__; Fluent Python 2e (Ramalho), ch. 11",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "slots", "inheritance", "gotcha"]
+    },
+    {
+      "id": "q020101009",
+      "skill_id": "sk020101",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass A: pass\nclass B(A): pass\nclass C(A): pass\nclass D(B, C): pass\nprint(D.__mro__[-1].__name__)\n```",
+      "question_en": "What does the following code print?\n```python\nclass A: pass\nclass B(A): pass\nclass C(A): pass\nclass D(B, C): pass\nprint(D.__mro__[-1].__name__)\n```",
+      "options_es": [
+        "A",
+        "B",
+        "D",
+        "object"
+      ],
+      "options_en": [
+        "A",
+        "B",
+        "D",
+        "object"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El último elemento de `__mro__` es siempre `object`, ya que todas las clases de estilo nuevo en Python 3 heredan en última instancia de `object`. El MRO completo de D es `(D, B, C, A, object)`, así que `D.__mro__[-1]` es la clase `object` y su `__name__` es `'object'`.",
+      "explanation_en": "The last element of `__mro__` is always `object`, as all new-style classes in Python 3 ultimately inherit from `object`. D's full MRO is `(D, B, C, A, object)`, so `D.__mro__[-1]` is the `object` class and its `__name__` is `'object'`.",
+      "source": "CPython docs 3.13 — type.__mro__",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "mro", "object"]
+    },
+    {
+      "id": "q020101010",
+      "skill_id": "sk020101",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass A:\n    def greet(self): return \"A\"\nclass B(A): pass\nclass C(A):\n    def greet(self): return \"C\"\nclass D(B, C): pass\nprint(D().greet())\n```",
+      "question_en": "What does the following code print?\n```python\nclass A:\n    def greet(self): return \"A\"\nclass B(A): pass\nclass C(A):\n    def greet(self): return \"C\"\nclass D(B, C): pass\nprint(D().greet())\n```",
+      "options_es": [
+        "C",
+        "A",
+        "B",
+        "AttributeError"
+      ],
+      "options_en": [
+        "C",
+        "A",
+        "B",
+        "AttributeError"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El MRO de D es `D → B → C → A`. B no define `greet`, por lo que la búsqueda continúa en C, que sí lo define y devuelve `\"C\"`. Aunque A también define `greet`, C aparece primero en el MRO y resuelve el atributo. Esto sorprende a quienes esperan que B herede directamente el `greet` de A sin pasar por C.",
+      "explanation_en": "D's MRO is `D → B → C → A`. B does not define `greet`, so the search continues to C, which does define it and returns `\"C\"`. Although A also defines `greet`, C appears earlier in the MRO and resolves the attribute. This surprises developers who expect B to inherit `greet` directly from A without going through C.",
+      "source": "CPython docs 3.13 — The Python 2.3 Method Resolution Order",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "mro", "inheritance", "gotcha"]
+    },
+    {
+      "id": "q020101011",
+      "skill_id": "sk020101",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En el patrón mixin, ¿cuál es el orden correcto para que los métodos del mixin tengan prioridad sobre los de la clase base?",
+      "question_en": "In the mixin pattern, what is the correct order so that the mixin's methods take priority over those of the base class?",
+      "options_es": [
+        "class MyClass(Base, Mixin): ...",
+        "class MyClass(object, Mixin, Base): ...",
+        "class MyClass(Mixin, Base): ...",
+        "El orden no afecta en absoluto a la resolución de métodos"
+      ],
+      "options_en": [
+        "class MyClass(Base, Mixin): ...",
+        "class MyClass(object, Mixin, Base): ...",
+        "class MyClass(Mixin, Base): ...",
+        "The order does not affect method resolution at all"
+      ],
+      "correct_index": 2,
+      "explanation_es": "En el MRO, las clases se buscan de izquierda a derecha. Al poner `Mixin` antes que `Base`, los métodos de `Mixin` aparecen primero en el MRO y anulan a los de `Base`. El patrón canónico es: `class Concreta(Mixin1, Mixin2, Base): ...`, con los mixins a la izquierda y la clase con estado real a la derecha.",
+      "explanation_en": "In the MRO, classes are searched left to right. Listing `Mixin` before `Base` puts Mixin's methods earlier in the MRO and overrides Base's. The canonical pattern is: `class Concrete(Mixin1, Mixin2, Base): ...`, with mixins on the left and the stateful primary base on the right.",
+      "source": "Fluent Python 2e (Ramalho), ch. 14 — Mixin classes",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "mixin", "mro", "pattern"]
+    },
+    {
+      "id": "q020101012",
+      "skill_id": "sk020101",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia entre `D.__mro__` y `D.mro()`?",
+      "question_en": "What is the difference between `D.__mro__` and `D.mro()`?",
+      "options_es": [
+        "__mro__ es una tupla almacenada en el tipo; mro() es un método que devuelve una lista nueva",
+        "Son completamente equivalentes; ambos devuelven una lista",
+        "__mro__ solo existe en instancias, mro() solo en la clase",
+        "mro() incluye object; __mro__ no lo incluye"
+      ],
+      "options_en": [
+        "__mro__ is a tuple stored on the type; mro() is a method that returns a new list",
+        "They are completely equivalent; both return a list",
+        "__mro__ exists only on instances; mro() exists only on the class",
+        "mro() includes object; __mro__ does not"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`D.__mro__` es un atributo de datos almacenado como tupla inmutable en el objeto tipo. `D.mro()` es un método que devuelve una lista nueva con el mismo contenido. Ambos incluyen `object` como último elemento. La distinción importa si el código asume mutabilidad o tipo exacto.",
+      "explanation_en": "`D.__mro__` is a data attribute stored as an immutable tuple on the type object. `D.mro()` is a method that returns a new list with the same content. Both include `object` as the last element. The distinction matters if code assumes mutability or an exact type.",
+      "source": "CPython docs 3.13 — type.__mro__ and type.mro()",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "mro", "introspection"]
+    },
+    {
+      "id": "q020101013",
+      "skill_id": "sk020101",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "En la herencia múltiple cooperativa, cada clase llama a `super().__init__()` para que la cadena de inicialización recorra el ___ en orden.",
+      "question_en": "In cooperative multiple inheritance, each class calls `super().__init__()` so the initialization chain traverses the ___ in order.",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "MRO",
+      "correct_answer_en": "MRO",
+      "explanation_es": "`super()` no llama al padre 'literal'; llama a la siguiente clase en el MRO de la instancia real. Gracias a esto, en una jerarquía en diamante cada `__init__` se ejecuta exactamente una vez, en el orden del MRO, y sin que se repita `object.__init__()`.",
+      "explanation_en": "`super()` does not call the 'literal' parent; it calls the next class in the actual instance's MRO. This ensures that in a diamond hierarchy every `__init__` runs exactly once, in MRO order, without repeating `object.__init__()`.",
+      "source": "Fluent Python 2e (Ramalho), ch. 14 — Cooperative multiple inheritance",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "super", "mro", "cooperative"]
+    },
+    {
+      "id": "q020101014",
+      "skill_id": "sk020101",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`super()` dentro de un método siempre delega a la clase escrita inmediatamente encima en la lista de herencia de esa clase.",
+      "question_en": "`super()` inside a method always delegates to the class written immediately above in that class's inheritance list.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. `super()` delega a la **siguiente clase en el MRO de la instancia real**, que puede no coincidir con la superclase directa de la clase llamante. En herencia múltiple cooperativa esto es lo que permite que métodos de clases 'hermanas' se ejecuten en el orden correcto.",
+      "explanation_en": "False. `super()` delegates to the **next class in the actual instance's MRO**, which may not match the calling class's direct superclass. In cooperative multiple inheritance this is what allows sibling class methods to execute in the correct order.",
+      "source": "Fluent Python 2e (Ramalho), ch. 14 — super() and MRO",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "super", "mro", "misconception"]
+    },
+    {
+      "id": "q020101015",
+      "skill_id": "sk020101",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "En Python 3, `super()` sin argumentos dentro de un método de instancia es equivalente a `super(___, self)`, donde el hueco es la celda implícita que el compilador inyecta.",
+      "question_en": "In Python 3, `super()` with no arguments inside an instance method is equivalent to `super(___, self)`, where the blank is the implicit cell variable the compiler injects.",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "__class__",
+      "correct_answer_en": "__class__",
+      "explanation_es": "El compilador de Python 3 genera automáticamente una variable celda `__class__` dentro de cualquier cuerpo de método que use `super()`, y el `super()` sin argumentos la utiliza. Es equivalente a `super(__class__, self)`. Copiar el método a otra clase sin redefinirlo puede causar sorpresas porque `__class__` sigue apuntando a la clase original.",
+      "explanation_en": "The Python 3 compiler automatically generates a `__class__` cell variable inside any method body that uses `super()`, and zero-argument `super()` uses it. It is equivalent to `super(__class__, self)`. Copying the method to another class without redefining it can cause surprises because `__class__` still points to the original class.",
+      "source": "CPython docs 3.13 — super(); PEP 3135",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "super", "python3", "compiler"]
+    },
+    {
+      "id": "q020102007",
+      "skill_id": "sk020102",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la forma más Pythónica de escribir una función que acepta cualquier objeto con un método `.draw()`, independientemente de su clase?",
+      "question_en": "What is the most Pythonic way to write a function that accepts any object with a `.draw()` method, regardless of its class?",
+      "options_es": [
+        "Llamar directamente a `obj.draw()` y dejar que AttributeError se propague si no existe",
+        "Comprobar `type(obj) == Drawable` antes de llamar",
+        "Comprobar `isinstance(obj, Drawable)` antes de llamar",
+        "Aceptar solo objetos que hereden explícitamente de una clase base común"
+      ],
+      "options_en": [
+        "Call `obj.draw()` directly and let AttributeError propagate if it doesn't exist",
+        "Check `type(obj) == Drawable` before calling",
+        "Check `isinstance(obj, Drawable)` before calling",
+        "Accept only objects that explicitly inherit from a common base class"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El duck typing de Python dice: llama al método y gestiona `AttributeError` si es necesario. Comprobar `isinstance` acopla la función a la jerarquía de clases e impide que objetos no relacionados (que también tienen `.draw()`) funcionen. Llamar directamente y capturar `AttributeError` (o comprobar con `hasattr`) mantiene el código abierto a extensión.",
+      "explanation_en": "Python's duck typing says: call the method and handle `AttributeError` if needed. Checking `isinstance` couples the function to the class hierarchy and prevents unrelated objects (that also have `.draw()`) from working. Calling directly and catching `AttributeError` (or checking with `hasattr`) keeps code open for extension.",
+      "source": "Fluent Python 2e (Ramalho), ch. 13 — Duck typing and EAFP",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "duck-typing", "polymorphism", "pythonic"]
+    },
+    {
+      "id": "q020102008",
+      "skill_id": "sk020102",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Vector:\n    def __init__(self, x, y):\n        self.x, self.y = x, y\n    def __add__(self, other):\n        return Vector(self.x + other.x, self.y + other.y)\n    def __repr__(self):\n        return f\"Vector({self.x}, {self.y})\"\nprint(Vector(1, 2) + Vector(3, 4))\n```",
+      "question_en": "What does the following code print?\n```python\nclass Vector:\n    def __init__(self, x, y):\n        self.x, self.y = x, y\n    def __add__(self, other):\n        return Vector(self.x + other.x, self.y + other.y)\n    def __repr__(self):\n        return f\"Vector({self.x}, {self.y})\"\nprint(Vector(1, 2) + Vector(3, 4))\n```",
+      "options_es": [
+        "Vector(1, 2)",
+        "Vector(4, 6)",
+        "(4, 6)",
+        "TypeError"
+      ],
+      "options_en": [
+        "Vector(1, 2)",
+        "Vector(4, 6)",
+        "(4, 6)",
+        "TypeError"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`+` invoca `__add__`, que crea un nuevo `Vector` con la suma de componentes: (1+3, 2+4) = (4, 6). `print` llama a `str(result)`, que usa `__repr__` porque no hay `__str__` definido. El resultado es `Vector(4, 6)`.",
+      "explanation_en": "`+` invokes `__add__`, which creates a new `Vector` with summed components: (1+3, 2+4) = (4, 6). `print` calls `str(result)`, which falls back to `__repr__` since no `__str__` is defined. The output is `Vector(4, 6)`.",
+      "source": "Fluent Python 2e (Ramalho), ch. 16 — Operator overloading",
+      "expected_time_ms": 30000,
+      "tags": ["oop", "dunder", "add", "repr", "polymorphism"]
+    },
+    {
+      "id": "q020102009",
+      "skill_id": "sk020102",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Python admite sobrecarga de métodos nativa: puedes definir varios métodos con el mismo nombre y distintas firmas de parámetros, y Python llamará al correcto según los tipos.",
+      "question_en": "Python supports native method overloading: you can define multiple methods with the same name and different parameter signatures, and Python will call the right one based on the types.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. Python no tiene sobrecarga de métodos nativa. Si defines el mismo nombre dos veces, la segunda definición reemplaza silenciosamente a la primera. El polimorfismo en Python se logra mediante duck typing, argumentos por defecto, `*args`/`**kwargs` y `functools.singledispatch`, no mediante sobrecarga basada en tipos.",
+      "explanation_en": "False. Python does not have native method overloading. If you define the same name twice, the second definition silently replaces the first. Polymorphism in Python is achieved through duck typing, default arguments, `*args`/`**kwargs`, and `functools.singledispatch`, not type-based overloading.",
+      "source": "Fluent Python 2e (Ramalho), ch. 13 — Polymorphism in Python",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "polymorphism", "overloading", "misconception"]
+    },
+    {
+      "id": "q020102010",
+      "skill_id": "sk020102",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué devuelve `isinstance(True, int)`?",
+      "question_en": "What does `isinstance(True, int)` return?",
+      "options_es": [
+        "False, porque True es de tipo bool, no int",
+        "None, porque bool no es numerico",
+        "False, porque isinstance solo comprueba el tipo exacto",
+        "True, porque bool es una subclase de int"
+      ],
+      "options_en": [
+        "False, because True is of type bool, not int",
+        "None, because bool is not numeric",
+        "False, because isinstance only checks the exact type",
+        "True, because bool is a subclass of int"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En Python, `bool` es una subclase de `int`. `isinstance()` comprueba toda la jerarquía de clases, por lo que `isinstance(True, int)` devuelve `True`. Esto implica que `True + 1 == 2` y que `True` puede usarse en operaciones aritméticas. Es un ejemplo clásico de polimorfismo por herencia.",
+      "explanation_en": "In Python, `bool` is a subclass of `int`. `isinstance()` checks the full class hierarchy, so `isinstance(True, int)` returns `True`. This means `True + 1 == 2` and `True` can be used in arithmetic. It is a classic example of polymorphism through inheritance.",
+      "source": "CPython docs 3.13 — Built-in types: bool; isinstance()",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "isinstance", "bool", "polymorphism"]
+    },
+    {
+      "id": "q020102011",
+      "skill_id": "sk020102",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Cat:\n    def speak(self): return \"meow\"\nclass Dog:\n    def speak(self): return \"woof\"\nanimals = [Cat(), Dog(), Cat()]\nprint([a.speak() for a in animals])\n```",
+      "question_en": "What does the following code print?\n```python\nclass Cat:\n    def speak(self): return \"meow\"\nclass Dog:\n    def speak(self): return \"woof\"\nanimals = [Cat(), Dog(), Cat()]\nprint([a.speak() for a in animals])\n```",
+      "options_es": [
+        "['meow', 'woof']",
+        "TypeError: objetos incompatibles en la lista",
+        "['meow', 'woof', 'meow']",
+        "'meowwoofmeow'"
+      ],
+      "options_en": [
+        "['meow', 'woof']",
+        "TypeError: incompatible objects in list",
+        "['meow', 'woof', 'meow']",
+        "'meowwoofmeow'"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Python no requiere que los objetos de una lista compartan un tipo o clase base; solo necesitan responder a la operación solicitada (`.speak()`). La comprensión itera los tres objetos en orden y llama a `speak()` en cada uno, produciendo `['meow', 'woof', 'meow']`. Esto es polimorfismo vía duck typing.",
+      "explanation_en": "Python does not require objects in a list to share a type or base class; they only need to respond to the requested operation (`.speak()`). The comprehension iterates the three objects in order and calls `speak()` on each, producing `['meow', 'woof', 'meow']`. This is polymorphism via duck typing.",
+      "source": "Fluent Python 2e (Ramalho), ch. 13 — Duck typing",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "polymorphism", "duck-typing", "list-comprehension"]
+    },
+    {
+      "id": "q020102012",
+      "skill_id": "sk020102",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Por qué `isinstance(obj, Base)` devuelve `True` para instancias de una subclase de `Base`, pero `type(obj) is Base` devuelve `False`?",
+      "question_en": "Why does `isinstance(obj, Base)` return `True` for instances of a subclass of `Base`, but `type(obj) is Base` returns `False`?",
+      "options_es": [
+        "isinstance() recorre toda la jerarquía; type() comprueba solo la clase exacta",
+        "isinstance() es menos preciso que type()",
+        "type() siempre devuelve True para cualquier subclase",
+        "No hay diferencia; ambos devuelven el mismo resultado"
+      ],
+      "options_en": [
+        "isinstance() traverses the full hierarchy; type() checks only the exact class",
+        "isinstance() is less precise than type()",
+        "type() always returns True for any subclass",
+        "There is no difference; both return the same result"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`isinstance()` comprueba si el tipo del objeto aparece en su MRO, por lo que devuelve `True` para instancias de subclases. `type()` devuelve la clase de ejecución exacta; `type(sub) is Base` es `False` porque el tipo real es la subclase, no `Base`. Para código polimórfico, `isinstance()` es la herramienta correcta.",
+      "explanation_en": "`isinstance()` checks whether the object's type appears in its MRO, so it returns `True` for subclass instances. `type()` returns the exact runtime class; `type(sub) is Base` is `False` because the real type is the subclass, not `Base`. For polymorphic code, `isinstance()` is the right tool.",
+      "source": "CPython docs 3.13 — isinstance() and type()",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "isinstance", "type", "polymorphism"]
+    },
+    {
+      "id": "q020102013",
+      "skill_id": "sk020102",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Para comprobar en tiempo de ejecución si un objeto tiene un atributo específico sin forzar herencia, usa la función incorporada `___(obj, 'nombre_atributo')`.",
+      "question_en": "To check at runtime whether an object has a specific attribute without forcing inheritance, use the built-in function `___(obj, 'attribute_name')`.",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "hasattr",
+      "correct_answer_en": "hasattr",
+      "explanation_es": "`hasattr(obj, nombre)` devuelve `True` si el objeto tiene el atributo, lo que permite duck typing sin `isinstance()`. Es equivalente a intentar `getattr` y capturar `AttributeError`. Úsalo para verificar soporte de interfaz sin acoplar el código a una jerarquía de clases concreta.",
+      "explanation_en": "`hasattr(obj, name)` returns `True` if the object has the attribute, enabling duck typing without `isinstance()`. It is equivalent to trying `getattr` and catching `AttributeError`. Use it to verify interface support without coupling code to a specific class hierarchy.",
+      "source": "CPython docs 3.13 — hasattr(); Fluent Python 2e (Ramalho), ch. 13",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "hasattr", "duck-typing", "introspection"]
+    },
+    {
+      "id": "q020102014",
+      "skill_id": "sk020102",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "`isinstance(obj, (A, B))` devuelve `True` si `obj` es una instancia de `A` O de `B` (o de cualquier subclase de cualquiera de las dos).",
+      "question_en": "`isinstance(obj, (A, B))` returns `True` if `obj` is an instance of `A` OR `B` (or any subclass of either).",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. `isinstance()` acepta una tupla de tipos como segundo argumento y devuelve `True` si el objeto es instancia de cualquiera de ellos (o sus subclases). Equivale a `isinstance(obj, A) or isinstance(obj, B)` pero es más conciso y eficiente.",
+      "explanation_en": "True. `isinstance()` accepts a tuple of types as its second argument and returns `True` if the object is an instance of any of them (or their subclasses). It is equivalent to `isinstance(obj, A) or isinstance(obj, B)` but is more concise and efficient.",
+      "source": "CPython docs 3.13 — isinstance()",
+      "expected_time_ms": 15000,
+      "tags": ["oop", "isinstance", "polymorphism"]
+    },
+    {
+      "id": "q020102015",
+      "skill_id": "sk020102",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Defines `__eq__` en una clase pero NO defines `__hash__`. ¿Qué le ocurre a `__hash__`?",
+      "question_en": "You define `__eq__` in a class but do NOT define `__hash__`. What happens to `__hash__`?",
+      "options_es": [
+        "Se hereda el __hash__ de object, basado en id()",
+        "Python lo fija implícitamente a None, haciendo las instancias no hashables",
+        "Se genera automáticamente un __hash__ consistente con __eq__",
+        "Python lanza TypeError al definir la clase"
+      ],
+      "options_en": [
+        "The __hash__ from object is inherited, based on id()",
+        "Python implicitly sets it to None, making instances unhashable",
+        "A __hash__ consistent with __eq__ is automatically generated",
+        "Python raises TypeError when defining the class"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando defines `__eq__` sin `__hash__`, Python fija `__hash__ = None` en la clase, haciendo que las instancias no sean hashables. Intentar usarlas como clave de dict o en un set lanza `TypeError: unhashable type`. Para mantener el hashing, define `__hash__` explícitamente junto a `__eq__`.",
+      "explanation_en": "When you define `__eq__` without `__hash__`, Python sets `__hash__ = None` on the class, making instances unhashable. Trying to use them as dict keys or in a set raises `TypeError: unhashable type`. To keep hashing, define `__hash__` explicitly alongside `__eq__`.",
+      "source": "CPython docs 3.13 — object.__hash__; Fluent Python 2e (Ramalho), ch. 11",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "eq", "hash", "gotcha", "misconception"]
+    },
+    {
+      "id": "q020103007",
+      "skill_id": "sk020103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué indica convencionalmente un único guión bajo al inicio de un nombre de atributo (`_attr`) en Python?",
+      "question_en": "What does a single leading underscore (`_attr`) conventionally signal in Python?",
+      "options_es": [
+        "El atributo es verdaderamente privado y no puede accederse desde fuera",
+        "El atributo es una variable de clase, no de instancia",
+        "El atributo es de uso interno (convención, no impuesto)",
+        "El atributo es de solo lectura"
+      ],
+      "options_en": [
+        "The attribute is truly private and cannot be accessed from outside",
+        "The attribute is a class variable, not an instance variable",
+        "The attribute is intended for internal use (convention, not enforced)",
+        "The attribute is read-only"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El guión bajo simple es únicamente una convención de la comunidad Python que dice 'esto es un detalle de implementación; trata con precaución'. Python no impone ninguna restricción de acceso: el atributo es completamente accesible desde fuera. Importaciones como `from modulo import *` no exportan nombres con `_` inicial por defecto, pero el acceso directo siempre funciona.",
+      "explanation_en": "The single underscore is purely a community convention saying 'this is an implementation detail; tread carefully'. Python enforces no access restriction: the attribute is fully accessible from outside. Imports like `from module import *` don't export names starting with `_` by default, but direct access always works.",
+      "source": "PEP 8 — Naming conventions; Fluent Python 2e (Ramalho), ch. 11",
+      "expected_time_ms": 15000,
+      "tags": ["oop", "encapsulation", "convention", "underscore"]
+    },
+    {
+      "id": "q020103008",
+      "skill_id": "sk020103",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Temp:\n    def __init__(self): self._c = 0\n    @property\n    def celsius(self): return self._c\nt = Temp()\nt.celsius = 100\nprint(t.celsius)\n```",
+      "question_en": "What does the following code print?\n```python\nclass Temp:\n    def __init__(self): self._c = 0\n    @property\n    def celsius(self): return self._c\nt = Temp()\nt.celsius = 100\nprint(t.celsius)\n```",
+      "options_es": [
+        "AttributeError: can't set attribute 'celsius'",
+        "100",
+        "0",
+        "None"
+      ],
+      "options_en": [
+        "AttributeError: can't set attribute 'celsius'",
+        "100",
+        "0",
+        "None"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Una propiedad definida solo con `@property` (sin `@celsius.setter`) es de solo lectura. Intentar asignar un valor lanza `AttributeError: can't set attribute`. Para hacerla escribible hay que añadir un setter con `@celsius.setter`.",
+      "explanation_en": "A property defined with only `@property` (no `@celsius.setter`) is read-only. Attempting to assign a value raises `AttributeError: can't set attribute`. To make it writable, add a setter with `@celsius.setter`.",
+      "source": "CPython docs 3.13 — property; Fluent Python 2e (Ramalho), ch. 22",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "property", "encapsulation", "readonly"]
+    },
+    {
+      "id": "q020103009",
+      "skill_id": "sk020103",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "El 'name mangling' con doble guión bajo (`__x`) impide completamente el acceso al atributo desde fuera de la clase.",
+      "question_en": "Name mangling with a double leading underscore (`__x`) completely prevents access to the attribute from outside the class.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. El name mangling transforma `__x` en `_NombreClase__x`. El atributo sigue siendo accesible desde fuera usando el nombre transformado (`obj._MiClase__x`). Es un mecanismo de desincentivación, no de seguridad. Sirve principalmente para evitar colisiones de nombres en herencia.",
+      "explanation_en": "False. Name mangling transforms `__x` to `_ClassName__x`. The attribute remains accessible from outside using the mangled name (`obj._MyClass__x`). It is a deterrent, not a security mechanism. Its main purpose is to avoid name clashes in inheritance.",
+      "source": "CPython docs 3.13 — Private name mangling; PEP 8",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "name-mangling", "encapsulation", "misconception"]
+    },
+    {
+      "id": "q020103010",
+      "skill_id": "sk020103",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué decorador se utiliza para definir el método que se ejecuta cuando se usa `del obj.valor` sobre una propiedad llamada `valor`?",
+      "question_en": "Which decorator is used to define the method that runs when `del obj.value` is used on a property named `value`?",
+      "options_es": [
+        "@value.remove",
+        "@value.destroy",
+        "@del value",
+        "@value.deleter"
+      ],
+      "options_en": [
+        "@value.remove",
+        "@value.destroy",
+        "@del value",
+        "@value.deleter"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las propiedades admiten tres partes: getter (`@property`), setter (`@value.setter`) y deleter (`@value.deleter`). El deleter se invoca cuando se usa `del obj.value`. Si no está definido, la declaración `del` lanza `AttributeError: can't delete attribute`.",
+      "explanation_en": "Properties support three parts: getter (`@property`), setter (`@value.setter`), and deleter (`@value.deleter`). The deleter is called when `del obj.value` is used. If it is not defined, the `del` statement raises `AttributeError: can't delete attribute`.",
+      "source": "CPython docs 3.13 — property; Python Cookbook 3e (Beazley), ch. 8",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "property", "deleter", "encapsulation"]
+    },
+    {
+      "id": "q020103011",
+      "skill_id": "sk020103",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Point:\n    __slots__ = ('x', 'y')\n    def __init__(self, x, y):\n        self.x, self.y = x, y\np = Point(1, 2)\np.z = 3\nprint(p.z)\n```",
+      "question_en": "What does the following code print?\n```python\nclass Point:\n    __slots__ = ('x', 'y')\n    def __init__(self, x, y):\n        self.x, self.y = x, y\np = Point(1, 2)\np.z = 3\nprint(p.z)\n```",
+      "options_es": [
+        "None",
+        "3",
+        "AttributeError: 'Point' object has no attribute 'z'",
+        "TypeError"
+      ],
+      "options_en": [
+        "None",
+        "3",
+        "AttributeError: 'Point' object has no attribute 'z'",
+        "TypeError"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`__slots__` restringe las instancias a los atributos nombrados en la tupla. Intentar asignar cualquier atributo no listado en `__slots__` lanza `AttributeError`. Esto elimina el `__dict__` de la instancia, ahorra memoria y previene errores de escritura accidentales.",
+      "explanation_en": "`__slots__` restricts instances to only the named attributes in the tuple. Attempting to set any attribute not listed in `__slots__` raises `AttributeError`. This eliminates the instance `__dict__`, saves memory, and prevents accidental typos.",
+      "source": "CPython docs 3.13 — __slots__; Fluent Python 2e (Ramalho), ch. 11",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "slots", "encapsulation", "attribute-error"]
+    },
+    {
+      "id": "q020103012",
+      "skill_id": "sk020103",
+      "type": "fill_blank",
+      "difficulty_tier": "easy",
+      "question_es": "Para permitir que una propiedad llamada `precio` pueda borrarse con `del obj.precio`, usa el decorador `@precio.___`.",
+      "question_en": "To allow a property called `price` to be deleted with `del obj.price`, use the decorator `@price.___`.",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "deleter",
+      "correct_answer_en": "deleter",
+      "explanation_es": "El decorador `@precio.deleter` marca el método como el eliminador de la propiedad. El patrón completo es: `@property` para el getter, `@precio.setter` para el setter y `@precio.deleter` para el deleter. Si no se define el deleter, `del obj.precio` lanza `AttributeError`.",
+      "explanation_en": "The `@price.deleter` decorator marks the method as the property's deleter. The full pattern is: `@property` for the getter, `@price.setter` for the setter, and `@price.deleter` for the deleter. Without the deleter, `del obj.price` raises `AttributeError`.",
+      "source": "CPython docs 3.13 — property",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "property", "deleter"]
+    },
+    {
+      "id": "q020103013",
+      "skill_id": "sk020103",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "La clase `Sub` hereda de `Base`, que NO define `__slots__`. `Sub` sí define `__slots__ = ('x',)`. ¿Qué es cierto?",
+      "question_en": "Class `Sub` inherits from `Base`, which does NOT define `__slots__`. `Sub` defines `__slots__ = ('x',)`. What is true?",
+      "options_es": [
+        "Las instancias de Sub solo tienen el slot x, sin __dict__",
+        "Las instancias de Sub tienen el slot x más un __dict__ heredado de Base",
+        "__slots__ hace que los atributos sean de solo lectura",
+        "Python lanza TypeError al definir Sub"
+      ],
+      "options_en": [
+        "Instances of Sub have only the slot x, no __dict__",
+        "Instances of Sub have the slot x plus a __dict__ inherited from Base",
+        "__slots__ makes attributes read-only",
+        "Python raises TypeError when defining Sub"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`Base` no declara `__slots__`, por lo que provee `__dict__` en su implementación. Las instancias de `Sub` heredan ese `__dict__` y además obtienen el slot `x`. Para eliminar el `__dict__` de las instancias, TODAS las clases del MRO deben declarar `__slots__`.",
+      "explanation_en": "`Base` does not declare `__slots__`, so it provides `__dict__` in its implementation. Instances of `Sub` inherit that `__dict__` and also get the slot `x`. To eliminate `__dict__` from instances, ALL classes in the MRO must declare `__slots__`.",
+      "source": "CPython docs 3.13 — __slots__; Fluent Python 2e (Ramalho), ch. 11",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "slots", "inheritance", "dict", "gotcha"]
+    },
+    {
+      "id": "q020103014",
+      "skill_id": "sk020103",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Definir `__slots__` en una clase elimina el diccionario de atributos de cada instancia, almacenado en el atributo especial `___`.",
+      "question_en": "Defining `__slots__` on a class eliminates the per-instance attribute dictionary stored in the special attribute `___`.",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "__dict__",
+      "correct_answer_en": "__dict__",
+      "explanation_es": "Normalmente cada instancia tiene un `__dict__` que almacena sus atributos de forma dinámica. Declarar `__slots__` elimina este diccionario y reemplaza los atributos por descriptores de bajo nivel de memoria fija, lo que ahorra memoria y acelera el acceso a atributos.",
+      "explanation_en": "Normally each instance has a `__dict__` that stores its attributes dynamically. Declaring `__slots__` eliminates this dictionary and replaces attributes with fixed-memory low-level descriptors, saving memory and speeding up attribute access.",
+      "source": "CPython docs 3.13 — __slots__",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "slots", "dict", "memory"]
+    },
+    {
+      "id": "q020103015",
+      "skill_id": "sk020103",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Celsius:\n    def __init__(self, temp):\n        self._temp = temp\n    @property\n    def temp(self):\n        return self._temp\n    @temp.setter\n    def temp(self, value):\n        if value < -273.15:\n            raise ValueError(\"Below absolute zero\")\n        self._temp = value\nc = Celsius(25)\nc.temp = -300\nprint(c.temp)\n```",
+      "question_en": "What does the following code print?\n```python\nclass Celsius:\n    def __init__(self, temp):\n        self._temp = temp\n    @property\n    def temp(self):\n        return self._temp\n    @temp.setter\n    def temp(self, value):\n        if value < -273.15:\n            raise ValueError(\"Below absolute zero\")\n        self._temp = value\nc = Celsius(25)\nc.temp = -300\nprint(c.temp)\n```",
+      "options_es": [
+        "25",
+        "-300",
+        "-273.15",
+        "ValueError: Below absolute zero"
+      ],
+      "options_en": [
+        "25",
+        "-300",
+        "-273.15",
+        "ValueError: Below absolute zero"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La asignación `c.temp = -300` invoca el setter. El setter comprueba que -300 < -273.15 y lanza `ValueError` antes de actualizar `_temp`. La excepción se propaga y el `print` nunca se alcanza. El valor protegido original (25) permanece, pero la excepción detiene la ejecución.",
+      "explanation_en": "The assignment `c.temp = -300` invokes the setter. The setter checks that -300 < -273.15 and raises `ValueError` before updating `_temp`. The exception propagates and `print` is never reached. The protected original value (25) remains, but the exception stops execution.",
+      "source": "Fluent Python 2e (Ramalho), ch. 22 — Dynamic attributes and properties",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "property", "setter", "validation", "exception"]
+    },
+    {
+      "id": "q020104007",
+      "skill_id": "sk020104",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la diferencia fundamental entre `__new__` y `__init__` en Python?",
+      "question_en": "What is the fundamental difference between `__new__` and `__init__` in Python?",
+      "options_es": [
+        "__new__ crea y devuelve la nueva instancia; __init__ la recibe ya creada y la inicializa",
+        "__init__ crea la instancia; __new__ establece los valores de atributo predeterminados",
+        "__new__ es solo para classmethods; __init__ es solo para métodos de instancia",
+        "Son intercambiables; usar uno u otro produce el mismo efecto"
+      ],
+      "options_en": [
+        "__new__ creates and returns the new instance; __init__ receives it already created and initializes it",
+        "__init__ creates the instance; __new__ sets default attribute values",
+        "__new__ is only for classmethods; __init__ is only for instance methods",
+        "They are interchangeable; using either produces the same effect"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`__new__` es el constructor real: asigna memoria y devuelve la nueva instancia. `__init__` es el inicializador: recibe la instancia ya creada y configura su estado. Sobrescribir `__new__` es necesario para subclasificar tipos inmutables (como `int` o `str`) o para implementar el patrón Singleton.",
+      "explanation_en": "`__new__` is the real constructor: it allocates memory and returns the new instance. `__init__` is the initializer: it receives the already-created instance and sets its initial state. Overriding `__new__` is needed to subclass immutable types (like `int` or `str`) or to implement the Singleton pattern.",
+      "source": "CPython docs 3.13 — object.__new__; Fluent Python 2e (Ramalho), ch. 24",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "dunder", "new", "init", "constructor"]
+    },
+    {
+      "id": "q020104008",
+      "skill_id": "sk020104",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Bag:\n    def __init__(self, items):\n        self.items = items\n    def __len__(self):\n        return len(self.items)\nb = Bag([])\nprint(bool(b))\n```",
+      "question_en": "What does the following code print?\n```python\nclass Bag:\n    def __init__(self, items):\n        self.items = items\n    def __len__(self):\n        return len(self.items)\nb = Bag([])\nprint(bool(b))\n```",
+      "options_es": [
+        "None",
+        "True",
+        "False",
+        "TypeError: object is not iterable"
+      ],
+      "options_en": [
+        "None",
+        "True",
+        "False",
+        "TypeError: object is not iterable"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`bool(x)` primero busca `__bool__`. Si no está definido, recurre a `__len__`: un objeto con longitud 0 es falsy. `Bag([])` tiene `__len__` que devuelve 0, por lo que `bool(Bag([]))` es `False`. Si tampoco hubiera `__len__`, sería `True` por defecto.",
+      "explanation_en": "`bool(x)` first looks for `__bool__`. If absent, it falls back to `__len__`: an object with length 0 is falsy. `Bag([])` has `__len__` returning 0, so `bool(Bag([]))` is `False`. Without `__len__` either, the default is `True`.",
+      "source": "CPython docs 3.13 — object.__bool__; Fluent Python 2e (Ramalho), ch. 13",
+      "expected_time_ms": 30000,
+      "tags": ["oop", "dunder", "bool", "len", "truthiness"]
+    },
+    {
+      "id": "q020104009",
+      "skill_id": "sk020104",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Si defines `__eq__` en una clase sin definir `__hash__`, Python hace que las instancias sean no-hashables (no se pueden usar como claves de dict ni en sets).",
+      "question_en": "If you define `__eq__` in a class without defining `__hash__`, Python makes instances unhashable (they cannot be used as dict keys or in sets).",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Cuando defines `__eq__` sin `__hash__`, Python fija `__hash__ = None` en la clase. Esto hace que las instancias sean no-hashables: intentar usarlas en un set o como clave de dict lanza `TypeError: unhashable type`. Para mantener el hashing hay que definir `__hash__` junto a `__eq__`.",
+      "explanation_en": "True. When you define `__eq__` without `__hash__`, Python sets `__hash__ = None` on the class. This makes instances unhashable: trying to use them in a set or as a dict key raises `TypeError: unhashable type`. To keep hashing, define `__hash__` alongside `__eq__`.",
+      "source": "CPython docs 3.13 — object.__hash__",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "dunder", "eq", "hash", "unhashable"]
+    },
+    {
+      "id": "q020104010",
+      "skill_id": "sk020104",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué método especial hace que una instancia de clase sea 'llamable' (invocable como función)?",
+      "question_en": "Which special method makes a class instance 'callable' (invokable like a function)?",
+      "options_es": [
+        "__run__",
+        "__call__",
+        "__invoke__",
+        "__execute__"
+      ],
+      "options_en": [
+        "__run__",
+        "__call__",
+        "__invoke__",
+        "__execute__"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Definir `__call__` permite usar instancias con la sintaxis `instancia(args)`. Esto es útil para objetos que se comportan como funciones pero mantienen estado (por ejemplo, decoradores como clases, memoizadores, redes neuronales). Se puede verificar con `callable(obj)`, que comprueba la presencia de `__call__`.",
+      "explanation_en": "Defining `__call__` allows instances to be used with `instance(args)` syntax. This is useful for objects that behave like functions but hold state (e.g. class-based decorators, memoizers, neural networks). You can verify with `callable(obj)`, which checks for the presence of `__call__`.",
+      "source": "CPython docs 3.13 — object.__call__; Python Cookbook 3e (Beazley), ch. 7",
+      "expected_time_ms": 15000,
+      "tags": ["oop", "dunder", "call", "callable"]
+    },
+    {
+      "id": "q020104011",
+      "skill_id": "sk020104",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Primes:\n    def __contains__(self, n):\n        if n < 2: return False\n        return all(n % i != 0 for i in range(2, int(n**0.5) + 1))\np = Primes()\nprint(7 in p, 4 in p)\n```",
+      "question_en": "What does the following code print?\n```python\nclass Primes:\n    def __contains__(self, n):\n        if n < 2: return False\n        return all(n % i != 0 for i in range(2, int(n**0.5) + 1))\np = Primes()\nprint(7 in p, 4 in p)\n```",
+      "options_es": [
+        "True True",
+        "False False",
+        "False True",
+        "True False"
+      ],
+      "options_en": [
+        "True True",
+        "False False",
+        "False True",
+        "True False"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`__contains__` es invocado por el operador `in`. Para 7: `range(2, 3)` da sólo `[2]`, y `7 % 2 != 0`, así que `all(...)` es `True` → 7 es primo → `True`. Para 4: `range(2, 3)` da `[2]`, y `4 % 2 == 0`, así que `all(...)` es `False` → 4 no es primo → `False`.",
+      "explanation_en": "`__contains__` is invoked by the `in` operator. For 7: `range(2, 3)` gives only `[2]`, and `7 % 2 != 0`, so `all(...)` is `True` → 7 is prime → `True`. For 4: `range(2, 3)` gives `[2]`, and `4 % 2 == 0`, so `all(...)` is `False` → 4 is not prime → `False`.",
+      "source": "CPython docs 3.13 — object.__contains__; Fluent Python 2e (Ramalho), ch. 12",
+      "expected_time_ms": 40000,
+      "tags": ["oop", "dunder", "contains", "in-operator"]
+    },
+    {
+      "id": "q020104012",
+      "skill_id": "sk020104",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la diferencia clave entre `__getattr__` y `__getattribute__`?",
+      "question_en": "What is the key difference between `__getattr__` and `__getattribute__`?",
+      "options_es": [
+        "Son idénticos; uno es solo un alias del otro",
+        "__getattr__ se invoca para TODOS los accesos a atributos; __getattribute__ solo cuando falla la búsqueda",
+        "__getattribute__ se invoca para TODOS los accesos; __getattr__ solo cuando la búsqueda normal falla",
+        "__getattr__ es para atributos de clase; __getattribute__ para atributos de instancia"
+      ],
+      "options_en": [
+        "They are identical; one is just an alias of the other",
+        "__getattr__ is called for ALL attribute lookups; __getattribute__ only when lookup fails",
+        "__getattribute__ is called for ALL attribute lookups; __getattr__ only when normal lookup fails",
+        "__getattr__ is for class attributes; __getattribute__ is for instance attributes"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`__getattribute__` intercepta CUALQUIER acceso a atributo. Sobrescribirlo sin llamar a `super().__getattribute__` rompe todos los accesos de atributos y puede causar recursión infinita. `__getattr__` es un mecanismo de fallback: solo se invoca cuando el atributo no se encontró por el mecanismo normal. Para la mayoría de los casos, `__getattr__` es la opción correcta.",
+      "explanation_en": "`__getattribute__` intercepts ANY attribute access. Overriding it without calling `super().__getattribute__` breaks all attribute accesses and can cause infinite recursion. `__getattr__` is a fallback: it is only invoked when the attribute was not found by the normal mechanism. For most use cases, `__getattr__` is the right hook.",
+      "source": "CPython docs 3.13 — object.__getattr__ and __getattribute__; Fluent Python 2e (Ramalho), ch. 22",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "dunder", "getattr", "getattribute", "attribute-access"]
+    },
+    {
+      "id": "q020104013",
+      "skill_id": "sk020104",
+      "type": "fill_blank",
+      "difficulty_tier": "easy",
+      "question_es": "Para que un objeto funcione como gestor de contexto con la instrucción `with`, debe implementar `__enter__` y `___`.",
+      "question_en": "For an object to work as a context manager with the `with` statement, it must implement `__enter__` and `___`.",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "__exit__",
+      "correct_answer_en": "__exit__",
+      "explanation_es": "El protocolo de gestor de contexto requiere `__enter__` (llamado al entrar al bloque `with`, su valor de retorno se asigna a la variable `as`) y `__exit__` (llamado al salir, recibe información de excepción si la hubo). Si `__exit__` devuelve `True`, las excepciones se suprimen.",
+      "explanation_en": "The context manager protocol requires `__enter__` (called on entering the `with` block; its return value is bound to the `as` variable) and `__exit__` (called on exit, receives exception info if one occurred). If `__exit__` returns `True`, exceptions are suppressed.",
+      "source": "CPython docs 3.13 — context manager protocol; PEP 343",
+      "expected_time_ms": 18000,
+      "tags": ["oop", "dunder", "context-manager", "with"]
+    },
+    {
+      "id": "q020104014",
+      "skill_id": "sk020104",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`__del__` está garantizado para ser llamado inmediatamente cuando la última referencia a un objeto desaparece.",
+      "question_en": "`__del__` is guaranteed to be called immediately when the last reference to an object disappears.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. En CPython con conteo de referencias simple, `__del__` se llama de inmediato cuando el contador llega a cero. Pero las referencias cíclicas son gestionadas por el recolector de ciclos, que puede retrasar la llamada. Otras implementaciones (PyPy, Jython) no garantizan ningún momento. Usa gestores de contexto para limpieza determinista de recursos.",
+      "explanation_en": "False. In CPython with simple reference counting, `__del__` is called immediately when the count reaches zero. But cyclic references are handled by the cycle collector, which can delay the call. Other implementations (PyPy, Jython) provide no timing guarantees at all. Use context managers for deterministic resource cleanup.",
+      "source": "CPython docs 3.13 — object.__del__; Fluent Python 2e (Ramalho), ch. 6",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "dunder", "del", "gc", "misconception"]
+    },
+    {
+      "id": "q020104015",
+      "skill_id": "sk020104",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Num:\n    def __init__(self, n): self.n = n\n    def __add__(self, other):\n        if isinstance(other, Num):\n            return Num(self.n + other.n)\n        return NotImplemented\n    def __repr__(self): return f\"Num({self.n})\"\nresult = Num(3) + Num(4)\nprint(result)\nprint(type(result).__name__)\n```",
+      "question_en": "What does the following code print?\n```python\nclass Num:\n    def __init__(self, n): self.n = n\n    def __add__(self, other):\n        if isinstance(other, Num):\n            return Num(self.n + other.n)\n        return NotImplemented\n    def __repr__(self): return f\"Num({self.n})\"\nresult = Num(3) + Num(4)\nprint(result)\nprint(type(result).__name__)\n```",
+      "options_es": [
+        "Num(7)\nNum",
+        "7\nint",
+        "TypeError",
+        "Num(34)\nNum"
+      ],
+      "options_en": [
+        "Num(7)\nNum",
+        "7\nint",
+        "TypeError",
+        "Num(34)\nNum"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`__add__` crea un nuevo `Num` con la suma de valores: 3 + 4 = 7. `print(result)` llama `repr(result)` (ya que no hay `__str__`), dando `Num(7)`. `type(result).__name__` es `'Num'`. Si `__add__` devuelve `NotImplemented` (cuando el otro no es `Num`), Python intenta el `__radd__` del otro operando.",
+      "explanation_en": "`__add__` creates a new `Num` with the summed value: 3 + 4 = 7. `print(result)` calls `repr(result)` (since no `__str__` exists), giving `Num(7)`. `type(result).__name__` is `'Num'`. If `__add__` returns `NotImplemented` (when the other is not a `Num`), Python tries the other operand's `__radd__`.",
+      "source": "Fluent Python 2e (Ramalho), ch. 16 — Operator overloading and NotImplemented",
+      "expected_time_ms": 40000,
+      "tags": ["oop", "dunder", "add", "repr", "notimplemented"]
+    },
+    {
+      "id": "q020105007",
+      "skill_id": "sk020105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es el orden correcto de decoradores para marcar un método de clase como abstracto en Python 3.3+?",
+      "question_en": "What is the correct decorator order to mark a class method as abstract in Python 3.3+?",
+      "options_es": [
+        "@abstractmethod encima de @classmethod",
+        "@abstract encima de @classmethod",
+        "@classmethod(abstract=True)",
+        "@classmethod encima de @abstractmethod"
+      ],
+      "options_en": [
+        "@abstractmethod above @classmethod",
+        "@abstract above @classmethod",
+        "@classmethod(abstract=True)",
+        "@classmethod above @abstractmethod"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En Python 3.3+, el orden correcto es `@classmethod` (decorador externo) encima de `@abstractmethod` (decorador interno). ABCMeta reconoce esta combinación como un 'abstract classmethod'. El orden inverso funcionó en versiones antiguas pero estaba desaconsejado. Las subclases deben proporcionar una implementación del classmethod para poder instanciarse.",
+      "explanation_en": "In Python 3.3+, the correct order is `@classmethod` (outer decorator) above `@abstractmethod` (inner decorator). ABCMeta recognizes this combination as an 'abstract classmethod'. The reverse order worked in older versions but was discouraged. Subclasses must provide an implementation of the classmethod to be instantiable.",
+      "source": "CPython docs 3.13 — abc.abstractmethod; PEP 3119",
+      "expected_time_ms": 30000,
+      "tags": ["oop", "abc", "abstractmethod", "classmethod", "decorator-order"]
+    },
+    {
+      "id": "q020105008",
+      "skill_id": "sk020105",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom abc import ABC, abstractmethod\nclass Shape(ABC):\n    @abstractmethod\n    def area(self): pass\n    def describe(self):\n        return f\"area={self.area()}\"\nclass Circle(Shape):\n    def __init__(self, r): self.r = r\n    def area(self): return round(3.14 * self.r * self.r, 2)\nprint(Circle(5).describe())\n```",
+      "question_en": "What does the following code print?\n```python\nfrom abc import ABC, abstractmethod\nclass Shape(ABC):\n    @abstractmethod\n    def area(self): pass\n    def describe(self):\n        return f\"area={self.area()}\"\nclass Circle(Shape):\n    def __init__(self, r): self.r = r\n    def area(self): return round(3.14 * self.r * self.r, 2)\nprint(Circle(5).describe())\n```",
+      "options_es": [
+        "area=78.5",
+        "NotImplementedError",
+        "TypeError: Can't instantiate abstract class",
+        "area=None"
+      ],
+      "options_en": [
+        "area=78.5",
+        "NotImplementedError",
+        "TypeError: Can't instantiate abstract class",
+        "area=None"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`Circle` implementa `area()`, por lo que puede instanciarse. `describe()` es un método concreto en la clase abstracta `Shape`; las subclases lo heredan y lo pueden llamar. `self.area()` despacha al `area()` de `Circle`, que devuelve `3.14 × 25 = 78.5`.",
+      "explanation_en": "`Circle` implements `area()`, so it can be instantiated. `describe()` is a concrete method on the abstract class `Shape`; subclasses inherit and can call it. `self.area()` dispatches to `Circle.area()`, which returns `3.14 × 25 = 78.5`.",
+      "source": "CPython docs 3.13 — abc; Python Cookbook 3e (Beazley), ch. 8",
+      "expected_time_ms": 35000,
+      "tags": ["oop", "abc", "abstractmethod", "concrete-method"]
+    },
+    {
+      "id": "q020105009",
+      "skill_id": "sk020105",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Una subclase de una clase abstracta puede instanciarse una vez que implementa todos los métodos abstractos de la clase padre.",
+      "question_en": "A subclass of an abstract class can be instantiated once it implements all the abstract methods of the parent class.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. ABCMeta registra en `__abstractmethods__` qué métodos quedan sin implementar. Cuando la subclase define versiones concretas de todos ellos, `__abstractmethods__` queda como un frozenset vacío y la clase puede instanciarse normalmente.",
+      "explanation_en": "True. ABCMeta tracks in `__abstractmethods__` which methods remain unimplemented. When the subclass provides concrete implementations for all of them, `__abstractmethods__` becomes an empty frozenset and the class can be instantiated normally.",
+      "source": "CPython docs 3.13 — abc; ABCMeta.__abstractmethods__",
+      "expected_time_ms": 15000,
+      "tags": ["oop", "abc", "abstractmethod", "instantiation"]
+    },
+    {
+      "id": "q020105010",
+      "skill_id": "sk020105",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué contiene el atributo `__abstractmethods__` de una clase?",
+      "question_en": "What does the `__abstractmethods__` attribute of a class contain?",
+      "options_es": [
+        "Una lista de todos los métodos heredados de ABC",
+        "Los nombres de todos los métodos, incluyendo los concretos",
+        "Un frozenset con los nombres de los métodos abstractos aún sin implementar",
+        "None, a menos que la clase lance NotImplementedError"
+      ],
+      "options_en": [
+        "A list of all methods inherited from ABC",
+        "The names of all methods, including concrete ones",
+        "A frozenset of names of abstract methods not yet implemented",
+        "None, unless the class raises NotImplementedError"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`__abstractmethods__` es un frozenset con los nombres de los métodos que permanecen abstractos en esa clase (no han sido sobreescritos con una implementación concreta). Si no está vacío, la clase no puede instanciarse. Puedes inspeccionarlo para ver qué métodos faltan en una implementación parcial.",
+      "explanation_en": "`__abstractmethods__` is a frozenset of names of methods that remain abstract in that class (not yet overridden with a concrete implementation). If it is non-empty, the class cannot be instantiated. You can inspect it to see which methods are missing in a partial implementation.",
+      "source": "CPython docs 3.13 — abc; ABCMeta.__abstractmethods__",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "abc", "abstractmethods", "introspection"]
+    },
+    {
+      "id": "q020105011",
+      "skill_id": "sk020105",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom abc import ABC, abstractmethod\nclass Animal(ABC):\n    @abstractmethod\n    def sound(self):\n        return \"...\"\nclass Dog(Animal):\n    def sound(self):\n        return \"woof\"\nd = Dog()\nprint(d.sound())\n```",
+      "question_en": "What does the following code print?\n```python\nfrom abc import ABC, abstractmethod\nclass Animal(ABC):\n    @abstractmethod\n    def sound(self):\n        return \"...\"\nclass Dog(Animal):\n    def sound(self):\n        return \"woof\"\nd = Dog()\nprint(d.sound())\n```",
+      "options_es": [
+        "...",
+        "woof",
+        "NotImplementedError",
+        "TypeError"
+      ],
+      "options_en": [
+        "...",
+        "woof",
+        "NotImplementedError",
+        "TypeError"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`Dog.sound()` devuelve `'woof'` directamente. El cuerpo del método abstracto en `Animal` (`return '...'`) **no se llama automáticamente**. Para invocarlo, `Dog.sound()` tendría que llamar explícitamente a `super().sound()`. Este es un error conceptual común: los métodos abstractos con cuerpo solo se ejecutan si la subclase los llama explícitamente.",
+      "explanation_en": "`Dog.sound()` returns `'woof'` directly. The abstract method body in `Animal` (`return '...'`) is **not called automatically**. To invoke it, `Dog.sound()` would need to explicitly call `super().sound()`. This is a common misconception: abstract methods with bodies only run if the subclass explicitly calls them.",
+      "source": "CPython docs 3.13 — abc; Python Cookbook 3e (Beazley), ch. 8",
+      "expected_time_ms": 30000,
+      "tags": ["oop", "abc", "abstractmethod", "super", "misconception"]
+    },
+    {
+      "id": "q020105012",
+      "skill_id": "sk020105",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué hace `MiABC.register(OtraClase)`?",
+      "question_en": "What does `MyABC.register(AnotherClass)` do?",
+      "options_es": [
+        "Hace que isinstance(obj, MiABC) devuelva True para instancias de OtraClase, sin herencia real",
+        "Copia todos los métodos abstractos de MiABC en OtraClase",
+        "Obliga a OtraClase a implementar de inmediato todos los métodos abstractos",
+        "Registra OtraClase como una nueva clase base abstracta en la misma jerarquía"
+      ],
+      "options_en": [
+        "Makes isinstance(obj, MyABC) return True for instances of AnotherClass, without real inheritance",
+        "Copies all abstract methods from MyABC into AnotherClass",
+        "Forces AnotherClass to implement all abstract methods immediately",
+        "Registers AnotherClass as a new abstract base class in the same hierarchy"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`register()` crea una 'subclase virtual': `isinstance()` e `issubclass()` devuelven `True`, pero `OtraClase` NO hereda ningún método de `MiABC` y NO necesita implementar sus métodos abstractos. Sirve para que las ABCs funcionen con clases de terceros que no pueden modificarse para heredar de la ABC.",
+      "explanation_en": "`register()` creates a 'virtual subclass': `isinstance()` and `issubclass()` return `True`, but `AnotherClass` does NOT inherit any methods from `MyABC` and does NOT need to implement its abstract methods. This lets ABCs work with third-party classes that cannot be changed to inherit from the ABC.",
+      "source": "CPython docs 3.13 — abc.ABCMeta.register(); Fluent Python 2e (Ramalho), ch. 13",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "abc", "register", "virtual-subclass"]
+    },
+    {
+      "id": "q020105013",
+      "skill_id": "sk020105",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Para comprobar qué métodos abstractos quedan sin implementar en una clase antes de instanciarla, inspecciona el atributo `___` de la clase.",
+      "question_en": "To check which abstract methods still need to be implemented in a class before it can be instantiated, inspect the `___` attribute on the class.",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "__abstractmethods__",
+      "correct_answer_en": "__abstractmethods__",
+      "explanation_es": "`__abstractmethods__` es un frozenset mantenido por ABCMeta. Si está vacío, la clase puede instanciarse. Si contiene nombres, esos métodos aún son abstractos. Puedes inspeccionarlo en tiempo de ejecución para depurar qué falta en una implementación parcial: `print(MiClase.__abstractmethods__)`.",
+      "explanation_en": "`__abstractmethods__` is a frozenset maintained by ABCMeta. If it is empty, the class can be instantiated. If it contains names, those methods are still abstract. You can inspect it at runtime to debug what is missing in a partial implementation: `print(MyClass.__abstractmethods__)`.",
+      "source": "CPython docs 3.13 — abc; ABCMeta.__abstractmethods__",
+      "expected_time_ms": 25000,
+      "tags": ["oop", "abc", "abstractmethods", "introspection"]
+    },
+    {
+      "id": "q020105014",
+      "skill_id": "sk020105",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un `@abstractmethod` puede tener un cuerpo con implementación; las subclases pueden llamarlo explícitamente con `super().metodo()`.",
+      "question_en": "An `@abstractmethod` can have a body with an implementation; subclasses can call it explicitly with `super().method()`.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Los métodos abstractos pueden tener cuerpo. Las subclases deben sobreescribirlos para poder instanciarse, pero pueden llamar a la implementación base con `super().metodo()`. Este patrón es útil para definir comportamiento por defecto o lógica compartida en la ABC mientras se exige que cada subclase también la implemente.",
+      "explanation_en": "True. Abstract methods can have a body. Subclasses must still override them to be instantiable, but they can call the base implementation with `super().method()`. This pattern is useful for defining default behavior or shared logic in the ABC while requiring each subclass to also provide an implementation.",
+      "source": "CPython docs 3.13 — abc.abstractmethod; Python Cookbook 3e (Beazley), ch. 8",
+      "expected_time_ms": 20000,
+      "tags": ["oop", "abc", "abstractmethod", "super", "body"]
+    },
+    {
+      "id": "q020105015",
+      "skill_id": "sk020105",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué ocurre si intentas instanciar directamente una clase que hereda de ABC y tiene al menos un método marcado con `@abstractmethod` sin sobreescribir?",
+      "question_en": "What happens if you try to directly instantiate a class that inherits from ABC and has at least one `@abstractmethod` not overridden?",
+      "options_es": [
+        "Se crea la instancia con el método abstracto definido como None",
+        "Se lanza NotImplementedError en el primer acceso al método",
+        "No pasa nada; Python ignora los métodos abstractos en tiempo de ejecución",
+        "Se lanza TypeError en el momento de la llamada a la clase"
+      ],
+      "options_en": [
+        "An instance is created with the abstract method set to None",
+        "NotImplementedError is raised on the first access to the method",
+        "Nothing happens; Python ignores abstract methods at runtime",
+        "TypeError is raised at the moment the class is called"
+      ],
+      "correct_index": 3,
+      "explanation_es": "ABCMeta sobreescribe `__call__` de la metaclase para comprobar `__abstractmethods__` antes de crear la instancia. Si no está vacío, lanza inmediatamente `TypeError: Can't instantiate abstract class X with abstract method(s) y`. El error se lanza al intentar instanciar, no al definir la clase ni al acceder al método.",
+      "explanation_en": "ABCMeta overrides the metaclass `__call__` to check `__abstractmethods__` before creating the instance. If it is non-empty, it immediately raises `TypeError: Can't instantiate abstract class X with abstract method(s) y`. The error is raised when trying to instantiate, not when the class is defined or the method is accessed.",
+      "source": "CPython docs 3.13 — abc; CPython source Lib/abc.py",
+      "expected_time_ms": 30000,
+      "tags": ["oop", "abc", "abstractmethod", "typeerror", "instantiation"]
+    }
+  ]
+}

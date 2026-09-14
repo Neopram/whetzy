@@ -1,0 +1,683 @@
+{
+  "questions": [
+    {
+      "id": "q060501009",
+      "skill_id": "sk060501",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En scikit-learn, `init='k-means++'` es el valor por defecto de `KMeans`. ¿Qué hace exactamente esa inicialización?",
+      "question_en": "In scikit-learn, `init='k-means++'` is the default for `KMeans`. What does that initialization actually do?",
+      "options_es": [
+        "Elige los centroides iniciales de uno en uno, tomando cada nuevo centroide con probabilidad proporcional a la distancia al cuadrado al centroide ya elegido más cercano, de modo que salgan separados entre sí",
+        "Determina automáticamente el valor óptimo de K antes de agrupar",
+        "Garantiza que el algoritmo alcance el óptimo global de la inercia",
+        "Estandariza las variables a media 0 y varianza 1 antes de agrupar"
+      ],
+      "options_en": [
+        "It picks the initial centroids one at a time, drawing each new centroid with probability proportional to its squared distance to the nearest already-chosen centroid, so they end up spread apart",
+        "It automatically determines the optimal value of K before clustering",
+        "It guarantees the algorithm reaches the global optimum of the inertia",
+        "It standardizes the variables to mean 0 and variance 1 before clustering"
+      ],
+      "correct_index": 0,
+      "explanation_es": "k-means++ es un esquema de siembra: reparte los centroides iniciales lejos unos de otros en vez de sortearlos uniformemente, lo que reduce mucho el riesgo de caer en un óptimo local malo. Las otras opciones recogen confusiones frecuentes: el símbolo `++` sugiere a mucha gente que el algoritmo 'mejorado' elige K solo, pero K sigue siendo un parámetro que tú fijas; el resultado teórico de Arthur y Vassilvitskii es una garantía de aproximación O(log K) en esperanza, no el óptimo global, y por eso scikit-learn sigue repitiendo el ajuste con `n_init`; y estandarizar es preprocesado, un paso anterior e independiente de la inicialización.",
+      "explanation_en": "k-means++ is a seeding scheme: it spreads the initial centroids far from one another instead of sampling them uniformly, which sharply reduces the risk of settling into a bad local optimum. The other options capture common confusions: the `++` makes many learners assume the 'improved' algorithm picks K by itself, but K is still a parameter you set; Arthur and Vassilvitskii's result is an expected O(log K) approximation guarantee, not the global optimum, which is why scikit-learn still repeats the fit via `n_init`; and standardizing is preprocessing, a separate step that happens before initialization.",
+      "source": "Arthur & Vassilvitskii, 'k-means++: The Advantages of Careful Seeding' (SODA 2007); scikit-learn User Guide — Clustering: K-Means initialization",
+      "expected_time_ms": 30000,
+      "tags": ["kmeans", "kmeans-plus-plus", "initialization"]
+    },
+    {
+      "id": "q060501010",
+      "skill_id": "sk060501",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Vas a agrupar clientes con dos variables: ingresos anuales (en euros) y años de estudio. ¿Por qué conviene estandarizar antes de ejecutar K-Means?",
+      "question_en": "You are about to cluster customers using two variables: annual income (in euros) and years of schooling. Why should you standardize before running K-Means?",
+      "options_es": [
+        "Porque K-Means no admite valores negativos",
+        "Porque K-Means mide distancias euclidianas, así que la variable con el rango mayor (los ingresos, con miles de unidades) domina la distancia y los años de estudio dejan de influir en la partición",
+        "Porque sin estandarizar el algoritmo no llega nunca a converger",
+        "Porque estandarizar garantiza que los clusters resultantes sean esféricos"
+      ],
+      "options_en": [
+        "Because K-Means cannot handle negative values",
+        "Because K-Means measures Euclidean distances, so the variable with the larger range (income, in thousands of units) dominates the distance and years of schooling stop influencing the partition",
+        "Because without standardizing the algorithm never converges",
+        "Because standardizing guarantees the resulting clusters will be spherical"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La escala es el problema: una diferencia de 10.000 € pesa en la distancia euclidiana muchísimo más que una diferencia de 3 años, así que sin estandarizar el clustering es en la práctica un clustering sobre ingresos. Las opciones equivocadas mezclan conceptos que sí existen: K-Means trabaja sin problema con valores negativos; el algoritmo de Lloyd converge siempre en un número finito de pasos, solo que a una partición peor; y la forma esférica es una limitación distinta del método (K-Means asume clusters convexos e isótropos) que ningún escalado arregla.",
+      "explanation_en": "Scale is the problem: a €10,000 gap weighs far more in Euclidean distance than a 3-year gap, so without standardizing you are effectively clustering on income alone. The wrong options borrow real ideas from elsewhere: K-Means handles negative values fine; Lloyd's algorithm always converges in a finite number of steps, it just converges to a worse partition; and the spherical-shape issue is a separate limitation of the method (K-Means assumes convex, isotropic clusters) that no rescaling fixes.",
+      "source": "Géron, Hands-On Machine Learning 3e, Ch. 9; scikit-learn User Guide — Preprocessing data: StandardScaler",
+      "expected_time_ms": 25000,
+      "tags": ["kmeans", "scaling", "distance"]
+    },
+    {
+      "id": "q060501011",
+      "skill_id": "sk060501",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Marketing pide que cada cliente reciba una probabilidad de pertenencia a cada segmento, no una asignación única. ¿Qué afirmación es correcta?",
+      "question_en": "Marketing wants every customer to get a probability of belonging to each segment, not a single hard assignment. Which statement is correct?",
+      "options_es": [
+        "K-Means ya devuelve esas probabilidades en el atributo `labels_`",
+        "Basta con normalizar 1/distancia a cada centroide: eso son las probabilidades que da K-Means",
+        "K-Means hace asignación dura (cada punto a un único cluster); un modelo de mezcla de gaussianas (GMM) ajustado por EM sí da asignaciones blandas, con `predict_proba` por componente",
+        "Ningún método de clustering puede dar pertenencias parciales"
+      ],
+      "options_en": [
+        "K-Means already returns those probabilities in the `labels_` attribute",
+        "Just normalize 1/distance to each centroid: those are the probabilities K-Means gives you",
+        "K-Means does hard assignment (each point to exactly one cluster); a Gaussian Mixture Model (GMM) fitted by EM does give soft assignments, with `predict_proba` per component",
+        "No clustering method can produce partial memberships"
+      ],
+      "correct_index": 2,
+      "explanation_es": "K-Means particiona el espacio en celdas de Voronoi: `labels_` es un entero por punto, no una distribución, así que la primera opción confunde etiqueta con probabilidad. La segunda es la trampa más fina, porque el número que sale parece una probabilidad: normalizar inversos de distancia produce pesos heurísticos sin modelo generativo detrás (lo que hace fuzzy c-means, que no es K-Means), y no responde a '¿con qué verosimilitud generó este componente el punto?'. El GMM sí modela cada cluster como una gaussiana y devuelve responsabilidades; K-Means es de hecho su caso límite con covarianzas esféricas iguales.",
+      "explanation_en": "K-Means partitions the space into Voronoi cells: `labels_` is one integer per point, not a distribution, so the first option confuses a label with a probability. The second is the subtler trap, because the number it produces looks like a probability: normalizing inverse distances yields heuristic weights with no generative model behind them (roughly what fuzzy c-means does, which is not K-Means), and it never answers 'how likely is it that this component generated this point?'. A GMM does model each cluster as a Gaussian and returns responsibilities; K-Means is in fact its limiting case with equal spherical covariances.",
+      "source": "Géron, Hands-On Machine Learning 3e, Ch. 9 (Gaussian Mixtures); scikit-learn User Guide — Gaussian mixture models",
+      "expected_time_ms": 38000,
+      "tags": ["kmeans", "gmm", "soft-assignment"]
+    },
+    {
+      "id": "q060501012",
+      "skill_id": "sk060501",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En un dataset de transacciones aparece un importe erróneo 1.000 veces mayor que el resto. ¿Cómo afecta a K-Means?",
+      "question_en": "A transactions dataset contains one erroneous amount 1,000 times larger than the rest. How does it affect K-Means?",
+      "options_es": [
+        "No le afecta, porque el centroide es la mediana de los puntos del cluster",
+        "Provoca que el algoritmo lance un error y no converja",
+        "Aumenta automáticamente el número de clusters para aislar ese punto",
+        "Arrastra hacia sí el centroide de su cluster, porque el centroide es la media y la inercia penaliza la distancia al cuadrado; K-Medoids (PAM), que usa puntos reales del dataset como centros, es bastante más robusto"
+      ],
+      "options_en": [
+        "It has no effect, because the centroid is the median of the cluster's points",
+        "It makes the algorithm raise an error and fail to converge",
+        "It automatically increases the number of clusters to isolate that point",
+        "It drags its cluster's centroid toward itself, because the centroid is the mean and inertia penalizes squared distance; K-Medoids (PAM), which uses actual data points as centers, is considerably more robust"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La media no es robusta y la inercia eleva las distancias al cuadrado, así que un solo valor extremo puede desplazar visiblemente un centroide e incluso robarle un cluster entero. La primera opción es la confusión clásica media/mediana: si el centro fuera la mediana (K-Medians) el atípico apenas contaría, pero K-Means usa la media por construcción. K nunca cambia solo: es un hiperparámetro fijo, así que un atípico no 'crea' un cluster salvo que tú subas K. Y el algoritmo no falla: converge tranquilamente a una solución mala, que es justo lo peligroso.",
+      "explanation_en": "The mean is not robust and inertia squares distances, so a single extreme value can visibly shift a centroid or even capture a whole cluster. The first option is the classic mean/median confusion: if the center were the median (K-Medians) the outlier would barely count, but K-Means uses the mean by construction. K never changes on its own — it is a fixed hyperparameter, so an outlier does not 'create' a cluster unless you raise K yourself. And the algorithm does not fail: it converges quietly to a bad solution, which is exactly what makes it dangerous.",
+      "source": "Géron, Hands-On Machine Learning 3e, Ch. 9; Kaufman & Rousseeuw, 'Finding Groups in Data' (PAM / K-Medoids)",
+      "expected_time_ms": 30000,
+      "tags": ["kmeans", "outliers", "kmedoids", "robustness"]
+    },
+    {
+      "id": "q060501013",
+      "skill_id": "sk060501",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\\n\\n```python\\nimport numpy as np\\nfrom sklearn.cluster import KMeans\\n\\nrng = np.random.default_rng(0)\\nX = rng.random((200, 6))\\nkm = KMeans(n_clusters=4, n_init=10, random_state=0).fit(X)\\nprint(km.cluster_centers_.shape, km.labels_.shape)\\n```",
+      "question_en": "What does this code print?\\n\\n```python\\nimport numpy as np\\nfrom sklearn.cluster import KMeans\\n\\nrng = np.random.default_rng(0)\\nX = rng.random((200, 6))\\nkm = KMeans(n_clusters=4, n_init=10, random_state=0).fit(X)\\nprint(km.cluster_centers_.shape, km.labels_.shape)\\n```",
+      "options_es": [
+        "(6, 4) (200,)",
+        "(200, 4) (4,)",
+        "(4, 6) (200,)",
+        "(4, 200) (6,)"
+      ],
+      "options_en": [
+        "(6, 4) (200,)",
+        "(200, 4) (4,)",
+        "(4, 6) (200,)",
+        "(4, 200) (6,)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Hay un centroide por cluster y cada centroide vive en el espacio de features, así que `cluster_centers_` tiene forma `(n_clusters, n_features)` = (4, 6); y hay exactamente una etiqueta por muestra, así que `labels_` es un vector de 200. La opción (6, 4) es la intuición traspuesta de quien imagina los centroides como columnas de una tabla. La opción (200, 4) es la forma que tendría una matriz de pertenencias blandas, que K-Means no produce. La última mezcla el número de muestras con el de variables.",
+      "explanation_en": "There is one centroid per cluster and each centroid lives in feature space, so `cluster_centers_` has shape `(n_clusters, n_features)` = (4, 6); and there is exactly one label per sample, so `labels_` is a length-200 vector. The (6, 4) option is the transposed intuition of someone picturing centroids as table columns. The (200, 4) option is the shape a soft-membership matrix would have, which K-Means never produces. The last one swaps the sample count with the feature count.",
+      "source": "scikit-learn API reference — sklearn.cluster.KMeans (attributes `cluster_centers_`, `labels_`)",
+      "expected_time_ms": 35000,
+      "tags": ["kmeans", "sklearn", "shapes", "code-output"]
+    },
+    {
+      "id": "q060501014",
+      "skill_id": "sk060501",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Las etiquetas numéricas que devuelve K-Means (0, 1, 2, ...) son arbitrarias: dos ejecuciones pueden dar exactamente la misma partición de los datos con los números permutados.",
+      "question_en": "The numeric labels K-Means returns (0, 1, 2, ...) are arbitrary: two runs can produce exactly the same partition of the data with the numbers permuted.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El entero solo identifica al grupo dentro de esa ejecución; depende del orden en que se sembraron los centroides. Cuesta creerlo cuando uno compara `labels_` de dos ejecuciones elemento a elemento, ve que 'casi nada coincide' y concluye que el modelo es inestable: la partición puede ser idéntica y el accuracy aparente, cero. Por eso las métricas de clustering correctas son invariantes a permutaciones de etiquetas (Adjusted Rand Index, información mutua normalizada) y nunca se evalúa un clustering comparando enteros directamente.",
+      "explanation_en": "True. The integer only identifies the group within that run; it depends on the order the centroids were seeded in. This is hard to believe when you compare `labels_` from two runs element by element, see that 'almost nothing matches' and conclude the model is unstable: the partition can be identical while the apparent accuracy is zero. That is why proper clustering metrics are invariant to label permutations (Adjusted Rand Index, normalized mutual information), and why you never evaluate a clustering by comparing integers directly.",
+      "source": "scikit-learn User Guide — Clustering performance evaluation: Rand index and Mutual Information based scores",
+      "expected_time_ms": 28000,
+      "tags": ["kmeans", "labels", "evaluation", "gotcha"]
+    },
+    {
+      "id": "q060501015",
+      "skill_id": "sk060501",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se llama el algoritmo de clustering basado en densidad que, mediante los parámetros `eps` y `min_samples`, encuentra clusters de forma arbitraria, decide por sí mismo cuántos hay y etiqueta como ruido los puntos que no pertenecen a ninguno?",
+      "question_en": "What is the density-based clustering algorithm called that, using the parameters `eps` and `min_samples`, finds arbitrarily shaped clusters, decides by itself how many there are, and labels as noise the points that belong to none of them?",
+      "correct_answer_es": "DBSCAN",
+      "correct_answer_en": "DBSCAN",
+      "explanation_es": "DBSCAN define un cluster como una región densa: un punto es 'núcleo' si tiene al menos `min_samples` vecinos dentro de un radio `eps`, y los núcleos conectados forman un cluster. Esto resuelve dos limitaciones de K-Means a la vez: no hay que fijar K y los clusters pueden tener forma de media luna o de anillo. El precio es que `eps` es sensible a la escala y que DBSCAN sufre cuando los clusters tienen densidades muy distintas (ahí se usa HDBSCAN). En scikit-learn los puntos de ruido se marcan con la etiqueta -1, no con un cluster propio.",
+      "explanation_en": "DBSCAN defines a cluster as a dense region: a point is a 'core' point if it has at least `min_samples` neighbors within radius `eps`, and connected core points form a cluster. This solves two K-Means limitations at once: you do not have to fix K, and clusters can be crescent- or ring-shaped. The price is that `eps` is scale-sensitive and DBSCAN struggles when clusters have very different densities (HDBSCAN is used there). In scikit-learn noise points get the label -1, not a cluster of their own.",
+      "source": "Ester, Kriegel, Sander & Xu, 'A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise' (KDD 1996); scikit-learn User Guide — Clustering: DBSCAN",
+      "expected_time_ms": 32000,
+      "tags": ["clustering", "dbscan", "density"]
+    },
+
+    {
+      "id": "q060502009",
+      "skill_id": "sk060502",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué efecto característico produce el enlace simple (single linkage), que mide la distancia entre dos clusters como la distancia mínima entre sus puntos?",
+      "question_en": "What characteristic effect does single linkage produce, given that it measures the distance between two clusters as the minimum distance between their points?",
+      "options_es": [
+        "Produce siempre clusters compactos y de tamaño parecido",
+        "Es idéntico al enlace de Ward, pero calculado más rápido",
+        "Obliga a fijar el número de clusters antes de ejecutar el algoritmo",
+        "El efecto de encadenamiento: basta un puente de puntos intermedios para que dos grupos se fusionen, produciendo clusters alargados cuyos extremos están muy lejos entre sí"
+      ],
+      "options_en": [
+        "It always produces compact clusters of similar size",
+        "It is identical to Ward linkage, just computed faster",
+        "It forces you to fix the number of clusters before running the algorithm",
+        "The chaining effect: a bridge of intermediate points is enough to merge two groups, producing elongated clusters whose ends are very far apart"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Como solo mira el par más cercano, el enlace simple va 'saltando' de vecino en vecino y encadena grupos que intuitivamente son distintos. La primera opción describe exactamente lo contrario y es el intercambio más frecuente: compacto y equilibrado es el comportamiento del enlace completo y de Ward. Ward, además, minimiza el incremento de varianza intra-cluster, un criterio totalmente distinto del mínimo par a par. Y ningún criterio de enlace obliga a fijar K: el dendrograma se construye entero y K se decide al cortar. El encadenamiento no siempre es malo: es lo que permite al enlace simple recuperar clusters no convexos.",
+      "explanation_en": "Because it only looks at the closest pair, single linkage hops from neighbor to neighbor and chains together groups that are intuitively distinct. The first option describes the exact opposite and is the most common swap: compact and balanced is complete-linkage and Ward behavior. Ward, moreover, minimizes the increase in within-cluster variance, a criterion entirely different from the minimum pairwise distance. And no linkage criterion forces you to fix K: the full dendrogram is built and K is decided at cut time. Chaining is not always bad: it is what lets single linkage recover non-convex clusters.",
+      "source": "Hastie, Tibshirani & Friedman, The Elements of Statistical Learning 2e, §14.3.12; scikit-learn User Guide — Hierarchical clustering: linkage criteria",
+      "expected_time_ms": 32000,
+      "tags": ["hierarchical", "single-linkage", "chaining"]
+    },
+    {
+      "id": "q060502010",
+      "skill_id": "sk060502",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Tienes una tabla de 2 millones de filas. ¿Por qué el clustering jerárquico aglomerativo clásico no es la primera opción?",
+      "question_en": "You have a table with 2 million rows. Why is classic agglomerative hierarchical clustering not your first choice?",
+      "options_es": [
+        "Porque necesita la matriz de distancias entre todos los pares: memoria O(n²) y coste temporal del orden de O(n³) (O(n² log n) en implementaciones optimizadas), inviable a esa escala",
+        "Porque es estocástico y cada ejecución devuelve una partición distinta",
+        "Porque solo puede producir dos clusters",
+        "Porque no admite variables numéricas continuas"
+      ],
+      "options_en": [
+        "Because it needs the full pairwise distance matrix: O(n²) memory and roughly O(n³) time (O(n² log n) in optimized implementations), infeasible at that scale",
+        "Because it is stochastic and every run returns a different partition",
+        "Because it can only produce two clusters",
+        "Because it does not accept continuous numeric variables"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con 2 millones de puntos la matriz de distancias tendría del orden de 2·10^12 entradas: el cuello de botella es memoria antes que tiempo. La segunda opción invierte una propiedad real y por eso engaña: el aglomerativo es determinista (lo estocástico es K-Means con inicialización aleatoria), y esa misma reproducibilidad es la razón por la que mucha gente lo prefiere, hasta que choca con el coste. Corta el árbol donde quieras y obtienes tantos clusters como necesites, así que lo de 'dos clusters' no tiene base. A esta escala se usan MiniBatchKMeans o BIRCH, o se agrupa jerárquicamente una muestra.",
+      "explanation_en": "With 2 million points the distance matrix would hold on the order of 2·10^12 entries: memory, not time, is the first wall you hit. The second option inverts a real property and is tempting for that reason: agglomerative clustering is deterministic (the stochastic one is K-Means with random initialization), and that same reproducibility is why many people prefer it — until they hit the cost. Cut the tree wherever you like and you get as many clusters as you need, so 'only two clusters' has no basis. At this scale you reach for MiniBatchKMeans or BIRCH, or cluster a sample hierarchically.",
+      "source": "Hastie, Tibshirani & Friedman, The Elements of Statistical Learning 2e, §14.3.12; scikit-learn User Guide — Comparing different clustering algorithms / scalability",
+      "expected_time_ms": 35000,
+      "tags": ["hierarchical", "complexity", "scalability"]
+    },
+    {
+      "id": "q060502011",
+      "skill_id": "sk060502",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿En qué se diferencia el clustering jerárquico divisivo del aglomerativo?",
+      "question_en": "How does divisive hierarchical clustering differ from agglomerative?",
+      "options_es": [
+        "El divisivo solo puede usar el enlace de Ward",
+        "El divisivo no produce un dendrograma, solo una lista de clusters",
+        "El divisivo parte de un único cluster con todos los puntos y lo va dividiendo (top-down); el aglomerativo parte de un cluster por punto y los va fusionando (bottom-up)",
+        "El divisivo es supervisado y el aglomerativo no"
+      ],
+      "options_en": [
+        "Divisive can only use Ward linkage",
+        "Divisive does not produce a dendrogram, only a list of clusters",
+        "Divisive starts from a single cluster holding every point and keeps splitting it (top-down); agglomerative starts from one cluster per point and keeps merging them (bottom-up)",
+        "Divisive is supervised and agglomerative is not"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Es la misma jerarquía recorrida en sentidos opuestos, y ambas producen dendrograma; la diferencia práctica es el coste y el detalle donde acierta cada una (el divisivo decide primero las particiones de alto nivel, el aglomerativo el detalle fino). La opción 'supervisado' es la confusión más importante de descartar: todo el clustering jerárquico es no supervisado, no hay etiquetas en ninguna de las dos variantes. En la práctica casi todas las librerías, scikit-learn incluida, implementan solo el aglomerativo.",
+      "explanation_en": "It is the same hierarchy traversed in opposite directions, and both produce a dendrogram; the practical difference is cost and where each is most reliable (divisive settles the high-level splits first, agglomerative the fine detail). The 'supervised' option is the most important one to rule out: all hierarchical clustering is unsupervised, there are no labels in either variant. In practice almost every library, scikit-learn included, ships only the agglomerative version.",
+      "source": "Hastie, Tibshirani & Friedman, The Elements of Statistical Learning 2e, §14.3.12",
+      "expected_time_ms": 24000,
+      "tags": ["hierarchical", "divisive", "agglomerative"]
+    },
+    {
+      "id": "q060502012",
+      "skill_id": "sk060502",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Ejecutas `AgglomerativeClustering(n_clusters=None, distance_threshold=5.0)` en scikit-learn. ¿Qué obtienes?",
+      "question_en": "You run `AgglomerativeClustering(n_clusters=None, distance_threshold=5.0)` in scikit-learn. What do you get?",
+      "options_es": [
+        "Exactamente 5 clusters",
+        "Los 5 puntos más alejados marcados como ruido",
+        "Un error, porque `n_clusters` es siempre obligatorio",
+        "El árbol cortado a la altura 5.0: el número de clusters lo determina el corte y no se conoce hasta ajustar el modelo (se lee luego en `n_clusters_`)"
+      ],
+      "options_en": [
+        "Exactly 5 clusters",
+        "The 5 most distant points marked as noise",
+        "An error, because `n_clusters` is always required",
+        "The tree cut at height 5.0: the number of clusters is determined by the cut and is unknown until you fit the model (you read it afterwards in `n_clusters_`)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`distance_threshold` es una altura del dendrograma, expresada en unidades de distancia, no un recuento: leer el 5.0 como 'cinco clusters' es el error más común con este parámetro, y es fácil caer porque el 5 aparece literalmente en el código. La API exige que exactamente uno de `n_clusters` y `distance_threshold` sea `None`, así que poner `n_clusters=None` es correcto, no un error. Y marcar puntos como ruido es propio de DBSCAN: el jerárquico asigna todos los puntos a algún cluster, aunque sea a uno de tamaño 1.",
+      "explanation_en": "`distance_threshold` is a dendrogram height expressed in distance units, not a count: reading 5.0 as 'five clusters' is the most common mistake with this parameter, and it is easy to fall for because the 5 appears literally in the code. The API requires exactly one of `n_clusters` and `distance_threshold` to be `None`, so passing `n_clusters=None` is correct, not an error. And marking points as noise is DBSCAN's behavior: hierarchical clustering assigns every point to some cluster, even a cluster of size 1.",
+      "source": "scikit-learn API reference — sklearn.cluster.AgglomerativeClustering (`distance_threshold`, `n_clusters_`)",
+      "expected_time_ms": 35000,
+      "tags": ["hierarchical", "sklearn", "dendrogram-cut"]
+    },
+    {
+      "id": "q060502013",
+      "skill_id": "sk060502",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\\n\\n```python\\nimport numpy as np\\nfrom scipy.cluster.hierarchy import linkage\\n\\nrng = np.random.default_rng(0)\\nX = rng.random((12, 3))\\nZ = linkage(X, method='ward')\\nprint(Z.shape)\\n```",
+      "question_en": "What does this code print?\\n\\n```python\\nimport numpy as np\\nfrom scipy.cluster.hierarchy import linkage\\n\\nrng = np.random.default_rng(0)\\nX = rng.random((12, 3))\\nZ = linkage(X, method='ward')\\nprint(Z.shape)\\n```",
+      "options_es": [
+        "(12, 4)",
+        "(11, 4)",
+        "(12, 12)",
+        "(11, 3)"
+      ],
+      "options_en": [
+        "(12, 4)",
+        "(11, 4)",
+        "(12, 12)",
+        "(11, 3)"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cada fusión reduce en uno el número de clusters, así que llevar 12 puntos hasta un único cluster cuesta exactamente 11 fusiones: una fila por fusión. Y cada fila tiene 4 columnas: los índices de los dos clusters fusionados, la distancia a la que se fusionan y el número de observaciones originales del cluster resultante. (12, 4) es el error de uno clásico, contar puntos en vez de uniones. (12, 12) confunde `Z` con la matriz de distancias entre pares, que es el insumo, no la salida. (11, 3) olvida la cuarta columna, el recuento, que es precisamente la que `dendrogram` usa para dibujar el tamaño de cada rama.",
+      "explanation_en": "Each merge reduces the cluster count by one, so taking 12 points down to a single cluster costs exactly 11 merges: one row per merge. And each row has 4 columns: the indices of the two merged clusters, the distance at which they merge, and the number of original observations in the resulting cluster. (12, 4) is the classic off-by-one, counting points instead of merges. (12, 12) confuses `Z` with the pairwise distance matrix, which is the input, not the output. (11, 3) drops the fourth column, the count, which is exactly what `dendrogram` uses to draw each branch's size.",
+      "source": "SciPy documentation — scipy.cluster.hierarchy.linkage (the linkage matrix Z)",
+      "expected_time_ms": 38000,
+      "tags": ["hierarchical", "scipy", "linkage-matrix", "code-output"]
+    },
+    {
+      "id": "q060502014",
+      "skill_id": "sk060502",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "El clustering jerárquico aglomerativo puede deshacer una fusión en un paso posterior si otra combinación resulta mejor según el criterio de enlace.",
+      "question_en": "Agglomerative hierarchical clustering can undo a merge at a later step if another combination turns out to be better under the linkage criterion.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso: el algoritmo es voraz e irreversible. En cada paso fusiona el par más cercano según el criterio de enlace y esa decisión queda fijada para siempre; no hay retroceso ni reoptimización global. La confusión viene de que el dendrograma parece explorar todas las jerarquías posibles cuando en realidad muestra una sola, la que produjo esa secuencia voraz. La consecuencia práctica importa: una fusión temprana equivocada (por un atípico, por una escala mal elegida o por un enlace poco adecuado) contamina toda la parte alta del árbol, y por eso conviene comparar varios criterios de enlace en lugar de fiarse de uno.",
+      "explanation_en": "False: the algorithm is greedy and irreversible. At each step it merges the closest pair under the linkage criterion and that decision is fixed forever; there is no backtracking and no global re-optimization. The confusion comes from the dendrogram looking like it explores every possible hierarchy when it actually shows just one, the one that greedy sequence produced. The practical consequence matters: one wrong early merge (from an outlier, a badly chosen scale or an unsuitable linkage) contaminates the entire upper part of the tree, which is why you compare several linkage criteria instead of trusting one.",
+      "source": "Hastie, Tibshirani & Friedman, The Elements of Statistical Learning 2e, §14.3.12; scikit-learn User Guide — Hierarchical clustering",
+      "expected_time_ms": 28000,
+      "tags": ["hierarchical", "greedy", "gotcha"]
+    },
+    {
+      "id": "q060502015",
+      "skill_id": "sk060502",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cómo se llama el coeficiente, calculable con `scipy.cluster.hierarchy.cophenet`, que mide hasta qué punto un dendrograma conserva las distancias originales entre pares de puntos, correlacionando las alturas de fusión del árbol con las distancias reales?",
+      "question_en": "What is the coefficient called, computable with `scipy.cluster.hierarchy.cophenet`, that measures how faithfully a dendrogram preserves the original pairwise distances, by correlating the tree's merge heights with the actual distances?",
+      "correct_answer_es": "correlación cofenética (coeficiente de correlación cofenética)",
+      "correct_answer_en": "cophenetic correlation (cophenetic correlation coefficient)",
+      "explanation_es": "La distancia cofenética entre dos puntos es la altura a la que se unen por primera vez en el dendrograma. Correlacionar esas alturas con las distancias originales da un número entre 0 y 1: cuanto más alto, menos deforma el árbol la geometría real de los datos. Sirve para algo muy concreto: comparar criterios de enlace sobre el mismo dataset con un criterio objetivo, en lugar de elegir 'el dendrograma que se ve mejor'. Ojo, no mide si los clusters son útiles ni cuántos hay: un árbol puede tener correlación cofenética alta y aun así no corresponder a ninguna estructura interesante.",
+      "explanation_en": "The cophenetic distance between two points is the height at which they first join in the dendrogram. Correlating those heights with the original distances gives a number between 0 and 1: the higher it is, the less the tree distorts the real geometry of the data. It serves one concrete purpose: comparing linkage criteria on the same dataset by an objective measure, instead of picking 'the dendrogram that looks nicest'. Note that it does not measure whether the clusters are useful or how many there are: a tree can have high cophenetic correlation and still correspond to no interesting structure.",
+      "source": "SciPy documentation — scipy.cluster.hierarchy.cophenet; Sokal & Rohlf, 'The comparison of dendrograms by objective methods' (Taxon, 1962)",
+      "expected_time_ms": 36000,
+      "tags": ["hierarchical", "cophenetic", "evaluation", "scipy"]
+    },
+
+    {
+      "id": "q060503008",
+      "skill_id": "sk060503",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Aplicas PCA con `n_components=3` a un dataset de 20 variables y un compañero te pide 'la lista de las 3 variables que PCA ha seleccionado'. ¿Qué le respondes?",
+      "question_en": "You apply PCA with `n_components=3` to a 20-variable dataset and a colleague asks you for 'the list of the 3 variables PCA selected'. What do you tell them?",
+      "options_es": [
+        "Que PCA no selecciona variables: construye 3 variables nuevas, cada una combinación lineal de las 20 originales. Quedarse con variables originales requiere selección de características (por ejemplo `SelectKBest` o la importancia de un modelo)",
+        "Que son las 3 variables con mayor varianza del dataset",
+        "Que son las 3 primeras columnas del DataFrame",
+        "Que son las 3 variables con mayor correlación con la variable objetivo"
+      ],
+      "options_en": [
+        "That PCA does not select variables: it builds 3 new variables, each a linear combination of the original 20. Keeping original variables requires feature selection (for example `SelectKBest` or a model's feature importances)",
+        "That they are the 3 highest-variance variables in the dataset",
+        "That they are the first 3 columns of the DataFrame",
+        "That they are the 3 variables most correlated with the target"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Extracción frente a selección es la confusión número uno con PCA, y sobrevive porque el resultado 'tiene 3 columnas' y parece un subconjunto. La segunda opción es la más tentadora porque roza una verdad: PC1 sí persigue la dirección de máxima varianza, pero es una dirección en el espacio de 20 dimensiones, con un peso para cada variable, no una columna. La cuarta describe un filtro supervisado, y PCA nunca ve la variable objetivo. Si necesitas interpretabilidad en términos de las variables originales, mira los `components_` (las cargas) o usa directamente selección de características.",
+      "explanation_en": "Extraction versus selection is the number-one PCA confusion, and it survives because the output 'has 3 columns' and looks like a subset. The second option is the most tempting because it brushes against a truth: PC1 does chase the direction of maximum variance, but it is a direction in 20-dimensional space, with a weight on every variable, not a single column. The fourth describes a supervised filter, and PCA never sees the target. If you need interpretability in terms of the original variables, inspect `components_` (the loadings) or use feature selection directly.",
+      "source": "Géron, Hands-On Machine Learning 3e, Ch. 8; scikit-learn User Guide — Decomposition: PCA / Feature selection",
+      "expected_time_ms": 32000,
+      "tags": ["pca", "feature-extraction", "feature-selection"]
+    },
+    {
+      "id": "q060503009",
+      "skill_id": "sk060503",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué relación tienen las componentes principales con la matriz de covarianza de los datos centrados?",
+      "question_en": "What is the relationship between the principal components and the covariance matrix of the centered data?",
+      "options_es": [
+        "Las componentes son las filas de la matriz de covarianza ordenadas por la suma de sus elementos",
+        "Las componentes son los vectores propios de la matriz de covarianza; sus valores propios son las varianzas explicadas, y las componentes son ortogonales entre sí, por lo que las proyecciones resultantes están incorreladas",
+        "Las componentes son los residuos de regresar cada variable sobre todas las demás",
+        "Las componentes son ortogonales solo si las variables originales ya lo eran"
+      ],
+      "options_en": [
+        "The components are the rows of the covariance matrix sorted by the sum of their elements",
+        "The components are the eigenvectors of the covariance matrix; their eigenvalues are the explained variances, and the components are mutually orthogonal, so the resulting projections are uncorrelated",
+        "The components are the residuals of regressing each variable on all the others",
+        "The components are orthogonal only if the original variables already were"
+      ],
+      "correct_index": 1,
+      "explanation_es": "PCA diagonaliza la covarianza: cada vector propio marca una dirección y su valor propio dice cuánta varianza hay en ella, por eso ordenar por valor propio ordena por importancia. La última opción es la equivocación conceptual que más daño hace, porque suena razonable: la ortogonalidad no se hereda de los datos, se impone por construcción, y descorrelacionar variables muy correlacionadas es precisamente para lo que sirve PCA. Las otras dos inventan mecanismos que no existen; la de los residuos suena a algo real (regresión parcial) pero no tiene relación con el problema de valores propios que resuelve PCA.",
+      "explanation_en": "PCA diagonalizes the covariance: each eigenvector marks a direction and its eigenvalue says how much variance lies along it, which is why sorting by eigenvalue sorts by importance. The last option is the most damaging conceptual error because it sounds reasonable: orthogonality is not inherited from the data, it is imposed by construction, and decorrelating highly correlated variables is exactly what PCA is for. The other two invent mechanisms that do not exist; the residuals one echoes something real (partial regression) but has nothing to do with the eigenvalue problem PCA solves.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning, §2.12 (Example: Principal Components Analysis); Géron, Hands-On Machine Learning 3e, Ch. 8",
+      "expected_time_ms": 38000,
+      "tags": ["pca", "eigenvectors", "covariance", "orthogonality"]
+    },
+    {
+      "id": "q060503010",
+      "skill_id": "sk060503",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En scikit-learn escribes `PCA(n_components=0.95)`. ¿Qué significa ese 0.95?",
+      "question_en": "In scikit-learn you write `PCA(n_components=0.95)`. What does that 0.95 mean?",
+      "options_es": [
+        "Que conserva el 95 % de las columnas originales",
+        "Que conserva el 95 % de las filas del dataset",
+        "Que aplica una regularización con fuerza 0.95",
+        "Que conserva el número mínimo de componentes necesario para explicar al menos el 95 % de la varianza total; cuántas son se decide al ajustar y se consulta en `pca.n_components_`"
+      ],
+      "options_en": [
+        "That it keeps 95 % of the original columns",
+        "That it keeps 95 % of the dataset's rows",
+        "That it applies regularization with strength 0.95",
+        "That it keeps the minimum number of components needed to explain at least 95 % of the total variance; how many that is gets decided at fit time and is read from `pca.n_components_`"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La trampa está en que el mismo argumento cambia de significado según el tipo: un entero es un número de componentes, y un float en (0, 1) es un objetivo de varianza acumulada. Leer 0.95 como 'el 95 % de las columnas' arrastra además la confusión extracción/selección, porque las componentes no son columnas originales. Nada tiene que ver con filas: PCA no descarta muestras. Y no hay regularización: PCA es una descomposición, no un ajuste penalizado. El patrón útil es fijar el objetivo de varianza y dejar que el número de componentes lo decida el dato.",
+      "explanation_en": "The trap is that the same argument changes meaning with its type: an integer is a component count, and a float in (0, 1) is a cumulative-variance target. Reading 0.95 as '95 % of the columns' also drags in the extraction/selection confusion, since components are not original columns. Rows have nothing to do with it: PCA discards no samples. And there is no regularization here: PCA is a decomposition, not a penalized fit. The useful pattern is to set the variance target and let the data decide the component count.",
+      "source": "scikit-learn API reference — sklearn.decomposition.PCA (`n_components`, `n_components_`)",
+      "expected_time_ms": 34000,
+      "tags": ["pca", "sklearn", "explained-variance"]
+    },
+    {
+      "id": "q060503011",
+      "skill_id": "sk060503",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la forma correcta de usar PCA en un flujo con conjuntos de entrenamiento y test?",
+      "question_en": "What is the correct way to use PCA in a workflow with train and test sets?",
+      "options_es": [
+        "Hacer `fit_transform` sobre el dataset completo y dividir en train y test después",
+        "Hacer `fit` solo con train (el escalador también) y `transform` sobre test, idealmente dentro de un `Pipeline` para que la validación cruzada lo respete en cada pliegue",
+        "Hacer `fit` por separado en train y en test, para que cada conjunto tenga sus propias componentes",
+        "Es indiferente: como PCA no usa la variable objetivo, no puede haber fuga de información"
+      ],
+      "options_en": [
+        "Call `fit_transform` on the full dataset and split into train and test afterwards",
+        "Call `fit` on train only (the scaler too) and `transform` on test, ideally inside a `Pipeline` so cross-validation respects it on every fold",
+        "Call `fit` separately on train and on test, so each set gets its own components",
+        "It makes no difference: since PCA does not use the target, there can be no information leakage"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La cuarta opción es la más peligrosa porque es medio verdad: PCA efectivamente no ve las etiquetas, pero la fuga no exige etiquetas. Si ajustas sobre todo el dataset, la covarianza del test participa en la elección de los ejes y la puntuación de test deja de ser una estimación honesta del rendimiento con datos nuevos, que es justo lo que pasa en la primera opción. La tercera parece simétrica y cuidadosa, pero es peor: produce ejes distintos (y con signos arbitrarios) en cada conjunto, así que train y test ya no viven en el mismo espacio y el modelo entrenado no significa nada sobre el test. El `Pipeline` existe para que esto se cumpla también dentro de cada pliegue de la validación cruzada, donde el error es más fácil de cometer sin darse cuenta.",
+      "explanation_en": "The fourth option is the most dangerous because it is half true: PCA genuinely does not see the labels, but leakage does not require labels. If you fit on the whole dataset, the test set's covariance takes part in choosing the axes and your test score stops being an honest estimate of performance on new data, which is exactly what the first option does. The third looks symmetric and careful but is worse: it produces different axes (with arbitrary signs) in each set, so train and test no longer live in the same space and the trained model means nothing on test. The `Pipeline` exists so this also holds inside every cross-validation fold, where the mistake is easiest to make unnoticed.",
+      "source": "Géron, Hands-On Machine Learning 3e, Ch. 2 and Ch. 8 (transformation pipelines); scikit-learn User Guide — Common pitfalls and recommended practices: data leakage",
+      "expected_time_ms": 40000,
+      "tags": ["pca", "data-leakage", "pipeline"]
+    },
+    {
+      "id": "q060503012",
+      "skill_id": "sk060503",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En un problema de clasificación, reducir a 2 componentes con PCA empeoró la separación entre clases frente a usar todas las variables. ¿Cuál es la explicación más razonable?",
+      "question_en": "In a classification problem, reducing to 2 components with PCA made the class separation worse than using all the variables. What is the most reasonable explanation?",
+      "options_es": [
+        "PCA está mal implementado en scikit-learn para tareas de clasificación",
+        "PCA solo es válido cuando hay exactamente dos clases",
+        "PCA maximiza varianza, no separabilidad: la dirección con más varianza no tiene por qué ser la que distingue las clases, porque PCA nunca ve las etiquetas. Un método supervisado como LDA busca precisamente las direcciones que separan clases",
+        "Hay sobreajuste; la solución es bajar a 1 sola componente"
+      ],
+      "options_en": [
+        "PCA is incorrectly implemented in scikit-learn for classification tasks",
+        "PCA is only valid when there are exactly two classes",
+        "PCA maximizes variance, not separability: the highest-variance direction need not be the one that distinguishes the classes, because PCA never sees the labels. A supervised method such as LDA looks precisely for the directions that separate classes",
+        "This is overfitting; the fix is to drop to a single component"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Es el malentendido más caro de PCA: se asume que 'menos dimensiones conservando la varianza' implica 'mejor para clasificar', y no hay tal implicación. La información que separa dos clases puede vivir en una dirección de varianza pequeña que PCA descarta la primera. La última opción refleja el reflejo de culpar al sobreajuste ante cualquier caída de métrica, cuando aquí el modelo tiene menos capacidad, no más. Si el objetivo es clasificar, compara PCA con LDA, o trata el número de componentes como un hiperparámetro que se ajusta mirando la métrica final, no el porcentaje de varianza.",
+      "explanation_en": "This is the costliest PCA misunderstanding: people assume 'fewer dimensions while preserving variance' implies 'better for classification', and there is no such implication. The information that separates two classes can live along a low-variance direction that PCA discards first. The last option reflects the reflex of blaming overfitting for any metric drop, when here the model has less capacity, not more. If the goal is classification, compare PCA with LDA, or treat the component count as a hyperparameter tuned on the final metric rather than on the variance percentage.",
+      "source": "Géron, Hands-On Machine Learning 3e, Ch. 8; scikit-learn User Guide — Linear and Quadratic Discriminant Analysis",
+      "expected_time_ms": 34000,
+      "tags": ["pca", "lda", "unsupervised", "separability"]
+    },
+    {
+      "id": "q060503013",
+      "skill_id": "sk060503",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\\n\\n```python\\nimport numpy as np\\nfrom sklearn.decomposition import PCA\\n\\nrng = np.random.default_rng(0)\\nX = rng.random((150, 8))\\np = PCA(n_components=3).fit(X)\\nprint(p.components_.shape, p.transform(X).shape)\\n```",
+      "question_en": "What does this code print?\\n\\n```python\\nimport numpy as np\\nfrom sklearn.decomposition import PCA\\n\\nrng = np.random.default_rng(0)\\nX = rng.random((150, 8))\\np = PCA(n_components=3).fit(X)\\nprint(p.components_.shape, p.transform(X).shape)\\n```",
+      "options_es": [
+        "(3, 8) (150, 3)",
+        "(8, 3) (150, 3)",
+        "(3, 8) (150, 8)",
+        "(150, 3) (3, 8)"
+      ],
+      "options_en": [
+        "(3, 8) (150, 3)",
+        "(8, 3) (150, 3)",
+        "(3, 8) (150, 8)",
+        "(150, 3) (3, 8)"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada fila de `components_` es una dirección principal expresada en las 8 variables originales, de ahí `(n_components, n_features)` = (3, 8); y `transform` proyecta cada una de las 150 muestras sobre esos 3 ejes, de ahí (150, 3). La opción (8, 3) es la intuición traspuesta, muy razonable porque buena parte de la literatura estadística imprime las cargas en columnas. La opción (150, 8) supone que `transform` conserva el ancho original, es decir, que PCA solo rota sin reducir: eso es lo que ocurre con `n_components=None`, no aquí.",
+      "explanation_en": "Each row of `components_` is one principal direction expressed in the 8 original variables, hence `(n_components, n_features)` = (3, 8); and `transform` projects each of the 150 samples onto those 3 axes, hence (150, 3). The (8, 3) option is the transposed intuition, quite reasonable since much of the statistical literature prints loadings as columns. The (150, 8) option assumes `transform` preserves the original width, i.e. that PCA only rotates without reducing: that is what happens with `n_components=None`, not here.",
+      "source": "scikit-learn API reference — sklearn.decomposition.PCA (`components_`, `transform`)",
+      "expected_time_ms": 36000,
+      "tags": ["pca", "sklearn", "shapes", "code-output"]
+    },
+    {
+      "id": "q060503014",
+      "skill_id": "sk060503",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "La primera componente principal coincide siempre con la variable original que más varianza tiene.",
+      "question_en": "The first principal component always coincides with the original variable that has the most variance.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. PC1 es una combinación lineal de todas las variables: la dirección de máxima varianza del espacio completo, no una columna. Solo coincide con una variable original en el caso degenerado de que esa variable esté incorrelada con el resto y domine claramente la varianza total. Y ahí está la razón de que el error sobreviva: sobre datos sin estandarizar, una variable medida en unidades grandes acapara casi toda la varianza y su carga en PC1 se acerca a 1, con lo que la observación parece confirmarse. Al estandarizar, esa 'coincidencia' desaparece.",
+      "explanation_en": "False. PC1 is a linear combination of every variable: the direction of maximum variance in the full space, not a column. It only coincides with one original variable in the degenerate case where that variable is uncorrelated with the rest and clearly dominates total variance. And that is why the error survives: on unstandardized data, a variable measured in large units soaks up almost all the variance and its loading on PC1 approaches 1, so the observation appears to confirm itself. Standardize, and the 'coincidence' disappears.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning, §2.12; Géron, Hands-On Machine Learning 3e, Ch. 8",
+      "expected_time_ms": 28000,
+      "tags": ["pca", "pc1", "scaling", "gotcha"]
+    },
+    {
+      "id": "q060503015",
+      "skill_id": "sk060503",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se llama la factorización matricial X = U Σ Vᵀ que scikit-learn emplea internamente para calcular PCA sin construir explícitamente la matriz de covarianza?",
+      "question_en": "What is the matrix factorization X = U Σ Vᵀ called, which scikit-learn uses internally to compute PCA without explicitly forming the covariance matrix?",
+      "correct_answer_es": "descomposición en valores singulares (SVD)",
+      "correct_answer_en": "singular value decomposition (SVD)",
+      "explanation_es": "Las filas de Vᵀ son las componentes principales y los valores singulares al cuadrado, divididos por n-1, son las varianzas explicadas, así que la SVD da exactamente el mismo resultado que diagonalizar la covarianza. Se prefiere por dos motivos prácticos: es numéricamente más estable (formar XᵀX eleva al cuadrado el número de condición) y evita construir una matriz p×p, impracticable cuando hay miles de variables. Es la misma herramienta detrás de `TruncatedSVD`, que sí funciona con matrices dispersas porque no necesita centrar los datos.",
+      "explanation_en": "The rows of Vᵀ are the principal components and the squared singular values, divided by n-1, are the explained variances, so the SVD gives exactly the same result as diagonalizing the covariance. It is preferred for two practical reasons: it is numerically more stable (forming XᵀX squares the condition number) and it avoids building a p×p matrix, impractical with thousands of variables. It is the same tool behind `TruncatedSVD`, which does work on sparse matrices because it does not need to center the data.",
+      "source": "scikit-learn User Guide — Decomposition: Exact PCA and probabilistic interpretation; Goodfellow, Bengio & Courville, Deep Learning, §2.8 (Singular Value Decomposition)",
+      "expected_time_ms": 34000,
+      "tags": ["pca", "svd", "linear-algebra"]
+    },
+
+    {
+      "id": "q060504008",
+      "skill_id": "sk060504",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En `IsolationForest(contamination=0.01)` de scikit-learn, ¿qué representa ese 0.01?",
+      "question_en": "In scikit-learn's `IsolationForest(contamination=0.01)`, what does that 0.01 represent?",
+      "options_es": [
+        "La tasa de error esperada del modelo",
+        "La proporción esperada de anomalías en los datos, que fija el umbral por el cual `predict()` devuelve -1",
+        "La fracción de variables que usa cada árbol",
+        "La tolerancia de convergencia del algoritmo"
+      ],
+      "options_en": [
+        "The model's expected error rate",
+        "The expected proportion of anomalies in the data, which sets the threshold at which `predict()` returns -1",
+        "The fraction of features each tree uses",
+        "The algorithm's convergence tolerance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`contamination` es una creencia previa que aportas tú, no algo que el modelo mida: solo desplaza el punto de corte sobre las puntuaciones. Leerla como tasa de error es la confusión más habitual y tiene consecuencias reales, porque induce a pensar que un valor bajo significa 'modelo preciso' cuando lo único que significa es 'voy a etiquetar pocas alertas'; con las mismas puntuaciones, pasar de 0.01 a 0.05 quintuplica la cola de alertas. La fracción de variables por árbol es `max_features`, otro parámetro distinto. Si no tienes una estimación razonable de la tasa base, usa `score_samples` y fija el umbral por capacidad operativa del equipo que revisa.",
+      "explanation_en": "`contamination` is a prior belief you supply, not something the model measures: it merely moves the cut-off on the scores. Reading it as an error rate is the most common confusion and it has real consequences, because it suggests a low value means 'accurate model' when all it means is 'I will label few alerts'; with identical scores, going from 0.01 to 0.05 gives you five times the alert tail. The per-tree feature fraction is `max_features`, a different parameter. If you have no reasonable estimate of the base rate, use `score_samples` and set the threshold from the review team's operational capacity.",
+      "source": "scikit-learn API reference — sklearn.ensemble.IsolationForest (`contamination`, `score_samples`)",
+      "expected_time_ms": 32000,
+      "tags": ["anomaly-detection", "isolation-forest", "sklearn", "threshold"]
+    },
+    {
+      "id": "q060504009",
+      "skill_id": "sk060504",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué aporta Local Outlier Factor (LOF) frente a un criterio global como la regla de las 3 sigmas?",
+      "question_en": "What does Local Outlier Factor (LOF) add over a global criterion such as the 3-sigma rule?",
+      "options_es": [
+        "Compara la densidad local de un punto con la de sus k vecinos, así que detecta un punto raro dentro de una región densa aunque su valor sea perfectamente corriente a escala global",
+        "Garantiza cero falsos positivos",
+        "Necesita un conjunto de anomalías etiquetadas para entrenar",
+        "Solo puede aplicarse a datos de una sola variable"
+      ],
+      "options_en": [
+        "It compares a point's local density with that of its k neighbors, so it detects a point that is odd inside a dense region even when its value is perfectly ordinary on a global scale",
+        "It guarantees zero false positives",
+        "It needs a labeled set of anomalies to train on",
+        "It can only be applied to single-variable data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La regla de 3 sigmas asume una única distribución global; si los datos forman varios grupos con densidades distintas, un punto puede estar dentro del rango global y ser claramente extraño respecto a su vecindario. LOF cuantifica exactamente esa comparación local. Ninguna técnica garantiza cero falsos positivos: siempre hay un umbral que negocia precisión y cobertura, y prometer lo contrario es la señal de que una opción es falsa. Tampoco necesita etiquetas: es no supervisado. Y funciona en cualquier número de dimensiones, aunque su calidad se degrada en dimensionalidad muy alta porque las distancias se concentran.",
+      "explanation_en": "The 3-sigma rule assumes a single global distribution; if the data form several groups with different densities, a point can sit inside the global range and still be clearly odd relative to its neighborhood. LOF quantifies exactly that local comparison. No technique guarantees zero false positives: there is always a threshold trading precision against coverage, and promising otherwise is the tell that an option is false. Nor does it need labels: it is unsupervised. And it works in any number of dimensions, though its quality degrades in very high dimensions because distances concentrate.",
+      "source": "Breunig, Kriegel, Ng & Sander, 'LOF: Identifying Density-Based Local Outliers' (SIGMOD 2000); scikit-learn User Guide — Novelty and Outlier Detection",
+      "expected_time_ms": 36000,
+      "tags": ["anomaly-detection", "lof", "local-density"]
+    },
+    {
+      "id": "q060504010",
+      "skill_id": "sk060504",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un detector de fraude con un 0,2 % de casos positivos obtiene un ROC-AUC de 0,97, pero el equipo de operaciones se queja de demasiadas falsas alarmas. ¿Qué explica esa aparente contradicción?",
+      "question_en": "A fraud detector with 0.2 % positives achieves a ROC-AUC of 0.97, yet the operations team complains about too many false alarms. What explains the apparent contradiction?",
+      "options_es": [
+        "El ROC-AUC se calcula mal cuando la clase positiva es rara",
+        "El modelo está sobreajustado; basta con reducir el número de árboles",
+        "Con clases extremadamente desbalanceadas, la tasa de falsos positivos del eje horizontal del ROC se diluye entre un número enorme de negativos; la curva precisión-recall (PR-AUC) refleja mucho mejor el coste operativo, porque la precisión sí depende del número absoluto de falsas alarmas",
+        "Un ROC-AUC de 0,97 significa que el 97 % de las alertas emitidas son correctas"
+      ],
+      "options_en": [
+        "ROC-AUC is computed incorrectly when the positive class is rare",
+        "The model is overfitting; just reduce the number of trees",
+        "With extremely imbalanced classes, the false positive rate on the ROC's horizontal axis is diluted across an enormous number of negatives; the precision-recall curve (PR-AUC) reflects the operational cost far better, because precision does depend on the absolute number of false alarms",
+        "A ROC-AUC of 0.97 means 97 % of the alerts issued are correct"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Con 0,2 % de positivos, una tasa de falsos positivos del 1 % parece minúscula en la curva ROC y sin embargo son 5 falsas alarmas por cada caso real: la precisión se hunde mientras el ROC-AUC sigue espléndido. La última opción es el malentendido más extendido sobre el AUC, leerlo como si fuera precisión o accuracy; en realidad es la probabilidad de que un positivo aleatorio puntúe por encima de un negativo aleatorio, y no dice nada del volumen de alertas. Culpar al sobreajuste tampoco encaja: el modelo ordena bien, el problema es el umbral y la métrica elegida para juzgarlo.",
+      "explanation_en": "At 0.2 % positives, a 1 % false positive rate looks tiny on the ROC curve and yet amounts to 5 false alarms per genuine case: precision collapses while ROC-AUC stays splendid. The last option is the most widespread misreading of AUC, treating it as precision or accuracy; it is actually the probability that a random positive scores above a random negative, and it says nothing about alert volume. Blaming overfitting does not fit either: the model ranks well, the problem is the threshold and the metric chosen to judge it.",
+      "source": "Davis & Goadrich, 'The Relationship Between Precision-Recall and ROC Curves' (ICML 2006); Chip Huyen, Designing Machine Learning Systems, Ch. 6 (Model evaluation)",
+      "expected_time_ms": 42000,
+      "tags": ["anomaly-detection", "imbalance", "pr-auc", "roc-auc", "evaluation"]
+    },
+    {
+      "id": "q060504011",
+      "skill_id": "sk060504",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué caracteriza al enfoque de detección de novedades (novelty detection) con One-Class SVM?",
+      "question_en": "What characterizes the novelty detection approach with a One-Class SVM?",
+      "options_es": [
+        "Se entrena con un conjunto que se asume limpio, formado solo por datos normales, y aprende una frontera que envuelve esa región; lo que cae fuera se marca como novedad",
+        "Se entrena con ejemplos etiquetados de anomalías reales",
+        "Es equivalente a un SVM binario con la clase minoritaria sobremuestreada",
+        "Exige que los datos sigan una distribución normal multivariante"
+      ],
+      "options_en": [
+        "It is trained on a set assumed to be clean, containing only normal data, and learns a boundary enclosing that region; anything falling outside is flagged as a novelty",
+        "It is trained on labeled examples of real anomalies",
+        "It is equivalent to a binary SVM with the minority class oversampled",
+        "It requires the data to follow a multivariate normal distribution"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Distinguir novedad (entrenamiento limpio, semisupervisado) de detección de atípicos (entrenamiento contaminado, no supervisado) es justo la separación que hace la documentación de scikit-learn y que los alumnos borran continuamente; el error práctico es entrenar un One-Class SVM con datos que ya contienen fraude y luego extrañarse de que no lo detecte. La opción del SVM binario sobremuestreado describe un enfoque supervisado legítimo, pero requiere las etiquetas que aquí precisamente no hay. Y la normalidad multivariante es la hipótesis de `EllipticEnvelope`, no del One-Class SVM, que con kernel RBF no asume forma paramétrica alguna.",
+      "explanation_en": "Distinguishing novelty (clean training set, semi-supervised) from outlier detection (contaminated training set, unsupervised) is exactly the split scikit-learn's documentation draws and that learners constantly blur; the practical failure is training a One-Class SVM on data that already contains fraud and then being surprised it does not flag it. The oversampled binary SVM option describes a legitimate supervised approach, but it needs the very labels that are missing here. And multivariate normality is `EllipticEnvelope`'s assumption, not the One-Class SVM's, which with an RBF kernel assumes no parametric shape at all.",
+      "source": "Schölkopf, Platt, Shawe-Taylor, Smola & Williamson, 'Estimating the Support of a High-Dimensional Distribution' (Neural Computation, 2001); scikit-learn User Guide — Novelty and Outlier Detection",
+      "expected_time_ms": 34000,
+      "tags": ["anomaly-detection", "one-class-svm", "novelty-detection"]
+    },
+    {
+      "id": "q060504012",
+      "skill_id": "sk060504",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En scikit-learn, `LocalOutlierFactor` permite por defecto puntuar datos nuevos llamando a `predict()` después de ajustar el modelo.",
+      "question_en": "In scikit-learn, `LocalOutlierFactor` lets you score new data by calling `predict()` after fitting the model, by default.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. Por defecto LOF es un detector de atípicos sobre el propio conjunto ajustado: solo expone `fit_predict` y el atributo `negative_outlier_factor_`, referidos a los datos de entrenamiento. Para puntuar muestras nuevas hay que construirlo con `novelty=True`, y entonces cambia el contrato: el conjunto de entrenamiento debe estar limpio y ya no puedes usar `fit_predict`. El error es muy fácil de cometer porque `IsolationForest` sí tiene `predict` desde el principio, y se asume que toda la familia de detectores comparte la misma API.",
+      "explanation_en": "False. By default LOF is an outlier detector over the very set it was fitted on: it only exposes `fit_predict` and the `negative_outlier_factor_` attribute, both referring to the training data. To score new samples you must construct it with `novelty=True`, and then the contract changes: the training set must be clean and you can no longer use `fit_predict`. The mistake is easy to make because `IsolationForest` does have `predict` from the start, so people assume the whole detector family shares one API.",
+      "source": "scikit-learn API reference — sklearn.neighbors.LocalOutlierFactor (`novelty` parameter); User Guide — Novelty and Outlier Detection",
+      "expected_time_ms": 30000,
+      "tags": ["anomaly-detection", "lof", "sklearn", "gotcha"]
+    },
+    {
+      "id": "q060504013",
+      "skill_id": "sk060504",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Como la detección de anomalías no usa etiquetas, un modelo ya desplegado no necesita seguimiento: la definición de 'normal' no cambia con el tiempo.",
+      "question_en": "Since anomaly detection uses no labels, a deployed model needs no monitoring: the definition of 'normal' does not change over time.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso, y por partida doble. Lo que cambia es precisamente 'lo normal': una campaña, una línea de producto nueva, un cambio de precios o la estacionalidad desplazan la distribución de entrada, y un detector calibrado con el trimestre anterior acaba inundando la cola de revisión de alertas o callándose por completo. Además, la ausencia de etiquetas hace la monitorización más necesaria, no menos: sin etiquetas no tienes ninguna métrica de acierto que te avise, así que hay que vigilar señales indirectas (distribución de las puntuaciones, tasa de alertas, drift de las variables de entrada) y recalibrar el umbral con regularidad.",
+      "explanation_en": "False, twice over. What changes is precisely what counts as normal: a campaign, a new product line, a pricing change or plain seasonality shift the input distribution, and a detector calibrated on last quarter ends up either flooding the review queue or going silent. Moreover, the absence of labels makes monitoring more necessary, not less: with no labels you have no accuracy metric to warn you, so you must watch indirect signals (score distribution, alert rate, input feature drift) and recalibrate the threshold regularly.",
+      "source": "Chip Huyen, Designing Machine Learning Systems, Ch. 8 (Data Distribution Shifts and Monitoring); NIST AI Risk Management Framework 1.0 — MEASURE and MANAGE functions",
+      "expected_time_ms": 32000,
+      "tags": ["anomaly-detection", "drift", "monitoring", "mlops"]
+    },
+    {
+      "id": "q060504014",
+      "skill_id": "sk060504",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una observación puede tener un valor perfectamente normal en cada variable por separado y ser aun así una anomalía por la combinación de valores.",
+      "question_en": "An observation can have a perfectly normal value in every variable taken separately and still be an anomaly because of the combination of values.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero: es la diferencia entre anomalía univariante y multivariante. Una persona de 20 años es normal, y 40 años de vida laboral también lo es, pero juntos son imposibles. Cuesta aceptarlo porque el control de calidad de datos suele hacerse columna a columna (3 sigmas o rango intercuartílico por variable) y ese barrido no puede ver la combinación por construcción. Detectarla exige un método que modele la distribución conjunta: distancia de Mahalanobis, Isolation Forest, o el error de reconstrucción de un autoencoder.",
+      "explanation_en": "True: this is the difference between a univariate and a multivariate anomaly. A 20-year-old is normal, and a 40-year work history is normal, but together they are impossible. It is hard to accept because data quality control is usually done column by column (3-sigma or interquartile range per variable) and that sweep cannot see the combination by construction. Detecting it requires a method that models the joint distribution: Mahalanobis distance, Isolation Forest, or an autoencoder's reconstruction error.",
+      "source": "Chandola, Banerjee & Kumar, 'Anomaly Detection: A Survey' (ACM Computing Surveys, 2009); Géron, Hands-On Machine Learning 3e, Ch. 9",
+      "expected_time_ms": 28000,
+      "tags": ["anomaly-detection", "multivariate", "joint-distribution"]
+    },
+    {
+      "id": "q060504015",
+      "skill_id": "sk060504",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se llama la distancia que, a diferencia de la euclidiana, tiene en cuenta la matriz de covarianza de los datos y por eso sirve para detectar atípicos multivariantes (es la base de `EllipticEnvelope` en scikit-learn)?",
+      "question_en": "What is the distance called that, unlike the Euclidean one, accounts for the data's covariance matrix and is therefore used to detect multivariate outliers (it is the basis of `EllipticEnvelope` in scikit-learn)?",
+      "correct_answer_es": "distancia de Mahalanobis",
+      "correct_answer_en": "Mahalanobis distance",
+      "explanation_es": "La distancia de Mahalanobis mide la separación respecto al centro en unidades de desviación típica a lo largo de cada dirección, tras descorrelacionar las variables: las curvas de nivel son elipses alineadas con la nube de datos, no circunferencias. Por eso captura anomalías que la euclidiana ignora, como el punto que se sale de la banda de correlación entre altura y peso aun estando dentro del rango de ambas. Su punto débil es que la media y la covarianza muestrales se estiman con los propios datos y los atípicos las contaminan; `EllipticEnvelope` lo resuelve usando el estimador robusto de determinante de covarianza mínima (MCD).",
+      "explanation_en": "Mahalanobis distance measures separation from the center in standard-deviation units along each direction, after decorrelating the variables: its level curves are ellipses aligned with the data cloud, not circles. That is why it catches anomalies Euclidean distance ignores, such as a point that falls off the height-weight correlation band while sitting inside the range of both. Its weak spot is that the sample mean and covariance are estimated from the very data the outliers contaminate; `EllipticEnvelope` addresses this with the robust Minimum Covariance Determinant (MCD) estimator.",
+      "source": "Rousseeuw & Van Driessen, 'A Fast Algorithm for the Minimum Covariance Determinant Estimator' (Technometrics, 1999); scikit-learn User Guide — Outlier detection: Fitting an elliptic envelope",
+      "expected_time_ms": 36000,
+      "tags": ["anomaly-detection", "mahalanobis", "covariance", "elliptic-envelope"]
+    }
+  ]
+}

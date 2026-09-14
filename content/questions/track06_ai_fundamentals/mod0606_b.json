@@ -1,0 +1,817 @@
+{
+  "questions": [
+    {
+      "id": "q060601009",
+      "skill_id": "sk060601",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo actualiza sus pesos la regla de aprendizaje del perceptrón de Rosenblatt cuando clasifica mal un ejemplo?",
+      "question_en": "How does Rosenblatt's perceptron learning rule update its weights when it misclassifies an example?",
+      "options_es": [
+        "Calcula el gradiente de la entropía cruzada sobre todo el conjunto de entrenamiento y da un paso en su dirección opuesta",
+        "Suma al vector de pesos el término eta * (y - y_pred) * x, es decir, empuja la frontera de decisión hacia el ejemplo mal clasificado",
+        "Reinicializa los pesos al azar y vuelve a intentarlo hasta que el ejemplo quede bien clasificado",
+        "Ajusta únicamente el sesgo, dejando los pesos fijos, porque desplazar la frontera basta para corregir cualquier error"
+      ],
+      "options_en": [
+        "It computes the cross-entropy gradient over the whole training set and takes a step in the opposite direction",
+        "It adds eta * (y - y_pred) * x to the weight vector, nudging the decision boundary toward the misclassified example",
+        "It re-initialises the weights at random and retries until that example is classified correctly",
+        "It adjusts only the bias and leaves the weights fixed, since shifting the boundary is enough to fix any error"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La regla es local y por ejemplo: se compara la salida con la etiqueta y se corrigen los pesos en proporción a la entrada. La opción del gradiente de la entropía cruzada tienta porque es como se entrena una red moderna, pero el perceptrón clásico usa un escalón, que no es derivable: no hay gradiente que calcular. Reinicializar al azar no es un algoritmo de aprendizaje, y tocar solo el sesgo únicamente traslada la frontera sin poder rotarla, que es lo que suele hacer falta.",
+      "explanation_en": "The rule is local and per-example: compare output with label, then correct the weights in proportion to the input. The cross-entropy-gradient option is tempting because that is how a modern network is trained, but the classic perceptron uses a step function, which is not differentiable, so there is no gradient to take. Random re-initialisation is not a learning algorithm, and touching only the bias translates the boundary without being able to rotate it, which is usually what is needed.",
+      "source": "Géron, Hands-On Machine Learning 3e (2022), Ch. 10: The Perceptron; Rosenblatt (1958)",
+      "expected_time_ms": 30000,
+      "tags": ["perceptron", "learning-rule", "weights"]
+    },
+    {
+      "id": "q060601010",
+      "skill_id": "sk060601",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "El teorema de convergencia del perceptrón garantiza que la regla de aprendizaje encuentra una solución en un número finito de actualizaciones únicamente cuando las clases de entrenamiento son linealmente separables.",
+      "question_en": "The perceptron convergence theorem guarantees that the learning rule finds a solution in a finite number of updates only when the training classes are linearly separable.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "La garantía es condicional: si existe un hiperplano que separa las clases, el perceptrón lo encuentra en un número finito de pasos. Si no existe, el algoritmo no converge: sigue oscilando indefinidamente, y por eso hace falta fijar un número máximo de épocas o quedarse con la mejor solución vista (pocket algorithm). Es un error frecuente leer el teorema como una garantía incondicional de convergencia.",
+      "explanation_en": "The guarantee is conditional: if a separating hyperplane exists, the perceptron will find one in finitely many steps. If none exists, the algorithm never converges, it keeps oscillating, which is why you must cap the number of epochs or keep the best solution seen so far (the pocket algorithm). Reading the theorem as an unconditional convergence guarantee is a common mistake.",
+      "source": "Géron, Hands-On Machine Learning 3e (2022), Ch. 10: The Perceptron (perceptron convergence theorem)",
+      "expected_time_ms": 26000,
+      "tags": ["perceptron", "convergence", "linear-separability"]
+    },
+    {
+      "id": "q060601011",
+      "skill_id": "sk060601",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué inicializar todos los pesos de un perceptrón multicapa a cero impide que la red aprenda?",
+      "question_en": "Why does initialising every weight of a multilayer perceptron to zero stop the network from learning?",
+      "options_es": [
+        "Porque la función de pérdida no está definida cuando los pesos valen cero",
+        "Porque el descenso de gradiente solo funciona si los pesos iniciales son positivos",
+        "Por simetría: todas las neuronas de una misma capa calculan lo mismo y reciben el mismo gradiente, así que se actualizan de forma idéntica y la capa entera se comporta siempre como una sola neurona",
+        "Porque con pesos a cero la pérdida vale cero y no queda nada que optimizar"
+      ],
+      "options_en": [
+        "Because the loss function is undefined when the weights are zero",
+        "Because gradient descent only works if the initial weights are positive",
+        "By symmetry: every neuron in a layer computes the same thing and receives the same gradient, so they update identically and the whole layer forever behaves as a single neuron",
+        "Because with zero weights the loss is zero and there is nothing left to optimise"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La ruptura de simetría es la razón: si dos neuronas de una capa arrancan iguales, backpropagation les entrega gradientes iguales y nunca se diferencian, de modo que la capa pierde toda su capacidad. Por eso se inicializa al azar (Glorot, He). Las opciones sobre la pérdida indefinida o nula confunden el valor de los pesos con el valor de la función objetivo: con pesos a cero la pérdida existe y normalmente es alta. El sesgo, en cambio, sí puede inicializarse a cero sin problema.",
+      "explanation_en": "Symmetry breaking is the reason: if two neurons in a layer start identical, backpropagation hands them identical gradients and they never differentiate, so the layer loses all of its capacity. That is why random initialisation (Glorot, He) is used. The options about an undefined or zero loss confuse the value of the weights with the value of the objective: with zero weights the loss exists and is usually large. Biases, by contrast, can safely be initialised to zero.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.4: Parameter Initialization Strategies",
+      "expected_time_ms": 34000,
+      "tags": ["mlp", "initialization", "symmetry"]
+    },
+    {
+      "id": "q060601012",
+      "skill_id": "sk060601",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "En PyTorch se define `capa = nn.Linear(4, 3)`. ¿Cuántos parámetros entrenables tiene `capa` con la configuración por defecto?",
+      "question_en": "In PyTorch you define `layer = nn.Linear(4, 3)`. How many trainable parameters does `layer` have with the default configuration?",
+      "options_es": ["7", "12", "16", "15"],
+      "options_en": ["7", "12", "16", "15"],
+      "correct_index": 3,
+      "explanation_es": "La matriz de pesos tiene forma (3, 4), o sea 12 valores, y por defecto `bias=True` añade un sesgo por neurona de salida: 12 + 3 = 15. El 12 es el error clásico de olvidar el sesgo; el 7 sale de sumar entradas y salidas en lugar de multiplicarlas; el 16 aparece al suponer una matriz cuadrada 4x4. Con `nn.Linear(4, 3, bias=False)` la respuesta sí sería 12.",
+      "explanation_en": "The weight matrix has shape (3, 4), i.e. 12 values, and the default `bias=True` adds one bias per output neuron: 12 + 3 = 15. The 12 is the classic slip of forgetting the bias; the 7 comes from adding inputs and outputs instead of multiplying them; the 16 appears if you assume a square 4x4 matrix. With `nn.Linear(4, 3, bias=False)` the answer would indeed be 12.",
+      "source": "PyTorch documentation, torch.nn.Linear",
+      "expected_time_ms": 28000,
+      "tags": ["pytorch", "linear-layer", "parameters"]
+    },
+    {
+      "id": "q060601013",
+      "skill_id": "sk060601",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama la capa en la que cada neurona está conectada a todas las salidas de la capa anterior, implementada como `nn.Linear` en PyTorch y como `Dense` en Keras?",
+      "question_en": "What is the layer called in which every neuron is connected to every output of the previous layer, implemented as `nn.Linear` in PyTorch and `Dense` in Keras?",
+      "correct_answer_es": "capa densa (totalmente conectada)",
+      "correct_answer_en": "dense layer (fully connected)",
+      "explanation_es": "Densa y totalmente conectada son el mismo concepto con dos nombres, y es la capa que forma el MLP clásico. Conviene distinguirla de la convolucional, donde cada unidad solo ve una vecindad local y los pesos se comparten: esa diferencia es justo la que explica por qué una capa densa sobre una imagen tiene millones de parámetros y una convolucional, miles.",
+      "explanation_en": "Dense and fully connected are the same concept under two names, and it is the layer that makes up the classic MLP. It is worth distinguishing from a convolutional layer, where each unit sees only a local neighbourhood and weights are shared: that difference is exactly why a dense layer over an image has millions of parameters while a convolutional one has thousands.",
+      "source": "Géron, Hands-On Machine Learning 3e (2022), Ch. 10; PyTorch documentation, torch.nn.Linear",
+      "expected_time_ms": 22000,
+      "tags": ["dense-layer", "mlp", "terminology"]
+    },
+    {
+      "id": "q060601014",
+      "skill_id": "sk060601",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Si el teorema de aproximación universal dice que una sola capa oculta basta para aproximar cualquier función continua, ¿por qué en la práctica se usan redes profundas?",
+      "question_en": "If the universal approximation theorem says a single hidden layer suffices to approximate any continuous function, why are deep networks used in practice?",
+      "options_es": [
+        "Porque la capa única puede necesitar un número de neuronas exponencialmente mayor: la profundidad representa la misma función con muchísimos menos parámetros y, empíricamente, generaliza mejor",
+        "Porque el teorema de aproximación universal resultó ser falso para funciones continuas",
+        "Porque una red de una sola capa oculta no admite funciones de activación no lineales",
+        "Porque las redes profundas siempre alcanzan error de entrenamiento cero y las superficiales nunca"
+      ],
+      "options_en": [
+        "Because the single layer may need exponentially many more neurons: depth represents the same function with far fewer parameters and, empirically, generalises better",
+        "Because the universal approximation theorem turned out to be false for continuous functions",
+        "Because a network with a single hidden layer cannot use non-linear activation functions",
+        "Because deep networks always reach zero training error and shallow ones never do"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El teorema es de existencia, no de eficiencia: garantiza que la red existe, pero no dice cuántas neuronas hace falta ni que el entrenamiento la vaya a encontrar. Hay familias de funciones que una red profunda representa con un número de unidades polinómico y una red poco profunda necesita exponencial. Las otras opciones niegan el propio teorema, contradicen la definición de capa oculta o confunden capacidad con garantía de ajuste perfecto.",
+      "explanation_en": "The theorem is about existence, not efficiency: it guarantees the network exists, but says nothing about how many neurons are needed or whether training will find it. There are function families a deep network represents with polynomially many units while a shallow one needs exponentially many. The other options deny the theorem itself, contradict the definition of a hidden layer, or confuse capacity with a guarantee of perfect fit.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.4.1: Universal Approximation Properties and Depth",
+      "expected_time_ms": 38000,
+      "tags": ["mlp", "depth", "universal-approximation"]
+    },
+    {
+      "id": "q060601015",
+      "skill_id": "sk060601",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Se define en PyTorch:\n\n```\nnet = nn.Sequential(nn.Linear(784, 128), nn.ReLU(), nn.Linear(128, 10))\n```\n\n¿Qué imprime `sum(p.numel() for p in net.parameters())`?",
+      "question_en": "In PyTorch you define:\n\n```\nnet = nn.Sequential(nn.Linear(784, 128), nn.ReLU(), nn.Linear(128, 10))\n```\n\nWhat does `sum(p.numel() for p in net.parameters())` print?",
+      "options_es": ["101632", "101770", "1290", "100480"],
+      "options_en": ["101632", "101770", "1290", "100480"],
+      "correct_index": 1,
+      "explanation_es": "Primera capa: 784*128 = 100352 pesos + 128 sesgos = 100480. Segunda capa: 128*10 = 1280 pesos + 10 sesgos = 1290. Total 101770. El 101632 es lo que sale si se olvidan ambos sesgos; el 100480 y el 1290 son cada capa por separado, un despiste habitual al leer un resumen del modelo. `nn.ReLU()` no aporta parámetros: no tiene ninguno que aprender.",
+      "explanation_en": "First layer: 784*128 = 100352 weights + 128 biases = 100480. Second layer: 128*10 = 1280 weights + 10 biases = 1290. Total 101770. The 101632 is what you get if both bias vectors are forgotten; 100480 and 1290 are the individual layers, an easy slip when skimming a model summary. `nn.ReLU()` contributes nothing: it has no learnable parameters.",
+      "source": "PyTorch documentation, torch.nn.Linear and torch.nn.Sequential",
+      "expected_time_ms": 42000,
+      "tags": ["pytorch", "mlp", "parameter-count"]
+    },
+    {
+      "id": "q060602008",
+      "skill_id": "sk060602",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿En qué consiste el problema de las neuronas ReLU muertas (dying ReLU)?",
+      "question_en": "What is the dying ReLU problem?",
+      "options_es": [
+        "En que ReLU se satura para entradas positivas grandes y su derivada tiende a cero",
+        "En que ReLU devuelve valores muy grandes que desbordan la memoria de la GPU",
+        "En que una neurona puede acabar con preactivación negativa para todos los ejemplos: su salida es siempre 0, su derivada local es 0, no le llega gradiente y sus pesos quedan congelados para siempre",
+        "En que ReLU no es derivable en x = 0, lo que detiene el entrenamiento en cuanto algún valor cae exactamente ahí"
+      ],
+      "options_en": [
+        "ReLU saturates for large positive inputs and its derivative tends to zero",
+        "ReLU returns huge values that overflow GPU memory",
+        "A neuron can end up with a negative pre-activation for every example: its output is always 0, its local derivative is 0, no gradient reaches it and its weights are frozen for good",
+        "ReLU is not differentiable at x = 0, which halts training as soon as some value lands exactly there"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La neurona muerta es irreversible mientras no cambien las entradas: como el gradiente que la atraviesa es exactamente cero, nada puede sacarla de ahí, y con tasas de aprendizaje altas puede morir una fracción notable de la capa. La primera opción describe la saturación de sigmoide o tanh, no la de ReLU, que en el lado positivo tiene derivada 1 constante. La no derivabilidad en 0 es real pero inofensiva: los frameworks devuelven un subgradiente (0 en PyTorch) y el entrenamiento continúa. Leaky ReLU, PReLU y ELU existen justamente para dar pendiente no nula en la zona negativa.",
+      "explanation_en": "A dead unit is irreversible as long as its inputs do not change: the gradient flowing through it is exactly zero, so nothing can revive it, and with a large learning rate a sizeable fraction of a layer can die. The first option describes sigmoid or tanh saturation, not ReLU, whose positive side has a constant derivative of 1. The non-differentiability at 0 is real but harmless: frameworks return a subgradient (0 in PyTorch) and training carries on. Leaky ReLU, PReLU and ELU exist precisely to give the negative region a non-zero slope.",
+      "source": "Géron, Hands-On Machine Learning 3e (2022), Ch. 11: Vanishing/Exploding Gradients - ReLU variants",
+      "expected_time_ms": 34000,
+      "tags": ["relu", "dying-relu", "activation"]
+    },
+    {
+      "id": "q060602009",
+      "skill_id": "sk060602",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Una red debe etiquetar cada imagen con cualquier combinación de 5 etiquetas que no son excluyentes (una imagen puede tener varias a la vez). ¿Qué activación de salida y qué pérdida corresponden?",
+      "question_en": "A network must tag each image with any combination of 5 labels that are not mutually exclusive (an image can carry several at once). Which output activation and loss are appropriate?",
+      "options_es": [
+        "Softmax sobre las 5 salidas, porque en clasificación siempre se usa softmax",
+        "Una única neurona con sigmoide y un umbral distinto por etiqueta",
+        "Tanh en las 5 salidas, de modo que el signo indique la presencia o ausencia de cada etiqueta",
+        "Una sigmoide independiente en cada una de las 5 salidas, con entropía cruzada binaria sumada por etiqueta"
+      ],
+      "options_en": [
+        "Softmax over the 5 outputs, because classification always uses softmax",
+        "A single sigmoid neuron with a different threshold per label",
+        "Tanh on the 5 outputs, so the sign indicates each label's presence or absence",
+        "An independent sigmoid on each of the 5 outputs, with binary cross-entropy summed over labels"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Es clasificación multietiqueta, no multiclase: cada etiqueta es una decisión binaria independiente, así que se necesitan 5 probabilidades libres entre 0 y 1. Softmax es la tentación por costumbre, pero fuerza que las salidas sumen 1, es decir, impone competencia entre etiquetas y hace imposible predecir dos a la vez con confianza alta. Una sola neurona no puede codificar 5 decisiones, y tanh devuelve valores en (-1, 1) que no son probabilidades ni encajan con la entropía cruzada.",
+      "explanation_en": "This is multi-label, not multi-class: each label is an independent binary decision, so you need 5 free probabilities in [0, 1]. Softmax is the habitual temptation, but it forces the outputs to sum to 1, i.e. it imposes competition between labels and makes it impossible to predict two of them confidently at once. A single neuron cannot encode 5 decisions, and tanh returns values in (-1, 1) that are not probabilities and do not fit cross-entropy.",
+      "source": "Géron, Hands-On Machine Learning 3e (2022), Ch. 10-11; PyTorch documentation, torch.nn.BCEWithLogitsLoss",
+      "expected_time_ms": 32000,
+      "tags": ["softmax", "sigmoid", "multilabel"]
+    },
+    {
+      "id": "q060602010",
+      "skill_id": "sk060602",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una red de 10 capas en la que todas las activaciones son lineales (la identidad) equivale a un único modelo lineal, por muchas capas que se apilen.",
+      "question_en": "A 10-layer network in which every activation is linear (the identity) is equivalent to a single linear model, no matter how many layers are stacked.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "La composición de transformaciones afines es otra transformación afín: W3(W2(W1x + b1) + b2) + b3 se reescribe como Wx + b. Apilar capas lineales añade parámetros y coste, pero no capacidad expresiva. Esa es exactamente la razón de ser de la no linealidad: sin ella, la profundidad no aporta nada.",
+      "explanation_en": "A composition of affine transformations is another affine transformation: W3(W2(W1x + b1) + b2) + b3 collapses to Wx + b. Stacking linear layers adds parameters and cost, but no expressive power. That is precisely why non-linearity exists: without it, depth buys nothing.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3: Hidden Units",
+      "expected_time_ms": 24000,
+      "tags": ["activation", "linearity", "depth"]
+    },
+    {
+      "id": "q060602011",
+      "skill_id": "sk060602",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "```\nimport torch\nx = torch.tensor([-2.0, 0.0, 3.0])\nprint(torch.relu(x))\n```\n¿Qué imprime este código?",
+      "question_en": "```\nimport torch\nx = torch.tensor([-2.0, 0.0, 3.0])\nprint(torch.relu(x))\n```\nWhat does this code print?",
+      "options_es": [
+        "tensor([0., 0., 3.])",
+        "tensor([-2., 0., 3.])",
+        "tensor([0., 1., 3.])",
+        "tensor([-1., 0., 1.])"
+      ],
+      "options_en": [
+        "tensor([0., 0., 3.])",
+        "tensor([-2., 0., 3.])",
+        "tensor([0., 1., 3.])",
+        "tensor([-1., 0., 1.])"
+      ],
+      "correct_index": 0,
+      "explanation_es": "ReLU es max(0, x) elemento a elemento: -2 pasa a 0, el 0 se queda en 0 y el 3 se conserva intacto. La segunda opción supone que ReLU no toca nada; la tercera confunde ReLU con el escalón de Heaviside, que vale 1 en 0; la cuarta la confunde con la función signo. Nótese que ReLU no reescala los valores positivos, solo recorta los negativos.",
+      "explanation_en": "ReLU is elementwise max(0, x): -2 becomes 0, the 0 stays 0, and the 3 passes through untouched. The second option assumes ReLU changes nothing; the third confuses ReLU with the Heaviside step, which is 1 at 0; the fourth confuses it with the sign function. Note that ReLU does not rescale positive values, it only clips negative ones.",
+      "source": "PyTorch documentation, torch.relu / torch.nn.ReLU",
+      "expected_time_ms": 20000,
+      "tags": ["relu", "pytorch", "activation"]
+    },
+    {
+      "id": "q060602012",
+      "skill_id": "sk060602",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cómo se llama la función de activación suave usada en BERT y en los modelos GPT, que multiplica la entrada por la función de distribución acumulada de una normal estándar, es decir x * Phi(x)?",
+      "question_en": "What is the smooth activation function used in BERT and the GPT models called, the one that multiplies the input by the cumulative distribution function of a standard normal, i.e. x * Phi(x)?",
+      "correct_answer_es": "GELU (Gaussian Error Linear Unit)",
+      "correct_answer_en": "GELU (Gaussian Error Linear Unit)",
+      "explanation_es": "GELU se comporta como una ReLU suavizada: para valores muy negativos tiende a 0 y para muy positivos tiende a la identidad, pero la transición es continua y derivable en todas partes, y deja pasar un poco de señal negativa. Eso evita las unidades muertas de ReLU sin la discontinuidad de la derivada. Conviene no confundirla con Swish/SiLU, que usa la sigmoide en lugar de Phi y es numéricamente muy parecida.",
+      "explanation_en": "GELU behaves like a smoothed ReLU: it tends to 0 for very negative values and to the identity for very positive ones, but the transition is continuous and differentiable everywhere, and it lets a little negative signal through. That avoids ReLU's dead units without the kink in the derivative. Do not confuse it with Swish/SiLU, which uses the sigmoid instead of Phi and is numerically very close.",
+      "source": "Hendrycks & Gimpel (2016), Gaussian Error Linear Units (GELUs); PyTorch documentation, torch.nn.GELU",
+      "expected_time_ms": 30000,
+      "tags": ["gelu", "activation", "transformers"]
+    },
+    {
+      "id": "q060602013",
+      "skill_id": "sk060602",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En PyTorch se entrena un clasificador multiclase con `nn.CrossEntropyLoss()`. ¿Qué debe devolver la última capa del modelo?",
+      "question_en": "In PyTorch a multi-class classifier is trained with `nn.CrossEntropyLoss()`. What should the model's final layer return?",
+      "options_es": [
+        "Probabilidades ya normalizadas con `softmax`, porque la pérdida espera que sumen 1",
+        "Logits sin normalizar: `nn.CrossEntropyLoss` aplica internamente `log_softmax`, así que añadir un softmax propio aplica la operación dos veces, aplana la distribución y debilita los gradientes",
+        "Una sola neurona con sigmoide, igual que en clasificación binaria",
+        "Las etiquetas verdaderas codificadas en one-hot"
+      ],
+      "options_en": [
+        "Probabilities already normalised with `softmax`, because the loss expects them to sum to 1",
+        "Raw, unnormalised logits: `nn.CrossEntropyLoss` applies `log_softmax` internally, so adding your own softmax applies the operation twice, flattens the distribution and weakens the gradients",
+        "A single sigmoid neuron, just as in binary classification",
+        "The ground-truth labels in one-hot encoding"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Es de los errores más comunes al pasar de Keras a PyTorch: en Keras es habitual declarar `activation='softmax'` en la última capa, mientras que `nn.CrossEntropyLoss` ya combina `log_softmax` con `nll_loss` por estabilidad numérica. El modelo sigue entrenando con el doble softmax, pero converge peor y nadie ve el fallo, porque no lanza ningún error. La opción de la sigmoide única solo vale para dos clases, y las etiquetas one-hot son el objetivo, no la salida (esta pérdida además espera índices enteros de clase).",
+      "explanation_en": "This is one of the most common slips when moving from Keras to PyTorch: in Keras you routinely declare `activation='softmax'` on the last layer, whereas `nn.CrossEntropyLoss` already fuses `log_softmax` with `nll_loss` for numerical stability. The model still trains with the double softmax, but converges worse and nobody notices, because nothing raises an error. The single-sigmoid option only applies to two classes, and one-hot labels are the target, not the output (this loss in fact expects integer class indices).",
+      "source": "PyTorch documentation, torch.nn.CrossEntropyLoss",
+      "expected_time_ms": 32000,
+      "tags": ["softmax", "cross-entropy", "pytorch"]
+    },
+    {
+      "id": "q060602014",
+      "skill_id": "sk060602",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "La salida de ReLU está centrada en cero, igual que la de tanh, lo que hace innecesaria cualquier normalización de activaciones dentro de la red.",
+      "question_en": "ReLU's output is zero-centred, just like tanh's, which makes any normalisation of activations inside the network unnecessary.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "ReLU devuelve siempre valores no negativos, así que su media es estrictamente positiva: es todo lo contrario a estar centrada en cero. Esa es una virtud de tanh, no de ReLU, y la confusión aparece al mezclar las dos ventajas que se estudian juntas. La ventaja real de ReLU es no saturarse en el lado positivo, donde su derivada vale 1. El sesgo positivo de las activaciones es precisamente una de las motivaciones de batch normalization y de variantes como ELU o SELU.",
+      "explanation_en": "ReLU always returns non-negative values, so its mean is strictly positive: the opposite of zero-centred. That property belongs to tanh, not ReLU, and the confusion comes from mixing up two advantages usually taught side by side. ReLU's real advantage is that it does not saturate on the positive side, where its derivative is 1. The positive bias of the activations is in fact one of the motivations for batch normalisation and for variants such as ELU or SELU.",
+      "source": "Géron, Hands-On Machine Learning 3e (2022), Ch. 11; Ioffe & Szegedy (2015), Batch Normalization",
+      "expected_time_ms": 28000,
+      "tags": ["relu", "tanh", "normalization"]
+    },
+    {
+      "id": "q060602015",
+      "skill_id": "sk060602",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es el valor máximo de la derivada de la sigmoide y qué consecuencia tiene al encadenar muchas capas?",
+      "question_en": "What is the maximum value of the sigmoid's derivative, and what follows from it when many layers are chained?",
+      "options_es": [
+        "Vale 1 en x = 0, y por eso la sigmoide no provoca desvanecimiento del gradiente",
+        "Vale 0,5 en x = 0, así que el gradiente se reduce exactamente a la mitad en cada capa",
+        "Vale 0,25 en x = 0, así que la regla de la cadena multiplica factores menores o iguales a 0,25 por capa y el gradiente se desvanece exponencialmente con la profundidad",
+        "Es infinita en x = 0, lo que provoca explosión del gradiente en redes profundas"
+      ],
+      "options_en": [
+        "It is 1 at x = 0, which is why the sigmoid does not cause vanishing gradients",
+        "It is 0.5 at x = 0, so the gradient is halved exactly once per layer",
+        "It is 0.25 at x = 0, so the chain rule multiplies factors of at most 0.25 per layer and the gradient vanishes exponentially with depth",
+        "It is infinite at x = 0, which causes exploding gradients in deep networks"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La derivada es sigma(x)(1 - sigma(x)), máxima cuando sigma(x) = 0,5, es decir 0,25 en x = 0. Confundir el valor de la sigmoide en 0 (que sí es 0,5) con el de su derivada es el error más frecuente, y de ahí sale la segunda opción. Y 0,25 es el mejor caso: en cuanto la neurona se satura el factor cae mucho más, por lo que en una red de 10 capas el gradiente que llega a las primeras es órdenes de magnitud menor. La cuarta opción invierte el fenómeno: la sigmoide acota su derivada, nunca la dispara.",
+      "explanation_en": "The derivative is sigma(x)(1 - sigma(x)), maximal when sigma(x) = 0.5, i.e. 0.25 at x = 0. Confusing the sigmoid's value at 0 (which is indeed 0.5) with its derivative's is the most frequent mistake, and it produces the second option. And 0.25 is the best case: as soon as a neuron saturates the factor drops much lower, so in a 10-layer network the gradient reaching the first layers is orders of magnitude smaller. The fourth option inverts the phenomenon: the sigmoid bounds its derivative, it never blows it up.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.3; Géron, Hands-On Machine Learning 3e (2022), Ch. 11",
+      "expected_time_ms": 36000,
+      "tags": ["sigmoid", "derivative", "vanishing-gradient"]
+    },
+    {
+      "id": "q060603009",
+      "skill_id": "sk060603",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué ocurre normalmente si la tasa de aprendizaje es demasiado alta al entrenar con descenso de gradiente?",
+      "question_en": "What typically happens if the learning rate is too high when training with gradient descent?",
+      "options_es": [
+        "La pérdida oscila o diverge hasta NaN: cada paso se pasa del mínimo y puede aumentar el error en lugar de reducirlo",
+        "El entrenamiento es simplemente más lento, pero acaba convergiendo al mismo mínimo",
+        "La red sobreajusta los datos de entrenamiento con más facilidad",
+        "Los gradientes que calcula backpropagation dejan de ser correctos"
+      ],
+      "options_en": [
+        "The loss oscillates or diverges to NaN: each step overshoots the minimum and can increase the error instead of reducing it",
+        "Training is simply slower, but it eventually converges to the same minimum",
+        "The network overfits the training data more easily",
+        "The gradients computed by backpropagation stop being correct"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El gradiente indica la dirección de descenso, pero solo localmente: si el paso es demasiado largo, se sale de la región donde esa dirección era válida y el error sube. La segunda opción describe el síntoma de una tasa demasiado baja, que es la confusión más habitual entre ambos extremos. La tercera confunde la tasa de aprendizaje con la capacidad del modelo o la regularización. La cuarta es falsa en un punto importante: el gradiente sigue siendo exacto; lo erróneo es cuánto se avanza en su dirección.",
+      "explanation_en": "The gradient gives the descent direction, but only locally: if the step is too long you leave the region where that direction was valid and the error goes up. The second option describes the symptom of a too-low rate, which is the most common confusion between the two extremes. The third confuses the learning rate with model capacity or regularisation. The fourth is false in an important way: the gradient stays exact; what is wrong is how far you move along it.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.3; Géron, Hands-On Machine Learning 3e (2022), Ch. 11",
+      "expected_time_ms": 28000,
+      "tags": ["learning-rate", "gradient-descent", "training"]
+    },
+    {
+      "id": "q060603010",
+      "skill_id": "sk060603",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "```\nimport torch\nx = torch.tensor(2.0, requires_grad=True)\nfor _ in range(3):\n    y = x ** 2\n    y.backward()\nprint(x.grad)\n```\n¿Qué imprime este código?",
+      "question_en": "```\nimport torch\nx = torch.tensor(2.0, requires_grad=True)\nfor _ in range(3):\n    y = x ** 2\n    y.backward()\nprint(x.grad)\n```\nWhat does this code print?",
+      "options_es": ["tensor(4.)", "tensor(2.)", "tensor(8.)", "tensor(12.)"],
+      "options_en": ["tensor(4.)", "tensor(2.)", "tensor(8.)", "tensor(12.)"],
+      "correct_index": 3,
+      "explanation_es": "dy/dx = 2x = 4 en cada iteración, pero PyTorch ACUMULA en `.grad` en lugar de sobrescribirlo: 4 + 4 + 4 = 12. Esperar `tensor(4.)` es la intuición natural (el último gradiente calculado) y es justo la que produce el bug clásico de olvidar `optimizer.zero_grad()` en el bucle de entrenamiento: el modelo avanza con la suma de los gradientes de todos los lotes vistos y el entrenamiento se desestabiliza sin lanzar ningún error. La acumulación es deliberada: permite simular lotes grandes en poca memoria (gradient accumulation).",
+      "explanation_en": "dy/dx = 2x = 4 on every iteration, but PyTorch ACCUMULATES into `.grad` rather than overwriting it: 4 + 4 + 4 = 12. Expecting `tensor(4.)` is the natural intuition (the last gradient computed) and it is exactly what produces the classic bug of forgetting `optimizer.zero_grad()` in the training loop: the model steps on the sum of the gradients of every batch seen so far and training destabilises without raising any error. The accumulation is deliberate: it lets you simulate large batches in little memory (gradient accumulation).",
+      "source": "PyTorch documentation, Autograd mechanics / torch.Tensor.backward",
+      "expected_time_ms": 42000,
+      "tags": ["pytorch", "autograd", "zero-grad"]
+    },
+    {
+      "id": "q060603011",
+      "skill_id": "sk060603",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En PyTorch, la llamada `loss.backward()` calcula los gradientes y además actualiza los pesos del modelo.",
+      "question_en": "In PyTorch, calling `loss.backward()` computes the gradients and also updates the model's weights.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "`backward()` solo recorre el grafo y deja el gradiente en el atributo `.grad` de cada parámetro; quien modifica los pesos es `optimizer.step()`. La separación no es un capricho: entre ambas llamadas caben el recorte de gradientes, la acumulación entre lotes o el escalado de precisión mixta. Confundirlas lleva al bucle que calcula gradientes pero nunca entrena, con una pérdida que no baja y ningún mensaje de error.",
+      "explanation_en": "`backward()` only walks the graph and leaves the gradient in each parameter's `.grad` attribute; what changes the weights is `optimizer.step()`. The separation is not arbitrary: gradient clipping, accumulation across batches, or mixed-precision scaling all fit between the two calls. Conflating them leads to the loop that computes gradients but never trains, with a loss that never drops and no error message.",
+      "source": "PyTorch documentation, torch.optim / Optimizing Model Parameters tutorial",
+      "expected_time_ms": 24000,
+      "tags": ["pytorch", "backpropagation", "optimizer"]
+    },
+    {
+      "id": "q060603012",
+      "skill_id": "sk060603",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué distingue el descenso de gradiente por minilotes (mini-batch) del descenso de gradiente por lote completo?",
+      "question_en": "What distinguishes mini-batch gradient descent from full-batch gradient descent?",
+      "options_es": [
+        "El de minilotes usa tasa de aprendizaje adaptativa y el de lote completo, fija",
+        "El de minilotes calcula el gradiente exacto y el de lote completo solo una aproximación",
+        "El de minilotes estima el gradiente con un subconjunto de ejemplos en cada paso: da muchas más actualizaciones por época, con una estimación ruidosa pero mucho más barata en memoria y cómputo",
+        "El de minilotes solo puede usarse cuando el conjunto de datos entero cabe en memoria"
+      ],
+      "options_en": [
+        "Mini-batch uses an adaptive learning rate and full-batch a fixed one",
+        "Mini-batch computes the exact gradient and full-batch only an approximation",
+        "Mini-batch estimates the gradient from a subset of examples at each step: many more updates per epoch, with a noisy estimate but far cheaper in memory and compute",
+        "Mini-batch can only be used when the entire dataset fits in memory"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El tamaño del lote solo determina cuántos ejemplos entran en la estimación del gradiente; es ortogonal al optimizador, así que la primera opción mezcla dos ejes independientes (se puede usar Adam con lote completo). La segunda invierte los papeles: el gradiente exacto de la función de pérdida sobre los datos es el de lote completo. La cuarta invierte el argumento de memoria: los minilotes existen precisamente porque el conjunto entero no cabe. Y el ruido de la estimación no es solo un coste: ayuda a escapar de mínimos locales pobres.",
+      "explanation_en": "Batch size only sets how many examples go into the gradient estimate; it is orthogonal to the optimiser, so the first option mixes two independent axes (you can run Adam full-batch). The second reverses the roles: the exact gradient of the loss over the data is the full-batch one. The fourth reverses the memory argument: mini-batches exist precisely because the whole set does not fit. And the noise in the estimate is not purely a cost: it helps escape poor local minima.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.1.3: Batch and Minibatch Algorithms",
+      "expected_time_ms": 32000,
+      "tags": ["mini-batch", "sgd", "gradient-descent"]
+    },
+    {
+      "id": "q060603013",
+      "skill_id": "sk060603",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se llama la técnica que limita la norma del vector de gradientes a un valor máximo antes de actualizar los pesos, usada sobre todo para evitar la explosión del gradiente en redes recurrentes?",
+      "question_en": "What is the technique called that caps the norm of the gradient vector at a maximum value before updating the weights, used above all to prevent exploding gradients in recurrent networks?",
+      "correct_answer_es": "recorte del gradiente (gradient clipping)",
+      "correct_answer_en": "gradient clipping",
+      "explanation_es": "Al recortar por norma se conserva la DIRECCIÓN del gradiente y solo se reduce su longitud, que es lo que hace que la técnica sea segura: el paso sigue apuntando hacia donde baja la pérdida. Es un remedio para la explosión del gradiente, no para el desvanecimiento: recortar no puede agrandar un gradiente que ya llega casi a cero, y confundir ambos problemas es habitual.",
+      "explanation_en": "Clipping by norm preserves the gradient's DIRECTION and only shortens it, which is what makes the technique safe: the step still points where the loss goes down. It is a remedy for exploding gradients, not vanishing ones: clipping cannot enlarge a gradient that already arrives near zero, and conflating the two problems is common.",
+      "source": "Pascanu, Mikolov & Bengio (2013), On the difficulty of training recurrent neural networks; PyTorch documentation, torch.nn.utils.clip_grad_norm_",
+      "expected_time_ms": 28000,
+      "tags": ["gradient-clipping", "exploding-gradient", "backpropagation"]
+    },
+    {
+      "id": "q060603014",
+      "skill_id": "sk060603",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Por qué backpropagation usa diferenciación automática en modo inverso y no diferencias finitas?",
+      "question_en": "Why does backpropagation use reverse-mode automatic differentiation rather than finite differences?",
+      "options_es": [
+        "Porque las diferencias finitas dan derivadas exactas, pero solo funcionan con activaciones lineales",
+        "Porque el modo inverso obtiene la derivada respecto a TODOS los parámetros con un coste del orden de una sola pasada hacia adelante, mientras que las diferencias finitas exigirían al menos dos evaluaciones de la red por parámetro: inviable con millones de pesos",
+        "Porque las diferencias finitas no se pueden implementar en aritmética de punto flotante",
+        "Porque el modo inverso no necesita guardar las activaciones de la pasada hacia adelante, y por eso ahorra memoria"
+      ],
+      "options_en": [
+        "Because finite differences give exact derivatives, but only work with linear activations",
+        "Because reverse mode obtains the derivative with respect to ALL parameters at a cost of the order of one forward pass, whereas finite differences would need at least two network evaluations per parameter: hopeless with millions of weights",
+        "Because finite differences cannot be implemented in floating-point arithmetic",
+        "Because reverse mode does not need to store the forward-pass activations, and therefore saves memory"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La clave es el coste: una función con muchas entradas y una sola salida escalar (la pérdida) es exactamente el caso que favorece al modo inverso. La cuarta opción es la trampa fina, porque dice lo contrario de la verdad: el modo inverso SÍ debe conservar las activaciones para reutilizarlas al retroceder, y por eso la memoria es su cuello de botella y existe el gradient checkpointing. Las diferencias finitas, además de caras, son aproximadas y numéricamente inestables; hoy solo se usan para verificar una implementación de gradiente (gradient checking), no para entrenar.",
+      "explanation_en": "Cost is the crux: a function with many inputs and a single scalar output (the loss) is exactly the case that favours reverse mode. The fourth option is the subtle trap, because it states the opposite of the truth: reverse mode DOES have to keep the activations to reuse them on the way back, which is why memory is its bottleneck and why gradient checkpointing exists. Finite differences, besides being expensive, are approximate and numerically unstable; today they are only used to verify a gradient implementation (gradient checking), not to train.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5: Back-Propagation and Other Differentiation Algorithms",
+      "expected_time_ms": 40000,
+      "tags": ["autodiff", "backpropagation", "computational-cost"]
+    },
+    {
+      "id": "q060603015",
+      "skill_id": "sk060603",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "Sea y = (3x + 1)^2 evaluada en x = 1. Aplicando la regla de la cadena tal y como lo hace backpropagation, ¿cuánto vale dy/dx?",
+      "question_en": "Let y = (3x + 1)^2 evaluated at x = 1. Applying the chain rule the way backpropagation does, what is dy/dx?",
+      "options_es": ["8", "16", "24", "12"],
+      "options_en": ["8", "16", "24", "12"],
+      "correct_index": 2,
+      "explanation_es": "Con u = 3x + 1, dy/du = 2u = 8 y du/dx = 3, así que dy/dx = 8 * 3 = 24. El 8 es el error clásico: derivar la función externa y olvidar multiplicar por la derivada de la interna, exactamente el paso que backpropagation automatiza capa a capa. El 16 es el valor de y en x = 1, no su derivada. El 12 sale de mezclar factores (4 * 3) usando u sin duplicar. En una red, cada capa aporta un factor como ese 3, y es su producto el que puede desvanecerse o explotar.",
+      "explanation_en": "With u = 3x + 1, dy/du = 2u = 8 and du/dx = 3, so dy/dx = 8 * 3 = 24. The 8 is the classic error: differentiate the outer function and forget to multiply by the inner derivative, exactly the step backpropagation automates layer by layer. The 16 is the value of y at x = 1, not its derivative. The 12 comes from mixing factors (4 * 3), using u without doubling it. In a network each layer contributes a factor like that 3, and it is their product that can vanish or explode.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5.2: Chain Rule of Calculus",
+      "expected_time_ms": 38000,
+      "tags": ["chain-rule", "backpropagation", "derivatives"]
+    },
+    {
+      "id": "q060604008",
+      "skill_id": "sk060604",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "```\nimport torch\nimport torch.nn as nn\nx = torch.randn(8, 3, 32, 32)\nconv = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=0)\nprint(conv(x).shape)\n```\n¿Qué imprime este código?",
+      "question_en": "```\nimport torch\nimport torch.nn as nn\nx = torch.randn(8, 3, 32, 32)\nconv = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=0)\nprint(conv(x).shape)\n```\nWhat does this code print?",
+      "options_es": [
+        "torch.Size([8, 3, 30, 30])",
+        "torch.Size([8, 16, 30, 30])",
+        "torch.Size([8, 16, 32, 32])",
+        "torch.Size([8, 16, 29, 29])"
+      ],
+      "options_en": [
+        "torch.Size([8, 3, 30, 30])",
+        "torch.Size([8, 16, 30, 30])",
+        "torch.Size([8, 16, 32, 32])",
+        "torch.Size([8, 16, 29, 29])"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El tamaño de salida es (32 - 3 + 2*0)/1 + 1 = 30 por lado, y los canales pasan a ser 16, el valor de `out_channels`. El lote (8) nunca cambia. La primera opción mantiene los 3 canales de entrada, confundiendo `in_channels` con `out_channels`. La tercera asume `padding='same'`, que sí conservaría 32x32, pero aquí el padding es 0. La cuarta es el clásico error de olvidar el `+ 1` de la fórmula.",
+      "explanation_en": "The output side is (32 - 3 + 2*0)/1 + 1 = 30, and the channels become 16, the value of `out_channels`. The batch dimension (8) never changes. The first option keeps the 3 input channels, confusing `in_channels` with `out_channels`. The third assumes `padding='same'`, which would indeed preserve 32x32, but padding here is 0. The fourth is the classic slip of dropping the `+ 1` in the formula.",
+      "source": "PyTorch documentation, torch.nn.Conv2d",
+      "expected_time_ms": 36000,
+      "tags": ["cnn", "conv2d", "output-shape"]
+    },
+    {
+      "id": "q060604009",
+      "skill_id": "sk060604",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿De qué depende el número de parámetros entrenables de una capa `Conv2d(3, 16, kernel_size=3)`?",
+      "question_en": "What does the number of trainable parameters of a `Conv2d(3, 16, kernel_size=3)` layer depend on?",
+      "options_es": [
+        "Solo del tamaño del kernel y del número de canales: 3*3*3*16 + 16 = 448 parámetros, con independencia total del tamaño de la imagen de entrada",
+        "Del número de píxeles de la imagen de entrada, porque cada píxel necesita su propio peso",
+        "Del tamaño del lote, porque cada ejemplo del lote aporta su propio juego de pesos",
+        "Del número de posiciones en que se aplica el filtro, es decir, del tamaño del mapa de activación de salida"
+      ],
+      "options_en": [
+        "Only on the kernel size and the channel counts: 3*3*3*16 + 16 = 448 parameters, entirely independent of the input image size",
+        "On the number of pixels in the input image, because each pixel needs its own weight",
+        "On the batch size, because each example in the batch contributes its own set of weights",
+        "On the number of positions where the filter is applied, i.e. on the size of the output activation map"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cada uno de los 16 filtros tiene forma 3x3x3 (alto x ancho x canales de entrada), más un sesgo por filtro. La independencia del tamaño de la imagen es consecuencia directa del reparto de pesos (parameter sharing): el mismo filtro se desliza por todas las posiciones. Las opciones sobre píxeles y posiciones son la misma idea equivocada, la de razonar como si fuera una capa densa, y suelen venir de confundir parámetros con ACTIVACIONES: el número de activaciones sí crece con la resolución y con el lote. Los pesos jamás dependen del lote: se comparten entre todos los ejemplos.",
+      "explanation_en": "Each of the 16 filters has shape 3x3x3 (height x width x input channels), plus one bias per filter. Independence from image size follows directly from parameter sharing: the same filter slides over every position. The pixel and position options are the same wrong idea, reasoning as if this were a dense layer, and they usually come from confusing parameters with ACTIVATIONS: the number of activations does grow with resolution and with batch size. Weights never depend on the batch: they are shared across all examples.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.2: Motivation (sparse interactions, parameter sharing); PyTorch documentation, torch.nn.Conv2d",
+      "expected_time_ms": 36000,
+      "tags": ["cnn", "parameters", "weight-sharing"]
+    },
+    {
+      "id": "q060604010",
+      "skill_id": "sk060604",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Una capa de max pooling tiene pesos entrenables que backpropagation ajusta durante el entrenamiento.",
+      "question_en": "A max pooling layer has trainable weights that backpropagation adjusts during training.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Max pooling es una operación fija sin parámetros: solo selecciona el máximo de cada ventana. Aparece listada como una capa más en el resumen del modelo, y de ahí sale la confusión, pero su fila de parámetros es 0. Sí participa en el paso hacia atrás: encamina todo el gradiente hacia la posición que fue el máximo y entrega cero a las demás. Sus únicos ajustes (tamaño de ventana, stride) son hiperparámetros que elige la persona, no la red.",
+      "explanation_en": "Max pooling is a fixed, parameter-free operation: it just selects the maximum of each window. It shows up as another layer in the model summary, which is where the confusion comes from, but its parameter count is 0. It does take part in the backward pass: it routes the entire gradient to the position that was the maximum and hands zero to the rest. Its only settings (window size, stride) are hyperparameters a person chooses, not something the network learns.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.3: Pooling; PyTorch documentation, torch.nn.MaxPool2d",
+      "expected_time_ms": 22000,
+      "tags": ["cnn", "pooling", "parameters"]
+    },
+    {
+      "id": "q060604011",
+      "skill_id": "sk060604",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se llama la región de la imagen de entrada que influye en el valor de una única unidad de un mapa de activación, y que se agranda a medida que se apilan capas convolucionales y de pooling?",
+      "question_en": "What is the region of the input image that influences the value of a single unit in an activation map called, the one that grows as convolutional and pooling layers are stacked?",
+      "correct_answer_es": "campo receptivo",
+      "correct_answer_en": "receptive field",
+      "explanation_es": "En la primera capa el campo receptivo es del tamaño del kernel, pero crece con la profundidad: por eso las capas iniciales detectan bordes y texturas locales, y las profundas, partes de objetos o el objeto entero. Es el concepto que explica por qué una CNN necesita profundidad (o stride, o dilatación) para captar estructura global: sin suficiente campo receptivo, ninguna unidad llega a ver el objeto completo.",
+      "explanation_en": "In the first layer the receptive field is the size of the kernel, but it grows with depth: that is why early layers detect edges and local textures while deep ones detect object parts or whole objects. It is the concept that explains why a CNN needs depth (or stride, or dilation) to capture global structure: without a large enough receptive field, no unit ever sees the whole object.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.2",
+      "expected_time_ms": 28000,
+      "tags": ["cnn", "receptive-field", "depth"]
+    },
+    {
+      "id": "q060604012",
+      "skill_id": "sk060604",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Si una convolución 1x1 no mira a ningún vecino espacial, ¿para qué sirve?",
+      "question_en": "If a 1x1 convolution looks at no spatial neighbour, what is it good for?",
+      "options_es": [
+        "Para nada útil: equivale a la identidad y solo se incluye por compatibilidad de formas",
+        "Para aumentar la resolución espacial del mapa de activación, como hace el upsampling",
+        "Para combinar linealmente los canales en cada posición: reduce o amplía la profundidad del tensor (cuello de botella) y añade no linealidad barata, como en los bloques Inception y ResNet",
+        "Para desplazar la imagen un píxel, lo que aporta invarianza a la traslación"
+      ],
+      "options_en": [
+        "Nothing useful: it is the identity and is only included for shape compatibility",
+        "To increase the spatial resolution of the activation map, the way upsampling does",
+        "To linearly mix the channels at each position: it shrinks or expands the tensor's depth (a bottleneck) and adds cheap non-linearity, as in Inception and ResNet blocks",
+        "To shift the image by one pixel, which adds translation invariance"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Aunque el kernel sea 1x1 espacialmente, su profundidad es la de los canales de entrada: opera a lo largo de la dimensión de canales, que es donde está toda su utilidad. Verla como la identidad es el malentendido central, y solo sería cierto con un único canal de entrada y salida y peso 1. Reducir de 256 a 64 canales antes de una convolución 3x3 recorta el cómputo varias veces, y es la razón de que aparezca en casi toda arquitectura moderna. Ni cambia la resolución (eso es el stride, el pooling o el upsampling) ni desplaza nada.",
+      "explanation_en": "Even though the kernel is 1x1 spatially, its depth equals the number of input channels: it operates along the channel dimension, which is where all its usefulness lives. Seeing it as the identity is the central misunderstanding, and would only hold with a single input and output channel and a weight of 1. Cutting 256 channels down to 64 before a 3x3 convolution shrinks the compute several-fold, which is why it appears in nearly every modern architecture. It neither changes resolution (that is stride, pooling or upsampling) nor shifts anything.",
+      "source": "Lin, Chen & Yan (2014), Network In Network; Szegedy et al. (2015), Going Deeper with Convolutions (Inception)",
+      "expected_time_ms": 40000,
+      "tags": ["cnn", "1x1-convolution", "architecture"]
+    },
+    {
+      "id": "q060604013",
+      "skill_id": "sk060604",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En una capa convolucional estándar, cada filtro se aplica por separado a un solo canal de entrada y las salidas de cada canal se mantienen independientes.",
+      "question_en": "In a standard convolutional layer, each filter is applied separately to a single input channel and the per-channel outputs are kept independent.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Un filtro estándar tiene profundidad igual al número de canales de entrada: convoluciona simultáneamente sobre TODOS ellos y suma los resultados en un único mapa de salida. Por eso `Conv2d(3, 16, 3)` produce 16 mapas, no 48. El enunciado describe en realidad la convolución depthwise, una operación distinta, usada en MobileNet precisamente porque es más barata al no mezclar canales; en ese diseño hace falta añadir una convolución 1x1 (pointwise) para recuperar esa mezcla.",
+      "explanation_en": "A standard filter has depth equal to the number of input channels: it convolves over ALL of them at once and sums the results into a single output map. That is why `Conv2d(3, 16, 3)` produces 16 maps, not 48. The statement actually describes depthwise convolution, a different operation, used in MobileNet precisely because it is cheaper by not mixing channels; that design then needs a 1x1 (pointwise) convolution to recover the mixing.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.5; Howard et al. (2017), MobileNets (depthwise separable convolutions)",
+      "expected_time_ms": 30000,
+      "tags": ["cnn", "channels", "depthwise"]
+    },
+    {
+      "id": "q060604014",
+      "skill_id": "sk060604",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué efecto tiene aumentar el stride (paso) de 1 a 2 en una capa convolucional?",
+      "question_en": "What is the effect of raising the stride from 1 to 2 in a convolutional layer?",
+      "options_es": [
+        "Aumenta el número de parámetros del filtro, porque cubre más superficie de la imagen",
+        "No cambia el tamaño de la salida: solo altera el orden en que se recorre la imagen",
+        "Añade una fila y una columna de ceros alrededor de la entrada",
+        "El filtro salta posiciones, así que el mapa de salida tiene aproximadamente la mitad de alto y de ancho: submuestrea sin necesidad de pooling y reduce el cómputo"
+      ],
+      "options_en": [
+        "It increases the filter's parameter count, because it covers more of the image",
+        "It does not change the output size: it only changes the order in which the image is scanned",
+        "It adds a row and a column of zeros around the input",
+        "The filter skips positions, so the output map is roughly half as tall and half as wide: it downsamples without pooling and cuts compute"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El stride es cada cuántos píxeles se reposiciona el filtro, y con stride 2 se evalúa en una de cada dos posiciones por eje: la salida cae a la cuarta parte en número de elementos. La tercera opción describe el padding, y es la confusión más frecuente porque ambos aparecen juntos en la misma fórmula y en la misma firma de `Conv2d`. La primera confunde stride con tamaño de kernel: los parámetros dependen del kernel y de los canales, nunca del stride. Muchas arquitecturas modernas usan convoluciones con stride en lugar de max pooling justamente por esto.",
+      "explanation_en": "Stride is how many pixels the filter moves between evaluations, and with stride 2 it is evaluated at every other position along each axis: the output drops to a quarter of the elements. The third option describes padding, and it is the most frequent confusion because both appear in the same formula and the same `Conv2d` signature. The first confuses stride with kernel size: parameters depend on the kernel and the channels, never on the stride. Many modern architectures use strided convolutions instead of max pooling for exactly this reason.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 9.5; PyTorch documentation, torch.nn.Conv2d",
+      "expected_time_ms": 30000,
+      "tags": ["cnn", "stride", "downsampling"]
+    },
+    {
+      "id": "q060604015",
+      "skill_id": "sk060604",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué ventaja tiene rematar una CNN con global average pooling en lugar de aplanar (flatten) el último mapa de activación y conectarlo a una capa densa?",
+      "question_en": "What is the advantage of finishing a CNN with global average pooling instead of flattening the last activation map into a dense layer?",
+      "options_es": [
+        "Produce un vector de tamaño igual al número de canales, independiente de la resolución de entrada: elimina la enorme capa densa final, recorta drásticamente los parámetros y el sobreajuste, y permite aceptar imágenes de distinto tamaño",
+        "Conserva más información espacial que el aplanado, porque no descarta ningún píxel",
+        "Permite prescindir de las funciones de activación no lineales en el resto de la red",
+        "Hace que la red pueda entrenarse sin datos etiquetados"
+      ],
+      "options_en": [
+        "It yields a vector whose size equals the channel count, independent of input resolution: it removes the huge final dense layer, slashes parameters and overfitting, and lets the network accept images of different sizes",
+        "It preserves more spatial information than flattening, because it discards no pixel",
+        "It lets you drop the non-linear activation functions in the rest of the network",
+        "It lets the network train without labelled data"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con un mapa final de 7x7x512, aplanar da 25088 valores y una densa a 1000 clases cuesta unos 25 millones de parámetros; el global average pooling entrega 512 valores y reduce esa capa a medio millón. La segunda opción es la intuición natural y equivocada: promediar cada canal descarta por completo la disposición espacial, que es justo lo que hace que la salida no dependa de la resolución. Las otras dos confunden un detalle de arquitectura con la no linealidad o con el paradigma de aprendizaje.",
+      "explanation_en": "With a final 7x7x512 map, flattening gives 25088 values and a dense layer to 1000 classes costs about 25 million parameters; global average pooling hands over 512 values and shrinks that layer to half a million. The second option is the natural but wrong intuition: averaging each channel throws away spatial layout entirely, which is exactly what makes the output independent of resolution. The other two confuse an architectural detail with non-linearity or with the learning paradigm.",
+      "source": "Lin, Chen & Yan (2014), Network In Network; Géron, Hands-On Machine Learning 3e (2022), Ch. 14",
+      "expected_time_ms": 38000,
+      "tags": ["cnn", "global-average-pooling", "architecture"]
+    },
+    {
+      "id": "q060605008",
+      "skill_id": "sk060605",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué es backpropagation through time (BPTT)?",
+      "question_en": "What is backpropagation through time (BPTT)?",
+      "options_es": [
+        "Un algoritmo que entrena la RNN hacia adelante en el tiempo, actualizando los pesos en cada paso temporal según llega cada entrada",
+        "Desplegar la RNN en el tiempo como una red profunda con una capa por paso temporal y aplicar backpropagation sobre ese grafo, sumando las contribuciones al gradiente de los pesos que se comparten entre pasos",
+        "Invertir el orden de la secuencia antes de entrenar, para que la red recuerde mejor el principio",
+        "Usar una red distinta e independiente, con sus propios pesos, en cada paso temporal de la secuencia"
+      ],
+      "options_en": [
+        "An algorithm that trains the RNN forward in time, updating the weights at each time step as each input arrives",
+        "Unrolling the RNN in time as a deep network with one layer per time step and running backpropagation over that graph, summing the gradient contributions of the weights shared across steps",
+        "Reversing the order of the sequence before training, so the network remembers the beginning better",
+        "Using a separate, independent network with its own weights at each time step of the sequence"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La clave que suele perderse es la suma: como la misma matriz de pesos se usa en todos los pasos, su gradiente es la suma de las contribuciones de cada paso temporal. La cuarta opción describe justo lo contrario, una red sin reparto de parámetros, que ya no sería recurrente ni podría procesar secuencias de longitud variable. La primera confunde el despliegue con una actualización en línea. Y de esa cadena larga de multiplicaciones sale precisamente el desvanecimiento o la explosión del gradiente; por eso se recorta el despliegue (truncated BPTT).",
+      "explanation_en": "The part usually missed is the summation: since the same weight matrix is used at every step, its gradient is the sum of the contributions from each time step. The fourth option describes the exact opposite, a network with no parameter sharing, which would no longer be recurrent nor able to handle variable-length sequences. The first confuses unrolling with an online update. And that long chain of multiplications is precisely where vanishing or exploding gradients come from, which is why the unroll is cut short (truncated BPTT).",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 10.2.2: Computing the Gradient in a Recurrent Neural Network",
+      "expected_time_ms": 32000,
+      "tags": ["rnn", "bptt", "backpropagation"]
+    },
+    {
+      "id": "q060605009",
+      "skill_id": "sk060605",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama la variante simplificada del LSTM que fusiona el estado de celda con el estado oculto y usa solo dos puertas, la de actualización y la de reinicio?",
+      "question_en": "What is the simplified LSTM variant called that merges the cell state with the hidden state and uses only two gates, update and reset?",
+      "correct_answer_es": "GRU (Gated Recurrent Unit)",
+      "correct_answer_en": "GRU (Gated Recurrent Unit)",
+      "explanation_es": "La GRU tiene menos parámetros que el LSTM y entrena algo más rápido, con un rendimiento comparable en la mayoría de tareas; no hay un ganador universal y la elección suele ser empírica. Lo que la distingue estructuralmente es que devuelve un único estado por paso, mientras que el LSTM mantiene dos vectores separados (h y c), detalle que se nota al programar: `nn.GRU` devuelve solo `h`, no la tupla `(h, c)`.",
+      "explanation_en": "The GRU has fewer parameters than the LSTM and trains somewhat faster, with comparable performance on most tasks; there is no universal winner and the choice is usually empirical. What distinguishes it structurally is that it returns a single state per step, whereas the LSTM keeps two separate vectors (h and c), a detail you notice in code: `nn.GRU` returns only `h`, not the `(h, c)` tuple.",
+      "source": "Cho et al. (2014), Learning Phrase Representations using RNN Encoder-Decoder; Jurafsky & Martin, Speech and Language Processing 3e, Ch. 9: RNNs and LSTMs",
+      "expected_time_ms": 26000,
+      "tags": ["gru", "lstm", "rnn"]
+    },
+    {
+      "id": "q060605010",
+      "skill_id": "sk060605",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Una RNN bidireccional sirve para predecir en tiempo real sobre un flujo de datos, porque procesa cada paso temporal en cuanto llega.",
+      "question_en": "A bidirectional RNN is suitable for real-time prediction over a data stream, because it processes each time step as soon as it arrives.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "La capa hacia atrás arranca en el ÚLTIMO elemento de la secuencia, así que hay que disponer de la secuencia completa antes de poder calcular la salida de cualquier posición. Eso descarta el uso en streaming y en generación autorregresiva, donde el futuro aún no existe. La bidireccionalidad brilla en tareas offline sobre secuencias ya completas, como etiquetar entidades o partes de la oración, donde el contexto posterior desambigua. Es la misma razón por la que BERT es bidireccional y sirve para comprender, mientras que un modelo generativo es causal.",
+      "explanation_en": "The backward layer starts at the LAST element of the sequence, so the full sequence must be available before the output at any position can be computed. That rules out streaming use and autoregressive generation, where the future does not exist yet. Bidirectionality shines on offline tasks over already-complete sequences, such as tagging entities or parts of speech, where later context disambiguates. It is the same reason BERT is bidirectional and suited to understanding, while a generative model is causal.",
+      "source": "Jurafsky & Martin, Speech and Language Processing 3e, Ch. 9: Bidirectional RNNs",
+      "expected_time_ms": 30000,
+      "tags": ["rnn", "bidirectional", "streaming"]
+    },
+    {
+      "id": "q060605011",
+      "skill_id": "sk060605",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "```\nimport torch\nimport torch.nn as nn\nlstm = nn.LSTM(input_size=10, hidden_size=20, num_layers=2, batch_first=True)\nx = torch.randn(5, 7, 10)\nout, (h, c) = lstm(x)\nprint(out.shape, h.shape)\n```\n¿Qué imprime este código?",
+      "question_en": "```\nimport torch\nimport torch.nn as nn\nlstm = nn.LSTM(input_size=10, hidden_size=20, num_layers=2, batch_first=True)\nx = torch.randn(5, 7, 10)\nout, (h, c) = lstm(x)\nprint(out.shape, h.shape)\n```\nWhat does this code print?",
+      "options_es": [
+        "torch.Size([5, 7, 20]) torch.Size([5, 7, 20])",
+        "torch.Size([5, 7, 10]) torch.Size([2, 5, 20])",
+        "torch.Size([5, 7, 20]) torch.Size([2, 5, 20])",
+        "torch.Size([5, 20]) torch.Size([2, 20])"
+      ],
+      "options_en": [
+        "torch.Size([5, 7, 20]) torch.Size([5, 7, 20])",
+        "torch.Size([5, 7, 10]) torch.Size([2, 5, 20])",
+        "torch.Size([5, 7, 20]) torch.Size([2, 5, 20])",
+        "torch.Size([5, 20]) torch.Size([2, 20])"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`out` contiene el estado oculto de la ÚLTIMA capa en CADA paso temporal: (lote 5, pasos 7, hidden 20). `h` contiene el ÚLTIMO estado oculto de CADA capa: (num_layers 2, lote 5, hidden 20). La trampa real es que `batch_first=True` afecta solo a `out` y a la entrada, nunca a `h` ni a `c`, que mantienen el lote en la segunda posición; es un fallo muy común al encadenar un LSTM con una capa densa. La primera opción confunde `h` con `out`, y la segunda se queda con `input_size` en lugar de `hidden_size`.",
+      "explanation_en": "`out` holds the hidden state of the LAST layer at EVERY time step: (batch 5, steps 7, hidden 20). `h` holds the LAST hidden state of EVERY layer: (num_layers 2, batch 5, hidden 20). The real trap is that `batch_first=True` affects only `out` and the input, never `h` or `c`, which keep the batch in the second position; this is a very common bug when wiring an LSTM into a dense layer. The first option confuses `h` with `out`, and the second keeps `input_size` instead of `hidden_size`.",
+      "source": "PyTorch documentation, torch.nn.LSTM",
+      "expected_time_ms": 45000,
+      "tags": ["lstm", "pytorch", "shapes"]
+    },
+    {
+      "id": "q060605012",
+      "skill_id": "sk060605",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En un LSTM, ¿qué distingue el estado de celda (c_t) del estado oculto (h_t)?",
+      "question_en": "In an LSTM, what distinguishes the cell state (c_t) from the hidden state (h_t)?",
+      "options_es": [
+        "c_t es la memoria interna de largo plazo, que se actualiza de forma casi aditiva y por eso deja pasar el gradiente sin desvanecerlo; h_t es esa memoria filtrada por la puerta de salida, y es lo que ven la capa siguiente y el paso temporal siguiente",
+        "Son dos nombres del mismo vector; PyTorch lo devuelve por duplicado por compatibilidad con Keras",
+        "c_t guarda la entrada original de la secuencia sin transformar, y h_t la versión transformada por la red",
+        "h_t es la memoria de largo plazo y c_t solo un valor temporal que se descarta en cada paso"
+      ],
+      "options_en": [
+        "c_t is the long-term internal memory, updated almost additively, which is why gradient flows through it without vanishing; h_t is that memory filtered by the output gate, and it is what the next layer and the next time step see",
+        "They are two names for the same vector; PyTorch returns it twice for Keras compatibility",
+        "c_t stores the raw, untransformed sequence input, and h_t the version transformed by the network",
+        "h_t is the long-term memory and c_t just a temporary value discarded at every step"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La cuarta opción invierte los papeles y es el error más extendido, porque h_t es el que se ve en la salida y parece por eso el importante. La aditividad de c_t = f_t * c_{t-1} + i_t * g_t es justo el mecanismo que salva el gradiente: cuando la puerta de olvido se abre, el gradiente atraviesa muchos pasos casi intacto, algo imposible en una RNN simple donde cada paso multiplica por una matriz. La segunda opción se desmiente en cuanto se ve que `nn.LSTM` devuelve `(h, c)` con contenidos distintos; la tercera describiría una conexión residual con la entrada, no un LSTM.",
+      "explanation_en": "The fourth option swaps the roles and is the most widespread error, because h_t is what you see at the output and therefore looks like the important one. The additive form c_t = f_t * c_{t-1} + i_t * g_t is exactly the mechanism that rescues the gradient: when the forget gate opens, gradient crosses many steps nearly intact, which is impossible in a simple RNN where every step multiplies by a matrix. The second option collapses as soon as you see `nn.LSTM` return `(h, c)` with different contents; the third would describe a residual connection to the input, not an LSTM.",
+      "source": "Hochreiter & Schmidhuber (1997), Long Short-Term Memory; Jurafsky & Martin, Speech and Language Processing 3e, Ch. 9",
+      "expected_time_ms": 40000,
+      "tags": ["lstm", "cell-state", "hidden-state"]
+    },
+    {
+      "id": "q060605013",
+      "skill_id": "sk060605",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Los LSTM eliminan por completo el desvanecimiento del gradiente, de modo que modelan dependencias de longitud arbitraria sin ninguna pérdida de información.",
+      "question_en": "LSTMs completely eliminate vanishing gradients, so they model dependencies of arbitrary length with no loss of information.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Los LSTM MITIGAN el problema, no lo eliminan. El camino aditivo del estado de celda permite conservar el gradiente durante muchos más pasos que una RNN simple, pero las puertas siguen multiplicando por valores en (0, 1): con secuencias de miles de pasos la señal acaba degradándose, y además el cuello de botella de un estado de tamaño fijo sigue ahí. Que no sea una solución total es exactamente lo que motivó la atención y, después, los Transformers, con rutas directas entre posiciones arbitrarias.",
+      "explanation_en": "LSTMs MITIGATE the problem, they do not eliminate it. The additive cell-state path preserves gradient over far more steps than a simple RNN, but the gates still multiply by values in (0, 1): over sequences of thousands of steps the signal degrades, and the fixed-size state bottleneck remains. That it is not a complete solution is exactly what motivated attention and, later, Transformers, with direct paths between arbitrary positions.",
+      "source": "Hochreiter & Schmidhuber (1997), Long Short-Term Memory; Vaswani et al. (2017), Attention Is All You Need",
+      "expected_time_ms": 30000,
+      "tags": ["lstm", "vanishing-gradient", "long-range"]
+    },
+    {
+      "id": "q060605014",
+      "skill_id": "sk060605",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "En un modelo codificador-decodificador (seq2seq) con RNN y sin atención, ¿cuál es el cuello de botella principal?",
+      "question_en": "In an RNN encoder-decoder (seq2seq) model without attention, what is the main bottleneck?",
+      "options_es": [
+        "Que el decodificador no puede compartir pesos entre sus pasos temporales",
+        "Que el codificador y el decodificador están obligados a tener el mismo número de pasos temporales",
+        "Que el codificador no admite secuencias de longitud variable",
+        "Que toda la secuencia de entrada se comprime en un único vector de estado de tamaño fijo, así que la información de los primeros tokens se degrada en secuencias largas; la atención lo resuelve dejando que el decodificador consulte todos los estados del codificador"
+      ],
+      "options_en": [
+        "The decoder cannot share weights across its time steps",
+        "The encoder and decoder are forced to have the same number of time steps",
+        "The encoder cannot handle variable-length sequences",
+        "The whole input sequence is squeezed into a single fixed-size state vector, so information from the earliest tokens degrades on long sequences; attention fixes it by letting the decoder consult every encoder state"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Ese vector único se llama, con razón, el cuello de botella del contexto: la calidad de la traducción se derrumbaba a partir de cierta longitud, y fue la observación que dio origen a la atención. Las otras tres opciones niegan propiedades que la arquitectura sí tiene: la RNN comparte pesos entre pasos por definición, la razón de ser del esquema codificador-decodificador es permitir longitudes de entrada y salida DISTINTAS, y procesar secuencias de longitud variable es precisamente la ventaja de una RNN sobre una red densa.",
+      "explanation_en": "That single vector is aptly called the context bottleneck: translation quality collapsed past a certain length, and that observation is what gave rise to attention. The other three options deny properties the architecture does have: an RNN shares weights across steps by definition, the whole point of the encoder-decoder scheme is to allow DIFFERENT input and output lengths, and handling variable-length sequences is exactly an RNN's advantage over a dense network.",
+      "source": "Sutskever, Vinyals & Le (2014), Sequence to Sequence Learning with Neural Networks; Bahdanau, Cho & Bengio (2015), Neural Machine Translation by Jointly Learning to Align and Translate",
+      "expected_time_ms": 40000,
+      "tags": ["seq2seq", "attention", "rnn"]
+    },
+    {
+      "id": "q060605015",
+      "skill_id": "sk060605",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Por qué una RNN no puede paralelizar el entrenamiento a lo largo de la dimensión temporal mientras que un Transformer sí?",
+      "question_en": "Why can an RNN not parallelise training along the time dimension while a Transformer can?",
+      "options_es": [
+        "Porque las RNN solo se pueden ejecutar en CPU y los Transformers están diseñados para GPU",
+        "Porque las RNN tienen demasiados parámetros para caber en memoria si se paralelizan",
+        "Porque h_t depende de h_{t-1}: la recurrencia es secuencial por definición y un paso no puede calcularse hasta terminar el anterior, mientras que la autoatención mira todas las posiciones a la vez y se calcula como productos de matrices en paralelo",
+        "Porque las RNN no admiten procesamiento por lotes (batching)"
+      ],
+      "options_en": [
+        "Because RNNs can only run on CPU and Transformers are designed for GPU",
+        "Because RNNs have too many parameters to fit in memory if parallelised",
+        "Because h_t depends on h_{t-1}: recurrence is sequential by definition and a step cannot be computed until the previous one finishes, whereas self-attention looks at all positions at once and is computed as parallel matrix products",
+        "Because RNNs do not support batching"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La dependencia es de datos, no de hardware: por muchas GPU que se pongan, h_7 no existe hasta que existe h_6. La cuarta opción es la distinción fina que conviene tener clara: las RNN SÍ paralelizan sobre la dimensión de lote, procesando muchas secuencias a la vez; lo que no pueden es paralelizar dentro de una secuencia. Las dos primeras inventan limitaciones de hardware o memoria que no existen. Esta diferencia, y no una mejora de precisión por sí sola, es la razón económica por la que los Transformers desplazaron a las RNN: permiten entrenar con corpus enormes en tiempos razonables.",
+      "explanation_en": "The dependency is on data, not hardware: no number of GPUs makes h_7 exist before h_6 does. The fourth option is the fine distinction worth getting right: RNNs DO parallelise across the batch dimension, processing many sequences at once; what they cannot do is parallelise within a sequence. The first two invent hardware or memory limits that do not exist. This difference, rather than an accuracy gain on its own, is the economic reason Transformers displaced RNNs: they make training on enormous corpora feasible in reasonable time.",
+      "source": "Vaswani et al. (2017), Attention Is All You Need, Sec. 4: Why Self-Attention",
+      "expected_time_ms": 42000,
+      "tags": ["rnn", "transformer", "parallelization"]
+    }
+  ]
+}

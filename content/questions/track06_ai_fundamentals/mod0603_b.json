@@ -1,0 +1,1055 @@
+{
+  "questions": [
+    {
+      "id": "q060301009",
+      "skill_id": "sk060301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un modelo que predice si un cliente cancelará su suscripción alcanza 0.99 de AUC en validación, pero en producción falla. Entre las features hay una columna `motivo_cancelacion`, que solo se rellena cuando el cliente ya ha cancelado. ¿Qué problema describe esto?",
+      "question_en": "A model predicting whether a customer will cancel their subscription reaches 0.99 AUC in validation but fails in production. Among the features there is a column `cancellation_reason`, which is only filled in once the customer has already cancelled. What problem does this describe?",
+      "options_es": [
+        "Fuga de la variable objetivo (target leakage): la feature contiene información que no existe en el momento de la predicción real",
+        "Sobreajuste clásico, porque el modelo memorizó los ejemplos de entrenamiento",
+        "Desequilibrio de clases, porque hay más clientes que se quedan que los que cancelan",
+        "Deriva de datos (data drift), porque la distribución cambió después del despliegue"
+      ],
+      "options_en": [
+        "Target leakage: the feature contains information that does not exist at real prediction time",
+        "Classic overfitting, because the model memorised the training examples",
+        "Class imbalance, because there are more customers who stay than customers who cancel",
+        "Data drift, because the distribution changed after deployment"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La fuga se detecta por el momento en que nace el dato, no por su correlación: `motivo_cancelacion` se escribe DESPUÉS del evento que queremos predecir, así que en validación el modelo lee la respuesta y en producción esa columna llega vacía. Sobreajuste (B) es tentador porque el síntoma se parece (excelente offline, malo en real), pero el sobreajuste degrada el rendimiento en validación, y aquí la validación es perfecta. El desequilibrio (C) y la deriva (D) son problemas reales del flujo de ML, pero ninguno explica un AUC de 0.99 que se evapora al desplegar. La regla práctica es auditar cada feature preguntando: ¿este valor estaba disponible antes de que ocurriera el objetivo?",
+      "explanation_en": "Leakage is spotted by when the data comes into existence, not by its correlation: `cancellation_reason` is written AFTER the event we want to predict, so in validation the model reads the answer and in production that column arrives empty. Overfitting (B) is tempting because the symptom looks similar (great offline, bad in reality), but overfitting degrades validation performance, and here validation is perfect. Imbalance (C) and drift (D) are genuine ML-workflow problems, but neither explains a 0.99 AUC that evaporates on deployment. The practical rule is to audit each feature by asking: was this value available before the target happened?",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 2: End-to-End Machine Learning Project",
+      "expected_time_ms": 40000,
+      "tags": [
+        "ml-workflow",
+        "data-leakage",
+        "validation"
+      ]
+    },
+    {
+      "id": "q060301010",
+      "skill_id": "sk060301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Antes de entrenar un modelo complejo, ¿para qué sirve establecer una línea base (baseline) como `DummyClassifier(strategy='most_frequent')` o predecir siempre la media?",
+      "question_en": "Before training a complex model, what is the point of establishing a baseline such as `DummyClassifier(strategy='most_frequent')` or always predicting the mean?",
+      "options_es": [
+        "Para acelerar el entrenamiento del modelo definitivo reutilizando sus pesos",
+        "Para saber qué puntuación se obtiene sin aprender nada, y poder juzgar si el modelo real aporta algo",
+        "Para rellenar los valores faltantes antes de entrenar",
+        "Porque scikit-learn exige entrenar un estimador simple antes de uno complejo"
+      ],
+      "options_en": [
+        "To speed up training of the final model by reusing its weights",
+        "To know what score you get without learning anything, so you can judge whether the real model adds value",
+        "To fill in missing values before training",
+        "Because scikit-learn requires training a simple estimator before a complex one"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Una métrica sin referencia no significa nada: un 92% de exactitud es excelente si la línea base da 50%, y es un fracaso si la clase mayoritaria ya representa el 93%. La opción A confunde la línea base con el aprendizaje por transferencia; el dummy no tiene pesos que reutilizar. La C mezcla la línea base con la imputación, dos pasos distintos del flujo. La D es un mito: no existe tal requisito en la librería, es una disciplina metodológica. La línea base es lo primero que se calcula después de dividir los datos.",
+      "explanation_en": "A metric without a reference means nothing: 92% accuracy is excellent if the baseline gives 50%, and a failure if the majority class is already 93%. Option A confuses the baseline with transfer learning; the dummy has no weights to reuse. C mixes the baseline up with imputation, two different workflow steps. D is a myth: no such requirement exists in the library, it is a methodological discipline. The baseline is the first thing you compute after splitting the data.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: Dummy estimators",
+      "expected_time_ms": 28000,
+      "tags": [
+        "ml-workflow",
+        "baseline",
+        "evaluation"
+      ]
+    },
+    {
+      "id": "q060301011",
+      "skill_id": "sk060301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En la API de estimadores de scikit-learn, ¿qué se debe hacer con el conjunto de prueba al aplicar un preprocesador como `StandardScaler`?",
+      "question_en": "In the scikit-learn estimator API, what should be done with the test set when applying a preprocessor such as `StandardScaler`?",
+      "options_es": [
+        "Llamar a `fit_transform` sobre el conjunto de prueba, igual que con el de entrenamiento",
+        "No aplicar ningún preprocesamiento al conjunto de prueba",
+        "Llamar solo a `transform`, usando los parámetros (media y desviación) aprendidos del entrenamiento",
+        "Llamar a `fit` sobre la unión de entrenamiento y prueba y luego a `transform` en cada uno"
+      ],
+      "options_en": [
+        "Call `fit_transform` on the test set, just like on the training set",
+        "Apply no preprocessing at all to the test set",
+        "Call `transform` only, using the parameters (mean and standard deviation) learned from training",
+        "Call `fit` on the union of training and test and then `transform` on each"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`fit` aprende estadísticas de los datos; `transform` las aplica. El conjunto de prueba simula datos futuros, y en el futuro no se conoce su media. Las opciones A y D son el error más común de principiante y provocan fuga: al ajustar sobre prueba (o sobre todo el dataset) la estadística del test entra en la transformación y la estimación de generalización se infla. La B es el error contrario: si el modelo se entrenó con datos escalados, recibir datos sin escalar en prueba produce predicciones sin sentido. La forma segura de no equivocarse es encapsular preprocesador y modelo en un `Pipeline`.",
+      "explanation_en": "`fit` learns statistics from the data; `transform` applies them. The test set simulates future data, and in the future you do not know its mean. Options A and D are the most common beginner mistake and cause leakage: fitting on test (or on the whole dataset) lets test statistics enter the transformation and inflates the generalisation estimate. B is the opposite mistake: if the model was trained on scaled data, feeding it unscaled test data produces meaningless predictions. The safe way not to get this wrong is to wrap preprocessor and model in a `Pipeline`.",
+      "source": "scikit-learn User Guide, 6.3 Preprocessing data: Standardization",
+      "expected_time_ms": 30000,
+      "tags": [
+        "ml-workflow",
+        "preprocessing",
+        "sklearn-api"
+      ]
+    },
+    {
+      "id": "q060301012",
+      "skill_id": "sk060301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Has usado el conjunto de validación para elegir hiperparámetros y ya has medido el modelo ganador en el conjunto de prueba. ¿Qué es lo recomendable hacer justo antes de desplegarlo a producción?",
+      "question_en": "You have used the validation set to choose hyperparameters and you have already measured the winning model on the test set. What is the recommended thing to do just before deploying it to production?",
+      "options_es": [
+        "Seguir ajustando hiperparámetros hasta que la puntuación de prueba suba",
+        "Desplegar exactamente el modelo entrenado solo con la porción de entrenamiento, sin tocarlo",
+        "Descartar el conjunto de prueba y volver a dividir los datos al azar",
+        "Reentrenar el modelo con los hiperparámetros elegidos sobre todos los datos disponibles, y reportar como estimación de generalización la puntuación ya obtenida en prueba"
+      ],
+      "options_en": [
+        "Keep tuning hyperparameters until the test score goes up",
+        "Deploy exactly the model trained on the training portion only, without touching it",
+        "Discard the test set and re-split the data at random",
+        "Retrain the model with the chosen hyperparameters on all available data, and report the already-obtained test score as the generalisation estimate"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los hiperparámetros ya están fijados, así que reentrenar con train+validación+prueba aprovecha cada ejemplo disponible y normalmente mejora el modelo desplegado; la estimación honesta de generalización sigue siendo la medición única que se hizo en prueba. La opción A es el error grave: cada vez que se mira la prueba para decidir algo, deja de ser un conjunto no visto y su puntuación se vuelve optimista. La B es defendible pero desperdicia datos sin ningún beneficio, ya que no queda ninguna decisión que tomar. La C destruye la trazabilidad de la evaluación y permite, por azar, una división más favorable.",
+      "explanation_en": "The hyperparameters are already fixed, so retraining on train+validation+test uses every available example and usually improves the deployed model; the honest generalisation estimate remains the single measurement already taken on test. Option A is the serious mistake: every time you look at the test set to decide something, it stops being unseen and its score becomes optimistic. B is defensible but wastes data for no benefit, since there are no decisions left to make. C destroys the traceability of the evaluation and lets you stumble, by chance, into a friendlier split.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 2: End-to-End Machine Learning Project",
+      "expected_time_ms": 42000,
+      "tags": [
+        "ml-workflow",
+        "test-set",
+        "deployment"
+      ]
+    },
+    {
+      "id": "q060301013",
+      "skill_id": "sk060301",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Decidir qué métrica define el éxito del proyecto es un paso que debe resolverse al principio del flujo de trabajo, antes de comparar algoritmos.",
+      "question_en": "Deciding which metric defines project success is a step that must be settled at the start of the workflow, before comparing algorithms.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El objetivo de negocio determina la métrica, y la métrica determina qué modelo gana: el mismo conjunto de candidatos produce ganadores distintos si se optimiza recall en vez de precisión. Elegir la métrica después de ver los resultados invita a escoger aquella que favorece al modelo preferido, que es una forma silenciosa de hacer trampa. Por eso el encuadre del problema y la definición de la métrica abren el flujo, antes incluso de mirar los datos en profundidad.",
+      "explanation_en": "True. The business objective determines the metric, and the metric determines which model wins: the same set of candidates yields different winners if you optimise recall instead of precision. Choosing the metric after seeing results invites picking whichever one flatters your preferred model, which is a quiet form of cheating. That is why framing the problem and defining the metric open the workflow, even before looking at the data in depth.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 2: Frame the Problem and Select a Performance Measure",
+      "expected_time_ms": 22000,
+      "tags": [
+        "ml-workflow",
+        "metric-selection"
+      ]
+    },
+    {
+      "id": "q060301014",
+      "skill_id": "sk060301",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Después de usar el conjunto de prueba para comparar diez modelos candidatos y quedarte con el mejor, esa puntuación de prueba sigue siendo una estimación insesgada del error de generalización.",
+      "question_en": "After using the test set to compare ten candidate models and keeping the best one, that test score is still an unbiased estimate of the generalisation error.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. Al elegir el máximo de diez mediciones ruidosas, parte de esa puntuación es suerte del muestreo, no calidad del modelo: es el problema del selection bias u 'overfitting al conjunto de prueba'. Cuantos más candidatos se comparen, mayor el optimismo. Suena razonable porque el conjunto de prueba nunca se usó para ENTRENAR, y ahí está la trampa: no se usó para ajustar pesos, pero sí para tomar una decisión, y eso ya lo contamina. La solución es comparar candidatos en validación o con validación cruzada y reservar la prueba para una sola medición final.",
+      "explanation_en": "False. Picking the maximum of ten noisy measurements means part of that score is sampling luck, not model quality: this is selection bias, or 'overfitting to the test set'. The more candidates you compare, the greater the optimism. It sounds reasonable because the test set was never used for TRAINING, and that is the trap: it was not used to fit weights, but it was used to make a decision, and that already contaminates it. The fix is to compare candidates on validation or via cross-validation and reserve the test set for one single final measurement.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5: Machine Learning Basics, Hyperparameters and Validation Sets",
+      "expected_time_ms": 30000,
+      "tags": [
+        "ml-workflow",
+        "test-set",
+        "selection-bias"
+      ]
+    },
+    {
+      "id": "q060301015",
+      "skill_id": "sk060301",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama el objeto de scikit-learn que encadena pasos de preprocesamiento y un estimador final en un solo objeto, de modo que al usarlo dentro de validación cruzada el preprocesamiento se ajuste por separado en cada partición?",
+      "question_en": "What is the scikit-learn object called that chains preprocessing steps and a final estimator into a single object, so that when used inside cross-validation the preprocessing is fitted separately on each fold?",
+      "correct_answer_es": "Pipeline",
+      "correct_answer_en": "Pipeline",
+      "explanation_es": "`Pipeline` expone la interfaz de un estimador (`fit`, `predict`), pero por dentro aplica cada paso en orden. Su valor no es la estética del código: cuando se pasa a `cross_val_score` o `GridSearchCV`, el escalado o la imputación se ajustan usando únicamente la porción de entrenamiento de cada fold. Escalar el dataset entero antes de la validación cruzada es la causa más frecuente de puntuaciones optimistas que no se reproducen en producción.",
+      "explanation_en": "`Pipeline` exposes an estimator interface (`fit`, `predict`) but internally applies each step in order. Its value is not code aesthetics: when passed to `cross_val_score` or `GridSearchCV`, scaling or imputation is fitted using only the training portion of each fold. Scaling the whole dataset before cross-validation is the most frequent cause of optimistic scores that do not reproduce in production.",
+      "source": "scikit-learn User Guide, 6.1 Pipelines and composite estimators",
+      "expected_time_ms": 26000,
+      "tags": [
+        "ml-workflow",
+        "pipeline",
+        "sklearn-api"
+      ]
+    },
+    {
+      "id": "q060302008",
+      "skill_id": "sk060302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Tienes una feature categórica `codigo_postal` con 8.000 valores distintos y solo 20.000 filas. ¿Cuál es el principal inconveniente de aplicarle one-hot encoding directamente?",
+      "question_en": "You have a categorical feature `postal_code` with 8,000 distinct values and only 20,000 rows. What is the main drawback of applying one-hot encoding to it directly?",
+      "options_es": [
+        "One-hot encoding no funciona con texto, solo con números enteros",
+        "Genera 8.000 columnas casi vacías: la matriz se dispara en dimensión, la mayoría de códigos aparece en un puñado de filas y el modelo memoriza ruido",
+        "El orden alfabético de los códigos postales introduciría una relación ordinal falsa",
+        "Se perdería la información de qué código postal tiene cada fila"
+      ],
+      "options_en": [
+        "One-hot encoding does not work with text, only with integers",
+        "It generates 8,000 nearly empty columns: the matrix explodes in dimension, most codes appear in a handful of rows and the model memorises noise",
+        "The alphabetical order of postal codes would introduce a false ordinal relationship",
+        "You would lose the information about which postal code each row has"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con alta cardinalidad, el one-hot produce más columnas que ejemplos por categoría: cada código aporta en media 2.5 filas, insuficiente para estimar nada fiable, y el modelo termina ajustando ruido. Alternativas habituales son agrupar categorías raras en 'otros', usar codificación por objetivo (target/mean encoding, con validación cruzada interna para evitar fuga) o quedarse con los primeros dígitos como zona geográfica. La opción A es falsa: los codificadores aceptan cadenas. La C describe el problema del ORDINAL encoding, no del one-hot, que es precisamente la técnica que evita ese orden falso. La D es lo contrario de lo que ocurre: el one-hot conserva la información completa, ese es su problema aquí.",
+      "explanation_en": "With high cardinality, one-hot produces more columns than examples per category: each code contributes 2.5 rows on average, not enough to estimate anything reliable, and the model ends up fitting noise. Common alternatives are grouping rare categories into 'other', using target/mean encoding (with inner cross-validation to avoid leakage), or keeping the leading digits as a geographic zone. Option A is false: encoders accept strings. C describes the problem of ORDINAL encoding, not one-hot, which is precisely the technique that avoids that false ordering. D is the opposite of what happens: one-hot preserves the full information, which is exactly its problem here.",
+      "source": "scikit-learn User Guide, 6.3 Preprocessing data: Encoding categorical features",
+      "expected_time_ms": 38000,
+      "tags": [
+        "feature-engineering",
+        "categorical",
+        "high-cardinality"
+      ]
+    },
+    {
+      "id": "q060302009",
+      "skill_id": "sk060302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Una feature de ingresos contiene algunos valores extremos (multimillonarios entre salarios normales). ¿Cómo se comporta `MinMaxScaler` frente a `StandardScaler` en este caso?",
+      "question_en": "An income feature contains a few extreme values (billionaires among ordinary salaries). How does `MinMaxScaler` behave compared with `StandardScaler` in this case?",
+      "options_es": [
+        "Ambos son inmunes a los valores extremos porque son transformaciones lineales",
+        "`MinMaxScaler` es más robusto porque acota el rango a [0, 1]",
+        "`MinMaxScaler` sufre más: usa el mínimo y el máximo, así que un único outlier comprime el resto de los valores en una franja diminuta cerca de 0",
+        "`StandardScaler` elimina los outliers del dataset antes de escalar"
+      ],
+      "options_en": [
+        "Both are immune to extreme values because they are linear transformations",
+        "`MinMaxScaler` is more robust because it bounds the range to [0, 1]",
+        "`MinMaxScaler` suffers more: it uses the minimum and maximum, so a single outlier squashes the rest of the values into a tiny band near 0",
+        "`StandardScaler` removes outliers from the dataset before scaling"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El mínimo y el máximo son los estadísticos menos robustos que existen: un solo valor extremo define todo el denominador y aplasta el resto de la distribución. La media y la desviación típica también se ven afectadas, pero promedian sobre todas las observaciones, así que el daño es menor. La opción B es la intuición equivocada más frecuente: acotar la salida en [0, 1] no es lo mismo que ser robusto, porque los datos normales acaban todos entre 0 y 0.02. La A confunde linealidad con robustez. La D es falsa: ningún escalador descarta filas. Cuando hay outliers reales, `RobustScaler` (mediana y rango intercuartílico) o una transformación logarítmica son las opciones adecuadas.",
+      "explanation_en": "The minimum and maximum are the least robust statistics there are: a single extreme value defines the whole denominator and flattens the rest of the distribution. Mean and standard deviation are affected too, but they average over all observations, so the damage is smaller. Option B is the most frequent wrong intuition: bounding the output to [0, 1] is not the same as being robust, because the normal data all ends up between 0 and 0.02. A confuses linearity with robustness. D is false: no scaler discards rows. When there are genuine outliers, `RobustScaler` (median and interquartile range) or a log transform are the right options.",
+      "source": "scikit-learn User Guide, 6.3 Preprocessing data: Scaling features to a range / Mapping to a Uniform distribution",
+      "expected_time_ms": 34000,
+      "tags": [
+        "feature-engineering",
+        "scaling",
+        "outliers"
+      ]
+    },
+    {
+      "id": "q060302010",
+      "skill_id": "sk060302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "La distribución de la feature `precio_vivienda` está fuertemente sesgada a la derecha (cola larga de casas caras). ¿Qué efecto tiene aplicar una transformación logarítmica `log(1 + x)`?",
+      "question_en": "The distribution of the feature `house_price` is strongly right-skewed (a long tail of expensive houses). What effect does applying a log transform `log(1 + x)` have?",
+      "options_es": [
+        "Elimina las filas con precios altos del dataset",
+        "Convierte la feature en categórica",
+        "Comprime la cola larga y hace la distribución más simétrica, de modo que los modelos lineales dejen de estar dominados por unos pocos valores enormes",
+        "No cambia nada porque el logaritmo es una función monótona y el orden se conserva"
+      ],
+      "options_en": [
+        "It removes the rows with high prices from the dataset",
+        "It turns the feature into a categorical one",
+        "It compresses the long tail and makes the distribution more symmetric, so linear models stop being dominated by a few enormous values",
+        "It changes nothing because the logarithm is monotonic and the ordering is preserved"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El logaritmo reduce las diferencias absolutas en la cola: pasar de 1M a 2M cuenta lo mismo que pasar de 100k a 200k, que suele ser la relación que de verdad importa. La opción D es el razonamiento equivocado más interesante: es cierto que el logaritmo preserva el orden, pero los modelos lineales y las métricas basadas en distancias no trabajan con rangos sino con MAGNITUDES, y esas sí cambian. La A confunde transformar con filtrar. La B confunde la transformación logarítmica con la discretización en intervalos (binning), que es otra técnica. Se usa `log(1 + x)` en lugar de `log(x)` para admitir el valor 0.",
+      "explanation_en": "The logarithm shrinks absolute differences in the tail: going from 1M to 2M counts the same as going from 100k to 200k, which is usually the relationship that actually matters. Option D is the most interesting wrong reasoning: it is true that the log preserves ordering, but linear models and distance-based metrics do not work on ranks, they work on MAGNITUDES, and those do change. A confuses transforming with filtering. B confuses the log transform with binning, which is a different technique. `log(1 + x)` is used instead of `log(x)` so that the value 0 is allowed.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 2: Prepare the Data for Machine Learning Algorithms",
+      "expected_time_ms": 32000,
+      "tags": [
+        "feature-engineering",
+        "transformations",
+        "skewness"
+      ]
+    },
+    {
+      "id": "q060302011",
+      "skill_id": "sk060302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por qué los modelos basados en árboles (árboles de decisión, random forest, gradient boosting) NO necesitan que se escalen las features numéricas?",
+      "question_en": "Why do tree-based models (decision trees, random forests, gradient boosting) NOT need numeric features to be scaled?",
+      "options_es": [
+        "Porque dividen usando umbrales sobre una feature cada vez, y el mejor corte no cambia si se reescala esa feature de forma monótona",
+        "Porque los árboles escalan internamente los datos antes de entrenar",
+        "Porque los árboles solo admiten features categóricas",
+        "Porque los árboles usan siempre la distancia euclídea, que es invariante a la escala"
+      ],
+      "options_en": [
+        "Because they split using thresholds on one feature at a time, and the best cut does not change if that feature is rescaled monotonically",
+        "Because trees internally scale the data before training",
+        "Because trees only accept categorical features",
+        "Because trees always use Euclidean distance, which is scale-invariant"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Un árbol pregunta '¿x < umbral?' comparando valores de UNA sola feature entre sí; si se multiplica esa feature por 1000, el umbral óptimo se multiplica también y las particiones resultantes son idénticas. La opción B suena plausible pero es falsa: no hay escalado interno alguno. La C es un error clásico al revés: los árboles manejan features numéricas de forma nativa, y en scikit-learn son las categóricas las que hay que codificar. La D confunde árboles con k-NN o SVM; precisamente son esos modelos basados en distancias los que SÍ exigen escalado, porque suman contribuciones de features distintas. Ojo: aunque no lo necesitan, escalar tampoco perjudica a un árbol.",
+      "explanation_en": "A tree asks 'is x < threshold?', comparing values of ONE feature against each other; if you multiply that feature by 1000, the optimal threshold is multiplied too and the resulting partitions are identical. Option B sounds plausible but is false: there is no internal scaling. C is a classic mistake in reverse: trees handle numeric features natively, and in scikit-learn it is categorical ones that must be encoded. D confuses trees with k-NN or SVM; those distance-based models are precisely the ones that DO require scaling, because they sum contributions from different features. Note: although they do not need it, scaling does not hurt a tree either.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 6: Decision Trees",
+      "expected_time_ms": 36000,
+      "tags": [
+        "feature-engineering",
+        "scaling",
+        "tree-models"
+      ]
+    },
+    {
+      "id": "q060302012",
+      "skill_id": "sk060302",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuántas columnas imprime este código?\n\n```python\nimport pandas as pd\n\ndf = pd.DataFrame({\n    \"color\": [\"rojo\", \"verde\", \"azul\", \"rojo\"],\n    \"talla\": [\"S\", \"M\", \"S\", \"L\"],\n})\nprint(pd.get_dummies(df).shape[1])\n```",
+      "question_en": "How many columns does this code print?\n\n```python\nimport pandas as pd\n\ndf = pd.DataFrame({\n    \"color\": [\"red\", \"green\", \"blue\", \"red\"],\n    \"size\": [\"S\", \"M\", \"S\", \"L\"],\n})\nprint(pd.get_dummies(df).shape[1])\n```",
+      "options_es": [
+        "2",
+        "4",
+        "6",
+        "8"
+      ],
+      "options_en": [
+        "2",
+        "4",
+        "6",
+        "8"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`get_dummies` crea una columna binaria por cada valor distinto de cada columna categórica: `color` tiene 3 valores únicos (rojo, verde, azul) y `talla` tiene 3 (S, M, L), así que 3 + 3 = 6. La respuesta 2 es la de quien cree que el número de columnas no cambia. La 4 es la de quien cuenta las FILAS (4) en lugar de las categorías. La 8 sale de contar los valores sin deduplicar (4 + 4). Nota práctica: con `drop_first=True` saldrían 4 columnas, porque se elimina una categoría de cada grupo para evitar la colinealidad perfecta que molesta a los modelos lineales.",
+      "explanation_en": "`get_dummies` creates one binary column per distinct value of each categorical column: `color` has 3 unique values (red, green, blue) and `size` has 3 (S, M, L), so 3 + 3 = 6. The answer 2 comes from believing the number of columns does not change. 4 comes from counting the ROWS (4) instead of the categories. 8 comes from counting values without deduplicating (4 + 4). Practical note: with `drop_first=True` you would get 4 columns, because one category from each group is dropped to avoid the perfect collinearity that bothers linear models.",
+      "source": "scikit-learn User Guide, 6.3 Preprocessing data: Encoding categorical features",
+      "expected_time_ms": 30000,
+      "tags": [
+        "feature-engineering",
+        "one-hot",
+        "pandas"
+      ]
+    },
+    {
+      "id": "q060302013",
+      "skill_id": "sk060302",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este código?\n\n```python\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\nX = np.array([[10.0], [20.0], [30.0], [40.0], [50.0]])\nprint(StandardScaler().fit_transform(X)[2][0])\n```",
+      "question_en": "What does this code print?\n\n```python\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\nX = np.array([[10.0], [20.0], [30.0], [40.0], [50.0]])\nprint(StandardScaler().fit_transform(X)[2][0])\n```",
+      "options_es": [
+        "30.0",
+        "1.0",
+        "0.5",
+        "0.0"
+      ],
+      "options_en": [
+        "30.0",
+        "1.0",
+        "0.5",
+        "0.0"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`StandardScaler` calcula `z = (x - media) / desviación`. La media de [10, 20, 30, 40, 50] es 30, y el elemento en el índice 2 es exactamente 30, así que `z = (30 - 30) / 14.14 = 0.0`. La respuesta 30.0 es de quien cree que el escalador no altera los valores. La 1.0 confunde el valor transformado con la desviación típica resultante (que sí es 1 para el conjunto completo, no para un elemento). La 0.5 es la respuesta correcta para `MinMaxScaler`: (30 - 10) / (50 - 10) = 0.5, y es la confusión más común entre los dos escaladores.",
+      "explanation_en": "`StandardScaler` computes `z = (x - mean) / std`. The mean of [10, 20, 30, 40, 50] is 30, and the element at index 2 is exactly 30, so `z = (30 - 30) / 14.14 = 0.0`. The answer 30.0 comes from believing the scaler leaves values untouched. 1.0 confuses the transformed value with the resulting standard deviation (which is indeed 1 for the whole set, not for one element). 0.5 is the correct answer for `MinMaxScaler`: (30 - 10) / (50 - 10) = 0.5, and it is the most common confusion between the two scalers.",
+      "source": "scikit-learn User Guide, 6.3 Preprocessing data: Standardization, or mean removal and variance scaling",
+      "expected_time_ms": 32000,
+      "tags": [
+        "feature-engineering",
+        "standardization",
+        "sklearn"
+      ]
+    },
+    {
+      "id": "q060302014",
+      "skill_id": "sk060302",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Aplicar one-hot encoding a una variable ordinal como 'bajo / medio / alto' conserva la información de orden entre sus categorías.",
+      "question_en": "Applying one-hot encoding to an ordinal variable such as 'low / medium / high' preserves the ordering information between its categories.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. El one-hot produce tres columnas mutuamente excluyentes y equidistantes: para el modelo, 'bajo' y 'alto' son tan distintos entre sí como 'bajo' y 'medio', y el orden desaparece. Es tentador pensar que se conserva porque la información de la categoría sí está completa, pero la ESTRUCTURA de orden no. Para variables ordinales suele preferirse `OrdinalEncoder` con las categorías declaradas en su orden natural (0, 1, 2), que sí transmite la relación. Es la decisión inversa a la de una categórica nominal como 'color', donde el one-hot es lo correcto precisamente porque evita inventar un orden.",
+      "explanation_en": "False. One-hot produces three mutually exclusive, equidistant columns: to the model, 'low' and 'high' are as different from each other as 'low' and 'medium', and the ordering disappears. It is tempting to think it is preserved because the category information is fully there, but the order STRUCTURE is not. For ordinal variables, `OrdinalEncoder` with the categories declared in their natural order (0, 1, 2) is usually preferred, since it does convey the relationship. This is the reverse decision from a nominal categorical such as 'colour', where one-hot is right precisely because it avoids inventing an order.",
+      "source": "scikit-learn User Guide, 6.3 Preprocessing data: Encoding categorical features",
+      "expected_time_ms": 26000,
+      "tags": [
+        "feature-engineering",
+        "ordinal",
+        "one-hot"
+      ]
+    },
+    {
+      "id": "q060302015",
+      "skill_id": "sk060302",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama la clase de scikit-learn que sustituye los valores faltantes de una columna por un estadístico como la media, la mediana o el valor más frecuente?",
+      "question_en": "What is the scikit-learn class called that replaces a column's missing values with a statistic such as the mean, the median or the most frequent value?",
+      "correct_answer_es": "SimpleImputer",
+      "correct_answer_en": "SimpleImputer",
+      "explanation_es": "`SimpleImputer(strategy='median')` aprende el estadístico en `fit` y lo aplica en `transform`, lo que permite meterlo en un `Pipeline` y que se calcule por fold durante la validación cruzada. La mediana suele preferirse a la media cuando la feature tiene valores extremos. Para columnas categóricas, la estrategia es `most_frequent` o `constant`. Cuando el hecho mismo de faltar es informativo, se añade además una columna indicadora con `add_indicator=True`.",
+      "explanation_en": "`SimpleImputer(strategy='median')` learns the statistic in `fit` and applies it in `transform`, which lets you drop it into a `Pipeline` so it is computed per fold during cross-validation. The median is usually preferred over the mean when the feature has extreme values. For categorical columns the strategy is `most_frequent` or `constant`. When the very fact of being missing is informative, an indicator column is also added with `add_indicator=True`.",
+      "source": "scikit-learn User Guide, 6.4 Imputation of missing values",
+      "expected_time_ms": 26000,
+      "tags": [
+        "feature-engineering",
+        "missing-values",
+        "imputation"
+      ]
+    },
+    {
+      "id": "q060303009",
+      "skill_id": "sk060303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Dibujas la curva de aprendizaje de un modelo: el error de entrenamiento es muy bajo, el de validación es alto, y la brecha entre ambos se va cerrando lentamente a medida que añades más datos. ¿Qué conclusión práctica extraes?",
+      "question_en": "You plot a model's learning curve: training error is very low, validation error is high, and the gap between them is slowly closing as you add more data. What practical conclusion do you draw?",
+      "options_es": [
+        "El modelo tiene varianza alta (sobreajusta): conseguir más datos de entrenamiento probablemente seguirá mejorando la validación",
+        "El modelo tiene sesgo alto (subajusta): hay que aumentar su capacidad",
+        "El modelo ya es óptimo y no se puede mejorar",
+        "Las curvas están mal calculadas, porque el error de entrenamiento nunca puede ser menor que el de validación"
+      ],
+      "options_en": [
+        "The model has high variance (it overfits): getting more training data will probably keep improving validation",
+        "The model has high bias (it underfits): its capacity must be increased",
+        "The model is already optimal and cannot be improved",
+        "The curves are miscomputed, because training error can never be lower than validation error"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La firma de la varianza alta es exactamente esa: brecha grande entre entrenamiento y validación que se estrecha al añadir datos. Es el único de los dos diagnósticos en el que 'conseguir más datos' es una recomendación útil. La opción B describe el patrón opuesto: en sesgo alto AMBAS curvas convergen pronto en un error alto y añadir datos no cambia nada; hay que cambiar el modelo o las features. La C ignora que la brecha aún se está cerrando. La D confunde una regla empírica con una ley: que el error de entrenamiento sea menor es lo NORMAL, no un fallo de cálculo.",
+      "explanation_en": "The signature of high variance is exactly that: a large gap between training and validation that narrows as data is added. It is the only one of the two diagnoses where 'get more data' is useful advice. Option B describes the opposite pattern: under high bias BOTH curves converge early at a high error and adding data changes nothing; you must change the model or the features. C ignores that the gap is still closing. D confuses a rule of thumb with a law: training error being lower is the NORMAL case, not a computation bug.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 4: Learning Curves",
+      "expected_time_ms": 40000,
+      "tags": [
+        "overfitting",
+        "learning-curves",
+        "bias-variance"
+      ]
+    },
+    {
+      "id": "q060303010",
+      "skill_id": "sk060303",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia práctica entre la regularización L1 (Lasso) y la L2 (Ridge)?",
+      "question_en": "What is the practical difference between L1 (Lasso) and L2 (Ridge) regularisation?",
+      "options_es": [
+        "L1 se aplica antes de entrenar y L2 después",
+        "L1 tiende a llevar coeficientes exactamente a cero, eliminando features; L2 los encoge hacia cero sin anularlos",
+        "L1 solo sirve para clasificación y L2 solo para regresión",
+        "L2 combate el sobreajuste y L1 combate el subajuste"
+      ],
+      "options_en": [
+        "L1 is applied before training and L2 afterwards",
+        "L1 tends to drive coefficients exactly to zero, removing features; L2 shrinks them toward zero without zeroing them out",
+        "L1 is only for classification and L2 only for regression",
+        "L2 fights overfitting and L1 fights underfitting"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La penalización L1 (suma de valores absolutos) tiene esquinas en los ejes, y el óptimo tiende a caer en ellas, lo que produce soluciones dispersas: Lasso hace selección de features de forma implícita. La L2 (suma de cuadrados) penaliza más los coeficientes grandes pero nunca los anula del todo. La opción D es el malentendido conceptual más grave: NINGUNA regularización combate el subajuste; ambas reducen la capacidad efectiva del modelo, así que las dos empeoran el subajuste si ya lo hay. Las opciones A y C inventan restricciones que no existen; ambas penalizaciones se añaden a la función de coste durante el entrenamiento y se usan en regresión y clasificación (`penalty='l1'` en `LogisticRegression`).",
+      "explanation_en": "The L1 penalty (sum of absolute values) has corners on the axes, and the optimum tends to land on them, which produces sparse solutions: Lasso performs implicit feature selection. L2 (sum of squares) penalises large coefficients more but never zeroes them out entirely. Option D is the most serious conceptual misunderstanding: NO regularisation fights underfitting; both reduce the model's effective capacity, so both make underfitting worse if it is already present. Options A and C invent constraints that do not exist; both penalties are added to the cost function during training and are used in regression and classification (`penalty='l1'` in `LogisticRegression`).",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 4: Regularized Linear Models",
+      "expected_time_ms": 34000,
+      "tags": [
+        "overfitting",
+        "regularization",
+        "l1-l2"
+      ]
+    },
+    {
+      "id": "q060303011",
+      "skill_id": "sk060303",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En un árbol de decisión, ¿qué efecto tiene aumentar `max_depth` de 3 a 30 sobre el compromiso sesgo-varianza?",
+      "question_en": "In a decision tree, what effect does increasing `max_depth` from 3 to 30 have on the bias-variance trade-off?",
+      "options_es": [
+        "No afecta al sesgo ni a la varianza, solo al tiempo de entrenamiento",
+        "Aumenta el sesgo y reduce la varianza",
+        "Reduce el sesgo y aumenta la varianza: el árbol puede crear hojas casi puras que memorizan ejemplos individuales",
+        "Reduce el sesgo y la varianza a la vez, por eso conviene usar siempre árboles profundos"
+      ],
+      "options_en": [
+        "It affects neither bias nor variance, only training time",
+        "It increases bias and reduces variance",
+        "It reduces bias and increases variance: the tree can grow nearly pure leaves that memorise individual examples",
+        "It reduces bias and variance at the same time, which is why deep trees are always preferable"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`max_depth` es el mando de capacidad del árbol. Más profundidad significa más particiones y por tanto una frontera de decisión capaz de seguir cada peculiaridad del conjunto de entrenamiento: menos sesgo, más varianza. La opción B invierte la dirección y es el error más frecuente al memorizar la frase 'más regularización = más sesgo' sin advertir que aumentar la profundidad es QUITAR regularización. La D describe algo que el compromiso sesgo-varianza excluye por definición salvo cambiando de familia de modelos o añadiendo datos; de hecho es la motivación del random forest, que promedia muchos árboles profundos para bajar la varianza sin subir el sesgo. La A es falsa: la profundidad cambia el modelo, no solo el coste.",
+      "explanation_en": "`max_depth` is the tree's capacity dial. More depth means more splits and therefore a decision boundary able to follow every quirk of the training set: less bias, more variance. Option B reverses the direction and is the most frequent mistake from memorising 'more regularisation = more bias' without noticing that increasing depth is REMOVING regularisation. D describes something the bias-variance trade-off rules out by definition, short of changing model family or adding data; in fact that is the motivation for random forests, which average many deep trees to lower variance without raising bias. A is false: depth changes the model, not just the cost.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 6: Regularization Hyperparameters",
+      "expected_time_ms": 34000,
+      "tags": [
+        "overfitting",
+        "bias-variance",
+        "decision-trees"
+      ]
+    },
+    {
+      "id": "q060303012",
+      "skill_id": "sk060303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Entrenas `Ridge` y aumentas mucho el hiperparámetro de regularización `alpha`. ¿Qué le ocurre al error de ENTRENAMIENTO?",
+      "question_en": "You train `Ridge` and increase the regularisation hyperparameter `alpha` a lot. What happens to the TRAINING error?",
+      "options_es": [
+        "Baja, porque la regularización mejora el ajuste del modelo",
+        "Se mantiene constante, porque `alpha` solo afecta a los datos de validación",
+        "Baja hasta cero, porque los coeficientes se anulan",
+        "Sube, porque el modelo tiene menos libertad para ajustar los datos; el error de validación puede bajar hasta cierto punto y luego subir cuando el modelo empieza a subajustar"
+      ],
+      "options_en": [
+        "It goes down, because regularisation improves the model's fit",
+        "It stays constant, because `alpha` only affects validation data",
+        "It drops to zero, because the coefficients vanish",
+        "It goes up, because the model has less freedom to fit the data; validation error may go down up to a point and then rise once the model starts underfitting"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La regularización añade una penalización al coste, así que la solución ya no es la que minimiza el error de entrenamiento puro: por construcción, el error de entrenamiento solo puede empeorar al subir `alpha`. Lo que se busca es cambiar un poco de ajuste en entrenamiento por generalización, y por eso la curva de validación tiene forma de U. La opción A es la confusión clave: 'mejora el modelo' se refiere a la validación, no al entrenamiento. La B ignora que `alpha` modifica la función objetivo con la que se entrena. La C confunde 'coeficientes pequeños' con 'error cero'; con todos los coeficientes en cero el modelo predice una constante y el error de entrenamiento es máximo, no mínimo.",
+      "explanation_en": "Regularisation adds a penalty to the cost, so the solution is no longer the one minimising pure training error: by construction, training error can only get worse as `alpha` rises. The point is to trade a little training fit for generalisation, which is why the validation curve is U-shaped. Option A is the key confusion: 'improves the model' refers to validation, not training. B ignores that `alpha` modifies the very objective being trained. C confuses 'small coefficients' with 'zero error'; with all coefficients at zero the model predicts a constant and the training error is maximal, not minimal.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5: Machine Learning Basics, Regularization",
+      "expected_time_ms": 40000,
+      "tags": [
+        "overfitting",
+        "regularization",
+        "ridge"
+      ]
+    },
+    {
+      "id": "q060303013",
+      "skill_id": "sk060303",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un modelo que subajusta (underfitting) se reconoce porque tiene un error bajo en entrenamiento y un error alto en validación.",
+      "question_en": "A model that underfits is recognised by having low training error and high validation error.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso: esa descripción es la del SOBREAJUSTE. El subajuste se reconoce por un error alto en AMBOS conjuntos, con poca brecha entre ellos: el modelo ni siquiera consigue explicar los datos que ya ha visto. La confusión aparece porque ambos casos comparten el síntoma visible de 'la validación va mal', y quien solo mira la métrica de validación no puede distinguirlos. La diferencia está en el error de entrenamiento, y las acciones correctoras son opuestas: ante subajuste hay que aumentar la capacidad o mejorar las features; ante sobreajuste, regularizar o conseguir más datos.",
+      "explanation_en": "False: that description is of OVERFITTING. Underfitting is recognised by a high error on BOTH sets, with little gap between them: the model cannot even explain the data it has already seen. The confusion arises because both cases share the visible symptom of 'validation is bad', and anyone looking only at the validation metric cannot tell them apart. The difference is in the training error, and the corrective actions are opposite: for underfitting you increase capacity or improve features; for overfitting you regularise or get more data.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5: Machine Learning Basics, Capacity, Overfitting and Underfitting",
+      "expected_time_ms": 24000,
+      "tags": [
+        "underfitting",
+        "overfitting",
+        "diagnosis"
+      ]
+    },
+    {
+      "id": "q060303014",
+      "skill_id": "sk060303",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Conseguir más datos de entrenamiento ayuda más a un modelo que sobreajusta que a uno que subajusta.",
+      "question_en": "Getting more training data helps a model that overfits more than one that underfits.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. El sobreajuste es un problema de varianza: el modelo tiene capacidad de sobra pero pocos ejemplos para determinar sus parámetros, así que más datos reducen directamente esa varianza y cierran la brecha entre entrenamiento y validación. En el subajuste el limitante es la capacidad del modelo, no la cantidad de datos: una recta ajustada a una relación curva seguirá siendo una recta con un millón de filas, y su curva de aprendizaje se aplana pronto en un error alto. Por eso 'conseguir más datos' es un consejo caro que solo merece la pena cuando la curva de aprendizaje muestra una brecha que aún se está cerrando.",
+      "explanation_en": "True. Overfitting is a variance problem: the model has capacity to spare but few examples to pin down its parameters, so more data directly reduces that variance and closes the train-validation gap. In underfitting the limiting factor is model capacity, not data volume: a straight line fitted to a curved relationship is still a straight line with a million rows, and its learning curve flattens early at a high error. That is why 'get more data' is expensive advice that only pays off when the learning curve shows a gap still closing.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 4: Learning Curves",
+      "expected_time_ms": 28000,
+      "tags": [
+        "overfitting",
+        "underfitting",
+        "learning-curves"
+      ]
+    },
+    {
+      "id": "q060303015",
+      "skill_id": "sk060303",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se llama la técnica de ensamblado que reduce la varianza entrenando muchos modelos sobre muestras bootstrap (con reemplazo) del conjunto de entrenamiento y promediando sus predicciones?",
+      "question_en": "What is the ensemble technique called that reduces variance by training many models on bootstrap samples (with replacement) of the training set and averaging their predictions?",
+      "correct_answer_es": "Bagging",
+      "correct_answer_en": "Bagging",
+      "explanation_es": "Bagging (bootstrap aggregating) ataca directamente la varianza: cada modelo sobreajusta su propia muestra de forma distinta, y al promediar, esos errores idiosincráticos se cancelan mientras la señal común se conserva. El sesgo apenas cambia. Es la razón de que un random forest, formado por árboles profundos que individualmente sobreajustan, generalice mucho mejor que cualquiera de ellos. No hay que confundirlo con el boosting, que entrena modelos en secuencia corrigiendo los errores del anterior y ataca sobre todo el sesgo.",
+      "explanation_en": "Bagging (bootstrap aggregating) attacks variance head-on: each model overfits its own sample differently, and averaging cancels those idiosyncratic errors while the shared signal survives. Bias barely changes. That is why a random forest, made of deep trees that individually overfit, generalises far better than any of them. Do not confuse it with boosting, which trains models sequentially, correcting the previous one's errors, and mainly attacks bias.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 7: Bagging and Pasting",
+      "expected_time_ms": 30000,
+      "tags": [
+        "overfitting",
+        "variance",
+        "ensembles"
+      ]
+    },
+    {
+      "id": "q060304008",
+      "skill_id": "sk060304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué se gana y qué se pierde al pasar de k=5 a k=20 en validación cruzada?",
+      "question_en": "What do you gain and what do you lose going from k=5 to k=20 in cross-validation?",
+      "options_es": [
+        "Se pierde precisión en la estimación, porque cada fold de prueba es más pequeño y por tanto menos fiable en conjunto",
+        "Cada modelo se entrena con una fracción mayor de los datos (95% frente a 80%), así que la estimación es menos pesimista; a cambio hay 20 entrenamientos en vez de 5 y los folds de prueba son muy pequeños, lo que hace más ruidosa cada puntuación individual",
+        "No cambia nada salvo el tiempo de ejecución",
+        "Se elimina la necesidad de estratificar las particiones"
+      ],
+      "options_en": [
+        "You lose precision in the estimate, because each test fold is smaller and therefore less reliable overall",
+        "Each model trains on a larger fraction of the data (95% vs 80%), so the estimate is less pessimistic; in exchange there are 20 fits instead of 5 and the test folds are very small, making each individual score noisier",
+        "Nothing changes except runtime",
+        "It removes the need to stratify the folds"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Subir k acerca cada modelo entrenado al modelo final (que usará el 100% de los datos), reduciendo el sesgo pesimista de la estimación, pero multiplica el coste computacional y hace que cada puntuación individual se calcule sobre muy pocos ejemplos. La opción A confunde el ruido de UNA puntuación con la precisión del PROMEDIO de las 20, que es lo que se reporta. La C ignora que la fracción de entrenamiento cambia. La D es falsa y además peligrosa: con k alto los folds son pequeños y estratificar importa MÁS, no menos, porque es más fácil que un fold quede sin ejemplos de la clase minoritaria. En la práctica k=5 o k=10 es el equilibrio habitual.",
+      "explanation_en": "Raising k brings each trained model closer to the final model (which will use 100% of the data), reducing the pessimistic bias of the estimate, but it multiplies compute cost and makes each individual score come from very few examples. Option A confuses the noise of ONE score with the precision of the AVERAGE of the 20, which is what gets reported. C ignores that the training fraction changes. D is false and also dangerous: with high k the folds are small and stratifying matters MORE, not less, because it is easier for a fold to end up with no minority-class examples. In practice k=5 or k=10 is the usual balance.",
+      "source": "scikit-learn User Guide, 3.1 Cross-validation: evaluating estimator performance",
+      "expected_time_ms": 42000,
+      "tags": [
+        "cross-validation",
+        "k-selection",
+        "bias-variance"
+      ]
+    },
+    {
+      "id": "q060304009",
+      "skill_id": "sk060304",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Qué problema resuelve la validación cruzada anidada (nested cross-validation) que una única validación cruzada con `GridSearchCV` no resuelve?",
+      "question_en": "What problem does nested cross-validation solve that a single cross-validation with `GridSearchCV` does not?",
+      "options_es": [
+        "Permite entrenar modelos más rápido al reutilizar las particiones",
+        "Elimina la necesidad de estratificar en problemas desbalanceados",
+        "Da una estimación insesgada del rendimiento del PROCEDIMIENTO completo de ajuste, porque la selección de hiperparámetros ocurre en un bucle interno cuyos folds nunca se usan para medir",
+        "Reduce el sobreajuste del modelo final al promediar sus coeficientes entre folds"
+      ],
+      "options_en": [
+        "It lets models train faster by reusing the folds",
+        "It removes the need to stratify on imbalanced problems",
+        "It gives an unbiased estimate of the performance of the whole TUNING PROCEDURE, because hyperparameter selection happens in an inner loop whose folds are never used to measure",
+        "It reduces the final model's overfitting by averaging its coefficients across folds"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`best_score_` de `GridSearchCV` es el máximo sobre muchas configuraciones evaluadas en los mismos folds, así que está sesgado al alza por la misma razón que elegir el mejor de diez modelos en el conjunto de prueba. La anidada separa los papeles: el bucle interno elige hiperparámetros, el externo mide, y ningún fold externo participó en la elección. La opción D es la confusión más común: la anidada NO produce un modelo mejor ni promedia coeficientes, solo produce un NÚMERO más honesto; el modelo que se despliega se reentrena aparte. La A es falsa (cuesta k_externo veces más) y la B mezcla dos decisiones independientes, ya que ambos bucles pueden y deben estratificar.",
+      "explanation_en": "`GridSearchCV.best_score_` is the maximum over many configurations evaluated on the same folds, so it is biased upward for the same reason as picking the best of ten models on the test set. Nested CV separates the roles: the inner loop chooses hyperparameters, the outer one measures, and no outer fold took part in the choice. Option D is the most common confusion: nested CV does NOT produce a better model and does not average coefficients, it only produces a more honest NUMBER; the deployed model is retrained separately. A is false (it costs outer_k times more) and B mixes two independent decisions, since both loops can and should stratify.",
+      "source": "scikit-learn User Guide, 3.1 Cross-validation: Nested versus non-nested cross-validation",
+      "expected_time_ms": 45000,
+      "tags": [
+        "cross-validation",
+        "nested-cv",
+        "hyperparameters"
+      ]
+    },
+    {
+      "id": "q060304010",
+      "skill_id": "sk060304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Tu dataset tiene 300 radiografías procedentes de 60 pacientes (unas 5 por paciente). ¿Por qué un `KFold` aleatorio daría una estimación engañosamente alta, y qué usarías en su lugar?",
+      "question_en": "Your dataset has 300 X-rays from 60 patients (about 5 per patient). Why would a random `KFold` give a misleadingly high estimate, and what would you use instead?",
+      "options_es": [
+        "Porque las imágenes del mismo paciente acabarían repartidas entre entrenamiento y prueba, y el modelo reconocería al paciente en vez de la patología: hay que usar `GroupKFold` agrupando por paciente",
+        "Porque 300 muestras son pocas para validación cruzada: habría que usar un único train/test split",
+        "Porque las radiografías no se pueden barajar: habría que usar `TimeSeriesSplit`",
+        "Porque `KFold` no acepta datos de imagen: habría que usar `StratifiedKFold`"
+      ],
+      "options_en": [
+        "Because images from the same patient would end up split between train and test, and the model would recognise the patient rather than the pathology: use `GroupKFold` grouping by patient",
+        "Because 300 samples are too few for cross-validation: you should use a single train/test split",
+        "Because X-rays cannot be shuffled: you should use `TimeSeriesSplit`",
+        "Because `KFold` does not accept image data: you should use `StratifiedKFold`"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Las filas no son independientes: cinco imágenes del mismo paciente comparten anatomía, aparato y protocolo. Si cuatro caen en entrenamiento y una en prueba, el modelo puede acertar por identificación del individuo y no por la lesión, y la puntuación sube sin que la capacidad clínica exista. `GroupKFold` (o `StratifiedGroupKFold` si además hay desbalance) garantiza que todas las muestras de un paciente caigan del mismo lado. La opción B invierte la lógica: con pocos datos la validación cruzada es MÁS necesaria, no menos. La C aplica la solución de la dependencia temporal a una dependencia por agrupación. La D es doblemente falsa: `KFold` solo ve índices, y estratificar por clase no impide que el mismo paciente cruce la frontera.",
+      "explanation_en": "The rows are not independent: five images from the same patient share anatomy, machine and protocol. If four land in training and one in test, the model can score correctly by identifying the individual rather than the lesion, and the score rises without any clinical ability existing. `GroupKFold` (or `StratifiedGroupKFold` if there is also imbalance) guarantees that all of a patient's samples fall on the same side. Option B inverts the logic: with little data cross-validation is MORE necessary, not less. C applies the fix for temporal dependence to a grouping dependence. D is doubly false: `KFold` only sees indices, and stratifying by class does not stop the same patient crossing the boundary.",
+      "source": "scikit-learn User Guide, 3.1 Cross-validation: Cross-validation iterators for grouped data",
+      "expected_time_ms": 42000,
+      "tags": [
+        "cross-validation",
+        "grouped-data",
+        "leakage"
+      ]
+    },
+    {
+      "id": "q060304011",
+      "skill_id": "sk060304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Dos modelos dan la misma media en validación cruzada de 5 folds, pero el modelo A tiene desviación típica 0.01 entre folds y el B tiene 0.12. ¿Qué te dice esa desviación?",
+      "question_en": "Two models give the same mean in 5-fold cross-validation, but model A has a standard deviation of 0.01 across folds and model B has 0.12. What does that standard deviation tell you?",
+      "options_es": [
+        "Que el modelo B es más preciso, porque explora un rango mayor de puntuaciones",
+        "Que el rendimiento del modelo B depende mucho de qué datos le toquen: es menos estable y su media es menos fiable, así que A es la apuesta más segura",
+        "Que el modelo B tiene más sesgo que el A",
+        "Que hay que aumentar k hasta que las dos desviaciones coincidan"
+      ],
+      "options_en": [
+        "That model B is more accurate, because it explores a wider range of scores",
+        "That model B's performance depends heavily on which data it gets: it is less stable and its mean is less reliable, so A is the safer bet",
+        "That model B has more bias than A",
+        "That you should raise k until the two standard deviations match"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La validación cruzada no entrega solo una media: la dispersión entre folds es una medida directa de la varianza del procedimiento. Una desviación de 0.12 significa que cambiar qué 20% de los datos sirve de prueba mueve el resultado entre, digamos, 0.70 y 0.94, y esa media no permite afirmar gran cosa. Por eso se reporta 'media ± desviación' y no solo la media. La opción A confunde dispersión con exactitud. La C confunde varianza con sesgo: la media es idéntica, así que el sesgo aparente es el mismo; lo que difiere es la estabilidad. La D no tiene sentido, porque la dispersión es una propiedad del modelo y los datos, no un parámetro que se pueda igualar a voluntad.",
+      "explanation_en": "Cross-validation does not deliver only a mean: the spread across folds is a direct measure of the procedure's variance. A standard deviation of 0.12 means that changing which 20% of the data serves as test moves the result between, say, 0.70 and 0.94, and that mean does not license strong claims. This is why people report 'mean ± std' rather than the mean alone. Option A confuses spread with accuracy. C confuses variance with bias: the mean is identical, so the apparent bias is the same; what differs is stability. D makes no sense, because the spread is a property of the model and the data, not a parameter you can equalise at will.",
+      "source": "scikit-learn User Guide, 3.1 Cross-validation: Computing cross-validated metrics",
+      "expected_time_ms": 34000,
+      "tags": [
+        "cross-validation",
+        "variance",
+        "model-selection"
+      ]
+    },
+    {
+      "id": "q060304012",
+      "skill_id": "sk060304",
+      "type": "code_output",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué imprime este código?\n\n```python\nfrom sklearn.model_selection import cross_val_score\nfrom sklearn.tree import DecisionTreeClassifier\nfrom sklearn.datasets import load_iris\n\nX, y = load_iris(return_X_y=True)\nscores = cross_val_score(DecisionTreeClassifier(random_state=0), X, y, cv=5)\nprint(len(scores))\n```",
+      "question_en": "What does this code print?\n\n```python\nfrom sklearn.model_selection import cross_val_score\nfrom sklearn.tree import DecisionTreeClassifier\nfrom sklearn.datasets import load_iris\n\nX, y = load_iris(return_X_y=True)\nscores = cross_val_score(DecisionTreeClassifier(random_state=0), X, y, cv=5)\nprint(len(scores))\n```",
+      "options_es": [
+        "5",
+        "1",
+        "4",
+        "150"
+      ],
+      "options_en": [
+        "5",
+        "1",
+        "4",
+        "150"
+      ],
+      "correct_index": 0,
+      "explanation_es": "`cross_val_score` devuelve un array con UNA puntuación por fold, así que con `cv=5` su longitud es 5. La respuesta 1 es de quien cree que la función ya devuelve la media (hay que llamar a `scores.mean()` explícitamente). La 4 confunde el número de folds de prueba con el de folds de entrenamiento por iteración (k-1). La 150 es el número de muestras de iris, que sería la longitud si la función devolviese una predicción por ejemplo, que es justo lo que hace `cross_val_predict`, una función distinta.",
+      "explanation_en": "`cross_val_score` returns an array with ONE score per fold, so with `cv=5` its length is 5. The answer 1 comes from believing the function already returns the mean (you must call `scores.mean()` explicitly). 4 confuses the number of test folds with the number of training folds per iteration (k-1). 150 is the number of iris samples, which would be the length if the function returned one prediction per example, which is exactly what `cross_val_predict` does, a different function.",
+      "source": "scikit-learn User Guide, 3.1 Cross-validation: Computing cross-validated metrics",
+      "expected_time_ms": 26000,
+      "tags": [
+        "cross-validation",
+        "sklearn",
+        "cross-val-score"
+      ]
+    },
+    {
+      "id": "q060304013",
+      "skill_id": "sk060304",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuántos entrenamientos de modelo realiza la búsqueda antes del reajuste final (`refit`)?\n\n```python\nfrom sklearn.model_selection import GridSearchCV\nfrom sklearn.svm import SVC\n\ngrid = {\"C\": [0.1, 1, 10, 100], \"gamma\": [0.01, 0.1, 1]}\nsearch = GridSearchCV(SVC(), grid, cv=5)\nsearch.fit(X, y)\n```",
+      "question_en": "How many model fits does the search perform before the final `refit`?\n\n```python\nfrom sklearn.model_selection import GridSearchCV\nfrom sklearn.svm import SVC\n\ngrid = {\"C\": [0.1, 1, 10, 100], \"gamma\": [0.01, 0.1, 1]}\nsearch = GridSearchCV(SVC(), grid, cv=5)\nsearch.fit(X, y)\n```",
+      "options_es": [
+        "12",
+        "60",
+        "20",
+        "300"
+      ],
+      "options_en": [
+        "12",
+        "60",
+        "20",
+        "300"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La rejilla es el producto cartesiano: 4 valores de `C` por 3 de `gamma` = 12 combinaciones, y cada una se evalúa con validación cruzada de 5 folds, así que 12 x 5 = 60 ajustes (scikit-learn imprime literalmente 'Fitting 5 folds for each of 12 candidates, totalling 60 fits' con `verbose=1`). La respuesta 12 cuenta solo los candidatos y olvida que cada uno se entrena k veces, que es el error que lleva a subestimar gravemente el tiempo de una búsqueda. La 20 multiplica 4 x 5 e ignora `gamma`. La 300 multiplica de más, contando 4 x 3 x 5 x 5. Esta aritmética explica por qué `RandomizedSearchCV` se vuelve preferible al crecer la rejilla.",
+      "explanation_en": "The grid is the Cartesian product: 4 values of `C` times 3 of `gamma` = 12 combinations, and each is evaluated with 5-fold cross-validation, so 12 x 5 = 60 fits (scikit-learn literally prints 'Fitting 5 folds for each of 12 candidates, totalling 60 fits' with `verbose=1`). The answer 12 counts only the candidates and forgets each is trained k times, the mistake that leads to badly underestimating a search's runtime. 20 multiplies 4 x 5 and ignores `gamma`. 300 over-multiplies, counting 4 x 3 x 5 x 5. This arithmetic is why `RandomizedSearchCV` becomes preferable as the grid grows.",
+      "source": "scikit-learn User Guide, 3.2 Tuning the hyper-parameters of an estimator: Exhaustive Grid Search",
+      "expected_time_ms": 40000,
+      "tags": [
+        "cross-validation",
+        "grid-search",
+        "hyperparameters"
+      ]
+    },
+    {
+      "id": "q060304014",
+      "skill_id": "sk060304",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Si usas validación cruzada de 10 folds, ya no necesitas reservar un conjunto de prueba independiente.",
+      "question_en": "If you use 10-fold cross-validation, you no longer need to hold out an independent test set.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. La validación cruzada sustituye al conjunto de VALIDACIÓN, no al de prueba. En cuanto se usan sus puntuaciones para elegir algoritmo, features o hiperparámetros, esos folds han participado en decisiones y su media deja de ser una estimación limpia, exactamente igual que un conjunto de validación gastado. La creencia contraria es muy extendida porque la validación cruzada 'usa todos los datos como prueba en algún momento', y ahí está el matiz: los usa como prueba de candidatos, no como prueba final. Lo correcto es apartar la prueba primero y hacer la validación cruzada solo dentro de la porción restante.",
+      "explanation_en": "False. Cross-validation replaces the VALIDATION set, not the test set. As soon as its scores are used to choose an algorithm, features or hyperparameters, those folds have taken part in decisions and their mean stops being a clean estimate, exactly like a spent validation set. The opposite belief is widespread because cross-validation 'uses all the data as test at some point', and that is the nuance: it uses it to test candidates, not as a final test. The correct approach is to set the test set aside first and run cross-validation only within the remaining portion.",
+      "source": "scikit-learn User Guide, 3.1 Cross-validation: evaluating estimator performance",
+      "expected_time_ms": 28000,
+      "tags": [
+        "cross-validation",
+        "test-set",
+        "methodology"
+      ]
+    },
+    {
+      "id": "q060304015",
+      "skill_id": "sk060304",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cómo se llama el iterador de validación cruzada de scikit-learn en el que cada partición de entrenamiento contiene únicamente observaciones anteriores en el tiempo a las de su partición de prueba?",
+      "question_en": "What is the scikit-learn cross-validation iterator called in which each training fold contains only observations that come earlier in time than those in its test fold?",
+      "correct_answer_es": "TimeSeriesSplit",
+      "correct_answer_en": "TimeSeriesSplit",
+      "explanation_es": "`TimeSeriesSplit` va ampliando una ventana: el primer fold entrena con el bloque inicial y prueba con el siguiente, el segundo entrena con los dos primeros y prueba con el tercero, y así sucesivamente (validación walk-forward). Así se respeta la flecha del tiempo y se evalúa exactamente lo que hará el modelo en producción: predecir el futuro con el pasado. Un `KFold` con `shuffle=True` sobre una serie temporal permite entrenar con datos posteriores a los de prueba, lo que produce puntuaciones excelentes e irreproducibles. El mismo razonamiento se aplica a cualquier dato con dependencia secuencial, no solo a series financieras.",
+      "explanation_en": "`TimeSeriesSplit` grows an expanding window: the first fold trains on the initial block and tests on the next, the second trains on the first two and tests on the third, and so on (walk-forward validation). This respects the arrow of time and evaluates exactly what the model will do in production: predict the future from the past. A `KFold` with `shuffle=True` over a time series allows training on data later than the test data, which produces excellent, irreproducible scores. The same reasoning applies to any data with sequential dependence, not just financial series.",
+      "source": "scikit-learn User Guide, 3.1 Cross-validation: Cross validation of time series data",
+      "expected_time_ms": 30000,
+      "tags": [
+        "cross-validation",
+        "time-series",
+        "temporal-leakage"
+      ]
+    },
+    {
+      "id": "q060305008",
+      "skill_id": "sk060305",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "En un problema con 0.2% de positivos, ¿por qué suele preferirse la curva precisión-recall (y su AUC-PR) a la curva ROC?",
+      "question_en": "In a problem with 0.2% positives, why is the precision-recall curve (and its AUC-PR) usually preferred over the ROC curve?",
+      "options_es": [
+        "Porque la curva ROC no se puede calcular cuando hay desbalance",
+        "Porque la AUC-PR siempre da un valor más alto y es más fácil de comunicar",
+        "Porque la tasa de falsos positivos de la ROC se divide entre un número enorme de negativos, así que miles de falsas alarmas apenas la mueven y la curva parece excelente; la precisión, en cambio, sí se desploma",
+        "Porque la curva ROC solo es válida para modelos que devuelven clases, no probabilidades"
+      ],
+      "options_en": [
+        "Because the ROC curve cannot be computed when there is imbalance",
+        "Because AUC-PR always gives a higher value and is easier to communicate",
+        "Because the ROC's false positive rate is divided by an enormous number of negatives, so thousands of false alarms barely move it and the curve looks excellent; precision, by contrast, does collapse",
+        "Because the ROC curve is only valid for models that return classes, not probabilities"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Con 998.000 negativos, 5.000 falsos positivos dan una FPR de 0.005 y una ROC de aspecto inmejorable; pero si hay 2.000 positivos y el modelo captura 1.000, la precisión es 1.000/6.000 = 0.17, es decir, cinco de cada seis alertas son ruido, que es justo lo que le importa a quien va a revisarlas. La precisión no tiene negativos verdaderos en su denominador, y por eso es sensible al desbalance. La opción B invierte la realidad: la AUC-PR suele ser MUCHO más baja, y esa es precisamente su virtud. La A es falsa (la ROC se calcula sin problema, solo que resulta engañosamente optimista) y la D también: ambas curvas se construyen barriendo umbrales sobre puntuaciones continuas.",
+      "explanation_en": "With 998,000 negatives, 5,000 false positives give an FPR of 0.005 and a ROC that looks unbeatable; but if there are 2,000 positives and the model catches 1,000, precision is 1,000/6,000 = 0.17, meaning five out of every six alerts are noise, which is exactly what matters to whoever must review them. Precision has no true negatives in its denominator, which is why it is sensitive to imbalance. Option B reverses reality: AUC-PR is usually MUCH lower, and that is precisely its virtue. A is false (the ROC computes fine, it is just misleadingly optimistic) and so is D: both curves are built by sweeping thresholds over continuous scores.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: Precision-Recall curve",
+      "expected_time_ms": 45000,
+      "tags": [
+        "evaluation-metrics",
+        "imbalance",
+        "precision-recall"
+      ]
+    },
+    {
+      "id": "q060305009",
+      "skill_id": "sk060305",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Diseñas un cribado inicial de cáncer: un falso positivo cuesta una prueba confirmatoria molesta, mientras que un falso negativo deja pasar un tumor tratable. ¿Qué métrica deberías priorizar al elegir el umbral?",
+      "question_en": "You are designing an initial cancer screening test: a false positive costs an annoying confirmatory test, while a false negative lets a treatable tumour through. Which metric should you prioritise when choosing the threshold?",
+      "options_es": [
+        "La exactitud (accuracy), porque resume el porcentaje total de aciertos",
+        "La precisión (precision), para que casi todos los positivos que señales sean reales",
+        "La recuperación o sensibilidad (recall), aceptando más falsas alarmas a cambio de que se escapen menos casos reales",
+        "La especificidad, para minimizar las derivaciones innecesarias"
+      ],
+      "options_en": [
+        "Accuracy, because it summarises the overall percentage of correct answers",
+        "Precision, so that almost all the positives you flag are real",
+        "Recall (sensitivity), accepting more false alarms in exchange for missing fewer real cases",
+        "Specificity, to minimise unnecessary referrals"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La métrica se elige a partir del coste asimétrico de los dos errores, y aquí el falso negativo es incomparablemente más caro, así que se baja el umbral para maximizar el recall aunque la precisión caiga: los falsos positivos los filtrará la prueba confirmatoria. Las opciones B y D son la elección correcta para el problema CONTRARIO, aquel en que la acción tras un positivo es irreversible o cara (un tratamiento agresivo, bloquear una cuenta); aplicarlas a un cribado significa dejar pasar tumores para evitar molestias. La A es la trampa clásica: con una prevalencia baja, predecir siempre 'sano' da una exactitud altísima y un recall de cero.",
+      "explanation_en": "The metric follows from the asymmetric cost of the two errors, and here the false negative is incomparably more expensive, so you lower the threshold to maximise recall even as precision falls: the confirmatory test will filter the false positives. Options B and D are the right choice for the OPPOSITE problem, the one where the action after a positive is irreversible or costly (aggressive treatment, blocking an account); applying them to screening means letting tumours through to avoid inconvenience. A is the classic trap: with low prevalence, always predicting 'healthy' gives very high accuracy and zero recall.",
+      "source": "Géron, Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow, 3e (2022), Ch. 3: Precision/Recall Trade-off",
+      "expected_time_ms": 34000,
+      "tags": [
+        "evaluation-metrics",
+        "recall",
+        "threshold"
+      ]
+    },
+    {
+      "id": "q060305010",
+      "skill_id": "sk060305",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En regresión, ¿qué significa obtener un coeficiente de determinación R² negativo sobre el conjunto de prueba?",
+      "question_en": "In regression, what does obtaining a negative coefficient of determination R² on the test set mean?",
+      "options_es": [
+        "Que el modelo predice peor que limitarse a devolver siempre la media del objetivo: R² compara contra esa línea base, y puede ser negativo fuera del conjunto de entrenamiento",
+        "Que hay un error de cálculo, porque R² está acotado entre 0 y 1",
+        "Que la correlación entre predicción y realidad es negativa, es decir, que basta invertir el signo de las predicciones",
+        "Que el modelo está subajustando, pero sigue siendo mejor que la línea base"
+      ],
+      "options_en": [
+        "That the model predicts worse than simply always returning the mean of the target: R² compares against that baseline, and can be negative outside the training set",
+        "That there is a computation error, because R² is bounded between 0 and 1",
+        "That the correlation between prediction and truth is negative, so flipping the sign of the predictions is enough",
+        "That the model is underfitting, but is still better than the baseline"
+      ],
+      "correct_index": 0,
+      "explanation_es": "R² = 1 - SS_res/SS_tot, y nada impide que la suma de residuos del modelo supere la de la línea base de la media: entonces el cociente pasa de 1 y R² se vuelve negativo. La opción B es el malentendido más común y viene de la regresión lineal ajustada por mínimos cuadrados, donde R² sí está en [0, 1] pero SOLO sobre los datos con los que se ajustó. La C confunde R² con el coeficiente de correlación r, que sí puede ser negativo con ese significado; R² fuera de la regresión lineal simple no es el cuadrado de nada. La D se contradice: un valor negativo significa exactamente estar POR DEBAJO de la línea base.",
+      "explanation_en": "R² = 1 - SS_res/SS_tot, and nothing stops the model's residual sum from exceeding that of the mean baseline: the ratio then passes 1 and R² turns negative. Option B is the most common misunderstanding and comes from least-squares linear regression, where R² is indeed in [0, 1] but ONLY on the data it was fitted on. C confuses R² with the correlation coefficient r, which can indeed be negative with that meaning; outside simple linear regression R² is not the square of anything. D contradicts itself: a negative value means precisely being BELOW the baseline.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: R² score, the coefficient of determination",
+      "expected_time_ms": 40000,
+      "tags": [
+        "evaluation-metrics",
+        "regression",
+        "r2"
+      ]
+    },
+    {
+      "id": "q060305011",
+      "skill_id": "sk060305",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un clasificador binario produce TP=30, FN=20, FP=5, TN=45. ¿Cuál es su recuperación (recall)?",
+      "question_en": "A binary classifier produces TP=30, FN=20, FP=5, TN=45. What is its recall?",
+      "options_es": [
+        "0.86",
+        "0.6",
+        "0.75",
+        "0.4"
+      ],
+      "options_en": [
+        "0.86",
+        "0.6",
+        "0.75",
+        "0.4"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`recall = TP / (TP + FN) = 30 / (30 + 20) = 0.6`: de los 50 positivos que realmente existían, el modelo encontró 30. El valor 0.86 es la PRECISIÓN, 30/(30+5), y confundir los dos denominadores (FN frente a FP) es el error más repetido con las matrices de confusión; el truco es recordar que el recall mira la columna de lo que era real y la precisión la de lo que se predijo. El 0.75 es la exactitud, (30+45)/100. El 0.4 es la proporción de positivos que se escaparon, 20/50, que es exactamente 1 - recall.",
+      "explanation_en": "`recall = TP / (TP + FN) = 30 / (30 + 20) = 0.6`: of the 50 positives that actually existed, the model found 30. The value 0.86 is PRECISION, 30/(30+5), and mixing up the two denominators (FN vs FP) is the most repeated mistake with confusion matrices; the trick is to remember that recall looks at the column of what was real and precision at the column of what was predicted. 0.75 is accuracy, (30+45)/100. 0.4 is the proportion of positives that got away, 20/50, which is exactly 1 - recall.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: Precision, recall and F-measures",
+      "expected_time_ms": 28000,
+      "tags": [
+        "evaluation-metrics",
+        "recall",
+        "confusion-matrix"
+      ]
+    },
+    {
+      "id": "q060305012",
+      "skill_id": "sk060305",
+      "type": "code_output",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué imprime este código?\n\n```python\nimport numpy as np\nfrom sklearn.metrics import mean_squared_error\n\ny_true = np.array([10, 12, 14, 16])\ny_pred = np.array([10, 15, 10, 16])\nprint(np.sqrt(mean_squared_error(y_true, y_pred)))\n```",
+      "question_en": "What does this code print?\n\n```python\nimport numpy as np\nfrom sklearn.metrics import mean_squared_error\n\ny_true = np.array([10, 12, 14, 16])\ny_pred = np.array([10, 15, 10, 16])\nprint(np.sqrt(mean_squared_error(y_true, y_pred)))\n```",
+      "options_es": [
+        "6.25",
+        "1.75",
+        "3.5",
+        "2.5"
+      ],
+      "options_en": [
+        "6.25",
+        "1.75",
+        "3.5",
+        "2.5"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Los errores son 0, -3, 4 y 0. El MSE es (0 + 9 + 16 + 0) / 4 = 6.25, y la raíz cuadrada da RMSE = 2.5. El 6.25 es la respuesta de quien olvida el `np.sqrt` y reporta el MSE, un fallo habitual que además cambia las unidades (el MSE está en unidades al cuadrado, el RMSE en las del objetivo). El 1.75 es el MAE, (0 + 3 + 4 + 0) / 4, y es siempre menor o igual que el RMSE: la diferencia entre ambos revela cuánto pesan los errores grandes, porque elevar al cuadrado castiga el error de 4 mucho más que el de 3. El 3.5 sale de promediar solo los dos errores no nulos.",
+      "explanation_en": "The errors are 0, -3, 4 and 0. The MSE is (0 + 9 + 16 + 0) / 4 = 6.25, and the square root gives RMSE = 2.5. 6.25 is the answer of whoever forgets the `np.sqrt` and reports the MSE, a common slip that also changes the units (MSE is in squared units, RMSE in the target's own). 1.75 is the MAE, (0 + 3 + 4 + 0) / 4, and it is always less than or equal to the RMSE: the gap between them reveals how much the large errors weigh, because squaring punishes the error of 4 far more than the one of 3. 3.5 comes from averaging only the two non-zero errors.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: Mean squared error",
+      "expected_time_ms": 40000,
+      "tags": [
+        "evaluation-metrics",
+        "regression",
+        "rmse"
+      ]
+    },
+    {
+      "id": "q060305013",
+      "skill_id": "sk060305",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "Cuando las dos clases están aproximadamente equilibradas y los dos tipos de error cuestan lo mismo, la exactitud (accuracy) es una métrica razonable para resumir el rendimiento.",
+      "question_en": "When the two classes are roughly balanced and the two error types cost the same, accuracy is a reasonable metric for summarising performance.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. La exactitud tiene mala fama merecida, pero su problema no es la métrica en sí, sino usarla fuera de las condiciones en las que es informativa. Cuando las clases están equilibradas la línea base trivial ronda el 50%, así que la cifra sí discrimina; y cuando los dos errores cuestan igual, tratarlos de forma simétrica es correcto. En cuanto falla cualquiera de las dos condiciones (fraude, diagnóstico de enfermedades raras, detección de defectos) hay que pasar a precisión, recall, F1 o AUC-PR. Reemplazar siempre la exactitud sin comprobar el contexto es tan mecánico como usarla siempre.",
+      "explanation_en": "True. Accuracy has a deservedly bad reputation, but its problem is not the metric itself, it is using it outside the conditions where it is informative. When classes are balanced the trivial baseline sits around 50%, so the figure does discriminate; and when both errors cost the same, treating them symmetrically is right. As soon as either condition fails (fraud, rare-disease diagnosis, defect detection) you must move to precision, recall, F1 or AUC-PR. Always replacing accuracy without checking the context is as mechanical as always using it.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: Accuracy score",
+      "expected_time_ms": 24000,
+      "tags": [
+        "evaluation-metrics",
+        "accuracy",
+        "metric-selection"
+      ]
+    },
+    {
+      "id": "q060305014",
+      "skill_id": "sk060305",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un clasificador binario con AUC-ROC de 0.5 tiene un rendimiento aceptable, aunque mejorable.",
+      "question_en": "A binary classifier with an AUC-ROC of 0.5 has acceptable, if improvable, performance.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Falso. En la AUC-ROC el 0.5 no es la mitad de una escala de 0 a 1: es el suelo, el valor de un clasificador aleatorio. La AUC es la probabilidad de que el modelo puntúe más alto a un positivo elegido al azar que a un negativo elegido al azar, y 0.5 significa que acierta ese orden tanto como una moneda. La intuición equivocada viene de leerlo como si fuera una exactitud, donde 0.5 sí sería 'la mitad de los aciertos'. El rango útil va de 0.5 a 1.0, y un valor por debajo de 0.5 indica que el modelo ordena al revés de forma sistemática, algo que suele delatar las etiquetas invertidas.",
+      "explanation_en": "False. In AUC-ROC, 0.5 is not the middle of a 0-to-1 scale: it is the floor, the value of a random classifier. AUC is the probability that the model scores a randomly chosen positive higher than a randomly chosen negative, and 0.5 means it gets that ordering right as often as a coin flip. The wrong intuition comes from reading it as if it were accuracy, where 0.5 would indeed be 'half correct'. The useful range runs from 0.5 to 1.0, and a value below 0.5 means the model ranks systematically backwards, which usually gives away flipped labels.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: Receiver operating characteristic (ROC)",
+      "expected_time_ms": 28000,
+      "tags": [
+        "evaluation-metrics",
+        "auc-roc",
+        "interpretation"
+      ]
+    },
+    {
+      "id": "q060305015",
+      "skill_id": "sk060305",
+      "type": "fill_blank",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cómo se llama la tabla que cruza las clases predichas con las clases reales y de la que se derivan la precisión, el recall y la exactitud?",
+      "question_en": "What is the table called that cross-tabulates predicted classes against actual classes, and from which precision, recall and accuracy are all derived?",
+      "correct_answer_es": "Matriz de confusión",
+      "correct_answer_en": "Confusion matrix",
+      "explanation_es": "La matriz de confusión es la fuente de la que salen todas las métricas de clasificación: sus cuatro celdas en el caso binario (TP, FP, FN, TN) contienen la información completa, y cada métrica es un cociente distinto entre ellas. Por eso conviene mirarla antes que cualquier número resumido: dos modelos con la misma exactitud pueden tener matrices muy distintas, uno equivocándose sobre todo por falsas alarmas y el otro por casos que se le escapan, que son problemas con consecuencias y soluciones diferentes. En multiclase se generaliza a una matriz n x n donde la diagonal son los aciertos.",
+      "explanation_en": "The confusion matrix is the source from which all classification metrics come: its four cells in the binary case (TP, FP, FN, TN) hold the complete information, and each metric is a different ratio among them. That is why it is worth looking at before any summary number: two models with identical accuracy can have very different matrices, one erring mainly through false alarms and the other through cases it misses, which are problems with different consequences and different fixes. In the multiclass case it generalises to an n x n matrix whose diagonal holds the correct predictions.",
+      "source": "scikit-learn User Guide, 3.3 Metrics and scoring: Confusion matrix",
+      "expected_time_ms": 22000,
+      "tags": [
+        "evaluation-metrics",
+        "confusion-matrix"
+      ]
+    }
+  ]
+}

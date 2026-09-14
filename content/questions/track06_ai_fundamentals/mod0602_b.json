@@ -1,0 +1,680 @@
+{
+  "questions": [
+    {
+      "id": "q060201009",
+      "skill_id": "sk060201",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Si `A` y `B` son dos arrays de NumPy de forma (2, 2), ¿qué diferencia hay entre `A * B` y `A @ B`?",
+      "question_en": "If `A` and `B` are two NumPy arrays of shape (2, 2), what is the difference between `A * B` and `A @ B`?",
+      "options_es": [
+        "`A * B` multiplica elemento a elemento y `A @ B` calcula el producto matricial (filas por columnas)",
+        "Las dos expresiones calculan el producto matricial; `@` es solo una forma más corta de escribirlo",
+        "`A * B` calcula el producto matricial y `A @ B` multiplica elemento a elemento",
+        "`A @ B` solo funciona con matrices de NumPy creadas con `np.matrix`, con arrays normales lanza un error"
+      ],
+      "options_en": [
+        "`A * B` multiplies element by element and `A @ B` computes the matrix product (rows by columns)",
+        "Both expressions compute the matrix product; `@` is just shorter to write",
+        "`A * B` computes the matrix product and `A @ B` multiplies element by element",
+        "`A @ B` only works on NumPy matrices created with `np.matrix`, it raises an error on ordinary arrays"
+      ],
+      "correct_index": 0,
+      "explanation_es": "En NumPy los operadores aritméticos son siempre elemento a elemento: `A * B` multiplica las posiciones correspondientes. El producto matricial se escribe con `@` (o `np.dot` / `np.matmul`). La confusión viene de MATLAB y del álgebra escrita a mano, donde `*` entre matrices significa producto matricial; quien llega de ahí asume que NumPy hace lo mismo y obtiene números que parecen razonables pero son incorrectos, sin ningún error que lo avise. `np.matrix` existe pero está desaconsejado: `@` funciona perfectamente con ndarrays normales.",
+      "explanation_en": "In NumPy the arithmetic operators are always elementwise: `A * B` multiplies matching positions. The matrix product is written with `@` (or `np.dot` / `np.matmul`). The confusion comes from MATLAB and from handwritten algebra, where `*` between matrices means the matrix product; people arriving from there assume NumPy does the same and get plausible-looking but wrong numbers, with no error to warn them. `np.matrix` exists but is discouraged: `@` works fine with ordinary ndarrays.",
+      "source": "NumPy User Guide - NumPy for MATLAB users; Harris et al., 'Array programming with NumPy', Nature 585 (2020)",
+      "expected_time_ms": 25000,
+      "tags": ["numpy", "linear-algebra", "operators"]
+    },
+    {
+      "id": "q060201010",
+      "skill_id": "sk060201",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Dado `a = np.array([1, 5, 2, 8, 3])`, ¿qué imprime `print(a[a > 3])`?",
+      "question_en": "Given `a = np.array([1, 5, 2, 8, 3])`, what does `print(a[a > 3])` print?",
+      "options_es": [
+        "[False True False True False]",
+        "[5 8]",
+        "[1 5 2 8 3]",
+        "[1 3]"
+      ],
+      "options_en": [
+        "[False True False True False]",
+        "[5 8]",
+        "[1 5 2 8 3]",
+        "[1 3]"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`a > 3` produce una máscara booleana `[False, True, False, True, False]`, y usarla como índice selecciona los elementos donde la máscara es True: `[5 8]`. La primera opción es lo que imprime `print(a > 3)`, un paso antes: se confunde la máscara con el resultado de aplicarla. La última opción son los índices de las posiciones que cumplen la condición (lo que devolvería `np.where(a > 3)`), no los valores.",
+      "explanation_en": "`a > 3` produces a boolean mask `[False, True, False, True, False]`, and using it as an index selects the elements where the mask is True: `[5 8]`. The first option is what `print(a > 3)` shows, one step earlier: the mask gets confused with the result of applying it. The last option is the indices of the positions satisfying the condition (what `np.where(a > 3)` returns), not the values.",
+      "source": "NumPy User Guide - Indexing on ndarrays (boolean array indexing)",
+      "expected_time_ms": 25000,
+      "tags": ["numpy", "boolean-indexing", "masking"]
+    },
+    {
+      "id": "q060201011",
+      "skill_id": "sk060201",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "`b = a.reshape(3, 4)` siempre copia los datos de `a` en un bloque de memoria nuevo, por lo que escribir en `b` nunca puede alterar `a`.",
+      "question_en": "`b = a.reshape(3, 4)` always copies the data of `a` into a fresh memory block, so writing into `b` can never alter `a`.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. `reshape` devuelve una vista siempre que pueda: no mueve los datos, solo reinterpreta el mismo búfer con otra forma y otros strides, así que `b[0, 0] = 99` modifica también `a`. Solo copia cuando la nueva forma es incompatible con los strides actuales (por ejemplo tras ciertas transposiciones o slicing no contiguo). La tentación es pensar que como el resultado 'se ve distinto' tiene que ser un objeto independiente; NumPy evita copiar precisamente porque copiar arrays grandes es caro. Si necesitas independencia, pide `a.reshape(3, 4).copy()`.",
+      "explanation_en": "False. `reshape` returns a view whenever it can: it does not move data, it just reinterprets the same buffer with a different shape and strides, so `b[0, 0] = 99` also modifies `a`. It copies only when the new shape is incompatible with the current strides (for example after certain transposes or non-contiguous slicing). The temptation is to assume that because the result 'looks different' it must be an independent object; NumPy avoids copying precisely because copying large arrays is expensive. If you need independence, ask for `a.reshape(3, 4).copy()`.",
+      "source": "NumPy User Guide - Copies and views; numpy.reshape API reference",
+      "expected_time_ms": 30000,
+      "tags": ["numpy", "views", "memory"]
+    },
+    {
+      "id": "q060201012",
+      "skill_id": "sk060201",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Tienes `a = np.zeros(3, dtype=np.int64)` y ejecutas `a[0] = 3.9`. ¿Qué queda guardado en `a[0]`?",
+      "question_en": "You have `a = np.zeros(3, dtype=np.int64)` and you run `a[0] = 3.9`. What ends up stored in `a[0]`?",
+      "options_es": [
+        "3.9, porque NumPy convierte el array entero a float64 automáticamente",
+        "0, porque la asignación se ignora al no coincidir el tipo",
+        "3, porque el valor se trunca al dtype entero del array",
+        "4, porque NumPy redondea al entero más cercano"
+      ],
+      "options_en": [
+        "3.9, because NumPy automatically converts the whole array to float64",
+        "0, because the assignment is ignored when the type does not match",
+        "3, because the value is truncated to the array's integer dtype",
+        "4, because NumPy rounds to the nearest integer"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El dtype de un ndarray es fijo: el array reserva un bloque de memoria con elementos de tamaño y tipo constantes, así que no puede 'convertirse' a float al asignar. NumPy trunca hacia cero y guarda 3, sin lanzar ningún aviso, que es lo peligroso del caso. La opción del redondeo es la trampa más común porque `round(3.9)` sí da 4, pero aquí no hay redondeo sino conversión de tipo. Para conservar los decimales hay que crear el array con `dtype=float` o usar `a = a.astype(float)` antes.",
+      "explanation_en": "An ndarray's dtype is fixed: the array reserves a memory block of constant-size, constant-type elements, so it cannot 'become' float on assignment. NumPy truncates toward zero and stores 3, with no warning, which is what makes this dangerous. The rounding option is the most common trap because `round(3.9)` does give 4, but this is not rounding, it is a type cast. To keep the decimals, create the array with `dtype=float` or use `a = a.astype(float)` first.",
+      "source": "NumPy User Guide - Data types (casting rules)",
+      "expected_time_ms": 20000,
+      "tags": ["numpy", "dtype", "casting"]
+    },
+    {
+      "id": "q060201013",
+      "skill_id": "sk060201",
+      "type": "fill_blank",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué atributo de un ndarray devuelve el número de dimensiones (ejes) del array, es decir 2 para una matriz y 1 para un vector?",
+      "question_en": "Which ndarray attribute returns the number of dimensions (axes) of the array, that is 2 for a matrix and 1 for a vector?",
+      "correct_answer_es": "ndim",
+      "correct_answer_en": "ndim",
+      "explanation_es": "`a.ndim` es el número de ejes. Se confunde a menudo con `a.shape`, que es la tupla con la longitud de cada eje (`ndim` es justamente `len(a.shape)`), y con `a.size`, que es el total de elementos. Distinguirlos importa al depurar errores de broadcasting: el mensaje habla de formas, pero el fallo suele estar en cuántos ejes tiene el array, no en cuántos elementos.",
+      "explanation_en": "`a.ndim` is the number of axes. It is often confused with `a.shape`, the tuple holding each axis length (`ndim` is exactly `len(a.shape)`), and with `a.size`, the total element count. Telling them apart matters when debugging broadcasting errors: the message talks about shapes, but the mistake is usually in how many axes the array has, not how many elements.",
+      "source": "NumPy User Guide - The N-dimensional array (ndarray attributes)",
+      "expected_time_ms": 20000,
+      "tags": ["numpy", "ndarray", "attributes"]
+    },
+    {
+      "id": "q060201014",
+      "skill_id": "sk060201",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Tienes `M` de forma (3, 4) y `v` de forma (3,). ¿Qué ocurre al evaluar `M + v`?",
+      "question_en": "You have `M` of shape (3, 4) and `v` of shape (3,). What happens when you evaluate `M + v`?",
+      "options_es": [
+        "Suma `v` a cada columna de `M`, porque `v` tiene tantos elementos como filas tiene `M`",
+        "Suma solo los tres primeros elementos de cada fila y deja la cuarta columna intacta",
+        "Devuelve un array de forma (3, 3) alineando `v` con el primer eje",
+        "Lanza un ValueError: las formas (3, 4) y (3,) no son compatibles para broadcasting"
+      ],
+      "options_en": [
+        "It adds `v` to each column of `M`, because `v` has as many elements as `M` has rows",
+        "It adds only the first three elements of each row and leaves the fourth column untouched",
+        "It returns an array of shape (3, 3) by aligning `v` with the first axis",
+        "It raises a ValueError: shapes (3, 4) and (3,) are not compatible for broadcasting"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El broadcasting alinea las formas por la derecha: (3, 4) frente a (3,) compara 4 con 3, que ni coinciden ni valen 1, así que falla. La primera opción es la intuición equivocada más frecuente: 'v tiene 3 elementos y M tiene 3 filas, luego encaja por filas'. NumPy no busca la dimensión que cuadre, alinea desde el último eje. Para sumar por filas hay que darle explícitamente un eje: `M + v.reshape(3, 1)` o `M + v[:, np.newaxis]`, que sí produce (3, 4).",
+      "explanation_en": "Broadcasting aligns shapes from the right: (3, 4) against (3,) compares 4 with 3, which neither match nor equal 1, so it fails. The first option is the most common wrong intuition: 'v has 3 elements and M has 3 rows, so it fits row-wise'. NumPy does not hunt for a dimension that matches, it aligns from the trailing axis. To add per row you must supply the axis explicitly: `M + v.reshape(3, 1)` or `M + v[:, np.newaxis]`, which does produce (3, 4).",
+      "source": "NumPy User Guide - Broadcasting (general broadcasting rules)",
+      "expected_time_ms": 35000,
+      "tags": ["numpy", "broadcasting", "shapes"]
+    },
+    {
+      "id": "q060201015",
+      "skill_id": "sk060201",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime `print(np.array([1, 2, 3]) / np.array([2, 2, 2]))`?",
+      "question_en": "What does `print(np.array([1, 2, 3]) / np.array([2, 2, 2]))` print?",
+      "options_es": [
+        "[0 1 1]",
+        "[0.5 1.  1.5]",
+        "[1 2 3]",
+        "Lanza un TypeError porque los arrays son de enteros"
+      ],
+      "options_en": [
+        "[0 1 1]",
+        "[0.5 1.  1.5]",
+        "[1 2 3]",
+        "It raises a TypeError because both arrays hold integers"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El operador `/` es siempre división verdadera, también en NumPy: aunque ambos arrays sean de enteros el resultado se promociona a float64 y sale `[0.5 1. 1.5]`. La primera opción es el resultado de `//` (división entera, que sí trunca) y es la trampa esperable en quien recuerda la división entera de Python 2 o asume que el dtype de entrada manda sobre el del resultado. No hay error de tipo: las reglas de promoción de NumPy están hechas justamente para evitarlo.",
+      "explanation_en": "The `/` operator is always true division, in NumPy too: even though both arrays hold integers, the result is promoted to float64 and prints `[0.5 1. 1.5]`. The first option is what `//` gives (floor division, which does truncate) and is the expected trap for anyone remembering Python 2 integer division or assuming the input dtype dictates the output dtype. There is no type error: NumPy's promotion rules exist precisely to avoid one.",
+      "source": "NumPy User Guide - Data types (type promotion); numpy.divide API reference",
+      "expected_time_ms": 25000,
+      "tags": ["numpy", "dtype", "arithmetic"]
+    },
+    {
+      "id": "q060202009",
+      "skill_id": "sk060202",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Sumas dos Series de pandas: `s1` con índice ['a', 'b', 'c'] y `s2` con índice ['b', 'c', 'd']. ¿Qué devuelve `s1 + s2`?",
+      "question_en": "You add two pandas Series: `s1` with index ['a', 'b', 'c'] and `s2` with index ['b', 'c', 'd']. What does `s1 + s2` return?",
+      "options_es": [
+        "Una Series con índice ['a', 'b', 'c', 'd'] donde 'a' y 'd' son NaN y 'b' y 'c' llevan la suma",
+        "Una Series de 3 elementos que suma posición a posición, ignorando las etiquetas del índice",
+        "Una Series con solo 'b' y 'c', descartando en silencio las etiquetas que no están en ambas",
+        "Un error, porque los índices de las dos Series deben ser idénticos para poder operar"
+      ],
+      "options_en": [
+        "A Series indexed ['a', 'b', 'c', 'd'] where 'a' and 'd' are NaN and 'b' and 'c' hold the sums",
+        "A 3-element Series added position by position, ignoring the index labels",
+        "A Series with only 'b' and 'c', silently dropping the labels not present in both",
+        "An error, because the two Series must have identical indexes to operate on each other"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Pandas alinea por etiqueta antes de operar: el resultado es la unión de los índices y las etiquetas que faltan en alguno de los lados dan NaN. La segunda opción es la intuición de NumPy, donde la suma es posicional, y es el error que más sorprende al llegar a pandas: el mismo código que funcionaba con arrays produce NaN inesperados. La tercera confunde la unión con la intersección; para quedarte solo con lo común hay que pedirlo (`s1.add(s2, fill_value=0)` o un `dropna()` posterior, según lo que quieras).",
+      "explanation_en": "Pandas aligns on labels before operating: the result is the union of the indexes, and labels missing on either side yield NaN. The second option is the NumPy intuition, where addition is positional, and it is the surprise that most often bites people moving to pandas: the same code that worked on arrays now produces unexpected NaN. The third confuses union with intersection; to keep only the common labels you have to ask for it (`s1.add(s2, fill_value=0)` or a later `dropna()`, depending on what you want).",
+      "source": "pandas User Guide - Intro to data structures (data alignment and arithmetic)",
+      "expected_time_ms": 30000,
+      "tags": ["pandas", "series", "alignment"]
+    },
+    {
+      "id": "q060202010",
+      "skill_id": "sk060202",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "En un DataFrame `df`, ¿cuál es la diferencia entre `df['edad']` y `df[['edad']]`?",
+      "question_en": "In a DataFrame `df`, what is the difference between `df['age']` and `df[['age']]`?",
+      "options_es": [
+        "No hay ninguna: los corchetes dobles son un estilo alternativo con el mismo resultado",
+        "`df['edad']` devuelve una Series (una dimensión) y `df[['edad']]` devuelve un DataFrame de una columna",
+        "`df['edad']` devuelve una copia y `df[['edad']]` devuelve siempre una vista editable",
+        "`df[['edad']]` ordena la columna de menor a mayor antes de devolverla"
+      ],
+      "options_en": [
+        "There is none: the double brackets are an alternative style with the same result",
+        "`df['age']` returns a Series (one-dimensional) and `df[['age']]` returns a one-column DataFrame",
+        "`df['age']` returns a copy and `df[['age']]` always returns an editable view",
+        "`df[['age']]` sorts the column ascending before returning it"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Los corchetes dobles pasan una lista de columnas, y seleccionar por lista siempre devuelve un DataFrame, aunque la lista tenga un solo nombre. La diferencia parece cosmética hasta que el objeto cae en una función que espera una forma concreta: `scaler.fit_transform` y muchos estimadores de scikit-learn piden 2D y fallan con una Series, mientras que `.str` o `.value_counts()` solo existen en Series. La opción de copia/vista mezcla este tema con el de SettingWithCopyWarning, que es independiente de cuántos corchetes uses.",
+      "explanation_en": "Double brackets pass a list of columns, and list-based selection always returns a DataFrame even when the list holds a single name. The difference looks cosmetic until the object reaches a function expecting a specific shape: `scaler.fit_transform` and many scikit-learn estimators want 2D and fail on a Series, while `.str` and `.value_counts()` only exist on a Series. The copy/view option mixes this up with SettingWithCopyWarning, which is unrelated to how many brackets you use.",
+      "source": "pandas User Guide - Indexing and selecting data (basics)",
+      "expected_time_ms": 20000,
+      "tags": ["pandas", "selection", "dataframe"]
+    },
+    {
+      "id": "q060202011",
+      "skill_id": "sk060202",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime `print(pd.Series([1, 2, None, 4]).sum())`?",
+      "question_en": "What does `print(pd.Series([1, 2, None, 4]).sum())` print?",
+      "options_es": [
+        "nan",
+        "None",
+        "7.0",
+        "3.0"
+      ],
+      "options_en": [
+        "nan",
+        "None",
+        "7.0",
+        "3.0"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Las agregaciones de pandas ignoran los valores faltantes por defecto (`skipna=True`), así que suma 1 + 2 + 4 = 7.0 (float porque el None convierte la columna a float64). La respuesta 'nan' es la que daría `np.sum` sobre un array con np.nan, y es la confusión típica entre el comportamiento de NumPy y el de pandas. Este default es cómodo pero conviene conocerlo: una media calculada sobre una columna con muchos faltantes se calcula sobre menos filas de las que crees, sin decírtelo. Con `skipna=False` obtienes NaN explícitamente.",
+      "explanation_en": "Pandas aggregations skip missing values by default (`skipna=True`), so it adds 1 + 2 + 4 = 7.0 (float because the None promotes the column to float64). The 'nan' answer is what `np.sum` would give on an array containing np.nan, and it is the classic confusion between NumPy's behaviour and pandas'. This default is convenient but worth knowing: a mean over a column with many missing values is computed over fewer rows than you think, without telling you. With `skipna=False` you get NaN explicitly.",
+      "source": "pandas User Guide - Working with missing data (calculations with missing data)",
+      "expected_time_ms": 25000,
+      "tags": ["pandas", "aggregation", "missing-values"]
+    },
+    {
+      "id": "q060202012",
+      "skill_id": "sk060202",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "`df['ciudad'].value_counts()` incluye por defecto una fila con el recuento de valores NaN de la columna.",
+      "question_en": "`df['city'].value_counts()` includes by default a row with the count of NaN values in the column.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso: `value_counts()` usa `dropna=True` por defecto, así que los NaN no aparecen. Es una fuente silenciosa de errores al auditar una columna categórica: los recuentos se ven completos, suman un total plausible y nada sugiere que falten filas, hasta que comparas con `len(df)` y no cuadra. Para verlos hay que pedir `value_counts(dropna=False)`, o comprobar aparte con `df['ciudad'].isna().sum()`.",
+      "explanation_en": "False: `value_counts()` defaults to `dropna=True`, so NaN values do not show up. This is a quiet source of mistakes when auditing a categorical column: the counts look complete, they add up to a plausible total and nothing hints at missing rows, until you compare against `len(df)` and the numbers do not match. To see them, ask for `value_counts(dropna=False)`, or check separately with `df['city'].isna().sum()`.",
+      "source": "pandas API reference - pandas.Series.value_counts (dropna parameter)",
+      "expected_time_ms": 25000,
+      "tags": ["pandas", "value-counts", "missing-values"]
+    },
+    {
+      "id": "q060202013",
+      "skill_id": "sk060202",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En un DataFrame de 1000 filas con una columna 'tienda' y otra 'ventas', ¿qué devuelve `df.groupby('tienda')['ventas'].transform('mean')`?",
+      "question_en": "In a 1000-row DataFrame with a 'store' column and a 'sales' column, what does `df.groupby('store')['sales'].transform('mean')` return?",
+      "options_es": [
+        "Una Series con una fila por tienda y su media, igual que `.agg('mean')`",
+        "Un DataFrame nuevo con las filas reordenadas y agrupadas por tienda",
+        "La media global de 'ventas' repetida 1000 veces",
+        "Una Series de 1000 valores, donde cada fila lleva la media de su propia tienda, alineada con el índice original"
+      ],
+      "options_en": [
+        "A Series with one row per store and its mean, exactly like `.agg('mean')`",
+        "A new DataFrame with the rows reordered and grouped by store",
+        "The global mean of 'sales' repeated 1000 times",
+        "A 1000-value Series where each row carries its own store's mean, aligned to the original index"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`transform` difunde el resultado de la agregación de vuelta a la forma original: devuelve tantos valores como filas de entrada, cada uno con el estadístico de su grupo. Eso es lo que permite escribir `df['desviacion'] = df['ventas'] - df.groupby('tienda')['ventas'].transform('mean')` en una línea. La opción de 'una fila por tienda' es exactamente lo que hace `agg`, y confundirlas es el error más frecuente: quien usa `agg` y luego intenta asignarlo como columna se encuentra con NaN o con un error de longitud, porque el resultado tiene una fila por grupo, no por fila.",
+      "explanation_en": "`transform` broadcasts the aggregation back to the original shape: it returns as many values as input rows, each carrying its own group's statistic. That is what lets you write `df['deviation'] = df['sales'] - df.groupby('store')['sales'].transform('mean')` in one line. The 'one row per store' option is exactly what `agg` does, and confusing the two is the most frequent error: people use `agg` and then try to assign it as a column, hitting NaN or a length error, because that result has one row per group, not per row.",
+      "source": "pandas User Guide - Group by: split-apply-combine (transformation)",
+      "expected_time_ms": 35000,
+      "tags": ["pandas", "groupby", "transform"]
+    },
+    {
+      "id": "q060202014",
+      "skill_id": "sk060202",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Después de un `groupby`, el resultado queda indexado por la clave de agrupación. ¿Qué método de pandas convierte ese índice de nuevo en una columna normal y repone un índice entero 0..n-1?",
+      "question_en": "After a `groupby`, the result is indexed by the grouping key. Which pandas method turns that index back into an ordinary column and restores an integer 0..n-1 index?",
+      "correct_answer_es": "reset_index",
+      "correct_answer_en": "reset_index",
+      "explanation_es": "`reset_index()` mueve el índice (o los niveles de un MultiIndex) a columnas y crea un RangeIndex nuevo. Es el paso que falta cuando un `groupby(...).agg(...)` no se deja unir con `merge` o graficar como esperas: la clave existe, pero está en el índice y no en las columnas, así que `df.columns` no la contiene. Su opuesto es `set_index`, que convierte una columna en índice. Si no quieres conservar la columna antigua, `reset_index(drop=True)` la descarta.",
+      "explanation_en": "`reset_index()` moves the index (or the levels of a MultiIndex) into columns and creates a fresh RangeIndex. It is the missing step when a `groupby(...).agg(...)` result refuses to `merge` or to plot the way you expect: the key exists, but it lives in the index rather than the columns, so `df.columns` does not contain it. Its opposite is `set_index`, which turns a column into the index. If you do not want to keep the old column, `reset_index(drop=True)` discards it.",
+      "source": "pandas API reference - pandas.DataFrame.reset_index; pandas User Guide - Group by (group keys)",
+      "expected_time_ms": 25000,
+      "tags": ["pandas", "index", "groupby"]
+    },
+    {
+      "id": "q060202015",
+      "skill_id": "sk060202",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Necesitas calcular una columna nueva a partir de dos columnas existentes en un DataFrame de varios millones de filas. ¿Por qué se desaconseja hacerlo con `for _, fila in df.iterrows()`?",
+      "question_en": "You need to compute a new column from two existing columns in a DataFrame of several million rows. Why is doing it with `for _, row in df.iterrows()` discouraged?",
+      "options_es": [
+        "Porque `iterrows` modifica el DataFrame original mientras lo recorre y corrompe los datos",
+        "Porque `iterrows` solo puede recorrer las 1000 primeras filas de un DataFrame",
+        "Porque construye un objeto Series de Python por cada fila, lo que es órdenes de magnitud más lento que una operación vectorizada como `df['a'] * df['b']` (y además pierde los dtypes por columna)",
+        "Porque `iterrows` requiere que todas las columnas sean numéricas y falla con texto"
+      ],
+      "options_en": [
+        "Because `iterrows` modifies the original DataFrame while looping over it and corrupts the data",
+        "Because `iterrows` can only walk the first 1000 rows of a DataFrame",
+        "Because it builds a Python Series object for every row, which is orders of magnitude slower than a vectorized operation like `df['a'] * df['b']` (and it also loses the per-column dtypes)",
+        "Because `iterrows` requires every column to be numeric and fails on text"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El coste está en materializar una Series por fila: millones de objetos Python, con la penalización del intérprete en cada iteración, frente a un único bucle compilado en C sobre memoria contigua. Además, como cada fila mezcla columnas de distinto tipo, la Series resultante suele ser de dtype object y los enteros pasan a float, así que el bucle no es solo lento sino que puede cambiar los tipos. `iterrows` no corrompe ni limita filas ni exige columnas numéricas: la penalización es de rendimiento y de tipos, no de corrección. Si de verdad hace falta iterar, `itertuples` es bastante más rápido.",
+      "explanation_en": "The cost is materializing one Series per row: millions of Python objects, paying interpreter overhead on every iteration, against a single compiled C loop over contiguous memory. On top of that, since each row mixes columns of different types, the resulting Series is usually dtype object and integers become floats, so the loop is not only slow, it can change your types. `iterrows` does not corrupt data, cap rows, or require numeric columns: the penalty is performance and dtypes, not correctness. If you truly must iterate, `itertuples` is considerably faster.",
+      "source": "pandas User Guide - Essential basic functionality (iteration); McKinney, Python for Data Analysis, 3rd ed.",
+      "expected_time_ms": 40000,
+      "tags": ["pandas", "performance", "vectorization"]
+    },
+    {
+      "id": "q060203008",
+      "skill_id": "sk060203",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Al empezar a limpiar un DataFrame ejecutas `df.isna().sum()`. ¿Qué información te da exactamente?",
+      "question_en": "Starting to clean a DataFrame you run `df.isna().sum()`. What information does it give you exactly?",
+      "options_es": [
+        "El número total de celdas vacías en todo el DataFrame, como un único número",
+        "El número de valores faltantes en cada columna, una cifra por columna",
+        "Las filas que contienen al menos un valor faltante",
+        "El porcentaje de valores faltantes sobre el total de celdas"
+      ],
+      "options_en": [
+        "The total number of empty cells in the whole DataFrame, as a single number",
+        "The number of missing values in each column, one figure per column",
+        "The rows that contain at least one missing value",
+        "The percentage of missing values over the total number of cells"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`df.isna()` devuelve un DataFrame booleano del mismo tamaño y `.sum()` agrega por defecto sobre el eje 0, es decir por columna, sumando True como 1. Por eso el resultado es una Series con una entrada por columna, que es justo lo que quieres para decidir columna a columna qué imputar y qué descartar. El total global se obtiene encadenando otro `.sum()` (`df.isna().sum().sum()`), y la proporción con `.mean()` en lugar de `.sum()`. La confusión con 'filas afectadas' viene de mezclar esto con `df[df.isna().any(axis=1)]`.",
+      "explanation_en": "`df.isna()` returns a boolean DataFrame of the same size and `.sum()` aggregates over axis 0 by default, that is per column, counting True as 1. So the result is a Series with one entry per column, which is exactly what you want in order to decide column by column what to impute and what to drop. The global total comes from chaining another `.sum()` (`df.isna().sum().sum()`), and the proportion from `.mean()` instead of `.sum()`. Confusing it with 'affected rows' comes from mixing it up with `df[df.isna().any(axis=1)]`.",
+      "source": "pandas User Guide - Working with missing data; Geron, Hands-On Machine Learning, 3rd ed., ch. 2",
+      "expected_time_ms": 20000,
+      "tags": ["data-cleaning", "missing-values", "pandas"]
+    },
+    {
+      "id": "q060203009",
+      "skill_id": "sk060203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una encuesta tiene la columna 'ingresos' vacía en el 20 % de los casos, y quienes la dejan en blanco son sobre todo personas de renta alta. ¿Cuál es el riesgo principal de resolverlo con `df.dropna(subset=['ingresos'])`?",
+      "question_en": "A survey has the 'income' column empty in 20 % of cases, and those who leave it blank are mostly high-income respondents. What is the main risk of solving this with `df.dropna(subset=['income'])`?",
+      "options_es": [
+        "Que pandas lance un error si se eliminan más del 10 % de las filas",
+        "Que el modelo ya no pueda usar las demás columnas del conjunto de datos",
+        "Ninguno: eliminar filas incompletas es siempre la opción más segura porque no inventa datos",
+        "Que la muestra restante deje de representar a la población, sesgando a la baja cualquier estimación sobre ingresos"
+      ],
+      "options_en": [
+        "That pandas raises an error if more than 10 % of the rows are removed",
+        "That the model can no longer use the remaining columns of the dataset",
+        "None: dropping incomplete rows is always the safest option because it invents no data",
+        "That the remaining sample stops representing the population, biasing any income estimate downward"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La ausencia no es aleatoria: falta más entre rentas altas, así que al borrar esas filas la muestra queda escorada hacia rentas bajas y la media estimada cae, además de perder el 20 % de los datos. La tercera opción es la creencia más extendida y la más peligrosa, porque suena prudente: 'no invento nada' es cierto, pero descartar tampoco es neutral, es una decisión sobre quién queda representado. Cuando la ausencia depende del propio valor conviene modelarla, por ejemplo imputando y añadiendo un indicador binario de 'faltaba', para que el modelo pueda usar esa señal.",
+      "explanation_en": "The missingness is not random: it is concentrated among high incomes, so dropping those rows tilts the sample toward low incomes and pulls the estimated mean down, on top of losing 20 % of the data. The third option is the most widespread belief and the most dangerous, because it sounds prudent: 'I invent nothing' is true, but discarding is not neutral either, it is a decision about who stays represented. When missingness depends on the value itself, model it, for example by imputing and adding a binary 'was missing' indicator so the model can use that signal.",
+      "source": "James, Witten, Hastie & Tibshirani, An Introduction to Statistical Learning, ch. 3 (missing data); Geron, Hands-On Machine Learning, 3rd ed., ch. 2",
+      "expected_time_ms": 40000,
+      "tags": ["data-cleaning", "missing-values", "bias"]
+    },
+    {
+      "id": "q060203010",
+      "skill_id": "sk060203",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Para localizar los valores faltantes de una columna puedes comparar con `df['x'] == np.nan`, porque NaN es igual a sí mismo.",
+      "question_en": "To locate the missing values of a column you can compare with `df['x'] == np.nan`, because NaN equals itself.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. Según el estándar IEEE 754, NaN no es igual a nada, ni siquiera a otro NaN, así que `np.nan == np.nan` es False y la comparación devuelve una máscara todo False: no encuentra ningún faltante y, lo peor, no da ningún error. Por eso existen `isna()` / `notna()` (o `np.isnan` para arrays numéricos), que comprueban el patrón de bits en lugar de la igualdad. La misma regla explica que `df.drop_duplicates()` y `groupby` traten los NaN con reglas propias en vez de compararlos entre sí.",
+      "explanation_en": "False. Under IEEE 754, NaN equals nothing, not even another NaN, so `np.nan == np.nan` is False and the comparison returns an all-False mask: it finds no missing values and, worse, raises no error. That is why `isna()` / `notna()` exist (or `np.isnan` for numeric arrays), checking the bit pattern instead of equality. The same rule explains why `df.drop_duplicates()` and `groupby` handle NaN with their own rules rather than comparing them to each other.",
+      "source": "pandas User Guide - Working with missing data; IEEE 754 floating point standard",
+      "expected_time_ms": 25000,
+      "tags": ["data-cleaning", "nan", "comparison"]
+    },
+    {
+      "id": "q060203011",
+      "skill_id": "sk060203",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Dado `s = pd.Series(['10', '20', 'n/d', '40'])`, ¿qué imprime `print(pd.to_numeric(s, errors='coerce').tolist())`?",
+      "question_en": "Given `s = pd.Series(['10', '20', 'n/a', '40'])`, what does `print(pd.to_numeric(s, errors='coerce').tolist())` print?",
+      "options_es": [
+        "[10, 20, 40]",
+        "['10', '20', 'n/d', '40']",
+        "Lanza un ValueError al llegar a 'n/d'",
+        "[10.0, 20.0, nan, 40.0]"
+      ],
+      "options_en": [
+        "[10, 20, 40]",
+        "['10', '20', 'n/a', '40']",
+        "It raises a ValueError when it reaches 'n/a'",
+        "[10.0, 20.0, nan, 40.0]"
+      ],
+      "correct_index": 3,
+      "explanation_es": "`errors='coerce'` convierte a NaN lo que no se puede parsear en vez de abortar, así que el centinela textual 'n/d' pasa a ser un faltante explícito y la Series queda en float64 (NaN no cabe en un dtype entero). La segunda opción asume que la fila se elimina: `to_numeric` nunca cambia la longitud, solo los valores; eliminar es un paso aparte con `dropna()`. El ValueError es lo que ocurre con el valor por defecto `errors='raise'`, y este patrón es justo la forma estándar de rescatar columnas numéricas que llegan como texto con centinelas ('-', 'N/A', 'desconocido').",
+      "explanation_en": "`errors='coerce'` turns unparseable values into NaN instead of aborting, so the text sentinel 'n/a' becomes an explicit missing value and the Series ends up float64 (NaN does not fit an integer dtype). The second option assumes the row is removed: `to_numeric` never changes the length, only the values; removal is a separate step with `dropna()`. The ValueError is what the default `errors='raise'` gives, and this pattern is precisely the standard way to rescue numeric columns that arrive as text with sentinels ('-', 'N/A', 'unknown').",
+      "source": "pandas API reference - pandas.to_numeric (errors parameter)",
+      "expected_time_ms": 30000,
+      "tags": ["data-cleaning", "type-conversion", "missing-values"]
+    },
+    {
+      "id": "q060203012",
+      "skill_id": "sk060203",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Al agrupar por una columna de texto 'ciudad' aparecen 'Madrid', 'madrid ' y ' MADRID' como grupos distintos. ¿Cuál es el tratamiento adecuado antes de agrupar?",
+      "question_en": "Grouping by a text column 'city' produces 'Madrid', 'madrid ' and ' MADRID' as separate groups. What is the right treatment before grouping?",
+      "options_es": [
+        "Eliminar las filas cuyo valor no coincide exactamente con la grafía más frecuente",
+        "Convertir la columna a numérica con un código arbitrario por cada grafía distinta",
+        "Normalizar el texto, por ejemplo `df['ciudad'].str.strip().str.lower()`, y luego mapear las variantes restantes a una forma canónica",
+        "Ninguno: pandas ya ignora mayúsculas y espacios al agrupar, el problema está en la visualización"
+      ],
+      "options_en": [
+        "Delete the rows whose value does not exactly match the most frequent spelling",
+        "Convert the column to numeric with an arbitrary code per distinct spelling",
+        "Normalize the text, for example `df['city'].str.strip().str.lower()`, and then map the remaining variants to a canonical form",
+        "None: pandas already ignores case and whitespace when grouping, the problem is only in the display"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El agrupamiento de pandas compara cadenas exactas: ' MADRID' y 'Madrid' son valores distintos y producen grupos distintos, con recuentos partidos y agregados erróneos. `str.strip()` quita espacios y `str.lower()` unifica mayúsculas; lo que queda después (abreviaturas, acentos, erratas) se resuelve con un diccionario de mapeo o con `replace`. Borrar las filas discrepantes tira datos válidos por un problema de formato, y codificarlas como números distintos conserva el error, solo que ahora escondido tras un entero.",
+      "explanation_en": "Pandas grouping compares exact strings: ' MADRID' and 'Madrid' are different values and produce different groups, splitting counts and corrupting aggregates. `str.strip()` removes whitespace and `str.lower()` unifies case; whatever survives (abbreviations, accents, typos) is handled with a mapping dictionary or `replace`. Deleting the mismatching rows throws away valid data over a formatting problem, and encoding them as distinct numbers preserves the error, merely hiding it behind an integer.",
+      "source": "pandas User Guide - Working with text data; McKinney, Python for Data Analysis, 3rd ed., ch. 7 (data cleaning)",
+      "expected_time_ms": 30000,
+      "tags": ["data-cleaning", "strings", "categorical"]
+    },
+    {
+      "id": "q060203013",
+      "skill_id": "sk060203",
+      "type": "fill_blank",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué método de pandas sustituye los valores faltantes de una Series o DataFrame por un valor dado, por ejemplo la mediana de la columna?",
+      "question_en": "Which pandas method replaces the missing values of a Series or DataFrame with a given value, for example the column median?",
+      "correct_answer_es": "fillna",
+      "correct_answer_en": "fillna",
+      "explanation_es": "`fillna(valor)` es la imputación directa; su pareja es `dropna`, que elimina en lugar de rellenar. Dos detalles importan en la práctica: por defecto devuelve un objeto nuevo y no modifica el original, y el valor con el que rellenas debe calcularse sobre el conjunto de entrenamiento, no sobre todo el dataset, o introduces fuga de información. Por eso scikit-learn ofrece `SimpleImputer`, que aprende el estadístico en `fit` y lo aplica en `transform` dentro de un pipeline.",
+      "explanation_en": "`fillna(value)` is direct imputation; its counterpart is `dropna`, which removes instead of filling. Two details matter in practice: by default it returns a new object and leaves the original untouched, and the value you fill with must be computed on the training set, not the whole dataset, or you introduce leakage. That is why scikit-learn provides `SimpleImputer`, which learns the statistic in `fit` and applies it in `transform` inside a pipeline.",
+      "source": "pandas API reference - pandas.DataFrame.fillna; scikit-learn User Guide - Imputation of missing values",
+      "expected_time_ms": 20000,
+      "tags": ["data-cleaning", "imputation", "pandas"]
+    },
+    {
+      "id": "q060203014",
+      "skill_id": "sk060203",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Aplicas la regla del rango intercuartílico (fuera de Q1 - 1,5·IQR y Q3 + 1,5·IQR) y marca 40 filas. ¿Cuál es la conclusión correcta?",
+      "question_en": "You apply the interquartile range rule (outside Q1 - 1.5*IQR and Q3 + 1.5*IQR) and it flags 40 rows. What is the correct conclusion?",
+      "options_es": [
+        "Que la regla ha encontrado valores extremos respecto a esta distribución, y hay que investigarlos antes de decidir: puede tratarse de errores de registro o de casos reales e informativos",
+        "Que esas 40 filas son errores y deben eliminarse siempre antes de modelar",
+        "Que la columna no sigue una distribución normal y debe descartarse del análisis",
+        "Que el umbral de 1,5·IQR está mal elegido, porque una regla correcta no debería marcar ninguna fila"
+      ],
+      "options_en": [
+        "That the rule found values extreme relative to this distribution, and they must be investigated before deciding: they may be recording errors or real and informative cases",
+        "That those 40 rows are errors and should always be deleted before modelling",
+        "That the column is not normally distributed and should be dropped from the analysis",
+        "That the 1.5*IQR threshold is badly chosen, because a correct rule should flag no rows at all"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La regla del IQR es un criterio estadístico de 'inusual respecto a esta distribución', no un detector de errores: en datos perfectamente correctos y bien medidos marca una fracción de filas por construcción, y en una distribución sesgada (ingresos, tiempos de espera) marca muchas más. La segunda opción es la peor práctica más común: eliminar por defecto borra precisamente los casos que suelen importar, como el fraude o el fallo raro, y en cambio un cero imposible o una edad de 200 años sí es un error que hay que corregir. La decisión depende de qué representa el valor, no de que la regla lo haya marcado.",
+      "explanation_en": "The IQR rule is a statistical criterion for 'unusual relative to this distribution', not an error detector: on perfectly correct, well-measured data it flags a fraction of rows by construction, and on a skewed distribution (income, waiting times) it flags many more. The second option is the most common bad practice: deleting by default erases exactly the cases that usually matter, such as fraud or the rare failure, whereas an impossible zero or an age of 200 really is an error to fix. The decision depends on what the value represents, not on the rule having flagged it.",
+      "source": "Tukey, Exploratory Data Analysis (1977); James, Witten, Hastie & Tibshirani, An Introduction to Statistical Learning, ch. 3",
+      "expected_time_ms": 40000,
+      "tags": ["data-cleaning", "outliers", "eda"]
+    },
+    {
+      "id": "q060203015",
+      "skill_id": "sk060203",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Si la tabla del lado derecho de un `merge` contiene claves duplicadas, el resultado puede tener más filas que la tabla izquierda y los agregados posteriores (sumas, recuentos) quedan inflados sin ningún aviso.",
+      "question_en": "If the right-hand table of a `merge` contains duplicate keys, the result can have more rows than the left table and later aggregates (sums, counts) come out inflated with no warning.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Un merge sobre claves duplicadas es un producto cartesiano dentro de cada clave: si una fila de la izquierda casa con tres de la derecha, aparece tres veces, y cualquier `sum()` posterior sobre una métrica de la izquierda la cuenta el triple. Es un error especialmente traicionero porque el código no falla y las cifras siguen pareciendo plausibles, solo que grandes. La defensa práctica es comprobar `len(df)` antes y después y, sobre todo, usar `validate='one_to_one'` o `validate='many_to_one'` en `merge`, que lanza un error si la relación no es la que creías.",
+      "explanation_en": "True. A merge on duplicate keys is a cartesian product within each key: if one left row matches three right rows, it appears three times, and any later `sum()` over a left-hand metric counts it three times over. This one is especially treacherous because the code does not fail and the figures still look plausible, just larger. The practical defence is checking `len(df)` before and after and, above all, passing `validate='one_to_one'` or `validate='many_to_one'` to `merge`, which raises an error if the relationship is not what you assumed.",
+      "source": "pandas User Guide - Merge, join, concatenate and compare (checking for duplicate keys)",
+      "expected_time_ms": 35000,
+      "tags": ["data-cleaning", "merge", "duplicates"]
+    },
+    {
+      "id": "q060204008",
+      "skill_id": "sk060204",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Quieres mostrar cómo ha evolucionado la temperatura media mensual a lo largo de cinco años. ¿Qué tipo de gráfico es el más adecuado?",
+      "question_en": "You want to show how the monthly average temperature has evolved over five years. Which chart type is most appropriate?",
+      "options_es": [
+        "Un gráfico de líneas con el tiempo en el eje X",
+        "Un gráfico de sectores con un sector por mes",
+        "Un diagrama de dispersión de la temperatura contra sí misma",
+        "Un histograma de las temperaturas registradas"
+      ],
+      "options_en": [
+        "A line chart with time on the X axis",
+        "A pie chart with one slice per month",
+        "A scatter plot of temperature against itself",
+        "A histogram of the recorded temperatures"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La línea es la codificación natural de una serie temporal: conecta observaciones consecutivas y hace visibles la tendencia y la estacionalidad, que es exactamente la pregunta. El histograma no es una respuesta absurda, y por eso tienta: resume bien qué temperaturas fueron frecuentes, pero destruye el orden temporal, así que no puede mostrar evolución alguna. El gráfico de sectores es para partes de un todo, y la temperatura de un mes no es una parte de nada.",
+      "explanation_en": "The line is the natural encoding for a time series: it connects consecutive observations and makes trend and seasonality visible, which is exactly the question. The histogram is not an absurd answer, which is why it tempts: it summarises which temperatures were frequent, but it destroys the time ordering, so it cannot show any evolution. The pie chart is for parts of a whole, and one month's temperature is not part of anything.",
+      "source": "Wilke, Fundamentals of Data Visualization (O'Reilly, 2019), ch. 13 (time series)",
+      "expected_time_ms": 20000,
+      "tags": ["visualization", "time-series", "chart-choice"]
+    },
+    {
+      "id": "q060204009",
+      "skill_id": "sk060204",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Tienes la cuota de mercado de 12 marcas, varias con porcentajes muy parecidos. ¿Por qué un gráfico de sectores es mala elección aquí?",
+      "question_en": "You have the market share of 12 brands, several with very similar percentages. Why is a pie chart a poor choice here?",
+      "options_es": [
+        "Porque un gráfico de sectores no puede representar más de 10 categorías",
+        "Porque los porcentajes deben sumar exactamente 100, y con 12 marcas nunca ocurre",
+        "Porque comparar ángulos y áreas es mucho menos preciso que comparar longitudes: con muchas porciones parecidas el lector no distingue el orden, cosa que un gráfico de barras sí permite",
+        "Porque los gráficos de sectores solo admiten datos temporales"
+      ],
+      "options_en": [
+        "Because a pie chart cannot represent more than 10 categories",
+        "Because the percentages must add up to exactly 100, which never happens with 12 brands",
+        "Because judging angles and areas is far less accurate than judging lengths: with many similar slices the reader cannot tell the ordering, while a bar chart makes it obvious",
+        "Because pie charts only accept time-based data"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La jerarquía de precisión perceptual de Cleveland y McGill sitúa la posición sobre una escala común (las barras) muy por encima del ángulo y el área (los sectores): la gente ordena bien barras que difieren un 2 %, y no ordena sectores que difieren lo mismo. No hay límite técnico de categorías ni restricción a datos temporales; el problema es de lectura, no de la herramienta. Con partes de un todo y pocas categorías muy dispares el sector todavía funciona, pero con 12 valores próximos la barra ordenada es siempre mejor.",
+      "explanation_en": "Cleveland and McGill's perceptual accuracy hierarchy ranks position on a common scale (bars) far above angle and area (pie slices): people correctly order bars differing by 2 %, and fail to order slices differing by the same amount. There is no technical category limit and no restriction to time data; the problem is reading, not the tool. For parts of a whole with a few sharply different categories a pie still works, but with 12 close values a sorted bar chart always wins.",
+      "source": "Cleveland & McGill, 'Graphical Perception', JASA 79 (1984); Wilke, Fundamentals of Data Visualization, ch. 10",
+      "expected_time_ms": 30000,
+      "tags": ["visualization", "chart-choice", "perception"]
+    },
+    {
+      "id": "q060204010",
+      "skill_id": "sk060204",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "El aspecto de un histograma puede cambiar de forma sustancial según la anchura de los intervalos (bins), hasta el punto de que una misma variable parezca unimodal con pocos bins y bimodal con más.",
+      "question_en": "A histogram's appearance can change substantially with the bin width, to the point that the same variable can look unimodal with few bins and bimodal with more.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. La anchura de los bins es un parámetro de suavizado, no un detalle estético: bins muy anchos promedian y esconden estructura (dos modas se funden en una), y bins muy estrechos convierten el ruido muestral en picos falsos. El valor por defecto de matplotlib son 10 bins, elegido por conveniencia y no por los datos, así que conviene probar varios valores o usar reglas como Freedman-Diaconis antes de afirmar que una distribución 'es' de una forma concreta. Es el mismo compromiso sesgo-varianza que aparece en estimación de densidad.",
+      "explanation_en": "True. Bin width is a smoothing parameter, not a cosmetic detail: very wide bins average structure away (two modes merge into one), and very narrow bins turn sampling noise into spurious peaks. Matplotlib's default is 10 bins, chosen for convenience rather than from the data, so it is worth trying several values or using rules such as Freedman-Diaconis before claiming a distribution 'is' a particular shape. It is the same bias-variance trade-off that appears in density estimation.",
+      "source": "Bishop, Pattern Recognition and Machine Learning, section 2.5.1 (histogram density estimation); Matplotlib API - matplotlib.pyplot.hist",
+      "expected_time_ms": 30000,
+      "tags": ["visualization", "histogram", "binning"]
+    },
+    {
+      "id": "q060204011",
+      "skill_id": "sk060204",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "En matplotlib, `fig, ax = plt.subplots()` devuelve una figura y un segundo objeto que representa la región de dibujo concreta sobre la que se trazan los datos y viven los ejes X e Y. ¿Cómo se llama la clase de ese segundo objeto?",
+      "question_en": "In matplotlib, `fig, ax = plt.subplots()` returns a figure and a second object representing the actual drawing region where the data is plotted and the X and Y axes live. What is the class of that second object called?",
+      "correct_answer_es": "Axes",
+      "correct_answer_en": "Axes",
+      "explanation_es": "La clase es `Axes`, y es la unidad de gráfico individual: una Figure puede contener varios Axes, y casi todos los métodos de trazado (`ax.plot`, `ax.set_xlabel`) son suyos. La confusión clásica es con `Axis` (en singular, sin la 'e'), que es el eje X o el eje Y dentro de un Axes, no el gráfico entero. Distinguirlos es lo que permite pasar del estilo `plt.plot()` implícito, que dibuja sobre 'el Axes actual', a la API orientada a objetos, imprescindible en cuanto hay más de un subgráfico.",
+      "explanation_en": "The class is `Axes`, and it is the individual plot unit: a Figure can hold several Axes, and almost every plotting method (`ax.plot`, `ax.set_xlabel`) belongs to it. The classic confusion is with `Axis` (singular, no 'e'), which is the X or Y axis inside an Axes, not the whole plot. Telling them apart is what lets you move from the implicit `plt.plot()` style, which draws on 'the current Axes', to the object-oriented API that becomes essential as soon as there is more than one subplot.",
+      "source": "Matplotlib documentation - Quick start guide (parts of a Figure); matplotlib.axes.Axes API reference",
+      "expected_time_ms": 25000,
+      "tags": ["visualization", "matplotlib", "api"]
+    },
+    {
+      "id": "q060204012",
+      "skill_id": "sk060204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Representas la población de 200 municipios, entre 300 y 3 000 000 de habitantes. En escala lineal casi todos los puntos se amontonan junto al origen. ¿Cuál es la solución habitual?",
+      "question_en": "You plot the population of 200 municipalities, ranging from 300 to 3,000,000 inhabitants. On a linear scale nearly all points pile up near the origin. What is the usual fix?",
+      "options_es": [
+        "Eliminar las ciudades grandes por ser valores atípicos, para que el resto se vea bien",
+        "Usar escala logarítmica en ese eje, que reparte el espacio por órdenes de magnitud y separa los valores pequeños",
+        "Aumentar el tamaño de la figura hasta que los puntos dejen de solaparse",
+        "Cambiar el gráfico de dispersión por un gráfico de sectores"
+      ],
+      "options_en": [
+        "Remove the large cities as outliers, so the rest is visible",
+        "Use a logarithmic scale on that axis, which allocates space by orders of magnitude and separates the small values",
+        "Enlarge the figure until the points stop overlapping",
+        "Replace the scatter plot with a pie chart"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cuando los datos abarcan cuatro órdenes de magnitud, la escala lineal dedica casi todo el espacio al rango superior y comprime el resto contra el eje. La escala logarítmica (`ax.set_xscale('log')`) da el mismo espacio a cada factor de diez, de modo que la diferencia entre 300 y 3000 se ve igual de bien que entre 300 000 y 3 000 000. Borrar las ciudades grandes es la tentación fácil y falsea el análisis: no son errores, son el rango real del fenómeno. Agrandar la figura no cambia nada, porque el problema es la escala, no los píxeles. Eso sí, hay que etiquetar el eje con claridad: un eje logarítmico sin señalar se malinterpreta como lineal.",
+      "explanation_en": "When data spans four orders of magnitude, a linear scale gives nearly all the space to the top of the range and squashes the rest against the axis. A log scale (`ax.set_xscale('log')`) gives equal space to each factor of ten, so the difference between 300 and 3,000 reads as clearly as the one between 300,000 and 3,000,000. Deleting the big cities is the easy temptation and falsifies the analysis: they are not errors, they are the real range of the phenomenon. Enlarging the figure changes nothing, because the problem is the scale, not the pixels. Do label the axis clearly, though: an unmarked log axis gets misread as linear.",
+      "source": "Wilke, Fundamentals of Data Visualization, ch. 3 (coordinate systems and axes); Matplotlib documentation - Scales",
+      "expected_time_ms": 35000,
+      "tags": ["visualization", "log-scale", "axes"]
+    },
+    {
+      "id": "q060204013",
+      "skill_id": "sk060204",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime `fig, axes = plt.subplots(2, 3); print(axes.shape)`?",
+      "question_en": "What does `fig, axes = plt.subplots(2, 3); print(axes.shape)` print?",
+      "options_es": [
+        "(6,)",
+        "(3, 2)",
+        "(2, 3)",
+        "(1, 6)"
+      ],
+      "options_en": [
+        "(6,)",
+        "(3, 2)",
+        "(2, 3)",
+        "(1, 6)"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`plt.subplots(nrows, ncols)` devuelve un ndarray de objetos Axes con forma (filas, columnas), aquí (2, 3), y se accede a cada uno como `axes[0, 1]`. La opción (3, 2) es el error de invertir el orden de los argumentos, que es fácil porque al hablar decimos 'una rejilla de 3 por 2'. La opción (6,) es lo que obtienes tras `axes.ravel()`, un patrón muy usado para recorrer los subgráficos en un solo bucle. Detalle aparte: con `plt.subplots()` sin argumentos el retorno es un único Axes, no un array, y entonces `axes.shape` da AttributeError.",
+      "explanation_en": "`plt.subplots(nrows, ncols)` returns an ndarray of Axes objects with shape (rows, columns), here (2, 3), each reachable as `axes[0, 1]`. The (3, 2) option is the argument-order mistake, an easy one because in speech we say 'a 3 by 2 grid'. The (6,) option is what you get after `axes.ravel()`, a common pattern for walking the subplots in a single loop. Separate detail: `plt.subplots()` with no arguments returns a single Axes rather than an array, and then `axes.shape` raises AttributeError.",
+      "source": "Matplotlib API reference - matplotlib.pyplot.subplots",
+      "expected_time_ms": 30000,
+      "tags": ["visualization", "matplotlib", "subplots"]
+    },
+    {
+      "id": "q060204014",
+      "skill_id": "sk060204",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Vas a colorear un mapa de calor de una variable continua que va de 0 a 100. ¿Por qué se desaconseja el mapa de color 'jet' (arcoíris) frente a uno secuencial como 'viridis'?",
+      "question_en": "You are about to colour a heatmap of a continuous variable ranging from 0 to 100. Why is the 'jet' (rainbow) colormap discouraged in favour of a sequential one such as 'viridis'?",
+      "options_es": [
+        "Porque 'jet' tiene menos colores disponibles y no puede representar 100 valores distintos",
+        "Porque 'jet' no es perceptualmente uniforme: crea bordes y bandas falsas donde el dato cambia de forma suave, no tiene un orden claro de claro a oscuro y se vuelve ilegible en escala de grises o para daltónicos",
+        "Porque 'jet' solo funciona con datos categóricos",
+        "Porque 'viridis' se calcula más rápido al renderizar"
+      ],
+      "options_en": [
+        "Because 'jet' has fewer available colours and cannot represent 100 distinct values",
+        "Because 'jet' is not perceptually uniform: it creates false edges and banding where the data changes smoothly, has no clear light-to-dark ordering, and becomes unreadable in greyscale or for colourblind readers",
+        "Because 'jet' only works with categorical data",
+        "Because 'viridis' renders faster"
+      ],
+      "correct_index": 1,
+      "explanation_es": "En 'jet' la luminancia sube y baja de forma irregular a lo largo de la escala: hay saltos bruscos de luminosidad entre cian y amarillo que el ojo lee como fronteras en los datos, y tramos largos donde cambios reales apenas se ven. El lector acaba viendo estructura que no existe y perdiendo la que sí. 'viridis' se diseñó con luminancia monótona creciente, por lo que conserva el orden en escala de grises y es legible con deuteranopía. No es cuestión de número de colores ni de velocidad: es cómo percibe el ojo humano la escala. Para datos con un punto medio con significado (correlaciones, diferencias respecto a cero) el mapa adecuado es divergente, tipo 'coolwarm'.",
+      "explanation_en": "In 'jet' the luminance rises and falls irregularly across the scale: there are abrupt brightness jumps between cyan and yellow that the eye reads as boundaries in the data, and long stretches where real changes are barely visible. The reader ends up seeing structure that is not there and missing structure that is. 'viridis' was designed with monotonically increasing luminance, so it keeps its ordering in greyscale and stays readable under deuteranopia. It is not about colour count or speed: it is about how the human eye perceives the scale. For data with a meaningful midpoint (correlations, differences from zero) the right choice is a diverging map such as 'coolwarm'.",
+      "source": "Matplotlib documentation - Choosing colormaps in Matplotlib; Wilke, Fundamentals of Data Visualization, ch. 4 (colour scales)",
+      "expected_time_ms": 40000,
+      "tags": ["visualization", "colormap", "perception"]
+    },
+    {
+      "id": "q060204015",
+      "skill_id": "sk060204",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Distinguir seis series de un gráfico de líneas únicamente por el color es aceptable siempre que los colores elegidos sean vivos y muy saturados.",
+      "question_en": "Distinguishing six series in a line chart by colour alone is acceptable as long as the chosen colours are bright and highly saturated.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. Cerca del 8 % de los hombres tiene alguna deficiencia en la visión del color, y el par rojo-verde, el más usado para contrastar, es justo el que se pierde; además el gráfico puede acabar impreso en blanco y negro o proyectado con poco contraste. La saturación no resuelve nada: dos colores vivos pueden tener la misma luminancia y volverse indistinguibles en cuanto desaparece el tono. La regla es redundar la codificación: añadir tipo de línea o marcador, etiquetar las series directamente junto a la línea en vez de en una leyenda, o usar paletas seguras para daltónicos como las de ColorBrewer o 'tab10'. Con seis series, etiquetar directamente suele ser además más legible para todo el mundo.",
+      "explanation_en": "False. Around 8 % of men have some colour vision deficiency, and the red-green pair, the one most used for contrast, is exactly the one that disappears; the chart may also end up printed in black and white or projected at low contrast. Saturation solves nothing: two bright colours can share the same luminance and become indistinguishable once hue is gone. The rule is to make the encoding redundant: add line style or markers, label the series directly next to the line instead of in a legend, or use colourblind-safe palettes such as ColorBrewer's or 'tab10'. With six series, direct labelling also tends to read better for everyone.",
+      "source": "Wilke, Fundamentals of Data Visualization, ch. 19 (common pitfalls of colour use); Matplotlib documentation - Choosing colormaps",
+      "expected_time_ms": 35000,
+      "tags": ["visualization", "accessibility", "colour"]
+    }
+  ]
+}

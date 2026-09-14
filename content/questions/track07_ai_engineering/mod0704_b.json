@@ -1,0 +1,719 @@
+{
+  "questions": [
+    {
+      "id": "q070401009",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Un equipo registra cada entrenamiento con mlflow.log_param, mlflow.log_metric y mlflow.log_artifact. Afirman que ya tienen un Model Registry. ¿Por qué no es así?",
+      "question_en": "A team logs every training run with mlflow.log_param, mlflow.log_metric and mlflow.log_artifact. They claim they already have a Model Registry. Why don't they?",
+      "options_es": [
+        "Porque el tracking guarda el histórico de ejecuciones (parámetros, métricas, artefactos) pero no da al modelo un nombre estable, un número de versión ni una etapa del ciclo de vida; el registry añade esa capa de promoción y gobierno sobre los artefactos ya registrados",
+        "Porque mlflow.log_artifact no puede guardar los pesos de un modelo, solo gráficos y ficheros de texto",
+        "Porque el tracking solo funciona con almacenamiento local y el registry exige una base de datos en la nube",
+        "Porque el registry sustituye al tracking: al activarlo, las ejecuciones antiguas dejan de consultarse"
+      ],
+      "options_en": [
+        "Because tracking stores the history of runs (params, metrics, artifacts) but gives the model no stable name, version number or lifecycle stage; the registry adds that promotion and governance layer on top of the artifacts already logged",
+        "Because mlflow.log_artifact cannot store model weights, only plots and text files",
+        "Because tracking only works with local storage and the registry requires a cloud database",
+        "Because the registry replaces tracking: once enabled, old runs are no longer queryable"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Tracking y registry resuelven problemas distintos y confundirlos es habitual. El tracking responde a '¿qué probé y qué salió?': es un diario de experimentos. El registry responde a '¿qué modelo está en producción, quién lo aprobó y cuál era el anterior?': nombre, versiones incrementales y etapas. La opción del almacenamiento tienta porque el registry sí necesita un backend store para las versiones, pero el tracking también puede usarlo; no es la diferencia conceptual. La idea de que el registry sustituye al tracking es falsa: cada versión del registry apunta a la ejecución que la produjo, que es justamente lo que da trazabilidad.",
+      "explanation_en": "Tracking and the registry solve different problems, and conflating them is common. Tracking answers 'what did I try and what came out?': it is an experiment journal. The registry answers 'which model is in production, who approved it, and what was the previous one?': name, incrementing versions and stages. The storage option is tempting because the registry does need a backend store for versions, but tracking can use one too; that isn't the conceptual difference. The idea that the registry replaces tracking is wrong: each registry version points back to the run that produced it, which is exactly what gives you traceability.",
+      "source": "MLflow documentation - Tracking and Model Registry",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "versioning", "mlflow", "model-registry"]
+    },
+    {
+      "id": "q070401010",
+      "skill_id": "sk070401",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "Dentro del directorio de un modelo guardado por MLflow hay un fichero de metadatos sin extensión que declara los 'flavors' del modelo y su entorno, y que permite cargarlo sin saber de antemano con qué librería se entrenó. ¿Cómo se llama ese fichero? (una palabra)",
+      "question_en": "Inside a model directory saved by MLflow there is an extensionless metadata file that declares the model's 'flavors' and its environment, and that lets you load it without knowing beforehand which library trained it. What is that file called? (one word)",
+      "correct_answer_es": "MLmodel",
+      "correct_answer_en": "MLmodel",
+      "explanation_es": "El fichero MLmodel es lo que convierte una carpeta de pesos en un modelo portable: enumera los flavors (por ejemplo python_function además de sklearn o pytorch), la firma de entradas y salidas y el entorno de dependencias. Es fácil confundirlo con conda.yaml o requirements.txt, que están en la misma carpeta pero solo describen el entorno, o con MLproject, que describe cómo ejecutar un proyecto de entrenamiento, no cómo cargar un modelo entrenado.",
+      "explanation_en": "The MLmodel file is what turns a folder of weights into a portable model: it lists the flavors (for example python_function alongside sklearn or pytorch), the input/output signature and the dependency environment. It is easy to confuse with conda.yaml or requirements.txt, which sit in the same folder but only describe the environment, or with MLproject, which describes how to run a training project, not how to load a trained model.",
+      "source": "MLflow documentation - MLmodel file and model flavors",
+      "expected_time_ms": 32000,
+      "tags": ["mlops", "versioning", "mlflow", "packaging"]
+    },
+    {
+      "id": "q070401011",
+      "skill_id": "sk070401",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Si el pipeline lee siempre del mismo prefijo de S3, etiquetar el commit de Git del script de entrenamiento basta para saber con qué datos exactos se entrenó un modelo.",
+      "question_en": "If the pipeline always reads from the same S3 prefix, tagging the Git commit of the training script is enough to know exactly which data a model was trained on.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "La ruta es una referencia mutable: el mismo prefijo contiene contenidos distintos según el día, porque llegan ficheros nuevos, se corrigen registros o se ejecuta un backfill. El commit fija el código y la ruta, pero no los bytes. Lo que identifica los datos es una referencia inmutable al contenido: un hash, un snapshot, o el id de commit de la tabla en un formato con versiones. Esta confusión es especialmente traicionera porque el pipeline sigue funcionando: nadie ve un error, simplemente el modelo deja de ser reproducible.",
+      "explanation_en": "A path is a mutable reference: the same prefix holds different contents on different days, because new files land, records get corrected, or a backfill runs. The commit pins the code and the path, but not the bytes. What identifies the data is an immutable reference to the content: a hash, a snapshot, or the table commit id in a versioned format. This confusion is especially treacherous because the pipeline keeps working: nobody sees an error, the model simply stops being reproducible.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - data engineering and reproducibility",
+      "expected_time_ms": 26000,
+      "tags": ["mlops", "versioning", "data-lineage"]
+    },
+    {
+      "id": "q070401012",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un pipeline de entrenamiento lee su dataset de un data lake que recibe escrituras continuas. ¿Cuál es la forma correcta de versionar ese dataset?",
+      "question_en": "A training pipeline reads its dataset from a data lake that receives continuous writes. What is the correct way to version that dataset?",
+      "options_es": [
+        "Guardar en la configuración del pipeline la ruta del prefijo: el data lake ya conserva todo el histórico",
+        "Registrar una referencia inmutable al contenido exacto usado (hash del contenido, id de snapshot o commit de la tabla), de modo que esa referencia devuelva siempre los mismos bytes",
+        "Guardar la fecha del entrenamiento y reconstruir el dataset con una consulta filtrada por ese rango de fechas cuando haga falta",
+        "Copiar el dataset al repositorio Git antes de cada entrenamiento para que quede junto al código"
+      ],
+      "options_en": [
+        "Store the prefix path in the pipeline config: the data lake already keeps the full history",
+        "Record an immutable reference to the exact content used (content hash, snapshot id, or table commit), so that reference always returns the same bytes",
+        "Store the training date and rebuild the dataset with a query filtered on that date range when needed",
+        "Copy the dataset into the Git repository before each training run so it sits next to the code"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Reconstruir por rango de fechas es la trampa más cara, porque parece rigurosa: falla en cuanto hay eventos que llegan tarde, correcciones retroactivas o un backfill, y entonces la misma consulta con las mismas fechas devuelve un dataset distinto meses después. Guardar solo la ruta no versiona nada. Copiar el dataset a Git rompe el repositorio: Git guarda cada versión completa de los binarios y clonarlo se vuelve inviable. Solo una referencia por contenido garantiza los mismos bytes.",
+      "explanation_en": "Rebuilding by date range is the most expensive trap, because it looks rigorous: it breaks as soon as there are late-arriving events, retroactive corrections, or a backfill, and then the same query with the same dates returns a different dataset months later. Storing only the path versions nothing. Copying the dataset into Git wrecks the repo: Git stores every full version of the binaries and cloning becomes unusable. Only a content-addressed reference guarantees the same bytes.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - data versioning",
+      "expected_time_ms": 36000,
+      "tags": ["mlops", "versioning", "data-lake", "reproducibility"]
+    },
+    {
+      "id": "q070401013",
+      "skill_id": "sk070401",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un equipo identifica cada versión de su dataset por el hash del contenido. ¿Qué imprime este fragmento?\n\n```python\nimport hashlib\n\nfilas = [b\"id,2\\n\", b\"id,1\\n\"]\na = hashlib.sha256(b\"\".join(filas)).hexdigest()\nb = hashlib.sha256(b\"\".join(sorted(filas))).hexdigest()\nprint(a == b)\n```",
+      "question_en": "A team identifies each version of its dataset by the hash of its content. What does this snippet print?\n\n```python\nimport hashlib\n\nrows = [b\"id,2\\n\", b\"id,1\\n\"]\na = hashlib.sha256(b\"\".join(rows)).hexdigest()\nb = hashlib.sha256(b\"\".join(sorted(rows))).hexdigest()\nprint(a == b)\n```",
+      "options_es": [
+        "False",
+        "True",
+        "Un TypeError, porque sha256 no acepta bytes concatenados",
+        "Depende de PYTHONHASHSEED: en la misma ejecución los dos hashes coinciden"
+      ],
+      "options_en": [
+        "False",
+        "True",
+        "A TypeError, because sha256 does not accept concatenated bytes",
+        "It depends on PYTHONHASHSEED: within the same run both hashes match"
+      ],
+      "correct_index": 0,
+      "explanation_es": "SHA-256 hashea una secuencia de bytes, no un conjunto de filas: cambiar el orden cambia los bytes y por tanto el digest. Esto tiene una consecuencia práctica en versionado de datos: si el paso de exportación no ordena de forma determinista, cada ejecución produce un 'dataset nuevo' aunque los datos sean idénticos, y la caché del pipeline nunca acierta. La opción de PYTHONHASHSEED mezcla dos cosas distintas: la aleatorización afecta a hash() de Python para str/bytes en memoria, nunca a hashlib, que es criptográfico y determinista entre procesos y máquinas.",
+      "explanation_en": "SHA-256 hashes a byte sequence, not a set of rows: changing the order changes the bytes and therefore the digest. This has a practical consequence for data versioning: if the export step does not sort deterministically, every run produces a 'new dataset' even when the data is identical, and the pipeline cache never hits. The PYTHONHASHSEED option mixes up two different things: randomization affects Python's built-in hash() for in-memory str/bytes, never hashlib, which is cryptographic and deterministic across processes and machines.",
+      "source": "DVC documentation - how DVC tracks data (content-addressable storage)",
+      "expected_time_ms": 38000,
+      "tags": ["mlops", "versioning", "hashing", "determinism"]
+    },
+    {
+      "id": "q070401014",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un modelo en producción da predicciones sesgadas para una región concreta. Para responder a la pregunta 'qué filas exactas entrenaron esta versión del modelo', ¿qué necesitas tener registrado?",
+      "question_en": "A model in production gives biased predictions for one specific region. To answer the question 'which exact rows trained this model version', what do you need to have recorded?",
+      "options_es": [
+        "El model registry, que guarda la versión del modelo y su etapa de ciclo de vida",
+        "El digest de la imagen de contenedor con la que se sirvió esa versión del modelo",
+        "El linaje: la versión del modelo enlazada con la versión exacta del dataset y con las transformaciones y filtros que lo produjeron",
+        "El git log del repositorio de entrenamiento filtrado por la fecha del despliegue"
+      ],
+      "options_en": [
+        "The model registry, which stores the model version and its lifecycle stage",
+        "The digest of the container image that served that model version",
+        "Lineage: the model version linked to the exact dataset version and to the transformations and filters that produced it",
+        "The git log of the training repo filtered by the deployment date"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El registry tienta porque es donde vive la versión, pero responde 'qué modelo' y no 'de dónde salió'; sin linaje, la versión 7 es un binario sin procedencia. El digest del contenedor fija el entorno de servicio, no los datos. El git log da el código, y el sesgo regional casi nunca está en el código: está en el filtro que descartó filas con un campo nulo, o en la ventana temporal que excluyó esa región. El linaje es lo único que conecta modelo, dataset y transformaciones, y es lo que una auditoría exige.",
+      "explanation_en": "The registry is tempting because it is where the version lives, but it answers 'which model', not 'where did it come from'; without lineage, version 7 is a binary with no provenance. The container digest pins the serving environment, not the data. The git log gives you the code, and regional bias almost never lives in the code: it lives in the filter that dropped rows with a null field, or in the time window that excluded that region. Lineage is the only thing that connects model, dataset and transformations, and it is what an audit demands.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - data lineage and model governance",
+      "expected_time_ms": 40000,
+      "tags": ["mlops", "versioning", "lineage", "audit"]
+    },
+    {
+      "id": "q070401015",
+      "skill_id": "sk070401",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Ejecutas `dvc add datos.csv` y DVC crea un fichero `datos.csv.dvc` que sí se commitea a Git. ¿Qué contiene ese fichero?",
+      "question_en": "You run `dvc add data.csv` and DVC creates a `data.csv.dvc` file that does get committed to Git. What does that file contain?",
+      "options_es": [
+        "Una copia comprimida del dataset, pequeña porque DVC deduplica",
+        "El dataset troceado en fragmentos binarios que Git recompone al hacer checkout",
+        "Un diff línea a línea frente a la versión anterior del dataset",
+        "Unas pocas líneas de texto con el hash del contenido, el tamaño y la ruta; los datos reales viven fuera de Git, en la caché de DVC y en el remoto"
+      ],
+      "options_en": [
+        "A compressed copy of the dataset, small because DVC deduplicates",
+        "The dataset split into binary chunks that Git reassembles on checkout",
+        "A line-by-line diff against the previous version of the dataset",
+        "A few lines of text with the content hash, the size and the path; the real data lives outside Git, in the DVC cache and remote"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La idea clave de DVC es el puntero: Git versiona un fichero de texto diminuto y el binario grande vive en un almacenamiento aparte. Las opciones de la copia comprimida y de los fragmentos son la intuición equivocada de que 'DVC mete los datos en Git de forma lista', que es justo lo que evita. El diff línea a línea describe cómo funciona Git con texto, pero DVC trata el dataset como contenido opaco direccionado por hash: no calcula diferencias, referencia versiones enteras.",
+      "explanation_en": "DVC's key idea is the pointer: Git versions a tiny text file and the large binary lives in separate storage. The compressed-copy and chunked options are the wrong intuition that 'DVC puts the data into Git cleverly', which is exactly what it avoids. The line-by-line diff describes how Git works with text, but DVC treats the dataset as opaque content addressed by hash: it computes no diffs, it references whole versions.",
+      "source": "DVC documentation - dvc add and .dvc metafiles",
+      "expected_time_ms": 24000,
+      "tags": ["mlops", "versioning", "dvc", "git"]
+    },
+
+    {
+      "id": "q070402008",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Un pipeline de entrenamiento tarda 6 horas y el 80% del tiempo es preprocesado. El equipo quiere probar 10 configuraciones de hiperparámetros esta semana. ¿Qué propiedad del pipeline hace que eso sea barato?",
+      "question_en": "A training pipeline takes 6 hours and 80% of the time is preprocessing. The team wants to try 10 hyperparameter configurations this week. Which property of the pipeline makes that cheap?",
+      "options_es": [
+        "Que cada paso esté cacheado por sus entradas (datos y parámetros), de modo que el preprocesado se reutiliza intacto y solo se reejecuta el paso de entrenamiento",
+        "Que el pipeline se ejecute en una máquina con más GPUs, para que las 6 horas bajen proporcionalmente",
+        "Que el preprocesado se haga dentro del mismo script de entrenamiento, evitando la sobrecarga de escribir y leer resultados intermedios",
+        "Que todo el pipeline se lance como un único job, para que el orquestador no lo divida y no pierda tiempo programando tareas"
+      ],
+      "options_en": [
+        "That each step is cached by its inputs (data and params), so preprocessing is reused untouched and only the training step re-runs",
+        "That the pipeline runs on a machine with more GPUs, so the 6 hours shrink proportionally",
+        "That preprocessing happens inside the training script itself, avoiding the overhead of writing and reading intermediate results",
+        "That the whole pipeline runs as a single job, so the orchestrator doesn't split it and waste time scheduling tasks"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El cacheo por entradas es la razón por la que se parte un pipeline en pasos con artefactos intermedios explícitos: si los datos y los parámetros del paso no cambian, su salida se reutiliza. Más GPUs no ayudan porque el cuello de botella es preprocesado, normalmente ligado a CPU y E/S. Fundir el preprocesado en el script de entrenamiento es la opción que más tienta a quien viene de notebooks, y es exactamente lo que hace pagar las 6 horas diez veces. Y un único job monolítico elimina la posibilidad de cachear o reintentar por pasos.",
+      "explanation_en": "Input-keyed caching is precisely why you split a pipeline into steps with explicit intermediate artifacts: if a step's data and params are unchanged, its output is reused. More GPUs don't help because the bottleneck is preprocessing, typically CPU- and I/O-bound. Folding preprocessing into the training script is the most tempting option for people coming from notebooks, and it is exactly what makes you pay the 6 hours ten times. And one monolithic job removes any chance of per-step caching or retries.",
+      "source": "Kubeflow Pipelines documentation - step caching and component artifacts",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "training-pipeline", "caching", "orchestration"]
+    },
+    {
+      "id": "q070402009",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En un pipeline, el paso de normalización se ajusta sobre el dataset completo y después se divide en entrenamiento y test. ¿Por qué esto infla las métricas offline?",
+      "question_en": "In a pipeline, the normalization step is fitted on the full dataset and only afterwards is the data split into train and test. Why does this inflate the offline metrics?",
+      "options_es": [
+        "Porque el escalador altera el número de filas que quedan en el conjunto de test",
+        "Porque la media y la desviación aprendidas incluyen información del test, así que el modelo se evalúa sobre datos que ya influyeron en su propio preprocesado: hay fuga de información",
+        "Porque scikit-learn no permite transformar datos que no vio durante fit y rellena los valores con la media global",
+        "Porque el test queda en una escala distinta de la de producción y el modelo aprende a compensar esa diferencia"
+      ],
+      "options_en": [
+        "Because the scaler changes how many rows end up in the test set",
+        "Because the learned mean and standard deviation include information from the test set, so the model is evaluated on data that already influenced its own preprocessing: that is leakage",
+        "Because scikit-learn refuses to transform data it did not see during fit and fills the values with the global mean",
+        "Because the test set ends up on a different scale from production and the model learns to compensate for that difference"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La fuga es sutil porque el escalador no ve las etiquetas: parece inofensivo. Pero la media y la desviación son estadísticos aprendidos, y si se calculan con el test, el test deja de ser datos no vistos. El efecto es un optimismo pequeño y sistemático que no se reproduce en producción, donde los estadísticos se fijaron en entrenamiento. La opción del escalado distinto en producción describe un problema real —training-serving skew— pero distinto: ese aparece al servir, no al evaluar. Nada de esto cambia el número de filas ni provoca un error de scikit-learn: por eso pasa desapercibido.",
+      "explanation_en": "The leak is subtle because the scaler never sees labels: it looks harmless. But mean and standard deviation are learned statistics, and if they are computed with the test data, the test set is no longer unseen. The effect is a small, systematic optimism that does not reproduce in production, where the statistics were frozen at training time. The 'different scale in production' option describes a real problem - training-serving skew - but a different one: that shows up at serving, not at evaluation. None of this changes row counts or raises a scikit-learn error, which is why it goes unnoticed.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - data leakage",
+      "expected_time_ms": 36000,
+      "tags": ["mlops", "training-pipeline", "data-leakage", "evaluation"]
+    },
+    {
+      "id": "q070402010",
+      "skill_id": "sk070402",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué imprime este fragmento?\n\n```python\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\ntrain = np.array([[0.0], [10.0]])\ntest = np.array([[20.0]])\n\nsc = StandardScaler().fit(np.vstack([train, test]))\nprint(sc.mean_[0])\n```",
+      "question_en": "What does this snippet print?\n\n```python\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\ntrain = np.array([[0.0], [10.0]])\ntest = np.array([[20.0]])\n\nsc = StandardScaler().fit(np.vstack([train, test]))\nprint(sc.mean_[0])\n```",
+      "options_es": [
+        "5.0, la media del conjunto de entrenamiento",
+        "0.0, porque StandardScaler centra siempre la referencia en cero",
+        "10.0, la media de train y test juntos: el escalador ya vio el conjunto de test",
+        "20.0, porque fit toma el último bloque de datos recibido"
+      ],
+      "options_en": [
+        "5.0, the mean of the training set",
+        "0.0, because StandardScaler always centers the reference at zero",
+        "10.0, the mean of train and test together: the scaler has already seen the test set",
+        "20.0, because fit takes the last block of data it received"
+      ],
+      "correct_index": 2,
+      "explanation_es": "(0 + 10 + 20) / 3 = 10.0, y ahí está el fallo: el escalador se ajustó con el test dentro. La respuesta 5.0 es la que daría un pipeline correcto (fit solo sobre train), y por eso es el distractor que más se elige: es lo que el autor del código *creía* estar haciendo. La opción del cero confunde el resultado de transform (los datos transformados tienen media cero) con el atributo mean_, que guarda la media de los datos originales usados en fit.",
+      "explanation_en": "(0 + 10 + 20) / 3 = 10.0, and that is the bug: the scaler was fitted with the test data included. The 5.0 answer is what a correct pipeline would give (fit on train only), which is why it is the most-chosen distractor: it is what the author of the code *thought* they were doing. The zero option confuses the output of transform (transformed data has mean zero) with the mean_ attribute, which stores the mean of the original data used in fit.",
+      "source": "scikit-learn documentation - StandardScaler and Pipeline (avoiding leakage in cross-validation)",
+      "expected_time_ms": 34000,
+      "tags": ["mlops", "training-pipeline", "sklearn", "data-leakage"]
+    },
+    {
+      "id": "q070402011",
+      "skill_id": "sk070402",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Adoptar un feature store elimina por completo el training-serving skew, porque entrenamiento y servicio leen las features del mismo almacén.",
+      "question_en": "Adopting a feature store completely eliminates training-serving skew, because training and serving read their features from the same store.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Un feature store reduce el skew, que no es poco, pero no lo elimina. Siguen abiertas tres grietas: la unión temporal del dataset de entrenamiento puede no ser point-in-time correcta y mezclar valores futuros; el almacén offline y el online pueden desincronizarse (frescura, retrasos de materialización), de modo que en producción se sirve un valor más viejo o más nuevo que el que vio el entrenamiento; y muchas implementaciones mantienen rutas de cálculo distintas para batch y para streaming, que es el skew clásico reintroducido por la puerta de atrás. La definición compartida ayuda; la disciplina de verificar paridad sigue siendo necesaria.",
+      "explanation_en": "A feature store reduces skew, which is worth a lot, but it does not eliminate it. Three cracks stay open: the temporal join that builds the training set may not be point-in-time correct and can mix in future values; the offline and online stores can drift apart (freshness, materialization lag), so production serves a staler or fresher value than training saw; and many implementations keep separate computation paths for batch and streaming, which is classic skew reintroduced through the back door. The shared definition helps; the discipline of verifying parity is still required.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - feature stores and training-serving skew",
+      "expected_time_ms": 28000,
+      "tags": ["mlops", "training-pipeline", "feature-store", "skew"]
+    },
+    {
+      "id": "q070402012",
+      "skill_id": "sk070402",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Al construir el dataset de entrenamiento a partir de logs de eventos hay que unir cada etiqueta con el valor que la feature tenía en el instante de la predicción, y no con su valor actual, para no filtrar el futuro. ¿Cómo se llama ese tipo de unión? (en inglés, tres palabras separadas por guiones más 'join')",
+      "question_en": "When building a training set from event logs you must join each label with the value the feature had at the moment of the prediction, not with its current value, so as not to leak the future. What is that kind of join called? (three hyphenated words plus 'join')",
+      "correct_answer_es": "point-in-time join",
+      "correct_answer_en": "point-in-time join",
+      "explanation_es": "Una unión ingenua por clave de entidad trae el valor más reciente de la feature, que en el momento de la predicción todavía no existía: el modelo entrena con información del futuro, la métrica offline es magnífica y en producción se desploma. La unión point-in-time (también llamada as-of join o time-travel join) filtra por marca temporal para devolver el último valor *anterior* al evento. Es el motivo principal por el que un feature store necesita almacenar el histórico de valores y no solo el estado actual.",
+      "explanation_en": "A naive join on the entity key pulls the most recent feature value, which did not yet exist at prediction time: the model trains on information from the future, the offline metric looks superb, and production collapses. The point-in-time join (also called as-of join or time-travel join) filters on timestamp to return the latest value *before* the event. It is the main reason a feature store must store the history of values and not just current state.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - point-in-time correctness in feature engineering",
+      "expected_time_ms": 40000,
+      "tags": ["mlops", "training-pipeline", "feature-store", "point-in-time"]
+    },
+    {
+      "id": "q070402013",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "El orquestador reintenta automáticamente un paso del pipeline que falló a mitad de escritura. ¿Qué propiedad debe cumplir ese paso para que el reintento no deje datos corruptos?",
+      "question_en": "The orchestrator automatically retries a pipeline step that failed halfway through writing. Which property must that step have so the retry doesn't leave corrupt data?",
+      "options_es": [
+        "Que escriba siempre en modo append, para no perder lo que ya había escrito antes del fallo",
+        "Que se ejecute siempre en la misma máquina, para que el reintento encuentre los ficheros temporales",
+        "Que sea idempotente: reejecutarlo con las mismas entradas deja el mismo estado final, típicamente escribiendo a una partición determinista que se sobrescribe por completo o publicando de forma atómica",
+        "Que tenga un timeout más largo que la duración media del paso, para que el reintento tenga margen"
+      ],
+      "options_en": [
+        "That it always writes in append mode, so nothing written before the failure is lost",
+        "That it always runs on the same machine, so the retry finds the temporary files",
+        "That it is idempotent: re-running it with the same inputs leaves the same final state, typically by writing to a deterministic partition that is fully overwritten, or by publishing atomically",
+        "That it has a timeout longer than the step's average duration, so the retry has room"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El append es exactamente el antipatrón: el reintento vuelve a escribir las filas que ya se habían escrito y el dataset queda con duplicados silenciosos que después se convierten en un modelo mal entrenado. Fijar la máquina no resuelve nada y rompe la elasticidad del orquestador. El timeout cambia cuándo falla, no en qué estado queda. La idempotencia es lo que permite que el reintento automático sea seguro, y por eso es la condición que dan por sentada los reintentos y los backfills de un orquestador.",
+      "explanation_en": "Append mode is precisely the antipattern: the retry rewrites rows that were already written and the dataset ends up with silent duplicates, which later become a badly trained model. Pinning the machine solves nothing and breaks the orchestrator's elasticity. The timeout changes when it fails, not the state it leaves behind. Idempotency is what makes automatic retries safe, which is why it is the condition an orchestrator's retries and backfills quietly assume.",
+      "source": "Apache Airflow documentation - task retries, idempotency and backfills",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "training-pipeline", "idempotency", "airflow"]
+    },
+    {
+      "id": "q070402014",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Cuál es el disparador más defendible para el reentrenamiento continuo de un modelo en producción?",
+      "question_en": "What is the most defensible trigger for continuous retraining of a model in production?",
+      "options_es": [
+        "Un cron fijo semanal y nada más, porque hace el sistema predecible y auditable",
+        "Cada vez que llegan datos nuevos al lago, para que el modelo use siempre lo más reciente",
+        "Cada vez que el equipo publica una versión nueva del código de entrenamiento",
+        "Una condición medida —caída de la métrica de negocio o de su proxy, o drift sostenido por encima de un umbral— con un cron periódico como red de seguridad"
+      ],
+      "options_en": [
+        "A fixed weekly cron and nothing else, because it makes the system predictable and auditable",
+        "Every time new data lands in the lake, so the model always uses the freshest data",
+        "Every time the team ships a new version of the training code",
+        "A measured condition - a drop in the business metric or its proxy, or sustained drift above a threshold - with a periodic cron as a safety net"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El cron a secas es la opción más popular y la más ciega: reentrena cuando no hace falta y no reentrena cuando el mundo cambia un martes. Reentrenar con cada llegada de datos suena a 'siempre fresco', pero multiplica el coste, añade una versión nueva sin evidencia de mejora y convierte cada rotura del pipeline de datos en un modelo roto. Disparar por commit mezcla CI de código con reentrenamiento: el código nuevo hay que probarlo, pero no es señal de que el modelo esté degradado. La respuesta correcta combina la señal (medida) con el cron como red de seguridad, porque las señales también fallan.",
+      "explanation_en": "A bare cron is the most popular option and the blindest: it retrains when nothing needs it and stays quiet when the world shifts on a Tuesday. Retraining on every data arrival sounds like 'always fresh', but it multiplies cost, ships a new version with no evidence of improvement, and turns every data-pipeline breakage into a broken model. Triggering on commit conflates code CI with retraining: new code must be tested, but it is not evidence that the model degraded. The right answer pairs the measured signal with a cron safety net, because signals fail too.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - when to retrain a model / continuous training",
+      "expected_time_ms": 40000,
+      "tags": ["mlops", "training-pipeline", "continuous-training", "retraining"]
+    },
+    {
+      "id": "q070402015",
+      "skill_id": "sk070402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "El mismo pipeline, con el mismo commit y el mismo dataset versionado, produce modelos con métricas distintas en dos ejecuciones separadas por un mes. ¿Qué investigas primero?",
+      "question_en": "The same pipeline, with the same commit and the same versioned dataset, produces models with different metrics in two runs a month apart. What do you investigate first?",
+      "options_es": [
+        "El orquestador ejecutó los pasos en otro orden, porque un DAG no garantiza el orden de ejecución",
+        "El dataset se leyó desde la caché del pipeline, que devuelve una copia obsoleta",
+        "MLflow sobrescribió las métricas de la ejecución anterior al reutilizar el nombre del experimento",
+        "El entorno no está fijado: imagen del contenedor por etiqueta móvil o dependencias sin pin, y/o la semilla aleatoria no se fija, así que cambian versiones de librería e inicialización"
+      ],
+      "options_en": [
+        "The orchestrator ran the steps in a different order, because a DAG does not guarantee execution order",
+        "The dataset was read from the pipeline cache, which returns a stale copy",
+        "MLflow overwrote the previous run's metrics by reusing the experiment name",
+        "The environment is not pinned: container image on a moving tag or unpinned dependencies, and/or the random seed is not fixed, so library versions and initialization change"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Código y datos son solo dos de las cuatro patas de la reproducibilidad; faltan el entorno y la aleatoriedad. Una etiqueta como :latest o un requirements sin pin hacen que un mes después se entrene con otra versión de la librería, con otro valor por defecto o otro algoritmo interno. El orden del DAG no es el problema: precisamente el DAG sí garantiza el orden de las dependencias. La caché devuelve resultados por hash de entradas, no copias obsoletas arbitrarias. Y MLflow crea una ejecución nueva por cada run; reutilizar el nombre del experimento no sobrescribe nada.",
+      "explanation_en": "Code and data are only two of the four legs of reproducibility; the environment and randomness are missing. A moving tag like :latest or an unpinned requirements file means that a month later you train against a different library version, with a different default or a different internal algorithm. DAG ordering is not the issue: a DAG is exactly what guarantees dependency order. The cache returns results keyed by input hash, not arbitrary stale copies. And MLflow creates a new run each time; reusing the experiment name overwrites nothing.",
+      "source": "MLflow documentation - reproducibility: logging the model environment (conda.yaml / requirements.txt)",
+      "expected_time_ms": 32000,
+      "tags": ["mlops", "training-pipeline", "reproducibility", "environment"]
+    },
+
+    {
+      "id": "q070403008",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Una versión nueva del modelo empieza a fallar 20 minutos después de recibir el 100% del tráfico. ¿Qué hace que la recuperación se mida en segundos y no en horas?",
+      "question_en": "A new model version starts failing 20 minutes after taking 100% of the traffic. What makes recovery a matter of seconds instead of hours?",
+      "options_es": [
+        "Que la versión anterior siga desplegada y calentada, de modo que revertir sea un cambio de enrutado y no una reconstrucción",
+        "Tener el checkpoint anterior guardado en el almacenamiento de objetos para volver a desplegarlo cuando haga falta",
+        "Haber guardado los logs de las predicciones fallidas para poder reproducir el fallo",
+        "Haber ejecutado un test A/B con significación estadística antes del despliegue"
+      ],
+      "options_en": [
+        "That the previous version is still deployed and warm, so rolling back is a routing change rather than a rebuild",
+        "Having the previous checkpoint stored in object storage so it can be redeployed when needed",
+        "Having logged the failing predictions so the failure can be reproduced",
+        "Having run a statistically significant A/B test before the rollout"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Guardar el checkpoint es el distractor fuerte porque suena a plan de rollback y mucha gente lo llama así: pero volver a desplegarlo implica arrancar réplicas, descargar la imagen y los pesos y calentar la caché, y eso son minutos u horas de incidente. Los logs sirven para el postmortem, no para recuperar el servicio. El test A/B previo reduce la probabilidad del fallo pero no acorta la recuperación cuando ocurre. La diferencia real es tener capacidad servible de la versión anterior y que revertir sea mover el tráfico.",
+      "explanation_en": "Storing the checkpoint is the strong distractor because it sounds like a rollback plan and many people call it one: but redeploying it means spinning up replicas, pulling the image and weights, and warming caches, which is minutes or hours of incident. Logs serve the postmortem, not service recovery. A prior A/B test lowers the probability of the failure but does not shorten recovery when it happens. The real difference is keeping servable capacity of the previous version so that rolling back is just moving traffic.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - model deployment and rollback",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "deployment", "rollback", "blue-green"]
+    },
+    {
+      "id": "q070403009",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En un servidor de inferencia con GPU se activa el batching dinámico con una ventana de espera de 50 ms. ¿Qué efecto tiene?",
+      "question_en": "On a GPU inference server, dynamic batching is enabled with a 50 ms wait window. What effect does it have?",
+      "options_es": [
+        "Reduce a la vez la latencia y el coste por petición, porque la GPU hace menos trabajo total",
+        "Aumenta el throughput (peticiones por segundo por GPU) a costa de añadir hasta 50 ms a la latencia de cada petición, lo que puede romper el SLA de p99",
+        "No cambia el throughput: solo agrupa las peticiones en los logs para facilitar el análisis",
+        "Mejora la calidad de las respuestas, porque el modelo dispone de más contexto al procesar varias peticiones juntas"
+      ],
+      "options_en": [
+        "It reduces latency and cost per request at the same time, because the GPU does less total work",
+        "It raises throughput (requests per second per GPU) at the cost of adding up to 50 ms to each request's latency, which can break the p99 SLA",
+        "It does not change throughput: it only groups requests in the logs to make analysis easier",
+        "It improves answer quality, because the model has more context when processing several requests together"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El batching explota el paralelismo de la GPU: agrupar peticiones sube mucho la utilización y baja el coste por petición, pero cada petición espera a que se llene el lote o expire la ventana. Por eso throughput y latencia se negocian y no se optimizan a la vez. La primera opción es el error clásico de leer 'más eficiente' como 'más rápido para el usuario'. La última confunde batching con contexto: las peticiones de un lote se procesan de forma independiente, no se ven entre sí.",
+      "explanation_en": "Batching exploits GPU parallelism: grouping requests greatly raises utilization and lowers cost per request, but every request waits for the batch to fill or the window to expire. That is why throughput and latency are traded off, not optimized together. The first option is the classic mistake of reading 'more efficient' as 'faster for the user'. The last confuses batching with context: requests in a batch are processed independently and cannot see each other.",
+      "source": "AI Engineering (Chip Huyen, 2025) - inference optimization: batching, latency and throughput",
+      "expected_time_ms": 36000,
+      "tags": ["mlops", "deployment", "inference", "latency"]
+    },
+    {
+      "id": "q070403010",
+      "skill_id": "sk070403",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Cuantizar un modelo a int8 antes de desplegarlo reduce memoria y latencia, pero puede cambiar sus predicciones, así que hay que volver a evaluarlo con el modelo cuantizado exacto que se va a servir.",
+      "question_en": "Quantizing a model to int8 before deployment reduces memory and latency, but it can change its predictions, so it must be re-evaluated using the exact quantized artifact that will be served.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "La cuantización es una optimización con pérdida: reducir la precisión numérica cambia los valores y, cerca de la frontera de decisión, cambia salidas. El error habitual es tratarla como un detalle de infraestructura y validar el modelo en float mientras se sirve el cuantizado, con lo que las métricas aprobadas no describen lo desplegado. La caída suele ser pequeña en agregado y concentrada en casos poco frecuentes, que son justo los que no aparecen en una media. La regla operativa es sencilla: se evalúa el artefacto que se sirve, no su antecesor.",
+      "explanation_en": "Quantization is a lossy optimization: reducing numeric precision changes values and, near the decision boundary, changes outputs. The common mistake is treating it as an infrastructure detail and validating the float model while serving the quantized one, so the approved metrics do not describe what is deployed. The drop is usually small in aggregate and concentrated in rare cases, which is exactly what an average hides. The operational rule is simple: evaluate the artifact you serve, not its ancestor.",
+      "source": "AI Engineering (Chip Huyen, 2025) - model compression and quantization",
+      "expected_time_ms": 26000,
+      "tags": ["mlops", "deployment", "quantization", "evaluation"]
+    },
+    {
+      "id": "q070403011",
+      "skill_id": "sk070403",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se llama la estrategia de despliegue en la que se levanta un entorno completo e idéntico con la versión nueva, se valida en él, y después se conmuta todo el tráfico de golpe, quedando el entorno antiguo intacto para revertir en segundos? (dos palabras unidas por guion, en inglés)",
+      "question_en": "What is the deployment strategy called where you stand up a complete, identical environment running the new version, validate it there, then switch all traffic at once, leaving the old environment intact so you can roll back in seconds? (two hyphenated words)",
+      "correct_answer_es": "blue-green",
+      "correct_answer_en": "blue-green",
+      "explanation_es": "En blue-green conviven dos entornos completos y la conmutación es del enrutado, lo que hace el rollback casi instantáneo. Se confunde a menudo con canary, donde el tráfico se desplaza de forma gradual (1%, 5%, 25%) y se observa cada escalón: canary limita el radio de impacto de un fallo, blue-green no lo limita pero acorta muchísimo la recuperación. La diferencia importa al elegir: si el fallo esperado es catastrófico e inmediato, blue-green basta; si es sutil y solo se ve con tráfico real, hace falta canary.",
+      "explanation_en": "In blue-green two complete environments coexist and the cutover is a routing switch, which makes rollback nearly instant. It is often confused with canary, where traffic shifts gradually (1%, 5%, 25%) and each step is observed: canary limits the blast radius of a failure, blue-green does not limit it but drastically shortens recovery. The difference matters when choosing: if the expected failure is catastrophic and immediate, blue-green suffices; if it is subtle and only visible under real traffic, you need canary.",
+      "source": "Google Cloud Architecture Center - Application deployment and testing strategies (blue/green, canary)",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "deployment", "blue-green", "rollout"]
+    },
+    {
+      "id": "q070403012",
+      "skill_id": "sk070403",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un servicio de inferencia usa este patrón para cargar los pesos. ¿Qué imprime el fragmento?\n\n```python\nimport functools\n\n@functools.lru_cache(maxsize=1)\ndef cargar_modelo():\n    print(\"cargando pesos\")\n    return \"modelo\"\n\nfor _ in range(3):\n    cargar_modelo()\n```",
+      "question_en": "An inference service uses this pattern to load its weights. What does the snippet print?\n\n```python\nimport functools\n\n@functools.lru_cache(maxsize=1)\ndef load_model():\n    print(\"loading weights\")\n    return \"model\"\n\nfor _ in range(3):\n    load_model()\n```",
+      "options_es": [
+        "\"cargando pesos\" tres veces, una por cada llamada",
+        "Nada, porque lru_cache captura la salida estándar de la función",
+        "\"cargando pesos\" dos veces: con maxsize=1 solo cabe una entrada y la primera se descarta",
+        "\"cargando pesos\" una sola vez: las llamadas siguientes devuelven el resultado cacheado sin ejecutar el cuerpo"
+      ],
+      "options_en": [
+        "\"loading weights\" three times, once per call",
+        "Nothing, because lru_cache captures the function's standard output",
+        "\"loading weights\" twice: with maxsize=1 only one entry fits and the first one is evicted",
+        "\"loading weights\" once: the following calls return the cached result without running the body"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La caché se indexa por argumentos y aquí no hay argumentos: existe una única clave, así que el cuerpo se ejecuta una vez y las otras dos llamadas devuelven el objeto guardado. Es el patrón que evita el error de despliegue más caro en servicios de inferencia: cargar los pesos dentro del handler de cada petición, que añade segundos de latencia y multiplica la memoria por worker. El distractor de maxsize=1 es una lectura razonable pero equivocada: el desalojo solo ocurre cuando entran claves distintas, y aquí la clave siempre es la misma.",
+      "explanation_en": "The cache is keyed by arguments and there are none here: there is a single key, so the body runs once and the other two calls return the stored object. This is the pattern that avoids the most expensive deployment mistake in inference services: loading the weights inside each request handler, which adds seconds of latency and multiplies memory per worker. The maxsize=1 distractor is a reasonable but wrong reading: eviction only happens when different keys arrive, and here the key is always the same.",
+      "source": "FastAPI documentation - lifespan events (loading a machine learning model at startup)",
+      "expected_time_ms": 34000,
+      "tags": ["mlops", "deployment", "serving", "python"]
+    },
+    {
+      "id": "q070403013",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un endpoint de inferencia con GPU se configura con escalado a cero para ahorrar coste en horas valle. ¿Cuál es el precio que se paga?",
+      "question_en": "A GPU inference endpoint is configured with scale-to-zero to save cost during quiet hours. What is the price you pay?",
+      "options_es": [
+        "El modelo pierde precisión cada vez que el proceso se reinicia y hay que recargar los pesos",
+        "Las métricas de monitorización se reinician en cada escalado y el histórico se pierde",
+        "La primera petición tras el escalado a cero paga el arranque en frío: provisionar la GPU, descargar la imagen y los pesos y cargarlos en memoria, lo que puede ser de decenas de segundos a minutos",
+        "El coste se duplica, porque el autoscaler mantiene siempre una réplica de reserva encendida"
+      ],
+      "options_en": [
+        "The model loses accuracy each time the process restarts and the weights are reloaded",
+        "Monitoring metrics reset on every scaling event and the history is lost",
+        "The first request after scaling to zero pays the cold start: provisioning the GPU, pulling the image and the weights and loading them into memory, which can take tens of seconds to minutes",
+        "Cost doubles, because the autoscaler always keeps one standby replica running"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El escalado a cero no es gratis: lo que se ahorra en GPU se paga en la latencia de la primera petición, y para modelos grandes el cuello no es arrancar el contenedor sino descargar y cargar decenas de gigabytes de pesos. Por eso conviene en cargas por lotes o internas y es peligroso en un endpoint de usuario con SLA. La opción de la precisión es un error conceptual común pero grave: recargar los mismos pesos es determinista. Y la opción del coste describe justamente lo contrario del escalado a cero, que por definición no deja réplicas encendidas.",
+      "explanation_en": "Scale-to-zero is not free: what you save on GPU you pay in the first request's latency, and for large models the bottleneck is not starting the container but pulling and loading tens of gigabytes of weights. That is why it fits batch or internal workloads and is dangerous on a user-facing endpoint with an SLA. The accuracy option is a common but serious conceptual error: reloading the same weights is deterministic. And the cost option describes the opposite of scale-to-zero, which by definition leaves no replica running.",
+      "source": "Hugging Face Inference Endpoints documentation - autoscaling and scale-to-zero cold starts",
+      "expected_time_ms": 34000,
+      "tags": ["mlops", "deployment", "autoscaling", "cold-start"]
+    },
+    {
+      "id": "q070403014",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un canary sirve el 5% del tráfico con el modelo nuevo. ¿Con qué criterio se decide promocionarlo al 100%?",
+      "question_en": "A canary serves 5% of traffic with the new model. On what basis do you decide to promote it to 100%?",
+      "options_es": [
+        "Con la métrica offline en el conjunto de test, que es la única comparable entre versiones",
+        "Con un conjunto de señales medidas en el propio canary —métricas de sistema (p99, tasa de error), distribución de las predicciones y la métrica de negocio— observadas durante una ventana con tráfico suficiente para tener potencia estadística",
+        "Cuando hayan pasado 24 horas sin ninguna alerta de infraestructura",
+        "Cuando el modelo nuevo gane en accuracy al antiguo sobre las peticiones del canary"
+      ],
+      "options_en": [
+        "On the offline metric over the test set, the only thing comparable across versions",
+        "On a set of signals measured in the canary itself - system metrics (p99, error rate), prediction distribution and the business metric - observed over a window with enough traffic for statistical power",
+        "When 24 hours have passed without a single infrastructure alert",
+        "When the new model beats the old one on accuracy over the canary's requests"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La métrica offline ya se usó para decidir el despliegue; el canary existe precisamente porque no predice el comportamiento real. Las 24 horas sin alertas confunden ausencia de caídas con evidencia: un modelo puede estar sano de infraestructura y empeorar la conversión. La opción de accuracy es la más tentadora y la que más gente elige: falla porque las etiquetas reales suelen llegar con retraso y porque el canary y el control no atienden las mismas peticiones, así que la comparación no es pareada. Promocionar exige varias capas de señal y una ventana con volumen suficiente.",
+      "explanation_en": "The offline metric was already used to decide the rollout; the canary exists precisely because it does not predict real behavior. Twenty-four hours without alerts confuses absence of outages with evidence: a model can be infrastructurally healthy and still hurt conversion. The accuracy option is the most tempting and the most frequently chosen: it fails because true labels usually arrive with delay, and because canary and control do not serve the same requests, so the comparison is not paired. Promotion requires several layers of signal and a window with enough volume.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - canary release and online evaluation",
+      "expected_time_ms": 42000,
+      "tags": ["mlops", "deployment", "canary", "online-evaluation"]
+    },
+    {
+      "id": "q070403015",
+      "skill_id": "sk070403",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "Hay que servir un clasificador de gradient boosting de 5 MB que recibe 200 peticiones por segundo con features tabulares. ¿Qué hardware de servicio es razonable?",
+      "question_en": "You need to serve a 5 MB gradient boosting classifier receiving 200 requests per second over tabular features. What serving hardware is reasonable?",
+      "options_es": [
+        "GPU siempre: cualquier modelo de machine learning se sirve más rápido en GPU",
+        "GPU con batching dinámico, porque 200 peticiones por segundo es carga alta",
+        "CPU: el modelo es pequeño y no hace álgebra matricial masiva, así que la GPU añadiría coste y transferencias entre host y dispositivo sin ganancia",
+        "TPU, porque están diseñadas específicamente para inferencia de baja latencia"
+      ],
+      "options_en": [
+        "GPU always: any machine learning model is served faster on a GPU",
+        "GPU with dynamic batching, because 200 requests per second is heavy load",
+        "CPU: the model is small and does no massive matrix algebra, so a GPU would add cost and host-to-device transfers with no gain",
+        "TPU, because they are designed specifically for low-latency inference"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La GPU gana cuando el cuello de botella es álgebra densa y paralelizable, como en redes profundas; un ensemble de árboles recorre estructuras condicionales y va bien en CPU. Con lotes pequeños, el tiempo de copiar datos a la GPU puede superar al del cálculo. La opción de 'GPU siempre' es el reflejo que más dinero quema en infraestructura de ML. Y las TPU son aceleradores para cargas tensoriales, principalmente redes neuronales: no aportan nada a un modelo de árboles.",
+      "explanation_en": "A GPU wins when the bottleneck is dense, parallelizable algebra, as in deep networks; a tree ensemble walks conditional structures and runs well on CPU. With small batches, the time to copy data to the GPU can exceed the compute itself. The 'GPU always' option is the reflex that burns the most money in ML infrastructure. And TPUs are accelerators for tensor workloads, mainly neural networks: they bring nothing to a tree-based model.",
+      "source": "AI Engineering (Chip Huyen, 2025) - inference hardware and cost",
+      "expected_time_ms": 26000,
+      "tags": ["mlops", "deployment", "hardware", "cost"]
+    },
+
+    {
+      "id": "q070404008",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Quieres alertar cuando la distribución de una feature numérica en producción se aleje de la que vio el modelo en entrenamiento. ¿Qué enfoque es adecuado?",
+      "question_en": "You want to alert when the distribution of a numeric feature in production drifts away from what the model saw during training. Which approach is appropriate?",
+      "options_es": [
+        "Comparar las distribuciones completas con un estadístico de dos muestras (KS, PSI, distancia de Wasserstein) sobre ventanas temporales y alertar por encima de un umbral calibrado con el histórico",
+        "Comparar la media de la feature en producción con la media de entrenamiento y alertar si difieren",
+        "Alertar cada vez que una petición individual trae un valor fuera del rango observado en entrenamiento",
+        "Reentrenar el modelo todas las noches: así el drift nunca llega a acumularse y no hace falta detectarlo"
+      ],
+      "options_en": [
+        "Compare full distributions with a two-sample statistic (KS, PSI, Wasserstein distance) over time windows and alert above a threshold calibrated on history",
+        "Compare the feature's mean in production with its mean in training and alert if they differ",
+        "Alert whenever a single request carries a value outside the range seen in training",
+        "Retrain the model every night: that way drift never accumulates and there is no need to detect it"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Vigilar solo la media es el atajo más extendido y deja pasar los casos que importan: una distribución que se parte en dos modos, o que duplica su varianza, puede mantener exactamente la misma media. Alertar por petición convierte los outliers normales en ruido constante y provoca fatiga de alertas hasta que alguien silencia el canal. Reentrenar cada noche no es detección: sin medir nunca sabes si el reentrenamiento ayudó, y si lo que cambió es un campo roto del pipeline, el reentreno propaga el error al modelo.",
+      "explanation_en": "Watching only the mean is the most widespread shortcut and misses the cases that matter: a distribution that splits into two modes, or doubles its variance, can keep exactly the same mean. Alerting per request turns ordinary outliers into constant noise and causes alert fatigue until someone mutes the channel. Retraining nightly is not detection: without measuring you never know whether retraining helped, and if what changed is a broken pipeline field, retraining propagates the error into the model.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - monitoring and detecting distribution shifts",
+      "expected_time_ms": 32000,
+      "tags": ["mlops", "monitoring", "drift-detection", "statistics"]
+    },
+    {
+      "id": "q070404009",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué distingue a un outlier de un fenómeno de drift, y por qué importa esa distinción a nivel operativo?",
+      "question_en": "What distinguishes an outlier from drift, and why does that distinction matter operationally?",
+      "options_es": [
+        "Son lo mismo con nombres distintos: ambos se resuelven reentrenando el modelo",
+        "El outlier es un error en la etiqueta y el drift es un error del modelo",
+        "El outlier es una petición individual atípica y se gestiona petición a petición (fallback, revisión humana, rechazo); el drift es un cambio sostenido de la distribución sobre muchas peticiones y se detecta y se responde a nivel de ventana temporal",
+        "El outlier afecta a la latencia del servicio y el drift afecta a la precisión del modelo"
+      ],
+      "options_en": [
+        "They are the same thing with different names: both are fixed by retraining",
+        "An outlier is a labeling error and drift is a model error",
+        "An outlier is a single atypical request, handled per request (fallback, human review, rejection); drift is a sustained change of the distribution across many requests, detected and handled at the level of a time window",
+        "An outlier affects service latency and drift affects model accuracy"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Confundirlos lleva a dos fallos simétricos y caros: tratar outliers como drift dispara alertas constantes y, en el peor caso, reentrenamientos innecesarios; tratar el drift como una sucesión de outliers hace que se ignore un cambio real porque 'cada caso, por separado, era raro pero explicable'. La opción de la etiqueta mezcla calidad de datos con distribución. Y la de la latencia es un falso amigo: un outlier puede ser lento de procesar, pero lo que lo define es la posición en la distribución de entrada, no el tiempo.",
+      "explanation_en": "Conflating them leads to two symmetric, expensive failures: treating outliers as drift fires constant alerts and, at worst, needless retraining; treating drift as a series of outliers means a real change is ignored because 'each case on its own was odd but explainable'. The labeling option mixes up data quality with distribution. And the latency one is a false friend: an outlier may be slow to process, but what defines it is its position in the input distribution, not its timing.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - monitoring: outliers versus distribution shift",
+      "expected_time_ms": 30000,
+      "tags": ["mlops", "monitoring", "outliers", "drift"]
+    },
+    {
+      "id": "q070404010",
+      "skill_id": "sk070404",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Todo data drift detectado en las features de entrada provoca necesariamente una caída del rendimiento del modelo.",
+      "question_en": "Any data drift detected in the input features necessarily causes a drop in the model's performance.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "El drift es una señal, no un diagnóstico. Una feature con poca importancia puede desplazarse mucho sin mover una predicción; y un desplazamiento incluso grande puede ocurrir en una zona del espacio donde la frontera de decisión no cambia, de modo que el modelo sigue acertando. Por eso un sistema de monitorización que solo alerta por drift genera falsos positivos y acaba ignorado: las alertas de drift deben correlacionarse con la métrica de rendimiento (o su proxy) antes de actuar. El error inverso también existe: el rendimiento puede caer sin drift detectable en las entradas, si lo que cambió es la relación entrada-objetivo.",
+      "explanation_en": "Drift is a signal, not a diagnosis. A low-importance feature can shift a lot without moving a single prediction; and even a large shift can happen in a region of the space where the decision boundary does not change, so the model stays right. That is why a monitoring system that alerts on drift alone produces false positives and ends up ignored: drift alerts must be correlated with the performance metric (or its proxy) before acting. The reverse error exists too: performance can fall with no detectable input drift, if what changed is the input-target relationship.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - types of distribution shift",
+      "expected_time_ms": 28000,
+      "tags": ["mlops", "monitoring", "drift", "alerting"]
+    },
+    {
+      "id": "q070404011",
+      "skill_id": "sk070404",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Aunque las etiquetas reales tarden semanas en llegar, monitorizar la distribución de las predicciones del modelo puede revelar un problema en producción.",
+      "question_en": "Even when true labels take weeks to arrive, monitoring the distribution of the model's own predictions can reveal a production problem.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Las predicciones son la señal más barata y más inmediata que existe: no dependen de etiquetas y se generan en cada petición. Si un clasificador que aprobaba al 3% de las solicitudes pasa de golpe al 30%, o si la distribución de puntuaciones se aplana o se concentra en un extremo, algo cambió: en los datos de entrada, en el preprocesado o en la versión servida. No dice qué ha fallado ni si el modelo acierta menos, y ahí está su límite; pero acorta el tiempo de detección de semanas a minutos, que es justo lo que la espera de etiquetas hace imposible.",
+      "explanation_en": "Predictions are the cheapest and most immediate signal available: they need no labels and are produced on every request. If a classifier that approved 3% of applications suddenly approves 30%, or if the score distribution flattens or piles up at one end, something changed: in the input data, in preprocessing, or in the served version. It does not say what broke or whether the model is less accurate, and that is its limit; but it cuts detection time from weeks to minutes, which is exactly what waiting for labels makes impossible.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - monitoring predictions when labels are delayed",
+      "expected_time_ms": 26000,
+      "tags": ["mlops", "monitoring", "predictions", "delayed-labels"]
+    },
+    {
+      "id": "q070404012",
+      "skill_id": "sk070404",
+      "type": "fill_blank",
+      "difficulty_tier": "hard",
+      "question_es": "En scoring crediticio y riesgo se usa un índice que mide cuánto se ha desplazado la distribución de una variable entre el conjunto de referencia y el de producción: agrupa los valores en deciles y suma (p_i - q_i)·ln(p_i/q_i) sobre los buckets. ¿Cómo se llama ese índice? (tres palabras, en inglés; sus siglas son PSI)",
+      "question_en": "In credit scoring and risk a single index is used to measure how far a variable's distribution has moved between a reference set and production: it buckets values into deciles and sums (p_i - q_i)*ln(p_i/q_i) over the buckets. What is that index called? (three words; its acronym is PSI)",
+      "correct_answer_es": "population stability index",
+      "correct_answer_en": "population stability index",
+      "explanation_es": "El PSI resume el desplazamiento en un número comparable entre variables y en el tiempo, con umbrales de uso extendido (por debajo de 0.1 estable, 0.1-0.25 cambio moderado, por encima de 0.25 cambio significativo), lo que lo hace fácil de convertir en una alerta. Se suele confundir con el test de Kolmogorov-Smirnov, que también compara dos distribuciones pero devuelve un estadístico y un p-valor cuya significación depende del tamaño de la muestra: con millones de peticiones, KS declara significativa cualquier diferencia trivial. Por eso en monitorización industrial suele preferirse un índice con umbrales fijos como el PSI.",
+      "explanation_en": "PSI compresses the shift into one number comparable across variables and over time, with widely used thresholds (below 0.1 stable, 0.1-0.25 moderate shift, above 0.25 significant shift), which makes it easy to turn into an alert. It is often confused with the Kolmogorov-Smirnov test, which also compares two distributions but returns a statistic and a p-value whose significance depends on sample size: with millions of requests, KS declares any trivial difference significant. That is why industrial monitoring often prefers a fixed-threshold index like PSI.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - measuring distribution shift",
+      "expected_time_ms": 40000,
+      "tags": ["mlops", "monitoring", "psi", "drift-metrics"]
+    },
+    {
+      "id": "q070404013",
+      "skill_id": "sk070404",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "El monitor calcula la tasa de error media de una ventana móvil. ¿Qué imprime?\n\n```python\nfrom collections import deque\n\nventana = deque(maxlen=3)\nfor tasa in [0.01, 0.02, 0.03, 0.40, 0.45]:\n    ventana.append(tasa)\n\nprint(round(sum(ventana) / len(ventana), 3))\n```",
+      "question_en": "The monitor computes the mean error rate over a sliding window. What does it print?\n\n```python\nfrom collections import deque\n\nwindow = deque(maxlen=3)\nfor rate in [0.01, 0.02, 0.03, 0.40, 0.45]:\n    window.append(rate)\n\nprint(round(sum(window) / len(window), 3))\n```",
+      "options_es": [
+        "0.182, la media de las cinco observaciones",
+        "0.293, la media de las tres últimas: maxlen descarta automáticamente las más antiguas",
+        "0.88, la suma de las tres últimas sin dividir",
+        "0.45, porque deque conserva solo el último valor añadido"
+      ],
+      "options_en": [
+        "0.182, the mean of all five observations",
+        "0.293, the mean of the last three: maxlen automatically discards the oldest ones",
+        "0.88, the sum of the last three without dividing",
+        "0.45, because a deque keeps only the last value appended"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Con maxlen=3 la cola conserva [0.03, 0.40, 0.45] y su media es 0.293. El distractor de 0.182 es la media acumulada desde el inicio del servicio, y comparar las dos respuestas es justo el punto de la pregunta: la media acumulada diluye un incidente reciente entre todo el histórico y hace que la alerta llegue tarde o no llegue; la ventana móvil reacciona, al precio de ser más ruidosa. Elegir el tamaño de ventana es negociar sensibilidad contra falsas alarmas, y es una decisión de monitorización, no un detalle de implementación.",
+      "explanation_en": "With maxlen=3 the deque holds [0.03, 0.40, 0.45] and its mean is 0.293. The 0.182 distractor is the cumulative mean since service start, and comparing the two answers is exactly the point of the question: a cumulative mean dilutes a recent incident across the whole history and makes the alert arrive late or never; a sliding window reacts, at the price of being noisier. Choosing the window size trades sensitivity against false alarms, and it is a monitoring decision, not an implementation detail.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - monitoring with sliding time windows",
+      "expected_time_ms": 34000,
+      "tags": ["mlops", "monitoring", "sliding-window", "python"]
+    },
+    {
+      "id": "q070404014",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Salta una alerta de drift en una feature de entrada. ¿Cuál debe ser la respuesta por defecto del equipo?",
+      "question_en": "A drift alert fires on an input feature. What should the team's default response be?",
+      "options_es": [
+        "Reentrenar automáticamente con los datos más recientes: el drift siempre se corrige reentrenando",
+        "Silenciar la alerta mientras la métrica de negocio no haya caído, para evitar fatiga de alertas",
+        "Revertir a la versión anterior del modelo, que fue entrenada con una distribución distinta",
+        "Investigar primero la causa: si es una rotura del pipeline de datos (campo renombrado, unidades cambiadas, aumento de nulos), se arregla en el pipeline y no reentrenando sobre datos corruptos"
+      ],
+      "options_en": [
+        "Retrain automatically on the most recent data: drift is always fixed by retraining",
+        "Mute the alert until the business metric drops, to avoid alert fatigue",
+        "Roll back to the previous model version, which was trained on a different distribution",
+        "Investigate the cause first: if it is a data pipeline breakage (renamed field, changed units, more nulls), you fix it in the pipeline, not by retraining on corrupted data"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El reentrenamiento automático es la respuesta más popular y la más peligrosa: la causa más frecuente de un salto brusco en una feature no es que el mundo haya cambiado, sino que alguien cambió la unidad de un campo, renombró una columna o rompió una ETL. Reentrenar sobre esos datos incorpora el error al modelo y borra la evidencia. Revertir no ayuda si el problema está en la entrada: el modelo antiguo recibe los mismos datos rotos. Y silenciar hasta que caiga el negocio garantiza enterarse por los usuarios. Investigar la causa antes de actuar es lo que separa el drift real de la rotura de datos.",
+      "explanation_en": "Automatic retraining is the most popular answer and the most dangerous: the most frequent cause of a sudden jump in a feature is not that the world changed, but that someone changed a field's unit, renamed a column, or broke an ETL. Retraining on that data bakes the error into the model and erases the evidence. Rolling back does not help when the problem is in the input: the old model receives the same broken data. And muting until the business metric drops guarantees you hear about it from users. Investigating the cause before acting is what separates genuine drift from a data breakage.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - monitoring, alerting and root-cause analysis",
+      "expected_time_ms": 42000,
+      "tags": ["mlops", "monitoring", "alerting", "incident-response"]
+    },
+    {
+      "id": "q070404015",
+      "skill_id": "sk070404",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Un recomendador se reentrena con los clics que él mismo genera. Con los meses, el catálogo que recomienda se estrecha y la diversidad cae. ¿Qué fenómeno describe esto?",
+      "question_en": "A recommender is retrained on the clicks it generates itself. Over the months, the catalog it recommends narrows and diversity falls. Which phenomenon describes this?",
+      "options_es": [
+        "Un bucle de retroalimentación degenerado: el modelo solo observa resultados de los ítems que él mismo mostró, de modo que sus propias preferencias se convierten en sus datos de entrenamiento y se amplifican",
+        "Concept drift: la relación entre las entradas y el objetivo ha cambiado por causas externas al sistema",
+        "Overfitting: el modelo ha memorizado el conjunto de entrenamiento y no generaliza a usuarios nuevos",
+        "Data drift: la distribución de los usuarios que llegan al producto ha cambiado"
+      ],
+      "options_en": [
+        "A degenerate feedback loop: the model only observes outcomes for the items it itself showed, so its own preferences become its training data and get amplified",
+        "Concept drift: the relationship between inputs and target has changed for reasons external to the system",
+        "Overfitting: the model has memorized the training set and does not generalize to new users",
+        "Data drift: the distribution of users arriving at the product has changed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Lo que hace peligroso al bucle degenerado es que el sistema se causa el problema a sí mismo: un ítem que no se muestra no recibe clics, así que parece malo, así que se muestra aún menos. Las opciones de drift tientan porque el síntoma se parece —la distribución cambia con el tiempo— pero ahí el cambio viene del mundo exterior, mientras que aquí lo provoca el propio modelo a través de sus acciones. Overfitting describe un fallo de generalización dentro de un entrenamiento concreto, no una deriva a lo largo de sucesivos reentrenamientos. Detectarlo exige medir diversidad y popularidad agregadas, y mitigarlo suele requerir exploración deliberada o corrección por propensión.",
+      "explanation_en": "What makes a degenerate loop dangerous is that the system causes its own problem: an item that is never shown gets no clicks, so it looks bad, so it is shown even less. The drift options are tempting because the symptom looks similar - the distribution changes over time - but there the change comes from the outside world, whereas here the model itself causes it through its actions. Overfitting describes a generalization failure within one training run, not a drift across successive retrainings. Detecting it requires measuring aggregate diversity and popularity, and mitigating it usually needs deliberate exploration or propensity correction.",
+      "source": "Designing Machine Learning Systems (Chip Huyen) - degenerate feedback loops",
+      "expected_time_ms": 38000,
+      "tags": ["mlops", "monitoring", "feedback-loop", "recommenders"]
+    }
+  ]
+}

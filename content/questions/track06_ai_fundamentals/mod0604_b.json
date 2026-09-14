@@ -1,0 +1,822 @@
+{
+  "questions": [
+    {
+      "id": "q060401009",
+      "skill_id": "sk060401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "La ecuación normal resuelve la regresión lineal en un solo paso. ¿Por qué entonces scikit-learn y las librerías de deep learning usan descenso de gradiente en datasets grandes?",
+      "question_en": "The normal equation solves linear regression in one step. Why, then, do scikit-learn and deep learning libraries use gradient descent on large datasets?",
+      "options_es": [
+        "Porque la ecuación normal da una solución aproximada y el descenso de gradiente da la exacta",
+        "Porque la ecuación normal solo funciona cuando hay una única feature",
+        "Porque invertir la matriz cuesta aproximadamente O(n³) en el número de features, y se vuelve inviable cuando hay muchas features o la matriz es singular",
+        "Porque la ecuación normal exige que el target esté estandarizado y eso rara vez se cumple"
+      ],
+      "options_en": [
+        "Because the normal equation gives an approximate solution and gradient descent gives the exact one",
+        "Because the normal equation only works when there is a single feature",
+        "Because inverting the matrix costs roughly O(n³) in the number of features, which becomes infeasible with many features or when the matrix is singular",
+        "Because the normal equation requires the target to be standardized and that is rarely the case"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La ecuación normal `w = (XᵀX)⁻¹Xᵀy` es exacta, no aproximada: la primera opción invierte los papeles, que es el error más común. El coste de invertir `XᵀX` crece con el cubo del número de features, así que con miles de columnas el descenso de gradiente (coste lineal por paso) gana, y además tolera que `XᵀX` sea singular por colinealidad. La ecuación normal sí admite muchas features, solo que caro; y no impone ninguna estandarización del target.",
+      "explanation_en": "The normal equation `w = (XᵀX)⁻¹Xᵀy` is exact, not approximate: the first option swaps the roles, which is the most common confusion. Inverting `XᵀX` scales with the cube of the number of features, so with thousands of columns gradient descent (linear cost per step) wins, and it also tolerates `XᵀX` being singular from collinearity. The normal equation does handle many features, just expensively; and it imposes no standardization on the target.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: The Normal Equation and Computational Complexity",
+      "expected_time_ms": 35000,
+      "tags": ["linear-regression", "normal-equation", "gradient-descent"]
+    },
+    {
+      "id": "q060401010",
+      "skill_id": "sk060401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Tienes 200 features y sospechas que solo unas pocas importan. ¿Qué regresión regularizada te deja el modelo más interpretable y por qué?",
+      "question_en": "You have 200 features and suspect only a few matter. Which regularized regression leaves you the most interpretable model, and why?",
+      "options_es": [
+        "Lasso (L1), porque su penalización puede llevar coeficientes exactamente a cero y así elimina features",
+        "Ridge (L2), porque su penalización lleva coeficientes exactamente a cero y así elimina features",
+        "Ridge (L2), porque penaliza solo las features correlacionadas y deja intactas las demás",
+        "Ninguna: la regularización afecta al error de entrenamiento pero no a los coeficientes"
+      ],
+      "options_en": [
+        "Lasso (L1), because its penalty can drive coefficients exactly to zero and thus removes features",
+        "Ridge (L2), because its penalty drives coefficients exactly to zero and thus removes features",
+        "Ridge (L2), because it penalizes only the correlated features and leaves the rest untouched",
+        "Neither: regularization affects training error but not the coefficients"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Lasso usa `α·Σ|w|`; la esquina del valor absoluto en cero hace que la solución óptima ponga coeficientes exactamente en cero, lo que equivale a selección automática de features. Ridge usa `α·Σw²`, que encoge los coeficientes hacia cero pero nunca los anula: confundir cuál de las dos anula es el error habitual, y por eso las opciones 2 y 3 suenan bien. Ridge tampoco distingue features correlacionadas de las demás, solo reparte el peso entre ellas. Y toda la regularización actúa precisamente modificando los coeficientes.",
+      "explanation_en": "Lasso uses `α·Σ|w|`; the corner of the absolute value at zero makes the optimum place coefficients exactly at zero, which amounts to automatic feature selection. Ridge uses `α·Σw²`, which shrinks coefficients toward zero but never nullifies them: mixing up which of the two zeroes out is the usual mistake, and that is why options 2 and 3 read plausibly. Ridge also does not single out correlated features, it just splits the weight among them. And all regularization works precisely by changing the coefficients.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: Lasso Regression",
+      "expected_time_ms": 30000,
+      "tags": ["linear-regression", "lasso", "ridge", "regularization"]
+    },
+    {
+      "id": "q060401011",
+      "skill_id": "sk060401",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Si añades a una regresión lineal múltiple una feature de ruido aleatorio sin relación con el target, el R² medido sobre los mismos datos de entrenamiento bajará.",
+      "question_en": "If you add a random-noise feature unrelated to the target to a multiple linear regression, the R² measured on the same training data will go down.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Es falso, y este es el motivo por el que existe el R² ajustado. Al añadir una columna, OLS puede como mínimo asignarle coeficiente cero y reproducir el ajuste anterior, así que el R² de entrenamiento nunca baja: en la práctica sube un poco porque el ruido se aprovecha para explicar residuos. La intuición de que 'una feature mala empeora el modelo' es correcta en test, no en entrenamiento; por eso el R² ajustado penaliza el número de predictores y por eso se compara siempre en un conjunto separado.",
+      "explanation_en": "This is false, and it is exactly why adjusted R² exists. Adding a column lets OLS at worst assign it a zero coefficient and reproduce the previous fit, so training R² never decreases: in practice it rises slightly because the noise gets used to explain residuals. The intuition that 'a bad feature hurts the model' holds on test data, not on training data; that is why adjusted R² penalizes the number of predictors and why comparisons are made on a held-out set.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4; scikit-learn User Guide — Regression metrics (R² score)",
+      "expected_time_ms": 32000,
+      "tags": ["linear-regression", "r-squared", "overfitting"]
+    },
+    {
+      "id": "q060401012",
+      "skill_id": "sk060401",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Una regresión lineal múltiple ajustó `y = 4 + 1.5*x1 - 2*x2`. ¿Qué predice para `x1 = 4`, `x2 = 3`?",
+      "question_en": "A multiple linear regression fitted `y = 4 + 1.5*x1 - 2*x2`. What does it predict for `x1 = 4`, `x2 = 3`?",
+      "options_es": ["4", "10", "-2", "16"],
+      "options_en": ["4", "10", "-2", "16"],
+      "correct_index": 0,
+      "explanation_es": "4 + 1.5·4 - 2·3 = 4 + 6 - 6 = 4. El 10 sale de olvidar el signo negativo del segundo coeficiente (4+6), el -2 de olvidar el intercepto (6-6-2 mal contado) y el 16 de multiplicar en lugar de sumar el intercepto. En un modelo lineal cada coeficiente aporta de forma independiente y aditiva: no hay interacciones salvo que las crees explícitamente como features.",
+      "explanation_en": "4 + 1.5·4 - 2·3 = 4 + 6 - 6 = 4. The 10 comes from dropping the negative sign on the second coefficient (4+6), the -2 from dropping the intercept, and the 16 from multiplying rather than adding the intercept. In a linear model each coefficient contributes independently and additively: there are no interactions unless you build them explicitly as features.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: Linear Regression",
+      "expected_time_ms": 25000,
+      "tags": ["linear-regression", "prediction", "coefficients"]
+    },
+    {
+      "id": "q060401013",
+      "skill_id": "sk060401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Tu dataset de precios tiene unas pocas viviendas de lujo con valores extremos. ¿Cómo se comporta el MSE frente al MAE como función de coste en este caso?",
+      "question_en": "Your price dataset has a few luxury homes with extreme values. How does MSE behave compared with MAE as a cost function here?",
+      "options_es": [
+        "Igual: ambos son medias de errores y responden idénticamente a los outliers",
+        "El MAE castiga más los outliers porque acumula el error sin dividir por el número de muestras",
+        "El MSE ignora los outliers porque al elevar al cuadrado los errores pequeños dominan la suma",
+        "El MSE castiga más los outliers porque eleva el error al cuadrado, así que la recta se desplaza hacia esos puntos extremos"
+      ],
+      "options_en": [
+        "The same: both are averages of errors and respond identically to outliers",
+        "MAE punishes outliers more because it accumulates error without dividing by the number of samples",
+        "MSE ignores outliers because squaring makes the small errors dominate the sum",
+        "MSE punishes outliers more because it squares the error, so the fitted line is pulled toward those extreme points"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Elevar al cuadrado convierte un residuo de 10 en 100 mientras que uno de 1 aporta solo 1, así que unos pocos outliers dominan el coste y arrastran la recta hacia ellos. El MAE crece linealmente y es más robusto. La opción 3 invierte el razonamiento correcto (son los errores grandes, no los pequeños, los que dominan al elevar al cuadrado) y por eso resulta tentadora; la opción 2 confunde escala con robustez, que son cosas distintas.",
+      "explanation_en": "Squaring turns a residual of 10 into 100 while a residual of 1 contributes only 1, so a few outliers dominate the cost and drag the fitted line toward them. MAE grows linearly and is more robust. Option 3 inverts the correct reasoning (it is the large errors, not the small ones, that dominate after squaring), which is what makes it tempting; option 2 confuses scale with robustness, which are different things.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 2: Select a Performance Measure (RMSE vs MAE)",
+      "expected_time_ms": 30000,
+      "tags": ["linear-regression", "loss-function", "outliers"]
+    },
+    {
+      "id": "q060401014",
+      "skill_id": "sk060401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Entrenas la misma regresión lineal con `LinearRegression` (ecuación normal) y con `SGDRegressor` sobre features en escalas muy distintas (metros y euros). ¿Qué observarás?",
+      "question_en": "You train the same linear regression with `LinearRegression` (normal equation) and with `SGDRegressor` on features at very different scales (metres and euros). What will you observe?",
+      "options_es": [
+        "Ambos fallarán igual, porque ningún modelo lineal admite escalas distintas",
+        "La ecuación normal no se ve afectada por la escala, pero el SGD convergerá muy lento o no convergerá si no se escalan las features",
+        "El SGD no se ve afectado porque adapta el learning rate a cada feature automáticamente",
+        "Los coeficientes obtenidos serán idénticos en ambos casos porque la solución de mínimos cuadrados es única"
+      ],
+      "options_en": [
+        "Both will fail equally, because no linear model tolerates differing scales",
+        "The normal equation is unaffected by scale, but SGD will converge very slowly or not at all unless the features are scaled",
+        "SGD is unaffected because it adapts the learning rate per feature automatically",
+        "The coefficients will be identical in both cases because the least-squares solution is unique"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La ecuación normal resuelve el sistema de golpe y es invariante a la escala; el descenso de gradiente recorre una superficie de coste alargada en forma de valle cuando las escalas difieren y rebota en lugar de bajar, de ahí que la documentación de scikit-learn insista en estandarizar antes de `SGDRegressor`. La opción 3 describe optimizadores adaptativos como Adam, no el SGD básico. La opción 4 es cierta solo en teoría: sin escalar, el SGD se detiene por número de épocas antes de alcanzar ese óptimo único.",
+      "explanation_en": "The normal equation solves the system in one shot and is scale-invariant; gradient descent traverses an elongated valley-shaped cost surface when scales differ and bounces rather than descends, which is why the scikit-learn docs insist on standardizing before `SGDRegressor`. Option 3 describes adaptive optimizers like Adam, not plain SGD. Option 4 is true only in theory: unscaled, SGD stops on its epoch budget before reaching that unique optimum.",
+      "source": "scikit-learn User Guide — Stochastic Gradient Descent: Tips on Practical Use; Géron, Hands-On ML 3e, Ch. 4",
+      "expected_time_ms": 35000,
+      "tags": ["linear-regression", "feature-scaling", "gradient-descent"]
+    },
+    {
+      "id": "q060401015",
+      "skill_id": "sk060401",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Al graficar residuos contra valores predichos ves un embudo que se abre: los errores son pequeños para predicciones bajas y grandes para predicciones altas. ¿Qué supuesto de la regresión lineal se está violando (el de varianza constante de los residuos)?",
+      "question_en": "Plotting residuals against fitted values you see a widening funnel: errors are small for low predictions and large for high ones. Which linear regression assumption is being violated (the one of constant residual variance)?",
+      "correct_answer_es": "homocedasticidad",
+      "correct_answer_en": "homoscedasticity",
+      "explanation_es": "La homocedasticidad supone que la varianza del error es la misma en todo el rango de predicción; el embudo indica heterocedasticidad. No invalida las predicciones puntuales, pero sí los intervalos de confianza y los p-valores de los coeficientes, que se calculan asumiendo varianza constante. Se suele corregir transformando el target (log) o usando errores estándar robustos. Es distinto de la no linealidad (residuos con forma de curva) y de la autocorrelación (residuos con patrón temporal).",
+      "explanation_en": "Homoscedasticity assumes the error variance is the same across the whole prediction range; the funnel signals heteroscedasticity. It does not invalidate point predictions, but it does invalidate confidence intervals and coefficient p-values, which are computed assuming constant variance. It is usually fixed by transforming the target (log) or using robust standard errors. It is distinct from non-linearity (curved residual pattern) and from autocorrelation (time-structured residuals).",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4; scikit-learn User Guide — Ordinary Least Squares",
+      "expected_time_ms": 38000,
+      "tags": ["linear-regression", "assumptions", "residuals"]
+    },
+
+    {
+      "id": "q060402008",
+      "skill_id": "sk060402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En una regresión logística el coeficiente de la variable `fumador` vale 0.7. ¿Qué significa exactamente?",
+      "question_en": "In a logistic regression the coefficient for the variable `smoker` is 0.7. What does it mean exactly?",
+      "options_es": [
+        "Ser fumador aumenta la probabilidad de la clase positiva en 0.7 (70 puntos porcentuales)",
+        "Ser fumador aumenta el logaritmo de las odds en 0.7, es decir multiplica las odds por e^0.7 ≈ 2.0",
+        "Ser fumador aumenta la probabilidad en un 70 % relativo respecto al valor base",
+        "El 0.7 es la probabilidad predicha para un fumador medio del dataset"
+      ],
+      "options_en": [
+        "Being a smoker raises the probability of the positive class by 0.7 (70 percentage points)",
+        "Being a smoker raises the log-odds by 0.7, i.e. multiplies the odds by e^0.7 ≈ 2.0",
+        "Being a smoker raises the probability by 70 % relative to the baseline",
+        "The 0.7 is the predicted probability for an average smoker in the dataset"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La regresión logística es lineal en el logit, no en la probabilidad: el modelo es `log(p/(1-p)) = β₀ + β₁x`, así que un coeficiente suma en escala de log-odds y su exponencial es el odds ratio. Leerlo como un incremento directo de probabilidad (opción 1) es el error más extendido, y falla porque el efecto en probabilidad depende de dónde estés en la curva sigmoide: el mismo 0.7 mueve mucho la probabilidad cerca de 0.5 y casi nada cerca de 0.99. La opción 3 confunde odds con riesgo relativo, que solo coinciden si el evento es raro.",
+      "explanation_en": "Logistic regression is linear in the logit, not in the probability: the model is `log(p/(1-p)) = β₀ + β₁x`, so a coefficient adds on the log-odds scale and its exponential is the odds ratio. Reading it as a direct probability increase (option 1) is the most widespread error, and it fails because the effect on probability depends on where you sit on the sigmoid: the same 0.7 moves probability a lot near 0.5 and almost nothing near 0.99. Option 3 confuses odds with relative risk, which coincide only when the event is rare.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: Logistic Regression; scikit-learn User Guide — Logistic regression",
+      "expected_time_ms": 38000,
+      "tags": ["logistic-regression", "odds-ratio", "interpretation"]
+    },
+    {
+      "id": "q060402009",
+      "skill_id": "sk060402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "La sigmoide es una curva no lineal. ¿Qué forma tiene entonces la frontera de decisión de una regresión logística sin features transformadas?",
+      "question_en": "The sigmoid is a non-linear curve. What shape, then, does the decision boundary of a logistic regression with untransformed features have?",
+      "options_es": [
+        "Lineal: la frontera es el conjunto de puntos donde w·x + b = 0, un hiperplano",
+        "Sigmoidal: la frontera hereda la curvatura en S de la función de activación",
+        "Circular alrededor del centroide de cada clase",
+        "Arbitrariamente compleja, ya que la sigmoide permite fronteras de cualquier forma"
+      ],
+      "options_en": [
+        "Linear: the boundary is the set of points where w·x + b = 0, a hyperplane",
+        "Sigmoidal: the boundary inherits the S-curvature of the activation function",
+        "Circular around each class centroid",
+        "Arbitrarily complex, since the sigmoid allows boundaries of any shape"
+      ],
+      "correct_index": 0,
+      "explanation_0": null,
+      "explanation_es": "La sigmoide es monótona, así que `p = 0.5` ocurre exactamente cuando `w·x + b = 0`: la frontera es un hiperplano plano. La curvatura afecta a la confianza de la predicción, no a dónde cambia la clase, y esa confusión es justo lo que hace atractiva la opción 2. Para fronteras curvas hay que añadir features polinómicas o interacciones, igual que en regresión lineal. La opción 3 describe un clasificador por centroides o un RBF, y la 4 sobreestima lo que un modelo lineal puede representar.",
+      "explanation_en": "The sigmoid is monotonic, so `p = 0.5` happens exactly when `w·x + b = 0`: the boundary is a flat hyperplane. The curvature affects the confidence of the prediction, not where the class flips, and that confusion is precisely what makes option 2 attractive. Curved boundaries require adding polynomial features or interactions, just as in linear regression. Option 3 describes a centroid classifier or an RBF model, and option 4 overstates what a linear model can represent.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: Decision Boundaries",
+      "expected_time_ms": 30000,
+      "tags": ["logistic-regression", "decision-boundary", "linear-model"]
+    },
+    {
+      "id": "q060402010",
+      "skill_id": "sk060402",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "A diferencia de la regresión lineal por mínimos cuadrados, la regresión logística no tiene solución en forma cerrada y debe entrenarse con optimización iterativa.",
+      "question_en": "Unlike least-squares linear regression, logistic regression has no closed-form solution and must be trained with iterative optimization.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero. Al derivar la log-verosimilitud aparece la sigmoide dentro del gradiente y no puede despejarse `w` como en la ecuación normal, así que se usan métodos iterativos (lbfgs, newton-cg, saga en scikit-learn). La buena noticia es que la log loss es convexa en los parámetros, de modo que ese óptimo iterativo es global y no hay mínimos locales: por eso mucha gente asume por analogía que 'debe existir una fórmula cerrada', y no la hay. Que un problema sea convexo y que tenga solución analítica son cosas distintas.",
+      "explanation_en": "True. Differentiating the log-likelihood leaves the sigmoid inside the gradient and `w` cannot be isolated as in the normal equation, so iterative methods are used (lbfgs, newton-cg, saga in scikit-learn). The good news is that log loss is convex in the parameters, so that iterative optimum is global with no local minima: this is why many people assume by analogy that 'a closed form must exist', and it does not. A problem being convex and having an analytic solution are different things.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: Training and Cost Function; scikit-learn User Guide — Logistic regression solvers",
+      "expected_time_ms": 32000,
+      "tags": ["logistic-regression", "optimization", "convexity"]
+    },
+    {
+      "id": "q060402011",
+      "skill_id": "sk060402",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Una regresión logística tiene pesos `w = [2, -1]` y sesgo `b = -3`. Para `x = [2, 1]` calcula `z = w·x + b` y aplica `σ(z) = 1 / (1 + e^(-z))`. ¿Qué probabilidad devuelve?",
+      "question_en": "A logistic regression has weights `w = [2, -1]` and bias `b = -3`. For `x = [2, 1]` compute `z = w·x + b` and apply `σ(z) = 1 / (1 + e^(-z))`. What probability does it return?",
+      "options_es": ["0.5", "0.0", "1.0", "0.27"],
+      "options_en": ["0.5", "0.0", "1.0", "0.27"],
+      "correct_index": 0,
+      "explanation_es": "z = 2·2 + (-1)·1 + (-3) = 4 - 1 - 3 = 0, y σ(0) = 1/(1+e⁰) = 1/2 = 0.5. El 0.0 sale de confundir σ(0) con 0, que es el error más frecuente: la sigmoide vale 0.5 en su centro y solo tiende a 0 cuando z → -∞. El 1.0 corresponde a z → +∞. El punto z = 0 es exactamente la frontera de decisión, donde el modelo no se inclina por ninguna clase.",
+      "explanation_en": "z = 2·2 + (-1)·1 + (-3) = 4 - 1 - 3 = 0, and σ(0) = 1/(1+e⁰) = 1/2 = 0.5. The 0.0 comes from confusing σ(0) with 0, the most frequent slip: the sigmoid equals 0.5 at its centre and only approaches 0 as z → -∞. The 1.0 corresponds to z → +∞. The point z = 0 is exactly the decision boundary, where the model favours neither class.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: Estimating Probabilities",
+      "expected_time_ms": 30000,
+      "tags": ["logistic-regression", "sigmoid", "computation"]
+    },
+    {
+      "id": "q060402012",
+      "skill_id": "sk060402",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Entrenas una regresión logística y una feature separa perfectamente las dos clases. El solver avisa de no convergencia y el coeficiente de esa feature es enorme. ¿Qué está pasando?",
+      "question_en": "You train a logistic regression and one feature separates the two classes perfectly. The solver warns about non-convergence and that feature's coefficient is huge. What is happening?",
+      "options_es": [
+        "La feature tiene valores nulos que el solver no sabe tratar",
+        "El dataset es demasiado pequeño y hay que recoger más datos antes de nada",
+        "Separación perfecta: la verosimilitud mejora indefinidamente al agrandar el coeficiente, así que el óptimo está en el infinito; la regularización (bajar C) lo acota",
+        "El solver eligió un learning rate demasiado bajo y basta con aumentar max_iter para que converja al valor correcto"
+      ],
+      "options_en": [
+        "The feature has null values the solver cannot handle",
+        "The dataset is too small and more data must be collected before anything else",
+        "Perfect separation: the likelihood keeps improving as the coefficient grows, so the optimum lies at infinity; regularization (lowering C) bounds it",
+        "The solver picked too low a learning rate and raising max_iter is enough to converge to the right value"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Con separación perfecta el modelo puede acercar las probabilidades predichas a 0 y 1 tanto como quiera empujando el coeficiente hacia infinito, de modo que la log loss decrece sin llegar nunca a un mínimo finito. Subir `max_iter` (opción 4) es lo primero que intenta casi todo el mundo y solo hace que el coeficiente crezca más: el aviso reaparece. La solución real es regularizar, y por eso `LogisticRegression` de scikit-learn aplica L2 por defecto. También conviene revisar si esa feature filtra el target (leakage).",
+      "explanation_en": "With perfect separation the model can push predicted probabilities arbitrarily close to 0 and 1 by driving the coefficient toward infinity, so log loss keeps decreasing and never reaches a finite minimum. Raising `max_iter` (option 4) is what almost everyone tries first and it only makes the coefficient grow larger: the warning returns. The real fix is regularization, which is why scikit-learn's `LogisticRegression` applies L2 by default. It is also worth checking whether that feature leaks the target.",
+      "source": "scikit-learn User Guide — Logistic regression (regularization and convergence); Géron, Hands-On ML 3e, Ch. 4",
+      "expected_time_ms": 40000,
+      "tags": ["logistic-regression", "separation", "regularization"]
+    },
+    {
+      "id": "q060402013",
+      "skill_id": "sk060402",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En scikit-learn, `LogisticRegression()` sin argumentos entrena un modelo sin ninguna regularización, igual que la regresión logística clásica de los libros de estadística.",
+      "question_en": "In scikit-learn, `LogisticRegression()` with no arguments trains a model with no regularization at all, just like the classic logistic regression in statistics textbooks.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso: por defecto aplica penalización L2 con `C=1.0`. Es una de las sorpresas clásicas al pasar de statsmodels o R a scikit-learn, porque los coeficientes salen encogidos y no coinciden con los de un ajuste de máxima verosimilitud puro. Como consecuencia práctica hay que escalar las features, ya que la penalización castiga por igual a coeficientes medidos en escalas distintas. Para acercarse al modelo sin regularizar se pone un `C` muy grande.",
+      "explanation_en": "False: by default it applies an L2 penalty with `C=1.0`. This is one of the classic surprises when moving from statsmodels or R to scikit-learn, because coefficients come out shrunk and do not match a pure maximum-likelihood fit. A practical consequence is that features must be scaled, since the penalty punishes coefficients measured on different scales equally. To approximate the unregularized model you set a very large `C`.",
+      "source": "scikit-learn User Guide — Logistic regression (penalty and C defaults)",
+      "expected_time_ms": 28000,
+      "tags": ["logistic-regression", "scikit-learn", "regularization"]
+    },
+    {
+      "id": "q060402014",
+      "skill_id": "sk060402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En `LogisticRegression(C=0.01)` de scikit-learn, ¿qué efecto tiene ese valor tan bajo de C?",
+      "question_en": "In scikit-learn's `LogisticRegression(C=0.01)`, what effect does such a low C value have?",
+      "options_es": [
+        "Regularización muy débil: los coeficientes quedan libres y el modelo tiende a sobreajustar",
+        "Fija el umbral de decisión en 0.01 en lugar de 0.5",
+        "Limita el entrenamiento a 0.01 veces el número de épocas por defecto",
+        "Regularización muy fuerte, porque C es el inverso de la intensidad de penalización: los coeficientes se encogen mucho y el modelo tiende a subajustar"
+      ],
+      "options_en": [
+        "Very weak regularization: the coefficients stay free and the model tends to overfit",
+        "It sets the decision threshold to 0.01 instead of 0.5",
+        "It caps training at 0.01 times the default number of epochs",
+        "Very strong regularization, because C is the inverse of the penalty strength: coefficients shrink a lot and the model tends to underfit"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En scikit-learn `C = 1/α`, así que C pequeño significa penalización grande. La opción 1 es el error más común y viene de arrastrar la intuición del `alpha` de Ridge o Lasso, donde el valor pequeño sí significa poca regularización: en `LogisticRegression` y en `SVC` la convención está invertida. La opción 2 confunde C con el umbral de clasificación, que en scikit-learn ni siquiera es un hiperparámetro del modelo, y la 3 lo confunde con `max_iter`.",
+      "explanation_en": "In scikit-learn `C = 1/α`, so a small C means a large penalty. Option 1 is the most common error and comes from carrying over the intuition of Ridge's or Lasso's `alpha`, where a small value does mean little regularization: in `LogisticRegression` and `SVC` the convention is inverted. Option 2 confuses C with the classification threshold, which in scikit-learn is not even a model hyperparameter, and option 3 confuses it with `max_iter`.",
+      "source": "scikit-learn User Guide — Logistic regression (C as inverse of regularization strength)",
+      "expected_time_ms": 35000,
+      "tags": ["logistic-regression", "hyperparameters", "scikit-learn"]
+    },
+    {
+      "id": "q060402015",
+      "skill_id": "sk060402",
+      "type": "fill_blank",
+      "difficulty_tier": "medium",
+      "question_es": "La regresión logística es lineal no en la probabilidad p sino en la transformación `log(p / (1 - p))`. ¿Cómo se llama esa transformación, inversa de la sigmoide?",
+      "question_en": "Logistic regression is linear not in the probability p but in the transformation `log(p / (1 - p))`. What is that transformation called, the inverse of the sigmoid?",
+      "correct_answer_es": "logit",
+      "correct_answer_en": "logit",
+      "explanation_es": "El logit (o log-odds) lleva una probabilidad del intervalo (0, 1) a toda la recta real, que es justo lo que necesita un modelo lineal para poder sumar coeficientes sin salirse del rango válido. La sigmoide hace el camino de vuelta. Entender esto desbloquea la interpretación de coeficientes: cada β es un incremento en logit, y e^β es un odds ratio. Sin esta pieza la gente lee los coeficientes como incrementos de probabilidad, que es la lectura incorrecta más frecuente.",
+      "explanation_en": "The logit (or log-odds) maps a probability from (0, 1) onto the whole real line, which is exactly what a linear model needs in order to add coefficients without leaving the valid range. The sigmoid maps back. Grasping this unlocks coefficient interpretation: each β is an increment in logit, and e^β is an odds ratio. Without this piece people read coefficients as probability increments, the most frequent misreading.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 4: Logistic Regression",
+      "expected_time_ms": 30000,
+      "tags": ["logistic-regression", "logit", "odds"]
+    },
+
+    {
+      "id": "q060403009",
+      "skill_id": "sk060403",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un Random Forest señala como feature más importante el ID de cliente (miles de valores distintos) por encima de la edad. ¿Cuál es la explicación más probable?",
+      "question_en": "A Random Forest reports customer ID (thousands of distinct values) as the most important feature, above age. What is the most likely explanation?",
+      "options_es": [
+        "El ID realmente predice el target y debe conservarse en el modelo final",
+        "El modelo necesita más árboles: con suficientes estimadores la importancia del ID caerá a cero",
+        "La importancia basada en impureza favorece a las variables con muchos valores distintos, porque ofrecen más cortes posibles y reducen impureza aunque no generalicen; conviene usar importancia por permutación sobre datos de validación",
+        "Es un bug conocido de scikit-learn al calcular feature_importances_ con variables enteras"
+      ],
+      "options_en": [
+        "The ID genuinely predicts the target and should be kept in the final model",
+        "The model needs more trees: with enough estimators the ID's importance will fall to zero",
+        "Impurity-based importance favours high-cardinality variables, because they offer more candidate splits and reduce impurity even without generalizing; permutation importance on validation data is the better tool",
+        "It is a known scikit-learn bug when computing feature_importances_ with integer variables"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La importancia por impureza (MDI) se calcula sobre los datos de entrenamiento y premia a quien puede partirlos finamente: una variable con cardinalidad alta casi siempre encuentra un corte que baja la impureza, aunque el patrón sea puro ruido. La documentación de scikit-learn lo advierte explícitamente y recomienda `permutation_importance` sobre un conjunto de validación. Añadir árboles (opción 2) no corrige el sesgo porque todos los árboles comparten el mismo criterio. Y no es un bug: es el comportamiento esperado de la métrica.",
+      "explanation_en": "Impurity-based importance (MDI) is computed on the training data and rewards whatever can split it finely: a high-cardinality variable almost always finds a cut that lowers impurity, even when the pattern is pure noise. The scikit-learn documentation warns about this explicitly and recommends `permutation_importance` on a validation set. Adding trees (option 2) does not fix the bias because every tree shares the same criterion. And it is not a bug: it is the metric behaving as designed.",
+      "source": "scikit-learn User Guide — Permutation feature importance vs impurity-based importance",
+      "expected_time_ms": 42000,
+      "tags": ["random-forest", "feature-importance", "bias"]
+    },
+    {
+      "id": "q060403010",
+      "skill_id": "sk060403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Además del bootstrap de filas, un Random Forest considera solo un subconjunto aleatorio de features en cada división. ¿Para qué sirve esa segunda fuente de aleatoriedad?",
+      "question_en": "Beyond bootstrapping rows, a Random Forest considers only a random subset of features at each split. What is that second source of randomness for?",
+      "options_es": [
+        "Para decorrelacionar los árboles: si una feature es muy predictiva, todos los árboles la usarían arriba y se parecerían demasiado, y promediar modelos parecidos reduce poco la varianza",
+        "Para acelerar el entrenamiento; estadísticamente el resultado es idéntico a usar todas las features",
+        "Para que cada árbol vea features distintas y así el bosque pueda manejar datos faltantes sin imputar",
+        "Para forzar que cada feature aparezca en al menos un árbol y poder calcular su importancia"
+      ],
+      "options_en": [
+        "To decorrelate the trees: if one feature is highly predictive every tree would use it at the top and they would look alike, and averaging similar models reduces variance very little",
+        "To speed up training; statistically the result is identical to using all features",
+        "So that each tree sees different features and the forest can handle missing data without imputation",
+        "To force every feature to appear in at least one tree so its importance can be computed"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Promediar reduce la varianza en proporción a lo poco correlacionados que estén los modelos; con bootstrap de filas solamente, una feature dominante haría que todos los árboles empezaran igual y quedaran muy correlacionados. Limitar las features candidatas obliga a que algunos árboles exploren caminos distintos. La opción 2 recoge un efecto real (sí acelera) pero niega el efecto estadístico, que es el motivo principal. La opción 3 confunde el muestreo de features con el manejo de nulos, y la 4 invierte la relación: la importancia se mide, no se garantiza.",
+      "explanation_en": "Averaging reduces variance in proportion to how uncorrelated the models are; with row bootstrapping alone, one dominant feature would make every tree start the same way and stay highly correlated. Restricting candidate features forces some trees down different paths. Option 2 captures a real side effect (it does speed things up) but denies the statistical effect, which is the main point. Option 3 confuses feature subsampling with missing-value handling, and option 4 inverts the relationship: importance is measured, not guaranteed.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 7: Random Forests; Breiman, Random Forests (2001)",
+      "expected_time_ms": 38000,
+      "tags": ["random-forest", "bagging", "variance"]
+    },
+    {
+      "id": "q060403011",
+      "skill_id": "sk060403",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Subir `n_estimators` de un Random Forest de 100 a 2000 árboles hace que el modelo sobreajuste los datos de entrenamiento.",
+      "question_en": "Raising a Random Forest's `n_estimators` from 100 to 2000 trees makes the model overfit the training data.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso, y es la confusión más extendida sobre bagging. Añadir árboles promedia más estimaciones del mismo tipo: el error de generalización converge a una asíntota en lugar de empeorar. Lo que sí sobreajusta es dejar cada árbol crecer sin límite sobre pocos datos, o usar boosting con demasiadas iteraciones, donde cada nuevo árbol corrige residuos del anterior y ahí más iteraciones sí degradan el test. El coste real de subir n_estimators es tiempo y memoria, no sesgo-varianza.",
+      "explanation_en": "False, and it is the most widespread confusion about bagging. Adding trees averages more estimates of the same kind: generalization error converges to an asymptote rather than worsening. What does overfit is letting each tree grow unbounded on little data, or using boosting with too many iterations, where each new tree corrects the previous one's residuals and more rounds genuinely degrade test performance. The real cost of raising n_estimators is time and memory, not bias-variance.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 7: Bagging and Pasting; Breiman, Random Forests (2001)",
+      "expected_time_ms": 32000,
+      "tags": ["random-forest", "overfitting", "ensembles"]
+    },
+    {
+      "id": "q060403012",
+      "skill_id": "sk060403",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un árbol entrenado tiene estas reglas:\\nraíz: si `ingreso <= 30000` -> nodo A, si no -> nodo B\\nnodo A: si `edad <= 25` -> \"rechazar\", si no -> \"revisar\"\\nnodo B: si `deuda <= 5000` -> \"aprobar\", si no -> \"revisar\"\\n¿Qué devuelve para `ingreso = 30000`, `edad = 40`, `deuda = 1000`?",
+      "question_en": "A trained tree has these rules:\\nroot: if `income <= 30000` -> node A, else -> node B\\nnode A: if `age <= 25` -> \"reject\", else -> \"review\"\\nnode B: if `debt <= 5000` -> \"approve\", else -> \"review\"\\nWhat does it return for `income = 30000`, `age = 40`, `debt = 1000`?",
+      "options_es": ["aprobar", "rechazar", "no se puede determinar: faltan datos", "revisar"],
+      "options_en": ["approve", "reject", "cannot be determined: data is missing", "review"],
+      "correct_index": 3,
+      "explanation_es": "La condición es `<=`, así que `ingreso = 30000` cumple exactamente y baja al nodo A. Allí `edad = 40` no cumple `<= 25`, luego la hoja es \"revisar\". El error habitual es leer `30000 <= 30000` como falso e irse al nodo B, donde `deuda = 1000` daría \"aprobar\": por eso esa opción es la más tentadora. La deuda no se evalúa nunca en este recorrido, lo que ilustra que un árbol usa solo las features del camino, no todas.",
+      "explanation_en": "The condition is `<=`, so `income = 30000` satisfies it exactly and descends to node A. There `age = 40` fails `<= 25`, so the leaf is \"review\". The usual slip is reading `30000 <= 30000` as false and going to node B, where `debt = 1000` would give \"approve\": that is why that option is the most tempting. Debt is never evaluated on this path, illustrating that a tree uses only the features along the route, not all of them.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 6: Making Predictions",
+      "expected_time_ms": 35000,
+      "tags": ["decision-trees", "inference", "thresholds"]
+    },
+    {
+      "id": "q060403013",
+      "skill_id": "sk060403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En Gradient Boosting, ¿sobre qué se entrena cada árbol nuevo del ensamble?",
+      "question_en": "In Gradient Boosting, what is each new tree in the ensemble trained on?",
+      "options_es": [
+        "Sobre una muestra bootstrap distinta del dataset original, igual que en Random Forest",
+        "Sobre los errores residuales que dejó el ensamble acumulado hasta ese momento",
+        "Sobre las mismas etiquetas originales, y al final se vota por mayoría entre todos los árboles",
+        "Sobre un subconjunto de features distinto, manteniendo siempre las etiquetas originales"
+      ],
+      "options_en": [
+        "On a different bootstrap sample of the original dataset, just like Random Forest",
+        "On the residual errors left by the ensemble accumulated so far",
+        "On the same original labels, with a final majority vote across all trees",
+        "On a different feature subset, always keeping the original labels"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El boosting es secuencial: cada árbol ve lo que el ensamble aún hace mal (los pseudo-residuos, el gradiente negativo de la pérdida) y se suma al modelo con un factor de aprendizaje. Las opciones 1, 3 y 4 describen bagging o Random Forest, que entrenan árboles en paralelo sobre las etiquetas originales y luego promedian o votan; mezclar ambos esquemas es el error conceptual clásico. De esa diferencia se derivan las consecuencias prácticas: el boosting no se paraleliza por árbol y sí sobreajusta si se añaden demasiadas iteraciones.",
+      "explanation_en": "Boosting is sequential: each tree sees what the ensemble still gets wrong (the pseudo-residuals, the negative gradient of the loss) and is added to the model with a learning-rate factor. Options 1, 3 and 4 describe bagging or Random Forest, which train trees in parallel on the original labels and then average or vote; conflating the two schemes is the classic conceptual error. The practical consequences follow from that difference: boosting does not parallelize across trees, and it does overfit if too many iterations are added.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 7: Gradient Boosting",
+      "expected_time_ms": 35000,
+      "tags": ["gradient-boosting", "ensembles", "residuals"]
+    },
+    {
+      "id": "q060403014",
+      "skill_id": "sk060403",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un árbol de decisión al que no se le pone ningún límite de profundidad es un modelo de sesgo alto y varianza baja.",
+      "question_en": "A decision tree with no depth limit imposed is a high-bias, low-variance model.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso: es exactamente al revés. Un árbol sin podar crece hasta aislar casi cada muestra, alcanza sesgo muy bajo (memoriza el entrenamiento) y varianza muy alta (cambiar unas pocas filas reordena el árbol entero). El alto sesgo y baja varianza corresponden a modelos rígidos como una regresión lineal o un árbol de profundidad 1. Confundir la dirección de este par es frecuente porque 'árbol grande' suena a 'modelo robusto'; precisamente esa varianza alta es lo que Random Forest reduce promediando.",
+      "explanation_en": "False: it is exactly the other way round. An unpruned tree grows until it nearly isolates each sample, reaching very low bias (it memorizes the training set) and very high variance (changing a few rows rearranges the whole tree). High bias and low variance belong to rigid models such as a linear regression or a depth-1 stump. Getting the direction of this pair backwards is common because 'big tree' sounds like 'robust model'; that high variance is precisely what Random Forest reduces by averaging.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 6: Regularization Hyperparameters; Ch. 4: Bias/Variance Trade-off",
+      "expected_time_ms": 30000,
+      "tags": ["decision-trees", "bias-variance", "overfitting"]
+    },
+    {
+      "id": "q060403015",
+      "skill_id": "sk060403",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Como cada árbol de un Random Forest se entrena con una muestra bootstrap, aproximadamente un 37 % de las filas queda fuera de esa muestra y sirve para estimar el error sin separar un conjunto de validación. ¿Cómo se llama esa evaluación (tres letras, o su nombre completo)?",
+      "question_en": "Because each Random Forest tree is trained on a bootstrap sample, roughly 37 % of the rows are left out of that sample and can be used to estimate error without holding out a validation set. What is that evaluation called (three letters, or its full name)?",
+      "correct_answer_es": "OOB",
+      "correct_answer_en": "OOB",
+      "explanation_es": "La evaluación out-of-bag (OOB) predice cada fila usando solo los árboles que no la vieron durante el entrenamiento, lo que da una estimación casi insesgada del error de generalización gratis. En scikit-learn se activa con `oob_score=True`. El 37 % sale de (1 - 1/n)ⁿ → 1/e cuando n crece. No es lo mismo que la validación cruzada: el OOB se obtiene en un solo entrenamiento, mientras que la CV k-fold entrena k modelos, y por eso el OOB es la opción práctica cuando el bosque es grande.",
+      "explanation_en": "Out-of-bag (OOB) evaluation predicts each row using only the trees that never saw it during training, giving a nearly unbiased estimate of generalization error for free. In scikit-learn it is enabled with `oob_score=True`. The 37 % comes from (1 - 1/n)ⁿ → 1/e as n grows. It is not the same as cross-validation: OOB comes out of a single training run whereas k-fold CV trains k models, which is why OOB is the practical choice when the forest is large.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 7: Out-of-Bag Evaluation; Breiman, Random Forests (2001)",
+      "expected_time_ms": 40000,
+      "tags": ["random-forest", "oob", "validation"]
+    },
+
+    {
+      "id": "q060404008",
+      "skill_id": "sk060404",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "En una SVM con kernel RBF, subes `gamma` de 0.1 a 100 y el accuracy de entrenamiento llega al 100 % mientras el de test se hunde. ¿Qué describe mejor el papel de gamma?",
+      "question_en": "In an SVM with an RBF kernel you raise `gamma` from 0.1 to 100 and training accuracy hits 100 % while test accuracy collapses. What best describes gamma's role?",
+      "options_es": [
+        "Gamma controla el alcance de influencia de cada muestra: un gamma alto estrecha esa influencia y produce fronteras muy sinuosas alrededor de puntos individuales, es decir sobreajuste",
+        "Gamma es el número de vectores de soporte que la SVM puede conservar",
+        "Gamma fija la tolerancia a errores de clasificación; al subirla la SVM acepta más violaciones del margen",
+        "Gamma es el grado del polinomio que el kernel RBF expande internamente"
+      ],
+      "options_en": [
+        "Gamma controls how far each sample's influence reaches: a high gamma narrows that influence and produces very wiggly boundaries around individual points, i.e. overfitting",
+        "Gamma is the number of support vectors the SVM is allowed to keep",
+        "Gamma sets the tolerance to misclassification; raising it makes the SVM accept more margin violations",
+        "Gamma is the degree of the polynomial that the RBF kernel expands internally"
+      ],
+      "correct_index": 0,
+      "explanation_es": "El kernel RBF es `exp(-gamma·||x - x'||²)`: con gamma grande la similitud decae muy rápido con la distancia, cada punto solo 've' a sus vecinos inmediatos y la frontera se pega a las muestras de entrenamiento. La opción 3 describe en realidad a C, y confundir gamma con C es el error más repetido al hacer grid search, porque ambos van de menos a más flexibilidad pero por mecanismos distintos. La opción 4 confunde RBF con el kernel polinómico, que sí tiene un parámetro `degree`.",
+      "explanation_en": "The RBF kernel is `exp(-gamma·||x - x'||²)`: with a large gamma similarity decays very fast with distance, each point only 'sees' its immediate neighbours and the boundary hugs the training samples. Option 3 actually describes C, and confusing gamma with C is the most repeated mistake during grid search, because both run from less to more flexibility but through different mechanisms. Option 4 confuses RBF with the polynomial kernel, which does have a `degree` parameter.",
+      "source": "scikit-learn User Guide — RBF SVM parameters (C and gamma); Géron, Hands-On ML 3e, Ch. 5",
+      "expected_time_ms": 38000,
+      "tags": ["svm", "rbf", "gamma", "overfitting"]
+    },
+    {
+      "id": "q060404009",
+      "skill_id": "sk060404",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Una `SVC` de scikit-learn devuelve directamente probabilidades calibradas de pertenencia a cada clase, igual que la regresión logística.",
+      "question_en": "A scikit-learn `SVC` directly returns calibrated class-membership probabilities, just like logistic regression.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. Una SVM optimiza el margen, no una verosimilitud, así que su salida natural es `decision_function`: una distancia con signo al hiperplano, no una probabilidad. Para obtener probabilidades hay que activar `probability=True`, que por dentro ajusta una sigmoide sobre esas puntuaciones mediante validación cruzada (escalado de Platt), lo que encarece el entrenamiento y puede dar resultados ligeramente incoherentes con `predict`. La confusión nace de que `predict_proba` existe en la API, lo que sugiere que es gratis y nativo.",
+      "explanation_en": "False. An SVM optimizes the margin, not a likelihood, so its natural output is `decision_function`: a signed distance to the hyperplane, not a probability. Getting probabilities requires `probability=True`, which internally fits a sigmoid over those scores using cross-validation (Platt scaling), making training more expensive and occasionally producing results slightly inconsistent with `predict`. The confusion comes from `predict_proba` existing in the API, which suggests it is free and native.",
+      "source": "scikit-learn User Guide — SVM: Scores and probabilities (Platt scaling)",
+      "expected_time_ms": 32000,
+      "tags": ["svm", "probabilities", "calibration"]
+    },
+    {
+      "id": "q060404010",
+      "skill_id": "sk060404",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué función de pérdida caracteriza a la SVM lineal y en qué se diferencia de la log loss de la regresión logística?",
+      "question_en": "Which loss function characterizes the linear SVM, and how does it differ from logistic regression's log loss?",
+      "options_es": [
+        "Error cuadrático medio; se diferencia solo en que la SVM lo aplica a etiquetas ±1",
+        "Entropía cruzada binaria; es la misma pérdida, pero la SVM la optimiza con un solver distinto",
+        "Hinge loss `max(0, 1 - y·f(x))`: es cero para los puntos bien clasificados fuera del margen, así que solo los del margen influyen; la log loss nunca llega a cero y todos los puntos aportan gradiente",
+        "Pérdida 0-1 exacta, que es lo que permite a la SVM maximizar el margen"
+      ],
+      "options_en": [
+        "Mean squared error; it differs only in that the SVM applies it to ±1 labels",
+        "Binary cross-entropy; it is the same loss, the SVM just optimizes it with a different solver",
+        "Hinge loss `max(0, 1 - y·f(x))`: it is zero for correctly classified points beyond the margin, so only the margin points matter; log loss never reaches zero and every point contributes gradient",
+        "The exact 0-1 loss, which is what lets the SVM maximize the margin"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La hinge loss se anula en cuanto un punto está bien clasificado y más allá del margen; eso es exactamente lo que hace que solo un subconjunto de muestras (los vectores de soporte) determine la solución, y explica la esparsidad del modelo. Con log loss un punto lejano y bien clasificado sigue empujando un poquito, por eso la regresión logística no es esparsa. La opción 4 es tentadora porque la pérdida 0-1 suena a 'clasificar bien', pero no es convexa ni diferenciable y por eso nadie la optimiza directamente: la hinge es su relajación convexa.",
+      "explanation_en": "Hinge loss vanishes as soon as a point is correctly classified beyond the margin; that is exactly what makes only a subset of samples (the support vectors) determine the solution, and it explains the model's sparsity. Under log loss a distant, correctly classified point still pushes a little, which is why logistic regression is not sparse. Option 4 is tempting because 0-1 loss sounds like 'classify correctly', but it is neither convex nor differentiable and so nobody optimizes it directly: hinge is its convex relaxation.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 5: The Hinge Loss; scikit-learn User Guide — SGD: Mathematical formulation",
+      "expected_time_ms": 40000,
+      "tags": ["svm", "hinge-loss", "sparsity"]
+    },
+    {
+      "id": "q060404011",
+      "skill_id": "sk060404",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se adapta la idea del margen de la SVM a un problema de regresión (SVR)?",
+      "question_en": "How is the SVM margin idea adapted to a regression problem (SVR)?",
+      "options_es": [
+        "No se adapta: las SVM solo sirven para clasificación",
+        "Se discretiza el target en intervalos y se clasifica cada intervalo por separado",
+        "Se aplica una SVM de clasificación y se promedian las distancias al hiperplano de cada clase",
+        "Se invierte el objetivo: en vez de maximizar el margen entre clases, se busca un tubo de anchura ε que contenga el máximo de puntos, y solo penaliza a los que quedan fuera"
+      ],
+      "options_en": [
+        "It does not adapt: SVMs only work for classification",
+        "The target is discretized into intervals and each interval is classified separately",
+        "A classification SVM is applied and the distances to each class hyperplane are averaged",
+        "The objective is inverted: instead of maximizing the margin between classes, it seeks a tube of width ε containing as many points as possible, penalizing only those that fall outside"
+      ],
+      "correct_index": 3,
+      "explanation_es": "En SVR el margen deja de ser una zona vacía entre clases y pasa a ser un tubo de tolerancia: los errores menores que ε no cuentan, y solo los puntos fuera del tubo se convierten en vectores de soporte. Esa insensibilidad a errores pequeños hace a SVR bastante robusto al ruido. La opción 1 es la creencia más común entre quienes solo han visto SVM en clasificación; discretizar el target (opción 2) es una técnica real pero de otra familia y pierde el orden de los valores.",
+      "explanation_en": "In SVR the margin stops being an empty band between classes and becomes a tolerance tube: errors smaller than ε do not count, and only points outside the tube become support vectors. That insensitivity to small errors makes SVR fairly robust to noise. Option 1 is the most common belief among people who have only met SVMs in classification; discretizing the target (option 2) is a real technique but from another family and it discards the ordering of values.",
+      "source": "scikit-learn User Guide — Support Vector Regression; Géron, Hands-On ML 3e, Ch. 5: SVM Regression",
+      "expected_time_ms": 32000,
+      "tags": ["svm", "svr", "regression"]
+    },
+    {
+      "id": "q060404012",
+      "skill_id": "sk060404",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Una SVM binaria entrenada con etiquetas {-1, +1} devuelve `clf.decision_function(x) = -1.4` para una muestra. ¿Qué clase predice y qué indica la magnitud?",
+      "question_en": "A binary SVM trained with labels {-1, +1} returns `clf.decision_function(x) = -1.4` for a sample. Which class does it predict, and what does the magnitude indicate?",
+      "options_es": [
+        "Clase +1, porque -1.4 está fuera del intervalo [-1, 1] y se satura al positivo",
+        "No se puede decidir sin llamar antes a predict_proba",
+        "Clase -1, y como |-1.4| > 1 la muestra queda al otro lado del margen, no solo del hiperplano",
+        "Clase -1, y el valor -1.4 es la probabilidad (negativa) de pertenecer a la clase positiva"
+      ],
+      "options_en": [
+        "Class +1, because -1.4 lies outside [-1, 1] and saturates to the positive side",
+        "It cannot be decided without calling predict_proba first",
+        "Class -1, and since |-1.4| > 1 the sample sits beyond the margin, not merely on the far side of the hyperplane",
+        "Class -1, and the value -1.4 is the (negative) probability of belonging to the positive class"
+      ],
+      "correct_index": 2,
+      "explanation_es": "`decision_function` devuelve una distancia con signo: el signo da la clase y la magnitud, en unidades de margen, dice cuán lejos está del hiperplano. Con -1.4 la muestra es de clase -1 y está fuera del margen, por lo que no sería vector de soporte ni contribuiría a la hinge loss. La opción 4 es tentadora porque la gente espera una probabilidad, pero las probabilidades viven en [0, 1] y la SVM no las produce por defecto. La opción 2 confunde tener la clase con tener la confianza calibrada.",
+      "explanation_en": "`decision_function` returns a signed distance: the sign gives the class and the magnitude, in margin units, says how far it is from the hyperplane. At -1.4 the sample is class -1 and lies beyond the margin, so it would be neither a support vector nor a contributor to hinge loss. Option 4 is tempting because people expect a probability, but probabilities live in [0, 1] and the SVM does not produce them by default. Option 2 confuses having the class with having a calibrated confidence.",
+      "source": "scikit-learn User Guide — SVM: Scores and probabilities (decision_function)",
+      "expected_time_ms": 35000,
+      "tags": ["svm", "decision-function", "margin"]
+    },
+    {
+      "id": "q060404013",
+      "skill_id": "sk060404",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Tienes 500 000 muestras y quieres un clasificador de margen máximo lineal. ¿Por qué se recomienda `LinearSVC` (o `SGDClassifier` con hinge loss) antes que `SVC(kernel='linear')`?",
+      "question_en": "You have 500,000 samples and want a linear maximum-margin classifier. Why is `LinearSVC` (or `SGDClassifier` with hinge loss) recommended over `SVC(kernel='linear')`?",
+      "options_es": [
+        "Porque `SVC(kernel='linear')` en realidad no maximiza el margen, solo aproxima la frontera",
+        "Porque `SVC` usa un solver kernelizado cuyo coste escala entre cuadrática y cúbicamente con el número de muestras, mientras que LinearSVC escala aproximadamente lineal",
+        "Porque `LinearSVC` no necesita que se escalen las features y `SVC` sí",
+        "Porque `SVC` no admite el parámetro C y por tanto no puede regularizarse"
+      ],
+      "options_en": [
+        "Because `SVC(kernel='linear')` does not actually maximize the margin, it only approximates the boundary",
+        "Because `SVC` uses a kernelized solver whose cost scales between quadratically and cubically with the number of samples, whereas LinearSVC scales roughly linearly",
+        "Because `LinearSVC` does not need feature scaling while `SVC` does",
+        "Because `SVC` does not accept the C parameter and therefore cannot be regularized"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`SVC` envuelve libsvm y resuelve el problema dual, que trabaja con una matriz kernel de tamaño n×n: con medio millón de filas eso es inviable en tiempo y memoria aunque el kernel sea lineal. `LinearSVC` (liblinear) resuelve la formulación primal y escala con el número de muestras. Ambos maximizan el margen (la opción 1 es falsa) y ambos usan C (la 4 también). La opción 3 invierte el consejo real: cualquier SVM, lineal incluida, necesita features escaladas porque la penalización y las distancias dependen de la escala.",
+      "explanation_en": "`SVC` wraps libsvm and solves the dual problem, which works with an n×n kernel matrix: with half a million rows that is infeasible in time and memory even for a linear kernel. `LinearSVC` (liblinear) solves the primal formulation and scales with the number of samples. Both maximize the margin (option 1 is false) and both use C (so is option 4). Option 3 inverts the real advice: any SVM, linear included, needs scaled features because the penalty and the distances depend on scale.",
+      "source": "scikit-learn User Guide — SVM: Complexity and Tips on Practical Use (LinearSVC vs SVC)",
+      "expected_time_ms": 42000,
+      "tags": ["svm", "scalability", "linearsvc"]
+    },
+    {
+      "id": "q060404014",
+      "skill_id": "sk060404",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "Si eliminas del conjunto de entrenamiento un punto que no es vector de soporte y vuelves a entrenar la SVM, obtienes exactamente el mismo hiperplano.",
+      "question_en": "If you delete a training point that is not a support vector and retrain the SVM, you get exactly the same hyperplane.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 0,
+      "explanation_es": "Verdadero, y es la propiedad que distingue a la SVM del resto de clasificadores lineales. La solución depende solo de los puntos con coeficiente dual distinto de cero, es decir los que están sobre el margen o lo violan; los demás tienen hinge loss cero y gradiente cero. Por eso el modelo entrenado se puede guardar quedándose solo con los vectores de soporte. En regresión logística, en cambio, todos los puntos aportan algo al gradiente y borrar cualquiera mueve la frontera, aunque sea poco.",
+      "explanation_en": "True, and it is the property that sets the SVM apart from other linear classifiers. The solution depends only on points with a non-zero dual coefficient, i.e. those on or violating the margin; the rest have zero hinge loss and zero gradient. That is why a trained model can be stored keeping only the support vectors. In logistic regression, by contrast, every point contributes to the gradient and deleting any of them moves the boundary, however slightly.",
+      "source": "Géron, Hands-On Machine Learning, 3e (2022), Ch. 5: Support Vector Machines",
+      "expected_time_ms": 32000,
+      "tags": ["svm", "support-vectors", "sparsity"]
+    },
+    {
+      "id": "q060404015",
+      "skill_id": "sk060404",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "La SVM es binaria por construcción. Para 4 clases, `SVC` de scikit-learn entrena 6 clasificadores, uno por cada par de clases, y decide por votos. ¿Cómo se llama esa estrategia multiclase?",
+      "question_en": "The SVM is binary by construction. For 4 classes, scikit-learn's `SVC` trains 6 classifiers, one per pair of classes, and decides by voting. What is that multiclass strategy called?",
+      "correct_answer_es": "uno contra uno",
+      "correct_answer_en": "one-vs-one",
+      "explanation_es": "Uno contra uno (OvO) entrena n(n-1)/2 clasificadores, de ahí los 6 para 4 clases. Aunque son más modelos que en uno contra el resto (OvR, que entrenaría 4), cada uno se ajusta solo con las muestras de dos clases, y como el coste de la SVM crece de forma superlineal con el número de muestras, OvO acaba siendo más rápido: por eso libsvm lo usa. `LinearSVC`, en cambio, usa OvR por defecto, así que dos clasificadores SVM del mismo paquete pueden diferir en el esquema multiclase.",
+      "explanation_en": "One-vs-one (OvO) trains n(n-1)/2 classifiers, hence 6 for 4 classes. Although that is more models than one-vs-rest (OvR, which would train 4), each is fitted on the samples of only two classes, and since SVM cost grows superlinearly with sample count, OvO ends up faster: that is why libsvm uses it. `LinearSVC`, by contrast, defaults to OvR, so two SVM classifiers from the same package can differ in their multiclass scheme.",
+      "source": "scikit-learn User Guide — SVM: Multi-class classification (one-vs-one)",
+      "expected_time_ms": 40000,
+      "tags": ["svm", "multiclass", "one-vs-one"]
+    },
+
+    {
+      "id": "q060405008",
+      "skill_id": "sk060405",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "En un dataset de 1000 muestras subes k de 5 a 500 en un k-NN. ¿Qué le pasa al modelo?",
+      "question_en": "On a 1000-sample dataset you raise k from 5 to 500 in a k-NN. What happens to the model?",
+      "options_es": [
+        "La frontera se suaviza hasta el punto de subajustar: con k tan grande la predicción se acerca a la clase mayoritaria global e ignora la estructura local",
+        "Mejora siempre, porque más vecinos significan más información y menos ruido",
+        "El modelo sobreajusta, porque tiene en cuenta más puntos de entrenamiento",
+        "No cambia nada mientras k sea menor que el número total de muestras"
+      ],
+      "options_en": [
+        "The boundary smooths to the point of underfitting: with k that large the prediction approaches the global majority class and ignores local structure",
+        "It always improves, because more neighbours mean more information and less noise",
+        "The model overfits, because it takes more training points into account",
+        "Nothing changes as long as k is below the total number of samples"
+      ],
+      "correct_index": 0,
+      "explanation_es": "k regula el compromiso sesgo-varianza al revés de lo que sugiere la intuición: k pequeño da varianza alta (sobreajuste al ruido) y k grande da sesgo alto. En el extremo k = n el modelo predice siempre la clase mayoritaria, sin usar las features. La opción 2 recoge la mitad buena del argumento (más vecinos reducen el ruido) pero olvida que también borran la señal local; la opción 3 invierte la dirección del efecto, que es el error clásico al pensar que 'más datos considerados = más complejo'.",
+      "explanation_en": "k governs the bias-variance trade-off in the opposite direction to intuition: small k gives high variance (overfitting to noise) and large k gives high bias. In the extreme k = n the model always predicts the majority class, never using the features. Option 2 captures the good half of the argument (more neighbours reduce noise) but forgets that they also erase the local signal; option 3 flips the direction of the effect, the classic slip of thinking 'more data considered = more complex'.",
+      "source": "scikit-learn User Guide — Nearest Neighbors Classification; Géron, Hands-On ML 3e, Ch. 2",
+      "expected_time_ms": 30000,
+      "tags": ["knn", "hyperparameters", "underfitting"]
+    },
+    {
+      "id": "q060405009",
+      "skill_id": "sk060405",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Un k-NN que funcionaba bien con 10 features se degrada a nivel de azar con 500 features, aunque tenga las mismas muestras. ¿Cuál es la causa de fondo?",
+      "question_en": "A k-NN that worked well with 10 features degrades to chance level with 500 features, even with the same samples. What is the underlying cause?",
+      "options_es": [
+        "El coste de calcular distancias se dispara y scikit-learn trunca los vecinos para no agotar la memoria",
+        "Las features nuevas están correlacionadas y eso rompe la desigualdad triangular de la distancia euclidiana",
+        "Con 500 features k-NN deja de ser aplicable porque exige más muestras que features para invertir la matriz de covarianzas",
+        "La maldición de la dimensionalidad: en alta dimensión las distancias entre pares de puntos se concentran, así que el vecino más cercano deja de ser significativamente más cercano que el más lejano"
+      ],
+      "options_en": [
+        "The cost of computing distances explodes and scikit-learn truncates neighbours to avoid exhausting memory",
+        "The new features are correlated and that breaks the triangle inequality of Euclidean distance",
+        "With 500 features k-NN stops being applicable because it needs more samples than features to invert the covariance matrix",
+        "The curse of dimensionality: in high dimensions pairwise distances concentrate, so the nearest neighbour stops being meaningfully closer than the farthest one"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Al crecer la dimensión, el cociente entre la distancia máxima y la mínima tiende a 1: todos los puntos quedan aproximadamente a la misma distancia y el concepto de 'vecindad' pierde sentido, de modo que el voto se vuelve casi aleatorio. Es un problema estadístico, no de implementación: la opción 1 describe un límite de recursos que no existe. La opción 2 es falsa (la euclidiana cumple la desigualdad triangular siempre) y la 3 mezcla k-NN con métodos que sí invierten covarianzas, como LDA o la distancia de Mahalanobis. La mitigación real es reducir dimensión (PCA, selección de features) o traer muchas más muestras.",
+      "explanation_en": "As dimension grows, the ratio between maximum and minimum distance tends to 1: all points sit at roughly the same distance and the notion of 'neighbourhood' loses meaning, so the vote becomes near-random. This is a statistical problem, not an implementation one: option 1 describes a resource limit that does not exist. Option 2 is false (Euclidean distance always satisfies the triangle inequality) and option 3 mixes k-NN up with methods that do invert covariances, such as LDA or Mahalanobis distance. The real mitigation is dimensionality reduction (PCA, feature selection) or far more samples.",
+      "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5.11: The Curse of Dimensionality; scikit-learn User Guide — Nearest Neighbors",
+      "expected_time_ms": 42000,
+      "tags": ["knn", "curse-of-dimensionality", "distance"]
+    },
+    {
+      "id": "q060405010",
+      "skill_id": "sk060405",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "k-NN solo sirve para clasificación: no puede usarse para predecir valores continuos.",
+      "question_en": "k-NN only works for classification: it cannot be used to predict continuous values.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso. `KNeighborsRegressor` predice promediando (o ponderando por distancia) el target de los k vecinos más cercanos, en lugar de votar la clase mayoritaria. El mecanismo de búsqueda de vecinos es idéntico; solo cambia cómo se agregan sus etiquetas. La creencia contraria es común porque casi todos los ejemplos introductorios son de clasificación. Igual que en la versión clasificadora, hace falta escalar las features y el valor de k regula la suavidad de la función predicha.",
+      "explanation_en": "False. `KNeighborsRegressor` predicts by averaging (or distance-weighting) the target of the k nearest neighbours instead of voting the majority class. The neighbour-search machinery is identical; only the aggregation of their labels changes. The opposite belief is common because nearly all introductory examples are classification ones. As in the classifier version, features must be scaled and k controls the smoothness of the predicted function.",
+      "source": "scikit-learn User Guide — Nearest Neighbors Regression",
+      "expected_time_ms": 22000,
+      "tags": ["knn", "regression", "api"]
+    },
+    {
+      "id": "q060405011",
+      "skill_id": "sk060405",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Un `KNeighborsClassifier(n_neighbors=5, weights='uniform')` encuentra para una muestra estos 5 vecinos, con (distancia, clase): (0.1, A), (0.2, A), (0.9, B), (1.0, B), (1.1, B). ¿Qué clase predice?",
+      "question_en": "A `KNeighborsClassifier(n_neighbors=5, weights='uniform')` finds these 5 neighbours for a sample, as (distance, class): (0.1, A), (0.2, A), (0.9, B), (1.0, B), (1.1, B). Which class does it predict?",
+      "options_es": [
+        "B, porque con weights='uniform' cada vecino vale un voto y B tiene 3 frente a 2",
+        "A, porque sus dos vecinos están mucho más cerca que los tres de B",
+        "A, porque el vecino más cercano en términos absolutos es de clase A",
+        "Empate: el clasificador devolvería un error por no poder desempatar"
+      ],
+      "options_en": [
+        "B, because with weights='uniform' each neighbour casts one vote and B has 3 against 2",
+        "A, because its two neighbours are far closer than B's three",
+        "A, because the single nearest neighbour in absolute terms is class A",
+        "A tie: the classifier would raise an error for being unable to break it"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Con `weights='uniform'` la distancia solo decide quiénes entran en el vecindario, no cuánto pesa cada uno dentro: 3 votos de B ganan a 2 de A. Las opciones 2 y 3 son exactamente el resultado que daría `weights='distance'` o un 1-NN, y por eso son tan tentadoras: describen comportamientos reales de la librería, pero de otra configuración. Este caso es justamente el ejemplo canónico de cuándo conviene pasar a ponderación por distancia.",
+      "explanation_en": "With `weights='uniform'` distance only decides who enters the neighbourhood, not how much each counts inside it: 3 votes for B beat 2 for A. Options 2 and 3 are exactly what `weights='distance'` or a 1-NN would return, which is what makes them so tempting: they describe real library behaviour, just from a different configuration. This case is precisely the canonical example of when switching to distance weighting is worthwhile.",
+      "source": "scikit-learn User Guide — Nearest Neighbors Classification (weights parameter)",
+      "expected_time_ms": 32000,
+      "tags": ["knn", "voting", "weights"]
+    },
+    {
+      "id": "q060405012",
+      "skill_id": "sk060405",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué cambia al pasar de `weights='uniform'` a `weights='distance'` en un k-NN?",
+      "question_en": "What changes when moving from `weights='uniform'` to `weights='distance'` in a k-NN?",
+      "options_es": [
+        "Se normalizan las features automáticamente usando la distancia media del dataset",
+        "Cada vecino vota con peso inversamente proporcional a su distancia, así que los más cercanos influyen más y el modelo se vuelve más sensible a la vecindad inmediata",
+        "Se descartan los vecinos cuya distancia supera un umbral fijo y k deja de ser un número fijo",
+        "Se cambia la métrica de euclidiana a Manhattan, que es la que permite ponderar"
+      ],
+      "options_en": [
+        "Features get normalized automatically using the dataset's mean distance",
+        "Each neighbour votes with weight inversely proportional to its distance, so closer ones matter more and the model becomes more sensitive to the immediate neighbourhood",
+        "Neighbours beyond a fixed distance threshold are discarded and k stops being a fixed number",
+        "The metric switches from Euclidean to Manhattan, which is the one that allows weighting"
+      ],
+      "correct_index": 1,
+      "explanation_es": "`weights='distance'` pondera cada voto por 1/d, lo que suele ayudar cuando la densidad de puntos es irregular y un k fijo arrastra vecinos lejanos poco relevantes. Efecto secundario: acerca el comportamiento al de un k pequeño, así que aumenta la varianza. La opción 1 es la confusión más peligrosa, porque hace creer que ya no hace falta escalar: la ponderación por distancia no arregla que una feature en euros domine a otra en metros. La opción 3 describe `RadiusNeighborsClassifier`, que es otro estimador, y la métrica se elige aparte con `metric`/`p`.",
+      "explanation_en": "`weights='distance'` weights each vote by 1/d, which usually helps when point density is uneven and a fixed k drags in distant, barely relevant neighbours. Side effect: it moves behaviour toward that of a small k, so variance rises. Option 1 is the most dangerous confusion, because it suggests scaling is no longer needed: distance weighting does not fix a feature in euros dominating one in metres. Option 3 describes `RadiusNeighborsClassifier`, a different estimator, and the metric is chosen separately via `metric`/`p`.",
+      "source": "scikit-learn User Guide — Nearest Neighbors Classification (uniform vs distance weights)",
+      "expected_time_ms": 32000,
+      "tags": ["knn", "weights", "scikit-learn"]
+    },
+    {
+      "id": "q060405013",
+      "skill_id": "sk060405",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "En k-NN, aumentar k mejora siempre la exactitud sobre el conjunto de test, porque cada vecino adicional aporta más evidencia a la decisión.",
+      "question_en": "In k-NN, increasing k always improves test accuracy, because each extra neighbour adds more evidence to the decision.",
+      "options_es": ["Verdadero", "Falso"],
+      "options_en": ["True", "False"],
+      "correct_index": 1,
+      "explanation_es": "Falso: la relación entre k y el error de test tiene forma de U. Al principio subir k reduce la varianza y el error baja, pero pasado un punto los vecinos que se añaden ya pertenecen a otras regiones del espacio y meten sesgo, de modo que el error vuelve a subir. Por eso k se elige por validación cruzada y no con la regla de 'cuanto más grande mejor'. La creencia contraria viene de mezclar 'más datos de entrenamiento siempre ayuda' (cierto) con 'más vecinos siempre ayuda' (falso).",
+      "explanation_en": "False: the relationship between k and test error is U-shaped. Initially raising k reduces variance and error drops, but past a point the neighbours being added belong to other regions of the space and inject bias, so error rises again. That is why k is chosen by cross-validation rather than by a 'bigger is better' rule. The opposite belief comes from conflating 'more training data always helps' (true) with 'more neighbours always helps' (false).",
+      "source": "scikit-learn User Guide — Nearest Neighbors Classification; Géron, Hands-On ML 3e, Ch. 2: Cross-Validation",
+      "expected_time_ms": 28000,
+      "tags": ["knn", "hyperparameters", "bias-variance"]
+    },
+    {
+      "id": "q060405014",
+      "skill_id": "sk060405",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Aplicas k-NN con k=15 a un problema de fraude donde solo el 2 % de las transacciones son fraudulentas. El modelo predice 'no fraude' casi siempre. ¿Por qué ocurre y qué se hace?",
+      "question_en": "You apply k-NN with k=15 to a fraud problem where only 2 % of transactions are fraudulent. The model predicts 'not fraud' almost always. Why does this happen and what is done about it?",
+      "options_es": [
+        "Porque k-NN necesita que las clases estén ordenadas; basta con recodificar las etiquetas",
+        "Porque k=15 es demasiado pequeño para captar patrones de fraude; subirlo a 100 lo resuelve",
+        "Porque el voto por mayoría en un vecindario de 15 casi nunca contiene 8 fraudes: la clase mayoritaria domina. Se mitiga con k menor, ponderación por distancia, remuestreo o ajustando el umbral sobre predict_proba",
+        "Porque la distancia euclidiana no está definida para datos muy desbalanceados y hay que usar Manhattan"
+      ],
+      "options_en": [
+        "Because k-NN needs the classes to be ordered; recoding the labels is enough",
+        "Because k=15 is too small to capture fraud patterns; raising it to 100 solves it",
+        "Because majority voting in a 15-neighbour neighbourhood almost never contains 8 frauds: the majority class dominates. Mitigations are a smaller k, distance weighting, resampling, or tuning the threshold on predict_proba",
+        "Because Euclidean distance is undefined for heavily imbalanced data and Manhattan must be used"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Con un 2 % de positivos, un vecindario típico de 15 puntos contiene 0 o 1 fraude, así que la mayoría es siempre la clase negativa aunque la muestra esté rodeada de casos relativamente sospechosos. La opción 2 es la reacción instintiva y empeora el problema: cuanto más grande el vecindario, más domina la clase mayoritaria. Las opciones 1 y 4 inventan requisitos que el algoritmo no tiene; la distancia no depende del balance de clases. Nota práctica: la accuracy aquí es inútil, hay que mirar recall y precisión.",
+      "explanation_en": "With 2 % positives, a typical 15-point neighbourhood contains 0 or 1 fraud, so the majority is always the negative class even when the sample sits among relatively suspicious cases. Option 2 is the instinctive reaction and makes things worse: the larger the neighbourhood, the more the majority class dominates. Options 1 and 4 invent requirements the algorithm does not have; distance does not depend on class balance. Practical note: accuracy is useless here, recall and precision are what to look at.",
+      "source": "scikit-learn User Guide — Nearest Neighbors Classification; Géron, Hands-On ML 3e, Ch. 3: Precision and Recall",
+      "expected_time_ms": 42000,
+      "tags": ["knn", "class-imbalance", "evaluation"]
+    },
+    {
+      "id": "q060405015",
+      "skill_id": "sk060405",
+      "type": "fill_blank",
+      "difficulty_tier": "expert",
+      "question_es": "Buscar vecinos por fuerza bruta cuesta O(n) por consulta. Para evitarlo, scikit-learn puede construir una estructura de árbol que particiona el espacio con hiperplanos perpendiculares a los ejes y que es muy eficaz con pocas dimensiones. ¿Cómo se llama esa estructura?",
+      "question_en": "Brute-force neighbour search costs O(n) per query. To avoid it, scikit-learn can build a tree structure that partitions the space with axis-aligned hyperplanes and is very effective in low dimensions. What is that structure called?",
+      "correct_answer_es": "KD-tree",
+      "correct_answer_en": "KD-tree",
+      "explanation_es": "El KD-tree (k-dimensional tree) divide recursivamente el espacio por un eje cada vez, lo que permite descartar ramas enteras y bajar el coste a ~O(log n) por consulta. Su eficacia se desploma al crecer la dimensión, justo por la concentración de distancias: por encima de unas 20 features scikit-learn tiende a preferir el Ball-tree, que usa hiperesferas en vez de cortes por eje, o directamente fuerza bruta. Por eso `algorithm='auto'` elige según n, la dimensión y la dispersión de los datos.",
+      "explanation_en": "The KD-tree (k-dimensional tree) recursively splits the space along one axis at a time, which lets whole branches be pruned and brings the cost down to ~O(log n) per query. Its effectiveness collapses as dimension grows, precisely because of distance concentration: above roughly 20 features scikit-learn tends to prefer the Ball-tree, which uses hyperspheres instead of axis-aligned cuts, or plain brute force. That is why `algorithm='auto'` picks based on n, dimensionality and data sparsity.",
+      "source": "scikit-learn User Guide — Nearest Neighbor Algorithms (K-D Tree and Ball Tree)",
+      "expected_time_ms": 40000,
+      "tags": ["knn", "kd-tree", "efficiency"]
+    }
+  ]
+}
