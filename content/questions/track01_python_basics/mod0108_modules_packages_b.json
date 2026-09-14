@@ -485,6 +485,58 @@
     },
 
     {
+      "id": "q010803018",
+      "skill_id": "sk010803",
+      "type": "code_output",
+      "difficulty_tier": "medium",
+      "question_es": "Dado el paquete `tienda/` con `__init__.py` y `carrito.py`, ¿cuál importa correctamente la función `total` desde fuera?",
+      "question_en": "Given the package `shop/` with `__init__.py` and `cart.py`, which correctly imports the function `total` from outside?",
+      "options_es": [
+        "`import tienda.total`",
+        "`from tienda.carrito import total`",
+        "`from tienda import total.carrito`",
+        "`import total from tienda`"
+      ],
+      "options_en": [
+        "`import shop.total`",
+        "`from shop.cart import total`",
+        "`from shop import total.cart`",
+        "`import total from shop`"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La ruta va de paquete a módulo y, por último, al nombre: el punto separa contenedores, nunca el nombre final. `import tienda.total` fallaría porque `total` no es un módulo, y la sintaxis `import X from Y` no existe en Python — es de JavaScript.",
+      "explanation_en": "The path runs from package to module and finally to the name: the dot separates containers, never the final name. `import shop.total` would fail because `total` is not a module, and the `import X from Y` syntax does not exist in Python — that is JavaScript.",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.4 (packages)",
+      "expected_time_ms": 32000,
+      "tags": ["packages", "imports"]
+    },
+    {
+      "id": "q010804018",
+      "skill_id": "sk010804",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué diferencia hay entre `requirements.txt` y las dependencias declaradas en `pyproject.toml`?",
+      "question_en": "What is the difference between `requirements.txt` and the dependencies declared in `pyproject.toml`?",
+      "options_es": [
+        "Ninguna, son dos formatos del mismo fichero",
+        "`requirements.txt` solo sirve para paquetes publicados en PyPI",
+        "`requirements.txt` describe un entorno concreto a instalar; `pyproject.toml` declara qué necesita el paquete para funcionar",
+        "`pyproject.toml` se genera automáticamente desde `requirements.txt`"
+      ],
+      "options_en": [
+        "None, they are two formats of the same file",
+        "`requirements.txt` only works for packages published on PyPI",
+        "`requirements.txt` describes a concrete environment to install; `pyproject.toml` declares what the package needs to work",
+        "`pyproject.toml` is generated automatically from `requirements.txt`"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Responden a preguntas distintas: uno reproduce un entorno exacto —normalmente con versiones fijadas e incluyendo dependencias indirectas— y el otro declara el contrato del paquete, habitualmente con rangos. Un proyecto puede usar los dos sin contradicción.",
+      "explanation_en": "They answer different questions: one reproduces an exact environment — usually pinned and including indirect dependencies — and the other declares the package's contract, usually with ranges. A project can use both without contradiction.",
+      "source": "Python Packaging User Guide — requirements.txt vs. pyproject.toml / PEP 621",
+      "expected_time_ms": 38000,
+      "tags": ["pip", "packaging", "pyproject"]
+    },
+    {
       "id": "q010804010",
       "skill_id": "sk010804",
       "type": "mcq",
