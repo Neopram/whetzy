@@ -17,7 +17,7 @@ from typing import Any
 import pytest
 from sqlalchemy import func, select
 
-from app.models.content import GlossaryTerm, Module, Question, Skill, Track
+from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
 from app.services import content_loader
 from app.services.content_loader import _content_root, load_content
 
@@ -498,6 +498,87 @@ class TestTrackCounts:
 
 
 # ── the real corpus (the path start.sh runs in production) ────────────────────
+
+
+class TestCertificationDomains:
+    """Domains exist in the schema since 10.1 but were never populated until
+    10.3, so `Skill.domain_id` was null for every question in the bank and a
+    per-domain report had nothing to group by."""
+
+    @pytest.mark.asyncio
+    async def test_certification_track_loads_its_exam_domains(
+        self, db_session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.delenv("CONTENT_DIR", raising=False)
+        await load_content(db_session)
+
+        domains = (
+            await db_session.scalars(
+                select(Domain).where(Domain.track_id == "track08").order_by(Domain.order)
+            )
+        ).all()
+
+        assert [d.name_en for d in domains] == [
+            "Domain 1: Cloud Concepts",
+            "Domain 2: Security and Compliance",
+            "Domain 3: Cloud Technology and Services",
+            "Domain 4: Billing, Pricing, and Support",
+        ]
+        # The published CLF-C02 blueprint. If these drift, the per-domain report
+        # and the exam's question mix stop mirroring the real exam.
+        assert [d.weight_pct for d in domains] == [24, 30, 34, 12]
+        assert sum(d.weight_pct for d in domains) == 100
+
+    @pytest.mark.asyncio
+    async def test_every_certification_skill_belongs_to_a_domain(
+        self, db_session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """A skill with no domain is a question that no report can attribute."""
+        monkeypatch.delenv("CONTENT_DIR", raising=False)
+        await load_content(db_session)
+
+        orphans = (
+            await db_session.scalars(
+                select(Skill.id)
+                .join(Module, Skill.module_id == Module.id)
+                .where(Module.track_id == "track08", Skill.domain_id.is_(None))
+            )
+        ).all()
+        assert orphans == [], f"certification skills with no exam domain: {orphans}"
+
+    @pytest.mark.asyncio
+    async def test_learning_tracks_have_no_domains(
+        self, db_session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Only certification tracks mirror a blueprint; the other seven must
+        not acquire domains as a side effect."""
+        monkeypatch.delenv("CONTENT_DIR", raising=False)
+        await load_content(db_session)
+
+        stray = (
+            await db_session.scalars(select(Domain).where(Domain.track_id != "track08"))
+        ).all()
+        assert stray == []
+
+    @pytest.mark.asyncio
+    async def test_certification_track_carries_its_exam_format(
+        self, db_session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.delenv("CONTENT_DIR", raising=False)
+        await load_content(db_session)
+
+        track = await db_session.get(Track, "track08")
+        assert track is not None
+        assert track.is_certification is True
+        assert track.cert_provider == "AWS"
+        # 65 questions in 90 minutes, from the official exam page.
+        assert track.exam_question_count == 65
+        assert track.exam_duration_minutes == 90
+
+        learning = await db_session.get(Track, "track01")
+        assert learning is not None
+        assert learning.is_certification is False
+        assert learning.exam_question_count is None
 
 
 class TestRealCorpus:

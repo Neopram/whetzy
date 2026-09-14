@@ -17,7 +17,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import AsyncSessionLocal, init_db
-from app.models.content import GlossaryTerm, Module, Question, Skill, Track
+from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
 
 
 def _content_root() -> Path:
@@ -40,6 +40,17 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
     track.icon = data.get("icon", "📘")
     track.color = data.get("color", "#1CB0F6")
 
+    # Certification metadata (10.1's schema, populated since 10.3). A learning
+    # track leaves all of this null; only a certification track carries a
+    # published exam blueprint to mirror.
+    cert = data.get("certification")
+    track.is_certification = bool(data.get("is_certification"))
+    if cert:
+        track.cert_provider = cert.get("provider")
+        track.exam_question_count = cert.get("exam_question_count")
+        track.exam_duration_minutes = cert.get("exam_duration_minutes")
+        track.passing_score_pct = cert.get("passing_score_pct")
+
     for m_order, m in enumerate(data.get("modules", []), start=1):
         module = await db.get(Module, m["id"])
         if module is None:
@@ -53,6 +64,25 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
         module.description_en = m.get("description_en", "")
         module.min_mastery_to_unlock = m.get("min_mastery_to_unlock", 0.7)
 
+        # One exam domain per module, for certification tracks. The domain id is
+        # derived from the module id rather than stored separately: a module IS
+        # a domain in a certification track, and inventing a second identifier
+        # would let the two drift apart.
+        domain_id: str | None = None
+        if m.get("exam_domain") is not None:
+            domain_id = f"dom{module.id[3:]}"
+            domain = await db.get(Domain, domain_id)
+            if domain is None:
+                domain = Domain(id=domain_id, track_id=track.id)
+                db.add(domain)
+            domain.track_id = track.id
+            # The published blueprint names the domain in English; the Spanish
+            # side reuses the module's own name, which is already native ES.
+            domain.name_en = m["exam_domain"]
+            domain.name_es = m["name_es"]
+            domain.weight_pct = float(m["exam_weight_pct"])
+            domain.order = m.get("order", m_order)
+
         for s_order, s in enumerate(m.get("skills", []), start=1):
             skill = await db.get(Skill, s["id"])
             if skill is None:
@@ -62,6 +92,7 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
             skill.name_es = s["name_es"]
             skill.name_en = s["name_en"]
             skill.order = s.get("order", s_order)
+            skill.domain_id = domain_id
 
 
 async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:
