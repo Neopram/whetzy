@@ -94,6 +94,11 @@ class UserSkillState(Base):
 
     attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     correct_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    # Counted apart from wrong answers so accuracy never reads an honest
+    # "I don't know" as a failure the learner made.
+    unknown_count: Mapped[int] = mapped_column(
+        Integer, default=0, nullable=False, server_default="0"
+    )
 
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False

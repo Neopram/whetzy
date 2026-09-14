@@ -74,7 +74,8 @@ async def db_session():
                         grade INTEGER DEFAULT 0,
                         response_time_ms INTEGER DEFAULT 0,
                         created_at TEXT,
-                        question_version INTEGER DEFAULT 1
+                        question_version INTEGER DEFAULT 1,
+                        declared_unknown INTEGER DEFAULT 0
                     )
                 """)),
             )

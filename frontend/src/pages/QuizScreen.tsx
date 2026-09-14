@@ -114,18 +114,29 @@ export function QuizScreen() {
 
   // ── Core answer submission ─────────────────────────────────────────────
   const submitAnswer = useCallback(
-    async (selectedIndex: number | null) => {
+    async (selectedIndex: number | null, declaredUnknown = false) => {
       if (!sessionId || !question || feedback || submitting) return;
       setSubmitting(true);
       const rt = Date.now() - questionStart.current;
       try {
-        const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt);
+        const res = await quizApi.answer(sessionId, question.id, selectedIndex, rt, declaredUnknown);
         setFeedback(res);
         setCombo(res.combo);
         setXpEarned((x) => x + res.xp_earned);
-        setLottieSrc(res.combo >= 3 ? '/lottie/streak.json' : res.correct ? '/lottie/correct.json' : '/lottie/incorrect.json');
+        // Admitting ignorance is not a failure, so it gets no failure animation.
+        setLottieSrc(
+          declaredUnknown
+            ? null
+            : res.combo >= 3
+              ? '/lottie/streak.json'
+              : res.correct
+                ? '/lottie/correct.json'
+                : '/lottie/incorrect.json'
+        );
         setTimeout(() => setLottieSrc(null), 1400);
-        if (res.correct) {
+        if (declaredUnknown) {
+          showToast(t('quiz.unknownAck'), 'info');
+        } else if (res.correct) {
           showToast(`+${res.xp_earned} XP${res.combo >= 3 ? ` · combo ${res.combo}🔥` : ''}`, 'success');
         } else {
           showToast(t('quiz.incorrect'), 'error');
@@ -175,6 +186,14 @@ export function QuizScreen() {
     },
     [submitAnswer]
   );
+
+  // Saying "I don't know" is a real answer, not a skip: it tells the model
+  // something a guess never could, so it goes through the same path and shows
+  // the same explanation.
+  const handleUnknown = useCallback(() => {
+    setSelected(null);
+    return submitAnswer(null, true);
+  }, [submitAnswer]);
 
   // ── Exec: run code in Pyodide ──────────────────────────────────────────
   const handleRun = useCallback(async () => {
@@ -458,6 +477,17 @@ export function QuizScreen() {
           );
         })}
       </div>
+
+      {!answered && (
+        <button
+          type="button"
+          className={styles.unknownBtn}
+          onClick={handleUnknown}
+          disabled={submitting}
+        >
+          {t('quiz.dontKnow')}
+        </button>
+      )}
 
       {answered && question.type === 'code_output' && code && (
         <div className={styles.verifyArea}>

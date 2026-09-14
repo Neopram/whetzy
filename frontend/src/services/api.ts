@@ -197,7 +197,13 @@ export const quiz = {
     });
   },
 
-  async answer(sessionId: string, questionId: string, selectedIndex: number | null, responseTimeMs: number) {
+  async answer(
+    sessionId: string,
+    questionId: string,
+    selectedIndex: number | null,
+    responseTimeMs: number,
+    declaredUnknown = false,
+  ) {
     return request<QuizAnswerResponse>('/quiz/answer', {
       method: 'POST',
       body: JSON.stringify({
@@ -205,6 +211,7 @@ export const quiz = {
         question_id: questionId,
         selected_index: selectedIndex,
         response_time_ms: responseTimeMs,
+        declared_unknown: declaredUnknown,
       }),
     });
   },

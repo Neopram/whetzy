@@ -127,3 +127,81 @@ class TestBKTModel:
         # Should not raise; p_known should stay >= 0
         model.update(state, correct=True)
         assert 0.0 <= state.p_known <= 1.0
+
+
+class TestUpdateUnknown:
+    """Explicit "I don't know" — a cleaner observation than a wrong answer.
+
+    A wrong answer is confounded twice: a quarter of lucky guesses on a
+    four-option question look like knowledge, and someone who does know can
+    slip. Declaring ignorance carries neither confound, so it should move the
+    posterior further down than a wrong answer does.
+    """
+
+    def test_drops_mastery_harder_than_a_wrong_answer(self, model: BKTModel) -> None:
+        wrong = SkillState(skill_id="sk01", p_known=0.5)
+        unknown = SkillState(skill_id="sk01", p_known=0.5)
+
+        model.update(wrong, correct=False)
+        model.update_unknown(unknown)
+
+        assert unknown.p_known < wrong.p_known
+
+    def test_guess_rate_does_not_affect_the_posterior(self) -> None:
+        # Nobody guesses their way into saying "I don't know", so P(G) must
+        # drop out entirely. Two models differing only in guess rate have to
+        # agree — which is exactly what a wrong answer cannot do.
+        low_guess = BKTModel(SkillParams(p_g=0.05))
+        high_guess = BKTModel(SkillParams(p_g=0.90))
+
+        a = SkillState(skill_id="sk01", p_known=0.5)
+        b = SkillState(skill_id="sk01", p_known=0.5)
+        low_guess.update_unknown(a)
+        high_guess.update_unknown(b)
+        assert a.p_known == pytest.approx(b.p_known)
+
+        c = SkillState(skill_id="sk01", p_known=0.5)
+        d = SkillState(skill_id="sk01", p_known=0.5)
+        low_guess.update(c, correct=False)
+        high_guess.update(d, correct=False)
+        assert c.p_known != pytest.approx(d.p_known)
+
+    def test_counts_the_attempt_but_never_as_correct(self, model: BKTModel) -> None:
+        state = SkillState(skill_id="sk01", p_known=0.5, attempts=3, correct=2)
+        model.update_unknown(state)
+        assert state.attempts == 4
+        assert state.correct == 2
+
+    def test_learning_transition_still_applies(self) -> None:
+        # The learner goes on to read the explanation, so the opportunity to
+        # learn is real. With p_t at zero the posterior must be strictly lower
+        # than with a learn rate.
+        no_learning = BKTModel(SkillParams(p_t=0.0))
+        learning = BKTModel(SkillParams(p_t=0.3))
+
+        a = SkillState(skill_id="sk01", p_known=0.5)
+        b = SkillState(skill_id="sk01", p_known=0.5)
+        no_learning.update_unknown(a)
+        learning.update_unknown(b)
+
+        assert b.p_known > a.p_known
+
+    def test_stays_within_bounds_at_the_extremes(self) -> None:
+        for prior in (0.0, 1.0):
+            state = SkillState(skill_id="sk01", p_known=prior)
+            BKTModel().update_unknown(state)
+            assert 0.0 <= state.p_known <= 1.0
+
+    def test_degenerate_likelihoods_leave_mastery_untouched(self) -> None:
+        # Both likelihoods at zero make the denominator vanish; the posterior
+        # has to fall back to the prior rather than divide by zero.
+        model = BKTModel(SkillParams(p_t=0.0, p_dk_known=0.0, p_dk_unknown=0.0))
+        state = SkillState(skill_id="sk01", p_known=0.42)
+        model.update_unknown(state)
+        assert state.p_known == pytest.approx(0.42)
+
+    def test_repeated_admissions_converge_toward_not_knowing(self, model: BKTModel) -> None:
+        state = SkillState(skill_id="sk01", p_known=0.9)
+        for _ in range(5):
+            model.update_unknown(state)
+        assert state.p_known < 0.35

@@ -61,4 +61,11 @@ class Response(Base):
     # recorded. Lets analytics distinguish answers to v1 from answers to v2.
     question_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
+    # True when the learner pressed "I don't know" instead of answering. Kept
+    # apart from `correct=False` so accuracy can be reported honestly and so
+    # the BKT posterior can use the unambiguous likelihood (see bkt.update_unknown).
+    declared_unknown: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False, server_default="false"
+    )
+
     session: Mapped[StudySession] = relationship(back_populates="responses")

@@ -412,7 +412,13 @@ async def submit_answer(
     if question is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Question not found")
 
-    if question.type in _EXEC_TYPES:
+    declared_unknown = req.declared_unknown
+    if declared_unknown:
+        # An explicit "I don't know" is never correct, but it is not a wrong
+        # answer either: it carries no guessing and no slip, so the models below
+        # treat it through a separate path.
+        correct = False
+    elif question.type in _EXEC_TYPES:
         expected = question.correct_answer_es
         if expected is not None and req.exec_output is not None:
             correct = req.exec_output.strip() == expected.strip()
@@ -436,7 +442,11 @@ async def submit_answer(
     item_entity = EloEntity(rating=question.elo_rating, interactions=30)
     user_entity, item_entity, _expected = elo.update(user_entity, item_entity, correct)
     state.elo_rating = user_entity.rating
-    question.elo_rating = item_entity.rating
+    if not declared_unknown:
+        question.elo_rating = item_entity.rating
+    # On "I don't know" the learner's rating still falls — they could not answer,
+    # and the selector should ease off. The item's rating is left alone: nobody
+    # attempted it, so the interaction says nothing about how hard it is.
 
     # --- BKT: skill mastery update ---
     bkt_state = SkillState(
@@ -445,7 +455,11 @@ async def submit_answer(
         attempts=state.attempts,
         correct=state.correct_count,
     )
-    bkt.update(bkt_state, correct)
+    if declared_unknown:
+        bkt.update_unknown(bkt_state)
+        state.unknown_count += 1
+    else:
+        bkt.update(bkt_state, correct)
     state.p_known = bkt_state.p_known
     state.attempts = bkt_state.attempts
     state.correct_count = bkt_state.correct
@@ -473,6 +487,7 @@ async def submit_answer(
         grade=grade,
         response_time_ms=req.response_time_ms,
         question_version=question.content_version,
+        declared_unknown=declared_unknown,
     )
     db.add(response)
     await db.flush()

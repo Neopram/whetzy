@@ -354,3 +354,220 @@ async def test_exec_output_with_whitespace_is_accepted(client, auth_headers, db_
     )
     assert r.status_code == 200
     assert r.json()["correct"] is True
+
+
+# ── "I don't know" ────────────────────────────────────────────────────────────
+
+
+async def _start(client, auth_headers, content_seed):
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"skill_id": content_seed["skill_id"], "mode": "study"},
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    return r.json()["session_id"]
+
+
+async def test_declared_unknown_is_not_correct(client, auth_headers, content_seed):
+    session_id = await _start(client, auth_headers, content_seed)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": content_seed["question_id"],
+            "declared_unknown": True,
+            "response_time_ms": 1500,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert r.json()["correct"] is False
+
+
+async def test_declared_unknown_ignores_a_sent_index(client, auth_headers, content_seed):
+    """Even with the right index attached, an admission is an admission.
+
+    The client should not be able to claim ignorance and credit at once.
+    """
+    session_id = await _start(client, auth_headers, content_seed)
+    first = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": content_seed["question_id"],
+            "selected_index": 0,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    correct_index = first.json()["correct_index"]
+
+    session_id = await _start(client, auth_headers, content_seed)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": content_seed["question_id"],
+            "declared_unknown": True,
+            "selected_index": correct_index,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert r.json()["correct"] is False
+
+
+async def test_declared_unknown_lowers_mastery_more_than_a_wrong_answer(
+    client, auth_headers, plus_auth_headers, content_seed
+):
+    """The whole point of the button: honesty must inform the model better.
+
+    Two learners meet the same question. One guesses wrong, the other admits
+    ignorance. The admission has to move p_known further down, because it is
+    the observation with no guessing and no slip hidden inside it.
+    """
+    wrong_session = await _start(client, auth_headers, content_seed)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": wrong_session,
+            "question_id": content_seed["question_id"],
+            "selected_index": 0,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    correct_index = r.json()["correct_index"]
+    wrong_index = 0 if correct_index != 0 else 1
+
+    # Re-run so the first learner is definitely wrong, not accidentally right.
+    wrong_session = await _start(client, auth_headers, content_seed)
+    r_wrong = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": wrong_session,
+            "question_id": content_seed["question_id"],
+            "selected_index": wrong_index,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r_wrong.json()["correct"] is False
+    mastery_after_wrong = r_wrong.json()["skill_mastery"][content_seed["skill_id"]]
+
+    unknown_session = await _start(client, plus_auth_headers, content_seed)
+    r_unknown = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": unknown_session,
+            "question_id": content_seed["question_id"],
+            "declared_unknown": True,
+            "response_time_ms": 1000,
+        },
+        headers=_h(plus_auth_headers),
+    )
+    mastery_after_unknown = r_unknown.json()["skill_mastery"][content_seed["skill_id"]]
+
+    assert mastery_after_unknown < mastery_after_wrong
+
+
+async def test_declared_unknown_leaves_item_difficulty_alone(
+    client, auth_headers, content_seed, db_session
+):
+    """Nobody attempted the question, so it learned nothing about its own difficulty."""
+    from sqlalchemy import select
+
+    from app.models.content import Question
+
+    before = (
+        await db_session.execute(
+            select(Question.elo_rating).where(Question.id == content_seed["question_id"])
+        )
+    ).scalar_one()
+
+    session_id = await _start(client, auth_headers, content_seed)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": content_seed["question_id"],
+            "declared_unknown": True,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+
+    db_session.expire_all()
+    after = (
+        await db_session.execute(
+            select(Question.elo_rating).where(Question.id == content_seed["question_id"])
+        )
+    ).scalar_one()
+
+    assert after == before
+
+
+async def test_declared_unknown_is_never_punished_on_xp(client, auth_headers, content_seed):
+    """Honesty must never cost more than being wrong, or nobody presses it."""
+    wrong_session = await _start(client, auth_headers, content_seed)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": wrong_session,
+            "question_id": content_seed["question_id"],
+            "selected_index": 0,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    correct_index = r.json()["correct_index"]
+    wrong_index = 0 if correct_index != 0 else 1
+
+    wrong_session = await _start(client, auth_headers, content_seed)
+    xp_wrong = (
+        await client.post(
+            f"{QUIZ}/answer",
+            json={
+                "session_id": wrong_session,
+                "question_id": content_seed["question_id"],
+                "selected_index": wrong_index,
+                "response_time_ms": 1000,
+            },
+            headers=_h(auth_headers),
+        )
+    ).json()["xp_earned"]
+
+    unknown_session = await _start(client, auth_headers, content_seed)
+    xp_unknown = (
+        await client.post(
+            f"{QUIZ}/answer",
+            json={
+                "session_id": unknown_session,
+                "question_id": content_seed["question_id"],
+                "declared_unknown": True,
+                "response_time_ms": 1000,
+            },
+            headers=_h(auth_headers),
+        )
+    ).json()["xp_earned"]
+
+    assert xp_unknown >= xp_wrong
+
+
+async def test_declared_unknown_defaults_to_false(client, auth_headers, content_seed):
+    """Old clients that never send the field must keep working unchanged."""
+    session_id = await _start(client, auth_headers, content_seed)
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": content_seed["question_id"],
+            "selected_index": 0,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200

@@ -579,3 +579,30 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+/* "I don't know" — deliberately quieter than the options: it is always
+   available but never the suggested path, and it must not read as a
+   punishment either. Text weight and a dashed edge, no fill. */
+.unknownBtn {
+  align-self: center;
+  margin-top: var(--le-space-sm);
+  padding: var(--le-space-sm) var(--le-space-lg);
+  background: transparent;
+  border: 1.5px dashed var(--le-border);
+  border-radius: var(--le-radius-md);
+  color: var(--le-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--le-transition-base), border-color var(--le-transition-base);
+}
+
+.unknownBtn:hover:not(:disabled) {
+  color: var(--le-text);
+  border-color: var(--le-text-muted);
+}
+
+.unknownBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

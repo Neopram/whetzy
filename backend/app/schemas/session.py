@@ -53,6 +53,9 @@ class QuizStartResponse(BaseModel):
 class QuizAnswerRequest(BaseModel):
     session_id: uuid.UUID
     question_id: str
+    # An explicit "I don't know", which is not the same as `selected_index=None`
+    # (no answer sent). When true, `selected_index` is ignored.
+    declared_unknown: bool = False
     selected_index: int | None = None
     response_time_ms: int = Field(ge=0)
     # For exec-type questions (fill_blank_exec, fix_bug): the actual stdout

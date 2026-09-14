@@ -22,6 +22,12 @@ class SkillParams:
     p_g: float = 0.25   # guess rate
     p_s: float = 0.1    # slip rate
 
+    # Used only by `update_unknown`, when the learner explicitly declares they
+    # do not know. That is a different observation from a wrong answer: no
+    # guessing took place, so P(G) plays no part in the posterior.
+    p_dk_known: float = 0.05    # declares ignorance despite knowing (momentary doubt)
+    p_dk_unknown: float = 0.80  # honestly declares ignorance when not knowing
+
 
 @dataclass
 class SkillState:
@@ -70,6 +76,37 @@ class BKTModel:
         state.attempts += 1
         if correct:
             state.correct += 1
+
+        return state
+
+    def update_unknown(self, state: SkillState) -> SkillState:
+        """Update mastery from an explicit "I don't know".
+
+        A wrong answer is ambiguous: on a four-option question a quarter of
+        lucky guesses look like knowledge, and a wrong one may be a slip by
+        someone who does know. An explicit declaration of ignorance carries
+        neither confound — nobody guesses their way into saying "I don't know".
+
+        So the posterior uses a separate likelihood pair (`p_dk_known`,
+        `p_dk_unknown`) and P(G) drops out entirely. The result is stronger
+        negative evidence than a wrong answer: with p_known = 0.5 and the
+        defaults, a wrong answer lands at ~0.12 while this lands at ~0.06.
+
+        The learning transition still applies — the learner goes on to read the
+        explanation, which is an opportunity to learn like any other. The
+        attempt is counted, but never as `correct`.
+        """
+        params = self.get_params(state.skill_id)
+        p_l = state.p_known
+
+        numerator = p_l * params.p_dk_known
+        denominator = numerator + (1.0 - p_l) * params.p_dk_unknown
+
+        p_l_posterior = numerator / denominator if denominator > 0 else p_l
+        p_l_next = p_l_posterior + (1.0 - p_l_posterior) * params.p_t
+
+        state.p_known = min(1.0, max(0.0, p_l_next))
+        state.attempts += 1
 
         return state
 
