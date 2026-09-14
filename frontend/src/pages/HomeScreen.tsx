@@ -20,6 +20,7 @@ export function HomeScreen() {
 
   const dash = useApi(() => progressApi.dashboard(), []);
   const missions = useApi(() => gamification.missions(), []);
+  const decaying = useApi(() => progressApi.decaying(), []);
 
   const overallMastery = dash.data
     ? Math.round(
@@ -70,6 +71,39 @@ export function HomeScreen() {
               {t('home.predText2')} <strong>{topTrack.skills_mastered}/{topTrack.total_skills}</strong> {t('home.predText3')}
             </p>
           </div>
+        </Card>
+      )}
+
+      {/* What you are about to forget — FSRS, made visible.
+          Only shown when there is something to say: an empty card here would
+          be noise, and inventing urgency to fill it would be the dark pattern
+          this feature is meant to avoid. */}
+      {decaying.data && decaying.data.length > 0 && (
+        <Card>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>{t('home.decayTitle')}</h2>
+          </div>
+          <p className={styles.muted}>{t('home.decaySubtitle')}</p>
+          <ul className={styles.decayList}>
+            {decaying.data.map((s) => (
+              <li key={s.skill_id} className={styles.decayItem}>
+                <button
+                  type="button"
+                  className={styles.decayName}
+                  onClick={() => startQuiz('review', 10, { skillId: s.skill_id })}
+                >
+                  {lang === 'es' ? s.name_es : s.name_en}
+                </button>
+                <span className={styles.decayWhen}>
+                  {s.days_until_due <= 0
+                    ? t('home.decayNow')
+                    : s.days_until_due === 1
+                      ? t('home.decayTomorrow')
+                      : t('home.decayInDays', { count: s.days_until_due })}
+                </span>
+              </li>
+            ))}
+          </ul>
         </Card>
       )}
 

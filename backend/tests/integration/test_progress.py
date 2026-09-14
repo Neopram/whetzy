@@ -185,3 +185,107 @@ async def test_predictions_401(client, content_seed):
         params={"track_id": content_seed["track_id"]},
     )
     assert resp.status_code == 401
+
+
+# ── /decaying (14.3) ───────────────────────────────────────────────────────────
+
+
+async def _seed_skill_with_due(db_session, user, *, skill_id: str, due_in_days: float, attempts: int = 3):
+    """Give the user a started skill whose FSRS review falls due at an offset."""
+    from datetime import UTC, datetime, timedelta
+
+    from app.models.content import Module, Skill, Track
+    from app.models.user import UserSkillState
+
+    track_id = f"track_dec_{skill_id}"
+    module_id = f"mod_dec_{skill_id}"
+    db_session.add_all([
+        Track(id=track_id, name_es="T", name_en="T", order=90, icon="x", color="#000", total_questions=0),
+        Module(id=module_id, track_id=track_id, name_es="M", name_en="M", order=1,
+               description_es="", description_en=""),
+        Skill(id=skill_id, module_id=module_id, name_es=f"ES {skill_id}", name_en=f"EN {skill_id}", order=1),
+        UserSkillState(
+            user_id=user.id,
+            skill_id=skill_id,
+            p_known=0.8,
+            attempts=attempts,
+            correct_count=attempts,
+            fsrs_due=datetime.now(UTC) + timedelta(days=due_in_days),
+        ),
+    ])
+    await db_session.commit()
+
+
+@pytest.mark.asyncio
+async def test_decaying_requires_auth(client):
+    resp = await client.get(f"{BASE}/decaying")
+    assert resp.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_decaying_is_empty_for_a_fresh_user(client, user, auth_headers):
+    resp = await client.get(f"{BASE}/decaying", headers=auth_headers)
+    assert resp.status_code == 200
+    assert resp.json() == []
+
+
+@pytest.mark.asyncio
+async def test_decaying_lists_skills_due_inside_the_window(client, user, auth_headers, db_session):
+    await _seed_skill_with_due(db_session, user, skill_id="sk_soon", due_in_days=2)
+
+    resp = await client.get(f"{BASE}/decaying", headers=auth_headers)
+    assert resp.status_code == 200
+    rows = resp.json()
+    assert len(rows) == 1
+    assert rows[0]["skill_id"] == "sk_soon"
+    # The real name, in both languages — the card has to be able to say what
+    # you are about to lose, not "skill 12".
+    assert rows[0]["name_es"] == "ES sk_soon"
+    assert rows[0]["name_en"] == "EN sk_soon"
+    assert rows[0]["days_until_due"] == 1  # 2 days minus a few micro-seconds
+
+
+@pytest.mark.asyncio
+async def test_decaying_excludes_skills_due_beyond_the_window(client, user, auth_headers, db_session):
+    await _seed_skill_with_due(db_session, user, skill_id="sk_far", due_in_days=30)
+
+    resp = await client.get(f"{BASE}/decaying", headers=auth_headers)
+    assert resp.json() == []
+
+    # ...but a wider window finds it, so the exclusion is the window, not a bug.
+    wide = await client.get(f"{BASE}/decaying?within_days=60", headers=auth_headers)
+    assert [r["skill_id"] for r in wide.json()] == ["sk_far"]
+
+
+@pytest.mark.asyncio
+async def test_decaying_includes_overdue_and_sorts_it_first(client, user, auth_headers, db_session):
+    """Hiding what is already overdue would be the dishonest half of the feature."""
+    await _seed_skill_with_due(db_session, user, skill_id="sk_late", due_in_days=-3)
+    await _seed_skill_with_due(db_session, user, skill_id="sk_next", due_in_days=5)
+
+    resp = await client.get(f"{BASE}/decaying", headers=auth_headers)
+    rows = resp.json()
+    assert [r["skill_id"] for r in rows] == ["sk_late", "sk_next"]
+    assert rows[0]["days_until_due"] < 0
+
+
+@pytest.mark.asyncio
+async def test_decaying_ignores_skills_never_practised(client, user, auth_headers, db_session):
+    """A skill you never started has nothing to decay; listing it would be a
+    to-do dressed up as a warning."""
+    await _seed_skill_with_due(db_session, user, skill_id="sk_untouched", due_in_days=1, attempts=0)
+
+    resp = await client.get(f"{BASE}/decaying", headers=auth_headers)
+    assert resp.json() == []
+
+
+@pytest.mark.asyncio
+async def test_decaying_respects_the_limit(client, user, auth_headers, db_session):
+    for i in range(7):
+        await _seed_skill_with_due(db_session, user, skill_id=f"sk_many{i}", due_in_days=i + 1)
+
+    resp = await client.get(f"{BASE}/decaying", headers=auth_headers)
+    assert len(resp.json()) == 5  # default cap
+
+    capped = await client.get(f"{BASE}/decaying?limit=2", headers=auth_headers)
+    assert len(capped.json()) == 2

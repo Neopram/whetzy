@@ -17,6 +17,7 @@ from app.schemas.progress import (
     CurriculumResponse,
     CurriculumSkill,
     DashboardResponse,
+    DecayingSkill,
     PredictionResponse,
     SkillMasteryDetail,
     TrackMastery,
@@ -307,3 +308,58 @@ async def get_predictions(db: AsyncSession, user: User, track_id: str) -> Predic
         estimated_days_to_completion=estimated_days,
         confidence=confidence,
     )
+
+
+async def get_decaying_skills(
+    db: AsyncSession, user: User, *, within_days: int = 7, limit: int = 5
+) -> list[DecayingSkill]:
+    """Skills whose FSRS review falls due inside the window, soonest first.
+
+    FSRS has always known when each skill is about to decay; that estimate only
+    ever fed the invisible review queue. Surfacing it turns spaced repetition
+    from a mechanism into a reason to come back — and an honest one: it says
+    what you are about to lose, never that you failed to show up.
+
+    Only skills the learner has actually started count. A skill never practised
+    has nothing to decay, and listing it would be a to-do disguised as a warning.
+    Already-overdue skills are included and sort first: they are the most at
+    risk, and hiding them would be the dishonest half of the same feature.
+    """
+    now = _now()
+    cutoff = now + timedelta(days=within_days)
+
+    result = await db.execute(
+        select(UserSkillState, Skill, Module.track_id)
+        .join(Skill, Skill.id == UserSkillState.skill_id)
+        .join(Module, Module.id == Skill.module_id)
+        .where(
+            UserSkillState.user_id == user.id,
+            UserSkillState.fsrs_due.is_not(None),
+            UserSkillState.fsrs_due <= cutoff,
+            UserSkillState.attempts > 0,
+        )
+        .order_by(UserSkillState.fsrs_due)
+        .limit(limit)
+    )
+
+    decaying: list[DecayingSkill] = []
+    for state, skill, track_id in result.all():
+        due = state.fsrs_due
+        if due is None:
+            continue
+        if due.tzinfo is None:
+            due = due.replace(tzinfo=UTC)
+        decaying.append(
+            DecayingSkill(
+                skill_id=skill.id,
+                name_es=skill.name_es,
+                name_en=skill.name_en,
+                track_id=track_id,
+                p_known=state.p_known,
+                due_at=due,
+                # Truncated toward zero: something due in 20 hours is "today",
+                # not "tomorrow". Overdue stays negative.
+                days_until_due=int((due - now).total_seconds() // 86400),
+            )
+        )
+    return decaying

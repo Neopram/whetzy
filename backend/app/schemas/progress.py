@@ -32,6 +32,20 @@ class DashboardResponse(BaseModel):
     overall_accuracy: float
 
 
+class DecayingSkill(BaseModel):
+    """A skill whose spaced-repetition review is due, or about to be."""
+
+    skill_id: str
+    name_es: str
+    name_en: str
+    track_id: str
+    p_known: float
+    due_at: datetime
+    # Negative when the review is already overdue. The client decides how to
+    # phrase that; the server does not editorialise.
+    days_until_due: int
+
+
 class SkillMasteryDetail(BaseModel):
     skill_id: str
     name_es: str

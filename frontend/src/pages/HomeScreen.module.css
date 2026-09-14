@@ -254,3 +254,58 @@
 .btnReview:active {
   transform: scale(0.95);
 }
+
+/* "What you'll forget this week". Reads as a list of things, not a list of
+   failures: no red, no warning icon, no count badge. The urgency is carried
+   by the date alone. */
+.decayList {
+  list-style: none;
+  margin-top: var(--le-space-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.decayItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--le-border);
+}
+
+.decayItem:last-child {
+  border-bottom: none;
+}
+
+.decayName {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.9375rem;
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+  cursor: pointer;
+}
+
+.decayName:hover,
+.decayName:focus-visible {
+  color: var(--le-brand);
+}
+
+.decayName:focus-visible {
+  outline: 2px solid var(--le-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Muted on purpose: the date informs, it does not scold. */
+.decayWhen {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text-muted);
+}

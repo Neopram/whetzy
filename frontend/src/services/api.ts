@@ -302,9 +302,23 @@ export interface CurriculumResponse {
   modules: CurriculumModule[];
 }
 
+export interface DecayingSkill {
+  skill_id: string;
+  name_es: string;
+  name_en: string;
+  track_id: string;
+  p_known: number;
+  due_at: string;
+  /** Negative when the review is already overdue. */
+  days_until_due: number;
+}
+
 export const progress = {
   async dashboard() {
     return request<DashboardResponse>('/progress/dashboard');
+  },
+  async decaying(withinDays = 7, limit = 5) {
+    return request<DecayingSkill[]>(`/progress/decaying?within_days=${withinDays}&limit=${limit}`);
   },
   async skills(trackId?: string, moduleId?: string) {
     const qs = new URLSearchParams();
