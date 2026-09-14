@@ -95,8 +95,8 @@
       "skill_id": "sk030501",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Un hilo marcado como daemon (daemon=True) no impide que el programa principal termine, y se cierra abruptamente al salir el proceso.",
-      "question_en": "A thread marked as daemon (daemon=True) does not prevent the main program from exiting, and is killed abruptly when the process exits.",
+      "question_es": "Un hilo marcado como daemon (daemon=True) impide que el proceso principal termine hasta que ese hilo haya acabado su trabajo.",
+      "question_en": "A thread marked as daemon (daemon=True) prevents the main process from exiting until that thread has finished its work.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -105,9 +105,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Verdadero. Los hilos daemon son 'de fondo': el intérprete no espera por ellos al terminar y los mata sin ejecutar su limpieza. Sirven para tareas auxiliares (monitores, heartbeats) que no deben mantener vivo el proceso. Los hilos no-daemon sí bloquean la salida hasta terminar.",
-      "explanation_en": "True. Daemon threads are 'background': the interpreter doesn't wait for them on exit and kills them without running cleanup. They suit auxiliary tasks (monitors, heartbeats) that shouldn't keep the process alive. Non-daemon threads do block exit until they finish.",
+      "correct_index": 1,
+      "explanation_es": "Falso, y es justo al reves: los hilos daemon **no** impiden que el programa termine, y se cierran abruptamente al salir el proceso, sin ejecutar bloques `finally` ni cerrar recursos. Los que retienen la salida son los hilos no-daemon. Por eso no conviene poner en un daemon trabajo que deba completarse, como volcar datos a disco.",
+      "explanation_en": "False, and it is the other way round: daemon threads do **not** prevent the program from exiting, and are killed abruptly when the process exits, without running `finally` blocks or closing resources. Non-daemon threads are what hold exit back. That is why work which must complete, such as flushing data to disk, does not belong in a daemon thread.",
       "source": "CPython docs 3.13 — threading: Daemon threads",
       "expected_time_ms": 30000,
       "tags": [
@@ -291,8 +291,8 @@
       "skill_id": "sk030502",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "En Windows y macOS (método 'spawn'), el código que lanza procesos debe protegerse con if __name__ == '__main__': para evitar recursión infinita.",
-      "question_en": "On Windows and macOS ('spawn' method), the code launching processes must be guarded with if __name__ == '__main__': to avoid infinite recursion.",
+      "question_es": "El bloque if __name__ == '__main__': es solo una convencion de estilo, y omitirlo no afecta al uso de multiprocessing en ningun sistema operativo.",
+      "question_en": "The if __name__ == '__main__': block is merely a style convention, and omitting it does not affect multiprocessing on any operating system.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -301,9 +301,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Verdadero. Con el método 'spawn' (por defecto en Windows y macOS), cada proceso hijo reimporta el módulo principal. Si el código que crea procesos no está bajo `if __name__ == '__main__':`, cada hijo volvería a lanzar procesos, causando recursión infinita. Es un requisito clásico de multiprocessing.",
-      "explanation_en": "True. With the 'spawn' method (default on Windows and macOS), each child process re-imports the main module. If the process-creating code isn't under `if __name__ == '__main__':`, each child would launch processes again, causing infinite recursion. It's a classic multiprocessing requirement.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Con el metodo de arranque **spawn** — el predeterminado en Windows y macOS — cada proceso hijo vuelve a importar el modulo principal. Si el codigo que lanza procesos esta en el nivel superior, cada hijo lanza mas hijos: recursion infinita hasta agotar el sistema. En Linux, con **fork**, el problema no aparece, lo que hace que el fallo solo se manifieste al cambiar de plataforma.",
+      "explanation_en": "False. With the **spawn** start method - the default on Windows and macOS - each child process re-imports the main module. If the code that launches processes sits at top level, every child launches more children: infinite recursion until the system is exhausted. On Linux, with **fork**, the problem does not appear, which is why the bug only shows up when the platform changes.",
       "source": "CPython docs 3.13 — multiprocessing: Safe importing of main module",
       "expected_time_ms": 32000,
       "tags": [

@@ -538,8 +538,8 @@
       "skill_id": "sk030404",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "mypy detecta los errores de tipo en tiempo de análisis (antes de ejecutar), no en tiempo de ejecución.",
-      "question_en": "mypy detects type errors at analysis time (before running), not at runtime.",
+      "question_es": "mypy comprueba las anotaciones de tipo durante la ejecucion del programa y lanza un TypeError cuando un valor no coincide con lo anotado.",
+      "question_en": "mypy checks type annotations while the program runs and raises a TypeError when a value does not match the annotation.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -548,9 +548,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Verdadero. mypy es estático: analiza el código fuente y sus anotaciones sin ejecutarlo, señalando problemas de tipo antes de correr el programa. Es complementario a los tests: los tests comprueban comportamiento en ejecución, mypy comprueba consistencia de tipos.",
-      "explanation_en": "True. mypy is static: it analyzes the source and its annotations without running it, flagging type problems before the program runs. It complements tests: tests check runtime behavior, mypy checks type consistency.",
+      "correct_index": 1,
+      "explanation_es": "Falso: mypy es un analizador **estatico**, detecta los errores antes de ejecutar y no participa en la ejecucion. En tiempo de ejecucion, Python ignora las anotaciones: pasar un `str` donde se anoto `int` no lanza nada por si solo. Si quieres validacion en ejecucion necesitas otra herramienta, como pydantic.",
+      "explanation_en": "False: mypy is a **static** analyzer, it finds errors before running and plays no part in execution. At runtime, Python ignores annotations: passing a `str` where `int` was annotated raises nothing by itself. If you want runtime validation you need a different tool, such as pydantic.",
       "source": "mypy docs — Static typing",
       "expected_time_ms": 25000,
       "tags": [

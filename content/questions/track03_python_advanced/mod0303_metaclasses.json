@@ -401,8 +401,8 @@
       "skill_id": "sk030303",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Si __new__ no devuelve una instancia de la clase (o de una subclase), Python NO llamará a __init__.",
-      "question_en": "If __new__ does not return an instance of the class (or a subclass), Python will NOT call __init__.",
+      "question_es": "Python llama siempre a __init__ despues de __new__, independientemente de lo que __new__ devuelva.",
+      "question_en": "Python always calls __init__ after __new__, regardless of what __new__ returns.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -411,9 +411,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Verdadero. Python solo invoca `__init__` si el objeto devuelto por `__new__` es una instancia de la clase. Si `__new__` devuelve otra cosa (por ejemplo un objeto de otro tipo), `__init__` se omite. Esto es clave al implementar patrones como Singleton.",
-      "explanation_en": "True. Python only invokes `__init__` if the object returned by `__new__` is an instance of the class. If `__new__` returns something else (e.g. an object of another type), `__init__` is skipped. This is key when implementing patterns like Singleton.",
+      "correct_index": 1,
+      "explanation_es": "Falso. Si `__new__` no devuelve una instancia de la clase (o de una subclase), Python **no** llama a `__init__`. Es el mecanismo que permite que `__new__` devuelva un objeto ya existente — un singleton, un valor cacheado — sin que se le vuelva a aplicar la inicializacion. Ignorarlo produce el bug clasico de un singleton cuyo estado se reinicia en cada supuesta creacion.",
+      "explanation_en": "False. If `__new__` does not return an instance of the class (or a subclass), Python does **not** call `__init__`. That is the mechanism letting `__new__` return an already existing object - a singleton, a cached value - without initialization being applied again. Missing it produces the classic bug of a singleton whose state resets on every supposed creation.",
       "source": "CPython docs 3.13 — Data model: object.__new__",
       "expected_time_ms": 28000,
       "tags": [

@@ -31,6 +31,9 @@ CONTENT = ROOT / "content" / "questions"
 SKEW_MIN_SAMPLE = 40
 SKEW_MAX_SHARE = 0.45
 MIN_PER_SKILL = 6
+# true/false balance: below this many in a track, the ratio is noise.
+TF_MIN_SAMPLE = 25
+TF_BAND = (0.35, 0.65)
 
 
 def load() -> list[tuple[Path, dict]]:
@@ -114,18 +117,34 @@ def main() -> int:
             )
 
     # --- true/false balance, reported but not failed on ---
-    tf_total = sum(sum(c.values()) for c in tf_track.values())
-    if tf_total:
-        tf_all = Counter()
-        for c in tf_track.values():
-            tf_all.update(c)
-        share_true = tf_all[0] / tf_total
-        if not 0.35 <= share_true <= 0.65:
+    #
+    # Measured per track as well as overall: the first version of this check was
+    # global only, and a global 59 % hid track03 sitting at 83 %. A learner
+    # studies one track at a time, so the per-track number is the one that
+    # describes what they actually experience.
+    tf_all = Counter()
+    for c in tf_track.values():
+        tf_all.update(c)
+    tf_total = sum(tf_all.values())
+
+    def flag(label: str, dist: Counter) -> None:
+        total = sum(dist.values())
+        if total < TF_MIN_SAMPLE:
+            return
+        share_true = dist[0] / total
+        if not TF_BAND[0] <= share_true <= TF_BAND[1]:
+            side = "true" if share_true > 0.5 else "false"
+            worst = dist[0] if side == "true" else dist[1]
             warnings.append(
-                f"true/false questions are {share_true:.0%} \"true\" "
-                f"({tf_all[0]}/{tf_total}) - always answering true scores that much. "
+                f"{label}: true/false questions are {max(share_true, 1 - share_true):.0%} "
+                f"\"{side}\" ({worst}/{total}) - always answering {side} scores that much. "
                 "Fixing it means rewriting statements, not reordering options"
             )
+
+    if tf_total:
+        flag("overall", tf_all)
+    for track, dist in sorted(tf_track.items()):
+        flag(track, dist)
 
     # --- per-skill floor ---
     per_skill = Counter(q.get("skill_id") for _, q in items)

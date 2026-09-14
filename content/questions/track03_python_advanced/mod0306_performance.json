@@ -122,8 +122,8 @@
       "skill_id": "sk030601",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "El propio acto de perfilar con cProfile añade sobrecarga, por lo que los tiempos absolutos medidos son mayores que en una ejecución normal.",
-      "question_en": "The act of profiling with cProfile itself adds overhead, so the absolute times measured are higher than in a normal run.",
+      "question_es": "cProfile mide sin coste: los tiempos absolutos que reporta coinciden con los de una ejecucion normal sin perfilado.",
+      "question_en": "cProfile measures for free: the absolute times it reports match those of a normal run without profiling.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -132,9 +132,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Verdadero. cProfile instrumenta cada llamada de función, lo que introduce sobrecarga y hace que los tiempos absolutos sean mayores que sin perfilar. Por eso se usa para comparar RELACIONES entre funciones (dónde está el cuello de botella), no como medida de rendimiento absoluto.",
-      "explanation_en": "True. cProfile instruments every function call, introducing overhead that makes absolute times higher than without profiling. That's why it's used to compare RELATIVE costs between functions (where the bottleneck is), not as an absolute performance measure.",
+      "correct_index": 1,
+      "explanation_es": "Falso: instrumentar cada llamada tiene coste, y los tiempos absolutos bajo cProfile son **mayores** que en una ejecucion normal — el efecto es mas acusado en codigo con muchas llamadas pequenas, que es donde la sobrecarga por llamada pesa mas. Lo util de un perfil son las proporciones entre funciones, no los numeros absolutos; para medir tiempos reales se usa `timeit` o un perfilador por muestreo.",
+      "explanation_en": "False: instrumenting every call has a cost, and absolute times under cProfile are **higher** than in a normal run - the effect is sharpest in code with many small calls, where per-call overhead weighs most. What is useful in a profile is the proportion between functions, not the absolute numbers; to measure real timings use `timeit` or a sampling profiler.",
       "source": "CPython docs 3.13 — The Python Profilers: overhead",
       "expected_time_ms": 30000,
       "tags": [

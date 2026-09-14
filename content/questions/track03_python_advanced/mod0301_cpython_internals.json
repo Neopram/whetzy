@@ -92,8 +92,8 @@
       "skill_id": "sk030101",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Python 3.13 introdujo una compilación experimental 'free-threaded' (sin GIL) descrita en la PEP 703.",
-      "question_en": "Python 3.13 introduced an experimental 'free-threaded' (GIL-less) build described in PEP 703.",
+      "question_es": "Python 3.13 elimino el GIL: a partir de esa version todos los interpretes de CPython ejecutan hilos en paralelo real sin ninguna configuracion especial.",
+      "question_en": "Python 3.13 removed the GIL: from that version on, every CPython interpreter runs threads in true parallel with no special configuration.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -102,9 +102,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Verdadero. Python 3.13 incluye una compilación experimental opcional sin GIL (PEP 703) que permite paralelismo real de hilos. No es la construcción por defecto y aún tiene coste de rendimiento en código de un solo hilo; es un cambio a largo plazo.",
-      "explanation_en": "True. Python 3.13 includes an optional experimental GIL-less build (PEP 703) enabling true thread parallelism. It is not the default build and still carries single-threaded performance cost; it's a long-term change.",
+      "correct_index": 1,
+      "explanation_es": "Falso. La PEP 703 introdujo una compilacion **experimental** 'free-threaded' que hay que instalar o construir aparte; la compilacion por defecto sigue teniendo GIL. Confundir «existe una version sin GIL» con «Python ya no tiene GIL» lleva a esperar paralelismo real de un interprete que no lo da, y a diagnosticar mal por que los hilos no aceleran el codigo con mucha CPU.",
+      "explanation_en": "False. PEP 703 introduced an **experimental** free-threaded build that must be installed or compiled separately; the default build still has the GIL. Confusing \"a GIL-free build exists\" with \"Python no longer has a GIL\" leads you to expect real parallelism from an interpreter that does not provide it, and to misdiagnose why threads do not speed up CPU-heavy code.",
       "source": "PEP 703 — Making the Global Interpreter Lock Optional in CPython",
       "expected_time_ms": 28000,
       "tags": [
@@ -264,8 +264,8 @@
       "skill_id": "sk030102",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "El recolector cíclico de CPython es generacional: agrupa los objetos en generaciones y revisa con más frecuencia los más jóvenes.",
-      "question_en": "CPython's cyclic collector is generational: it groups objects into generations and inspects younger ones more frequently.",
+      "question_es": "El recolector ciclico de CPython revisa todas las generaciones de objetos con la misma frecuencia, para no dar trato preferente a ninguna.",
+      "question_en": "CPython's cyclic collector scans every object generation with the same frequency, so as not to favour any of them.",
       "options_es": [
         "Verdadero",
         "Falso"
@@ -274,9 +274,9 @@
         "True",
         "False"
       ],
-      "correct_index": 0,
-      "explanation_es": "Verdadero. El `gc` usa tres generaciones basándose en la hipótesis generacional: la mayoría de los objetos mueren jóvenes. Los objetos que sobreviven a una recolección 'ascienden' de generación y se revisan con menos frecuencia, reduciendo el coste.",
-      "explanation_en": "True. The `gc` uses three generations based on the generational hypothesis: most objects die young. Objects that survive a collection are 'promoted' to an older generation and inspected less often, reducing cost.",
+      "correct_index": 1,
+      "explanation_es": "Falso: es **generacional** precisamente porque no las trata igual. Revisa mucho mas a menudo la generacion joven, apoyandose en la observacion de que la mayoria de los objetos muere pronto; los que sobreviven van promocionando a generaciones mas viejas, que se revisan con menos frecuencia. Recorrerlo todo con la misma cadencia seria mucho mas caro sin recoger apenas mas basura.",
+      "explanation_en": "False: it is **generational** precisely because it does not treat them equally. It scans the young generation far more often, relying on the observation that most objects die young; survivors are promoted to older generations, which are collected less frequently. Scanning everything at the same cadence would cost far more while collecting barely any more garbage.",
       "source": "CPython docs 3.13 — gc: generational collection",
       "expected_time_ms": 28000,
       "tags": [
