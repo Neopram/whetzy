@@ -49,16 +49,9 @@ const BANNED = [
  * never that it became inconvenient. Each entry names the task that ends it.
  */
 const KNOWN_EXCEPTIONS = [
-  {
-    file: 'pyodide-worker.js',
-    host: 'cdn.jsdelivr.net',
-    task: '12.9',
-    note:
-      'The Pyodide runtime (~10 MB of wasm + stdlib) is fetched from jsDelivr the first time ' +
-      'a learner opens an exec question. Found by this check on the very run that added it, ' +
-      'not by anyone who already knew. Self-hosting it has real size and licensing questions, ' +
-      'so it is tracked as 12.9 instead of being quietly dropped from BANNED.',
-  },
+  // Empty, and worth keeping that way. The one entry this list ever held was
+  // pyodide-worker.js reaching for cdn.jsdelivr.net; task 12.9 removed the
+  // reference instead of the rule, which is the only way an entry should leave.
 ];
 
 const isKnownException = (file, host) =>

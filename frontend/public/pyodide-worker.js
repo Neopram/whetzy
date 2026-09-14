@@ -4,7 +4,9 @@
 //               { type: 'result', id, output, error, timedOut }
 //               { type: 'loadError', message }
 
-importScripts('https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js');
+// Same-origin, served by pyodideSelfHostPlugin in vite.config.ts from the
+// pinned `pyodide` dependency — never a third-party CDN (task 12.9, red line 5).
+importScripts('/pyodide/pyodide.js');
 
 const TIMEOUT_MS = 5_000;
 
@@ -43,7 +45,7 @@ let interruptBuffer = null;  // Int32Array on SharedArrayBuffer, or null
 (async () => {
   try {
     pyodide = await loadPyodide({
-      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/',
+      indexURL: '/pyodide/',
     });
 
     // SharedArrayBuffer-based interrupt requires COOP + COEP headers.
