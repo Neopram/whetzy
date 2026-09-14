@@ -20,6 +20,7 @@ logger = logging.getLogger("whetzy.quiz")
 
 from fastapi import HTTPException, status
 from sqlalchemy import func, or_, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -88,11 +89,30 @@ async def _get_or_create_skill_state(
         )
     )
     state = result.scalar_one_or_none()
-    if state is None:
-        state = UserSkillState(user_id=user_id, skill_id=skill_id)
-        db.add(state)
-        await db.flush()
-    return state
+    if state is not None:
+        return state
+
+    # Check-then-insert is a race: two requests for the same skill both see no
+    # row and both insert, and the loser hits `uq_user_skill_state` and takes
+    # the whole request down with a 500. It is not hypothetical — a double tap
+    # on "Practicar" is enough, and React's development double-render produced
+    # it on the first try.
+    #
+    # Savepoint so the failed insert does not poison the outer transaction,
+    # then re-read: whoever won created exactly the row we wanted.
+    try:
+        async with db.begin_nested():
+            state = UserSkillState(user_id=user_id, skill_id=skill_id)
+            db.add(state)
+            await db.flush()
+        return state
+    except IntegrityError:
+        result = await db.execute(
+            select(UserSkillState).where(
+                UserSkillState.user_id == user_id, UserSkillState.skill_id == skill_id
+            )
+        )
+        return result.scalar_one()
 
 
 async def _is_module_unlocked(db: AsyncSession, user_id: uuid.UUID, module: Module) -> bool:

@@ -9,6 +9,7 @@ import { showToast } from '../components/common/Toast';
 import { WhyButton } from '../components/quiz/WhyButton';
 import { GlossaryText } from '../components/quiz/GlossaryText';
 import { TermCard } from '../components/quiz/TermCard';
+import { SourceLine } from '../components/quiz/SourceLine';
 import { usePyodide } from '../hooks/usePyodide';
 import { useGlossary } from '../hooks/useGlossary';
 import styles from './QuizScreen.module.css';
@@ -376,9 +377,7 @@ export function QuizScreen() {
           onPick={setPickedTerm}
         />
       </p>
-      {feedback.source && (
-        <p className={styles.sourceBadge}>📚 {t('quiz.source')}: {feedback.source}</p>
-      )}
+      {feedback.source && <SourceLine source={feedback.source} />}
 
       <WhyButton questionId={question.id} isPremium={isPremium} onUpgrade={handleUpgrade} />
 

@@ -684,3 +684,51 @@ async def test_viewing_a_question_in_the_other_language_cannot_change_grading(
 
     assert len(verdicts) == 1, "the same index must always get the same verdict"
     assert len(correct_indices) == 1, "the correct index must not depend on presentation"
+
+
+async def test_skill_state_creation_recovers_from_a_lost_race(user, db_session):
+    """The loser of a create race must get the winner's row, not a 500.
+
+    Check-then-insert had no guard: two callers both saw no row, both inserted,
+    and the loser hit `uq_user_skill_state` and took the request down. A double
+    tap on "Practicar" is enough — React's development double-render produced it
+    on the first real click, as an HTTP 500 in the browser.
+
+    True concurrency cannot be staged here: the fixtures hand every request the
+    same SQLAlchemy Session, and one Session used from two tasks raises
+    "Session is already flushing" before any race can happen. So this drives the
+    recovery branch directly — the row exists, the SELECT is made to miss it,
+    and the insert therefore collides exactly as the loser's would.
+    """
+    from sqlalchemy import select
+
+    from app.models.user import UserSkillState
+    from app.services.quiz import _get_or_create_skill_state
+
+    skill_id = "sk_race"
+    db_session.add(UserSkillState(user_id=user.id, skill_id=skill_id))
+    await db_session.flush()
+
+    real_execute = db_session.execute
+    calls = {"n": 0}
+
+    async def execute_missing_once(statement, *args, **kwargs):
+        # Only the function's own first lookup is blinded; everything after,
+        # including its re-read, sees the truth.
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return await real_execute(
+                select(UserSkillState).where(UserSkillState.skill_id == "sk_does_not_exist"),
+                *args,
+                **kwargs,
+            )
+        return await real_execute(statement, *args, **kwargs)
+
+    db_session.execute = execute_missing_once  # type: ignore[method-assign]
+    try:
+        state = await _get_or_create_skill_state(db_session, user.id, skill_id)
+    finally:
+        db_session.execute = real_execute  # type: ignore[method-assign]
+
+    assert state.skill_id == skill_id
+    assert state.user_id == user.id
