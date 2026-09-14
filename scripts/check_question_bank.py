@@ -31,6 +31,20 @@ CONTENT = ROOT / "content" / "questions"
 SKEW_MIN_SAMPLE = 40
 SKEW_MAX_SHARE = 0.45
 MIN_PER_SKILL = 6
+
+# Density the adaptive engine actually needs, as opposed to the floor above.
+#
+# Taking a skill to mastery costs roughly 10-15 attempts of BKT evidence. Below
+# that many items per skill the learner meets the same question again before
+# mastering the concept, starts recognising the answer rather than knowing it,
+# and `p_known` climbs on a memory of the option rather than of the idea. That
+# is red line 1 broken from the content side, where no amount of engine work
+# can fix it.
+#
+# It is a WARN, not a failure: the bank sits at ~8.0 today and closing the gap
+# is authoring work measured in weeks. Ratchet it as tracks are filled in, so
+# the number can only ever move forward.
+TARGET_PER_SKILL = 15
 # true/false balance: below this many in a track, the ratio is noise.
 TF_MIN_SAMPLE = 25
 TF_BAND = (0.35, 0.65)
@@ -152,12 +166,43 @@ def main() -> int:
         if n < MIN_PER_SKILL:
             problems.append(f"skill {skill} has {n} question(s); the floor is {MIN_PER_SKILL}")
 
+    # --- engine density, per track ---
+    # Reported per track because that is the unit authoring happens in, and
+    # because the averages differ sharply: the certification track was built at
+    # the right density while the original seven were not.
+    # Counted over ALL questions, not just the ones with options. `by_track`
+    # holds the answer-position distribution, so it only sees multiple choice;
+    # dividing that subset by every skill in the track would report a density
+    # well below the real one and send authoring after a phantom gap.
+    skills_per_track: dict[str, set[str]] = {}
+    questions_per_track: Counter[str] = Counter()
+    for path, q in items:
+        skill = q.get("skill_id")
+        if not skill:
+            continue
+        # Same key as by_track, so the two columns line up on one row.
+        skills_per_track.setdefault(path.parent.name, set()).add(skill)
+        questions_per_track[path.parent.name] += 1
+
     print(f"\n[bank] {len(items)} questions across {len(by_track)} tracks, "
           f"{len(per_skill)} skills\n")
     for track, dist in sorted(by_track.items()):
-        total = sum(dist.values())
+        total = questions_per_track.get(track, 0)
         spread = "/".join(str(dist[i]) for i in range(4))
-        print(f"  {track:<38} {total:>5} Q   positions {spread}")
+        n_skills = len(skills_per_track.get(track, ()))
+        density = f"{total / n_skills:>5.1f}" if n_skills else "    -"
+        mark = " " if not n_skills or total / n_skills >= TARGET_PER_SKILL else "*"
+        print(f"  {track:<38} {total:>5} Q   {density} Q/skill{mark}  positions {spread}")
+
+    overall_density = len(items) / len(per_skill) if per_skill else 0.0
+    if overall_density < TARGET_PER_SKILL:
+        short = int(TARGET_PER_SKILL * len(per_skill)) - len(items)
+        warnings.append(
+            f"bank density is {overall_density:.1f} Q/skill against a target of "
+            f"{TARGET_PER_SKILL} (* marks the tracks below it). That is {short} more "
+            "questions. Under-dense skills repeat before they are mastered, so "
+            "p_known ends up measuring recall of the option rather than of the idea"
+        )
 
     # Warnings are real findings that this tool is the wrong place to fail on:
     # they need authoring work, not a mechanical fix, so blocking CI on them
