@@ -1,0 +1,1048 @@
+{
+  "questions": [
+    {
+      "id": "q080401001",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Como se factura una instancia bajo demanda (On-Demand) de Amazon EC2?",
+      "question_en": "How is an Amazon EC2 On-Demand Instance billed?",
+      "options_es": [
+        "Por mes completo",
+        "Por segundo, por las instancias que lanzas",
+        "Por numero de usuarios",
+        "Con una cuota anual fija"
+      ],
+      "options_en": [
+        "Per full month",
+        "Per second, for the instances you launch",
+        "Per number of users",
+        "With a fixed annual fee"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS lo define como pagar, por segundo, por las instancias que lanzas. Es la opcion sin compromiso: maxima flexibilidad y el precio por unidad mas alto. Todas las demas opciones existen para bajar ese precio a cambio de algun tipo de compromiso o de flexibilidad.",
+      "explanation_en": "AWS defines it as paying, by the second, for the instances you launch. It is the no-commitment option: maximum flexibility and the highest unit price. Every other option exists to lower that price in exchange for some commitment or flexibility.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "on-demand"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401002",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿A que se compromete quien compra un Savings Plan?",
+      "question_en": "What does buying a Savings Plan commit you to?",
+      "options_es": [
+        "A una configuracion concreta de instancia",
+        "A permanecer en una unica region",
+        "A una cantidad constante de uso, en USD por hora, durante 1 o 3 anos",
+        "A un numero de instancias determinado"
+      ],
+      "options_en": [
+        "A specific instance configuration",
+        "To staying in a single Region",
+        "A consistent amount of usage, in USD per hour, for a 1 or 3 year term",
+        "To a fixed number of instances"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El Savings Plan compromete un gasto por hora, no una configuracion. Por eso AWS lo recomienda cuando no puedes comprometerte a una configuracion concreta de instancia pero si a una cantidad de uso. Comprometerse a la configuracion es lo propio de las instancias reservadas.",
+      "explanation_en": "A Savings Plan commits to spend per hour, not to a configuration. That is why AWS recommends it when you cannot commit to a specific instance configuration but can commit to a usage amount. Committing to the configuration is what Reserved Instances do.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "savings-plans"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401003",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿A que se compromete quien compra una instancia reservada (Reserved Instance)?",
+      "question_en": "What does buying a Reserved Instance commit you to?",
+      "options_es": [
+        "A una cantidad de gasto por hora",
+        "A no usar otras regiones",
+        "A una configuracion de instancia constante, incluido el tipo de instancia y la region, durante 1 o 3 anos",
+        "A un nivel de soporte concreto"
+      ],
+      "options_en": [
+        "An amount of spend per hour",
+        "To not using other Regions",
+        "A consistent instance configuration, including instance type and Region, for a 1 or 3 year term",
+        "To a specific support tier"
+      ],
+      "correct_index": 2,
+      "explanation_es": "La instancia reservada compromete la configuracion: tipo de instancia y region, durante 1 o 3 anos. Es mas rigida que un Savings Plan, y a cambio AWS senala que sirve cuando ademas necesitas reserva de capacidad.",
+      "explanation_en": "A Reserved Instance commits the configuration: instance type and Region, for a 1 or 3 year term. It is more rigid than a Savings Plan, and in exchange AWS notes it is what you want when you also need a capacity reservation.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "reserved-instances"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401004",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que son las instancias de spot (Spot Instances)?",
+      "question_en": "What are Spot Instances?",
+      "options_es": [
+        "Instancias con hardware dedicado",
+        "Instancias exclusivas de AWS GovCloud",
+        "Instancias que solo existen 60 minutos",
+        "Peticiones de capacidad EC2 sin usar, que pueden reducir mucho el coste"
+      ],
+      "options_en": [
+        "Instances on dedicated hardware",
+        "Instances exclusive to AWS GovCloud",
+        "Instances that only live for 60 minutes",
+        "Requests for unused EC2 capacity, which can significantly reduce cost"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las instancias de spot piden capacidad EC2 sin usar y pueden abaratar mucho la factura. AWS precisa cuando conviene: si puedes ser flexible con el momento en que se ejecutan tus aplicaciones y estas pueden ser interrumpidas.",
+      "explanation_en": "Spot Instances request unused EC2 capacity and can reduce cost significantly. AWS is precise about when they fit: if you can be flexible about when your applications run and they can be interrupted.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "spot"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401005",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una carga de trabajo procesa lotes por la noche y tolera interrupciones. ¿Que opcion de compra es la mas adecuada?",
+      "question_en": "A workload processes batches at night and tolerates interruption. Which purchasing option fits best?",
+      "options_es": [
+        "Instancias bajo demanda",
+        "Hosts dedicados",
+        "Instancias de spot",
+        "Instancias reservadas de 3 anos"
+      ],
+      "options_en": [
+        "On-Demand Instances",
+        "Dedicated Hosts",
+        "Spot Instances",
+        "3-year Reserved Instances"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Tolerar interrupciones y ser flexible en el horario son exactamente las dos condiciones que AWS pone para que spot sea una eleccion rentable. Bajo demanda funcionaria pero saldria mas caro, y reservar 3 anos para una carga nocturna intermitente compromete capacidad que no se usa el resto del tiempo.",
+      "explanation_en": "Tolerating interruption and being flexible about timing are exactly the two conditions AWS sets for Spot to be a cost-effective choice. On-Demand would work but cost more, and reserving for 3 years for an intermittent nightly job commits capacity that is idle the rest of the time.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "spot"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401006",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es un host dedicado (Dedicated Host)?",
+      "question_en": "What is a Dedicated Host?",
+      "options_es": [
+        "Un servidor fisico dedicado por completo a ejecutar tus instancias",
+        "Una instancia con IP fija",
+        "Una instancia con mas memoria",
+        "Una instancia reservada de 3 anos"
+      ],
+      "options_en": [
+        "A physical host fully dedicated to running your instances",
+        "An instance with a static IP",
+        "An instance with more memory",
+        "A 3-year Reserved Instance"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Se paga por un host fisico dedicado enteramente a tus instancias, y AWS destaca que permite traer licencias por socket, por core o por VM para reducir costes. Junto con las instancias dedicadas, ayuda a cumplir requisitos normativos y a aprovechar licencias ligadas al servidor.",
+      "explanation_en": "You pay for a physical host fully dedicated to running your instances, and AWS highlights that it lets you bring per-socket, per-core or per-VM licenses to reduce costs. Together with Dedicated Instances, it helps address compliance requirements and reuse server-bound licenses.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "dedicated-hosts"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401007",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cual es la diferencia entre un host dedicado y una instancia dedicada?",
+      "question_en": "What is the difference between a Dedicated Host and a Dedicated Instance?",
+      "options_es": [
+        "Ninguna, son sinonimos",
+        "La instancia dedicada es mas cara siempre",
+        "El host dedicado se paga como servidor fisico completo asignado a ti; la instancia dedicada se paga por hora y corre sobre hardware de un solo inquilino",
+        "El host dedicado no admite licencias propias"
+      ],
+      "options_en": [
+        "None, they are synonyms",
+        "A Dedicated Instance is always more expensive",
+        "A Dedicated Host is paid for as a whole physical server assigned to you; a Dedicated Instance is paid by the hour and runs on single-tenant hardware",
+        "A Dedicated Host does not allow bringing your own licenses"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Los dos dan aislamiento de hardware, pero se facturan y se controlan distinto: el host dedicado es un servidor fisico entero asignado a ti — util para licencias por socket o por core —, mientras que la instancia dedicada se paga por hora y solo garantiza hardware de un unico inquilino.",
+      "explanation_en": "Both give hardware isolation, but they bill and behave differently: a Dedicated Host is a whole physical server assigned to you - useful for per-socket or per-core licensing - while a Dedicated Instance is paid by the hour and only guarantees single-tenant hardware.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "dedicated"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401008",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Para que sirve una reserva de capacidad (Capacity Reservation)?",
+      "question_en": "What is a Capacity Reservation for?",
+      "options_es": [
+        "Para reservar capacidad para tus instancias EC2 en una zona de disponibilidad concreta",
+        "Para reservar ancho de banda",
+        "Para reservar direcciones IP",
+        "Para reservar espacio en S3"
+      ],
+      "options_en": [
+        "To reserve capacity for your EC2 instances in a specific Availability Zone",
+        "To reserve bandwidth",
+        "To reserve IP addresses",
+        "To reserve S3 space"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La reserva de capacidad asegura capacidad para tus instancias en una zona de disponibilidad concreta. AWS la menciona junto a las instancias reservadas como la via cuando lo que necesitas es garantia de capacidad, no solo descuento.",
+      "explanation_en": "A Capacity Reservation secures capacity for your EC2 instances in a specific Availability Zone. AWS mentions it alongside Reserved Instances as the route when what you need is a capacity guarantee, not just a discount.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "capacity-reservation"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401009",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "Una empresa tiene una carga base estable pero no sabe que tipos de instancia usara dentro de un ano. ¿Que recomienda AWS?",
+      "question_en": "A company has a steady baseline load but does not know which instance types it will use in a year. What does AWS recommend?",
+      "options_es": [
+        "Savings Plans, porque permiten comprometer gasto sin comprometer la configuracion",
+        "Instancias reservadas de 3 anos",
+        "Instancias de spot",
+        "Hosts dedicados"
+      ],
+      "options_en": [
+        "Savings Plans, because they commit spend without committing the configuration",
+        "3-year Reserved Instances",
+        "Spot Instances",
+        "Dedicated Hosts"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS lo formula casi con esas palabras: si no puedes comprometerte a una configuracion concreta de instancia pero si a una cantidad de uso, compra Savings Plans para reducir el coste de las instancias bajo demanda. Reservar 3 anos una configuracion que quiza cambie es el riesgo que esa opcion evita.",
+      "explanation_en": "AWS words it almost exactly that way: if you cannot commit to a specific instance configuration but you can commit to a usage amount, purchase Savings Plans to reduce your On-Demand costs. Reserving a configuration for 3 years that may change is the risk that option avoids.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "savings-plans"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401010",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que opcion de compra ayuda a cumplir requisitos normativos que exigen hardware de un solo inquilino?",
+      "question_en": "Which purchasing option helps meet compliance requirements demanding single-tenant hardware?",
+      "options_es": [
+        "Instancias de spot",
+        "Savings Plans",
+        "Hosts dedicados o instancias dedicadas",
+        "Instancias bajo demanda"
+      ],
+      "options_en": [
+        "Spot Instances",
+        "Savings Plans",
+        "Dedicated Hosts or Dedicated Instances",
+        "On-Demand Instances"
+      ],
+      "correct_index": 2,
+      "explanation_es": "AWS senala que los hosts dedicados y las instancias dedicadas ayudan a atender requisitos de cumplimiento y a reducir costes reutilizando licencias ligadas al servidor. Spot, Savings Plans y bajo demanda son decisiones economicas, no de aislamiento.",
+      "explanation_en": "AWS notes that Dedicated Hosts and Dedicated Instances help address compliance requirements and reduce costs by using existing server-bound licenses. Spot, Savings Plans and On-Demand are economic decisions, not isolation ones.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "compliance"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401011",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Por que una instancia de spot no es adecuada para una base de datos de produccion con estado?",
+      "question_en": "Why is a Spot Instance unsuitable for a stateful production database?",
+      "options_es": [
+        "Porque las instancias de spot tienen menos CPU",
+        "Porque solo existen en una region",
+        "Porque no soportan volumenes EBS",
+        "Porque piden capacidad sin usar y pueden interrumpirse, y la premisa de spot es que la carga tolere interrupciones"
+      ],
+      "options_en": [
+        "Because Spot Instances have less CPU",
+        "Because they exist in only one Region",
+        "Because they do not support EBS volumes",
+        "Because they request unused capacity and can be interrupted, and Spot's premise is that the workload tolerates interruption"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Las instancias de spot son capacidad sobrante y pueden reclamarse. AWS pone la condicion explicitamente: son rentables si puedes ser flexible con cuando se ejecutan y si pueden interrumpirse. Una base de datos de produccion con estado no cumple ninguna de las dos.",
+      "explanation_en": "Spot Instances are spare capacity and can be reclaimed. AWS states the condition explicitly: they are cost-effective if you can be flexible about when your applications run and if they can be interrupted. A stateful production database meets neither.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "spot"
+      ],
+      "source": "Amazon EC2 billing and purchasing options (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html)"
+    },
+    {
+      "id": "q080401012",
+      "skill_id": "sk080401",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "¿Por que puede una empresa acabar pagando de mas pese a tener Savings Plans e instancias reservadas?",
+      "question_en": "Why can a company still overpay despite having Savings Plans and Reserved Instances?",
+      "options_es": [
+        "Porque los descuentos caducan cada mes",
+        "Porque AWS cobra una comision por descuento",
+        "Porque no se pueden combinar ambos",
+        "Porque un compromiso solo abarata lo que de verdad se usa: si la carga se dimensiona de mas o queda ociosa, se paga barato algo que no hacia falta"
+      ],
+      "options_en": [
+        "Because discounts expire monthly",
+        "Because AWS charges a fee per discount",
+        "Because the two cannot be combined",
+        "Because a commitment only discounts what is actually used: if the workload is oversized or idle, you pay a cheap price for something unnecessary"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Comprometer gasto y ajustar el tamano son palancas distintas, y en ese orden se equivocan muchos equipos. Un descuento del 40 % sobre una flota sobredimensionada sigue siendo mas caro que pagar bajo demanda por la flota correcta. Primero se mide y se ajusta; despues se compromete lo que quede estable.",
+      "explanation_en": "Committing spend and rightsizing are different levers, and many teams get the order wrong. A 40 % discount on an oversized fleet still costs more than On-Demand for the right-sized one. Measure and rightsize first; commit afterwards, on whatever stays stable.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "pricing",
+        "cost-optimization"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 4.1 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    },
+    {
+      "id": "q080402001",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que servicio permite analizar datos de coste y uso con graficos, filtros y agrupaciones, y ademas prever el gasto?",
+      "question_en": "Which service lets you analyze cost and usage data with visuals, filtering and grouping, and also forecast spend?",
+      "options_es": [
+        "AWS Budgets",
+        "AWS Cost Explorer",
+        "AWS Artifact",
+        "Amazon CloudWatch"
+      ],
+      "options_en": [
+        "AWS Budgets",
+        "AWS Cost Explorer",
+        "AWS Artifact",
+        "Amazon CloudWatch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "Cost Explorer analiza coste y uso con visualizaciones, filtrado y agrupacion, permite prever costes y crear informes personalizados. Budgets sirve para fijar limites y avisar cuando se superan: analizar y vigilar son cosas distintas.",
+      "explanation_en": "Cost Explorer analyzes cost and usage data with visuals, filtering and grouping, lets you forecast your costs and create custom reports. Budgets is for setting limits and alerting when they are exceeded: analyzing and watching are different jobs.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "cost-explorer"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402002",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Para que sirve AWS Budgets?",
+      "question_en": "What is AWS Budgets for?",
+      "options_es": [
+        "Para descargar informes de cumplimiento",
+        "Para pagar las facturas",
+        "Para fijar presupuestos de coste y uso y recibir alertas cuando se superan los umbrales definidos",
+        "Para reservar capacidad"
+      ],
+      "options_en": [
+        "To download compliance reports",
+        "To pay invoices",
+        "To set custom cost and usage budgets and receive alerts when costs exceed defined thresholds",
+        "To reserve capacity"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Budgets permite fijar presupuestos propios de coste y uso para gobernar el gasto en la organizacion y recibir alertas al superar los umbrales definidos. Es el mecanismo de control; Cost Explorer es el de analisis.",
+      "explanation_en": "Budgets lets you set custom cost and usage budgets to govern costs across your organization and receive alerts when costs exceed your defined thresholds. It is the control mechanism; Cost Explorer is the analysis one.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "budgets"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402003",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que hace AWS Cost Anomaly Detection?",
+      "question_en": "What does AWS Cost Anomaly Detection do?",
+      "options_es": [
+        "Configura alertas automaticas cuando AWS detecta una anomalia de coste, para reducir gastos inesperados",
+        "Bloquea los recursos que gastan de mas",
+        "Rebaja automaticamente el precio",
+        "Elimina recursos ociosos"
+      ],
+      "options_en": [
+        "Sets up automated alerts when AWS detects a cost anomaly, to reduce unexpected costs",
+        "Blocks resources that overspend",
+        "Automatically lowers the price",
+        "Deletes idle resources"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Cost Anomaly Detection avisa: configura alertas automaticas cuando AWS detecta una anomalia de coste, para reducir gastos inesperados. No bloquea ni borra nada — eso seguiria siendo una decision del cliente.",
+      "explanation_en": "Cost Anomaly Detection alerts: it sets up automated alerts when AWS detects a cost anomaly, to reduce unexpected costs. It does not block or delete anything - that remains a customer decision.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "anomaly-detection"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402004",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que permite la facturacion consolidada de AWS Organizations?",
+      "question_en": "What does AWS Organizations consolidated billing enable?",
+      "options_es": [
+        "Pagar con criptomoneda",
+        "Una sola factura para varias cuentas, seguimiento conjunto y combinar el uso para compartir descuentos por volumen",
+        "Eliminar el IVA",
+        "Separar las cuentas por region"
+      ],
+      "options_en": [
+        "Paying with cryptocurrency",
+        "One bill for multiple accounts, combined tracking, and combining usage to share volume discounts",
+        "Removing VAT",
+        "Separating accounts by Region"
+      ],
+      "correct_index": 1,
+      "explanation_es": "AWS enumera sus beneficios: una sola factura, seguimiento facil del gasto entre cuentas, uso combinado para compartir descuentos por volumen, instancias reservadas y Savings Plans, y sin coste adicional por usarla.",
+      "explanation_en": "AWS lists its benefits: one bill, easy tracking of charges across accounts, combined usage to share volume pricing discounts, Reserved Instances and Savings Plans, and no extra fee for using it.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "organizations"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402005",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuanto cuesta usar la facturacion consolidada?",
+      "question_en": "How much does consolidated billing cost?",
+      "options_es": [
+        "Un porcentaje de la factura",
+        "Depende del plan de soporte",
+        "Una cuota fija mensual",
+        "Nada: se ofrece sin coste adicional"
+      ],
+      "options_en": [
+        "A percentage of the bill",
+        "It depends on the support plan",
+        "A fixed monthly fee",
+        "Nothing: it is offered at no additional cost"
+      ],
+      "correct_index": 3,
+      "explanation_es": "AWS lo enumera explicitamente entre los beneficios: «sin coste adicional». Y ademas suele abaratar, porque combinar el uso de todas las cuentas permite compartir descuentos por volumen, reservas y Savings Plans.",
+      "explanation_en": "AWS lists it explicitly among the benefits: \"no extra fee\". And it usually reduces cost, because combining usage across accounts lets you share volume discounts, reservations and Savings Plans.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "organizations"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402006",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que diferencia hay entre las etiquetas de asignacion de costes y las categorias de coste?",
+      "question_en": "What is the difference between cost allocation tags and cost categories?",
+      "options_es": [
+        "Las etiquetas usan etiquetas de recurso para organizar y ver costes; las categorias mapean costes a equipos, aplicaciones o entornos y permiten reglas de reparto de costes compartidos",
+        "Ninguna, son sinonimos",
+        "Las categorias solo existen en cuentas Enterprise",
+        "Las etiquetas solo aplican a EC2"
+      ],
+      "options_en": [
+        "Tags use resource tags to organize and view costs; categories map costs to teams, applications or environments and allow split charge rules for shared costs",
+        "None, they are synonyms",
+        "Categories only exist in Enterprise accounts",
+        "Tags only apply to EC2"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Ambas organizan el gasto, pero por vias distintas. Las etiquetas parten de los recursos etiquetados. Las categorias mapean costes a dimensiones de negocio y, lo que las distingue, permiten definir reglas para repartir costes compartidos que ninguna etiqueta identifica por si sola.",
+      "explanation_en": "Both organize spend, but by different routes. Tags start from tagged resources. Categories map costs to business dimensions and, crucially, let you define split charge rules to allocate shared costs that no single tag identifies.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "cost-allocation"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402007",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que herramienta permite estimar el coste de una carga de trabajo planificada usando precios bajo demanda?",
+      "question_en": "Which tool estimates the cost of a planned workload using On-Demand rates?",
+      "options_es": [
+        "AWS Cost Explorer",
+        "El sitio web publico de la calculadora de precios",
+        "AWS Artifact",
+        "Amazon CloudWatch"
+      ],
+      "options_en": [
+        "AWS Cost Explorer",
+        "The public Pricing Calculator website",
+        "AWS Artifact",
+        "Amazon CloudWatch"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La calculadora de precios publica crea estimaciones del uso de servicios de AWS con tarifas bajo demanda. Existe ademas una calculadora dentro de la consola, que estima usando tus descuentos y compromisos de compra. Cost Explorer analiza lo ya gastado, no lo planificado.",
+      "explanation_en": "The public Pricing Calculator website creates cost estimates for using AWS services at On-Demand rates. There is also an in-console calculator, which estimates using your own discounts and purchase commitments. Cost Explorer analyzes what has already been spent, not what is planned.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "pricing-calculator"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402008",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que permite vigilar la funcion de AWS Free Tier dentro de Billing and Cost Management?",
+      "question_en": "What does the AWS Free Tier feature within Billing and Cost Management let you monitor?",
+      "options_es": [
+        "El numero de usuarios IAM",
+        "El uso actual y previsto de los servicios de la capa gratuita, para evitar costes inesperados",
+        "La latencia de las aplicaciones",
+        "El cumplimiento normativo"
+      ],
+      "options_en": [
+        "The number of IAM users",
+        "Current and forecasted usage of free tier services, to avoid unexpected costs",
+        "Application latency",
+        "Regulatory compliance"
+      ],
+      "correct_index": 1,
+      "explanation_es": "La funcion permite vigilar el uso actual y previsto de los servicios de la capa gratuita para evitar costes inesperados. Es util justo porque el problema tipico no es superar la capa gratuita, sino no enterarse hasta que llega la factura.",
+      "explanation_en": "The feature lets you monitor current and forecasted usage of free tier services to avoid unexpected costs. It is useful precisely because the typical problem is not exceeding the free tier, but not noticing until the invoice arrives.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "free-tier"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402009",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que hace AWS Cost Optimization Hub?",
+      "question_en": "What does AWS Cost Optimization Hub do?",
+      "options_es": [
+        "Sustituye a Cost Explorer",
+        "Aplica automaticamente los descuentos",
+        "Identifica oportunidades de ahorro con recomendaciones a medida: borrar recursos sin usar, ajustar tamanos, Savings Plans y reservas",
+        "Negocia precios con AWS"
+      ],
+      "options_en": [
+        "Replaces Cost Explorer",
+        "Automatically applies discounts",
+        "Identifies savings opportunities with tailored recommendations: deleting unused resources, rightsizing, Savings Plans and reservations",
+        "Negotiates prices with AWS"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Cost Optimization Hub identifica oportunidades de ahorro con recomendaciones adaptadas, incluidas eliminar recursos sin usar, ajustar tamanos, Savings Plans y reservas. Recomienda; aplicar los cambios sigue siendo decision del cliente.",
+      "explanation_en": "Cost Optimization Hub identifies savings opportunities with tailored recommendations, including deleting unused resources, rightsizing, Savings Plans and reservations. It recommends; applying the changes remains the customer's decision.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "cost-optimization"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402010",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "Por defecto, ¿pueden los usuarios y roles IAM acceder a la consola de Billing and Cost Management?",
+      "question_en": "By default, can IAM users and roles access the Billing and Cost Management console?",
+      "options_es": [
+        "No: hay que activar el ajuste «Activate IAM Access» para concederlo",
+        "Si, todos los usuarios IAM la ven",
+        "Solo los usuarios con MFA",
+        "Solo en cuentas de AWS Organizations"
+      ],
+      "options_en": [
+        "No: the \"Activate IAM Access\" setting must be enabled to grant it",
+        "Yes, every IAM user sees it",
+        "Only users with MFA",
+        "Only in AWS Organizations accounts"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Por defecto los usuarios y roles IAM no pueden acceder a la consola de facturacion; hay que activar «Activate IAM Access». Y esa activacion es, ella misma, una de las tareas que requiere el usuario raiz — un buen ejemplo de para que sirve el raiz.",
+      "explanation_en": "By default IAM users and roles cannot access the Billing console; the \"Activate IAM Access\" setting must be enabled. And that activation is itself one of the tasks requiring the root user - a good example of what root is for.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "iam"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402011",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que es el AWS Price List API?",
+      "question_en": "What is the AWS Price List API?",
+      "options_es": [
+        "Una API para negociar descuentos",
+        "Un servicio de facturacion alternativo",
+        "Una API para pagar facturas",
+        "Un catalogo centralizado que se puede consultar mediante programacion para obtener servicios, productos y precios"
+      ],
+      "options_en": [
+        "An API for negotiating discounts",
+        "An alternative billing service",
+        "An API for paying invoices",
+        "A centralized catalog you can query programmatically for services, products and pricing information"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El Price List API es un catalogo centralizado consultable por programa con informacion de servicios, productos y precios, con una API masiva que devuelve la informacion actualizada en JSON o CSV. Sirve para construir estimaciones propias, no para pagar ni negociar.",
+      "explanation_en": "The Price List API is a centralized catalog you can query programmatically for services, products and pricing information, with a bulk API returning up-to-date data in JSON or CSV. It is for building your own estimates, not for paying or negotiating.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "pricing-api"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080402012",
+      "skill_id": "sk080402",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "El gasto de una empresa sube un 30 % sin cambios de trafico. ¿Que secuencia de herramientas tiene mas sentido?",
+      "question_en": "A company's spend rises 30 % with no traffic change. Which sequence of tools makes most sense?",
+      "options_es": [
+        "Abrir un caso de soporte y esperar",
+        "Comprar Savings Plans inmediatamente",
+        "Cost Explorer para ver que servicio y cuenta lo explican, etiquetas o categorias para atribuirlo, y despues Budgets y Cost Anomaly Detection para que la proxima vez avise solo",
+        "Cambiar de region"
+      ],
+      "options_en": [
+        "Open a support case and wait",
+        "Buy Savings Plans immediately",
+        "Cost Explorer to see which service and account explain it, tags or categories to attribute it, then Budgets and Cost Anomaly Detection so next time it alerts by itself",
+        "Change Region"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Primero medir: Cost Explorer dice que servicio y que cuenta han cambiado, y las etiquetas o categorias a quien pertenece. Solo despues tiene sentido decidir. Comprar compromisos antes de entender la causa es abaratar un gasto que quiza no deberia existir.",
+      "explanation_en": "Measure first: Cost Explorer says which service and account changed, and tags or categories say whose it is. Only then does a decision make sense. Buying commitments before understanding the cause is discounting spend that perhaps should not exist at all.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "billing",
+        "cost-optimization"
+      ],
+      "source": "Use AWS Billing and Cost Management for AWS (https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html)"
+    },
+    {
+      "id": "q080403001",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Que incluye el plan Basic de AWS Support, disponible para todos los clientes?",
+      "question_en": "What does the Basic AWS Support plan, available to all customers, include?",
+      "options_es": [
+        "Un Technical Account Manager designado",
+        "Acceso telefonico 24x7 a ingenieros de soporte",
+        "Respuestas a preguntas de cuenta y facturacion, foros de soporte, comprobaciones de estado de los servicios y documentacion",
+        "Respuesta en 15 minutos para casos criticos"
+      ],
+      "options_en": [
+        "A designated Technical Account Manager",
+        "24x7 phone access to Cloud Support Engineers",
+        "One-on-one responses to account and billing questions, support forums, service health checks and documentation",
+        "15-minute response for critical cases"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Todos los clientes tienen acceso 24x7 a esas cuatro cosas: respuestas individuales sobre cuenta y facturacion, foros, comprobaciones de estado de los servicios y documentacion, articulos tecnicos y guias de buenas practicas. Basic tambien cubre solicitudes de aumento de cuotas de servicio.",
+      "explanation_en": "All customers have 24x7 access to those four things: one-on-one responses to account and billing questions, support forums, service health checks, and documentation, technical papers and best practice guides. Basic also covers service quota increase requests.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "basic"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403002",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que plan de soporte incluye un Technical Account Manager (TAM) designado?",
+      "question_en": "Which support plan includes a designated Technical Account Manager (TAM)?",
+      "options_es": [
+        "Basic",
+        "Todos los planes de pago",
+        "Ninguno lo incluye",
+        "Enterprise Support"
+      ],
+      "options_en": [
+        "Basic",
+        "All paid plans",
+        "None includes it",
+        "Enterprise Support"
+      ],
+      "correct_index": 3,
+      "explanation_es": "El TAM designado es una de las ventajas propias de Enterprise Support, junto con la respuesta en hasta 15 minutos para casos criticos de produccion, el acceso a AWS Security Incident Response y las revisiones estrategicas de negocio.",
+      "explanation_en": "A designated TAM is one of Enterprise Support's own benefits, alongside up to 15-minute response for production-critical cases, access to AWS Security Incident Response and strategic business reviews.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "enterprise"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403003",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cual es el tiempo de respuesta para casos criticos de produccion con Enterprise Support?",
+      "question_en": "What is the response time for production-critical cases with Enterprise Support?",
+      "options_es": [
+        "Hasta 24 horas",
+        "Hasta 1 hora",
+        "Hasta 4 horas",
+        "Hasta 15 minutos"
+      ],
+      "options_en": [
+        "Up to 24 hours",
+        "Up to 1 hour",
+        "Up to 4 hours",
+        "Up to 15 minutes"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Enterprise Support ofrece respuesta de hasta 15 minutos para casos criticos de produccion. Es la diferencia mas visible entre planes: no cambia lo que AWS puede hacer, cambia en cuanto tiempo empieza a hacerlo.",
+      "explanation_en": "Enterprise Support offers up to 15-minute production-critical case response. It is the most visible difference between plans: it does not change what AWS can do, it changes how soon it starts doing it.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "enterprise"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403004",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es AWS Trusted Advisor?",
+      "question_en": "What is AWS Trusted Advisor?",
+      "options_es": [
+        "Un cortafuegos",
+        "Un consultor humano asignado",
+        "Un servicio de copias de seguridad",
+        "Un servicio que ejecuta comprobaciones sobre tu cuenta y recomienda mejoras"
+      ],
+      "options_en": [
+        "A firewall",
+        "An assigned human consultant",
+        "A backup service",
+        "A service that runs checks against your account and recommends improvements"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Trusted Advisor ejecuta comprobaciones automatizadas sobre la cuenta. El numero de comprobaciones disponibles depende del plan: los planes superiores dan acceso a mas de 500. No es una persona: el consultor humano designado es el TAM.",
+      "explanation_en": "Trusted Advisor runs automated checks against the account. How many checks are available depends on the plan: the higher plans give access to more than 500. It is not a person: the designated human advisor is the TAM.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "trusted-advisor"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403005",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que permite la AWS Support API?",
+      "question_en": "What does the AWS Support API allow?",
+      "options_es": [
+        "Contratar un TAM",
+        "Abrir casos gratis desde Basic",
+        "Reducir el tiempo de respuesta",
+        "Interactuar con Support Center y Trusted Advisor para automatizar la gestion de casos y las operaciones de Trusted Advisor"
+      ],
+      "options_en": [
+        "Hiring a TAM",
+        "Opening free cases from Basic",
+        "Reducing response times",
+        "Interacting with Support Center and Trusted Advisor to automate case management and Trusted Advisor operations"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La Support API permite interactuar con Support Center y Trusted Advisor, de modo que se puede automatizar la gestion de casos y las operaciones de Trusted Advisor. Va incluida en los planes superiores, no en Basic, y no altera los tiempos de respuesta.",
+      "explanation_en": "The Support API lets you interact with Support Center and Trusted Advisor, so case management and Trusted Advisor operations can be automated. It comes with the higher plans, not Basic, and does not change response times.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "api"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403006",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que tipo de soporte incluye ayuda con los sistemas operativos de las instancias EC2 y con software de terceros?",
+      "question_en": "Which kind of support includes help with EC2 instance operating systems and third-party software?",
+      "options_es": [
+        "Basic",
+        "Ninguno",
+        "Los planes con soporte de software de terceros, como Business Support+",
+        "Solo AWS Unified Operations"
+      ],
+      "options_en": [
+        "Basic",
+        "None",
+        "Plans with third-party software support, such as Business Support+",
+        "Only AWS Unified Operations"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El soporte de software de terceros — ayuda con los sistemas operativos y la configuracion de instancias EC2, y con el rendimiento de los componentes de terceros mas populares en AWS — es una de las funciones adicionales de Business Support+, no de Basic.",
+      "explanation_en": "Third-party software support - help with EC2 instance operating systems and configuration, and with the performance of the most popular third-party software components on AWS - is one of Business Support+'s additional features, not Basic's.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "third-party"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403007",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que cambio anuncia la documentacion actual de AWS Support respecto a los planes Developer y Business?",
+      "question_en": "What change does the current AWS Support documentation announce for the Developer and Business plans?",
+      "options_es": [
+        "Que se discontinuan el 1 de enero de 2027, y sus clientes pueden migrar a Business Support+",
+        "Que bajan de precio",
+        "Que se fusionan con Basic",
+        "Que pasan a ser gratuitos"
+      ],
+      "options_en": [
+        "That they are discontinued on 1 January 2027, and their customers can move to Business Support+",
+        "That they get cheaper",
+        "That they merge with Basic",
+        "That they become free"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La documentacion avisa de que Developer Support y Business Support se discontinuan el 1 de enero de 2027, y de que sus clientes pueden seguir con su plan actual o pasar a Business Support+ antes de esa fecha. **Ojo con el examen:** la guia del CLF-C02 v1.0 es anterior a este cambio y puede seguir preguntando por el conjunto antiguo de planes.",
+      "explanation_en": "The documentation warns that Developer Support and Business Support are discontinued on 1 January 2027, and that their customers can stay on their existing plan or move to Business Support+ before that date. **Careful with the exam:** the CLF-C02 v1.0 guide predates this change and may still ask about the older plan lineup.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "plans"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403008",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que ocurre con el plan Enterprise On-Ramp segun la documentacion actual?",
+      "question_en": "What happens to the Enterprise On-Ramp plan according to current documentation?",
+      "options_es": [
+        "Se discontinua el 1 de enero de 2027 y sus clientes pasan automaticamente a Enterprise Support",
+        "Se mantiene sin cambios",
+        "Se fusiona con Basic",
+        "Pasa a ser el plan por defecto"
+      ],
+      "options_en": [
+        "It is discontinued on 1 January 2027 and its customers are automatically upgraded to Enterprise Support",
+        "It stays unchanged",
+        "It merges with Basic",
+        "It becomes the default plan"
+      ],
+      "correct_index": 0,
+      "explanation_es": "AWS anuncia que el 1 de enero de 2027 discontinua Enterprise On-Ramp, y que durante 2026 sus clientes pasan automaticamente a Enterprise Support en la renovacion o por lotes, con aviso por correo un mes antes. Es otro punto donde la documentacion actual y la guia del examen ya no coinciden.",
+      "explanation_en": "AWS announces that on 1 January 2027 it discontinues Enterprise On-Ramp, and that through 2026 its customers are automatically upgraded to Enterprise Support at renewal or in periodic batches, with an email a month beforehand. Another point where current documentation and the exam guide no longer agree.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "plans"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403009",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Que es AWS Security Incident Response, y con que plan viene incluido?",
+      "question_en": "What is AWS Security Incident Response, and which plan includes it?",
+      "options_es": [
+        "Una herramienta de facturacion",
+        "Un cortafuegos incluido en Basic",
+        "Un servicio para preparar, responder y recuperarse de incidentes de seguridad, incluido con Enterprise Support",
+        "Un plan de soporte independiente"
+      ],
+      "options_en": [
+        "A billing tool",
+        "A firewall included in Basic",
+        "A service to prepare for, respond to and recover from security incidents, included with Enterprise Support",
+        "A standalone support plan"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Es un servicio que ayuda a prepararse, responder y recibir orientacion para recuperarse de incidentes de seguridad — tomas de control de cuentas, filtraciones de datos, ransomware — y la documentacion lo cita entre las ventajas de Enterprise Support.",
+      "explanation_en": "It is a service that helps you prepare for, respond to and receive guidance to recover from security incidents - account takeovers, data breaches, ransomware - and the documentation cites it among Enterprise Support's benefits.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "security"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403010",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Que aporta el plan AWS Unified Operations frente a los demas?",
+      "question_en": "What does the AWS Unified Operations plan add over the others?",
+      "options_es": [
+        "Un TAM designado y un ingeniero especialista de dominio (DSE), guia de arquitectura de aplicaciones, gestion de eventos de infraestructura y revisiones de cargas criticas",
+        "Solo un descuento en la factura",
+        "Acceso anticipado a servicios nuevos",
+        "Soporte exclusivamente por correo"
+      ],
+      "options_en": [
+        "A designated TAM and Domain Specialist Engineer (DSE), application architecture guidance, infrastructure event management and critical workload reviews",
+        "Only a discount on the bill",
+        "Early access to new services",
+        "Email-only support"
+      ],
+      "correct_index": 0,
+      "explanation_es": "La documentacion enumera para Unified Operations: guia consultiva de arquitectura de aplicaciones, gestion de eventos de infraestructura, un TAM y un DSE designados para tus casos de uso, una suscripcion recurrente a AWS Countdown Premium y revisiones de cargas criticas con runbooks personalizados.",
+      "explanation_en": "The documentation lists for Unified Operations: consultative application architecture guidance, infrastructure event management, a designated TAM and DSE for your use cases, a recurring AWS Countdown Premium subscription, and critical workload reviews with personalized runbooks.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "unified-operations"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403011",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuantos casos de soporte tecnico puede abrir un cliente con Business Support+?",
+      "question_en": "How many technical support cases can a customer open with Business Support+?",
+      "options_es": [
+        "Uno al mes",
+        "Solo el usuario raiz puede abrirlos",
+        "Cinco al ano",
+        "Un numero ilimitado, y los puede abrir cualquier usuario con permisos"
+      ],
+      "options_en": [
+        "One per month",
+        "Only the root user can open them",
+        "Five per year",
+        "An unlimited number, and any user with permissions can open them"
+      ],
+      "correct_index": 3,
+      "explanation_es": "La documentacion lo dice asi: soporta un numero ilimitado de casos, que puede abrir cualquier usuario con los permisos adecuados. Basic, en cambio, cubre preguntas de cuenta y facturacion y aumentos de cuota, no casos tecnicos.",
+      "explanation_en": "The documentation says it plainly: it supports an unlimited number of support cases that can be opened by any user with permissions. Basic, by contrast, covers account and billing questions and quota increases, not technical cases.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "cases"
+      ],
+      "source": "AWS Support Plans (https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html)"
+    },
+    {
+      "id": "q080403012",
+      "skill_id": "sk080403",
+      "type": "mcq",
+      "difficulty_tier": "expert",
+      "question_es": "Una startup con un entorno de produccion pequeno duda entre Basic y un plan de pago. ¿Que criterio decide de verdad?",
+      "question_en": "A startup with a small production environment is unsure between Basic and a paid plan. What criterion actually decides?",
+      "options_es": [
+        "El numero de instancias que tienen",
+        "La region donde despliegan",
+        "El tamano del equipo",
+        "Cuanto cuesta una hora de caida y si pueden permitirse esperar en vez de hablar con un ingeniero de soporte"
+      ],
+      "options_en": [
+        "The number of instances they have",
+        "The Region they deploy in",
+        "The team size",
+        "What an hour of downtime costs them and whether they can afford to wait rather than reach a support engineer"
+      ],
+      "correct_index": 3,
+      "explanation_es": "Basic no incluye casos de soporte tecnico: ante una caida, los recursos son la documentacion y los foros. La pregunta economica no es el precio del plan, sino cuanto cuesta una hora de caida sin poder hablar con nadie. Si esa cifra supera con holgura el coste mensual del plan, la decision se contesta sola.",
+      "explanation_en": "Basic includes no technical support cases: in an outage, the resources are the documentation and the forums. The economic question is not the plan's price but what an hour of downtime costs when you cannot reach anyone. If that figure comfortably exceeds the plan's monthly cost, the decision answers itself.",
+      "expected_time_ms": 25000,
+      "tags": [
+        "support",
+        "decision"
+      ],
+      "source": "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide v1.0, Task Statement 4.3 (https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf)"
+    }
+  ]
+}
