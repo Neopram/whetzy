@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-15 (sesión ac) — banco expandido a **3.419 Q** (todos los tracks ≥15 Q/skill), plan maestro F15-F22 creado, docs P0 corregidos. Backlog activo: F15 DOING, F16-F22 TODO. H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
+> Última actualización: 2026-09-15 (sesión ac) — F15 DONE (docs P0/P1 + bugs), F16 DONE (glosario 101→321 términos), F17 DONE (exec ratio 3.2%→16.8%, todos los tracks ≥15%; fill_blank activado 373Q + 109 nuevas). Backlog activo: F18 (certs PCEP/SAA/AIF). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
 
 ---
 
@@ -21,7 +21,7 @@
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |
-| Contenido | **3.419 preguntas** / 8 tracks / 226 skills / 101 términos glosario (111 exec = 7,3 %). Track 08 = AWS CLF-C02 (300 Q, 19 skills). Exec ratio objetivo: ≥15 % (F17) |
+| Contenido | **3.528 preguntas** / 8 tracks / 226 skills / **321 términos glosario** (593 exec = 16.8%). Track 08 = AWS CLF-C02 (355 Q, 19 skills). fill_blank activado en frontend+backend. |
 
 ### Gotchas verificados (no redescubrir)
 - **`npx tsc --noEmit` en `frontend/` NO comprueba nada.** `tsconfig.json` es solution-style
@@ -327,10 +327,10 @@
 | 14.7 | 3 | **PCEP** — primera certificación del carril 1 (decisión #25) | TODO | ≥ 200 Q alineadas al temario oficial PCEP con fuente, simulacro cronometrado en formato real, informe por dominio. Cierra el track 01 |
 | 14.8 | 4 | **Predictor beta-binomial de aprobado** con calibración pública | BLOCKED (11.8 · H.10) | «P(PCEP) = 91 % ± 4 %» más curva de calibración: de aquellos a quienes dijimos 90 %, aprobó ~90 %. **Sin datos reales no se puede calibrar** — depende de la cohorte beta |
 | 14.9 | 4 | **Informe de dominio verificable** por URL | BLOCKED (11.8 · H.10) | URL pública: «p_known ≥ 0,95 en N de M skills, X respuestas en Y semanas, Z % a la primera». Un reclutador puede confiar en esto más que en un «terminó el curso» |
-| 14.12 | 1 | **Densidad del banco a 15 Q/skill en los tracks 01–07** | DONE | **3.419 preguntas, 226 skills, todos los tracks ≥15,0 Q/skill.** `check_question_bank.py` PASS, 0 WARNs. Completado sesión ac 2026-09-15. Regresión de exec ratio: era 15,57 % antes de la expansión del banco, ahora **7,3 %** — 111 exec Q sobre 3.419. Se arregla en F17 (+116 Q exec) |
+| 14.12 | 1 | **Densidad del banco a 15 Q/skill en los tracks 01–07** | DONE | **3.528 preguntas, 226 skills, todos los tracks ≥15,0 Q/skill.** `check_question_bank.py` PASS. F17 DONE 2026-09-15: exec ratio 16.8% (593/3528), todos los tracks ≥15%. fill_blank activado (373Q desbloqueadas) + 109 nuevas fill_blank_exec/fill_blank. |
 | 14.13 | 2 | **Cuatro tracks nuevos: Linux/CLI · SQL y bases de datos · Frameworks web (FastAPI) · Data engineering** | TODO | Revisados los 53 módulos: para «Python de 0 a AI Engineer» faltan cuatro cosas que un empleador da por sentadas. Linux y shell no aparecen en absoluto; SQL es **un módulo** dentro de Ingeniería de Software, insuficiente para una ruta de datos; los frameworks web —el trabajo real de un dev Python— no existen; y de data engineering solo hay pandas, sin pipelines. ~24 módulos y ~100 skills nuevas, a 15 Q/skill = **+1.500 preguntas**. Criterio: 12 tracks, `validate_content.py` 0 errores, 100 % con `source`, y el checker sin `*` en los nuevos |
 | 14.14 | 3 | **~50 animaciones Manim para los conceptos que un texto no explica** | TODO | Manim (MIT, Python — el motor de 3Blue1Brown) genera animaciones **desde código**, así que son versionables en git y se regeneran solas; la ventaja de Brilliant son visualizaciones hechas a mano una a una. Es especialmente apto aquí porque lo que enseñas *es* Python. **Alcance deliberadamente acotado: ~50 piezas de 10–30 s, sin audio**, solo donde una explicación estática falla de verdad — recursión, el GIL, el event loop, backprop, HNSW. **No es una videoteca**: el vídeo largo rompe la línea roja 4 (offline), pesa en móvil y no compone con el motor, porque no se puede servir adaptativamente un vídeo de 12 minutos. Complemento para CLI: `asciinema`, que graba terminal como **texto**, no vídeo. Criterio: renderizado en CI, servido desde origen propio (línea roja 5), `prefers-reduced-motion` respetado |
-| 14.11 | 3 | **Glosario de 70 → ~300 términos** — el enlazado de 14.2 solo alcanza al 14,2 % de las preguntas | DOING (F16) | track03 expandido a 41 términos (commitear). Tracks 01,02,04,05,06,07,08 en cola (F16, agentes Haiku). Bug crítico identificado: etiquetas compuestas con ` y ` o ` / ` nunca coinciden en `GlossaryText.tsx` (regex de límite de palabra). **Todas las etiquetas nuevas serán simples y de frecuencia medida** |
+| 14.11 | 3 | **Glosario de 70 → ~300 términos** | DONE | F16 DONE 2026-09-15: **321 términos** en 8 tracks (track01:38, track02:43, track03:41, track04:37, track05:42, track06:40, track07:39, track08:42). Dead-label bug resuelto: todas las etiquetas son simples. commit 99698b8. |
 | 14.10 | 5 | **IRT (θ) — el modelo de Vicks** | BLOCKED (datos) | Ajustar dificultad y discriminación psicométricas por ítem sobre respuestas reales. Es lo que usan los exámenes de certificación de verdad, y haría mucho más preciso a 14.8. **No antes de tener miles de respuestas**: sin datos sería un séptimo algoritmo sin evidencia sobre seis que solo tienen una (decisión de no «lanzarlos todos») |
 
 ### Dependencias
