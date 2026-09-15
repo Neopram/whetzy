@@ -6,7 +6,9 @@
     same query shape app.services.ai.tutor.explain_question() builds — finds
     the question's own chunk in the top 3 results for >= 95% of questions,
     in BOTH Spanish and English (bilingual parity, red line #3).
-  - Memory: building the index adds well under 30MB.
+  - Memory: building the index adds well under a per-document budget (see
+    _MAX_BYTES_PER_DOC) — bounded per-doc footprint, not a flat ceiling that
+    goes stale as the content bank grows.
 
 Loads the *real* content/ JSON corpus (the whole bank, whatever its
 current size — see _MIN_CORPUS_QUESTIONS)
@@ -48,7 +50,22 @@ def _coverage_is_active() -> bool:
         return False
     return coverage.Coverage.current() is not None
 
-_MAX_RSS_DELTA_BYTES = 30 * 1024 * 1024
+# Bytes-per-document, not a fixed ceiling: BM25Okapi's memory is inherently
+# ~linear in corpus size (every doc keeps its own token list, plus a
+# doc_freqs dict inside rank_bm25), and the content bank grows every
+# session — a flat MB ceiling goes stale on legitimate content growth
+# instead of catching a real regression.
+#
+# Measured peak tracemalloc / doc count:
+#   1323 docs -> +15.73 MB = 11.89 KB/doc  (task 11.1, docs/AUTONOMOUS_STATE.md)
+#   4790 docs -> +57.52 MB = 12.01 KB/doc  (this session, F15-F22 grew the
+#                                           bank to 4346 questions / 3 tracks)
+# The per-doc footprint drifted ~1% while the corpus grew 3.6x — that's
+# linear scaling, not a leak. The budget below keeps 11.1's original ~1.9x
+# headroom over the measured per-doc footprint, so it still catches a
+# genuine blow-up (e.g. a change that keeps a duplicate copy of the
+# tokenized corpus per doc) without going stale as content grows.
+_MAX_BYTES_PER_DOC = 24 * 1024  # ~2x headroom over the ~12 KB/doc measured
 
 
 async def _load_real_corpus() -> async_sessionmaker[AsyncSession]:
@@ -95,8 +112,11 @@ async def test_index_builds_fast_with_bounded_memory_and_hits_self_retrieval_bar
             f"Index build took {build_seconds:.3f}s, over the {budget}s budget"
             + (" (measured under a coverage tracer)" if traced else "")
         )
-        assert peak < _MAX_RSS_DELTA_BYTES, (
-            f"Index build allocated {peak / 1e6:.2f} MB, over the 30 MB budget"
+        budget_bytes = len(idx._docs) * _MAX_BYTES_PER_DOC
+        assert peak < budget_bytes, (
+            f"Index build allocated {peak / 1e6:.2f} MB for {len(idx._docs)} docs "
+            f"({peak / len(idx._docs):.0f} B/doc), over the {_MAX_BYTES_PER_DOC / 1024:.0f} "
+            f"KB/doc budget ({budget_bytes / 1e6:.2f} MB total)"
         )
 
         rows = (
