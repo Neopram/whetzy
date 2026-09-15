@@ -103,7 +103,7 @@ EXEC_FLOOR = {
     "track01": 0.15,
     "track02": 0.15,
     "track03": 0.15,
-    "track04": 0.07,
+    "track04": 0.15,
     # 1,9 % hasta que la sesion ar autoro 68 ejecutables. Sus 8 originales
     # importaban numpy/pandas y no podian correr en el navegador del alumno,
     # asi que el ratio de antes contaba preguntas rotas. Ver ADR-9 y 17.3.
