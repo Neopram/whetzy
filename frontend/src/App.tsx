@@ -87,6 +87,7 @@ function App() {
 
   const currentScreen = useAppStore((s) => s.currentScreen);
   const setScreen = useAppStore((s) => s.setScreen);
+  const mockExamTrackId = useAppStore((s) => s.mockExamTrackId);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
   const userId = useAppStore((s) => s.user.id);
@@ -163,10 +164,8 @@ function App() {
       case 'profile': return <ProfileScreen />;
       case 'placement': return <PlacementScreen />;
       case 'duels': return <DuelScreen />;
-      // The blueprint figures are the CLF-C02 ones; the server is the
-      // authority once the exam starts (it sets the deadline and the mix).
       case 'mockexam':
-        return <MockExamScreen trackId="track08" questionCount={65} durationMinutes={90} onExit={() => setScreen('tracks')} />;
+        return <MockExamScreen trackId={mockExamTrackId ?? 'track08'} questionCount={65} durationMinutes={90} onExit={() => setScreen('tracks')} />;
       default: return <HomeScreen />;
     }
   };

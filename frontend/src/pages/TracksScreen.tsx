@@ -32,6 +32,7 @@ export function TracksScreen() {
   const lang = useAppStore((s) => s.user.language);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const setScreen = useAppStore((s) => s.setScreen);
+  const startMockExam = useAppStore((s) => s.startMockExam);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
   const { t } = useTranslation();
@@ -87,7 +88,7 @@ export function TracksScreen() {
       {/* Only a certification track offers a mock exam, and it says what it
           costs in time before the clock starts. */}
       {selected?.is_certification && selected.exam_question_count && selected.exam_duration_minutes && (
-        <button className={styles.mockExamCta} onClick={() => setScreen('mockexam')}>
+        <button className={styles.mockExamCta} onClick={() => selected && startMockExam(selected.id)}>
           <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
           <span className={styles.mockExamMeta}>
             {t('mockExam.format', {
