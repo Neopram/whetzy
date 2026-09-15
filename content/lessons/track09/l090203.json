@@ -1,0 +1,12 @@
+{
+  "id": "l090203",
+  "skill_id": "sk090203",
+  "title_es": "Bucles for y range()",
+  "title_en": "for Loops and range()",
+  "body_es": "El bucle for en Python itera sobre los elementos de cualquier objeto iterable: listas, tuplas, cadenas, rangos, diccionarios y más. A diferencia de otros lenguajes, no requiere un índice explícito; la variable del bucle recibe directamente cada valor en cada iteración.\n\nLa función range() genera secuencias de enteros de forma perezosa (sin almacenarlos todos en memoria). Acepta entre uno y tres argumentos: range(stop), range(start, stop) o range(start, stop, step). El valor stop siempre queda excluido: range(5) genera 0, 1, 2, 3, 4.\n\nCuando se necesita tanto el índice como el valor, enumerate() es la forma idiomática: for i, valor in enumerate(lista) evita el antipatrón for i in range(len(lista)). Para iterar sobre dos secuencias en paralelo se usa zip().\n\nEl bucle for también admite una cláusula else que se ejecuta cuando el iterable se agota sin que se haya ejecutado un break. Es especialmente útil en algoritmos de búsqueda lineal para detectar de forma limpia si el elemento buscado no estaba presente.",
+  "body_en": "Python's for loop iterates directly over any iterable object — lists, strings, tuples, ranges, dictionaries, files, and more — without requiring an explicit numeric index. The loop variable is bound to each element in turn, making the code closer to natural language.\n\nThe built-in range() function generates integer sequences lazily (on demand), so it never allocates a large list in memory. It accepts one, two, or three arguments: range(stop), range(start, stop), or range(start, stop, step). The stop value is always exclusive: range(5) produces 0 through 4.\n\nWhen you need both the index and the value of each element, enumerate() is the idiomatic choice: for i, item in enumerate(sequence) is cleaner than the anti-pattern for i in range(len(sequence)). To iterate over two sequences in parallel, use zip().\n\nLike while, a for loop can have an else clause that runs when the iterable is exhausted without a break. This is a useful pattern in search algorithms where you want to cleanly detect the case where no matching element was found, without setting a separate boolean flag variable.",
+  "example_code": "for i in range(0, 10, 2):\n    print(i)\nfruits = ['apple', 'banana', 'cherry']\nfor fruit in fruits:\n    print(fruit)",
+  "example_output": "0\n2\n4\n6\n8\napple\nbanana\ncherry",
+  "source": "Python Institute PCEP — https://pythoninstitute.org/pcep",
+  "order": 8
+}
