@@ -108,6 +108,17 @@ export async function answerCurrentQuestion(page: Page) {
   if (await options.count() > 0) {
     await options.first().click();
   } else {
+    // `fill_blank` (and `fill_blank_exec` with a code template) render a text
+    // input, and their submit button stays disabled while it is empty. Typing
+    // something is what enables it — without this the helper sat on a disabled
+    // "✓ Confirmar" until the test timed out, which is how the 373 fill_blank
+    // questions activated in F17 started breaking any spec that answers a quiz.
+    // The value need not be right: a wrong answer still reaches the feedback
+    // panel, which is all these specs wait for.
+    const blankInput = page.locator('[class*="blankInput_"]');
+    if (await blankInput.count() > 0) {
+      await blankInput.first().fill('42');
+    }
     const runBtn = page.locator('[class*="btnRun_"]');
     await expect(runBtn).toBeVisible({ timeout: 10_000 });
     for (let attempt = 0; attempt < 3; attempt++) {
