@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
@@ -150,20 +151,27 @@ async def get_user_badges(db: AsyncSession, user: User) -> list[UserBadgeWithDet
     ]
 
 
+async def _todays_missions(
+    db: AsyncSession, user: User, today: date
+) -> list[tuple[UserMission, Mission]]:
+    """Today's (UserMission, Mission) pairs as they currently stand in the DB."""
+    result = await db.execute(
+        select(UserMission, Mission)
+        .join(Mission, Mission.id == UserMission.mission_id)
+        .where(UserMission.user_id == user.id, UserMission.date == today)
+    )
+    return list(result.all())  # type: ignore[arg-type]
+
+
 async def _ensure_today_missions(db: AsyncSession, user: User) -> list[tuple[UserMission, Mission]]:
     """Return today's (UserMission, Mission) pairs for the user, lazily
     auto-assigning a default set of missions the first time they're needed
     on a given day — whether that's a GET /missions call or the very first
     quiz answer of the day."""
     today = date.today()
-    result = await db.execute(
-        select(UserMission, Mission)
-        .join(Mission, Mission.id == UserMission.mission_id)
-        .where(UserMission.user_id == user.id, UserMission.date == today)
-    )
-    rows = result.all()
+    rows = await _todays_missions(db, user, today)
     if rows:
-        return list(rows)  # type: ignore[arg-type]
+        return rows
 
     templates_result = await db.execute(
         select(Mission).order_by(Mission.id).limit(DEFAULT_DAILY_MISSION_COUNT)
@@ -172,24 +180,31 @@ async def _ensure_today_missions(db: AsyncSession, user: User) -> list[tuple[Use
     if not templates:
         return []
 
-    for template in templates:
-        db.add(
-            UserMission(
-                user_id=user.id,
-                mission_id=template.id,
-                progress=0,
-                completed=False,
-                date=today,
+    try:
+        # A SAVEPOINT, not a bare flush: the first screen of the day fires
+        # /progress/dashboard and /quiz/start almost together, both read "no
+        # missions yet", and both insert — so the loser hit
+        # uq_user_mission_date and the user got a 500 on their first action of
+        # the day. Rolling back to the savepoint leaves the outer transaction
+        # (XP, streak, the answer itself) intact, and the re-read below picks
+        # up whichever request won.
+        async with db.begin_nested():
+            db.add_all(
+                [
+                    UserMission(
+                        user_id=user.id,
+                        mission_id=template.id,
+                        progress=0,
+                        completed=False,
+                        date=today,
+                    )
+                    for template in templates
+                ]
             )
-        )
-    await db.flush()
+    except IntegrityError:
+        pass
 
-    result = await db.execute(
-        select(UserMission, Mission)
-        .join(Mission, Mission.id == UserMission.mission_id)
-        .where(UserMission.user_id == user.id, UserMission.date == today)
-    )
-    return list(result.all())  # type: ignore[arg-type]
+    return await _todays_missions(db, user, today)
 
 
 async def get_today_missions(db: AsyncSession, user: User) -> list[UserMissionRead]:

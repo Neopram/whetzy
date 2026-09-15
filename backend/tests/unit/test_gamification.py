@@ -8,9 +8,11 @@ from __future__ import annotations
 import uuid
 from datetime import date, timedelta
 
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.gamification import Badge, League, LeagueEntry, Mission
+import app.services.gamification.service as service_module
+from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.user import User, UserBadge
 from app.services.gamification.service import (
     apply_quiz_event,
@@ -536,6 +538,51 @@ class TestGetTodayMissions:
 
         assert len(result1) == len(result2) == 1
         assert result1[0].mission.id == result2[0].mission.id
+
+    async def test_concurrent_seeding_does_not_raise(
+        self, db_session: AsyncSession, user: User, monkeypatch
+    ) -> None:
+        """Two requests on the first screen of the day both see "no missions".
+
+        /progress/dashboard and /quiz/start fire almost together, both read an
+        empty set, and both insert — the loser used to hit uq_user_mission_date
+        and the user got a 500 on their first action of the day. The race is
+        reproduced by making the existence check lie exactly once, which is
+        what the losing request observes.
+        """
+        db_session.add_all([
+            _mission("questions_answered", 5),
+            _mission("correct_answers", 3),
+        ])
+        await db_session.commit()
+
+        # The winning request.
+        first = await get_today_missions(db_session, user)
+        assert len(first) == 2
+
+        real_check = service_module._todays_missions
+        calls = {"n": 0}
+
+        async def lying_check(db, u, today):  # type: ignore[no-untyped-def]
+            calls["n"] += 1
+            if calls["n"] == 1:
+                return []          # the stale read the loser made
+            return await real_check(db, u, today)
+
+        monkeypatch.setattr(service_module, "_todays_missions", lying_check)
+
+        # The losing request: inserts into rows that already exist.
+        second = await get_today_missions(db_session, user)
+
+        assert calls["n"] == 2, "the second lookup (after the conflict) must happen"
+        assert len(second) == 2, "the loser still gets today's missions back"
+        assert {r.mission.id for r in second} == {r.mission.id for r in first}
+
+        # And no duplicates were created.
+        total = await db_session.scalar(
+            select(func.count()).select_from(UserMission).where(UserMission.user_id == user.id)
+        )
+        assert total == 2
 
     async def test_initial_progress_is_zero(self, db_session: AsyncSession, user: User):
         db_session.add(_mission("xp_earned", 100))
