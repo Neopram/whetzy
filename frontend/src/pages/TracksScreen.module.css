@@ -113,7 +113,12 @@
 .connectorMet { background: var(--le-green); }
 
 .module { padding: 0; overflow: hidden; }
-.moduleLocked { opacity: 0.7; }
+/* No blanket opacity here. 0.7 over the card dragged --le-text-secondary
+   (5.8:1 on white) down to ~3:1 and made every "Se desbloquea al dominar…"
+   line fail WCAG 1.4.3 — dimming a container dims its text with it. The 🔒
+   badge and that same sentence already say the module is locked, so the
+   opacity was decoration that cost legibility. */
+.moduleLocked .moduleName { color: var(--le-text-secondary); }
 
 .moduleHeader {
   display: flex;

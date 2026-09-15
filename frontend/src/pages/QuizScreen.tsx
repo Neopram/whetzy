@@ -336,12 +336,15 @@ export function QuizScreen() {
   const answered = feedback !== null;
   const otherLang: 'es' | 'en' = viewLang === 'es' ? 'en' : 'es';
 
+  // The *-text tokens, not the raw hues: this badge is 11px bold text sitting
+  // straight on --le-bg, where --le-red/--le-orange/--le-green measure
+  // 3.08:1 / 2.04:1 / 1.94:1 — all under the 4.5:1 floor (red line 6).
   const diffColor =
     question.difficulty_tier === 'hard' || question.difficulty_tier === 'expert'
-      ? 'var(--le-red)'
+      ? 'var(--le-danger-text)'
       : question.difficulty_tier === 'medium'
-        ? 'var(--le-orange)'
-        : 'var(--le-green)';
+        ? 'var(--le-warning-text)'
+        : 'var(--le-success-on-tint)';
 
   // ── Shared header + stats bar ──────────────────────────────────────────
   const header = (
