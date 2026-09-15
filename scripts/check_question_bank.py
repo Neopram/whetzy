@@ -106,7 +106,10 @@ EXEC_FLOOR = {
     "track04": 0.07,
     "track06": 0.01,
     "track07": 0.00,
-    "track09": 0.00,
+    # 0 % until session ar authored 42 executable questions for it. PCEP is the
+    # wedge of lane 1 and it is a *Python* certification, so a zero here was
+    # never a limitation of the medium - only of the bank.
+    "track09": 0.15,
 }
 
 
