@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { auth, logout as apiLogout, type UserRead } from '../services/api';
 
 type Language = 'es' | 'en';
-type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks' | 'duels' | 'mockexam' | 'lesson';
+type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks' | 'duels' | 'mockexam' | 'lesson' | 'trackexam';
 type LeagueTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
 interface UserProfile {
@@ -73,6 +73,20 @@ interface AppState {
   mockExamQuestionCount: number;
   mockExamDurationMinutes: number;
   startMockExam: (trackId: string, questionCount?: number, durationMinutes?: number) => void;
+
+  // Track final exam / module test-out (17.2). One slice for both: they are the
+  // same sitting with a different blueprint, and `trackExamKind` is what the
+  // screen switches on.
+  trackExamKind: 'track_final' | 'test_out';
+  trackExamTargetId: string | null;
+  trackExamQuestionCount: number;
+  trackExamDurationMinutes: number;
+  trackExamPassPct: number;
+  startTrackExam: (
+    kind: 'track_final' | 'test_out',
+    targetId: string,
+    blueprint: { questions: number; durationMinutes: number; passPct: number },
+  ) => void;
 
   // Lesson
   lessonSkillId: string | null;
@@ -229,6 +243,26 @@ export const useAppStore = create<AppState>()(
       mockExamDurationMinutes: 90,
       startMockExam: (trackId, questionCount = 65, durationMinutes = 90) =>
         set((s) => ({ mockExamTrackId: trackId, mockExamQuestionCount: questionCount, mockExamDurationMinutes: durationMinutes, previousScreen: s.currentScreen, currentScreen: 'mockexam' })),
+
+      trackExamKind: 'track_final',
+      trackExamTargetId: null,
+      // Defaults match the service's floors (MIN_TRACK_EXAM_QUESTIONS = 20 at
+      // 90 s each, DEFAULT_PASS_PCT = 70) so a first paint before the blueprint
+      // arrives shows plausible figures rather than zeros. The server is the
+      // authority once the sitting starts.
+      trackExamQuestionCount: 20,
+      trackExamDurationMinutes: 30,
+      trackExamPassPct: 70,
+      startTrackExam: (kind, targetId, blueprint) =>
+        set((s) => ({
+          trackExamKind: kind,
+          trackExamTargetId: targetId,
+          trackExamQuestionCount: blueprint.questions,
+          trackExamDurationMinutes: blueprint.durationMinutes,
+          trackExamPassPct: blueprint.passPct,
+          previousScreen: s.currentScreen,
+          currentScreen: 'trackexam',
+        })),
 
       lessonSkillId: null,
       startLesson: (skillId) =>

@@ -4,5 +4,12 @@ Allow: /privacy
 Allow: /terms
 Disallow: /delete-account
 Disallow: /api/
+# Certificates are public so anyone the holder sends the link to can check
+# them. That is not the same as wanting them indexed: a search engine crawling
+# these would turn "a link I chose to share" into "my name and my score are
+# findable by anybody who googles me", which nobody agreed to (red line 5).
+# The codes are unguessable, so the only way a crawler reaches one is a page
+# that already published it.
+Disallow: /certificate/
 
 Sitemap: https://whetzy.com/sitemap.xml

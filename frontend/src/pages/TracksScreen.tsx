@@ -9,9 +9,11 @@ import { useApi } from '../hooks/useApi';
 import { pageVariants } from '../lib/motion';
 import {
   content as contentApi,
+  exams as examsApi,
   progress as progressApi,
   glossary as glossaryApi,
   type CurriculumModule,
+  type TrackExamBlueprint,
   type TrackRead,
 } from '../services/api';
 import styles from './TracksScreen.module.css';
@@ -36,6 +38,7 @@ export function TracksScreen() {
   const startQuiz = useAppStore((s) => s.startQuiz);
   const startLesson = useAppStore((s) => s.startLesson);
   const startMockExam = useAppStore((s) => s.startMockExam);
+  const startTrackExam = useAppStore((s) => s.startTrackExam);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
   const { t } = useTranslation();
@@ -43,6 +46,12 @@ export function TracksScreen() {
     useApi<TrackRead[]>(() => contentApi.tracks(), []);
   const trackList = tracks ?? [];
   const selected = trackList.find((tr) => tr.id === track);
+  // Refetched per track: the blueprint is derived from that track's skills, so
+  // one cached answer reused across tracks would advertise the wrong exam.
+  const { data: trackExamBlueprint } = useApi<TrackExamBlueprint>(
+    () => examsApi.trackBlueprint(track),
+    [track],
+  );
 
   return (
     <div className={styles.screen}>
@@ -104,6 +113,36 @@ export function TracksScreen() {
             {t('mockExam.format', {
               count: selected.exam_question_count,
               minutes: selected.exam_duration_minutes,
+            })}
+          </span>
+        </motion.button>
+      )}
+
+      {/* Final exam, for the tracks that are courses rather than rehearsals of
+          somebody else's certification (17.2). The blueprint is fetched rather
+          than guessed: the figures on this button have to be the ones the exam
+          will actually use, or the learner commits to the wrong thing. */}
+      {selected && !selected.is_certification && trackExamBlueprint && (
+        <motion.button
+          className={styles.mockExamCta}
+          onClick={() =>
+            startTrackExam('track_final', selected.id, {
+              questions: trackExamBlueprint.questions,
+              durationMinutes: trackExamBlueprint.duration_minutes,
+              passPct: trackExamBlueprint.pass_pct,
+            })
+          }
+          whileTap={{ scale: 0.97 }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <span className={styles.mockExamTitle}>{t('trackExam.title')}</span>
+          <span className={styles.mockExamMeta}>
+            {t('trackExam.format', {
+              count: trackExamBlueprint.questions,
+              minutes: trackExamBlueprint.duration_minutes,
+              pass: trackExamBlueprint.pass_pct,
             })}
           </span>
         </motion.button>

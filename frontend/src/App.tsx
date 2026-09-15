@@ -31,6 +31,14 @@ const OnboardingScreen = lazy(() =>
   import('./pages/OnboardingScreen').then((m) => ({ default: m.OnboardingScreen }))
 );
 const LandingScreen = lazy(() => import('./pages/LandingScreen').then((m) => ({ default: m.LandingScreen })));
+const TrackExamScreen = lazy(() =>
+  import('./pages/TrackExamScreen').then((m) => ({ default: m.TrackExamScreen }))
+);
+// Lazy like the other standalone pages: a visitor checking somebody else's
+// certificate should not download the quiz engine to read one card.
+const CertificateScreen = lazy(() =>
+  import('./pages/CertificateScreen').then((m) => ({ default: m.CertificateScreen }))
+);
 const MockExamScreen = lazy(() =>
   import('./pages/MockExamScreen').then((m) => ({ default: m.MockExamScreen }))
 );
@@ -81,6 +89,26 @@ function StandalonePage({ path }: { path: string }) {
   return <Screen><LandingScreen /></Screen>;
 }
 
+/** `/certificate/<code>` — the public verification page (17.2).
+ *
+ *  Separate from `STANDALONE_DOC` because it is a prefix route rather than an
+ *  exact path, and separate from `StandalonePage` because it takes the code out
+ *  of the URL. It is standalone for the same reason the legal pages are: it has
+ *  to render for a visitor with no account and no session.
+ */
+const CERTIFICATE_PATH = '/certificate/';
+
+function StandaloneCertificate({ code }: { code: string }) {
+  const userLanguage = useAppStore((s) => s.user.language);
+
+  useEffect(() => {
+    void i18n.changeLanguage(userLanguage);
+    document.documentElement.lang = userLanguage;
+  }, [userLanguage]);
+
+  return <Screen><CertificateScreen code={code} /></Screen>;
+}
+
 function needsOnboarding(userId: string): boolean {
   try {
     return !localStorage.getItem(`whetzy_onboarded_${userId}`);
@@ -93,12 +121,23 @@ function App() {
   // Standalone pages routed by URL path
   const path = window.location.pathname;
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
+  // Both returns sit above every hook in this component, which is the only
+  // arrangement React allows: an early return *between* hooks is what blanked
+  // the screen for every signed-in user in 16.8.
+  if (path.startsWith(CERTIFICATE_PATH)) {
+    return <StandaloneCertificate code={path.slice(CERTIFICATE_PATH.length)} />;
+  }
 
   const currentScreen = useAppStore((s) => s.currentScreen);
   const setScreen = useAppStore((s) => s.setScreen);
   const mockExamTrackId = useAppStore((s) => s.mockExamTrackId);
   const mockExamQuestionCount = useAppStore((s) => s.mockExamQuestionCount);
   const mockExamDurationMinutes = useAppStore((s) => s.mockExamDurationMinutes);
+  const trackExamKind = useAppStore((s) => s.trackExamKind);
+  const trackExamTargetId = useAppStore((s) => s.trackExamTargetId);
+  const trackExamQuestionCount = useAppStore((s) => s.trackExamQuestionCount);
+  const trackExamDurationMinutes = useAppStore((s) => s.trackExamDurationMinutes);
+  const trackExamPassPct = useAppStore((s) => s.trackExamPassPct);
   const lessonSkillId = useAppStore((s) => s.lessonSkillId);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
@@ -190,6 +229,21 @@ function App() {
       case 'duels': return <DuelScreen />;
       case 'mockexam':
         return <MockExamScreen trackId={mockExamTrackId ?? 'track08'} questionCount={mockExamQuestionCount} durationMinutes={mockExamDurationMinutes} onExit={() => setScreen('tracks')} />;
+      case 'trackexam':
+        // Without a target there is nothing to sit; bouncing to the catalogue
+        // beats rendering an exam screen that can only fail on start.
+        return trackExamTargetId ? (
+          <TrackExamScreen
+            kind={trackExamKind}
+            targetId={trackExamTargetId}
+            questionCount={trackExamQuestionCount}
+            durationMinutes={trackExamDurationMinutes}
+            passPct={trackExamPassPct}
+            onExit={() => setScreen('tracks')}
+          />
+        ) : (
+          <TracksScreen />
+        );
       case 'lesson':
         return (
           <LessonScreen
@@ -229,15 +283,21 @@ function App() {
           </motion.div>
         </AnimatePresence>
       </main>
-      {currentScreen !== 'quiz' && currentScreen !== 'placement' && currentScreen !== 'mockexam' && currentScreen !== 'lesson' && <BottomNav />}
+      {!IMMERSIVE_SCREENS.has(currentScreen) && <BottomNav />}
       <Toast />
     </MotionConfig>
   );
 }
 
+/** Screens that hide the bottom nav: one task, one way out, no wandering off
+ *  mid-exam. It is a set rather than a chain of `!==` so adding a screen is one
+ *  entry instead of one more clause nobody remembers to extend — 'trackexam'
+ *  was the fifth, and the chain was already four deep. */
+const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson']);
+
 const SCREEN_ORDER: Record<string, number> = {
   home: 0, tracks: 1, stats: 2, league: 3, profile: 4,
-  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9,
+  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10,
 };
 function screenOrder(s: string) { return SCREEN_ORDER[s] ?? 0; }
 
