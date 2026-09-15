@@ -15,6 +15,17 @@
   --le-brand-light: #DDF4FF;
   --le-brand-2: #5CD1FF;
   --le-brand-deep: #0B72B0;
+  /* Brand colour for TEXT, not for fills. --le-brand-dark (#0E8BD4) only
+     reaches 3.7:1 on white, so small brand-coloured labels using it failed
+     WCAG 2.2 AA 1.4.3 (red line 6). This token is the accessible counterpart:
+     5.19:1 on white here, 8.16:1 on the dark surface below. Use --le-brand-dark
+     for gradients and fills, --le-brand-text whenever it is a glyph. */
+  --le-brand-text: #0B72B0;
+  /* Same idea for the success colour: --le-green (#58CC02) is 2.09:1 on white,
+     so it is a fill, never a glyph. This is 5.00:1 on white, 6.83:1 on the dark
+     surface (where plain --le-green is already fine). Red line: green still
+     means success and nothing else. */
+  --le-success-text: #387F00;
 
   --le-orange: #FF9600;
   --le-orange-dark: #E08600;
@@ -127,6 +138,10 @@
     --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.4);
     --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
     --le-danger: #FF6659;
+    /* A deep brand blue is unreadable on a dark surface — flip to the light
+       tint, which is 8.16:1 on --le-surface. */
+    --le-brand-text: #5CD1FF;
+    --le-success-text: #58CC02;
   }
 }
 
@@ -143,4 +158,6 @@
   --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.4);
   --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
   --le-danger: #FF6659;
+  --le-brand-text: #5CD1FF;
+  --le-success-text: #58CC02;
 }

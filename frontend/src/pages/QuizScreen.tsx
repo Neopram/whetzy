@@ -352,7 +352,13 @@ export function QuizScreen() {
         </svg>
       </button>
       <div className={styles.progressWrap}>
-        <ProgressBar value={index + 1} max={TARGET_QUESTIONS} color="var(--le-brand)" height={10} />
+        <ProgressBar
+          value={index + 1}
+          max={TARGET_QUESTIONS}
+          label={t('a11y.progressQuestion', { n: index + 1, total: TARGET_QUESTIONS })}
+          color="var(--le-brand)"
+          height={10}
+        />
         <span className={styles.progressLabel}>{index + 1}/{TARGET_QUESTIONS}</span>
       </div>
       {!isExecType && (

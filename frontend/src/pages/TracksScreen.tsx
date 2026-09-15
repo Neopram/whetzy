@@ -136,7 +136,13 @@ function CurriculumView({
             <p className={styles.overviewMeta}>{completed}/{modules.length} {t('tracks.modulesDone')}</p>
           </div>
         </div>
-        <ProgressBar value={completed} max={modules.length} color="var(--le-green)" height={10} />
+        <ProgressBar
+          value={completed}
+          max={modules.length}
+          label={t('a11y.progressModules', { done: completed, total: modules.length })}
+          color="var(--le-green)"
+          height={10}
+        />
       </Card>
 
       <div className={styles.spine}>
@@ -178,6 +184,7 @@ function CurriculumView({
                     <ProgressBar
                       value={m.average_mastery * 100}
                       max={100}
+                      label={t('a11y.progressMastery', { name: lang === 'es' ? m.name_es : m.name_en })}
                       color={m.status === 'completed' ? 'var(--le-green)' : 'var(--le-brand)'}
                       height={6}
                     />

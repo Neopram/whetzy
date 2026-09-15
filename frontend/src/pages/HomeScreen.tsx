@@ -125,9 +125,15 @@ export function HomeScreen() {
             </div>
             <div className={styles.missionInfo}>
               <p className={styles.missionTitle}>{lang === 'es' ? m.mission.name_es : m.mission.name_en}</p>
-              <ProgressBar value={m.progress} max={m.mission.target_value} color={m.completed ? 'var(--le-green)' : 'var(--le-brand)'} height={10} />
+              <ProgressBar
+                value={m.progress}
+                max={m.mission.target_value}
+                label={t('a11y.progressMission', { name: lang === 'es' ? m.mission.name_es : m.mission.name_en })}
+                color={m.completed ? 'var(--le-green)' : 'var(--le-brand)'}
+                height={10}
+              />
             </div>
-            <span className={styles.missionXp} style={{ color: m.completed ? 'var(--le-green)' : 'var(--le-brand-dark)' }}>
+            <span className={styles.missionXp} style={{ color: m.completed ? 'var(--le-success-text)' : 'var(--le-brand-text)' }}>
               {m.completed ? t('home.done') : `+${m.mission.xp_reward} XP`}
             </span>
           </div>

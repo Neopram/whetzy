@@ -55,7 +55,7 @@ export function ProfileScreen() {
         <div className={styles.levelWrap}>
           <span className={styles.levelBadge}>{t('profile.level')} {user.level}</span>
           <div className={styles.xpBar}>
-            <ProgressBar value={user.totalXp % 500} max={500} color="var(--le-brand)" height={8} />
+            <ProgressBar value={user.totalXp % 500} max={500} label={t('a11y.progressXp')} color="var(--le-brand)" height={8} />
             <span className={styles.xpText}>{user.totalXp.toLocaleString()} XP · {t('profile.nextLevel')} {500 - (user.totalXp % 500)} XP</span>
           </div>
         </div>

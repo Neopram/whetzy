@@ -106,7 +106,7 @@ export function PlacementScreen() {
         <h1 className={styles.resultTitle}>{t('placement.levelResult', { level })}</h1>
         <p className={styles.resultPct}>{t('placement.pctAccuracy', { pct, correct, total })}</p>
         <div className={styles.resultBar}>
-          <ProgressBar value={pct} max={100} color="var(--le-green)" height={16} showLabel />
+          <ProgressBar value={pct} max={100} label={t('a11y.progressScore', { pct })} color="var(--le-green)" height={16} showLabel />
         </div>
         <p className={styles.resultDesc}>
           {pct >= 70 ? t('placement.descHigh') : t('placement.descLow')}
@@ -121,7 +121,13 @@ export function PlacementScreen() {
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
-        <ProgressBar value={qIndex + 1} max={PLACEMENT_POOL.length} color="var(--le-purple)" height={8} />
+        <ProgressBar
+          value={qIndex + 1}
+          max={PLACEMENT_POOL.length}
+          label={t('a11y.progressQuestion', { n: qIndex + 1, total: PLACEMENT_POOL.length })}
+          color="var(--le-purple)"
+          height={8}
+        />
         <span className={styles.headerLabel}>{t('placement.questionOf', { n: qIndex + 1, total: PLACEMENT_POOL.length })}</span>
       </div>
 

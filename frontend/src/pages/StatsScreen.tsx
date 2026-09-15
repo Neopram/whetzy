@@ -58,7 +58,13 @@ export function StatsScreen() {
                 <span className={styles.skillName}>{tr.icon} {lang === 'es' ? tr.name_es : tr.name_en}</span>
                 <span className={styles.skillPct} style={{ color: masteryColor(tr.average_mastery) }}>{Math.round(tr.average_mastery * 100)}%</span>
               </div>
-              <ProgressBar value={tr.average_mastery * 100} max={100} color={masteryColor(tr.average_mastery)} height={8} />
+              <ProgressBar
+                value={tr.average_mastery * 100}
+                max={100}
+                label={t('a11y.progressMastery', { name: lang === 'es' ? tr.name_es : tr.name_en })}
+                color={masteryColor(tr.average_mastery)}
+                height={8}
+              />
               <span className={styles.skillMeta}>{tr.skills_mastered}/{tr.total_skills} {t('stats.skillsMastered')}</span>
             </div>
           ))}
@@ -77,7 +83,13 @@ export function StatsScreen() {
                 <span className={styles.skillName}>{lang === 'es' ? s.name_es : s.name_en}</span>
                 <span className={styles.skillPct} style={{ color: masteryColor(s.p_known) }}>{Math.round(s.p_known * 100)}%</span>
               </div>
-              <ProgressBar value={s.p_known * 100} max={100} color={masteryColor(s.p_known)} height={8} />
+              <ProgressBar
+                value={s.p_known * 100}
+                max={100}
+                label={t('a11y.progressMastery', { name: lang === 'es' ? s.name_es : s.name_en })}
+                color={masteryColor(s.p_known)}
+                height={8}
+              />
               <span className={styles.skillMeta}>{s.correct_count}/{s.attempts} · Elo {Math.round(s.elo_rating)}</span>
             </div>
           ))}
