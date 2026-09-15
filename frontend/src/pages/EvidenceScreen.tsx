@@ -208,16 +208,71 @@ export function EvidenceScreen() {
             </tbody>
           </table>
           <div className={styles.benchmarkNote}>
-            <strong>AUC benchmark (planned):</strong> Once ASSISTments 2012 or EdNet-KT1
-            data is integrated, we will publish AUC-ROC for BKT vs. DKT on held-out
-            sequences here. Expected AUC 0.70–0.78 based on prior literature (Corbett 1994,
-            Piech 2015). Every competing platform on this page publishes zero such numbers.
+            <strong>ASSISTments 2009 (not included):</strong> the canonical distribution
+            page returns HTTP 200 but exposes no scriptable download URL, and every
+            commonly-cited GitHub mirror we checked 404'd. Recorded as a gap in
+            <code className={styles.inlineCode}> docs/ml/kt-benchmark.json</code> rather
+            than silently skipped or substituted with a look-alike dataset.
           </div>
         </section>
 
-        {/* Section 3: Competitor teardown */}
+        {/* Section 3: Measured benchmark */}
         <section className={styles.section}>
-          <h2 className={styles.h2}>03 — Competitor teardown</h2>
+          <h2 className={styles.h2}>03 — Measured benchmark: BKT vs DKT</h2>
+          <p className={styles.lead}>
+            Run on <strong>synthetic-5</strong> (Piech et al. 2015, <em>Deep Knowledge
+            Tracing</em>) — a fixed, third-party, citable dataset, so the "adaptive engine"
+            claim is not graded by our own homework. 4 000 students, 5 concepts,
+            50 responses each. Temporal split by student (3 200 train / 800 test, no
+            shuffling); within every sequence, predicting response <em>t</em> uses only
+            responses 1…<em>t</em>−1 of that same student.
+          </p>
+
+          <div className={styles.resultGrid}>
+            <div className={styles.resultCard}>
+              <span className={styles.resultLabel}>BKT — test AUC</span>
+              <span className={styles.resultValue}>0.7983</span>
+              <span className={styles.resultSub}>acc 0.7281 · grid-fit on train only</span>
+            </div>
+            <div className={`${styles.resultCard} ${styles.resultCardWin}`}>
+              <span className={styles.resultLabel}>DKT — test AUC</span>
+              <span className={styles.resultValue}>0.8294</span>
+              <span className={styles.resultSub}>acc 0.7563 · LSTM h=64, seed 42</span>
+            </div>
+            <div className={styles.resultCard}>
+              <span className={styles.resultLabel}>DKT − BKT margin</span>
+              <span className={styles.resultValue}>+0.031</span>
+              <span className={styles.resultSub}>39 200 held-out predictions</span>
+            </div>
+          </div>
+
+          <div className={styles.benchmarkNote}>
+            <strong>Read this before quoting the numbers.</strong> Responses are keyed by
+            <em> concept id</em> (0–4), not question id — the representation our production
+            engine actually uses, but <em>not</em> the paper's setup. Handing the model
+            ground-truth concept labels removes within-concept difficulty and makes the task
+            strictly easier for <em>both</em> models, which is why both score above the
+            paper's 0.75 / 0.62. These numbers must never be reported as beating Piech et al.
+            The margin is what transfers, and ours (+0.031) is far smaller than the paper's
+            (+0.13): a well-fit BKT is a strong baseline over only 5 concepts. The one
+            defensible claim here is narrow — <em>on concept-level synthetic-5, our DKT beats
+            our grid-fit BKT by about 0.03 AUC.</em> Nothing stronger.
+          </div>
+
+          <p className={styles.disclaimer}>
+            BKT baseline uses <code className={styles.inlineCode}>app/services/engine/bkt.py</code> unchanged;
+            parameters were grid-searched on the train split only (coarse grid, not full
+            Baum-Welch — the production model has no EM). Full methodology, the exact fitted
+            parameters, and the ASSISTments failure log live in
+            <code className={styles.inlineCode}> docs/ml/kt-benchmark.json</code>.
+            Reproduce with <code className={styles.inlineCode}>python -m app.ml.benchmark_kt</code>.
+            Generated 2026-09-13.
+          </p>
+        </section>
+
+        {/* Section 4: Competitor teardown */}
+        <section className={styles.section}>
+          <h2 className={styles.h2}>04 — Competitor teardown</h2>
           <p className={styles.lead}>
             Scored across six weighted dimensions (total {MAX} pts). Scores are our own
             judgement based on public feature lists and hands-on testing — not independently
@@ -276,14 +331,15 @@ export function EvidenceScreen() {
 
         {/* Section 4: What we're not */}
         <section className={styles.section}>
-          <h2 className={styles.h2}>04 — Where we're behind</h2>
+          <h2 className={styles.h2}>05 — Where we're behind</h2>
           <ul className={styles.behindList}>
             <li><strong>Catalog breadth:</strong> 8 tracks vs. Platzi's 500+ courses. We're adding ~2 tracks/week.</li>
             <li><strong>Video content:</strong> We have none. We use code examples and worked examples instead.</li>
             <li><strong>Community:</strong> Zero users today (H.10). Forums, peer review, and leaderboards need people.</li>
             <li><strong>Mobile native:</strong> PWA only. No App Store / Play Store listing yet (H.2/H.3).</li>
-            <li><strong>Public AUC benchmark:</strong> No user data yet to compute it. Planned for F23.</li>
-            <li><strong>ASSISTments calibration:</strong> BKT parameters are literature defaults, not fit to our users.</li>
+            <li><strong>Benchmark is synthetic, not real learners:</strong> synthetic-5 is generated data. We have no AUC on a real classroom dataset, and none on our own users.</li>
+            <li><strong>ASSISTments / EdNet:</strong> not integrated — ASSISTments 2009 has no scriptable download; the failure log is in the benchmark JSON.</li>
+            <li><strong>Per-skill calibration:</strong> production BKT ships literature defaults with no EM fitting. The grid search exists only inside the benchmark script.</li>
           </ul>
         </section>
 
