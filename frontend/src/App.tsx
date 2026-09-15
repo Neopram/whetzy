@@ -1,4 +1,5 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
 import { useAppStore } from './stores/useAppStore';
@@ -188,17 +189,38 @@ function App() {
     }
   };
 
+  const prevScreenRef = useRef(currentScreen);
+  const dir = screenOrder(currentScreen) >= screenOrder(prevScreenRef.current) ? 1 : -1;
+  useEffect(() => { prevScreenRef.current = currentScreen; }, [currentScreen]);
+
   return (
     <>
       <TopBar />
       <main className="app-content">
-        <Screen>{renderScreen()}</Screen>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={currentScreen}
+            initial={{ opacity: 0, x: dir * 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: dir * -20 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            style={{ height: '100%' }}
+          >
+            <Screen>{renderScreen()}</Screen>
+          </motion.div>
+        </AnimatePresence>
       </main>
       {currentScreen !== 'quiz' && currentScreen !== 'placement' && currentScreen !== 'mockexam' && currentScreen !== 'lesson' && <BottomNav />}
       <Toast />
     </>
   );
 }
+
+const SCREEN_ORDER: Record<string, number> = {
+  home: 0, tracks: 1, stats: 2, league: 3, profile: 4,
+  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9,
+};
+function screenOrder(s: string) { return SCREEN_ORDER[s] ?? 0; }
 
 /** Suspense boundary for a lazily loaded screen. */
 function Screen({ children }: { children: React.ReactNode }) {

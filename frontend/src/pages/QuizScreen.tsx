@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
@@ -383,7 +384,12 @@ export function QuizScreen() {
   );
 
   const feedbackPanel = answered && feedback && (
-    <div className={styles.explanation}>
+    <motion.div
+      className={styles.explanation}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+    >
       <div className={styles.explanationHeader}>
         {feedback.correct ? `🎯 ${t('quiz.correct')}` : `💡 ${t('quiz.explanation')}`}
       </div>
@@ -402,7 +408,7 @@ export function QuizScreen() {
       <button className={styles.btnNext} onClick={handleNext}>
         {index + 1 >= TARGET_QUESTIONS || !feedback.next_question ? t('quiz.seeResults') : t('quiz.next')}
       </button>
-    </div>
+    </motion.div>
   );
 
   // ── Exec question render ───────────────────────────────────────────────
@@ -562,12 +568,21 @@ export function QuizScreen() {
             cls += ` ${styles.selected}`;
           }
           return (
-            <button key={i} className={cls} onClick={() => handleAnswer(i)} disabled={answered || submitting}>
+            <motion.button
+              key={i}
+              className={cls}
+              onClick={() => handleAnswer(i)}
+              disabled={answered || submitting}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05, duration: 0.15 }}
+              whileTap={{ scale: answered ? 1 : 0.97 }}
+            >
               <span className={styles.optionLetter}>{String.fromCharCode(65 + i)}</span>
               <span className={styles.optionText}>{opt}</span>
               {answered && feedback && i === feedback.correct_index && <span className={styles.optionIcon}>✓</span>}
               {answered && i === selected && feedback && i !== feedback.correct_index && <span className={styles.optionIcon}>✗</span>}
-            </button>
+            </motion.button>
           );
         })}
       </div>

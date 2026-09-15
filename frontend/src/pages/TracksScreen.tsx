@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
@@ -183,21 +184,35 @@ function CurriculumView({
                   </div>
                 )}
 
+                <AnimatePresence initial={false}>
                 {isOpen && (
-                  <div className={styles.skills}>
+                  <motion.div
+                    className={styles.skills}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    style={{ overflow: 'hidden' }}
+                  >
                     {m.description_es && (
                       <p className={styles.moduleDesc}>{lang === 'es' ? m.description_es : m.description_en}</p>
                     )}
-                    {m.skills.map((s) => (
-                      <div key={s.skill_id} className={styles.skill}>
+                    {m.skills.map((s, si) => (
+                      <motion.div
+                        key={s.skill_id}
+                        className={styles.skill}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: si * 0.04, duration: 0.15 }}
+                      >
                         <span className={styles.skillDot} style={{
                           background: s.mastered ? 'var(--le-green)' : s.attempts > 0 ? 'var(--le-brand)' : 'var(--le-border)',
                         }} />
                         <span className={styles.skillName}>{lang === 'es' ? s.name_es : s.name_en}</span>
-                        <span className={styles.skillPct}>
+                        <span className={styles.skillPct} style={{ color: s.mastered ? 'var(--le-green)' : undefined }}>
                           {s.mastered ? '★' : `${Math.round(s.p_known * 100)}%`}
                         </span>
-                      </div>
+                      </motion.div>
                     ))}
                     {locked ? (
                       <p className={styles.lockNote}>🔒 {t('tracks.lockNote')}</p>
@@ -218,8 +233,9 @@ function CurriculumView({
                         </button>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 )}
+                </AnimatePresence>
               </Card>
             </div>
           );

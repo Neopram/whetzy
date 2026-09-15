@@ -1,12 +1,26 @@
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSpring, useMotionValue, useTransform, motion } from 'framer-motion';
 import { useAppStore } from '../../stores/useAppStore';
 import { useOfflineSync } from '../../hooks/useOfflineSync';
 import styles from './TopBar.module.css';
+
+function useCountUp(value: number) {
+  const mv = useMotionValue(value);
+  const spring = useSpring(mv, { stiffness: 80, damping: 20 });
+  const display = useTransform(spring, (v) => Math.round(v).toLocaleString());
+  const prevRef = useRef(value);
+  useEffect(() => {
+    if (value !== prevRef.current) { mv.set(value); prevRef.current = value; }
+  }, [value, mv]);
+  return display;
+}
 
 export function TopBar() {
   const { t } = useTranslation('common');
   const user = useAppStore((s) => s.user);
   const { isOnline, isSyncing, pendingAnswers } = useOfflineSync();
+  const xpDisplay = useCountUp(user.totalXp);
 
   return (
     <header className={styles.topbar}>
@@ -42,7 +56,7 @@ export function TopBar() {
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
             <path d="M13 2L3 14h6l-1 8 10-12h-6l1-8z" />
           </svg>
-          <span>{user.totalXp.toLocaleString()}</span>
+          <motion.span>{xpDisplay}</motion.span>
         </div>
         <div className={`${styles.stat} ${styles.level}`} title="Nivel">
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">

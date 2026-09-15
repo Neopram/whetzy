@@ -1,0 +1,26 @@
+.skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--le-border) 25%,
+    var(--le-border-light, color-mix(in srgb, var(--le-border) 60%, var(--le-bg))) 50%,
+    var(--le-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; opacity: 0.5; }
+}
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
