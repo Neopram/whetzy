@@ -80,6 +80,254 @@
       "definition_es": "Notación del crecimiento asintótico del coste de un algoritmo. En CPython, indexar una lista es O(1) pero `list.insert(0, x)` es O(n); concatenar strings en bucle es O(n²) — usar `deque`, `join` o `collections`.",
       "definition_en": "Notation for the asymptotic growth of an algorithm's cost. In CPython, indexing a list is O(1) but `list.insert(0, x)` is O(n); string concatenation in a loop is O(n²) — use `deque`, `join` or `collections`.",
       "source": "CPython docs 3.13 — TimeComplexity wiki; collections"
+    },
+    {
+      "id": "gl03_11",
+      "term_es": "Bytecode",
+      "term_en": "Bytecode",
+      "definition_es": "Instrucciones intermedias que el compilador de CPython genera desde el código fuente y que ejecuta la máquina virtual; se cachean en archivos `.pyc`. `dis.dis()` las muestra. El término se deja en inglés, sin traducir.",
+      "definition_en": "The intermediate instructions CPython's compiler produces from source and its virtual machine executes; they are cached in `.pyc` files. `dis.dis()` shows them for any function.",
+      "source": "CPython docs 3.13 — dis; Glossary (“bytecode”)"
+    },
+    {
+      "id": "gl03_12",
+      "term_es": "Conteo de referencias (refcount)",
+      "term_en": "Reference counting (refcount)",
+      "definition_es": "Cada objeto de CPython lleva la cuenta de cuántas referencias lo apuntan y se libera en el instante en que llega a cero. Es determinista, a diferencia del GC cíclico, y es justo lo que el GIL protege. Se suele usar el término inglés *refcount*.",
+      "definition_en": "Every CPython object tracks how many references point at it and is freed the moment that count reaches zero. Unlike the cyclic GC this is deterministic — and it is precisely what the GIL exists to protect.",
+      "source": "CPython docs 3.13 — Extending: Reference Counts; sys.getrefcount"
+    },
+    {
+      "id": "gl03_13",
+      "term_es": "Interning",
+      "term_en": "Interning",
+      "definition_es": "CPython reutiliza un único objeto para ciertos valores inmutables (enteros pequeños, cadenas con forma de identificador) como optimización. Por eso `a is b` puede dar `True` con valores pequeños y `False` con grandes: `is` compara identidad, no igualdad. Detalle de implementación, nunca algo en lo que apoyarse.",
+      "definition_en": "CPython reuses a single object for certain immutable values (small ints, identifier-like strings) as an optimisation. That is why `a is b` can be `True` for small values and `False` for large ones: `is` compares identity, not equality. An implementation detail, never something to rely on.",
+      "source": "CPython docs 3.13 — sys.intern; Glossary (“immutable”)"
+    },
+    {
+      "id": "gl03_14",
+      "term_es": "Intérprete adaptativo especializado (PEP 659)",
+      "term_en": "Specializing adaptive interpreter (PEP 659)",
+      "definition_es": "Desde 3.11 el intérprete observa qué tipos pasan realmente por cada instrucción y la sustituye en caliente por una versión rápida, con una guarda que revierte si aparece otro tipo. Sigue interpretando bytecode: no es un JIT que compile a código máquina.",
+      "definition_en": "Since 3.11 the interpreter watches which types actually flow through each instruction and hot-swaps it for a fast version, guarded so it reverts when another type shows up. It is still interpreting bytecode, which is why it is not a JIT compiling to machine code.",
+      "source": "PEP 659 — Specializing Adaptive Interpreter"
+    },
+    {
+      "id": "gl03_15",
+      "term_es": "Free threading (PEP 703)",
+      "term_en": "Free threading (PEP 703)",
+      "definition_es": "Build de CPython (3.13+, `--disable-gil`) que elimina el GIL y permite paralelismo real entre hilos. A cambio, las extensiones C y el código Python que se apoyaba en la atomicidad implícita del GIL dejan de ser seguros por defecto. Se deja en inglés.",
+      "definition_en": "A CPython build (3.13+, `--disable-gil`) that removes the GIL and lets threads run truly in parallel. The trade-off: C extensions and Python code that leaned on the GIL's implicit atomicity are no longer safe by default.",
+      "source": "PEP 703 — Making the Global Interpreter Lock Optional in CPython"
+    },
+    {
+      "id": "gl03_16",
+      "term_es": "Corrutina (coroutine)",
+      "term_en": "Coroutine",
+      "definition_es": "Función `async def` que se suspende en cada `await` y devuelve el control al event loop. Se diferencia de un generador en que no produce valores para un `for`, sino que espera E/S; y llamarla no ejecuta nada: hay que hacerle `await` o envolverla en una Task.",
+      "definition_en": "An `async def` function that suspends at each `await` and hands control back to the event loop. Unlike a generator it does not produce values for a `for` loop but waits on I/O; and calling it runs nothing — you must `await` it or wrap it in a Task.",
+      "source": "PEP 492 — Coroutines with async and await syntax; CPython docs 3.13 — Coroutines and Tasks"
+    },
+    {
+      "id": "gl03_17",
+      "term_es": "Task / `asyncio.create_task`",
+      "term_en": "Task / `asyncio.create_task`",
+      "definition_es": "`create_task(coro)` programa la corrutina en el loop ya en marcha y vuelve de inmediato, así que el trabajo avanza en segundo plano. `asyncio.run(coro)` es otra cosa: crea el loop, ejecuta UNA corrutina hasta el final y lo cierra — es el punto de entrada del programa, no una forma de lanzar trabajo.",
+      "definition_en": "`create_task(coro)` schedules the coroutine on the already-running loop and returns at once, so the work proceeds in the background. `asyncio.run(coro)` is a different thing: it creates the loop, runs ONE coroutine to completion and closes the loop — a program entry point, not a way to launch work.",
+      "source": "CPython docs 3.13 — asyncio.create_task; asyncio.run"
+    },
+    {
+      "id": "gl03_18",
+      "term_es": "`asyncio.gather`",
+      "term_en": "`asyncio.gather`",
+      "definition_es": "Ejecuta varios awaitables a la vez y devuelve la lista de resultados en el ORDEN DE LOS ARGUMENTOS, no de finalización; el tiempo total es el del más lento, no la suma. `TaskGroup` (3.11+) hace lo mismo pero cancela a los hermanos cuando uno falla.",
+      "definition_en": "Runs several awaitables at once and returns their results in ARGUMENT ORDER, not completion order; total time is the slowest one, not the sum. `TaskGroup` (3.11+) does the same while cancelling siblings when one of them fails.",
+      "source": "CPython docs 3.13 — asyncio: Running Tasks Concurrently; asyncio.TaskGroup"
+    },
+    {
+      "id": "gl03_19",
+      "term_es": "`CancelledError` y `asyncio.shield`",
+      "term_en": "`CancelledError` and `asyncio.shield`",
+      "definition_es": "Excepción que asyncio lanza dentro de una tarea cancelada. Capturarla sin relanzarla rompe el protocolo de cancelación y deja colgado un `TaskGroup` o un apagado ordenado. `asyncio.shield()` es la vía correcta: absorbe la cancelación y deja que la operación protegida termine.",
+      "definition_en": "The exception asyncio raises inside a cancelled task. Swallowing it without re-raising breaks the cancellation protocol and leaves a `TaskGroup` or a graceful shutdown hanging. `asyncio.shield()` is the sanctioned route: it absorbs the cancellation and lets the protected operation finish.",
+      "source": "CPython docs 3.13 — asyncio: Task Cancellation; asyncio.shield"
+    },
+    {
+      "id": "gl03_20",
+      "term_es": "Concurrencia vs paralelismo",
+      "term_en": "Concurrency vs parallelism",
+      "definition_es": "Concurrencia es estructurar el programa para que varias tareas progresen intercaladas — asyncio lo hace en un solo hilo. Paralelismo es ejecutarlas literalmente en el mismo instante en varios núcleos, lo que en CPython exige procesos. Ninguna implica la otra.",
+      "definition_en": "Concurrency is structuring a program so several tasks make progress interleaved — asyncio does this on one thread. Parallelism is running them at literally the same instant on several cores, which in CPython requires processes. Neither one implies the other.",
+      "source": "CPython docs 3.13 — asyncio; multiprocessing"
+    },
+    {
+      "id": "gl03_21",
+      "term_es": "I/O-bound vs CPU-bound",
+      "term_en": "I/O-bound vs CPU-bound",
+      "definition_es": "Una tarea I/O-bound pasa el tiempo esperando disco o red: los hilos o asyncio la aceleran porque el GIL se libera durante la espera. Una CPU-bound quema ciclos calculando: solo la aceleran `multiprocessing` o el código nativo. Elegir mal la herramienta es el error típico del track.",
+      "definition_en": "An I/O-bound task spends its time waiting on disk or network: threads or asyncio speed it up, because the GIL is released during the wait. A CPU-bound task burns cycles computing: only `multiprocessing` or native code helps. Picking the wrong tool is the classic mistake here.",
+      "source": "CPython docs 3.13 — threading; multiprocessing; asyncio"
+    },
+    {
+      "id": "gl03_22",
+      "term_es": "`__new__` vs `__init__`",
+      "term_en": "`__new__` vs `__init__`",
+      "definition_es": "`__new__` crea y devuelve la instancia (recibe `cls`); `__init__` inicializa una que ya existe (recibe `self`) y debe devolver `None`. Solo hace falta tocar `__new__` con inmutables como `int`/`str`/`tuple` o para singletons; si `__new__` devuelve algo que no es instancia de la clase, `__init__` ni se llama.",
+      "definition_en": "`__new__` creates and returns the instance (it takes `cls`); `__init__` initialises one that already exists (it takes `self`) and must return `None`. You only need `__new__` for immutables like `int`/`str`/`tuple` or for singletons; if `__new__` returns something that is not an instance of the class, `__init__` is never called.",
+      "source": "CPython docs 3.13 — Data model: Basic customization (object.__new__)"
+    },
+    {
+      "id": "gl03_23",
+      "term_es": "`__init_subclass__`",
+      "term_en": "`__init_subclass__`",
+      "definition_es": "Hook (PEP 487) que la clase padre ejecuta cada vez que alguien la hereda: registro de subclases, validación de atributos. Cubre casi todo lo que antes pedía una metaclase, y sin los conflictos de metaclase que aparecen en herencia múltiple.",
+      "definition_en": "A hook (PEP 487) the parent class runs every time someone subclasses it: subclass registries, attribute validation. It covers most of what used to need a metaclass, without the metaclass conflicts multiple inheritance brings.",
+      "source": "PEP 487 — Simpler customisation of class creation; CPython docs 3.13 — Data model"
+    },
+    {
+      "id": "gl03_24",
+      "term_es": "Clase base abstracta (ABC)",
+      "term_en": "Abstract base class (ABC)",
+      "definition_es": "Clase (`abc.ABC`, metaclase `ABCMeta`) que impide instanciar hasta que se implementen sus `@abstractmethod`. Es subtipado NOMINAL: hay que heredar de ella. Un `Protocol` da la misma garantía por la forma del objeto, sin herencia.",
+      "definition_en": "A class (`abc.ABC`, whose metaclass is `ABCMeta`) that refuses instantiation until its `@abstractmethod`s are implemented. This is NOMINAL subtyping: you must inherit from it. A `Protocol` gets the same guarantee from the object's shape, with no inheritance.",
+      "source": "CPython docs 3.13 — abc; PEP 544 — Protocols"
+    },
+    {
+      "id": "gl03_25",
+      "term_es": "`@runtime_checkable`",
+      "term_en": "`@runtime_checkable`",
+      "definition_es": "Decorador que permite usar `isinstance()` contra un `Protocol`. Solo comprueba que los miembros EXISTAN por nombre: no mira firmas ni tipos, así que no sustituye al comprobador estático. Sin él, `isinstance` contra un Protocol lanza `TypeError`.",
+      "definition_en": "A decorator that makes `isinstance()` work against a `Protocol`. It only checks that the members EXIST by name — no signatures, no types — so it is no substitute for a static checker. Without it, `isinstance` against a Protocol raises `TypeError`.",
+      "source": "CPython typing docs 3.13 — typing.runtime_checkable; PEP 544"
+    },
+    {
+      "id": "gl03_26",
+      "term_es": "`TypeVar` y genéricos",
+      "term_en": "`TypeVar` and generics",
+      "definition_es": "Un `TypeVar` es un hueco de tipo que se rellena en cada uso: `def first(xs: list[T]) -> T` conserva el tipo del elemento en lugar de perderlo en `Any`. PEP 695 permite escribirlo como `def first[T](...)` sin declarar el TypeVar aparte.",
+      "definition_en": "A `TypeVar` is a type slot filled in at each use: `def first(xs: list[T]) -> T` preserves the element type instead of losing it to `Any`. PEP 695 lets you write it as `def first[T](...)` with no separate TypeVar declaration.",
+      "source": "PEP 484 — Type Hints: Generics; PEP 695 — Type Parameter Syntax"
+    },
+    {
+      "id": "gl03_27",
+      "term_es": "Varianza (covariante / contravariante / invariante)",
+      "term_en": "Variance (covariant / contravariant / invariant)",
+      "definition_es": "Regla que decide si `C[Hijo]` sirve donde se espera `C[Padre]`. Los contenedores mutables son invariantes (`list[Perro]` NO es un `list[Animal]`: se le podría meter un gato); los de solo lectura como `Sequence` son covariantes, y las posiciones que solo consumen, contravariantes.",
+      "definition_en": "The rule deciding whether `C[Child]` is acceptable where `C[Parent]` is expected. Mutable containers are invariant (`list[Dog]` is NOT a `list[Animal]` — someone could put a cat in it); read-only ones such as `Sequence` are covariant, and consumer-only positions are contravariant.",
+      "source": "PEP 484 — Type Hints: Covariance and Contravariance"
+    },
+    {
+      "id": "gl03_28",
+      "term_es": "Uniones `X | Y` y genéricos nativos",
+      "term_en": "`X | Y` unions and built-in generics",
+      "definition_es": "Desde PEP 604 la unión se escribe `int | None` en vez de `Optional[int]`, y desde PEP 585 los builtins son genéricos (`list[int]`, no `List[int]`). Es sintaxis: en tiempo de ejecución no cambia nada, solo lo que lee el comprobador de tipos.",
+      "definition_en": "Since PEP 604 a union is written `int | None` rather than `Optional[int]`, and since PEP 585 the builtins are generic (`list[int]`, not `List[int]`). This is syntax: nothing changes at run time, only what the type checker reads.",
+      "source": "PEP 604 — Allow writing union types as X | Y; PEP 585 — Type Hinting Generics In Standard Collections"
+    },
+    {
+      "id": "gl03_29",
+      "term_es": "mypy (comprobación estática)",
+      "term_en": "mypy (static type checking)",
+      "definition_es": "Comprobador que lee las anotaciones y avisa ANTES de ejecutar; `--strict` exige anotarlo todo y prohíbe el `Any` implícito. Python nunca valida los hints en runtime: `x: int = \"a\"` se ejecuta sin error. `reveal_type()` pregunta qué tipo ha inferido y `cast()` lo fuerza sin comprobar nada.",
+      "definition_en": "A checker that reads the annotations and reports BEFORE anything runs; `--strict` demands full annotation and bans implicit `Any`. Python itself never validates hints at run time: `x: int = \"a\"` executes fine. `reveal_type()` asks what it inferred; `cast()` overrides it without checking anything.",
+      "source": "PEP 484 — Type Hints: Non-goals; CPython typing docs 3.13 — typing.cast"
+    },
+    {
+      "id": "gl03_30",
+      "term_es": "Proceso vs hilo",
+      "term_en": "Process vs thread",
+      "definition_es": "Los hilos de un proceso comparten memoria (compartir sale barato, pero obliga a sincronizar) y en CPython comparten un mismo GIL. Cada proceso tiene su memoria y su propio intérprete: no hay carreras de datos, pero todo lo que cruce debe serializarse con `pickle` y arrancarlo cuesta tiempo real.",
+      "definition_en": "Threads within one process share memory (sharing is cheap but forces synchronisation) and in CPython share a single GIL. Each process has its own memory and its own interpreter: no data races, but anything crossing between them must be `pickle`d, and starting one costs real time.",
+      "source": "CPython docs 3.13 — threading; multiprocessing"
+    },
+    {
+      "id": "gl03_31",
+      "term_es": "`Lock` vs `RLock`",
+      "term_en": "`Lock` vs `RLock`",
+      "definition_es": "`Lock` es un mutex simple: si el mismo hilo lo adquiere dos veces, se bloquea contra sí mismo. `RLock` es reentrante — cuenta las adquisiciones del hilo dueño y solo se libera al soltar la última — y es lo que hace falta cuando un método protegido llama a otro del mismo objeto.",
+      "definition_en": "`Lock` is a plain mutex: if the same thread acquires it twice it deadlocks against itself. `RLock` is reentrant — it counts the owning thread's acquisitions and releases only on the last one — which is what you need when a guarded method calls another one on the same object.",
+      "source": "CPython docs 3.13 — threading.Lock; threading.RLock"
+    },
+    {
+      "id": "gl03_32",
+      "term_es": "Condición de carrera (race condition)",
+      "term_en": "Race condition",
+      "definition_es": "El resultado depende del orden en que se intercalan los hilos. `x += 1` no es atómico (lee, suma, escribe) y puede perder incrementos aun con el GIL puesto: el GIL serializa bytecode, no operaciones lógicas. Se corrige con un `Lock` o pasando el trabajo por `queue.Queue`.",
+      "definition_en": "The outcome depends on how the threads happen to interleave. `x += 1` is not atomic (load, add, store) and can lose increments even with the GIL in place: the GIL serialises bytecode, not logical operations. Fix it with a `Lock`, or hand work through `queue.Queue`.",
+      "source": "CPython docs 3.13 — threading; queue.Queue"
+    },
+    {
+      "id": "gl03_33",
+      "term_es": "Interbloqueo (deadlock)",
+      "term_en": "Deadlock",
+      "definition_es": "Dos o más hilos esperan indefinidamente un recurso que retiene el otro y ninguno avanza. La receta clásica es adquirir dos locks en orden opuesto; la prevención estándar es fijar un orden global de adquisición o poner `timeout`.",
+      "definition_en": "Two or more threads wait forever on a resource the other one holds, and none of them advances. The classic recipe is acquiring two locks in opposite orders; the standard prevention is a global lock ordering, or an acquisition `timeout`.",
+      "source": "CPython docs 3.13 — threading: Lock objects"
+    },
+    {
+      "id": "gl03_34",
+      "term_es": "`concurrent.futures` y `Future`",
+      "term_en": "`concurrent.futures` and `Future`",
+      "definition_es": "API única sobre hilos y procesos: se cambia `ThreadPoolExecutor` por `ProcessPoolExecutor` y no hay que tocar nada más. `submit()` devuelve un `Future` cuyo `result()` bloquea hasta tener el valor (o relanza la excepción del worker); `map()` conserva el orden de entrada.",
+      "definition_en": "One API over both threads and processes: swap `ThreadPoolExecutor` for `ProcessPoolExecutor` and nothing else changes. `submit()` hands back a `Future` whose `result()` blocks until the value arrives (or re-raises the worker's exception); `map()` preserves input order.",
+      "source": "CPython docs 3.13 — concurrent.futures"
+    },
+    {
+      "id": "gl03_35",
+      "term_es": "fork vs spawn (métodos de arranque)",
+      "term_en": "fork vs spawn (start methods)",
+      "definition_es": "Cómo `multiprocessing` crea un hijo. `fork` (por defecto en Linux) clona el proceso padre entero; `spawn` (Windows y macOS) arranca un intérprete limpio que reimporta el módulo principal — por eso el lanzamiento debe ir bajo `if __name__ == \"__main__\":` o los hijos crean hijos sin fin.",
+      "definition_en": "How `multiprocessing` creates a child. `fork` (the Linux default) clones the entire parent process; `spawn` (Windows and macOS) boots a clean interpreter that re-imports the main module — which is why the launch must sit under `if __name__ == \"__main__\":` or children keep spawning children.",
+      "source": "CPython docs 3.13 — multiprocessing: Contexts and start methods"
+    },
+    {
+      "id": "gl03_36",
+      "term_es": "`timeit`",
+      "term_en": "`timeit`",
+      "definition_es": "Módulo para cronometrar fragmentos pequeños: repite la ejecución muchas veces, desactiva el GC y se queda con el mínimo, que es lo que mantiene el ruido del sistema fuera de la medida. No dice DÓNDE gasta el tiempo un programa entero — eso es trabajo del profiler.",
+      "definition_en": "The module for timing small snippets: it repeats the run many times, disables the GC and reports the minimum, which keeps system noise out of the number. It will not tell you WHERE a whole program spends its time — that is the profiler's job.",
+      "source": "CPython docs 3.13 — timeit"
+    },
+    {
+      "id": "gl03_37",
+      "term_es": "Profiling (`cProfile`)",
+      "term_en": "Profiling (`cProfile`)",
+      "definition_es": "Medir cómo se reparte de verdad el tiempo por función antes de optimizar nada. En `cProfile`, `tottime` es el tiempo dentro de la función sin contar lo que llama y `cumtime` sí lo incluye: ordenar por `tottime` señala al culpable concreto.",
+      "definition_en": "Measuring where a program's time actually goes, function by function, before optimising anything. In `cProfile`, `tottime` is time inside the function excluding its callees and `cumtime` includes them: sorting by `tottime` points at the real culprit.",
+      "source": "CPython docs 3.13 — The Python Profilers (cProfile)"
+    },
+    {
+      "id": "gl03_38",
+      "term_es": "Complejidad amortizada",
+      "term_en": "Amortised complexity",
+      "definition_es": "Coste medio por operación a lo largo de una secuencia, aunque alguna suelta sea cara. `list.append` es O(1) amortizado: de vez en cuando redimensiona en O(n), pero al sobreasignar espacio ese coste se reparte entre muchos appends. No es lo mismo que el caso medio.",
+      "definition_en": "The average cost per operation across a whole sequence, even when an individual one is expensive. `list.append` is amortised O(1): it occasionally resizes in O(n), but over-allocating spreads that cost across many appends. This is not the same as average-case.",
+      "source": "CPython docs 3.13 — TimeComplexity wiki; list over-allocation in Objects/listobject.c"
+    },
+    {
+      "id": "gl03_39",
+      "term_es": "Cython vs Numba",
+      "term_en": "Cython vs Numba",
+      "definition_es": "Dos salidas de la velocidad de Python puro. Cython compila a C un superconjunto de Python con tipos declarados, en un paso de build; Numba compila con LLVM en la primera llamada, con el decorador `@njit` y sin build. Cython cubre más lenguaje; Numba brilla en bucles numéricos y NumPy.",
+      "definition_en": "Two routes out of pure-Python speed. Cython compiles a typed superset of Python down to C as a build step; Numba JIT-compiles with LLVM on the first call, via an `@njit` decorator and no build at all. Cython covers more of the language; Numba shines on numeric loops and NumPy.",
+      "source": "Cython docs — Language Basics; Numba docs — Compiling Python code with @jit"
+    },
+    {
+      "id": "gl03_40",
+      "term_es": "`functools.lru_cache` (memoización)",
+      "term_en": "`functools.lru_cache` (memoisation)",
+      "definition_es": "Decorador que guarda los resultados de una función pura indexados por sus argumentos y descarta los menos usados al llegar a `maxsize`. Convierte recursiones exponenciales (Fibonacci ingenuo) en lineales. Exige argumentos hashables y no vale si la función tiene efectos o depende de estado mutable.",
+      "definition_en": "A decorator that stores a pure function's results keyed by its arguments, evicting the least recently used once `maxsize` is reached. It turns exponential recursion (naive Fibonacci) into linear. Arguments must be hashable, and it is wrong for functions with side effects or mutable state.",
+      "source": "CPython docs 3.13 — functools.lru_cache"
+    },
+    {
+      "id": "gl03_41",
+      "term_es": "`queue.Queue`",
+      "term_en": "`queue.Queue`",
+      "definition_es": "Cola FIFO segura entre hilos: lleva sus propios locks, así que no hay que sincronizar a mano — es la forma recomendada de pasar trabajo entre hilos en vez de compartir una lista. Cada `get()` debe emparejarse con `task_done()` o `join()` espera para siempre; con hilos vivos, `qsize()` es aproximado.",
+      "definition_en": "A thread-safe FIFO queue: it carries its own locks, so no hand-rolled synchronisation is needed — the recommended way to hand work between threads instead of sharing a list. Every `get()` must be paired with `task_done()` or `join()` waits forever; while threads are live, `qsize()` is approximate.",
+      "source": "CPython docs 3.13 — queue.Queue"
     }
   ]
 }

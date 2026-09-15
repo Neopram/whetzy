@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../stores/useAppStore';
 import { useOfflineSync } from '../../hooks/useOfflineSync';
 import styles from './TopBar.module.css';
 
 export function TopBar() {
+  const { t } = useTranslation('common');
   const user = useAppStore((s) => s.user);
   const { isOnline, isSyncing, pendingAnswers } = useOfflineSync();
 
@@ -27,7 +29,7 @@ export function TopBar() {
             background: isSyncing ? 'var(--le-brand)' : 'var(--le-orange)',
             borderRadius: 8, padding: '3px 8px', lineHeight: 1.4,
           }}>
-            {isSyncing ? `Sincronizando...` : `Sin conexión${pendingAnswers > 0 ? ` (${pendingAnswers})` : ''}`}
+            {isSyncing ? t('offline.syncing') : pendingAnswers > 0 ? t('offline.noConnectionWithCount', { count: pendingAnswers }) : t('offline.noConnection')}
           </div>
         )}
         <div className={`${styles.stat} ${styles.streak}`} title="Racha">

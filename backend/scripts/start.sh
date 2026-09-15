@@ -51,7 +51,10 @@ echo "[start] running alembic upgrade head..."
 alembic upgrade head
 
 echo "[start] loading content..."
-python -m app.services.content_loader || echo "[start] content load skipped (no content dir mounted)"
+if ! python -m app.services.content_loader; then
+  echo "[start] content_loader failed — check JSON syntax and skill IDs; aborting" >&2
+  exit 1
+fi
 
 echo "[start] seeding gamification..."
 python -m app.services.seed || echo "[start] seed skipped"

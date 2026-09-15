@@ -34,20 +34,17 @@ in the Railway dashboard.
    curl -s https://api-production-9751.up.railway.app/api/v1/openapi.json | head -c 200
    ```
    `/health` must return `{"status":"healthy"}` and the OpenAPI document must
-   list **57** paths.
+   list **65** paths.
 5. In the deploy logs, confirm `start.sh` got through all four stages:
    `alembic upgrade head` → `content loaded` → `gamification seeded` →
-   `launching gunicorn`. Content load should report **1507 questions, 0
-   skipped**; anything else means the `content/` tree did not make it into the
-   image.
+   `launching gunicorn`. Content load should report **0 skipped** questions;
+   if it exits with code 1, a JSON file has a syntax error or references an
+   unknown skill_id — check the deploy log for the traceback.
 
-**The startup path was smoke-tested end to end on 2026-09-13** against the
-current `master`, running the real lifespan: 1507 questions / 0 skipped,
-`/health` 200, 57 endpoints, BM25 RAG index built in 0.60 s with every
-retrieved chunk carrying a `source`. The only dependency added since the last
-successful deploy is `rank-bm25` (pure Python, no torch), which the existing
-Dockerfile builds unchanged. So a redeploy is safe: if it fails, suspect the
-Railway service or its env vars, not the code.
+**Note on question count:** the bank grows over time. Verify the loaded count
+matches `check_question_bank.py` output (currently 3419), not a hardcoded
+number. Any non-zero `skipped` count means a question references a skill_id
+that does not exist in `curriculum/tracks.json`.
 
 ## DB migrations
 
@@ -67,11 +64,10 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `m3n4o5p6q7r8` (13 migrations, single head — verified 2026-09-13)
-Chain: `<base> → a1b2c3d4e5f6 → b2c3d4e5f6a7 → c3d4e5f6a7b8 → d4e5f6a7b8c9 → e5f6a7b8c9d0 → f6a7b8c9d0e1 → g7h8i9j0k1l2 → h8i9j0k1l2m3 → i9j0k1l2m3n4 → j0k1l2m3n4o5 → k1l2m3n4o5p6 → l2m3n4o5p6q7 → m3n4o5p6q7r8`
+Current Alembic HEAD: `o5p6q7r8s9t0` (16 migrations, single head — verified 2026-09-15)
+Chain: `<base> → a1b2 → b2c3 → c3d4 → d4e5 → e5f6 → f6a7 → g7h8 → h8i9 → i9j0 → j0k1 → k1l2 → l2m3 → m3n4 → n4o5 → o5p6q7r8s9t0`
 
-Don't trust this line — recompute it. It was stale by 9 migrations until
-2026-09-13 because six schema changes landed without anyone updating it:
+Always recompute — never trust this line:
 
 ```bash
 cd backend && alembic heads     # must print exactly ONE head
@@ -101,16 +97,18 @@ python -m pytest tests/ --tb=short
 COVERAGE_FILE=/tmp/.coverage_whetzy python -m pytest tests/ --tb=short
 ```
 
-No external services needed. 229 tests against SQLite in-memory.
+No external services needed. 739+ tests against SQLite in-memory (Alembic migrations are Postgres-only; tests use `Base.metadata.create_all` on SQLite).
 
 ## Load question bank (dev)
 
 ```bash
 cd backend
-python -m app.scripts.content_loader   # loads 1253 questions from JSON fixtures
+python -m app.services.content_loader   # loads questions from content/questions/**/*.json
 ```
 
-Only run in development. Production DB already has content.
+This is the same command `start.sh` runs at every deploy. It is idempotent — safe
+to run multiple times. In prod, a new deploy automatically re-runs it.
+To see how many questions loaded: check the log line `questions loaded`.
 
 ## Environment variables (production checklist)
 
@@ -136,7 +134,7 @@ FRONTEND_BASE_URL=https://whetzy.com
 | 401 on all requests | SECRET_KEY mismatch between instances |
 | Email not sending | EMAIL_PROVIDER, SMTP_USER/RESEND_API_KEY, check logs for `email_failed` |
 | AI tutor returns `provider=fallback` | GROQ_API_KEY not set or invalid |
-| RAG not used (`grounded=false`) | ChromaDB index not built yet (starts async at startup) |
+| RAG not used (`grounded=false`) | BM25 index not built yet — it starts async in `main.py`; check logs for `rag_ready` |
 | Rate limit 429 in tests | Each test must use a unique X-Forwarded-For header |
 | Alembic error "target database is not up to date" | Run `alembic upgrade head` |
 

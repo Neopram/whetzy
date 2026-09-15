@@ -13,7 +13,7 @@ qué hacer; el ledger lo sabe.
 - Backend prod: `https://api-production-9751.up.railway.app` — deploy **manual**, sin webhook GitHub
 - Frontend prod: `https://whetzy.com` — `whetzy.com/health` devuelve el SPA; el health real es el del backend
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
-- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `m3n4o5p6q7r8`
+- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `o5p6q7r8s9t0` (16 migraciones)
 - LLM: `qwen/qwen3.8-27b` en Groq
 - OpenAPI en `/api/v1/openapi.json`; `POST /quiz/start` devuelve el id en `.question.id`
 

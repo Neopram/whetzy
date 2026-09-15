@@ -119,6 +119,10 @@ async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:
     question.explanation_en = q.get("explanation_en", "")
     question.source = q.get("source")
     question.expected_time_ms = q.get("expected_time_ms", 15000)
+    # Preserve content_version — only set on new rows; admin PATCHes bump it and
+    # must not be silently reverted by a redeploy (see DECISIONS.md P.9).
+    if question.content_version is None or question.content_version == 0:
+        question.content_version = 1
     if "difficulty" in q:  # IRT difficulty (-3..3) -> seed Elo rating
         question.elo_rating = 1500.0 + float(q["difficulty"]) * 120.0
     if "discrimination" in q:
