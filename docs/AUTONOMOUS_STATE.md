@@ -409,6 +409,7 @@
 ### 17. De quiz a escuela + release definitivo (web · App Store · Play Store)
 
 > Abierta el 2026-09-15 (sesión ap) a petición del dueño. Convierte en entregables medibles las nueve preguntas que hizo: contenido de estudio, libros/repos libres, vídeos generados desde código, exámenes que desbloquean tracks, cursos por niveles, catálogo frente a «500 cursos», render del frontend, UI al nivel de la competencia y release en tiendas. **Estado de partida medido:** 4.512 Q · 281 skills · **lecciones 15/281 (5 %)** → **17.1 DONE: 281/281 (100 %)** · exec: tracks 01-03 ≈ 16 %, track04 5 %, **tracks 05/07/08/09/10/11 = 0 %** · framer-motion en 4 ficheros · Monaco 1,04 MB lazy · Android generado (Capacitor), **iOS inexistente** (sin macOS) · score ≈ 42/100.
+> **Estado medido el 2026-09-15 al cierre de la sesión ar** (el de partida queda arriba, para que la serie siga siendo comparable): 4.512 Q · 281 skills · **lecciones 281/281 (100 %)** · **ejecutables por track, ya medidos y con trinquete**: track01 15,8 %, track02 16,0 %, track03 16,1 %, track04 7,6 %, track06 1,9 %, track07 0 %, **track09 0 %**; track05/08/10/11 exentos con razón (ADR-9) · Android generado (Capacitor) y `codemagic.yaml` como vía para iOS sin macOS · **deuda nueva y visible: 315 cadenas de español sin tildes** (17.11) · score todavía ≈ 42/100, sin re-puntuar desde el 14-sep.
 > Orden: urgente × difícil primero. 17.0 va antes que todo. Nada de la serie se declara DONE sin evidencia ejecutable y, donde aplique, captura fechada.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
