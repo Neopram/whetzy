@@ -21,25 +21,27 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.create_table(
-        "lessons",
-        sa.Column("id", sa.String(64), primary_key=True),
-        sa.Column(
-            "skill_id",
-            sa.String(64),
-            sa.ForeignKey("skills.id", ondelete="CASCADE"),
-            nullable=False,
-        ),
-        sa.Column("title_es", sa.String(200), nullable=False),
-        sa.Column("title_en", sa.String(200), nullable=False),
-        sa.Column("body_es", sa.Text, nullable=False),
-        sa.Column("body_en", sa.Text, nullable=False),
-        sa.Column("example_code", sa.Text, nullable=True),
-        sa.Column("example_output", sa.Text, nullable=True),
-        sa.Column("source", sa.Text, nullable=False),
-        sa.Column("order", sa.Integer, nullable=False, server_default="1"),
-    )
-    op.create_index("ix_lessons_skill_id", "lessons", ["skill_id"])
+    # Idempotent DDL: prod already has this table from when F20 was deployed
+    # via SQLAlchemy create_all before this migration file was committed.
+    # Using IF NOT EXISTS prevents DuplicateTableError on re-deploy.
+    op.execute(sa.text("""
+        CREATE TABLE IF NOT EXISTS lessons (
+            id          VARCHAR(64) PRIMARY KEY,
+            skill_id    VARCHAR(64) NOT NULL
+                            REFERENCES skills(id) ON DELETE CASCADE,
+            title_es    VARCHAR(200) NOT NULL,
+            title_en    VARCHAR(200) NOT NULL,
+            body_es     TEXT NOT NULL,
+            body_en     TEXT NOT NULL,
+            example_code  TEXT,
+            example_output TEXT,
+            source      TEXT NOT NULL,
+            "order"     INTEGER NOT NULL DEFAULT 1
+        )
+    """))
+    op.execute(sa.text(
+        "CREATE INDEX IF NOT EXISTS ix_lessons_skill_id ON lessons (skill_id)"
+    ))
 
 
 def downgrade() -> None:
