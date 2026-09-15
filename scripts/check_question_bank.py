@@ -49,6 +49,72 @@ TARGET_PER_SKILL = 15
 TF_MIN_SAMPLE = 25
 TF_BAND = (0.35, 0.65)
 
+# --- executable practice (17.3) -------------------------------------------
+#
+# Question types the learner actually runs, rather than picks an option for.
+EXEC_TYPES = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
+EXEC_TARGET = 0.15
+
+# Tracks and modules that do NOT chase the 15 % bar, each with the reason.
+#
+# This list is the honest half of 17.3, and it exists so the bar means
+# something. Nothing in these runs in a browser: you cannot execute "should
+# this be a microservice", a Docker build, a CI pipeline or an AWS console
+# decision inside a Pyodide worker. Chasing the ratio here would produce fake
+# exercises - a `fill_blank_exec` whose "execution" is a string comparison -
+# which is a worse lie than a low number, because it inflates a metric the
+# competitive scorecard reads. Their format of practice is scenario + decision
+# (`multiple_choice` with context), and they are removed from the denominator
+# rather than counted as failures.
+#
+# track09 (PCEP) is deliberately NOT here even though it sits at 0 %: it is a
+# *Python* certification, Python runs in the browser, and it is the wedge of
+# lane 1. Its zero is a real gap, not an exemption.
+EXEC_EXEMPT_TRACKS = {
+    "track05": "software architecture - design decisions, nothing to execute",
+    "track08": "AWS Cloud Practitioner - console and service choices",
+    "track10": "AWS Solutions Architect - design decisions",
+    "track11": "AWS AI Practitioner - service choices",
+}
+# Module-level exemptions inside a track that otherwise does chase the bar.
+# Keyed by module id, which is "mod" plus the track and module digits of a skill
+# id: sk|04|01|01 -> mod0401 (the last two digits are the skill and are dropped).
+EXEC_EXEMPT_MODULES = {
+    "mod0401": "Git - version control happens in a terminal, not a sandbox",
+    "mod0406": "Docker - no container runtime in a browser",
+    "mod0407": "CI/CD - pipelines are not runnable client-side",
+}
+
+# Per-track ratchet. Same idea as MIN_LESSONS: these are today's measured
+# numbers, and they may only ever go up. A track that loses executable coverage
+# because someone bulk-added multiple choice fails here rather than drifting
+# down unnoticed - which is exactly how the ratio fell from 15,57 % to 7,33 %
+# between two sessions without anybody deciding to.
+EXEC_FLOOR = {
+    "track01": 0.15,
+    "track02": 0.15,
+    "track03": 0.15,
+    "track04": 0.07,
+    "track06": 0.01,
+    "track07": 0.00,
+    "track09": 0.00,
+}
+
+
+def track_key(path: Path) -> str:
+    """The track a question file belongs to, not the folder it happens to sit in.
+
+    `content/questions/` has TWELVE directories for ELEVEN tracks:
+    `track08_aws_clf_c02` and `track08_aws_cloud_practitioner` are both track08
+    (same `sk0801xx` skills). Keying the report by folder split that track in
+    two and reported the smaller half at 2.5 Q/skill against a floor of 15 - a
+    gap that does not exist, since the two halves together sit at 18.3. The
+    same folder-counting mistake had `check_docs.py` accusing the ledger of
+    lying about the track count.
+    """
+    name = path.parent.name
+    return name[:7] if name.startswith("track") and name[5:7].isdigit() else name
+
 
 def load() -> list[tuple[Path, dict]]:
     items = []
@@ -117,9 +183,9 @@ def main() -> int:
         if ci is None or not opts:
             continue
         if q.get("type") == "true_false":
-            tf_track[path.parent.name][ci] += 1
+            tf_track[track_key(path)][ci] += 1
         else:
-            by_track[path.parent.name][ci] += 1
+            by_track[track_key(path)][ci] += 1
 
     for track, dist in sorted(by_track.items()):
         total = sum(dist.values())
@@ -185,12 +251,19 @@ def main() -> int:
         if not skill:
             continue
         # Same key as by_track, so the two columns line up on one row.
-        skills_per_track.setdefault(path.parent.name, set()).add(skill)
-        questions_per_track[path.parent.name] += 1
+        skills_per_track.setdefault(track_key(path), set()).add(skill)
+        questions_per_track[track_key(path)] += 1
 
-    print(f"\n[bank] {len(items)} questions across {len(by_track)} tracks, "
+    # Rows are driven by `questions_per_track`, not by `by_track`. `by_track`
+    # only sees questions that carry options, so a directory whose questions are
+    # all `fill_blank` gets no row at all: `track08_aws_clf_c02` holds 48 of
+    # them and was counted in the total while never appearing in the per-track
+    # report, which is why the rows summed to 4.464 against a total of 4.512.
+    # A track the report cannot show is a track nobody audits.
+    print(f"\n[bank] {len(items)} questions across {len(questions_per_track)} tracks, "
           f"{len(per_skill)} skills\n")
-    for track, dist in sorted(by_track.items()):
+    for track in sorted(questions_per_track):
+        dist = by_track.get(track, Counter())
         total = questions_per_track.get(track, 0)
         spread = "/".join(str(dist[i]) for i in range(4))
         n_skills = len(skills_per_track.get(track, ()))
@@ -206,6 +279,49 @@ def main() -> int:
             f"{TARGET_PER_SKILL} (* marks the tracks below it). That is {short} more "
             "questions. Under-dense skills repeat before they are mastered, so "
             "p_known ends up measuring recall of the option rather than of the idea"
+        )
+
+    # --- executable practice per track (17.3) ---
+    #
+    # Reported per track and against a floor that only rises, because the ratio
+    # is one of the numbers the competitive scorecard leans on and it moved by
+    # eight points between two sessions without anyone deciding it should.
+    exec_total: Counter[str] = Counter()
+    exec_hits: Counter[str] = Counter()
+    for path, q in items:
+        track = track_key(path)
+        skill = q.get("skill_id") or ""
+        # sk040101 -> mod0401: track digits then module digits, skill digits dropped.
+        module = "mod" + skill[2:6] if skill.startswith("sk") else ""
+        if track in EXEC_EXEMPT_TRACKS or module in EXEC_EXEMPT_MODULES:
+            continue
+        exec_total[track] += 1
+        if q.get("type") in EXEC_TYPES:
+            exec_hits[track] += 1
+
+    print("\n  executable practice (17.3)")
+    for track in sorted(exec_total):
+        total = exec_total[track]
+        hits = exec_hits[track]
+        ratio = hits / total if total else 0.0
+        floor = EXEC_FLOOR.get(track, 0.0)
+        if ratio + 1e-9 < floor:
+            problems.append(
+                f"{track}: executable practice fell to {ratio:.1%} ({hits}/{total}) "
+                f"from a floor of {floor:.0%}. The floor only moves up - if this is "
+                "deliberate, change EXEC_FLOOR and say why in the commit"
+            )
+        mark = " " if ratio >= EXEC_TARGET else "*"
+        print(f"  {track:<38} {hits:>4}/{total:<5} = {ratio:>5.1%}{mark}  floor {floor:.0%}")
+    for track, reason in sorted(EXEC_EXEMPT_TRACKS.items()):
+        print(f"  {track:<38} {'exempt':>10}     {reason}")
+
+    below = sorted(t for t, n in exec_total.items() if n and exec_hits[t] / n < EXEC_TARGET)
+    if below:
+        warnings.append(
+            f"executable practice is under {EXEC_TARGET:.0%} in: {', '.join(below)} "
+            "(* above). This is authoring work, not a mechanical fix; the exempt "
+            "tracks are listed with their reasons and are out of the denominator"
         )
 
     # Warnings are real findings that this tool is the wrong place to fail on:
