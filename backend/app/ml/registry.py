@@ -148,7 +148,10 @@ class _Registry:
     @property
     def skill_ids(self) -> list[str]:
         """Ordered skill IDs the checkpoint was trained on (from metadata.json)."""
-        return self._metadata.get("skill_ids", [])
+        # metadata.json is untyped JSON, so the lookup is Any: narrow it here
+        # rather than letting Any leak into every caller of skill_ids.
+        skill_ids: list[str] = list(self._metadata.get("skill_ids", []))
+        return skill_ids
 
     def current_info(self) -> dict[str, Any]:
         return {

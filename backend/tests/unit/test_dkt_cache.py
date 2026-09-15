@@ -145,8 +145,9 @@ def test_predict_uses_checkpoint_skill_ids_when_registry_loaded() -> None:
     the fix, skills appearing at position >n_skills in history caused IndexError
     inside nn.Embedding (bug 15.1)."""
     from unittest.mock import MagicMock, PropertyMock
+
     import app.services.dkt as dkt_module
-    from app.services.dkt import predict, dkt_cache_clear
+    from app.services.dkt import dkt_cache_clear, predict
 
     dkt_cache_clear()
 

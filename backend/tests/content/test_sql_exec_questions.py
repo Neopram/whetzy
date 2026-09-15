@@ -22,8 +22,6 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
-import pytest
-
 from app.services.content_loader import _content_root
 
 FILLS_PATH = Path(__file__).parent / "sql_exec_reference_fills.json"
@@ -55,7 +53,10 @@ def _run_sql(code: str) -> tuple[str, str | None]:
                 cols = [d[0] for d in cursor.description]
                 rows = cursor.fetchall()
                 results.append((cols, rows))
-    except Exception as exc:
+    except sqlite3.Error as exc:
+        # Narrow rather than blind (ruff BLE001): everything raised by execute()
+        # on a bad statement is a sqlite3.Error, and a TypeError here would be a
+        # bug in this harness that should surface, not be reported as SQL output.
         conn.close()
         return "", str(exc)
     conn.close()
