@@ -136,13 +136,26 @@ def _run_sql(code: str) -> str:
     return _format_like_sql_worker(results)
 
 
-def _is_sql(lesson: dict[str, Any]) -> bool:
-    """SQL lessons declare it; everything else is Python.
+# Languages whose example we can actually execute here, and therefore verify.
+EXECUTABLE_LANGUAGES = {"python", "sql"}
 
-    Explicit field rather than sniffing the code, so a Python example that
-    happens to contain the word SELECT in a string is not run against sqlite3.
-    """
-    return str(lesson.get("language", "python")).lower() == "sql"
+# Languages we can only show. A lesson on `git rebase` or a Dockerfile has no
+# honest runnable-Python example: forcing one produces a toy that teaches nothing
+# and pretends to be verified. Showing the real command with its real output is
+# both more useful and more honest — but it is NOT verified, so it must say so in
+# the file ("executable": false) and it is counted on every run. The count is the
+# point: an unverified example is a cost, and a cost that is not measured grows.
+ILLUSTRATIVE_LANGUAGES = {"shell", "dockerfile", "yaml", "http", "text"}
+
+
+def _language(lesson: dict[str, Any]) -> str:
+    return str(lesson.get("language", "python")).lower()
+
+
+def _is_executable(lesson: dict[str, Any]) -> bool:
+    """Explicit field rather than sniffing the code, so a Python example that
+    happens to contain the word SELECT is not run against sqlite3."""
+    return _language(lesson) in EXECUTABLE_LANGUAGES
 
 
 # ── Shape ─────────────────────────────────────────────────────────────────────
@@ -284,13 +297,68 @@ def test_every_lesson_cites_a_resolvable_looking_source(
 
 
 @pytest.mark.parametrize("case", LESSONS, ids=_lesson_id)
+def test_language_is_declared_and_known(case: tuple[Path, dict[str, Any]]) -> None:
+    _path, lesson = case
+    language = _language(lesson)
+    assert language in EXECUTABLE_LANGUAGES | ILLUSTRATIVE_LANGUAGES, (
+        f"{lesson.get('id')}: unknown language {language!r}"
+    )
+
+
+@pytest.mark.parametrize("case", LESSONS, ids=_lesson_id)
+def test_an_unverifiable_example_says_so_in_the_file(
+    case: tuple[Path, dict[str, Any]]
+) -> None:
+    """`"executable": false` is required, never inferred.
+
+    Without it, dropping `"language": "shell"` onto a Python lesson would silently
+    switch off its execution check — the one guarantee this file exists to give.
+    Making the opt-out explicit means skipping verification is a visible decision
+    in the content, not a side effect.
+    """
+    _path, lesson = case
+    if _is_executable(lesson):
+        assert lesson.get("executable", True) is not False, (
+            f"{lesson.get('id')}: language {_language(lesson)!r} IS executable here, "
+            'so it must not claim "executable": false'
+        )
+        return
+    assert lesson.get("executable") is False, (
+        f"{lesson.get('id')}: language {_language(lesson)!r} cannot be executed by "
+        'this suite, so the lesson must carry "executable": false and accept that '
+        "its output is illustrative"
+    )
+
+
+def test_unverified_example_count_is_reported(capsys: pytest.CaptureFixture[str]) -> None:
+    executed = [lesson for _p, lesson in LESSONS if _is_executable(lesson)]
+    shown = [lesson for _p, lesson in LESSONS if not _is_executable(lesson)]
+    with capsys.disabled():
+        print(
+            f"[lessons] {len(executed)} examples executed and verified, "
+            f"{len(shown)} illustrative "
+            f"({', '.join(sorted({_language(x) for x in shown})) or 'none'})"
+        )
+    assert len(executed) + len(shown) == len(LESSONS)
+
+
+@pytest.mark.parametrize("case", LESSONS, ids=_lesson_id)
 def test_example_code_produces_example_output(case: tuple[Path, dict[str, Any]]) -> None:
     _path, lesson = case
     code = str(lesson.get("example_code", "")).strip()
     assert code, f"{lesson.get('id')}: no example_code"
     expected = str(lesson.get("example_output", "")).rstrip("\n")
 
-    if _is_sql(lesson):
+    if not _is_executable(lesson):
+        # Nothing to run, but the lesson still has to show something concrete:
+        # an illustrative example with no output is just a code snippet.
+        assert expected, (
+            f"{lesson.get('id')}: illustrative examples still need example_output — "
+            "show what the command actually prints"
+        )
+        return
+
+    if _language(lesson) == "sql":
         actual = _run_sql(code).rstrip("\n")
         assert actual == expected, (
             f"{lesson.get('id')}: SQL example output mismatch\n"
