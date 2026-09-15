@@ -591,6 +591,21 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 
 > Decisiones de arquitectura irreversibles o costosas de revertir. Formato ADR corto.
 
+**#31 (sesión ar, 2026-09-16) — dejo de hacer `push` en cuanto supe que `push` despliega.**
+El contrato de autonomía autoriza `git push origin master` «sin preguntar», y esa
+autorización se dio sobre una premisa que hoy resultó falsa: que el despliegue era
+manual. No lo es (**H.16**). Un permiso concedido sobre una premisa falsa no cubre
+lo que la premisa ocultaba, así que a partir del commit `af45c14` esta sesión
+**sigue commiteando en local y deja de empujar**. Nada se pierde: un commit local
+es tan duradero como uno empujado y la siguiente sesión del cron lee el mismo
+repositorio en la misma máquina — lo que se perdió en la sesión aq fue trabajo **sin
+commitear**, que es otra cosa. Lo que sí se evita es seguir reiniciando producción
+cada quince minutos por decisión de un agente. **Es reversible en un comando** (`git
+push origin master`) en cuanto el dueño decida el modelo de despliegue de H.16.
+Nota honesta sobre la magnitud: hoy el coste real de esos 502 es probablemente cero,
+porque no hay usuarios (H.10 sigue abierto). La razón para parar no es el daño
+medido, es que la decisión de desplegar no es mía.
+
 | # | Fecha | Decisión | Razón | Alternativas descartadas |
 |---|---|---|---|---|
 | 1 | 2026-09-07 | Monolito FastAPI, no microservicios | Equipo de 1, tráfico bajo, complejidad no justificada | K8s + servicios separados |
