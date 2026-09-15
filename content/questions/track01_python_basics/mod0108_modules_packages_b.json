@@ -7,14 +7,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport math as m\nprint(m.floor(3.9))\n```",
       "question_en": "What does the following code print?\n\n```python\nimport math as m\nprint(m.floor(3.9))\n```",
-      "options_es": ["3", "4", "3.9", "Lanza un `NameError`"],
-      "options_en": ["3", "4", "3.9", "It raises a `NameError`"],
+      "options_es": [
+        "3",
+        "4",
+        "3.9",
+        "Lanza un `NameError`"
+      ],
+      "options_en": [
+        "3",
+        "4",
+        "3.9",
+        "It raises a `NameError`"
+      ],
       "correct_index": 0,
       "explanation_es": "`as` crea un alias: a partir de ahí el nombre original `math` ya no está enlazado, solo `m`. Y `floor` redondea siempre hacia abajo, a diferencia de `round`.",
       "explanation_en": "`as` creates an alias: from then on the original name `math` is no longer bound, only `m`. And `floor` always rounds downwards, unlike `round`.",
       "source": "CPython docs 3.13 — The Python Tutorial §6 (modules) / math.floor",
       "expected_time_ms": 25000,
-      "tags": ["imports", "alias"]
+      "tags": [
+        "imports",
+        "alias"
+      ]
     },
     {
       "id": "q010801011",
@@ -24,23 +37,26 @@
       "question_es": "¿Qué diferencia práctica hay entre `import os` y `from os import path`?",
       "question_en": "What practical difference is there between `import os` and `from os import path`?",
       "options_es": [
-        "El primero trae el módulo y obliga a escribir `os.path`; el segundo trae el nombre suelto",
-        "El segundo es más rápido porque carga menos código",
         "El primero no permite usar `os.path`",
+        "El segundo es más rápido porque carga menos código",
+        "El primero trae el módulo y obliga a escribir `os.path`; el segundo trae el nombre suelto",
         "Ninguna, son equivalentes en todo"
       ],
       "options_en": [
-        "The first brings the module and requires writing `os.path`; the second brings the bare name",
-        "The second is faster because it loads less code",
         "The first does not allow using `os.path`",
+        "The second is faster because it loads less code",
+        "The first brings the module and requires writing `os.path`; the second brings the bare name",
         "None, they are equivalent in every way"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Ambos ejecutan el módulo entero, así que no hay ahorro de carga. Lo que cambia es la legibilidad: `os.path.join` dice de dónde viene la función, mientras que un `path` suelto puede confundirse con una variable local.",
       "explanation_en": "Both execute the entire module, so there is no loading saved. What changes is readability: `os.path.join` says where the function comes from, whereas a bare `path` can be mistaken for a local variable.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.1 (more on modules)",
       "expected_time_ms": 32000,
-      "tags": ["imports", "style"]
+      "tags": [
+        "imports",
+        "style"
+      ]
     },
     {
       "id": "q010801012",
@@ -49,14 +65,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime este fichero al ejecutarlo directamente con `python archivo.py`?\n\n```python\nprint(__name__)\n```",
       "question_en": "What does this file print when run directly with `python file.py`?\n\n```python\nprint(__name__)\n```",
-      "options_es": ["__main__", "archivo", "__module__", "None"],
-      "options_en": ["__main__", "file", "__module__", "None"],
+      "options_es": [
+        "__main__",
+        "archivo",
+        "__module__",
+        "None"
+      ],
+      "options_en": [
+        "__main__",
+        "file",
+        "__module__",
+        "None"
+      ],
       "correct_index": 0,
       "explanation_es": "Al ejecutarse directamente, el módulo recibe el nombre `__main__`; si se importa, recibe el suyo propio. Es lo que hace funcionar el patrón `if __name__ == \"__main__\":`, que separa el código de arranque del importable.",
       "explanation_en": "When run directly, the module is given the name `__main__`; when imported, it gets its own. This is what makes the `if __name__ == \"__main__\":` pattern work, separating start-up code from importable code.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.1.1 (executing modules as scripts)",
       "expected_time_ms": 35000,
-      "tags": ["imports", "main"]
+      "tags": [
+        "imports",
+        "main"
+      ]
     },
     {
       "id": "q010801013",
@@ -65,14 +94,23 @@
       "difficulty_tier": "medium",
       "question_es": "Importar el mismo módulo dos veces en un programa ejecuta su código dos veces.",
       "question_en": "Importing the same module twice in a program executes its code twice.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Python guarda los módulos ya cargados en `sys.modules` y reutiliza el mismo objeto. Por eso el estado de un módulo se comparte en todo el programa, algo a tener en cuenta con variables globales de módulo.",
       "explanation_en": "Python caches loaded modules in `sys.modules` and reuses the same object. That is why a module's state is shared across the whole program, something to keep in mind with module-level globals.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.1 / sys.modules",
       "expected_time_ms": 30000,
-      "tags": ["imports", "caching"]
+      "tags": [
+        "imports",
+        "caching"
+      ]
     },
     {
       "id": "q010801014",
@@ -82,23 +120,26 @@
       "question_es": "¿Por qué PEP 8 desaconseja `from modulo import *`?",
       "question_en": "Why does PEP 8 discourage `from module import *`?",
       "options_es": [
-        "Contamina el espacio de nombres y oculta de dónde viene cada nombre, pudiendo pisar los tuyos",
+        "Está prohibido desde Python 3.10",
         "Es mucho más lento al arrancar",
         "No funciona con paquetes",
-        "Está prohibido desde Python 3.10"
+        "Contamina el espacio de nombres y oculta de dónde viene cada nombre, pudiendo pisar los tuyos"
       ],
       "options_en": [
-        "It pollutes the namespace and hides where each name comes from, possibly shadowing yours",
+        "It has been forbidden since Python 3.10",
         "It is far slower at start-up",
         "It does not work with packages",
-        "It has been forbidden since Python 3.10"
+        "It pollutes the namespace and hides where each name comes from, possibly shadowing yours"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Con dos `import *` seguidos, el segundo puede sobrescribir nombres del primero sin que nadie lo note. Además, quien lee el código no puede saber de qué módulo sale una función sin buscarla.",
       "explanation_en": "With two consecutive `import *`, the second can overwrite names from the first with nobody noticing. On top of that, a reader cannot tell which module a function came from without hunting for it.",
       "source": "PEP 8 — Style Guide for Python Code: Imports",
       "expected_time_ms": 35000,
-      "tags": ["imports", "pep8"]
+      "tags": [
+        "imports",
+        "pep8"
+      ]
     },
     {
       "id": "q010801015",
@@ -113,7 +154,10 @@
       "explanation_en": "`from math import pi` binds `pi` directly, with no `math.` prefix needed. Several names can be requested, separated by commas.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.1 (more on modules)",
       "expected_time_ms": 16000,
-      "tags": ["imports", "syntax"]
+      "tags": [
+        "imports",
+        "syntax"
+      ]
     },
     {
       "id": "q010801016",
@@ -123,23 +167,27 @@
       "question_es": "¿Qué orden de imports recomienda PEP 8?",
       "question_en": "What import order does PEP 8 recommend?",
       "options_es": [
-        "Librería estándar, luego terceros, luego los del propio proyecto, separados por una línea en blanco",
+        "Por longitud de línea, de más corta a más larga",
         "Alfabético estricto, sin agrupar",
         "Los del proyecto primero, para verlos antes",
-        "Por longitud de línea, de más corta a más larga"
+        "Librería estándar, luego terceros, luego los del propio proyecto, separados por una línea en blanco"
       ],
       "options_en": [
-        "Standard library, then third party, then the project's own, separated by a blank line",
+        "By line length, shortest to longest",
         "Strictly alphabetical, with no grouping",
         "The project's own first, so they are seen sooner",
-        "By line length, shortest to longest"
+        "Standard library, then third party, then the project's own, separated by a blank line"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Los tres grupos separados dejan ver de un vistazo qué dependencias externas tiene el fichero. Herramientas como `isort` y `ruff` lo aplican solas.",
       "explanation_en": "The three separated groups make a file's external dependencies visible at a glance. Tools such as `isort` and `ruff` apply it automatically.",
       "source": "PEP 8 — Style Guide for Python Code: Imports",
       "expected_time_ms": 32000,
-      "tags": ["imports", "pep8", "style"]
+      "tags": [
+        "imports",
+        "pep8",
+        "style"
+      ]
     },
     {
       "id": "q010801017",
@@ -148,16 +196,28 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom math import pi\npi = 3\nimport math\nprint(pi, round(math.pi, 2))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom math import pi\npi = 3\nimport math\nprint(pi, round(math.pi, 2))\n```",
-      "options_es": ["3 3.14", "3.14 3.14", "3 3", "Lanza un error"],
-      "options_en": ["3 3.14", "3.14 3.14", "3 3", "It raises an error"],
-      "correct_index": 0,
+      "options_es": [
+        "3.14 3.14",
+        "3 3.14",
+        "3 3",
+        "Lanza un error"
+      ],
+      "options_en": [
+        "3.14 3.14",
+        "3 3.14",
+        "3 3",
+        "It raises an error"
+      ],
+      "correct_index": 1,
       "explanation_es": "`from ... import` copia el valor a un nombre local: reasignarlo no toca el módulo. Por eso `math.pi` sigue intacto. Es la razón de fondo por la que `import modulo` resulta más predecible.",
       "explanation_en": "`from ... import` copies the value into a local name: reassigning it does not touch the module. That is why `math.pi` is untouched. It is the underlying reason `import module` behaves more predictably.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.1 (more on modules)",
       "expected_time_ms": 50000,
-      "tags": ["imports", "binding"]
+      "tags": [
+        "imports",
+        "binding"
+      ]
     },
-
     {
       "id": "q010802010",
       "skill_id": "sk010802",
@@ -165,14 +225,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué módulo estándar usarías para leer y escribir ficheros JSON?",
       "question_en": "Which standard module would you use to read and write JSON files?",
-      "options_es": ["`json`", "`pickle`", "`csv`", "`codecs`"],
-      "options_en": ["`json`", "`pickle`", "`csv`", "`codecs`"],
+      "options_es": [
+        "`json`",
+        "`pickle`",
+        "`csv`",
+        "`codecs`"
+      ],
+      "options_en": [
+        "`json`",
+        "`pickle`",
+        "`csv`",
+        "`codecs`"
+      ],
       "correct_index": 0,
       "explanation_es": "`json.dumps` serializa a texto y `json.loads` lo recupera. `pickle` también serializa, pero en un formato binario propio de Python y **no es seguro** con datos de origen desconocido: puede ejecutar código al deserializar.",
       "explanation_en": "`json.dumps` serialises to text and `json.loads` reads it back. `pickle` also serialises, but into a Python-specific binary format and is **not safe** with data of unknown origin: it can execute code while deserialising.",
       "source": "CPython docs 3.13 — json / pickle (security warning)",
       "expected_time_ms": 28000,
-      "tags": ["stdlib", "json"]
+      "tags": [
+        "stdlib",
+        "json"
+      ]
     },
     {
       "id": "q010802011",
@@ -181,14 +254,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom collections import Counter\nprint(Counter(\"aabbbc\").most_common(1))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom collections import Counter\nprint(Counter(\"aabbbc\").most_common(1))\n```",
-      "options_es": ["`[('b', 3)]`", "`[('a', 2)]`", "`{'b': 3}`", "`('b', 3)`"],
-      "options_en": ["`[('b', 3)]`", "`[('a', 2)]`", "`{'b': 3}`", "`('b', 3)`"],
-      "correct_index": 0,
+      "options_es": [
+        "`{'b': 3}`",
+        "`[('a', 2)]`",
+        "`[('b', 3)]`",
+        "`('b', 3)`"
+      ],
+      "options_en": [
+        "`{'b': 3}`",
+        "`[('a', 2)]`",
+        "`[('b', 3)]`",
+        "`('b', 3)`"
+      ],
+      "correct_index": 2,
       "explanation_es": "`Counter` cuenta apariciones y `most_common(n)` devuelve una **lista** de pares ordenada de mayor a menor. Aunque se pida uno solo, sigue siendo una lista de un elemento.",
       "explanation_en": "`Counter` tallies occurrences and `most_common(n)` returns a **list** of pairs ordered from most to least. Even when asking for one, it is still a one-element list.",
       "source": "CPython docs 3.13 — collections.Counter",
       "expected_time_ms": 35000,
-      "tags": ["stdlib", "collections"]
+      "tags": [
+        "stdlib",
+        "collections"
+      ]
     },
     {
       "id": "q010802012",
@@ -214,7 +300,10 @@
       "explanation_en": "`Path(\"dir\") / \"f.txt\"` builds the path with the right separator on any system, whereas concatenating with `\"/\"` by hand breaks on Windows. It also gathers into one object what used to be spread across `os.path` and `glob`.",
       "source": "CPython docs 3.13 — pathlib — Object-oriented filesystem paths",
       "expected_time_ms": 32000,
-      "tags": ["stdlib", "pathlib"]
+      "tags": [
+        "stdlib",
+        "pathlib"
+      ]
     },
     {
       "id": "q010802013",
@@ -223,14 +312,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom collections import defaultdict\nd = defaultdict(int)\nd[\"x\"] += 1\nprint(d[\"x\"], d[\"y\"])\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom collections import defaultdict\nd = defaultdict(int)\nd[\"x\"] += 1\nprint(d[\"x\"], d[\"y\"])\n```",
-      "options_es": ["1 0", "Lanza un `KeyError`", "1 None", "0 0"],
-      "options_en": ["1 0", "It raises a `KeyError`", "1 None", "0 0"],
-      "correct_index": 0,
+      "options_es": [
+        "1 None",
+        "Lanza un `KeyError`",
+        "1 0",
+        "0 0"
+      ],
+      "options_en": [
+        "1 None",
+        "It raises a `KeyError`",
+        "1 0",
+        "0 0"
+      ],
+      "correct_index": 2,
       "explanation_es": "`defaultdict(int)` crea el valor `0` al consultar una clave ausente, lo que permite `+= 1` sin inicializar. Efecto secundario a tener presente: **leer** `d[\"y\"]` la inserta en el diccionario.",
       "explanation_en": "`defaultdict(int)` creates the value `0` when a missing key is looked up, which allows `+= 1` without initialising. A side effect worth remembering: **reading** `d[\"y\"]` inserts it into the dictionary.",
       "source": "CPython docs 3.13 — collections.defaultdict",
       "expected_time_ms": 40000,
-      "tags": ["stdlib", "defaultdict"]
+      "tags": [
+        "stdlib",
+        "defaultdict"
+      ]
     },
     {
       "id": "q010802014",
@@ -239,14 +341,23 @@
       "difficulty_tier": "medium",
       "question_es": "`random.random()` es adecuado para generar contraseñas o tokens de seguridad.",
       "question_en": "`random.random()` is suitable for generating passwords or security tokens.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "`random` usa un generador determinista, predecible si se conoce el estado interno. Para cualquier uso de seguridad está `secrets`, pensado exactamente para eso — y la propia documentación de `random` lo advierte.",
       "explanation_en": "`random` uses a deterministic generator, predictable if the internal state is known. For any security use there is `secrets`, designed precisely for it — and `random`'s own documentation says so.",
       "source": "CPython docs 3.13 — random (note on reproducibility) / secrets",
       "expected_time_ms": 30000,
-      "tags": ["stdlib", "security"]
+      "tags": [
+        "stdlib",
+        "security"
+      ]
     },
     {
       "id": "q010802015",
@@ -261,7 +372,10 @@
       "explanation_en": "`timeit` repeats the run many times and disables the garbage collector, giving more reliable figures than subtracting two `time.time()` calls.",
       "source": "CPython docs 3.13 — timeit — Measure execution time of small code snippets",
       "expected_time_ms": 25000,
-      "tags": ["stdlib", "timeit"]
+      "tags": [
+        "stdlib",
+        "timeit"
+      ]
     },
     {
       "id": "q010802016",
@@ -270,14 +384,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué módulo usarías para leer argumentos de la línea de comandos con validación y ayuda automática?",
       "question_en": "Which module would you use to read command-line arguments with validation and automatic help?",
-      "options_es": ["`argparse`", "`sys`", "`os`", "`getopt`"],
-      "options_en": ["`argparse`", "`sys`", "`os`", "`getopt`"],
-      "correct_index": 0,
+      "options_es": [
+        "`os`",
+        "`sys`",
+        "`argparse`",
+        "`getopt`"
+      ],
+      "options_en": [
+        "`os`",
+        "`sys`",
+        "`argparse`",
+        "`getopt`"
+      ],
+      "correct_index": 2,
       "explanation_es": "`sys.argv` da la lista cruda y obliga a validar a mano. `argparse` declara los argumentos, comprueba tipos, genera `--help` y avisa de los que faltan. `getopt` es el precursor, hoy desaconsejado.",
       "explanation_en": "`sys.argv` gives the raw list and leaves validation to you. `argparse` declares the arguments, checks types, generates `--help` and reports missing ones. `getopt` is the predecessor, now discouraged.",
       "source": "CPython docs 3.13 — argparse — Parser for command-line options",
       "expected_time_ms": 32000,
-      "tags": ["stdlib", "argparse"]
+      "tags": [
+        "stdlib",
+        "argparse"
+      ]
     },
     {
       "id": "q010802017",
@@ -287,25 +414,28 @@
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport json\nprint(json.dumps({\"a\": (1, 2)}))\n```",
       "question_en": "What does the following code print?\n\n```python\nimport json\nprint(json.dumps({\"a\": (1, 2)}))\n```",
       "options_es": [
-        "`{\"a\": [1, 2]}`",
         "`{\"a\": (1, 2)}`",
+        "`{\"a\": [1, 2]}`",
         "Lanza un `TypeError`",
         "`{'a': [1, 2]}`"
       ],
       "options_en": [
-        "`{\"a\": [1, 2]}`",
         "`{\"a\": (1, 2)}`",
+        "`{\"a\": [1, 2]}`",
         "It raises a `TypeError`",
         "`{'a': [1, 2]}`"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "JSON no tiene tuplas, así que se serializan como arrays y vuelven convertidas en listas. La ida y vuelta no conserva el tipo, algo a tener en cuenta al guardar y recargar estructuras.",
       "explanation_en": "JSON has no tuples, so they serialise as arrays and come back as lists. The round trip does not preserve the type, which matters when saving and reloading structures.",
       "source": "CPython docs 3.13 — json (conversion table)",
       "expected_time_ms": 45000,
-      "tags": ["stdlib", "json", "types"]
+      "tags": [
+        "stdlib",
+        "json",
+        "types"
+      ]
     },
-
     {
       "id": "q010803010",
       "skill_id": "sk010803",
@@ -314,23 +444,26 @@
       "question_es": "¿Qué papel cumple hoy el fichero `__init__.py` en un paquete?",
       "question_en": "What role does `__init__.py` play in a package today?",
       "options_es": [
-        "Marca el paquete como regular y permite ejecutar código de inicialización o reexportar nombres",
-        "Es obligatorio o el paquete no se puede importar",
         "Contiene la lista de dependencias",
+        "Es obligatorio o el paquete no se puede importar",
+        "Marca el paquete como regular y permite ejecutar código de inicialización o reexportar nombres",
         "Define la versión de Python requerida"
       ],
       "options_en": [
-        "It marks the package as regular and allows running init code or re-exporting names",
-        "It is mandatory or the package cannot be imported",
         "It holds the dependency list",
+        "It is mandatory or the package cannot be imported",
+        "It marks the package as regular and allows running init code or re-exporting names",
         "It declares the required Python version"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Desde Python 3.3 existen los paquetes de espacio de nombres y un directorio sin `__init__.py` puede importarse. Se sigue usando porque da un punto claro de inicialización y permite exponer una API limpia.",
       "explanation_en": "Since Python 3.3 namespace packages exist and a directory without `__init__.py` can be imported. It is still used because it gives a clear initialisation point and lets you expose a tidy API.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.4 (packages) / PEP 420",
       "expected_time_ms": 35000,
-      "tags": ["packages", "init"]
+      "tags": [
+        "packages",
+        "init"
+      ]
     },
     {
       "id": "q010803011",
@@ -340,23 +473,26 @@
       "question_es": "¿Qué significa el punto en `from . import utils`?",
       "question_en": "What does the dot mean in `from . import utils`?",
       "options_es": [
-        "Importa desde el paquete actual, sin depender de dónde se ejecute el programa",
+        "Es un error de sintaxis",
         "Importa desde el directorio de trabajo actual",
         "Importa desde la raíz del proyecto",
-        "Es un error de sintaxis"
+        "Importa desde el paquete actual, sin depender de dónde se ejecute el programa"
       ],
       "options_en": [
-        "It imports from the current package, independently of where the program is run",
+        "It is a syntax error",
         "It imports from the current working directory",
         "It imports from the project root",
-        "It is a syntax error"
+        "It imports from the current package, independently of where the program is run"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un punto es el paquete actual y dos puntos el padre. Es relativo al **paquete**, no al directorio de trabajo, lo que hace el paquete reubicable. No funciona en un script ejecutado directamente.",
       "explanation_en": "One dot is the current package and two dots the parent. It is relative to the **package**, not to the working directory, which makes the package relocatable. It does not work in a script run directly.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.4.2 (intra-package references) / PEP 328",
       "expected_time_ms": 40000,
-      "tags": ["packages", "relative-imports"]
+      "tags": [
+        "packages",
+        "relative-imports"
+      ]
     },
     {
       "id": "q010803012",
@@ -366,23 +502,26 @@
       "question_es": "¿Para qué sirve `__all__` en un módulo?",
       "question_en": "What is `__all__` for in a module?",
       "options_es": [
-        "Define qué nombres exporta `from modulo import *` y documenta la API pública",
         "Impide importar cualquier otro nombre del módulo",
+        "Define qué nombres exporta `from modulo import *` y documenta la API pública",
         "Lista las dependencias del módulo",
         "Hace privados los nombres que no aparezcan"
       ],
       "options_en": [
-        "It defines which names `from module import *` exports and documents the public API",
         "It prevents importing any other name from the module",
+        "It defines which names `from module import *` exports and documents the public API",
         "It lists the module's dependencies",
         "It makes names not listed private"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "No impide nada: quien quiera puede seguir importando cualquier nombre explícitamente. Es una declaración de intenciones sobre qué es público, y las herramientas de análisis la respetan.",
       "explanation_en": "It prevents nothing: anyone can still import any name explicitly. It is a statement of intent about what is public, and analysis tools respect it.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.4.1 (importing * from a package)",
       "expected_time_ms": 32000,
-      "tags": ["packages", "all"]
+      "tags": [
+        "packages",
+        "all"
+      ]
     },
     {
       "id": "q010803013",
@@ -391,14 +530,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué fichero declara hoy los metadatos y dependencias de un paquete Python?",
       "question_en": "Which file declares a Python package's metadata and dependencies today?",
-      "options_es": ["`pyproject.toml`", "`setup.py`", "`requirements.txt`", "`MANIFEST.in`"],
-      "options_en": ["`pyproject.toml`", "`setup.py`", "`requirements.txt`", "`MANIFEST.in`"],
+      "options_es": [
+        "`pyproject.toml`",
+        "`setup.py`",
+        "`requirements.txt`",
+        "`MANIFEST.in`"
+      ],
+      "options_en": [
+        "`pyproject.toml`",
+        "`setup.py`",
+        "`requirements.txt`",
+        "`MANIFEST.in`"
+      ],
       "correct_index": 0,
       "explanation_es": "PEP 518 y PEP 621 establecieron `pyproject.toml` como el estándar declarativo. `setup.py` sigue funcionando pero es código ejecutable, y `requirements.txt` fija un entorno concreto, que es un problema distinto del de declarar un paquete.",
       "explanation_en": "PEP 518 and PEP 621 established `pyproject.toml` as the declarative standard. `setup.py` still works but is executable code, and `requirements.txt` pins a specific environment, which is a different problem from declaring a package.",
       "source": "PEP 621 — Storing project metadata in pyproject.toml",
       "expected_time_ms": 38000,
-      "tags": ["packages", "pyproject"]
+      "tags": [
+        "packages",
+        "pyproject"
+      ]
     },
     {
       "id": "q010803014",
@@ -407,14 +559,23 @@
       "difficulty_tier": "medium",
       "question_es": "Un subpaquete puede contener sus propios subpaquetes, anidados a cualquier profundidad.",
       "question_en": "A subpackage can contain its own subpackages, nested to any depth.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La jerarquía refleja la de directorios y no tiene límite técnico. Sí tiene límite práctico: `from a.b.c.d.e import f` es señal de que la estructura conviene aplanarse.",
       "explanation_en": "The hierarchy mirrors the directory tree and has no technical limit. It does have a practical one: `from a.b.c.d.e import f` is a sign the structure should be flattened.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.4 (packages)",
       "expected_time_ms": 28000,
-      "tags": ["packages", "structure"]
+      "tags": [
+        "packages",
+        "structure"
+      ]
     },
     {
       "id": "q010803015",
@@ -429,7 +590,10 @@
       "explanation_en": "It runs once, on the package's first import. Keeping it light matters: heavy logic there slows every import, even when only one submodule is needed.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.4 (packages)",
       "expected_time_ms": 22000,
-      "tags": ["packages", "init"]
+      "tags": [
+        "packages",
+        "init"
+      ]
     },
     {
       "id": "q010803016",
@@ -439,23 +603,26 @@
       "question_es": "¿Qué problema causa una importación circular entre dos módulos?",
       "question_en": "What problem does a circular import between two modules cause?",
       "options_es": [
-        "Uno de los módulos se ve a medio cargar y falla con `ImportError` o `AttributeError`",
-        "Python entra en un bucle infinito",
         "Se duplica el código en memoria",
+        "Python entra en un bucle infinito",
+        "Uno de los módulos se ve a medio cargar y falla con `ImportError` o `AttributeError`",
         "No causa ningún problema: Python lo resuelve solo"
       ],
       "options_en": [
-        "One of the modules is seen half-loaded and fails with `ImportError` or `AttributeError`",
-        "Python enters an infinite loop",
         "The code is duplicated in memory",
+        "Python enters an infinite loop",
+        "One of the modules is seen half-loaded and fails with `ImportError` or `AttributeError`",
         "It causes no problem: Python resolves it by itself"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Python detecta el ciclo y no se cuelga, pero el módulo a medio ejecutar todavía no tiene definidos todos sus nombres. Suele arreglarse moviendo el import dentro de la función, o extrayendo lo común a un tercer módulo.",
       "explanation_en": "Python detects the cycle and does not hang, but the half-executed module has not yet defined all its names. The usual fixes are moving the import inside the function, or extracting the shared part into a third module.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.1 / Programming FAQ (circular imports)",
       "expected_time_ms": 45000,
-      "tags": ["packages", "circular-imports"]
+      "tags": [
+        "packages",
+        "circular-imports"
+      ]
     },
     {
       "id": "q010803017",
@@ -465,25 +632,28 @@
       "question_es": "¿Qué hace `pip install -e .` en el directorio de un proyecto?",
       "question_en": "What does `pip install -e .` do in a project directory?",
       "options_es": [
-        "Lo instala en modo editable: los cambios en el código se reflejan sin reinstalar",
-        "Instala solo las dependencias, no el proyecto",
         "Crea un entorno virtual nuevo",
+        "Instala solo las dependencias, no el proyecto",
+        "Lo instala en modo editable: los cambios en el código se reflejan sin reinstalar",
         "Exporta el proyecto a un fichero comprimido"
       ],
       "options_en": [
-        "It installs it in editable mode: code changes take effect without reinstalling",
-        "It installs only the dependencies, not the project",
         "It creates a new virtual environment",
+        "It installs only the dependencies, not the project",
+        "It installs it in editable mode: code changes take effect without reinstalling",
         "It exports the project to an archive"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Enlaza el código fuente en lugar de copiarlo, que es lo que se quiere mientras se desarrolla. Además permite importar el paquete desde cualquier sitio sin tocar `sys.path` a mano.",
       "explanation_en": "It links the source instead of copying it, which is what you want while developing. It also makes the package importable from anywhere without touching `sys.path` by hand.",
       "source": "CPython docs 3.13 — Installing Python Modules / PEP 660",
       "expected_time_ms": 38000,
-      "tags": ["packages", "pip", "editable"]
+      "tags": [
+        "packages",
+        "pip",
+        "editable"
+      ]
     },
-
     {
       "id": "q010803018",
       "skill_id": "sk010803",
@@ -492,23 +662,26 @@
       "question_es": "Dado el paquete `tienda/` con `__init__.py` y `carrito.py`, ¿cuál importa correctamente la función `total` desde fuera?",
       "question_en": "Given the package `shop/` with `__init__.py` and `cart.py`, which correctly imports the function `total` from outside?",
       "options_es": [
-        "`import tienda.total`",
         "`from tienda.carrito import total`",
+        "`import tienda.total`",
         "`from tienda import total.carrito`",
         "`import total from tienda`"
       ],
       "options_en": [
-        "`import shop.total`",
         "`from shop.cart import total`",
+        "`import shop.total`",
         "`from shop import total.cart`",
         "`import total from shop`"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "La ruta va de paquete a módulo y, por último, al nombre: el punto separa contenedores, nunca el nombre final. `import tienda.total` fallaría porque `total` no es un módulo, y la sintaxis `import X from Y` no existe en Python — es de JavaScript.",
       "explanation_en": "The path runs from package to module and finally to the name: the dot separates containers, never the final name. `import shop.total` would fail because `total` is not a module, and the `import X from Y` syntax does not exist in Python — that is JavaScript.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.4 (packages)",
       "expected_time_ms": 32000,
-      "tags": ["packages", "imports"]
+      "tags": [
+        "packages",
+        "imports"
+      ]
     },
     {
       "id": "q010804018",
@@ -520,21 +693,25 @@
       "options_es": [
         "Ninguna, son dos formatos del mismo fichero",
         "`requirements.txt` solo sirve para paquetes publicados en PyPI",
-        "`requirements.txt` describe un entorno concreto a instalar; `pyproject.toml` declara qué necesita el paquete para funcionar",
-        "`pyproject.toml` se genera automáticamente desde `requirements.txt`"
+        "`pyproject.toml` se genera automáticamente desde `requirements.txt`",
+        "`requirements.txt` describe un entorno concreto a instalar; `pyproject.toml` declara qué necesita el paquete para funcionar"
       ],
       "options_en": [
         "None, they are two formats of the same file",
         "`requirements.txt` only works for packages published on PyPI",
-        "`requirements.txt` describes a concrete environment to install; `pyproject.toml` declares what the package needs to work",
-        "`pyproject.toml` is generated automatically from `requirements.txt`"
+        "`pyproject.toml` is generated automatically from `requirements.txt`",
+        "`requirements.txt` describes a concrete environment to install; `pyproject.toml` declares what the package needs to work"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "Responden a preguntas distintas: uno reproduce un entorno exacto —normalmente con versiones fijadas e incluyendo dependencias indirectas— y el otro declara el contrato del paquete, habitualmente con rangos. Un proyecto puede usar los dos sin contradicción.",
       "explanation_en": "They answer different questions: one reproduces an exact environment — usually pinned and including indirect dependencies — and the other declares the package's contract, usually with ranges. A project can use both without contradiction.",
       "source": "Python Packaging User Guide — requirements.txt vs. pyproject.toml / PEP 621",
       "expected_time_ms": 38000,
-      "tags": ["pip", "packaging", "pyproject"]
+      "tags": [
+        "pip",
+        "packaging",
+        "pyproject"
+      ]
     },
     {
       "id": "q010804010",
@@ -544,23 +721,26 @@
       "question_es": "¿Qué problema resuelve un entorno virtual?",
       "question_en": "What problem does a virtual environment solve?",
       "options_es": [
-        "Aísla las dependencias de cada proyecto para que sus versiones no choquen entre sí",
         "Acelera la ejecución del código",
+        "Aísla las dependencias de cada proyecto para que sus versiones no choquen entre sí",
         "Permite usar varias versiones de Python a la vez en el mismo intérprete",
         "Comprime los paquetes para ocupar menos disco"
       ],
       "options_en": [
-        "It isolates each project's dependencies so their versions do not clash",
         "It speeds up code execution",
+        "It isolates each project's dependencies so their versions do not clash",
         "It allows several Python versions at once in the same interpreter",
         "It compresses packages to save disk space"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Sin aislamiento, un proyecto que necesita la versión 1 de una librería y otro que necesita la 2 no pueden convivir. El entorno virtual da a cada uno su propio `site-packages`.",
       "explanation_en": "Without isolation, a project needing version 1 of a library and another needing version 2 cannot coexist. A virtual environment gives each its own `site-packages`.",
       "source": "CPython docs 3.13 — venv — Creation of virtual environments",
       "expected_time_ms": 30000,
-      "tags": ["venv", "dependencies"]
+      "tags": [
+        "venv",
+        "dependencies"
+      ]
     },
     {
       "id": "q010804011",
@@ -586,7 +766,10 @@
       "explanation_en": "`venv` ships with the standard library and is invoked with `-m`, which runs a module as a script. There is nothing to install, and creating it is not enough: it also has to be activated.",
       "source": "CPython docs 3.13 — venv — Creation of virtual environments",
       "expected_time_ms": 28000,
-      "tags": ["venv", "cli"]
+      "tags": [
+        "venv",
+        "cli"
+      ]
     },
     {
       "id": "q010804012",
@@ -595,14 +778,23 @@
       "difficulty_tier": "medium",
       "question_es": "La carpeta del entorno virtual debería subirse al repositorio de control de versiones.",
       "question_en": "The virtual environment folder should be committed to version control.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Contiene binarios propios del sistema operativo y pesa mucho; va en `.gitignore`. Lo que sí se versiona es la **declaración** de dependencias, con la que cualquiera reconstruye el entorno.",
       "explanation_en": "It holds OS-specific binaries and is large; it belongs in `.gitignore`. What is versioned is the dependency **declaration**, from which anyone can rebuild the environment.",
       "source": "CPython docs 3.13 — venv / Python Packaging User Guide",
       "expected_time_ms": 28000,
-      "tags": ["venv", "git"]
+      "tags": [
+        "venv",
+        "git"
+      ]
     },
     {
       "id": "q010804013",
@@ -612,23 +804,26 @@
       "question_es": "¿Por qué conviene fijar versiones exactas (`libreria==1.4.2`) en el fichero de dependencias de una aplicación?",
       "question_en": "Why pin exact versions (`library==1.4.2`) in an application's dependency file?",
       "options_es": [
-        "Para que todos los entornos instalen lo mismo y un despliegue sea reproducible",
         "Porque pip no acepta rangos de versiones",
+        "Para que todos los entornos instalen lo mismo y un despliegue sea reproducible",
         "Para que la instalación sea más rápida",
         "Porque las versiones nuevas siempre rompen la compatibilidad"
       ],
       "options_en": [
-        "So every environment installs the same thing and a deployment is reproducible",
         "Because pip does not accept version ranges",
+        "So every environment installs the same thing and a deployment is reproducible",
         "To make installation faster",
         "Because new versions always break compatibility"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Sin fijar, dos instalaciones en fechas distintas traen versiones distintas y aparece el «en mi máquina funciona». En una **librería** el criterio se invierte: allí conviene aceptar rangos para no chocar con el resto del ecosistema.",
       "explanation_en": "Without pinning, two installs on different dates pull different versions and 'it works on my machine' appears. For a **library** the criterion inverts: there you want ranges so as not to clash with the rest of the ecosystem.",
       "source": "Python Packaging User Guide — Requirements files / pip documentation",
       "expected_time_ms": 38000,
-      "tags": ["pip", "versioning"]
+      "tags": [
+        "pip",
+        "versioning"
+      ]
     },
     {
       "id": "q010804014",
@@ -638,23 +833,26 @@
       "question_es": "¿Qué hace `pip freeze`?",
       "question_en": "What does `pip freeze` do?",
       "options_es": [
-        "Lista los paquetes instalados con sus versiones exactas, en formato de requirements",
-        "Impide que se actualicen los paquetes",
         "Bloquea el entorno virtual para que no se modifique",
+        "Impide que se actualicen los paquetes",
+        "Lista los paquetes instalados con sus versiones exactas, en formato de requirements",
         "Descarga los paquetes sin instalarlos"
       ],
       "options_en": [
-        "It lists the installed packages with their exact versions, in requirements format",
-        "It stops packages from being updated",
         "It locks the virtual environment against modification",
+        "It stops packages from being updated",
+        "It lists the installed packages with their exact versions, in requirements format",
         "It downloads packages without installing them"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Su salida se redirige a `requirements.txt` para congelar el estado del entorno. Incluye también las dependencias indirectas, que es útil para reproducir pero mezcla lo que pediste con lo que vino arrastrado.",
       "explanation_en": "Its output is redirected into `requirements.txt` to freeze the environment's state. It also includes indirect dependencies, which helps reproducibility but blurs what you asked for with what came along.",
       "source": "pip documentation — pip freeze",
       "expected_time_ms": 30000,
-      "tags": ["pip", "requirements"]
+      "tags": [
+        "pip",
+        "requirements"
+      ]
     },
     {
       "id": "q010804015",
@@ -669,7 +867,10 @@
       "explanation_en": "`pip install` downloads from PyPI and installs into the active environment. Worth checking the virtual environment is activated: otherwise the package lands in the system Python.",
       "source": "pip documentation — pip install",
       "expected_time_ms": 16000,
-      "tags": ["pip", "cli"]
+      "tags": [
+        "pip",
+        "cli"
+      ]
     },
     {
       "id": "q010804016",
@@ -695,7 +896,10 @@
       "explanation_en": "`sys.prefix` points at the interpreter in use, so it is the definitive check. The prompt usually shows `(.venv)`, but that depends on the shell and can mislead; the folder existing does not mean it is active.",
       "source": "CPython docs 3.13 — venv / sys.prefix",
       "expected_time_ms": 40000,
-      "tags": ["venv", "troubleshooting"]
+      "tags": [
+        "venv",
+        "troubleshooting"
+      ]
     },
     {
       "id": "q010804017",
@@ -704,14 +908,24 @@
       "difficulty_tier": "hard",
       "question_es": "Instalar con `pip install` sin un entorno virtual activo puede afectar a otros proyectos del mismo equipo.",
       "question_en": "Installing with `pip install` without an active virtual environment can affect other projects on the same machine.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Sin entorno activo, el paquete va al Python del sistema, que todos los proyectos comparten: actualizar una librería puede romper otro programa. Por eso muchas distribuciones bloquean hoy esa instalación (PEP 668).",
       "explanation_en": "With no active environment, the package goes into the system Python, which every project shares: upgrading a library can break another program. That is why many distributions now block such installs (PEP 668).",
       "source": "PEP 668 — Marking Python base environments as externally managed",
       "expected_time_ms": 35000,
-      "tags": ["pip", "venv", "isolation"]
+      "tags": [
+        "pip",
+        "venv",
+        "isolation"
+      ]
     }
   ]
 }

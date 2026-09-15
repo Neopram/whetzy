@@ -8,23 +8,28 @@
       "question_es": "Dos equipos, Reservas y Facturación, comparten un subconjunto pequeño del modelo (el concepto de Tarifa) y acuerdan versionarlo en una librería común, con la regla de que ningún equipo lo modifica sin avisar al otro y sin pasar los tests conjuntos. ¿Qué relación del mapa de contextos están aplicando?",
       "question_en": "Two teams, Booking and Billing, share a small subset of the model (the Fare concept) and agree to version it in a shared library, with the rule that neither team changes it without notifying the other and running the joint test suite. Which context-map relationship are they applying?",
       "options_es": [
-        "Shared Kernel (núcleo compartido)",
         "Anticorruption Layer",
+        "Shared Kernel (núcleo compartido)",
         "Separate Ways",
         "Conformist"
       ],
       "options_en": [
-        "Shared Kernel",
         "Anticorruption Layer",
+        "Shared Kernel",
         "Separate Ways",
         "Conformist"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "El Shared Kernel es exactamente eso: una porción explícita y deliberadamente pequeña del modelo que dos contextos comparten, con integración continua y acuerdo de cambio entre ambos equipos. Anticorruption Layer es tentador porque también trata de integración, pero describe una capa de traducción que aísla un modelo de otro, no código compartido. Separate Ways es lo contrario: duplicar a propósito y no integrar. Conformist significa aceptar el modelo ajeno sin traducirlo ni tener voz sobre él, mientras que aquí ambos equipos negocian los cambios. El riesgo real del Shared Kernel es que crezca: cuanto más grande, más se acopla la agenda de los dos equipos.",
       "explanation_en": "A Shared Kernel is exactly this: an explicit, deliberately small slice of the model that two contexts share, with continuous integration and a change agreement between both teams. Anticorruption Layer is tempting because it is also about integration, but it describes a translation layer that isolates one model from another, not shared code. Separate Ways is the opposite: deliberately duplicate and don't integrate. Conformist means accepting someone else's model without translation and without a say in it, whereas here both teams negotiate changes. The real risk of a Shared Kernel is growth: the bigger it gets, the more the two teams' roadmaps become coupled.",
       "source": "Evans, E. — Domain-Driven Design (Shared Kernel, Context Map)",
       "expected_time_ms": 34000,
-      "tags": ["ddd", "bounded-context", "context-map", "shared-kernel"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "context-map",
+        "shared-kernel"
+      ]
     },
     {
       "id": "q050501010",
@@ -34,23 +39,28 @@
       "question_es": "Tu contexto de Pagos integra un proveedor externo de tarjetas. El equipo decide adoptar tal cual el vocabulario y las estructuras del proveedor (charge, payment_intent, customer) dentro de su propio dominio, porque «total, es lo que devuelve la API». ¿Qué relación de mapa de contextos han elegido y cuál es su coste principal?",
       "question_en": "Your Payments context integrates an external card provider. The team decides to adopt the provider's vocabulary and structures verbatim (charge, payment_intent, customer) inside their own domain, because \"that's what the API returns anyway\". Which context-map relationship have they chosen, and what is its main cost?",
       "options_es": [
-        "Open Host Service: el coste es tener que documentar un protocolo público",
-        "Shared Kernel: el coste es coordinar cada despliegue con el proveedor",
         "Conformist: el modelo interno queda a merced de los cambios y de las decisiones de modelado del proveedor",
+        "Shared Kernel: el coste es coordinar cada despliegue con el proveedor",
+        "Open Host Service: el coste es tener que documentar un protocolo público",
         "Separate Ways: el coste es duplicar la lógica de cobro en dos sitios"
       ],
       "options_en": [
-        "Open Host Service: the cost is having to document a public protocol",
-        "Shared Kernel: the cost is coordinating every deploy with the provider",
         "Conformist: the internal model is left at the mercy of the provider's changes and modelling decisions",
+        "Shared Kernel: the cost is coordinating every deploy with the provider",
+        "Open Host Service: the cost is having to document a public protocol",
         "Separate Ways: the cost is duplicating charging logic in two places"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Adoptar el modelo upstream sin traducirlo es la relación Conformist. Es una decisión legítima cuando el proveedor es estable y el subdominio no es diferenciador, pero el precio es que su lenguaje contamina tu dominio: un cambio de nomenclatura del proveedor se propaga a tus entidades, tests y base de datos. Open Host Service describe al que publica el servicio, no al que lo consume. Shared Kernel implica código compartido y acuerdo bilateral, imposible con un SaaS de terceros. Separate Ways significa no integrar en absoluto. La alternativa a Conformist aquí es un Anticorruption Layer que traduzca charge/payment_intent al lenguaje propio (Cobro, Autorización).",
       "explanation_en": "Adopting the upstream model without translating it is the Conformist relationship. It is a legitimate choice when the provider is stable and the subdomain is not differentiating, but the price is that their language contaminates your domain: a provider renaming propagates into your entities, tests and database. Open Host Service describes the party publishing the service, not the consumer. Shared Kernel implies shared code and a bilateral agreement, impossible with a third-party SaaS. Separate Ways means not integrating at all. The alternative to Conformist here is an Anticorruption Layer translating charge/payment_intent into your own language (Capture, Authorization).",
       "source": "Evans, E. — Domain-Driven Design (Conformist, Anticorruption Layer)",
       "expected_time_ms": 36000,
-      "tags": ["ddd", "bounded-context", "context-map", "conformist"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "context-map",
+        "conformist"
+      ]
     },
     {
       "id": "q050501011",
@@ -76,7 +86,12 @@
       "explanation_en": "A bounded context only exists if the model is its own, and that includes the data. Sharing tables turns the schema into an implicit, unversioned contract between teams: any structural change is an API change nobody reviews. The index answer mistakes a coupling symptom for a performance problem. Two-phase transactions are tempting because this looks like a consistency issue, but they do not fix schema coupling and they reintroduce the very failure point you were avoiding. Going back to a monolith is an overreaction: a monolith with well-bounded modules would be fine, and the failure here is not the number of deployables but that the model boundary was never drawn.",
       "source": "Newman, S. — Building Microservices 2e (shared database, hidden coupling)",
       "expected_time_ms": 38000,
-      "tags": ["ddd", "bounded-context", "coupling", "microservices"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "coupling",
+        "microservices"
+      ]
     },
     {
       "id": "q050501012",
@@ -86,23 +101,28 @@
       "question_es": "Al dibujar el mapa de contextos aparece un ERP heredado, sin dueño claro, cuyo modelo interno nadie entiende del todo y que no se va a reescribir en años. ¿Cuál es la recomendación estratégica de DDD?",
       "question_en": "While drawing the context map, a legacy ERP shows up: no clear owner, an internal model nobody fully understands, and no chance of a rewrite for years. What is DDD's strategic recommendation?",
       "options_es": [
-        "Omitirlo del mapa hasta que se reescriba, para que el mapa refleje sólo arquitectura limpia",
+        "Dibujarlo explícitamente como un contexto más (un «Big Ball of Mud»), marcar su relación con los demás y aislarlo tras una capa anticorrupción",
         "Refactorizar primero el ERP a entidades y agregados antes de trazar ningún otro contexto",
         "Extender el lenguaje ubicuo del dominio nuevo hasta cubrir también el modelo del ERP",
-        "Dibujarlo explícitamente como un contexto más (un «Big Ball of Mud»), marcar su relación con los demás y aislarlo tras una capa anticorrupción"
+        "Omitirlo del mapa hasta que se reescriba, para que el mapa refleje sólo arquitectura limpia"
       ],
       "options_en": [
-        "Leave it off the map until it is rewritten, so the map only shows clean architecture",
+        "Draw it explicitly as one more context (a \"Big Ball of Mud\"), mark its relationships, and isolate it behind an anticorruption layer",
         "Refactor the ERP into entities and aggregates first, before drawing any other context",
         "Extend the new domain's ubiquitous language to also cover the ERP's model",
-        "Draw it explicitly as one more context (a \"Big Ball of Mud\"), mark its relationships, and isolate it behind an anticorruption layer"
+        "Leave it off the map until it is rewritten, so the map only shows clean architecture"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "El mapa de contextos describe el territorio tal y como es, no como querríamos que fuera; Evans nombra explícitamente el patrón Big Ball of Mud para que los sistemas heredados aparezcan en el mapa con su frontera y sus relaciones. Omitirlo es la trampa más común: el sistema que no está en el mapa sigue integrándose y sigue rompiendo cosas, sólo que a escondidas. Refactorizarlo primero suele ser inviable y bloquea todo el trabajo estratégico. Extender el lenguaje ubicuo para abarcarlo es justo el error que el bounded context evita: un solo lenguaje estirado sobre modelos incompatibles pierde precisión en ambos lados. Lo útil es reconocerlo, no unificarlo, y proteger el modelo nuevo con traducción en la frontera.",
       "explanation_en": "The context map describes the territory as it is, not as we wish it were; Evans explicitly names the Big Ball of Mud pattern so legacy systems appear on the map with their boundary and relationships. Leaving it off is the most common trap: a system that isn't on the map still integrates and still breaks things, just invisibly. Refactoring it first is usually infeasible and blocks all strategic work. Stretching the ubiquitous language to cover it is precisely the mistake bounded contexts prevent: one language stretched over incompatible models loses precision on both sides. The useful move is to acknowledge it, not unify it, and protect the new model with translation at the border.",
       "source": "Evans, E. — Domain-Driven Design (Big Ball of Mud, Context Map)",
       "expected_time_ms": 40000,
-      "tags": ["ddd", "bounded-context", "legacy", "context-map"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "legacy",
+        "context-map"
+      ]
     },
     {
       "id": "q050501013",
@@ -112,23 +132,28 @@
       "question_es": "Una capa anticorrupción traduce el payload del contexto CRM al modelo del contexto Facturación. ¿Qué imprime?\\n\\n```python\\nclass Invoice:  # modelo interno de Facturacion\\n    def __init__(self, customer_id, total_cents):\\n        self.customer_id = customer_id\\n        self.total_cents = total_cents\\n\\ncrm_payload = {\"clientRef\": \"C-9\", \"amount\": \"12.50\", \"currency\": \"EUR\"}\\n\\ndef translate(payload):\\n    cents = int(round(float(payload[\"amount\"]) * 100))\\n    return Invoice(payload[\"clientRef\"], cents)\\n\\ninv = translate(crm_payload)\\nprint(inv.customer_id, inv.total_cents)\\n```",
       "question_en": "An anticorruption layer translates a CRM-context payload into the Billing context's model. What does it print?\\n\\n```python\\nclass Invoice:  # Billing's internal model\\n    def __init__(self, customer_id, total_cents):\\n        self.customer_id = customer_id\\n        self.total_cents = total_cents\\n\\ncrm_payload = {\"clientRef\": \"C-9\", \"amount\": \"12.50\", \"currency\": \"EUR\"}\\n\\ndef translate(payload):\\n    cents = int(round(float(payload[\"amount\"]) * 100))\\n    return Invoice(payload[\"clientRef\"], cents)\\n\\ninv = translate(crm_payload)\\nprint(inv.customer_id, inv.total_cents)\\n```",
       "options_es": [
-        "C-9 12.5",
-        "clientRef 1250",
         "C-9 1250",
+        "clientRef 1250",
+        "C-9 12.5",
         "TypeError: unsupported operand type(s) for *: 'str' and 'int'"
       ],
       "options_en": [
-        "C-9 12.5",
-        "clientRef 1250",
         "C-9 1250",
+        "clientRef 1250",
+        "C-9 12.5",
         "TypeError: unsupported operand type(s) for *: 'str' and 'int'"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "`float(\"12.50\") * 100` es 1250.0 y `int(round(...))` lo deja en 1250, mientras que el identificador se copia tal cual: «C-9 1250». La opción con 12.5 asume que el importe entra sin convertir, que es justo el bug que la traducción evita (mezclar la representación decimal externa con los céntimos enteros internos). «clientRef 1250» es el error de leer la clave en vez del valor. El TypeError sería real si se multiplicara la cadena sin `float()`, y por eso es tentador: es exactamente lo que ocurre cuando alguien elimina la capa de traducción «porque los datos ya vienen bien». El valor de la ACL es precisamente este: el vocabulario y los tipos externos se quedan fuera de la frontera.",
       "explanation_en": "`float(\"12.50\") * 100` is 1250.0 and `int(round(...))` yields 1250, while the identifier is copied through: \"C-9 1250\". The 12.5 option assumes the amount flows in unconverted, which is exactly the bug translation prevents (mixing the external decimal representation with internal integer cents). \"clientRef 1250\" is the error of reading the key instead of the value. The TypeError would be real if the string were multiplied without `float()`, which is why it tempts: it is precisely what happens when someone deletes the translation layer \"because the data already comes in fine\". That is the ACL's value: foreign vocabulary and types stay outside the boundary.",
       "source": "Evans, E. — Domain-Driven Design (Anticorruption Layer)",
       "expected_time_ms": 42000,
-      "tags": ["ddd", "bounded-context", "anticorruption-layer", "code-output"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "anticorruption-layer",
+        "code-output"
+      ]
     },
     {
       "id": "q050501014",
@@ -137,14 +162,24 @@
       "difficulty_tier": "hard",
       "question_es": "Todo bounded context debe corresponder obligatoriamente a un único microservicio desplegable: si un contexto se implementa como varios servicios, o varios contextos viven dentro de un mismo despliegue, el diseño DDD es incorrecto.",
       "question_en": "Every bounded context must map one-to-one to a single deployable microservice: if one context is implemented as several services, or several contexts live inside one deployable, the DDD design is wrong.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. El bounded context es una frontera de modelo y de lenguaje, no una unidad de despliegue. Es perfectamente válido empezar con varios contextos dentro de un mismo monolito modular (y es la recomendación habitual cuando las fronteras aún no son firmes), y también dividir después un contexto grande en varios servicios por razones operativas, de escalado o de equipo. La confusión es muy común porque los contextos sí son buenos candidatos a fronteras de servicio, pero «buen candidato» no es «equivalencia obligatoria». Forzar el uno-a-uno demasiado pronto produce microservicios sobre fronteras que aún no se entienden, y mover una frontera equivocada entre procesos es mucho más caro que moverla dentro de uno.",
       "explanation_en": "False. A bounded context is a model and language boundary, not a deployment unit. It is perfectly valid to start with several contexts inside one modular monolith (and that is the usual advice while boundaries are still uncertain), and equally valid to later split one large context into several services for operational, scaling or team reasons. The confusion is common because contexts are good candidates for service boundaries, but \"good candidate\" is not \"mandatory equivalence\". Forcing one-to-one too early produces microservices along boundaries nobody understands yet, and moving a wrong boundary across processes is far more expensive than moving it inside one.",
       "source": "Newman, S. — Building Microservices 2e (bounded contexts and service boundaries)",
       "expected_time_ms": 30000,
-      "tags": ["ddd", "bounded-context", "microservices"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "microservices"
+      ]
     },
     {
       "id": "q050501015",
@@ -159,9 +194,13 @@
       "explanation_en": "A Published Language is the documented, versioned interchange format an upstream context publishes so every consumer translates against it rather than against its internal model. It pairs with Open Host Service: the service is the channel, the Published Language is the vocabulary. The common misconception is that \"exposing a REST API\" is enough: if that API is a dump of the internal model, every internal change breaks consumers and you end up in a de facto Conformist relationship. A Published Language is deliberately distinct from the internal model and evolves under explicit compatibility rules.",
       "source": "Evans, E. — Domain-Driven Design (Open Host Service, Published Language)",
       "expected_time_ms": 34000,
-      "tags": ["ddd", "bounded-context", "published-language", "integration"]
+      "tags": [
+        "ddd",
+        "bounded-context",
+        "published-language",
+        "integration"
+      ]
     },
-
     {
       "id": "q050502008",
       "skill_id": "sk050502",
@@ -172,21 +211,26 @@
       "options_es": [
         "Reduce el número de columnas de la tabla y por tanto el tamaño en disco",
         "Permite que el ORM cachee el objeto entre peticiones",
-        "Hace que los importes sean mutables, lo que simplifica los descuentos",
-        "El importe y la divisa son un solo concepto: juntos permiten rechazar en tiempo de ejecución una suma de divisas distintas y encapsular el redondeo en un único sitio"
+        "El importe y la divisa son un solo concepto: juntos permiten rechazar en tiempo de ejecución una suma de divisas distintas y encapsular el redondeo en un único sitio",
+        "Hace que los importes sean mutables, lo que simplifica los descuentos"
       ],
       "options_en": [
         "It reduces the number of table columns and therefore disk size",
         "It lets the ORM cache the object between requests",
-        "It makes amounts mutable, which simplifies discounts",
-        "Amount and currency are one concept: together they can reject adding different currencies at runtime and keep rounding rules in a single place"
+        "Amount and currency are one concept: together they can reject adding different currencies at runtime and keep rounding rules in a single place",
+        "It makes amounts mutable, which simplifies discounts"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "Un value object agrupa atributos que sólo tienen sentido juntos y aloja las reglas que los gobiernan. `Money` puede lanzar un error al sumar EUR con USD, obligar a aritmética en enteros de céntimos y centralizar el redondeo; con dos campos sueltos esa regla se reescribe (mal) en cada servicio. El argumento del disco confunde modelado con almacenamiento: un VO suele mapearse a las mismas columnas. La caché del ORM no es una razón de dominio. La mutabilidad es directamente el antipatrón: un `Money` mutable compartido entre dos líneas de factura provoca que un descuento en una altere la otra, que es el fallo clásico que la inmutabilidad de los VO elimina.",
       "explanation_en": "A value object groups attributes that only make sense together and hosts the rules that govern them. `Money` can raise when adding EUR to USD, force integer-cent arithmetic and centralise rounding; with two loose fields that rule gets re-implemented (badly) in every service. The disk argument confuses modelling with storage: a VO usually maps to the same columns. ORM caching is not a domain reason. Mutability is the anti-pattern itself: one mutable `Money` shared by two invoice lines means a discount on one silently changes the other — the classic bug VO immutability removes.",
       "source": "Evans, E. — Domain-Driven Design (Value Objects) / Fowler, M. — martinfowler.com ValueObject",
       "expected_time_ms": 32000,
-      "tags": ["ddd", "value-object", "money", "modelling"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "money",
+        "modelling"
+      ]
     },
     {
       "id": "q050502009",
@@ -197,22 +241,27 @@
       "question_en": "The team has an `Email` value object and validates the format in the HTTP controller, in a CSV import service, and in a migration job. Invalid addresses show up in the database, coming from the job. What is the DDD-aligned fix?",
       "options_es": [
         "Añadir una restricción CHECK en la base de datos y dejar la validación de aplicación como está",
-        "Validar en el constructor del propio `Email`, de modo que no pueda existir una instancia inválida, y construir siempre el VO en la frontera",
         "Mover toda la validación a un `EmailValidator` estático que los tres puntos de entrada deban recordar llamar",
+        "Validar en el constructor del propio `Email`, de modo que no pueda existir una instancia inválida, y construir siempre el VO en la frontera",
         "Convertir `Email` en entidad con su propio id para poder rastrear qué job lo creó"
       ],
       "options_en": [
         "Add a CHECK constraint in the database and leave application validation as it is",
-        "Validate inside `Email`'s own constructor so an invalid instance cannot exist, and always build the VO at the boundary",
         "Move all validation into a static `EmailValidator` that all three entry points must remember to call",
+        "Validate inside `Email`'s own constructor so an invalid instance cannot exist, and always build the VO at the boundary",
         "Turn `Email` into an entity with its own id so you can trace which job created it"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un value object debe ser self-validating: si el constructor rechaza lo inválido, la existencia misma del objeto es la prueba de que la regla se cumplió, y ningún punto de entrada puede saltársela por olvido. El CHECK en base de datos es una red de seguridad útil, pero llega tarde, devuelve un error de infraestructura en lugar de uno de dominio y no protege los cálculos en memoria. El validador estático es la opción más tentadora porque parece «centralizar»: sigue siendo opcional, y el bug descrito es exactamente alguien que no lo llamó. Convertirlo en entidad es un error de categoría: un correo no tiene identidad ni ciclo de vida propios; dos correos con el mismo texto son el mismo valor.",
       "explanation_en": "A value object should be self-validating: if the constructor rejects invalid input, the object's very existence proves the rule held, and no entry point can skip it by forgetting. A database CHECK is a useful safety net but arrives late, surfaces an infrastructure error rather than a domain one, and does not protect in-memory computation. The static validator is the most tempting option because it looks like \"centralising\": it is still opt-in, and the described bug is precisely someone not calling it. Turning it into an entity is a category error: an address has no identity or lifecycle of its own; two identical strings are the same value.",
       "source": "Evans, E. — Domain-Driven Design (Value Objects, self-validation)",
       "expected_time_ms": 36000,
-      "tags": ["ddd", "value-object", "invariants", "validation"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "invariants",
+        "validation"
+      ]
     },
     {
       "id": "q050502010",
@@ -238,7 +287,12 @@
       "explanation_en": "Entity identity is local to its bounded context: in Clinical the lifecycle starts at admission and history is what matters; in Billing it starts at contract signature and creditworthiness is what matters. Keeping two entities and correlating them (for example storing the foreign `patient_id` as a reference) lets each context evolve without asking permission. The first option is the naive \"one person, one record\" intuition, which as soon as you apply it forces a common schema and drags both teams along. The second confuses a model boundary with a storage boundary. The fourth fails because the Billing customer does have identity and a lifecycle: they change address, accrue debt, and remain the same customer.",
       "source": "Evans, E. — Domain-Driven Design (Entities, identity across contexts)",
       "expected_time_ms": 38000,
-      "tags": ["ddd", "entity", "identity", "bounded-context"]
+      "tags": [
+        "ddd",
+        "entity",
+        "identity",
+        "bounded-context"
+      ]
     },
     {
       "id": "q050502011",
@@ -248,23 +302,28 @@
       "question_es": "Al persistir con un ORM relacional un value object `Address` que pertenece a la entidad `Customer`, un desarrollador crea una tabla `addresses` con su propia clave primaria autoincremental y una relación uno-a-uno. ¿Qué problema introduce respecto al modelo de dominio?",
       "question_en": "When persisting a value object `Address` belonging to the `Customer` entity with a relational ORM, a developer creates an `addresses` table with its own auto-increment primary key and a one-to-one relation. What problem does this introduce with respect to the domain model?",
       "options_es": [
-        "Le da al value object una identidad técnica propia: dos direcciones idénticas dejan de ser intercambiables, aparece la tentación de referenciarla y de «editarla» en lugar de reemplazarla, y se filtra el ciclo de vida de la persistencia al dominio",
+        "Obliga a que `Customer` deje de ser entidad y pase a ser agregado raíz",
         "Ninguno: en el modelo relacional toda tabla necesita clave primaria, así que es la única opción posible",
         "Impide usar índices sobre los campos de la dirección, degradando las consultas por código postal",
-        "Obliga a que `Customer` deje de ser entidad y pase a ser agregado raíz"
+        "Le da al value object una identidad técnica propia: dos direcciones idénticas dejan de ser intercambiables, aparece la tentación de referenciarla y de «editarla» en lugar de reemplazarla, y se filtra el ciclo de vida de la persistencia al dominio"
       ],
       "options_en": [
-        "It gives the value object a technical identity of its own: two identical addresses stop being interchangeable, it invites referencing and \"editing\" it instead of replacing it, and persistence lifecycle leaks into the domain",
+        "It forces `Customer` to stop being an entity and become an aggregate root",
         "None: in the relational model every table needs a primary key, so this is the only possible option",
         "It prevents indexing the address fields, degrading postcode queries",
-        "It forces `Customer` to stop being an entity and become an aggregate root"
+        "It gives the value object a technical identity of its own: two identical addresses stop being interchangeable, it invites referencing and \"editing\" it instead of replacing it, and persistence lifecycle leaks into the domain"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El value object se define por no tener identidad: lo natural es embeberlo como columnas de `customers` (street, city, postcode) o, si debe ir en su propia tabla por cardinalidad, hacer que la clave sea la del propietario y tratar la fila como reemplazable en bloque. Darle un id autoincremental crea una identidad que el dominio no tiene, y a partir de ahí el equipo empieza a hacer UPDATE sobre la dirección —rompiendo la inmutabilidad— y a compartirla entre clientes. La segunda opción es el razonamiento más frecuente y es una regla de persistencia, no de dominio: los ORM ofrecen precisamente componentes embebidos para este caso. La tercera es falsa, los índices funcionan igual. La cuarta mezcla conceptos: `Customer` puede ser raíz de agregado independientemente de cómo se guarde la dirección.",
       "explanation_en": "A value object is defined by having no identity: the natural mapping is embedding it as columns on `customers` (street, city, postcode) or, when cardinality demands its own table, keying it by the owner and treating the row as replaceable wholesale. An auto-increment id manufactures an identity the domain does not have, and from there the team starts UPDATE-ing the address — breaking immutability — and sharing it between customers. The second option is the most frequent reasoning and is a persistence rule, not a domain one: ORMs offer embedded components precisely for this. The third is false, indexes work the same. The fourth mixes concepts: `Customer` can be an aggregate root regardless of how the address is stored.",
       "source": "Evans, E. — Domain-Driven Design (Value Objects and persistence)",
       "expected_time_ms": 42000,
-      "tags": ["ddd", "value-object", "persistence", "orm"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "persistence",
+        "orm"
+      ]
     },
     {
       "id": "q050502012",
@@ -275,22 +334,27 @@
       "question_en": "`Money` is modelled as a value object with a frozen dataclass. What does it print?\\n\\n```python\\nfrom dataclasses import dataclass\\n\\n@dataclass(frozen=True)\\nclass Money:\\n    amount_cents: int\\n    currency: str\\n\\na = Money(1000, \"EUR\")\\nb = Money(1000, \"EUR\")\\nprint(a == b, len({a, b}))\\n```",
       "options_es": [
         "False 2",
-        "True 1",
         "True 2",
+        "True 1",
         "TypeError: unhashable type: 'Money'"
       ],
       "options_en": [
         "False 2",
-        "True 1",
         "True 2",
+        "True 1",
         "TypeError: unhashable type: 'Money'"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`frozen=True` con `eq=True` (por defecto) genera `__eq__` por valor y además un `__hash__` coherente, así que `a == b` es True y el conjunto colapsa a un solo elemento: «True 1». «False 2» es la intuición de identidad por referencia, que es justo lo que un value object no debe tener. «True 2» es el error de creer que la igualdad no arrastra el hash, incoherencia que rompería diccionarios y conjuntos. El TypeError es el distractor más instructivo: ocurre de verdad con `@dataclass` sin `frozen`, porque definir `__eq__` sin `__hash__` marca la clase como no hashable. Por eso los value objects se declaran inmutables: la inmutabilidad es lo que hace legítimo el hash por valor.",
       "explanation_en": "`frozen=True` together with `eq=True` (the default) generates value-based `__eq__` plus a consistent `__hash__`, so `a == b` is True and the set collapses to one element: \"True 1\". \"False 2\" is reference-identity intuition, exactly what a value object must not have. \"True 2\" assumes equality does not drag hashing along, an inconsistency that would break dicts and sets. The TypeError is the most instructive distractor: it genuinely happens with a plain `@dataclass` without `frozen`, because defining `__eq__` without `__hash__` marks the class unhashable. That is why value objects are declared immutable: immutability is what makes value-based hashing legitimate.",
       "source": "Evans, E. — Domain-Driven Design (Value Objects) / Python docs — dataclasses (frozen, eq, hash)",
       "expected_time_ms": 38000,
-      "tags": ["ddd", "value-object", "immutability", "code-output"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "immutability",
+        "code-output"
+      ]
     },
     {
       "id": "q050502013",
@@ -299,14 +363,24 @@
       "difficulty_tier": "medium",
       "question_es": "Si dos value objects tienen exactamente los mismos atributos, son intercambiables: puedes sustituir uno por otro en cualquier parte del sistema sin que el comportamiento cambie.",
       "question_en": "If two value objects have exactly the same attributes, they are interchangeable: you can substitute one for the other anywhere in the system without changing behaviour.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y ésa es precisamente la definición operativa de un value object: no tiene identidad, de modo que la igualdad estructural implica sustituibilidad total, igual que ocurre con el número 5 o con la cadena «EUR». Es lo que permite copiarlos libremente, cachearlos, compartirlos entre hilos y usarlos como claves de diccionario. La confusión habitual viene de haber trabajado con objetos mutables: si un «value object» tiene setters, dos instancias iguales hoy pueden divergir mañana y la sustituibilidad se pierde; por eso la inmutabilidad no es un detalle estilístico sino lo que sostiene esta propiedad. Con una entidad la afirmación sería falsa: dos pedidos con los mismos datos siguen siendo pedidos distintos.",
       "explanation_en": "True, and that is precisely the operational definition of a value object: it has no identity, so structural equality implies full substitutability, just like the number 5 or the string \"EUR\". That is what makes it safe to copy them freely, cache them, share them across threads and use them as dictionary keys. The usual confusion comes from mutable objects: if a \"value object\" has setters, two instances equal today can diverge tomorrow and substitutability is lost — which is why immutability is not a stylistic detail but what holds this property up. For an entity the statement would be false: two orders with identical data are still different orders.",
       "source": "Evans, E. — Domain-Driven Design (Value Objects, substitutability)",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "value-object", "equality"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "equality"
+      ]
     },
     {
       "id": "q050502014",
@@ -315,14 +389,25 @@
       "difficulty_tier": "hard",
       "question_es": "Para comparar dos entidades del dominio es correcto implementar `__eq__` comparando todos sus atributos de negocio, ya que dos entidades con los mismos datos representan lo mismo.",
       "question_en": "To compare two domain entities it is correct to implement `__eq__` by comparing all their business attributes, since two entities with the same data represent the same thing.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Una entidad se identifica por su identidad, no por su estado: dos clientes con el mismo nombre, la misma fecha de alta y la misma dirección son dos clientes distintos, y el mismo cliente sigue siéndolo después de mudarse aunque todos sus atributos hayan cambiado. Comparar por atributos produce dos fallos reales y opuestos: colisiones (dos entidades distintas se tratan como una, y una deduplicación borra datos buenos) y falsos negativos (la versión en memoria deja de coincidir con la persistida tras un cambio, y el código de sincronización inserta un duplicado). La regla práctica es implementar `__eq__` y `__hash__` sobre el identificador estable, y dejar la igualdad estructural para los value objects.",
       "explanation_en": "False. An entity is identified by identity, not by state: two customers with the same name, signup date and address are two different customers, and the same customer is still the same one after moving house even though every attribute changed. Attribute-based comparison produces two real and opposite failures: collisions (two distinct entities treated as one, so a dedupe job deletes good data) and false negatives (the in-memory version stops matching the persisted one after a change, so sync code inserts a duplicate). The practical rule is to implement `__eq__` and `__hash__` over the stable identifier, and leave structural equality to value objects.",
       "source": "Evans, E. — Domain-Driven Design (Entities, identity-based equality)",
       "expected_time_ms": 32000,
-      "tags": ["ddd", "entity", "equality", "identity"]
+      "tags": [
+        "ddd",
+        "entity",
+        "equality",
+        "identity"
+      ]
     },
     {
       "id": "q050502015",
@@ -337,9 +422,13 @@
       "explanation_en": "Side-effect-free functions return a result without altering anything, so they compose, repeat and can be reasoned about without looking at the rest of the system. Value objects are their natural home precisely because they are immutable: `price.with_vat(21)` returns a new `Money` instead of mutating the original. The frequent mistake is leaving the calculation as an entity method, mixing computation and state change in one call (the command-query separation problem Evans and Meyer describe): then every test of the calculation has to build the whole entity, and every refactor drags hidden effects along.",
       "source": "Evans, E. — Domain-Driven Design (Supple Design: Side-Effect-Free Functions)",
       "expected_time_ms": 36000,
-      "tags": ["ddd", "value-object", "supple-design", "side-effect-free"]
+      "tags": [
+        "ddd",
+        "value-object",
+        "supple-design",
+        "side-effect-free"
+      ]
     },
-
     {
       "id": "q050503009",
       "skill_id": "sk050503",
@@ -350,21 +439,26 @@
       "options_es": [
         "Que cada línea de pedido debe ser su propio agregado, para poder validarla de forma independiente",
         "Que el límite de crédito debe replicarse en cada línea para evitar consultas",
-        "Que `Pedido` y sus líneas forman un mismo agregado: la regla es un invariante que debe cumplirse de forma inmediata y transaccional, y sólo puede garantizarlo el objeto que ve todas las líneas a la vez",
-        "Que hace falta una transacción distribuida entre el servicio de Pedidos y el de Crédito"
+        "Que hace falta una transacción distribuida entre el servicio de Pedidos y el de Crédito",
+        "Que `Pedido` y sus líneas forman un mismo agregado: la regla es un invariante que debe cumplirse de forma inmediata y transaccional, y sólo puede garantizarlo el objeto que ve todas las líneas a la vez"
       ],
       "options_en": [
         "That each order line must be its own aggregate, so it can be validated independently",
         "That the credit limit must be replicated into every line to avoid lookups",
-        "That `Order` and its lines form one aggregate: the rule is an invariant that must hold immediately and transactionally, and only the object that sees all lines at once can guarantee it",
-        "That a distributed transaction between the Orders service and the Credit service is needed"
+        "That a distributed transaction between the Orders service and the Credit service is needed",
+        "That `Order` and its lines form one aggregate: the rule is an invariant that must hold immediately and transactionally, and only the object that sees all lines at once can guarantee it"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "El criterio para trazar un agregado es el invariante: lo que debe ser cierto en todo momento marca la frontera de consistencia, y la raíz es quien lo hace cumplir al aceptar cada cambio. Hacer de cada línea un agregado es el error clásico de dividir por «entidad» en lugar de por regla: dos líneas añadidas a la vez pueden pasar cada una su validación local y violar el total juntas. Replicar el límite en cada línea no cambia nada, porque el problema no es leer el límite sino ver la suma. La transacción distribuida asume una frontera de servicios que la regla no exige: el límite aprobado ya está en el pedido.",
       "explanation_en": "The criterion for drawing an aggregate is the invariant: what must be true at all times defines the consistency boundary, and the root enforces it as it accepts each change. Making every line its own aggregate is the classic mistake of splitting by \"entity\" rather than by rule: two lines added concurrently can each pass local validation and jointly break the total. Replicating the limit into each line changes nothing, because the problem is not reading the limit but seeing the sum. The distributed transaction assumes a service boundary the rule does not require: the approved limit already lives on the order.",
       "source": "Evans, E. — Domain-Driven Design (Aggregates, invariants)",
       "expected_time_ms": 34000,
-      "tags": ["ddd", "aggregate", "invariants", "consistency"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "invariants",
+        "consistency"
+      ]
     },
     {
       "id": "q050503010",
@@ -374,23 +468,28 @@
       "question_es": "El agregado `Equipo` contiene la lista completa de sus 40.000 miembros. En producción, cambiar el nombre de un equipo falla con conflictos de versión optimista cada vez que alguien se une, y cada carga del agregado trae 40.000 filas. ¿Cuál es el rediseño correcto?",
       "question_en": "The `Team` aggregate holds the full list of its 40,000 members. In production, renaming a team fails with optimistic-concurrency conflicts every time someone joins, and every load of the aggregate pulls 40,000 rows. What is the correct redesign?",
       "options_es": [
-        "Partir el agregado: `Equipo` guarda sus datos propios y `Membresía` pasa a ser un agregado aparte que referencia al equipo por id, dejando la regla de pertenencia en consistencia eventual si no es un invariante inmediato",
         "Quitar el bloqueo optimista del agregado `Equipo` para que dejen de aparecer conflictos",
+        "Partir el agregado: `Equipo` guarda sus datos propios y `Membresía` pasa a ser un agregado aparte que referencia al equipo por id, dejando la regla de pertenencia en consistencia eventual si no es un invariante inmediato",
         "Cargar los miembros con lazy loading manteniendo el agregado tal cual",
         "Subir el nivel de aislamiento de la transacción a SERIALIZABLE"
       ],
       "options_en": [
-        "Split the aggregate: `Team` keeps its own data and `Membership` becomes a separate aggregate referencing the team by id, letting the membership rule be eventually consistent if it is not an immediate invariant",
         "Remove optimistic locking from the `Team` aggregate so conflicts stop appearing",
+        "Split the aggregate: `Team` keeps its own data and `Membership` becomes a separate aggregate referencing the team by id, letting the membership rule be eventually consistent if it is not an immediate invariant",
         "Load members lazily while keeping the aggregate as it is",
         "Raise the transaction isolation level to SERIALIZABLE"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Los conflictos son el síntoma de un agregado demasiado grande: si la frontera de consistencia abarca datos que cambian por motivos distintos y a ritmos distintos, toda escritura compite con las demás por la misma versión. La solución de diseño es reducir la frontera al invariante que realmente exige atomicidad y referenciar el resto por identidad. Quitar el bloqueo optimista elimina el error, no la carrera: pasa de conflictos visibles a actualizaciones perdidas silenciosas, que es mucho peor. El lazy loading es la respuesta más tentadora porque arregla el coste de lectura, pero deja intacta la contención en escritura y además rompe la garantía de que la raíz ve el estado completo al validar. SERIALIZABLE aumenta los abortos en lugar de reducirlos.",
       "explanation_en": "The conflicts are the symptom of an oversized aggregate: when the consistency boundary spans data that changes for different reasons at different rates, every write competes with the rest for the same version. The design fix is to shrink the boundary to the invariant that truly needs atomicity and reference the rest by identity. Removing optimistic locking removes the error, not the race: it converts visible conflicts into silent lost updates, which is far worse. Lazy loading is the most tempting answer because it fixes read cost, but it leaves write contention untouched and breaks the guarantee that the root sees the complete state when validating. SERIALIZABLE increases aborts rather than reducing them.",
       "source": "Richardson, C. — Microservices Patterns (Aggregate granularity, optimistic concurrency)",
       "expected_time_ms": 42000,
-      "tags": ["ddd", "aggregate", "concurrency", "design"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "concurrency",
+        "design"
+      ]
     },
     {
       "id": "q050503011",
@@ -416,7 +515,12 @@
       "explanation_en": "The rule is one repository per aggregate root. If `OrderLineRepository` exists, any service can bypass `Order`, change a quantity and skip the checks on the total, the order status or the credit limit; the invariant stops being guaranteed by construction and starts depending on whoever writes each use case being disciplined. DTOs are a separate topic (and a domain repository does return aggregates). Connection count is an infrastructure detail irrelevant to the design. The \"one repository per table\" idea is exactly the confusion that causes the problem: a repository is a collection of aggregates, not a per-table DAO.",
       "source": "Evans, E. — Domain-Driven Design (Repositories, one per aggregate root)",
       "expected_time_ms": 36000,
-      "tags": ["ddd", "repository", "aggregate", "encapsulation"]
+      "tags": [
+        "ddd",
+        "repository",
+        "aggregate",
+        "encapsulation"
+      ]
     },
     {
       "id": "q050503012",
@@ -426,23 +530,28 @@
       "question_es": "Una pantalla de administración necesita una tabla con 200 pedidos y, por cada uno, el nombre del cliente y el estado del envío. El equipo carga 200 agregados `Order` completos y navega desde cada uno. ¿Cuál es el enfoque recomendado?",
       "question_en": "An admin screen needs a table of 200 orders and, for each, the customer name and the shipment status. The team loads 200 full `Order` aggregates and navigates from each one. What is the recommended approach?",
       "options_es": [
-        "Hacer que los agregados sean más grandes para que una sola carga contenga todo lo que la pantalla necesita",
         "Separar lectura y escritura: servir la pantalla con una consulta o proyección de sólo lectura que devuelve exactamente esos campos, y reservar los agregados para las operaciones que cambian estado",
+        "Hacer que los agregados sean más grandes para que una sola carga contenga todo lo que la pantalla necesita",
         "Añadir un método `findAllWithCustomerAndShipping()` al `OrderRepository` que devuelva agregados con relaciones precargadas",
         "Aumentar el tamaño de la caché de segundo nivel del ORM y mantener el diseño"
       ],
       "options_en": [
-        "Make aggregates larger so a single load contains everything the screen needs",
         "Separate reads from writes: serve the screen with a read-only query or projection returning exactly those fields, and reserve aggregates for state-changing operations",
+        "Make aggregates larger so a single load contains everything the screen needs",
         "Add a `findAllWithCustomerAndShipping()` method to `OrderRepository` returning aggregates with relations eagerly loaded",
         "Increase the ORM's second-level cache size and keep the design"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Los agregados están diseñados para proteger invariantes en escritura, no para alimentar listados; usarlos como modelo de lectura obliga a hidratar objetos caros y empuja a engordar la frontera de consistencia por motivos de UI. La separación de responsabilidades entre comandos y consultas (CQRS, aunque sea en su forma más simple: una consulta SQL que devuelve un DTO) resuelve el caso sin tocar el modelo de dominio. Agrandar el agregado es exactamente el antipatrón de dejar que la pantalla dicte la frontera de consistencia. El método con relaciones precargadas es la opción más tentadora porque parece un ajuste local, pero sigue materializando 200 agregados completos y contamina el repositorio de dominio con necesidades de presentación. La caché sólo esconde el coste hasta la primera invalidación masiva.",
       "explanation_en": "Aggregates are designed to protect write-side invariants, not to feed listings; using them as a read model forces hydrating expensive objects and pressures the team to widen the consistency boundary for UI reasons. Separating commands from queries (CQRS, even in its simplest form: a SQL query returning a DTO) solves this without touching the domain model. Growing the aggregate is precisely the anti-pattern of letting the screen dictate the consistency boundary. The eagerly-loaded finder is the most tempting option because it looks like a local tweak, but it still materialises 200 full aggregates and pollutes the domain repository with presentation needs. Caching only hides the cost until the first mass invalidation.",
       "source": "Richardson, C. — Microservices Patterns (CQRS, read models) / Fowler, M. — martinfowler.com CQRS",
       "expected_time_ms": 42000,
-      "tags": ["ddd", "aggregate", "repository", "cqrs"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "repository",
+        "cqrs"
+      ]
     },
     {
       "id": "q050503013",
@@ -454,21 +563,26 @@
       "options_es": [
         "2 1",
         "ValueError: qty must be positive",
-        "AttributeError: can't set attribute",
-        "-3 2"
+        "-3 2",
+        "AttributeError: can't set attribute"
       ],
       "options_en": [
         "2 1",
         "ValueError: qty must be positive",
-        "AttributeError: can't set attribute",
-        "-3 2"
+        "-3 2",
+        "AttributeError: can't set attribute"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "La property devuelve la lista real, no una copia, así que `o.lines.append(-5)` muta el estado interno saltándose `add_line` y su validación: el total queda en -3 con 2 líneas. «2 1» asume que la property protege el estado, que es la creencia que hace peligroso este patrón: una property de sólo lectura protege el atributo, no el objeto mutable al que apunta. El ValueError sería lo deseable, pero la validación vive en un método que nadie ha llamado. El AttributeError aparecería con `o.lines = [...]` (asignación sin setter), no con un `append`. La corrección canónica es devolver `tuple(self._lines)` o una vista inmutable y obligar a que todo cambio pase por métodos de la raíz.",
       "explanation_en": "The property returns the real list, not a copy, so `o.lines.append(-5)` mutates internal state bypassing `add_line` and its validation: the total ends at -3 with 2 lines. \"2 1\" assumes the property protects state, which is the belief that makes this pattern dangerous: a read-only property protects the attribute, not the mutable object it points to. The ValueError is what you would want, but the validation lives in a method nobody called. The AttributeError would appear with `o.lines = [...]` (assignment with no setter), not with `append`. The canonical fix is to return `tuple(self._lines)` or an immutable view and force every change through root methods.",
       "source": "Evans, E. — Domain-Driven Design (Aggregate root encapsulation)",
       "expected_time_ms": 45000,
-      "tags": ["ddd", "aggregate", "encapsulation", "code-output"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "encapsulation",
+        "code-output"
+      ]
     },
     {
       "id": "q050503014",
@@ -477,14 +591,25 @@
       "difficulty_tier": "hard",
       "question_es": "La forma correcta de decidir la frontera de un agregado es mirar qué datos se muestran juntos en la misma pantalla: si la UI presenta pedido, cliente y envío en una sola vista, los tres deben formar un agregado.",
       "question_en": "The right way to decide an aggregate boundary is to look at which data appears together on the same screen: if the UI shows order, customer and shipment in one view, the three should form one aggregate.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. La frontera de un agregado la determinan los invariantes que deben mantenerse de forma inmediata y transaccional, no la composición de una pantalla. Es un error frecuente porque la UI es la fuente de requisitos más visible, y porque agrupar lo que se muestra junto parece eficiente; el resultado son agregados enormes que provocan contención en escritura, transacciones largas y acoplamiento entre conceptos que cambian por razones distintas. Además la UI cambia mucho más rápido que las reglas de negocio, así que el modelo quedaría atado al rediseño de turno. La necesidad de mostrar datos juntos se resuelve en el lado de lectura, con una proyección o una consulta que componga varios agregados, sin ampliar la frontera de consistencia.",
       "explanation_en": "False. An aggregate boundary is determined by the invariants that must hold immediately and transactionally, not by a screen's composition. The mistake is common because the UI is the most visible source of requirements and grouping what is shown together looks efficient; the result is huge aggregates causing write contention, long transactions and coupling between concepts that change for different reasons. The UI also changes far faster than business rules, so the model would be hostage to the next redesign. The need to display data together belongs on the read side, with a projection or query composing several aggregates, without widening the consistency boundary.",
       "source": "Richardson, C. — Microservices Patterns (designing aggregates around invariants)",
       "expected_time_ms": 32000,
-      "tags": ["ddd", "aggregate", "boundaries", "invariants"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "boundaries",
+        "invariants"
+      ]
     },
     {
       "id": "q050503015",
@@ -499,9 +624,13 @@
       "explanation_en": "Optimistic locking locks nothing: it lets both transactions proceed and checks at UPDATE time that the version read is still current (`WHERE id = ? AND version = ?`); if not, it fails and the use case retries. It fits aggregates because the root is the natural place to hold the version, so a change to any internal part bumps the same version and protects the whole invariant. The alternative, pessimistic locking (SELECT ... FOR UPDATE), tempts by seeming safer, but holds locks for the transaction's duration and scales badly under contention. An aggregate suffering constant optimistic conflicts is usually telling you it is too big.",
       "source": "Fowler, M. — martinfowler.com / P of EAA catalog: Optimistic Offline Lock",
       "expected_time_ms": 38000,
-      "tags": ["ddd", "aggregate", "concurrency", "optimistic-locking"]
+      "tags": [
+        "ddd",
+        "aggregate",
+        "concurrency",
+        "optimistic-locking"
+      ]
     },
-
     {
       "id": "q050504008",
       "skill_id": "sk050504",
@@ -512,21 +641,26 @@
       "options_es": [
         "Que `updatePolicy` no sigue las convenciones REST para actualizaciones parciales",
         "Que el diccionario de campos no está tipado y puede provocar errores en tiempo de ejecución",
-        "Que sería más eficiente un único UPDATE que tres sentencias distintas",
-        "Que la intención del negocio desaparece: tres operaciones con reglas, autorizaciones y efectos distintos quedan fundidas en una genérica, y ni el código ni los logs permiten ya hablar con el experto sobre lo que ocurrió"
+        "Que la intención del negocio desaparece: tres operaciones con reglas, autorizaciones y efectos distintos quedan fundidas en una genérica, y ni el código ni los logs permiten ya hablar con el experto sobre lo que ocurrió",
+        "Que sería más eficiente un único UPDATE que tres sentencias distintas"
       ],
       "options_en": [
         "That `updatePolicy` does not follow REST conventions for partial updates",
         "That the field dictionary is untyped and can cause runtime errors",
-        "That a single UPDATE would be more efficient than three separate statements",
-        "That business intent disappears: three operations with different rules, authorisations and effects collapse into one generic call, and neither the code nor the logs let you discuss with the expert what actually happened"
+        "That business intent disappears: three operations with different rules, authorisations and effects collapse into one generic call, and neither the code nor the logs let you discuss with the expert what actually happened",
+        "That a single UPDATE would be more efficient than three separate statements"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "El lenguaje ubicuo no es sólo nombrar bien los sustantivos: los verbos del negocio son los que llevan las reglas. `renovar`, `anular` y `endosar` tienen precondiciones, permisos y consecuencias contables distintas; fundirlos en `updatePolicy` obliga a que esas diferencias vivan en condicionales dispersos y hace imposible auditar qué se hizo. Las opciones de REST y de tipado son problemas reales, pero técnicos y secundarios: un `updatePolicy` perfectamente tipado y RESTful sigue sin decir qué pasó en el negocio. La eficiencia es irrelevante y además falsa como criterio de modelado. El remedio es exponer métodos con el nombre del negocio, aunque por debajo compartan persistencia.",
       "explanation_en": "The ubiquitous language is not only about naming nouns well: the business verbs are what carry the rules. `renew`, `cancel` and `endorse` have different preconditions, permissions and accounting consequences; collapsing them into `updatePolicy` forces those differences into scattered conditionals and makes it impossible to audit what was done. The REST and typing options are real problems, but technical and secondary: a perfectly typed, RESTful `updatePolicy` still says nothing about what happened in the business. Efficiency is irrelevant and a false modelling criterion anyway. The fix is exposing methods named after the business, even if they share persistence underneath.",
       "source": "Evans, E. — Domain-Driven Design (Ubiquitous Language, making implicit concepts explicit)",
       "expected_time_ms": 36000,
-      "tags": ["ddd", "ubiquitous-language", "intention-revealing", "modelling"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "intention-revealing",
+        "modelling"
+      ]
     },
     {
       "id": "q050504009",
@@ -536,23 +670,28 @@
       "question_es": "Un jefe de proyecto propone: «los analistas hablarán el lenguaje del negocio, los desarrolladores usarán su propio vocabulario técnico, y los analistas traducirán entre ambos en las especificaciones». ¿Qué respondería DDD?",
       "question_en": "A project manager proposes: \"analysts will speak the business language, developers will use their own technical vocabulary, and analysts will translate between them in the specifications\". What would DDD answer?",
       "options_es": [
-        "Que la traducción permanente es el problema, no la solución: cada salto pierde matices sin dejar rastro, los malentendidos se descubren en producción y el modelo del código deja de ser comprobable contra el conocimiento del experto",
+        "Que es correcto en equipos grandes, donde el lenguaje único sólo es viable con menos de diez personas",
         "Que es correcto siempre que los analistas mantengan un glosario actualizado de la correspondencia entre ambos vocabularios",
         "Que es correcto porque el lenguaje ubicuo sólo aplica a la documentación funcional, no al código",
-        "Que es correcto en equipos grandes, donde el lenguaje único sólo es viable con menos de diez personas"
+        "Que la traducción permanente es el problema, no la solución: cada salto pierde matices sin dejar rastro, los malentendidos se descubren en producción y el modelo del código deja de ser comprobable contra el conocimiento del experto"
       ],
       "options_en": [
-        "That permanent translation is the problem, not the solution: every hop loses nuance without leaving a trace, misunderstandings surface in production, and the code's model stops being testable against the expert's knowledge",
+        "That it is fine on large teams, where a single language is only viable with fewer than ten people",
         "That it is fine as long as analysts keep an up-to-date glossary mapping both vocabularies",
         "That it is fine because the ubiquitous language applies only to functional documentation, not to code",
-        "That it is fine on large teams, where a single language is only viable with fewer than ten people"
+        "That permanent translation is the problem, not the solution: every hop loses nuance without leaving a trace, misunderstandings surface in production, and the code's model stops being testable against the expert's knowledge"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Evans describe exactamente este escenario como la causa del divorcio entre modelo y dominio: cuando existe una capa de traducción humana, el conocimiento se degrada en cada paso y nadie puede señalar el código y preguntarle al experto «¿es esto lo que haces?». La opción del glosario es la más tentadora porque suena a rigor, pero un glosario de correspondencias institucionaliza los dos idiomas en lugar de eliminarlos, y envejece en cuanto alguien renombra algo. Limitar el lenguaje a la documentación contradice el núcleo de DDD: el lenguaje debe estar en las clases, métodos y eventos. El argumento del tamaño de equipo confunde la solución real a la escala, que es dividir en bounded contexts —cada uno con su lenguaje— y no mantener dos idiomas dentro del mismo contexto.",
       "explanation_en": "Evans describes exactly this setup as the cause of the divorce between model and domain: with a human translation layer, knowledge degrades at every hop and nobody can point at the code and ask the expert \"is this what you do?\". The glossary option is the most tempting because it sounds rigorous, but a mapping glossary institutionalises the two languages instead of removing them, and goes stale the moment someone renames something. Confining the language to documentation contradicts the core of DDD: the language must live in classes, methods and events. The team-size argument mistakes the real answer to scale, which is splitting into bounded contexts — each with its own language — not keeping two languages inside one context.",
       "source": "Evans, E. — Domain-Driven Design (Ubiquitous Language, the cost of translation)",
       "expected_time_ms": 40000,
-      "tags": ["ddd", "ubiquitous-language", "collaboration", "modelling"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "collaboration",
+        "modelling"
+      ]
     },
     {
       "id": "q050504010",
@@ -562,23 +701,28 @@
       "question_es": "¿Cuál es la señal más fiable de que el lenguaje ubicuo de un equipo está vivo y no es sólo un glosario decorativo en la wiki?",
       "question_en": "What is the most reliable sign that a team's ubiquitous language is alive rather than a decorative glossary on the wiki?",
       "options_es": [
-        "Que el glosario tiene una entrada por cada tabla de la base de datos",
-        "Que existe un documento aprobado por el comité de arquitectura con los términos oficiales",
         "Que los nombres de clases, métodos, eventos y pruebas cambian cuando el negocio cambia de término, y el experto puede leer una prueba y decir si el comportamiento descrito es correcto",
+        "Que existe un documento aprobado por el comité de arquitectura con los términos oficiales",
+        "Que el glosario tiene una entrada por cada tabla de la base de datos",
         "Que todos los términos están traducidos al inglés de forma consistente en todo el código"
       ],
       "options_en": [
-        "That the glossary has one entry per database table",
-        "That there is a document approved by the architecture committee listing the official terms",
         "That class, method, event and test names change when the business changes a term, and an expert can read a test and say whether the described behaviour is right",
+        "That there is a document approved by the architecture committee listing the official terms",
+        "That the glossary has one entry per database table",
         "That every term is consistently translated into English across the codebase"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "El lenguaje ubicuo se verifica por su efecto: si cambia el negocio, cambia el código; y si el experto no entiende los nombres, el modelo no refleja su conocimiento. Que las pruebas se lean como afirmaciones de negocio es la prueba práctica más barata. El glosario alineado con las tablas mide el esquema, no el dominio, y de hecho suele delatar un modelo anémico dictado por la persistencia. La aprobación por un comité es tentadora porque parece gobernanza seria, pero el lenguaje se construye y se corrige en las conversaciones diarias entre desarrolladores y expertos, no por decreto. La consistencia idiomática en inglés es una buena práctica de código, pero no dice nada sobre si los términos son los del negocio.",
       "explanation_en": "A ubiquitous language is verified by its effect: when the business changes, the code changes; and if the expert cannot understand the names, the model does not reflect their knowledge. Tests reading as business statements are the cheapest practical check. A glossary aligned to tables measures the schema, not the domain, and usually reveals an anaemic model dictated by persistence. Committee approval tempts because it looks like serious governance, but the language is built and corrected in daily conversations between developers and experts, not by decree. Consistent English naming is good coding practice but says nothing about whether the terms are the business's own.",
       "source": "Evans, E. — Domain-Driven Design (Ubiquitous Language in code and tests)",
       "expected_time_ms": 32000,
-      "tags": ["ddd", "ubiquitous-language", "tests", "practice"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "tests",
+        "practice"
+      ]
     },
     {
       "id": "q050504011",
@@ -589,22 +733,27 @@
       "question_en": "In a modelling session, the sales team insists that \"a booking is confirmed when the customer accepts the quote\" and operations insists that \"it is confirmed when a room has been allocated\". Three meetings, no agreement. What interpretation does DDD propose?",
       "options_es": [
         "Que hay que escalar la decisión a un arquitecto o a dirección para imponer la definición oficial",
-        "Que el desacuerdo es una señal de dos bounded contexts distintos: «confirmada» significa cosas diferentes en Ventas y en Operaciones, y cada contexto debe modelar su propio concepto, integrándose con eventos explícitos",
         "Que debe crearse una entidad `Reserva` con dos banderas booleanas, `confirmada_ventas` y `confirmada_operaciones`",
+        "Que el desacuerdo es una señal de dos bounded contexts distintos: «confirmada» significa cosas diferentes en Ventas y en Operaciones, y cada contexto debe modelar su propio concepto, integrándose con eventos explícitos",
         "Que uno de los dos equipos no entiende el negocio y necesita formación en el dominio"
       ],
       "options_en": [
         "That the decision must be escalated to an architect or management to impose the official definition",
-        "That the disagreement signals two distinct bounded contexts: \"confirmed\" means different things in Sales and Operations, and each context should model its own concept, integrating through explicit events",
         "That a `Booking` entity should be created with two boolean flags, `confirmed_sales` and `confirmed_ops`",
+        "That the disagreement signals two distinct bounded contexts: \"confirmed\" means different things in Sales and Operations, and each context should model its own concept, integrating through explicit events",
         "That one of the two teams does not understand the business and needs domain training"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Un desacuerdo persistente y de buena fe sobre el significado de un término casi siempre indica que hay dos modelos legítimos, no que alguien se equivoque. La respuesta de DDD es delimitar: `PresupuestoAceptado` en Ventas y `ReservaAsignada` en Operaciones, con integración explícita. Escalar la decisión impone un único significado y condena al equipo perdedor a traducir mentalmente para siempre. Las dos banderas booleanas son la solución más habitual en la práctica y la más dañina: parece un compromiso razonable, pero mete los dos modelos en una misma clase y a partir de ahí toda regla necesita preguntar «¿confirmada para quién?». Culpar a un equipo desperdicia justamente la información que el desacuerdo aporta sobre la frontera.",
       "explanation_en": "A persistent, good-faith disagreement about a term's meaning almost always indicates two legitimate models, not that someone is wrong. DDD's answer is to bound them: `QuoteAccepted` in Sales and `RoomAllocated` in Operations, with explicit integration. Escalating imposes a single meaning and condemns the losing team to translate mentally forever. The two boolean flags are the most common fix in practice and the most damaging: it looks like a reasonable compromise, but it packs both models into one class, and from then on every rule has to ask \"confirmed for whom?\". Blaming a team throws away precisely the information the disagreement gives you about the boundary.",
       "source": "Evans, E. — Domain-Driven Design (Ubiquitous Language and Bounded Context)",
       "expected_time_ms": 40000,
-      "tags": ["ddd", "ubiquitous-language", "bounded-context", "modelling"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "bounded-context",
+        "modelling"
+      ]
     },
     {
       "id": "q050504012",
@@ -615,22 +764,27 @@
       "question_en": "After a regulatory change, what the business called a \"delinquent customer\" becomes a \"customer in default\" and its definition changes (was 30 days, now 90). The code uses `DelinquentCustomer` in 40 places. What does a team practising DDD do?",
       "options_es": [
         "Mantener `DelinquentCustomer` y documentar la equivalencia en el glosario, para no arriesgar una refactorización amplia",
-        "Añadir `CustomerInDefault` como alias que herede de `DelinquentCustomer`, conservando ambos nombres",
+        "Renombrar en el código, los eventos y las pruebas junto con el cambio de regla, tratando el renombrado como parte del cambio de dominio y no como una tarea opcional de limpieza",
         "Cambiar sólo la constante de 30 a 90 días, ya que el nombre es un detalle cosmético",
-        "Renombrar en el código, los eventos y las pruebas junto con el cambio de regla, tratando el renombrado como parte del cambio de dominio y no como una tarea opcional de limpieza"
+        "Añadir `CustomerInDefault` como alias que herede de `DelinquentCustomer`, conservando ambos nombres"
       ],
       "options_en": [
         "Keep `DelinquentCustomer` and document the equivalence in the glossary, to avoid risking a broad refactor",
-        "Add `CustomerInDefault` as an alias inheriting from `DelinquentCustomer`, keeping both names",
+        "Rename in code, events and tests along with the rule change, treating the rename as part of the domain change rather than an optional cleanup task",
         "Change only the constant from 30 to 90 days, since the name is a cosmetic detail",
-        "Rename in code, events and tests along with the rule change, treating the rename as part of the domain change rather than an optional cleanup task"
+        "Add `CustomerInDefault` as an alias inheriting from `DelinquentCustomer`, keeping both names"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "El lenguaje ubicuo obliga a que el código siga hablando el idioma actual del negocio: si el término y su definición cambian, el renombrado forma parte del cambio, igual que la constante. Dejar el nombre viejo con una nota en el glosario es la opción que más equipos eligen y la que crea deuda de comprensión: seis meses después nadie recuerda el mapeo, y un desarrollador nuevo aplica la intuición del nombre antiguo al leer la regla nueva. El alias por herencia es peor aún, porque perpetua los dos vocabularios dentro del mismo contexto y añade una jerarquía que no modela nada del dominio. Cambiar sólo la constante es el error más sutil: el código quedaría técnicamente correcto y semánticamente mentiroso, que es la forma más cara de equivocarse.",
       "explanation_en": "The ubiquitous language requires the code to keep speaking the business's current idiom: if the term and its definition change, the rename is part of the change, exactly like the constant. Keeping the old name with a glossary note is what most teams pick, and it creates comprehension debt: six months later nobody remembers the mapping, and a new developer applies the old name's intuition to the new rule. The inheritance alias is worse, because it perpetuates two vocabularies inside one context and adds a hierarchy that models nothing in the domain. Changing only the constant is the subtlest error: the code would be technically correct and semantically lying, the most expensive way to be wrong.",
       "source": "Evans, E. — Domain-Driven Design (Ubiquitous Language evolves with the model)",
       "expected_time_ms": 40000,
-      "tags": ["ddd", "ubiquitous-language", "refactoring", "naming"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "refactoring",
+        "naming"
+      ]
     },
     {
       "id": "q050504013",
@@ -639,14 +793,25 @@
       "difficulty_tier": "medium",
       "question_es": "El lenguaje ubicuo incluye también los verbos, los eventos y las reglas del dominio («la póliza se endosa», «el envío se despacha», «un pedido no puede superar el límite de crédito»), no sólo los sustantivos que dan nombre a las entidades.",
       "question_en": "The ubiquitous language also covers the domain's verbs, events and rules (\"the policy is endorsed\", \"the shipment is dispatched\", \"an order cannot exceed the credit limit\"), not just the nouns that name entities.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Reducir el lenguaje ubicuo a una lista de sustantivos es uno de los malentendidos más extendidos, y produce modelos anémicos: clases con los nombres correctos, getters y setters, y toda la lógica del negocio repartida en servicios con nombres genéricos como `OrderManager.process()`. Los verbos son los que llevan las reglas y las precondiciones; los eventos («PedidoDespachado») son los que permiten que el negocio reconozca en un log lo que pasó; y las reglas expresadas en el lenguaje del dominio son las que se pueden validar con el experto. Por eso técnicas como Event Storming empiezan justamente por los eventos en pasado, no por las entidades.",
       "explanation_en": "True. Reducing the ubiquitous language to a list of nouns is one of the most widespread misunderstandings, and it produces anaemic models: correctly named classes full of getters and setters, with all the business logic scattered across generically named services like `OrderManager.process()`. Verbs carry the rules and preconditions; events (\"ShipmentDispatched\") are what let the business recognise in a log what happened; and rules expressed in domain language are the ones an expert can validate. That is exactly why techniques like Event Storming start from past-tense events rather than from entities.",
       "source": "Evans, E. — Domain-Driven Design (Ubiquitous Language covers behaviour)",
       "expected_time_ms": 28000,
-      "tags": ["ddd", "ubiquitous-language", "events", "anemic-model"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "events",
+        "anemic-model"
+      ]
     },
     {
       "id": "q050504014",
@@ -655,14 +820,25 @@
       "difficulty_tier": "hard",
       "question_es": "Si durante una conversación el experto de dominio corrige un término que el equipo venía usando, el cambio debe propagarse al código, a los nombres de eventos y a las pruebas, aunque eso implique una refactorización de renombrado en muchos ficheros.",
       "question_en": "If a domain expert corrects a term the team had been using, the change should propagate into the code, the event names and the tests, even if that means a rename refactor across many files.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El lenguaje ubicuo sólo funciona si es el mismo en la conversación y en el código; permitir que diverjan convierte cada lectura del código en una traducción mental y hace que los malentendidos sobrevivan invisibles. La objeción habitual —«renombrar 40 ficheros es caro y arriesgado»— pesa mucho menos de lo que parece con refactorizaciones automáticas y tests, y desde luego menos que el coste acumulado de un modelo que miente. El matiz importante es el alcance: el renombrado se aplica dentro del bounded context donde el experto tiene autoridad, y no obliga a los demás contextos, que pueden seguir usando su propio término y traducir en la frontera. Un renombrado que cruza contextos suele ser, en realidad, una señal de que la frontera está mal puesta.",
       "explanation_en": "True. A ubiquitous language only works if it is the same in conversation and in code; letting them diverge turns every code reading into a mental translation and lets misunderstandings survive invisibly. The usual objection — \"renaming 40 files is expensive and risky\" — weighs far less than it seems given automated refactoring and tests, and certainly less than the accumulated cost of a model that lies. The important nuance is scope: the rename applies inside the bounded context where that expert has authority, and does not bind other contexts, which may keep their own term and translate at the boundary. A rename that has to cross contexts is usually a sign the boundary is in the wrong place.",
       "source": "Evans, E. — Domain-Driven Design (refining the Ubiquitous Language)",
       "expected_time_ms": 32000,
-      "tags": ["ddd", "ubiquitous-language", "refactoring", "bounded-context"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "refactoring",
+        "bounded-context"
+      ]
     },
     {
       "id": "q050504015",
@@ -677,7 +853,12 @@
       "explanation_en": "Model-Driven Design is the technical counterpart of the ubiquitous language: speaking the same idiom in meetings is worthless if the code then implements something else. The practice demands that classes and methods be the literal expression of the model, so the code itself can be used to check the model with the expert. The typical misunderstanding is confusing it with generating code from diagrams (UML-tool MDA/MDD), which is almost the opposite: there the model is a separate artefact that gets compiled; here the code is the model. The other common failure is keeping a pretty \"analysis model\" plus a different implementation model for technical reasons: the moment they separate, the analysis one stops being maintained and the knowledge is lost.",
       "source": "Evans, E. — Domain-Driven Design (Model-Driven Design)",
       "expected_time_ms": 38000,
-      "tags": ["ddd", "ubiquitous-language", "model-driven-design", "modelling"]
+      "tags": [
+        "ddd",
+        "ubiquitous-language",
+        "model-driven-design",
+        "modelling"
+      ]
     }
   ]
 }

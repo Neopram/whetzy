@@ -34,18 +34,18 @@
     "question_es": "¿Cuál es la diferencia entre subred pública y privada?",
     "question_en": "What is the difference between public and private subnet?",
     "options_es": [
-      "Pública tiene acceso a internet, privada no",
-      "Privada tiene más seguridad",
       "Son lo mismo",
+      "Privada tiene más seguridad",
+      "Pública tiene acceso a internet, privada no",
       "Pública es para bases de datos"
     ],
     "options_en": [
-      "Public has internet access, private doesn't",
-      "Private has more security",
       "They are same",
+      "Private has more security",
+      "Public has internet access, private doesn't",
       "Public for databases"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Subred pública tiene ruta a Internet Gateway. Privada no tiene ruta directa (usa NAT Gateway). Ambas pueden tener seguridad igual con Security Groups.",
@@ -62,17 +62,17 @@
     "question_en": "What is the best practice for network security in AWS?",
     "options_es": [
       "Una VPC sin subnets",
-      "Múltiples subnets con Security Groups restrictivos",
       "Todo acceso permitido, confiar en IAM",
+      "Múltiples subnets con Security Groups restrictivos",
       "Publicar todo en internet"
     ],
     "options_en": [
       "Single VPC no subnets",
-      "Multiple subnets with restrictive Security Groups",
       "Allow all, trust IAM",
+      "Multiple subnets with restrictive Security Groups",
       "Publish everything online"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Segmentación de red con subnets + Security Groups restrictivos es defensa de capas. IAM es para identidad, no red. Publicar todo es inseguro.",
@@ -88,18 +88,18 @@
     "question_es": "¿Cómo diseñar VPC para arquitectura de alta disponibilidad multi-AZ con bastion host?",
     "question_en": "How to design VPC for multi-AZ high availability architecture with bastion host?",
     "options_es": [
-      "Una subred pública con bastion, subredes privadas en múltiples AZs",
-      "Todas subnets públicas",
       "Un bastion por AZ",
+      "Todas subnets públicas",
+      "Una subred pública con bastion, subredes privadas en múltiples AZs",
       "Usar EC2 Systems Manager Session Manager"
     ],
     "options_en": [
-      "One public subnet with bastion, private in multiple AZs",
-      "All public subnets",
       "One bastion per AZ",
+      "All public subnets",
+      "One public subnet with bastion, private in multiple AZs",
       "Use EC2 Systems Manager Session Manager"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Bastion en subred pública permite acceso SSH a instancias privadas. Subredes privadas en múltiples AZs para HA. Un bastion es suficiente si está en ALB. Session Manager es alternativa sin bastion.",
@@ -116,17 +116,17 @@
     "question_en": "What is a NAT Gateway and when to use it?",
     "options_es": [
       "Dispositivo de red física",
-      "Permite instancias privadas acceso saliente a internet",
       "Reemplaza Security Groups",
+      "Permite instancias privadas acceso saliente a internet",
       "Solo para debugging"
     ],
     "options_en": [
       "Physical network device",
-      "Allows private instances outbound internet access",
       "Replaces Security Groups",
+      "Allows private instances outbound internet access",
       "Debugging only"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NAT Gateway es servicio AWS que permite salida a internet desde instancias privadas. Requiere Elastic IP. No es dispositivo físico, no reemplaza Security Groups.",
@@ -142,18 +142,18 @@
     "question_es": "¿Qué es un Internet Gateway (IGW)?",
     "question_en": "What is an Internet Gateway (IGW)?",
     "options_es": [
-      "Acceso a internet desde VPC",
       "Base de datos",
+      "Acceso a internet desde VPC",
       "Servicio de monitoreo",
       "Caché"
     ],
     "options_en": [
-      "Internet access from VPC",
       "Database",
+      "Internet access from VPC",
       "Monitoring service",
       "Cache"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IGW proporciona acceso bidireccional entre instancias en VPC e internet. Requerido para subredes públicas. No es BD, monitoreo, ni caché.",
@@ -169,18 +169,18 @@
     "question_es": "¿Cuál es la diferencia entre Security Groups y Network ACLs (NACLs)?",
     "question_en": "What is the difference between Security Groups and Network ACLs?",
     "options_es": [
-      "Security Groups operan en instancia, NACLs en subred",
+      "Son lo mismo",
       "NACLs son más restrictivas",
       "Security Groups usan allowlist, NACLs denylist",
-      "Son lo mismo"
+      "Security Groups operan en instancia, NACLs en subred"
     ],
     "options_en": [
-      "Security Groups at instance level, NACLs at subnet",
+      "They are same",
       "NACLs more restrictive",
       "Security Groups allowlist, NACLs denylist",
-      "They are same"
+      "Security Groups at instance level, NACLs at subnet"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Security Groups: instancia, stateful, default deny. NACLs: subred, stateless, pueden denegar explícitamente. Ambas capas de defensa.",
@@ -197,17 +197,17 @@
     "question_en": "How to enable communication between VPCs in different regions without internet exposure?",
     "options_es": [
       "Usar VPC Peering simple",
-      "Usar VPC Peering inter-regional",
+      "Ambas B y C",
       "Usar Transit Gateway con replicación",
-      "Ambas B y C"
+      "Usar VPC Peering inter-regional"
     ],
     "options_en": [
       "Use simple VPC Peering",
-      "Use inter-regional VPC Peering",
+      "Both B and C",
       "Use Transit Gateway with replication",
-      "Both B and C"
+      "Use inter-regional VPC Peering"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "VPC Peering inter-regional permite conexión privada. Transit Gateway centraliza para múltiples VPCs. Ambas son seguras sin exposición a internet.",
@@ -223,18 +223,18 @@
     "question_es": "¿Qué es un VPC Flow Logs?",
     "question_en": "What are VPC Flow Logs?",
     "options_es": [
-      "Registra tráfico de red en VPC",
       "Monitoreo de performance",
+      "Registra tráfico de red en VPC",
       "Caché de datos",
       "Historial de cambios"
     ],
     "options_en": [
-      "Records network traffic in VPC",
       "Performance monitoring",
+      "Records network traffic in VPC",
       "Data cache",
       "Change history"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Flow Logs captura metadata de flujos de tráfico IP (source, dest, puerto, protocolo). Útil para debugging y seguridad. No es monitoreo de performance.",
@@ -250,18 +250,18 @@
     "question_es": "¿Qué es un Elastic IP (EIP)?",
     "question_en": "What is an Elastic IP (EIP)?",
     "options_es": [
-      "Dirección IP pública estática",
+      "Registro DNS",
       "IP privada",
       "Certificado SSL",
-      "Registro DNS"
+      "Dirección IP pública estática"
     ],
     "options_en": [
-      "Static public IP address",
+      "DNS record",
       "Private IP",
       "SSL certificate",
-      "DNS record"
+      "Static public IP address"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "EIP es IP pública estática que persiste aunque detengues instancia. Puede reasignarse. No es IP privada, certificado, ni DNS.",
@@ -277,18 +277,18 @@
     "question_es": "¿Cómo monitorear y alertar sobre cambios no autorizados en VPC?",
     "question_en": "How to monitor and alert on unauthorized VPC changes?",
     "options_es": [
-      "AWS Config + CloudTrail",
+      "Todas las anteriores",
       "Security Hub",
       "AWS Trusted Advisor",
-      "Todas las anteriores"
+      "AWS Config + CloudTrail"
     ],
     "options_en": [
-      "AWS Config + CloudTrail",
+      "All of the above",
       "Security Hub",
       "AWS Trusted Advisor",
-      "All of the above"
+      "AWS Config + CloudTrail"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudTrail registra API calls. Config monitorea cambios de recursos. Security Hub centraliza hallazgos. Trusted Advisor da recomendaciones.",
@@ -386,17 +386,17 @@
     "question_en": "How to minimize data transfer cost in multi-AZ architecture?",
     "options_es": [
       "Mantener datos en una AZ",
-      "Replicación entre AZs (no hay costo)",
       "Usar CloudFront para distribución",
+      "Replicación entre AZs (no hay costo)",
       "Ambas B y C"
     ],
     "options_en": [
       "Keep data in one AZ",
-      "Replication between AZs (free)",
       "Use CloudFront for distribution",
+      "Replication between AZs (free)",
       "Both B and C"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Data transfer entre AZs en misma región es gratis. CloudFront reduce transferencia a usuarios externos pero costo separado.",
@@ -412,18 +412,18 @@
     "question_es": "¿Qué es Route 53?",
     "question_en": "What is Route 53?",
     "options_es": [
-      "Servicio DNS y domain name registrar",
-      "Balanceador de carga",
       "Servicio de almacenamiento",
+      "Balanceador de carga",
+      "Servicio DNS y domain name registrar",
       "Herramienta de monitoreo"
     ],
     "options_en": [
-      "DNS service and domain registrar",
-      "Load balancer",
       "Storage service",
+      "Load balancer",
+      "DNS service and domain registrar",
       "Monitoring tool"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Route 53 es DNS y registrar combinados. Soporta alias a recursos AWS y políticas de routing. No es ALB, S3, ni monitoreo.",
@@ -439,18 +439,18 @@
     "question_es": "¿Cuál es la política de enrutamiento más simple en Route 53?",
     "question_en": "What is the simplest routing policy in Route 53?",
     "options_es": [
-      "Simple routing (round-robin)",
-      "Weighted routing",
       "Latency-based routing",
+      "Weighted routing",
+      "Simple routing (round-robin)",
       "Failover routing"
     ],
     "options_en": [
-      "Simple routing (round-robin)",
-      "Weighted routing",
       "Latency-based routing",
+      "Weighted routing",
+      "Simple routing (round-robin)",
       "Failover routing"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Simple routing retorna todos los registros. Weighted permite distribución % personalizada. Latency-based minimiza latencia. Failover para DR.",
@@ -466,18 +466,18 @@
     "question_es": "¿Cómo implementar multi-region failover automático con Route 53?",
     "question_en": "How to implement multi-region auto failover with Route 53?",
     "options_es": [
-      "Usar Failover routing policy + health checks",
+      "Geolocation routing",
       "Weighted routing",
       "Latency routing",
-      "Geolocation routing"
+      "Usar Failover routing policy + health checks"
     ],
     "options_en": [
-      "Use Failover routing policy + health checks",
+      "Geolocation routing",
       "Weighted routing",
       "Latency routing",
-      "Geolocation routing"
+      "Use Failover routing policy + health checks"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Failover routing + health checks detecta región primaria caída y cambia a secundaria automáticamente. Otras políticas son para distribución.",
@@ -493,18 +493,18 @@
     "question_es": "¿Qué es un Route 53 Health Check?",
     "question_en": "What is a Route 53 Health Check?",
     "options_es": [
-      "Monitoreo de salud de endpoint",
+      "Todas las anteriores",
       "Verificación de disponibilidad",
       "Puede activar routing change automático",
-      "Todas las anteriores"
+      "Monitoreo de salud de endpoint"
     ],
     "options_en": [
-      "Endpoint health monitoring",
+      "All of the above",
       "Availability verification",
       "Can trigger automatic routing change",
-      "All of the above"
+      "Endpoint health monitoring"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Health Checks monitorean endpoints (HTTP, TCP, etc.). Si fallan, Route 53 puede cambiar routing automáticamente. Combinación de A, B, C.",
@@ -520,18 +520,18 @@
     "question_es": "¿Cuándo usar alias resource vs record DNS tradicional en Route 53?",
     "question_en": "When to use alias resource vs traditional DNS record in Route 53?",
     "options_es": [
-      "Alias para recursos AWS (ALB, CloudFront)",
+      "Son iguales",
       "Alias siempre",
       "DNS tradicional siempre",
-      "Son iguales"
+      "Alias para recursos AWS (ALB, CloudFront)"
     ],
     "options_en": [
-      "Alias for AWS resources (ALB, CloudFront)",
+      "They are same",
       "Always alias",
       "Always traditional DNS",
-      "They are same"
+      "Alias for AWS resources (ALB, CloudFront)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Alias mapea a recursos AWS nativamente sin costo de query. Tradicional es para externos. Alias es preferido para AWS.",
@@ -574,18 +574,18 @@
     "question_es": "¿Cómo manejar resolución DNS privada en VPC con dominios personalizados?",
     "question_en": "How to handle private DNS resolution in VPC with custom domains?",
     "options_es": [
-      "Route 53 Private Hosted Zone",
+      "Todas las anteriores",
       "DHCP option sets",
       "Resolver endpoints",
-      "Todas las anteriores"
+      "Route 53 Private Hosted Zone"
     ],
     "options_en": [
-      "Route 53 Private Hosted Zone",
+      "All of the above",
       "DHCP option sets",
       "Resolver endpoints",
-      "All of the above"
+      "Route 53 Private Hosted Zone"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Private Hosted Zone para dominios internos. DHCP options configuran servidores DNS. Resolver endpoints permiten DNS condicional entre on-prem y AWS.",
@@ -601,18 +601,18 @@
     "question_es": "¿Qué es Route 53 Resolver?",
     "question_en": "What is Route 53 Resolver?",
     "options_es": [
-      "DNS resolver para VPC",
-      "Reenvío de queries DNS entre on-premise y AWS",
       "Ambas",
+      "Reenvío de queries DNS entre on-premise y AWS",
+      "DNS resolver para VPC",
       "Balanceador de carga DNS"
     ],
     "options_en": [
-      "DNS resolver for VPC",
-      "DNS query forwarding between on-prem and AWS",
       "Both",
+      "DNS query forwarding between on-prem and AWS",
+      "DNS resolver for VPC",
       "DNS load balancer"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Resolver proporciona DNS recursivo en VPC y permite reenvío condicional. Útil para hybrid cloud con dominios privados.",
@@ -629,17 +629,17 @@
     "question_en": "What is recommended TTL (Time To Live) for Route 53 records?",
     "options_es": [
       "1 segundo para cambios frecuentes",
-      "300 segundos como default",
+      "Depende del caso",
       "3600 segundos para estabilidad",
-      "Depende del caso"
+      "300 segundos como default"
     ],
     "options_en": [
       "1 second for frequent changes",
-      "300 seconds as default",
+      "Depends on use case",
       "3600 seconds for stability",
-      "Depends on use case"
+      "300 seconds as default"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "TTL bajo permite cambios rápidos pero más queries. TTL alto reduce queries pero cambios lentos. Balance según necesidad.",
@@ -682,18 +682,18 @@
     "question_es": "¿Cómo monitorear cambios DNS y alertar sobre modificaciones no autorizadas?",
     "question_en": "How to monitor DNS changes and alert on unauthorized modifications?",
     "options_es": [
-      "Route 53 change logs",
+      "Todas las anteriores",
       "CloudTrail para API calls",
       "EventBridge para cambios",
-      "Todas las anteriores"
+      "Route 53 change logs"
     ],
     "options_en": [
-      "Route 53 change logs",
+      "All of the above",
       "CloudTrail for API calls",
       "EventBridge for changes",
-      "All of the above"
+      "Route 53 change logs"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Combinar CloudTrail (quién cambió qué), EventBridge (alertas en tiempo real), y logs proporciona auditoría completa.",
@@ -709,18 +709,18 @@
     "question_es": "¿Qué es Amazon CloudFront?",
     "question_en": "What is Amazon CloudFront?",
     "options_es": [
-      "Red de distribución de contenido (CDN)",
+      "Firewall",
       "Balanceador de carga",
       "Servicio DNS",
-      "Firewall"
+      "Red de distribución de contenido (CDN)"
     ],
     "options_en": [
-      "Content Delivery Network (CDN)",
+      "Firewall",
       "Load balancer",
       "DNS service",
-      "Firewall"
+      "Content Delivery Network (CDN)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudFront es CDN de AWS que cacha contenido en edge locations globales. Reduce latencia. No es ALB, Route 53, ni WAF.",
@@ -736,18 +736,18 @@
     "question_es": "¿Cuál es el beneficio principal de usar CloudFront?",
     "question_en": "What is the primary benefit of using CloudFront?",
     "options_es": [
-      "Reduce latencia para usuarios globales",
-      "Balanceo de carga",
       "Encriptación de datos",
+      "Balanceo de carga",
+      "Reduce latencia para usuarios globales",
       "Backup automático"
     ],
     "options_en": [
-      "Reduce latency for global users",
-      "Load balancing",
       "Data encryption",
+      "Load balancing",
+      "Reduce latency for global users",
       "Automatic backup"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudFront cacha cerca del usuario, reduciendo latencia. ALB balancea. Encriptación es separado. Backup es otra función.",
@@ -765,16 +765,16 @@
     "options_es": [
       "Un distribution para todo",
       "Usar behaviors con different cache policies",
-      "Behaviors con Cache-Control headers",
-      "Ambas B y C"
+      "Ambas B y C",
+      "Behaviors con Cache-Control headers"
     ],
     "options_en": [
       "Single distribution for all",
       "Use behaviors with different cache policies",
-      "Behaviors with Cache-Control headers",
-      "Both B and C"
+      "Both B and C",
+      "Behaviors with Cache-Control headers"
     ],
-    "correct_index": 3,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Behaviors permite diferentes políticas por path. Estático (jpg, css) con TTL alto. Dinámico (API) con TTL bajo o no cachear. Headers personalizados.",
@@ -791,17 +791,17 @@
     "question_en": "What is Origin Access Identity (OAI) in CloudFront?",
     "options_es": [
       "Permite acceso directo a S3 desde internet",
-      "Asegura acceso a origen solo via CloudFront",
+      "Certificado SSL",
       "Autenticación de usuario",
-      "Certificado SSL"
+      "Asegura acceso a origen solo via CloudFront"
     ],
     "options_en": [
       "Allows direct S3 access from internet",
-      "Ensures origin access only via CloudFront",
+      "SSL certificate",
       "User authentication",
-      "SSL certificate"
+      "Ensures origin access only via CloudFront"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "OAI (ahora Origin Access Control/OAC) previene acceso directo a S3. CloudFront accede como OAI, S3 bucket policy lo permite.",
@@ -818,17 +818,17 @@
     "question_en": "How to invalidate cache in CloudFront after updating content?",
     "options_es": [
       "Crear Invalidation request",
-      "Esperar TTL",
+      "Ambas A y C",
       "Usar AWS CLI invalidate",
-      "Ambas A y C"
+      "Esperar TTL"
     ],
     "options_en": [
       "Create Invalidation request",
-      "Wait for TTL",
+      "Both A and C",
       "Use AWS CLI invalidate",
-      "Both A and C"
+      "Wait for TTL"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Invalidation Request limpia caché inmediatamente por patrón. CLI permite automatizar. Esperar TTL es pasivo. Ambas activas son válidas.",
@@ -845,17 +845,17 @@
     "question_en": "How many edge locations does CloudFront have?",
     "options_es": [
       "10 ubicaciones",
-      "50+ ubicaciones",
       "500+ ubicaciones",
+      "50+ ubicaciones",
       "Depende de la región"
     ],
     "options_en": [
       "10 locations",
-      "50+ locations",
       "500+ locations",
+      "50+ locations",
       "Depends on region"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudFront tiene 500+ edge locations globales. Proporciona cobertura casi universal.",
@@ -873,16 +873,16 @@
     "options_es": [
       "AWS Shield Standard (incluido)",
       "AWS Shield Advanced + WAF",
-      "Security Groups",
-      "Ambas A y B"
+      "Ambas A y B",
+      "Security Groups"
     ],
     "options_en": [
       "AWS Shield Standard (included)",
       "AWS Shield Advanced + WAF",
-      "Security Groups",
-      "Both A and B"
+      "Both A and B",
+      "Security Groups"
     ],
-    "correct_index": 3,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Shield Standard incluido contra DDoS comunes. Shield Advanced + WAF para protección avanzada. Security Groups no aplica a CloudFront.",
@@ -898,18 +898,18 @@
     "question_es": "¿Cómo usar CloudFront con aplicación dinámica (API)?",
     "question_en": "How to use CloudFront with dynamic application (API)?",
     "options_es": [
-      "CloudFront no funciona con APIs",
-      "Usar query string caching",
       "Cachear solo responses GET sin cambios",
+      "Usar query string caching",
+      "CloudFront no funciona con APIs",
       "Usar Lambda@Edge para transformar"
     ],
     "options_en": [
-      "CloudFront doesn't work with APIs",
-      "Use query string caching",
       "Cache only stable GET responses",
+      "Use query string caching",
+      "CloudFront doesn't work with APIs",
       "Use Lambda@Edge to transform"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudFront cachea APIs pero con cuidado: GET estables sí, POST/PUT/DELETE por defecto no cachea. Lambda@Edge permite lógica avanzada.",
@@ -925,18 +925,18 @@
     "question_es": "¿Cómo minimizar costo de CloudFront?",
     "question_en": "How to minimize CloudFront cost?",
     "options_es": [
-      "TTL bajo",
+      "Ambas B y C",
       "Comprimir contenido + cache agresivo",
       "Usar Data Transfer Out menos",
-      "Ambas B y C"
+      "TTL bajo"
     ],
     "options_en": [
-      "Low TTL",
+      "Both B and C",
       "Compress content + aggressive cache",
       "Use less Data Transfer Out",
-      "Both B and C"
+      "Low TTL"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Compresión reduce bytes transferidos. Cache agresivo (alto TTL) reduce solicitudes origen. Ambas reducen costo.",
@@ -952,18 +952,18 @@
     "question_es": "¿Qué es Lambda@Edge?",
     "question_en": "What is Lambda@Edge?",
     "options_es": [
-      "Lambda en edge locations de CloudFront",
-      "Función serverless normal",
       "Servicio de caché",
+      "Función serverless normal",
+      "Lambda en edge locations de CloudFront",
       "Balanceador de carga"
     ],
     "options_en": [
-      "Lambda at CloudFront edge locations",
-      "Normal serverless function",
       "Caching service",
+      "Normal serverless function",
+      "Lambda at CloudFront edge locations",
       "Load balancer"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Lambda@Edge ejecuta código en edge locations para transformar requests/responses. Permite lógica personalizada cerca del usuario.",
@@ -1007,17 +1007,17 @@
     "question_en": "How to monitor CloudFront performance?",
     "options_es": [
       "CloudWatch metrics automáticas",
-      "CloudFront access logs",
+      "Todas las anteriores",
       "AWS CloudTrail",
-      "Todas las anteriores"
+      "CloudFront access logs"
     ],
     "options_en": [
       "Automatic CloudWatch metrics",
-      "CloudFront access logs",
+      "All of the above",
       "AWS CloudTrail",
-      "All of the above"
+      "CloudFront access logs"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudWatch proporciona métricas estándar. Access logs dan detalle de cada request. CloudTrail rastrea cambios de configuración.",
@@ -1061,17 +1061,17 @@
     "question_en": "How to serve content in multiple languages using CloudFront?",
     "options_es": [
       "Crear distribution separado por idioma",
-      "Usar cache basado en Accept-Language header",
+      "Usar Lambda@Edge para redirigir",
       "CloudFront no soporta idiomas",
-      "Usar Lambda@Edge para redirigir"
+      "Usar cache basado en Accept-Language header"
     ],
     "options_en": [
       "Create separate distribution per language",
-      "Use cache based on Accept-Language header",
+      "Use Lambda@Edge to redirect",
       "CloudFront doesn't support languages",
-      "Use Lambda@Edge to redirect"
+      "Use cache based on Accept-Language header"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Accept-Language permite cachear versiones distintas. Lambda@Edge puede redirigir. Un distribution es más simple.",
@@ -1087,18 +1087,18 @@
     "question_es": "¿Cómo optimizar CloudFront para maximizar hit ratio?",
     "question_en": "How to optimize CloudFront for maximum hit ratio?",
     "options_es": [
-      "TTL muy bajo",
+      "Todas las anteriores",
       "Cache headers optimizados + versionado de URLs",
       "Comportamientos específicos por tipo de contenido",
-      "Todas las anteriores"
+      "TTL muy bajo"
     ],
     "options_en": [
-      "Very low TTL",
+      "All of the above",
       "Optimized cache headers + URL versioning",
       "Specific behaviors by content type",
-      "All of the above"
+      "Very low TTL"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Combinar: headers Cache-Control óptimos, versionar URLs (assets-v1.js), behaviors específicos, TTL adecuado. Maximiza hit ratio.",
@@ -1114,18 +1114,18 @@
     "question_es": "¿Qué es una Route 53 Health Check y cuándo la usarías?",
     "question_en": "What is a Route 53 Health Check and when would you use it?",
     "options_es": [
-      "Verifica si un endpoint está disponible; usada para failover automático de tráfico",
+      "Compresión de datos DNS",
       "Backup automático de registros DNS",
       "Validación de certificados SSL",
-      "Compresión de datos DNS"
+      "Verifica si un endpoint está disponible; usada para failover automático de tráfico"
     ],
     "options_en": [
-      "Verifies if an endpoint is available; used for automatic traffic failover",
+      "DNS data compression",
       "Automatic DNS record backup",
       "SSL certificate validation",
-      "DNS data compression"
+      "Verifies if an endpoint is available; used for automatic traffic failover"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Health Checks monitorizan endpoints HTTP/HTTPS/TCP. Si uno falla, Route 53 puede automaticamente dirigir tráfico a alternativas saludables.",
@@ -1141,18 +1141,18 @@
     "question_es": "¿Cuál es la diferencia entre Route 53 Simple Routing y Weighted Routing?",
     "question_en": "What is the difference between Route 53 Simple Routing and Weighted Routing?",
     "options_es": [
-      "Simple: una IP. Weighted: distribuye porcentaje de tráfico según peso asignado",
-      "Simple es más rápido",
       "Weighted no soporta failover",
+      "Simple es más rápido",
+      "Simple: una IP. Weighted: distribuye porcentaje de tráfico según peso asignado",
       "Son idénticos"
     ],
     "options_en": [
-      "Simple: one IP. Weighted: distributes percentage of traffic by assigned weight",
-      "Simple is faster",
       "Weighted does not support failover",
+      "Simple is faster",
+      "Simple: one IP. Weighted: distributes percentage of traffic by assigned weight",
       "They are identical"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Simple Routing retorna una sola IP (o múltiples sin control). Weighted asigna pesos (ej: 70% server A, 30% server B) para distribución controlada.",
@@ -1168,18 +1168,18 @@
     "question_es": "¿Cómo implementas failover automático en Route 53?",
     "question_en": "How do you implement automatic failover in Route 53?",
     "options_es": [
-      "Usar Failover routing policy con primario y secundario; health checks activados",
+      "No es posible",
       "Cambiar DNS manualmente",
       "Usar solo Geolocation routing",
-      "No es posible"
+      "Usar Failover routing policy con primario y secundario; health checks activados"
     ],
     "options_en": [
-      "Use Failover routing policy with primary and secondary; health checks enabled",
+      "Not possible",
       "Change DNS manually",
       "Use only Geolocation routing",
-      "Not possible"
+      "Use Failover routing policy with primary and secondary; health checks enabled"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Failover policy define un registro primario y otro secundario (standby). Health checks monitorean el primario; si falla, Route 53 dirige a secundario.",
@@ -1195,18 +1195,18 @@
     "question_es": "¿Qué es Route 53 Geolocation Routing y para qué se usa?",
     "question_en": "What is Route 53 Geolocation Routing and what is it used for?",
     "options_es": [
-      "Dirige tráfico basado en ubicación geográfica del cliente; compliance local o idioma",
       "Optimiza latencia automáticamente",
+      "Dirige tráfico basado en ubicación geográfica del cliente; compliance local o idioma",
       "Balanceo de carga igual",
       "Failover basado en región"
     ],
     "options_en": [
-      "Routes traffic based on client's geographic location; local compliance or language",
       "Automatically optimizes latency",
+      "Routes traffic based on client's geographic location; local compliance or language",
       "Equal load balancing",
       "Region-based failover"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Geolocation permite servir contenido específico por país/continente: ej, usuarios EU→servidor EU, usuarios APAC→servidor APAC, útil para compliance GDPR.",
@@ -1249,18 +1249,18 @@
     "question_es": "¿Cuál es la diferencia entre Direct Connect y VPN?",
     "question_en": "What is the difference between Direct Connect and VPN?",
     "options_es": [
-      "DC: dedicado, fisico, consistente. VPN: compartido, internet, variable latencia",
-      "VPN es más rápido",
       "DC solo para on-premises",
+      "VPN es más rápido",
+      "DC: dedicado, fisico, consistente. VPN: compartido, internet, variable latencia",
       "No hay diferencia"
     ],
     "options_en": [
-      "DC: dedicated, physical, consistent. VPN: shared, internet, variable latency",
-      "VPN is faster",
       "DC only for on-premises",
+      "VPN is faster",
+      "DC: dedicated, physical, consistent. VPN: shared, internet, variable latency",
       "No difference"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Direct Connect es conexión física dedicada con SLA de 99.99%. VPN usa internet público encriptado, más flexible pero con latencia impredecible.",
@@ -1276,18 +1276,18 @@
     "question_es": "¿Qué es un Virtual Interface (VIF) en Direct Connect?",
     "question_en": "What is a Virtual Interface (VIF) in Direct Connect?",
     "options_es": [
-      "Interfaz virtual que asigna conexión DC a VPC o AWS service específico",
+      "Tipo de instancia EC2",
       "Servidor virtual en la nube",
       "Interfaz de usuario gráfica",
-      "Tipo de instancia EC2"
+      "Interfaz virtual que asigna conexión DC a VPC o AWS service específico"
     ],
     "options_en": [
-      "Virtual interface that assigns DC connection to specific VPC or AWS service",
+      "EC2 instance type",
       "Virtual server in the cloud",
       "Graphical user interface",
-      "EC2 instance type"
+      "Virtual interface that assigns DC connection to specific VPC or AWS service"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "VIF es un tunel virtual dentro de la conexión DC. Puedes tener múltiples VIFs: Private (a VPC), Public (a servicios AWS), Transit (a Transit Gateway).",
@@ -1330,18 +1330,18 @@
     "question_es": "¿Cómo activas redundancia en Direct Connect?",
     "question_en": "How do you enable redundancy in Direct Connect?",
     "options_es": [
-      "Crear múltiples conexiones DC a diferentes ubicaciones; use failover automático",
       "Una sola conexión es suficiente",
+      "Crear múltiples conexiones DC a diferentes ubicaciones; use failover automático",
       "Requiere standby manual",
       "No es posible"
     ],
     "options_en": [
-      "Create multiple DC connections to different locations; use automatic failover",
       "Single connection is sufficient",
+      "Create multiple DC connections to different locations; use automatic failover",
       "Requires manual standby",
       "Not possible"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWS recomienda 2+ conexiones DC a diferentes locaciones para alta disponibilidad. Puedes usar BGP para failover automático entre conexiones.",
@@ -1357,18 +1357,18 @@
     "question_es": "¿Qué es Direct Connect Gateway y para qué sirve?",
     "question_en": "What is Direct Connect Gateway and what is it for?",
     "options_es": [
-      "Conecta múltiples VPCs/regiones a una sola conexión DC; distribuye ancho de banda",
-      "Router de internet",
       "Servicio de DNS",
+      "Router de internet",
+      "Conecta múltiples VPCs/regiones a una sola conexión DC; distribuye ancho de banda",
       "Acelerador de transferencia"
     ],
     "options_en": [
-      "Connects multiple VPCs/regions to single DC connection; distributes bandwidth",
-      "Internet router",
       "DNS service",
+      "Internet router",
+      "Connects multiple VPCs/regions to single DC connection; distributes bandwidth",
       "Transfer accelerator"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DX Gateway permite compartir una sola conexión Direct Connect con múltiples VPCs en múltiples regiones, centralizando la conectividad.",
@@ -1384,18 +1384,18 @@
     "question_es": "¿Cuál es la latencia típica de una conexión VPN respecto a Direct Connect?",
     "question_en": "What is the typical latency of a VPN connection compared to Direct Connect?",
     "options_es": [
-      "VPN: 20-50ms típico. DC: <5ms típico",
       "VPN es más rápido",
+      "VPN: 20-50ms típico. DC: <5ms típico",
       "Igual latencia",
       "VPN es 10x más rápido"
     ],
     "options_en": [
-      "VPN: 20-50ms typical. DC: <5ms typical",
       "VPN is faster",
+      "VPN: 20-50ms typical. DC: <5ms typical",
       "Equal latency",
       "VPN is 10x faster"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "VPN va por internet público, latencia variable 20-50ms. DC es conexión dedicada con latencia sub-milisegundo <5ms, predecible.",
@@ -1438,18 +1438,18 @@
     "question_es": "¿Qué tiempo toma provision una conexión Direct Connect desde solicitud?",
     "question_en": "How long does it take to provision a Direct Connect connection from request?",
     "options_es": [
-      "Típicamente 1-3 semanas (incluye coordinación con proveedor de colocation)",
+      "Instantáneo",
       "Días",
       "Minutos",
-      "Instantáneo"
+      "Típicamente 1-3 semanas (incluye coordinación con proveedor de colocation)"
     ],
     "options_en": [
-      "Typically 1-3 weeks (includes coordination with colocation provider)",
+      "Instant",
       "Days",
       "Minutes",
-      "Instant"
+      "Typically 1-3 weeks (includes coordination with colocation provider)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DC requiere coordinación con AWS y proveedores de colocation/carriers. Típico 1-3 semanas desde solicitud hasta tráfico activo.",
@@ -1465,18 +1465,18 @@
     "question_es": "¿Cuál es la estructura de costos de Direct Connect?",
     "question_en": "What is the cost structure of Direct Connect?",
     "options_es": [
-      "Conexión mensual + datos transferidos (outbound chargeable)",
+      "Gratis con commitment de 1 año",
       "Solo outbound",
       "Pago único",
-      "Gratis con commitment de 1 año"
+      "Conexión mensual + datos transferidos (outbound chargeable)"
     ],
     "options_en": [
-      "Monthly connection + data transferred (outbound chargeable)",
+      "Free with 1-year commitment",
       "Outbound only",
       "One-time fee",
-      "Free with 1-year commitment"
+      "Monthly connection + data transferred (outbound chargeable)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DC tiene cargo mensual por conexión (varía por velocidad) + tarifa por GB de datos salientes. Datos entrantes son gratis.",
@@ -1492,18 +1492,18 @@
     "question_es": "¿Qué es AWS Direct Connect Hosted Connection?",
     "question_en": "What is AWS Direct Connect Hosted Connection?",
     "options_es": [
-      "Conexión DC provisionada por partners; más rápido setup que conexión estándar",
       "Conexión VPN",
+      "Conexión DC provisionada por partners; más rápido setup que conexión estándar",
       "Servicio deprecated",
       "Solo para startups"
     ],
     "options_en": [
-      "DC connection provisioned by partners; faster setup than standard connection",
       "VPN connection",
+      "DC connection provisioned by partners; faster setup than standard connection",
       "Deprecated service",
       "Only for startups"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Hosted Connection es provisionada por AWS partners (carriers, proveedores cloud), reduciendo tiempo de setup a días en lugar de semanas.",
@@ -1546,18 +1546,18 @@
     "question_es": "¿Qué es AWS Direct Connect Local Connection?",
     "question_en": "What is AWS Direct Connect Local Connection?",
     "options_es": [
-      "Conexión DC a locación/región AWS local cercana; reduce costo vs conexión regional",
       "Conexión a instancias EC2 locales",
+      "Conexión DC a locación/región AWS local cercana; reduce costo vs conexión regional",
       "VPN local",
       "Cache distribuida"
     ],
     "options_en": [
-      "DC connection to nearby AWS location/local region; reduces cost vs regional connection",
       "Connection to local EC2 instances",
+      "DC connection to nearby AWS location/local region; reduces cost vs regional connection",
       "Local VPN",
       "Distributed cache"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Local Connection conecta a una locación AWS cercana en tu región, con costos menores que conexiones a regiones lejanas.",
@@ -1573,18 +1573,18 @@
     "question_es": "¿Cómo monitoreas una conexión Direct Connect?",
     "question_en": "How do you monitor a Direct Connect connection?",
     "options_es": [
-      "CloudWatch metrics (estado, BWth, conexión), logs, notificaciones SNS",
       "Solo mediante consola manual",
+      "CloudWatch metrics (estado, BWth, conexión), logs, notificaciones SNS",
       "No hay monitoreo",
       "Scripts personalizado solamente"
     ],
     "options_en": [
-      "CloudWatch metrics (state, BWth, connection), logs, SNS notifications",
       "Manual console only",
+      "CloudWatch metrics (state, BWth, connection), logs, SNS notifications",
       "No monitoring",
       "Custom scripts only"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Monitorea DC con CloudWatch (physical/logical state, bandwidth utilization). Configura alarmas y SNS para alertas de desconexiones.",
@@ -1600,18 +1600,18 @@
     "question_es": "¿Cuándo elegir Direct Connect vs VPN vs AWS Global Accelerator?",
     "question_en": "When to choose Direct Connect vs VPN vs AWS Global Accelerator?",
     "options_es": [
-      "DC: banda consistente, on-premises. VPN: flexible, fallback. GA: optimizar latencia internet",
+      "Solo usar DC",
       "Son idénticos",
       "GA reemplaza a DC",
-      "Solo usar DC"
+      "DC: banda consistente, on-premises. VPN: flexible, fallback. GA: optimizar latencia internet"
     ],
     "options_en": [
-      "DC: consistent bandwidth, on-premises. VPN: flexible, fallback. GA: optimize internet latency",
+      "Only use DC",
       "They are identical",
       "GA replaces DC",
-      "Only use DC"
+      "DC: consistent bandwidth, on-premises. VPN: flexible, fallback. GA: optimize internet latency"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DC para producción on-premises. VPN para backup/fallback. Global Accelerator para optimizar usuarios internet globales sin on-premises.",
@@ -1628,17 +1628,17 @@
     "question_en": "What is the main advantage of using API Gateway with direct Lambda integration instead of EC2?",
     "options_es": [
       "A) Mejor rendimiento en operaciones CPU-intensivas",
-      "B) Escalado automático sin gestión de servidores",
+      "D) Mayor control sobre la configuración del sistema operativo",
       "C) Menor costo de computación para APIs de alto volumen",
-      "D) Mayor control sobre la configuración del sistema operativo"
+      "B) Escalado automático sin gestión de servidores"
     ],
     "options_en": [
       "A) Better performance for CPU-intensive operations",
-      "B) Automatic scaling without server management",
+      "D) Greater control over operating system configuration",
       "C) Lower compute costs for high-volume APIs",
-      "D) Greater control over operating system configuration"
+      "B) Automatic scaling without server management"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "API Gateway con Lambda proporciona escalado automático sin necesidad de administrar servidores EC2, pagando solo por las invocaciones realizadas.",
@@ -1654,18 +1654,18 @@
     "question_es": "¿Cómo se configura CORS en API Gateway para permitir solicitudes desde un dominio específico?",
     "question_en": "How do you configure CORS in API Gateway to allow requests from a specific domain?",
     "options_es": [
-      "A) A través de headers de respuesta en el método OPTIONS",
-      "B) En la configuración de la fase de API Gateway",
       "C) Modificando las reglas del Security Group",
+      "B) En la configuración de la fase de API Gateway",
+      "A) A través de headers de respuesta en el método OPTIONS",
       "D) En la política de bucket de S3 asociado"
     ],
     "options_en": [
-      "A) Through response headers in the OPTIONS method",
-      "B) In the API Gateway stage configuration",
       "C) By modifying Security Group rules",
+      "B) In the API Gateway stage configuration",
+      "A) Through response headers in the OPTIONS method",
       "D) In the associated S3 bucket policy"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CORS se configura respondiendo apropiadamente a solicitudes OPTIONS con headers como Access-Control-Allow-Origin, Access-Control-Allow-Methods, etc.",
@@ -1762,18 +1762,18 @@
     "question_es": "¿Cuál es la diferencia entre autorización de API Gateway y autenticación en Lambda?",
     "question_en": "What is the difference between API Gateway authorization and authentication in Lambda?",
     "options_es": [
-      "A) API Gateway maneja quién eres (autenticación), Lambda verifica qué puedes hacer (autorización)",
+      "D) API Gateway no puede manejar autorización",
       "B) API Gateway verifica qué puedes hacer, Lambda verifica quién eres",
       "C) Son lo mismo, solo con nombres diferentes",
-      "D) API Gateway no puede manejar autorización"
+      "A) API Gateway maneja quién eres (autenticación), Lambda verifica qué puedes hacer (autorización)"
     ],
     "options_en": [
-      "A) API Gateway handles who you are (authentication), Lambda verifies what you can do (authorization)",
+      "D) API Gateway cannot handle authorization",
       "B) API Gateway verifies what you can do, Lambda verifies who you are",
       "C) They are the same, just with different names",
-      "D) API Gateway cannot handle authorization"
+      "A) API Gateway handles who you are (authentication), Lambda verifies what you can do (authorization)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "API Gateway autentica (verifica identidad) mediante authorizers, mientras que Lambda típicamente implementa la lógica de autorización (qué puede hacer ese usuario).",
@@ -1789,18 +1789,18 @@
     "question_es": "¿Cuál es la mejor estrategia para implementar un patrón de circuit breaker en una arquitectura serverless con API Gateway?",
     "question_en": "What is the best strategy to implement a circuit breaker pattern in a serverless architecture with API Gateway?",
     "options_es": [
-      "A) Usar Lambda para mantener estado de intentos fallidos en DynamoDB",
+      "D) Implementar reintentos automáticos en CloudFront",
       "B) Configurar rate limiting en API Gateway",
       "C) Usar VPC Endpoints con caché",
-      "D) Implementar reintentos automáticos en CloudFront"
+      "A) Usar Lambda para mantener estado de intentos fallidos en DynamoDB"
     ],
     "options_en": [
-      "A) Use Lambda to maintain failed attempt state in DynamoDB",
+      "D) Implement automatic retries in CloudFront",
       "B) Configure rate limiting in API Gateway",
       "C) Use VPC Endpoints with caching",
-      "D) Implement automatic retries in CloudFront"
+      "A) Use Lambda to maintain failed attempt state in DynamoDB"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El patrón circuit breaker se implementa mejor usando una función Lambda que mantiene estado en DynamoDB sobre el estado de los intentos fallidos.",
@@ -1817,17 +1817,17 @@
     "question_en": "What is the pricing model for API Gateway?",
     "options_es": [
       "A) Por cantidad de API creadas",
-      "B) Por cantidad de solicitudes más datos transferidos",
       "C) Por tiempo de ejecución de funciones Lambda",
+      "B) Por cantidad de solicitudes más datos transferidos",
       "D) Acceso ilimitado con suscripción mensual"
     ],
     "options_en": [
       "A) By number of APIs created",
-      "B) By number of requests plus data transfer",
       "C) By execution time of Lambda functions",
+      "B) By number of requests plus data transfer",
       "D) Unlimited access with monthly subscription"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "API Gateway cobra por millones de solicitudes HTTP recibidas y por cantidad de datos transferidos, siguiendo un modelo de pago por uso.",
@@ -1843,18 +1843,18 @@
     "question_es": "¿Cómo se configura una WebSocket API en API Gateway para mantener conexiones bidireccionales?",
     "question_en": "How do you configure a WebSocket API in API Gateway to maintain bidirectional connections?",
     "options_es": [
-      "A) Creando rutas para $connect, $default y $disconnect",
-      "B) Usando solo HTTP methods POST y GET",
       "C) Configurando un Classic Load Balancer",
+      "B) Usando solo HTTP methods POST y GET",
+      "A) Creando rutas para $connect, $default y $disconnect",
       "D) Implementando un protocolo MQTT en Lambda"
     ],
     "options_en": [
-      "A) Creating routes for $connect, $default and $disconnect",
-      "B) Using only HTTP methods POST and GET",
       "C) Configuring a Classic Load Balancer",
+      "B) Using only HTTP methods POST and GET",
+      "A) Creating routes for $connect, $default and $disconnect",
       "D) Implementing an MQTT protocol in Lambda"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Las WebSocket APIs en API Gateway utilizan rutas especiales: $connect para conexiones nuevas, $default para mensajes, y $disconnect para cierres.",
@@ -1897,18 +1897,18 @@
     "question_es": "¿Qué es un AWS Lambda Authorizer y cuándo lo usarías?",
     "question_en": "What is an AWS Lambda Authorizer and when would you use it?",
     "options_es": [
-      "A) Una función Lambda que valida JWT o tokens OAuth en solicitudes API",
       "B) Un servicio que gestiona credenciales en IAM",
+      "A) Una función Lambda que valida JWT o tokens OAuth en solicitudes API",
       "C) Un componente que encripta datos",
       "D) Un servicio que registra todas las acciones en CloudTrail"
     ],
     "options_en": [
-      "A) A Lambda function that validates JWT or OAuth tokens in API requests",
       "B) A service that manages credentials in IAM",
+      "A) A Lambda function that validates JWT or OAuth tokens in API requests",
       "C) A component that encrypts data",
       "D) A service that logs all actions in CloudTrail"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Un Lambda Authorizer es una función Lambda personalizada que valida tokens JWT, OAuth o credenciales personalizadas en solicitudes a API Gateway.",
@@ -1951,18 +1951,18 @@
     "question_es": "¿Cuál es la ventaja de usar API Gateway con caché de respuestas?",
     "question_en": "What is the advantage of using API Gateway with response caching?",
     "options_es": [
-      "A) Reduce la latencia sirviendo respuestas desde caché, reduciendo invocaciones al backend",
+      "D) Implementa automáticamente HTTPS",
       "B) Encripta todas las respuestas",
       "C) Permite almacenar datos en S3",
-      "D) Implementa automáticamente HTTPS"
+      "A) Reduce la latencia sirviendo respuestas desde caché, reduciendo invocaciones al backend"
     ],
     "options_en": [
-      "A) Reduces latency by serving responses from cache, reducing backend invocations",
+      "D) Automatically implements HTTPS",
       "B) Encrypts all responses",
       "C) Allows storing data in S3",
-      "D) Automatically implements HTTPS"
+      "A) Reduces latency by serving responses from cache, reducing backend invocations"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El caché en API Gateway almacena respuestas durante un TTL específico, reduce latencia y costo al servir respuestas cacheadas sin invocar el backend.",
@@ -1979,17 +1979,17 @@
     "question_en": "What is the maximum payload size that API Gateway can accept?",
     "options_es": [
       "A) 1 MB",
-      "B) 5 MB",
+      "D) 50 MB",
       "C) 10 MB",
-      "D) 50 MB"
+      "B) 5 MB"
     ],
     "options_en": [
       "A) 1 MB",
-      "B) 5 MB",
+      "D) 50 MB",
       "C) 10 MB",
-      "D) 50 MB"
+      "B) 5 MB"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "API Gateway tiene un límite de tamaño de payload de 10 MB para solicitudes y respuestas en integraciones Lambda, aunque puede variar según el tipo.",
@@ -2005,18 +2005,18 @@
     "question_es": "¿Cómo se integra API Gateway con IAM para control de acceso?",
     "question_en": "How does API Gateway integrate with IAM for access control?",
     "options_es": [
-      "A) Mediante IAM roles y políticas que especifican quién puede invocar APIs",
-      "B) IAM solo controla acceso a la consola, no a las APIs",
       "C) API Gateway no puede usar IAM",
+      "B) IAM solo controla acceso a la consola, no a las APIs",
+      "A) Mediante IAM roles y políticas que especifican quién puede invocar APIs",
       "D) Solo funciona con IAM users, no con roles"
     ],
     "options_en": [
-      "A) Through IAM roles and policies that specify who can invoke APIs",
-      "B) IAM only controls console access, not APIs",
       "C) API Gateway cannot use IAM",
+      "B) IAM only controls console access, not APIs",
+      "A) Through IAM roles and policies that specify who can invoke APIs",
       "D) Only works with IAM users, not roles"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "API Gateway se integra con IAM permitiendo crear políticas que especifican quién puede invocar métodos específicos de la API.",

@@ -24,7 +24,11 @@
       "explanation_en": "The identity is the neutral element of matrix multiplication: `A·I = I·A = A`. Confusing it with the all-ones matrix is a common slip, but a matrix full of ones does not leave `A` untouched. The all-zeros matrix is the neutral element of *addition*, not multiplication. And having determinant 1 is not enough: many matrices other than `I` have determinant 1.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
       "expected_time_ms": 18000,
-      "tags": ["linear-algebra", "matrices", "identity"]
+      "tags": [
+        "linear-algebra",
+        "matrices",
+        "identity"
+      ]
     },
     {
       "id": "q060101010",
@@ -34,23 +38,27 @@
       "question_es": "En NumPy, `A` tiene forma `(3, 4)` y `x` tiene forma `(4,)`. ¿Cuál es la forma de `A @ x`?",
       "question_en": "In NumPy, `A` has shape `(3, 4)` and `x` has shape `(4,)`. What is the shape of `A @ x`?",
       "options_es": [
-        "(4,)",
         "(3,)",
+        "(4,)",
         "(3, 4)",
         "Error: las formas no son compatibles"
       ],
       "options_en": [
-        "(4,)",
         "(3,)",
+        "(4,)",
         "(3, 4)",
         "Error: the shapes are incompatible"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Al multiplicar `(3, 4)` por `(4,)` se contrae la dimensión interna (4) y queda `(3,)`: una salida por cada fila de `A`. Responder `(4,)` es quedarse con la dimensión que desaparece; `(3, 4)` sería el resultado de una multiplicación elemento a elemento con broadcasting (`A * x`), que es una operación distinta. No hay error porque las dimensiones internas coinciden.",
       "explanation_en": "Multiplying `(3, 4)` by `(4,)` contracts the inner dimension (4) and leaves `(3,)`: one output per row of `A`. Answering `(4,)` keeps the dimension that disappears; `(3, 4)` would be the result of element-wise multiplication with broadcasting (`A * x`), which is a different operation. There is no error because the inner dimensions match.",
       "source": "NumPy documentation, numpy.matmul / Linear algebra (numpy.linalg)",
       "expected_time_ms": 25000,
-      "tags": ["linear-algebra", "numpy", "shapes"]
+      "tags": [
+        "linear-algebra",
+        "numpy",
+        "shapes"
+      ]
     },
     {
       "id": "q060101011",
@@ -60,23 +68,27 @@
       "question_es": "Una matriz cuadrada `A` tiene determinante 0. ¿Qué se deduce de ello?",
       "question_en": "A square matrix `A` has determinant 0. What follows from that?",
       "options_es": [
-        "Que todos sus elementos son cero",
-        "Que su inversa existe pero es difícil de calcular numéricamente",
         "Que es singular: sus columnas son linealmente dependientes y no tiene inversa",
+        "Que su inversa existe pero es difícil de calcular numéricamente",
+        "Que todos sus elementos son cero",
         "Que sus valores propios son todos iguales a 1"
       ],
       "options_en": [
-        "That all of its entries are zero",
-        "That its inverse exists but is numerically hard to compute",
         "That it is singular: its columns are linearly dependent and it has no inverse",
+        "That its inverse exists but is numerically hard to compute",
+        "That all of its entries are zero",
         "That all of its eigenvalues equal 1"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Determinante cero significa que la transformación colapsa el espacio en una dimensión menor, así que no puede deshacerse: no hay inversa. Una matriz puede ser singular sin tener ningún elemento nulo (por ejemplo `[[1,2],[2,4]]`). La opción del cálculo 'difícil' describe el mal condicionamiento, un problema distinto: ahí el determinante es pequeño pero no cero. Y el determinante es el *producto* de los valores propios, luego determinante 0 implica que al menos uno de ellos es 0, no que valgan 1.",
       "explanation_en": "A zero determinant means the transformation collapses space into a lower dimension, so it cannot be undone: there is no inverse. A matrix can be singular without any zero entries (e.g. `[[1,2],[2,4]]`). The 'numerically hard' option describes ill-conditioning, a different problem: there the determinant is small but not zero. And the determinant is the *product* of the eigenvalues, so a determinant of 0 implies at least one eigenvalue is 0, not that they all equal 1.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
       "expected_time_ms": 35000,
-      "tags": ["linear-algebra", "determinant", "invertibility"]
+      "tags": [
+        "linear-algebra",
+        "determinant",
+        "invertibility"
+      ]
     },
     {
       "id": "q060101012",
@@ -94,7 +106,11 @@
       "explanation_en": "The rank is the effective dimensionality of the information a matrix carries. A data matrix with 1000 columns and rank 12 has 988 redundant columns: although its shape suggests 1000 variables, only 12 directions are genuinely distinct. That is why rank explains both how PCA can drop dimensions without losing information and why a rank-deficient matrix is not invertible.",
       "source": "Strang, Introduction to Linear Algebra (5th ed.), Ch. 3: Vector Spaces and Subspaces",
       "expected_time_ms": 30000,
-      "tags": ["linear-algebra", "rank", "linear-independence"]
+      "tags": [
+        "linear-algebra",
+        "rank",
+        "linear-independence"
+      ]
     },
     {
       "id": "q060101013",
@@ -106,21 +122,25 @@
       "options_es": [
         "(3, 1)",
         "(1, 3)",
-        "Error: las formas no coinciden",
-        "(3, 3)"
+        "(3, 3)",
+        "Error: las formas no coinciden"
       ],
       "options_en": [
         "(3, 1)",
         "(1, 3)",
-        "Error: the shapes do not match",
-        "(3, 3)"
+        "(3, 3)",
+        "Error: the shapes do not match"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "El broadcasting expande cada dimensión de tamaño 1 hasta igualar a la otra, así que `(3,1)` y `(1,3)` producen `(3,3)`: cada elemento de `a` se suma con cada elemento de `b`. Esperar `(3,1)`, `(1,3)` o un error es el error clásico de asumir que sumar dos 'vectores de 3' da un vector de 3; aquí la orientación distinta los convierte silenciosamente en una matriz, un bug que no lanza excepción y solo se detecta al ver formas inesperadas aguas abajo.",
       "explanation_en": "Broadcasting stretches every size-1 dimension to match the other, so `(3,1)` and `(1,3)` produce `(3,3)`: every element of `a` is added to every element of `b`. Expecting `(3,1)`, `(1,3)` or an error is the classic mistake of assuming that adding two 'vectors of 3' gives a vector of 3; here the different orientation silently turns them into a matrix, a bug that raises no exception and only shows up as unexpected shapes downstream.",
       "source": "NumPy documentation, Broadcasting",
       "expected_time_ms": 35000,
-      "tags": ["linear-algebra", "numpy", "broadcasting"]
+      "tags": [
+        "linear-algebra",
+        "numpy",
+        "broadcasting"
+      ]
     },
     {
       "id": "q060101014",
@@ -130,23 +150,28 @@
       "question_es": "¿Por qué se usa la similitud coseno en lugar de la distancia euclidiana para comparar embeddings de texto?",
       "question_en": "Why is cosine similarity used instead of Euclidean distance to compare text embeddings?",
       "options_es": [
-        "Porque mide el ángulo entre vectores e ignora su magnitud, que suele reflejar la longitud del texto y no su significado",
+        "Porque garantiza que los vectores similares tengan exactamente las mismas componentes",
         "Porque siempre es más rápida de calcular que la distancia euclidiana",
         "Porque es la única métrica que funciona con vectores de alta dimensión",
-        "Porque garantiza que los vectores similares tengan exactamente las mismas componentes"
+        "Porque mide el ángulo entre vectores e ignora su magnitud, que suele reflejar la longitud del texto y no su significado"
       ],
       "options_en": [
-        "Because it measures the angle between vectors and ignores magnitude, which usually reflects text length rather than meaning",
+        "Because it guarantees that similar vectors have exactly the same components",
         "Because it is always faster to compute than Euclidean distance",
         "Because it is the only metric that works with high-dimensional vectors",
-        "Because it guarantees that similar vectors have exactly the same components"
+        "Because it measures the angle between vectors and ignores magnitude, which usually reflects text length rather than meaning"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Dos textos con el mismo tema pero longitudes muy distintas producen vectores casi paralelos pero de magnitud muy diferente: la distancia euclidiana los separa, el coseno los reconoce como similares. No es más rápida (el coseno es un producto punto *más* dos normas), ni la única métrica válida en alta dimensión, y sobre vectores ya normalizados a norma 1 el coseno y la distancia euclidiana están relacionados de forma monótona, así que ordenan igual.",
       "explanation_en": "Two texts on the same topic but of very different lengths produce nearly parallel vectors of very different magnitude: Euclidean distance separates them, cosine recognises them as similar. It is not faster (cosine is a dot product *plus* two norms), nor the only valid metric in high dimensions, and over vectors already normalised to unit norm cosine and Euclidean distance are monotonically related, so they rank identically.",
       "source": "Géron, Hands-On Machine Learning (3rd ed., 2022), Ch. 16: Natural Language Processing",
       "expected_time_ms": 30000,
-      "tags": ["linear-algebra", "vectors", "similarity", "embeddings"]
+      "tags": [
+        "linear-algebra",
+        "vectors",
+        "similarity",
+        "embeddings"
+      ]
     },
     {
       "id": "q060101015",
@@ -155,16 +180,25 @@
       "difficulty_tier": "hard",
       "question_es": "La transpuesta de un producto de matrices cumple `(A·B)^T = A^T · B^T`.",
       "question_en": "The transpose of a matrix product satisfies `(A·B)^T = A^T · B^T`.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "La regla correcta invierte el orden: `(A·B)^T = B^T · A^T`. La versión falsa resulta tentadora porque en los números `(a·b)` y `(b·a)` son lo mismo, pero el producto matricial no es conmutativo. Además, con `A` de (m×n) y `B` de (n×p), el producto `A^T · B^T` sería (n×m)·(p×n) y ni siquiera tiene formas compatibles salvo casos particulares.",
       "explanation_en": "The correct rule reverses the order: `(A·B)^T = B^T · A^T`. The false version is tempting because with numbers `(a·b)` and `(b·a)` are the same, but matrix multiplication is not commutative. Moreover, with `A` of shape (m×n) and `B` of shape (n×p), the product `A^T · B^T` would be (n×m)·(p×n) and does not even have compatible shapes except in special cases.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 2: Linear Algebra",
       "expected_time_ms": 28000,
-      "tags": ["linear-algebra", "transpose", "matrices"]
+      "tags": [
+        "linear-algebra",
+        "transpose",
+        "matrices"
+      ]
     },
-
     {
       "id": "q060102009",
       "skill_id": "sk060102",
@@ -173,23 +207,27 @@
       "question_es": "¿Cuál es la derivada de `f(x) = x^3`?",
       "question_en": "What is the derivative of `f(x) = x^3`?",
       "options_es": [
-        "x^2",
-        "3x",
         "3x^2",
+        "3x",
+        "x^2",
         "x^4 / 4"
       ],
       "options_en": [
-        "x^2",
-        "3x",
         "3x^2",
+        "3x",
+        "x^2",
         "x^4 / 4"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "La regla de la potencia da `d/dx x^n = n·x^(n-1)`, luego `3x^2`. Responder `x^2` es bajar el exponente y olvidar el coeficiente; `3x` es bajarlo al coeficiente pero también al exponente; y `x^4/4` es la *integral*, no la derivada, un intercambio frecuente cuando se memorizan ambas reglas juntas.",
       "explanation_en": "The power rule gives `d/dx x^n = n·x^(n-1)`, hence `3x^2`. Answering `x^2` drops the exponent but forgets the coefficient; `3x` applies the drop to the coefficient and to the exponent as well; and `x^4/4` is the *integral*, not the derivative, a frequent swap when both rules are memorised together.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4: Numerical Computation",
       "expected_time_ms": 18000,
-      "tags": ["calculus", "derivatives", "power-rule"]
+      "tags": [
+        "calculus",
+        "derivatives",
+        "power-rule"
+      ]
     },
     {
       "id": "q060102010",
@@ -200,22 +238,26 @@
       "question_en": "Using the chain rule, what is the derivative of `f(x) = (3x + 1)^2`?",
       "options_es": [
         "2(3x + 1)",
-        "6x",
+        "18x + 6",
         "9x^2 + 6x + 1",
-        "18x + 6"
+        "6x"
       ],
       "options_en": [
         "2(3x + 1)",
-        "6x",
+        "18x + 6",
         "9x^2 + 6x + 1",
-        "18x + 6"
+        "6x"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "Derivada externa por derivada interna: `2(3x+1) · 3 = 18x + 6`. La opción `2(3x+1)` es el error más común: aplicar la regla de la potencia y olvidar multiplicar por la derivada interna (3). `9x^2+6x+1` es la función expandida, no su derivada. Este mismo olvido, repetido capa a capa, es exactamente lo que la retropropagación no puede permitirse.",
       "explanation_en": "Outer derivative times inner derivative: `2(3x+1) · 3 = 18x + 6`. The option `2(3x+1)` is the most common error: applying the power rule and forgetting to multiply by the inner derivative (3). `9x^2+6x+1` is the expanded function, not its derivative. That same omission, repeated layer after layer, is exactly what backpropagation cannot afford.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 6.5: Back-Propagation and Other Differentiation Algorithms",
       "expected_time_ms": 28000,
-      "tags": ["calculus", "chain-rule", "derivatives"]
+      "tags": [
+        "calculus",
+        "chain-rule",
+        "derivatives"
+      ]
     },
     {
       "id": "q060102011",
@@ -241,7 +283,11 @@
       "explanation_en": "The second derivative measures curvature: positive means the function curves upward, so a critical point with positive curvature is a minimum. 'Positive' is intuitively associated with 'increasing', but the first derivative there is 0: the function is not increasing, it is the *slope* that is increasing. A maximum corresponds to a negative second derivative.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3: Gradient-Based Optimization",
       "expected_time_ms": 32000,
-      "tags": ["calculus", "second-derivative", "curvature"]
+      "tags": [
+        "calculus",
+        "second-derivative",
+        "curvature"
+      ]
     },
     {
       "id": "q060102012",
@@ -259,7 +305,11 @@
       "explanation_en": "The Hessian is to multivariable functions what the second derivative is to single-variable ones: its eigenvalues say in which directions the surface curves upward and in which it curves downward. It is often confused with the Jacobian, which collects the *first* partial derivatives of a vector-valued function. In network training it is almost never computed explicitly: for n parameters it has n² entries.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3.1: Beyond the Gradient: Jacobian and Hessian Matrices",
       "expected_time_ms": 32000,
-      "tags": ["calculus", "hessian", "second-derivative"]
+      "tags": [
+        "calculus",
+        "hessian",
+        "second-derivative"
+      ]
     },
     {
       "id": "q060102013",
@@ -270,22 +320,27 @@
       "question_en": "In the high-dimensional parameter space of a neural network, why are saddle points a more frequent obstacle than local minima?",
       "options_es": [
         "Porque en alta dimensión la función de pérdida deja de tener mínimos locales",
-        "Porque para ser mínimo local la curvatura debe ser positiva en todas las direcciones a la vez, algo cada vez más improbable al crecer la dimensión",
         "Porque los puntos de silla tienen gradiente distinto de cero y por eso atrapan al optimizador",
+        "Porque para ser mínimo local la curvatura debe ser positiva en todas las direcciones a la vez, algo cada vez más improbable al crecer la dimensión",
         "Porque los mínimos locales solo aparecen en funciones de pérdida convexas"
       ],
       "options_en": [
         "Because in high dimensions the loss function stops having local minima",
-        "Because being a local minimum requires positive curvature in every direction at once, which becomes increasingly unlikely as dimension grows",
         "Because saddle points have a non-zero gradient and therefore trap the optimiser",
+        "Because being a local minimum requires positive curvature in every direction at once, which becomes increasingly unlikely as dimension grows",
         "Because local minima only appear in convex loss functions"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Con n parámetros hacen falta n curvaturas positivas simultáneas para tener un mínimo; basta una negativa para que el punto crítico sea de silla, y esa condición es mucho más fácil de cumplir. Los mínimos locales no desaparecen, solo se vuelven raros. La opción del gradiente no nulo invierte el hecho: en un punto de silla el gradiente *es* cero, y por eso el descenso se frena allí. Y una función convexa tiene exactamente un mínimo global, no mínimos locales espurios.",
       "explanation_en": "With n parameters, a minimum requires n simultaneously positive curvatures; a single negative one makes the critical point a saddle, and that condition is far easier to satisfy. Local minima do not disappear, they merely become rare. The non-zero-gradient option inverts the fact: at a saddle point the gradient *is* zero, which is precisely why descent stalls there. And a convex function has exactly one global minimum, not spurious local ones.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.2.3: Plateaus, Saddle Points and Other Flat Regions",
       "expected_time_ms": 50000,
-      "tags": ["calculus", "saddle-points", "optimization", "high-dimensional"]
+      "tags": [
+        "calculus",
+        "saddle-points",
+        "optimization",
+        "high-dimensional"
+      ]
     },
     {
       "id": "q060102014",
@@ -296,22 +351,26 @@
       "question_en": "During training, the norm of the gradient of the loss with respect to the weights is very close to zero. What best describes that situation?",
       "options_es": [
         "El modelo ha alcanzado necesariamente el mínimo global de la pérdida",
-        "La tasa de aprendizaje es demasiado alta",
         "El optimizador está en una región plana o en un punto crítico, y las actualizaciones de los pesos serán mínimas",
+        "La tasa de aprendizaje es demasiado alta",
         "El modelo está sobreajustando los datos de entrenamiento"
       ],
       "options_en": [
         "The model has necessarily reached the global minimum of the loss",
-        "The learning rate is too high",
         "The optimiser is in a flat region or at a critical point, so weight updates will be tiny",
+        "The learning rate is too high",
         "The model is overfitting the training data"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "El gradiente solo dice que localmente la pérdida apenas cambia: puede ser un mínimo, un máximo, un punto de silla o una meseta (por ejemplo, por saturación de sigmoides). Concluir 'mínimo global' es el salto injustificado: el gradiente es una señal local, no global. Una tasa de aprendizaje alta produce lo contrario, gradientes que oscilan o explotan. Y el sobreajuste se diagnostica comparando pérdida de entrenamiento y de validación, no mirando la norma del gradiente.",
       "explanation_en": "The gradient only says that locally the loss barely changes: it could be a minimum, a maximum, a saddle point or a plateau (from saturated sigmoids, for instance). Concluding 'global minimum' is the unjustified leap: the gradient is a local signal, not a global one. A high learning rate produces the opposite, gradients that oscillate or blow up. And overfitting is diagnosed by comparing training and validation loss, not by looking at the gradient norm.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8: Optimization for Training Deep Models",
       "expected_time_ms": 35000,
-      "tags": ["calculus", "gradients", "training"]
+      "tags": [
+        "calculus",
+        "gradients",
+        "training"
+      ]
     },
     {
       "id": "q060102015",
@@ -320,16 +379,25 @@
       "difficulty_tier": "expert",
       "question_es": "Si el gradiente de una función en un punto es el vector cero, ese punto es necesariamente un mínimo de la función.",
       "question_en": "If the gradient of a function at a point is the zero vector, that point is necessarily a minimum of the function.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Gradiente cero define un *punto crítico*, que puede ser mínimo, máximo o punto de silla. La afirmación suena razonable porque en el entrenamiento se persigue precisamente un gradiente pequeño, pero la condición es necesaria, no suficiente: hace falta mirar la curvatura (la hessiana) para distinguir los tres casos. En redes profundas la mayoría de los puntos críticos con gradiente cero son de silla, no mínimos.",
       "explanation_en": "A zero gradient defines a *critical point*, which may be a minimum, a maximum or a saddle point. The claim sounds reasonable because training does chase a small gradient, but the condition is necessary, not sufficient: distinguishing the three cases requires looking at the curvature (the Hessian). In deep networks most zero-gradient critical points are saddles, not minima.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 4.3: Gradient-Based Optimization",
       "expected_time_ms": 30000,
-      "tags": ["calculus", "gradients", "critical-points"]
+      "tags": [
+        "calculus",
+        "gradients",
+        "critical-points"
+      ]
     },
-
     {
       "id": "q060103008",
       "skill_id": "sk060103",
@@ -340,21 +408,25 @@
       "options_es": [
         "Cada valor debe tener probabilidad 1/3",
         "Cada probabilidad debe ser mayor que 0",
-        "La suma de las tres probabilidades debe ser menor que 1",
-        "Cada probabilidad está entre 0 y 1, y las tres suman exactamente 1"
+        "Cada probabilidad está entre 0 y 1, y las tres suman exactamente 1",
+        "La suma de las tres probabilidades debe ser menor que 1"
       ],
       "options_en": [
         "Each value must have probability 1/3",
         "Each probability must be greater than 0",
-        "The three probabilities must sum to less than 1",
-        "Each probability lies between 0 and 1, and the three sum to exactly 1"
+        "Each probability lies between 0 and 1, and the three sum to exactly 1",
+        "The three probabilities must sum to less than 1"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "Los axiomas exigen probabilidades no negativas que sumen 1 sobre todos los resultados posibles. Repartir 1/3 a cada uno solo vale si la distribución es uniforme, que es un caso particular y no una obligación. Un valor puede tener probabilidad 0 sin romper nada. Y que sumaran menos de 1 significaría que falta algún resultado posible por contemplar.",
       "explanation_en": "The axioms require non-negative probabilities that sum to 1 over all possible outcomes. Assigning 1/3 to each only holds if the distribution is uniform, which is a special case and not a requirement. A value may have probability 0 without breaking anything. And summing to less than 1 would mean some possible outcome has been left out.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 1.2: Probability Theory",
       "expected_time_ms": 20000,
-      "tags": ["probability", "axioms", "distributions"]
+      "tags": [
+        "probability",
+        "axioms",
+        "distributions"
+      ]
     },
     {
       "id": "q060103009",
@@ -364,23 +436,27 @@
       "question_es": "Si A y B son eventos independientes con P(A) = 0.5 y P(B) = 0.4, ¿cuánto vale P(A y B)?",
       "question_en": "If A and B are independent events with P(A) = 0.5 and P(B) = 0.4, what is P(A and B)?",
       "options_es": [
-        "0.20",
-        "0.90",
         "0.45",
+        "0.90",
+        "0.20",
         "0.10"
       ],
       "options_en": [
-        "0.20",
-        "0.90",
         "0.45",
+        "0.90",
+        "0.20",
         "0.10"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Para eventos independientes, `P(A y B) = P(A)·P(B) = 0.5 × 0.4 = 0.20`. La respuesta 0.90 suma en lugar de multiplicar, que es la regla de 'A o B' (y solo si son mutuamente excluyentes). 0.45 es la media de las dos probabilidades, que no corresponde a ninguna regla. Nótese que la intersección nunca puede superar a la menor de las dos probabilidades individuales, lo que descarta 0.90 de inmediato.",
       "explanation_en": "For independent events, `P(A and B) = P(A)·P(B) = 0.5 × 0.4 = 0.20`. The answer 0.90 adds instead of multiplying, which is the rule for 'A or B' (and only when they are mutually exclusive). 0.45 is the average of the two probabilities, which corresponds to no rule at all. Note that an intersection can never exceed the smaller of the two individual probabilities, which rules out 0.90 immediately.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 1.2: Probability Theory",
       "expected_time_ms": 25000,
-      "tags": ["probability", "independence", "joint-probability"]
+      "tags": [
+        "probability",
+        "independence",
+        "joint-probability"
+      ]
     },
     {
       "id": "q060103010",
@@ -390,23 +466,28 @@
       "question_es": "Una enfermedad afecta al 1% de la población. Un test la detecta en el 99% de los enfermos y da falso positivo en el 5% de los sanos. Si un paciente da positivo, ¿cuál es aproximadamente la probabilidad de que esté enfermo?",
       "question_en": "A disease affects 1% of the population. A test detects it in 99% of those who have it and gives a false positive in 5% of healthy people. If a patient tests positive, what is roughly the probability that they have the disease?",
       "options_es": [
-        "99%",
         "17%",
+        "99%",
         "95%",
         "1%"
       ],
       "options_en": [
-        "99%",
         "17%",
+        "99%",
         "95%",
         "1%"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Sobre 10.000 personas: 100 enfermas, de las que 99 dan positivo; 9.900 sanas, de las que 495 dan falso positivo. De los 594 positivos totales, 99 están realmente enfermos: 99/594 ≈ 17%. Responder 99% confunde P(positivo|enfermo) con P(enfermo|positivo), la inversión de condicionales que el teorema de Bayes existe para corregir. 95% viene de restar la tasa de falsos positivos. Y 1% es la prevalencia base, ignorando que el test sí aporta información.",
       "explanation_en": "Out of 10,000 people: 100 have the disease, 99 of whom test positive; 9,900 are healthy, 495 of whom are false positives. Of the 594 total positives, 99 truly have the disease: 99/594 ≈ 17%. Answering 99% confuses P(positive|disease) with P(disease|positive), the conditional inversion that Bayes' theorem exists to fix. 95% comes from subtracting the false positive rate. And 1% is the base prevalence, ignoring that the test does carry information.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 1.2.3: Bayes' Theorem",
       "expected_time_ms": 55000,
-      "tags": ["probability", "bayes", "base-rate", "conditional-probability"]
+      "tags": [
+        "probability",
+        "bayes",
+        "base-rate",
+        "conditional-probability"
+      ]
     },
     {
       "id": "q060103011",
@@ -417,22 +498,25 @@
       "question_en": "A fair six-sided die yields values 1 to 6 with equal probability. What is its expected value?",
       "options_es": [
         "3",
-        "6",
         "3.5",
+        "6",
         "1/6"
       ],
       "options_en": [
         "3",
-        "6",
         "3.5",
+        "6",
         "1/6"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`E[X] = (1+2+3+4+5+6)/6 = 21/6 = 3.5`. Responder 3 es redondear al valor 'central' que sí puede salir, pero el valor esperado no tiene por qué ser un resultado posible: es una media ponderada, no un modo. 6 es el máximo y 1/6 es la probabilidad de cada cara, no su valor esperado.",
       "explanation_en": "`E[X] = (1+2+3+4+5+6)/6 = 21/6 = 3.5`. Answering 3 rounds to a 'central' value that can actually be rolled, but an expected value need not be an attainable outcome: it is a weighted mean, not a mode. 6 is the maximum and 1/6 is the probability of each face, not its expected value.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 1.2.2: Expectations and Covariances",
       "expected_time_ms": 25000,
-      "tags": ["probability", "expected-value"]
+      "tags": [
+        "probability",
+        "expected-value"
+      ]
     },
     {
       "id": "q060103012",
@@ -444,21 +528,25 @@
       "options_es": [
         "Mayor que 0.5, porque la ley de los grandes números debe compensar la racha",
         "Menor que 0.5, porque la moneda parece estar sesgada hacia cara",
-        "No se puede calcular sin conocer el historial completo",
-        "Exactamente 0.5, porque las tiradas son independientes"
+        "Exactamente 0.5, porque las tiradas son independientes",
+        "No se puede calcular sin conocer el historial completo"
       ],
       "options_en": [
         "Greater than 0.5, because the law of large numbers must offset the streak",
         "Less than 0.5, because the coin appears biased towards heads",
-        "It cannot be computed without knowing the full history",
-        "Exactly 0.5, because the tosses are independent"
+        "Exactly 0.5, because the tosses are independent",
+        "It cannot be computed without knowing the full history"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "La moneda no tiene memoria: cada tirada es independiente, así que sigue siendo 0.5. La opción 'mayor que 0.5' es la falacia del jugador: la ley de los grandes números no corrige rachas pasadas, simplemente las diluye al crecer el número de tiradas. La opción 'menor que 0.5' abandona el supuesto del enunciado (la moneda es equilibrada) y confunde evidencia con hipótesis; ocho caras seguidas tienen probabilidad 1/256 con una moneda justa, poco pero nada extraordinario.",
       "explanation_en": "The coin has no memory: each toss is independent, so it remains 0.5. The 'greater than 0.5' option is the gambler's fallacy: the law of large numbers does not correct past streaks, it simply dilutes them as the number of tosses grows. The 'less than 0.5' option abandons the premise (the coin is fair) and confuses evidence with hypothesis; eight heads in a row has probability 1/256 with a fair coin, unlikely but hardly extraordinary.",
       "source": "Wasserman, All of Statistics (2004), Ch. 5: Convergence of Random Variables",
       "expected_time_ms": 32000,
-      "tags": ["probability", "independence", "gamblers-fallacy"]
+      "tags": [
+        "probability",
+        "independence",
+        "gamblers-fallacy"
+      ]
     },
     {
       "id": "q060103013",
@@ -476,7 +564,11 @@
       "explanation_en": "The binomial counts successes over a fixed number of Bernoulli trials. It is often confused with the Bernoulli distribution (the n=1 case, a single trial) and with the Poisson, which counts events over a continuous interval of time or space with no fixed number of trials. In ML it arises naturally when modelling the likelihood of binary labels, which is where binary cross-entropy loss comes from.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 2.1: Binary Variables",
       "expected_time_ms": 28000,
-      "tags": ["probability", "distributions", "binomial"]
+      "tags": [
+        "probability",
+        "distributions",
+        "binomial"
+      ]
     },
     {
       "id": "q060103014",
@@ -485,14 +577,24 @@
       "difficulty_tier": "hard",
       "question_es": "El valor de una función de densidad de probabilidad (PDF) en un punto puede ser mayor que 1.",
       "question_en": "The value of a probability density function (PDF) at a point can be greater than 1.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Lo que debe valer 1 es el *área* bajo la curva, no su altura. Una uniforme en [0, 0.1] tiene densidad 10 en todo ese intervalo y su área sigue siendo 1. La intuición contraria viene de trasladar la regla de las distribuciones discretas, donde cada P(x) sí es una probabilidad acotada por 1; en el caso continuo la densidad no es una probabilidad, y de hecho P(X = x) = 0 para cualquier punto concreto.",
       "explanation_en": "What must equal 1 is the *area* under the curve, not its height. A uniform distribution on [0, 0.1] has density 10 across that interval and its area is still 1. The opposite intuition comes from carrying over the rule for discrete distributions, where each P(x) genuinely is a probability bounded by 1; in the continuous case the density is not a probability, and indeed P(X = x) = 0 for any specific point.",
       "source": "Bishop, Pattern Recognition and Machine Learning (2006), Ch. 1.2.1: Probability Densities",
       "expected_time_ms": 35000,
-      "tags": ["probability", "pdf", "continuous-distributions"]
+      "tags": [
+        "probability",
+        "pdf",
+        "continuous-distributions"
+      ]
     },
     {
       "id": "q060103015",
@@ -502,25 +604,28 @@
       "question_es": "Al lanzar dos dados equilibrados, ¿por qué la suma 7 es más probable que la suma 2?",
       "question_en": "When rolling two fair dice, why is a sum of 7 more likely than a sum of 2?",
       "options_es": [
-        "Porque hay seis combinaciones que suman 7 y solo una que suma 2, sobre 36 resultados igualmente probables",
+        "Porque el 7 es el valor esperado de la suma y el valor esperado es siempre el más probable",
         "Porque 7 está en el centro del rango y los valores centrales siempre son más probables por definición",
         "Porque la suma de dos dados sigue una distribución normal exacta",
-        "Porque el 7 es el valor esperado de la suma y el valor esperado es siempre el más probable"
+        "Porque hay seis combinaciones que suman 7 y solo una que suma 2, sobre 36 resultados igualmente probables"
       ],
       "options_en": [
-        "Because six combinations sum to 7 and only one sums to 2, out of 36 equally likely outcomes",
+        "Because 7 is the expected value of the sum and the expected value is always the most likely",
         "Because 7 sits at the centre of the range and central values are always more likely by definition",
         "Because the sum of two dice follows an exact normal distribution",
-        "Because 7 is the expected value of the sum and the expected value is always the most likely"
+        "Because six combinations sum to 7 and only one sums to 2, out of 36 equally likely outcomes"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "El razonamiento correcto es contar: 7 se consigue con (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) y 2 solo con (1,1), luego 6/36 frente a 1/36. Que los valores centrales sean más probables es una consecuencia del conteo, no una ley previa: en un solo dado todos los valores son igual de probables. La suma de dos dados es triangular, no normal (la normalidad es un límite asintótico, no un resultado exacto para n=2). Y el valor esperado puede incluso ser un resultado imposible, como 3.5 en un dado.",
       "explanation_en": "The correct reasoning is counting: 7 arises from (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) and 2 only from (1,1), so 6/36 against 1/36. Central values being more likely is a consequence of that count, not a prior law: on a single die every value is equally likely. The sum of two dice is triangular, not normal (normality is an asymptotic limit, not an exact result for n=2). And an expected value can even be an impossible outcome, like 3.5 on one die.",
       "source": "Wasserman, All of Statistics (2004), Ch. 1: Probability",
       "expected_time_ms": 45000,
-      "tags": ["probability", "counting", "distributions"]
+      "tags": [
+        "probability",
+        "counting",
+        "distributions"
+      ]
     },
-
     {
       "id": "q060104008",
       "skill_id": "sk060104",
@@ -545,7 +650,11 @@
       "explanation_en": "Correlation is symmetric and carries no direction: satisfaction could cause more usage, or a third variable (say, the user's prior affinity for the product) could cause both. The 85% option confuses r with r²: explained variance would be 0.85² ≈ 72%. And a correlation of 0.85 is strong, not absent; requiring 1 would require a perfect linear relationship.",
       "source": "James, Witten, Hastie & Tibshirani, An Introduction to Statistical Learning (2nd ed., 2021), Ch. 3: Linear Regression",
       "expected_time_ms": 35000,
-      "tags": ["statistics", "correlation", "causation"]
+      "tags": [
+        "statistics",
+        "correlation",
+        "causation"
+      ]
     },
     {
       "id": "q060104009",
@@ -555,23 +664,27 @@
       "question_es": "Un intervalo de confianza del 95% para la media poblacional resulta ser [12.4, 15.8]. ¿Cuál es su interpretación correcta?",
       "question_en": "A 95% confidence interval for the population mean turns out to be [12.4, 15.8]. What is its correct interpretation?",
       "options_es": [
-        "Hay un 95% de probabilidad de que la media poblacional esté entre 12.4 y 15.8",
-        "El 95% de las observaciones individuales caen entre 12.4 y 15.8",
         "Si repitiéramos el muestreo muchas veces, el 95% de los intervalos así construidos contendrían la media poblacional real",
+        "El 95% de las observaciones individuales caen entre 12.4 y 15.8",
+        "Hay un 95% de probabilidad de que la media poblacional esté entre 12.4 y 15.8",
         "La media muestral tiene un 95% de probabilidad de estar en ese intervalo"
       ],
       "options_en": [
-        "There is a 95% probability that the population mean lies between 12.4 and 15.8",
-        "95% of individual observations fall between 12.4 and 15.8",
         "If we repeated the sampling many times, 95% of the intervals built this way would contain the true population mean",
+        "95% of individual observations fall between 12.4 and 15.8",
+        "There is a 95% probability that the population mean lies between 12.4 and 15.8",
         "The sample mean has a 95% probability of lying in that interval"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "La confianza es una propiedad del *procedimiento* a largo plazo, no de este intervalo concreto: bajo el marco frecuentista la media poblacional es un número fijo, así que ya está dentro o ya está fuera. La primera opción es la lectura bayesiana (válida para un intervalo de credibilidad, no para uno de confianza) y es el malentendido más extendido. La segunda confunde intervalo de confianza con intervalo de predicción, que es mucho más ancho. La cuarta es trivialmente cierta y vacía: la media muestral es el centro del intervalo por construcción.",
       "explanation_en": "Confidence is a property of the long-run *procedure*, not of this particular interval: under the frequentist framework the population mean is a fixed number, so it is either already inside or already outside. The first option is the Bayesian reading (valid for a credible interval, not a confidence interval) and is the most widespread misunderstanding. The second confuses a confidence interval with a prediction interval, which is much wider. The fourth is trivially true and empty: the sample mean is the centre of the interval by construction.",
       "source": "Wasserman, All of Statistics (2004), Ch. 6.3.2: Confidence Intervals",
       "expected_time_ms": 50000,
-      "tags": ["statistics", "inference", "confidence-intervals"]
+      "tags": [
+        "statistics",
+        "inference",
+        "confidence-intervals"
+      ]
     },
     {
       "id": "q060104010",
@@ -589,7 +702,11 @@
       "explanation_en": "The central limit theorem is what justifies using normal-based confidence intervals and tests even when the raw data are not normal. It is often confused with the law of large numbers, which says the sample mean converges to the true value but says nothing about the *shape* of its distribution. A nuance that gets lost: what becomes normal is the sample mean, not the data themselves.",
       "source": "Wasserman, All of Statistics (2004), Ch. 5.4: The Central Limit Theorem",
       "expected_time_ms": 28000,
-      "tags": ["statistics", "inference", "central-limit-theorem"]
+      "tags": [
+        "statistics",
+        "inference",
+        "central-limit-theorem"
+      ]
     },
     {
       "id": "q060104011",
@@ -598,14 +715,25 @@
       "difficulty_tier": "hard",
       "question_es": "Un resultado con p < 0.05 indica que el efecto observado es grande y relevante en la práctica.",
       "question_en": "A result with p < 0.05 indicates that the observed effect is large and practically relevant.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "El valor p mide la incompatibilidad de los datos con la hipótesis nula, no el tamaño del efecto. Con una muestra suficientemente grande, una diferencia trivial (un 0.01% de mejora en la tasa de clics) puede salir estadísticamente significativa. La confusión entre significancia estadística y relevancia práctica es sistemática; por eso se reportan también el tamaño del efecto y su intervalo de confianza.",
       "explanation_en": "The p-value measures the incompatibility of the data with the null hypothesis, not the size of the effect. With a large enough sample, a trivial difference (a 0.01% lift in click-through rate) can come out statistically significant. Confusing statistical significance with practical relevance is systematic; that is why effect size and its confidence interval are reported alongside.",
       "source": "Wasserman, All of Statistics (2004), Ch. 10: Hypothesis Testing and p-values",
       "expected_time_ms": 32000,
-      "tags": ["statistics", "inference", "p-value", "effect-size"]
+      "tags": [
+        "statistics",
+        "inference",
+        "p-value",
+        "effect-size"
+      ]
     },
     {
       "id": "q060104012",
@@ -617,21 +745,25 @@
       "options_es": [
         "La muestra es demasiado pequeña para aplicar el teorema central del límite",
         "La varianza de la muestra será sistemáticamente mayor que la poblacional",
-        "No hay problema si la muestra supera las 1000 respuestas",
-        "La muestra no es representativa: está sesgada hacia clientes con problemas, así que aumentar su tamaño no corrige el sesgo"
+        "La muestra no es representativa: está sesgada hacia clientes con problemas, así que aumentar su tamaño no corrige el sesgo",
+        "No hay problema si la muestra supera las 1000 respuestas"
       ],
       "options_en": [
         "The sample is too small to apply the central limit theorem",
         "The sample variance will be systematically larger than the population variance",
-        "There is no problem as long as the sample exceeds 1000 responses",
-        "The sample is not representative: it is biased towards customers with problems, so increasing its size does not fix the bias"
+        "The sample is not representative: it is biased towards customers with problems, so increasing its size does not fix the bias",
+        "There is no problem as long as the sample exceeds 1000 responses"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "El sesgo de selección desplaza la estimación de forma sistemática, y más datos del mismo grupo sesgado solo estrechan el intervalo de confianza alrededor del número equivocado: se gana precisión sin ganar exactitud. Por eso las opciones que apelan al tamaño (muestra pequeña, o 'basta con 1000') fallan: el tamaño combate el error aleatorio, no el sistemático. La varianza tampoco es el problema central; de hecho un subgrupo homogéneo suele tener *menos* varianza que la población.",
       "explanation_en": "Selection bias shifts the estimate systematically, and more data from the same biased group merely narrows the confidence interval around the wrong number: precision improves without accuracy improving. That is why the size-based options (too small, or '1000 is enough') fail: sample size fights random error, not systematic error. Variance is not the core issue either; in fact a homogeneous subgroup usually has *less* variance than the population.",
       "source": "James, Witten, Hastie & Tibshirani, An Introduction to Statistical Learning (2nd ed., 2021), Ch. 5: Resampling Methods",
       "expected_time_ms": 42000,
-      "tags": ["statistics", "sampling-bias", "inference"]
+      "tags": [
+        "statistics",
+        "sampling-bias",
+        "inference"
+      ]
     },
     {
       "id": "q060104013",
@@ -641,23 +773,27 @@
       "question_es": "¿Cuál es la mediana del conjunto de datos `[7, 1, 3, 9, 3, 8, 6]`?",
       "question_en": "What is the median of the dataset `[7, 1, 3, 9, 3, 8, 6]`?",
       "options_es": [
-        "6",
-        "9",
         "3",
+        "9",
+        "6",
         "5.28"
       ],
       "options_en": [
-        "6",
-        "9",
         "3",
+        "9",
+        "6",
         "5.28"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Hay que ordenar primero: `[1, 3, 3, 6, 7, 8, 9]`. Con 7 valores, la mediana es el cuarto: 6. El error más común es tomar el valor central de la lista *sin ordenar*, que aquí sería 9. La opción 3 es la moda (el valor que más se repite) y 5.28 es la media aritmética; los tres estadísticos se confunden con facilidad porque los tres se presentan como 'el valor típico'.",
       "explanation_en": "Sort first: `[1, 3, 3, 6, 7, 8, 9]`. With 7 values, the median is the fourth: 6. The most common error is taking the middle value of the *unsorted* list, which here would be 9. Option 3 is the mode (the most frequent value) and 5.28 is the arithmetic mean; all three statistics get confused easily because all three are presented as 'the typical value'.",
       "source": "James, Witten, Hastie & Tibshirani, An Introduction to Statistical Learning (2nd ed., 2021), Ch. 2: Statistical Learning",
       "expected_time_ms": 22000,
-      "tags": ["statistics", "descriptive", "median"]
+      "tags": [
+        "statistics",
+        "descriptive",
+        "median"
+      ]
     },
     {
       "id": "q060104014",
@@ -669,21 +805,26 @@
       "options_es": [
         "La diferencia entre el valor máximo y el mínimo; sirve para medir la amplitud total",
         "La media de los cuartiles primero y tercero; sirve para estimar el centro",
-        "La diferencia entre el tercer y el primer cuartil (Q3 - Q1); sirve para medir la dispersión central y detectar valores atípicos",
-        "La desviación estándar dividida entre la media; sirve para comparar variables en escalas distintas"
+        "La desviación estándar dividida entre la media; sirve para comparar variables en escalas distintas",
+        "La diferencia entre el tercer y el primer cuartil (Q3 - Q1); sirve para medir la dispersión central y detectar valores atípicos"
       ],
       "options_en": [
         "The difference between the maximum and minimum; used to measure total spread",
         "The mean of the first and third quartiles; used to estimate the centre",
-        "The difference between the third and first quartile (Q3 - Q1); used to measure central spread and flag outliers",
-        "The standard deviation divided by the mean; used to compare variables on different scales"
+        "The standard deviation divided by the mean; used to compare variables on different scales",
+        "The difference between the third and first quartile (Q3 - Q1); used to measure central spread and flag outliers"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "El IQR abarca el 50% central de los datos, y la regla habitual marca como atípico lo que cae fuera de `[Q1 - 1.5·IQR, Q3 + 1.5·IQR]`. La primera opción describe el rango simple, que es extremadamente sensible precisamente a los valores atípicos que el IQR pretende detectar; esa robustez es la razón de usarlo. La cuarta describe el coeficiente de variación.",
       "explanation_en": "The IQR spans the middle 50% of the data, and the usual rule flags as outliers anything outside `[Q1 - 1.5·IQR, Q3 + 1.5·IQR]`. The first option describes the plain range, which is extremely sensitive to exactly the outliers the IQR is meant to detect; that robustness is the reason for using it. The fourth describes the coefficient of variation.",
       "source": "Géron, Hands-On Machine Learning (3rd ed., 2022), Ch. 2: End-to-End Machine Learning Project",
       "expected_time_ms": 30000,
-      "tags": ["statistics", "descriptive", "iqr", "outliers"]
+      "tags": [
+        "statistics",
+        "descriptive",
+        "iqr",
+        "outliers"
+      ]
     },
     {
       "id": "q060104015",
@@ -692,16 +833,25 @@
       "difficulty_tier": "hard",
       "question_es": "Un coeficiente de correlación de Pearson igual a 0 demuestra que las dos variables no tienen ninguna relación entre sí.",
       "question_en": "A Pearson correlation coefficient of 0 proves that the two variables have no relationship whatsoever.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Pearson solo mide relación *lineal*. Una relación en forma de U perfecta, como `y = x²` sobre datos simétricos en torno a cero, da correlación 0 y sin embargo `y` queda completamente determinada por `x`. El cuarteto de Anscombe muestra el caso contrario: conjuntos con estadísticos idénticos y formas radicalmente distintas. La lección práctica es que un filtro de features basado solo en correlación descarta predictores no lineales perfectamente útiles para un modelo de árboles o una red.",
       "explanation_en": "Pearson only measures a *linear* relationship. A perfect U-shape, such as `y = x²` over data symmetric around zero, gives correlation 0 and yet `y` is fully determined by `x`. Anscombe's quartet shows the converse: datasets with identical statistics and radically different shapes. The practical lesson is that a feature filter based on correlation alone discards non-linear predictors that are perfectly useful to a tree model or a network.",
       "source": "James, Witten, Hastie & Tibshirani, An Introduction to Statistical Learning (2nd ed., 2021), Ch. 3: Linear Regression",
       "expected_time_ms": 35000,
-      "tags": ["statistics", "correlation", "nonlinearity"]
+      "tags": [
+        "statistics",
+        "correlation",
+        "nonlinearity"
+      ]
     },
-
     {
       "id": "q060105008",
       "skill_id": "sk060105",
@@ -712,21 +862,25 @@
       "options_es": [
         "Calcula el gradiente exacto de la función de pérdida en cada paso",
         "Elimina por completo la necesidad de elegir una tasa de aprendizaje",
-        "Garantiza alcanzar un valor de pérdida menor al final del entrenamiento",
-        "Actualiza los pesos muchas más veces por época y cabe en memoria con datasets grandes, a cambio de un gradiente ruidoso"
+        "Actualiza los pesos muchas más veces por época y cabe en memoria con datasets grandes, a cambio de un gradiente ruidoso",
+        "Garantiza alcanzar un valor de pérdida menor al final del entrenamiento"
       ],
       "options_en": [
         "It computes the exact gradient of the loss function at each step",
         "It removes the need to choose a learning rate entirely",
-        "It guarantees a lower final loss value at the end of training",
-        "It updates the weights far more often per epoch and fits in memory on large datasets, at the cost of a noisy gradient"
+        "It updates the weights far more often per epoch and fits in memory on large datasets, at the cost of a noisy gradient",
+        "It guarantees a lower final loss value at the end of training"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "El mini-lote cambia precisión del gradiente por frecuencia de actualización y viabilidad en memoria. Quien responde 'gradiente exacto' invierte el compromiso: el gradiente exacto es justamente el del lote completo. Ningún método elimina la tasa de aprendizaje (ni siquiera Adam, que la adapta pero sigue necesitando un valor base). Y no hay garantía de menor pérdida final: el ruido a veces ayuda a escapar de puntos de silla y a veces impide un ajuste fino.",
       "explanation_en": "Mini-batching trades gradient precision for update frequency and memory feasibility. Answering 'exact gradient' inverts the trade-off: the exact gradient is precisely the full-batch one. No method removes the learning rate (not even Adam, which adapts it but still needs a base value). And there is no guarantee of a lower final loss: the noise sometimes helps escape saddle points and sometimes prevents fine convergence.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.1.3: Batch and Minibatch Algorithms",
       "expected_time_ms": 35000,
-      "tags": ["optimization", "gradient-descent", "mini-batch"]
+      "tags": [
+        "optimization",
+        "gradient-descent",
+        "mini-batch"
+      ]
     },
     {
       "id": "q060105009",
@@ -752,7 +906,11 @@
       "explanation_en": "Adam keeps two moment estimates: the first (mean of the gradient, like momentum) and the second (mean of the squared gradient, like RMSProp), correcting the initial bias of both. It is not a second-order method: using the mean of the *squared* gradient is often confused with using second derivatives, but the Hessian is never computed. L2 regularisation is independent of the optimiser (and its interaction with Adam is exactly what AdamW was introduced to fix).",
       "source": "Kingma & Ba, Adam: A Method for Stochastic Optimization (ICLR 2015)",
       "expected_time_ms": 45000,
-      "tags": ["optimization", "adam", "optimizers"]
+      "tags": [
+        "optimization",
+        "adam",
+        "optimizers"
+      ]
     },
     {
       "id": "q060105010",
@@ -770,7 +928,11 @@
       "explanation_en": "The learning rate (often α or η) multiplies the gradient in the rule `w := w - α·∇L`. It is a hyperparameter, not a learned parameter: it is not fitted by gradient descent but chosen before training. It is sometimes confused with batch size, which controls *how many* examples go into each gradient estimate, not the length of the step.",
       "source": "Géron, Hands-On Machine Learning (3rd ed., 2022), Ch. 4: Training Models",
       "expected_time_ms": 25000,
-      "tags": ["optimization", "learning-rate", "hyperparameters"]
+      "tags": [
+        "optimization",
+        "learning-rate",
+        "hyperparameters"
+      ]
     },
     {
       "id": "q060105011",
@@ -779,14 +941,24 @@
       "difficulty_tier": "hard",
       "question_es": "Sobre una función de pérdida no convexa, el descenso de gradiente siempre encuentra el mínimo global si se le deja suficientes iteraciones.",
       "question_en": "On a non-convex loss function, gradient descent always finds the global minimum if given enough iterations.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "El descenso de gradiente solo usa información local, así que puede quedarse en un mínimo local, en una meseta o frenarse cerca de un punto de silla, y más iteraciones no lo sacan de ahí. La garantía de convergencia al óptimo global existe únicamente para funciones convexas. Que en la práctica las redes profundas entrenen bien no contradice esto: se conforman con mínimos locales de calidad suficiente, no con el global demostrado.",
       "explanation_en": "Gradient descent uses only local information, so it can settle in a local minimum, in a plateau, or stall near a saddle point, and more iterations will not pull it out. The guarantee of convergence to the global optimum exists only for convex functions. That deep networks train well in practice does not contradict this: they settle for local minima of sufficient quality, not a proven global one.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 8.2: Challenges in Neural Network Optimization",
       "expected_time_ms": 32000,
-      "tags": ["optimization", "convexity", "gradient-descent"]
+      "tags": [
+        "optimization",
+        "convexity",
+        "gradient-descent"
+      ]
     },
     {
       "id": "q060105012",
@@ -795,14 +967,24 @@
       "difficulty_tier": "medium",
       "question_es": "Escalar las features a rangos comparables antes de entrenar suele acelerar la convergencia del descenso de gradiente.",
       "question_en": "Scaling features to comparable ranges before training usually speeds up the convergence of gradient descent.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Con features de escalas muy distintas (edad en años frente a ingresos en euros) las curvas de nivel de la pérdida se vuelven valles alargados y el gradiente zigzaguea en vez de apuntar al mínimo, obligando a tasas de aprendizaje pequeñas. Escalar redondea esas curvas y permite pasos mayores. Advertencia práctica que acompaña a esta verdad: el escalador debe ajustarse solo con el conjunto de entrenamiento y aplicarse después a validación y test; ajustarlo sobre todo el dataset filtra información y es una fuga de datos.",
       "explanation_en": "With features on very different scales (age in years versus income in euros) the loss contours become elongated valleys and the gradient zigzags instead of pointing at the minimum, forcing small learning rates. Scaling rounds out those contours and allows larger steps. The practical caveat that accompanies this truth: the scaler must be fitted on the training set only and then applied to validation and test; fitting it on the whole dataset leaks information and is data leakage.",
       "source": "Géron, Hands-On Machine Learning (3rd ed., 2022), Ch. 4: Training Models",
       "expected_time_ms": 30000,
-      "tags": ["optimization", "feature-scaling", "convergence"]
+      "tags": [
+        "optimization",
+        "feature-scaling",
+        "convergence"
+      ]
     },
     {
       "id": "q060105013",
@@ -820,7 +1002,12 @@
       "explanation_en": "Early stopping uses the validation set as a termination criterion and returns the weights of the best epoch. Goodfellow describes it as a form of regularisation: limiting the number of steps effectively restricts the reachable parameter space. The mistake that makes it useless is measuring it on the test set: at that moment the test set stops being an honest estimate of performance because it has already driven a training decision.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 7.8: Early Stopping",
       "expected_time_ms": 32000,
-      "tags": ["optimization", "early-stopping", "regularization", "validation"]
+      "tags": [
+        "optimization",
+        "early-stopping",
+        "regularization",
+        "validation"
+      ]
     },
     {
       "id": "q060105014",
@@ -831,22 +1018,26 @@
       "question_en": "For `f(w) = w^2`, starting from `w = 3` with a learning rate of 0.1, what is the value of `w` after one gradient descent update?",
       "options_es": [
         "3.6",
-        "2.9",
         "2.4",
+        "2.9",
         "0.6"
       ],
       "options_en": [
         "3.6",
-        "2.9",
         "2.4",
+        "2.9",
         "0.6"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`f'(w) = 2w = 6`, luego `w := 3 - 0.1 × 6 = 2.4`. La opción 2.9 resta la tasa de aprendizaje sin multiplicarla por el gradiente. 3.6 suma en vez de restar, el signo invertido que convierte el descenso en ascenso y hace que la pérdida crezca. Y 0.6 es `0.1 × 6`, es decir, el tamaño del paso confundido con el nuevo valor de `w`.",
       "explanation_en": "`f'(w) = 2w = 6`, so `w := 3 - 0.1 × 6 = 2.4`. Option 2.9 subtracts the learning rate without multiplying it by the gradient. 3.6 adds instead of subtracting, the sign flip that turns descent into ascent and makes the loss grow. And 0.6 is `0.1 × 6`, i.e. the step size mistaken for the new value of `w`.",
       "source": "Géron, Hands-On Machine Learning (3rd ed., 2022), Ch. 4: Training Models",
       "expected_time_ms": 32000,
-      "tags": ["optimization", "gradient-descent", "computation"]
+      "tags": [
+        "optimization",
+        "gradient-descent",
+        "computation"
+      ]
     },
     {
       "id": "q060105015",
@@ -858,21 +1049,26 @@
       "options_es": [
         "El optimizador ha divergido; hay que aumentar la tasa de aprendizaje",
         "El modelo está infraajustando; hay que entrenar más épocas",
-        "La optimización ha fallado; hay que reinicializar los pesos y volver a empezar",
-        "El modelo ha empezado a sobreajustar: la optimización sigue funcionando pero la generalización empeora, así que conviene parada temprana, regularización o más datos"
+        "El modelo ha empezado a sobreajustar: la optimización sigue funcionando pero la generalización empeora, así que conviene parada temprana, regularización o más datos",
+        "La optimización ha fallado; hay que reinicializar los pesos y volver a empezar"
       ],
       "options_en": [
         "The optimiser has diverged; the learning rate should be increased",
         "The model is underfitting; it should be trained for more epochs",
-        "Optimisation has failed; the weights should be reinitialised and training restarted",
-        "The model has begun to overfit: optimisation is still working but generalisation is worsening, so early stopping, regularisation or more data are appropriate"
+        "The model has begun to overfit: optimisation is still working but generalisation is worsening, so early stopping, regularisation or more data are appropriate",
+        "Optimisation has failed; the weights should be reinitialised and training restarted"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "Es la firma clásica del sobreajuste, y el matiz importante es que la optimización está funcionando perfectamente: la pérdida de entrenamiento baja porque el modelo memoriza ruido específico de esa muestra. Diagnosticar infraajuste y entrenar más épocas empeora justo lo que va mal (el infraajuste tendría ambas pérdidas altas y estancadas). Subir la tasa de aprendizaje trata un problema de divergencia, que se vería como pérdida de entrenamiento oscilando o creciendo. Y reinicializar no cambia nada estructural: con la misma capacidad y los mismos datos, el modelo volverá al mismo punto.",
       "explanation_en": "This is the classic signature of overfitting, and the important nuance is that optimisation is working perfectly: the training loss falls because the model is memorising noise specific to that sample. Diagnosing underfitting and training for more epochs worsens exactly what is going wrong (underfitting would show both losses high and flat). Raising the learning rate addresses divergence, which would look like a training loss oscillating or growing. And reinitialising changes nothing structural: with the same capacity and the same data, the model will arrive at the same place.",
       "source": "Goodfellow, Bengio & Courville, Deep Learning (2016), Ch. 5.2: Capacity, Overfitting and Underfitting",
       "expected_time_ms": 50000,
-      "tags": ["optimization", "overfitting", "generalization", "validation"]
+      "tags": [
+        "optimization",
+        "overfitting",
+        "generalization",
+        "validation"
+      ]
     }
   ]
 }

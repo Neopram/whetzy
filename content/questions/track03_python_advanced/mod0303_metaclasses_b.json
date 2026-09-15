@@ -8,18 +8,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Perro:\n    pass\n\nprint(type(Perro))\nprint(type(type(Perro)))\n```",
       "question_en": "What does the following code print?\n```python\nclass Perro:\n    pass\n\nprint(type(Perro))\nprint(type(type(Perro)))\n```",
       "options_es": [
-        "<class 'type'>\n<class 'type'>",
+        "<class 'object'>\n<class 'type'>",
         "<class '__main__.Perro'>\n<class 'type'>",
         "<class 'type'>\n<class 'object'>",
-        "<class 'object'>\n<class 'type'>"
+        "<class 'type'>\n<class 'type'>"
       ],
       "options_en": [
-        "<class 'type'>\n<class 'type'>",
+        "<class 'object'>\n<class 'type'>",
         "<class '__main__.Perro'>\n<class 'type'>",
         "<class 'type'>\n<class 'object'>",
-        "<class 'object'>\n<class 'type'>"
+        "<class 'type'>\n<class 'type'>"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Una clase también es un objeto, y su clase (su metaclase) es `type`. Por eso `type(Perro)` es `<class 'type'>`. La segunda línea vuelve a dar `type` porque `type` es instancia de sí misma: ahí termina la cadena. La opción con `Perro` confunde `type(Perro)` con `type(Perro())`, que sí daría la clase. Las opciones con `object` mezclan dos jerarquías distintas: `object` es la base por HERENCIA, `type` es la clase por INSTANCIACIÓN.",
       "explanation_en": "A class is also an object, and its class (its metaclass) is `type`, so `type(Perro)` is `<class 'type'>`. The second line prints `type` again because `type` is an instance of itself: the chain stops there. The `Perro` option confuses `type(Perro)` with `type(Perro())`, which would indeed give the class. The `object` options conflate two different hierarchies: `object` is the base by INHERITANCE, `type` is the class by INSTANTIATION.",
       "source": "CPython docs 3.13 — Data model: The standard type hierarchy (classes are instances of type)",
@@ -39,17 +39,17 @@
       "question_en": "What does the following code print?\n```python\nBase = type(\"Base\", (), {\"saludo\": \"hola\"})\nHija = type(\"Hija\", (Base,), {})\nprint(Hija().saludo, Hija.__bases__[0].__name__)\n```",
       "options_es": [
         "hola Hija",
-        "hola Base",
+        "hola object",
         "AttributeError: 'Hija' object has no attribute 'saludo'",
-        "hola object"
+        "hola Base"
       ],
       "options_en": [
         "hola Hija",
-        "hola Base",
+        "hola object",
         "AttributeError: 'Hija' object has no attribute 'saludo'",
-        "hola object"
+        "hola Base"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El segundo argumento de `type` es la tupla de bases, así que `Hija` hereda de `Base` igual que si se hubiera escrito `class Hija(Base)`. La herencia funciona con normalidad y `saludo` se encuentra en `Base`, de ahí `hola`. `__bases__[0]` es `Base`, no `Hija` (confundir la clase con su base es el error típico) ni `object` (que sería la base solo si la tupla estuviera vacía). No hay AttributeError: crear la clase dinámicamente no cambia en nada la búsqueda por el MRO.",
       "explanation_en": "The second argument to `type` is the tuple of bases, so `Hija` inherits from `Base` exactly as if you had written `class Hija(Base)`. Inheritance works normally and `saludo` is found on `Base`, hence `hola`. `__bases__[0]` is `Base`, not `Hija` (confusing a class with its base is the classic slip) and not `object` (which would be the base only if the tuple were empty). There is no AttributeError: building the class dynamically changes nothing about MRO lookup.",
       "source": "CPython docs 3.13 — Built-in Functions: type (3-argument form)",
@@ -100,18 +100,18 @@
       "question_es": "¿Qué hace realmente la sentencia `class` por debajo, y en qué orden?",
       "question_en": "What does the `class` statement actually do under the hood, and in what order?",
       "options_es": [
-        "Crea un dict vacío y le va añadiendo los métodos después de instanciar la clase por primera vez",
+        "Determina la metaclase, obtiene el namespace con `metaclase.__prepare__`, ejecuta el cuerpo dentro de ese namespace y finalmente llama a `metaclase(nombre, bases, namespace)`",
         "Llama a `object.__new__` con el nombre de la clase y luego ejecuta el cuerpo dentro de la instancia resultante",
         "Compila el cuerpo a una función y no la ejecuta hasta que alguien accede a un atributo de la clase",
-        "Determina la metaclase, obtiene el namespace con `metaclase.__prepare__`, ejecuta el cuerpo dentro de ese namespace y finalmente llama a `metaclase(nombre, bases, namespace)`"
+        "Crea un dict vacío y le va añadiendo los métodos después de instanciar la clase por primera vez"
       ],
       "options_en": [
-        "It creates an empty dict and adds the methods to it after the class is first instantiated",
+        "It determines the metaclass, gets the namespace from `metaclass.__prepare__`, executes the body inside that namespace, and finally calls `metaclass(name, bases, namespace)`",
         "It calls `object.__new__` with the class name and then executes the body inside the resulting instance",
         "It compiles the body into a function and does not run it until someone accesses a class attribute",
-        "It determines the metaclass, gets the namespace from `metaclass.__prepare__`, executes the body inside that namespace, and finally calls `metaclass(name, bases, namespace)`"
+        "It creates an empty dict and adds the methods to it after the class is first instantiated"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "El cuerpo de la clase se ejecuta INMEDIATAMENTE, como un bloque de código, dentro del mapping que devuelve `__prepare__`; lo que queda en ese mapping se pasa como tercer argumento a la metaclase. Las opciones perezosas («no se ejecuta hasta...») son tentadoras porque los cuerpos de FUNCIÓN sí son perezosos, pero los de clase no. La opción de `object.__new__` confunde crear una CLASE (trabajo de la metaclase) con crear una INSTANCIA (trabajo de `__new__`/`__init__`).",
       "explanation_en": "The class body runs IMMEDIATELY, as a code block, inside the mapping returned by `__prepare__`; whatever is left in that mapping is passed as the third argument to the metaclass. The lazy options (\"not executed until...\") are tempting because FUNCTION bodies are lazy, but class bodies are not. The `object.__new__` option confuses creating a CLASS (the metaclass's job) with creating an INSTANCE (the job of `__new__`/`__init__`).",
       "source": "PEP 3115 — Metaclasses in Python 3000",
@@ -206,17 +206,17 @@
       "question_en": "What does the following code print?\n```python\nclass Plugin:\n    def __init_subclass__(cls, nombre=None, **kw):\n        super().__init_subclass__(**kw)\n        cls.nombre = nombre\n        print(\"registrado\", nombre)\n\nclass Csv(Plugin, nombre=\"csv\"):\n    pass\n\nprint(Csv.nombre)\n```",
       "options_es": [
         "csv\nregistrado csv",
-        "registrado csv\ncsv",
         "registrado None\nNone",
+        "registrado csv\ncsv",
         "TypeError: Plugin.__init_subclass__() takes no keyword arguments"
       ],
       "options_en": [
         "csv\nregistrado csv",
-        "registrado csv\ncsv",
         "registrado None\nNone",
+        "registrado csv\ncsv",
         "TypeError: Plugin.__init_subclass__() takes no keyword arguments"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Las palabras clave extra de la cabecera (`nombre=\"csv\"`) se pasan a `__init_subclass__`, que se ejecuta AL DEFINIRSE la subclase — por eso `registrado csv` aparece antes que el `print` final. Además es implícitamente un `classmethod`, sin necesidad del decorador. La opción con el orden invertido es la trampa: quien cree que el hook corre al instanciar coloca esa línea después. `None` sería el resultado si las kwargs de la cabecera se perdieran, que es precisamente lo que PEP 487 vino a evitar sin obligar a escribir una metaclase.",
       "explanation_en": "Extra keywords in the class header (`nombre=\"csv\"`) are passed to `__init_subclass__`, which runs WHEN the subclass is defined — that is why `registrado csv` appears before the final `print`. It is also implicitly a `classmethod`, no decorator needed. The reversed-order option is the trap: whoever thinks the hook runs at instantiation time puts that line second. `None` would be the result if header kwargs were dropped, which is precisely what PEP 487 exists to avoid without forcing you to write a metaclass.",
       "source": "PEP 487 — Simpler customisation of class creation",
@@ -235,18 +235,18 @@
       "question_es": "Al definir `class C(A, B):` sin pasar `metaclass=`, ¿cómo decide Python cuál es la metaclase de `C`?",
       "question_en": "When defining `class C(A, B):` without passing `metaclass=`, how does Python decide which metaclass `C` gets?",
       "options_es": [
-        "Siempre usa `type`; las metaclases de las bases solo afectan a las bases",
-        "Usa la metaclase de la primera base de la lista, `A`",
         "Toma la más derivada entre las candidatas (`type(A)`, `type(B)` y la explícita si la hay); si ninguna es subclase de todas las demás, lanza TypeError",
+        "Usa la metaclase de la primera base de la lista, `A`",
+        "Siempre usa `type`; las metaclases de las bases solo afectan a las bases",
         "Usa siempre la metaclase de la última base, siguiendo el orden inverso del MRO"
       ],
       "options_en": [
-        "It always uses `type`; the bases' metaclasses only affect the bases themselves",
-        "It uses the metaclass of the first base in the list, `A`",
         "It takes the most derived of the candidates (`type(A)`, `type(B)` and the explicit one if given); if none is a subclass of all the others, it raises TypeError",
+        "It uses the metaclass of the first base in the list, `A`",
+        "It always uses `type`; the bases' metaclasses only affect the bases themselves",
         "It always uses the last base's metaclass, following the MRO in reverse"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "La metaclase se HEREDA, y con varias bases Python busca la candidata más derivada; si no existe una que domine a todas, falla con `metaclass conflict`. «La primera base» y «la última base» son tentadoras porque el MRO sí depende del orden, pero aquí el criterio es de subclase, no posicional. Y creer que «siempre es type» explica mal por qué heredar a la vez de `abc.ABC` y de otra clase con metaclase propia puede reventar: `ABCMeta` es una metaclase real que entra en la comparación.",
       "explanation_en": "The metaclass is INHERITED, and with several bases Python looks for the most derived candidate; if no candidate dominates all the others it fails with `metaclass conflict`. \"First base\" and \"last base\" are tempting because the MRO does depend on order, but the criterion here is subclass-hood, not position. And believing \"it's always type\" fails to explain why inheriting from both `abc.ABC` and another class with its own metaclass can blow up: `ABCMeta` is a real metaclass that joins the comparison.",
       "source": "CPython docs 3.13 — Data model: Determining the appropriate metaclass",
@@ -265,18 +265,18 @@
       "question_es": "¿Para qué sirve `__prepare__` en una metaclase?",
       "question_en": "What is `__prepare__` for in a metaclass?",
       "options_es": [
-        "Para validar los atributos de la clase una vez que ya ha sido creada",
+        "Para devolver el mapping que se usará como namespace mientras se ejecuta el cuerpo de la clase, permitiendo por ejemplo detectar nombres redefinidos o conservar un orden propio",
         "Para preparar la instancia justo antes de que se llame a `__init__`",
         "Para registrar automáticamente la clase en un registro global de subclases",
-        "Para devolver el mapping que se usará como namespace mientras se ejecuta el cuerpo de la clase, permitiendo por ejemplo detectar nombres redefinidos o conservar un orden propio"
+        "Para validar los atributos de la clase una vez que ya ha sido creada"
       ],
       "options_en": [
-        "To validate the class's attributes once it has already been created",
+        "To return the mapping used as the namespace while the class body executes, allowing you to e.g. detect redefined names or keep a custom ordering",
         "To prepare the instance just before `__init__` is called",
         "To automatically register the class in a global subclass registry",
-        "To return the mapping used as the namespace while the class body executes, allowing you to e.g. detect redefined names or keep a custom ordering"
+        "To validate the class's attributes once it has already been created"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`__prepare__(mcs, name, bases, **kwds)` se llama ANTES de ejecutar el cuerpo y devuelve el mapping donde se irán escribiendo los nombres definidos en él; ahí es donde se pueden interceptar redefiniciones o registrar el orden de declaración. Validar «después» es trabajo de `__new__`/`__init__` de la metaclase, y «preparar la instancia» confunde el nivel: `__prepare__` opera sobre la CLASE, no sobre sus instancias. Desde Python 3.6 el namespace ya es ordenado por defecto, así que ese motivo histórico por sí solo ya no justifica escribirlo.",
       "explanation_en": "`__prepare__(mcs, name, bases, **kwds)` is called BEFORE the body runs and returns the mapping into which the names defined in it are written; that is where you can intercept redefinitions or record declaration order. Validating \"afterwards\" is the job of the metaclass's `__new__`/`__init__`, and \"preparing the instance\" confuses levels: `__prepare__` operates on the CLASS, not on its instances. Since Python 3.6 the namespace is ordered by default, so that historical motivation alone no longer justifies writing one.",
       "source": "PEP 3115 — Metaclasses in Python 3000",
@@ -340,18 +340,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Positivo(int):\n    def __new__(cls, valor):\n        return super().__new__(cls, abs(valor))\n\np = Positivo(-7)\nprint(p, p + 1, type(p).__name__)\n```",
       "question_en": "What does the following code print?\n```python\nclass Positivo(int):\n    def __new__(cls, valor):\n        return super().__new__(cls, abs(valor))\n\np = Positivo(-7)\nprint(p, p + 1, type(p).__name__)\n```",
       "options_es": [
-        "7 8 Positivo",
+        "TypeError: int() argument must be a string or a number",
         "-7 -6 Positivo",
         "7 8 int",
-        "TypeError: int() argument must be a string or a number"
+        "7 8 Positivo"
       ],
       "options_en": [
-        "7 8 Positivo",
+        "TypeError: int() argument must be a string or a number",
         "-7 -6 Positivo",
         "7 8 int",
-        "TypeError: int() argument must be a string or a number"
+        "7 8 Positivo"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`int` es inmutable: una vez existe la instancia ya no se puede cambiar su valor, así que la única oportunidad de normalizarlo es `__new__`, que decide con qué valor NACE el objeto. La opción `-7` es lo que saldría si se hubiera intentado hacer esto en `__init__`, donde `self` ya vale -7 y asignarle no cambia nada. `type(p).__name__` sigue siendo `Positivo` porque se pasó `cls`, no `int`; pasar `int` a `super().__new__` habría perdido la subclase.",
       "explanation_en": "`int` is immutable: once the instance exists its value cannot be changed, so the only chance to normalise it is `__new__`, which decides the value the object is BORN with. The `-7` option is what you would get had you tried this in `__init__`, where `self` is already -7 and assigning to it changes nothing. `type(p).__name__` is still `Positivo` because `cls` was passed, not `int`; passing `int` to `super().__new__` would have lost the subclass.",
       "source": "CPython docs 3.13 — Data model: object.__new__ (subclassing immutable types)",
@@ -370,18 +370,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Meta(type):\n    def __call__(cls, *a, **k):\n        print(\"meta.__call__\")\n        return super().__call__(*a, **k)\n\nclass C(metaclass=Meta):\n    def __new__(cls):\n        print(\"__new__\")\n        return super().__new__(cls)\n    def __init__(self):\n        print(\"__init__\")\n\nC()\n```",
       "question_en": "What does the following code print?\n```python\nclass Meta(type):\n    def __call__(cls, *a, **k):\n        print(\"meta.__call__\")\n        return super().__call__(*a, **k)\n\nclass C(metaclass=Meta):\n    def __new__(cls):\n        print(\"__new__\")\n        return super().__new__(cls)\n    def __init__(self):\n        print(\"__init__\")\n\nC()\n```",
       "options_es": [
-        "__new__\n__init__\nmeta.__call__",
         "meta.__call__\n__new__\n__init__",
+        "__new__\n__init__\nmeta.__call__",
         "meta.__call__\n__init__\n__new__",
         "__new__\nmeta.__call__\n__init__"
       ],
       "options_en": [
-        "__new__\n__init__\nmeta.__call__",
         "meta.__call__\n__new__\n__init__",
+        "__new__\n__init__\nmeta.__call__",
         "meta.__call__\n__init__\n__new__",
         "__new__\nmeta.__call__\n__init__"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "`C()` es una llamada sobre el objeto `C`, cuyo tipo es `Meta`, así que lo primero en ejecutarse es `Meta.__call__`. Solo cuando este delega en `type.__call__` se invocan `C.__new__` y luego `C.__init__`. Poner `meta.__call__` al final es el error más habitual: se asume que la metaclase «envuelve» el resultado después. Y `__init__` nunca precede a `__new__`: no hay objeto que inicializar hasta que `__new__` lo devuelve.",
       "explanation_en": "`C()` is a call on the object `C`, whose type is `Meta`, so `Meta.__call__` runs first. Only when it delegates to `type.__call__` do `C.__new__` and then `C.__init__` get invoked. Putting `meta.__call__` last is the commonest mistake: people assume the metaclass \"wraps\" the result afterwards. And `__init__` never precedes `__new__`: there is no object to initialise until `__new__` returns one.",
       "source": "CPython docs 3.13 — Data model: Metaclasses (customizing instance creation, __call__)",
@@ -402,16 +402,16 @@
       "options_es": [
         "No ocurre nada visible; el 42 se descarta silenciosamente",
         "`C()` devuelve 42 en lugar de la instancia",
-        "TypeError: __init__() should return None, not 'int'",
-        "Se crea la instancia y el 42 queda accesible como valor de retorno de `__init__`"
+        "Se crea la instancia y el 42 queda accesible como valor de retorno de `__init__`",
+        "TypeError: __init__() should return None, not 'int'"
       ],
       "options_en": [
         "Nothing visible happens; the 42 is silently discarded",
         "`C()` returns 42 instead of the instance",
-        "TypeError: __init__() should return None, not 'int'",
-        "The instance is created and 42 remains accessible as `__init__`'s return value"
+        "The instance is created and 42 remains accessible as `__init__`'s return value",
+        "TypeError: __init__() should return None, not 'int'"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "`__init__` INICIALIZA un objeto que ya existe, no lo produce, y Python impone esa semántica lanzando `TypeError` si devuelve algo distinto de `None`. La opción «devuelve 42» es la confusión de fondo con `__new__`, que SÍ devuelve el objeto y cuyo valor de retorno sí determina lo que recibe quien llama a la clase. «Se descarta silenciosamente» parece razonable porque muchos lenguajes ignoran lo que devuelve un constructor; Python prefiere convertirlo en un error ruidoso.",
       "explanation_en": "`__init__` INITIALISES an already-existing object, it does not produce one, and Python enforces that by raising `TypeError` if it returns anything other than `None`. The \"returns 42\" option is the underlying confusion with `__new__`, which DOES return the object and whose return value does determine what the caller of the class receives. \"Silently discarded\" feels reasonable because many languages ignore constructor returns; Python chooses to make it a loud error.",
       "source": "CPython docs 3.13 — Data model: object.__init__",
@@ -430,18 +430,18 @@
       "question_es": "`__new__` recibe la clase como primer parámetro (`cls`). ¿Qué tipo de método es en realidad?",
       "question_en": "`__new__` receives the class as its first parameter (`cls`). What kind of method is it actually?",
       "options_es": [
-        "Un `classmethod`; por eso recibe `cls` y hay que decorarlo con `@classmethod`",
+        "Un `staticmethod`: Python lo convierte automáticamente en estático y la clase se pasa explícitamente como primer argumento, sin necesidad de decorador",
         "Un método de instancia normal al que Python le pasa la clase en vez de la instancia",
         "Un método definido en la metaclase, no en la clase",
-        "Un `staticmethod`: Python lo convierte automáticamente en estático y la clase se pasa explícitamente como primer argumento, sin necesidad de decorador"
+        "Un `classmethod`; por eso recibe `cls` y hay que decorarlo con `@classmethod`"
       ],
       "options_en": [
-        "A `classmethod`; that is why it gets `cls`, and it must be decorated with `@classmethod`",
+        "A `staticmethod`: Python makes it static automatically and the class is passed explicitly as the first argument, with no decorator needed",
         "An ordinary instance method to which Python passes the class instead of the instance",
         "A method defined on the metaclass rather than on the class",
-        "A `staticmethod`: Python makes it static automatically and the class is passed explicitly as the first argument, with no decorator needed"
+        "A `classmethod`; that is why it gets `cls`, and it must be decorated with `@classmethod`"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`object.__new__` es un caso especial: el intérprete lo trata como `staticmethod` implícito, de modo que `cls` es un argumento explícito más y puedes escribir `Otra.__new__(Otra)` sin sorpresas. «Classmethod» es la respuesta que casi todo el mundo da porque el primer parámetro se llama `cls` — pero si lo fuera, la clase se inyectaría sola y llamarlo desde otra clase pasaría la equivocada. Decorarlo con `@classmethod` es un error frecuente que acaba duplicando ese argumento.",
       "explanation_en": "`object.__new__` is a special case: the interpreter treats it as an implicit `staticmethod`, so `cls` is just another explicit argument and you can write `Other.__new__(Other)` without surprises. \"Classmethod\" is what almost everyone answers because the first parameter is named `cls` — but if it were one, the class would be injected automatically and calling it from another class would pass the wrong one. Decorating it with `@classmethod` is a common bug that ends up duplicating that argument.",
       "source": "CPython docs 3.13 — Data model: object.__new__ (implicit static method)",
@@ -502,18 +502,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass Campo:\n    def __get__(self, obj, objtype=None):\n        return \"descriptor\"\n    def __set__(self, obj, valor):\n        obj.__dict__[\"x\"] = valor\n\nclass C:\n    x = Campo()\n\nc = C()\nc.x = \"instancia\"\nprint(c.__dict__[\"x\"], c.x)\n```",
       "question_en": "What does the following code print?\n```python\nclass Campo:\n    def __get__(self, obj, objtype=None):\n        return \"descriptor\"\n    def __set__(self, obj, valor):\n        obj.__dict__[\"x\"] = valor\n\nclass C:\n    x = Campo()\n\nc = C()\nc.x = \"instancia\"\nprint(c.__dict__[\"x\"], c.x)\n```",
       "options_es": [
-        "instancia descriptor",
-        "instancia instancia",
         "descriptor descriptor",
+        "instancia instancia",
+        "instancia descriptor",
         "KeyError: 'x'"
       ],
       "options_en": [
-        "instancia descriptor",
-        "instancia instancia",
         "descriptor descriptor",
+        "instancia instancia",
+        "instancia descriptor",
         "KeyError: 'x'"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`Campo` define `__get__` y `__set__`, así que es un descriptor DE DATOS y tiene prioridad sobre el `__dict__` de la instancia. El valor «instancia» sí está guardado en `c.__dict__` (lo puso el propio `__set__`), pero `c.x` nunca llega a mirar ahí: `__getattribute__` consulta primero la clase, encuentra el descriptor de datos y llama a su `__get__`. La respuesta «instancia instancia» es la intuición habitual — y sería correcta si `Campo` solo tuviera `__get__` (descriptor de no-datos), porque entonces el `__dict__` de la instancia ganaría.",
       "explanation_en": "`Campo` defines both `__get__` and `__set__`, so it is a DATA descriptor and takes precedence over the instance `__dict__`. The value \"instancia\" really is stored in `c.__dict__` (its own `__set__` put it there), but `c.x` never looks there: `__getattribute__` consults the class first, finds the data descriptor and calls its `__get__`. The \"instancia instancia\" answer is the usual intuition — and would be right if `Campo` had only `__get__` (a non-data descriptor), because then the instance `__dict__` would win.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide: data vs non-data descriptors",
@@ -562,18 +562,18 @@
       "question_es": "¿Cuándo se invoca `__getattr__`, y en qué se diferencia de `__getattribute__`?",
       "question_en": "When is `__getattr__` invoked, and how does it differ from `__getattribute__`?",
       "options_es": [
-        "En cada acceso a un atributo, antes incluso de mirar en `__dict__`; `__getattribute__` es su alias antiguo",
-        "Solo cuando el atributo buscado resulta ser un descriptor de datos",
         "Solo cuando la búsqueda normal (instancia, clase, MRO y descriptores) falla y se lanzaría `AttributeError`; `__getattribute__`, en cambio, se ejecuta SIEMPRE",
+        "Solo cuando el atributo buscado resulta ser un descriptor de datos",
+        "En cada acceso a un atributo, antes incluso de mirar en `__dict__`; `__getattribute__` es su alias antiguo",
         "Cada vez que se ASIGNA un atributo que aún no existía en la instancia"
       ],
       "options_en": [
-        "On every attribute access, even before looking in `__dict__`; `__getattribute__` is its legacy alias",
-        "Only when the attribute being looked up turns out to be a data descriptor",
         "Only when normal lookup (instance, class, MRO and descriptors) fails and `AttributeError` would be raised; `__getattribute__`, by contrast, runs ALWAYS",
+        "Only when the attribute being looked up turns out to be a data descriptor",
+        "On every attribute access, even before looking in `__dict__`; `__getattribute__` is its legacy alias",
         "Every time you ASSIGN an attribute that did not yet exist on the instance"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "`__getattribute__` es el punto de entrada incondicional de toda lectura de atributos y es quien implementa el protocolo de descriptores; `__getattr__` es solo el plan B que Python llama si aquel fracasa. Confundirlos sale caro: sobrescribir `__getattribute__` sin delegar en `super()` rompe la clase entera y provoca recursión infinita con muchísima facilidad, mientras que `__getattr__` es inofensivo para lo que ya existe. La opción de la asignación describe a `__setattr__`, que ese sí corre en TODA asignación, exista el atributo o no.",
       "explanation_en": "`__getattribute__` is the unconditional entry point for every attribute read and is what implements the descriptor protocol; `__getattr__` is merely the fallback Python calls if that fails. Mixing them up is expensive: overriding `__getattribute__` without delegating to `super()` breaks the whole class and causes infinite recursion very easily, whereas `__getattr__` is harmless for attributes that already exist. The assignment option describes `__setattr__`, which does run on EVERY assignment, existing attribute or not.",
       "source": "CPython docs 3.13 — Data model: Customizing attribute access",
@@ -593,17 +593,17 @@
       "question_en": "What is the relationship between `property` and the descriptor protocol?",
       "options_es": [
         "Ninguna: `property` es magia del compilador y no tiene nada que ver con los descriptores",
-        "`property` guarda el valor directamente en el `__dict__` de la instancia y lo lee de ahí",
+        "`property` es un descriptor de datos: implementa `__get__`, `__set__` y `__delete__`, y por eso tiene prioridad sobre el `__dict__` de la instancia",
         "`property` se apoya en `__getattr__`, por eso su getter solo se dispara si el atributo no existe todavía",
-        "`property` es un descriptor de datos: implementa `__get__`, `__set__` y `__delete__`, y por eso tiene prioridad sobre el `__dict__` de la instancia"
+        "`property` guarda el valor directamente en el `__dict__` de la instancia y lo lee de ahí"
       ],
       "options_en": [
         "None: `property` is compiler magic and has nothing to do with descriptors",
-        "`property` stores the value directly in the instance `__dict__` and reads it back from there",
+        "`property` is a data descriptor: it implements `__get__`, `__set__` and `__delete__`, which is why it takes precedence over the instance `__dict__`",
         "`property` relies on `__getattr__`, which is why its getter only fires when the attribute does not exist yet",
-        "`property` is a data descriptor: it implements `__get__`, `__set__` and `__delete__`, which is why it takes precedence over the instance `__dict__`"
+        "`property` stores the value directly in the instance `__dict__` and reads it back from there"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "`property` no es sintaxis especial sino una clase corriente que implementa el protocolo completo; podrías reescribirla en Python puro, y la guía de descriptores de CPython lo hace. Ser descriptor DE DATOS es justo lo que garantiza que el getter se ejecute siempre, aunque exista una entrada con ese nombre en `__dict__`. La opción de `__getattr__` es la explicación falsa más extendida, y predice justo lo contrario: que asignar el atributo «taparía» la property. Lo mismo vale para los métodos, `classmethod` y `staticmethod`, todos ellos descriptores.",
       "explanation_en": "`property` is not special syntax but an ordinary class implementing the full protocol; you could rewrite it in pure Python, and CPython's descriptor guide does exactly that. Being a DATA descriptor is precisely what guarantees the getter always runs, even if an entry with that name exists in `__dict__`. The `__getattr__` option is the most widespread false explanation, and it predicts the opposite: that assigning the attribute would \"shadow\" the property. The same holds for methods, `classmethod` and `staticmethod`, all of them descriptors.",
       "source": "CPython docs 3.13 — Descriptor HowTo Guide: Properties",

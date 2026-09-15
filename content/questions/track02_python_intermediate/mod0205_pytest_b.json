@@ -8,23 +8,27 @@
       "question_es": "¿Cuántos tests recoge y ejecuta `pytest test_math.py`?\n\n```python\n# test_math.py\ndef helper():\n    assert False\n\ndef test_one():\n    assert 1 + 1 == 2\n\ndef check_two():\n    assert 2 + 2 == 5\n\ndef test_three():\n    assert 3 > 2\n```",
       "question_en": "How many tests does `pytest test_math.py` collect and run?\n\n```python\n# test_math.py\ndef helper():\n    assert False\n\ndef test_one():\n    assert 1 + 1 == 2\n\ndef check_two():\n    assert 2 + 2 == 5\n\ndef test_three():\n    assert 3 > 2\n```",
       "options_es": [
-        "2: solo test_one y test_three",
         "3: pytest también recoge check_two",
+        "2: solo test_one y test_three",
         "4: pytest ejecuta todas las funciones del archivo",
         "0: faltaría una clase Test que las agrupe"
       ],
       "options_en": [
-        "2: only test_one and test_three",
         "3: pytest also collects check_two",
+        "2: only test_one and test_three",
         "4: pytest runs every function in the file",
         "0: they would need a Test class to group them"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "La recolección se basa en el nombre: solo las funciones que empiezan por `test_` entran en la suite. `helper` y `check_two` contienen asserts que fallarían, pero pytest ni siquiera las llama, así que el `assert False` nunca se evalúa. Contar 3 o 4 es el error típico de quien cree que pytest \"busca asserts\" en el archivo; y no hace falta ninguna clase base ni contenedor, a diferencia de unittest.",
       "explanation_en": "Collection is name-based: only functions starting with `test_` become tests. `helper` and `check_two` contain asserts that would fail, but pytest never calls them, so that `assert False` is never evaluated. Answering 3 or 4 is the classic mistake of assuming pytest \"scans the file for asserts\"; and unlike unittest, no base class or container is required.",
       "source": "pytest docs - Good Integration Practices: conventions for Python test discovery",
       "expected_time_ms": 20000,
-      "tags": ["pytest", "discovery", "collection"]
+      "tags": [
+        "pytest",
+        "discovery",
+        "collection"
+      ]
     },
     {
       "id": "q020501011",
@@ -34,23 +38,27 @@
       "question_es": "Con la configuración por defecto, ¿qué archivos recoge pytest al recorrer un directorio?",
       "question_en": "With the default configuration, which files does pytest collect when it walks a directory?",
       "options_es": [
-        "Cualquier archivo .py que contenga la palabra `assert`",
-        "Solo el archivo `tests.py` de cada paquete",
         "Los que coinciden con `test_*.py` o `*_test.py`",
+        "Solo el archivo `tests.py` de cada paquete",
+        "Cualquier archivo .py que contenga la palabra `assert`",
         "Todos los archivos .py dentro de una carpeta llamada `tests/`, con cualquier nombre"
       ],
       "options_en": [
-        "Any .py file that contains the word `assert`",
-        "Only each package's `tests.py` file",
         "Files matching `test_*.py` or `*_test.py`",
+        "Only each package's `tests.py` file",
+        "Any .py file that contains the word `assert`",
         "Every .py file inside a folder named `tests/`, whatever it is called"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Los patrones por defecto son `test_*.py` y `*_test.py` (configurables con `python_files`). `tests.py` es la convención de Django, no de pytest. Y meter los archivos en una carpeta `tests/` no cambia nada: si el archivo se llama `helpers.py`, pytest no lo recoge aunque esté lleno de tests. Ese es el motivo número uno de \"mis tests no se ejecutan y no da ningún error\".",
       "explanation_en": "The default patterns are `test_*.py` and `*_test.py` (configurable via `python_files`). `tests.py` is Django's convention, not pytest's. Putting files in a `tests/` folder changes nothing either: a file named `helpers.py` is never collected, however many tests it holds. That is the number-one cause of \"my tests don't run and nothing is reported\".",
       "source": "pytest docs - Good Integration Practices: conventions for Python test discovery",
       "expected_time_ms": 22000,
-      "tags": ["pytest", "discovery", "configuration"]
+      "tags": [
+        "pytest",
+        "discovery",
+        "configuration"
+      ]
     },
     {
       "id": "q020501012",
@@ -76,7 +84,12 @@
       "explanation_en": "Neither 0.1 nor 0.2 is exactly representable in binary, so the sum drifts in the last bit and strict equality fails. The pytest way is `assert 0.1 + 0.2 == pytest.approx(0.3)`, which compares within a relative tolerance. pytest fixes nothing behind your back: it neither rounds comparisons nor turns failures into xfails - xfail has to be requested with an explicit marker.",
       "source": "pytest docs - API Reference: pytest.approx",
       "expected_time_ms": 30000,
-      "tags": ["pytest", "assertions", "floating-point", "approx"]
+      "tags": [
+        "pytest",
+        "assertions",
+        "floating-point",
+        "approx"
+      ]
     },
     {
       "id": "q020501013",
@@ -102,7 +115,12 @@
       "explanation_en": "pytest rewrites the AST of test modules as it imports them, injecting code that captures the sub-expressions; that is why the report shows `assert 3 == 4` with both sides broken out. A plain Python `assert` shows only the optional message and nothing else - that is the trap in option 3. Option 1 is dangerous as well as wrong: `-O` *strips* asserts, so running tests optimised turns them into no-ops. And `assertEqual` is alive and well in `unittest`; it is simply unnecessary here.",
       "source": "pytest docs - How to write and report assertions in tests: Assertion introspection details",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "assertions", "introspection", "unittest"]
+      "tags": [
+        "pytest",
+        "assertions",
+        "introspection",
+        "unittest"
+      ]
     },
     {
       "id": "q020501014",
@@ -112,23 +130,28 @@
       "question_es": "¿Qué informa pytest al ejecutar este test?\n\n```python\ndef saludar(nombre):\n    print(f\"Hola, {nombre}\")\n\ndef test_saludar(capsys):\n    saludar(\"Ana\")\n    capturado = capsys.readouterr()\n    assert capturado.out == \"Hola, Ana\"\n```",
       "question_en": "What does pytest report for this test?\n\n```python\ndef greet(name):\n    print(f\"Hello, {name}\")\n\ndef test_greet(capsys):\n    greet(\"Ana\")\n    captured = capsys.readouterr()\n    assert captured.out == \"Hello, Ana\"\n```",
       "options_es": [
-        "Pasa: capsys elimina el salto de línea final automáticamente",
+        "Falla: `capturado.out` vale \"Hola, Ana\\n\" por el salto de línea que añade print",
         "Falla: capsys captura stderr, no stdout",
         "Pasa, pero solo si se ejecuta pytest con la opción -s",
-        "Falla: `capturado.out` vale \"Hola, Ana\\n\" por el salto de línea que añade print"
+        "Pasa: capsys elimina el salto de línea final automáticamente"
       ],
       "options_en": [
-        "It passes: capsys strips the trailing newline automatically",
+        "It fails: `captured.out` is \"Hello, Ana\\n\" because of the newline print adds",
         "It fails: capsys captures stderr, not stdout",
         "It passes, but only when pytest is run with -s",
-        "It fails: `captured.out` is \"Hello, Ana\\n\" because of the newline print adds"
+        "It passes: capsys strips the trailing newline automatically"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`capsys.readouterr()` devuelve el texto capturado tal cual, incluido el `\\n` que `print` añade por defecto; la comparación exacta falla por un solo carácter. Se arregla comparando con `\"Hola, Ana\\n\"` o usando `capturado.out.strip()`. `capsys` expone `.out` y `.err` por separado, así que sí captura stdout. Y la opción 3 se invierte: `-s` *desactiva* la captura, con lo que `capturado.out` quedaría vacío y el test fallaría igual, pero por otro motivo.",
       "explanation_en": "`capsys.readouterr()` returns the captured text verbatim, including the `\\n` that `print` appends by default, so an exact comparison fails by one character. Fix it by comparing against `\"Hello, Ana\\n\"` or calling `captured.out.strip()`. `capsys` exposes `.out` and `.err` separately, so it does capture stdout. Option 3 has it backwards: `-s` *disables* capturing, which would leave `captured.out` empty and fail the test for a different reason.",
       "source": "pytest docs - How to capture stdout/stderr output",
       "expected_time_ms": 45000,
-      "tags": ["pytest", "capsys", "builtin-fixtures", "assertions"]
+      "tags": [
+        "pytest",
+        "capsys",
+        "builtin-fixtures",
+        "assertions"
+      ]
     },
     {
       "id": "q020501015",
@@ -137,14 +160,24 @@
       "difficulty_tier": "medium",
       "question_es": "pytest puede ejecutar tests escritos como subclases de `unittest.TestCase` sin modificarlos.",
       "question_en": "pytest can run tests written as `unittest.TestCase` subclasses without modifying them.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "pytest recoge y ejecuta las subclases de `unittest.TestCase` tal cual, con sus `setUp`, `tearDown` y métodos `assertX`. Por eso migrar una suite de unittest suele empezar por cambiar el comando de ejecución y nada más. Lo que no funciona en esas clases son las fixtures de pytest pasadas como argumento del test, porque unittest controla la firma de sus métodos.",
       "explanation_en": "pytest collects and runs `unittest.TestCase` subclasses as they are, honouring `setUp`, `tearDown` and the `assertX` methods. That is why migrating a unittest suite usually starts by changing the runner command and nothing else. What does not work inside those classes is pytest fixtures passed as test arguments, because unittest owns the method signature.",
       "source": "pytest docs - How to use unittest-based tests with pytest",
       "expected_time_ms": 25000,
-      "tags": ["pytest", "unittest", "migration"]
+      "tags": [
+        "pytest",
+        "unittest",
+        "migration"
+      ]
     },
     {
       "id": "q020501016",
@@ -159,7 +192,11 @@
       "explanation_en": "`-x` (alias of `--exitfirst`) aborts the session on the first failure; `--maxfail=N` generalises it to N failures. It is the flag you reach for when one change broke half the suite and only the first real error matters. Don't confuse it with `-v`/`-q`, which only change report verbosity, or with `--lf` (`--last-failed`), which stops nothing: it reruns only the tests that failed last time.",
       "source": "pytest docs - How to invoke pytest: Stopping after the first (or N) failures",
       "expected_time_ms": 50000,
-      "tags": ["pytest", "cli", "workflow"]
+      "tags": [
+        "pytest",
+        "cli",
+        "workflow"
+      ]
     },
     {
       "id": "q020501017",
@@ -171,23 +208,27 @@
       "options_es": [
         "Un test que pasa: pytest instancia la clase llamando a su `__init__`",
         "Un test que falla con AttributeError sobre `self.items`",
-        "Un error de colección que aborta la sesión completa",
-        "Un aviso (PytestCollectionWarning): la clase define `__init__`, no se recoge, y se ejecutan 0 tests"
+        "Un aviso (PytestCollectionWarning): la clase define `__init__`, no se recoge, y se ejecutan 0 tests",
+        "Un error de colección que aborta la sesión completa"
       ],
       "options_en": [
         "One passing test: pytest instantiates the class through its `__init__`",
         "One failing test with an AttributeError on `self.items`",
-        "A collection error that aborts the whole session",
-        "A warning (PytestCollectionWarning): the class defines `__init__`, is skipped, and 0 tests run"
+        "A warning (PytestCollectionWarning): the class defines `__init__`, is skipped, and 0 tests run",
+        "A collection error that aborts the whole session"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "pytest instancia la clase una vez por cada test, por lo que no puede trabajar con clases que definan `__init__`: las descarta y emite `PytestCollectionWarning`. Lo peligroso es que no es un error, así que la suite termina \"en verde\" con cero tests ejecutados, y eso pasa desapercibido en CI. El estado compartido va en una fixture o en `setup_method`. La opción 1 es lo que haría unittest con `setUp`, no pytest con `__init__`.",
       "explanation_en": "pytest instantiates the class once per test, so it cannot work with classes that define `__init__`: it skips them and emits a `PytestCollectionWarning`. The dangerous part is that this is not an error, so the suite finishes \"green\" having run zero tests, and that slips through CI unnoticed. Shared state belongs in a fixture or in `setup_method`. Option 1 is what unittest does with `setUp`, not what pytest does with `__init__`.",
       "source": "pytest docs - Conventions for Python test discovery (test class collection)",
       "expected_time_ms": 48000,
-      "tags": ["pytest", "discovery", "test-classes", "warnings"]
+      "tags": [
+        "pytest",
+        "discovery",
+        "test-classes",
+        "warnings"
+      ]
     },
-
     {
       "id": "q020502010",
       "skill_id": "sk020502",
@@ -197,22 +238,26 @@
       "question_en": "What does pytest report for this module?\n\n```python\nimport pytest\n\n@pytest.fixture\ndef items():\n    return []\n\ndef test_first(items):\n    items.append(\"a\")\n    assert len(items) == 1\n\ndef test_second(items):\n    items.append(\"b\")\n    assert len(items) == 1\n```",
       "options_es": [
         "Solo pasa test_primero; test_segundo falla porque la lista ya contiene \"a\"",
-        "Ninguno pasa: dos tests no pueden pedir la misma fixture",
         "Pasan los dos: el scope por defecto es `function`, así que la fixture se vuelve a ejecutar para cada test",
+        "Ninguno pasa: dos tests no pueden pedir la misma fixture",
         "Pasan los dos, pero solo si se añade `scope=\"function\"` de forma explícita"
       ],
       "options_en": [
         "Only test_first passes; test_second fails because the list already holds \"a\"",
-        "Neither passes: two tests cannot request the same fixture",
         "Both pass: the default scope is `function`, so the fixture runs again for each test",
+        "Neither passes: two tests cannot request the same fixture",
         "Both pass, but only if `scope=\"function\"` is stated explicitly"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "El scope por defecto ya es `function`, así que el cuerpo de la fixture se ejecuta de nuevo antes de cada test y cada uno recibe una lista recién creada. Escribirlo explícitamente no cambia nada. La opción 1 describe lo que sí ocurriría con `scope=\"module\"` o `\"session\"`, donde el valor se cachea y se comparte: ese es el origen clásico de tests que pasan solos pero fallan en suite.",
       "explanation_en": "The default scope is already `function`, so the fixture body runs again before each test and every test gets a freshly built list. Spelling the scope out changes nothing. Option 1 describes what *would* happen with `scope=\"module\"` or `\"session\"`, where the value is cached and shared - the classic source of tests that pass alone but fail in a suite.",
       "source": "pytest docs - How to use fixtures: Fixture scopes",
       "expected_time_ms": 28000,
-      "tags": ["pytest", "fixtures", "scope"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "scope"
+      ]
     },
     {
       "id": "q020502011",
@@ -238,7 +283,13 @@
       "explanation_en": "With `scope=\"module\"` the value is computed once and cached: `test_second` receives the very list `test_first` already mutated, so `len(items)` is 2 and the assertion fails. pytest never copies the returned value (option 1) - it hands over the reference. This is exactly how shared-state flakiness works, and it hurts twice over: the failure depends on ordering, so running that test on its own passes. If you need a wide scope, return something immutable or reset the state in teardown.",
       "source": "pytest docs - How to use fixtures: Fixture scopes",
       "expected_time_ms": 50000,
-      "tags": ["pytest", "fixtures", "scope", "shared-state", "flaky"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "scope",
+        "shared-state",
+        "flaky"
+      ]
     },
     {
       "id": "q020502012",
@@ -248,23 +299,28 @@
       "question_es": "Un test necesita escribir y volver a leer un archivo temporal. ¿Cuál es la forma que recomienda pytest?",
       "question_en": "A test needs to write a temporary file and read it back. What does pytest recommend?",
       "options_es": [
-        "Pedir la fixture `tmp_path` y trabajar dentro del directorio `Path` que devuelve",
-        "Escribir en el directorio actual y borrar el archivo con `os.remove` al final del test",
         "Crear una carpeta fija `/tmp/test_data` y reutilizarla en toda la suite",
+        "Escribir en el directorio actual y borrar el archivo con `os.remove` al final del test",
+        "Pedir la fixture `tmp_path` y trabajar dentro del directorio `Path` que devuelve",
         "Llamar a `tempfile.mkdtemp()` en el cuerpo del test"
       ],
       "options_en": [
-        "Request the `tmp_path` fixture and work inside the `Path` it returns",
-        "Write to the current directory and delete the file with `os.remove` at the end of the test",
         "Create a fixed `/tmp/test_data` folder and reuse it across the suite",
+        "Write to the current directory and delete the file with `os.remove` at the end of the test",
+        "Request the `tmp_path` fixture and work inside the `Path` it returns",
         "Call `tempfile.mkdtemp()` in the body of the test"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`tmp_path` da un `pathlib.Path` único por test, con limpieza automática (pytest conserva solo las últimas ejecuciones para poder depurar). Las alternativas fallan justo cuando más duele: el `os.remove` del final nunca se ejecuta si una aserción anterior falla, así que la basura se acumula y contamina la siguiente ejecución; una carpeta fija compartida hace que dos tests en paralelo se pisen y además `/tmp` no existe en Windows; y `mkdtemp()` sin teardown va dejando directorios para siempre.",
       "explanation_en": "`tmp_path` gives you a unique `pathlib.Path` per test with automatic cleanup (pytest keeps the last few runs around so you can debug). The alternatives fail exactly when it hurts: the trailing `os.remove` never runs if an earlier assertion fails, so leftovers pile up and pollute the next run; a fixed shared folder makes parallel tests clobber each other and `/tmp` does not exist on Windows; and `mkdtemp()` with no teardown leaks directories forever.",
       "source": "pytest docs - How to use temporary directories and files in tests",
       "expected_time_ms": 25000,
-      "tags": ["pytest", "fixtures", "tmp_path", "builtin-fixtures"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "tmp_path",
+        "builtin-fixtures"
+      ]
     },
     {
       "id": "q020502013",
@@ -275,22 +331,27 @@
       "question_en": "Do both tests pass?\n\n```python\nimport pytest\n\ncalls = []\n\n@pytest.fixture(autouse=True)\ndef track():\n    calls.append(\"setup\")\n    yield\n    calls.append(\"teardown\")\n\ndef test_a():\n    assert \"setup\" in calls\n\ndef test_b():\n    assert calls.count(\"setup\") == 2\n```",
       "options_es": [
         "No: `registrar` nunca se ejecuta porque ningún test la pide como argumento",
-        "No: test_b falla porque `llamadas` se reinicia entre tests",
         "Sí: `autouse=True` aplica la fixture a todos los tests de su ámbito, la pidan o no",
+        "No: test_b falla porque `llamadas` se reinicia entre tests",
         "No: pytest da error porque una fixture autouse no puede usar `yield`"
       ],
       "options_en": [
         "No: `track` never runs because no test requests it as an argument",
-        "No: test_b fails because `calls` is reset between tests",
         "Yes: `autouse=True` applies the fixture to every test in its scope, requested or not",
+        "No: test_b fails because `calls` is reset between tests",
         "No: pytest errors out because an autouse fixture cannot use `yield`"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`autouse=True` inyecta la fixture en todos los tests de su ámbito sin declararla, así que antes de test_a ya hay un \"setup\" y antes de test_b hay dos. `llamadas` es una lista a nivel de módulo, no la reinicia nadie: por eso el contador acumula. Y `yield` es perfectamente válido en una fixture autouse; es el mecanismo estándar de teardown. Ojo: esa acumulación entre tests que aquí es el objetivo es, en código real, el patrón que genera tests dependientes del orden.",
       "explanation_en": "`autouse=True` injects the fixture into every test in its scope without being declared, so one \"setup\" exists before test_a and two before test_b. `calls` is a module-level list that nothing resets, which is why the count accumulates. And `yield` is perfectly valid in an autouse fixture - it is the standard teardown mechanism. Note that the very accumulation the test relies on here is, in real code, the pattern that produces order-dependent tests.",
       "source": "pytest docs - How to use fixtures: Autouse fixtures",
       "expected_time_ms": 50000,
-      "tags": ["pytest", "fixtures", "autouse", "teardown"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "autouse",
+        "teardown"
+      ]
     },
     {
       "id": "q020502014",
@@ -316,7 +377,12 @@
       "explanation_en": "pytest auto-loads the `conftest.py` in the test's directory and every ancestor up to rootdir, then resolves fixtures by parameter name. Importing `conftest` by hand (option 1) is the most common mistake: it works by accident depending on `sys.path`, breaks once there are several conftest files, and bypasses scope-based resolution entirely. There is no `fixtures` config key, and the decorator is `@pytest.fixture`, not a mark.",
       "source": "pytest docs - conftest.py: sharing fixtures across multiple files",
       "expected_time_ms": 32000,
-      "tags": ["pytest", "fixtures", "conftest", "project-layout"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "conftest",
+        "project-layout"
+      ]
     },
     {
       "id": "q020502015",
@@ -325,14 +391,25 @@
       "difficulty_tier": "hard",
       "question_es": "Una fixture con `scope=\"session\"` se destruye y se vuelve a crear una vez por cada archivo de test de la suite.",
       "question_en": "A fixture with `scope=\"session\"` is torn down and recreated once for every test file in the suite.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Eso describe `scope=\"module\"`, no `\"session\"`. Una fixture de sesión se crea como mucho una vez por ejecución de pytest y sobrevive a todos los archivos; su teardown ocurre al final de la sesión. Es la razón por la que una fixture de sesión que devuelve algo mutable (una conexión, un diccionario de caché) puede filtrar estado entre archivos completos. Matiz: bajo `pytest-xdist` cada worker tiene su propia sesión, así que la fixture se crea una vez por proceso.",
       "explanation_en": "That describes `scope=\"module\"`, not `\"session\"`. A session fixture is created at most once per pytest run and outlives every file; its teardown happens at the end of the session. That is exactly why a session fixture returning something mutable (a connection, a cache dict) can leak state across whole files. One nuance: under `pytest-xdist` each worker has its own session, so the fixture is created once per process.",
       "source": "pytest docs - How to use fixtures: Fixture scopes",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "fixtures", "scope", "session"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "scope",
+        "session"
+      ]
     },
     {
       "id": "q020502016",
@@ -347,7 +424,11 @@
       "explanation_en": "`autouse=True` is the route for cross-cutting setup: seeding the RNG, clearing a global cache, freezing the clock. Its cost is invisibility: the test declares none of its dependencies, so a failure sends you hunting through the conftest files of every parent directory. Use it when the dependency really is universal; if two tests need it, request it by name instead.",
       "source": "pytest docs - How to use fixtures: Autouse fixtures",
       "expected_time_ms": 50000,
-      "tags": ["pytest", "fixtures", "autouse"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "autouse"
+      ]
     },
     {
       "id": "q020502017",
@@ -357,25 +438,29 @@
       "question_es": "¿Cuántos casos de test informa pytest?\n\n```python\nimport pytest\n\n@pytest.fixture(params=[1, 2, 3])\ndef numero(request):\n    return request.param\n\ndef test_positivo(numero):\n    assert numero > 0\n```",
       "question_en": "How many test cases does pytest report?\n\n```python\nimport pytest\n\n@pytest.fixture(params=[1, 2, 3])\ndef number(request):\n    return request.param\n\ndef test_positive(number):\n    assert number > 0\n```",
       "options_es": [
-        "1: la fixture solo devuelve el primer valor de `params`",
         "3: pytest genera un caso por cada valor de `params`",
+        "1: la fixture solo devuelve el primer valor de `params`",
         "0: `request.param` solo es válido dentro de `@pytest.mark.parametrize`",
         "Error de colección: `params` exige indicar también `ids`"
       ],
       "options_en": [
-        "1: the fixture only returns the first value in `params`",
         "3: pytest generates one case per value in `params`",
+        "1: the fixture only returns the first value in `params`",
         "0: `request.param` is only valid inside `@pytest.mark.parametrize`",
         "A collection error: `params` also requires `ids`"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Una fixture parametrizada multiplica todos los tests que la piden: pytest ejecuta `test_positivo` tres veces, con ids `[1]`, `[2]` y `[3]`. Es distinto de `@pytest.mark.parametrize`, que parametriza un único test; aquí el efecto se propaga a cualquier test (y a cualquier fixture) que dependa de `numero`, que es justo lo que se busca para probar contra varios backends o versiones. `ids` es opcional.",
       "explanation_en": "A parametrised fixture multiplies every test that requests it: pytest runs `test_positive` three times, with ids `[1]`, `[2]` and `[3]`. This differs from `@pytest.mark.parametrize`, which parametrises one test; here the effect propagates to any test (and any fixture) depending on `number`, which is exactly what you want for running a suite against several backends or versions. `ids` is optional.",
       "source": "pytest docs - How to parametrize fixtures and test functions: parametrizing fixtures",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "fixtures", "parametrize", "request"]
+      "tags": [
+        "pytest",
+        "fixtures",
+        "parametrize",
+        "request"
+      ]
     },
-
     {
       "id": "q020503010",
       "skill_id": "sk020503",
@@ -385,22 +470,27 @@
       "question_en": "`app/service.py` contains `from app.api import fetch` and a function `run()` that calls `fetch()`. Which target must be passed to `patch` to replace it in the test?",
       "options_es": [
         "\"app.api.consultar\", porque es donde está definida la función",
-        "\"app.servicio.consultar\", porque es el nombre que `ejecutar` resuelve en tiempo de ejecución",
+        "\"app.servicio.ejecutar.consultar\", la ruta hasta la función que la usa",
         "\"consultar\", el nombre sin ruta de módulo",
-        "\"app.servicio.ejecutar.consultar\", la ruta hasta la función que la usa"
+        "\"app.servicio.consultar\", porque es el nombre que `ejecutar` resuelve en tiempo de ejecución"
       ],
       "options_en": [
         "\"app.api.fetch\", because that is where the function is defined",
-        "\"app.service.fetch\", because that is the name `run` resolves at call time",
+        "\"app.service.run.fetch\", the path down to the calling function",
         "\"fetch\", the bare name with no module path",
-        "\"app.service.run.fetch\", the path down to the calling function"
+        "\"app.service.fetch\", because that is the name `run` resolves at call time"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El `from ... import` crea, en el momento de importar, un nombre nuevo dentro de `app.servicio` que apunta al mismo objeto. Parchear `app.api.consultar` reemplaza el atributo del módulo original, pero `app.servicio` sigue teniendo su propia referencia a la función real, así que el test no sustituye nada y sigue llamando a la implementación verdadera. La regla de la documentación es \"parchea donde se usa, no donde se define\". Solo si el código hiciera `import app.api` y llamara a `app.api.consultar()` funcionaría la opción 1.",
       "explanation_en": "The `from ... import` binds a new name inside `app.service` at import time, pointing at the same object. Patching `app.api.fetch` swaps the attribute on the original module, but `app.service` still holds its own reference to the real function, so the test replaces nothing and keeps calling production code. The documented rule is \"patch where it is looked up, not where it is defined\". Option 1 would only work if the code did `import app.api` and called `app.api.fetch()`.",
       "source": "CPython docs 3.13 - unittest.mock: Where to patch",
       "expected_time_ms": 50000,
-      "tags": ["mocking", "patch", "imports", "unittest-mock"]
+      "tags": [
+        "mocking",
+        "patch",
+        "imports",
+        "unittest-mock"
+      ]
     },
     {
       "id": "q020503011",
@@ -411,22 +501,26 @@
       "question_en": "What does this code print?\n\n```python\nfrom unittest.mock import Mock\n\nm = Mock()\nm.next.side_effect = [1, 2, 3]\nprint(m.next(), m.next(), m.next())\n```",
       "options_es": [
         "[1, 2, 3] [1, 2, 3] [1, 2, 3]",
-        "1 1 1",
         "1 2 3",
+        "1 1 1",
         "TypeError: side_effect tiene que ser un callable"
       ],
       "options_en": [
         "[1, 2, 3] [1, 2, 3] [1, 2, 3]",
-        "1 1 1",
         "1 2 3",
+        "1 1 1",
         "TypeError: side_effect must be a callable"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Cuando `side_effect` recibe un iterable, cada llamada devuelve el siguiente elemento; una cuarta llamada lanzaría `StopIteration`. Eso es lo que permite simular una API que devuelve resultados distintos en llamadas sucesivas (paginación, reintentos). `return_value` es lo contrario: devolvería el mismo valor siempre, y ese es el error de la opción 2. `side_effect` acepta iterables, excepciones y callables, no solo lo último.",
       "explanation_en": "When `side_effect` is given an iterable, each call returns the next item; a fourth call would raise `StopIteration`. That is how you simulate an API returning different results on successive calls (pagination, retries). `return_value` is the opposite - it would hand back the same value every time, which is the mistake behind option 2. `side_effect` accepts iterables, exceptions and callables, not just the last of those.",
       "source": "CPython docs 3.13 - unittest.mock.Mock: side_effect",
       "expected_time_ms": 25000,
-      "tags": ["mocking", "side_effect", "unittest-mock"]
+      "tags": [
+        "mocking",
+        "side_effect",
+        "unittest-mock"
+      ]
     },
     {
       "id": "q020503012",
@@ -452,7 +546,12 @@
       "explanation_en": "Assigning an exception (class or instance) to `side_effect` makes the call raise it - the standard way to exercise the error path without a real network failure. The call is still recorded: `call_count` is 1, which is the trap in option 2, where people assume a \"failed\" call is not counted. Without `side_effect` a Mock would silently return another Mock (option 3), and that behaviour is exactly what lets a badly built test pass while asserting nothing.",
       "source": "CPython docs 3.13 - unittest.mock.Mock: side_effect",
       "expected_time_ms": 45000,
-      "tags": ["mocking", "side_effect", "exceptions", "call_count"]
+      "tags": [
+        "mocking",
+        "side_effect",
+        "exceptions",
+        "call_count"
+      ]
     },
     {
       "id": "q020503013",
@@ -478,7 +577,12 @@
       "explanation_en": "A Mock manufactures any attribute you ask for, so historically a typo in `assert_called_once_with` created a child Mock, called it, got another Mock back, and the test passed having verified nothing at all. That is why `Mock` raises `AttributeError` for attributes starting with `assert` (and near-misses like `assret`) unless it is built with `unsafe=True`. Option 2 was the right answer ten years ago and still is for typos that do not start with `assert`: `save.called_once_with(\"receipt\")` does not exist, raises nothing, and leaves a green, empty test. The real safety net is `autospec`/`spec`.",
       "source": "CPython docs 3.13 - unittest.mock.Mock (unsafe; attributes starting with \"assert\")",
       "expected_time_ms": 60000,
-      "tags": ["mocking", "unittest-mock", "false-positive", "assertions"]
+      "tags": [
+        "mocking",
+        "unittest-mock",
+        "false-positive",
+        "assertions"
+      ]
     },
     {
       "id": "q020503014",
@@ -489,22 +593,27 @@
       "question_en": "What problem does `patch(..., autospec=True)` prevent, compared with replacing the dependency with a plain `Mock()`?",
       "options_es": [
         "Hace el test más rápido porque el mock deja de registrar las llamadas",
-        "Consigue que el test siga pasando aunque cambie la firma de la función real",
         "Detecta las llamadas con una firma que la función real no aceptaría, en vez de admitirlas en silencio",
+        "Consigue que el test siga pasando aunque cambie la firma de la función real",
         "Sustituye automáticamente todas las dependencias del módulo sin tener que indicarlas"
       ],
       "options_en": [
         "It makes the test faster because the mock stops recording calls",
-        "It keeps the test passing even when the real function's signature changes",
         "It catches calls with a signature the real function would reject, instead of accepting them silently",
+        "It keeps the test passing even when the real function's signature changes",
         "It automatically replaces every dependency in the module without naming them"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Un `Mock()` pelado acepta cualquier llamada: `enviar()`, `enviar(1, 2, 3)` o `enviar(destinatarioo=\"a\")` son todas válidas para él. Si mañana la función real pasa a exigir un argumento más, el test sigue verde y producción se rompe. `autospec` construye el mock a partir del objeto real y valida la firma en cada llamada, así que el desajuste sale en el test. La opción 2 es la más peligrosa de la lista porque describe lo que mucha gente quiere de un mock: que el test no se queje. Un test que no se queja cuando el contrato cambia no está probando el contrato.",
       "explanation_en": "A bare `Mock()` accepts any call: `send()`, `send(1, 2, 3)` and `send(recipeint=\"a\")` are all fine by it. If the real function later requires one more argument, the test stays green and production breaks. `autospec` builds the mock from the real object and validates the signature on every call, so the mismatch surfaces in the test. Option 2 is the most dangerous item on the list because it describes what many people actually want from a mock: a test that does not complain. A test that stays quiet when the contract changes is not testing the contract.",
       "source": "CPython docs 3.13 - unittest.mock: Autospeccing",
       "expected_time_ms": 48000,
-      "tags": ["mocking", "autospec", "unittest-mock", "test-quality"]
+      "tags": [
+        "mocking",
+        "autospec",
+        "unittest-mock",
+        "test-quality"
+      ]
     },
     {
       "id": "q020503015",
@@ -513,14 +622,24 @@
       "difficulty_tier": "medium",
       "question_es": "Si un test sustituye por mocks todas las dependencias de una función, un fallo real en la integración con esas dependencias seguirá detectándose.",
       "question_en": "If a test mocks out every dependency of a function, a real integration failure with those dependencies will still be caught.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Un mock codifica tu suposición sobre el colaborador, no su comportamiento real. Cuando el colaborador cambia (otra firma, otro formato de respuesta, un error nuevo), el mock conserva el contrato antiguo y el test sigue en verde mientras producción falla. Cuanto más mockeas, menos código real ejercita la prueba: al final validas que tus mocks se comportan como los programaste. Por eso los dobles de prueba se complementan con tests de contrato o de integración contra la dependencia real, y por eso `autospec` al menos ancla la firma.",
       "explanation_en": "A mock encodes your assumption about the collaborator, not its real behaviour. When the collaborator changes - a different signature, a different response shape, a new error - the mock keeps the old contract and the test stays green while production fails. The more you mock, the less real code the test exercises; eventually you are only verifying that your mocks behave the way you programmed them. That is why test doubles are paired with contract or integration tests against the real dependency, and why `autospec` at least pins the signature.",
       "source": "Martin Fowler, \"Mocks Aren't Stubs\" (2007)",
       "expected_time_ms": 32000,
-      "tags": ["mocking", "test-quality", "integration"]
+      "tags": [
+        "mocking",
+        "test-quality",
+        "integration"
+      ]
     },
     {
       "id": "q020503016",
@@ -530,23 +649,28 @@
       "question_es": "Suponiendo que la variable de entorno REGION no está definida antes de lanzar pytest, ¿qué informa esta suite?\n\n```python\nimport os\n\ndef region():\n    return os.environ.get(\"REGION\", \"eu-west-1\")\n\ndef test_region(monkeypatch):\n    monkeypatch.setenv(\"REGION\", \"us-east-1\")\n    assert region() == \"us-east-1\"\n\ndef test_por_defecto():\n    assert region() == \"eu-west-1\"\n```",
       "question_en": "Assuming the REGION environment variable is not set before pytest starts, what does this suite report?\n\n```python\nimport os\n\ndef region():\n    return os.environ.get(\"REGION\", \"eu-west-1\")\n\ndef test_region(monkeypatch):\n    monkeypatch.setenv(\"REGION\", \"us-east-1\")\n    assert region() == \"us-east-1\"\n\ndef test_default():\n    assert region() == \"eu-west-1\"\n```",
       "options_es": [
-        "test_region pasa y test_por_defecto falla: el cambio en el entorno persiste",
+        "Pasan los dos: monkeypatch deshace sus cambios al terminar cada test",
         "test_region falla: `monkeypatch.setenv` solo puede usarse dentro de una fixture",
         "Fallan los dos: `os.environ` no admite modificaciones en tiempo de ejecución",
-        "Pasan los dos: monkeypatch deshace sus cambios al terminar cada test"
+        "test_region pasa y test_por_defecto falla: el cambio en el entorno persiste"
       ],
       "options_en": [
-        "test_region passes and test_default fails: the environment change persists",
+        "Both pass: monkeypatch undoes its changes at the end of each test",
         "test_region fails: `monkeypatch.setenv` can only be used inside a fixture",
         "Both fail: `os.environ` cannot be modified at runtime",
-        "Both pass: monkeypatch undoes its changes at the end of each test"
+        "test_region passes and test_default fails: the environment change persists"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`monkeypatch` es una fixture de ámbito `function` que lleva un registro de todo lo que modifica y lo revierte en el teardown, incluidas las variables de entorno, los atributos de módulos y `sys.path`. La opción 1 describe exactamente lo que ocurriría con `os.environ[\"REGION\"] = \"us-east-1\"` escrito a mano: el valor sobreviviría al test, el resultado dependería del orden de ejecución y el fallo aparecería en un test que no tiene nada que ver. Ese es el argumento para usar siempre monkeypatch en lugar de tocar el entorno directamente.",
       "explanation_en": "`monkeypatch` is a function-scoped fixture that records everything it changes and reverts it during teardown - environment variables, module attributes and `sys.path` alike. Option 1 describes precisely what would happen with a hand-written `os.environ[\"REGION\"] = \"us-east-1\"`: the value would outlive the test, the outcome would depend on execution order, and the failure would surface in an unrelated test. That is the whole argument for reaching for monkeypatch instead of touching the environment directly.",
       "source": "pytest docs - How to monkeypatch/mock modules and environments",
       "expected_time_ms": 38000,
-      "tags": ["mocking", "monkeypatch", "environment", "teardown"]
+      "tags": [
+        "mocking",
+        "monkeypatch",
+        "environment",
+        "teardown"
+      ]
     },
     {
       "id": "q020503017",
@@ -561,9 +685,12 @@
       "explanation_en": "`autospec=True` inspects the real object and builds a mock with the same signature and attributes, so calling it with invalid arguments raises `TypeError` in the test instead of being accepted silently. That is what prevents the \"all tests pass, production breaks\" scenario when someone changes a signature. Outside `patch` the equivalent is `create_autospec(obj)`; `spec=` restricts attributes but does not validate signatures as deeply.",
       "source": "CPython docs 3.13 - unittest.mock.patch (autospec)",
       "expected_time_ms": 48000,
-      "tags": ["mocking", "autospec", "patch"]
+      "tags": [
+        "mocking",
+        "autospec",
+        "patch"
+      ]
     },
-
     {
       "id": "q020504010",
       "skill_id": "sk020504",
@@ -573,22 +700,26 @@
       "question_en": "How many cases does pytest run?\n\n```python\nimport pytest\n\n@pytest.mark.parametrize(\"x\", [1, 2, 3])\n@pytest.mark.parametrize(\"y\", [\"a\", \"b\"])\ndef test_pairs(x, y):\n    assert x and y\n```",
       "options_es": [
         "5: la suma de ambos conjuntos",
-        "3: el tamaño del conjunto mayor",
         "6: el producto cartesiano de los dos decoradores",
+        "3: el tamaño del conjunto mayor",
         "2: solo se aplica el decorador más cercano a la función"
       ],
       "options_en": [
         "5: the sum of both sets",
-        "3: the size of the larger set",
         "6: the cartesian product of the two decorators",
+        "3: the size of the larger set",
         "2: only the decorator closest to the function applies"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Apilar decoradores `parametrize` combina los conjuntos: 3 valores de `x` por 2 de `y` dan 6 casos con ids como `test_pares[a-1]`. Es la forma directa de cubrir una matriz (tres monedas por dos idiomas, por ejemplo), y también la forma directa de que una suite explote: apilar tres decoradores de cinco valores son 125 tests. Si lo que quieres son parejas concretas y no todas las combinaciones, usa un solo decorador con `\"x,y\"` y una lista de tuplas.",
       "explanation_en": "Stacked `parametrize` decorators combine their sets: 3 values of `x` times 2 of `y` gives 6 cases, with ids like `test_pairs[a-1]`. It is the direct way to cover a matrix (three currencies by two locales, say), and equally the direct way to make a suite explode: three stacked decorators of five values each is 125 tests. If you want specific pairs rather than every combination, use one decorator with `\"x,y\"` and a list of tuples.",
       "source": "pytest docs - How to parametrize fixtures and test functions: stacking parametrize decorators",
       "expected_time_ms": 42000,
-      "tags": ["pytest", "parametrize", "combinations"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "combinations"
+      ]
     },
     {
       "id": "q020504011",
@@ -599,22 +730,27 @@
       "question_en": "What is the real advantage of parametrising a test over looping through the cases with a `for` inside a single test?",
       "options_es": [
         "El bucle es más rápido porque evita la sobrecarga de recolección de pytest",
-        "Cada caso es un test independiente: si uno falla, los demás siguen ejecutándose y el informe dice cuál falló",
         "Con parametrize se puede usar `assert`, mientras que dentro de un bucle hace falta `assertEqual`",
+        "Cada caso es un test independiente: si uno falla, los demás siguen ejecutándose y el informe dice cuál falló",
         "No hay diferencia real: parametrize es azúcar sintáctico sobre el bucle"
       ],
       "options_en": [
         "The loop is faster because it avoids pytest's collection overhead",
-        "Each case is an independent test: if one fails the rest still run, and the report names the one that failed",
         "parametrize lets you use `assert`, whereas inside a loop you need `assertEqual`",
+        "Each case is an independent test: if one fails the rest still run, and the report names the one that failed",
         "There is no real difference: parametrize is syntactic sugar over the loop"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Dentro de un `for`, el primer `assert` que falla corta el test: los casos posteriores no llegan a ejecutarse, así que pierdes la información de si fallaba uno o veinte, y el informe solo dice el nombre del test, no el dato que lo rompió. Con `parametrize` cada caso se recoge, ejecuta e informa por separado, con su id entre corchetes, y funciona con `-k` para reejecutar solo el que falla. La opción 4 es la más tentadora precisamente porque el resultado \"parece\" el mismo cuando todo pasa; la diferencia aparece el día que algo falla, que es cuando importa un test.",
       "explanation_en": "Inside a `for`, the first failing `assert` ends the test: later cases never run, so you lose the information about whether one case broke or twenty, and the report names only the test, not the data that broke it. With `parametrize` each case is collected, run and reported separately, carries its own bracketed id, and works with `-k` so you can rerun just the failing one. Option 4 is tempting precisely because the two look identical while everything passes; the difference shows up the day something fails, which is the day a test matters.",
       "source": "pytest docs - How to parametrize fixtures and test functions",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "parametrize", "test-design", "reporting"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "test-design",
+        "reporting"
+      ]
     },
     {
       "id": "q020504012",
@@ -624,23 +760,28 @@
       "question_es": "¿Cómo aparece el primer caso en la salida de `pytest -v`?\n\n```python\nimport pytest\n\n@pytest.mark.parametrize(\"valor,esperado\", [(2, 4), (3, 9)], ids=[\"dos\", \"tres\"])\ndef test_cuadrado(valor, esperado):\n    assert valor ** 2 == esperado\n```",
       "question_en": "How does the first case appear in the output of `pytest -v`?\n\n```python\nimport pytest\n\n@pytest.mark.parametrize(\"value,expected\", [(2, 4), (3, 9)], ids=[\"two\", \"three\"])\ndef test_square(value, expected):\n    assert value ** 2 == expected\n```",
       "options_es": [
-        "test_cuadrado[dos]",
         "test_cuadrado[2-4]",
+        "test_cuadrado[dos]",
         "test_cuadrado[0]",
         "test_cuadrado(2, 4)"
       ],
       "options_en": [
-        "test_square[two]",
         "test_square[2-4]",
+        "test_square[two]",
         "test_square[0]",
         "test_square(2, 4)"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`ids` sustituye los identificadores autogenerados, uno por caso y en el mismo orden. La opción 2 es lo que verías sin `ids`: pytest los deriva de los valores uniéndolos con guiones. Esto no es cosmético: ese id es lo que se pasa a `pytest \"test_x.py::test_cuadrado[dos]\"` para reejecutar un único caso, así que unos ids legibles (`\"iva_reducido\"`, `\"carrito_vacio\"`) convierten el informe de fallos en una lista de escenarios con nombre. Cuando los valores son objetos complejos, sin `ids` pytest genera `valor0`, `valor1`, que no dicen nada.",
       "explanation_en": "`ids` replaces the auto-generated identifiers, one per case, in the same order. Option 2 is what you would see without `ids`: pytest derives them from the values joined by hyphens. This is not cosmetic - that id is what you paste into `pytest \"test_x.py::test_square[two]\"` to rerun a single case, so readable ids (`\"reduced_vat\"`, `\"empty_cart\"`) turn a failure report into a named list of scenarios. When the values are complex objects, pytest falls back to `value0`, `value1`, which tell you nothing.",
       "source": "pytest docs - How to parametrize fixtures and test functions: test IDs",
       "expected_time_ms": 35000,
-      "tags": ["pytest", "parametrize", "ids", "reporting"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "ids",
+        "reporting"
+      ]
     },
     {
       "id": "q020504013",
@@ -666,7 +807,13 @@
       "explanation_en": "`pytest.param` wraps an individual case so you can attach marks or a custom id, and here the `skip` keeps the one case that would fail (3 < 3 is false) from running. Mixing plain values and `pytest.param` in the same list is legal and common. Be wary of the pattern though: skipping a case to get the suite green hides an unmet requirement. `xfail` is more honest, because if the case starts passing pytest reports XPASS and tells you the mark is now stale.",
       "source": "pytest docs - Set marks or test ID for individual parametrized tests",
       "expected_time_ms": 45000,
-      "tags": ["pytest", "parametrize", "marks", "skip", "xfail"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "marks",
+        "skip",
+        "xfail"
+      ]
     },
     {
       "id": "q020504014",
@@ -676,23 +823,28 @@
       "question_es": "¿Para qué sirve `indirect=True` en `@pytest.mark.parametrize`?",
       "question_en": "What is `indirect=True` for in `@pytest.mark.parametrize`?",
       "options_es": [
-        "Para que los valores se entreguen a una fixture con ese nombre, que los recibe en `request.param` y los transforma",
         "Para que los casos se ejecuten en orden aleatorio y así detectar dependencias entre ellos",
+        "Para que los valores se entreguen a una fixture con ese nombre, que los recibe en `request.param` y los transforma",
         "Para que los valores se evalúen solo si el test falla, ahorrando tiempo",
         "Para compartir la misma lista de valores entre varios archivos de test"
       ],
       "options_en": [
-        "So the values are handed to a fixture of that name, which receives them via `request.param` and transforms them",
         "So the cases run in random order, exposing dependencies between them",
+        "So the values are handed to a fixture of that name, which receives them via `request.param` and transforms them",
         "So the values are only evaluated if the test fails, saving time",
         "So the same list of values is shared across several test files"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Sin `indirect`, el valor llega tal cual al argumento del test. Con `indirect=True`, pytest se lo pasa a la fixture homónima, que lo lee en `request.param` y devuelve lo que realmente necesita el test: por ejemplo, parametrizas con `\"sqlite\"` y `\"postgres\"` y la fixture entrega una conexión ya abierta y con teardown. Es el puente entre parametrizar datos y parametrizar setup. La opción 2 describe lo que hace el plugin `pytest-random-order`, y compartir valores entre archivos se resuelve con una constante en `conftest.py`.",
       "explanation_en": "Without `indirect`, the value reaches the test argument as-is. With `indirect=True`, pytest routes it to the fixture of the same name, which reads it from `request.param` and returns what the test actually needs: you parametrise with `\"sqlite\"` and `\"postgres\"`, and the fixture hands back an open connection with proper teardown. It is the bridge between parametrising data and parametrising setup. Option 2 describes the `pytest-random-order` plugin, and sharing values across files is solved with a constant in `conftest.py`.",
       "source": "pytest docs - How to parametrize fixtures and test functions: indirect parametrization",
       "expected_time_ms": 48000,
-      "tags": ["pytest", "parametrize", "indirect", "fixtures"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "indirect",
+        "fixtures"
+      ]
     },
     {
       "id": "q020504015",
@@ -701,14 +853,24 @@
       "difficulty_tier": "easy",
       "question_es": "En `@pytest.mark.parametrize`, los nombres de los argumentos pueden darse como una sola cadena separada por comas (`\"a,b\"`) o como una lista de cadenas (`[\"a\", \"b\"]`).",
       "question_en": "In `@pytest.mark.parametrize`, the argument names can be given as one comma-separated string (`\"a,b\"`) or as a list of strings (`[\"a\", \"b\"]`).",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "`argnames` acepta ambas formas y son equivalentes. Lo que no es opcional es la correspondencia: cada elemento de `argvalues` tiene que ser una tupla con tantos elementos como nombres haya, o pytest aborta la colección con un error explícito. El fallo típico es escribir `\"a, b\"` con espacio (pytest lo tolera y los recorta) pero pasar un solo valor por caso en vez de una tupla.",
       "explanation_en": "`argnames` accepts both forms and they are equivalent. What is not optional is the correspondence: each entry in `argvalues` must be a tuple with as many elements as there are names, or pytest aborts collection with an explicit error. The usual slip is writing `\"a, b\"` with a space (pytest tolerates it and strips them) but then passing a single value per case instead of a tuple.",
       "source": "pytest docs - API Reference: pytest.mark.parametrize",
       "expected_time_ms": 22000,
-      "tags": ["pytest", "parametrize", "syntax"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "syntax"
+      ]
     },
     {
       "id": "q020504016",
@@ -723,7 +885,12 @@
       "explanation_en": "`pytest.param(value, marks=..., id=...)` is the only way to mark one case in isolation: putting `@pytest.mark.xfail` on the function would apply it to every case, which is precisely what you want to avoid when only one fails due to a known bug. It takes several marks in a list and sits happily alongside plain values in the same `argvalues` list. With multiple arguments, the order inside `pytest.param` follows `argnames`.",
       "source": "pytest docs - API Reference: pytest.param",
       "expected_time_ms": 50000,
-      "tags": ["pytest", "parametrize", "pytest.param", "marks"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "pytest.param",
+        "marks"
+      ]
     },
     {
       "id": "q020504017",
@@ -749,9 +916,12 @@
       "explanation_en": "Each tuple in `argvalues` is unpacked into the two declared arguments, so there are three independent cases. All three hold: the empty string has length 0, \"hello\" has 5, and the two-space string has 2, because a space is a character like any other. That last case is the one that makes people hesitate - it reads as \"empty\" and is not, which is exactly why it belongs in the table.",
       "source": "pytest docs - How to parametrize fixtures and test functions",
       "expected_time_ms": 25000,
-      "tags": ["pytest", "parametrize", "edge-cases"]
+      "tags": [
+        "pytest",
+        "parametrize",
+        "edge-cases"
+      ]
     },
-
     {
       "id": "q020505010",
       "skill_id": "sk020505",
@@ -761,22 +931,26 @@
       "question_en": "You write the first test for a new feature and it fails with `NameError: name 'Cart' is not defined`. What does that mean in TDD?",
       "options_es": [
         "Que el test está mal escrito y hay que arreglarlo antes de continuar",
-        "Que la fase roja es válida: el test falla porque el código todavía no existe, que es exactamente lo previsto",
         "Que hay que saltarse la fase roja e implementar `Carrito` antes de volver al test",
+        "Que la fase roja es válida: el test falla porque el código todavía no existe, que es exactamente lo previsto",
         "Que pytest no ha llegado a recoger el test"
       ],
       "options_en": [
         "That the test is badly written and must be fixed before going on",
-        "That the red phase is valid: the test fails because the code does not exist yet, which is exactly what was predicted",
         "That the red phase should be skipped and `Cart` implemented before returning to the test",
+        "That the red phase is valid: the test fails because the code does not exist yet, which is exactly what was predicted",
         "That pytest never collected the test"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "La fase roja solo cuenta si el test falla por el motivo que habías previsto. Aquí lo es: la clase aún no existe, así que el `NameError` confirma que el test ejercita el código nuevo y no otra cosa. La distinción importa porque hay un rojo malo: el test que falla por una errata en el propio test, una fixture que falta o un import equivocado. Ese no mide nada, y si lo \"arreglas\" implementando código de producción acabas escribiendo producción para un test roto.",
       "explanation_en": "A red phase only counts if the test fails for the reason you predicted. Here it does: the class does not exist yet, so the `NameError` confirms the test exercises the new code and nothing else. The distinction matters because there is such a thing as a bad red: a test failing on a typo in the test itself, a missing fixture, or a wrong import. That one measures nothing, and \"fixing\" it by writing production code means writing production code for a broken test.",
       "source": "Kent Beck, \"Test-Driven Development by Example\" (2002), Red/Green/Refactor",
       "expected_time_ms": 35000,
-      "tags": ["tdd", "red-green-refactor", "workflow"]
+      "tags": [
+        "tdd",
+        "red-green-refactor",
+        "workflow"
+      ]
     },
     {
       "id": "q020505011",
@@ -787,22 +961,27 @@
       "question_en": "A production bug report comes in. Following TDD, what is the first step?",
       "options_es": [
         "Corregir el código y después añadir un test que cubra la corrección",
-        "Subir la cobertura del módulo al 100% para localizar el fallo",
         "Escribir un test que reproduzca el bug y comprobar que falla antes de tocar el código de producción",
+        "Subir la cobertura del módulo al 100% para localizar el fallo",
         "Envolver la llamada en un `try/except` para que el error deje de propagarse"
       ],
       "options_en": [
         "Fix the code and then add a test covering the fix",
-        "Push the module's coverage to 100% to locate the fault",
         "Write a test that reproduces the bug and watch it fail before touching production code",
+        "Push the module's coverage to 100% to locate the fault",
         "Wrap the call in a `try/except` so the error stops propagating"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Ver el test en rojo antes de arreglar nada es lo que demuestra dos cosas: que has entendido el bug lo bastante bien como para reproducirlo, y que ese test detectaría la regresión si volviera. La opción 1 es el orden habitual y pierde justo esa prueba: un test escrito después del arreglo pasa a la primera y nunca has comprobado que sea capaz de fallar. La cobertura no localiza bugs, solo dice qué líneas se ejecutaron. Y el `try/except` oculta el síntoma dejando el defecto intacto.",
       "explanation_en": "Seeing the test red before fixing anything proves two things: that you understand the bug well enough to reproduce it, and that this test would catch the regression if it came back. Option 1 is the common ordering and loses exactly that proof - a test written after the fix passes first time, and you have never seen it capable of failing. Coverage does not locate bugs; it only reports which lines ran. And the `try/except` hides the symptom while leaving the defect in place.",
       "source": "Kent Beck, \"Test-Driven Development by Example\" (2002)",
       "expected_time_ms": 35000,
-      "tags": ["tdd", "regression", "debugging", "workflow"]
+      "tags": [
+        "tdd",
+        "regression",
+        "debugging",
+        "workflow"
+      ]
     },
     {
       "id": "q020505012",
@@ -811,14 +990,24 @@
       "difficulty_tier": "medium",
       "question_es": "Durante la fase de refactorización de TDD es correcto cambiar el comportamiento observable del código siempre que los tests sigan pasando.",
       "question_en": "During TDD's refactor phase it is fine to change the code's observable behaviour as long as the tests keep passing.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Refactorizar es, por definición, cambiar la estructura interna sin alterar el comportamiento observable; los tests en verde son precisamente la red que te permite hacerlo con confianza. Si el comportamiento cambia, no estás refactorizando: estás añadiendo o modificando una funcionalidad, y eso exige volver al rojo con un test nuevo que la describa. La confusión es peligrosa porque \"los tests pasan\" se usa como permiso para cualquier cambio, cuando en realidad solo demuestra que lo que los tests cubren sigue igual.",
       "explanation_en": "Refactoring is by definition a change to internal structure that leaves observable behaviour intact; the green tests are the net that lets you do it confidently. If the behaviour changes you are not refactoring - you are adding or altering a feature, which means going back to red with a new test describing it. The confusion is dangerous because \"the tests pass\" gets used as permission for any change, when all it demonstrates is that whatever the tests cover is unchanged.",
       "source": "Martin Fowler, \"Refactoring\" 2nd ed. (2018), definition of refactoring",
       "expected_time_ms": 30000,
-      "tags": ["tdd", "refactoring", "red-green-refactor"]
+      "tags": [
+        "tdd",
+        "refactoring",
+        "red-green-refactor"
+      ]
     },
     {
       "id": "q020505013",
@@ -827,14 +1016,24 @@
       "difficulty_tier": "hard",
       "question_es": "Un test que pasa a la primera, sin haber fallado nunca, no aporta evidencia de que realmente compruebe lo que crees que comprueba.",
       "question_en": "A test that passes on the first run, having never failed, gives you no evidence that it actually checks what you think it checks.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Un test verde que nunca has visto en rojo puede estar afirmando algo trivialmente cierto: comparar un Mock consigo mismo, importar la función equivocada, o tener el `assert` dentro de un `if` que no se cumple. Todos esos casos se ven exactamente igual desde fuera: \"1 passed\". Ver el rojo primero es la única comprobación barata de que el test tiene poder de detección. Si escribes un test después del código y pasa a la primera, rómpelo a propósito (cambia un signo en producción) y confirma que se entera.",
       "explanation_en": "A green test you have never seen red may be asserting something trivially true: comparing a Mock with itself, importing the wrong function, or hiding the `assert` inside an `if` that is never taken. From the outside all of these look identical: \"1 passed\". Seeing red first is the cheapest possible check that the test has any detection power. If you write a test after the code and it passes immediately, break it on purpose - flip a sign in production - and confirm it notices.",
       "source": "Kent Beck, \"Test-Driven Development by Example\" (2002)",
       "expected_time_ms": 38000,
-      "tags": ["tdd", "test-quality", "false-positive"]
+      "tags": [
+        "tdd",
+        "test-quality",
+        "false-positive"
+      ]
     },
     {
       "id": "q020505014",
@@ -846,21 +1045,26 @@
       "options_es": [
         "Que mockees las tres dependencias y sigas adelante sin tocar el diseño",
         "Que TDD no se aplica al código que habla con sistemas externos",
-        "Que subas la prueba al nivel de integración y renuncies a probar la lógica por separado",
-        "Que la función acumula responsabilidades acopladas: conviene inyectar las dependencias o extraer la lógica pura"
+        "Que la función acumula responsabilidades acopladas: conviene inyectar las dependencias o extraer la lógica pura",
+        "Que subas la prueba al nivel de integración y renuncies a probar la lógica por separado"
       ],
       "options_en": [
         "To mock all three dependencies and carry on without touching the design",
         "That TDD does not apply to code talking to external systems",
-        "To move the test up to the integration level and give up on testing the logic separately",
-        "That the function bundles coupled responsibilities: inject the dependencies or extract the pure logic"
+        "That the function bundles coupled responsibilities: inject the dependencies or extract the pure logic",
+        "To move the test up to the integration level and give up on testing the logic separately"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "La dificultad para escribir el test es información de diseño, y ese es el beneficio de TDD que no se ve en la cobertura: un test difícil suele señalar una función que decide, calcula y habla con el mundo a la vez. Separar el cálculo puro (que se prueba con datos, sin dobles) del borde que hace I/O resuelve el problema de raíz. La opción 1 es lo que hace casi todo el mundo y produce tests con tres mocks que pasan siempre y no detectan nada real cuando el contrato de la pasarela cambia.",
       "explanation_en": "Difficulty writing the test is design feedback, and that is the benefit of TDD coverage never shows: a hard test usually points at a function that decides, computes and talks to the world all at once. Splitting the pure computation (testable with plain data and no doubles) from the edge that does I/O fixes it at the root. Option 1 is what most people do, and it produces three-mock tests that always pass and catch nothing real when the gateway's contract changes.",
       "source": "Freeman & Pryce, \"Growing Object-Oriented Software, Guided by Tests\" (2009)",
       "expected_time_ms": 48000,
-      "tags": ["tdd", "design", "coupling", "mocking"]
+      "tags": [
+        "tdd",
+        "design",
+        "coupling",
+        "mocking"
+      ]
     },
     {
       "id": "q020505015",
@@ -870,23 +1074,28 @@
       "question_es": "¿Qué informa pytest con esta primera implementación, y qué toca hacer después según TDD?\n\n```python\n# test_precio.py\ndef test_precio_con_iva():\n    assert precio_con_iva(100) == 121\n\n# precio.py\ndef precio_con_iva(base):\n    return 121\n```",
       "question_en": "What does pytest report with this first implementation, and what comes next under TDD?\n\n```python\n# test_price.py\ndef test_price_with_vat():\n    assert price_with_vat(100) == 121\n\n# price.py\ndef price_with_vat(base):\n    return 121\n```",
       "options_es": [
-        "Falla: pytest detecta que la implementación ignora el parámetro",
         "Pasa (verde). Es un paso legítimo: se añade otro caso, p. ej. `precio_con_iva(200) == 242`, que obliga a generalizar",
+        "Falla: pytest detecta que la implementación ignora el parámetro",
         "Pasa, y el ciclo termina: ya hay un test verde por cada requisito escrito",
         "Pasa, pero pytest emite un warning por devolver una constante"
       ],
       "options_en": [
-        "It fails: pytest notices the implementation ignores its parameter",
         "It passes (green). That is a legitimate step: add another case, e.g. `price_with_vat(200) == 242`, which forces generalisation",
+        "It fails: pytest notices the implementation ignores its parameter",
         "It passes, and the cycle is over: there is a green test for every requirement written down",
         "It passes, but pytest warns about returning a constant"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Devolver la constante es la técnica \"fake it till you make it\": el objetivo del primer paso es llegar al verde rápido, y la generalización se fuerza con un segundo caso (triangulación) que la constante ya no puede satisfacer. La opción 3 es el error de fondo: el verde no significa \"terminado\", significa \"los tests que tengo no distinguen esta implementación de la correcta\". Y pytest no analiza el cuerpo de la función: no sabe si el parámetro se usa ni avisa de constantes; eso es trabajo de un linter, no del runner de tests.",
       "explanation_en": "Returning the constant is the \"fake it till you make it\" technique: the point of the first step is to reach green fast, and generalisation is forced by a second case (triangulation) that the constant can no longer satisfy. Option 3 is the underlying mistake: green does not mean \"done\", it means \"the tests I have cannot tell this implementation apart from the correct one\". And pytest does not analyse the function body - it has no idea whether the parameter is used and warns about no constants; that is a linter's job, not the test runner's.",
       "source": "Kent Beck, \"Test-Driven Development by Example\" (2002), Fake It and triangulation",
       "expected_time_ms": 48000,
-      "tags": ["tdd", "fake-it", "triangulation", "red-green-refactor"]
+      "tags": [
+        "tdd",
+        "fake-it",
+        "triangulation",
+        "red-green-refactor"
+      ]
     },
     {
       "id": "q020505016",
@@ -897,22 +1106,26 @@
       "question_en": "What does the Arrange-Act-Assert pattern (the phased test) describe about a test's structure?",
       "options_es": [
         "Ordenar los tests alfabéticamente, ejecutarlos y comparar los resultados con la ejecución anterior",
-        "Preparar el estado necesario, ejecutar la acción bajo prueba y comprobar el resultado",
         "Escribir al menos tres asserts en cada test para cubrir todos los caminos",
+        "Preparar el estado necesario, ejecutar la acción bajo prueba y comprobar el resultado",
         "Repartir cada test en tres archivos: preparación, acción y verificación"
       ],
       "options_en": [
         "Sorting tests alphabetically, running them and comparing results with the previous run",
-        "Setting up the state you need, exercising the behaviour under test, and checking the result",
         "Writing at least three asserts per test to cover every path",
+        "Setting up the state you need, exercising the behaviour under test, and checking the result",
         "Splitting each test across three files: setup, action and verification"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Son las tres fases de un test legible: preparar (fixtures, datos), actuar (una sola llamada al código bajo prueba) y verificar (las aserciones). La utilidad práctica es de diagnóstico: si te cuesta separar las fases, o hay varias acciones intercaladas con aserciones, el test está probando más de una cosa y conviene dividirlo. \"Assert\" es el nombre de una fase, no un recuento de aserciones: la opción 3 confunde ambas cosas. En pytest, la fase de preparación suele vivir en fixtures y el teardown se añade tras el `yield`.",
       "explanation_en": "These are the three phases of a readable test: arrange (fixtures, data), act (a single call into the code under test) and assert (the checks). The practical value is diagnostic: if the phases are hard to separate, or several actions are interleaved with assertions, the test is covering more than one thing and should be split. \"Assert\" names a phase, not a count of assertions - option 3 conflates the two. In pytest the arrange phase usually lives in fixtures, and teardown is whatever follows the `yield`.",
       "source": "Gerard Meszaros, \"xUnit Test Patterns\" (2007), Four-Phase Test",
       "expected_time_ms": 25000,
-      "tags": ["tdd", "test-structure", "readability"]
+      "tags": [
+        "tdd",
+        "test-structure",
+        "readability"
+      ]
     },
     {
       "id": "q020505017",
@@ -927,7 +1140,11 @@
       "explanation_en": "A regression test is born from a real failure rather than a requirement: you write it with the exact data that broke the system, watch it fail, and from then on it stays in the suite as a permanent guard. It is the cheapest way to stop a bug returning twice, which is why naming it after the incident reference pays off. Don't confuse it with a smoke test (checks the system starts) or an acceptance test (describes a business requirement).",
       "source": "Gerard Meszaros, \"xUnit Test Patterns\" (2007), regression testing",
       "expected_time_ms": 50000,
-      "tags": ["tdd", "regression", "terminology"]
+      "tags": [
+        "tdd",
+        "regression",
+        "terminology"
+      ]
     }
   ]
 }

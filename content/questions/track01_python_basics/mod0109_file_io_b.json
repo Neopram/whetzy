@@ -9,22 +9,25 @@
       "question_en": "What does `f.readlines()` return for a three-line file?",
       "options_es": [
         "Un string con todo el contenido",
-        "Una lista de tres strings, cada uno terminado en `\\n` salvo quizá el último",
         "Un iterador perezoso sobre las líneas",
+        "Una lista de tres strings, cada uno terminado en `\\n` salvo quizá el último",
         "Una lista de tres strings ya sin saltos de línea"
       ],
       "options_en": [
         "A string with the whole contents",
-        "A list of three strings, each ending in `\\n` except perhaps the last",
         "A lazy iterator over the lines",
+        "A list of three strings, each ending in `\\n` except perhaps the last",
         "A list of three strings with the newlines already stripped"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Conserva el `\\n` de cada línea, que hay que quitar con `.strip()` si estorba. Y carga el fichero entero en memoria: para ficheros grandes conviene iterar directamente sobre `f`, que sí es perezoso.",
       "explanation_en": "It keeps each line's `\\n`, which has to be removed with `.strip()` if it gets in the way. And it loads the whole file into memory: for large files you should iterate over `f` directly, which is lazy.",
       "source": "CPython docs 3.13 — The Python Tutorial §7.2.1 (methods of file objects)",
       "expected_time_ms": 32000,
-      "tags": ["files", "reading"]
+      "tags": [
+        "files",
+        "reading"
+      ]
     },
     {
       "id": "q010901011",
@@ -35,22 +38,26 @@
       "question_en": "A file contains `hi\\n`. What does this code print?\n\n```python\nwith open(\"f.txt\") as f:\n    print(f.read())\n    print(f.read())\n```",
       "options_es": [
         "hola y luego hola otra vez",
-        "hola y luego una línea vacía",
         "hola y luego `None`",
+        "hola y luego una línea vacía",
         "Lanza un `ValueError` en la segunda lectura"
       ],
       "options_en": [
         "hi and then hi again",
-        "hi and then an empty line",
         "hi and then `None`",
+        "hi and then an empty line",
         "It raises a `ValueError` on the second read"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "La primera lectura deja el cursor al final, así que la segunda devuelve el string vacío. Para releer hay que rebobinar con `f.seek(0)`. Es la causa habitual de que «el fichero se vea vacío» tras procesarlo una vez.",
       "explanation_en": "The first read leaves the cursor at the end, so the second returns the empty string. To read again you rewind with `f.seek(0)`. It is the usual reason a file 'looks empty' after being processed once.",
       "source": "CPython docs 3.13 — The Python Tutorial §7.2.1 (methods of file objects)",
       "expected_time_ms": 45000,
-      "tags": ["files", "cursor", "gotcha"]
+      "tags": [
+        "files",
+        "cursor",
+        "gotcha"
+      ]
     },
     {
       "id": "q010901012",
@@ -61,22 +68,25 @@
       "question_en": "Why is it advisable to pass `encoding=\"utf-8\"` when opening a text file?",
       "options_es": [
         "Porque acelera la lectura",
-        "Porque sin él Python usa la codificación por defecto del sistema, que cambia entre máquinas",
+        "Porque permite leer ficheros binarios",
         "Porque es obligatorio desde Python 3.11",
-        "Porque permite leer ficheros binarios"
+        "Porque sin él Python usa la codificación por defecto del sistema, que cambia entre máquinas"
       ],
       "options_en": [
         "Because it speeds up reading",
-        "Because without it Python uses the system default encoding, which differs between machines",
+        "Because it allows reading binary files",
         "Because it has been mandatory since Python 3.11",
-        "Because it allows reading binary files"
+        "Because without it Python uses the system default encoding, which differs between machines"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El mismo código puede funcionar en Linux y romperse en Windows con `UnicodeDecodeError` al encontrar una tilde. Declararlo hace el comportamiento reproducible; desde 3.15 será el valor por defecto (PEP 686).",
       "explanation_en": "The same code can work on Linux and break on Windows with `UnicodeDecodeError` on an accented character. Declaring it makes behaviour reproducible; from 3.15 it will be the default (PEP 686).",
       "source": "CPython docs 3.13 — Built-in Functions: open() / PEP 686",
       "expected_time_ms": 38000,
-      "tags": ["files", "encoding"]
+      "tags": [
+        "files",
+        "encoding"
+      ]
     },
     {
       "id": "q010901013",
@@ -85,14 +95,27 @@
       "difficulty_tier": "medium",
       "question_es": "Un fichero contiene dos líneas: `a` y `b`. ¿Qué imprime este código?\n\n```python\nwith open(\"f.txt\") as f:\n    for linea in f:\n        print(repr(linea), end=\"\")\n```",
       "question_en": "A file contains two lines: `a` and `b`. What does this code print?\n\n```python\nwith open(\"f.txt\") as f:\n    for line in f:\n        print(repr(line), end=\"\")\n```",
-      "options_es": ["`'a''b'`", "`'a\\n''b\\n'`", "`'a\\nb\\n'`", "`['a\\n', 'b\\n']`"],
-      "options_en": ["`'a''b'`", "`'a\\n''b\\n'`", "`'a\\nb\\n'`", "`['a\\n', 'b\\n']`"],
-      "correct_index": 1,
+      "options_es": [
+        "`'a''b'`",
+        "`'a\\nb\\n'`",
+        "`'a\\n''b\\n'`",
+        "`['a\\n', 'b\\n']`"
+      ],
+      "options_en": [
+        "`'a''b'`",
+        "`'a\\nb\\n'`",
+        "`'a\\n''b\\n'`",
+        "`['a\\n', 'b\\n']`"
+      ],
+      "correct_index": 2,
       "explanation_es": "Iterar el fichero entrega línea a línea **con** su salto, que `repr` deja ver. Es la forma recomendada de leer ficheros grandes: no carga todo en memoria.",
       "explanation_en": "Iterating the file yields line by line **with** its newline, which `repr` makes visible. It is the recommended way to read large files: nothing is loaded wholesale into memory.",
       "source": "CPython docs 3.13 — The Python Tutorial §7.2.1 (methods of file objects)",
       "expected_time_ms": 35000,
-      "tags": ["files", "iteration"]
+      "tags": [
+        "files",
+        "iteration"
+      ]
     },
     {
       "id": "q010901014",
@@ -101,14 +124,23 @@
       "difficulty_tier": "medium",
       "question_es": "Abrir un fichero en modo `'rb'` devuelve `bytes` en lugar de `str`.",
       "question_en": "Opening a file in `'rb'` mode returns `bytes` rather than `str`.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "En modo binario no hay decodificación, así que sale `bytes` y el argumento `encoding` deja de aceptarse. Es lo que se usa para imágenes, ficheros comprimidos o cuando la codificación aún no se conoce.",
       "explanation_en": "In binary mode there is no decoding, so `bytes` come out and the `encoding` argument is no longer accepted. It is what you use for images, archives, or when the encoding is not yet known.",
       "source": "CPython docs 3.13 — Built-in Functions: open() (modes)",
       "expected_time_ms": 28000,
-      "tags": ["files", "binary"]
+      "tags": [
+        "files",
+        "binary"
+      ]
     },
     {
       "id": "q010901015",
@@ -123,7 +155,10 @@
       "explanation_en": "`seek(0)` rewinds and allows re-reading. Its counterpart `tell()` reports the current position, useful for processing a file in chunks.",
       "source": "CPython docs 3.13 — The Python Tutorial §7.2.1 (methods of file objects)",
       "expected_time_ms": 22000,
-      "tags": ["files", "seek"]
+      "tags": [
+        "files",
+        "seek"
+      ]
     },
     {
       "id": "q010901016",
@@ -134,22 +169,26 @@
       "question_en": "You need to process a 10 GB file line by line. Which approach would you use?",
       "options_es": [
         "`f.read().split(\"\\n\")`",
-        "`for linea in f:`, que lee de forma perezosa",
         "`f.readlines()` y luego recorrer la lista",
+        "`for linea in f:`, que lee de forma perezosa",
         "Cargar el fichero en una lista con `list(f)`"
       ],
       "options_en": [
         "`f.read().split(\"\\n\")`",
-        "`for line in f:`, which reads lazily",
         "`f.readlines()` and then walk the list",
+        "`for line in f:`, which reads lazily",
         "Load the file into a list with `list(f)`"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Las otras tres cargan los 10 GB en memoria y el proceso muere. Iterar el objeto fichero lee por bloques y mantiene en memoria solo la línea actual, sin importar el tamaño del fichero.",
       "explanation_en": "The other three load all 10 GB into memory and the process dies. Iterating the file object reads in blocks and keeps only the current line in memory, whatever the file's size.",
       "source": "CPython docs 3.13 — The Python Tutorial §7.2.1 (methods of file objects)",
       "expected_time_ms": 42000,
-      "tags": ["files", "memory", "performance"]
+      "tags": [
+        "files",
+        "memory",
+        "performance"
+      ]
     },
     {
       "id": "q010901017",
@@ -158,16 +197,28 @@
       "difficulty_tier": "hard",
       "question_es": "Un fichero contiene `hola\\n`. ¿Qué imprime este código?\n\n```python\nwith open(\"f.txt\") as f:\n    print(len(f.readline()))\n```",
       "question_en": "A file contains `hi\\n`. What does this code print?\n\n```python\nwith open(\"f.txt\") as f:\n    print(len(f.readline()))\n```",
-      "options_es": ["4", "5", "3", "2"],
-      "options_en": ["4", "3", "2", "1"],
-      "correct_index": 1,
+      "options_es": [
+        "4",
+        "2",
+        "3",
+        "5"
+      ],
+      "options_en": [
+        "4",
+        "1",
+        "2",
+        "3"
+      ],
+      "correct_index": 3,
       "explanation_es": "`readline` incluye el salto de línea, así que «hola» más `\\n` son cinco caracteres. Contar sin el salto exige `.rstrip(\"\\n\")` antes, y olvidarlo descuadra cualquier validación de longitud.",
       "explanation_en": "`readline` includes the newline, so 'hi' plus `\\n` is three characters. Counting without it requires `.rstrip(\"\\n\")` first, and forgetting it throws off any length validation.",
       "source": "CPython docs 3.13 — The Python Tutorial §7.2.1 (methods of file objects)",
       "expected_time_ms": 40000,
-      "tags": ["files", "readline"]
+      "tags": [
+        "files",
+        "readline"
+      ]
     },
-
     {
       "id": "q010902010",
       "skill_id": "sk010902",
@@ -175,14 +226,28 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué contiene `f.txt` tras ejecutar este código dos veces seguidas?\n\n```python\nwith open(\"f.txt\", \"w\") as f:\n    f.write(\"hola\")\n```",
       "question_en": "What does `f.txt` contain after running this code twice in a row?\n\n```python\nwith open(\"f.txt\", \"w\") as f:\n    f.write(\"hi\")\n```",
-      "options_es": ["holahola", "hola", "hola\\nhola", "Queda vacío"],
-      "options_en": ["hihi", "hi", "hi\\nhi", "It ends up empty"],
+      "options_es": [
+        "holahola",
+        "hola",
+        "hola\\nhola",
+        "Queda vacío"
+      ],
+      "options_en": [
+        "hihi",
+        "hi",
+        "hi\\nhi",
+        "It ends up empty"
+      ],
       "correct_index": 1,
       "explanation_es": "El modo `'w'` trunca el fichero al abrirlo, así que la segunda ejecución borra lo anterior antes de escribir. Para acumular hay que usar `'a'`.",
       "explanation_en": "Mode `'w'` truncates the file on opening, so the second run erases the previous content before writing. To accumulate you use `'a'`.",
       "source": "CPython docs 3.13 — Built-in Functions: open() (modes)",
       "expected_time_ms": 30000,
-      "tags": ["files", "writing", "modes"]
+      "tags": [
+        "files",
+        "writing",
+        "modes"
+      ]
     },
     {
       "id": "q010902011",
@@ -208,7 +273,11 @@
       "explanation_en": "The name is misleading: it adds no newlines. You have to include them in each string, or use `f.write(\"\\n\".join(lines))`, which is clearer anyway.",
       "source": "CPython docs 3.13 — io.IOBase.writelines()",
       "expected_time_ms": 32000,
-      "tags": ["files", "writelines", "gotcha"]
+      "tags": [
+        "files",
+        "writelines",
+        "gotcha"
+      ]
     },
     {
       "id": "q010902012",
@@ -219,22 +288,26 @@
       "question_en": "What is the difference between modes `'w'` and `'x'` when opening for writing?",
       "options_es": [
         "`'x'` escribe en binario y `'w'` en texto",
-        "`'x'` falla con `FileExistsError` si el fichero ya existe; `'w'` lo sobrescribe",
+        "Ninguna, `'x'` es un alias antiguo",
         "`'x'` añade al final y `'w'` trunca",
-        "Ninguna, `'x'` es un alias antiguo"
+        "`'x'` falla con `FileExistsError` si el fichero ya existe; `'w'` lo sobrescribe"
       ],
       "options_en": [
         "`'x'` writes in binary and `'w'` in text",
-        "`'x'` fails with `FileExistsError` if the file already exists; `'w'` overwrites it",
+        "None, `'x'` is an old alias",
         "`'x'` appends and `'w'` truncates",
-        "None, `'x'` is an old alias"
+        "`'x'` fails with `FileExistsError` if the file already exists; `'w'` overwrites it"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`'x'` es creación exclusiva: sirve para no pisar datos por accidente. Es más seguro que comprobar con `exists()` antes de abrir, porque entre la comprobación y la escritura otro proceso podría crear el fichero.",
       "explanation_en": "`'x'` is exclusive creation: it exists so you do not clobber data by accident. It is safer than checking with `exists()` before opening, because between the check and the write another process could create the file.",
       "source": "CPython docs 3.13 — Built-in Functions: open() (modes)",
       "expected_time_ms": 40000,
-      "tags": ["files", "modes", "safety"]
+      "tags": [
+        "files",
+        "modes",
+        "safety"
+      ]
     },
     {
       "id": "q010902013",
@@ -243,14 +316,24 @@
       "difficulty_tier": "medium",
       "question_es": "`f.write(42)` escribe el número 42 en un fichero de texto.",
       "question_en": "`f.write(42)` writes the number 42 to a text file.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Lanza `TypeError`: en modo texto solo se escriben strings. Hay que convertir con `str(42)` o, mejor, con una f-string que formatee lo que haga falta.",
       "explanation_en": "It raises `TypeError`: in text mode only strings can be written. You convert with `str(42)` or, better, with an f-string that formats whatever is needed.",
       "source": "CPython docs 3.13 — io.TextIOBase.write()",
       "expected_time_ms": 28000,
-      "tags": ["files", "writing", "types"]
+      "tags": [
+        "files",
+        "writing",
+        "types"
+      ]
     },
     {
       "id": "q010902014",
@@ -261,22 +344,25 @@
       "question_en": "Why might a file appear empty right after writing to it?",
       "options_es": [
         "Porque el fichero se escribe en orden inverso",
-        "Porque la escritura queda en un búfer y no llega al disco hasta cerrar o hacer `flush()`",
+        "Porque el sistema operativo lo bloquea mientras el proceso vive",
         "Porque `write` devuelve el contenido en vez de guardarlo",
-        "Porque el sistema operativo lo bloquea mientras el proceso vive"
+        "Porque la escritura queda en un búfer y no llega al disco hasta cerrar o hacer `flush()`"
       ],
       "options_en": [
         "Because the file is written in reverse order",
-        "Because the write sits in a buffer and does not reach disk until closing or calling `flush()`",
+        "Because the OS locks it while the process lives",
         "Because `write` returns the content instead of saving it",
-        "Because the OS locks it while the process lives"
+        "Because the write sits in a buffer and does not reach disk until closing or calling `flush()`"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La E/S se almacena en búfer por rendimiento. Cerrar el fichero vacía el búfer, y por eso `with` evita este problema: garantiza el cierre incluso si algo falla.",
       "explanation_en": "I/O is buffered for performance. Closing the file flushes the buffer, which is why `with` avoids this problem: it guarantees the close even if something fails.",
       "source": "CPython docs 3.13 — io — Core tools for working with streams (buffering)",
       "expected_time_ms": 40000,
-      "tags": ["files", "buffering"]
+      "tags": [
+        "files",
+        "buffering"
+      ]
     },
     {
       "id": "q010902015",
@@ -291,7 +377,10 @@
       "explanation_en": "Mode `'a'` places the cursor at the end and creates the file if absent. It is what log files use so nothing is lost on each start-up.",
       "source": "CPython docs 3.13 — Built-in Functions: open() (modes)",
       "expected_time_ms": 18000,
-      "tags": ["files", "append"]
+      "tags": [
+        "files",
+        "append"
+      ]
     },
     {
       "id": "q010902016",
@@ -302,22 +391,25 @@
       "question_en": "What does `f.write(\"hi\")` return in text mode?",
       "options_es": [
         "El propio fichero, para poder encadenar",
-        "El número de caracteres escritos",
         "`None`",
+        "El número de caracteres escritos",
         "`True` si la escritura fue correcta"
       ],
       "options_en": [
         "The file itself, so calls can be chained",
-        "The number of characters written",
         "`None`",
+        "The number of characters written",
         "`True` if the write succeeded"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Devuelve 4, la cantidad escrita. Suele ignorarse, pero es útil para llevar la cuenta de lo que se ha volcado sin recalcularlo aparte.",
       "explanation_en": "It returns 2, the amount written. It is usually ignored, but is handy for tracking how much has been dumped without recomputing it separately.",
       "source": "CPython docs 3.13 — io.TextIOBase.write()",
       "expected_time_ms": 35000,
-      "tags": ["files", "writing"]
+      "tags": [
+        "files",
+        "writing"
+      ]
     },
     {
       "id": "q010902017",
@@ -328,24 +420,27 @@
       "question_en": "Why is `newline=\"\"` recommended when opening a file to write CSV?",
       "options_es": [
         "Para que las filas queden sin separación",
-        "Porque el módulo `csv` gestiona sus propios saltos y sin eso aparecen líneas en blanco en Windows",
         "Porque acelera la escritura",
+        "Porque el módulo `csv` gestiona sus propios saltos y sin eso aparecen líneas en blanco en Windows",
         "Porque es obligatorio con `DictWriter`"
       ],
       "options_en": [
         "So the rows end up with no separation",
-        "Because the `csv` module handles its own line endings, and without it blank lines appear on Windows",
         "Because it speeds up writing",
+        "Because the `csv` module handles its own line endings, and without it blank lines appear on Windows",
         "Because it is mandatory with `DictWriter`"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Sin `newline=\"\"`, el traductor de saltos del modo texto convierte el `\\r\\n` que escribe `csv` en `\\r\\r\\n`, y el resultado sale con una línea vacía entre filas. La documentación del módulo lo indica explícitamente.",
       "explanation_en": "Without `newline=\"\"`, text mode's newline translation turns the `\\r\\n` written by `csv` into `\\r\\r\\n`, and the result has a blank line between rows. The module's documentation states this explicitly.",
       "source": "CPython docs 3.13 — csv — CSV File Reading and Writing (footnote on newline)",
       "expected_time_ms": 45000,
-      "tags": ["files", "csv", "gotcha"]
+      "tags": [
+        "files",
+        "csv",
+        "gotcha"
+      ]
     },
-
     {
       "id": "q010903010",
       "skill_id": "sk010903",
@@ -353,14 +448,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom pathlib import Path\nprint(Path(\"datos/informe.csv\").suffix)\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom pathlib import Path\nprint(Path(\"data/report.csv\").suffix)\n```",
-      "options_es": ["csv", ".csv", "informe.csv", "informe"],
-      "options_en": ["csv", ".csv", "report.csv", "report"],
+      "options_es": [
+        "csv",
+        ".csv",
+        "informe.csv",
+        "informe"
+      ],
+      "options_en": [
+        "csv",
+        ".csv",
+        "report.csv",
+        "report"
+      ],
       "correct_index": 1,
       "explanation_es": "`suffix` incluye el punto. Sus compañeros son `stem` (el nombre sin extensión), `name` (nombre con extensión) y `parent` (el directorio).",
       "explanation_en": "`suffix` includes the dot. Its companions are `stem` (the name without extension), `name` (name with extension) and `parent` (the directory).",
       "source": "CPython docs 3.13 — pathlib.PurePath.suffix",
       "expected_time_ms": 28000,
-      "tags": ["pathlib", "paths"]
+      "tags": [
+        "pathlib",
+        "paths"
+      ]
     },
     {
       "id": "q010903011",
@@ -369,14 +477,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué operador une rutas con `pathlib`?",
       "question_en": "Which operator joins paths with `pathlib`?",
-      "options_es": ["`+`", "`/`", "`&`", "`.join()`"],
-      "options_en": ["`+`", "`/`", "`&`", "`.join()`"],
+      "options_es": [
+        "`+`",
+        "`/`",
+        "`&`",
+        "`.join()`"
+      ],
+      "options_en": [
+        "`+`",
+        "`/`",
+        "`&`",
+        "`.join()`"
+      ],
       "correct_index": 1,
       "explanation_es": "`Path(\"dir\") / \"f.txt\"` usa la barra, que se lee como una ruta y coloca el separador correcto del sistema. El `+` concatenaría strings sin separador y `.join()` es de los strings, no de `Path`.",
       "explanation_en": "`Path(\"dir\") / \"f.txt\"` uses the slash, which reads like a path and inserts the system's correct separator. `+` would concatenate strings with no separator, and `.join()` belongs to strings, not to `Path`.",
       "source": "CPython docs 3.13 — pathlib (operators)",
       "expected_time_ms": 28000,
-      "tags": ["pathlib", "joining"]
+      "tags": [
+        "pathlib",
+        "joining"
+      ]
     },
     {
       "id": "q010903012",
@@ -385,14 +506,23 @@
       "difficulty_tier": "medium",
       "question_es": "Crear un objeto `Path(\"no_existe.txt\")` lanza un error si el fichero no existe.",
       "question_en": "Creating a `Path(\"missing.txt\")` object raises an error if the file does not exist.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "`Path` solo representa una ruta: no toca el disco hasta que se llama a algo como `.exists()`, `.read_text()` o `.open()`. Por eso se pueden construir rutas de ficheros que aún no se han creado.",
       "explanation_en": "`Path` merely represents a path: it does not touch the disk until something like `.exists()`, `.read_text()` or `.open()` is called. That is why you can build paths for files not yet created.",
       "source": "CPython docs 3.13 — pathlib — Pure paths vs concrete paths",
       "expected_time_ms": 30000,
-      "tags": ["pathlib", "semantics"]
+      "tags": [
+        "pathlib",
+        "semantics"
+      ]
     },
     {
       "id": "q010903013",
@@ -403,22 +533,25 @@
       "question_en": "What does `Path(\"output\").mkdir(parents=True, exist_ok=True)` do?",
       "options_es": [
         "Crea el directorio solo si el padre ya existe",
-        "Crea el directorio y los padres que falten, y no falla si ya existe",
         "Crea el directorio y borra su contenido previo",
+        "Crea el directorio y los padres que falten, y no falla si ya existe",
         "Solo comprueba si podría crearse"
       ],
       "options_en": [
         "Creates the directory only if the parent already exists",
-        "Creates the directory and any missing parents, and does not fail if it already exists",
         "Creates the directory and clears its previous contents",
+        "Creates the directory and any missing parents, and does not fail if it already exists",
         "Only checks whether it could be created"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`parents=True` equivale a `mkdir -p` y `exist_ok=True` evita el `FileExistsError`. Juntos hacen la operación idempotente, que es lo que se quiere en un script que puede ejecutarse varias veces.",
       "explanation_en": "`parents=True` is the equivalent of `mkdir -p`, and `exist_ok=True` avoids `FileExistsError`. Together they make the operation idempotent, which is what you want in a script that may run more than once.",
       "source": "CPython docs 3.13 — pathlib.Path.mkdir()",
       "expected_time_ms": 38000,
-      "tags": ["pathlib", "directories"]
+      "tags": [
+        "pathlib",
+        "directories"
+      ]
     },
     {
       "id": "q010903014",
@@ -429,22 +562,25 @@
       "question_en": "What does `Path(\"dir\").glob(\"*.txt\")` return?",
       "options_es": [
         "Una lista de strings con los nombres",
-        "Un generador de objetos `Path` que coinciden con el patrón",
         "Un único `Path` con el primer resultado",
+        "Un generador de objetos `Path` que coinciden con el patrón",
         "Un diccionario de nombre a ruta"
       ],
       "options_en": [
         "A list of strings with the names",
-        "A generator of `Path` objects matching the pattern",
         "A single `Path` with the first result",
+        "A generator of `Path` objects matching the pattern",
         "A dictionary mapping name to path"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Es perezoso, así que hay que envolverlo en `list()` para verlo entero o recorrerlo con un `for`. Para buscar también en subdirectorios está `rglob`, o el patrón `**/*.txt`.",
       "explanation_en": "It is lazy, so wrap it in `list()` to see it whole, or walk it with a `for`. To search subdirectories too there is `rglob`, or the `**/*.txt` pattern.",
       "source": "CPython docs 3.13 — pathlib.Path.glob()",
       "expected_time_ms": 38000,
-      "tags": ["pathlib", "glob"]
+      "tags": [
+        "pathlib",
+        "glob"
+      ]
     },
     {
       "id": "q010903015",
@@ -459,7 +595,10 @@
       "explanation_en": "`read_text()` opens, reads and closes in one call, with no `with` needed. Its counterpart is `write_text()`, and for binary there are `read_bytes()` and `write_bytes()`.",
       "source": "CPython docs 3.13 — pathlib.Path.read_text()",
       "expected_time_ms": 25000,
-      "tags": ["pathlib", "reading"]
+      "tags": [
+        "pathlib",
+        "reading"
+      ]
     },
     {
       "id": "q010903016",
@@ -468,14 +607,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom pathlib import Path\nprint(Path(\"a/b/c.txt\").parent.name)\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom pathlib import Path\nprint(Path(\"a/b/c.txt\").parent.name)\n```",
-      "options_es": ["a", "b", "c.txt", "a/b"],
-      "options_en": ["a", "b", "c.txt", "a/b"],
-      "correct_index": 1,
+      "options_es": [
+        "a",
+        "a/b",
+        "c.txt",
+        "b"
+      ],
+      "options_en": [
+        "a",
+        "a/b",
+        "c.txt",
+        "b"
+      ],
+      "correct_index": 3,
       "explanation_es": "`parent` da `a/b` y `name` toma su último componente: `b`. Se pueden encadenar: `parent.parent` sube dos niveles, y `parents` da la secuencia completa de ancestros.",
       "explanation_en": "`parent` gives `a/b` and `name` takes its last component: `b`. They chain: `parent.parent` goes up two levels, and `parents` gives the full sequence of ancestors.",
       "source": "CPython docs 3.13 — pathlib.PurePath.parent / .name",
       "expected_time_ms": 40000,
-      "tags": ["pathlib", "navigation"]
+      "tags": [
+        "pathlib",
+        "navigation"
+      ]
     },
     {
       "id": "q010903017",
@@ -486,24 +638,26 @@
       "question_en": "Why is building paths by concatenating strings with `\"/\"` a bad idea?",
       "options_es": [
         "Porque las rutas no pueden contener barras",
-        "Porque Windows usa `\\` y el código deja de ser portable; además duplicar barras da rutas inválidas",
+        "Porque los strings no admiten rutas largas",
         "Porque es más lento que `pathlib`",
-        "Porque los strings no admiten rutas largas"
+        "Porque Windows usa `\\` y el código deja de ser portable; además duplicar barras da rutas inválidas"
       ],
       "options_en": [
         "Because paths cannot contain slashes",
-        "Because Windows uses `\\` and the code stops being portable; and doubling slashes yields invalid paths",
+        "Because strings cannot hold long paths",
         "Because it is slower than `pathlib`",
-        "Because strings cannot hold long paths"
+        "Because Windows uses `\\` and the code stops being portable; and doubling slashes yields invalid paths"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`pathlib` y `os.path.join` insertan el separador correcto y evitan duplicarlo cuando una parte ya termina en barra. Windows tolera `/` en muchos casos, pero el código deja de ser predecible.",
       "explanation_en": "`pathlib` and `os.path.join` insert the right separator and avoid doubling it when one part already ends in a slash. Windows tolerates `/` in many cases, but the code stops being predictable.",
       "source": "CPython docs 3.13 — pathlib / os.path.join",
       "expected_time_ms": 40000,
-      "tags": ["pathlib", "portability"]
+      "tags": [
+        "pathlib",
+        "portability"
+      ]
     },
-
     {
       "id": "q010903018",
       "skill_id": "sk010903",
@@ -511,14 +665,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom pathlib import Path\nprint(Path(\"informe.tar.gz\").stem)\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom pathlib import Path\nprint(Path(\"report.tar.gz\").stem)\n```",
-      "options_es": ["informe", "informe.tar", "informe.tar.gz", ".gz"],
-      "options_en": ["report", "report.tar", "report.tar.gz", ".gz"],
-      "correct_index": 1,
+      "options_es": [
+        "informe.tar",
+        "informe",
+        "informe.tar.gz",
+        ".gz"
+      ],
+      "options_en": [
+        "report.tar",
+        "report",
+        "report.tar.gz",
+        ".gz"
+      ],
+      "correct_index": 0,
       "explanation_es": "`stem` quita solo la **última** extensión, así que queda `informe.tar`. Para las extensiones compuestas está `suffixes`, que devuelve `['.tar', '.gz']`.",
       "explanation_en": "`stem` removes only the **last** extension, leaving `report.tar`. For compound extensions there is `suffixes`, which returns `['.tar', '.gz']`.",
       "source": "CPython docs 3.13 — pathlib.PurePath.stem / .suffixes",
       "expected_time_ms": 35000,
-      "tags": ["pathlib", "suffixes"]
+      "tags": [
+        "pathlib",
+        "suffixes"
+      ]
     },
     {
       "id": "q010904010",
@@ -529,22 +696,25 @@
       "question_en": "What is the difference between `json.load` and `json.loads`?",
       "options_es": [
         "`load` valida el esquema y `loads` no",
-        "`load` lee de un fichero abierto; `loads` lee de un string",
+        "Ninguna, `loads` es un alias",
         "`load` es para escribir y `loads` para leer",
-        "Ninguna, `loads` es un alias"
+        "`load` lee de un fichero abierto; `loads` lee de un string"
       ],
       "options_en": [
         "`load` validates the schema and `loads` does not",
-        "`load` reads from an open file; `loads` reads from a string",
+        "None, `loads` is an alias",
         "`load` is for writing and `loads` for reading",
-        "None, `loads` is an alias"
+        "`load` reads from an open file; `loads` reads from a string"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La `s` final significa «string». La misma pareja existe al escribir: `dump` a fichero y `dumps` a string. Confundirlas da un `TypeError` poco descriptivo.",
       "explanation_en": "The trailing `s` stands for 'string'. The same pair exists for writing: `dump` to a file and `dumps` to a string. Mixing them up gives an unhelpful `TypeError`.",
       "source": "CPython docs 3.13 — json.load() / json.loads()",
       "expected_time_ms": 30000,
-      "tags": ["json", "api"]
+      "tags": [
+        "json",
+        "api"
+      ]
     },
     {
       "id": "q010904011",
@@ -553,14 +723,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport json\nd = json.loads('{\"n\": 1}')\nprint(type(d).__name__)\n```",
       "question_en": "What does the following code print?\n\n```python\nimport json\nd = json.loads('{\"n\": 1}')\nprint(type(d).__name__)\n```",
-      "options_es": ["str", "dict", "list", "JSON"],
-      "options_en": ["str", "dict", "list", "JSON"],
-      "correct_index": 1,
+      "options_es": [
+        "dict",
+        "str",
+        "list",
+        "JSON"
+      ],
+      "options_en": [
+        "dict",
+        "str",
+        "list",
+        "JSON"
+      ],
+      "correct_index": 0,
       "explanation_es": "Un objeto JSON se convierte en diccionario de Python, y un array en lista. Las claves siempre llegan como strings, aunque en el original parecieran números.",
       "explanation_en": "A JSON object becomes a Python dictionary, and an array becomes a list. Keys always arrive as strings, even when they looked like numbers in the original.",
       "source": "CPython docs 3.13 — json (conversion table)",
       "expected_time_ms": 35000,
-      "tags": ["json", "types"]
+      "tags": [
+        "json",
+        "types"
+      ]
     },
     {
       "id": "q010904012",
@@ -571,22 +754,25 @@
       "question_en": "What advantage does `csv.DictReader` have over `csv.reader`?",
       "options_es": [
         "Lee el fichero más rápido",
-        "Devuelve cada fila como diccionario con la cabecera como claves, en vez de por índice",
         "Valida los tipos de cada columna",
+        "Devuelve cada fila como diccionario con la cabecera como claves, en vez de por índice",
         "Permite leer ficheros sin cabecera"
       ],
       "options_en": [
         "It reads the file faster",
-        "It returns each row as a dictionary keyed by the header, rather than by index",
         "It validates each column's types",
+        "It returns each row as a dictionary keyed by the header, rather than by index",
         "It allows reading files without a header"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`fila[\"precio\"]` no se rompe si cambia el orden de las columnas, mientras que `fila[3]` sí. No convierte tipos: todo llega como string y hay que convertirlo a mano.",
       "explanation_en": "`row[\"price\"]` does not break when the column order changes, whereas `row[3]` does. It converts no types: everything arrives as a string and has to be converted by hand.",
       "source": "CPython docs 3.13 — csv.DictReader",
       "expected_time_ms": 38000,
-      "tags": ["csv", "dictreader"]
+      "tags": [
+        "csv",
+        "dictreader"
+      ]
     },
     {
       "id": "q010904013",
@@ -595,14 +781,23 @@
       "difficulty_tier": "medium",
       "question_es": "`json.dumps(d, indent=2)` produce una salida legible con sangrado.",
       "question_en": "`json.dumps(d, indent=2)` produces readable output with indentation.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Sin `indent`, todo sale en una sola línea, que ocupa menos y es lo adecuado para transmitir. Con sangrado se lee mejor, y añadiendo `sort_keys=True` la salida es estable entre ejecuciones, útil para comparar en git.",
       "explanation_en": "Without `indent`, everything comes out on one line, which is smaller and right for transmission. With indentation it reads better, and adding `sort_keys=True` makes the output stable across runs, useful for diffing in git.",
       "source": "CPython docs 3.13 — json.dumps()",
       "expected_time_ms": 28000,
-      "tags": ["json", "formatting"]
+      "tags": [
+        "json",
+        "formatting"
+      ]
     },
     {
       "id": "q010904014",
@@ -613,22 +808,26 @@
       "question_en": "What does the following code print?\n\n```python\nimport json\nprint(json.loads('{\"1\": \"a\"}').keys())\n```",
       "options_es": [
         "`dict_keys([1])`",
-        "`dict_keys(['1'])`",
+        "Lanza un error",
         "`[1]`",
-        "Lanza un error"
+        "`dict_keys(['1'])`"
       ],
       "options_en": [
         "`dict_keys([1])`",
-        "`dict_keys(['1'])`",
+        "It raises an error",
         "`[1]`",
-        "It raises an error"
+        "`dict_keys(['1'])`"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "En JSON las claves solo pueden ser strings, así que el `1` vuelve como `\"1\"`. Guardar un diccionario con claves enteras y recargarlo cambia el tipo de las claves sin previo aviso.",
       "explanation_en": "In JSON keys can only be strings, so the `1` comes back as `\"1\"`. Saving a dictionary with integer keys and reloading it changes the key type with no warning.",
       "source": "CPython docs 3.13 — json (conversion table)",
       "expected_time_ms": 45000,
-      "tags": ["json", "keys", "gotcha"]
+      "tags": [
+        "json",
+        "keys",
+        "gotcha"
+      ]
     },
     {
       "id": "q010904015",
@@ -643,7 +842,10 @@
       "explanation_en": "`dump` writes straight into the file, while `dumps` returns the string. Writing `f.write(json.dump(d))` is a common mistake: `dump` returns nothing.",
       "source": "CPython docs 3.13 — json.dump()",
       "expected_time_ms": 25000,
-      "tags": ["json", "writing"]
+      "tags": [
+        "json",
+        "writing"
+      ]
     },
     {
       "id": "q010904016",
@@ -654,22 +856,25 @@
       "question_en": "Why is reading a CSV by splitting each line with `line.split(\",\")` a bad idea?",
       "options_es": [
         "Porque `split` no acepta la coma como separador",
-        "Porque rompe los campos entrecomillados que contienen comas o saltos de línea",
+        "Porque no funciona con ficheros grandes",
         "Porque es más lento que el módulo `csv`",
-        "Porque no funciona con ficheros grandes"
+        "Porque rompe los campos entrecomillados que contienen comas o saltos de línea"
       ],
       "options_en": [
         "Because `split` does not accept a comma as separator",
-        "Because it breaks quoted fields containing commas or newlines",
+        "Because it does not work with large files",
         "Because it is slower than the `csv` module",
-        "Because it does not work with large files"
+        "Because it breaks quoted fields containing commas or newlines"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Un campo como `\"Madrid, España\"` se partiría en dos, y un salto de línea dentro de comillas descuadraría todas las filas siguientes. El módulo `csv` implementa esas reglas de entrecomillado.",
       "explanation_en": "A field such as `\"Madrid, Spain\"` would be split in two, and a newline inside quotes would throw off every following row. The `csv` module implements those quoting rules.",
       "source": "CPython docs 3.13 — csv — CSV File Reading and Writing",
       "expected_time_ms": 40000,
-      "tags": ["csv", "parsing"]
+      "tags": [
+        "csv",
+        "parsing"
+      ]
     },
     {
       "id": "q010904017",
@@ -695,7 +900,11 @@
       "explanation_en": "JSON only knows string, number, boolean, null, array and object. The usual fix is converting with `.isoformat()` beforehand, or passing `default=str` to `dumps` for simple cases.",
       "source": "CPython docs 3.13 — json (conversion table) / json.JSONEncoder",
       "expected_time_ms": 45000,
-      "tags": ["json", "datetime", "serialization"]
+      "tags": [
+        "json",
+        "datetime",
+        "serialization"
+      ]
     }
   ]
 }

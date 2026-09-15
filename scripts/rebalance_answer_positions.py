@@ -71,7 +71,12 @@ def main() -> int:
 
     for path in sorted(CONTENT.rglob("*.json")):
         data = json.loads(path.read_text(encoding="utf-8"))
-        questions = data.get("questions")
+        # Two container shapes live in content/: the original {"questions": [...]}
+        # and a bare [...] list used by every track added from track08_clf_c02
+        # onward. Reading only the first shape made this script crash on the
+        # newer tracks - which are precisely the ones with the worst position
+        # bias - so it had never run over them.
+        questions = data if isinstance(data, list) else data.get("questions")
         if not questions:
             continue
         track = path.parent.name

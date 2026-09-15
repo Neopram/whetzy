@@ -9,22 +9,26 @@
       "question_en": "A table range-partitioned by 'tenant_id' has one shard carrying 10x the load of the rest, because a single corporate account concentrates almost all the write traffic. What best describes the situation and its fix?",
       "options_es": [
         "Es un problema de replicación: basta con subir el factor de replicación de ese shard a 5",
-        "Añadir más shards lo resuelve solo, porque el rebalanceo reparte la clave caliente entre los nodos nuevos",
+        "Es un hot spot por carga sesgada: como toda la carga cae en una única clave, hay que descomponerla añadiéndole un prefijo o sufijo aleatorio para repartirla en N subclaves, asumiendo que las lecturas tendrán que consultar las N",
         "Cambiar a particionado por hash lo elimina, porque el hash distribuye uniformemente cualquier carga",
-        "Es un hot spot por carga sesgada: como toda la carga cae en una única clave, hay que descomponerla añadiéndole un prefijo o sufijo aleatorio para repartirla en N subclaves, asumiendo que las lecturas tendrán que consultar las N"
+        "Añadir más shards lo resuelve solo, porque el rebalanceo reparte la clave caliente entre los nodos nuevos"
       ],
       "options_en": [
         "It is a replication problem: just raise that shard's replication factor to 5",
-        "Adding more shards fixes it on its own, because rebalancing spreads the hot key across the new nodes",
+        "It is a hot spot from a skewed workload: since all the load lands on one key, you must decompose that key by adding a random prefix or suffix to spread it over N subkeys, accepting that reads must now query all N",
         "Switching to hash partitioning removes it, because hashing distributes any workload evenly",
-        "It is a hot spot from a skewed workload: since all the load lands on one key, you must decompose that key by adding a random prefix or suffix to spread it over N subkeys, accepting that reads must now query all N"
+        "Adding more shards fixes it on its own, because rebalancing spreads the hot key across the new nodes"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "La respuesta correcta es la única que ataca la causa: la unidad de reparto es la clave, y una sola clave caliente no se puede repartir sin modificarla. La opción del hash es la trampa más frecuente y por eso la eligen tantos ingenieros: el hash reparte bien un conjunto amplio de claves, pero una clave concreta siempre produce el mismo hash y por tanto cae siempre en la misma partición. Añadir shards (opción 2) mueve particiones enteras, nunca parte de una clave. Y subir el factor de replicación (opción 1) escala lecturas, pero copia las mismas escrituras calientes a más nodos: empeora el problema en lugar de aliviarlo.",
       "explanation_en": "The correct answer is the only one that addresses the cause: the unit of distribution is the key, and a single hot key cannot be spread without modifying it. The hashing option is the most common trap, and that is exactly why so many engineers pick it: hashing spreads a broad set of keys well, but one specific key always hashes to the same value and therefore always lands on the same partition. Adding shards (option 2) moves whole partitions, never part of a key. And raising the replication factor (option 1) scales reads, but copies the same hot writes to more nodes: it makes the problem worse, not better.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (Skewed Workloads and Relieving Hot Spots)",
       "expected_time_ms": 35000,
-      "tags": ["sharding", "hot-spot", "partitioning"]
+      "tags": [
+        "sharding",
+        "hot-spot",
+        "partitioning"
+      ]
     },
     {
       "id": "q050601009",
@@ -50,7 +54,11 @@
       "explanation_en": "This is the core partitioning trade-off: range preserves ordering and therefore allows contiguous scans, but concentrates load at the active end of the range; hashing destroys ordering and therefore spreads load well, but turns any range query into a scatter/gather. Option 4 is tempting because some engines do keep ordering within a partition (compound keys), but never across partitions, which is what the date query needs. Options 1 and 3 confuse partitioning with replication and with indexing: those are orthogonal mechanisms and both work fine under hashing.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (Partitioning by Hash of Key)",
       "expected_time_ms": 30000,
-      "tags": ["sharding", "partitioning", "range-query"]
+      "tags": [
+        "sharding",
+        "partitioning",
+        "range-query"
+      ]
     },
     {
       "id": "q050601010",
@@ -59,14 +67,24 @@
       "difficulty_tier": "medium",
       "question_es": "La replicación totalmente síncrona a todas las réplicas mejora la durabilidad, pero reduce la disponibilidad de escritura: basta con que una sola réplica esté caída o lenta para que las escrituras se bloqueen.",
       "question_en": "Fully synchronous replication to every replica improves durability, but reduces write availability: a single replica being down or slow is enough to block writes.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y es la razón por la que casi ningún sistema real usa replicación síncrona a todas las réplicas. Al confirmar la escritura solo cuando todas las réplicas la han aplicado, se garantiza que ninguna confirmación se pierde, pero también se hace que la disponibilidad de escritura sea el producto de la disponibilidad de todos los nodos. La configuración habitual es semi-síncrona: una réplica síncrona (que protege de la pérdida de datos si cae el primario) y el resto asíncronas. Muchos ingenieros responden 'falso' porque asumen que 'síncrono' es simplemente la opción mejor y más segura, sin ver que el precio se paga en disponibilidad.",
       "explanation_en": "True, and it is why almost no real system uses fully synchronous replication. Acknowledging a write only once every replica has applied it guarantees no acknowledged write is lost, but it also makes write availability the product of every node's availability. The usual configuration is semi-synchronous: one synchronous follower (which protects against data loss if the leader dies) and the rest asynchronous. Many engineers answer 'false' because they assume 'synchronous' simply means the better, safer option, without seeing that the price is paid in availability.",
       "source": "Kleppmann, M. — DDIA Cap. 5 (Synchronous Versus Asynchronous Replication)",
       "expected_time_ms": 22000,
-      "tags": ["replication", "durability", "availability"]
+      "tags": [
+        "replication",
+        "durability",
+        "availability"
+      ]
     },
     {
       "id": "q050601011",
@@ -76,23 +94,27 @@
       "question_es": "En un almacén sin líder (leaderless, estilo Dynamo) con n=3, w=2 y r=2, un ingeniero concluye que, como w+r>n, toda lectura devolverá siempre el último valor escrito. ¿Por qué es incorrecto?",
       "question_en": "In a leaderless (Dynamo-style) store with n=3, w=2 and r=2, an engineer concludes that because w+r>n every read will always return the latest written value. Why is that wrong?",
       "options_es": [
-        "Porque la fórmula w+r>n solo es válida cuando n es impar",
+        "Porque w+r>n solo garantiza que los conjuntos de nodos leídos y escritos se solapen, no orden ni atomicidad: con escrituras concurrentes, escrituras que fallan a medias o quórums difusos (sloppy quorums), una lectura puede devolver un valor antiguo",
         "Porque los quórums solo funcionan con replicación síncrona dentro de un mismo centro de datos",
         "Porque r tiene que ser siempre igual a n para poder leer datos actualizados",
-        "Porque w+r>n solo garantiza que los conjuntos de nodos leídos y escritos se solapen, no orden ni atomicidad: con escrituras concurrentes, escrituras que fallan a medias o quórums difusos (sloppy quorums), una lectura puede devolver un valor antiguo"
+        "Porque la fórmula w+r>n solo es válida cuando n es impar"
       ],
       "options_en": [
-        "Because the w+r>n formula only holds when n is odd",
+        "Because w+r>n only guarantees that the read and write node sets overlap, not ordering or atomicity: with concurrent writes, partially failed writes, or sloppy quorums, a read can still return a stale value",
         "Because quorums only work with synchronous replication inside a single datacenter",
         "Because r must always equal n in order to read up-to-date data",
-        "Because w+r>n only guarantees that the read and write node sets overlap, not ordering or atomicity: with concurrent writes, partially failed writes, or sloppy quorums, a read can still return a stale value"
+        "Because the w+r>n formula only holds when n is odd"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "El solapamiento de quórum es una condición necesaria, no suficiente. Kleppmann enumera los casos que la rompen: dos escrituras concurrentes sin orden definido (hay que resolver el conflicto), una escritura que solo llega a un nodo antes de fallar (queda en un estado indeterminado), un sloppy quorum donde los nodos que responden no son los nodos 'de casa' de la clave, y la restauración de una réplica desde una copia antigua. La confusión es muy común porque la aritmética w+r>n se enseña como si fuera equivalente a consistencia fuerte; no lo es, y por eso Dynamo y Cassandra ofrecen niveles de consistencia adicionales y reparación de lectura. Las otras opciones inventan restricciones (paridad de n, r=n, mismo centro de datos) que no existen en el modelo de quórum.",
       "explanation_en": "Quorum overlap is a necessary condition, not a sufficient one. Kleppmann lists the cases that break it: two concurrent writes with no defined order (the conflict must be resolved), a write that reaches only one node before failing (left in an indeterminate state), a sloppy quorum where the responding nodes are not the key's home nodes, and a replica restored from an old snapshot. The confusion is widespread because the w+r>n arithmetic is taught as if it were equivalent to strong consistency; it is not, which is why Dynamo and Cassandra add consistency levels and read repair. The other options invent constraints (parity of n, r=n, single datacenter) that the quorum model does not have.",
       "source": "Kleppmann, M. — DDIA Cap. 5 (Limitations of Quorum Consistency)",
       "expected_time_ms": 40000,
-      "tags": ["replication", "quorum", "consistency"]
+      "tags": [
+        "replication",
+        "quorum",
+        "consistency"
+      ]
     },
     {
       "id": "q050601012",
@@ -107,7 +129,11 @@
       "explanation_en": "Consistent hashing exists precisely to fix the flaw in 'hash(key) mod N': when N changes, nearly every key moves to a different node and the cluster spends hours shuffling data at the exact moment you were asking it for more capacity. On the ring each node owns the arc up to the next node, so adding or removing one only affects its neighbours. Worth knowing: Kleppmann notes that many real systems (Cassandra, Riak) actually use a large fixed number of partitions assigned to nodes, a different scheme achieving the same goal: rebalance by moving whole partitions, never individual keys.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (Rebalancing Partitions)",
       "expected_time_ms": 30000,
-      "tags": ["sharding", "rebalancing", "consistent-hashing"]
+      "tags": [
+        "sharding",
+        "rebalancing",
+        "consistent-hashing"
+      ]
     },
     {
       "id": "q050601013",
@@ -133,7 +159,11 @@
       "explanation_en": "The partition key decides two things at once: how data is spread and which queries are cheap. Changing it is not a code change, it is a full data migration with dual writes or a downtime window, which is why it is treated as an architectural decision rather than an implementation detail. Option 2 is the real trap: uniformity solves hot spots but not locality, and a perfectly uniform spread that forces every user request to fan out to all 64 partitions is worse than a slightly uneven one that answers it from a single partition. Option 1 underestimates the cost by looking only at the code side; option 4 conflates partition key with primary key, which in most engines can be a (partition key, sort key) pair.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (Partitioning)",
       "expected_time_ms": 32000,
-      "tags": ["sharding", "shard-key", "design"]
+      "tags": [
+        "sharding",
+        "shard-key",
+        "design"
+      ]
     },
     {
       "id": "q050601014",
@@ -142,14 +172,28 @@
       "difficulty_tier": "medium",
       "question_es": "Un clúster reparte claves con 'hash(clave) mod N' y pasa de 4 nodos a 5. ¿Qué imprime este código, es decir, cuántas de las 1000 claves cambian de nodo?\\n\\nclaves = range(1000)\\nantes = {k: k % 4 for k in claves}\\ndespues = {k: k % 5 for k in claves}\\nmovidas = sum(1 for k in claves if antes[k] != despues[k])\\nprint(movidas)",
       "question_en": "A cluster distributes keys with 'hash(key) mod N' and grows from 4 nodes to 5. What does this code print, i.e. how many of the 1000 keys move to a different node?\\n\\nkeys = range(1000)\\nbefore = {k: k % 4 for k in keys}\\nafter = {k: k % 5 for k in keys}\\nmoved = sum(1 for k in keys if before[k] != after[k])\\nprint(moved)",
-      "options_es": ["800", "200", "250", "1000"],
-      "options_en": ["800", "200", "250", "1000"],
-      "correct_index": 0,
+      "options_es": [
+        "250",
+        "200",
+        "800",
+        "1000"
+      ],
+      "options_en": [
+        "250",
+        "200",
+        "800",
+        "1000"
+      ],
+      "correct_index": 2,
       "explanation_es": "Los restos coinciden solo cuando k está en los cuatro primeros valores de cada ciclo de 20 (el mcm de 4 y 5), es decir el 20% de las claves: 200 se quedan y 800 se mueven. Ese es exactamente el argumento por el que 'mod N' es una estrategia de rebalanceo desastrosa: añadir UN nodo obliga a mover el 80% de los datos por la red mientras el clúster ya está saturado. La opción 200 es el complemento (las que no se mueven) y la eligen quienes leen mal la condición; 250 es la intuición de 'entra un nodo nuevo, se lleva 1/4'; 1000 es la exageración de 'se mueve todo'. La alternativa es hashing consistente o un número fijo y grande de particiones.",
       "explanation_en": "The remainders match only when k falls in the first four values of each cycle of 20 (the lcm of 4 and 5), i.e. 20% of the keys: 200 stay and 800 move. That is precisely the argument for why 'mod N' is a disastrous rebalancing strategy: adding ONE node forces 80% of the data across the network exactly when the cluster is already under strain. Option 200 is the complement (the ones that stay) and is chosen by anyone misreading the condition; 250 is the 'a new node arrives, it takes 1/4' intuition; 1000 is the 'everything moves' exaggeration. The alternative is consistent hashing or a large fixed number of partitions.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (Rebalancing Partitions: How not to do it, hash mod N)",
       "expected_time_ms": 45000,
-      "tags": ["sharding", "rebalancing", "hashing"]
+      "tags": [
+        "sharding",
+        "rebalancing",
+        "hashing"
+      ]
     },
     {
       "id": "q050601015",
@@ -159,25 +203,28 @@
       "question_es": "Un catálogo está particionado por 'product_id'. Se añade un índice secundario local por 'color' dentro de cada partición. ¿Qué implica para la consulta 'dame todos los productos rojos'?",
       "question_en": "A catalogue is partitioned by 'product_id'. A local secondary index on 'color' is added inside each partition. What does that mean for the query 'give me all red products'?",
       "options_es": [
-        "La consulta irá a una única partición: la que contenga el término 'rojo'",
+        "Habrá que hacer scatter/gather: preguntar a TODAS las particiones y unir los resultados, de forma que la latencia p99 de la consulta la marca la partición más lenta de todas",
         "La consulta fallará, porque no se pueden crear índices secundarios sobre datos particionados",
         "La consulta será barata en todas las particiones, porque un índice local es global por definición",
-        "Habrá que hacer scatter/gather: preguntar a TODAS las particiones y unir los resultados, de forma que la latencia p99 de la consulta la marca la partición más lenta de todas"
+        "La consulta irá a una única partición: la que contenga el término 'rojo'"
       ],
       "options_en": [
-        "The query will go to a single partition: the one holding the term 'red'",
+        "It requires scatter/gather: query EVERY partition and merge the results, so the query's p99 latency is set by the slowest partition of them all",
         "The query will fail, because secondary indexes cannot exist over partitioned data",
         "The query will be cheap across all partitions, because a local index is global by definition",
-        "It requires scatter/gather: query EVERY partition and merge the results, so the query's p99 latency is set by the slowest partition of them all"
+        "The query will go to a single partition: the one holding the term 'red'"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "Un índice secundario local (particionado por documento) solo conoce los documentos de su propia partición, así que el motor no sabe de antemano dónde están los productos rojos y debe preguntar a todas. La opción 1 es la más tentadora porque describe correctamente la OTRA estrategia, el índice particionado por término (global): ahí el término 'rojo' vive en una sola partición y la lectura es barata, pero cada escritura de un producto pasa a tocar varias particiones y deja de ser una operación local, normalmente con actualización asíncrona del índice. Ese es el intercambio real: índice local = escrituras baratas y lecturas con scatter/gather; índice global por término = lecturas baratas y escrituras distribuidas. La opción 3 es autocontradictoria y la 2 simplemente es falsa.",
       "explanation_en": "A local (document-partitioned) secondary index only knows about documents in its own partition, so the engine cannot know in advance where the red products live and must ask all of them. Option 1 is the most tempting because it correctly describes the OTHER strategy, the term-partitioned (global) index: there the term 'red' lives in a single partition and the read is cheap, but every product write now touches several partitions and stops being a local operation, usually with asynchronous index updates. That is the real trade-off: local index = cheap writes and scatter/gather reads; global term-partitioned index = cheap reads and distributed writes. Option 3 contradicts itself and option 2 is simply false.",
       "source": "Kleppmann, M. — DDIA Cap. 6 (Partitioning and Secondary Indexes)",
       "expected_time_ms": 40000,
-      "tags": ["sharding", "secondary-index", "scatter-gather"]
+      "tags": [
+        "sharding",
+        "secondary-index",
+        "scatter-gather"
+      ]
     },
-
     {
       "id": "q050602009",
       "skill_id": "sk050602",
@@ -188,21 +235,25 @@
       "options_es": [
         "99.9%: la disponibilidad la marca la dependencia menos disponible",
         "99.975%: se promedia la disponibilidad de las cuatro dependencias",
-        "Aproximadamente 99.6%: las disponibilidades de dependencias obligatorias en serie se multiplican, así que cada salto síncrono resta",
-        "100%: al estar distribuido en varios servicios, el sistema es tolerante a fallos por diseño"
+        "100%: al estar distribuido en varios servicios, el sistema es tolerante a fallos por diseño",
+        "Aproximadamente 99.6%: las disponibilidades de dependencias obligatorias en serie se multiplican, así que cada salto síncrono resta"
       ],
       "options_en": [
         "99.9%: availability is set by the least available dependency",
         "99.975%: you average the availability of the four dependencies",
-        "Around 99.6%: the availabilities of mandatory synchronous dependencies multiply, so every synchronous hop subtracts",
-        "100%: being distributed across several services makes the system fault tolerant by design"
+        "100%: being distributed across several services makes the system fault tolerant by design",
+        "Around 99.6%: the availabilities of mandatory synchronous dependencies multiply, so every synchronous hop subtracts"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "0.999 elevado a 4 es 0.9960, es decir unas tres horas de indisponibilidad al mes en vez de 43 minutos. La opción 1 es la más tentadora porque traslada la intuición de 'la cadena es tan fuerte como su eslabón más débil', que describe el suelo pero no el producto: cuatro eslabones igual de fuertes siguen siendo peores que uno solo. Promediar (opción 2) es sencillamente la operación equivocada. Newman usa exactamente este cálculo para advertir de que descomponer en más servicios no aumenta la fiabilidad por sí mismo: la aumenta si las llamadas dejan de ser obligatorias y síncronas, con caché, valores por defecto o mensajería asíncrona.",
       "explanation_en": "0.999 to the fourth power is 0.9960, i.e. about three hours of downtime a month instead of 43 minutes. Option 1 is the most tempting because it carries over the 'a chain is only as strong as its weakest link' intuition, which describes the floor but not the product: four equally strong links are still worse than one. Averaging (option 2) is simply the wrong operation. Newman uses exactly this arithmetic to warn that decomposing into more services does not increase reliability by itself: it does so only when the calls stop being mandatory and synchronous, via caching, defaults, or asynchronous messaging.",
       "source": "Newman, S. — Building Microservices 2e, cap. 12 (Resiliency)",
       "expected_time_ms": 35000,
-      "tags": ["fault-tolerance", "availability", "dependencies"]
+      "tags": [
+        "fault-tolerance",
+        "availability",
+        "dependencies"
+      ]
     },
     {
       "id": "q050602010",
@@ -211,14 +262,24 @@
       "difficulty_tier": "medium",
       "question_es": "Un camino de conmutación por error (failover) que nunca se ejercita no puede considerarse fiable: mientras no se pruebe en condiciones reales, es solo una suposición sobre el papel.",
       "question_en": "A failover path that is never exercised cannot be considered reliable: until it is tested under realistic conditions it is only an assumption on paper.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El código de recuperación es el que menos se ejecuta y por tanto el que más se pudre: credenciales caducadas en el standby, una versión de esquema distinta, un DNS que nadie actualizó, un runbook que describe una consola que ya no existe. Por eso los equipos de SRE hacen simulacros de desastre y pruebas de fallo deliberadas: no para descubrir que la redundancia existe, sino para descubrir en qué punto concreto no funciona. Quien responde 'falso' suele razonar que el standby está aprovisionado y el panel de monitorización está en verde, pero un standby monitorizado y un standby probado no son lo mismo: lo primero comprueba que la máquina está encendida, lo segundo que el sistema sabe cambiar a ella.",
       "explanation_en": "True. Recovery code is the code that runs least often and therefore rots most: expired credentials on the standby, a different schema version, a DNS record nobody updated, a runbook describing a console that no longer exists. That is why SRE teams run disaster drills and deliberate failure tests: not to discover that redundancy exists, but to discover the specific point at which it does not work. Answering 'false' usually rests on the standby being provisioned and the dashboard being green, but a monitored standby and a tested standby are not the same thing: the first confirms the machine is powered on, the second that the system knows how to switch to it.",
       "source": "Google — Site Reliability Engineering, cap. 22 (Testing for Cascading Failures)",
       "expected_time_ms": 22000,
-      "tags": ["fault-tolerance", "failover", "testing"]
+      "tags": [
+        "fault-tolerance",
+        "failover",
+        "testing"
+      ]
     },
     {
       "id": "q050602011",
@@ -244,7 +305,11 @@
       "explanation_en": "Counting replicas measures tolerance only if failures are independent, and in practice they rarely are: power, network, kernel, image, and configuration rollout are common causes that hit every copy at once. That is why replicas are spread across availability zones and configuration is rolled out progressively. Option 1 is the most tempting because it correctly applies quorum arithmetic (three replicas tolerate one loss) to the wrong problem: going to five replicas on the same rack changes nothing, because the failure that matters takes all of them. Option 2 confuses domain independence with multicloud, which is one expensive extreme way to achieve it, not the only one. Option 3 invents a rule that does not exist.",
       "source": "Google — Site Reliability Engineering, cap. 22 (Addressing Cascading Failures)",
       "expected_time_ms": 35000,
-      "tags": ["fault-tolerance", "redundancy", "correlated-failure"]
+      "tags": [
+        "fault-tolerance",
+        "redundancy",
+        "correlated-failure"
+      ]
     },
     {
       "id": "q050602012",
@@ -259,7 +324,11 @@
       "explanation_en": "RPO (Recovery Point Objective) answers 'how many minutes of data can we afford to lose?' and drives backup frequency or replication lag. It is constantly confused with RTO (Recovery Time Objective), which answers 'how long can we take to be back up?' and drives how much of the failover is automated. The distinction has expensive consequences: an RPO of zero forces synchronous replication and therefore pays latency and write availability on every transaction, whereas an aggressive RTO is bought with automation and rehearsal, not with more copies.",
       "source": "Google — Site Reliability Engineering, cap. 26 (Data Integrity: What Is Data Integrity?)",
       "expected_time_ms": 28000,
-      "tags": ["fault-tolerance", "disaster-recovery", "rpo"]
+      "tags": [
+        "fault-tolerance",
+        "disaster-recovery",
+        "rpo"
+      ]
     },
     {
       "id": "q050602013",
@@ -269,23 +338,27 @@
       "question_es": "En Kubernetes, un equipo configura el 'livenessProbe' de su API para que devuelva error si la base de datos no responde. Durante una caída de la base de datos, ¿qué ocurre?",
       "question_en": "In Kubernetes, a team configures their API's 'livenessProbe' to return an error if the database is unreachable. During a database outage, what happens?",
       "options_es": [
-        "Kubernetes deja de enviar tráfico a los pods y los mantiene intactos hasta que la base de datos vuelva",
         "Kubernetes reinicia todos los pods en bucle: la liveness probe solo debe comprobar si el proceso está sano, y las dependencias externas van en la readiness probe",
+        "Kubernetes deja de enviar tráfico a los pods y los mantiene intactos hasta que la base de datos vuelva",
         "No ocurre nada: las liveness probes solo se evalúan durante el arranque del contenedor",
         "Kubernetes escala automáticamente el Deployment para compensar la latencia añadida de la base de datos"
       ],
       "options_en": [
-        "Kubernetes stops sending traffic to the pods and keeps them intact until the database is back",
         "Kubernetes restarts every pod in a loop: the liveness probe should only check whether the process itself is healthy, and external dependencies belong in the readiness probe",
+        "Kubernetes stops sending traffic to the pods and keeps them intact until the database is back",
         "Nothing happens: liveness probes are only evaluated during container startup",
         "Kubernetes automatically scales the Deployment to compensate for the database's added latency"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Un fallo de liveness hace que el kubelet mate y reinicie el contenedor; un fallo de readiness solo lo saca de los endpoints del Service. Al meter una dependencia compartida en la liveness, una incidencia de la base de datos se convierte en un CrashLoopBackOff simultáneo de toda la flota, que además perderá cachés calientes y bombardeará a la base de datos con reconexiones justo cuando está recuperándose. La opción 1 es la trampa central, porque describe exactamente el comportamiento de la readiness probe, que es donde mucha gente cree que está configurando la liveness. La opción 3 describe la startupProbe. La opción 4 atribuye a las probes una función de autoescalado que corresponde al HPA y que no reacciona a ellas.",
       "explanation_en": "A liveness failure makes the kubelet kill and restart the container; a readiness failure only removes it from the Service endpoints. Putting a shared dependency in the liveness probe turns a database incident into a simultaneous CrashLoopBackOff across the whole fleet, which also loses warm caches and hammers the database with reconnections exactly while it is recovering. Option 1 is the central trap, because it describes precisely the readiness probe's behaviour, which is what many people believe they are configuring. Option 3 describes the startupProbe. Option 4 attributes an autoscaling role to probes that belongs to the HPA and does not react to them.",
       "source": "Kubernetes — documentación oficial: Configure Liveness, Readiness and Startup Probes",
       "expected_time_ms": 32000,
-      "tags": ["fault-tolerance", "kubernetes", "health-checks"]
+      "tags": [
+        "fault-tolerance",
+        "kubernetes",
+        "health-checks"
+      ]
     },
     {
       "id": "q050602014",
@@ -294,14 +367,24 @@
       "difficulty_tier": "hard",
       "question_es": "Una réplica de lectura asíncrona hace las veces de copia de seguridad: si alguien ejecuta por error un DELETE masivo en producción, basta con recuperar los datos desde la réplica.",
       "question_en": "An asynchronous read replica doubles as a backup: if someone accidentally runs a mass DELETE in production, you can just recover the data from the replica.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso, y es uno de los errores que más datos ha costado. La replicación propaga fielmente todo lo que ocurre en el primario, incluido el DELETE, normalmente en segundos: la réplica no es una versión anterior de los datos, es la misma versión con un ligero retardo. La replicación protege de la pérdida de un nodo; las copias de seguridad, con retención y recuperación a un punto en el tiempo, protegen del error humano y de los fallos lógicos (un bug de migración, un borrado en cascada inesperado). Suena verdadero porque ambas cosas son 'una segunda copia de los datos', pero se defienden de amenazas distintas, y por eso Google trata la integridad de datos como un problema aparte del de disponibilidad.",
       "explanation_en": "False, and it is one of the costliest mistakes in data operations. Replication faithfully propagates everything that happens on the primary, the DELETE included, usually within seconds: the replica is not an earlier version of the data, it is the same version slightly delayed. Replication protects against losing a node; backups, with retention and point-in-time recovery, protect against human error and logical corruption (a migration bug, an unexpected cascade delete). It sounds true because both are 'a second copy of the data', but they defend against different threats, which is why Google treats data integrity as a problem separate from availability.",
       "source": "Google — Site Reliability Engineering, cap. 26 (Data Integrity: Backups Versus Archives)",
       "expected_time_ms": 25000,
-      "tags": ["fault-tolerance", "backups", "replication"]
+      "tags": [
+        "fault-tolerance",
+        "backups",
+        "replication"
+      ]
     },
     {
       "id": "q050602015",
@@ -310,16 +393,29 @@
       "difficulty_tier": "hard",
       "question_es": "El SLO mensual de disponibilidad es 99.9%. ¿Qué imprime este cálculo del presupuesto de error en minutos?\\n\\nminutos_mes = 30 * 24 * 60\\nslo = 0.999\\npresupuesto = minutos_mes * (1 - slo)\\nprint(round(presupuesto, 1))",
       "question_en": "The monthly availability SLO is 99.9%. What does this error budget calculation print, in minutes?\\n\\nminutes_month = 30 * 24 * 60\\nslo = 0.999\\nbudget = minutes_month * (1 - slo)\\nprint(round(budget, 1))",
-      "options_es": ["4.3", "432.0", "0.0", "43.2"],
-      "options_en": ["4.3", "432.0", "0.0", "43.2"],
-      "correct_index": 3,
+      "options_es": [
+        "4.3",
+        "432.0",
+        "43.2",
+        "0.0"
+      ],
+      "options_en": [
+        "4.3",
+        "432.0",
+        "43.2",
+        "0.0"
+      ],
+      "correct_index": 2,
       "explanation_es": "30*24*60 = 43200 minutos al mes, y el 0.1% de eso son 43.2 minutos. Ese número es el presupuesto de error: el tiempo de indisponibilidad que el equipo puede gastar sin incumplir el SLO, y por tanto el margen del que dispone para desplegar, migrar y experimentar. La opción 4.3 es la más elegida porque corresponde a 99.99% (cuatro nueves) y es muy fácil desplazar un nueve al leer; 432.0 sale de equivocarse en un factor de diez al restar el SLO; y 0.0 lo eligen quienes intuyen que la aritmética en coma flotante acaba anulando el resultado, cosa que aquí no pasa. Cuando el presupuesto se agota, la política habitual es congelar los cambios de funcionalidad hasta recuperarlo.",
       "explanation_en": "30*24*60 = 43200 minutes a month, and 0.1% of that is 43.2 minutes. That number is the error budget: the downtime the team may spend without breaking the SLO, and therefore the room it has to deploy, migrate, and experiment. Option 4.3 is the most chosen because it corresponds to 99.99% (four nines) and it is very easy to slip a nine while reading; 432.0 comes from a factor-of-ten mistake when subtracting the SLO; and 0.0 is picked by people who suspect floating-point arithmetic cancels the result out, which does not happen here. When the budget is exhausted, the usual policy is to freeze feature changes until it recovers.",
       "source": "Google — Site Reliability Engineering, cap. 3 y 4 (Embracing Risk / Service Level Objectives)",
       "expected_time_ms": 45000,
-      "tags": ["fault-tolerance", "slo", "error-budget"]
+      "tags": [
+        "fault-tolerance",
+        "slo",
+        "error-budget"
+      ]
     },
-
     {
       "id": "q050603008",
       "skill_id": "sk050603",
@@ -328,23 +424,27 @@
       "question_es": "El cliente de pagos recibe un timeout al llamar a 'POST /charges' y reintenta automáticamente. ¿Cuál es el riesgo real y cómo se elimina?",
       "question_en": "The payments client gets a timeout calling 'POST /charges' and retries automatically. What is the real risk and how is it eliminated?",
       "options_es": [
-        "El timeout no dice si el cargo llegó a aplicarse: el reintento puede duplicar el cobro. Se elimina haciendo la operación idempotente, con una clave de idempotencia que el servidor guarda y usa para deduplicar",
+        "Se elimina reintentando una sola vez, porque un único reintento nunca puede duplicar el efecto",
         "No hay riesgo: un timeout significa que la petición no llegó a procesarse en el servidor",
         "El riesgo es de latencia, y se elimina bajando el timeout del cliente a 100 ms",
-        "Se elimina reintentando una sola vez, porque un único reintento nunca puede duplicar el efecto"
+        "El timeout no dice si el cargo llegó a aplicarse: el reintento puede duplicar el cobro. Se elimina haciendo la operación idempotente, con una clave de idempotencia que el servidor guarda y usa para deduplicar"
       ],
       "options_en": [
-        "The timeout does not tell you whether the charge was applied: the retry can double-charge. It is eliminated by making the operation idempotent, with an idempotency key the server stores and uses to deduplicate",
+        "It is eliminated by retrying only once, because a single retry can never duplicate the effect",
         "There is no risk: a timeout means the request never got processed on the server",
         "The risk is latency, and it is eliminated by lowering the client timeout to 100 ms",
-        "It is eliminated by retrying only once, because a single retry can never duplicate the effect"
+        "The timeout does not tell you whether the charge was applied: the retry can double-charge. It is eliminated by making the operation idempotent, with an idempotency key the server stores and uses to deduplicate"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un timeout es una respuesta indeterminada, no un fallo: la petición pudo perderse de ida, procesarse y perderse la respuesta de vuelta, o seguir ejecutándose en ese momento. La opción 2 es la creencia más peligrosa del reintento automático y es exactamente la que provoca los cobros duplicados en producción. La opción 4 confunde 'una vez' con 'seguro': un único reintento de una operación no idempotente ya duplica el efecto si la primera sí se aplicó. La opción 3 empeora la situación, porque un timeout más corto genera más reintentos sobre peticiones que sí estaban progresando. La solución no es reintentar con más cuidado sino cambiar la semántica de la operación: el receptor idempotente reconoce la clave y devuelve el resultado del primer intento.",
       "explanation_en": "A timeout is an indeterminate answer, not a failure: the request may have been lost on the way out, processed with the response lost on the way back, or still be running right then. Option 2 is the most dangerous belief in automatic retries and is exactly what produces duplicate charges in production. Option 4 confuses 'once' with 'safe': a single retry of a non-idempotent operation already duplicates the effect if the first one did apply. Option 3 makes things worse, because a shorter timeout produces more retries against requests that were in fact progressing. The fix is not to retry more carefully but to change the operation's semantics: an idempotent receiver recognises the key and returns the first attempt's result.",
       "source": "Hohpe, G. & Woolf, B. — Enterprise Integration Patterns (Idempotent Receiver)",
       "expected_time_ms": 32000,
-      "tags": ["resilience", "retry", "idempotency"]
+      "tags": [
+        "resilience",
+        "retry",
+        "idempotency"
+      ]
     },
     {
       "id": "q050603009",
@@ -370,7 +470,11 @@
       "explanation_en": "Retries compose multiplicatively: 3x3x3. The result is that the already-overloaded component receives an order of magnitude more traffic exactly when it can least absorb it, turning a degradation into an outage. That is why the SRE book recommends retrying at a single level (usually the one closest to the failure or the one closest to the user, but not both) and using a retry budget that caps the ratio of retries to total requests. Option 3 is the most tempting because it sounds like good architecture: breakers do help, but only after they detect the failure, and the amplification has already happened by the time they open; moreover, if each layer has its own threshold, the bottom layer takes the spike before the upper ones react.",
       "source": "Google — Site Reliability Engineering, cap. 22 (Addressing Cascading Failures)",
       "expected_time_ms": 35000,
-      "tags": ["resilience", "retry", "cascading-failure"]
+      "tags": [
+        "resilience",
+        "retry",
+        "cascading-failure"
+      ]
     },
     {
       "id": "q050603010",
@@ -379,14 +483,24 @@
       "difficulty_tier": "medium",
       "question_es": "Configurar el timeout del cliente más largo que el del servidor es la práctica recomendada, para no cortar peticiones que el servidor todavía podría completar.",
       "question_en": "Setting the client timeout longer than the server's is the recommended practice, so you do not cut off requests the server might still complete.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso: el presupuesto de tiempo debe decrecer conforme se baja por la cadena de llamadas, no crecer. Si el cliente espera más que el servidor, mantiene hilos, conexiones y memoria ocupados esperando un trabajo que el servidor ya ha abandonado, y bajo carga eso desemboca en el antipatrón de hilos bloqueados que describe Nygard: el servicio deja de responder no porque falle, sino porque no le quedan hilos libres. La afirmación suena razonable porque parece 'dar margen' y evitar cortar trabajo útil, pero el trabajo ya no es útil: nadie recogerá la respuesta. Lo correcto es propagar una fecha límite (deadline) desde el borde y que cada salto disponga de una porción estrictamente menor.",
       "explanation_en": "False: the time budget must shrink as you go down the call chain, not grow. If the client waits longer than the server, it holds threads, connections, and memory waiting for work the server has already abandoned, and under load that leads straight to Nygard's blocked-threads antipattern: the service stops responding not because it fails, but because it has no free threads left. The statement sounds reasonable because it seems to 'give room' and avoid cutting off useful work, but the work is no longer useful: nobody will collect the response. The correct approach is to propagate a deadline from the edge and give each hop a strictly smaller slice of it.",
       "source": "Nygard, M. — Release It! 2e, cap. 5 (Stability Patterns: Timeouts)",
       "expected_time_ms": 25000,
-      "tags": ["resilience", "timeouts", "deadlines"]
+      "tags": [
+        "resilience",
+        "timeouts",
+        "deadlines"
+      ]
     },
     {
       "id": "q050603011",
@@ -401,7 +515,11 @@
       "explanation_en": "The fallback is what turns an open breaker into graceful degradation rather than a visible error: the cart keeps working while the recommendations service is down, simply without recommendations. A breaker with no fallback only fails faster, which already beats hanging, but does not save the experience. Two known traps: a fallback that itself calls another remote dependency reintroduces the very failure you were avoiding, and a silent fallback returning an empty list can look like success and hide the incident from the team, so it must be recorded in metrics and traces.",
       "source": "Newman, S. — Building Microservices 2e, cap. 12 (Resiliency: Circuit Breakers)",
       "expected_time_ms": 28000,
-      "tags": ["resilience", "circuit-breaker", "fallback"]
+      "tags": [
+        "resilience",
+        "circuit-breaker",
+        "fallback"
+      ]
     },
     {
       "id": "q050603012",
@@ -411,23 +529,27 @@
       "question_es": "Un servicio se satura en horas punta. Un ingeniero propone aumentar mucho el tamaño de la cola de peticiones entrantes 'para no perder ninguna'. ¿Qué ocurre en realidad con una sobrecarga sostenida?",
       "question_en": "A service saturates at peak hours. An engineer proposes greatly increasing the size of the incoming request queue 'so we do not drop any'. What actually happens under sustained overload?",
       "options_es": [
-        "La latencia baja, porque una cola más larga absorbe los picos indefinidamente",
-        "No cambia nada medible: el tamaño de la cola no influye en el comportamiento del servicio",
         "La espera crece hasta que las respuestas llegan cuando el cliente ya ha abandonado por timeout: el servidor consume todos sus recursos produciendo trabajo que nadie recoge. Ante sobrecarga sostenida hay que descartar carga (load shedding) y responder 429/503 rápido",
+        "No cambia nada medible: el tamaño de la cola no influye en el comportamiento del servicio",
+        "La latencia baja, porque una cola más larga absorbe los picos indefinidamente",
         "El servicio se vuelve tolerante a fallos, porque la cola persiste las peticiones frente a un reinicio"
       ],
       "options_en": [
-        "Latency drops, because a longer queue absorbs the spikes indefinitely",
-        "Nothing measurable changes: queue size does not affect the service's behaviour",
         "Waiting time grows until responses arrive after the client has already timed out: the server burns all its resources producing work nobody collects. Under sustained overload you must shed load and return 429/503 quickly",
+        "Nothing measurable changes: queue size does not affect the service's behaviour",
+        "Latency drops, because a longer queue absorbs the spikes indefinitely",
         "The service becomes fault tolerant, because the queue persists requests across a restart"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Una cola solo sirve para absorber ráfagas transitorias; si la tasa de llegada supera a la de servicio de forma sostenida, la cola crece sin límite y con ella la latencia, hasta que cada respuesta se entrega a un cliente que ya se rindió. Es trabajo perdido que además desplaza al trabajo útil. La opción 1 es la trampa real, porque es cierta para ráfagas cortas y muchos ingenieros generalizan esa experiencia a la sobrecarga sostenida. La opción 4 confunde una cola en memoria con una cola de mensajes durable. La receta del libro de SRE es la contraria a la intuición: colas acotadas, descartar pronto la carga que no se va a poder servir a tiempo, y priorizar por criticidad para que lo que se descarte sea lo menos importante.",
       "explanation_en": "A queue only absorbs transient bursts; if the arrival rate exceeds the service rate persistently, the queue grows without bound and latency with it, until every response is delivered to a client that already gave up. That is wasted work, and it crowds out useful work. Option 1 is the real trap, because it is true for short bursts and many engineers generalise that experience to sustained overload. Option 4 confuses an in-memory queue with a durable message queue. The SRE book's prescription is counterintuitive: bounded queues, shed early the load you cannot serve in time, and prioritise by criticality so that what gets dropped is the least important.",
       "source": "Google — Site Reliability Engineering, cap. 22 (Load Shedding and Graceful Degradation)",
       "expected_time_ms": 35000,
-      "tags": ["resilience", "load-shedding", "overload"]
+      "tags": [
+        "resilience",
+        "load-shedding",
+        "overload"
+      ]
     },
     {
       "id": "q050603013",
@@ -438,22 +560,26 @@
       "question_en": "Which of these statements about the circuit breaker pattern is correct?",
       "options_es": [
         "Solo sirve frente a dependencias lentas: si la dependencia devuelve errores rápidamente, el breaker no aporta nada",
-        "Se dispara por tasa de fallos, incluidos los errores rápidos, y además protege a la propia dependencia: al abrirse deja de enviarle tráfico y le da margen para recuperarse",
         "Debe mantener un único estado global compartido por todas las dependencias del proceso",
+        "Se dispara por tasa de fallos, incluidos los errores rápidos, y además protege a la propia dependencia: al abrirse deja de enviarle tráfico y le da margen para recuperarse",
         "Sustituye a los timeouts: con un breaker bien configurado los timeouts dejan de ser necesarios"
       ],
       "options_en": [
         "It only helps against slow dependencies: if the dependency returns errors quickly, the breaker adds nothing",
-        "It trips on failure rate, fast errors included, and it also protects the dependency itself: once open it stops sending it traffic and gives it room to recover",
         "It should keep a single global state shared by every dependency in the process",
+        "It trips on failure rate, fast errors included, and it also protects the dependency itself: once open it stops sending it traffic and gives it room to recover",
         "It replaces timeouts: with a well-configured breaker, timeouts are no longer necessary"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "La opción 1 es la creencia más extendida —que el breaker es poco más que un envoltorio de timeouts— y es falsa por dos motivos: los errores rápidos también consumen conexiones, hilos y presupuesto de latencia del llamante, y sobre todo siguen golpeando a una dependencia que ya está en apuros. Media función del breaker mira hacia fuera: dejar de llamar es lo que permite que el servicio de abajo levante cabeza. La opción 3 es un error de implementación real y grave: el estado debe ser por dependencia (idealmente por endpoint remoto), porque un estado global hace que una dependencia enferma bloquee las llamadas a las sanas. La opción 4 invierte la relación: el breaker necesita los timeouts para poder clasificar una llamada como fallida; sin timeout, una llamada colgada nunca cuenta como fallo y el breaker no llega a abrirse.",
       "explanation_en": "Option 1 is the most widespread belief —that a breaker is little more than a timeout wrapper— and it is false for two reasons: fast errors still consume the caller's connections, threads, and latency budget, and above all they keep hammering a dependency that is already struggling. Half the breaker's job points outward: not calling is what lets the downstream service recover. Option 3 is a real and serious implementation mistake: state must be per dependency (ideally per remote endpoint), because a global state lets one sick dependency block calls to the healthy ones. Option 4 inverts the relationship: the breaker needs timeouts in order to classify a call as failed at all; with no timeout, a hung call never counts as a failure and the breaker never opens.",
       "source": "Fowler, M. — martinfowler.com/bliki/CircuitBreaker.html",
       "expected_time_ms": 33000,
-      "tags": ["resilience", "circuit-breaker", "timeouts"]
+      "tags": [
+        "resilience",
+        "circuit-breaker",
+        "timeouts"
+      ]
     },
     {
       "id": "q050603014",
@@ -465,21 +591,25 @@
       "options_es": [
         "[100, 200, 400, 800, 1600, 3200]",
         "[100, 100, 100, 100, 100, 100]",
-        "[100, 200, 400, 800, 1000, 1000]",
-        "[100, 200, 300, 400, 500, 600]"
+        "[100, 200, 300, 400, 500, 600]",
+        "[100, 200, 400, 800, 1000, 1000]"
       ],
       "options_en": [
         "[100, 200, 400, 800, 1600, 3200]",
         "[100, 100, 100, 100, 100, 100]",
-        "[100, 200, 400, 800, 1000, 1000]",
-        "[100, 200, 300, 400, 500, 600]"
+        "[100, 200, 300, 400, 500, 600]",
+        "[100, 200, 400, 800, 1000, 1000]"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "La espera crece exponencialmente hasta chocar con el tope de 1000 ms, que aplasta los dos últimos valores. La opción 1 es la más elegida porque es el backoff exponencial 'de libro' sin el min(), y quien la escoge está pasando por alto el tope, que existe para que un reintento no espere minutos. La opción 4 es backoff lineal. Lo importante del ejercicio no es la aritmética sino lo que le falta al código: no hay jitter, así que si mil clientes fallan a la vez reintentarán exactamente en los mismos instantes (100, 300, 700 ms...) y reproducirán el pico que tumbó al servidor. El jitter completo multiplica cada espera por un aleatorio, dispersando los reintentos en el tiempo.",
       "explanation_en": "The delay grows exponentially until it hits the 1000 ms cap, which flattens the last two values. Option 1 is the most chosen because it is textbook exponential backoff without the min(), and whoever picks it is overlooking the cap, which exists so a retry does not wait for minutes. Option 4 is linear backoff. The point of the exercise is not the arithmetic but what the code is missing: there is no jitter, so if a thousand clients fail at once they will retry at exactly the same instants (100, 300, 700 ms...) and reproduce the spike that took the server down. Full jitter multiplies each delay by a random factor, spreading the retries out in time.",
       "source": "Nygard, M. — Release It! 2e, cap. 5 (Stability Patterns)",
       "expected_time_ms": 40000,
-      "tags": ["resilience", "retry", "backoff"]
+      "tags": [
+        "resilience",
+        "retry",
+        "backoff"
+      ]
     },
     {
       "id": "q050603015",
@@ -489,25 +619,28 @@
       "question_es": "Un circuit breaker configurado como 'abrir tras 20 fallos consecutivos' se comporta mal en un endpoint que recibe 2 peticiones por minuto. ¿Cuál es el problema y el arreglo?",
       "question_en": "A circuit breaker configured as 'open after 20 consecutive failures' behaves badly on an endpoint receiving 2 requests per minute. What is the problem and the fix?",
       "options_es": [
-        "Que los breakers no funcionan con tráfico bajo, así que hay que quitarlos de esos endpoints",
+        "Que con ese volumen tardaría diez minutos en abrirse: el umbral debe expresarse como tasa de fallos dentro de una ventana temporal deslizante con un mínimo de muestras, aceptando que con poco tráfico el breaker decide con menos señal",
         "Que 20 es un umbral demasiado bajo, y subirlo a 200 corrige el comportamiento",
         "Que el breaker necesita tráfico constante para medir latencia, así que hay que enviarle peticiones sintéticas cada segundo",
-        "Que con ese volumen tardaría diez minutos en abrirse: el umbral debe expresarse como tasa de fallos dentro de una ventana temporal deslizante con un mínimo de muestras, aceptando que con poco tráfico el breaker decide con menos señal"
+        "Que los breakers no funcionan con tráfico bajo, así que hay que quitarlos de esos endpoints"
       ],
       "options_en": [
-        "That breakers do not work at low traffic, so they should be removed from such endpoints",
+        "That at that volume it would take ten minutes to open: the threshold should be expressed as a failure rate within a sliding time window with a minimum sample size, accepting that at low traffic the breaker decides on less evidence",
         "That 20 is too low a threshold, and raising it to 200 fixes the behaviour",
         "That the breaker needs constant traffic to measure latency, so you must send synthetic requests every second",
-        "That at that volume it would take ten minutes to open: the threshold should be expressed as a failure rate within a sliding time window with a minimum sample size, accepting that at low traffic the breaker decides on less evidence"
+        "That breakers do not work at low traffic, so they should be removed from such endpoints"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "Un umbral basado en un recuento absoluto ata el tiempo de reacción del breaker al volumen de tráfico: con 2 peticiones por minuto, 20 fallos consecutivos son diez minutos de llamadas colgadas antes de que el breaker haga nada. Las implementaciones maduras (el bliki de Fowler y el diseño de Hystrix que describe) usan porcentaje de error sobre una ventana deslizante más un volumen mínimo de peticiones, que desacopla el umbral del tráfico y a la vez evita abrir el circuito por un único fallo aislado. La opción 2 es la reacción instintiva y va en la dirección contraria: subir el recuento empeora exactamente el problema que hay que resolver. La opción 3 describe el health checking activo, que es una técnica real pero que no arregla la semántica del umbral y además añade carga. La opción 1 tira la herramienta en vez de configurarla.",
       "explanation_en": "A threshold based on an absolute count ties the breaker's reaction time to traffic volume: at 2 requests per minute, 20 consecutive failures is ten minutes of hanging calls before the breaker does anything. Mature implementations (Fowler's bliki and the Hystrix design it describes) use an error percentage over a rolling window plus a minimum request volume, which decouples the threshold from traffic while still avoiding tripping on one isolated failure. Option 2 is the instinctive reaction and goes the wrong way: raising the count makes exactly the problem you need to fix worse. Option 3 describes active health checking, a real technique that does not fix the threshold semantics and adds load on top. Option 1 throws away the tool instead of configuring it.",
       "source": "Fowler, M. — martinfowler.com/bliki/CircuitBreaker.html",
       "expected_time_ms": 40000,
-      "tags": ["resilience", "circuit-breaker", "tuning"]
+      "tags": [
+        "resilience",
+        "circuit-breaker",
+        "tuning"
+      ]
     },
-
     {
       "id": "q050604008",
       "skill_id": "sk050604",
@@ -532,7 +665,11 @@
       "explanation_en": "In Prometheus the unit of storage is the time series, and a series' identity is the metric name plus its full label set: two million 'user_id' values means two million series, each with its own sample stream in memory and in the index. Option 3 is the most dangerous because it sounds like sensible behaviour from a mature system, but Prometheus does nothing of the sort: there is no automatic grouping and no implicit cap, it just falls over. Option 4 gets the intuition right —per-user detail belongs in logs and traces— but the mechanism wrong: adding a label does not turn a metric into a log. The practical rule is that labels must have bounded, known cardinality (status code, method, region), and high-cardinality identifiers belong in traces, logs, or exemplars.",
       "source": "Prometheus — documentación oficial: Metric and Label Naming / Instrumentation best practices",
       "expected_time_ms": 30000,
-      "tags": ["observability", "metrics", "cardinality"]
+      "tags": [
+        "observability",
+        "metrics",
+        "cardinality"
+      ]
     },
     {
       "id": "q050604009",
@@ -543,22 +680,26 @@
       "question_en": "The dashboard shows a mean latency of 120 ms and the team concludes the experience is fine, yet support keeps receiving complaints about slowness. What is the most likely explanation?",
       "options_es": [
         "La media está mal calculada y basta con recalcularla en ventanas por hora",
-        "Los usuarios exageran: 120 ms es imperceptible para una persona",
+        "La media esconde la cola de la distribución: hay que mirar percentiles altos (p95, p99) sobre un histograma, porque una minoría de peticiones muy lentas afecta a muchos usuarios reales sin mover apenas la media",
         "El problema está en la red del cliente y por definición no puede observarse desde el servidor",
-        "La media esconde la cola de la distribución: hay que mirar percentiles altos (p95, p99) sobre un histograma, porque una minoría de peticiones muy lentas afecta a muchos usuarios reales sin mover apenas la media"
+        "Los usuarios exageran: 120 ms es imperceptible para una persona"
       ],
       "options_en": [
         "The mean is miscalculated and simply needs recomputing in hourly windows",
-        "Users are exaggerating: 120 ms is imperceptible to a human",
+        "The mean hides the tail of the distribution: you need high percentiles (p95, p99) over a histogram, because a minority of very slow requests affects many real users while barely moving the mean",
         "The problem is in the client's network and by definition cannot be observed from the server",
-        "The mean hides the tail of the distribution: you need high percentiles (p95, p99) over a histogram, because a minority of very slow requests affects many real users while barely moving the mean"
+        "Users are exaggerating: 120 ms is imperceptible to a human"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "La media es un resumen malísimo de una distribución con cola larga: un 1% de peticiones a 8 segundos apenas mueve una media de 120 ms, pero es una de cada cien pantallas que el usuario percibe como rota. Y el efecto se amplifica cuando una página compone varias llamadas, porque la probabilidad de tocar al menos una petición lenta crece con el número de llamadas. La opción 2 es el reflejo desestimatorio que hace que estas incidencias se cierren sin investigar. La opción 3 renuncia demasiado pronto: la latencia del servidor se mide en el servidor y la percibida se instrumenta en el cliente, ambas son observables. Un apunte que suspende muchas entrevistas: los percentiles no se pueden promediar entre instancias; hay que agregar los histogramas y calcular el percentil sobre el agregado.",
       "explanation_en": "The mean is a terrible summary of a long-tailed distribution: 1% of requests at 8 seconds barely moves a 120 ms mean, but it is one in a hundred screens the user experiences as broken. The effect amplifies when a page composes several calls, because the chance of hitting at least one slow request grows with the number of calls. Option 2 is the dismissive reflex that gets such incidents closed without investigation. Option 3 gives up too early: server latency is measured at the server and perceived latency is instrumented in the client, both are observable. One detail that fails many interviews: percentiles cannot be averaged across instances; you must aggregate the histograms and compute the percentile over the aggregate.",
       "source": "Google — Site Reliability Engineering, cap. 6 (Monitoring Distributed Systems)",
       "expected_time_ms": 32000,
-      "tags": ["observability", "latency", "percentiles"]
+      "tags": [
+        "observability",
+        "latency",
+        "percentiles"
+      ]
     },
     {
       "id": "q050604010",
@@ -567,14 +708,24 @@
       "difficulty_tier": "medium",
       "question_es": "El muestreo basado en cola (tail-based sampling) permite quedarse con las trazas que contienen un error o una latencia alta, a cambio de tener que retener los spans hasta que la traza termina.",
       "question_en": "Tail-based sampling lets you keep the traces that contain an error or high latency, at the cost of buffering spans until the trace is complete.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y ahí está la diferencia práctica con el muestreo en cabecera. El muestreo en cabecera (head-based) decide en la raíz, antes de saber cómo terminará la petición, así que al 1% se pierde el 99% de los errores raros, que son justo los que se quería investigar. El muestreo en cola espera a que la traza esté completa y entonces decide, por lo que puede quedarse con el 100% de las trazas con error, pero exige un colector que agrupe los spans por trace id y los mantenga en memoria durante una ventana de tiempo, lo que cuesta memoria y complica el escalado horizontal del colector, ya que todos los spans de una traza tienen que llegar a la misma instancia.",
       "explanation_en": "True, and that is the practical difference from head-based sampling. Head-based sampling decides at the root, before knowing how the request will end, so at 1% you lose 99% of the rare errors, which are exactly the ones you wanted to investigate. Tail-based sampling waits for the trace to complete and then decides, so it can keep 100% of error traces, but it requires a collector that groups spans by trace id and holds them in memory for a time window, which costs memory and complicates scaling the collector horizontally, since all spans of one trace must reach the same instance.",
       "source": "OpenTelemetry — documentación oficial: Sampling",
       "expected_time_ms": 25000,
-      "tags": ["observability", "tracing", "sampling"]
+      "tags": [
+        "observability",
+        "tracing",
+        "sampling"
+      ]
     },
     {
       "id": "q050604011",
@@ -589,7 +740,11 @@
       "explanation_en": "Saturation measures how full the service's most constrained resource is (memory, I/O, threads, connections) and is the only one of the four that acts as a leading indicator: it usually rises before latency spikes and errors appear, which buys time to act before the incident. The common wrong answers are 'availability' (an aggregated outcome, not an instrumented signal) and 'CPU' (one possible concrete measure of saturation, not the signal itself: in many services the resource that saturates first is database connections or threads, not the processor).",
       "source": "Google — Site Reliability Engineering, cap. 6 (The Four Golden Signals)",
       "expected_time_ms": 25000,
-      "tags": ["observability", "monitoring", "golden-signals"]
+      "tags": [
+        "observability",
+        "monitoring",
+        "golden-signals"
+      ]
     },
     {
       "id": "q050604012",
@@ -600,22 +755,26 @@
       "question_en": "A team migrates from free-text logs to structured JSON logs that include a 'trace_id' on every line. What is the main benefit in a distributed system?",
       "options_es": [
         "Que los logs ocupan bastante menos espacio en disco que el texto plano",
-        "Que permiten consultar y agregar por campos y, sobre todo, reconstruir el recorrido completo de una petición uniendo las líneas emitidas por todos los servicios que la atendieron a través de su 'trace_id'",
         "Que sustituyen a las métricas: con logs estructurados ya no hacen falta contadores ni histogramas",
+        "Que permiten consultar y agregar por campos y, sobre todo, reconstruir el recorrido completo de una petición uniendo las líneas emitidas por todos los servicios que la atendieron a través de su 'trace_id'",
         "Que garantizan la observabilidad por sí solos, porque los otros dos pilares se derivan automáticamente de los logs"
       ],
       "options_en": [
         "That logs take up considerably less disk space than plain text",
-        "That they can be queried and aggregated by field and, above all, let you reconstruct a request's full path by joining the lines emitted by every service that handled it via its 'trace_id'",
         "That they replace metrics: with structured logs you no longer need counters or histograms",
+        "That they can be queried and aggregated by field and, above all, let you reconstruct a request's full path by joining the lines emitted by every service that handled it via its 'trace_id'",
         "That they guarantee observability on their own, because the other two pillars derive automatically from logs"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Sin identificador de correlación, un log distribuido es un montón de líneas de servicios distintos que nadie puede coser; con 'trace_id' pasa a ser una narración por petición, que es lo que de verdad se necesita a las tres de la mañana. Las opciones 3 y 4 son la sobrecorrección típica de los equipos que acaban de descubrir el logging estructurado: los logs son caros de agregar a escala y responden mal a 'cuál es el p99 ahora mismo', pregunta que una métrica contesta en milisegundos sobre datos preagregados. La opción 1 es falsa en la dirección opuesta: el JSON repite las claves en cada línea y suele ocupar más, no menos; el beneficio es de consulta, no de almacenamiento.",
       "explanation_en": "Without a correlation identifier, distributed logs are a pile of lines from different services that nobody can stitch together; with a 'trace_id' they become a per-request narrative, which is what you actually need at three in the morning. Options 3 and 4 are the typical overcorrection of teams that have just discovered structured logging: logs are expensive to aggregate at scale and answer 'what is the p99 right now' badly, a question a metric answers in milliseconds over pre-aggregated data. Option 1 is false in the opposite direction: JSON repeats the keys on every line and usually takes more space, not less; the benefit is in querying, not storage.",
       "source": "Newman, S. — Building Microservices 2e, cap. 10 (Monitoring, Observability)",
       "expected_time_ms": 30000,
-      "tags": ["observability", "logging", "correlation"]
+      "tags": [
+        "observability",
+        "logging",
+        "correlation"
+      ]
     },
     {
       "id": "q050604013",
@@ -624,14 +783,24 @@
       "difficulty_tier": "hard",
       "question_es": "Alertar sobre causas (CPU alta, disco al 80%, un pod reiniciado) genera menos ruido y es preferible a alertar sobre síntomas ligados al SLO que percibe el usuario.",
       "question_en": "Alerting on causes (high CPU, disk at 80%, a pod restarted) produces less noise and is preferable to alerting on symptoms tied to the user-facing SLO.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso, y está invertido en los dos sentidos. Las alertas por causa generan MÁS ruido, porque se disparan ante condiciones que el usuario nunca llega a notar (una CPU al 95% en un servicio que responde perfectamente) y entrenan al equipo a ignorar la busca. Y además dejan huecos: solo cubren las causas que alguien ya imaginó, así que un fallo nuevo pasa inadvertido mientras todos los paneles siguen en verde. La práctica de SRE es avisar sobre síntomas —el SLO se está consumiendo, la tasa de errores sube, la latencia p99 se dispara— y conservar las métricas de causa para diagnosticar una vez que ya hay alguien mirando. La afirmación resulta creíble porque una alerta por causa parece llegar antes y ser más accionable, pero 'antes' no vale de nada si avisa de algo que no afecta a nadie.",
       "explanation_en": "False, and it is inverted in both directions. Cause-based alerts produce MORE noise, because they fire on conditions the user never notices (95% CPU on a service that responds perfectly) and train the team to ignore the pager. They also leave gaps: they only cover the causes someone already imagined, so a novel failure goes unnoticed while every dashboard stays green. SRE practice is to page on symptoms —the SLO is burning, the error rate is climbing, p99 latency is spiking— and keep cause metrics for diagnosis once someone is already looking. The statement sounds credible because a cause alert seems to arrive earlier and be more actionable, but 'earlier' is worth nothing when it warns about something affecting nobody.",
       "source": "Google — Site Reliability Engineering, cap. 6 (Symptoms Versus Causes)",
       "expected_time_ms": 28000,
-      "tags": ["observability", "alerting", "slo"]
+      "tags": [
+        "observability",
+        "alerting",
+        "slo"
+      ]
     },
     {
       "id": "q050604014",
@@ -642,22 +811,26 @@
       "question_en": "A request arrives with the W3C 'traceparent' header. What does this code print?\\n\\ntp = \"00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01\"\\nversion, trace_id, span_id, flags = tp.split(\"-\")\\nprint(len(trace_id), len(span_id), flags == \"01\")",
       "options_es": [
         "16 8 True",
-        "32 16 False",
         "32 16 True",
+        "32 16 False",
         "ValueError: no hay suficientes valores para desempaquetar"
       ],
       "options_en": [
         "16 8 True",
-        "32 16 False",
         "32 16 True",
+        "32 16 False",
         "ValueError: not enough values to unpack"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "El formato de 'traceparent' es version-trace_id-parent_id-flags, con el trace id en 32 caracteres hexadecimales (16 bytes), el id de span padre en 16 (8 bytes) y unas flags donde el bit menos significativo a 1 indica que la traza está muestreada. La opción 1 es la confusión clásica entre bytes y caracteres hexadecimales: el trace id son 16 BYTES, que se escriben con 32 caracteres. Lo que de verdad importa de esta cabecera es que propagarla sin tocarla es lo que mantiene unida la traza: en cuanto un servicio intermedio, un proxy o un cliente HTTP la descarta, la traza se parte en fragmentos inconexos, y ese es con diferencia el fallo más común al instrumentar trazado distribuido.",
       "explanation_en": "The 'traceparent' format is version-trace_id-parent_id-flags, with the trace id as 32 hexadecimal characters (16 bytes), the parent span id as 16 (8 bytes), and flags whose least significant bit set to 1 means the trace is sampled. Option 1 is the classic confusion between bytes and hex characters: the trace id is 16 BYTES, written as 32 characters. What really matters about this header is that propagating it untouched is what keeps a trace whole: the moment an intermediate service, a proxy, or an HTTP client drops it, the trace splits into disconnected fragments, and that is by far the most common failure when instrumenting distributed tracing.",
       "source": "W3C Trace Context — especificación oficial (traceparent header), adoptada por OpenTelemetry",
       "expected_time_ms": 40000,
-      "tags": ["observability", "tracing", "trace-context"]
+      "tags": [
+        "observability",
+        "tracing",
+        "trace-context"
+      ]
     },
     {
       "id": "q050604015",
@@ -667,23 +840,27 @@
       "question_es": "El SLO es 99.9% mensual. El equipo quiere que la alerta avise a tiempo de que el presupuesto de error se está consumiendo demasiado deprisa, sin despertar a nadie por un pico de dos minutos. ¿Qué configuración lo consigue?",
       "question_en": "The SLO is 99.9% monthly. The team wants an alert that warns in time that the error budget is burning too fast, without paging anyone for a two-minute spike. Which configuration achieves that?",
       "options_es": [
-        "Alertas multiventana sobre la tasa de consumo del presupuesto (burn rate): una ventana larga confirma que el consumo es sostenido y una ventana corta comprueba que el problema sigue activo ahora mismo",
-        "Alertar cada vez que una petición devuelva un código 5xx",
         "Alertar cuando el presupuesto de error del mes se haya agotado por completo",
+        "Alertar cada vez que una petición devuelva un código 5xx",
+        "Alertas multiventana sobre la tasa de consumo del presupuesto (burn rate): una ventana larga confirma que el consumo es sostenido y una ventana corta comprueba que el problema sigue activo ahora mismo",
         "Alertar cuando la CPU de los pods supere el 90% durante cinco minutos"
       ],
       "options_en": [
-        "Multiwindow alerts on the error budget burn rate: a long window confirms the burn is sustained and a short window checks the problem is still active right now",
-        "Alerting every time a request returns a 5xx status code",
         "Alerting when the month's error budget has been fully exhausted",
+        "Alerting every time a request returns a 5xx status code",
+        "Multiwindow alerts on the error budget burn rate: a long window confirms the burn is sustained and a short window checks the problem is still active right now",
         "Alerting when pod CPU exceeds 90% for five minutes"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "La tasa de consumo expresa cuántas veces más rápido se está gastando el presupuesto de lo que el SLO permite: una tasa de 1 lo agota justo al final del mes, una de 14.4 lo agota en dos días. Se alerta con varias parejas de umbral y ventana (por ejemplo 14.4 sobre una hora para una página urgente, 6 sobre seis horas para un ticket), y cada pareja lleva además una ventana corta para que la alerta se resuelva sola cuando el consumo se detiene: sin esa ventana corta, la ventana larga mantiene la alarma activa mucho después de que el incidente termine. La opción 3 es la más tentadora porque parece la aplicación literal del concepto de presupuesto, pero llega por definición tarde: cuando el presupuesto está agotado el SLO ya se ha incumplido, y la alerta debía servir para evitarlo. La opción 2 es ruido puro y la 4 es una alerta por causa, no por síntoma.",
       "explanation_en": "Burn rate expresses how many times faster the budget is being spent than the SLO allows: a rate of 1 exhausts it exactly at month end, a rate of 14.4 exhausts it in two days. You alert with several threshold/window pairs (for example 14.4 over one hour for an urgent page, 6 over six hours for a ticket), and each pair carries a short window as well so the alert resolves itself once the burn stops: without that short window, the long window keeps the alarm firing long after the incident is over. Option 3 is the most tempting because it looks like the literal application of a budget, but it is late by definition: once the budget is exhausted the SLO has already been missed, and the alert was supposed to prevent that. Option 2 is pure noise and option 4 is a cause-based alert, not a symptom-based one.",
       "source": "Google — The Site Reliability Workbook, cap. 5 (Alerting on SLOs)",
       "expected_time_ms": 40000,
-      "tags": ["observability", "slo", "burn-rate"]
+      "tags": [
+        "observability",
+        "slo",
+        "burn-rate"
+      ]
     }
   ]
 }

@@ -8,23 +8,27 @@
       "question_es": "En la atención de producto escalar, cada token genera tres vectores: query (Q), key (K) y value (V). ¿Qué representa el producto escalar entre la query de un token y la key de otro?",
       "question_en": "In scaled dot-product attention each token produces three vectors: query (Q), key (K) and value (V). What does the dot product between one token's query and another token's key represent?",
       "options_es": [
-        "Una puntuación de compatibilidad: cuánta atención debe prestar el primer token al segundo, que tras el softmax pondera el vector value del segundo",
-        "La distancia semántica final entre las dos palabras, usada directamente como salida de la capa",
         "La probabilidad de que el segundo token sea el siguiente token generado",
+        "La distancia semántica final entre las dos palabras, usada directamente como salida de la capa",
+        "Una puntuación de compatibilidad: cuánta atención debe prestar el primer token al segundo, que tras el softmax pondera el vector value del segundo",
         "La corrección gramatical de la pareja de palabras según el corpus de entrenamiento"
       ],
       "options_en": [
-        "A compatibility score: how much the first token should attend to the second, which after softmax weights the second token's value vector",
-        "The final semantic distance between the two words, used directly as the layer's output",
         "The probability that the second token is the next token to be generated",
+        "The final semantic distance between the two words, used directly as the layer's output",
+        "A compatibility score: how much the first token should attend to the second, which after softmax weights the second token's value vector",
         "The grammatical correctness of the word pair according to the training corpus"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Q·K produce una puntuación de relevancia; el softmax la convierte en pesos que se aplican a los vectores V. Es tentador leerlo como 'distancia semántica' porque se parece a la similitud coseno, pero no está normalizado y no es la salida: la salida es la suma ponderada de los values. Tampoco es una probabilidad del siguiente token: esa se calcula al final de la pila, en la capa de salida, no dentro de cada cabeza de atención.",
       "explanation_en": "Q·K gives a relevance score; softmax turns it into weights applied to the V vectors. It is tempting to read it as 'semantic distance' because it resembles cosine similarity, but it is not normalized and it is not the output: the output is the weighted sum of the values. It is also not a next-token probability, which is computed at the top of the stack in the output layer, not inside an attention head.",
       "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017), section 3.2.1",
       "expected_time_ms": 35000,
-      "tags": ["llm", "transformer", "attention"]
+      "tags": [
+        "llm",
+        "transformer",
+        "attention"
+      ]
     },
     {
       "id": "q070101011",
@@ -35,22 +39,27 @@
       "question_en": "Why does the original paper divide attention scores by the square root of d_k before applying softmax?",
       "options_es": [
         "Para que las puntuaciones sumen exactamente 1 sin necesidad del softmax",
-        "Porque con d_k grande los productos escalares crecen en magnitud y empujan al softmax a regiones de gradiente casi nulo",
+        "Para compensar el número de cabezas de atención usadas en la capa",
         "Para reducir la memoria consumida por la matriz de atención",
-        "Para compensar el número de cabezas de atención usadas en la capa"
+        "Porque con d_k grande los productos escalares crecen en magnitud y empujan al softmax a regiones de gradiente casi nulo"
       ],
       "options_en": [
         "So the scores sum to exactly 1 without needing the softmax",
-        "Because with large d_k the dot products grow in magnitude and push the softmax into regions of vanishing gradient",
+        "To compensate for the number of attention heads used in the layer",
         "To reduce the memory consumed by the attention matrix",
-        "To compensate for the number of attention heads used in the layer"
+        "Because with large d_k the dot products grow in magnitude and push the softmax into regions of vanishing gradient"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El paper razona que si las componentes de q y k son independientes con media 0 y varianza 1, su producto escalar tiene varianza d_k; sin escalar, valores grandes saturan el softmax y el gradiente se desvanece. El escalado es numérico, no de memoria: la matriz de atención ocupa lo mismo antes y después. Y la normalización a suma 1 la hace el softmax, no la división.",
       "explanation_en": "The paper argues that if the components of q and k are independent with mean 0 and variance 1, their dot product has variance d_k; unscaled, large values saturate the softmax and the gradient vanishes. The scaling is numerical, not a memory measure: the attention matrix is the same size either way. And the normalization to sum 1 is done by the softmax, not by the division.",
       "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017), section 3.2.1",
       "expected_time_ms": 40000,
-      "tags": ["llm", "transformer", "attention", "advanced"]
+      "tags": [
+        "llm",
+        "transformer",
+        "attention",
+        "advanced"
+      ]
     },
     {
       "id": "q070101012",
@@ -60,23 +69,27 @@
       "question_es": "¿Qué función cumplen las conexiones residuales y la normalización de capa (layer norm) alrededor de cada subcapa del Transformer?",
       "question_en": "What role do the residual connections and layer normalization around each Transformer sublayer play?",
       "options_es": [
-        "Comprimen la secuencia de entrada para que quepa en la ventana de contexto",
-        "Sustituyen a las codificaciones posicionales inyectando el orden de los tokens",
         "Permiten entrenar pilas muy profundas: el residual da un camino directo al gradiente y la normalización mantiene estables las activaciones",
+        "Sustituyen a las codificaciones posicionales inyectando el orden de los tokens",
+        "Comprimen la secuencia de entrada para que quepa en la ventana de contexto",
         "Eliminan la necesidad de la capa feed-forward posicional"
       ],
       "options_en": [
-        "They compress the input sequence so it fits the context window",
-        "They replace positional encodings by injecting token order",
         "They make very deep stacks trainable: the residual gives the gradient a direct path and normalization keeps activations stable",
+        "They replace positional encodings by injecting token order",
+        "They compress the input sequence so it fits the context window",
         "They remove the need for the position-wise feed-forward layer"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Cada subcapa se envuelve como LayerNorm(x + Sublayer(x)). El atajo residual evita que el gradiente se degrade al atravesar decenas de bloques y la normalización estabiliza la escala de las activaciones. No tienen nada que ver con la ventana de contexto (un límite de longitud de secuencia) ni con el orden de los tokens, que sigue dependiendo de las codificaciones posicionales; y el bloque feed-forward sigue presente dentro del envoltorio.",
       "explanation_en": "Each sublayer is wrapped as LayerNorm(x + Sublayer(x)). The residual shortcut keeps the gradient from degrading across dozens of blocks, and normalization stabilizes activation scale. They have nothing to do with the context window (a sequence-length limit) or with token order, which still depends on positional encodings; and the feed-forward block is still there inside the wrapper.",
       "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017), section 3.1",
       "expected_time_ms": 33000,
-      "tags": ["llm", "transformer", "architecture"]
+      "tags": [
+        "llm",
+        "transformer",
+        "architecture"
+      ]
     },
     {
       "id": "q070101013",
@@ -86,23 +99,27 @@
       "question_es": "En el Transformer base del paper, d_model = 512 y se usan h = 8 cabezas de atención. ¿Cuál es la dimensión d_k de cada cabeza?\\n\\nd_k = d_model / h",
       "question_en": "In the paper's base Transformer, d_model = 512 with h = 8 attention heads. What is the dimension d_k of each head?\\n\\nd_k = d_model / h",
       "options_es": [
-        "512, cada cabeza trabaja con la dimensión completa",
+        "64",
         "4096, la dimensión se multiplica por el número de cabezas",
         "8, una dimensión por cabeza",
-        "64"
+        "512, cada cabeza trabaja con la dimensión completa"
       ],
       "options_en": [
-        "512, each head works with the full dimension",
+        "64",
         "4096, the dimension is multiplied by the number of heads",
         "8, one dimension per head",
-        "64"
+        "512, each head works with the full dimension"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "512 / 8 = 64. El error habitual es suponer que cada cabeza opera sobre la dimensión completa (512) y que multi-head multiplica el cómputo por 8; en realidad el paper reparte la dimensión entre las cabezas, así que el coste total es similar al de una sola cabeza con dimensión completa.",
       "explanation_en": "512 / 8 = 64. The usual mistake is assuming each head operates on the full dimension (512) and that multi-head multiplies compute by 8; in fact the paper splits the dimension across heads, so the total cost is similar to a single head with full dimensionality.",
       "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017), section 3.2.2",
       "expected_time_ms": 30000,
-      "tags": ["llm", "transformer", "attention"]
+      "tags": [
+        "llm",
+        "transformer",
+        "attention"
+      ]
     },
     {
       "id": "q070101014",
@@ -111,14 +128,25 @@
       "difficulty_tier": "hard",
       "question_es": "Usar 8 cabezas de atención en lugar de una multiplica aproximadamente por 8 el coste computacional de la subcapa de atención.",
       "question_en": "Using 8 attention heads instead of one multiplies the computational cost of the attention sublayer by roughly 8.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. El paper reduce la dimensión de cada cabeza a d_model/h, de modo que el coste total de la atención multi-cabeza es similar al de una única cabeza con dimensionalidad completa. La intuición de 'más cabezas = más cómputo' es tentadora porque en otras arquitecturas añadir ramas paralelas sí suma coste, pero aquí el presupuesto se reparte, no se replica.",
       "explanation_en": "False. The paper reduces each head's dimension to d_model/h, so the total cost of multi-head attention is similar to that of a single head with full dimensionality. The 'more heads = more compute' intuition is tempting because in other architectures adding parallel branches does add cost, but here the budget is divided, not duplicated.",
       "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017), section 3.2.2",
       "expected_time_ms": 30000,
-      "tags": ["llm", "transformer", "attention", "advanced"]
+      "tags": [
+        "llm",
+        "transformer",
+        "attention",
+        "advanced"
+      ]
     },
     {
       "id": "q070101015",
@@ -133,9 +161,12 @@
       "explanation_en": "Softmax normalizes the scores into a distribution of weights over tokens, which then weight the value vectors. It is not the sigmoid (which normalizes each value independently and does not guarantee a sum of 1), nor layer normalization, which acts on the residual's activations rather than on the attention matrix.",
       "source": "Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017), section 3.2.1",
       "expected_time_ms": 22000,
-      "tags": ["llm", "transformer", "attention"]
+      "tags": [
+        "llm",
+        "transformer",
+        "attention"
+      ]
     },
-
     {
       "id": "q070102008",
       "skill_id": "sk070102",
@@ -144,23 +175,27 @@
       "question_es": "Un mismo párrafo traducido al español o al japonés suele consumir bastantes más tokens que su versión en inglés con el mismo tokenizador. ¿Por qué?",
       "question_en": "The same paragraph translated into Spanish or Japanese usually consumes noticeably more tokens than its English version with the same tokenizer. Why?",
       "options_es": [
-        "Porque el vocabulario BPE se aprendió sobre un corpus dominado por el inglés, así que las secuencias frecuentes en otros idiomas no tienen tokens propios y se fragmentan",
-        "Porque los caracteres acentuados y no latinos ocupan más bytes en el disco del servidor",
         "Porque el modelo traduce internamente al inglés antes de procesar el texto",
+        "Porque los caracteres acentuados y no latinos ocupan más bytes en el disco del servidor",
+        "Porque el vocabulario BPE se aprendió sobre un corpus dominado por el inglés, así que las secuencias frecuentes en otros idiomas no tienen tokens propios y se fragmentan",
         "Porque los idiomas distintos del inglés usan frases más largas en promedio"
       ],
       "options_en": [
-        "Because the BPE vocabulary was learned on an English-dominated corpus, so frequent sequences in other languages have no dedicated tokens and get fragmented",
-        "Because accented and non-Latin characters take more bytes on the server's disk",
         "Because the model internally translates to English before processing the text",
+        "Because accented and non-Latin characters take more bytes on the server's disk",
+        "Because the BPE vocabulary was learned on an English-dominated corpus, so frequent sequences in other languages have no dedicated tokens and get fragmented",
         "Because non-English languages use longer sentences on average"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "El vocabulario de subpalabras se entrena por frecuencia: las secuencias que abundan en el corpus reciben un token propio. Con corpus dominados por el inglés, palabras comunes en español o japonés acaban partidas en varios fragmentos. El tamaño en bytes influye en el fallback byte-level, pero la causa principal es la composición del vocabulario, no el almacenamiento; y el modelo no traduce nada antes de tokenizar: la tokenización ocurre antes de que el modelo vea el texto. Consecuencia práctica: el mismo contenido cuesta más y llena antes la ventana de contexto en otros idiomas.",
       "explanation_en": "The subword vocabulary is trained by frequency: sequences that are common in the corpus get their own token. With English-dominated corpora, words that are common in Spanish or Japanese end up split into several fragments. Byte size matters for the byte-level fallback, but the main cause is vocabulary composition, not storage; and the model does not translate anything before tokenizing, since tokenization happens before the model sees the text. Practical consequence: the same content costs more and fills the context window sooner in other languages.",
       "source": "Jurafsky & Martin, 'Speech and Language Processing' 3e, chapter on subword tokenization",
       "expected_time_ms": 35000,
-      "tags": ["llm", "tokenization", "multilingual"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "multilingual"
+      ]
     },
     {
       "id": "q070102009",
@@ -170,23 +205,27 @@
       "question_es": "¿Qué hace un tokenizador BPE a nivel de bytes al encontrar una palabra que nunca vio durante el entrenamiento, como un identificador interno 'zqfx_id42'?",
       "question_en": "What does a byte-level BPE tokenizer do when it meets a word it never saw during training, such as an internal identifier like 'zqfx_id42'?",
       "options_es": [
-        "Lanza un error de vocabulario fuera de rango y rechaza la petición",
         "La descompone en subpalabras y, en último término, en bytes individuales, así que nunca produce un token desconocido",
+        "Lanza un error de vocabulario fuera de rango y rechaza la petición",
         "La sustituye por la palabra más parecida del vocabulario",
         "La ignora y la elimina de la secuencia de entrada"
       ],
       "options_en": [
-        "It raises an out-of-vocabulary error and rejects the request",
         "It breaks it into subwords and, ultimately, into individual bytes, so it never produces an unknown token",
+        "It raises an out-of-vocabulary error and rejects the request",
         "It replaces it with the closest word in the vocabulary",
         "It drops it from the input sequence"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Ésa es justamente la ventaja del BPE a nivel de bytes: la cobertura es total porque los bytes son el nivel base. Las opciones de error de vocabulario o de sustitución vienen de la intuición de los tokenizadores de palabras clásicos, que sí necesitaban un token <UNK>. El coste real no es un fallo, sino que estos identificadores se fragmentan en muchos tokens y consumen contexto y presupuesto de forma desproporcionada.",
       "explanation_en": "That is precisely the advantage of byte-level BPE: coverage is total because bytes are the base level. The vocabulary-error and substitution options come from the intuition of classic word tokenizers, which did need an <UNK> token. The real cost is not a failure but that such identifiers fragment into many tokens, consuming context and budget disproportionately.",
       "source": "Hugging Face Transformers documentation, 'Summary of the tokenizers' (Byte-level BPE)",
       "expected_time_ms": 35000,
-      "tags": ["llm", "tokenization", "bpe"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "bpe"
+      ]
     },
     {
       "id": "q070102010",
@@ -196,23 +235,27 @@
       "question_es": "Después de tokenizar un texto, ¿qué recibe realmente la primera capa del Transformer?",
       "question_en": "After a text is tokenized, what does the first Transformer layer actually receive?",
       "options_es": [
-        "Las cadenas de texto de cada token, procesadas como caracteres",
-        "Los identificadores enteros de los tokens tal cual, usados como números",
         "Vectores densos obtenidos buscando cada id de token en una matriz de embeddings aprendida, sumados a la información posicional",
+        "Los identificadores enteros de los tokens tal cual, usados como números",
+        "Las cadenas de texto de cada token, procesadas como caracteres",
         "Los bytes UTF-8 del texto original sin ninguna transformación"
       ],
       "options_en": [
-        "The text strings of each token, processed as characters",
-        "The integer token ids as they are, used as numbers",
         "Dense vectors obtained by looking up each token id in a learned embedding matrix, added to positional information",
+        "The integer token ids as they are, used as numbers",
+        "The text strings of each token, processed as characters",
         "The raw UTF-8 bytes of the original text with no transformation"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "La tokenización produce ids enteros, pero esos ids son solo índices: la capa de embedding los convierte en vectores densos y se les suma la información posicional. Tratar los ids como números tiene consecuencias absurdas (el token 4001 no es 'el doble' del 2000), y por eso la búsqueda en la matriz de embeddings es imprescindible. El modelo nunca ve caracteres ni bytes crudos.",
       "explanation_en": "Tokenization produces integer ids, but those ids are only indices: the embedding layer turns them into dense vectors and positional information is added. Treating ids as numbers has absurd consequences (token 4001 is not 'twice' token 2000), which is why the embedding lookup is essential. The model never sees raw characters or bytes.",
       "source": "Jurafsky & Martin, 'Speech and Language Processing' 3e, chapter on Transformers and embeddings",
       "expected_time_ms": 33000,
-      "tags": ["llm", "tokenization", "embeddings"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "embeddings"
+      ]
     },
     {
       "id": "q070102011",
@@ -224,21 +267,25 @@
       "options_es": [
         "Aumenta la calidad del razonamiento del modelo sin ningún coste",
         "Reduce el consumo de memoria del modelo porque hay menos tokens que procesar",
-        "Amplía automáticamente la ventana de contexto del modelo",
-        "Cada texto se representa con menos tokens, pero la matriz de embeddings y la capa de salida crecen, aumentando parámetros y memoria"
+        "Cada texto se representa con menos tokens, pero la matriz de embeddings y la capa de salida crecen, aumentando parámetros y memoria",
+        "Amplía automáticamente la ventana de contexto del modelo"
       ],
       "options_en": [
         "It improves the model's reasoning quality at no cost",
         "It reduces the model's memory footprint because there are fewer tokens to process",
-        "It automatically widens the model's context window",
-        "Each text is represented with fewer tokens, but the embedding matrix and output layer grow, increasing parameters and memory"
+        "Each text is represented with fewer tokens, but the embedding matrix and output layer grow, increasing parameters and memory",
+        "It automatically widens the model's context window"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "Un vocabulario mayor captura secuencias más largas en un solo token, así que las secuencias se acortan; pero las matrices de embedding y de proyección de salida tienen una fila por token del vocabulario, y el softmax final se calcula sobre todo el vocabulario. La idea de que 'menos tokens = menos memoria' confunde la longitud de la secuencia con el tamaño del modelo, y la ventana de contexto se mide en tokens: no cambia, aunque cada token cunda más.",
       "explanation_en": "A larger vocabulary captures longer sequences in a single token, so sequences get shorter; but the embedding and output projection matrices have one row per vocabulary token, and the final softmax is computed over the whole vocabulary. The 'fewer tokens = less memory' idea confuses sequence length with model size, and the context window is measured in tokens: it does not change, even if each token carries more text.",
       "source": "Chip Huyen, 'AI Engineering' (2025), chapter on model architecture and tokenization",
       "expected_time_ms": 40000,
-      "tags": ["llm", "tokenization", "advanced"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "advanced"
+      ]
     },
     {
       "id": "q070102012",
@@ -248,23 +295,27 @@
       "question_es": "Con un tokenizador BPE a nivel de bytes de Hugging Face:\\n\\n```python\\ntext = \"Hola, ¿qué tal? 🚀\"\\nids = tok.encode(text)\\nprint(tok.decode(ids) == text)\\n```\\n\\n¿Qué imprime?",
       "question_en": "With a Hugging Face byte-level BPE tokenizer:\\n\\n```python\\ntext = \"Hola, ¿qué tal? 🚀\"\\nids = tok.encode(text)\\nprint(tok.decode(ids) == text)\\n```\\n\\nWhat does it print?",
       "options_es": [
-        "True",
-        "False, porque los emojis se pierden al decodificar",
         "False, porque los acentos se normalizan a caracteres sin tilde",
+        "False, porque los emojis se pierden al decodificar",
+        "True",
         "Lanza UnicodeDecodeError al decodificar"
       ],
       "options_en": [
-        "True",
-        "False, because emojis are lost on decoding",
         "False, because accents are normalized to unaccented characters",
+        "False, because emojis are lost on decoding",
+        "True",
         "It raises UnicodeDecodeError on decoding"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "La tokenización a nivel de bytes es reversible sin pérdida: el ciclo encode→decode reconstruye el texto original, incluidos acentos y emojis, porque el nivel base son bytes UTF-8. Las opciones de pérdida vienen de tokenizadores más antiguos que sí aplicaban lowercasing o eliminación de acentos (por ejemplo, ciertas variantes de WordPiece de BERT), un comportamiento que no es universal y que hay que comprobar por modelo. Que no haya pérdida no significa que sea barato: el emoji puede ocupar varios tokens.",
       "explanation_en": "Byte-level tokenization is losslessly reversible: the encode→decode round trip reconstructs the original text, accents and emoji included, because the base level is UTF-8 bytes. The lossy options come from older tokenizers that did apply lowercasing or accent stripping (for example, certain BERT WordPiece variants), behaviour that is not universal and must be checked per model. Lossless does not mean cheap: the emoji may cost several tokens.",
       "source": "Hugging Face Transformers documentation, 'Summary of the tokenizers'",
       "expected_time_ms": 38000,
-      "tags": ["llm", "tokenization", "bpe"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "bpe"
+      ]
     },
     {
       "id": "q070102013",
@@ -273,14 +324,24 @@
       "difficulty_tier": "medium",
       "question_es": "La ventana de contexto de un modelo limita únicamente el tamaño del prompt de entrada; los tokens que el modelo genera como respuesta no cuentan contra ese límite.",
       "question_en": "A model's context window limits only the size of the input prompt; the tokens the model generates as its answer do not count against that limit.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. La ventana de contexto cubre prompt y generación juntos: si el prompt ocupa casi todo el límite, apenas queda espacio para la respuesta y la generación se corta. El error es tentador porque las facturas separan tokens de entrada y de salida con precios distintos, lo que sugiere que son presupuestos independientes; el precio se separa, el límite de contexto no.",
       "explanation_en": "False. The context window covers prompt and completion together: if the prompt fills nearly the whole limit, there is barely room for the answer and generation gets cut off. The mistake is tempting because billing separates input and output tokens at different prices, which suggests two independent budgets; pricing is separate, the context limit is not.",
       "source": "OpenAI API Reference, context length; Anthropic API documentation, context window",
       "expected_time_ms": 28000,
-      "tags": ["llm", "tokenization", "context-window"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "context-window"
+      ]
     },
     {
       "id": "q070102014",
@@ -289,14 +350,25 @@
       "difficulty_tier": "hard",
       "question_es": "En la mayoría de tokenizadores BPE modernos el espacio inicial forma parte del token de la palabra siguiente, de modo que ' perro' (con espacio) y 'perro' (sin espacio) son tokens distintos.",
       "question_en": "In most modern BPE tokenizers the leading space is part of the following word's token, so ' dog' (with a space) and 'dog' (no space) are different tokens.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y tiene consecuencias prácticas: una lista de stop sequences o un logit_bias escritos sin el espacio inicial pueden no coincidir con el token que el modelo realmente emite. Suponer que el espacio es un separador invisible que el tokenizador descarta es el error habitual; en BPE a nivel de bytes el espacio es un carácter más y se fusiona con la palabra que le sigue.",
       "explanation_en": "True, and it has practical consequences: a stop-sequence list or a logit_bias written without the leading space may fail to match the token the model actually emits. Assuming the space is an invisible separator the tokenizer discards is the usual mistake; in byte-level BPE the space is just another character and merges with the word that follows it.",
       "source": "Hugging Face Transformers documentation, 'Summary of the tokenizers' (byte-level BPE, add_prefix_space)",
       "expected_time_ms": 32000,
-      "tags": ["llm", "tokenization", "bpe", "advanced"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "bpe",
+        "advanced"
+      ]
     },
     {
       "id": "q070102015",
@@ -311,9 +383,12 @@
       "explanation_en": "The EOS (end of sequence) token is the natural stop signal: when the model samples it, generation ends and finish_reason reports 'stop'. It gets confused with BOS (beginning of sequence) and PAD (padding used to equalize lengths within a batch), neither of which stops anything. It also differs from max_tokens, which truncates generation on budget even when the model has not finished its answer.",
       "source": "Hugging Face Transformers documentation, special tokens (eos_token)",
       "expected_time_ms": 25000,
-      "tags": ["llm", "tokenization", "special-tokens"]
+      "tags": [
+        "llm",
+        "tokenization",
+        "special-tokens"
+      ]
     },
-
     {
       "id": "q070103009",
       "skill_id": "sk070103",
@@ -323,22 +398,26 @@
       "question_en": "In a prompt that includes a user-supplied document, why is it worth wrapping that document in explicit delimiters, for example <document>...</document> tags?",
       "options_es": [
         "Porque los delimitadores reducen el número de tokens que consume el documento",
-        "Porque marcan con claridad dónde acaban las instrucciones y dónde empiezan los datos, reduciendo la probabilidad de que el modelo interprete el contenido como instrucciones",
+        "Porque los delimitadores cifran el contenido frente a otros usuarios de la API",
         "Porque obligan al modelo a citar el documento textualmente en su respuesta",
-        "Porque los delimitadores cifran el contenido frente a otros usuarios de la API"
+        "Porque marcan con claridad dónde acaban las instrucciones y dónde empiezan los datos, reduciendo la probabilidad de que el modelo interprete el contenido como instrucciones"
       ],
       "options_en": [
         "Because delimiters reduce the number of tokens the document consumes",
-        "Because they clearly mark where instructions end and data begins, lowering the chance the model treats the content as instructions",
+        "Because delimiters encrypt the content from other API users",
         "Because they force the model to quote the document verbatim in its answer",
-        "Because delimiters encrypt the content from other API users"
+        "Because they clearly mark where instructions end and data begins, lowering the chance the model treats the content as instructions"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Separar instrucciones de datos con delimitadores explícitos es una de las prácticas de estructuración más rentables y una mitigación parcial contra la inyección de prompts. 'Parcial' es la palabra clave: reduce la confusión, no la elimina, porque el modelo sigue viendo un único flujo de texto y un documento hostil puede intentar cerrar la etiqueta. Los delimitadores añaden tokens en lugar de ahorrarlos y no cifran nada.",
       "explanation_en": "Separating instructions from data with explicit delimiters is one of the highest-return structuring practices and a partial mitigation against prompt injection. 'Partial' is the key word: it reduces confusion but does not eliminate it, because the model still sees one stream of text and a hostile document can try to close the tag. Delimiters add tokens rather than saving them, and they encrypt nothing.",
       "source": "Anthropic API documentation, prompt engineering: use XML tags; OWASP Top 10 for LLM Applications (LLM01 Prompt Injection)",
       "expected_time_ms": 33000,
-      "tags": ["llm", "prompt-engineering", "structure"]
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "structure"
+      ]
     },
     {
       "id": "q070103010",
@@ -349,22 +428,26 @@
       "question_en": "You need the model's output to be consumed by a program. Which of these instructions is most reliable?",
       "options_es": [
         "'Devuelve la respuesta en formato JSON'",
-        "'Responde de forma estructurada y ordenada'",
         "'Devuelve exactamente un objeto JSON con las claves \"nombre\" (string) y \"edad\" (entero), sin texto adicional ni bloque de código'",
+        "'Responde de forma estructurada y ordenada'",
         "'Devuelve JSON y, si no puedes, explica por qué en lenguaje natural'"
       ],
       "options_en": [
         "'Return the answer in JSON format'",
-        "'Answer in a structured and organized way'",
         "'Return exactly one JSON object with the keys \"name\" (string) and \"age\" (integer), with no extra text and no code fence'",
+        "'Answer in a structured and organized way'",
         "'Return JSON and, if you cannot, explain why in natural language'"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Especificar el esquema, los tipos y qué NO debe aparecer elimina la ambigüedad que rompe los parsers. 'Devuelve JSON' parece suficiente pero deja abierto el bloque ```json, las claves y el texto introductorio. La cuarta opción es peor de lo que parece: ofrece al modelo una salida alternativa en lenguaje natural, es decir, autoriza explícitamente el caso que el parser no sabe manejar. En producción conviene además validar la salida y usar modos de salida estructurada cuando la API los ofrece.",
       "explanation_en": "Specifying the schema, the types and what must NOT appear removes the ambiguity that breaks parsers. 'Return JSON' looks sufficient but leaves the ```json fence, the key names and any preamble open. The fourth option is worse than it looks: it offers the model a natural-language escape hatch, explicitly authorizing the very case the parser cannot handle. In production, also validate the output and use structured-output modes where the API offers them.",
       "source": "OpenAI API documentation, structured outputs and prompt engineering guide",
       "expected_time_ms": 35000,
-      "tags": ["llm", "prompt-engineering", "output-format"]
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "output-format"
+      ]
     },
     {
       "id": "q070103011",
@@ -374,23 +457,27 @@
       "question_es": "¿Por qué una instrucción negativa como 'no menciones el precio' suele funcionar peor que su equivalente positiva?",
       "question_en": "Why does a negative instruction such as 'do not mention the price' usually work worse than its positive equivalent?",
       "options_es": [
-        "Porque las APIs rechazan las instrucciones que contienen negaciones",
+        "Porque describe lo que no hay que hacer sin decir qué hacer en su lugar, y además introduce el concepto prohibido en el contexto, aumentando su prominencia",
         "Porque la negación consume el doble de tokens que una instrucción afirmativa",
         "Porque el modelo no entiende la palabra 'no' en ningún contexto",
-        "Porque describe lo que no hay que hacer sin decir qué hacer en su lugar, y además introduce el concepto prohibido en el contexto, aumentando su prominencia"
+        "Porque las APIs rechazan las instrucciones que contienen negaciones"
       ],
       "options_en": [
-        "Because APIs reject instructions containing negations",
+        "Because it describes what to avoid without saying what to do instead, and it also puts the forbidden concept into the context, raising its salience",
         "Because a negation costs twice as many tokens as an affirmative instruction",
         "Because the model does not understand the word 'not' in any context",
-        "Because it describes what to avoid without saying what to do instead, and it also puts the forbidden concept into the context, raising its salience"
+        "Because APIs reject instructions containing negations"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "Una restricción negativa deja indefinido el espacio de respuestas válidas y, al nombrar el concepto prohibido, lo hace más presente en el contexto. La formulación positiva ('habla solo de características técnicas') define el comportamiento deseado y es más fácil de seguir y de evaluar. El modelo sí entiende la negación y las APIs no la rechazan: el problema es de especificación, no de comprensión ni de coste.",
       "explanation_en": "A negative constraint leaves the space of acceptable answers undefined and, by naming the forbidden concept, makes it more salient in context. The positive phrasing ('talk only about technical features') defines the desired behaviour and is easier to follow and to evaluate. The model does understand negation and APIs do not reject it: the problem is specification, not comprehension or cost.",
       "source": "Anthropic API documentation, prompt engineering: be clear and direct",
       "expected_time_ms": 35000,
-      "tags": ["llm", "prompt-engineering", "instructions"]
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "instructions"
+      ]
     },
     {
       "id": "q070103012",
@@ -400,23 +487,28 @@
       "question_es": "Un clasificador funciona con 3 ejemplos few-shot. Añadir 40 ejemplos mejora poco la precisión. ¿Cuál es el coste real de esa decisión en producción?",
       "question_en": "A classifier works with 3 few-shot examples. Adding 40 examples barely improves accuracy. What is the real cost of that decision in production?",
       "options_es": [
-        "Los ejemplos ocupan contexto y se facturan en cada llamada, aumentando coste y latencia y dejando menos espacio para la entrada real del usuario",
         "Ninguno: los ejemplos del prompt se almacenan una sola vez en el modelo",
+        "Los ejemplos ocupan contexto y se facturan en cada llamada, aumentando coste y latencia y dejando menos espacio para la entrada real del usuario",
         "El modelo se reentrena con esos ejemplos y cambia sus pesos permanentemente",
         "La ventana de contexto se amplía automáticamente para acomodarlos"
       ],
       "options_en": [
-        "The examples occupy context and are billed on every call, raising cost and latency and leaving less room for the user's actual input",
         "None: prompt examples are stored once inside the model",
+        "The examples occupy context and are billed on every call, raising cost and latency and leaving less room for the user's actual input",
         "The model retrains on those examples and permanently changes its weights",
         "The context window automatically expands to accommodate them"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "El few-shot es aprendizaje en contexto: los ejemplos viajan en cada petición, se pagan en cada petición y compiten por la ventana con la entrada del usuario. La idea de que el modelo 'se queda' con los ejemplos confunde prompting con fine-tuning: los pesos no cambian y la siguiente llamada empieza sin memoria. El caching de prompts puede abaratar el prefijo repetido, pero no libera contexto.",
       "explanation_en": "Few-shot is in-context learning: the examples travel with every request, are billed on every request, and compete for the window with the user's input. The idea that the model 'keeps' the examples confuses prompting with fine-tuning: the weights do not change and the next call starts with no memory. Prompt caching can make the repeated prefix cheaper, but it does not free up context.",
       "source": "Chip Huyen, 'AI Engineering' (2025), chapter on prompt engineering and in-context learning",
       "expected_time_ms": 38000,
-      "tags": ["llm", "prompt-engineering", "few-shot", "cost"]
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "few-shot",
+        "cost"
+      ]
     },
     {
       "id": "q070103013",
@@ -427,22 +519,26 @@
       "question_en": "```python\\nmessages = [\\n    {\"role\": \"system\", \"content\": \"Answer with a single digit only, no other text.\"},\\n    {\"role\": \"user\", \"content\": \"What is 2 + 2?\"},\\n]\\n```\\n\\nIf the model follows the system prompt correctly, what is the expected output?",
       "options_es": [
         "2 + 2 = 4",
-        "4",
+        "Cuatro",
         "La respuesta es 4.",
-        "Cuatro"
+        "4"
       ],
       "options_en": [
         "2 + 2 = 4",
-        "4",
+        "Four",
         "The answer is 4.",
-        "Four"
+        "4"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El system prompt fija el formato además del contenido: un solo dígito. Las otras opciones dan el resultado correcto pero incumplen la restricción de formato, que es justamente lo que rompe un parser aguas abajo. Nótese que 'seguirá el formato' es una expectativa, no una garantía: por eso conviene validar la salida y, si el formato es crítico, usar salida estructurada.",
       "explanation_en": "The system prompt fixes format as well as content: a single digit. The other options give the right result but violate the format constraint, which is exactly what breaks a downstream parser. Note that 'it will follow the format' is an expectation, not a guarantee: hence validating the output and, where format is critical, using structured output.",
       "source": "OpenAI API Reference, chat completions and the role of the system message",
       "expected_time_ms": 28000,
-      "tags": ["llm", "prompt-engineering", "system-prompt"]
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "system-prompt"
+      ]
     },
     {
       "id": "q070103014",
@@ -451,14 +547,24 @@
       "difficulty_tier": "hard",
       "question_es": "Poner las reglas de negocio confidenciales en el system prompt es una medida de seguridad suficiente, porque el usuario final no puede leer ese mensaje.",
       "question_en": "Putting confidential business rules in the system prompt is a sufficient security measure, because the end user cannot read that message.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. El system prompt no es una frontera de seguridad: es texto que entra en el mismo contexto que el mensaje del usuario y puede extraerse con técnicas de exfiltración de prompt. Es tentador creerlo porque la interfaz no lo muestra, pero 'no visible en la UI' no es 'inaccesible'. Los secretos y las reglas de autorización deben vivir en el backend, fuera del modelo.",
       "explanation_en": "False. The system prompt is not a security boundary: it is text entering the same context as the user's message and can be extracted through prompt-leaking techniques. It is tempting to believe otherwise because the interface does not display it, but 'not shown in the UI' is not 'inaccessible'. Secrets and authorization rules belong in the backend, outside the model.",
       "source": "OWASP Top 10 for LLM Applications (LLM01 Prompt Injection, LLM07 System Prompt Leakage)",
       "expected_time_ms": 30000,
-      "tags": ["llm", "prompt-engineering", "security"]
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "security"
+      ]
     },
     {
       "id": "q070103015",
@@ -473,9 +579,12 @@
       "explanation_en": "Prefilling the assistant turn constrains the continuation from the very first token and is more effective than asking for the format in prose, because the model can no longer open with a preamble. It is not few-shot, which teaches through complete input-output examples, nor a stop sequence, which acts at the end by cutting generation off rather than shaping its start.",
       "source": "Anthropic API documentation, prefill Claude's response",
       "expected_time_ms": 32000,
-      "tags": ["llm", "prompt-engineering", "output-format"]
+      "tags": [
+        "llm",
+        "prompt-engineering",
+        "output-format"
+      ]
     },
-
     {
       "id": "q070104008",
       "skill_id": "sk070104",
@@ -500,7 +609,12 @@
       "explanation_en": "The paper documents CoT as an emergent ability: below a certain scale the generated chains are fluent but illogical and performance does not improve, or degrades. The 'small models need more help' idea is intuitive but backwards: the technique exploits a reasoning capability the small model does not have. Practical consequence: measure CoT on the specific model you will deploy rather than assuming the gain.",
       "source": "Wei et al., 'Chain-of-Thought Prompting Elicits Reasoning in Large Language Models' (2022)",
       "expected_time_ms": 40000,
-      "tags": ["llm", "prompting", "chain-of-thought", "advanced"]
+      "tags": [
+        "llm",
+        "prompting",
+        "chain-of-thought",
+        "advanced"
+      ]
     },
     {
       "id": "q070104009",
@@ -526,7 +640,11 @@
       "explanation_en": "CoT with examples shows worked reasoning chains, which pins down style and structure but costs many tokens; zero-shot CoT gets much of the effect from one sentence, at the price of less control. Neither touches the model's weights: that would be fine-tuning. And neither depends on temperature = 0; that parameter affects sampling, not whether the model reasons out loud.",
       "source": "Jurafsky & Martin, 'Speech and Language Processing' 3e, chapter on prompting and chain-of-thought",
       "expected_time_ms": 35000,
-      "tags": ["llm", "prompting", "chain-of-thought"]
+      "tags": [
+        "llm",
+        "prompting",
+        "chain-of-thought"
+      ]
     },
     {
       "id": "q070104010",
@@ -536,23 +654,27 @@
       "question_es": "Un pipeline debe extraer datos de un contrato, validarlos contra reglas y redactar un resumen. ¿Qué ventaja tiene encadenar tres prompts (prompt chaining) frente a un único prompt que lo haga todo?",
       "question_en": "A pipeline must extract data from a contract, validate it against rules and draft a summary. What is the advantage of chaining three prompts over a single prompt that does everything?",
       "options_es": [
-        "Cada paso tiene una sola responsabilidad, su salida es verificable y se puede reintentar o evaluar por separado el paso que falla",
         "Consume menos tokens en total que una única llamada",
+        "Cada paso tiene una sola responsabilidad, su salida es verificable y se puede reintentar o evaluar por separado el paso que falla",
         "Garantiza que el modelo no cometa errores en ningún paso",
         "Elimina la necesidad de evaluar la calidad de la salida"
       ],
       "options_en": [
-        "Each step has a single responsibility, its output is checkable, and the failing step can be retried or evaluated in isolation",
         "It consumes fewer tokens in total than a single call",
+        "Each step has a single responsibility, its output is checkable, and the failing step can be retried or evaluated in isolation",
         "It guarantees the model makes no mistakes at any step",
         "It removes the need to evaluate output quality"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Descomponer convierte una caja negra en etapas observables: se puede validar el JSON extraído antes de razonar sobre él y medir qué etapa falla. El coste es lo contrario de lo que sugiere la segunda opción: encadenar suele consumir MÁS tokens y añadir latencia, porque cada llamada repite contexto. Y no elimina errores ni la necesidad de evaluar: solo los localiza.",
       "explanation_en": "Decomposition turns a black box into observable stages: you can validate the extracted JSON before reasoning over it and measure which stage fails. The cost is the opposite of what the second option suggests: chaining usually consumes MORE tokens and adds latency, because each call repeats context. And it removes neither errors nor the need for evaluation: it only localizes them.",
       "source": "Chip Huyen, 'AI Engineering' (2025), chapter on prompt decomposition and pipelines",
       "expected_time_ms": 35000,
-      "tags": ["llm", "prompting", "pipelines"]
+      "tags": [
+        "llm",
+        "prompting",
+        "pipelines"
+      ]
     },
     {
       "id": "q070104011",
@@ -562,23 +684,28 @@
       "question_es": "¿Cuál es la diferencia esencial entre una inyección de prompt indirecta y un jailbreak?",
       "question_en": "What is the essential difference between an indirect prompt injection and a jailbreak?",
       "options_es": [
-        "El jailbreak solo afecta a modelos de código abierto; la inyección solo a modelos comerciales",
         "En la inyección indirecta, las instrucciones hostiles llegan a través de contenido que la aplicación ingiere (una web, un correo, un documento); en el jailbreak es el propio usuario quien intenta eludir las restricciones del modelo",
+        "El jailbreak solo afecta a modelos de código abierto; la inyección solo a modelos comerciales",
         "Son sinónimos: ambos términos describen el mismo ataque",
         "La inyección requiere acceso a los pesos del modelo y el jailbreak no"
       ],
       "options_en": [
-        "A jailbreak only affects open-source models; injection only affects commercial ones",
         "In an indirect injection, hostile instructions arrive through content the application ingests (a web page, an email, a document); in a jailbreak it is the user themselves trying to bypass the model's restrictions",
+        "A jailbreak only affects open-source models; injection only affects commercial ones",
         "They are synonyms: both terms describe the same attack",
         "Injection requires access to the model's weights; a jailbreak does not"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "La distinción importa porque cambia la defensa. Frente al jailbreak el adversario es el usuario y las defensas son de política y filtrado; frente a la inyección indirecta el usuario puede ser una víctima y hay que tratar todo contenido recuperado como no confiable, limitar los permisos de las herramientas y exigir confirmación humana en acciones con efectos. Confundirlos lleva a proteger solo la entrada del usuario y dejar abierto el canal de los datos ingeridos. Ninguno de los dos requiere acceso a los pesos.",
       "explanation_en": "The distinction matters because it changes the defence. Against a jailbreak the adversary is the user, and defences are policy and filtering; against indirect injection the user may be a victim, so all retrieved content must be treated as untrusted, tool permissions must be constrained, and side-effectful actions must require human confirmation. Conflating them leads to protecting only the user's input while leaving the ingested-data channel wide open. Neither requires access to the weights.",
       "source": "OWASP Top 10 for LLM Applications (LLM01 Prompt Injection)",
       "expected_time_ms": 40000,
-      "tags": ["llm", "prompting", "security", "prompt-injection"]
+      "tags": [
+        "llm",
+        "prompting",
+        "security",
+        "prompt-injection"
+      ]
     },
     {
       "id": "q070104012",
@@ -589,22 +716,27 @@
       "question_en": "A model answers with an impeccable reasoning chain and reaches the correct conclusion. What can be rigorously claimed about that chain?",
       "options_es": [
         "Es una traza fiel del cálculo interno que produjo la respuesta",
-        "Demuestra que el modelo no ha alucinado en ningún paso",
         "Es texto generado token a token que puede no reflejar el proceso real del modelo: una cadena plausible puede acompañar tanto a una respuesta correcta como a una incorrecta",
+        "Demuestra que el modelo no ha alucinado en ningún paso",
         "Permite auditar el modelo sin necesidad de verificar la conclusión"
       ],
       "options_en": [
         "It is a faithful trace of the internal computation that produced the answer",
-        "It proves the model did not hallucinate at any step",
         "It is text generated token by token that may not reflect the model's actual process: a plausible chain can accompany either a correct or an incorrect answer",
+        "It proves the model did not hallucinate at any step",
         "It allows auditing the model without verifying the conclusion"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "La cadena de razonamiento es una salida más del modelo, no un registro de su cómputo; el propio paper de CoT advierte que no hay garantía de que el razonamiento expresado sea el que llevó a la respuesta. La trampa es que una cadena bien escrita resulta convincente y se usa como evidencia de corrección, cuando el CoT también puede racionalizar con fluidez una conclusión errónea. Por eso el CoT mejora la precisión en promedio pero no sustituye a la verificación de la respuesta.",
       "explanation_en": "The reasoning chain is another model output, not a record of its computation; the CoT paper itself warns there is no guarantee the expressed reasoning is what led to the answer. The trap is that a well-written chain is persuasive and gets used as evidence of correctness, when CoT can just as fluently rationalize a wrong conclusion. That is why CoT improves accuracy on average but does not replace verifying the answer.",
       "source": "Wei et al., 'Chain-of-Thought Prompting Elicits Reasoning in Large Language Models' (2022), discussion and limitations",
       "expected_time_ms": 45000,
-      "tags": ["llm", "prompting", "chain-of-thought", "advanced"]
+      "tags": [
+        "llm",
+        "prompting",
+        "chain-of-thought",
+        "advanced"
+      ]
     },
     {
       "id": "q070104013",
@@ -613,14 +745,24 @@
       "difficulty_tier": "medium",
       "question_es": "Añadir al prompt la instrucción 'sé preciso y no inventes información' elimina las alucinaciones del modelo.",
       "question_en": "Adding the instruction 'be accurate and do not make things up' to the prompt eliminates the model's hallucinations.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. La instrucción puede reducir algo la propensión a especular y anima al modelo a decir 'no lo sé', pero no le da acceso a información que no tiene: seguirá muestreando el token más plausible. La creencia contraria es tentadora porque la salida suena más cauta tras añadirla. Las mitigaciones reales son estructurales: aportar las fuentes en el contexto (RAG), exigir citas verificables y evaluar la salida.",
       "explanation_en": "False. The instruction can somewhat reduce the tendency to speculate and encourages the model to say 'I don't know', but it does not give it access to information it lacks: it will still sample the most plausible token. The opposite belief is tempting because the output sounds more cautious after adding it. The real mitigations are structural: supply the sources in context (RAG), require verifiable citations, and evaluate the output.",
       "source": "Lewis et al., 'Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks' (2020); OWASP Top 10 for LLM Applications (LLM09 Misinformation)",
       "expected_time_ms": 28000,
-      "tags": ["llm", "prompting", "hallucination"]
+      "tags": [
+        "llm",
+        "prompting",
+        "hallucination"
+      ]
     },
     {
       "id": "q070104014",
@@ -629,14 +771,25 @@
       "difficulty_tier": "hard",
       "question_es": "La técnica de 'self-consistency' necesita generar varias respuestas con muestreo estocástico (temperature > 0) para después quedarse con la conclusión mayoritaria.",
       "question_en": "The 'self-consistency' technique needs to generate several answers with stochastic sampling (temperature > 0) in order to then keep the majority conclusion.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero: sin diversidad en el muestreo, las k generaciones serían casi idénticas y la votación no aportaría nada. Es la excepción interesante a la regla de 'baja la temperatura para tareas de razonamiento': aquí la aleatoriedad es el ingrediente. El coste también es real: k veces el precio y la latencia de una sola llamada, lo que la hace poco práctica en rutas interactivas.",
       "explanation_en": "True: without sampling diversity the k generations would be nearly identical and the vote would add nothing. This is the interesting exception to the 'lower the temperature for reasoning tasks' rule: here randomness is the ingredient. The cost is real too: k times the price and latency of a single call, which makes it impractical on interactive paths.",
       "source": "Chip Huyen, 'AI Engineering' (2025), chapter on prompting techniques (self-consistency)",
       "expected_time_ms": 32000,
-      "tags": ["llm", "prompting", "self-consistency", "advanced"]
+      "tags": [
+        "llm",
+        "prompting",
+        "self-consistency",
+        "advanced"
+      ]
     },
     {
       "id": "q070104015",
@@ -651,9 +804,13 @@
       "explanation_en": "Prompt injection sits at LLM01, first on the list, because it is the most cross-cutting risk: it affects any application that mixes instructions with untrusted content. It is often confused with the supply-chain or insecure-output-handling risks, which are separate entries in the same list describing problems at other layers.",
       "source": "OWASP Top 10 for LLM Applications",
       "expected_time_ms": 30000,
-      "tags": ["llm", "prompting", "security", "owasp"]
+      "tags": [
+        "llm",
+        "prompting",
+        "security",
+        "owasp"
+      ]
     },
-
     {
       "id": "q070105008",
       "skill_id": "sk070105",
@@ -664,21 +821,26 @@
       "options_es": [
         "top-k afecta a la longitud de la respuesta y top-p a su creatividad",
         "top-k se aplica antes del softmax y top-p después",
-        "top-k solo funciona con temperature = 0 y top-p con cualquier temperatura",
-        "top-k conserva siempre un número fijo de candidatos; top-p conserva un número variable, los que hagan falta para acumular una probabilidad p"
+        "top-k conserva siempre un número fijo de candidatos; top-p conserva un número variable, los que hagan falta para acumular una probabilidad p",
+        "top-k solo funciona con temperature = 0 y top-p con cualquier temperatura"
       ],
       "options_en": [
         "top-k affects answer length and top-p affects creativity",
         "top-k is applied before the softmax and top-p after it",
-        "top-k only works with temperature = 0 and top-p with any temperature",
-        "top-k always keeps a fixed number of candidates; top-p keeps a variable number, however many are needed to accumulate probability p"
+        "top-k always keeps a fixed number of candidates; top-p keeps a variable number, however many are needed to accumulate probability p",
+        "top-k only works with temperature = 0 and top-p with any temperature"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "top-k corta por número y top-p por masa de probabilidad, y esa diferencia importa cuando la distribución es muy desigual: si un token concentra el 95 % de la probabilidad, top-k = 40 admite 39 candidatos improbables que abren la puerta a incoherencias, mientras que top-p = 0,9 se queda solo con ese token. Ninguno de los dos controla la longitud (eso es max_tokens) y ambos operan sobre las probabilidades ya calculadas por el softmax.",
       "explanation_en": "top-k truncates by count and top-p by probability mass, and that difference matters when the distribution is very peaked: if one token holds 95 % of the probability, top-k = 40 admits 39 unlikely candidates that open the door to incoherence, while top-p = 0.9 keeps only that token. Neither controls length (that is max_tokens) and both operate on the probabilities already produced by the softmax.",
       "source": "Jurafsky & Martin, 'Speech and Language Processing' 3e, chapter on decoding and sampling",
       "expected_time_ms": 40000,
-      "tags": ["llm", "generation-parameters", "sampling", "advanced"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "sampling",
+        "advanced"
+      ]
     },
     {
       "id": "q070105009",
@@ -688,24 +850,28 @@
       "question_es": "La documentación de la API de OpenAI recomienda modificar temperature o top_p, pero no ambos a la vez. ¿Por qué?",
       "question_en": "The OpenAI API documentation recommends changing temperature or top_p, but not both at once. Why?",
       "options_es": [
-        "Porque los dos actúan sobre la misma distribución de probabilidad y combinarlos hace que el efecto resultante sea difícil de razonar y de reproducir al ajustar",
         "Porque usar ambos duplica el coste de la llamada",
+        "Porque los dos actúan sobre la misma distribución de probabilidad y combinarlos hace que el efecto resultante sea difícil de razonar y de reproducir al ajustar",
         "Porque la API devuelve un error si se envían los dos parámetros",
         "Porque top_p anula por completo el efecto de temperature"
       ],
       "options_en": [
-        "Because both act on the same probability distribution, and combining them makes the resulting effect hard to reason about and to reproduce while tuning",
         "Because using both doubles the cost of the call",
+        "Because both act on the same probability distribution, and combining them makes the resulting effect hard to reason about and to reproduce while tuning",
         "Because the API returns an error if both parameters are sent",
         "Because top_p completely cancels out the effect of temperature"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_0": "",
       "explanation_es": "temperature reescala los logits y top_p trunca la cola; aplicados juntos interactúan, y una misma salida puede explicarse por varias combinaciones, lo que convierte el ajuste en prueba y error. No es una restricción técnica: la API acepta los dos parámetros sin error y no cobra más por ello. Tampoco se anulan: se componen, y ése es justamente el problema.",
       "explanation_en": "temperature rescales the logits and top_p truncates the tail; applied together they interact, and the same output can be explained by several combinations, turning tuning into trial and error. This is not a technical restriction: the API accepts both parameters without error and does not charge more for it. Nor do they cancel out: they compose, and that is precisely the problem.",
       "source": "OpenAI API Reference, chat completions (temperature and top_p)",
       "expected_time_ms": 35000,
-      "tags": ["llm", "generation-parameters", "sampling"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "sampling"
+      ]
     },
     {
       "id": "q070105010",
@@ -716,22 +882,26 @@
       "question_en": "What does the 'stop' parameter (stop sequences) do in a generation call?",
       "options_es": [
         "Impide que el modelo genere contenido prohibido por la política de uso",
-        "Detiene la generación en cuanto aparece una de las cadenas indicadas, que además no se incluye en el texto devuelto",
+        "Define el número máximo de tokens que puede devolver el modelo",
         "Elimina esas cadenas de la respuesta después de generarla completa",
-        "Define el número máximo de tokens que puede devolver el modelo"
+        "Detiene la generación en cuanto aparece una de las cadenas indicadas, que además no se incluye en el texto devuelto"
       ],
       "options_en": [
         "It prevents the model from generating content forbidden by the usage policy",
-        "It halts generation as soon as one of the given strings appears, and that string is not included in the returned text",
+        "It sets the maximum number of tokens the model may return",
         "It strips those strings from the response after generating it in full",
-        "It sets the maximum number of tokens the model may return"
+        "It halts generation as soon as one of the given strings appears, and that string is not included in the returned text"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Las stop sequences cortan el muestreo en el momento en que se produce la coincidencia, lo que ahorra tokens de salida y latencia además de delimitar el formato. Se confunden con un filtro de contenido (son un control de formato, no de seguridad) y con un post-procesado: la diferencia práctica es que aquí los tokens posteriores no llegan a generarse ni a facturarse. El límite de longitud es max_tokens, otro parámetro.",
       "explanation_en": "Stop sequences cut sampling at the moment of the match, saving output tokens and latency as well as delimiting the format. They get confused with a content filter (they are a format control, not a safety control) and with post-processing: the practical difference is that here the later tokens are never generated or billed. The length limit is max_tokens, a different parameter.",
       "source": "OpenAI API Reference, chat completions (stop); Anthropic API documentation (stop_sequences)",
       "expected_time_ms": 32000,
-      "tags": ["llm", "generation-parameters", "api"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "api"
+      ]
     },
     {
       "id": "q070105011",
@@ -743,21 +913,26 @@
       "options_es": [
         "Produce texto gramaticalmente incorrecto con frecuencia",
         "Impide que el modelo respete el parámetro max_tokens",
-        "Tiende a texto repetitivo y genérico, porque elegir siempre el token más probable favorece bucles y frases de relleno",
-        "Hace que cada llamada devuelva una respuesta distinta"
+        "Hace que cada llamada devuelva una respuesta distinta",
+        "Tiende a texto repetitivo y genérico, porque elegir siempre el token más probable favorece bucles y frases de relleno"
       ],
       "options_en": [
         "It frequently produces grammatically incorrect text",
         "It stops the model from respecting the max_tokens parameter",
-        "It tends toward repetitive, generic text, because always picking the most likely token favours loops and filler phrases",
-        "It makes every call return a different answer"
+        "It makes every call return a different answer",
+        "It tends toward repetitive, generic text, because always picking the most likely token favours loops and filler phrases"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "La decodificación voraz es fiable para tareas con una respuesta correcta (extracción, clasificación), pero en texto abierto el token más probable en cada paso lleva a repeticiones y a la salida más sosa posible. El texto resultante suele ser impecable gramaticalmente, que es justo lo que despista: el defecto está en la diversidad, no en la corrección. La variabilidad entre llamadas describe el muestreo, no la decodificación voraz.",
       "explanation_en": "Greedy decoding is reliable for tasks with one correct answer (extraction, classification), but in open-ended text picking the most likely token at each step leads to repetition and the blandest possible output. The resulting text is usually grammatically impeccable, which is exactly what misleads: the flaw is in diversity, not correctness. Variability between calls describes sampling, not greedy decoding.",
       "source": "Jurafsky & Martin, 'Speech and Language Processing' 3e, chapter on decoding and sampling",
       "expected_time_ms": 38000,
-      "tags": ["llm", "generation-parameters", "decoding", "advanced"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "decoding",
+        "advanced"
+      ]
     },
     {
       "id": "q070105012",
@@ -767,23 +942,27 @@
       "question_es": "```python\\nresp = client.chat.completions.create(\\n    model=\"gpt-4o-mini\",\\n    messages=[{\"role\": \"user\", \"content\": \"Escribe un ensayo de 800 palabras sobre los Transformers.\"}],\\n    max_tokens=5,\\n)\\nprint(resp.choices[0].finish_reason)\\n```\\n\\n¿Qué imprime?",
       "question_en": "```python\\nresp = client.chat.completions.create(\\n    model=\"gpt-4o-mini\",\\n    messages=[{\"role\": \"user\", \"content\": \"Write an 800-word essay about Transformers.\"}],\\n    max_tokens=5,\\n)\\nprint(resp.choices[0].finish_reason)\\n```\\n\\nWhat does it print?",
       "options_es": [
-        "stop",
+        "length",
         "max_tokens",
         "content_filter",
-        "length"
+        "stop"
       ],
       "options_en": [
-        "stop",
+        "length",
         "max_tokens",
         "content_filter",
-        "length"
+        "stop"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "Con max_tokens = 5 la generación se trunca por presupuesto y finish_reason vale 'length'. Sería 'stop' si el modelo hubiera terminado por sí mismo (token EOS o una stop sequence), que es el error habitual: se asume que la respuesta está completa sin mirar finish_reason, y en producción eso se traduce en JSON cortado a mitad. 'max_tokens' es el nombre del parámetro, no el valor que devuelve el campo.",
       "explanation_en": "With max_tokens = 5 the generation is truncated on budget and finish_reason is 'length'. It would be 'stop' if the model had finished on its own (EOS token or a stop sequence), which is the usual mistake: assuming the answer is complete without checking finish_reason, which in production means JSON cut off mid-object. 'max_tokens' is the parameter's name, not the value the field returns.",
       "source": "OpenAI API Reference, chat completions object (finish_reason)",
       "expected_time_ms": 33000,
-      "tags": ["llm", "generation-parameters", "api"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "api"
+      ]
     },
     {
       "id": "q070105013",
@@ -792,14 +971,24 @@
       "difficulty_tier": "medium",
       "question_es": "Subir la temperature aumenta la creatividad del modelo en el sentido de darle acceso a ideas mejores o a más conocimiento.",
       "question_en": "Raising the temperature increases the model's creativity in the sense of giving it access to better ideas or more knowledge.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. La temperature solo aplana o agudiza la distribución de probabilidad sobre el vocabulario que el modelo ya calculó: no añade conocimiento ni capacidad. Lo que llamamos creatividad es mayor probabilidad de muestrear tokens de la cola, lo que produce salidas menos previsibles y también más errores factuales. El atajo mental 'temperatura alta = modelo más listo' es justo al revés en tareas con una respuesta correcta.",
       "explanation_en": "False. Temperature only flattens or sharpens the probability distribution over the vocabulary that the model already computed: it adds no knowledge or capability. What we call creativity is a higher chance of sampling tail tokens, which produces less predictable output and also more factual errors. The mental shortcut 'higher temperature = smarter model' is exactly backwards on tasks with one correct answer.",
       "source": "Jurafsky & Martin, 'Speech and Language Processing' 3e, chapter on decoding and sampling",
       "expected_time_ms": 28000,
-      "tags": ["llm", "generation-parameters", "temperature"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "temperature"
+      ]
     },
     {
       "id": "q070105014",
@@ -814,7 +1003,11 @@
       "explanation_en": "The 'seed' parameter fixes the sampling seed and the documentation explicitly describes it as best effort: you must also compare system_fingerprint, because a change in the provider's infrastructure can alter the result. It complements temperature = 0, which reduces sampling randomness but does not remove the nondeterminism coming from floating-point arithmetic and GPU batching.",
       "source": "OpenAI API Reference, chat completions (seed, system_fingerprint)",
       "expected_time_ms": 30000,
-      "tags": ["llm", "generation-parameters", "reproducibility"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "reproducibility"
+      ]
     },
     {
       "id": "q070105015",
@@ -829,7 +1022,12 @@
       "explanation_en": "logit_bias adds the given bias to the logits before sampling; -100 makes a token effectively impossible and +100 effectively mandatory. It is confused with 'logprobs', which only reports probabilities without altering them, and with stop sequences, which halt generation rather than forbid a token. The detail that breaks its use in practice is that the key is the token id from the specific tokenizer, not the word, and that the leading space is part of the token.",
       "source": "OpenAI API Reference, chat completions (logit_bias)",
       "expected_time_ms": 38000,
-      "tags": ["llm", "generation-parameters", "api", "advanced"]
+      "tags": [
+        "llm",
+        "generation-parameters",
+        "api",
+        "advanced"
+      ]
     }
   ]
 }

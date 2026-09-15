@@ -10,16 +10,16 @@
       "options_es": [
         "{'x': <class 'int'>, 'return': <class 'str'>}",
         "{}",
-        "{'x': 'int', 'return': 'str'}",
-        "TypeError: las anotaciones no se pueden leer con __future__"
+        "TypeError: las anotaciones no se pueden leer con __future__",
+        "{'x': 'int', 'return': 'str'}"
       ],
       "options_en": [
         "{'x': <class 'int'>, 'return': <class 'str'>}",
         "{}",
-        "{'x': 'int', 'return': 'str'}",
-        "TypeError: annotations cannot be read with __future__"
+        "TypeError: annotations cannot be read with __future__",
+        "{'x': 'int', 'return': 'str'}"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "Con `from __future__ import annotations` (PEP 563) las anotaciones no se evalúan: se guardan como cadenas. Por eso salen `'int'` y `'str'` entre comillas y no los objetos de clase. La primera opción es lo que verías SIN esa importación, que es justo la trampa: mucha gente asume que `__annotations__` siempre contiene tipos reales y llama a `issubclass` sobre ellos. Si necesitas los objetos, usa `typing.get_type_hints(f)`, que resuelve las cadenas.",
       "explanation_en": "With `from __future__ import annotations` (PEP 563) annotations are never evaluated: they are stored as strings. That is why you get quoted `'int'` and `'str'` rather than the class objects. The first option is what you would see WITHOUT that import, which is exactly the trap: people assume `__annotations__` always holds real types and call `issubclass` on them. If you need the objects, use `typing.get_type_hints(f)`, which resolves the strings.",
       "source": "PEP 563 — Postponed Evaluation of Annotations",
@@ -41,16 +41,16 @@
       "options_es": [
         "f: function[int, str, bool]",
         "f: Callable(int, str) -> bool",
-        "f: Callable[int, str, bool]",
-        "f: Callable[[int, str], bool]"
+        "f: Callable[[int, str], bool]",
+        "f: Callable[int, str, bool]"
       ],
       "options_en": [
         "f: function[int, str, bool]",
         "f: Callable(int, str) -> bool",
-        "f: Callable[int, str, bool]",
-        "f: Callable[[int, str], bool]"
+        "f: Callable[[int, str], bool]",
+        "f: Callable[int, str, bool]"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "`Callable` toma exactamente dos argumentos: una LISTA con los tipos de los parámetros y, aparte, el tipo de retorno. De ahí los corchetes dobles: `Callable[[int, str], bool]`. Olvidar la lista interna (`Callable[int, str, bool]`) es el error más frecuente y es tentador porque se lee como una firma normal. `function` no es un tipo anotable, y la flecha `->` solo existe en la sintaxis `def`, no dentro de una anotación.",
       "explanation_en": "`Callable` takes exactly two arguments: a LIST of the parameter types and, separately, the return type. Hence the double brackets: `Callable[[int, str], bool]`. Dropping the inner list (`Callable[int, str, bool]`) is the most common slip and it is tempting because it reads like an ordinary signature. `function` is not an annotatable type, and the `->` arrow only exists in `def` syntax, not inside an annotation.",
       "source": "CPython typing docs 3.13 — typing.Callable",
@@ -95,18 +95,18 @@
       "question_es": "¿Qué imprime este módulo?\n```python\nx: int\nprint(\"x\" in __annotations__, \"x\" in dir())\n```",
       "question_en": "What does this module print?\n```python\nx: int\nprint(\"x\" in __annotations__, \"x\" in dir())\n```",
       "options_es": [
-        "True False",
+        "NameError: name 'x' is not defined",
         "True True",
         "False False",
-        "NameError: name 'x' is not defined"
+        "True False"
       ],
       "options_en": [
-        "True False",
+        "NameError: name 'x' is not defined",
         "True True",
         "False False",
-        "NameError: name 'x' is not defined"
+        "True False"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Una anotación sin asignación registra el tipo en `__annotations__` del módulo pero NO crea el nombre: `x` no existe como variable, por eso `dir()` no lo lista. De ahí `True False`. `True True` es la respuesta intuitiva de quien cree que `x: int` es una declaración al estilo C que reserva la variable. El `NameError` sí aparecería, pero solo si intentaras LEER `x`; aquí nadie lo lee.",
       "explanation_en": "A bare annotation records the type in the module's `__annotations__` but does NOT create the name: `x` does not exist as a variable, so `dir()` does not list it. Hence `True False`. `True True` is the intuitive answer for anyone who reads `x: int` as a C-style declaration that reserves the variable. The `NameError` would indeed happen, but only if you actually READ `x`; nothing here reads it.",
       "source": "PEP 526 — Syntax for Variable Annotations",
@@ -145,18 +145,18 @@
       "question_es": "¿Qué imprime este código en Python 3.13?\n```python\nprint(list[int])\nprint(int | None)\n```",
       "question_en": "What does this code print on Python 3.13?\n```python\nprint(list[int])\nprint(int | None)\n```",
       "options_es": [
-        "<class 'list'>\n<class 'int'>",
         "list[int]\nint | None",
+        "<class 'list'>\n<class 'int'>",
         "TypeError: 'type' object is not subscriptable",
         "typing.List[int]\ntyping.Optional[int]"
       ],
       "options_en": [
-        "<class 'list'>\n<class 'int'>",
         "list[int]\nint | None",
+        "<class 'list'>\n<class 'int'>",
         "TypeError: 'type' object is not subscriptable",
         "typing.List[int]\ntyping.Optional[int]"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Desde 3.9 (PEP 585) los tipos built-in son suscriptables y devuelven un `types.GenericAlias` cuyo `repr` es `list[int]`; desde 3.10 (PEP 604) `int | None` construye un `types.UnionType` que se imprime tal cual. El `TypeError` era el resultado real en 3.8 y antes, cuando había que escribir `List[int]` de `typing`; por eso sigue siendo la opción tentadora. Y no: Python no reescribe nada a la forma antigua de `typing`.",
       "explanation_en": "Since 3.9 (PEP 585) built-in types are subscriptable and return a `types.GenericAlias` whose `repr` is `list[int]`; since 3.10 (PEP 604) `int | None` builds a `types.UnionType` that prints as written. The `TypeError` was the real result on 3.8 and earlier, when you had to write `typing.List[int]` - which is why it stays tempting. And no, Python does not rewrite anything back into the old `typing` spelling.",
       "source": "PEP 585 — Type Hinting Generics In Standard Collections",
@@ -177,17 +177,17 @@
       "question_en": "What does this code print?\n```python\nfrom typing import TypeVar\nT = TypeVar(\"T\")\nprint(T)\n```",
       "options_es": [
         "T",
-        "~T",
         "<class 'typing.TypeVar'>",
+        "~T",
         "TypeVar('T')"
       ],
       "options_en": [
         "T",
-        "~T",
         "<class 'typing.TypeVar'>",
+        "~T",
         "TypeVar('T')"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El `repr` de un TypeVar invariante lleva una tilde delante: `~T`. Los covariantes se imprimen `+T` y los contravariantes `-T`, así que el prefijo te dice la varianza de un vistazo. `T` a secas es lo que esperas si crees que `TypeVar(\"T\")` solo guarda el nombre, y `<class 'typing.TypeVar'>` sería `type(T)`, no `T`.",
       "explanation_en": "An invariant TypeVar's `repr` carries a leading tilde: `~T`. Covariant ones print as `+T` and contravariant ones as `-T`, so the prefix tells you the variance at a glance. A bare `T` is what you expect if you assume `TypeVar(\"T\")` merely stores the name, and `<class 'typing.TypeVar'>` would be `type(T)`, not `T`.",
       "source": "CPython typing docs 3.13 — typing.TypeVar",
@@ -207,17 +207,17 @@
       "question_en": "What does declaring `S = TypeVar(\"S\", str, bytes)` mean?",
       "options_es": [
         "Que S acepta cualquier subclase de str o de bytes y se resuelve a la subclase concreta",
-        "Que S equivale a `str | bytes`, así que un mismo valor puede ser cualquiera de los dos",
         "Que S se fija exactamente a `str` o exactamente a `bytes` en cada uso, nunca a una mezcla ni a una subclase",
+        "Que S equivale a `str | bytes`, así que un mismo valor puede ser cualquiera de los dos",
         "Que S vale `str` por defecto y `bytes` solo si se indica"
       ],
       "options_en": [
         "That S accepts any subclass of str or bytes and resolves to the concrete subclass",
-        "That S is equivalent to `str | bytes`, so one value may be either of them",
         "That S is pinned to exactly `str` or exactly `bytes` at each use, never a mix and never a subclass",
+        "That S is equivalent to `str | bytes`, so one value may be either of them",
         "That S defaults to `str` and is `bytes` only when stated"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Un TypeVar con restricciones de valor solo puede tomar uno de los tipos listados, y ese tipo se fija para toda la firma: `def cat(a: S, b: S) -> S` acepta dos str o dos bytes, nunca uno de cada. Confundirlo con `str | bytes` (opción 2) es el error clásico: la unión permitiría mezclarlos. Y a diferencia de `bound=`, las restricciones NO se resuelven a subclases: una subclase de str se colapsa a `str`.",
       "explanation_en": "A value-restricted TypeVar may take only one of the listed types, and that type is pinned across the whole signature: `def cat(a: S, b: S) -> S` accepts two strs or two bytes, never one of each. Confusing it with `str | bytes` (option 2) is the classic mistake - a union would let you mix them. And unlike `bound=`, constraints do NOT resolve to subclasses: a str subclass collapses to `str`.",
       "source": "PEP 484 — Type Hints: Type variables with value restriction",
@@ -237,17 +237,17 @@
       "question_en": "What does this code print?\n```python\nfrom typing import Generic, TypeVar\nT = TypeVar(\"T\")\nclass Box(Generic[T]):\n    def __init__(self, v: T) -> None:\n        self.v = v\nb: Box[int] = Box(\"hello\")\nprint(b.v, type(b.v).__name__)\n```",
       "options_es": [
         "TypeError: Box[int] exige un int",
-        "hola int",
+        "hola str",
         "Lanza un error al parametrizar Box[int]",
-        "hola str"
+        "hola int"
       ],
       "options_en": [
         "TypeError: Box[int] requires an int",
-        "hello int",
+        "hello str",
         "Raises an error when parameterising Box[int]",
-        "hello str"
+        "hello int"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "Los parámetros de tipo se borran en ejecución: `Box[int]` es solo una anotación y `Generic` no valida nada al construir, así que el str entra tal cual y sale `hola str`. mypy SÍ marcaría esta línea como error, y ahí está la trampa de la primera opción: se confunde el error del checker con una excepción en ejecución. `hola int` es aún más tentador: sugiere que la anotación convierte el valor, cosa que nunca ocurre.",
       "explanation_en": "Type parameters are erased at runtime: `Box[int]` is only an annotation and `Generic` validates nothing on construction, so the str goes straight in and you get `hello str`. mypy WOULD flag this line, and that is the trap in the first option: a checker error gets confused with a runtime exception. `hello int` is even more tempting - it suggests the annotation converts the value, which never happens.",
       "source": "PEP 484 — Type Hints: Generics",
@@ -337,16 +337,16 @@
       "options_es": [
         "list (int,)",
         "list[int] ()",
-        "<class 'list'> (<class 'int'>,)",
-        "None ()"
+        "None ()",
+        "<class 'list'> (<class 'int'>,)"
       ],
       "options_en": [
         "list (int,)",
         "list[int] ()",
-        "<class 'list'> (<class 'int'>,)",
-        "None ()"
+        "None ()",
+        "<class 'list'> (<class 'int'>,)"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "`get_origin` devuelve el objeto de clase real, `list`, cuyo `repr` es `<class 'list'>`; `get_args` devuelve una TUPLA de parámetros, aquí `(<class 'int'>,)` con su coma final. La primera opción confunde el `repr` de una clase con su nombre. `None ()` es lo que sale con un tipo NO genérico como `get_origin(int)`, y es la trampa de quien cree que estas funciones solo entienden los genéricos de `typing` y no los de PEP 585.",
       "explanation_en": "`get_origin` returns the actual class object, `list`, whose `repr` is `<class 'list'>`; `get_args` returns a TUPLE of parameters, here `(<class 'int'>,)` with its trailing comma. The first option confuses a class's `repr` with its name. `None ()` is what you get for a NON-generic type such as `get_origin(int)`, and it tempts anyone who believes these helpers only understand `typing` generics and not PEP 585 ones.",
       "source": "CPython typing docs 3.13 — typing.get_origin, typing.get_args",
@@ -395,18 +395,18 @@
       "question_es": "Un método `add()` devuelve `self` para poder encadenar llamadas, y la clase tiene subclases. ¿Qué anotación de retorno es la correcta?",
       "question_en": "A method `add()` returns `self` so calls can be chained, and the class has subclasses. Which return annotation is correct?",
       "options_es": [
-        "`-> object`",
+        "`-> Self`, de `typing.Self`",
         "`-> \"Builder\"`, el nombre de la propia clase entre comillas",
         "`-> TypeVar(\"T\")` sin `bound`",
-        "`-> Self`, de `typing.Self`"
+        "`-> object`"
       ],
       "options_en": [
-        "`-> object`",
+        "`-> Self`, from `typing.Self`",
         "`-> \"Builder\"`, the class's own name in quotes",
         "`-> TypeVar(\"T\")` with no `bound`",
-        "`-> Self`, from `typing.Self`"
+        "`-> object`"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`Self` significa 'el tipo de la instancia real', así que en una subclase `SubBuilder().add()` se tipa como `SubBuilder` y el encadenamiento sigue viendo los métodos de la subclase. Anotar `-> \"Builder\"` es lo que casi todo el mundo escribe primero y funciona en la clase base, pero degrada el tipo de las subclases a la base y esconde sus métodos. `object` pierde todo, y un `TypeVar` suelto en el retorno no se liga a nada porque no aparece en los parámetros.",
       "explanation_en": "`Self` means 'the type of the actual instance', so in a subclass `SubBuilder().add()` is typed as `SubBuilder` and chaining still sees the subclass's methods. Annotating `-> \"Builder\"` is what almost everyone writes first and it works on the base class, but it downgrades subclass results to the base and hides their methods. `object` loses everything, and a bare `TypeVar` in the return position binds to nothing because it never appears in the parameters.",
       "source": "CPython typing docs 3.13 — typing.Self",
@@ -425,18 +425,18 @@
       "question_es": "¿Qué ocurre al ejecutar este código?\n```python\nfrom typing import Protocol\nclass Speaker(Protocol):\n    def speak(self) -> str: ...\nclass Dog:\n    def speak(self) -> str: return \"woof\"\nprint(isinstance(Dog(), Speaker))\n```",
       "question_en": "What happens when this code runs?\n```python\nfrom typing import Protocol\nclass Speaker(Protocol):\n    def speak(self) -> str: ...\nclass Dog:\n    def speak(self) -> str: return \"woof\"\nprint(isinstance(Dog(), Speaker))\n```",
       "options_es": [
-        "Lanza `TypeError`: isinstance solo funciona con protocolos decorados con `@runtime_checkable`",
-        "Imprime `True`",
         "Imprime `False`",
+        "Imprime `True`",
+        "Lanza `TypeError`: isinstance solo funciona con protocolos decorados con `@runtime_checkable`",
         "Lanza `NotImplementedError` porque `speak` tiene cuerpo `...`"
       ],
       "options_en": [
-        "Raises `TypeError`: isinstance only works with protocols decorated `@runtime_checkable`",
-        "Prints `True`",
         "Prints `False`",
+        "Prints `True`",
+        "Raises `TypeError`: isinstance only works with protocols decorated `@runtime_checkable`",
         "Raises `NotImplementedError` because `speak` has a `...` body"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Por defecto un Protocol es puramente estático y `isinstance` contra él es un error en ejecución, no un `False`. Hay que decorarlo con `@runtime_checkable`. `True` es lo que espera quien razona correctamente sobre el subtipado estructural pero olvida que esa comprobación vive en el checker, no en el intérprete; `False` es lo que espera quien piensa en herencia nominal. El cuerpo `...` es la forma idónea de declarar un miembro de protocolo y no lanza nada por sí mismo.",
       "explanation_en": "By default a Protocol is purely static and `isinstance` against it is a runtime error, not a `False`. You must decorate it `@runtime_checkable`. `True` is what you expect if you reason correctly about structural subtyping but forget that the check lives in the checker, not the interpreter; `False` is what you expect if you think in nominal inheritance. The `...` body is the idiomatic way to declare a protocol member and raises nothing by itself.",
       "source": "PEP 544 — Protocols: runtime_checkable",
@@ -485,18 +485,18 @@
       "question_es": "¿Qué imprime este código?\n```python\nfrom collections.abc import Sized\nclass Bag:\n    def __len__(self) -> int: return 3\nprint(isinstance(Bag(), Sized), len(Bag()))\n```",
       "question_en": "What does this code print?\n```python\nfrom collections.abc import Sized\nclass Bag:\n    def __len__(self) -> int: return 3\nprint(isinstance(Bag(), Sized), len(Bag()))\n```",
       "options_es": [
-        "True 3",
+        "True 0",
         "False 3",
         "TypeError: Sized no es runtime_checkable",
-        "True 0"
+        "True 3"
       ],
       "options_en": [
-        "True 3",
+        "True 0",
         "False 3",
         "TypeError: Sized is not runtime_checkable",
-        "True 0"
+        "True 3"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`Sized` es una ABC con `__subclasshook__`, así que reconoce estructuralmente a cualquier clase que defina `__len__`, sin registro ni herencia; por eso `True 3`. `False 3` es la respuesta de quien asume que hace falta heredar de `Sized`. Y no hace falta `@runtime_checkable`: ese decorador es para los `Protocol` de `typing`, mientras que estas ABC de `collections.abc` ya traen la comprobación en ejecución de serie.",
       "explanation_en": "`Sized` is an ABC with a `__subclasshook__`, so it structurally recognises any class defining `__len__`, with no registration or inheritance; hence `True 3`. `False 3` is the answer if you assume you must inherit from `Sized`. And no `@runtime_checkable` is needed: that decorator is for `typing.Protocol` classes, whereas these `collections.abc` ABCs ship with the runtime check built in.",
       "source": "CPython typing docs 3.13 — typing.Sized / collections.abc",
@@ -560,17 +560,17 @@
       "question_en": "You use a third-party class you cannot modify and want the checker to accept any object with `.read() -> bytes`. What do you do?",
       "options_es": [
         "Registrar la clase en una ABC con `MiABC.register(Externa)`, que es lo único que mypy reconoce",
-        "Anotar el parámetro como `Any`, porque es la única forma de tipar clases externas",
         "Definir un `Protocol` con `def read(self) -> bytes: ...`; el subtipado estructural no exige herencia ni registro",
+        "Anotar el parámetro como `Any`, porque es la única forma de tipar clases externas",
         "Definir un `TypeVar` con `bound=Externa`"
       ],
       "options_en": [
         "Register the class on an ABC with `MyABC.register(External)`, the only thing mypy recognises",
-        "Annotate the parameter as `Any`, since that is the only way to type external classes",
         "Define a `Protocol` with `def read(self) -> bytes: ...`; structural subtyping needs no inheritance and no registration",
+        "Annotate the parameter as `Any`, since that is the only way to type external classes",
         "Define a `TypeVar` with `bound=External`"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Este es exactamente el hueco que PEP 544 vino a tapar: con un Protocol describes la FORMA que necesitas y cualquier clase que la cumpla encaja, aunque se escribiera años antes y sin conocer tu código. `ABC.register()` sí hace que `isinstance` dé `True` en ejecución, y por eso es tan tentador, pero mypy lo ignora casi siempre. `Any` funciona en el sentido de que nada falla, y precisamente por eso: apaga la comprobación en lugar de expresar el contrato. `bound=Externa` te ata a ESA clase, que es lo contrario de lo que pides.",
       "explanation_en": "This is exactly the gap PEP 544 was written to close: with a Protocol you describe the SHAPE you need and any class matching it fits, even one written years earlier with no knowledge of your code. `ABC.register()` does make `isinstance` return `True` at runtime, which is why it tempts, but mypy largely ignores it. `Any` 'works' in the sense that nothing fails - and that is the problem: it switches checking off instead of expressing the contract. `bound=External` ties you to THAT class, the opposite of what you asked for.",
       "source": "PEP 544 — Protocols: Rationale",
@@ -646,18 +646,18 @@
       "question_es": "Una clase hereda explícitamente de un `Protocol` pero no implementa uno de sus métodos. ¿Qué ocurre?",
       "question_en": "A class explicitly inherits from a `Protocol` but does not implement one of its methods. What happens?",
       "options_es": [
-        "Python lanza `TypeError` al definir la clase, igual que con una ABC",
         "El type checker señala el error en la definición de la clase; en ejecución la clase se crea y se puede instanciar sin problema",
+        "Python lanza `TypeError` al definir la clase, igual que con una ABC",
         "No pasa nada en ningún sitio: heredar de `Protocol` desactiva toda comprobación",
         "La clase se vuelve abstracta y falla solo al instanciarla en ejecución"
       ],
       "options_en": [
-        "Python raises `TypeError` at class definition time, just like an ABC",
         "The type checker flags the class definition; at runtime the class is created and instantiates fine",
+        "Python raises `TypeError` at class definition time, just like an ABC",
         "Nothing anywhere: inheriting from `Protocol` switches off all checking",
         "The class becomes abstract and fails only when instantiated at runtime"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Heredar de un Protocol declara la intención y hace que el checker exija los miembros que falten, pero el intérprete no impone nada: la subclase concreta se define y se instancia sin quejas (heredará el cuerpo `...` del protocolo, que devuelve `None`). La opción 4 es la trampa buena, porque describe exactamente el comportamiento de `abc.ABC` con `@abstractmethod`, que SÍ falla al instanciar; es la diferencia práctica entre una ABC y un Protocol.",
       "explanation_en": "Inheriting from a Protocol declares intent and makes the checker demand the missing members, but the interpreter enforces nothing: the concrete subclass is defined and instantiated without complaint (it inherits the protocol's `...` body, which returns `None`). Option 4 is the good trap, because it describes exactly how `abc.ABC` with `@abstractmethod` behaves - that one DOES fail on instantiation. It is the practical difference between an ABC and a Protocol.",
       "source": "PEP 544 — Protocols: Explicit declaration of protocol members",
@@ -677,17 +677,17 @@
       "question_en": "What does `typing`'s `cast(int, x)` do?",
       "options_es": [
         "Convierte `x` a entero en ejecución, igual que `int(x)`",
-        "Comprueba en ejecución que `x` es `int` y lanza `TypeError` si no lo es",
         "Le dice al checker que trate `x` como `int`, sin comprobar ni convertir nada en ejecución",
+        "Comprueba en ejecución que `x` es `int` y lanza `TypeError` si no lo es",
         "Registra una comprobación que mypy ejecuta al final del análisis"
       ],
       "options_en": [
         "Converts `x` to an integer at runtime, like `int(x)`",
-        "Checks at runtime that `x` is an `int` and raises `TypeError` otherwise",
         "Tells the checker to treat `x` as `int`, with no runtime check and no conversion",
+        "Checks at runtime that `x` is an `int` and raises `TypeError` otherwise",
         "Registers a check that mypy runs at the end of its analysis"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`cast` es una afirmación, no una verificación: en ejecución devuelve el valor tal cual y su implementación es literalmente `return val`. El nombre viene de otros lenguajes donde 'cast' sí convierte (opción 1) o sí comprueba (opción 2), y ahí está la trampa. Por eso un `cast` equivocado silencia un error real y lo convierte en un fallo más tarde y más lejos; úsalo solo cuando sepas algo que el checker no puede deducir.",
       "explanation_en": "`cast` is an assertion, not a verification: at runtime it returns the value untouched and its implementation is literally `return val`. The name comes from languages where a 'cast' does convert (option 1) or does check (option 2), and that is the trap. A wrong `cast` therefore silences a real error and turns it into a failure later and further away; use it only when you know something the checker cannot deduce.",
       "source": "CPython typing docs 3.13 — typing.cast",
@@ -706,18 +706,18 @@
       "question_es": "¿Qué imprime este código?\n```python\nfrom typing import cast\nx = cast(int, \"5\")\nprint(type(x).__name__, x + \"0\")\n```",
       "question_en": "What does this code print?\n```python\nfrom typing import cast\nx = cast(int, \"5\")\nprint(type(x).__name__, x + \"0\")\n```",
       "options_es": [
-        "int 5",
+        "str 50",
         "TypeError: can only concatenate str (not \"int\") to str",
         "int 15",
-        "str 50"
+        "int 5"
       ],
       "options_en": [
-        "int 5",
+        "str 50",
         "TypeError: can only concatenate str (not \"int\") to str",
         "int 15",
-        "str 50"
+        "int 5"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`cast` no toca el valor: `x` sigue siendo el str `\"5\"`, por eso `type(x).__name__` da `str` y `\"5\" + \"0\"` concatena a `\"50\"`. Las opciones con `int` asumen una conversión que nunca ocurre, y el `TypeError` es lo que pasaría si `cast` HUBIERA convertido a entero: la trampa perfecta, porque solo falla si te crees el cast. mypy, mientras tanto, cree que `x` es `int` y marcará error en `x + \"0\"` por el motivo contrario.",
       "explanation_en": "`cast` never touches the value: `x` is still the str `\"5\"`, so `type(x).__name__` gives `str` and `\"5\" + \"0\"` concatenates to `\"50\"`. The `int` options assume a conversion that never happens, and the `TypeError` is what WOULD happen if `cast` had converted to an integer - the perfect trap, because it only fires if you believe the cast. mypy, meanwhile, believes `x` is an `int` and will flag `x + \"0\"` for the opposite reason.",
       "source": "CPython typing docs 3.13 — typing.cast",
@@ -737,18 +737,18 @@
       "question_es": "Este código se ejecuta y además se pasa por `mypy --strict`. ¿Qué ocurre en cada caso?\n```python\nfrom typing import Any\ndef f(a: Any, b: object) -> None:\n    print(a.upper(), b.upper())\nf(\"x\", \"y\")\n```",
       "question_en": "This code is both run and checked with `mypy --strict`. What happens in each case?\n```python\nfrom typing import Any\ndef f(a: Any, b: object) -> None:\n    print(a.upper(), b.upper())\nf(\"x\", \"y\")\n```",
       "options_es": [
-        "Imprime `X Y`; mypy señala error solo en `b.upper()`, porque `object` no tiene `upper`",
+        "Lanza `AttributeError` sobre `b` en ejecución",
         "Imprime `X Y`; mypy no señala nada",
         "Imprime `X Y`; mypy señala error en las dos llamadas",
-        "Lanza `AttributeError` sobre `b` en ejecución"
+        "Imprime `X Y`; mypy señala error solo en `b.upper()`, porque `object` no tiene `upper`"
       ],
       "options_en": [
-        "Prints `X Y`; mypy flags only `b.upper()`, because `object` has no `upper`",
+        "Raises `AttributeError` on `b` at runtime",
         "Prints `X Y`; mypy flags nothing",
         "Prints `X Y`; mypy flags both calls",
-        "Raises `AttributeError` on `b` at runtime"
+        "Prints `X Y`; mypy flags only `b.upper()`, because `object` has no `upper`"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`Any` y `object` se confunden constantemente porque ambos 'aceptan cualquier cosa', pero son opuestos para el checker: `Any` apaga la comprobación, así que `a.upper()` pasa sin mirar; `object` es el tipo más general pero sigue siendo un tipo concreto, y solo puedes usar sobre él lo que `object` define, así que `b.upper()` es error. En ejecución ninguna anotación interviene: ambos argumentos son str reales y se imprime `X Y`. Si quieres 'cualquier cosa' pero SIN perder seguridad, `object` es la elección correcta.",
       "explanation_en": "`Any` and `object` are constantly confused because both 'accept anything', but for the checker they are opposites: `Any` switches checking off, so `a.upper()` passes unexamined; `object` is the most general type but is still a real type, and you may only use what `object` defines, so `b.upper()` is an error. At runtime no annotation participates: both arguments are real strs and `X Y` is printed. If you want 'anything' WITHOUT losing safety, `object` is the right choice.",
       "source": "CPython typing docs 3.13 — typing.Any",
@@ -814,17 +814,17 @@
       "question_en": "What does this code print, given that the `expensive` package is NOT installed?\n```python\nfrom typing import TYPE_CHECKING\nif TYPE_CHECKING:\n    from expensive import Thing\nprint(TYPE_CHECKING)\n```",
       "options_es": [
         "True",
-        "False",
         "ModuleNotFoundError: No module named 'expensive'",
+        "False",
         "None"
       ],
       "options_en": [
         "True",
-        "False",
         "ModuleNotFoundError: No module named 'expensive'",
+        "False",
         "None"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`TYPE_CHECKING` vale `False` en ejecución, siempre; el bloque `if` no se entra nunca y el import inexistente no se ejecuta, así que no hay `ModuleNotFoundError`. `True` es lo que 've' mypy, que trata esta constante como verdadera para leer el import; confundir las dos perspectivas es justo lo que esta construcción explota a propósito.",
       "explanation_en": "`TYPE_CHECKING` is `False` at runtime, always; the `if` block is never entered and the non-existent import never executes, so there is no `ModuleNotFoundError`. `True` is what mypy 'sees' - it treats the constant as true so it can read the import. Confusing the two viewpoints is exactly what this construct exploits on purpose.",
       "source": "CPython typing docs 3.13 — typing.TYPE_CHECKING",
@@ -843,18 +843,18 @@
       "question_es": "¿Qué es un fichero `.pyi`?",
       "question_en": "What is a `.pyi` file?",
       "options_es": [
-        "Un stub: contiene sólo firmas y anotaciones, sin implementación, y el checker lo usa en lugar del `.py`",
+        "Un módulo que se importa en ejecución para validar los tipos declarados",
         "Un `.py` precompilado con las anotaciones ya resueltas, que Python carga más rápido",
         "El fichero de configuración de mypy para un proyecto",
-        "Un módulo que se importa en ejecución para validar los tipos declarados"
+        "Un stub: contiene sólo firmas y anotaciones, sin implementación, y el checker lo usa en lugar del `.py`"
       ],
       "options_en": [
-        "A stub: it holds only signatures and annotations, no implementation, and the checker uses it instead of the `.py`",
+        "A module imported at runtime to validate the declared types",
         "A precompiled `.py` with annotations already resolved, which Python loads faster",
         "mypy's per-project configuration file",
-        "A module imported at runtime to validate the declared types"
+        "A stub: it holds only signatures and annotations, no implementation, and the checker uses it instead of the `.py`"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un stub describe la interfaz de un módulo con cuerpos `...`, y existe para tipar código que no puedes o no quieres anotar en el sitio: extensiones en C, librería estándar, paquetes de terceros sin tipos (typeshed está hecho de esto). Python nunca lo importa ni lo ejecuta, así que no acelera nada y no valida nada en ejecución; la configuración de mypy vive en `mypy.ini` o `pyproject.toml`.",
       "explanation_en": "A stub describes a module's interface with `...` bodies, and exists to type code you cannot or will not annotate inline: C extensions, the standard library, untyped third-party packages (typeshed is made of these). Python never imports or executes it, so it speeds nothing up and validates nothing at runtime; mypy's configuration lives in `mypy.ini` or `pyproject.toml`.",
       "source": "PEP 484 — Type Hints: Stub files",
@@ -899,18 +899,18 @@
       "question_es": "Recibes JSON de una API externa y quieres garantizar EN EJECUCIÓN que encaja con tu modelo tipado. ¿Qué lo consigue?",
       "question_en": "You receive JSON from an external API and want to guarantee AT RUNTIME that it matches your typed model. What achieves that?",
       "options_es": [
-        "`mypy --strict`, que instrumenta el código para comprobar los tipos al ejecutarlo",
-        "`typing.assert_type`, que compara el valor con el tipo esperado y falla en ejecución",
         "Una librería de validación como Pydantic, que lee las anotaciones y genera comprobaciones reales en ejecución",
+        "`typing.assert_type`, que compara el valor con el tipo esperado y falla en ejecución",
+        "`mypy --strict`, que instrumenta el código para comprobar los tipos al ejecutarlo",
         "`reveal_type`, que imprime y valida el tipo real durante la ejecución"
       ],
       "options_en": [
-        "`mypy --strict`, which instruments the code to check types as it runs",
-        "`typing.assert_type`, which compares the value with the expected type and fails at runtime",
         "A validation library such as Pydantic, which reads the annotations and generates real runtime checks",
+        "`typing.assert_type`, which compares the value with the expected type and fails at runtime",
+        "`mypy --strict`, which instruments the code to check types as it runs",
         "`reveal_type`, which prints and validates the actual type while the program runs"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "La división de trabajo es la clave: mypy nunca ejecuta tu código, sólo lo lee, así que no puede saber nada de un JSON que aún no ha llegado. Pydantic reutiliza las mismas anotaciones para construir validadores que sí corren. `assert_type` engaña muchísimo por el nombre: es una comprobación ESTÁTICA que en ejecución devuelve el valor sin mirarlo. `reveal_type` tampoco se ejecuta: es un pseudo-nombre que mypy sustituye por un mensaje durante el análisis, y si dejas la llamada en el código, Python fallará con `NameError`.",
       "explanation_en": "The division of labour is the point: mypy never runs your code, it only reads it, so it can know nothing about JSON that has not arrived yet. Pydantic reuses those same annotations to build validators that do run. `assert_type` is badly misleading by name: it is a STATIC check that at runtime returns the value unexamined. `reveal_type` does not run either - it is a pseudo-name mypy replaces with a message during analysis, and leaving the call in your code makes Python fail with `NameError`.",
       "source": "CPython typing docs 3.13 — typing: the runtime does not enforce annotations",

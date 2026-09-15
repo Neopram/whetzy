@@ -10,16 +10,16 @@
       "options_es": [
         "Que el cuerpo de la respuesta debe ir siempre serializado en JSON",
         "Que el servidor debe recordar qué formato pidió el cliente en la petición anterior",
-        "Que cada mensaje lleva la metainformación necesaria para interpretarlo (por ejemplo `Content-Type`), de modo que un intermediario pueda procesarlo sin conocer la aplicación",
-        "Que la URI debe describir la operación que se va a ejecutar sobre el recurso"
+        "Que la URI debe describir la operación que se va a ejecutar sobre el recurso",
+        "Que cada mensaje lleva la metainformación necesaria para interpretarlo (por ejemplo `Content-Type`), de modo que un intermediario pueda procesarlo sin conocer la aplicación"
       ],
       "options_en": [
         "That the response body must always be serialised as JSON",
         "That the server must remember which format the client asked for in the previous request",
-        "That every message carries the metadata needed to interpret it (e.g. `Content-Type`), so an intermediary can process it without knowing the application",
-        "That the URI must describe the operation to be performed on the resource"
+        "That the URI must describe the operation to be performed on the resource",
+        "That every message carries the metadata needed to interpret it (e.g. `Content-Type`), so an intermediary can process it without knowing the application"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "Un mensaje autodescriptivo se entiende por sí solo: el método, la URI y las cabeceras (`Content-Type`, `Cache-Control`) bastan para procesarlo. JSON es la representación más habitual, pero la restricción no exige ningún formato concreto, así que la primera opción confunde costumbre con principio. Recordar el formato pedido antes es justo lo contrario: sería estado de sesión en el servidor. Y describir la operación en la URI (`/getUser`) es RPC sobre HTTP, no interfaz uniforme: la acción la fija el método, no la ruta.",
       "explanation_en": "A self-descriptive message stands on its own: the method, the URI and the headers (`Content-Type`, `Cache-Control`) are enough to process it. JSON is the most common representation, but the constraint mandates no particular format, so the first option confuses habit with principle. Remembering the previously requested format is the exact opposite: that would be session state on the server. And describing the operation in the URI (`/getUser`) is RPC over HTTP, not a uniform interface: the method decides the action, not the path.",
       "source": "Fielding, R. — Dissertation §5.1.5 (Uniform Interface) / RFC 9110 §8.3 (Content-Type)",
@@ -37,18 +37,18 @@
       "question_es": "Una API expone una única ruta y recibe esta petición:\n\n```http\nPOST /api HTTP/1.1\nContent-Type: application/json\n\n{\"method\": \"getUser\", \"params\": {\"id\": 42}}\n```\n\n¿Cómo se clasifica este diseño respecto al modelo de madurez REST?",
       "question_en": "An API exposes a single route and receives this request:\n\n```http\nPOST /api HTTP/1.1\nContent-Type: application/json\n\n{\"method\": \"getUser\", \"params\": {\"id\": 42}}\n```\n\nHow does this design rate on the REST maturity scale?",
       "options_es": [
-        "Nivel 0: un único endpoint que tuneliza llamadas RPC sobre HTTP; HTTP actúa solo como transporte",
+        "Nivel 3: incorpora controles hipermedia que guían al cliente",
         "Nivel 1: ya identifica recursos individuales mediante URIs distintas",
         "Nivel 2: usa los métodos HTTP con su semántica (POST para crear, GET para leer)",
-        "Nivel 3: incorpora controles hipermedia que guían al cliente"
+        "Nivel 0: un único endpoint que tuneliza llamadas RPC sobre HTTP; HTTP actúa solo como transporte"
       ],
       "options_en": [
-        "Level 0: a single endpoint tunnelling RPC calls over HTTP; HTTP acts only as transport",
+        "Level 3: it adds hypermedia controls that guide the client",
         "Level 1: it already identifies individual resources through distinct URIs",
         "Level 2: it uses HTTP methods with their semantics (POST to create, GET to read)",
-        "Level 3: it adds hypermedia controls that guide the client"
+        "Level 0: a single endpoint tunnelling RPC calls over HTTP; HTTP acts only as transport"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Hay una sola URI y el verbo real viaja dentro del cuerpo: HTTP se usa como tubería, no como interfaz. Eso es el nivel 0. La opción de nivel 1 tienta porque el JSON contiene un identificador de usuario, pero un id en el cuerpo no es una URI de recurso. La de nivel 2 tienta porque la petición es un POST perfectamente válido, solo que aquí POST no significa «crea un recurso» sino «ejecuta esta función»: la semántica del método se ignora. El nivel 3 exigiría además enlaces en la respuesta.",
       "explanation_en": "There is a single URI and the real verb travels inside the body: HTTP is used as a pipe, not as an interface. That is level 0. The level 1 option is tempting because the JSON carries a user identifier, but an id in the body is not a resource URI. The level 2 option is tempting because the request is a perfectly valid POST, except that here POST does not mean \"create a resource\" but \"run this function\": the method's semantics are ignored. Level 3 would additionally require links in the response.",
       "source": "RFC 9110 §9.3.3 (POST) / Fielding, R. — Dissertation §5.1.5 (Uniform Interface)",
@@ -94,16 +94,16 @@
       "options_es": [
         "Sin estado (stateless)",
         "Cacheabilidad",
-        "Sistema en capas (layered system)",
-        "Código bajo demanda (code-on-demand)"
+        "Código bajo demanda (code-on-demand)",
+        "Sistema en capas (layered system)"
       ],
       "options_en": [
         "Stateless",
         "Cacheability",
-        "Layered system",
-        "Code-on-demand"
+        "Code-on-demand",
+        "Layered system"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "Código bajo demanda —enviar código ejecutable, por ejemplo JavaScript, para extender al cliente— es la única restricción que Fielding marca como opcional: una API que nunca envía código sigue siendo RESTful. La cacheabilidad tienta como «opcional» porque muchas APIs responden `Cache-Control: no-store`, pero eso es cumplir la restricción, no incumplirla: lo que exige es etiquetar cada respuesta como cacheable o no, no cachear. Sin estado y sistema en capas son obligatorias; renunciar a la primera con sesiones en memoria rompe el escalado horizontal que REST persigue.",
       "explanation_en": "Code-on-demand - shipping executable code, JavaScript for instance, to extend the client - is the only constraint Fielding marks as optional: an API that never sends code is still RESTful. Cacheability is tempting as \"optional\" because many APIs answer `Cache-Control: no-store`, but that satisfies the constraint rather than breaking it: what it requires is labelling every response as cacheable or not, not caching. Stateless and layered system are mandatory; dropping the first with in-memory sessions breaks the horizontal scaling REST is after.",
       "source": "Fielding, R. — Dissertation §5.1.7 (Code-On-Demand)",
@@ -140,17 +140,17 @@
       "question_en": "In REST, what distinguishes a resource from a representation?",
       "options_es": [
         "Son sinónimos: el recurso es el JSON que devuelve el servidor",
-        "El recurso es la abstracción identificada por la URI; la representación es una de sus formas concretas (JSON, XML, HTML) transferida en un mensaje",
+        "El recurso es el método HTTP aplicado y la representación es el código de estado devuelto",
         "El recurso es la fila de la base de datos y la representación es la URI que la apunta",
-        "El recurso es el método HTTP aplicado y la representación es el código de estado devuelto"
+        "El recurso es la abstracción identificada por la URI; la representación es una de sus formas concretas (JSON, XML, HTML) transferida en un mensaje"
       ],
       "options_en": [
         "They are synonyms: the resource is the JSON the server returns",
-        "The resource is the abstraction identified by the URI; the representation is one of its concrete forms (JSON, XML, HTML) transferred in a message",
+        "The resource is the HTTP method applied and the representation is the status code returned",
         "The resource is the database row and the representation is the URI pointing at it",
-        "The resource is the HTTP method applied and the representation is the status code returned"
+        "The resource is the abstraction identified by the URI; the representation is one of its concrete forms (JSON, XML, HTML) transferred in a message"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El recurso es el concepto («el usuario 42»), estable en el tiempo aunque cambien sus datos; la representación es la fotografía concreta que se transfiere, y un mismo recurso puede tener varias (JSON, XML, HTML) negociadas con `Accept`. Identificar el recurso con el JSON, como hace la primera opción, impide entender la negociación de contenido. Identificarlo con una fila de la base de datos, como hace la tercera, es el error que produce APIs acopladas al esquema: un recurso puede agregar varias tablas o no existir en ninguna.",
       "explanation_en": "The resource is the concept (\"user 42\"), stable over time even as its data changes; the representation is the concrete snapshot that gets transferred, and one resource may have several (JSON, XML, HTML) negotiated with `Accept`. Equating the resource with the JSON, as the first option does, makes content negotiation impossible to understand. Equating it with a database row, as the third does, is the mistake that produces APIs coupled to the schema: a resource may aggregate several tables or exist in none.",
       "source": "Fielding, R. — Dissertation §5.2.1 (Resources and Resource Identifiers) / RFC 9110 §3.1",
@@ -168,18 +168,18 @@
       "question_es": "Observa esta traza de dos peticiones consecutivas:\n\n```\nPOST /login    -> 200 OK   (el servidor guarda user_id en una sesión en memoria)\nGET  /profile  -> 200 OK   (el servidor lee user_id de esa sesión)\n```\n\n¿Qué restricción REST se está violando?",
       "question_en": "Look at this trace of two consecutive requests:\n\n```\nPOST /login    -> 200 OK   (the server stores user_id in an in-memory session)\nGET  /profile  -> 200 OK   (the server reads user_id from that session)\n```\n\nWhich REST constraint is being violated?",
       "options_es": [
-        "Cacheabilidad",
-        "Cliente-servidor",
         "Sin estado (stateless)",
+        "Cliente-servidor",
+        "Cacheabilidad",
         "Código bajo demanda"
       ],
       "options_en": [
-        "Cacheability",
-        "Client-server",
         "Stateless",
+        "Client-server",
+        "Cacheability",
         "Code-on-demand"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "`GET /profile` no es autónoma: solo significa algo si el servidor recuerda la petición anterior. Eso es estado de sesión en el servidor, justo lo que prohíbe la restricción stateless; la versión RESTful envía la credencial —un token, por ejemplo— en cada petición. Cliente-servidor tienta, pero esa separación sigue intacta. Sistema en capas y cacheabilidad tientan porque las sesiones pegajosas estorban a balanceadores y cachés: eso son síntomas, no la restricción incumplida.",
       "explanation_en": "`GET /profile` is not self-contained: it only means anything if the server remembers the previous request. That is server-side session state, exactly what the stateless constraint forbids; the RESTful version sends the credential - a token, say - on every request. Client-server is tempting, but that separation is still intact. Layered system and cacheability are tempting because sticky sessions get in the way of load balancers and caches: those are symptoms, not the constraint being broken.",
       "source": "Fielding, R. — Dissertation §5.1.3 (Stateless)",
@@ -198,17 +198,17 @@
       "question_en": "A client sends `DELETE /orders/17` and gets back `204 No Content`. Because of a network timeout it retries the same request and now gets `404 Not Found`. Is DELETE still an idempotent method?",
       "options_es": [
         "No: como la segunda respuesta es distinta, el método deja de ser idempotente",
-        "No: en HTTP solo GET es idempotente",
+        "Sí: la idempotencia se define sobre el efecto en el servidor, no sobre el código de estado devuelto",
         "Sí, pero únicamente si el servidor devuelve siempre `204` en los reintentos",
-        "Sí: la idempotencia se define sobre el efecto en el servidor, no sobre el código de estado devuelto"
+        "No: en HTTP solo GET es idempotente"
       ],
       "options_en": [
         "No: since the second response differs, the method stops being idempotent",
-        "No: in HTTP only GET is idempotent",
+        "Yes: idempotency is defined over the effect on the server, not over the status code returned",
         "Yes, but only if the server always returns `204` on retries",
-        "Yes: idempotency is defined over the effect on the server, not over the status code returned"
+        "No: in HTTP only GET is idempotent"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "RFC 9110 define idempotente como que el efecto pretendido en el servidor de varias peticiones idénticas sea el mismo que el de una sola. Tras el primer DELETE el pedido ya no existe, y sigue sin existir tras el segundo: el efecto es idéntico aunque la respuesta cambie. Las tres opciones incorrectas nacen del mismo malentendido —creer que idempotente significa «misma respuesta»—, y ese malentendido produce clientes que no reintentan operaciones perfectamente seguras de reintentar. GET, HEAD, PUT y DELETE son idempotentes; POST no.",
       "explanation_en": "RFC 9110 defines idempotent as the intended effect on the server of several identical requests being the same as that of a single one. After the first DELETE the order no longer exists, and it still does not exist after the second: the effect is identical even though the response changes. The three wrong options all come from the same misunderstanding - believing idempotent means \"same response\" - and that misunderstanding produces clients that refuse to retry operations which are perfectly safe to retry. GET, HEAD, PUT and DELETE are idempotent; POST is not.",
       "source": "RFC 9110 §9.2.2 (Idempotent Methods) y §9.3.5 (DELETE)",
@@ -342,16 +342,16 @@
       "options_es": [
         "`404 Not Found`, porque no hay ninguna ruta DELETE registrada",
         "`400 Bad Request`, porque el método enviado no es válido",
-        "`501 Not Implemented`, porque falta implementar DELETE",
-        "`405 Method Not Allowed`, incluyendo una cabecera `Allow: GET, POST`"
+        "`405 Method Not Allowed`, incluyendo una cabecera `Allow: GET, POST`",
+        "`501 Not Implemented`, porque falta implementar DELETE"
       ],
       "options_en": [
         "`404 Not Found`, because no DELETE route is registered",
         "`400 Bad Request`, because the method sent is not valid",
-        "`501 Not Implemented`, because DELETE has yet to be implemented",
-        "`405 Method Not Allowed`, including an `Allow: GET, POST` header"
+        "`405 Method Not Allowed`, including an `Allow: GET, POST` header",
+        "`501 Not Implemented`, because DELETE has yet to be implemented"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "405 dice justo lo que ocurre: el recurso existe pero no admite ese método, y RFC 9110 obliga a enviar `Allow` con los que sí admite, de modo que el cliente se corrija sin adivinar. 404 tienta si uno piensa en «rutas» del framework en lugar de en recursos, y además oculta que el artículo existe. 400 es para sintaxis mal formada, no para un método perfectamente válido. 501 tienta por el verbo «implementar», pero es un 5xx: se reserva a métodos que el servidor no reconoce en absoluto, no a los que este recurso concreto no ofrece.",
       "explanation_en": "405 says exactly what is happening: the resource exists but does not support that method, and RFC 9110 requires sending `Allow` listing the ones it does, so the client can correct itself without guessing. 404 is tempting if you think in framework \"routes\" rather than resources, and it also hides the fact that the article exists. 400 is for malformed syntax, not for a perfectly valid method. 501 is tempting because of the word \"implement\", but it is a 5xx: it is reserved for methods the server does not recognise at all, not for ones this particular resource does not offer.",
       "source": "RFC 9110 §15.5.6 (405 Method Not Allowed) y §10.2.1 (Allow)",
@@ -412,18 +412,18 @@
       "question_es": "Los comentarios pertenecen a publicaciones, que a su vez pertenecen a usuarios. ¿Cuál es la mejor decisión de diseño para recuperar un comentario concreto?",
       "question_en": "Comments belong to posts, which in turn belong to users. What is the best design decision for retrieving one specific comment?",
       "options_es": [
-        "`GET /comments/{commentId}`: el comentario ya se identifica de forma única, así que anidar más allá de un nivel solo alarga la URI sin añadir información",
+        "`POST /comments/get` con los tres identificadores en el cuerpo",
         "`GET /users/{u}/posts/{p}/comments/{c}`: la URI debe reflejar siempre la jerarquía completa del modelo de datos",
         "`GET /comments?user={u}&post={p}&comment={c}`: toda identificación debe viajar en la query string",
-        "`POST /comments/get` con los tres identificadores en el cuerpo"
+        "`GET /comments/{commentId}`: el comentario ya se identifica de forma única, así que anidar más allá de un nivel solo alarga la URI sin añadir información"
       ],
       "options_en": [
-        "`GET /comments/{commentId}`: the comment is already uniquely identified, so nesting beyond one level only lengthens the URI without adding information",
+        "`POST /comments/get` with the three identifiers in the body",
         "`GET /users/{u}/posts/{p}/comments/{c}`: the URI must always mirror the full hierarchy of the data model",
         "`GET /comments?user={u}&post={p}&comment={c}`: all identification should travel in the query string",
-        "`POST /comments/get` with the three identifiers in the body"
+        "`GET /comments/{commentId}`: the comment is already uniquely identified, so nesting beyond one level only lengthens the URI without adding information"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "La jerarquía profunda tienta porque «describe mejor» el modelo, pero acopla la URI al esquema: el día que un comentario pueda colgar de otra cosa, todas las URIs publicadas se rompen, y mientras tanto obliga al cliente a conocer datos que no necesita. La convención útil es anidar un solo nivel para expresar el ámbito de una colección (`/posts/{p}/comments`) y exponer los miembros en primer nivel. La tercera opción confunde identificar con filtrar: la ruta identifica, la query filtra. La cuarta es RPC disfrazado y además vuelve insegura y no cacheable una simple lectura.",
       "explanation_en": "Deep hierarchy is tempting because it \"describes the model better\", but it couples the URI to the schema: the day a comment can hang off something else, every published URI breaks, and in the meantime it forces the client to know data it does not need. The useful convention is to nest one level to express a collection's scope (`/posts/{p}/comments`) and expose members at the top level. The third option confuses identifying with filtering: the path identifies, the query filters. The fourth is RPC in disguise and it also makes a plain read unsafe and uncacheable.",
       "source": "Fielding, R. — Dissertation §5.2.1 (Resources and Resource Identifiers) / RFC 9110 §4.2 (http URI scheme)",
@@ -442,17 +442,17 @@
       "question_en": "A busy feed is paginated with `?offset=N&limit=20`. Users complain about seeing repeated items and about others vanishing between pages. What is the cause and the idiomatic fix?",
       "options_es": [
         "El límite es demasiado bajo; subir `limit` a 200 elimina el problema",
-        "Falta cachear la respuesta; con `Cache-Control: public` las páginas serían consistentes",
         "El offset se calcula sobre un conjunto que cambia entre peticiones; una paginación por cursor, anclada al último elemento devuelto, es estable ante inserciones",
+        "Falta cachear la respuesta; con `Cache-Control: public` las páginas serían consistentes",
         "Hay que mover la paginación al cuerpo de un `POST`, porque las query strings tienen longitud limitada"
       ],
       "options_en": [
         "The limit is too low; raising `limit` to 200 makes the problem go away",
-        "The response is not cached; with `Cache-Control: public` the pages would be consistent",
         "The offset is computed over a set that changes between requests; cursor pagination, anchored to the last item returned, is stable under insertions",
+        "The response is not cached; with `Cache-Control: public` the pages would be consistent",
         "Pagination should move into the body of a `POST`, because query strings have a length limit"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Con offset, cada petición es independiente —como exige la restricción stateless— y se evalúa contra el estado actual: si se insertan elementos al principio, todo se desplaza y el cliente vuelve a ver lo ya visto. El cursor codifica «continúa después de este elemento», así que las inserciones no lo desplazan. Subir el límite solo reduce el número de saltos, no la carrera. Cachear congelaría copias sin resolver la inconsistencia, y un feed personalizado no es `public`. Mover la paginación a un POST rompe la seguridad y la cacheabilidad de una lectura para resolver un problema que aquí no existe.",
       "explanation_en": "With offset, each request is independent - as the stateless constraint requires - and is evaluated against the current state: if items are inserted at the head, everything shifts and the client re-reads what it already saw. A cursor encodes \"continue after this item\", so insertions do not shift it. Raising the limit only reduces the number of hops, not the race. Caching would freeze copies without fixing the inconsistency, and a personalised feed is not `public`. Moving pagination into a POST breaks the safety and cacheability of a read to solve a problem that is not present here.",
       "source": "RFC 9110 §4.2 (http URI scheme) y §9.3.1 (GET) / Fielding, R. — Dissertation §5.1.3 (Stateless)",
@@ -520,18 +520,18 @@
       "question_es": "Necesitas exponer «reenviar el correo de confirmación» de un pedido. ¿Qué diseño encaja mejor con REST?",
       "question_en": "You need to expose \"resend the confirmation email\" for an order. Which design fits REST best?",
       "options_es": [
-        "`GET /orders/{id}/resendConfirmation`, ya que la operación no modifica el pedido",
         "Modelar la acción como un recurso subordinado: `POST /orders/{id}/confirmation-emails`, que crea un nuevo envío",
+        "`GET /orders/{id}/resendConfirmation`, ya que la operación no modifica el pedido",
         "`POST /api/resendOrderConfirmation` con el identificador del pedido en el cuerpo",
         "`PUT /orders/{id}?action=resend`, usando un parámetro de consulta para indicar el verbo"
       ],
       "options_en": [
-        "`GET /orders/{id}/resendConfirmation`, since the operation does not modify the order",
         "Model the action as a subordinate resource: `POST /orders/{id}/confirmation-emails`, which creates a new send",
+        "`GET /orders/{id}/resendConfirmation`, since the operation does not modify the order",
         "`POST /api/resendOrderConfirmation` with the order identifier in the body",
         "`PUT /orders/{id}?action=resend`, using a query parameter to carry the verb"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "REST modela sustantivos: una acción con efecto se convierte en un recurso subordinado que se crea con POST, y así queda además algo direccionable —los envíos realizados— que se puede listar o auditar. La primera opción es doblemente peligrosa: mete un verbo en la URI y usa GET, que debe ser seguro; un prefetch del navegador o un rastreador dispararían correos reales. La tercera es RPC sobre HTTP con otro nombre. La cuarta esconde el verbo en la query string y, además, PUT significa reemplazar el pedido completo, que no es lo que ocurre.",
       "explanation_en": "REST models nouns: an action with an effect becomes a subordinate resource created with POST, which also leaves something addressable behind - the sends performed - that you can list or audit. The first option is doubly dangerous: it puts a verb in the URI and uses GET, which must be safe; a browser prefetch or a crawler would fire real emails. The third is RPC over HTTP under another name. The fourth hides the verb in the query string and, on top of that, PUT means replacing the whole order, which is not what happens.",
       "source": "RFC 9110 §9.2.1 (Safe Methods) y §9.3.3 (POST)",
@@ -597,18 +597,18 @@
       "question_es": "Un endpoint `POST /payments` puede cobrar dos veces si el cliente reintenta tras un timeout. ¿Qué rediseño resuelve el problema apoyándose en la semántica HTTP?",
       "question_en": "A `POST /payments` endpoint can charge twice if the client retries after a timeout. Which redesign fixes it by leaning on HTTP semantics?",
       "options_es": [
-        "Que el cliente genere el identificador del pago y este se cree con `PUT /payments/{id}`: PUT es idempotente, así que el reintento sobre la misma URI no produce un segundo cobro",
+        "Añadir `Cache-Control: no-store` a la respuesta, para que el reintento no se sirva desde una caché intermedia",
         "Cambiar el método a `GET` con los datos en la query string, porque GET es seguro y se puede reintentar sin riesgo",
         "Responder `200 OK` en lugar de `201 Created`, para que el cliente entienda que no debe reintentar",
-        "Añadir `Cache-Control: no-store` a la respuesta, para que el reintento no se sirva desde una caché intermedia"
+        "Que el cliente genere el identificador del pago y este se cree con `PUT /payments/{id}`: PUT es idempotente, así que el reintento sobre la misma URI no produce un segundo cobro"
       ],
       "options_en": [
-        "Have the client generate the payment identifier and create it with `PUT /payments/{id}`: PUT is idempotent, so retrying against the same URI produces no second charge",
+        "Add `Cache-Control: no-store` to the response, so the retry is not served from an intermediate cache",
         "Switch the method to `GET` with the data in the query string, because GET is safe and can be retried without risk",
         "Answer `200 OK` instead of `201 Created`, so the client understands it must not retry",
-        "Add `Cache-Control: no-store` to the response, so the retry is not served from an intermediate cache"
+        "Have the client generate the payment identifier and create it with `PUT /payments/{id}`: PUT is idempotent, so retrying against the same URI produces no second charge"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "PUT sobre una URI elegida por el cliente es idempotente por definición: el segundo PUT encuentra el pago ya creado y el efecto en el servidor es el mismo. La segunda opción invierte el razonamiento: GET es seguro precisamente porque no debe tener efectos, así que usarlo para cobrar es peor, no mejor, y además mete datos sensibles en la URI, que acaba en logs y en el historial. La tercera confunde el código de estado con la política de reintentos del cliente: el timeout ocurre antes de ver código alguno. La cuarta ataca un problema de caché que no es la causa del cobro duplicado.",
       "explanation_en": "PUT to a client-chosen URI is idempotent by definition: the second PUT finds the payment already created and the effect on the server is the same. The second option inverts the reasoning: GET is safe precisely because it should have no effects, so using it to charge money is worse, not better, and it also puts sensitive data in the URI, which ends up in logs and history. The third confuses the status code with the client's retry policy: the timeout happens before any code is seen. The fourth attacks a caching problem that is not the cause of the duplicate charge.",
       "source": "RFC 9110 §9.2.2 (Idempotent Methods) y §9.3.4 (PUT)",
@@ -626,18 +626,18 @@
       "question_es": "En OpenAPI 3.x, el objeto Parameter declara dónde viaja cada parámetro mediante el campo `in`. ¿Qué valores admite ese campo?",
       "question_en": "In OpenAPI 3.x, the Parameter object declares where each parameter travels through the `in` field. Which values does that field accept?",
       "options_es": [
-        "`body`, `formData`, `query`, `path`",
         "`path`, `query`, `header`, `cookie`",
+        "`body`, `formData`, `query`, `path`",
         "`get`, `post`, `put`, `delete`",
         "`required`, `optional`, `deprecated`, `nullable`"
       ],
       "options_en": [
-        "`body`, `formData`, `query`, `path`",
         "`path`, `query`, `header`, `cookie`",
+        "`body`, `formData`, `query`, `path`",
         "`get`, `post`, `put`, `delete`",
         "`required`, `optional`, `deprecated`, `nullable`"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "En 3.x el cuerpo dejó de ser un parámetro y pasó a ser `requestBody`, con su propio mapa `content` indexado por tipo de medio. Por eso la primera opción es la trampa útil: `body` y `formData` eran valores válidos en Swagger 2.0, y es el error típico de quien aprendió con la versión anterior o copia ejemplos antiguos. La tercera confunde parámetros con métodos HTTP, que son las claves del Path Item, y la cuarta enumera modificadores del propio parámetro o del esquema, no ubicaciones.",
       "explanation_en": "In 3.x the body stopped being a parameter and became `requestBody`, with its own `content` map keyed by media type. That makes the first option the useful trap: `body` and `formData` were valid values in Swagger 2.0, and it is the classic mistake of anyone who learned the earlier version or copies old examples. The third confuses parameters with HTTP methods, which are the Path Item's keys, and the fourth lists modifiers of the parameter or the schema, not locations.",
       "source": "OpenAPI Specification 3.1 — Parameter Object",
@@ -657,16 +657,16 @@
       "options_es": [
         "Con dos operaciones `post` distintas bajo la misma ruta, una por formato",
         "Con un parámetro `in: body` por cada formato admitido",
-        "Con el campo `consumes: [application/json, application/x-www-form-urlencoded]` en la operación",
-        "Con un único `requestBody` cuyo mapa `content` tiene una entrada por tipo de medio, cada una con su propio `schema`"
+        "Con un único `requestBody` cuyo mapa `content` tiene una entrada por tipo de medio, cada una con su propio `schema`",
+        "Con el campo `consumes: [application/json, application/x-www-form-urlencoded]` en la operación"
       ],
       "options_en": [
         "With two separate `post` operations under the same path, one per format",
         "With one `in: body` parameter per accepted format",
-        "With a `consumes: [application/json, application/x-www-form-urlencoded]` field on the operation",
-        "With a single `requestBody` whose `content` map has one entry per media type, each with its own `schema`"
+        "With a single `requestBody` whose `content` map has one entry per media type, each with its own `schema`",
+        "With a `consumes: [application/json, application/x-www-form-urlencoded]` field on the operation"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "El mapa `content` está indexado por tipo de medio, así que un mismo cuerpo puede describirse en varios formatos, cada uno con su esquema. `consumes` y `produces` existían en Swagger 2.0 y desaparecieron en 3.x precisamente porque no permitían asociar un esquema distinto a cada formato: por eso tientan a quien viene de la versión anterior, igual que `in: body`. La primera opción es directamente imposible: dentro de un Path Item cada método HTTP es una clave única y no puede repetirse.",
       "explanation_en": "The `content` map is keyed by media type, so one body can be described in several formats, each with its own schema. `consumes` and `produces` existed in Swagger 2.0 and disappeared in 3.x precisely because they could not attach a different schema per format: that is why they tempt anyone coming from the earlier version, as does `in: body`. The first option is outright impossible: inside a Path Item each HTTP method is a unique key and cannot repeat.",
       "source": "OpenAPI Specification 3.1 — Request Body Object / Media Type Object",
@@ -684,18 +684,18 @@
       "question_es": "Un validador rechaza este fragmento de documento OpenAPI 3.1:\n\n```yaml\npaths:\n  /users/{id}:\n    get:\n      parameters:\n        - name: id\n          in: path\n          schema:\n            type: integer\n      responses:\n        '200':\n          description: OK\n```\n\n¿Por qué?",
       "question_en": "A validator rejects this OpenAPI 3.1 document fragment:\n\n```yaml\npaths:\n  /users/{id}:\n    get:\n      parameters:\n        - name: id\n          in: path\n          schema:\n            type: integer\n      responses:\n        '200':\n          description: OK\n```\n\nWhy?",
       "options_es": [
-        "Un parámetro con `in: path` debe declarar `required: true`: el campo es obligatorio y su único valor válido es `true`",
         "Falta la sección `components`, que es obligatoria en todo documento OpenAPI",
+        "Un parámetro con `in: path` debe declarar `required: true`: el campo es obligatorio y su único valor válido es `true`",
         "`type: integer` no existe en OpenAPI; hay que usar `type: number`",
         "No se puede usar una plantilla `{id}` como parte de una clave de `paths`"
       ],
       "options_en": [
-        "A parameter with `in: path` must declare `required: true`: the field is mandatory and its only valid value is `true`",
         "The `components` section is missing, and it is mandatory in every OpenAPI document",
+        "A parameter with `in: path` must declare `required: true`: the field is mandatory and its only valid value is `true`",
         "`type: integer` does not exist in OpenAPI; you have to use `type: number`",
         "A `{id}` template cannot be used as part of a `paths` key"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Un parámetro de ruta forma parte de la propia URI, así que no puede ser opcional; la especificación lo formaliza exigiendo el campo con valor `true` en lugar de darlo por supuesto. El fallo es común porque en `query`, `header` y `cookie` el campo es opcional y vale `false` por defecto, de modo que uno interioriza «si no lo pongo, es opcional» y lo arrastra a `path`. Las demás opciones describen cosas perfectamente válidas: `components` es opcional, `integer` es un tipo correcto y la plantilla `{id}` es el mecanismo normal de la especificación para expresar variables en la ruta.",
       "explanation_en": "A path parameter is part of the URI itself, so it cannot be optional; the specification formalises that by requiring the field with the value `true` rather than assuming it. The mistake is common because in `query`, `header` and `cookie` the field is optional and defaults to `false`, so you internalise \"if I leave it out, it is optional\" and carry that over to `path`. The other options describe perfectly valid things: `components` is optional, `integer` is a correct type, and the `{id}` template is the specification's normal way of expressing path variables.",
       "source": "OpenAPI Specification 3.1 — Parameter Object (required)",
@@ -757,18 +757,18 @@
       "question_es": "En OpenAPI 3.x, ¿qué sustituye a los campos `host`, `basePath` y `schemes` de Swagger 2.0?",
       "question_en": "In OpenAPI 3.x, what replaces Swagger 2.0's `host`, `basePath` and `schemes` fields?",
       "options_es": [
-        "El objeto `info`, indicando la dirección en `info.contact`",
-        "El objeto `externalDocs`, que apunta a dónde está desplegada la API",
         "El array `servers`, donde cada entrada tiene una `url` (opcionalmente con variables de plantilla) y una descripción",
+        "El objeto `externalDocs`, que apunta a dónde está desplegada la API",
+        "El objeto `info`, indicando la dirección en `info.contact`",
         "Un campo `baseUrl` declarado dentro de cada operación"
       ],
       "options_en": [
-        "The `info` object, giving the address in `info.contact`",
-        "The `externalDocs` object, which points at where the API is deployed",
         "The `servers` array, where each entry has a `url` (optionally with template variables) and a description",
+        "The `externalDocs` object, which points at where the API is deployed",
+        "The `info` object, giving the address in `info.contact`",
         "A `baseUrl` field declared inside each operation"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "`servers` puede declararse en la raíz, en un Path Item o en una operación concreta, y gana la declaración más cercana: por eso un solo documento describe producción, staging y sandbox, e incluso un endpoint alojado aparte. Las variables de plantilla (`https://{region}.api.example.com`) cubren el despliegue multirregión. `info` lleva solo metadatos —título, versión, contacto, licencia— y `externalDocs` enlaza documentación en prosa, no entornos; la última opción inventa un campo que la especificación no define.",
       "explanation_en": "`servers` can be declared at the root, on a Path Item or on a specific operation, and the closest declaration wins: that is how one document describes production, staging and sandbox, or even an endpoint hosted elsewhere. Template variables (`https://{region}.api.example.com`) cover multi-region deployments. `info` carries metadata only - title, version, contact, licence - and `externalDocs` links prose documentation, not environments; the last option invents a field the specification does not define.",
       "source": "OpenAPI Specification 3.1 — Server Object",
@@ -787,17 +787,17 @@
       "question_en": "What is `operationId` for in an OpenAPI operation, and what constraint does it carry?",
       "options_es": [
         "Es el identificador del recurso y debe coincidir con el `{id}` declarado en la ruta",
-        "Es un nombre único en todo el documento que identifica la operación; los generadores de código lo usan como nombre del método en el cliente",
+        "Es obligatorio, y el servidor lo usa en tiempo de ejecución para enrutar las peticiones entrantes",
         "Indica el orden en que deben ejecutarse las operaciones documentadas",
-        "Es obligatorio, y el servidor lo usa en tiempo de ejecución para enrutar las peticiones entrantes"
+        "Es un nombre único en todo el documento que identifica la operación; los generadores de código lo usan como nombre del método en el cliente"
       ],
       "options_en": [
         "It is the resource identifier and must match the `{id}` declared in the path",
-        "It is a document-wide unique name identifying the operation; code generators use it as the client's method name",
+        "It is mandatory, and the server uses it at runtime to route incoming requests",
         "It indicates the order in which the documented operations must be executed",
-        "It is mandatory, and the server uses it at runtime to route incoming requests"
+        "It is a document-wide unique name identifying the operation; code generators use it as the client's method name"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`operationId` es opcional pero, si se usa, debe ser único en todo el documento; los generadores lo convierten en el nombre del método del SDK, de modo que renombrarlo es un cambio incompatible para todo cliente generado. La primera opción lo confunde con un identificador de recurso. La tercera atribuye a un documento descriptivo un orden de ejecución que no existe. La cuarta es la forma concreta del malentendido «OpenAPI es ejecutable»: el documento describe la API, no la enruta ni la implementa.",
       "explanation_en": "`operationId` is optional but, when used, must be unique across the whole document; generators turn it into the SDK's method name, so renaming it is a breaking change for every generated client. The first option confuses it with a resource identifier. The third attributes an execution order to a descriptive document, where none exists. The fourth is the concrete form of the \"OpenAPI is executable\" misunderstanding: the document describes the API, it does not route or implement it.",
       "source": "OpenAPI Specification 3.1 — Operation Object (operationId)",

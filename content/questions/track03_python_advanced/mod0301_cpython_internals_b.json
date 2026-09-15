@@ -8,23 +8,28 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport threading\n\ndatos = []\n\ndef agregar():\n    for i in range(1000):\n        datos.append(i)\n\nhilos = [threading.Thread(target=agregar) for _ in range(2)]\nfor h in hilos:\n    h.start()\nfor h in hilos:\n    h.join()\nprint(len(datos))\n```",
       "question_en": "What does the following code print?\n```python\nimport threading\n\ndata = []\n\ndef add():\n    for i in range(1000):\n        data.append(i)\n\nthreads = [threading.Thread(target=add) for _ in range(2)]\nfor t in threads:\n    t.start()\nfor t in threads:\n    t.join()\nprint(len(data))\n```",
       "options_es": [
-        "2000",
+        "RuntimeError: list changed size during iteration",
         "Un número variable menor que 2000 por una condición de carrera",
         "1000",
-        "RuntimeError: list changed size during iteration"
+        "2000"
       ],
       "options_en": [
-        "2000",
+        "RuntimeError: list changed size during iteration",
         "A variable number below 2000 because of a race condition",
         "1000",
-        "RuntimeError: list changed size during iteration"
+        "2000"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`list.append` es una única operación que se completa dentro del intérprete sin soltar el GIL, así que nunca se pierde un elemento: siempre 2000. La respuesta \"menor que 2000\" es tentadora porque suena a la condición de carrera clásica, pero esa sólo aparece cuando la operación se compone de varios bytecodes (`x += 1`). \"1000\" asume que los hilos comparten el bucle, no la lista. El RuntimeError sólo ocurre al mutar una lista mientras se itera sobre ella.",
       "explanation_en": "`list.append` is a single operation that completes inside the interpreter without releasing the GIL, so no element is ever lost: always 2000. \"Below 2000\" is tempting because it sounds like the classic race condition, but that one only shows up when the operation spans several bytecodes (`x += 1`). \"1000\" assumes the threads share the loop rather than the list. The RuntimeError only happens when mutating a list while iterating it.",
       "source": "CPython docs 3.13 - threading / FAQ: What kinds of global value mutation are thread-safe?",
       "expected_time_ms": 45000,
-      "tags": ["cpython", "gil", "threading", "atomicity"]
+      "tags": [
+        "cpython",
+        "gil",
+        "threading",
+        "atomicity"
+      ]
     },
     {
       "id": "q030101011",
@@ -50,7 +55,12 @@
       "explanation_en": "The free-threaded build drops the GIL and protects objects with biased reference counting plus per-object locks; the price is more work per operation and, in 3.13, slower single-threaded performance. It is not a JIT (the machine-code option) and has nothing to do with asyncio, which is single-threaded concurrency. Reference counting does not go away either: it gets more expensive, which is exactly why the change is contentious.",
       "source": "PEP 703 - Making the Global Interpreter Lock Optional in CPython",
       "expected_time_ms": 40000,
-      "tags": ["cpython", "gil", "pep703", "free-threading"]
+      "tags": [
+        "cpython",
+        "gil",
+        "pep703",
+        "free-threading"
+      ]
     },
     {
       "id": "q030101012",
@@ -61,22 +71,27 @@
       "question_en": "What does this code print on a freshly started standard CPython 3.13 build?\n```python\nimport sys\nprint(sys.getswitchinterval())\n```",
       "options_es": [
         "100 (número de bytecodes entre cambios de hilo)",
-        "0.0",
+        "0.005",
         "1.0",
-        "0.005"
+        "0.0"
       ],
       "options_en": [
         "100 (number of bytecodes between thread switches)",
-        "0.0",
+        "0.005",
         "1.0",
-        "0.005"
+        "0.0"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "El intervalo de cambio por defecto son 0.005 segundos: pasado ese tiempo, el intérprete pide al hilo que tiene el GIL que lo suelte. La opción \"100 bytecodes\" describe el mecanismo antiguo (`sys.setcheckinterval`, contaba instrucciones), retirado en Python 3.9; es la respuesta que da quien aprendió el modelo de Python 2. `0.0` implicaría ceder el GIL constantemente y `1.0` haría que un hilo monopolizara el intérprete un segundo entero.",
       "explanation_en": "The default switch interval is 0.005 seconds: after that, the interpreter asks the thread holding the GIL to drop it. The \"100 bytecodes\" option describes the old mechanism (`sys.setcheckinterval`, which counted instructions), removed in Python 3.9; it is the answer of someone who learned the Python 2 model. `0.0` would mean yielding the GIL constantly, and `1.0` would let one thread hog the interpreter for a full second.",
       "source": "CPython docs 3.13 - sys.getswitchinterval",
       "expected_time_ms": 35000,
-      "tags": ["cpython", "gil", "sys", "scheduling"]
+      "tags": [
+        "cpython",
+        "gil",
+        "sys",
+        "scheduling"
+      ]
     },
     {
       "id": "q030101013",
@@ -85,14 +100,25 @@
       "difficulty_tier": "easy",
       "question_es": "El GIL se libera mientras un hilo espera una operación de I/O bloqueante, como leer de un socket o de un archivo.",
       "question_en": "The GIL is released while a thread waits on a blocking I/O operation, such as reading from a socket or a file.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y es la razón por la que `threading` sigue siendo útil. Las llamadas al sistema bloqueantes sueltan el GIL antes de esperar y lo recuperan al volver, así que otros hilos avanzan mientras uno espera datos. El error frecuente es deducir de \"el GIL serializa todo\" que los hilos no sirven para nada: sólo son inútiles cuando el trabajo es de CPU puro.",
       "explanation_en": "True, and it is why `threading` is still useful. Blocking system calls release the GIL before waiting and reacquire it on return, so other threads make progress while one waits for data. The common mistake is to infer from \"the GIL serialises everything\" that threads are useless: they are only useless when the work is pure CPU.",
       "source": "CPython docs 3.13 - threading / Glossary: global interpreter lock",
       "expected_time_ms": 22000,
-      "tags": ["cpython", "gil", "io-bound", "threading"]
+      "tags": [
+        "cpython",
+        "gil",
+        "io-bound",
+        "threading"
+      ]
     },
     {
       "id": "q030101014",
@@ -118,7 +144,12 @@
       "explanation_en": "Every CPython object carries a reference count that is touched constantly; making that atomic per object would cost more than the useful work, so one global lock is cheaper and additionally keeps safe the thousands of C extensions written assuming it exists. The GIL has no cross-process scope (each process has its own), does not cap memory, and says nothing about other implementations: Jython and IronPython have none.",
       "source": "CPython docs 3.13 - Glossary: global interpreter lock / C API: Thread State and the GIL",
       "expected_time_ms": 38000,
-      "tags": ["cpython", "gil", "refcount", "design"]
+      "tags": [
+        "cpython",
+        "gil",
+        "refcount",
+        "design"
+      ]
     },
     {
       "id": "q030101015",
@@ -133,7 +164,12 @@
       "explanation_en": "`ProcessPoolExecutor` uses `multiprocessing` underneath, so each worker is a process with its own interpreter and its own GIL: real parallelism. Its twin `ThreadPoolExecutor` shares the API exactly, and that is the trap: changing one word in the import speeds up nothing if the work is CPU-bound. In exchange, arguments and results must be picklable.",
       "source": "CPython docs 3.13 - concurrent.futures",
       "expected_time_ms": 32000,
-      "tags": ["cpython", "gil", "concurrent-futures", "parallelism"]
+      "tags": [
+        "cpython",
+        "gil",
+        "concurrent-futures",
+        "parallelism"
+      ]
     },
     {
       "id": "q030101016",
@@ -143,23 +179,28 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport threading, time\n\ndef esperar():\n    time.sleep(1)\n\nt0 = time.time()\nhilos = [threading.Thread(target=esperar) for _ in range(3)]\nfor h in hilos:\n    h.start()\nfor h in hilos:\n    h.join()\nprint(round(time.time() - t0))\n```",
       "question_en": "What does the following code print?\n```python\nimport threading, time\n\ndef wait():\n    time.sleep(1)\n\nt0 = time.time()\nthreads = [threading.Thread(target=wait) for _ in range(3)]\nfor t in threads:\n    t.start()\nfor t in threads:\n    t.join()\nprint(round(time.time() - t0))\n```",
       "options_es": [
-        "1",
+        "9",
         "0",
         "3",
-        "9"
+        "1"
       ],
       "options_en": [
-        "1",
+        "9",
         "0",
         "3",
-        "9"
+        "1"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`time.sleep` suelta el GIL mientras duerme, así que los tres hilos esperan a la vez y el total es ~1 segundo, no 3. El \"3\" es la respuesta de quien cree que el GIL serializa también las esperas: serializa la ejecución de bytecode, no el tiempo bloqueado. El \"0\" saldría si `join()` no esperara, y \"9\" no corresponde a ningún modelo (3 hilos x 3 segundos).",
       "explanation_en": "`time.sleep` releases the GIL while sleeping, so all three threads wait simultaneously and the total is ~1 second, not 3. \"3\" is the answer of someone who thinks the GIL serialises waiting too: it serialises bytecode execution, not blocked time. \"0\" would appear if `join()` did not wait, and \"9\" matches no model at all (3 threads x 3 seconds).",
       "source": "CPython docs 3.13 - time.sleep / threading",
       "expected_time_ms": 42000,
-      "tags": ["cpython", "gil", "io-bound", "threading"]
+      "tags": [
+        "cpython",
+        "gil",
+        "io-bound",
+        "threading"
+      ]
     },
     {
       "id": "q030101017",
@@ -185,7 +226,12 @@
       "explanation_en": "The GIL is not in the language specification: it is how CPython solved thread safety. Jython (on the JVM) and IronPython (on .NET) use their platform's collectors and need no GIL; PyPy does have one. Saying \"Python's GIL\" conflates language with implementation, which is exactly the confusion that hides why alternatives like PyPy or MicroPython exist.",
       "source": "CPython docs 3.13 - Reference: Alternate Implementations",
       "expected_time_ms": 38000,
-      "tags": ["cpython", "gil", "implementations", "pypy"]
+      "tags": [
+        "cpython",
+        "gil",
+        "implementations",
+        "pypy"
+      ]
     },
     {
       "id": "q030101018",
@@ -195,25 +241,29 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport threading\n\ncontador = 0\n\ndef incrementar():\n    global contador\n    for _ in range(100000):\n        contador += 1\n\nhilos = [threading.Thread(target=incrementar) for _ in range(2)]\nfor h in hilos:\n    h.start()\nfor h in hilos:\n    h.join()\nprint(contador <= 200000)\n```",
       "question_en": "What does the following code print?\n```python\nimport threading\n\ncounter = 0\n\ndef increment():\n    global counter\n    for _ in range(100000):\n        counter += 1\n\nthreads = [threading.Thread(target=increment) for _ in range(2)]\nfor t in threads:\n    t.start()\nfor t in threads:\n    t.join()\nprint(counter <= 200000)\n```",
       "options_es": [
-        "200000",
+        "True",
         "False, porque el GIL garantiza exactamente 200000",
         "RuntimeError por acceso concurrente a una variable global",
-        "True"
+        "200000"
       ],
       "options_en": [
-        "200000",
+        "True",
         "False, because the GIL guarantees exactly 200000",
         "RuntimeError from concurrent access to a global variable",
-        "True"
+        "200000"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "Imprime `True`, y la gracia está en por qué: `contador += 1` no es atómico, se compila en leer, sumar y guardar, y el GIL puede cambiar de hilo entre esos bytecodes, así que se pierden incrementos y el resultado suele ser menor que 200000 (por eso la comparación es `<=` y no `==`). Quien responde \"False\" cree que el GIL convierte cualquier operación en atómica; quien responde \"200000\" olvida que el `print` muestra una comparación, no el contador. Python nunca lanza un error por esto: simplemente da un número equivocado en silencio.",
       "explanation_en": "It prints `True`, and the point is why: `counter += 1` is not atomic, it compiles to load, add and store, and the GIL can switch threads between those bytecodes, so increments are lost and the result is usually below 200000 (hence `<=` rather than `==`). Answering \"False\" assumes the GIL makes every operation atomic; answering \"200000\" forgets the `print` shows a comparison, not the counter. Python never raises for this: it silently produces a wrong number.",
       "source": "CPython docs 3.13 - threading / FAQ: What kinds of global value mutation are thread-safe?",
       "expected_time_ms": 50000,
-      "tags": ["cpython", "gil", "race-condition", "gotcha"]
+      "tags": [
+        "cpython",
+        "gil",
+        "race-condition",
+        "gotcha"
+      ]
     },
-
     {
       "id": "q030102010",
       "skill_id": "sk030102",
@@ -222,23 +272,28 @@
       "question_es": "El recolector cíclico de CPython organiza los objetos en tres generaciones. ¿Qué idea justifica revisar la generación 0 muchísimo más a menudo que la 2?",
       "question_en": "CPython's cyclic collector organises objects into three generations. What idea justifies scanning generation 0 far more often than generation 2?",
       "options_es": [
-        "Que la generación 0 guarda sólo objetos pequeños y por eso es rápida de revisar",
         "La hipótesis generacional: la mayoría de los objetos muere joven, así que mirar a los recién creados encuentra más basura por unidad de trabajo",
+        "Que la generación 0 guarda sólo objetos pequeños y por eso es rápida de revisar",
         "Que los objetos de la generación 2 no pueden formar ciclos",
         "Que la generación 0 es la única que el conteo de referencias no cubre"
       ],
       "options_en": [
-        "That generation 0 holds only small objects and is therefore fast to scan",
         "The generational hypothesis: most objects die young, so scanning the newly created ones finds more garbage per unit of work",
+        "That generation 0 holds only small objects and is therefore fast to scan",
         "That generation 2 objects cannot take part in cycles",
         "That generation 0 is the only one reference counting does not cover"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "La hipótesis generacional es empírica: la inmensa mayoría de los objetos son temporales. Un objeto que sobrevive a una recolección se promueve, y los supervivientes de la generación 2 (estructuras de larga vida) casi nunca son basura, así que revisarlos con la misma frecuencia sería gastar tiempo para no encontrar nada. Las generaciones no clasifican por tamaño ni por capacidad de formar ciclos: los objetos viejos también los forman. Y el conteo de referencias cubre a todos por igual; el recolector sólo añade la detección de ciclos.",
       "explanation_en": "The generational hypothesis is empirical: the vast majority of objects are temporary. An object that survives a collection is promoted, and generation 2 survivors (long-lived structures) are almost never garbage, so scanning them as often would spend time finding nothing. Generations do not sort by size or by ability to form cycles: old objects form them too. And reference counting covers all objects equally; the collector only adds cycle detection.",
       "source": "CPython docs 3.13 - gc / Design of CPython's Garbage Collector (devguide)",
       "expected_time_ms": 40000,
-      "tags": ["cpython", "gc", "generational", "memory"]
+      "tags": [
+        "cpython",
+        "gc",
+        "generational",
+        "memory"
+      ]
     },
     {
       "id": "q030102011",
@@ -248,23 +303,28 @@
       "question_es": "¿Qué imprime el siguiente código en CPython?\n```python\na = \"py\" + \"thon\"\nb = \"python\"\nc = \"\".join([\"p\", \"y\"])\nd = \"py\"\nprint(a is b, c is d)\n```",
       "question_en": "What does the following code print in CPython?\n```python\na = \"py\" + \"thon\"\nb = \"python\"\nc = \"\".join([\"p\", \"y\"])\nd = \"py\"\nprint(a is b, c is d)\n```",
       "options_es": [
-        "True False",
-        "True True",
         "False False",
+        "True True",
+        "True False",
         "False True"
       ],
       "options_en": [
-        "True False",
-        "True True",
         "False False",
+        "True True",
+        "True False",
         "False True"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`\"py\" + \"thon\"` se pliega en tiempo de compilación a la constante `\"python\"`, que el compilador comparte con la constante idéntica de la línea siguiente: mismo objeto, `is` da True. `\"\".join([...])` construye la cadena en tiempo de ejecución, y CPython no interna automáticamente esas cadenas: objeto distinto, `is` da False aunque el contenido sea igual. Responder \"True True\" es asumir que el internado alcanza a cualquier cadena; \"False False\" es olvidar el plegado de constantes. La lección práctica: comparar cadenas con `is` funciona por accidente hasta que deja de funcionar.",
       "explanation_en": "`\"py\" + \"thon\"` is constant-folded at compile time into the constant `\"python\"`, which the compiler shares with the identical constant on the next line: same object, `is` gives True. `\"\".join([...])` builds the string at run time, and CPython does not automatically intern such strings: different object, `is` gives False even though the contents match. Answering \"True True\" assumes interning reaches every string; \"False False\" forgets constant folding. The practical lesson: comparing strings with `is` works by accident until it does not.",
       "source": "CPython docs 3.13 - sys.intern / Reference: The standard type hierarchy (immutable object caching)",
       "expected_time_ms": 48000,
-      "tags": ["cpython", "interning", "identity", "gotcha"]
+      "tags": [
+        "cpython",
+        "interning",
+        "identity",
+        "gotcha"
+      ]
     },
     {
       "id": "q030102012",
@@ -275,22 +335,27 @@
       "question_en": "What does the following code print?\n```python\nclass R:\n    def __del__(self):\n        print(\"bye\")\n\nx = R()\ny = x\ndel x\nprint(\"middle\")\ndel y\nprint(\"end\")\n```",
       "options_es": [
         "adios, medio, fin",
-        "medio, fin, adios",
         "medio, adios, fin",
+        "medio, fin, adios",
         "medio, fin (el objeto se libera al terminar el programa)"
       ],
       "options_en": [
         "bye, middle, end",
-        "middle, end, bye",
         "middle, bye, end",
+        "middle, end, bye",
         "middle, end (the object is freed when the program exits)"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`del x` sólo borra un nombre: el contador de referencias baja de 2 a 1 y el objeto sigue vivo, así que se imprime \"medio\" primero. `del y` lo deja en 0 y CPython lo destruye inmediatamente, llamando a `__del__` antes de la línea siguiente: \"adios\", luego \"fin\". La opción \"adios, medio, fin\" supone que `del` destruye el objeto, no el nombre. La última opción describe cómo se comportaría un recolector puramente generacional, como el de la JVM, donde la finalización no es determinista: en CPython el conteo de referencias la hace inmediata.",
       "explanation_en": "`del x` only deletes a name: the reference count drops from 2 to 1 and the object stays alive, so \"middle\" prints first. `del y` takes it to 0 and CPython destroys it immediately, calling `__del__` before the next line: \"bye\", then \"end\". The \"bye, middle, end\" option assumes `del` destroys the object rather than the name. The last option describes how a purely generational collector such as the JVM's would behave, where finalisation is non-deterministic: in CPython reference counting makes it immediate.",
       "source": "CPython docs 3.13 - Reference: Data model, object.__del__ / Extending: Reference Counts",
       "expected_time_ms": 42000,
-      "tags": ["cpython", "refcount", "del", "memory"]
+      "tags": [
+        "cpython",
+        "refcount",
+        "del",
+        "memory"
+      ]
     },
     {
       "id": "q030102013",
@@ -299,14 +364,25 @@
       "difficulty_tier": "hard",
       "question_es": "Un ciclo de referencias entre objetos que definen `__del__` nunca puede ser recolectado por el recolector cíclico y queda como fuga de memoria permanente.",
       "question_en": "A reference cycle between objects that define `__del__` can never be collected by the cyclic collector and leaks memory permanently.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso desde Python 3.4. La PEP 442 cambió la finalización para que el recolector pueda ejecutar `__del__` sobre objetos atrapados en un ciclo y liberarlos después; antes esos objetos iban a `gc.garbage` y ahí se quedaban. Es una de esas reglas que se repiten por inercia porque era cierta en Python 2 y en los primeros Python 3, y lleva a la gente a evitar `__del__` o a llenar el código de `weakref` sin necesidad.",
       "explanation_en": "False since Python 3.4. PEP 442 changed finalisation so the collector can run `__del__` on objects trapped in a cycle and free them afterwards; previously such objects landed in `gc.garbage` and stayed there. It is one of those rules repeated out of inertia because it was true in Python 2 and early Python 3, and it pushes people to avoid `__del__` or sprinkle `weakref` around unnecessarily.",
       "source": "PEP 442 - Safe object finalization",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "gc", "pep442", "cycles"]
+      "tags": [
+        "cpython",
+        "gc",
+        "pep442",
+        "cycles"
+      ]
     },
     {
       "id": "q030102014",
@@ -332,7 +408,12 @@
       "explanation_en": "Python creates and destroys small objects constantly; asking the OS every time would be ruinous, so pymalloc reserves large arenas, splits them into size-class pools and serves from there (above 512 bytes it delegates to `malloc`). It does not decide when to free: that is reference counting and the cyclic collector, operating at a different layer. And it never compacts or moves objects: it cannot, because `id()` exposes the address and C code holds raw pointers, unlike JVMs with copying collectors.",
       "source": "CPython docs 3.13 - C API: Memory Management",
       "expected_time_ms": 45000,
-      "tags": ["cpython", "pymalloc", "allocator", "memory"]
+      "tags": [
+        "cpython",
+        "pymalloc",
+        "allocator",
+        "memory"
+      ]
     },
     {
       "id": "q030102015",
@@ -347,9 +428,13 @@
       "explanation_en": "`tracemalloc` hooks into the allocator and attributes each live block to the source line that reserved it, so subtracting two snapshots points at the line piling up memory. It differs from `sys.getsizeof`, which measures one object without counting what it references, and from `gc`, which exposes the cycle collector but never says who allocated what.",
       "source": "CPython docs 3.13 - tracemalloc",
       "expected_time_ms": 32000,
-      "tags": ["cpython", "memory", "tracemalloc", "profiling"]
+      "tags": [
+        "cpython",
+        "memory",
+        "tracemalloc",
+        "profiling"
+      ]
     },
-
     {
       "id": "q030103010",
       "skill_id": "sk030103",
@@ -359,22 +444,27 @@
       "question_en": "What does the following code print?\n```python\ndef add(x, acc=[]):\n    acc.append(x)\n    return acc\n\nprint(add(1))\nprint(add(2))\n```",
       "options_es": [
         "[1] y luego [2]",
-        "[1] y luego [1, 2]",
         "[1] y luego []",
+        "[1] y luego [1, 2]",
         "TypeError: no se permiten listas como valor por defecto"
       ],
       "options_en": [
         "[1] then [2]",
-        "[1] then [1, 2]",
         "[1] then []",
+        "[1] then [1, 2]",
         "TypeError: lists are not allowed as default values"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El valor por defecto se evalúa UNA vez, al definir la función, y el objeto lista resultante queda guardado en `agregar.__defaults__`. Todas las llamadas comparten esa misma lista, así que se va acumulando. La respuesta \"[1] y luego [2]\" es la que da la intuición de que el defecto se reconstruye en cada llamada; es exactamente el modelo mental equivocado. Python no lo prohíbe porque el mismo mecanismo se usa a propósito para cachés y para capturar valores de bucle (`lambda x, n=n: ...`). El remedio es `acumulador=None` y crear la lista dentro.",
       "explanation_en": "The default value is evaluated ONCE, when the function is defined, and the resulting list object is stored in `add.__defaults__`. Every call shares that same list, so it accumulates. \"[1] then [2]\" is what the intuition that defaults are rebuilt per call predicts; that is exactly the wrong mental model. Python does not forbid it because the same mechanism is used deliberately for caches and for capturing loop values (`lambda x, n=n: ...`). The fix is `acc=None` and building the list inside.",
       "source": "CPython docs 3.13 - FAQ: Why are default values shared between objects?",
       "expected_time_ms": 40000,
-      "tags": ["cpython", "object-model", "mutable-default", "gotcha"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "mutable-default",
+        "gotcha"
+      ]
     },
     {
       "id": "q030103011",
@@ -384,23 +474,28 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef f():\n    pass\n\nf.cache = {}\nprint(f.__class__.__name__, hasattr(f, \"__dict__\"), f.cache)\n```",
       "question_en": "What does the following code print?\n```python\ndef f():\n    pass\n\nf.cache = {}\nprint(f.__class__.__name__, hasattr(f, \"__dict__\"), f.cache)\n```",
       "options_es": [
-        "function True {}",
-        "AttributeError: 'function' object has no attribute 'cache'",
         "builtin_function_or_method True {}",
+        "AttributeError: 'function' object has no attribute 'cache'",
+        "function True {}",
         "f True {}"
       ],
       "options_en": [
-        "function True {}",
-        "AttributeError: 'function' object has no attribute 'cache'",
         "builtin_function_or_method True {}",
+        "AttributeError: 'function' object has no attribute 'cache'",
+        "function True {}",
         "f True {}"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Una función es un objeto de tipo `function`, con su propio `__dict__`, así que se le pueden colgar atributos como a cualquier instancia (`functools.wraps` y varios decoradores viven de esto). El AttributeError es lo que espera quien piensa que las funciones son un constructo especial del lenguaje y no objetos. `builtin_function_or_method` es el tipo de las funciones implementadas en C, como `len`, no el de las definidas con `def`. Y `f` es el nombre de la función, no el de su clase: eso sería `f.__name__`.",
       "explanation_en": "A function is an object of type `function`, with its own `__dict__`, so attributes can be hung on it like on any instance (`functools.wraps` and several decorators rely on this). The AttributeError is what someone expects if they think functions are a special language construct rather than objects. `builtin_function_or_method` is the type of C-implemented functions such as `len`, not of those defined with `def`. And `f` is the function's name, not its class's: that would be `f.__name__`.",
       "source": "CPython docs 3.13 - Reference: Data model, user-defined functions",
       "expected_time_ms": 38000,
-      "tags": ["cpython", "object-model", "functions", "attributes"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "functions",
+        "attributes"
+      ]
     },
     {
       "id": "q030103012",
@@ -412,21 +507,26 @@
       "options_es": [
         "True True True",
         "False False False",
-        "True False False",
-        "True True False"
+        "True True False",
+        "True False False"
       ],
       "options_en": [
         "True True True",
         "False False False",
-        "True False False",
-        "True True False"
+        "True True False",
+        "True False False"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "`==` compara valor y da True; `is` compara identidad y da False porque son dos listas distintas creadas por separado. `a is b` y `id(a) == id(b)` son literalmente la misma pregunta en CPython, así que las dos últimas columnas coinciden siempre: por eso \"True True False\" es imposible, aunque tiente a quien no ha atado `is` con `id`. La confusión se alimenta de casos como `a = 256; b = 256`, donde el internado de enteros pequeños hace que `is` dé True y parezca que compara valores.",
       "explanation_en": "`==` compares value and gives True; `is` compares identity and gives False because these are two separately created lists. `a is b` and `id(a) == id(b)` are literally the same question in CPython, so the last two columns always agree: that is why \"True True False\" is impossible, however tempting it is to someone who has not linked `is` with `id`. The confusion is fed by cases like `a = 256; b = 256`, where small-integer interning makes `is` return True and look like a value comparison.",
       "source": "CPython docs 3.13 - Reference: Objects, values and types",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "object-model", "identity", "equality"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "identity",
+        "equality"
+      ]
     },
     {
       "id": "q030103013",
@@ -437,22 +537,27 @@
       "question_en": "When evaluating `obj.attr` on an ordinary instance, in what order does CPython look?",
       "options_es": [
         "Sólo en `obj.__dict__`; si no está, lanza AttributeError",
-        "Primero en `obj.__dict__`, y sólo si falla recorre el tipo y su MRO",
+        "Descriptores de datos del tipo (y su MRO), luego `obj.__dict__`, luego descriptores sin datos y atributos de clase, y al final `__getattr__`",
         "Primero en el MRO del tipo, y el `__dict__` de la instancia nunca se consulta salvo con `getattr`",
-        "Descriptores de datos del tipo (y su MRO), luego `obj.__dict__`, luego descriptores sin datos y atributos de clase, y al final `__getattr__`"
+        "Primero en `obj.__dict__`, y sólo si falla recorre el tipo y su MRO"
       ],
       "options_en": [
         "Only in `obj.__dict__`; if absent, it raises AttributeError",
-        "First `obj.__dict__`, and only on failure does it walk the type and its MRO",
+        "Data descriptors on the type (and its MRO), then `obj.__dict__`, then non-data descriptors and class attributes, and finally `__getattr__`",
         "First the type's MRO, and the instance `__dict__` is never consulted except through `getattr`",
-        "Data descriptors on the type (and its MRO), then `obj.__dict__`, then non-data descriptors and class attributes, and finally `__getattr__`"
+        "First `obj.__dict__`, and only on failure does it walk the type and its MRO"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "`object.__getattribute__` da prioridad a los descriptores de DATOS del tipo (los que definen `__set__` o `__delete__`, como `property`) por encima del diccionario de la instancia; sólo después mira `obj.__dict__`, y luego los descriptores sin datos, entre los que están las funciones, que es como los métodos se enlazan. \"Primero la instancia\" es la aproximación que se enseña y falla justo donde importa: explica por qué asignar a un atributo cubierto por una `property` no la sobrescribe. \"Sólo la instancia\" haría imposible heredar métodos, y `getattr(obj, 'attr')` es exactamente el mismo mecanismo, no uno distinto.",
       "explanation_en": "`object.__getattribute__` gives DATA descriptors on the type (those defining `__set__` or `__delete__`, such as `property`) priority over the instance dictionary; only then does it check `obj.__dict__`, and then non-data descriptors, functions among them, which is how methods bind. \"Instance first\" is the taught approximation and it fails exactly where it matters: it explains why assigning to an attribute covered by a `property` does not shadow it. \"Instance only\" would make method inheritance impossible, and `getattr(obj, 'attr')` is the very same mechanism, not a different one.",
       "source": "CPython docs 3.13 - Reference: Data model, Invoking Descriptors",
       "expected_time_ms": 50000,
-      "tags": ["cpython", "object-model", "descriptors", "mro"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "descriptors",
+        "mro"
+      ]
     },
     {
       "id": "q030103014",
@@ -463,22 +568,27 @@
       "question_en": "A class with millions of instances defines `__slots__ = ('x', 'y')`. What is gained and what is lost?",
       "options_es": [
         "Gana velocidad de cálculo porque los atributos pasan a ser tipados en C; no se pierde nada",
-        "Se ahorra memoria al no crear un `__dict__` por instancia, pero se pierde la capacidad de añadir atributos nuevos y, salvo que se declare `__weakref__`, de crear referencias débiles",
+        "Se gana inmutabilidad: las instancias ya no pueden modificar `x` ni `y`",
         "Se ahorra memoria porque las instancias comparten un único diccionario de clase, a costa de que los atributos sean globales a la clase",
-        "Se gana inmutabilidad: las instancias ya no pueden modificar `x` ni `y`"
+        "Se ahorra memoria al no crear un `__dict__` por instancia, pero se pierde la capacidad de añadir atributos nuevos y, salvo que se declare `__weakref__`, de crear referencias débiles"
       ],
       "options_en": [
         "It gains compute speed because attributes become C-typed; nothing is lost",
-        "Memory is saved by not creating a per-instance `__dict__`, but new attributes can no longer be added and, unless `__weakref__` is declared, weak references cannot be created",
+        "It gains immutability: instances can no longer modify `x` or `y`",
         "Memory is saved because instances share one class-level dictionary, at the cost of attributes being global to the class",
-        "It gains immutability: instances can no longer modify `x` or `y`"
+        "Memory is saved by not creating a per-instance `__dict__`, but new attributes can no longer be added and, unless `__weakref__` is declared, weak references cannot be created"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`__slots__` reemplaza el `__dict__` por huecos de tamaño fijo con descriptores de datos, y ese diccionario por instancia era justo el grueso del coste en objetos pequeños. Lo que se paga es rigidez: nada de atributos ad-hoc, `__weakref__` desaparece salvo que se pida, y la herencia múltiple con slots se complica. No aporta tipado (los huecos siguen guardando cualquier objeto) ni inmutabilidad: `obj.x = 3` funciona igual. Y la opción del diccionario compartido describe los atributos de clase, que es otra cosa.",
       "explanation_en": "`__slots__` replaces `__dict__` with fixed-size slots backed by data descriptors, and that per-instance dictionary was precisely the bulk of the cost for small objects. The price is rigidity: no ad-hoc attributes, `__weakref__` gone unless requested, and multiple inheritance with slots gets awkward. It adds no typing (slots still hold any object) and no immutability: `obj.x = 3` works as before. The shared-dictionary option describes class attributes, which is a different thing.",
       "source": "CPython docs 3.13 - Reference: Data model, __slots__",
       "expected_time_ms": 45000,
-      "tags": ["cpython", "object-model", "slots", "memory"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "slots",
+        "memory"
+      ]
     },
     {
       "id": "q030103015",
@@ -487,16 +597,26 @@
       "difficulty_tier": "hard",
       "question_es": "En CPython `id()` devuelve la dirección de memoria del objeto, y ese mismo valor puede reaparecer más tarde en un objeto distinto si el original ya fue liberado.",
       "question_en": "In CPython `id()` returns the object's memory address, and that same value can reappear later on a different object once the original has been freed.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El lenguaje sólo garantiza que el `id` es único y constante mientras el objeto vive; CPython lo implementa como la dirección, así que en cuanto el conteo de referencias llega a cero y el bloque se reutiliza, el siguiente objeto puede recibir el mismo número. Por eso guardar `id(obj)` en un registro o un caché es un error clásico: la comprobación sigue pasando pero apunta a otro objeto. Si se necesita una clave estable ligada a la vida del objeto, hay que mantener una referencia o usar `weakref`.",
       "explanation_en": "True. The language only guarantees the `id` is unique and constant for the object's lifetime; CPython implements it as the address, so once the reference count hits zero and the block is reused, the next object can get the same number. That is why storing `id(obj)` in a registry or cache is a classic bug: the check still passes but points at a different object. For a stable key tied to an object's life, keep a reference or use `weakref`.",
       "source": "CPython docs 3.13 - Built-in Functions: id()",
       "expected_time_ms": 30000,
-      "tags": ["cpython", "object-model", "identity", "gotcha"]
+      "tags": [
+        "cpython",
+        "object-model",
+        "identity",
+        "gotcha"
+      ]
     },
-
     {
       "id": "q030104010",
       "skill_id": "sk030104",
@@ -505,23 +625,28 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\ndef f(a, b):\n    return a + b\n\nprint(f.__code__.co_varnames, f.__code__.co_argcount)\n```",
       "question_en": "What does the following code print?\n```python\ndef f(a, b):\n    return a + b\n\nprint(f.__code__.co_varnames, f.__code__.co_argcount)\n```",
       "options_es": [
-        "('a', 'b') 2",
+        "AttributeError: 'function' object has no attribute '__code__'",
         "['a', 'b'] 2",
         "('f', 'a', 'b') 3",
-        "AttributeError: 'function' object has no attribute '__code__'"
+        "('a', 'b') 2"
       ],
       "options_en": [
-        "('a', 'b') 2",
+        "AttributeError: 'function' object has no attribute '__code__'",
         "['a', 'b'] 2",
         "('f', 'a', 'b') 3",
-        "AttributeError: 'function' object has no attribute '__code__'"
+        "('a', 'b') 2"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Compilar `def` produce un objeto código accesible en `f.__code__`; `co_varnames` es una TUPLA (los atributos del objeto código son inmutables, de ahí los paréntesis y no los corchetes) con los parámetros y variables locales, y `co_argcount` cuenta sólo los parámetros posicionales. El nombre `f` no aparece en `co_varnames` porque vive en el ámbito exterior, no dentro de la función. El AttributeError es de quien cree que el bytecode es interno e inaccesible: es un atributo público de cualquier función Python.",
       "explanation_en": "Compiling a `def` produces a code object reachable at `f.__code__`; `co_varnames` is a TUPLE (code object attributes are immutable, hence parentheses rather than brackets) holding parameters and locals, and `co_argcount` counts positional parameters only. The name `f` does not appear in `co_varnames` because it lives in the enclosing scope, not inside the function. The AttributeError is for whoever thinks bytecode is internal and unreachable: it is a public attribute of every Python function.",
       "source": "CPython docs 3.13 - Reference: Data model, code objects",
       "expected_time_ms": 40000,
-      "tags": ["cpython", "bytecode", "code-object", "dis"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "code-object",
+        "dis"
+      ]
     },
     {
       "id": "q030104011",
@@ -532,22 +657,27 @@
       "question_en": "What does the following code print?\n```python\ncode = compile(\"x = 1 + 2\", \"<string>\", \"exec\")\nnamespace = {}\nexec(code, namespace)\nprint(type(code).__name__, namespace[\"x\"])\n```",
       "options_es": [
         "str 3",
-        "bytes 3",
         "code 3",
+        "bytes 3",
         "code x = 1 + 2"
       ],
       "options_en": [
         "str 3",
-        "bytes 3",
         "code 3",
+        "bytes 3",
         "code x = 1 + 2"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`compile` no devuelve texto ni bytes crudos: devuelve un objeto de tipo `code`, que empaqueta el bytecode junto con constantes, nombres y metadatos, y es lo que la máquina virtual sabe ejecutar. `exec` lo ejecuta en el diccionario que se le pasa, así que `espacio[\"x\"]` vale 3. Responder `bytes` confunde el objeto código con su campo `co_code`, que sí es una cadena de bytes pero es sólo una parte. Y la última opción olvida que `exec` ya ejecutó la asignación: en el diccionario queda el resultado, no el fuente.",
       "explanation_en": "`compile` returns neither text nor raw bytes: it returns an object of type `code`, packaging the bytecode together with constants, names and metadata, and that is what the virtual machine knows how to run. `exec` runs it in the dictionary it is given, so `namespace[\"x\"]` is 3. Answering `bytes` confuses the code object with its `co_code` field, which is a byte string but only one part of it. The last option forgets `exec` already ran the assignment: the dictionary holds the result, not the source.",
       "source": "CPython docs 3.13 - Built-in Functions: compile(), exec()",
       "expected_time_ms": 45000,
-      "tags": ["cpython", "bytecode", "compile", "code-object"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "compile",
+        "code-object"
+      ]
     },
     {
       "id": "q030104012",
@@ -558,22 +688,27 @@
       "question_en": "What does the following code print?\n```python\ndef f(s):\n    return len(s)\n\nprint(f.__code__.co_names, f.__code__.co_varnames)\n```",
       "options_es": [
         "('s',) ('len',)",
-        "('len', 's') ()",
+        "('len',) ('s',)",
         "() ('len', 's')",
-        "('len',) ('s',)"
+        "('len', 's') ()"
       ],
       "options_en": [
         "('s',) ('len',)",
-        "('len', 's') ()",
+        "('len',) ('s',)",
         "() ('len', 's')",
-        "('len',) ('s',)"
+        "('len', 's') ()"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "El compilador separa los nombres según cómo se resolverán en tiempo de ejecución: `co_varnames` guarda los locales, que el bytecode alcanza por índice con `LOAD_FAST` (aquí el parámetro `s`), y `co_names` guarda los nombres que hay que buscar por nombre en globals y builtins con `LOAD_GLOBAL` (aquí `len`). Las opciones que mezclan ambas listas o las intercambian reflejan la idea de que \"un nombre es un nombre\"; esa separación en tiempo de compilación es justo la razón de que acceder a una variable local sea notablemente más rápido que a una global, y de que rebindear `len` localmente cambie qué instrucción se emite.",
       "explanation_en": "The compiler separates names by how they will be resolved at run time: `co_varnames` holds locals, which bytecode reaches by index with `LOAD_FAST` (here the parameter `s`), while `co_names` holds names that must be looked up by name in globals and builtins with `LOAD_GLOBAL` (here `len`). The options that merge or swap the lists reflect the idea that \"a name is a name\"; that compile-time split is exactly why reading a local is markedly faster than reading a global, and why rebinding `len` locally changes which instruction is emitted.",
       "source": "CPython docs 3.13 - Reference: Data model, code objects / dis",
       "expected_time_ms": 48000,
-      "tags": ["cpython", "bytecode", "code-object", "scoping"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "code-object",
+        "scoping"
+      ]
     },
     {
       "id": "q030104013",
@@ -583,23 +718,28 @@
       "question_es": "¿Qué contiene un archivo `.pyc` dentro de `__pycache__` y cuándo lo reutiliza el intérprete?",
       "question_en": "What does a `.pyc` file inside `__pycache__` contain, and when does the interpreter reuse it?",
       "options_es": [
-        "Código máquina nativo del procesador, reutilizado si la arquitectura coincide",
         "El bytecode compilado del módulo, reutilizado sólo si la versión del intérprete coincide y la marca de tiempo y tamaño del fuente (o su hash) no han cambiado",
+        "Código máquina nativo del procesador, reutilizado si la arquitectura coincide",
         "El código fuente comprimido, reutilizado siempre para ahorrar lecturas de disco",
         "Un volcado del estado del módulo tras importarlo, que evita ejecutar el código de nivel superior"
       ],
       "options_en": [
-        "Native machine code for the CPU, reused if the architecture matches",
         "The module's compiled bytecode, reused only if the interpreter version matches and the source's timestamp and size (or its hash) are unchanged",
+        "Native machine code for the CPU, reused if the architecture matches",
         "Compressed source code, reused always to save disk reads",
         "A dump of the module state after import, which avoids running the top-level code"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El `.pyc` guarda el objeto código serializado precedido de un número mágico ligado a la versión del intérprete y de una cabecera de validación. Si el fuente cambia o el intérprete es otro, se recompila. No es código máquina: CPython interpreta bytecode, y ahí está la confusión con un JIT como el de PyPy. Tampoco evita ejecutar el módulo: importarlo sigue corriendo su código de nivel superior; lo único que se ahorra es la fase de compilación.",
       "explanation_en": "A `.pyc` stores the marshalled code object preceded by a magic number tied to the interpreter version and a validation header. If the source changes or the interpreter differs, it recompiles. It is not machine code: CPython interprets bytecode, which is where the confusion with a JIT like PyPy's comes from. Nor does it skip running the module: importing still executes its top-level code; the only saving is the compilation step.",
       "source": "PEP 3147 - PYC Repository Directories / CPython docs 3.13 - importlib",
       "expected_time_ms": 40000,
-      "tags": ["cpython", "bytecode", "pyc", "import"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "pyc",
+        "import"
+      ]
     },
     {
       "id": "q030104014",
@@ -625,7 +765,12 @@
       "explanation_en": "PEP 659 introduced lazy specialisation: the interpreter observes which types actually flow through an instruction and hot-swaps it for a fast version (adding two ints without the full numeric protocol), guarded so it reverts to the generic form if another type shows up. It remains bytecode interpretation, not compilation to machine code: that is why it is not a classic JIT, however similar the goal. And `dis` rewrites nothing: `adaptive=True` merely shows the bytecode as it currently stands in memory.",
       "source": "PEP 659 - Specializing Adaptive Interpreter",
       "expected_time_ms": 50000,
-      "tags": ["cpython", "bytecode", "pep659", "specialization"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "pep659",
+        "specialization"
+      ]
     },
     {
       "id": "q030104015",
@@ -634,14 +779,25 @@
       "difficulty_tier": "medium",
       "question_es": "El bytecode de CPython es estable entre versiones, así que un `.pyc` generado con Python 3.11 puede ejecutarse tal cual con Python 3.13.",
       "question_en": "CPython bytecode is stable across versions, so a `.pyc` produced by Python 3.11 can run as-is under Python 3.13.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. El bytecode es un detalle de implementación sin garantía de compatibilidad: los opcodes se añaden, se quitan y cambian de número entre versiones menores. Cada `.pyc` empieza con un número mágico ligado a la versión, y si no coincide el intérprete lo ignora y recompila desde el fuente. Por eso `__pycache__` guarda archivos con el nombre de la versión (`modulo.cpython-313.pyc`) y por eso distribuir sólo `.pyc` para \"ocultar\" el código ata el paquete a un intérprete exacto.",
       "explanation_en": "False. Bytecode is an implementation detail with no compatibility guarantee: opcodes are added, removed and renumbered between minor versions. Every `.pyc` begins with a version-tied magic number, and on a mismatch the interpreter ignores it and recompiles from source. That is why `__pycache__` names files after the version (`module.cpython-313.pyc`), and why shipping only `.pyc` to \"hide\" code pins the package to one exact interpreter.",
       "source": "CPython docs 3.13 - importlib.util.MAGIC_NUMBER / dis: bytecode is an implementation detail",
       "expected_time_ms": 28000,
-      "tags": ["cpython", "bytecode", "pyc", "compatibility"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "pyc",
+        "compatibility"
+      ]
     },
     {
       "id": "q030104016",
@@ -650,14 +806,25 @@
       "difficulty_tier": "easy",
       "question_es": "`dis.dis()` acepta también una cadena con código fuente, no sólo funciones, métodos u objetos código.",
       "question_en": "`dis.dis()` also accepts a source code string, not just functions, methods or code objects.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero: si se le pasa una cadena, `dis.dis` la compila primero y desensambla el resultado, lo que la convierte en la forma más rápida de comparar dos maneras de escribir la misma expresión sin definir funciones. Acepta además módulos, clases (desensambla todos sus métodos), generadores y objetos código. Quien responde \"Falso\" suele haber visto sólo el uso típico `dis.dis(mi_funcion)` y asume que hace falta un objeto ya compilado.",
       "explanation_en": "True: given a string, `dis.dis` compiles it first and disassembles the result, which makes it the quickest way to compare two ways of writing the same expression without defining functions. It also accepts modules, classes (disassembling all their methods), generators and code objects. Answering \"False\" usually comes from only ever seeing the typical `dis.dis(my_function)` and assuming an already-compiled object is required.",
       "source": "CPython docs 3.13 - dis.dis",
       "expected_time_ms": 24000,
-      "tags": ["cpython", "bytecode", "dis", "tooling"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "dis",
+        "tooling"
+      ]
     },
     {
       "id": "q030104017",
@@ -672,7 +839,12 @@
       "explanation_en": "`__code__` is the compiled code object the virtual machine runs on every call; the function object merely wraps it together with defaults, closures and `__globals__`. It is assignable, which is where hot-swapping implementations comes from. Not to be confused with `__defaults__` (default values) or with `co_code`, the raw byte field INSIDE the code object rather than the way in.",
       "source": "CPython docs 3.13 - Reference: Data model, user-defined functions",
       "expected_time_ms": 28000,
-      "tags": ["cpython", "bytecode", "code-object", "introspection"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "code-object",
+        "introspection"
+      ]
     },
     {
       "id": "q030104018",
@@ -687,7 +859,12 @@
       "explanation_en": "`dis.dis` is meant for human eyes: it writes to stdout and returns `None`, so building a tool on top forces capturing and parsing text, which is brittle across versions. `dis.get_instructions` hands over the same data already structured, which is what linters and analysers use. The object-oriented alternative is the `dis.Bytecode` class, which additionally exposes `codeobj` and `dis()`.",
       "source": "CPython docs 3.13 - dis.get_instructions",
       "expected_time_ms": 32000,
-      "tags": ["cpython", "bytecode", "dis", "introspection"]
+      "tags": [
+        "cpython",
+        "bytecode",
+        "dis",
+        "introspection"
+      ]
     }
   ]
 }

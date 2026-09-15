@@ -9,17 +9,17 @@
       "question_en": "What does this freshly started script print, before any thread is created?\n```python\nimport threading\nprint(threading.active_count())\n```",
       "options_es": [
         "0",
-        "1",
         "El número de núcleos de la CPU",
+        "1",
         "None"
       ],
       "options_en": [
         "0",
-        "1",
         "The number of CPU cores",
+        "1",
         "None"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`active_count()` devuelve cuántos objetos `Thread` siguen vivos, y el intérprete siempre tiene uno: el hilo principal (`MainThread`). Por eso el resultado es 1 y nunca 0. La opción del número de núcleos confunde hilos con procesadores: `threading` no crea un hilo por núcleo, los hilos existen solo si tú los creas.",
       "explanation_en": "`active_count()` returns how many `Thread` objects are still alive, and the interpreter always has one: the main thread (`MainThread`). So the answer is 1, never 0. The CPU-cores option confuses threads with processors: `threading` does not spin up one thread per core, threads exist only because you create them.",
       "source": "CPython docs 3.13 — threading.active_count",
@@ -38,18 +38,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport threading\n\ndef work():\n    print(threading.current_thread().name)\n\nt = threading.Thread(target=work, name=\"Obrero\")\nt.run()\n```",
       "question_en": "What does the following code print?\n```python\nimport threading\n\ndef work():\n    print(threading.current_thread().name)\n\nt = threading.Thread(target=work, name=\"Worker\")\nt.run()\n```",
       "options_es": [
-        "MainThread",
+        "RuntimeError: el hilo no ha sido iniciado",
         "Obrero",
         "Thread-1",
-        "RuntimeError: el hilo no ha sido iniciado"
+        "MainThread"
       ],
       "options_en": [
-        "MainThread",
+        "RuntimeError: thread has not been started",
         "Worker",
         "Thread-1",
-        "RuntimeError: thread has not been started"
+        "MainThread"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`run()` es simplemente el método que contiene el cuerpo del hilo: llamarlo a mano lo ejecuta como una función normal, en el hilo que hace la llamada. No nace ningún hilo nuevo, así que `current_thread()` sigue siendo el principal y se imprime `MainThread`. El nombre `Obrero` solo aparecería si hubieras llamado a `start()`, que es lo que pide al sistema operativo un hilo real y luego invoca `run()` dentro de él. Es el error clásico de quien confunde `start()` con `run()`: el programa funciona, pero es secuencial.",
       "explanation_en": "`run()` is just the method holding the thread body: calling it by hand executes it like an ordinary function, on the calling thread. No new thread is born, so `current_thread()` is still the main one and `MainThread` is printed. The name `Worker` would only show up had you called `start()`, which asks the OS for a real thread and then invokes `run()` inside it. This is the classic `start()`-vs-`run()` mix-up: the program works, but it is sequential.",
       "source": "CPython docs 3.13 — threading.Thread.run",
@@ -70,16 +70,16 @@
       "options_es": [
         "Un orden impredecible, distinto en cada ejecución",
         "[]",
-        "[0, 1, 2] siempre: el join() dentro del bucle serializa los hilos",
-        "[2, 1, 0]"
+        "[2, 1, 0]",
+        "[0, 1, 2] siempre: el join() dentro del bucle serializa los hilos"
       ],
       "options_en": [
         "An unpredictable order, different on every run",
         "[]",
-        "[0, 1, 2] always: the join() inside the loop serializes the threads",
-        "[2, 1, 0]"
+        "[2, 1, 0]",
+        "[0, 1, 2] always: the join() inside the loop serializes the threads"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "El `join()` está DENTRO del bucle, así que cada iteración arranca un hilo y espera a que muera antes de crear el siguiente. Nunca hay dos hilos vivos a la vez: el resultado es determinista, `[0, 1, 2]`, y el programa tarda lo mismo que la versión secuencial. La opción del orden impredecible es tentadora porque es lo que ocurre en el patrón correcto (arrancar todos los hilos en un bucle y hacer los `join()` en un segundo bucle). Aquí ese patrón está roto.",
       "explanation_en": "The `join()` sits INSIDE the loop, so each iteration starts a thread and waits for it to die before creating the next one. Two threads are never alive at once: the result is deterministic, `[0, 1, 2]`, and the program takes exactly as long as the sequential version. The unpredictable-order option is tempting because that is what happens in the correct pattern (start every thread in one loop, then `join()` them in a second loop). Here that pattern is broken.",
       "source": "CPython docs 3.13 — threading.Thread.join",
@@ -130,18 +130,18 @@
       "question_es": "Has llamado a `t.start()` y el hilo ya terminó su trabajo. Quieres reutilizar ese mismo objeto y vuelves a llamar a `t.start()`. ¿Qué ocurre?",
       "question_en": "You called `t.start()` and the thread has already finished its work. You want to reuse that same object, so you call `t.start()` again. What happens?",
       "options_es": [
-        "Lanza RuntimeError: un objeto Thread solo puede arrancarse una vez",
-        "Vuelve a ejecutar la función en un hilo nuevo, sin problema",
         "No hace nada, se ignora silenciosamente",
+        "Vuelve a ejecutar la función en un hilo nuevo, sin problema",
+        "Lanza RuntimeError: un objeto Thread solo puede arrancarse una vez",
         "Reanuda el hilo desde donde se quedó"
       ],
       "options_en": [
-        "It raises RuntimeError: a Thread object can only be started once",
-        "It runs the function again on a fresh thread, no problem",
         "Nothing happens, it is silently ignored",
+        "It runs the function again on a fresh thread, no problem",
+        "It raises RuntimeError: a Thread object can only be started once",
         "It resumes the thread where it left off"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Un objeto `Thread` representa UNA ejecución, no una plantilla reutilizable: `start()` lanza `RuntimeError` si el hilo ya fue arrancado, haya terminado o no. Si necesitas ejecutar la misma función otra vez, crea un `Thread` nuevo, o mejor usa un `ThreadPoolExecutor`, que reutiliza los hilos del sistema operativo por ti. La opción de «ejecuta otra vez sin problema» es la intuición de quien piensa en el hilo como en una función; la de «reanuda» mezcla hilos con corrutinas, que sí se suspenden y reanudan.",
       "explanation_en": "A `Thread` object represents ONE run, not a reusable template: `start()` raises `RuntimeError` if the thread was already started, whether it finished or not. If you need the same function again, build a new `Thread`, or better, use a `ThreadPoolExecutor`, which recycles OS threads for you. The \"runs again, no problem\" option is the instinct of someone thinking of a thread as a function; \"resumes\" mixes threads up with coroutines, which genuinely do suspend and resume.",
       "source": "CPython docs 3.13 — threading.Thread.start",
@@ -160,18 +160,18 @@
       "question_es": "¿Para qué sirve `threading.local()`?",
       "question_en": "What is `threading.local()` for?",
       "options_es": [
-        "Para restringir un hilo a un único núcleo de la CPU",
         "Para crear un objeto cuyos atributos son independientes en cada hilo, sin necesidad de locks",
+        "Para restringir un hilo a un único núcleo de la CPU",
         "Para declarar variables locales dentro de la función que ejecuta el hilo",
         "Para bloquear el acceso concurrente a una variable global"
       ],
       "options_en": [
-        "To pin a thread to a single CPU core",
         "To create an object whose attributes are independent in each thread, with no locks needed",
+        "To pin a thread to a single CPU core",
         "To declare local variables inside the thread's function",
         "To lock concurrent access to a global variable"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Un objeto `threading.local()` parece un objeto normal, pero cada hilo ve su propio juego de atributos: si el hilo A hace `datos.conexion = c1` y el hilo B hace `datos.conexion = c2`, ninguno pisa al otro. Es la alternativa al lock cuando el estado no necesita compartirse realmente (conexiones a base de datos, buffers por petición). La opción del lock es tentadora porque ambas resuelven el mismo dolor, pero por caminos opuestos: el lock serializa el acceso a un dato compartido, `local()` elimina el compartir. Las variables locales de una función ya son por hilo de forma natural: cada hilo tiene su propia pila y no hacen falta herramientas para eso.",
       "explanation_en": "A `threading.local()` object looks like an ordinary object, but each thread sees its own set of attributes: if thread A does `data.conn = c1` and thread B does `data.conn = c2`, neither clobbers the other. It is the alternative to a lock when the state does not actually need to be shared (database connections, per-request buffers). The lock option is tempting because both solve the same pain, but from opposite directions: a lock serializes access to shared data, `local()` removes the sharing. A function's local variables are already per-thread by nature: each thread has its own stack, and no tooling is needed for that.",
       "source": "CPython docs 3.13 — threading.local",
@@ -255,7 +255,6 @@
         "is_alive"
       ]
     },
-
     {
       "id": "q030502010",
       "skill_id": "sk030502",
@@ -264,18 +263,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport multiprocessing as mp\n\ncontador = 0\n\ndef sumar():\n    global contador\n    contador += 1\n\nif __name__ == \"__main__\":\n    p = mp.Process(target=sumar)\n    p.start()\n    p.join()\n    print(contador)\n```",
       "question_en": "What does the following code print?\n```python\nimport multiprocessing as mp\n\ncounter = 0\n\ndef bump():\n    global counter\n    counter += 1\n\nif __name__ == \"__main__\":\n    p = mp.Process(target=bump)\n    p.start()\n    p.join()\n    print(counter)\n```",
       "options_es": [
-        "1",
-        "2",
         "0",
+        "2",
+        "1",
         "None"
       ],
       "options_en": [
-        "1",
-        "2",
         "0",
+        "2",
+        "1",
         "None"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Imprime `0`. El hijo es un proceso independiente con su propia memoria: incrementa SU copia de `contador` y esa copia desaparece cuando el proceso muere. El padre nunca se entera. Responder `1` es el reflejo de quien piensa en `threading`, donde el estado global sí se comparte (y por eso hace falta un lock). Aquí el problema es el opuesto: para que el padre vea el resultado hay que devolverlo explícitamente por una `mp.Queue`, un `mp.Pipe`, un `mp.Value` compartido o el valor de retorno de `Pool.map`.",
       "explanation_en": "It prints `0`. The child is a separate process with its own memory: it increments ITS copy of `counter`, and that copy dies with the process. The parent never hears about it. Answering `1` is the reflex of someone thinking in `threading` terms, where global state really is shared (which is why you need a lock there). Here the problem is the opposite: for the parent to see the result it must be sent back explicitly through an `mp.Queue`, an `mp.Pipe`, a shared `mp.Value`, or the return value of `Pool.map`.",
       "source": "CPython docs 3.13 — multiprocessing: Process and exceptions",
@@ -294,18 +293,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport multiprocessing as mp\n\ndef worker(q):\n    q.put(\"hola\")\n\nif __name__ == \"__main__\":\n    q = mp.Queue()\n    p = mp.Process(target=worker, args=(q,))\n    p.start()\n    print(q.get())\n    p.join()\n```",
       "question_en": "What does the following code print?\n```python\nimport multiprocessing as mp\n\ndef worker(q):\n    q.put(\"hola\")\n\nif __name__ == \"__main__\":\n    q = mp.Queue()\n    p = mp.Process(target=worker, args=(q,))\n    p.start()\n    print(q.get())\n    p.join()\n```",
       "options_es": [
-        "hola",
         "None",
+        "hola",
         "La representación del objeto Queue",
         "Nada: el hijo no comparte memoria, así que la cola del padre queda vacía"
       ],
       "options_en": [
-        "hola",
         "None",
+        "hola",
         "The repr of the Queue object",
         "Nothing: the child shares no memory, so the parent's queue stays empty"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Imprime `hola`. Una `mp.Queue` no es memoria compartida: por debajo hay una tubería del sistema operativo y el objeto se serializa con pickle al ponerlo y se deserializa al sacarlo, cruzando así la frontera entre procesos. La cuarta opción es la trampa fina: es cierto que los procesos no comparten memoria, pero de ahí no se sigue que no puedan comunicarse; precisamente para eso existen `Queue` y `Pipe`. Fíjate también en el orden: `q.get()` va antes de `p.join()`, porque unirse a un proceso que todavía tiene datos pendientes en la tubería puede bloquearse.",
       "explanation_en": "It prints `hola`. An `mp.Queue` is not shared memory: underneath sits an OS pipe, and the object is pickled on the way in and unpickled on the way out, crossing the process boundary. The fourth option is the subtle trap: it is true that processes share no memory, but that does not imply they cannot communicate; `Queue` and `Pipe` exist precisely for this. Note the ordering too: `q.get()` comes before `p.join()`, because joining a process that still has data sitting in the pipe can deadlock.",
       "source": "CPython docs 3.13 — multiprocessing.Queue",
@@ -357,17 +356,17 @@
       "question_en": "What do `multiprocessing.Value` and `multiprocessing.Array` provide that an ordinary global variable does not?",
       "options_es": [
         "Aceleran el arranque de los procesos hijo",
-        "Reservan memoria compartida real que varios procesos ven, con un lock incorporado por defecto",
+        "Permiten que un proceso hijo modifique las variables globales del padre",
         "Convierten cualquier objeto Python en picklable automáticamente",
-        "Permiten que un proceso hijo modifique las variables globales del padre"
+        "Reservan memoria compartida real que varios procesos ven, con un lock incorporado por defecto"
       ],
       "options_en": [
         "They make child processes start faster",
-        "They allocate real shared memory that several processes can see, with a built-in lock by default",
+        "They let a child process modify the parent's global variables",
         "They make any Python object automatically picklable",
-        "They let a child process modify the parent's global variables"
+        "They allocate real shared memory that several processes can see, with a built-in lock by default"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`Value` y `Array` reservan un bloque de memoria compartida por el sistema operativo y lo envuelven con un lock (a menos que pases `lock=False`), así que varios procesos pueden leer y escribir el MISMO dato. Son de tipos ctypes, no objetos Python arbitrarios: un `int`, un `double`, un array de enteros. La última opción es la confusión más común: no «arreglan» las variables globales, crean un canal nuevo y explícito; las globales del padre siguen siendo invisibles para el hijo. Y para objetos ricos y compartidos, lo que se usa es un `multiprocessing.Manager`, más flexible pero mucho más lento porque cada acceso es una llamada a un proceso servidor.",
       "explanation_en": "`Value` and `Array` allocate a block of OS shared memory and wrap it in a lock (unless you pass `lock=False`), so several processes can read and write the SAME datum. They hold ctypes types, not arbitrary Python objects: an `int`, a `double`, an array of integers. The last option is the most common confusion: they do not \"fix\" global variables, they open a new explicit channel; the parent's globals remain invisible to the child. For rich shared objects the tool is a `multiprocessing.Manager`, more flexible but far slower, because every access is a call into a server process.",
       "source": "CPython docs 3.13 — multiprocessing: Sharing state between processes",
@@ -388,16 +387,16 @@
       "options_es": [
         "Que los hijos heredan automáticamente todas las variables del padre",
         "Que `multiprocessing` usa hilos en lugar de procesos en esas plataformas",
-        "Que cada hijo arranca un intérprete nuevo y reimporta el módulo principal, por lo que el código de nivel superior debe ir bajo `if __name__ == \"__main__\":`",
-        "Que las funciones pasadas a los workers no necesitan ser picklables"
+        "Que las funciones pasadas a los workers no necesitan ser picklables",
+        "Que cada hijo arranca un intérprete nuevo y reimporta el módulo principal, por lo que el código de nivel superior debe ir bajo `if __name__ == \"__main__\":`"
       ],
       "options_en": [
         "That children automatically inherit all of the parent's variables",
         "That `multiprocessing` uses threads instead of processes on those platforms",
-        "That each child boots a fresh interpreter and re-imports the main module, so top-level code must live under `if __name__ == \"__main__\":`",
-        "That functions handed to workers need not be picklable"
+        "That functions handed to workers need not be picklable",
+        "That each child boots a fresh interpreter and re-imports the main module, so top-level code must live under `if __name__ == \"__main__\":`"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "Con `spawn` el hijo no es una copia del padre: arranca un intérprete limpio, importa el módulo principal y solo entonces ejecuta la función objetivo. Por eso el código que crea procesos debe estar protegido por `if __name__ == \"__main__\":`; sin esa guarda, cada hijo reejecutaría la creación de procesos al importarse y tendrías una bomba de procesos. La primera opción describe `fork` (el otro método, disponible en Linux), donde el hijo sí hereda el estado de memoria, y precisamente por eso el código que funciona en Linux se rompe al llevarlo a Windows. Con `spawn` la exigencia de que todo sea picklable es mayor, no menor: no hay memoria heredada de la que tirar.",
       "explanation_en": "With `spawn` the child is not a copy of the parent: it boots a clean interpreter, imports the main module, and only then runs the target function. That is why the code creating processes must be guarded by `if __name__ == \"__main__\":`; without that guard each child would re-execute the process creation on import and you would get a process bomb. The first option describes `fork` (the other method, available on Linux), where the child does inherit the memory state, and that is exactly why code that works on Linux breaks when moved to Windows. Under `spawn` the picklability requirement is stronger, not weaker: there is no inherited memory to lean on.",
       "source": "CPython docs 3.13 — multiprocessing: Contexts and start methods",
@@ -417,18 +416,18 @@
       "question_es": "Repartes con `multiprocessing` un millón de llamadas a una función trivial (`lambda x: x + 1`) y el programa acaba tardando MÁS que la versión de un solo proceso. ¿Cuál es la explicación más probable?",
       "question_en": "You spread a million calls to a trivial function (`lambda x: x + 1`) across `multiprocessing`, and the program ends up SLOWER than the single-process version. What is the most likely explanation?",
       "options_es": [
-        "El coste de crear procesos y de serializar cada dato de ida y vuelta supera al trabajo, que es demasiado pequeño",
-        "El GIL sigue serializando los procesos entre sí",
         "`multiprocessing` está limitado a dos procesos simultáneos",
+        "El GIL sigue serializando los procesos entre sí",
+        "El coste de crear procesos y de serializar cada dato de ida y vuelta supera al trabajo, que es demasiado pequeño",
         "Los procesos compiten por la misma caché de CPU y se invalidan mutuamente"
       ],
       "options_en": [
-        "The cost of spawning processes and pickling each item back and forth dwarfs the work, which is far too small",
-        "The GIL still serializes the processes against each other",
         "`multiprocessing` is capped at two simultaneous processes",
+        "The GIL still serializes the processes against each other",
+        "The cost of spawning processes and pickling each item back and forth dwarfs the work, which is far too small",
         "The processes fight over the same CPU cache and invalidate each other"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "El paralelismo por procesos tiene un peaje fijo: arrancar intérpretes y, sobre todo, serializar con pickle cada argumento y cada resultado para cruzar la tubería. Si la tarea dura microsegundos, ese peaje domina el reloj. La regla práctica es agrupar el trabajo en trozos grandes (`chunksize` en `Pool.map`) y reservar `multiprocessing` para tareas de cómputo sustancial. La respuesta del GIL es la trampa principal: cada proceso tiene su propio GIL, así que el GIL no es lo que te frena aquí; culparlo lleva a «optimizar» en la dirección equivocada.",
       "explanation_en": "Process parallelism carries a fixed toll: booting interpreters and, above all, pickling every argument and every result to cross the pipe. If a task takes microseconds, that toll dominates the clock. The rule of thumb is to batch work into large chunks (`chunksize` in `Pool.map`) and reserve `multiprocessing` for substantial computation. The GIL answer is the main trap: each process has its own GIL, so the GIL is not what slows you down here, and blaming it sends you optimizing in the wrong direction.",
       "source": "CPython docs 3.13 — multiprocessing.pool.Pool.map",
@@ -514,7 +513,6 @@
         "pool"
       ]
     },
-
     {
       "id": "q030503010",
       "skill_id": "sk030503",
@@ -524,17 +522,17 @@
       "question_en": "What does the following code print?\n```python\nfrom concurrent.futures import ThreadPoolExecutor\n\ndef f(n):\n    return n * n\n\nwith ThreadPoolExecutor(max_workers=3) as ex:\n    futures = [ex.submit(f, i) for i in range(3)]\n    print([fu.result() for fu in futures])\n```",
       "options_es": [
         "Los tres cuadrados en el orden en que acabaron los hilos, impredecible",
-        "[0, 1, 4]",
+        "Una lista de tres objetos Future",
         "[0, 1, 2]",
-        "Una lista de tres objetos Future"
+        "[0, 1, 4]"
       ],
       "options_en": [
         "The three squares in the order the threads finished, unpredictable",
-        "[0, 1, 4]",
+        "A list of three Future objects",
         "[0, 1, 2]",
-        "A list of three Future objects"
+        "[0, 1, 4]"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "La lista `futuros` conserva el orden de envío, y `fu.result()` bloquea hasta que ESE futuro concreto tenga su valor. Da igual quién termine primero: recorres la lista en orden y obtienes `[0, 1, 4]`. La primera opción confunde el orden de finalización con el orden de la lista; si lo que quieres es procesar según van acabando, ahí sí necesitas `as_completed(futuros)`. Y la cuarta olvida que `.result()` desenvuelve el futuro: sin esa llamada sí tendrías objetos `Future`.",
       "explanation_en": "The `futures` list keeps submission order, and `fu.result()` blocks until THAT particular future has its value. It does not matter who finishes first: you walk the list in order and get `[0, 1, 4]`. The first option confuses completion order with list order; if you want to process results as they land, that is exactly what `as_completed(futures)` is for. And the fourth forgets that `.result()` unwraps the future: without that call you would indeed hold `Future` objects.",
       "source": "CPython docs 3.13 — concurrent.futures.Future.result",
@@ -554,18 +552,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom concurrent.futures import ThreadPoolExecutor\n\nwith ThreadPoolExecutor() as ex:\n    fut = ex.submit(lambda: 1 / 0)\n    print(type(fut.exception()).__name__)\n```",
       "question_en": "What does the following code print?\n```python\nfrom concurrent.futures import ThreadPoolExecutor\n\nwith ThreadPoolExecutor() as ex:\n    fut = ex.submit(lambda: 1 / 0)\n    print(type(fut.exception()).__name__)\n```",
       "options_es": [
-        "El programa aborta: la excepción se propaga desde el hilo worker",
-        "NoneType",
         "ZeroDivisionError",
+        "NoneType",
+        "El programa aborta: la excepción se propaga desde el hilo worker",
         "Nada: la excepción se traga en silencio y se pierde"
       ],
       "options_en": [
-        "The program crashes: the exception propagates from the worker thread",
-        "NoneType",
         "ZeroDivisionError",
+        "NoneType",
+        "The program crashes: the exception propagates from the worker thread",
         "Nothing: the exception is swallowed silently and lost"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "El Executor captura la excepción que lanza la tarea y la guarda DENTRO del futuro. `fut.exception()` te devuelve la instancia (aquí un `ZeroDivisionError`) en lugar de relanzarla, a diferencia de `fut.result()`, que sí la relanza. Por eso imprime `ZeroDivisionError`. La primera opción es la intuición de quien espera que un fallo en un hilo tumbe el programa: no lo hace, queda en cuarentena. La cuarta es la mitad peligrosa de la verdad: la excepción no se pierde, pero si nunca llamas a `result()` ni a `exception()` sobre ese futuro, en la práctica nadie se entera del fallo. Ese es el bug silencioso clásico de los pools de tareas.",
       "explanation_en": "The Executor catches whatever the task raises and stores it INSIDE the future. `fut.exception()` hands you the instance (a `ZeroDivisionError` here) instead of re-raising it, unlike `fut.result()`, which does re-raise. So it prints `ZeroDivisionError`. The first option is the instinct of someone expecting a thread failure to take the program down: it does not, the failure is quarantined. The fourth is the dangerous half-truth: the exception is not lost, but if you never call `result()` or `exception()` on that future, in practice nobody ever learns about the failure. That is the classic silent bug of task pools.",
       "source": "CPython docs 3.13 — concurrent.futures.Future.exception",
@@ -615,18 +613,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nfrom concurrent.futures import ThreadPoolExecutor\n\nwith ThreadPoolExecutor() as ex:\n    it = ex.map(lambda n: 10 // n, [5, 0, 2])\n    print(next(it))\n```",
       "question_en": "What does the following code print?\n```python\nfrom concurrent.futures import ThreadPoolExecutor\n\nwith ThreadPoolExecutor() as ex:\n    it = ex.map(lambda n: 10 // n, [5, 0, 2])\n    print(next(it))\n```",
       "options_es": [
-        "2",
+        "[2, 5]",
         "ZeroDivisionError al llamar a ex.map(...)",
         "ZeroDivisionError al llamar a next(it)",
-        "[2, 5]"
+        "2"
       ],
       "options_en": [
-        "2",
+        "[2, 5]",
         "ZeroDivisionError raised by the ex.map(...) call",
         "ZeroDivisionError raised by the next(it) call",
-        "[2, 5]"
+        "2"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Imprime `2`. `Executor.map` no devuelve una lista sino un iterador: agenda las tareas, pero los resultados (y las excepciones) solo afloran cuando iteras. El primer elemento es `10 // 5 = 2` y se entrega sin problema; el `ZeroDivisionError` del segundo elemento se relanzaría en la SIGUIENTE llamada a `next(it)`, que nunca llega a hacerse. Las dos opciones de excepción son las dos versiones del mismo malentendido: creer que `map` evalúa todo por adelantado, o no distinguir en qué posición del iterador está el fallo. De ahí la regla práctica: un `ex.map` cuyos resultados no consumes puede estar escondiendo errores.",
       "explanation_en": "It prints `2`. `Executor.map` returns an iterator, not a list: it schedules the tasks, but results (and exceptions) only surface as you iterate. The first element is `10 // 5 = 2` and is delivered fine; the second element's `ZeroDivisionError` would be re-raised on the NEXT `next(it)` call, which never happens. The two exception options are two versions of the same misunderstanding: believing `map` evaluates everything up front, or not tracking which iterator position the failure sits at. Hence the rule of thumb: an `ex.map` whose results you never consume may be hiding errors.",
       "source": "CPython docs 3.13 — concurrent.futures.Executor.map",
@@ -647,18 +645,18 @@
       "question_es": "¿Qué hace `executor.shutdown(wait=True)`, que es lo que se ejecuta al salir de un bloque `with`?",
       "question_en": "What does `executor.shutdown(wait=True)` do — the call that runs when you leave a `with` block?",
       "options_es": [
-        "Cancela de inmediato las tareas que estén corriendo",
+        "Deja de aceptar tareas nuevas y bloquea hasta que las ya enviadas terminan y los workers se liberan",
         "Mata los hilos o procesos worker aunque estén a medias",
         "Vacía la cola de tareas pendientes sin ejecutarlas",
-        "Deja de aceptar tareas nuevas y bloquea hasta que las ya enviadas terminan y los workers se liberan"
+        "Cancela de inmediato las tareas que estén corriendo"
       ],
       "options_en": [
-        "Immediately cancels the tasks that are running",
+        "Stops accepting new tasks and blocks until the already-submitted ones finish and the workers are released",
         "Kills the worker threads or processes even mid-task",
         "Drops the pending task queue without running it",
-        "Stops accepting new tasks and blocks until the already-submitted ones finish and the workers are released"
+        "Immediately cancels the tasks that are running"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`shutdown(wait=True)` cierra la puerta de entrada (enviar después lanza `RuntimeError`) y espera a que se drene todo lo ya enviado, liberando después los recursos. Las tres opciones erróneas describen una cancelación que NO ocurre: `concurrent.futures` no interrumpe tareas en curso, ni con `shutdown` ni con `cancel()`, que solo funciona sobre futuros que todavía no han empezado a ejecutarse. Si de verdad quieres descartar lo pendiente, existe `shutdown(wait=False, cancel_futures=True)`, y aun así lo que ya está corriendo termina.",
       "explanation_en": "`shutdown(wait=True)` closes the front door (submitting afterwards raises `RuntimeError`) and waits for everything already submitted to drain, then frees the resources. The three wrong options all describe a cancellation that does NOT happen: `concurrent.futures` never interrupts running tasks, neither via `shutdown` nor via `cancel()`, which only works on futures that have not started yet. If you genuinely want to discard pending work there is `shutdown(wait=False, cancel_futures=True)` — and even then, whatever is already running runs to the end.",
       "source": "CPython docs 3.13 — concurrent.futures.Executor.shutdown",
@@ -679,17 +677,17 @@
       "question_en": "You need to download 200 web pages and save the HTML. Which executor do you pick, and on what basis do you choose `max_workers`?",
       "options_es": [
         "ProcessPoolExecutor con `max_workers = cpu_count()`, para repartir la carga entre núcleos",
-        "ProcessPoolExecutor con 200 procesos, uno por página",
         "ThreadPoolExecutor, con bastantes más workers que núcleos: las tareas pasan el tiempo esperando a la red, no calculando",
+        "ProcessPoolExecutor con 200 procesos, uno por página",
         "ThreadPoolExecutor con exactamente un worker por núcleo de CPU"
       ],
       "options_en": [
         "ProcessPoolExecutor with `max_workers = cpu_count()`, to spread the load across cores",
-        "ProcessPoolExecutor with 200 processes, one per page",
         "ThreadPoolExecutor, with many more workers than cores: the tasks spend their time waiting on the network, not computing",
+        "ProcessPoolExecutor with 200 processes, one per page",
         "ThreadPoolExecutor with exactly one worker per CPU core"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Descargar es I/O-bound: cada worker pasa casi todo el tiempo bloqueado esperando bytes, con el GIL liberado, así que decenas de hilos caben cómodamente en pocos núcleos y el límite real lo pone la red o la cortesía con el servidor remoto. Los hilos además son baratos de crear y comparten memoria, mientras que 200 procesos consumirían muchísima RAM y pagarían pickle en cada respuesta. Las dos opciones ligadas a `cpu_count()` aplican una regla que es correcta —pero para trabajo CPU-bound— fuera de su dominio: aquí el número de núcleos no es el cuello de botella.",
       "explanation_en": "Downloading is I/O-bound: each worker spends nearly all its time blocked waiting for bytes, with the GIL released, so dozens of threads fit comfortably on a few cores and the real ceiling is the network or politeness toward the remote server. Threads are also cheap to create and share memory, whereas 200 processes would eat enormous RAM and pay pickle costs on every response. The two `cpu_count()` options apply a rule that is correct — for CPU-bound work — outside its domain: here the core count is not the bottleneck.",
       "source": "CPython docs 3.13 — concurrent.futures.ThreadPoolExecutor",
@@ -709,18 +707,18 @@
       "question_es": "Tu código funciona con `ThreadPoolExecutor`, cambias una sola línea a `ProcessPoolExecutor` y ahora falla al enviar la tarea. La función que envías es una `lambda` definida dentro de otra función. ¿Por qué?",
       "question_en": "Your code works with `ThreadPoolExecutor`; you change a single line to `ProcessPoolExecutor` and now it fails on submit. The function you submit is a `lambda` defined inside another function. Why?",
       "options_es": [
-        "Porque `ProcessPoolExecutor` envía la función al worker serializada con pickle, y una lambda (o una función anidada) no es picklable: hace falta una función de nivel de módulo",
         "Porque `ProcessPoolExecutor` no admite funciones con argumentos",
+        "Porque `ProcessPoolExecutor` envía la función al worker serializada con pickle, y una lambda (o una función anidada) no es picklable: hace falta una función de nivel de módulo",
         "Porque las lambdas no pueden ejecutarse fuera del hilo principal",
         "Porque el GIL impide que un proceso hijo ejecute código Python definido en el padre"
       ],
       "options_en": [
-        "Because `ProcessPoolExecutor` ships the function to the worker pickled, and a lambda (or a nested function) is not picklable: you need a module-level function",
         "Because `ProcessPoolExecutor` does not accept functions with arguments",
+        "Because `ProcessPoolExecutor` ships the function to the worker pickled, and a lambda (or a nested function) is not picklable: you need a module-level function",
         "Because lambdas cannot run outside the main thread",
         "Because the GIL stops a child process from running Python code defined in the parent"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Los hilos comparten memoria, así que al `ThreadPoolExecutor` le basta una referencia a la función, sea lambda, closure o lo que sea. Los procesos no: la función y sus argumentos se serializan con pickle para cruzar la tubería, y pickle guarda las funciones POR NOMBRE cualificado. Una lambda no tiene nombre localizable, y una función anidada tampoco es importable desde el módulo, así que fallan con `PicklingError` o `AttributeError`. La solución es mover la función al nivel del módulo (o usar `functools.partial` sobre una función que sí lo esté). La respuesta del GIL es el comodín falso: cada proceso tiene su propio GIL y no tiene nada que ver con este error.",
       "explanation_en": "Threads share memory, so a `ThreadPoolExecutor` only needs a reference to the function, lambda or closure or whatever. Processes do not: the function and its arguments are pickled to cross the pipe, and pickle stores functions BY qualified NAME. A lambda has no locatable name, and a nested function is not importable from the module either, so they fail with `PicklingError` or `AttributeError`. The fix is to move the function to module level (or wrap a module-level one with `functools.partial`). The GIL answer is the false catch-all: each process has its own GIL and it has nothing to do with this error.",
       "source": "CPython docs 3.13 — concurrent.futures.ProcessPoolExecutor",
@@ -778,7 +776,6 @@
         "as_completed"
       ]
     },
-
     {
       "id": "q030504010",
       "skill_id": "sk030504",
@@ -787,18 +784,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nimport threading\n\ncontador = 0\nlock = threading.Lock()\n\ndef sumar():\n    global contador\n    for _ in range(100_000):\n        with lock:\n            contador += 1\n\nts = [threading.Thread(target=sumar) for _ in range(2)]\nfor t in ts: t.start()\nfor t in ts: t.join()\nprint(contador)\n```",
       "question_en": "What does the following code print?\n```python\nimport threading\n\ncounter = 0\nlock = threading.Lock()\n\ndef bump():\n    global counter\n    for _ in range(100_000):\n        with lock:\n            counter += 1\n\nts = [threading.Thread(target=bump) for _ in range(2)]\nfor t in ts: t.start()\nfor t in ts: t.join()\nprint(counter)\n```",
       "options_es": [
-        "200000",
-        "100000",
         "Un número algo menor que 200000, distinto en cada ejecución",
+        "100000",
+        "200000",
         "0"
       ],
       "options_en": [
-        "200000",
-        "100000",
         "A number somewhat below 200000, different on each run",
+        "100000",
+        "200000",
         "0"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Imprime `200000`, siempre. `contador += 1` son en realidad tres pasos (leer, sumar, escribir) y el intérprete puede cambiar de hilo entre ellos; sin lock, dos hilos leen el mismo valor, escriben el mismo valor y se pierde un incremento. El `with lock:` convierte esos tres pasos en una sección crítica indivisible, así que no se pierde ninguno. La tercera opción es exactamente lo que verías si borraras la línea del lock: ese resultado variable e irreproducible es la firma de una condición de carrera, y es también la razón por la que estos bugs sobreviven a los tests (a veces salen bien por pura suerte de planificación).",
       "explanation_en": "It prints `200000`, every time. `counter += 1` is really three steps (read, add, write) and the interpreter may switch threads between them; without a lock, two threads read the same value, write the same value, and one increment is lost. The `with lock:` turns those three steps into an indivisible critical section, so nothing is lost. The third option is exactly what you would see if you deleted the lock line: that variable, irreproducible result is the signature of a race condition, and it is also why these bugs survive test suites (sometimes scheduling luck makes them pass).",
       "source": "CPython docs 3.13 — threading.Lock",
@@ -819,17 +816,17 @@
       "question_en": "What does the following code print (all of it running on the main thread)?\n```python\nimport threading\n\nlock = threading.Lock()\nlock.acquire()\nprint(lock.acquire(blocking=False))\n```",
       "options_es": [
         "True: el hilo que ya posee el lock puede readquirirlo",
-        "False",
+        "RuntimeError: lock ya adquirido",
         "Se queda bloqueado para siempre",
-        "RuntimeError: lock ya adquirido"
+        "False"
       ],
       "options_en": [
         "True: the thread that already owns the lock can re-acquire it",
-        "False",
+        "RuntimeError: lock already acquired",
         "It blocks forever",
-        "RuntimeError: lock already acquired"
+        "False"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Un `threading.Lock` NO es reentrante: no recuerda quién lo posee, solo si está tomado o libre. Como ya está tomado, el segundo `acquire(blocking=False)` devuelve `False` inmediatamente en lugar de esperar. La primera opción describe el comportamiento de un `RLock`, que sí lleva la cuenta del propietario y de las veces que lo ha adquirido (y que por tanto hay que liberar el mismo número de veces). Y la tercera es lo que pasaría con `blocking=True`, el valor por defecto: un autobloqueo permanente, el deadlock más fácil de provocar y el motivo por el que se usa `RLock` cuando una función con lock llama a otra que también lo toma.",
       "explanation_en": "A `threading.Lock` is NOT reentrant: it does not remember who owns it, only whether it is held or free. Since it is already held, the second `acquire(blocking=False)` returns `False` immediately instead of waiting. The first option describes `RLock` behaviour, which does track the owner and the acquisition count (and therefore must be released the same number of times). The third is what would happen with `blocking=True`, the default: a permanent self-deadlock, the easiest deadlock to trigger and the reason `RLock` exists for when a locked function calls another function that also takes the lock.",
       "source": "CPython docs 3.13 — threading.Lock.acquire",
@@ -851,16 +848,16 @@
       "options_es": [
         "0 None",
         "3 2",
-        "3 0",
-        "Un resultado variable: hace falta un Lock para que la cola sea fiable"
+        "Un resultado variable: hace falta un Lock para que la cola sea fiable",
+        "3 0"
       ],
       "options_en": [
         "0 None",
         "3 2",
-        "3 0",
-        "A variable result: you need a Lock for the queue to be reliable"
+        "A variable result: you need a Lock for the queue to be reliable",
+        "3 0"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "El `join()` garantiza que los tres `put` ya ocurrieron, así que `qsize()` es 3, y `queue.Queue` es FIFO: el primero que sale es el `0`. La cuarta opción es la equivocación conceptual que esta pregunta quiere cazar: `queue.Queue` ya es segura para hilos por dentro (usa sus propios locks y condiciones), y por eso es la forma recomendada de pasar trabajo entre hilos en lugar de compartir una lista con un lock a mano. Y ojo con `qsize()`: aquí es fiable porque el productor ya terminó, pero con hilos activos su valor es aproximado y no debe usarse para tomar decisiones.",
       "explanation_en": "The `join()` guarantees all three `put` calls happened, so `qsize()` is 3, and `queue.Queue` is FIFO: the first item out is `0`. The fourth option is the conceptual mistake this question is designed to catch: `queue.Queue` is already thread-safe internally (it uses its own locks and conditions), which is why it is the recommended way to hand work between threads instead of sharing a list guarded by a hand-rolled lock. And beware of `qsize()`: it is reliable here because the producer already finished, but with live threads its value is approximate and should not drive decisions.",
       "source": "CPython docs 3.13 — queue.Queue",
@@ -880,18 +877,18 @@
       "question_es": "Un hilo toma `lock_a` y luego pide `lock_b`; otro hilo toma `lock_b` y luego pide `lock_a`. El programa se congela de vez en cuando. ¿Cuál es la corrección estándar?",
       "question_en": "One thread takes `lock_a` then asks for `lock_b`; another takes `lock_b` then asks for `lock_a`. The program freezes now and then. What is the standard fix?",
       "options_es": [
-        "Establecer un orden global de adquisición y que todos los hilos tomen siempre los locks en ese mismo orden",
+        "Añadir un `time.sleep(0.1)` antes de pedir el segundo lock",
         "Sustituir ambos `Lock` por `RLock`, que son reentrantes",
         "Reducir el número de hilos a uno hasta que deje de pasar",
-        "Añadir un `time.sleep(0.1)` antes de pedir el segundo lock"
+        "Establecer un orden global de adquisición y que todos los hilos tomen siempre los locks en ese mismo orden"
       ],
       "options_en": [
-        "Define a global acquisition order and have every thread take the locks in that same order",
+        "Add a `time.sleep(0.1)` before asking for the second lock",
         "Replace both `Lock`s with `RLock`s, which are reentrant",
         "Cut down to a single thread until it stops happening",
-        "Add a `time.sleep(0.1)` before asking for the second lock"
+        "Define a global acquisition order and have every thread take the locks in that same order"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Esto es un deadlock por espera circular: cada hilo retiene lo que el otro necesita. La solución canónica es romper la circularidad imponiendo un orden total sobre los locks (por nombre, por id, por lo que sea) y respetarlo en todo el programa; si todos piden `lock_a` antes que `lock_b`, el ciclo no puede formarse. El `RLock` es la trampa más atractiva porque suena a «lock mejor», pero solo resuelve que UN hilo readquiera SU PROPIO lock; aquí el conflicto es entre hilos distintos y no cambia nada. El `sleep` es peor todavía: hace el deadlock menos frecuente y por tanto más difícil de reproducir y de diagnosticar, sin eliminarlo.",
       "explanation_en": "This is a deadlock by circular wait: each thread holds what the other needs. The canonical fix is to break the cycle by imposing a total order on the locks (by name, by id, by anything) and honouring it program-wide; if everyone takes `lock_a` before `lock_b`, no cycle can form. `RLock` is the most attractive trap because it sounds like a \"better lock\", but it only solves ONE thread re-acquiring ITS OWN lock; here the conflict is between different threads and it changes nothing. The `sleep` is worse still: it makes the deadlock rarer and therefore harder to reproduce and diagnose, without removing it.",
       "source": "CPython docs 3.13 — threading: Lock objects",
@@ -941,17 +938,17 @@
       "question_en": "A concurrency bug shows up once every few thousand runs, and when you add a `print` to debug it, it stops reproducing. What best explains this?",
       "options_es": [
         "El `print` corrige el bug porque las operaciones de escritura son atómicas",
-        "El fallo depende del entrelazado exacto de los hilos, y el `print` (I/O, lento) cambia los tiempos y hace que la ventana de carrera sea mucho menos probable",
+        "El GIL bloquea el bug mientras haya I/O activa en el programa",
         "El bug estaba en el sistema de logging, no en tu código concurrente",
-        "El GIL bloquea el bug mientras haya I/O activa en el programa"
+        "El fallo depende del entrelazado exacto de los hilos, y el `print` (I/O, lento) cambia los tiempos y hace que la ventana de carrera sea mucho menos probable"
       ],
       "options_en": [
         "The `print` fixes the bug because write operations are atomic",
-        "The failure depends on the exact interleaving of the threads, and the `print` (slow I/O) shifts the timing so the race window becomes far less likely",
+        "The GIL blocks the bug while there is active I/O in the program",
         "The bug was in the logging system, not in your concurrent code",
-        "The GIL blocks the bug while there is active I/O in the program"
+        "The failure depends on the exact interleaving of the threads, and the `print` (slow I/O) shifts the timing so the race window becomes far less likely"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Las condiciones de carrera solo se manifiestan cuando el planificador entrelaza los hilos justo de la manera mala, y esa ventana suele durar microsegundos. Cualquier cosa que altere los tiempos —un `print`, un depurador, un logger, una máquina más lenta o más rápida— cambia la probabilidad de dar con ella, a veces hasta hacerla invisible. De ahí el apodo de «heisenbug»: observarlo lo modifica. La lección práctica es que no puedes concluir «lo he arreglado» porque deje de aparecer; el bug sigue ahí, esperando a producción. Hay que razonar sobre qué estado se comparte y protegerlo, o pasar el dato por una `queue.Queue` para dejar de compartirlo.",
       "explanation_en": "Race conditions only manifest when the scheduler interleaves the threads in exactly the bad way, and that window is often microseconds wide. Anything that perturbs timing — a `print`, a debugger, a logger, a slower or faster machine — changes the odds of hitting it, sometimes to the point of invisibility. Hence the nickname \"heisenbug\": observing it alters it. The practical lesson is that you cannot conclude \"I fixed it\" just because it stopped appearing; the bug is still there, waiting for production. You have to reason about which state is shared and guard it, or hand the data through a `queue.Queue` and stop sharing it.",
       "source": "CPython docs 3.13 — threading: Lock objects",

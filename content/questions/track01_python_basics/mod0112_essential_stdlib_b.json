@@ -7,14 +7,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom collections import Counter\nc = Counter(\"abracadabra\")\nprint(c[\"a\"], c[\"z\"])\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom collections import Counter\nc = Counter(\"abracadabra\")\nprint(c[\"a\"], c[\"z\"])\n```",
-      "options_es": ["5 0", "Lanza un `KeyError`", "5 None", "11 0"],
-      "options_en": ["5 0", "It raises a `KeyError`", "5 None", "11 0"],
-      "correct_index": 0,
+      "options_es": [
+        "Lanza un `KeyError`",
+        "5 0",
+        "5 None",
+        "11 0"
+      ],
+      "options_en": [
+        "It raises a `KeyError`",
+        "5 0",
+        "5 None",
+        "11 0"
+      ],
+      "correct_index": 1,
       "explanation_es": "Hay cinco «a», y consultar algo que no está devuelve 0 en vez de fallar, a diferencia de un diccionario normal. Ojo: consultar **no** inserta la clave, al contrario que en un `defaultdict`.",
       "explanation_en": "There are five 'a's, and looking up something absent returns 0 rather than failing, unlike an ordinary dictionary. Note: looking up does **not** insert the key, unlike in a `defaultdict`.",
       "source": "CPython docs 3.13 — collections.Counter",
       "expected_time_ms": 35000,
-      "tags": ["collections", "counter"]
+      "tags": [
+        "collections",
+        "counter"
+      ]
     },
     {
       "id": "q011201011",
@@ -24,23 +37,26 @@
       "question_es": "¿Qué diferencia práctica hay entre `Counter` y `defaultdict(int)` para contar?",
       "question_en": "What practical difference is there between `Counter` and `defaultdict(int)` for counting?",
       "options_es": [
-        "`Counter` añade utilidades como `most_common` y suma contadores con `+`",
-        "`defaultdict` es más rápido siempre",
         "`Counter` solo cuenta strings",
+        "`defaultdict` es más rápido siempre",
+        "`Counter` añade utilidades como `most_common` y suma contadores con `+`",
         "Ninguna, son idénticos"
       ],
       "options_en": [
-        "`Counter` adds utilities such as `most_common` and sums counters with `+`",
-        "`defaultdict` is always faster",
         "`Counter` only counts strings",
+        "`defaultdict` is always faster",
+        "`Counter` adds utilities such as `most_common` and sums counters with `+`",
         "None, they are identical"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`Counter` es un `dict` especializado que además acepta un iterable en el constructor y sabe restar, sumar e intersecar. Para contar, escribir el bucle con `defaultdict` es reinventar lo que ya existe.",
       "explanation_en": "`Counter` is a specialised `dict` that also accepts an iterable in its constructor and knows how to subtract, add and intersect. For counting, writing the loop with `defaultdict` reinvents what already exists.",
       "source": "CPython docs 3.13 — collections.Counter / collections.defaultdict",
       "expected_time_ms": 35000,
-      "tags": ["collections", "counter"]
+      "tags": [
+        "collections",
+        "counter"
+      ]
     },
     {
       "id": "q011201012",
@@ -49,14 +65,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom collections import namedtuple\nP = namedtuple(\"P\", \"x y\")\np = P(1, 2)\nprint(p.x, p[1], len(p))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom collections import namedtuple\nP = namedtuple(\"P\", \"x y\")\np = P(1, 2)\nprint(p.x, p[1], len(p))\n```",
-      "options_es": ["1 2 2", "1 2 3", "Lanza un `TypeError`", "x 2 2"],
-      "options_en": ["1 2 2", "1 2 3", "It raises a `TypeError`", "x 2 2"],
-      "correct_index": 0,
+      "options_es": [
+        "Lanza un `TypeError`",
+        "1 2 3",
+        "1 2 2",
+        "x 2 2"
+      ],
+      "options_en": [
+        "It raises a `TypeError`",
+        "1 2 3",
+        "1 2 2",
+        "x 2 2"
+      ],
+      "correct_index": 2,
       "explanation_es": "Una `namedtuple` es una tupla con nombres: admite acceso por atributo **y** por índice, y `len` cuenta los campos. Por eso encaja donde ya se esperaba una tupla, sin romper nada.",
       "explanation_en": "A `namedtuple` is a tuple with names: it supports attribute access **and** index access, and `len` counts the fields. That is why it drops into places that already expected a tuple, breaking nothing.",
       "source": "CPython docs 3.13 — collections.namedtuple",
       "expected_time_ms": 42000,
-      "tags": ["collections", "namedtuple"]
+      "tags": [
+        "collections",
+        "namedtuple"
+      ]
     },
     {
       "id": "q011201013",
@@ -65,14 +94,23 @@
       "difficulty_tier": "medium",
       "question_es": "`defaultdict(list)` crea una lista vacía al consultar una clave que no existe.",
       "question_en": "`defaultdict(list)` creates an empty list when looking up a key that does not exist.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "La crea **y la inserta**, así que el diccionario crece al leer. Es lo que permite `d[k].append(v)` sin inicializar, pero significa que una consulta de diagnóstico modifica la estructura.",
       "explanation_en": "It creates it **and inserts it**, so the dictionary grows on read. That is what allows `d[k].append(v)` without initialising, but it also means a diagnostic lookup modifies the structure.",
       "source": "CPython docs 3.13 — collections.defaultdict",
       "expected_time_ms": 30000,
-      "tags": ["collections", "defaultdict"]
+      "tags": [
+        "collections",
+        "defaultdict"
+      ]
     },
     {
       "id": "q011201014",
@@ -82,23 +120,27 @@
       "question_es": "¿Qué ventaja tiene `collections.deque` sobre una lista para una cola?",
       "question_en": "What advantage does `collections.deque` have over a list for a queue?",
       "options_es": [
-        "Insertar y quitar por el principio es O(1); en una lista es O(n)",
+        "Se puede ordenar en el sitio",
         "Ocupa menos memoria",
         "Permite indexar más rápido por posición",
-        "Se puede ordenar en el sitio"
+        "Insertar y quitar por el principio es O(1); en una lista es O(n)"
       ],
       "options_en": [
-        "Inserting and removing at the front is O(1); in a list it is O(n)",
+        "It can be sorted in place",
         "It uses less memory",
         "It indexes by position faster",
-        "It can be sorted in place"
+        "Inserting and removing at the front is O(1); in a list it is O(n)"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`lista.pop(0)` desplaza todos los elementos restantes, así que una cola con listas se degrada con el tamaño. A cambio, `deque` indexa por el medio más lento y no tiene `.sort()`.",
       "explanation_en": "`list.pop(0)` shifts every remaining element, so a queue built on lists degrades as it grows. In exchange, `deque` indexes in the middle more slowly and has no `.sort()`.",
       "source": "CPython docs 3.13 — collections.deque",
       "expected_time_ms": 42000,
-      "tags": ["collections", "deque", "performance"]
+      "tags": [
+        "collections",
+        "deque",
+        "performance"
+      ]
     },
     {
       "id": "q011201015",
@@ -113,7 +155,10 @@
       "explanation_en": "It returns a list of `(element, count)` pairs ordered from most to least. With no argument it returns them all.",
       "source": "CPython docs 3.13 — collections.Counter.most_common()",
       "expected_time_ms": 25000,
-      "tags": ["collections", "counter"]
+      "tags": [
+        "collections",
+        "counter"
+      ]
     },
     {
       "id": "q011201016",
@@ -139,7 +184,11 @@
       "explanation_en": "Subtraction drops counts that fall to zero or below, so the 'b' disappears. To keep them you would use `subtract()`, which does allow negatives.",
       "source": "CPython docs 3.13 — collections.Counter (arithmetic operations)",
       "expected_time_ms": 50000,
-      "tags": ["collections", "counter", "arithmetic"]
+      "tags": [
+        "collections",
+        "counter",
+        "arithmetic"
+      ]
     },
     {
       "id": "q011201017",
@@ -149,25 +198,28 @@
       "question_es": "¿Qué problema resuelve `namedtuple` frente a devolver una tupla suelta?",
       "question_en": "What problem does `namedtuple` solve compared with returning a bare tuple?",
       "options_es": [
-        "Da nombre a cada posición, así que el código deja de depender de recordar el orden",
         "Permite modificar los valores",
+        "Da nombre a cada posición, así que el código deja de depender de recordar el orden",
         "Hace la tupla más rápida",
         "Admite un número variable de campos"
       ],
       "options_en": [
-        "It names each position, so the code stops depending on remembering the order",
         "It allows modifying the values",
+        "It names each position, so the code stops depending on remembering the order",
         "It makes the tuple faster",
         "It accepts a variable number of fields"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`punto[0]` obliga a saber qué había en cada sitio; `punto.x` lo dice. Sigue siendo inmutable —no se pueden modificar los valores— y tiene los campos fijos.",
       "explanation_en": "`point[0]` forces you to know what was where; `point.x` says it. It remains immutable — values cannot be modified — and its fields are fixed.",
       "source": "CPython docs 3.13 — collections.namedtuple",
       "expected_time_ms": 38000,
-      "tags": ["collections", "namedtuple", "readability"]
+      "tags": [
+        "collections",
+        "namedtuple",
+        "readability"
+      ]
     },
-
     {
       "id": "q011202010",
       "skill_id": "sk011202",
@@ -176,23 +228,26 @@
       "question_es": "¿Qué diferencia hay entre `datetime.date` y `datetime.datetime`?",
       "question_en": "What is the difference between `datetime.date` and `datetime.datetime`?",
       "options_es": [
-        "`date` guarda solo año, mes y día; `datetime` añade la hora",
+        "Son sinónimos",
         "`date` es más precisa",
         "`datetime` solo sirve para zonas horarias",
-        "Son sinónimos"
+        "`date` guarda solo año, mes y día; `datetime` añade la hora"
       ],
       "options_en": [
-        "`date` holds only year, month and day; `datetime` adds the time",
+        "They are synonyms",
         "`date` is more precise",
         "`datetime` is only for time zones",
-        "They are synonyms"
+        "`date` holds only year, month and day; `datetime` adds the time"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Usar `date` cuando la hora no importa evita comparaciones sorprendentes: dos `datetime` del mismo día son distintos si difieren en segundos. Ambos están en el módulo `datetime`.",
       "explanation_en": "Using `date` when the time does not matter avoids surprising comparisons: two `datetime`s on the same day differ if they are seconds apart. Both live in the `datetime` module.",
       "source": "CPython docs 3.13 — datetime — Basic date and time types",
       "expected_time_ms": 30000,
-      "tags": ["datetime", "types"]
+      "tags": [
+        "datetime",
+        "types"
+      ]
     },
     {
       "id": "q011202011",
@@ -201,14 +256,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué tipo devuelve restar dos objetos `datetime`?\n\n```python\nfrom datetime import datetime\nd = datetime(2026, 1, 2) - datetime(2026, 1, 1)\nprint(type(d).__name__, d.days)\n```",
       "question_en": "What type does subtracting two `datetime` objects return?\n\n```python\nfrom datetime import datetime\nd = datetime(2026, 1, 2) - datetime(2026, 1, 1)\nprint(type(d).__name__, d.days)\n```",
-      "options_es": ["timedelta 1", "datetime 1", "int 1", "Lanza un `TypeError`"],
-      "options_en": ["timedelta 1", "datetime 1", "int 1", "It raises a `TypeError`"],
-      "correct_index": 0,
+      "options_es": [
+        "int 1",
+        "datetime 1",
+        "timedelta 1",
+        "Lanza un `TypeError`"
+      ],
+      "options_en": [
+        "int 1",
+        "datetime 1",
+        "timedelta 1",
+        "It raises a `TypeError`"
+      ],
+      "correct_index": 2,
       "explanation_es": "La diferencia entre dos instantes es una duración, no un instante. `timedelta` tiene `.days` y `.seconds`, y se puede sumar a una fecha para desplazarla.",
       "explanation_en": "The difference between two instants is a duration, not an instant. `timedelta` has `.days` and `.seconds`, and can be added to a date to shift it.",
       "source": "CPython docs 3.13 — datetime.timedelta",
       "expected_time_ms": 42000,
-      "tags": ["datetime", "timedelta"]
+      "tags": [
+        "datetime",
+        "timedelta"
+      ]
     },
     {
       "id": "q011202012",
@@ -218,23 +286,26 @@
       "question_es": "¿Qué problema tiene usar `datetime.now()` sin zona horaria en una aplicación con usuarios de varios países?",
       "question_en": "What is wrong with using `datetime.now()` without a time zone in an application serving several countries?",
       "options_es": [
-        "Devuelve la hora local del servidor y es ambigua: no se sabe a qué instante real corresponde",
+        "Solo funciona en Linux",
         "Es más lenta que `utcnow()`",
         "No se puede guardar en una base de datos",
-        "Solo funciona en Linux"
+        "Devuelve la hora local del servidor y es ambigua: no se sabe a qué instante real corresponde"
       ],
       "options_en": [
-        "It returns the server's local time and is ambiguous: the real instant it refers to is unknown",
+        "It only works on Linux",
         "It is slower than `utcnow()`",
         "It cannot be stored in a database",
-        "It only works on Linux"
+        "It returns the server's local time and is ambiguous: the real instant it refers to is unknown"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "Un `datetime` sin zona («naive») no sabe a qué huso pertenece, así que comparar dos de servidores distintos no tiene sentido. La práctica recomendada es trabajar en UTC con `datetime.now(timezone.utc)` y convertir solo al mostrar.",
       "explanation_en": "A `datetime` with no zone ('naive') does not know which offset it belongs to, so comparing two from different servers is meaningless. The recommended practice is working in UTC with `datetime.now(timezone.utc)` and converting only for display.",
       "source": "CPython docs 3.13 — datetime (aware and naive objects)",
       "expected_time_ms": 45000,
-      "tags": ["datetime", "timezones"]
+      "tags": [
+        "datetime",
+        "timezones"
+      ]
     },
     {
       "id": "q011202013",
@@ -243,14 +314,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom datetime import date\nprint(date(2026, 3, 9).strftime(\"%Y-%m-%d\"))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom datetime import date\nprint(date(2026, 3, 9).strftime(\"%Y-%m-%d\"))\n```",
-      "options_es": ["2026-03-09", "2026-3-9", "09-03-2026", "Lanza un `ValueError`"],
-      "options_en": ["2026-03-09", "2026-3-9", "09-03-2026", "It raises a `ValueError`"],
+      "options_es": [
+        "2026-03-09",
+        "2026-3-9",
+        "09-03-2026",
+        "Lanza un `ValueError`"
+      ],
+      "options_en": [
+        "2026-03-09",
+        "2026-3-9",
+        "09-03-2026",
+        "It raises a `ValueError`"
+      ],
       "correct_index": 0,
       "explanation_es": "`%m` y `%d` rellenan con cero a la izquierda. `strftime` formatea a texto y su pareja `strptime` hace lo contrario: interpretar texto como fecha.",
       "explanation_en": "`%m` and `%d` pad with a leading zero. `strftime` formats to text, and its counterpart `strptime` does the reverse: parsing text into a date.",
       "source": "CPython docs 3.13 — datetime (strftime() and strptime() format codes)",
       "expected_time_ms": 32000,
-      "tags": ["datetime", "formatting"]
+      "tags": [
+        "datetime",
+        "formatting"
+      ]
     },
     {
       "id": "q011202014",
@@ -259,14 +343,23 @@
       "difficulty_tier": "medium",
       "question_es": "`timedelta` admite sumarse a un `date` para obtener otra fecha.",
       "question_en": "`timedelta` can be added to a `date` to obtain another date.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "`hoy + timedelta(days=30)` calcula la fecha dentro de un mes gestionando cambios de mes y años bisiestos. Sumar 30 a mano sobre el día no funcionaría.",
       "explanation_en": "`today + timedelta(days=30)` computes the date a month ahead, handling month boundaries and leap years. Adding 30 to the day by hand would not work.",
       "source": "CPython docs 3.13 — datetime.timedelta (supported operations)",
       "expected_time_ms": 28000,
-      "tags": ["datetime", "arithmetic"]
+      "tags": [
+        "datetime",
+        "arithmetic"
+      ]
     },
     {
       "id": "q011202015",
@@ -281,7 +374,10 @@
       "explanation_en": "`isoformat()` produces ISO 8601 without needing to remember `strftime` codes. It is the format JSON and most APIs expect, and `fromisoformat()` reads it back.",
       "source": "CPython docs 3.13 — datetime.date.isoformat()",
       "expected_time_ms": 28000,
-      "tags": ["datetime", "iso"]
+      "tags": [
+        "datetime",
+        "iso"
+      ]
     },
     {
       "id": "q011202016",
@@ -291,23 +387,27 @@
       "question_es": "¿Por qué comparar un `datetime` con zona horaria y otro sin ella lanza `TypeError`?",
       "question_en": "Why does comparing a time-zone-aware `datetime` with a naive one raise `TypeError`?",
       "options_es": [
-        "Porque sin zona no se sabe a qué instante real corresponde, y la comparación sería adivinar",
-        "Porque son clases distintas",
         "Porque el naive siempre es anterior",
+        "Porque son clases distintas",
+        "Porque sin zona no se sabe a qué instante real corresponde, y la comparación sería adivinar",
         "Porque Python no soporta zonas horarias"
       ],
       "options_en": [
-        "Because without a zone the real instant is unknown, and comparing would be guessing",
-        "Because they are different classes",
         "Because the naive one is always earlier",
+        "Because they are different classes",
+        "Because without a zone the real instant is unknown, and comparing would be guessing",
         "Because Python does not support time zones"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Ambos son de la clase `datetime`; lo que falta es información, no compatibilidad de tipos. Python prefiere fallar a inventar una zona, que es justo lo que produciría errores silenciosos de horas.",
       "explanation_en": "Both are of class `datetime`; what is missing is information, not type compatibility. Python prefers to fail rather than invent a zone, which is exactly what would produce silent hour-level errors.",
       "source": "CPython docs 3.13 — datetime (aware and naive objects)",
       "expected_time_ms": 48000,
-      "tags": ["datetime", "timezones", "comparison"]
+      "tags": [
+        "datetime",
+        "timezones",
+        "comparison"
+      ]
     },
     {
       "id": "q011202017",
@@ -316,16 +416,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom datetime import date\nprint(date(2026, 1, 1) < date(2026, 1, 2))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom datetime import date\nprint(date(2026, 1, 1) < date(2026, 1, 2))\n```",
-      "options_es": ["True", "False", "Lanza un `TypeError`", "None"],
-      "options_en": ["True", "False", "It raises a `TypeError`", "None"],
-      "correct_index": 0,
+      "options_es": [
+        "None",
+        "False",
+        "Lanza un `TypeError`",
+        "True"
+      ],
+      "options_en": [
+        "None",
+        "False",
+        "It raises a `TypeError`",
+        "True"
+      ],
+      "correct_index": 3,
       "explanation_es": "Las fechas son comparables y ordenables directamente, así que `sorted()` funciona sobre una lista de ellas sin `key`. Con `date` no hay problema de zonas horarias, a diferencia de `datetime`.",
       "explanation_en": "Dates are directly comparable and sortable, so `sorted()` works on a list of them with no `key`. With `date` there is no time-zone problem, unlike with `datetime`.",
       "source": "CPython docs 3.13 — datetime.date (supported operations)",
       "expected_time_ms": 35000,
-      "tags": ["datetime", "comparison"]
+      "tags": [
+        "datetime",
+        "comparison"
+      ]
     },
-
     {
       "id": "q011203010",
       "skill_id": "sk011203",
@@ -333,14 +445,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport math\nprint(math.ceil(4.1), math.floor(4.9))\n```",
       "question_en": "What does the following code print?\n\n```python\nimport math\nprint(math.ceil(4.1), math.floor(4.9))\n```",
-      "options_es": ["5 4", "4 5", "4 4", "5 5"],
-      "options_en": ["5 4", "4 5", "4 4", "5 5"],
+      "options_es": [
+        "5 4",
+        "4 5",
+        "4 4",
+        "5 5"
+      ],
+      "options_en": [
+        "5 4",
+        "4 5",
+        "4 4",
+        "5 5"
+      ],
       "correct_index": 0,
       "explanation_es": "`ceil` sube siempre y `floor` baja siempre, sin mirar los decimales. Ninguno redondea al más cercano: eso es `round`.",
       "explanation_en": "`ceil` always goes up and `floor` always goes down, regardless of the decimals. Neither rounds to nearest: that is `round`.",
       "source": "CPython docs 3.13 — math.ceil() / math.floor()",
       "expected_time_ms": 28000,
-      "tags": ["math", "rounding"]
+      "tags": [
+        "math",
+        "rounding"
+      ]
     },
     {
       "id": "q011203011",
@@ -350,23 +475,26 @@
       "question_es": "¿Qué devuelve `random.choice([1, 2, 3])`?",
       "question_en": "What does `random.choice([1, 2, 3])` return?",
       "options_es": [
-        "Un elemento cualquiera de la lista",
-        "Una lista con un elemento",
         "Un índice al azar",
+        "Una lista con un elemento",
+        "Un elemento cualquiera de la lista",
         "La lista barajada"
       ],
       "options_en": [
-        "Any one element from the list",
-        "A list holding one element",
         "A random index",
+        "A list holding one element",
+        "Any one element from the list",
         "The shuffled list"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Devuelve el elemento en sí. Sus vecinos son `sample(xs, k)` para varios sin repetir, `choices(xs, k=n)` con repetición, y `shuffle(xs)`, que baraja **en el sitio** y devuelve `None`.",
       "explanation_en": "It returns the element itself. Its neighbours are `sample(xs, k)` for several without repeats, `choices(xs, k=n)` with repeats, and `shuffle(xs)`, which shuffles **in place** and returns `None`.",
       "source": "CPython docs 3.13 — random.choice()",
       "expected_time_ms": 30000,
-      "tags": ["random", "selection"]
+      "tags": [
+        "random",
+        "selection"
+      ]
     },
     {
       "id": "q011203012",
@@ -375,14 +503,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport random\nrandom.seed(42)\na = random.randint(1, 100)\nrandom.seed(42)\nb = random.randint(1, 100)\nprint(a == b)\n```",
       "question_en": "What does the following code print?\n\n```python\nimport random\nrandom.seed(42)\na = random.randint(1, 100)\nrandom.seed(42)\nb = random.randint(1, 100)\nprint(a == b)\n```",
-      "options_es": ["True", "False", "Lanza un error", "None"],
-      "options_en": ["True", "False", "It raises an error", "None"],
-      "correct_index": 0,
+      "options_es": [
+        "False",
+        "True",
+        "Lanza un error",
+        "None"
+      ],
+      "options_en": [
+        "False",
+        "True",
+        "It raises an error",
+        "None"
+      ],
+      "correct_index": 1,
       "explanation_es": "Con la misma semilla, la secuencia se repite exactamente: por eso `random` no sirve para seguridad, y por eso sí sirve para tests reproducibles.",
       "explanation_en": "With the same seed the sequence repeats exactly: that is why `random` is unfit for security, and precisely why it is useful for reproducible tests.",
       "source": "CPython docs 3.13 — random.seed()",
       "expected_time_ms": 42000,
-      "tags": ["random", "seed", "reproducibility"]
+      "tags": [
+        "random",
+        "seed",
+        "reproducibility"
+      ]
     },
     {
       "id": "q011203013",
@@ -391,14 +533,23 @@
       "difficulty_tier": "medium",
       "question_es": "`random.randint(1, 10)` puede devolver 10.",
       "question_en": "`random.randint(1, 10)` can return 10.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "`randint` incluye ambos extremos, a diferencia de casi todo lo demás en Python. Quien quiera el comportamiento habitual de `range` tiene `randrange(1, 10)`, que excluye el 10.",
       "explanation_en": "`randint` includes both endpoints, unlike almost everything else in Python. Anyone wanting `range`'s usual behaviour has `randrange(1, 10)`, which excludes the 10.",
       "source": "CPython docs 3.13 — random.randint() / random.randrange()",
       "expected_time_ms": 30000,
-      "tags": ["random", "ranges"]
+      "tags": [
+        "random",
+        "ranges"
+      ]
     },
     {
       "id": "q011203014",
@@ -408,23 +559,27 @@
       "question_es": "¿Por qué `math.isclose(a, b)` es mejor que `a == b` con números decimales?",
       "question_en": "Why is `math.isclose(a, b)` better than `a == b` with decimal numbers?",
       "options_es": [
-        "Porque compara con una tolerancia y absorbe el error de representación binaria",
         "Porque es más rápido",
+        "Porque compara con una tolerancia y absorbe el error de representación binaria",
         "Porque convierte los números a enteros",
         "Porque `==` no funciona con floats"
       ],
       "options_en": [
-        "Because it compares within a tolerance and absorbs the binary representation error",
         "Because it is faster",
+        "Because it compares within a tolerance and absorbs the binary representation error",
         "Because it converts the numbers to integers",
         "Because `==` does not work with floats"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`0.1 + 0.2 == 0.3` da `False` por cómo se guardan los decimales en binario. `isclose` admite una diferencia mínima, que es lo razonable al comparar resultados de cálculos.",
       "explanation_en": "`0.1 + 0.2 == 0.3` is `False` because of how decimals are stored in binary. `isclose` allows a minimal difference, which is the sensible thing when comparing computed results.",
       "source": "CPython docs 3.13 — math.isclose() / PEP 485",
       "expected_time_ms": 40000,
-      "tags": ["math", "float", "comparison"]
+      "tags": [
+        "math",
+        "float",
+        "comparison"
+      ]
     },
     {
       "id": "q011203015",
@@ -439,7 +594,10 @@
       "explanation_en": "`math.sqrt(16)` returns `4.0`, always a float. With negatives it raises `ValueError`: for those cases there is `cmath`, which works with complex numbers.",
       "source": "CPython docs 3.13 — math.sqrt()",
       "expected_time_ms": 18000,
-      "tags": ["math", "functions"]
+      "tags": [
+        "math",
+        "functions"
+      ]
     },
     {
       "id": "q011203016",
@@ -448,14 +606,28 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport random\nxs = [1, 2, 3]\nprint(random.shuffle(xs) is None)\n```",
       "question_en": "What does the following code print?\n\n```python\nimport random\nxs = [1, 2, 3]\nprint(random.shuffle(xs) is None)\n```",
-      "options_es": ["True", "False", "Lanza un `TypeError`", "`[3, 1, 2]`"],
-      "options_en": ["True", "False", "It raises a `TypeError`", "`[3, 1, 2]`"],
+      "options_es": [
+        "True",
+        "False",
+        "Lanza un `TypeError`",
+        "`[3, 1, 2]`"
+      ],
+      "options_en": [
+        "True",
+        "False",
+        "It raises a `TypeError`",
+        "`[3, 1, 2]`"
+      ],
       "correct_index": 0,
       "explanation_es": "`shuffle` baraja en el sitio y devuelve `None`, igual que `list.sort()`. Escribir `xs = random.shuffle(xs)` deja la variable vacía, que es el mismo error clásico de `sort`.",
       "explanation_en": "`shuffle` shuffles in place and returns `None`, just like `list.sort()`. Writing `xs = random.shuffle(xs)` leaves the variable empty, the same classic mistake as with `sort`.",
       "source": "CPython docs 3.13 — random.shuffle()",
       "expected_time_ms": 45000,
-      "tags": ["random", "shuffle", "gotcha"]
+      "tags": [
+        "random",
+        "shuffle",
+        "gotcha"
+      ]
     },
     {
       "id": "q011203017",
@@ -465,25 +637,27 @@
       "question_es": "¿Qué diferencia hay entre `math.pow(2, 3)` y `2 ** 3`?",
       "question_en": "What is the difference between `math.pow(2, 3)` and `2 ** 3`?",
       "options_es": [
-        "`math.pow` devuelve siempre float; `**` conserva el entero si ambos lo son",
-        "`math.pow` es más preciso",
         "`**` solo admite exponentes enteros",
+        "`math.pow` es más preciso",
+        "`math.pow` devuelve siempre float; `**` conserva el entero si ambos lo son",
         "Ninguna"
       ],
       "options_en": [
-        "`math.pow` always returns a float; `**` keeps the integer when both are",
-        "`math.pow` is more precise",
         "`**` only accepts integer exponents",
+        "`math.pow` is more precise",
+        "`math.pow` always returns a float; `**` keeps the integer when both are",
         "None"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`math.pow(2, 3)` da `8.0` y `2 ** 3` da `8`. Con enteros grandes la diferencia importa: el float pierde precisión a partir de cierto tamaño, mientras que `**` mantiene el entero exacto.",
       "explanation_en": "`math.pow(2, 3)` gives `8.0` and `2 ** 3` gives `8`. With large integers the difference matters: the float loses precision beyond a certain size, whereas `**` keeps the integer exact.",
       "source": "CPython docs 3.13 — math.pow() / The power operator",
       "expected_time_ms": 42000,
-      "tags": ["math", "types"]
+      "tags": [
+        "math",
+        "types"
+      ]
     },
-
     {
       "id": "q011204010",
       "skill_id": "sk011204",
@@ -491,14 +665,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom itertools import chain\nprint(list(chain([1, 2], [3])))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom itertools import chain\nprint(list(chain([1, 2], [3])))\n```",
-      "options_es": ["`[1, 2, 3]`", "`[[1, 2], [3]]`", "`[1, 2]`", "Lanza un `TypeError`"],
-      "options_en": ["`[1, 2, 3]`", "`[[1, 2], [3]]`", "`[1, 2]`", "It raises a `TypeError`"],
-      "correct_index": 0,
+      "options_es": [
+        "Lanza un `TypeError`",
+        "`[[1, 2], [3]]`",
+        "`[1, 2]`",
+        "`[1, 2, 3]`"
+      ],
+      "options_en": [
+        "It raises a `TypeError`",
+        "`[[1, 2], [3]]`",
+        "`[1, 2]`",
+        "`[1, 2, 3]`"
+      ],
+      "correct_index": 3,
       "explanation_es": "`chain` recorre varios iterables como si fueran uno, sin construir una lista intermedia. Para una lista de listas está `chain.from_iterable`.",
       "explanation_en": "`chain` walks several iterables as though they were one, building no intermediate list. For a list of lists there is `chain.from_iterable`.",
       "source": "CPython docs 3.13 — itertools.chain()",
       "expected_time_ms": 32000,
-      "tags": ["itertools", "chain"]
+      "tags": [
+        "itertools",
+        "chain"
+      ]
     },
     {
       "id": "q011204011",
@@ -524,7 +711,10 @@
       "explanation_en": "It only works if the function is pure: same arguments, same result. The arguments must be hashable, so a list will not do, and the cache size is worth watching with highly varied data.",
       "source": "CPython docs 3.13 — functools.lru_cache",
       "expected_time_ms": 40000,
-      "tags": ["functools", "caching"]
+      "tags": [
+        "functools",
+        "caching"
+      ]
     },
     {
       "id": "q011204012",
@@ -533,14 +723,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom functools import partial\ndoble = partial(lambda a, b: a * b, 2)\nprint(doble(5))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom functools import partial\ndouble = partial(lambda a, b: a * b, 2)\nprint(double(5))\n```",
-      "options_es": ["10", "2", "7", "Lanza un `TypeError`"],
-      "options_en": ["10", "2", "7", "It raises a `TypeError`"],
-      "correct_index": 0,
+      "options_es": [
+        "7",
+        "2",
+        "10",
+        "Lanza un `TypeError`"
+      ],
+      "options_en": [
+        "7",
+        "2",
+        "10",
+        "It raises a `TypeError`"
+      ],
+      "correct_index": 2,
       "explanation_es": "`partial` fija argumentos por adelantado y devuelve una función nueva que espera los que faltan. Es útil para adaptar una función a una interfaz que espera menos parámetros, como un `key` o un callback.",
       "explanation_en": "`partial` pins arguments in advance and returns a new function expecting the rest. It is useful for adapting a function to an interface that expects fewer parameters, such as a `key` or a callback.",
       "source": "CPython docs 3.13 — functools.partial",
       "expected_time_ms": 42000,
-      "tags": ["functools", "partial"]
+      "tags": [
+        "functools",
+        "partial"
+      ]
     },
     {
       "id": "q011204013",
@@ -566,7 +769,10 @@
       "explanation_en": "For the ordered ones there is `permutations`, and for those allowing repeats `combinations_with_replacement`. All three return lazy iterators, not lists.",
       "source": "CPython docs 3.13 — itertools.combinations()",
       "expected_time_ms": 42000,
-      "tags": ["itertools", "combinatorics"]
+      "tags": [
+        "itertools",
+        "combinatorics"
+      ]
     },
     {
       "id": "q011204014",
@@ -575,14 +781,24 @@
       "difficulty_tier": "medium",
       "question_es": "`itertools.groupby` agrupa correctamente aunque los elementos iguales estén dispersos por la secuencia.",
       "question_en": "`itertools.groupby` groups correctly even when equal elements are scattered through the sequence.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Solo agrupa elementos **consecutivos**, así que hay que ordenar antes por la misma clave. Es la causa más frecuente de que devuelva grupos repetidos y parezca roto.",
       "explanation_en": "It only groups **consecutive** elements, so the data must be sorted by the same key beforehand. It is the most frequent reason it returns duplicated groups and appears broken.",
       "source": "CPython docs 3.13 — itertools.groupby()",
       "expected_time_ms": 35000,
-      "tags": ["itertools", "groupby", "gotcha"]
+      "tags": [
+        "itertools",
+        "groupby",
+        "gotcha"
+      ]
     },
     {
       "id": "q011204015",
@@ -597,7 +813,10 @@
       "explanation_en": "`islice` slices an iterator the way a slice cuts a list, but without needing indices or materialising it. It is what makes consuming an infinite generator safe.",
       "source": "CPython docs 3.13 — itertools.islice()",
       "expected_time_ms": 28000,
-      "tags": ["itertools", "islice"]
+      "tags": [
+        "itertools",
+        "islice"
+      ]
     },
     {
       "id": "q011204016",
@@ -607,23 +826,26 @@
       "question_es": "¿Para qué sirve `functools.wraps` al escribir un decorador?",
       "question_en": "What is `functools.wraps` for when writing a decorator?",
       "options_es": [
-        "Conserva el nombre, el docstring y la firma de la función original en la envoltura",
         "Hace el decorador más rápido",
+        "Conserva el nombre, el docstring y la firma de la función original en la envoltura",
         "Permite decorar varias funciones a la vez",
         "Convierte la función en asíncrona"
       ],
       "options_en": [
-        "It preserves the original function's name, docstring and signature on the wrapper",
         "It makes the decorator faster",
+        "It preserves the original function's name, docstring and signature on the wrapper",
         "It allows decorating several functions at once",
         "It turns the function asynchronous"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Sin él, la función decorada pasa a llamarse `wrapper` y pierde su documentación, lo que confunde a `help()`, a los depuradores y a las herramientas de análisis. Es una línea que evita horas de desconcierto.",
       "explanation_en": "Without it, the decorated function ends up called `wrapper` and loses its documentation, which confuses `help()`, debuggers and analysis tools. It is one line that saves hours of bafflement.",
       "source": "CPython docs 3.13 — functools.wraps",
       "expected_time_ms": 48000,
-      "tags": ["functools", "decorators"]
+      "tags": [
+        "functools",
+        "decorators"
+      ]
     },
     {
       "id": "q011204017",
@@ -632,14 +854,28 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfrom itertools import count, islice\nprint(list(islice(count(10, 5), 3)))\n```",
       "question_en": "What does the following code print?\n\n```python\nfrom itertools import count, islice\nprint(list(islice(count(10, 5), 3)))\n```",
-      "options_es": ["`[10, 15, 20]`", "`[10, 11, 12]`", "`[5, 10, 15]`", "Nunca termina"],
-      "options_en": ["`[10, 15, 20]`", "`[10, 11, 12]`", "`[5, 10, 15]`", "It never finishes"],
-      "correct_index": 0,
+      "options_es": [
+        "`[5, 10, 15]`",
+        "`[10, 11, 12]`",
+        "`[10, 15, 20]`",
+        "Nunca termina"
+      ],
+      "options_en": [
+        "`[5, 10, 15]`",
+        "`[10, 11, 12]`",
+        "`[10, 15, 20]`",
+        "It never finishes"
+      ],
+      "correct_index": 2,
       "explanation_es": "`count(10, 5)` es un contador infinito que empieza en 10 y sube de 5 en 5; `islice` toma los tres primeros y detiene el consumo. Sin `islice`, `list()` intentaría materializar el infinito y agotaría la memoria.",
       "explanation_en": "`count(10, 5)` is an infinite counter starting at 10 and stepping by 5; `islice` takes the first three and stops the consumption. Without `islice`, `list()` would try to materialise the infinite and exhaust memory.",
       "source": "CPython docs 3.13 — itertools.count() / itertools.islice()",
       "expected_time_ms": 50000,
-      "tags": ["itertools", "infinite", "islice"]
+      "tags": [
+        "itertools",
+        "infinite",
+        "islice"
+      ]
     }
   ]
 }

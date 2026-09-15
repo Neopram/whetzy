@@ -8,17 +8,17 @@
     "question_en": "Which EC2 instance type is best suited for a web application requiring high compute performance but low memory utilization?",
     "options_es": [
       "m5.large (propósito general)",
-      "c5.large (optimizada para cómputo)",
       "r5.large (optimizada para memoria)",
+      "c5.large (optimizada para cómputo)",
       "t3.medium (ráfaga)"
     ],
     "options_en": [
       "m5.large (general purpose)",
-      "c5.large (compute optimized)",
       "r5.large (memory optimized)",
+      "c5.large (compute optimized)",
       "t3.medium (burstable)"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Las instancias optimizadas para cómputo (familia c5) ofrecen la mejor relación cómputo-precio para cargas intensivas en CPU. Las instancias propósito general (m5) son equilibradas. Las r5 son para cargas memoria-intensivas. Las t3 ofrecen rendimiento de ráfaga, no sostenido.",
@@ -34,18 +34,18 @@
     "question_es": "¿Cuál es la diferencia principal entre el almacenamiento raíz EBS y el almacenamiento de instancia para EC2?",
     "question_en": "What is the primary difference between EBS root volume and instance store for EC2 instances?",
     "options_es": [
-      "EBS es más rápido pero se pierde al detener la instancia",
-      "Instance store persiste después de detener la instancia",
       "EBS persiste después de detener la instancia",
+      "Instance store persiste después de detener la instancia",
+      "EBS es más rápido pero se pierde al detener la instancia",
       "Instance store tiene mejor rendimiento de IOPS garantizado"
     ],
     "options_en": [
-      "EBS is faster but lost when stopping the instance",
-      "Instance store persists after stopping the instance",
       "EBS persists after stopping the instance",
+      "Instance store persists after stopping the instance",
+      "EBS is faster but lost when stopping the instance",
       "Instance store has guaranteed IOPS performance"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "EBS proporciona almacenamiento persistente que se mantiene después de detener la instancia. Instance store es temporal y se pierde. EBS puede ser más lento inicialmente pero ofrece durabilidad. Instance store ofrece mejor rendimiento pero no es persistente.",
@@ -62,17 +62,17 @@
     "question_en": "A data analytics application requires massive parallel processing for 2 hours once weekly. What is the most cost-efficient instance strategy?",
     "options_es": [
       "Instancias On-Demand permanentes escaladas",
-      "Instancias Spot agrupadas que se lanzan bajo demanda",
+      "Dedicated Hosts",
       "Reserved Instances de 3 años",
-      "Dedicated Hosts"
+      "Instancias Spot agrupadas que se lanzan bajo demanda"
     ],
     "options_en": [
       "Permanent On-Demand instances scaled up",
-      "Spot instances launched on-demand in clusters",
+      "Dedicated Hosts",
       "3-year Reserved Instances",
-      "Dedicated Hosts"
+      "Spot instances launched on-demand in clusters"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Las instancias Spot ofrecen descuentos hasta del 90% pero pueden ser interrumpidas. Para cargas predecibles de corta duración, agrupar Spot instances es ideal. On-Demand sería costoso. Reserved Instances requieren compromiso de capacidad. Dedicated Hosts son para compliance, no para optimizar costo.",
@@ -89,17 +89,17 @@
     "question_en": "What mechanism provides latency guarantees for high-frequency trading applications running on EC2?",
     "options_es": [
       "Placement Groups (cluster)",
-      "Enhanced Networking",
+      "Todas las anteriores",
       "Instancias Nitro",
-      "Todas las anteriores"
+      "Enhanced Networking"
     ],
     "options_en": [
       "Placement Groups (cluster)",
-      "Enhanced Networking",
+      "All of the above",
       "Nitro instances",
-      "All of the above"
+      "Enhanced Networking"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Los Placement Groups (cluster) reducen latencia entre instancias. Enhanced Networking proporciona mejor rendimiento de red. Las instancias Nitro ofrecen acceso más directo al hardware. Para trading HFT, todas estas tecnologías se combinan para minimizar latencia.",
@@ -142,18 +142,18 @@
     "question_es": "¿Cuál es el propósito principal de AWS EC2 Instance Metadata Service (IMDS)?",
     "question_en": "What is the primary purpose of AWS EC2 Instance Metadata Service (IMDS)?",
     "options_es": [
-      "Recopilar métricas de rendimiento",
       "Proporcionar credenciales temporales y configuración de instancia",
+      "Recopilar métricas de rendimiento",
       "Monitorear salud de la instancia",
       "Iniciar instancias adicionales"
     ],
     "options_en": [
-      "Collect performance metrics",
       "Provide temporary credentials and instance configuration",
+      "Collect performance metrics",
       "Monitor instance health",
       "Launch additional instances"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IMDS proporciona metadata sobre la instancia incluyendo credenciales IAM temporales, zona de disponibilidad, ID de instancia, etc. Las métricas de rendimiento vienen de CloudWatch. La salud se monitorea con checks separados. IMDS no lanza instancias.",
@@ -197,17 +197,17 @@
     "question_en": "How to optimize an EC2 application suffering from unpredictable garbage collection pauses affecting latency?",
     "options_es": [
       "Escalar horizontalmente con Spot instances",
-      "Usar instancias Nitro con acceso a vCPU dedicadas",
+      "Usar bare metal instances (i3en) con SO optimizado",
       "Migrara contenedores con Fargate para mejor control de recursos",
-      "Usar bare metal instances (i3en) con SO optimizado"
+      "Usar instancias Nitro con acceso a vCPU dedicadas"
     ],
     "options_en": [
       "Scale horizontally with Spot instances",
-      "Use Nitro instances with dedicated vCPU access",
+      "Use bare metal instances (i3en) with OS tuning",
       "Migrate to containers with Fargate for resource control",
-      "Use bare metal instances (i3en) with OS tuning"
+      "Use Nitro instances with dedicated vCPU access"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Las pausas de GC impredecibles son problema de determinismo de hardware. Bare metal instances (i3en) permiten control total del SO y exclusión de vcpu. Instancias Nitro ofrecen mejor aislamiento pero no control total. Spot y Fargate no resuelven el problema de GC.",
@@ -223,18 +223,18 @@
     "question_es": "¿Cuál es el impacto principal de usar EC2 con sobresubscripción de vCPU en cargas de trabajo de baja variabilidad?",
     "question_en": "What is the primary impact of using EC2 with vCPU over-subscription on low-variability workloads?",
     "options_es": [
-      "Mejor costo con degradación mínima de rendimiento",
+      "Mejor utilización de almacenamiento",
       "Mayor disponibilidad de CPU",
       "Reducción de latencia de red",
-      "Mejor utilización de almacenamiento"
+      "Mejor costo con degradación mínima de rendimiento"
     ],
     "options_en": [
-      "Better cost with minimal performance degradation",
+      "Better storage utilization",
       "Higher CPU availability",
       "Reduced network latency",
-      "Better storage utilization"
+      "Better cost with minimal performance degradation"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "La sobresubscripción de vCPU permite instancias Burstable (t3, t4) que reducen costo en cargas estables. En cargas predecibles de baja variabilidad, el rendimiento degradado es mínimo porque no usan ráfagas. No afecta disponibilidad, latencia de red, ni almacenamiento.",
@@ -251,17 +251,17 @@
     "question_en": "What is a Security Group in EC2?",
     "options_es": [
       "Política de cifrado para almacenamiento",
-      "Firewall virtual que controla tráfico de entrada y salida",
       "Grupo de instancias para escalado automático",
+      "Firewall virtual que controla tráfico de entrada y salida",
       "Certificado SSL/TLS"
     ],
     "options_en": [
       "Encryption policy for storage",
-      "Virtual firewall controlling inbound and outbound traffic",
       "Group of instances for auto-scaling",
+      "Virtual firewall controlling inbound and outbound traffic",
       "SSL/TLS certificate"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Los Security Groups actúan como firewall virtual a nivel de instancia. Cifrado es distinto. Auto Scaling groups es otro concepto. Los certificados son para HTTPS.",
@@ -277,18 +277,18 @@
     "question_es": "¿Qué beneficio ofrece una Network ACL (NACL) sobre un Security Group?",
     "question_en": "What benefit does a Network ACL (NACL) provide over a Security Group?",
     "options_es": [
-      "Control a nivel de subred vs solo instancia",
-      "Mejor rendimiento de red",
       "Cifrado automático",
+      "Mejor rendimiento de red",
+      "Control a nivel de subred vs solo instancia",
       "Escalado automático"
     ],
     "options_en": [
-      "Subnet-level control vs instance-level only",
-      "Better network performance",
       "Automatic encryption",
+      "Better network performance",
+      "Subnet-level control vs instance-level only",
       "Auto-scaling"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NACLs operan a nivel de subred y pueden negar tráfico explícitamente. Security Groups operan a nivel de instancia y son stateful. NACLs son stateless. No afectan rendimiento, cifrado, ni escalado automático.",
@@ -305,17 +305,17 @@
     "question_en": "How would you design a multi-tenant EC2 architecture requiring guaranteed resource isolation between customers?",
     "options_es": [
       "Instancias Dedicadas con vCPU exclusivas",
-      "Bare Metal instances con particionamiento SO",
       "Placement Groups dedicados por cliente",
+      "Bare Metal instances con particionamiento SO",
       "Container hosts con cgroups"
     ],
     "options_en": [
       "Dedicated instances with exclusive vCPUs",
-      "Bare Metal instances with OS partitioning",
       "Dedicated Placement Groups per customer",
+      "Bare Metal instances with OS partitioning",
       "Container hosts with cgroups"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Bare Metal instances ofrecen máximo control de recursos y aislamiento. Instancias Dedicadas aseguran hardware pero no CPU exclusivas. Placement Groups afectan latencia pero no isolamiento. Containers sin bare metal permite interferencia entre tenants.",
@@ -331,18 +331,18 @@
     "question_es": "¿Cuál es el uso de case principal para Instance Store vs EBS en una arquitectura de base de datos NoSQL?",
     "question_en": "What is the primary use case for Instance Store vs EBS in a NoSQL database architecture?",
     "options_es": [
-      "Instance Store para caché de alto rendimiento, EBS para persistencia",
-      "EBS para caché, Instance Store para persistencia",
       "Son intercambiables",
+      "EBS para caché, Instance Store para persistencia",
+      "Instance Store para caché de alto rendimiento, EBS para persistencia",
       "Depende del proveedor de base de datos"
     ],
     "options_en": [
-      "Instance Store for high-performance cache, EBS for persistence",
-      "EBS for cache, Instance Store for persistence",
       "They are interchangeable",
+      "EBS for cache, Instance Store for persistence",
+      "Instance Store for high-performance cache, EBS for persistence",
       "Depends on database vendor"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Instance Store ofrece IOPS muy altos pero es efímero. Es ideal para caché y datos temporales. EBS es persistente pero más lento. Para NoSQL, usar Instance Store en caché y EBS en almacenamiento durability es la arquitectura óptima.",
@@ -385,18 +385,18 @@
     "question_es": "¿Cuál es la estrategia arquitectónica para minimizar downtime al cambiar instancias EC2 de t3 a m5 en producción?",
     "question_en": "What architectural strategy minimizes downtime when migrating production EC2 instances from t3 to m5?",
     "options_es": [
-      "Cambio directo con AMI",
-      "Actualización in-place con tiempo de inactividad aceptado",
       "Launch nueva m5 en paralelo, cambiar con Load Balancer",
+      "Actualización in-place con tiempo de inactividad aceptado",
+      "Cambio directo con AMI",
       "Usar CloudFormation stack switch"
     ],
     "options_en": [
-      "Direct change via AMI",
-      "In-place update with accepted downtime",
       "Launch new m5 in parallel, switch via Load Balancer",
+      "In-place update with accepted downtime",
+      "Direct change via AMI",
       "Use CloudFormation stack switch"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Zero-downtime migration requiere lanzar nuevas instancias en paralelo y cambiar el tráfico. El Load Balancer permite esto. AMI solo copia imagen. Cambio in-place causa downtime. CloudFormation stack switch también causa interrupción.",
@@ -413,17 +413,17 @@
     "question_en": "What is the primary advantage of AWS Lambda over EC2 for simple web applications?",
     "options_es": [
       "Mejor rendimiento de CPU",
-      "No pagar por servidores inactivos, escalado automático",
+      "Mayor capacidad de almacenamiento",
       "Cifrado integrado",
-      "Mayor capacidad de almacenamiento"
+      "No pagar por servidores inactivos, escalado automático"
     ],
     "options_en": [
       "Better CPU performance",
-      "Pay only for execution time, automatic scaling",
+      "Higher storage capacity",
       "Integrated encryption",
-      "Higher storage capacity"
+      "Pay only for execution time, automatic scaling"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Lambda permite pagar por tiempo de ejecución en milisegundos. No hay costo de servidor ocioso. Escalado es automático. CPU de Lambda es limitada comparada con EC2. El cifrado y almacenamiento no son ventajas principales.",
@@ -440,17 +440,17 @@
     "question_en": "What is the maximum execution time for a Lambda function?",
     "options_es": [
       "1 minuto",
-      "5 minutos",
       "15 minutos",
+      "5 minutos",
       "1 hora"
     ],
     "options_en": [
       "1 minute",
-      "5 minutes",
       "15 minutes",
+      "5 minutes",
       "1 hour"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El timeout máximo de Lambda es 15 minutos (900 segundos). Funciones que requieren más tiempo necesitan una arquitectura diferente.",
@@ -521,17 +521,17 @@
     "question_en": "What is the connection persistence strategy for a Lambda function processing thousands of database requests?",
     "options_es": [
       "Crear nueva conexión en cada invocación",
-      "Usar connection pooling en el handler",
       "Mantener conexión en context (fuera del handler)",
+      "Usar connection pooling en el handler",
       "Usar RDS Proxy"
     ],
     "options_en": [
       "Create new connection on each invocation",
-      "Use connection pooling in handler",
       "Maintain connection in context (outside handler)",
+      "Use connection pooling in handler",
       "Use RDS Proxy"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Lambda reutiliza el execution context entre invocaciones. Las conexiones creadas fuera del handler persisten y se reutilizan. Crear nueva conexión en cada invocación es ineficiente. RDS Proxy es para múltiples funciones, no para una única función.",
@@ -547,18 +547,18 @@
     "question_es": "¿Qué es una Lambda Layer y cuál es su caso de uso principal?",
     "question_en": "What is a Lambda Layer and what is its primary use case?",
     "options_es": [
-      "Componente de almacenamiento para funciones",
       "Biblioteca compartida de código o dependencias",
+      "Componente de almacenamiento para funciones",
       "Versión de la función Lambda",
       "Política de seguridad"
     ],
     "options_en": [
-      "Storage component for functions",
       "Shared code or dependency library",
+      "Storage component for functions",
       "Version of Lambda function",
       "Security policy"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Lambda Layers permiten compartir código y librerías entre múltiples funciones sin duplicar. Reducen tamaño de deployment. No es almacenamiento, versión, ni política de seguridad.",
@@ -574,18 +574,18 @@
     "question_es": "¿Cuál es el evento que típicamente dispara una función Lambda para procesar cambios en S3?",
     "question_en": "What event typically triggers a Lambda function to process changes in S3?",
     "options_es": [
-      "S3 EventNotification",
+      "SQS Message",
       "CloudWatch Event",
       "SNS Notification",
-      "SQS Message"
+      "S3 EventNotification"
     ],
     "options_en": [
-      "S3 EventNotification",
+      "SQS Message",
       "CloudWatch Event",
       "SNS Notification",
-      "SQS Message"
+      "S3 EventNotification"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "S3 EventNotification dispara automáticamente cuando ocurren eventos como PutObject. CloudWatch Events es para cambios de recursos. SNS y SQS requieren configuración explícita como intermediarios.",
@@ -601,18 +601,18 @@
     "question_es": "¿Cómo garantizar que una Lambda function se ejecute exactamente una vez para cada mensaje de SQS?",
     "question_en": "How to ensure a Lambda function executes exactly once for each SQS message?",
     "options_es": [
-      "Lambda garantiza procesamiento al menos una vez; requiere idempotencia",
-      "Lambda garantiza exactamente una vez automáticamente",
       "Usar DLQ para retry",
+      "Lambda garantiza exactamente una vez automáticamente",
+      "Lambda garantiza procesamiento al menos una vez; requiere idempotencia",
       "Implementar deduplicación en la función"
     ],
     "options_en": [
-      "Lambda guarantees at least once; requires idempotence",
-      "Lambda guarantees exactly once automatically",
       "Use DLQ for retry",
+      "Lambda guarantees exactly once automatically",
+      "Lambda guarantees at least once; requires idempotence",
       "Implement deduplication in function"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Lambda garantiza 'at least once' (al menos una vez). La responsabilidad de idempotencia es del desenvolvedor. DLQ es para manejo de errores. Deduplicación requiere estado externo.",
@@ -629,17 +629,17 @@
     "question_en": "How to optimize a Lambda function processing 1GB files from S3 with a 10-minute timeout?",
     "options_es": [
       "Usar Lambda concurrency",
-      "Usar Fargate o Step Functions para procesamiento",
+      "Dividir archivo en chunks con S3 Select",
       "Aumentar memoria de Lambda a 10GB",
-      "Dividir archivo en chunks con S3 Select"
+      "Usar Fargate o Step Functions para procesamiento"
     ],
     "options_en": [
       "Use Lambda concurrency",
-      "Use Fargate or Step Functions for processing",
+      "Split file into chunks with S3 Select",
       "Increase Lambda memory to 10GB",
-      "Split file into chunks with S3 Select"
+      "Use Fargate or Step Functions for processing"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "S3 Select permite procesar datos específicos del archivo sin descargar todo. Procesar en chunks es más eficiente que cargar 1GB en memoria. Fargate es alternativa si S3 Select no es viable. Aumentar memoria ayuda pero no es suficiente.",
@@ -656,17 +656,17 @@
     "question_en": "What is the best practice for handling transient errors in a Lambda function invoked by EventBridge?",
     "options_es": [
       "Reintentar dentro de la función",
-      "Configurar Dead Letter Queue (DLQ) en EventBridge",
+      "Usar Circuit Breaker",
       "Registrar el error y salir",
-      "Usar Circuit Breaker"
+      "Configurar Dead Letter Queue (DLQ) en EventBridge"
     ],
     "options_en": [
       "Retry inside function",
-      "Configure Dead Letter Queue (DLQ) in EventBridge",
+      "Use Circuit Breaker",
       "Log error and exit",
-      "Use Circuit Breaker"
+      "Configure Dead Letter Queue (DLQ) in EventBridge"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "EventBridge puede reintentar automáticamente. DLQ captura eventos fallidos después de reintentos para análisis. Reintentos dentro de la función pueden causar timeouts. DLQ es el patrón recomendado para Lambda con EventBridge.",
@@ -683,17 +683,17 @@
     "question_en": "What is AWS SAM (Serverless Application Model)?",
     "options_es": [
       "Framework para desplegar Lambda desde S3",
-      "Abstracción de CloudFormation para serverless",
+      "Servicio de autenticación",
       "Herramienta de monitoreo de Lambda",
-      "Servicio de autenticación"
+      "Abstracción de CloudFormation para serverless"
     ],
     "options_en": [
       "Framework for deploying Lambda from S3",
-      "CloudFormation abstraction for serverless",
+      "Authentication service",
       "Lambda monitoring tool",
-      "Authentication service"
+      "CloudFormation abstraction for serverless"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "SAM es una abstracción de CloudFormation que simplifica la definición de aplicaciones serverless. No es específicamente para S3, monitoreo, ni autenticación.",
@@ -790,18 +790,18 @@
     "question_es": "¿Cómo implementar autoscaling personalizado para una función Lambda basada en métrica de CloudWatch personalizada?",
     "question_en": "How to implement custom auto-scaling for Lambda based on custom CloudWatch metric?",
     "options_es": [
-      "Lambda auto-scaling es automático, no personalizable",
       "Usar Application Auto Scaling con Target Tracking",
+      "Lambda auto-scaling es automático, no personalizable",
       "Usar Step Functions para orquestación",
       "Usar CloudWatch Alarms con SNS a script Lambda"
     ],
     "options_en": [
-      "Lambda auto-scaling is automatic, not customizable",
       "Use Application Auto Scaling with Target Tracking",
+      "Lambda auto-scaling is automatic, not customizable",
       "Use Step Functions for orchestration",
       "Use CloudWatch Alarms with SNS to Lambda script"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Application Auto Scaling permite escalado basado en métricas personalizadas con Target Tracking. Lambda tiene escalado automático pero Application Auto Scaling es para control fino. CloudWatch Alarms + SNS es manual. Step Functions es para coordinación.",
@@ -817,18 +817,18 @@
     "question_es": "¿Cuál es la diferencia principal entre ECS y EKS?",
     "question_en": "What is the primary difference between ECS and EKS?",
     "options_es": [
-      "ECS usa Kubernetes, EKS usa Docker",
       "ECS es managed por AWS, EKS requiere Kubernetes expertise",
+      "ECS usa Kubernetes, EKS usa Docker",
       "EKS es serverless, ECS requiere gestión",
       "No hay diferencia significativa"
     ],
     "options_en": [
-      "ECS uses Kubernetes, EKS uses Docker",
       "ECS is AWS-managed, EKS requires Kubernetes expertise",
+      "ECS uses Kubernetes, EKS uses Docker",
       "EKS is serverless, ECS requires management",
       "No significant difference"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "ECS es orquestador propietario de AWS. EKS es servicio managed de Kubernetes de AWS. Ambos usan Docker. ECS es más simple para usuarios no familiarizados con Kubernetes. EKS requiere conocimiento de Kubernetes.",
@@ -845,17 +845,17 @@
     "question_en": "What is AWS Fargate?",
     "options_es": [
       "Motor de contenedores",
-      "Compute serverless para ECS y EKS",
+      "Servicio de base de datos",
       "Red CDN",
-      "Servicio de base de datos"
+      "Compute serverless para ECS y EKS"
     ],
     "options_en": [
       "Container engine",
-      "Serverless compute for ECS and EKS",
+      "Database service",
       "CDN network",
-      "Database service"
+      "Serverless compute for ECS and EKS"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Fargate es opción de lanzamiento serverless para ECS y EKS. No requiere gestionar instancias EC2. Docker es el motor de contenedores. CDN y base de datos son servicios distintos.",
@@ -871,18 +871,18 @@
     "question_es": "¿Cuál es la mejor elección entre ECS EC2 y Fargate para una aplicación de microservicios con tráfico impredecible?",
     "question_en": "Which is better between ECS EC2 and Fargate for a microservices application with unpredictable traffic?",
     "options_es": [
-      "ECS EC2 por mejor control de recursos",
       "Fargate por pagar solo por uso y sin gestión",
+      "ECS EC2 por mejor control de recursos",
       "ECS EC2 por menor latencia",
       "Depende del proveedor de contenedor"
     ],
     "options_en": [
-      "ECS EC2 for better resource control",
       "Fargate for pay-as-you-go and no management",
+      "ECS EC2 for better resource control",
       "ECS EC2 for lower latency",
       "Depends on container vendor"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Fargate escala automáticamente sin gestión de instancias. Tráfico impredecible se maneja bien sin reservar capacidad. ECS EC2 requiere gestión de capacidad. Fargate tiene overhead mínimo de latencia. El proveedor de contenedor es Docker en ambos casos.",
@@ -899,17 +899,17 @@
     "question_en": "How to ensure data persistence in a stateful service running on ECS Fargate with frequently replaced tasks?",
     "options_es": [
       "Usar volúmenes EBS adjuntos",
-      "Usar EFS mounted desde Fargate",
       "Usar caché en memoria con ElastiCache",
+      "Usar EFS mounted desde Fargate",
       "Usar DynamoDB para estado"
     ],
     "options_en": [
       "Use attached EBS volumes",
-      "Use EFS mounted from Fargate",
       "Use in-memory cache with ElastiCache",
+      "Use EFS mounted from Fargate",
       "Use DynamoDB for state"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "EFS puede montarse en Fargate y persiste cuando tareas se reemplazan. EBS no es soportado en Fargate. ElastiCache es caché, no persistencia. DynamoDB es para estado pero requiere lógica de aplicación específica.",
@@ -926,17 +926,17 @@
     "question_en": "How to configure service discovery in ECS to enable automatic container discovery?",
     "options_es": [
       "Configurar manualmente DNS para cada contenedor",
-      "Usar AWS Cloud Map integrado con ECS",
       "Usar Route 53 con registros dinámicos",
+      "Usar AWS Cloud Map integrado con ECS",
       "Usar Security Groups para routing"
     ],
     "options_en": [
       "Manually configure DNS for each container",
-      "Use AWS Cloud Map integrated with ECS",
       "Use Route 53 with dynamic records",
+      "Use AWS Cloud Map integrated with ECS",
       "Use Security Groups for routing"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWS Cloud Map es servicio de service discovery integrado con ECS. Registra automáticamente servicios. Route 53 requiere actualización manual. Security Groups no hace service discovery. Configuración manual no escala.",
@@ -953,17 +953,17 @@
     "question_en": "What does 'desired count' mean in an ECS service definition?",
     "options_es": [
       "Número total de instancias en el cluster",
-      "Número de tareas que ECS intenta mantener en ejecución",
+      "Umbral de alertas",
       "Número máximo de conexiones permitidas",
-      "Umbral de alertas"
+      "Número de tareas que ECS intenta mantener en ejecución"
     ],
     "options_en": [
       "Total number of instances in cluster",
-      "Number of tasks ECS tries to keep running",
+      "Alert threshold",
       "Maximum connections allowed",
-      "Alert threshold"
+      "Number of tasks ECS tries to keep running"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Desired count es el número de instancias de tarea que ECS intenta ejecutar. Si una tarea falla, ECS la reinicia para mantener el desired count. No es máximo de conexiones, umbral de alertas, ni total del cluster.",
@@ -979,18 +979,18 @@
     "question_es": "¿Qué es un ECR (Elastic Container Registry)?",
     "question_en": "What is an ECR (Elastic Container Registry)?",
     "options_es": [
-      "Registro de imágenes Docker managed por AWS",
       "Base de datos de configuraciones",
+      "Registro de imágenes Docker managed por AWS",
       "Sistema de monitoreo",
       "Herramienta de CI/CD"
     ],
     "options_en": [
-      "AWS-managed Docker image registry",
       "Configuration database",
+      "AWS-managed Docker image registry",
       "Monitoring system",
       "CI/CD tool"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "ECR es servicio managed de AWS para almacenar, gestionar y desplegar imágenes Docker. No es base de datos, monitoreo, ni CI/CD, aunque se integra con ambos.",
@@ -1006,18 +1006,18 @@
     "question_es": "¿Cómo optimizar costos en un cluster ECS con cargas de trabajo que varían entre picos y valles?",
     "question_en": "How to optimize costs in an ECS cluster with workloads varying between peaks and valleys?",
     "options_es": [
-      "Usar Spot instances en el cluster con autoscaling",
-      "Usar Fargate exclusivamente",
       "Usar Reserved Instances",
+      "Usar Fargate exclusivamente",
+      "Usar Spot instances en el cluster con autoscaling",
       "Usar On-Demand exclusivamente"
     ],
     "options_en": [
-      "Use Spot instances in cluster with autoscaling",
-      "Use Fargate exclusively",
       "Use Reserved Instances",
+      "Use Fargate exclusively",
+      "Use Spot instances in cluster with autoscaling",
       "Use On-Demand exclusively"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Spot instances ofrecen descuentos hasta 90% en ECS EC2. Con autoscaling que agrega/remueve instancias, se optimiza costo. Fargate no usa Spot. Reserved Instances requieren compromiso pero no se adaptan a picos/valles. On-Demand es costoso.",
@@ -1035,16 +1035,16 @@
     "options_es": [
       "Actualizar imagen y reiniciar todas las tareas",
       "Crear nuevo servicio y cambiar Load Balancer",
-      "Actualizar task definition y permitir rolling update",
-      "Detener servicio, actualizar, reiniciar"
+      "Detener servicio, actualizar, reiniciar",
+      "Actualizar task definition y permitir rolling update"
     ],
     "options_en": [
       "Update image and restart all tasks",
       "Create new service and switch Load Balancer",
-      "Update task definition and allow rolling update",
-      "Stop service, update, restart"
+      "Stop service, update, restart",
+      "Update task definition and allow rolling update"
     ],
-    "correct_index": 2,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Rolling update en ECS reemplaza gradualmente tareas con la nueva imagen. Configurar desired count > mínimo permite que old tasks sigan sirviendo mientras new tasks se inician. Reiniciar todos causa downtime. Crear nuevo servicio es más complejo.",
@@ -1061,17 +1061,17 @@
     "question_en": "What is a Task Role in ECS and why is it important?",
     "options_es": [
       "Rol de usuario para acceder la consola",
-      "Permiso IAM para tareas ECS acceder a otros servicios AWS",
       "Restricción de puerto",
+      "Permiso IAM para tareas ECS acceder a otros servicios AWS",
       "Política de red"
     ],
     "options_en": [
       "User role to access console",
-      "IAM permission for ECS tasks to access other AWS services",
       "Port restriction",
+      "IAM permission for ECS tasks to access other AWS services",
       "Network policy"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Task Role permite que contenedores en ECS accedan a servicios AWS (S3, DynamoDB, etc.) de forma segura usando credenciales IAM temporales. No es para acceso a consola, restricción de puerto, ni política de red.",
@@ -1115,17 +1115,17 @@
     "question_en": "How to scale an ECS service based on custom application metric instead of CPU/memory?",
     "options_es": [
       "ECS solo escala por CPU/memoria",
-      "Enviar métrica a CloudWatch y usar Target Tracking",
+      "Usar AWS X-Ray",
       "Usar Lambda para monitoreo manual",
-      "Usar AWS X-Ray"
+      "Enviar métrica a CloudWatch y usar Target Tracking"
     ],
     "options_en": [
       "ECS only scales by CPU/memory",
-      "Send metric to CloudWatch and use Target Tracking",
+      "Use AWS X-Ray",
       "Use Lambda for manual monitoring",
-      "Use AWS X-Ray"
+      "Send metric to CloudWatch and use Target Tracking"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Application Auto Scaling permite Target Tracking basado en métricas personalizadas de CloudWatch. La aplicación publica métrica a CloudWatch, Auto Scaling la monitorea. Lambda es alternativa manual. X-Ray es para tracing, no autoscaling.",
@@ -1142,17 +1142,17 @@
     "question_en": "What is an EKS Cluster and how does it differ from ECS?",
     "options_es": [
       "EKS es grupo de instancias ECS",
-      "EKS es Kubernetes managed por AWS, ECS es orquestador propietario",
       "Son lo mismo",
+      "EKS es Kubernetes managed por AWS, ECS es orquestador propietario",
       "EKS es para desarrollo, ECS para producción"
     ],
     "options_en": [
       "EKS is group of ECS instances",
-      "EKS is Kubernetes managed by AWS, ECS is proprietary orchestrator",
       "They are the same",
+      "EKS is Kubernetes managed by AWS, ECS is proprietary orchestrator",
       "EKS for dev, ECS for production"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "EKS ejecuta Kubernetes (estándar de industria). ECS es orquestador propietario de AWS. Ambos corren contenedores pero con diferentes APIs y filosofías. EKS es mejor para usuarios de Kubernetes. ECS es más simple para no-Kubernetes.",
@@ -1168,18 +1168,18 @@
     "question_es": "¿Cómo garantizar que pods en EKS con requerimientos de GPU se programen en nodos con GPU disponible?",
     "question_en": "How to ensure pods in EKS with GPU requirements are scheduled on GPU-available nodes?",
     "options_es": [
-      "EKS asigna automáticamente",
       "Usar node selectors y taints/tolerations",
+      "EKS asigna automáticamente",
       "Crear subnets separadas",
       "Usar NetworkPolicy"
     ],
     "options_en": [
-      "EKS assigns automatically",
       "Use node selectors and taints/tolerations",
+      "EKS assigns automatically",
       "Create separate subnets",
       "Use NetworkPolicy"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Taints/tolerations es mecanismo de Kubernetes para asegurar que pods se programen en nodos correctos. Node selectors también funciona pero taints es más robusto. Subnets y NetworkPolicy no afectan scheduling de compute.",
@@ -1196,17 +1196,17 @@
     "question_en": "What is the best option for Ingress in EKS?",
     "options_es": [
       "AWS ELB Controller",
-      "Nginx Ingress Controller",
       "Ambas son viables",
+      "Nginx Ingress Controller",
       "Solo CloudFront"
     ],
     "options_en": [
       "AWS ELB Controller",
-      "Nginx Ingress Controller",
       "Both are viable",
+      "Nginx Ingress Controller",
       "CloudFront only"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Ambas son viables. AWS Load Balancer Controller integra con ALB/NLB. Nginx es controlador estándar de Kubernetes. Elegir depende de preferencia y requisitos de integración con servicios AWS. CloudFront es para CDN, no ingress.",
@@ -1303,18 +1303,18 @@
     "question_es": "¿Qué es un Application Load Balancer (ALB) y cuál es su principal ventaja sobre Classic Load Balancer?",
     "question_en": "What is an Application Load Balancer (ALB) and what is its main advantage over a Classic Load Balancer?",
     "options_es": [
-      "Soporta enrutamiento basado en rutas y hostnames; el CLB solo balancea conexiones",
-      "Es más barato que el CLB",
       "Solo funciona con EC2",
+      "Es más barato que el CLB",
+      "Soporta enrutamiento basado en rutas y hostnames; el CLB solo balancea conexiones",
       "Soporta más de 1000 conexiones por segundo"
     ],
     "options_en": [
-      "Supports path-based and hostname-based routing; CLB only balances connections",
-      "It is cheaper than CLB",
       "Only works with EC2",
+      "It is cheaper than CLB",
+      "Supports path-based and hostname-based routing; CLB only balances connections",
       "Supports more than 1000 connections per second"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El ALB permite enrutamiento inteligente basado en rutas de URL, hostnames, y otros parámetros de la capa 7, mientras que el CLB trabaja principalmente en la capa 4 con conexiones simples.",
@@ -1384,18 +1384,18 @@
     "question_es": "¿Qué sucede cuando una política de escalado escalonado ejecuta múltiples ajustes simultáneamente?",
     "question_en": "What happens when a step scaling policy executes multiple adjustments simultaneously?",
     "options_es": [
-      "Se aplican todos los ajustes sumados",
-      "Solo se aplica el primer ajuste",
       "Se aplica el promedio de los ajustes",
+      "Solo se aplica el primer ajuste",
+      "Se aplican todos los ajustes sumados",
       "Se rechaza la solicitud de escalado"
     ],
     "options_en": [
-      "All adjustments are applied cumulatively",
-      "Only the first adjustment is applied",
       "The average of adjustments is applied",
+      "Only the first adjustment is applied",
+      "All adjustments are applied cumulatively",
       "The scaling request is rejected"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cuando hay múltiples pasos que coinciden, Auto Scaling suma todos los ajustes especificados. Por ejemplo, si dos pasos indican +2 y +1, se añaden 3 instancias totales.",
@@ -1411,18 +1411,18 @@
     "question_es": "¿Cuál es el período de enfriamiento (cooldown period) en Auto Scaling y cuál es su propósito?",
     "question_en": "What is the cooldown period in Auto Scaling and what is its purpose?",
     "options_es": [
-      "Tiempo de espera después de un escalado antes de que se ejecute otra acción",
+      "Intervalo de backup automático",
       "Tiempo para verificar la salud de las instancias",
       "Período de caché del load balancer",
-      "Intervalo de backup automático"
+      "Tiempo de espera después de un escalado antes de que se ejecute otra acción"
     ],
     "options_en": [
-      "Wait time after scaling before another action can occur",
+      "Automatic backup interval",
       "Time to check instance health",
       "Load balancer cache period",
-      "Automatic backup interval"
+      "Wait time after scaling before another action can occur"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El cooldown period previene el escalado thrashing al requerir un tiempo de espera (típicamente 300s) entre acciones de escalado, permitiendo que las métricas se estabilicen.",
@@ -1438,18 +1438,18 @@
     "question_es": "¿Qué es la afinidad de sesión (sticky sessions) en un load balancer y cómo afecta al rendimiento?",
     "question_en": "What is session affinity (sticky sessions) in a load balancer and how does it affect performance?",
     "options_es": [
-      "Dirige todas las requests del mismo cliente a la misma instancia; puede causar desbalance",
       "Almacena datos de sesión en el load balancer",
+      "Dirige todas las requests del mismo cliente a la misma instancia; puede causar desbalance",
       "Encripta las cookies de sesión",
       "Limpia sesiones antiguas automáticamente"
     ],
     "options_en": [
-      "Routes all requests from the same client to the same instance; can cause imbalance",
       "Stores session data in the load balancer",
+      "Routes all requests from the same client to the same instance; can cause imbalance",
       "Encrypts session cookies",
       "Automatically clears old sessions"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "La afinidad de sesión mantiene a un cliente conectado a la misma instancia usando cookies. Aunque facilita aplicaciones con estado, puede provocar desbalance de carga si algunos usuarios tienen sesiones largas.",
@@ -1465,18 +1465,18 @@
     "question_es": "¿Cuál es el impacto de aumentar el lifecycle hook timeout en Auto Scaling?",
     "question_en": "What is the impact of increasing the lifecycle hook timeout in Auto Scaling?",
     "options_es": [
-      "Permite más tiempo para ejecutar acciones personalizadas antes de terminar la instancia",
       "Reduce el costo de las instancias",
+      "Permite más tiempo para ejecutar acciones personalizadas antes de terminar la instancia",
       "Acelera el escalado automático",
       "Mejora la afinidad de sesión"
     ],
     "options_en": [
-      "Allows more time to execute custom actions before instance termination",
       "Reduces instance costs",
+      "Allows more time to execute custom actions before instance termination",
       "Speeds up automatic scaling",
       "Improves session affinity"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Los lifecycle hooks pausan acciones de terminación de instancias para permitir operaciones como limpieza de datos o logs. Aumentar el timeout da más tiempo para estas operaciones.",
@@ -1519,18 +1519,18 @@
     "question_es": "¿Cuál es la diferencia entre un Auto Scaling group y un Launch Configuration?",
     "question_en": "What is the difference between an Auto Scaling group and a Launch Configuration?",
     "options_es": [
-      "ASG define cuándo y cómo escalar; LC define qué instancias crear",
+      "LC es obsoleto y no se usa",
       "LC define cuándo escalar; ASG define las instancias",
       "Son lo mismo, solo diferente nombre",
-      "LC es obsoleto y no se usa"
+      "ASG define cuándo y cómo escalar; LC define qué instancias crear"
     ],
     "options_en": [
-      "ASG defines when and how to scale; LC defines what instances to create",
+      "LC is obsolete and not used",
       "LC defines when to scale; ASG defines the instances",
       "They are the same, just different names",
-      "LC is obsolete and not used"
+      "ASG defines when and how to scale; LC defines what instances to create"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El Auto Scaling Group es el servicio que gestiona el escalado (min, max, desired); Launch Configuration (o Template) especifica la AMI, tipo de instancia, y configuración. Ahora se prefieren Launch Templates.",
@@ -1546,18 +1546,18 @@
     "question_es": "¿Qué sucede cuando una instancia registrada en un ALB reporta una salud no saludable?",
     "question_en": "What happens when an instance registered with an ALB reports an unhealthy status?",
     "options_es": [
-      "El ALB deja de enviar tráfico a esa instancia",
+      "El Auto Scaling group la termina automáticamente",
       "El ALB intenta reiniciarla automáticamente",
       "Se crea una alarma en CloudWatch",
-      "El Auto Scaling group la termina automáticamente"
+      "El ALB deja de enviar tráfico a esa instancia"
     ],
     "options_en": [
-      "The ALB stops sending traffic to that instance",
+      "The Auto Scaling group automatically terminates it",
       "The ALB automatically attempts to restart it",
       "A CloudWatch alarm is created",
-      "The Auto Scaling group automatically terminates it"
+      "The ALB stops sending traffic to that instance"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cuando un health check falla, el ALB marca la instancia como no saludable y deja de enviar nuevo tráfico. Las conexiones existentes pueden completarse según el connection draining.",
@@ -1573,18 +1573,18 @@
     "question_es": "¿Cómo puede optimizar el rendimiento de un Auto Scaling group cuando hay picos rápidos de demanda?",
     "question_en": "How can you optimize Auto Scaling group performance when there are sudden demand spikes?",
     "options_es": [
-      "Usar escalado predictivo o scheduled scaling; reducir cooldown period",
-      "Aumentar el número mínimo de instancias",
       "Usar solo step scaling, no target tracking",
+      "Aumentar el número mínimo de instancias",
+      "Usar escalado predictivo o scheduled scaling; reducir cooldown period",
       "Aumentar el health check interval"
     ],
     "options_en": [
-      "Use predictive or scheduled scaling; reduce cooldown period",
-      "Increase the minimum number of instances",
       "Use only step scaling, not target tracking",
+      "Increase the minimum number of instances",
+      "Use predictive or scheduled scaling; reduce cooldown period",
       "Increase the health check interval"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "El escalado predictivo usa machine learning para anticipar demanda, y el scheduled scaling activa reglas a tiempos conocidos. Reducir cooldown permite reaccionar más rápido a cambios.",
@@ -1600,18 +1600,18 @@
     "question_es": "¿Cuál es la principal ventaja de usar un Gateway Load Balancer (GWLB) en lugar de ALB/NLB?",
     "question_en": "What is the main advantage of using a Gateway Load Balancer (GWLB) instead of ALB/NLB?",
     "options_es": [
-      "Permite distribuir tráfico a través de appliances virtuales de terceros sin modificar la aplicación",
       "Es más barato",
+      "Permite distribuir tráfico a través de appliances virtuales de terceros sin modificar la aplicación",
       "Soporta más protocolos",
       "Tiene mejor latencia"
     ],
     "options_en": [
-      "Allows distributing traffic through third-party virtual appliances without modifying the application",
       "It is cheaper",
+      "Allows distributing traffic through third-party virtual appliances without modifying the application",
       "Supports more protocols",
       "Has better latency"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "GWLB es diseñado para escalar appliances virtuales (firewalls, IDS/IPS) de terceros. Intercepción transparente de tráfico sin cambios en la aplicación es su caso de uso principal.",
@@ -1627,18 +1627,18 @@
     "question_es": "¿Qué es AWS Elastic Beanstalk y cuál es su propósito principal?",
     "question_en": "What is AWS Elastic Beanstalk and what is its primary purpose?",
     "options_es": [
-      "PaaS que automatiza deployment, scaling y gestión de aplicaciones web",
-      "Una base de datos relacional completamente administrada",
       "Un servicio de CI/CD para automatizar builds",
+      "Una base de datos relacional completamente administrada",
+      "PaaS que automatiza deployment, scaling y gestión de aplicaciones web",
       "Un sistema de almacenamiento de objetos"
     ],
     "options_en": [
-      "PaaS that automates deployment, scaling and management of web applications",
-      "A fully managed relational database",
       "A CI/CD service for automating builds",
+      "A fully managed relational database",
+      "PaaS that automates deployment, scaling and management of web applications",
       "An object storage system"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Elastic Beanstalk es una Platform as a Service que simplifica el despliegue de aplicaciones web. Administra automáticamente la infraestructura (EC2, ALB, RDS) permitiendo enfocarse en código.",
@@ -1654,18 +1654,18 @@
     "question_es": "¿Cuáles son los componentes principales de un entorno Elastic Beanstalk?",
     "question_en": "What are the main components of an Elastic Beanstalk environment?",
     "options_es": [
-      "Application, Environment, Platform, Version",
       "Database, Server, Network, Storage",
+      "Application, Environment, Platform, Version",
       "IAM, VPC, Subnets, Routes",
       "Lambda, API Gateway, DynamoDB, S3"
     ],
     "options_en": [
-      "Application, Environment, Platform, Version",
       "Database, Server, Network, Storage",
+      "Application, Environment, Platform, Version",
       "IAM, VPC, Subnets, Routes",
       "Lambda, API Gateway, DynamoDB, S3"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Una Application contiene Environments (dev, prod). Cada Environment corre en una Platform (Java, Python, Node.js, etc.) con una Version específica del código.",
@@ -1681,18 +1681,18 @@
     "question_es": "¿Qué archivo se requiere para configurar Elastic Beanstalk en tu aplicación?",
     "question_en": "What file is required to configure Elastic Beanstalk in your application?",
     "options_es": [
-      ".ebextensions/",
       ".beanstalk.json",
+      ".ebextensions/",
       "beanstalk.yaml",
       ".aws-config.sh"
     ],
     "options_en": [
-      ".ebextensions/",
       ".beanstalk.json",
+      ".ebextensions/",
       "beanstalk.yaml",
       ".aws-config.sh"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": ".ebextensions es un directorio donde colocas archivos .yaml o .json para personalizar la configuración del entorno, instalar paquetes, y ejecutar comandos.",
@@ -1708,18 +1708,18 @@
     "question_es": "¿Cuál es la diferencia entre despliegue All at once y Rolling en Elastic Beanstalk?",
     "question_en": "What is the difference between All at once and Rolling deployment in Elastic Beanstalk?",
     "options_es": [
-      "All at once: todas las instancias simultáneamente (downtime). Rolling: por lotes (sin downtime)",
+      "No hay diferencia, es lo mismo",
       "All at once: más lento. Rolling: más rápido",
       "All at once: solo para testing. Rolling: para producción",
-      "No hay diferencia, es lo mismo"
+      "All at once: todas las instancias simultáneamente (downtime). Rolling: por lotes (sin downtime)"
     ],
     "options_en": [
-      "All at once: all instances simultaneously (downtime). Rolling: by batches (no downtime)",
+      "There is no difference, it's the same",
       "All at once: slower. Rolling: faster",
       "All at once: testing only. Rolling: for production",
-      "There is no difference, it's the same"
+      "All at once: all instances simultaneously (downtime). Rolling: by batches (no downtime)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "All at once detiene todas las instancias y las actualiza (hay downtime). Rolling actualiza en lotes, manteniendo algunas instancias sirviendo tráfico (sin downtime).",
@@ -1735,18 +1735,18 @@
     "question_es": "¿Qué es un Elastic Beanstalk environment tier y cuáles son las opciones?",
     "question_en": "What is an Elastic Beanstalk environment tier and what are the options?",
     "options_es": [
-      "Web tier (HTTP requests) y Worker tier (background jobs)",
       "Development tier y Production tier",
+      "Web tier (HTTP requests) y Worker tier (background jobs)",
       "Standard tier y Premium tier",
       "Free tier y Paid tier"
     ],
     "options_en": [
-      "Web tier (HTTP requests) and Worker tier (background jobs)",
       "Development tier and Production tier",
+      "Web tier (HTTP requests) and Worker tier (background jobs)",
       "Standard tier and Premium tier",
       "Free tier and Paid tier"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Web tier recibe tráfico HTTP directo y ejecuta aplicaciones web. Worker tier procesa mensajes de una SQS queue, ideal para tareas asincrónicas.",
@@ -1789,18 +1789,18 @@
     "question_es": "¿Cuál es el comando de EB CLI para crear un nuevo entorno Beanstalk?",
     "question_en": "What is the EB CLI command to create a new Beanstalk environment?",
     "options_es": [
-      "eb create",
+      "eb deploy",
       "eb new",
       "eb init",
-      "eb deploy"
+      "eb create"
     ],
     "options_en": [
-      "eb create",
+      "eb deploy",
       "eb new",
       "eb init",
-      "eb deploy"
+      "eb create"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "eb create crea un nuevo entorno. eb init inicializa la aplicación localmente, eb deploy despliega cambios a un entorno existente.",
@@ -1816,18 +1816,18 @@
     "question_es": "¿Cómo habilitas HTTPS/SSL en Elastic Beanstalk?",
     "question_en": "How do you enable HTTPS/SSL in Elastic Beanstalk?",
     "options_es": [
-      "Cargar certificado SSL en Load Balancer y configurar listener HTTPS",
-      "Es automático con Beanstalk",
       "Requiere crear un CloudFront distribution",
+      "Es automático con Beanstalk",
+      "Cargar certificado SSL en Load Balancer y configurar listener HTTPS",
       "No es posible en Beanstalk"
     ],
     "options_en": [
-      "Upload SSL certificate to Load Balancer and configure HTTPS listener",
-      "It is automatic with Beanstalk",
       "Requires creating a CloudFront distribution",
+      "It is automatic with Beanstalk",
+      "Upload SSL certificate to Load Balancer and configure HTTPS listener",
       "Not possible in Beanstalk"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cargas un certificado ACM (AWS Certificate Manager) en el ALB asociado a tu ambiente Beanstalk y configuras un listener HTTPS.",
@@ -1843,18 +1843,18 @@
     "question_es": "¿Qué son las Elastic Beanstalk Application Versions?",
     "question_en": "What are Elastic Beanstalk Application Versions?",
     "options_es": [
-      "Snapshots del código aplicación que se pueden desplegar en cualquier momento",
-      "Versiones del SDK de Beanstalk",
       "Tiers de infraestructura",
+      "Versiones del SDK de Beanstalk",
+      "Snapshots del código aplicación que se pueden desplegar en cualquier momento",
       "Tipos de ambientes"
     ],
     "options_en": [
-      "Snapshots of application code that can be deployed at any time",
-      "Versions of the Beanstalk SDK",
       "Infrastructure tiers",
+      "Versions of the Beanstalk SDK",
+      "Snapshots of application code that can be deployed at any time",
       "Types of environments"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cada despliegue en Beanstalk crea una nueva Application Version. Esto permite rollback rápido a versiones anteriores sin recompilación.",
@@ -1951,18 +1951,18 @@
     "question_es": "¿Cómo se escala automáticamente una aplicación Elastic Beanstalk?",
     "question_en": "How does an Elastic Beanstalk application automatically scale?",
     "options_es": [
-      "Beanstalk crea un Auto Scaling group con políticas basadas en métricas CloudWatch",
-      "Escalado manual solamente",
       "Requiere Lambda",
+      "Escalado manual solamente",
+      "Beanstalk crea un Auto Scaling group con políticas basadas en métricas CloudWatch",
       "No hay escalado automático"
     ],
     "options_en": [
-      "Beanstalk creates an Auto Scaling group with policies based on CloudWatch metrics",
-      "Manual scaling only",
       "Requires Lambda",
+      "Manual scaling only",
+      "Beanstalk creates an Auto Scaling group with policies based on CloudWatch metrics",
       "No automatic scaling"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Beanstalk configura un Auto Scaling group detrás de escenas. Defines capacidad mínima/máxima y políticas de escalado en la configuración del ambiente.",
@@ -1978,18 +1978,18 @@
     "question_es": "¿Qué es una Elastic Beanstalk Saved Configuration?",
     "question_en": "What is an Elastic Beanstalk Saved Configuration?",
     "options_es": [
-      "Snapshot de la configuración del ambiente que se puede reutilizar en otros ambientes",
+      "Historial de deployments",
       "Backup automático de base de datos",
       "Versión de código aplicación",
-      "Historial de deployments"
+      "Snapshot de la configuración del ambiente que se puede reutilizar en otros ambientes"
     ],
     "options_en": [
-      "Snapshot of environment configuration that can be reused in other environments",
+      "Deployment history",
       "Automatic database backup",
       "Application code version",
-      "Deployment history"
+      "Snapshot of environment configuration that can be reused in other environments"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Guardas la configuración de un ambiente funcionando y la reutilizas como plantilla para crear ambientes similares con la misma configuración.",
@@ -2005,18 +2005,18 @@
     "question_es": "¿Cómo integras Elastic Beanstalk con CI/CD pipelines?",
     "question_en": "How do you integrate Elastic Beanstalk with CI/CD pipelines?",
     "options_es": [
-      "AWS CodePipeline, CodeBuild, CodeDeploy; o GitHub Actions con EB CLI",
       "Solo mediante consola manual",
+      "AWS CodePipeline, CodeBuild, CodeDeploy; o GitHub Actions con EB CLI",
       "No es posible",
       "Requiere instalar Jenkins en EC2"
     ],
     "options_en": [
-      "AWS CodePipeline, CodeBuild, CodeDeploy; or GitHub Actions with EB CLI",
       "Only via manual console",
+      "AWS CodePipeline, CodeBuild, CodeDeploy; or GitHub Actions with EB CLI",
       "Not possible",
       "Requires installing Jenkins on EC2"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Usa AWS CodePipeline para orquestar: source (GitHub) → build (CodeBuild) → deploy (CodeDeploy/EB). O integra GitHub Actions con comandos eb deploy.",

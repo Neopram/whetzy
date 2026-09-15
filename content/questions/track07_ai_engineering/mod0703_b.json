@@ -24,7 +24,11 @@
       "explanation_en": "Evaluator-optimizer is a generate-and-critique loop. It works when evaluation criteria can be articulated (a nuanced translation, a report with requirements) and when the critique demonstrably adds value, the same way a human's writing improves after review. The wrong options describe real but different things: cost-based routing, model selection during training, and latency races involve no feedback cycle over the generated content.",
       "source": "Anthropic — 'Building effective agents' (2024)",
       "expected_time_ms": 34000,
-      "tags": ["agents", "workflows", "evaluator-optimizer"]
+      "tags": [
+        "agents",
+        "workflows",
+        "evaluator-optimizer"
+      ]
     },
     {
       "id": "q070301010",
@@ -50,7 +54,11 @@
       "explanation_en": "LLM APIs are stateless: every call carries the full context. An 8-step loop pays for step 1's tokens eight times, and bulky tool results inflate that context further. This is why prompt caching, observation truncation and intermediate summarisation are genuine cost levers. The other options point at weight-loading or model-tier billing, which is not how per-token pricing works.",
       "source": "Chip Huyen — 'AI Engineering' (2025), agents and cost chapters; Anthropic — Prompt caching documentation",
       "expected_time_ms": 32000,
-      "tags": ["agents", "cost", "context"]
+      "tags": [
+        "agents",
+        "cost",
+        "context"
+      ]
     },
     {
       "id": "q070301011",
@@ -59,14 +67,24 @@
       "difficulty_tier": "medium",
       "question_es": "Un LLM al que se le pide razonar paso a paso antes de responder, pero que no dispone de ninguna herramienta ni de un bucle que ejecute acciones, ya puede considerarse un agente.",
       "question_en": "An LLM asked to reason step by step before answering, but with no tools and no loop that executes actions, already counts as an agent.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Razonar en voz alta mejora la calidad del texto, pero no cambia la naturaleza del sistema: sigue siendo una única generación sin efecto sobre el mundo ni realimentación desde él. Lo que define a un agente es el ciclo actuar-observar-decidir sobre un entorno. La confusión es habitual porque las trazas de razonamiento se parecen mucho a las de un agente ReAct, pero en ReAct cada 'Action' se ejecuta de verdad y devuelve una 'Observation' que el modelo no controla.",
       "explanation_en": "False. Reasoning out loud improves text quality, but it does not change the nature of the system: it is still a single generation with no effect on the world and no feedback from it. What defines an agent is the act-observe-decide cycle over an environment. The confusion is common because reasoning traces look a lot like a ReAct trace, but in ReAct each 'Action' is really executed and returns an 'Observation' the model does not control.",
       "source": "Anthropic — 'Building effective agents' (2024); Yao et al. (2022) — 'ReAct: Synergizing Reasoning and Acting in Language Models'",
       "expected_time_ms": 24000,
-      "tags": ["agents", "fundamentals", "definitions"]
+      "tags": [
+        "agents",
+        "fundamentals",
+        "definitions"
+      ]
     },
     {
       "id": "q070301012",
@@ -81,7 +99,11 @@
       "explanation_en": "Routing separates classification from handling: it allows prompts tuned per category without degrading the others, and lets easy queries go to a small, cheap model. It is a workflow, not an agent: the paths are predefined by the developer and the LLM only picks a branch, whereas an agent dynamically decides its own steps.",
       "source": "Anthropic — 'Building effective agents' (2024)",
       "expected_time_ms": 26000,
-      "tags": ["agents", "workflows", "routing"]
+      "tags": [
+        "agents",
+        "workflows",
+        "routing"
+      ]
     },
     {
       "id": "q070301013",
@@ -92,22 +114,26 @@
       "question_en": "When designing the 'agent-computer interface' (ACI), which investment usually pays off most in making an agent work reliably?",
       "options_es": [
         "Aumentar la temperatura del modelo para que explore más acciones posibles",
-        "Dedicar al diseño de las herramientas (nombres, formatos, ejemplos, mensajes de error y formas difíciles de equivocarse) tanto cuidado como se dedicaría al diseño de una interfaz para personas",
+        "Sustituir las descripciones en lenguaje natural por identificadores numéricos cortos para ahorrar tokens",
         "Exponer todas las herramientas disponibles de golpe para que el agente nunca se quede sin opciones",
-        "Sustituir las descripciones en lenguaje natural por identificadores numéricos cortos para ahorrar tokens"
+        "Dedicar al diseño de las herramientas (nombres, formatos, ejemplos, mensajes de error y formas difíciles de equivocarse) tanto cuidado como se dedicaría al diseño de una interfaz para personas"
       ],
       "options_en": [
         "Raising the model's temperature so it explores more possible actions",
-        "Giving tool design (names, formats, examples, error messages and making mistakes hard to make) the same care you would give to designing a human-facing interface",
+        "Replacing natural-language descriptions with short numeric identifiers to save tokens",
         "Exposing every available tool at once so the agent never runs out of options",
-        "Replacing natural-language descriptions with short numeric identifiers to save tokens"
+        "Giving tool design (names, formats, examples, error messages and making mistakes hard to make) the same care you would give to designing a human-facing interface"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El modelo solo ve la herramienta a través de su definición textual, igual que una persona solo ve un producto a través de su interfaz. Formatos que evitan el escapado difícil, parámetros con nombres evidentes, ejemplos de uso y errores que explican cómo corregir la llamada reducen los fallos más que cualquier ajuste de prompt. Subir la temperatura empeora el seguimiento de esquemas; volcar decenas de herramientas satura el contexto y provoca elecciones erróneas; y abreviar las descripciones destruye justo la señal con la que el modelo decide.",
       "explanation_en": "The model only sees a tool through its textual definition, just as a person only sees a product through its interface. Formats that avoid awkward escaping, obviously named parameters, usage examples and errors that explain how to fix the call reduce failures more than any prompt tweak. Raising temperature degrades schema adherence; dumping dozens of tools floods the context and causes wrong choices; and abbreviating descriptions destroys the very signal the model decides with.",
       "source": "Anthropic — 'Building effective agents' (2024), appendix on tool engineering",
       "expected_time_ms": 34000,
-      "tags": ["agents", "tools", "design"]
+      "tags": [
+        "agents",
+        "tools",
+        "design"
+      ]
     },
     {
       "id": "q070301014",
@@ -133,7 +159,11 @@
       "explanation_en": "0.95^10 ≈ 0.599: an agent that looks near-perfect per step completes the whole task only 6 times out of 10. This is the costliest thing to underestimate when moving from demo to production, because demos are tried on short trajectories. Hence shorter chains, validated intermediate outputs, retries, and human review at irreversible steps. Answering 0.95 confuses per-step reliability with task reliability; adding probabilities makes no dimensional sense.",
       "source": "Chip Huyen — 'AI Engineering' (2025), on compounding errors in agentic pipelines",
       "expected_time_ms": 40000,
-      "tags": ["agents", "reliability", "compounding-errors"]
+      "tags": [
+        "agents",
+        "reliability",
+        "compounding-errors"
+      ]
     },
     {
       "id": "q070301015",
@@ -142,16 +172,25 @@
       "difficulty_tier": "medium",
       "question_es": "Insertar puntos de control con aprobación humana antes de que un agente ejecute acciones irreversibles (enviar dinero, borrar registros, publicar contenido) es una medida de gestión de riesgo recomendada, no una señal de que el agente esté mal construido.",
       "question_en": "Inserting human-approval checkpoints before an agent performs irreversible actions (sending money, deleting records, publishing content) is a recommended risk-management measure, not a sign that the agent is poorly built.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El marco de gestión de riesgo de IA del NIST organiza el control alrededor de la severidad del daño y su reversibilidad, y la supervisión humana en el punto de acción es uno de los controles más eficaces cuando el daño no se puede deshacer. La intuición contraria —'si necesita permiso, es que no es autónomo de verdad'— confunde autonomía con ausencia de controles; los sistemas críticos maduros tienen más puntos de verificación, no menos.",
       "explanation_en": "True. The NIST AI Risk Management Framework organises control around harm severity and reversibility, and human oversight at the point of action is one of the most effective controls when harm cannot be undone. The opposite intuition — 'if it needs permission it isn't really autonomous' — confuses autonomy with the absence of controls; mature safety-critical systems have more checkpoints, not fewer.",
       "source": "NIST AI Risk Management Framework (AI RMF 1.0); Anthropic — 'Building effective agents' (2024)",
       "expected_time_ms": 24000,
-      "tags": ["agents", "safety", "human-in-the-loop"]
+      "tags": [
+        "agents",
+        "safety",
+        "human-in-the-loop"
+      ]
     },
-
     {
       "id": "q070302009",
       "skill_id": "sk070302",
@@ -160,23 +199,27 @@
       "question_es": "En un turno de tool use, el modelo devuelve dos bloques de llamada a herramienta a la vez (por ejemplo, el clima de Madrid y el de Lisboa). ¿Qué debe hacer la aplicación?",
       "question_en": "In a tool-use turn, the model returns two tool-call blocks at once (for example, the weather in Madrid and in Lisbon). What should the application do?",
       "options_es": [
-        "Descartar el turno entero porque un modelo solo puede pedir una herramienta por turno",
-        "Ejecutar solo la primera llamada e ignorar la segunda, ya que es una alucinación",
         "Ejecutar ambas (pueden lanzarse en paralelo) y devolver los dos resultados, cada uno asociado al identificador de su llamada, antes de volver a invocar al modelo",
+        "Ejecutar solo la primera llamada e ignorar la segunda, ya que es una alucinación",
+        "Descartar el turno entero porque un modelo solo puede pedir una herramienta por turno",
         "Pedir al usuario que reformule la pregunta para que pida una ciudad cada vez"
       ],
       "options_en": [
-        "Discard the whole turn, because a model can only request one tool per turn",
-        "Execute only the first call and ignore the second, since it is a hallucination",
         "Execute both (they can be run in parallel) and return both results, each tied to its call identifier, before invoking the model again",
+        "Execute only the first call and ignore the second, since it is a hallucination",
+        "Discard the whole turn, because a model can only request one tool per turn",
         "Ask the user to rephrase so they request one city at a time"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Las APIs de tool use de Anthropic y OpenAI permiten varias llamadas en un mismo turno del asistente, y ejecutarlas en paralelo reduce la latencia notablemente. El error clásico es tratar el bucle como estrictamente una-herramienta-por-turno: si se devuelve un solo resultado, el modelo se queda con una llamada sin responder y muchos endpoints rechazan el turno o el modelo repite la petición. Cada resultado debe referenciar el identificador de la llamada correspondiente para que el emparejamiento sea inequívoco.",
       "explanation_en": "Anthropic's and OpenAI's tool-use APIs allow several calls within one assistant turn, and running them in parallel cuts latency noticeably. The classic mistake is treating the loop as strictly one-tool-per-turn: if you return a single result, the model is left with an unanswered call and many endpoints reject the turn or the model repeats the request. Each result must reference its call's identifier so pairing is unambiguous.",
       "source": "Anthropic — Tool use documentation (parallel tool use); OpenAI — Function calling guide",
       "expected_time_ms": 26000,
-      "tags": ["tool-use", "function-calling", "parallel"]
+      "tags": [
+        "tool-use",
+        "function-calling",
+        "parallel"
+      ]
     },
     {
       "id": "q070302010",
@@ -188,21 +231,25 @@
       "options_es": [
         "Subir el límite de max_tokens de la respuesta del modelo",
         "Quitar la herramienta del agente, porque las herramientas no deben devolver texto largo",
-        "Bajar la temperatura a 0 para que el modelo se concentre",
-        "Hacer que la herramienta devuelva resultados paginados, resumidos o filtrados (top-N, con campos recortados y un cursor para pedir más), de modo que el resultado quepa sin desbordar el contexto acumulado del bucle"
+        "Hacer que la herramienta devuelva resultados paginados, resumidos o filtrados (top-N, con campos recortados y un cursor para pedir más), de modo que el resultado quepa sin desbordar el contexto acumulado del bucle",
+        "Bajar la temperatura a 0 para que el modelo se concentre"
       ],
       "options_en": [
         "Raise the model response's max_tokens limit",
         "Remove the tool from the agent, since tools should not return long text",
-        "Lower the temperature to 0 so the model concentrates",
-        "Make the tool return paginated, summarised or filtered results (top-N, trimmed fields, plus a cursor to ask for more) so the result fits without blowing up the loop's accumulated context"
+        "Make the tool return paginated, summarised or filtered results (top-N, trimmed fields, plus a cursor to ask for more) so the result fits without blowing up the loop's accumulated context",
+        "Lower the temperature to 0 so the model concentrates"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "El resultado de la herramienta entra en el contexto y se reenvía en cada iteración posterior, así que tres llamadas voluminosas agotan la ventana y expulsan el objetivo original y las instrucciones. La solución está en el diseño de la herramienta, no en los parámetros de muestreo: `max_tokens` limita la salida del modelo, no la entrada, y la temperatura no tiene relación alguna con la ocupación del contexto. Eliminar la herramienta sacrifica la capacidad en vez de arreglar su interfaz.",
       "explanation_en": "A tool result enters the context and is resent on every later iteration, so three bulky calls exhaust the window and push out the original goal and instructions. The fix lives in tool design, not sampling parameters: `max_tokens` caps the model's output, not its input, and temperature has nothing to do with context occupancy. Removing the tool sacrifices capability instead of fixing its interface.",
       "source": "Anthropic — Tool use documentation; Chip Huyen — 'AI Engineering' (2025), context management",
       "expected_time_ms": 32000,
-      "tags": ["tool-use", "context", "tool-design"]
+      "tags": [
+        "tool-use",
+        "context",
+        "tool-design"
+      ]
     },
     {
       "id": "q070302011",
@@ -213,22 +260,26 @@
       "question_en": "With Anthropic's Messages API, the model decides to invoke a declared tool. What value does `stop_reason` carry in that response?",
       "options_es": [
         "\"end_turn\", porque el modelo ha terminado de hablar",
-        "\"tool_use\", que indica al bucle que debe ejecutar la herramienta y devolver el resultado en el siguiente mensaje de rol user",
         "\"max_tokens\", porque la llamada a la herramienta interrumpe la generación",
+        "\"tool_use\", que indica al bucle que debe ejecutar la herramienta y devolver el resultado en el siguiente mensaje de rol user",
         "\"function_call\", el mismo valor que usa la API de OpenAI"
       ],
       "options_en": [
         "\"end_turn\", because the model has finished speaking",
-        "\"tool_use\", which tells the loop to run the tool and return the result in the next user-role message",
         "\"max_tokens\", because the tool call interrupts generation",
+        "\"tool_use\", which tells the loop to run the tool and return the result in the next user-role message",
         "\"function_call\", the same value OpenAI's API uses"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`stop_reason == \"tool_use\"` es la señal de control del bucle: el turno del asistente contiene uno o más bloques `tool_use` y el programa debe ejecutarlos y responder con bloques `tool_result`. Confundirlo con `end_turn` es el fallo habitual al escribir el bucle a mano: se muestra al usuario un turno vacío de texto y el agente se queda colgado. `max_tokens` señalaría truncamiento real, y `function_call` pertenece al vocabulario de otro proveedor: los nombres no son intercambiables entre APIs.",
       "explanation_en": "`stop_reason == \"tool_use\"` is the loop's control signal: the assistant turn contains one or more `tool_use` blocks and the program must execute them and reply with `tool_result` blocks. Mistaking it for `end_turn` is the classic hand-rolled-loop bug: the user is shown a turn with no text and the agent stalls. `max_tokens` would signal genuine truncation, and `function_call` belongs to another provider's vocabulary — the names are not interchangeable across APIs.",
       "source": "Anthropic — Tool use documentation (Messages API, stop_reason)",
       "expected_time_ms": 30000,
-      "tags": ["tool-use", "anthropic-api", "agent-loop"]
+      "tags": [
+        "tool-use",
+        "anthropic-api",
+        "agent-loop"
+      ]
     },
     {
       "id": "q070302012",
@@ -237,14 +288,24 @@
       "difficulty_tier": "medium",
       "question_es": "Al continuar la conversación, el resultado de una herramienta debe enviarse referenciando el identificador de la llamada que lo originó, y el historial previo (incluido el turno del asistente con la petición de herramienta) debe reenviarse íntegro.",
       "question_en": "When continuing the conversation, a tool result must be sent referencing the identifier of the call that produced it, and the prior history (including the assistant turn carrying the tool request) must be resent in full.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. La API es sin estado: el proveedor no recuerda el turno anterior, así que el cliente reconstruye la conversación completa en cada llamada. Si se omite el turno del asistente que pidió la herramienta, o si el resultado no lleva el identificador correcto, la petición se rechaza o el modelo pierde el hilo de qué resultado corresponde a qué llamada, algo que se vuelve crítico cuando hay varias llamadas en paralelo. El error frecuente es suponer que basta con mandar el resultado 'suelto' como si el servidor mantuviera sesión.",
       "explanation_en": "True. The API is stateless: the provider does not remember the previous turn, so the client rebuilds the whole conversation on every call. If the assistant turn that requested the tool is omitted, or the result lacks the right identifier, the request is rejected or the model loses track of which result belongs to which call — critical once several calls run in parallel. The frequent mistake is assuming you can send the result on its own as if the server kept a session.",
       "source": "Anthropic — Tool use documentation; OpenAI — Function calling guide",
       "expected_time_ms": 26000,
-      "tags": ["tool-use", "api", "statelessness"]
+      "tags": [
+        "tool-use",
+        "api",
+        "statelessness"
+      ]
     },
     {
       "id": "q070302013",
@@ -259,7 +320,11 @@
       "explanation_en": "Declaring a property inside `properties` does not make it mandatory: it only describes it. Without the `required` list, the model can produce a syntactically valid call that is missing `user_id` or `date`, and the failure surfaces inside the function where it is harder to diagnose. Together with `enum` for closed value sets and per-parameter `description`, `required` is the cheapest way to turn a reasoning error into a validation error caught before anything executes.",
       "source": "OpenAI — Function calling guide (JSON Schema for tool parameters); Anthropic — Tool use documentation (input_schema)",
       "expected_time_ms": 28000,
-      "tags": ["tool-use", "json-schema", "validation"]
+      "tags": [
+        "tool-use",
+        "json-schema",
+        "validation"
+      ]
     },
     {
       "id": "q070302014",
@@ -269,23 +334,27 @@
       "question_es": "En producción, un agente invoca de vez en cuando una herramienta que no existe o inventa un parámetro que no está en el esquema. ¿Cuál es la respuesta de ingeniería correcta?",
       "question_en": "In production, an agent occasionally invokes a tool that does not exist or invents a parameter absent from the schema. What is the correct engineering response?",
       "options_es": [
-        "Validar cada llamada contra un registro de herramientas y su esquema antes de ejecutarla, y devolver al modelo un error estructurado y explicativo para que se corrija en la siguiente iteración, contabilizando el suceso como métrica",
+        "Usar `eval()` sobre la llamada generada para que el intérprete resuelva el nombre de la función dinámicamente",
         "Ejecutar la llamada igualmente confiando en que el lenguaje de la función ignore los argumentos sobrantes",
         "Añadir al prompt del sistema la frase 'no inventes herramientas' y dar el problema por resuelto",
-        "Usar `eval()` sobre la llamada generada para que el intérprete resuelva el nombre de la función dinámicamente"
+        "Validar cada llamada contra un registro de herramientas y su esquema antes de ejecutarla, y devolver al modelo un error estructurado y explicativo para que se corrija en la siguiente iteración, contabilizando el suceso como métrica"
       ],
       "options_en": [
-        "Validate every call against a tool registry and its schema before executing it, and return a structured, explanatory error to the model so it can self-correct on the next iteration, while counting the event as a metric",
+        "Use `eval()` on the generated call so the interpreter resolves the function name dynamically",
         "Execute the call anyway, trusting the function's language to ignore surplus arguments",
         "Add 'do not invent tools' to the system prompt and consider the problem solved",
-        "Use `eval()` on the generated call so the interpreter resolves the function name dynamically"
+        "Validate every call against a tool registry and its schema before executing it, and return a structured, explanatory error to the model so it can self-correct on the next iteration, while counting the event as a metric"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "La salida del modelo es una entrada no confiable como cualquier otra. Un despachador que comprueba nombre y esquema convierte una alucinación en un error recuperable, y devolver un mensaje que diga qué herramientas existen y qué campos faltan permite al modelo arreglarlo solo. Confiar en que el lenguaje tolere argumentos extra es frágil y depende del binding; el prompting reduce la frecuencia pero no da garantías, y por eso no sustituye a la validación; y `eval()` sobre texto generado por un LLM es directamente ejecución de código arbitrario, el patrón que OWASP señala como inyección de prompt llevada a ejecución.",
       "explanation_en": "Model output is untrusted input like any other. A dispatcher that checks name and schema turns a hallucination into a recoverable error, and returning a message stating which tools exist and which fields are missing lets the model fix it itself. Trusting the language to tolerate extra arguments is brittle and binding-dependent; prompting lowers the frequency but guarantees nothing, so it does not replace validation; and `eval()` over LLM-generated text is outright arbitrary code execution — the pattern OWASP flags as prompt injection carried through to execution.",
       "source": "OWASP Top 10 for LLM Applications; Anthropic — Tool use documentation",
       "expected_time_ms": 36000,
-      "tags": ["tool-use", "validation", "security"]
+      "tags": [
+        "tool-use",
+        "validation",
+        "security"
+      ]
     },
     {
       "id": "q070302015",
@@ -311,9 +380,13 @@
       "explanation_en": "Excessive agency comes from granting a tool more capability than the task requires; the damage lands when a prompt injection in a ticket or a retrieved document steers that capability. The mitigation is structural and lives outside the model: least-privilege database permissions, a narrow operation surface, and human confirmation for anything irreversible. The other options are detection or deterrence: logs help you investigate after the deletion, a prompt instruction is exactly what an injection aims to override, and hiding the tool's existence is security by obscurity, not a capability bound.",
       "source": "OWASP Top 10 for LLM Applications — Excessive Agency; NIST AI Risk Management Framework (AI RMF 1.0)",
       "expected_time_ms": 42000,
-      "tags": ["tool-use", "security", "owasp", "excessive-agency"]
+      "tags": [
+        "tool-use",
+        "security",
+        "owasp",
+        "excessive-agency"
+      ]
     },
-
     {
       "id": "q070303008",
       "skill_id": "sk070303",
@@ -338,7 +411,10 @@
       "explanation_en": "Chain-of-thought is a prompting technique, not training or architecture: showing in the exemplars how the result is reached is enough for the model to unfold intermediate steps on arithmetic, commonsense and symbolic reasoning tasks. The distractors describe real but different things — prompt chaining, supervised fine-tuning and long-term memory — often confused with CoT because they also 'improve reasoning', but none is what the paper proposes.",
       "source": "Wei et al. (2022) — 'Chain-of-Thought Prompting Elicits Reasoning in Large Language Models'",
       "expected_time_ms": 24000,
-      "tags": ["reasoning", "chain-of-thought"]
+      "tags": [
+        "reasoning",
+        "chain-of-thought"
+      ]
     },
     {
       "id": "q070303009",
@@ -349,22 +425,26 @@
       "question_en": "According to Yao et al. (2022), why does ReAct reduce hallucination and error propagation compared with pure chain-of-thought on knowledge-intensive question answering?",
       "options_es": [
         "Porque ReAct usa un modelo con más parámetros que el empleado en chain-of-thought",
-        "Porque cada paso de razonamiento puede anclarse en información recuperada del entorno, de modo que el modelo corrige su trayectoria con hechos externos en lugar de razonar encerrado en su conocimiento paramétrico",
+        "Porque ReAct elimina por completo los pasos de razonamiento y solo ejecuta acciones verificables",
         "Porque ReAct fuerza al modelo a responder en menos pasos, y menos pasos implican menos oportunidades de error",
-        "Porque ReAct elimina por completo los pasos de razonamiento y solo ejecuta acciones verificables"
+        "Porque cada paso de razonamiento puede anclarse en información recuperada del entorno, de modo que el modelo corrige su trayectoria con hechos externos en lugar de razonar encerrado en su conocimiento paramétrico"
       ],
       "options_en": [
         "Because ReAct uses a model with more parameters than the one used for chain-of-thought",
-        "Because each reasoning step can be grounded in information retrieved from the environment, so the model corrects its trajectory with external facts instead of reasoning sealed inside its parametric knowledge",
+        "Because ReAct removes reasoning steps entirely and only executes verifiable actions",
         "Because ReAct forces the model to answer in fewer steps, and fewer steps means fewer chances to err",
-        "Because ReAct removes reasoning steps entirely and only executes verifiable actions"
+        "Because each reasoning step can be grounded in information retrieved from the environment, so the model corrects its trajectory with external facts instead of reasoning sealed inside its parametric knowledge"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "El artículo atribuye el problema de CoT puro a que el razonamiento no tiene contacto con el mundo: un hecho equivocado al principio arrastra toda la cadena sin posibilidad de detectarlo. ReAct intercala acciones que traen observaciones reales y sirven de anclaje. El distractor del tamaño del modelo es tentador porque casi todo mejora con escala, pero el artículo compara el mismo modelo con distintos esquemas de prompting; y ReAct no acorta las trayectorias ni suprime el razonamiento, precisamente la sinergia entre pensar y actuar es su tesis central.",
       "explanation_en": "The paper attributes pure CoT's failure mode to reasoning having no contact with the world: one wrong fact early on drags the whole chain along undetected. ReAct interleaves actions that bring back real observations to anchor on. The model-size distractor is tempting because nearly everything improves with scale, but the paper compares the same model under different prompting schemes; and ReAct neither shortens trajectories nor suppresses reasoning — the synergy between thinking and acting is its central thesis.",
       "source": "Yao et al. (2022) — 'ReAct: Synergizing Reasoning and Acting in Language Models'",
       "expected_time_ms": 32000,
-      "tags": ["reasoning", "react", "grounding"]
+      "tags": [
+        "reasoning",
+        "react",
+        "grounding"
+      ]
     },
     {
       "id": "q070303010",
@@ -373,14 +453,24 @@
       "difficulty_tier": "hard",
       "question_es": "Según Wei et al. (2022), la mejora que aporta el prompting de cadena de pensamiento es aproximadamente constante para modelos de cualquier tamaño, por lo que conviene aplicarla igualmente a modelos pequeños.",
       "question_en": "According to Wei et al. (2022), the gain from chain-of-thought prompting is roughly constant across model sizes, so it is equally worth applying to small models.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. El artículo describe la cadena de pensamiento como una capacidad emergente de la escala: en modelos pequeños las trazas generadas son fluidas pero lógicamente incorrectas, y el rendimiento puede incluso empeorar respecto a responder directamente. La creencia contraria lleva a un error práctico caro: forzar CoT en un modelo pequeño para abaratar un agente y acabar pagando más tokens por peores respuestas. Con modelos pequeños suele rendir más descomponer la tarea en pasos deterministas que pedir razonamiento libre.",
       "explanation_en": "False. The paper describes chain-of-thought as an emergent ability of scale: in small models the generated traces are fluent but logically wrong, and performance can even degrade relative to answering directly. The opposite belief drives an expensive practical mistake: forcing CoT on a small model to make an agent cheaper, and paying more tokens for worse answers. With small models, decomposing the task into deterministic steps usually beats asking for free-form reasoning.",
       "source": "Wei et al. (2022) — 'Chain-of-Thought Prompting Elicits Reasoning in Large Language Models'",
       "expected_time_ms": 28000,
-      "tags": ["reasoning", "chain-of-thought", "scale"]
+      "tags": [
+        "reasoning",
+        "chain-of-thought",
+        "scale"
+      ]
     },
     {
       "id": "q070303011",
@@ -395,7 +485,11 @@
       "explanation_en": "The trajectory alternates Thought (model-generated reasoning), Action (the call the model emits) and Observation (the result the environment returns). The distinction matters in implementation: the Observation is external text injected into the context, and mistaking it for something the model produces leads to the classic bug where the model 'invents' observations because the loop fails to stop generation after the Action.",
       "source": "Yao et al. (2022) — 'ReAct: Synergizing Reasoning and Acting in Language Models'",
       "expected_time_ms": 22000,
-      "tags": ["reasoning", "react", "trajectory"]
+      "tags": [
+        "reasoning",
+        "react",
+        "trajectory"
+      ]
     },
     {
       "id": "q070303012",
@@ -405,23 +499,27 @@
       "question_es": "Un bucle ReAct acumula esta traza. ¿Qué debe ocurrir inmediatamente después de la última línea?\\n\\n```text\\nThought 1: Necesito la poblacion de Nicosia.\\nAction 1: search[\"poblacion de Nicosia\"]\\n```",
       "question_en": "A ReAct loop has accumulated this trace. What must happen immediately after the last line?",
       "options_es": [
-        "El bucle detiene la generación en la Action, ejecuta `search` de verdad, y añade a la traza `Observation 1:` con el resultado real antes de volver a llamar al modelo",
         "El modelo continúa generando y escribe él mismo `Observation 1:` con lo que recuerde sobre Nicosia",
+        "El bucle detiene la generación en la Action, ejecuta `search` de verdad, y añade a la traza `Observation 1:` con el resultado real antes de volver a llamar al modelo",
         "El bucle emite directamente `Thought 2:` y deja la acción pendiente para el final",
         "El bucle devuelve la respuesta al usuario, porque la acción ya expresa la intención del modelo"
       ],
       "options_en": [
-        "The loop stops generation at the Action, actually executes `search`, and appends `Observation 1:` with the real result before calling the model again",
         "The model keeps generating and writes `Observation 1:` itself with whatever it recalls about Nicosia",
+        "The loop stops generation at the Action, actually executes `search`, and appends `Observation 1:` with the real result before calling the model again",
         "The loop emits `Thought 2:` directly and leaves the action pending until the end",
         "The loop returns the answer to the user, because the action already expresses the model's intent"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "La implementación correcta usa una secuencia de parada en `Observation` (o el equivalente estructurado de la API) para cortar la generación justo tras la acción. Si no se corta, el modelo alucina su propia observación con toda naturalidad y la traza parece impecable mientras los hechos son inventados: es el error más frecuente al escribir un bucle ReAct a mano y el más difícil de ver en los registros, porque el formato sigue siendo válido. Saltar a `Thought 2` o responder sin observación pierden el anclaje que justifica usar ReAct.",
       "explanation_en": "A correct implementation uses a stop sequence at `Observation` (or the API's structured equivalent) to cut generation right after the action. Without that cut, the model happily hallucinates its own observation and the trace looks impeccable while the facts are invented: the most frequent bug in hand-written ReAct loops and the hardest to spot in logs, because the format stays valid. Jumping to `Thought 2` or answering with no observation throws away the grounding that justifies ReAct in the first place.",
       "source": "Yao et al. (2022) — 'ReAct: Synergizing Reasoning and Acting in Language Models'; LangChain — ReAct agent documentation",
       "expected_time_ms": 32000,
-      "tags": ["reasoning", "react", "implementation"]
+      "tags": [
+        "reasoning",
+        "react",
+        "implementation"
+      ]
     },
     {
       "id": "q070303013",
@@ -432,22 +530,26 @@
       "question_en": "A text-based ReAct agent fails 6 % of the time because the model emits actions in a format the parser cannot read (unbalanced quotes, tool names with spaces). What is the most robust improvement?",
       "options_es": [
         "Aumentar el número máximo de iteraciones para que el agente tenga más intentos",
-        "Reescribir el parser con expresiones regulares cada vez más permisivas hasta que acepte todas las variantes observadas",
         "Delegar la acción al mecanismo estructurado de tool use de la API, que devuelve la llamada ya validada contra un esquema, y reservar el texto libre solo para el Thought; si hay que seguir parseando, devolver el error de formato como Observation para que el modelo se corrija",
+        "Reescribir el parser con expresiones regulares cada vez más permisivas hasta que acepte todas las variantes observadas",
         "Bajar la temperatura a 0, que elimina por completo los errores de formato"
       ],
       "options_en": [
         "Increase the maximum iteration count so the agent gets more attempts",
-        "Rewrite the parser with ever more permissive regular expressions until it accepts every observed variant",
         "Delegate the action to the API's structured tool-use mechanism, which returns the call already validated against a schema, and keep free text only for the Thought; if parsing must remain, return the format error as an Observation so the model self-corrects",
+        "Rewrite the parser with ever more permissive regular expressions until it accepts every observed variant",
         "Set temperature to 0, which fully eliminates formatting errors"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "El formato ReAct original es texto porque en 2022 no existían APIs de tool use; hoy el esquema estructurado traslada la validación al proveedor y elimina toda una clase de fallos. Ampliar iteraciones solo multiplica el coste de un error que se repite; los parsers cada vez más permisivos acaban aceptando llamadas ambiguas y fallando más adelante con datos equivocados, que es peor que fallar pronto; y la temperatura 0 reduce la variabilidad pero no garantiza formato válido, porque el modo del modelo también puede ser incorrecto.",
       "explanation_en": "The original ReAct format is text because tool-use APIs did not exist in 2022; today a structured schema moves validation to the provider and removes an entire class of failures. Raising the iteration cap just multiplies the cost of a recurring error; ever more permissive parsers end up accepting ambiguous calls and failing later with wrong data, which is worse than failing early; and temperature 0 reduces variability but does not guarantee valid format, since the model's mode can itself be wrong.",
       "source": "Yao et al. (2022) — 'ReAct: Synergizing Reasoning and Acting in Language Models'; Anthropic — Tool use documentation",
       "expected_time_ms": 38000,
-      "tags": ["reasoning", "react", "robustness"]
+      "tags": [
+        "reasoning",
+        "react",
+        "robustness"
+      ]
     },
     {
       "id": "q070303014",
@@ -456,14 +558,24 @@
       "difficulty_tier": "medium",
       "question_es": "Aplicar el patrón ReAct exige ajustar finamente (fine-tuning) el modelo sobre trayectorias anotadas; no es viable únicamente con prompting.",
       "question_en": "Applying the ReAct pattern requires fine-tuning the model on annotated trajectories; it is not viable with prompting alone.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. El artículo original obtiene sus resultados principales con prompting de pocos ejemplos: bastan unas trayectorias de demostración en el prompt para que el modelo adopte el formato Thought/Action/Observation. Los autores exploran además variantes con ajuste fino, y de ahí viene la confusión, pero el ajuste fino es una optimización opcional, útil sobre todo con modelos pequeños. Suponer lo contrario lleva a descartar ReAct por un coste de entrenamiento que en la práctica no se necesita.",
       "explanation_en": "False. The original paper obtains its main results with few-shot prompting: a handful of demonstration trajectories in the prompt is enough for the model to adopt the Thought/Action/Observation format. The authors also explore fine-tuned variants, which is where the confusion comes from, but fine-tuning is an optional optimisation, mainly useful with smaller models. Assuming otherwise leads teams to dismiss ReAct over a training cost they do not actually need to pay.",
       "source": "Yao et al. (2022) — 'ReAct: Synergizing Reasoning and Acting in Language Models'",
       "expected_time_ms": 26000,
-      "tags": ["reasoning", "react", "prompting"]
+      "tags": [
+        "reasoning",
+        "react",
+        "prompting"
+      ]
     },
     {
       "id": "q070303015",
@@ -489,9 +601,13 @@
       "explanation_en": "A reasoning trace is generated tokens, not a log of the internal computation; it can be fluent and convincing and still not reflect why the model chose that action. The genuinely auditable part is the trajectory of actions and observations: which tool was called, with what arguments, and what it returned — all traceable against real systems. The seed option is especially tempting because it confuses reproducibility with faithfulness: repeating the same rationalisation does not make it true. The NIST framework asks precisely for this distinction between explainability and logged evidence.",
       "source": "NIST AI Risk Management Framework (AI RMF 1.0); Yao et al. (2022) — 'ReAct: Synergizing Reasoning and Acting in Language Models'",
       "expected_time_ms": 44000,
-      "tags": ["reasoning", "react", "explainability", "governance"]
+      "tags": [
+        "reasoning",
+        "react",
+        "explainability",
+        "governance"
+      ]
     },
-
     {
       "id": "q070304008",
       "skill_id": "sk070304",
@@ -500,23 +616,27 @@
       "question_es": "¿Qué caracteriza al patrón de 'paralelización' en sistemas con varios LLMs?",
       "question_en": "What characterises the 'parallelisation' pattern in systems with several LLMs?",
       "options_es": [
-        "Un agente principal delega en otro solo cuando se queda sin contexto disponible",
+        "Varias llamadas al modelo se ejecutan simultáneamente y sus salidas se agregan de forma programática: o bien cada una atiende una parte independiente de la tarea, o bien todas atacan la misma tarea y se combinan sus resultados",
         "Varios agentes se turnan para editar el mismo documento hasta llegar a un consenso",
         "El sistema ejecuta el mismo prompt en varios proveedores y se queda con el más barato",
-        "Varias llamadas al modelo se ejecutan simultáneamente y sus salidas se agregan de forma programática: o bien cada una atiende una parte independiente de la tarea, o bien todas atacan la misma tarea y se combinan sus resultados"
+        "Un agente principal delega en otro solo cuando se queda sin contexto disponible"
       ],
       "options_en": [
-        "A main agent delegates to another only when it runs out of available context",
+        "Several model calls run simultaneously and their outputs are aggregated programmatically: either each handles an independent part of the task, or all attack the same task and their results are combined",
         "Several agents take turns editing the same document until they reach consensus",
         "The system runs the same prompt across several providers and keeps the cheapest",
-        "Several model calls run simultaneously and their outputs are aggregated programmatically: either each handles an independent part of the task, or all attack the same task and their results are combined"
+        "A main agent delegates to another only when it runs out of available context"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "La paralelización tiene dos variantes: repartir subtareas independientes entre llamadas, y lanzar la misma tarea varias veces para agregar las respuestas. Ambas requieren que las subtareas no dependan unas de otras, que es la condición que distingue este patrón de una cadena secuencial. Los distractores describen delegación por límite de contexto, colaboración iterativa sobre un estado compartido y arbitraje de proveedores: son mecanismos reales, pero ninguno es paralelización en el sentido del patrón.",
       "explanation_en": "Parallelisation has two variants: splitting independent subtasks across calls, and running the same task several times to aggregate the answers. Both require the subtasks not to depend on one another, which is the condition that separates this pattern from a sequential chain. The distractors describe context-limit delegation, iterative collaboration over shared state, and provider arbitrage: real mechanisms, but none is parallelisation in the pattern's sense.",
       "source": "Anthropic — 'Building effective agents' (2024)",
       "expected_time_ms": 26000,
-      "tags": ["multi-agent", "parallelization", "patterns"]
+      "tags": [
+        "multi-agent",
+        "parallelization",
+        "patterns"
+      ]
     },
     {
       "id": "q070304009",
@@ -526,23 +646,27 @@
       "question_es": "Antes de aprobar una arquitectura multi-agente para una funcionalidad de producto, ¿qué comprobación económica es imprescindible?",
       "question_en": "Before approving a multi-agent architecture for a product feature, which economic check is essential?",
       "options_es": [
-        "Que el valor de la tarea justifique el consumo de tokens, porque un sistema multi-agente puede gastar un orden de magnitud más que una conversación normal al multiplicar contextos, razonamientos y coordinación entre subagentes",
         "Que todos los subagentes usen el mismo proveedor, para negociar un descuento por volumen",
+        "Que el valor de la tarea justifique el consumo de tokens, porque un sistema multi-agente puede gastar un orden de magnitud más que una conversación normal al multiplicar contextos, razonamientos y coordinación entre subagentes",
         "Que el número de subagentes sea potencia de dos, para repartir la carga de forma uniforme",
         "Que el coste de infraestructura de los contenedores supere al coste de inferencia, señal de que la arquitectura está bien dimensionada"
       ],
       "options_en": [
-        "That the task's value justifies the token spend, because a multi-agent system can burn an order of magnitude more than a normal conversation once you multiply contexts, reasoning and inter-agent coordination",
         "That all subagents use the same provider, to negotiate a volume discount",
+        "That the task's value justifies the token spend, because a multi-agent system can burn an order of magnitude more than a normal conversation once you multiply contexts, reasoning and inter-agent coordination",
         "That the number of subagents is a power of two, so load splits evenly",
         "That container infrastructure cost exceeds inference cost, a sign the architecture is well sized"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Anthropic reportó que su sistema de investigación multi-agente consumía en torno a quince veces los tokens de un chat corriente. Eso acota su terreno útil: tareas valiosas, de exploración amplia y paralelizables, donde ese gasto se recupera. El error habitual es adoptar multi-agente por elegancia arquitectónica y descubrir el coste unitario ya en producción. Los otros distractores aplican intuiciones de sistemas distribuidos clásicos —simetría de particiones, descuentos, relación entre costes— que no gobiernan el precio por token.",
       "explanation_en": "Anthropic reported that its multi-agent research system consumed roughly fifteen times the tokens of an ordinary chat. That bounds where it pays off: valuable, breadth-first, parallelisable tasks where the spend is recovered. The common mistake is adopting multi-agent for architectural elegance and discovering unit economics only in production. The other distractors apply classic distributed-systems intuitions — partition symmetry, volume discounts, cost ratios — that do not govern per-token pricing.",
       "source": "Anthropic — 'How we built our multi-agent research system' (2025)",
       "expected_time_ms": 30000,
-      "tags": ["multi-agent", "cost", "architecture"]
+      "tags": [
+        "multi-agent",
+        "cost",
+        "architecture"
+      ]
     },
     {
       "id": "q070304010",
@@ -551,14 +675,24 @@
       "difficulty_tier": "medium",
       "question_es": "En un sistema orquestador-trabajadores, los subagentes comparten automáticamente la ventana de contexto del orquestador, de modo que ven sus instrucciones originales y los hallazgos de los demás subagentes.",
       "question_en": "In an orchestrator-workers system, subagents automatically share the orchestrator's context window, so they see its original instructions and the other subagents' findings.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Cada subagente corre con su propio contexto, y esa separación es precisamente la ventaja del patrón: multiplica la capacidad de exploración sin saturar una única ventana. Pero implica que todo lo que el subagente necesita saber debe ir explícito en su encargo: objetivo, formato de salida, límites y fuentes permitidas. El fallo típico de este patrón son las instrucciones vagas ('investiga X'), que producen trabajo duplicado o divergente porque cada subagente rellena los huecos a su manera.",
       "explanation_en": "False. Each subagent runs with its own context, and that separation is precisely the pattern's advantage: it multiplies exploration capacity without saturating a single window. But it means everything the subagent needs to know must be explicit in its assignment: objective, output format, boundaries and allowed sources. The characteristic failure of this pattern is vague instructions ('research X'), which produce duplicated or divergent work because each subagent fills the gaps its own way.",
       "source": "Anthropic — 'How we built our multi-agent research system' (2025)",
       "expected_time_ms": 26000,
-      "tags": ["multi-agent", "orchestrator-workers", "context"]
+      "tags": [
+        "multi-agent",
+        "orchestrator-workers",
+        "context"
+      ]
     },
     {
       "id": "q070304011",
@@ -573,7 +707,11 @@
       "explanation_en": "Voting trades cost for reliability: it helps when false negatives must be driven down (reviewing code for vulnerabilities with several different prompts) or when you want an explicit agreement threshold before acting. It differs from sectioning, the other variant, where each call handles a different part of the task. Confusing the two leads to majority-voting over outputs that are actually complementary pieces rather than opinions about the same thing.",
       "source": "Anthropic — 'Building effective agents' (2024)",
       "expected_time_ms": 30000,
-      "tags": ["multi-agent", "parallelization", "voting"]
+      "tags": [
+        "multi-agent",
+        "parallelization",
+        "voting"
+      ]
     },
     {
       "id": "q070304012",
@@ -585,21 +723,25 @@
       "options_es": [
         "El modelo de los subagentes es demasiado pequeño; hay que escalar a un modelo mayor en cada trabajador",
         "Los subagentes se están comunicando entre sí y se contagian; hay que aislarlos en procesos distintos",
-        "El orquestador delegó con encargos solapados o poco específicos; la corrección es que asigne a cada subagente un objetivo delimitado, con fuentes o subpreguntas distintas y un formato de entrega concreto, y que verifique la cobertura al agregar",
-        "El número de subagentes es insuficiente; con diez el solapamiento desaparece estadísticamente"
+        "El número de subagentes es insuficiente; con diez el solapamiento desaparece estadísticamente",
+        "El orquestador delegó con encargos solapados o poco específicos; la corrección es que asigne a cada subagente un objetivo delimitado, con fuentes o subpreguntas distintas y un formato de entrega concreto, y que verifique la cobertura al agregar"
       ],
       "options_en": [
         "The subagents' model is too small; each worker should be scaled up to a larger model",
         "The subagents are talking to each other and contaminating one another; they must be isolated in separate processes",
-        "The orchestrator delegated with overlapping or under-specified assignments; the fix is for it to give each subagent a bounded objective with distinct sources or subquestions and a concrete delivery format, and to verify coverage when aggregating",
-        "There are too few subagents; with ten, overlap disappears statistically"
+        "There are too few subagents; with ten, overlap disappears statistically",
+        "The orchestrator delegated with overlapping or under-specified assignments; the fix is for it to give each subagent a bounded objective with distinct sources or subquestions and a concrete delivery format, and to verify coverage when aggregating"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "El solapamiento es un fallo de descomposición, no de capacidad. Si a tres subagentes se les da el mismo encargo difuso, convergen hacia las mismas fuentes evidentes y ninguno cubre lo periférico. La corrección está en el prompt del orquestador y en una comprobación de cobertura al agregar. Escalar el modelo hace que los tres hagan mejor el mismo trabajo redundante; añadir subagentes multiplica el coste y el solapamiento en lugar de reducirlo; y en el patrón orquestador-trabajadores los subagentes no se comunican entre sí, así que el contagio no puede ser la causa.",
       "explanation_en": "Overlap is a decomposition failure, not a capability failure. Give three subagents the same fuzzy assignment and they converge on the same obvious sources while nobody covers the periphery. The fix lives in the orchestrator's prompt and in a coverage check at aggregation time. Scaling the model makes all three do the same redundant work better; adding subagents multiplies cost and overlap rather than reducing it; and in orchestrator-workers the subagents do not talk to each other, so cross-contamination cannot be the cause.",
       "source": "Anthropic — 'How we built our multi-agent research system' (2025); Anthropic — 'Building effective agents' (2024)",
       "expected_time_ms": 38000,
-      "tags": ["multi-agent", "orchestration", "task-decomposition"]
+      "tags": [
+        "multi-agent",
+        "orchestration",
+        "task-decomposition"
+      ]
     },
     {
       "id": "q070304013",
@@ -609,23 +751,27 @@
       "question_es": "¿Por qué evaluar un sistema multi-agente exige más que comparar la respuesta final con una respuesta de referencia?",
       "question_en": "Why does evaluating a multi-agent system require more than comparing the final answer against a reference answer?",
       "options_es": [
-        "Porque los sistemas multi-agente no producen una respuesta final única, sino siempre un conjunto de respuestas parciales",
         "Porque trayectorias muy distintas pueden llegar a una respuesta final aceptable, y solo evaluando la trayectoria (qué subagentes se lanzaron, qué herramientas usaron, si hubo trabajo duplicado, coste y latencia) se detectan las ineficiencias y los fallos que aún no han cambiado el resultado",
+        "Porque los sistemas multi-agente no producen una respuesta final única, sino siempre un conjunto de respuestas parciales",
         "Porque las métricas de exactitud no se pueden calcular cuando intervienen varios modelos",
         "Porque la respuesta final la produce un agente distinto en cada ejecución y por tanto no es comparable"
       ],
       "options_en": [
-        "Because multi-agent systems never produce a single final answer, only a set of partial ones",
         "Because very different trajectories can reach an acceptable final answer, and only by evaluating the trajectory (which subagents were spawned, which tools they used, whether work was duplicated, cost and latency) do you catch inefficiencies and failures that have not yet changed the result",
+        "Because multi-agent systems never produce a single final answer, only a set of partial ones",
         "Because accuracy metrics cannot be computed when several models are involved",
         "Because a different agent produces the final answer on each run, so it is not comparable"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Un sistema puede acertar la respuesta gastando el triple de lo necesario, repitiendo búsquedas o ignorando una fuente crítica que en la siguiente consulta sí habría cambiado el resultado. Esos fallos son invisibles para una métrica de resultado final y visibles en la traza. Por eso la evaluación combina juicio sobre el resultado con inspección de trayectoria y métricas operativas. Los distractores dan por imposible lo que sí se hace en la práctica: los sistemas multi-agente sí entregan una respuesta final y la exactitud sí se mide sobre ella; lo que ocurre es que no basta.",
       "explanation_en": "A system can land the right answer while spending three times what it needed, repeating searches, or ignoring a critical source that would have changed the result on the next query. Those failures are invisible to a final-answer metric and visible in the trace. Hence evaluation combines outcome judgement with trajectory inspection and operational metrics. The distractors declare impossible what is done routinely: multi-agent systems do deliver a final answer and accuracy is measured on it — it just is not sufficient.",
       "source": "Anthropic — 'How we built our multi-agent research system' (2025); Chip Huyen — 'AI Engineering' (2025), evaluation chapter",
       "expected_time_ms": 38000,
-      "tags": ["multi-agent", "evaluation", "observability"]
+      "tags": [
+        "multi-agent",
+        "evaluation",
+        "observability"
+      ]
     },
     {
       "id": "q070304014",
@@ -634,14 +780,24 @@
       "difficulty_tier": "hard",
       "question_es": "Los sistemas multi-agente rinden especialmente bien en tareas de exploración amplia y de solo lectura que se dejan repartir en subtareas independientes, y peor en tareas muy secuenciales o que exigen que todos los agentes compartan un estado mutable en evolución.",
       "question_en": "Multi-agent systems perform particularly well on breadth-first, read-only tasks that split into independent subtasks, and worse on highly sequential tasks or ones requiring all agents to share an evolving mutable state.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. Buscar en paralelo por muchas ramas se beneficia de contextos separados y de la agregación al final, y sin escrituras no hay conflictos que resolver. En cambio, cuando el paso 3 depende del 2 no hay nada que paralelizar, y cuando varios agentes editan un estado compartido aparecen conflictos de escritura y decisiones tomadas sobre versiones obsoletas del estado, porque nadie ve el contexto del otro. Esa es la frontera práctica que decide si el coste extra del multi-agente se justifica.",
       "explanation_en": "True. Searching many branches in parallel benefits from separate contexts and end-stage aggregation, and with no writes there are no conflicts to resolve. By contrast, when step 3 depends on step 2 there is nothing to parallelise, and when several agents edit shared state you get write conflicts and decisions made on stale versions of that state, because no agent sees another's context. That boundary is what decides in practice whether multi-agent's extra cost is justified.",
       "source": "Anthropic — 'How we built our multi-agent research system' (2025)",
       "expected_time_ms": 30000,
-      "tags": ["multi-agent", "when-to-use", "coordination"]
+      "tags": [
+        "multi-agent",
+        "when-to-use",
+        "coordination"
+      ]
     },
     {
       "id": "q070304015",
@@ -653,21 +809,25 @@
       "options_es": [
         "Envolver la ejecución completa en una transacción de base de datos y revertirla ante cualquier error",
         "Subir el número máximo de reintentos globales del sistema a un valor alto",
-        "Persistir el estado de la ejecución de forma duradera (encargos, resultados parciales y estado de cada subagente) para poder reanudar desde el último punto válido, con reintentos idempotentes por subagente y degradación elegante cuando uno no se recupera",
-        "Ejecutar todos los subagentes en un único proceso con memoria compartida, para que el estado no se pierda si uno falla"
+        "Ejecutar todos los subagentes en un único proceso con memoria compartida, para que el estado no se pierda si uno falla",
+        "Persistir el estado de la ejecución de forma duradera (encargos, resultados parciales y estado de cada subagente) para poder reanudar desde el último punto válido, con reintentos idempotentes por subagente y degradación elegante cuando uno no se recupera"
       ],
       "options_en": [
         "Wrapping the whole run in a database transaction and rolling it back on any error",
         "Raising the system's global maximum retry count to a high value",
-        "Persisting run state durably (assignments, partial results and each subagent's status) so the run can resume from the last valid point, with idempotent per-subagent retries and graceful degradation when one cannot recover",
-        "Running every subagent in a single process with shared memory, so state is not lost if one fails"
+        "Running every subagent in a single process with shared memory, so state is not lost if one fails",
+        "Persisting run state durably (assignments, partial results and each subagent's status) so the run can resume from the last valid point, with idempotent per-subagent retries and graceful degradation when one cannot recover"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "Los agentes son sistemas con estado y de larga duración, así que un fallo tardío es caro en tiempo y en tokens ya gastados. La persistencia con reanudación convierte ese fallo en un reintento parcial. La transacción con reversión es el reflejo importado de las bases de datos y aquí es justo lo contrario de lo que se quiere: descarta el trabajo válido de los seis subagentes anteriores, y además las acciones externas ya ejecutadas no se deshacen con un rollback. Los reintentos globales repiten todo el trabajo y multiplican el coste, y la memoria compartida en un proceso no sobrevive a la caída del propio proceso.",
       "explanation_en": "Agents are stateful, long-running systems, so a late failure is expensive in wall time and in tokens already spent. Durable state with resume turns that failure into a partial retry. The rollback transaction is a reflex imported from databases and here it is exactly backwards: it discards the valid work of the six earlier subagents, and external actions already executed are not undone by a rollback anyway. Global retries redo all the work and multiply cost, and in-process shared memory does not survive the process itself crashing.",
       "source": "Anthropic — 'How we built our multi-agent research system' (2025); Chip Huyen — 'AI Engineering' (2025), on stateful agentic systems",
       "expected_time_ms": 44000,
-      "tags": ["multi-agent", "reliability", "state-management"]
+      "tags": [
+        "multi-agent",
+        "reliability",
+        "state-management"
+      ]
     }
   ]
 }

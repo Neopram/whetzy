@@ -70,18 +70,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport json\ntexto = '{\"x\": 1, \"y\": 2}'\nd = json.loads(texto, object_hook=lambda o: {k: v * 10 for k, v in o.items()})\nprint(d)\n```",
       "question_en": "What does the following code print?\n\n```python\nimport json\ntexto = '{\"x\": 1, \"y\": 2}'\nd = json.loads(texto, object_hook=lambda o: {k: v * 10 for k, v in o.items()})\nprint(d)\n```",
       "options_es": [
-        "{'x': 1, 'y': 2}",
         "{'x': 10, 'y': 20}",
+        "{'x': 1, 'y': 2}",
         "{\"x\": 10, \"y\": 20}",
         "TypeError: object_hook debe ser una clase, no una lambda"
       ],
       "options_en": [
-        "{'x': 1, 'y': 2}",
         "{'x': 10, 'y': 20}",
+        "{'x': 1, 'y': 2}",
         "{\"x\": 10, \"y\": 20}",
         "TypeError: object_hook must be a class, not a lambda"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "`object_hook` recibe cada objeto JSON ya convertido en dict y su valor de retorno sustituye a ese dict; es el punto de enganche canónico para reconstruir tipos propios (fechas, Decimal, dataclasses) al deserializar. La primera opción asume que el hook solo observa sin poder sustituir; la tercera confunde el `print` de un dict de Python con texto JSON; y `object_hook` acepta cualquier callable, también una lambda.",
       "explanation_en": "`object_hook` receives every JSON object already turned into a dict, and whatever it returns replaces that dict; it is the canonical hook for rebuilding your own types (dates, Decimal, dataclasses) on the way in. The first option assumes the hook only observes and cannot substitute; the third confuses printing a Python dict with JSON text; and `object_hook` accepts any callable, a lambda included.",
       "source": "CPython docs 3.13 — json.loads (object_hook)",
@@ -103,16 +103,16 @@
       "options_es": [
         "Se serializa solo como cadena ISO 8601, porque `datetime` implementa `__str__`",
         "Lanza `ValueError`; se arregla con `json.dumps(datos, strict=False)`",
-        "Lanza `TypeError`; se arregla pasando una función `default=` o subclasando `json.JSONEncoder`",
-        "Se serializa como el timestamp Unix en segundos, porque es la representación numérica natural"
+        "Se serializa como el timestamp Unix en segundos, porque es la representación numérica natural",
+        "Lanza `TypeError`; se arregla pasando una función `default=` o subclasando `json.JSONEncoder`"
       ],
       "options_en": [
         "It is serialized as an ISO 8601 string, because `datetime` implements `__str__`",
         "It raises `ValueError`; fix it with `json.dumps(data, strict=False)`",
-        "It raises `TypeError`; fix it by passing a `default=` function or subclassing `json.JSONEncoder`",
-        "It is serialized as a Unix timestamp in seconds, because that is the natural numeric representation"
+        "It is serialized as a Unix timestamp in seconds, because that is the natural numeric representation",
+        "It raises `TypeError`; fix it by passing a `default=` function or subclassing `json.JSONEncoder`"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "El codificador solo conoce dict, list, tuple, str, int, float, bool y None; ante cualquier otro tipo llama a `default(obj)`, cuya implementación base lanza `TypeError: Object of type datetime is not JSON serializable`. Las opciones de ISO y de timestamp tientan porque es lo que uno acaba escribiendo a mano, pero `json` no elige por ti: esa decisión es tuya precisamente porque no es reversible sin acordar el formato. `strict` existe en el decodificador, no en `dumps`, y controla caracteres de control, no tipos.",
       "explanation_en": "The encoder only knows dict, list, tuple, str, int, float, bool and None; for anything else it calls `default(obj)`, whose base implementation raises `TypeError: Object of type datetime is not JSON serializable`. The ISO and timestamp options tempt because that is what you end up writing by hand, but `json` will not choose for you: the choice is yours precisely because it is not reversible without agreeing on a format. `strict` belongs to the decoder, not to `dumps`, and governs control characters, not types.",
       "source": "CPython docs 3.13 — json.JSONEncoder.default / json.dumps (default)",
@@ -134,16 +134,16 @@
       "options_es": [
         "Porque `pickle.dump` exige siempre el argumento `protocol` explícito",
         "Porque `pickle` solo acepta tipos básicos, igual que `json`",
-        "No falla: `pickle` detecta el modo del archivo y escribe texto si hace falta",
-        "Porque `pickle` produce bytes y el archivo está abierto en modo texto; hay que usar `\"wb\"`"
+        "Porque `pickle` produce bytes y el archivo está abierto en modo texto; hay que usar `\"wb\"`",
+        "No falla: `pickle` detecta el modo del archivo y escribe texto si hace falta"
       ],
       "options_en": [
         "Because `pickle.dump` always requires an explicit `protocol` argument",
         "Because `pickle` only accepts basic types, just like `json`",
-        "It does not fail: `pickle` inspects the file mode and writes text when needed",
-        "Because `pickle` produces bytes and the file is open in text mode; you need `\"wb\"`"
+        "Because `pickle` produces bytes and the file is open in text mode; you need `\"wb\"`",
+        "It does not fail: `pickle` inspects the file mode and writes text when needed"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "Todos los protocolos de `pickle` desde el 0 en adelante se escriben como flujo de bytes, así que el archivo destino debe abrirse en binario (`\"wb\"`) y leerse con `\"rb\"`; en modo texto el `write` recibe `bytes` donde espera `str` y lanza `TypeError`. `protocol` es opcional (por defecto el 5 en 3.13). Que `pickle` acepte casi cualquier objeto es justo lo contrario de la segunda opción, y el objeto archivo no adapta el modo: esa es la diferencia deliberada entre las capas de texto y de binario en `io`.",
       "explanation_en": "Every `pickle` protocol from 0 on is written as a byte stream, so the target file must be opened in binary (`\"wb\"`) and read back with `\"rb\"`; in text mode `write` gets `bytes` where it expects `str` and raises `TypeError`. `protocol` is optional (5 by default in 3.13). That `pickle` handles almost any object is the opposite of the second option, and a file object does not adapt its mode: that split between the text and binary layers in `io` is deliberate.",
       "source": "CPython docs 3.13 — pickle: Data stream format / pickle.dump",
@@ -242,17 +242,17 @@
       "question_en": "What does the following code print?\n\n```python\nimport csv, io\ntexto = 'producto,precio\\n\"Mesa, roble\",120\\n'\nfilas = list(csv.reader(io.StringIO(texto)))\nprint(filas[1])\n```",
       "options_es": [
         "['\"Mesa', ' roble\"', '120']",
-        "['Mesa, roble', '120']",
+        "['Mesa, roble', 120]",
         "['Mesa', 'roble', '120']",
-        "['Mesa, roble', 120]"
+        "['Mesa, roble', '120']"
       ],
       "options_en": [
         "['\"Mesa', ' roble\"', '120']",
-        "['Mesa, roble', '120']",
+        "['Mesa, roble', 120]",
         "['Mesa', 'roble', '120']",
-        "['Mesa, roble', 120]"
+        "['Mesa, roble', '120']"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Ese es el motivo de existir del módulo `csv`: la coma dentro de comillas es parte del dato, no un separador, y el lector devuelve el campo ya sin las comillas. Las dos primeras opciones equivocadas son lo que obtendrías con `linea.split(\",\")`, que es exactamente el atajo que el módulo evita. La última cae en la otra trampa clásica: `csv` no convierte tipos, así que `120` llega como la cadena `'120'`.",
       "explanation_en": "This is why the `csv` module exists: a comma inside quotes is part of the datum, not a separator, and the reader hands back the field with the quotes already stripped. The first two wrong options are what `line.split(\",\")` would give you, which is precisely the shortcut the module saves you from. The last one falls into the other classic trap: `csv` does no type conversion, so `120` arrives as the string `'120'`.",
       "source": "CPython docs 3.13 — csv: Dialects and Formatting Parameters (quotechar, QUOTE_MINIMAL)",
@@ -272,18 +272,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport csv, io\ntexto = \"a;b;c\\n1;2;3\\n\"\nfilas = list(csv.reader(io.StringIO(texto), delimiter=\";\"))\nprint(filas[1])\n```",
       "question_en": "What does the following code print?\n\n```python\nimport csv, io\ntexto = \"a;b;c\\n1;2;3\\n\"\nfilas = list(csv.reader(io.StringIO(texto), delimiter=\";\"))\nprint(filas[1])\n```",
       "options_es": [
-        "['1;2;3']",
-        "[1, 2, 3]",
         "['1', '2', '3']",
+        "[1, 2, 3]",
+        "['1;2;3']",
         "['a', 'b', 'c']"
       ],
       "options_en": [
-        "['1;2;3']",
-        "[1, 2, 3]",
         "['1', '2', '3']",
+        "[1, 2, 3]",
+        "['1;2;3']",
         "['a', 'b', 'c']"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "`delimiter=\";\"` cambia el separador, muy común en exportaciones de Excel con configuración regional europea, donde la coma es el separador decimal. `csv.reader` no interpreta la primera fila como cabecera (eso es `DictReader`), así que `filas[0]` es `['a','b','c']` y `filas[1]` la primera fila de datos. Y siguen siendo cadenas: `[1, 2, 3]` es la suposición que rompe en silencio cualquier suma posterior.",
       "explanation_en": "`delimiter=\";\"` changes the separator, very common in Excel exports under European locales where the comma is the decimal separator. `csv.reader` does not treat the first row as a header (that is `DictReader`), so `filas[0]` is `['a','b','c']` and `filas[1]` is the first data row. And they are still strings: `[1, 2, 3]` is the assumption that silently breaks any arithmetic downstream.",
       "source": "CPython docs 3.13 — csv.reader / Dialects and Formatting Parameters (delimiter)",
@@ -303,18 +303,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport csv, io\nbuf = io.StringIO()\nw = csv.writer(buf)\nw.writerow([\"hola, mundo\", 'dijo \"si\"'])\nprint(buf.getvalue().strip())\n```",
       "question_en": "What does the following code print?\n\n```python\nimport csv, io\nbuf = io.StringIO()\nw = csv.writer(buf)\nw.writerow([\"hola, mundo\", 'dijo \"si\"'])\nprint(buf.getvalue().strip())\n```",
       "options_es": [
-        "\"hola, mundo\",\"dijo \"\"si\"\"\"",
-        "hola, mundo,dijo \"si\"",
         "\"hola, mundo\",\"dijo \\\"si\\\"\"",
+        "hola, mundo,dijo \"si\"",
+        "\"hola, mundo\",\"dijo \"\"si\"\"\"",
         "'hola, mundo','dijo \"si\"'"
       ],
       "options_en": [
-        "\"hola, mundo\",\"dijo \"\"si\"\"\"",
-        "hola, mundo,dijo \"si\"",
         "\"hola, mundo\",\"dijo \\\"si\\\"\"",
+        "hola, mundo,dijo \"si\"",
+        "\"hola, mundo\",\"dijo \"\"si\"\"\"",
         "'hola, mundo','dijo \"si\"'"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Con el dialecto por defecto (`QUOTE_MINIMAL`) el escritor entrecomilla solo los campos que lo necesitan: el primero porque lleva una coma, el segundo porque lleva comillas. Y el escape de una comilla en CSV es duplicarla, no anteponerle una barra invertida: de ahí `\"\"si\"\"`. La opción con `\\\"` traslada la costumbre de JSON o de los literales de Python a un formato que nunca usó la barra invertida, y la opción sin comillas es lo que produce la concatenación a mano: un archivo que ningún lector puede volver a parsear.",
       "explanation_en": "With the default dialect (`QUOTE_MINIMAL`) the writer quotes only the fields that need it: the first because it contains a comma, the second because it contains quotes. And escaping a quote in CSV means doubling it, not backslashing it: hence `\"\"si\"\"`. The `\\\"` option carries a JSON or Python-literal habit into a format that never used the backslash, and the unquoted option is what hand-concatenation produces: a file no reader can parse back.",
       "source": "CPython docs 3.13 — csv: Dialect.doublequote / csv.QUOTE_MINIMAL",
@@ -334,18 +334,18 @@
       "question_es": "Recibes CSV de varios proveedores: unos separan por coma, otros por punto y coma y otros por tabulador. ¿Qué ofrece la biblioteca estándar para no cablear el delimitador?",
       "question_en": "You receive CSVs from several suppliers: some comma-separated, some semicolon-separated, some tab-separated. What does the standard library offer so you do not hard-code the delimiter?",
       "options_es": [
-        "`csv.autodetect(archivo)`, que devuelve el delimitador encontrado",
-        "Nada: hay que probar delimitadores a mano o pedir el formato al proveedor",
         "`csv.Sniffer().sniff(muestra)`, que deduce el dialecto a partir de un fragmento de texto",
+        "Nada: hay que probar delimitadores a mano o pedir el formato al proveedor",
+        "`csv.autodetect(archivo)`, que devuelve el delimitador encontrado",
         "`csv.reader(f, delimiter=\"auto\")`, que activa la detección automática"
       ],
       "options_en": [
-        "`csv.autodetect(file)`, which returns the delimiter it found",
-        "Nothing: you have to try delimiters by hand or ask the supplier for the format",
         "`csv.Sniffer().sniff(sample)`, which deduces the dialect from a chunk of text",
+        "Nothing: you have to try delimiters by hand or ask the supplier for the format",
+        "`csv.autodetect(file)`, which returns the delimiter it found",
         "`csv.reader(f, delimiter=\"auto\")`, which turns on auto-detection"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "`csv.Sniffer` analiza una muestra (típicamente `f.read(1024)` seguido de `f.seek(0)`) y devuelve una subclase de `Dialect` que puedes pasar directamente a `csv.reader`; `has_header()` completa el juego. Es heurístico y puede equivocarse con muestras cortas o campos con mucha puntuación, así que conviene envolverlo y tener un dialecto de reserva, pero existe y es la respuesta canónica. `autodetect` y `delimiter=\"auto\"` son nombres plausibles que nunca han existido: `delimiter` espera un único carácter.",
       "explanation_en": "`csv.Sniffer` inspects a sample (typically `f.read(1024)` followed by `f.seek(0)`) and returns a `Dialect` subclass you pass straight to `csv.reader`; `has_header()` rounds it out. It is heuristic and can be fooled by short samples or punctuation-heavy fields, so wrap it and keep a fallback dialect, but it exists and it is the canonical answer. `autodetect` and `delimiter=\"auto\"` are plausible names that never existed: `delimiter` expects a single character.",
       "source": "CPython docs 3.13 — csv.Sniffer",
@@ -366,17 +366,17 @@
       "question_en": "Which method of a `csv.writer` object writes a whole list of rows at once?",
       "options_es": [
         "`writelines(filas)`, heredado del objeto archivo subyacente",
-        "`writerows(filas)`",
+        "`extend(filas)`, por analogía con las listas",
         "`writerow(filas)`: detecta solo si recibe una fila o una lista de filas",
-        "`extend(filas)`, por analogía con las listas"
+        "`writerows(filas)`"
       ],
       "options_en": [
         "`writelines(rows)`, inherited from the underlying file object",
-        "`writerows(rows)`",
+        "`extend(rows)`, by analogy with lists",
         "`writerow(rows)`: it detects by itself whether it got one row or many",
-        "`extend(rows)`, by analogy with lists"
+        "`writerows(rows)`"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`writerow` escribe una fila y `writerows` itera sobre un iterable de filas; ambos aplican el dialecto (entrecomillado, delimitador, terminador de línea). `writerow` con una lista de listas no falla al llamarlo: escribe una sola fila cuyos campos son el `str()` de cada lista interna, y ese es el fallo más difícil de detectar porque el archivo resultante parece plausible. `writelines` sí existe, pero en el archivo, y escribiría texto crudo saltándose el escapado del dialecto.",
       "explanation_en": "`writerow` writes one row and `writerows` iterates over an iterable of rows; both apply the dialect (quoting, delimiter, line terminator). `writerow` with a list of lists does not fail at the call: it writes a single row whose fields are the `str()` of each inner list, and that is the hardest failure to spot because the resulting file looks plausible. `writelines` does exist, but on the file, and it would write raw text bypassing the dialect's escaping.",
       "source": "CPython docs 3.13 — csv: Writer Objects (writerow, writerows)",
@@ -397,17 +397,17 @@
       "question_en": "When **reading**, what does `csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)` do?",
       "options_es": [
         "Rechaza el archivo con `csv.Error` si algún campo numérico aparece entrecomillado",
-        "Convierte todos los campos a `float`, entrecomillados o no",
+        "Convierte a `float` los campos **no** entrecomillados y deja como `str` los entrecomillados",
         "Ninguno: `quoting` solo influye al escribir",
-        "Convierte a `float` los campos **no** entrecomillados y deja como `str` los entrecomillados"
+        "Convierte todos los campos a `float`, entrecomillados o no"
       ],
       "options_en": [
         "It rejects the file with `csv.Error` if any numeric field appears quoted",
-        "It converts every field to `float`, quoted or not",
+        "It converts the **unquoted** fields to `float` and leaves quoted ones as `str`",
         "None: `quoting` only affects writing",
-        "It converts the **unquoted** fields to `float` and leaves quoted ones as `str`"
+        "It converts every field to `float`, quoted or not"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "Es la única vía del módulo para obtener números en lugar de cadenas, y es frágil: cualquier campo sin comillas que no parezca un número (una cabecera, un campo vacío) provoca `ValueError`, por eso lo habitual es convertir a mano después de leer. La opción «solo al escribir» recoge la creencia más extendida, porque `quoting` casi siempre se estudia escribiendo; y «todos a float» olvida que las comillas son precisamente la señal de que el dato es texto.",
       "explanation_en": "It is the module's only route to numbers instead of strings, and it is brittle: any unquoted field that does not look like a number (a header, an empty field) raises `ValueError`, which is why people usually convert by hand after reading. The \"writing only\" option captures the most widespread belief, since `quoting` is nearly always met while writing; and \"everything to float\" forgets that the quotes are exactly the signal that a datum is text.",
       "source": "CPython docs 3.13 — csv.QUOTE_NONNUMERIC",
@@ -474,18 +474,18 @@
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nimport io\nf = io.BytesIO(b\"PYTHON\")\nf.seek(2)\nprint(f.read(3))\n```",
       "question_en": "What does the following code print?\n\n```python\nimport io\nf = io.BytesIO(b\"PYTHON\")\nf.seek(2)\nprint(f.read(3))\n```",
       "options_es": [
-        "b'THO'",
         "'THO'",
+        "b'THO'",
         "b'YTH'",
         "b'PYT'"
       ],
       "options_en": [
-        "b'THO'",
         "'THO'",
+        "b'THO'",
         "b'YTH'",
         "b'PYT'"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "`seek(2)` coloca el cursor en el desplazamiento 2 contado desde el principio, es decir **antes** del tercer byte, y `read(3)` consume tres bytes desde ahí: `T`, `H`, `O`. `b'YTH'` es el error de leer `seek` como «salta uno», y `b'PYT'` ignora el `seek`. La opción `'THO'` sin la `b` delata la confusión de fondo: un flujo binario devuelve siempre `bytes`, nunca `str`, aunque el contenido sea ASCII legible.",
       "explanation_en": "`seek(2)` puts the cursor at offset 2 from the start, i.e. **before** the third byte, and `read(3)` consumes three bytes from there: `T`, `H`, `O`. `b'YTH'` is the off-by-one of reading `seek` as \"skip one\", and `b'PYT'` ignores the `seek` entirely. The `'THO'` option without the `b` gives away the deeper confusion: a binary stream always returns `bytes`, never `str`, even when the content is readable ASCII.",
       "source": "CPython docs 3.13 — io: io.IOBase.seek / io.BytesIO",
@@ -506,17 +506,17 @@
       "question_en": "What does the following code print?\n\n```python\ndatos = b\"\\x01\\x00\"\nprint(int.from_bytes(datos, \"big\"), int.from_bytes(datos, \"little\"))\n```",
       "options_es": [
         "1 256",
-        "256 1",
+        "1 1",
         "256 256",
-        "1 1"
+        "256 1"
       ],
       "options_en": [
         "1 256",
-        "256 1",
+        "1 1",
         "256 256",
-        "1 1"
+        "256 1"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "En *big-endian* el byte más significativo va primero, así que `\\x01\\x00` vale `1 * 256 + 0 = 256`; en *little-endian* el orden se invierte y vale `0 * 256 + 1 = 1`. Las opciones que repiten el mismo número recogen la idea de que el orden de bytes «da igual»: solo da igual para valores de un byte o para secuencias palíndromas. Esta es la raíz de los formatos binarios que dejan de leerse al cambiar de máquina, y la razón de que `struct` pida un prefijo explícito (`>`, `<`) en lugar de fiarse del orden nativo.",
       "explanation_en": "In big-endian the most significant byte comes first, so `\\x01\\x00` is `1 * 256 + 0 = 256`; in little-endian the order flips and it is `0 * 256 + 1 = 1`. The options repeating one number capture the belief that byte order \"does not matter\": it only fails to matter for single-byte values or palindromic sequences. This is the root of binary formats that stop reading when you change machine, and the reason `struct` wants an explicit prefix (`>`, `<`) rather than trusting native order.",
       "source": "CPython docs 3.13 — Built-in Types: int.from_bytes (byteorder)",
@@ -537,17 +537,17 @@
       "question_en": "What does the following code print?\n\n```python\nb = b\"abc\"\nprint(b[0], b[0:1])\n```",
       "options_es": [
         "b'a' b'a'",
-        "97 97",
         "97 b'a'",
+        "97 97",
         "'a' 'a'"
       ],
       "options_en": [
         "b'a' b'a'",
-        "97 97",
         "97 b'a'",
+        "97 97",
         "'a' 'a'"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "Indexar un `bytes` devuelve un `int` (el valor del byte, aquí 97 para `a`), mientras que rebanarlo devuelve otro `bytes`. Esa asimetría es la causa habitual de que `datos[0] == b\"a\"` sea siempre `False` sin lanzar ningún error: hay que escribir `datos[0:1] == b\"a\"` o bien `datos[0] == 97`. La opción `'a' 'a'` es el modelo mental de Python 2, donde `str` y `bytes` eran el mismo tipo.",
       "explanation_en": "Indexing a `bytes` gives an `int` (the byte's value, 97 for `a` here), while slicing gives another `bytes`. That asymmetry is the usual reason `data[0] == b\"a\"` is always `False` without raising anything: you must write `data[0:1] == b\"a\"` or `data[0] == 97`. The `'a' 'a'` option is the Python 2 mental model, where `str` and `bytes` were one and the same type.",
       "source": "CPython docs 3.13 — Built-in Types: Bytes Objects (indexing vs slicing)",
@@ -567,18 +567,18 @@
       "question_es": "Un script escribe bytes en un archivo dentro de un bucle largo. Otro proceso lo lee mientras tanto y lo ve vacío, o cortado a mitad de un registro. ¿Por qué?",
       "question_en": "A script writes bytes to a file inside a long loop. Another process reads it meanwhile and sees it empty, or cut off halfway through a record. Why?",
       "options_es": [
-        "Porque el modo binario no admite lectura concurrente desde otro proceso",
+        "Porque la escritura pasa por un búfer en memoria: los datos no llegan al disco hasta `flush()`, hasta que el búfer se llena o hasta que el archivo se cierra",
         "Porque el sistema operativo bloquea el archivo hasta que se cierra",
         "Porque en modo binario hay que llamar a `encode()` antes de cada escritura",
-        "Porque la escritura pasa por un búfer en memoria: los datos no llegan al disco hasta `flush()`, hasta que el búfer se llena o hasta que el archivo se cierra"
+        "Porque el modo binario no admite lectura concurrente desde otro proceso"
       ],
       "options_en": [
-        "Because binary mode does not allow another process to read concurrently",
+        "Because writing goes through an in-memory buffer: the data does not reach disk until `flush()`, until the buffer fills, or until the file is closed",
         "Because the operating system locks the file until it is closed",
         "Because in binary mode you must call `encode()` before every write",
-        "Because writing goes through an in-memory buffer: the data does not reach disk until `flush()`, until the buffer fills, or until the file is closed"
+        "Because binary mode does not allow another process to read concurrently"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`open` devuelve por defecto un flujo con búfer (`io.BufferedWriter`, 8 KiB típicos), así que `write` normalmente copia a memoria y vuelve enseguida; el vaciado ocurre al llenarse, con un `flush()` explícito o al cerrar, que es lo que garantiza el `with`. De ahí que un archivo parezca vacío «aunque el código ya escribió» y que un proceso muerto a medias deje datos truncados. El bloqueo automático de archivos no existe en los sistemas operativos comunes, y `encode()` sobra: en binario ya se escriben `bytes`.",
       "explanation_en": "`open` returns a buffered stream by default (`io.BufferedWriter`, typically 8 KiB), so `write` usually copies into memory and returns at once; the flush happens when it fills, on an explicit `flush()`, or on close, which is what `with` guarantees. Hence a file that looks empty \"even though the code already wrote\", and a half-killed process leaving truncated data. Automatic file locking does not exist on the common operating systems, and `encode()` is redundant: in binary mode you are already writing `bytes`.",
       "source": "CPython docs 3.13 — io: Buffered Streams / io.IOBase.flush",
@@ -598,18 +598,18 @@
       "question_es": "Necesitas copiar un archivo binario de 4 GB sin cargarlo entero en memoria. ¿Cuál es la forma estándar?",
       "question_en": "You need to copy a 4 GB binary file without loading it all into memory. What is the standard way?",
       "options_es": [
-        "`shutil.copyfileobj(origen, destino)`, que copia por bloques, o directamente `shutil.copyfile(ruta1, ruta2)`",
-        "`destino.write(origen.read())`: Python lo optimiza internamente por bloques",
         "`destino.writelines(origen.readlines())`, porque `readlines` es perezoso",
+        "`destino.write(origen.read())`: Python lo optimiza internamente por bloques",
+        "`shutil.copyfileobj(origen, destino)`, que copia por bloques, o directamente `shutil.copyfile(ruta1, ruta2)`",
         "`pickle.dump(origen.read(), destino)`, que comprime el contenido al serializarlo"
       ],
       "options_en": [
-        "`shutil.copyfileobj(src, dst)`, which copies in chunks, or `shutil.copyfile(path1, path2)` directly",
-        "`dst.write(src.read())`: Python internally optimizes it into chunks",
         "`dst.writelines(src.readlines())`, because `readlines` is lazy",
+        "`dst.write(src.read())`: Python internally optimizes it into chunks",
+        "`shutil.copyfileobj(src, dst)`, which copies in chunks, or `shutil.copyfile(path1, path2)` directly",
         "`pickle.dump(src.read(), dst)`, which compresses the content while serializing"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`shutil.copyfileobj` copia en trozos de tamaño fijo (`length`, 64 KiB por defecto) entre dos objetos archivo abiertos en binario, y `copyfile`/`copy2` hacen lo mismo partiendo de rutas (`copy2` además conserva metadatos). `read()` sin argumento sí carga los 4 GB en RAM, sin ninguna optimización oculta; `readlines` es lo contrario de perezoso, construye la lista completa, y además partir datos binarios por `\\n` no significa nada. Y `pickle` ni comprime ni copia archivos: solo envolvería los mismos bytes en su propia cabecera.",
       "explanation_en": "`shutil.copyfileobj` copies in fixed-size chunks (`length`, 64 KiB by default) between two file objects opened in binary, and `copyfile`/`copy2` do the same starting from paths (`copy2` also preserves metadata). `read()` with no argument really does pull all 4 GB into RAM, with no hidden optimization; `readlines` is the opposite of lazy, it builds the whole list, and splitting binary data on `\\n` means nothing anyway. And `pickle` neither compresses nor copies files: it would just wrap the same bytes in its own header.",
       "source": "CPython docs 3.13 — shutil.copyfileobj / shutil.copyfile",

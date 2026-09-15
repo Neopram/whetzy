@@ -8,23 +8,27 @@
       "question_es": "Un equipo afirma que su sistema 'escala' porque pueden pedir maquinas mas grandes al proveedor y redimensionarlas en una ventana de mantenimiento mensual. ¿Que propiedad les sigue faltando?",
       "question_en": "A team claims their system 'scales' because they can ask the provider for bigger machines and resize them during a monthly maintenance window. Which property are they still missing?",
       "options_es": [
-        "No les falta escalabilidad: redimensionar maquinas no cuenta como escalar de ninguna forma",
-        "Les falta tolerancia a particiones de red, que es lo que define la escalabilidad",
         "Les falta elasticidad: poder añadir y retirar capacidad de forma automatica, en minutos, siguiendo la demanda real",
+        "Les falta tolerancia a particiones de red, que es lo que define la escalabilidad",
+        "No les falta escalabilidad: redimensionar maquinas no cuenta como escalar de ninguna forma",
         "No les falta nada, porque elasticidad y escalabilidad son dos nombres para lo mismo"
       ],
       "options_en": [
-        "They are not missing scalability: resizing machines does not count as scaling at all",
-        "They are missing network partition tolerance, which is what defines scalability",
         "They are missing elasticity: the ability to add and remove capacity automatically, within minutes, tracking real demand",
+        "They are missing network partition tolerance, which is what defines scalability",
+        "They are not missing scalability: resizing machines does not count as scaling at all",
         "They are missing nothing, because elasticity and scalability are two names for the same thing"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Redimensionar si es escalar (escalado vertical), por eso la primera opcion es falsa aunque suene severa y tecnica. Lo que no tienen es elasticidad: capacidad que sigue a la demanda sin intervencion humana ni ventana de mantenimiento. La ultima opcion es la confusion mas comun del sector: escalabilidad es 'puede crecer', elasticidad es 'crece y decrece solo, rapido'. Un sistema puede ser escalable y nada elastico, que es exactamente este caso: pagan el pico todo el mes. La tolerancia a particiones pertenece a CAP y no dice nada sobre capacidad.",
       "explanation_en": "Resizing IS scaling (vertical scaling), so the first option is wrong even though it sounds strict and technical. What they lack is elasticity: capacity that follows demand with no human in the loop and no maintenance window. The last option is the industry's most common conflation: scalability is 'it can grow', elasticity is 'it grows and shrinks by itself, fast'. A system can be scalable and not remotely elastic, which is exactly this case: they pay for peak all month. Partition tolerance belongs to CAP and says nothing about capacity.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 1 (Scalability / Coping with Load)",
       "expected_time_ms": 32000,
-      "tags": ["scalability", "elasticity", "cloud"]
+      "tags": [
+        "scalability",
+        "elasticity",
+        "cloud"
+      ]
     },
     {
       "id": "q050401009",
@@ -50,7 +54,11 @@
       "explanation_en": "Single-leader replication is asymmetric: it spreads reads, never writes. Each replica replays 100% of the WAL, so five replicas do the same write work five times over. The second option is the classic mental slip of treating 'replica' as 'a node that helps with everything'. The third is tempting because it is partly true (some CPU is freed), but reads are only 20% here: even at zero cost the primary still carries the same write volume. The fourth confuses replication with multi-leader, which PostgreSQL does not ship by default and which would introduce write conflicts anyway. The real way out is partitioning (sharding) by a key, batching writes, or moving work off the synchronous path.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 5 (Replication) y Cap. 6 (Partitioning)",
       "expected_time_ms": 42000,
-      "tags": ["scalability", "replication", "write-bottleneck"]
+      "tags": [
+        "scalability",
+        "replication",
+        "write-bottleneck"
+      ]
     },
     {
       "id": "q050401010",
@@ -76,7 +84,11 @@
       "explanation_en": "CPU-based scaling only works when CPU is the scarce resource. In a consumer waiting on network responses, CPU sits flat at 10-20% while the queue grows without bound: the saturation signal is lag, not CPU. HPA v2 supports external and custom metrics, which is how Kafka lag or queue depth is wired in. The partition option is the most tempting because it contains a real truth: within a consumer group parallelism IS bounded by the partition count, which is why the full fix often includes repartitioning the topic; but it is not the reason the HPA fails to react, and while replicas are fewer than partitions there is still room to scale.",
       "source": "Kubernetes docs - Horizontal Pod Autoscaling (custom and external metrics)",
       "expected_time_ms": 45000,
-      "tags": ["scalability", "autoscaling", "kubernetes"]
+      "tags": [
+        "scalability",
+        "autoscaling",
+        "kubernetes"
+      ]
     },
     {
       "id": "q050401011",
@@ -85,14 +97,24 @@
       "difficulty_tier": "hard",
       "question_es": "Como el autoescalado añade instancias automaticamente, un sistema con autoescalado bien configurado no necesita mecanismos de descarte de carga (load shedding) para sobrevivir a un pico instantaneo de trafico.",
       "question_en": "Because autoscaling adds instances automatically, a system with well-configured autoscaling does not need load shedding to survive an instantaneous traffic spike.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso, y es un error caro. El autoescalado tarda: hay que observar la metrica, decidir, arrancar la instancia, cargar la imagen, calentar cachés y conexiones, pasar el readiness. Eso son decenas de segundos o minutos. Un pico instantaneo (una campaña, un retweet, la vuelta de una caida) llega en segundos. Durante esa ventana el sistema tiene exactamente la capacidad que ya tenia, y si la cola de peticiones crece sin limite entra en colapso congestivo: responde tarde, los clientes reintentan, la carga sube mas. El descarte de carga y la contrapresion son los que protegen esa ventana; el autoescalado es la respuesta a la tendencia, no al pico.",
       "explanation_en": "False, and it is an expensive mistake. Autoscaling takes time: observe the metric, decide, boot the instance, pull the image, warm caches and connections, pass readiness. That is tens of seconds to minutes. An instantaneous spike (a campaign, a retweet, recovery from an outage) arrives in seconds. During that window the system has exactly the capacity it already had, and if the request queue grows unbounded it enters congestive collapse: it answers late, clients retry, load climbs further. Load shedding and backpressure protect that window; autoscaling answers the trend, not the spike.",
       "source": "Google - Site Reliability Engineering, Cap. 22 (Addressing Cascading Failures)",
       "expected_time_ms": 30000,
-      "tags": ["scalability", "autoscaling", "load-shedding"]
+      "tags": [
+        "scalability",
+        "autoscaling",
+        "load-shedding"
+      ]
     },
     {
       "id": "q050401012",
@@ -101,14 +123,24 @@
       "difficulty_tier": "medium",
       "question_es": "Escalar verticalmente una instancia gestionada en la nube (cambiar su tipo de maquina por otro mayor) normalmente obliga a reiniciarla, por lo que no es una operacion sin interrupcion.",
       "question_en": "Vertically scaling a managed cloud instance (swapping its machine type for a bigger one) normally requires a restart, so it is not a zero-downtime operation.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y es la razon operativa por la que el escalado vertical no sirve como respuesta al trafico. Cambiar el tipo de maquina implica detener la VM, reasignarla a otro host con mas recursos y arrancarla: minutos de indisponibilidad de esa instancia. Si solo hay una, es una caida; si hay varias tras un balanceador se puede hacer de una en una, pero entonces ya se esta usando escalado horizontal para cubrir la operacion. Ademas el escalado vertical tiene techo fisico y un coste que crece mas rapido que la capacidad, mientras que el horizontal se hace en caliente añadiendo instancias.",
       "explanation_en": "True, and it is the operational reason vertical scaling is not an answer to traffic. Changing the machine type means stopping the VM, reassigning it to a host with more resources, and booting it: minutes of downtime for that instance. With only one instance that is an outage; with several behind a load balancer you can do them one at a time, but then you are already relying on horizontal scaling to cover the operation. Vertical scaling also has a physical ceiling and a cost curve that grows faster than the capacity, while horizontal scaling happens hot by adding instances.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 1 (Scaling Up vs Scaling Out)",
       "expected_time_ms": 28000,
-      "tags": ["scalability", "vertical-scaling", "operations"]
+      "tags": [
+        "scalability",
+        "vertical-scaling",
+        "operations"
+      ]
     },
     {
       "id": "q050401013",
@@ -123,7 +155,11 @@
       "explanation_en": "Shared-nothing is the model that makes cheap horizontal scaling possible: with no shared disk or memory, you can grow with commodity machines in any geography, and losing a node does not drag the others down. The price is that all coordination becomes an explicit software problem: partitioning, replication, consensus and partial-failure tolerance stop being free. It contrasts with shared-disk (several nodes over the same storage, typical of some database clusters) and shared-memory (one big machine with many CPUs, which is the ceiling of vertical scaling).",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Parte II (Shared-Nothing Architectures)",
       "expected_time_ms": 34000,
-      "tags": ["scalability", "shared-nothing", "distributed-systems"]
+      "tags": [
+        "scalability",
+        "shared-nothing",
+        "distributed-systems"
+      ]
     },
     {
       "id": "q050401014",
@@ -133,23 +169,27 @@
       "question_es": "Un HorizontalPodAutoscaler esta configurado asi:\n\n```yaml\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nspec:\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 50\n```\n\nAhora mismo hay 4 replicas y la utilizacion media de CPU es del 100%. ¿Cuantas replicas calcula el HPA como deseadas?",
       "question_en": "A HorizontalPodAutoscaler is configured like this:\n\n```yaml\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nspec:\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 50\n```\n\nRight now there are 4 replicas and average CPU utilization is 100%. How many replicas does the HPA compute as desired?",
       "options_es": [
-        "10, porque cualquier valor por encima del objetivo lleva directamente al maximo",
         "8, por la formula ceil(replicas_actuales x metrica_actual / metrica_objetivo) = ceil(4 x 100/50)",
+        "10, porque cualquier valor por encima del objetivo lleva directamente al maximo",
         "5, porque el HPA añade como mucho una replica por ciclo de control",
         "4, porque el HPA solo actua cuando la utilizacion pasa del 100%"
       ],
       "options_en": [
-        "10, because any value above the target goes straight to the maximum",
         "8, from the formula ceil(currentReplicas x currentMetric / targetMetric) = ceil(4 x 100/50)",
+        "10, because any value above the target goes straight to the maximum",
         "5, because the HPA adds at most one replica per control cycle",
         "4, because the HPA only acts once utilization exceeds 100%"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "El HPA es proporcional, no incremental: desiredReplicas = ceil(currentReplicas x currentMetric / desiredMetric). Con 4 replicas al 100% frente a un objetivo del 50%, pide 8, por debajo del maximo de 10. La opcion de 'una replica por ciclo' es la que mas gente elige porque describe como se comportan otros autoescaladores y porque la gente confunde el calculo con las politicas de behavior/scaleUp, que si pueden limitar el ritmo pero son opcionales y no cambian el numero deseado. Llegar al maximo solo ocurre si la formula lo supera. Y el HPA actua en cuanto la metrica se separa del objetivo mas alla de una pequeña tolerancia (10% por defecto), no al 100%.",
       "explanation_en": "The HPA is proportional, not incremental: desiredReplicas = ceil(currentReplicas x currentMetric / desiredMetric). With 4 replicas at 100% against a 50% target it asks for 8, below the maximum of 10. The 'one replica per cycle' option is the one most people pick, because it describes how other autoscalers behave and because people confuse the calculation with behavior/scaleUp policies, which can indeed rate-limit the change but are optional and do not alter the desired number. Hitting the maximum only happens when the formula exceeds it. And the HPA acts as soon as the metric leaves the target beyond a small tolerance (10% by default), not at 100%.",
       "source": "Kubernetes docs - Horizontal Pod Autoscaling (algorithm details)",
       "expected_time_ms": 40000,
-      "tags": ["scalability", "kubernetes", "autoscaling"]
+      "tags": [
+        "scalability",
+        "kubernetes",
+        "autoscaling"
+      ]
     },
     {
       "id": "q050401015",
@@ -175,7 +215,11 @@
       "explanation_en": "Several interchangeable instances give redundancy: losing one degrades capacity, not service. The first option describes vertical scaling (bigger machines), which is the opposite. The second inverts reality: horizontal scaling requires a balancer, it does not remove one. The fourth is the most serious and most common confusion: adding nodes does not hand you consistency, it complicates it, because now there are several copies of state to coordinate. Availability and consistency are separate axes, and often opposed.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 1 (Reliability and Scalability)",
       "expected_time_ms": 24000,
-      "tags": ["scalability", "availability", "redundancy"]
+      "tags": [
+        "scalability",
+        "availability",
+        "redundancy"
+      ]
     },
     {
       "id": "q050402009",
@@ -185,23 +229,27 @@
       "question_es": "Un equipo migra de REST a gRPC manteniendo el mismo balanceador de nivel 4 (TCP). Tras el cambio, una sola instancia recibe casi todo el trafico mientras las demas estan ociosas. ¿Por que?",
       "question_en": "A team migrates from REST to gRPC keeping the same Layer 4 (TCP) load balancer. After the change, a single instance receives nearly all the traffic while the others sit idle. Why?",
       "options_es": [
-        "gRPC usa HTTP/2 con conexiones persistentes y multiplexadas: el balanceador L4 reparte CONEXIONES, no peticiones, asi que todas las RPC de una conexion caen en la misma instancia. Hace falta balanceo L7 (o del lado del cliente)",
-        "gRPC no admite balanceo de carga; la unica salida es volver a REST",
         "gRPC viaja sobre UDP y el balanceador L4 solo entiende TCP",
+        "gRPC no admite balanceo de carga; la unica salida es volver a REST",
+        "gRPC usa HTTP/2 con conexiones persistentes y multiplexadas: el balanceador L4 reparte CONEXIONES, no peticiones, asi que todas las RPC de una conexion caen en la misma instancia. Hace falta balanceo L7 (o del lado del cliente)",
         "Es un fallo de los health checks: la instancia sobrecargada esta marcando a las demas como no sanas"
       ],
       "options_en": [
-        "gRPC uses HTTP/2 with long-lived multiplexed connections: an L4 balancer distributes CONNECTIONS, not requests, so every RPC on one connection lands on the same instance. L7 (or client-side) load balancing is needed",
-        "gRPC does not support load balancing; the only way out is going back to REST",
         "gRPC runs over UDP and the L4 balancer only understands TCP",
+        "gRPC does not support load balancing; the only way out is going back to REST",
+        "gRPC uses HTTP/2 with long-lived multiplexed connections: an L4 balancer distributes CONNECTIONS, not requests, so every RPC on one connection lands on the same instance. L7 (or client-side) load balancing is needed",
         "It is a health check failure: the overloaded instance is marking the others as unhealthy"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "Con HTTP/1.1 sin keep-alive agresivo, cada peticion tiende a abrir conexion y el L4 la reparte, lo que da la ilusion de que balancea peticiones. gRPC abre una conexion HTTP/2 y multiplexa miles de RPC dentro, asi que el L4 toma una sola decision y la mantiene durante horas. Las soluciones reales son un proxy L7 que entienda HTTP/2 (Envoy, un ingress con soporte gRPC) o balanceo del lado del cliente con descubrimiento de servicios. La opcion de 'gRPC no admite balanceo' es tentadora porque el sintoma parece confirmarla. La de UDP confunde gRPC con QUIC/HTTP3. Y culpar a los health checks es el reflejo de quien ha visto ese fallo antes: aqui no hay instancias marcadas como caidas, simplemente nadie les manda nada.",
       "explanation_en": "With HTTP/1.1 and no aggressive keep-alive, each request tends to open a connection and the L4 spreads them, creating the illusion that it balances requests. gRPC opens one HTTP/2 connection and multiplexes thousands of RPCs inside it, so the L4 makes a single decision and keeps it for hours. The real fixes are an L7 proxy that understands HTTP/2 (Envoy, a gRPC-capable ingress) or client-side load balancing with service discovery. The 'gRPC does not support load balancing' option is tempting because the symptom seems to confirm it. The UDP one confuses gRPC with QUIC/HTTP3. And blaming health checks is the reflex of someone who has seen that failure before: here no instance is marked down, nobody is simply sending them anything.",
       "source": "grpc.io - gRPC Load Balancing (documentacion oficial)",
       "expected_time_ms": 45000,
-      "tags": ["load-balancing", "grpc", "http2"]
+      "tags": [
+        "load-balancing",
+        "grpc",
+        "http2"
+      ]
     },
     {
       "id": "q050402010",
@@ -228,7 +276,11 @@
       "explanation_en": "'Power of two choices' is one of the most useful applied results in queueing theory: two random samples cut the expected maximum queue almost as well as knowing the global minimum, at constant cost. And it avoids herd behaviour: if several proxies always picked the exact minimum from slightly stale information, they would all aim at the same host and sink it together. The 'query everyone' option looks rigorous and correct, but it would add a network round trip per request. Sorting by p99 sounds sophisticated and is exactly the greedy algorithm that causes the herd. And the last is false: Envoy does keep a local active-request counter per host.",
       "source": "Envoy docs - Supported load balancers (Least Request)",
       "expected_time_ms": 44000,
-      "tags": ["load-balancing", "envoy", "least-request"]
+      "tags": [
+        "load-balancing",
+        "envoy",
+        "least-request"
+      ]
     },
     {
       "id": "q050402011",
@@ -240,21 +292,25 @@
       "options_es": [
         "El balanceador de carga no admite despliegues sin interrupcion",
         "Faltan replicas: hay que subir maxReplicas para cubrir el despliegue",
-        "El pod recibe SIGTERM y cierra antes de que el balanceador se entere de que ya no esta: hay que fallar primero el readiness probe, dejar que se propague la retirada y drenar las peticiones en vuelo (hook preStop y un terminationGracePeriod suficiente)",
-        "El liveness probe esta reiniciando las replicas nuevas antes de que terminen de arrancar"
+        "El liveness probe esta reiniciando las replicas nuevas antes de que terminen de arrancar",
+        "El pod recibe SIGTERM y cierra antes de que el balanceador se entere de que ya no esta: hay que fallar primero el readiness probe, dejar que se propague la retirada y drenar las peticiones en vuelo (hook preStop y un terminationGracePeriod suficiente)"
       ],
       "options_en": [
         "The load balancer does not support zero-downtime deployments",
         "There are not enough replicas: maxReplicas must be raised to cover the rollout",
-        "The pod receives SIGTERM and closes before the balancer learns it is gone: the readiness probe must fail first, the removal must propagate, and in-flight requests must drain (preStop hook plus a sufficient terminationGracePeriod)",
-        "The liveness probe is restarting the new replicas before they finish starting up"
+        "The liveness probe is restarting the new replicas before they finish starting up",
+        "The pod receives SIGTERM and closes before the balancer learns it is gone: the readiness probe must fail first, the removal must propagate, and in-flight requests must drain (preStop hook plus a sufficient terminationGracePeriod)"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "La retirada de un backend no es instantanea: entre que el pod empieza a apagarse y que el ultimo proxy deja de tener su direccion en la tabla pasan cientos de milisegundos o segundos. Si el proceso cierra el socket de escucha en ese hueco, las conexiones que llegan se rompen y salen como 502. El patron correcto es: fallar readiness, esperar (preStop sleep), dejar de aceptar nuevas y terminar las que hay. La opcion del liveness probe es la mas tentadora porque describe un fallo real y frecuente, pero ese produce reinicios visibles y CrashLoopBackOff, no 502 esporadicos en el momento exacto del cambio. Añadir replicas no arregla nada si cada retirada sigue cortando conexiones, y culpar al balanceador sustituye el diagnostico por una etiqueta.",
       "explanation_en": "Removing a backend is not instantaneous: hundreds of milliseconds to seconds pass between the pod starting to shut down and the last proxy dropping its address from the table. If the process closes its listening socket in that gap, arriving connections break and surface as 502s. The correct pattern is: fail readiness, wait (preStop sleep), stop accepting new work, finish what is in flight. The liveness probe option is the most tempting because it describes a real and frequent failure, but that one produces visible restarts and CrashLoopBackOff, not sporadic 502s at the exact moment of the swap. Adding replicas fixes nothing if each removal still severs connections, and blaming the balancer replaces diagnosis with a label.",
       "source": "Kubernetes docs - Pod Lifecycle (Termination of Pods) y Configure Liveness, Readiness and Startup Probes",
       "expected_time_ms": 42000,
-      "tags": ["load-balancing", "kubernetes", "graceful-shutdown"]
+      "tags": [
+        "load-balancing",
+        "kubernetes",
+        "graceful-shutdown"
+      ]
     },
     {
       "id": "q050402012",
@@ -264,23 +320,27 @@
       "question_es": "Un backend empieza a responder lento. El cliente reintenta hasta 3 veces y, sin que nadie lo coordine, el balanceador tambien tiene configurados 2 reintentos. ¿Que ocurre?",
       "question_en": "A backend starts responding slowly. The client retries up to 3 times and, with nobody coordinating it, the load balancer also has 2 retries configured. What happens?",
       "options_es": [
-        "Los reintentos de las dos capas se anulan entre si y la carga efectiva baja",
+        "Los reintentos se multiplican capa a capa (3 x 2 = hasta 6 intentos por peticion de usuario): justo cuando el backend esta peor recibe varias veces mas carga. Hay que reintentar en UNA sola capa y acotarla con un presupuesto de reintentos",
         "El balanceador detecta los reintentos del cliente y desactiva los suyos automaticamente",
         "No pasa nada relevante: los reintentos solo se consumen cuando la peticion falla del todo",
-        "Los reintentos se multiplican capa a capa (3 x 2 = hasta 6 intentos por peticion de usuario): justo cuando el backend esta peor recibe varias veces mas carga. Hay que reintentar en UNA sola capa y acotarla con un presupuesto de reintentos"
+        "Los reintentos de las dos capas se anulan entre si y la carga efectiva baja"
       ],
       "options_en": [
-        "The retries from the two layers cancel each other out and effective load drops",
+        "Retries multiply layer by layer (3 x 2 = up to 6 attempts per user request): exactly when the backend is worst it receives several times more load. Retry in ONE layer only and bound it with a retry budget",
         "The balancer detects the client's retries and disables its own automatically",
         "Nothing relevant happens: retries are only consumed when the request fails outright",
-        "Retries multiply layer by layer (3 x 2 = up to 6 attempts per user request): exactly when the backend is worst it receives several times more load. Retry in ONE layer only and bound it with a retry budget"
+        "The retries from the two layers cancel each other out and effective load drops"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "La amplificacion de reintentos es multiplicativa, no aditiva, y por eso convierte una degradacion en una caida total. Con tres capas de tres reintentos cada una son hasta 27 intentos por peticion de usuario. La tercera opcion es la mas tentadora porque en regimen normal es cierta: mientras todo va bien casi ningun reintento se gasta, asi que el problema es invisible en pruebas y aparece solo el dia del incidente. Las defensas son: reintentar en una unica capa (normalmente la mas cercana al usuario), presupuesto de reintentos (por ejemplo, como maximo un 10% de reintentos sobre el trafico base), retroceso exponencial con jitter, y no reintentar nunca los errores que no van a cambiar de respuesta.",
       "explanation_en": "Retry amplification is multiplicative, not additive, which is how a degradation turns into a full outage. Three layers of three retries each is up to 27 attempts per user request. The third option is the most tempting because in steady state it is true: while everything is fine almost no retry is spent, so the problem is invisible in testing and shows up only on incident day. The defences are: retry in a single layer (usually the one closest to the user), a retry budget (say at most 10% retries over base traffic), exponential backoff with jitter, and never retrying errors whose answer will not change.",
       "source": "Google - Site Reliability Engineering, Cap. 22 (Addressing Cascading Failures)",
       "expected_time_ms": 46000,
-      "tags": ["load-balancing", "retries", "cascading-failure"]
+      "tags": [
+        "load-balancing",
+        "retries",
+        "cascading-failure"
+      ]
     },
     {
       "id": "q050402013",
@@ -290,23 +350,27 @@
       "question_es": "El endpoint /health de un servicio devuelve 200 siempre que el proceso este vivo, sin comprobar nada mas. La base de datos lleva diez minutos caida y todas las peticiones reales fallan. ¿Que hace el balanceador de carga?",
       "question_en": "A service's /health endpoint returns 200 as long as the process is alive, checking nothing else. The database has been down for ten minutes and every real request fails. What does the load balancer do?",
       "options_es": [
-        "Sigue mandando trafico a todas las instancias: el check solo demuestra que el proceso vive, no que sea capaz de servir peticiones",
         "Retira todas las instancias y el servicio se queda sin backends sanos",
+        "Sigue mandando trafico a todas las instancias: el check solo demuestra que el proceso vive, no que sea capaz de servir peticiones",
         "Detecta los codigos 500 de las respuestas reales y retira las instancias automaticamente",
         "Pone el servicio en modo de solo lectura hasta que la base de datos vuelva"
       ],
       "options_en": [
-        "It keeps sending traffic to every instance: the check only proves the process is alive, not that it can serve requests",
         "It removes every instance and the service is left with no healthy backends",
+        "It keeps sending traffic to every instance: the check only proves the process is alive, not that it can serve requests",
         "It detects the 500s in the real responses and removes the instances automatically",
         "It puts the service into read-only mode until the database comes back"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Un health check superficial responde a la pregunta equivocada. La segunda opcion es lo que pasaria con un check profundo que consulta la base de datos, y de ahi viene la leccion importante: un check que depende de una dependencia compartida saca TODAS las instancias a la vez y convierte una degradacion en una caida total. Por eso se separan liveness (¿sigo vivo? superficial, provoca reinicio) y readiness (¿puedo servir? mas profundo, provoca retirada), y se prefiere degradar sirviendo respuestas parciales o cacheadas antes que retirarse en bloque. La tercera describe la deteccion pasiva de errores (outlier detection), que existe pero hay que activarla y no es lo que hacen los health checks activos. La cuarta atribuye al balanceador una decision que solo puede tomar la aplicacion.",
       "explanation_en": "A shallow health check answers the wrong question. The second option is what a deep check that queries the database would do, and that is the important lesson: a check that depends on a shared dependency pulls EVERY instance at once and turns a degradation into a total outage. That is why liveness (am I alive? shallow, triggers restart) and readiness (can I serve? deeper, triggers removal) are separated, and why degrading with partial or cached responses beats withdrawing wholesale. The third describes passive error detection (outlier detection), which exists but must be enabled and is not what active health checks do. The fourth credits the balancer with a decision only the application can make.",
       "source": "Nygard, M. - Release It! 2e, Cap. 5 (Stability Patterns) y Cap. 17 (Transparency / Health Checks)",
       "expected_time_ms": 30000,
-      "tags": ["load-balancing", "health-checks", "readiness"]
+      "tags": [
+        "load-balancing",
+        "health-checks",
+        "readiness"
+      ]
     },
     {
       "id": "q050402014",
@@ -315,14 +379,24 @@
       "difficulty_tier": "medium",
       "question_es": "Publicar varios registros A para el mismo nombre (DNS round-robin) es un mecanismo de balanceo preciso, porque clientes y resolvers respetan siempre el TTL y rotan las direcciones de forma uniforme.",
       "question_en": "Publishing several A records for the same name (DNS round-robin) is a precise balancing mechanism, because clients and resolvers always honour the TTL and rotate the addresses uniformly.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. El DNS reparte con una precision pesima: los resolvers intermedios y las bibliotecas de los clientes cachean por su cuenta, muchos ignoran o alargan el TTL, otros se quedan siempre con la primera direccion de la lista, y un unico resolver corporativo puede representar a miles de usuarios y mandarlos todos al mismo sitio. Ademas el DNS no conoce la carga ni la salud: si una instancia cae, los clientes que tienen su direccion cacheada siguen intentandolo hasta que caduque, y bajar el TTL a segundos no arregla el problema porque muchos clientes no lo respetan. Por eso el DNS se usa para el reparto grueso (por region o por centro de datos) y el balanceo fino se hace despues con un balanceador real.",
       "explanation_en": "False. DNS distributes with terrible precision: intermediate resolvers and client libraries cache on their own, many ignore or extend the TTL, others simply keep the first address in the list, and a single corporate resolver can stand for thousands of users and send them all to the same place. DNS also knows nothing about load or health: if an instance dies, clients holding its cached address keep trying until the entry expires, and dropping the TTL to seconds does not fix it because many clients do not honour it. That is why DNS is used for coarse distribution (by region or data centre) and the fine-grained balancing happens afterwards in a real load balancer.",
       "source": "Google - Site Reliability Engineering, Cap. 19 (Load Balancing at the Frontend)",
       "expected_time_ms": 32000,
-      "tags": ["load-balancing", "dns", "ttl"]
+      "tags": [
+        "load-balancing",
+        "dns",
+        "ttl"
+      ]
     },
     {
       "id": "q050402015",
@@ -337,7 +411,11 @@
       "explanation_en": "Draining (connection draining, also called deregistration delay) is what separates a clean rollout from one with sporadic 502s. The balancer marks the backend as 'draining': it assigns no new connections but does not cut the open ones until they finish or a maximum time elapses. The typical mistake is confusing it with yanking the backend out at once, which breaks requests already half-answered; the second typical mistake is setting a drain time shorter than the service's slowest request, so the problem returns on heavy endpoints only.",
       "source": "Envoy docs - Draining (Operations)",
       "expected_time_ms": 34000,
-      "tags": ["load-balancing", "connection-draining", "deployments"]
+      "tags": [
+        "load-balancing",
+        "connection-draining",
+        "deployments"
+      ]
     },
     {
       "id": "q050403009",
@@ -347,23 +425,27 @@
       "question_es": "En un almacen con replicacion sin lider y N = 5 replicas, el equipo configura W = 2 y R = 2 'para que todo vaya rapido'. ¿Que garantia acaban de perder?",
       "question_en": "In a leaderless replicated store with N = 5 replicas, the team sets W = 2 and R = 2 'so everything is fast'. Which guarantee have they just given up?",
       "options_es": [
-        "Ninguna: mientras W y R sean mayores que 1, toda lectura ve la ultima escritura confirmada",
-        "Pierden durabilidad, pero la consistencia de las lecturas se mantiene intacta",
         "Pierden el solapamiento de quorum: con W + R = 4, que no supera N = 5, puede haber lecturas que no toquen ninguna replica con la ultima escritura, asi que se puede leer un valor obsoleto",
+        "Pierden durabilidad, pero la consistencia de las lecturas se mantiene intacta",
+        "Ninguna: mientras W y R sean mayores que 1, toda lectura ve la ultima escritura confirmada",
         "Pierden la tolerancia a particiones, porque un quorum exige por definicion mayoria estricta"
       ],
       "options_en": [
-        "None: as long as W and R are greater than 1, every read sees the last committed write",
-        "They lose durability, but read consistency stays intact",
         "They lose quorum overlap: with W + R = 4, which does not exceed N = 5, a read may touch no replica holding the latest write, so a stale value can be returned",
+        "They lose durability, but read consistency stays intact",
+        "None: as long as W and R are greater than 1, every read sees the last committed write",
         "They lose partition tolerance, because a quorum by definition requires a strict majority"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "La condicion que hace util un quorum es W + R > N, porque entonces el conjunto de replicas que confirmo la escritura y el conjunto que responde la lectura comparten al menos una replica, y esa trae el valor nuevo. Con W + R <= N no hay solape garantizado y se lee pasado. La primera opcion es el atajo mental mas comun ('con que haya varias, ya'). La segunda separa mal los conceptos: aqui si hay dos copias, o sea alguna durabilidad; lo que falla es la lectura. La cuarta confunde quorum con mayoria: un quorum no tiene por que ser mayoritario, aunque los quorum mayoritarios (W = R = 3 con N = 5) son los que ademas evitan el cerebro dividido durante una particion. Y ojo: incluso con W + R > N, los quorum laxos (sloppy quorums) rompen la garantia, porque las escrituras pueden aterrizar en nodos que no pertenecen a las N replicas de esa clave.",
       "explanation_en": "The condition that makes a quorum useful is W + R > N, because then the set of replicas that acknowledged the write and the set that answers the read share at least one replica, and that one carries the new value. With W + R <= N there is no guaranteed overlap and you read the past. The first option is the most common mental shortcut ('as long as there are several, fine'). The second separates the concepts badly: there are two copies here, so there is some durability; what fails is the read. The fourth confuses quorum with majority: a quorum need not be a majority, though majority quorums (W = R = 3 with N = 5) are the ones that also prevent split brain during a partition. And note: even with W + R > N, sloppy quorums break the guarantee, because writes can land on nodes outside that key's N replicas.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 5 (Quorums for Reading and Writing)",
       "expected_time_ms": 48000,
-      "tags": ["cap", "quorum", "consistency"]
+      "tags": [
+        "cap",
+        "quorum",
+        "consistency"
+      ]
     },
     {
       "id": "q050403010",
@@ -374,22 +456,26 @@
       "question_en": "A user edits their profile, reloads the page and sees the old data. The write went to the primary and the read landed on a lagging replica. Which guarantee is missing and what is the simplest fix?",
       "options_es": [
         "Falta linealizabilidad, y la unica forma de recuperarla es envolver cada escritura en una transaccion distribuida con 2PC",
-        "Falta la consistencia 'lee tus propias escrituras': basta con que ESE usuario lea del primario (o de una replica suficientemente al dia) durante un rato despues de haber escrito",
         "Falta consistencia eventual: hay que esperar a que las replicas converjan y avisar al usuario mientras tanto",
+        "Falta la consistencia 'lee tus propias escrituras': basta con que ESE usuario lea del primario (o de una replica suficientemente al dia) durante un rato despues de haber escrito",
         "Falta tolerancia a particiones: hay que añadir mas replicas para que alguna este al dia"
       ],
       "options_en": [
         "Linearizability is missing, and the only way to get it back is wrapping every write in a distributed transaction with 2PC",
-        "Read-your-own-writes consistency is missing: it is enough for THAT user to read from the primary (or a sufficiently up-to-date replica) for a while after writing",
         "Eventual consistency is missing: you must wait for the replicas to converge and warn the user meanwhile",
+        "Read-your-own-writes consistency is missing: it is enough for THAT user to read from the primary (or a sufficiently up-to-date replica) for a while after writing",
         "Partition tolerance is missing: add more replicas so at least one is current"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "Leer tus propias escrituras es una garantia por usuario, mucho mas barata que la consistencia global: nadie exige que el resto del mundo vea el cambio al instante, solo que quien lo hizo no vea desaparecer su propio trabajo. Se implementa leyendo del primario lo que ese usuario ha modificado recientemente, o comparando la marca logica de la escritura con la posicion de la replica. La primera opcion es tipica de quien ha aprendido los nombres mas fuertes: pide linealizabilidad global y 2PC para un problema local, con un coste enorme. La tercera invierte los terminos, porque consistencia eventual es justo lo que YA tienen, y es la causa del sintoma. La cuarta confunde CAP con retardo de replicacion: aqui no hay ninguna particion, solo latencia, y añadir replicas no la reduce.",
       "explanation_en": "Read-your-own-writes is a per-user guarantee and far cheaper than global consistency: nobody demands the rest of the world see the change instantly, only that the person who made it does not watch their own work vanish. It is implemented by reading from the primary whatever that user recently modified, or by comparing the write's logical position against the replica's. The first option is typical of someone who has learned the strongest names: it asks for global linearizability and 2PC to solve a local problem, at enormous cost. The third inverts the terms, since eventual consistency is what they ALREADY have, and it is the cause of the symptom. The fourth confuses CAP with replication lag: there is no partition here, only latency, and adding replicas does not reduce it.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 5 (Reading Your Own Writes)",
       "expected_time_ms": 38000,
-      "tags": ["consistency", "replication-lag", "read-your-writes"]
+      "tags": [
+        "consistency",
+        "replication-lag",
+        "read-your-writes"
+      ]
     },
     {
       "id": "q050403011",
@@ -401,21 +487,25 @@
       "options_es": [
         "Porque 2PC no garantiza atomicidad y obliga a reintentar la transaccion completa cada vez",
         "Porque 2PC necesita relojes sincronizados con precision de microsegundos entre todos los participantes",
-        "Porque 2PC replica los datos en todos los participantes y multiplica el almacenamiento",
-        "Porque la transaccion solo puede terminar si TODOS los participantes estan disponibles, y si el coordinador cae despues del 'prepare' los participantes quedan en duda manteniendo sus cerrojos hasta que vuelva"
+        "Porque la transaccion solo puede terminar si TODOS los participantes estan disponibles, y si el coordinador cae despues del 'prepare' los participantes quedan en duda manteniendo sus cerrojos hasta que vuelva",
+        "Porque 2PC replica los datos en todos los participantes y multiplica el almacenamiento"
       ],
       "options_en": [
         "Because 2PC does not guarantee atomicity and forces the whole transaction to be retried every time",
         "Because 2PC needs clocks synchronized to microsecond precision across all participants",
-        "Because 2PC replicates the data to every participant and multiplies storage",
-        "Because the transaction can only finish if EVERY participant is available, and if the coordinator dies after 'prepare' the participants are left in doubt holding their locks until it returns"
+        "Because the transaction can only finish if EVERY participant is available, and if the coordinator dies after 'prepare' the participants are left in doubt holding their locks until it returns",
+        "Because 2PC replicates the data to every participant and multiplies storage"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "La disponibilidad de 2PC es el producto de las disponibilidades de los participantes: cinco servicios al 99,9% dan 99,5%, y basta que uno falte para que nada se confirme. Peor aun es la fase de duda: tras responder 'preparado', un participante ha renunciado a decidir por su cuenta y debe mantener los cerrojos hasta que el coordinador diga algo; si el coordinador muere, esos cerrojos bloquean a todos los demas y hace falta intervencion manual. La primera opcion es falsa en su premisa: 2PC si es atomico, ese es precisamente su proposito. La segunda describe a Spanner y TrueTime, que resuelve otro problema (ordenacion externa). La tercera confunde transaccion con replicacion. Por esto los sistemas grandes prefieren sagas con compensaciones y consistencia eventual.",
       "explanation_en": "2PC's availability is the product of the participants' availabilities: five services at 99.9% give 99.5%, and one missing participant means nothing commits. Worse is the in-doubt phase: after answering 'prepared', a participant has surrendered its right to decide alone and must hold its locks until the coordinator speaks; if the coordinator dies, those locks block everyone else and manual intervention is needed. The first option is false in its premise: 2PC IS atomic, that is precisely its purpose. The second describes Spanner and TrueTime, which solves a different problem (external ordering). The third confuses transactions with replication. This is why large systems prefer sagas with compensating actions and eventual consistency.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 9 (Atomic Commit and Two-Phase Commit)",
       "expected_time_ms": 46000,
-      "tags": ["consistency", "two-phase-commit", "availability"]
+      "tags": [
+        "consistency",
+        "two-phase-commit",
+        "availability"
+      ]
     },
     {
       "id": "q050403012",
@@ -425,23 +515,27 @@
       "question_es": "Un compañero argumenta: 'nuestra base de datos es ACID, asi que en CAP somos claramente C'. ¿Que error esta cometiendo?",
       "question_en": "A colleague argues: 'our database is ACID, so in CAP we are clearly C'. What mistake are they making?",
       "options_es": [
-        "La C de CAP es linealizabilidad (todos los clientes ven una sola copia logica de los datos), mientras que la C de ACID es la preservacion de invariantes dentro de una transaccion: son propiedades distintas y una no implica la otra",
-        "Ninguno: ACID implica CP por definicion del teorema",
         "El error es que ACID solo existe en bases relacionales y CAP solo se aplica a las NoSQL",
+        "Ninguno: ACID implica CP por definicion del teorema",
+        "La C de CAP es linealizabilidad (todos los clientes ven una sola copia logica de los datos), mientras que la C de ACID es la preservacion de invariantes dentro de una transaccion: son propiedades distintas y una no implica la otra",
         "El error es que la C de ACID se refiere en realidad a la disponibilidad, no a la consistencia"
       ],
       "options_en": [
-        "CAP's C is linearizability (every client sees a single logical copy of the data), while ACID's C is the preservation of invariants within a transaction: they are different properties and one does not imply the other",
-        "None: ACID implies CP by definition of the theorem",
         "The mistake is that ACID only exists in relational databases and CAP only applies to NoSQL",
+        "None: ACID implies CP by definition of the theorem",
+        "CAP's C is linearizability (every client sees a single logical copy of the data), while ACID's C is the preservation of invariants within a transaction: they are different properties and one does not imply the other",
         "The mistake is that ACID's C actually refers to availability, not consistency"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "La coincidencia de la letra es una de las fuentes de confusion mas persistentes del sector. La C de ACID es responsabilidad de la aplicacion: que las restricciones de negocio (saldos no negativos, claves ajenas) sigan valiendo antes y despues de la transaccion. La C de CAP es una propiedad del sistema distribuido: que las operaciones se comporten como si existiera una sola copia, con un orden total. Una base ACID en un solo nodo cumple la primera y ni siquiera se plantea la segunda, porque no hay nada que particionar. Y una base distribuida con transacciones ACID puede perfectamente servir lecturas de replicas retrasadas, lo que la hace no linealizable. La segunda opcion es el atajo que se quiere validar; la tercera reparte los conceptos por familia de producto, que es folclore; la cuarta simplemente cambia el significado de la letra.",
       "explanation_en": "The shared letter is one of the industry's most persistent sources of confusion. ACID's C is the application's responsibility: that business constraints (non-negative balances, foreign keys) still hold before and after the transaction. CAP's C is a property of the distributed system: that operations behave as if a single copy existed, with a total order. A single-node ACID database satisfies the first and never even faces the second, because there is nothing to partition. And a distributed database with ACID transactions can happily serve reads from lagging replicas, which makes it non-linearizable. The second option is the shortcut being sought; the third sorts concepts by product family, which is folklore; the fourth simply redefines the letter.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 7 (ACID) y Cap. 9 (Linearizability; The CAP Theorem)",
       "expected_time_ms": 42000,
-      "tags": ["cap", "acid", "linearizability"]
+      "tags": [
+        "cap",
+        "acid",
+        "linearizability"
+      ]
     },
     {
       "id": "q050403013",
@@ -450,14 +544,24 @@
       "difficulty_tier": "hard",
       "question_es": "Si un sistema elige AP durante una particion, los nodos de ambos lados pueden seguir aceptando escrituras, lo que hace inevitable tener que resolver conflictos cuando la particion se cura.",
       "question_en": "If a system chooses AP during a partition, nodes on both sides can keep accepting writes, which makes conflict resolution unavoidable once the partition heals.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y es la parte que se olvida al elegir AP en una pizarra. Aceptar escrituras a ambos lados significa que dos clientes pueden modificar la misma clave sin verse, y al reunirse las particiones el sistema tiene dos versiones igualmente validas. Alguien tiene que decidir: last-write-wins (simple y silenciosamente destructivo, porque descarta una escritura confirmada), guardar hermanos y resolver en la aplicacion como hacia Dynamo con los carritos de la compra, o usar estructuras que convergen por construccion (CRDT). Elegir AP no es elegir 'menos trabajo', es mover el trabajo del momento de la escritura al momento de la reconciliacion, y ese trabajo es de diseño de dominio, no de infraestructura.",
       "explanation_en": "True, and it is the part people forget when choosing AP on a whiteboard. Accepting writes on both sides means two clients can modify the same key without seeing each other, and when the partitions rejoin the system holds two equally valid versions. Someone has to decide: last-write-wins (simple and silently destructive, since it discards an acknowledged write), keeping siblings and resolving in the application as Dynamo did with shopping carts, or using structures that converge by construction (CRDTs). Choosing AP is not choosing less work, it is moving the work from write time to reconciliation time, and that work is domain design, not infrastructure.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 5 (Handling Write Conflicts) y Cap. 9 (The CAP Theorem)",
       "expected_time_ms": 34000,
-      "tags": ["cap", "conflict-resolution", "availability"]
+      "tags": [
+        "cap",
+        "conflict-resolution",
+        "availability"
+      ]
     },
     {
       "id": "q050403014",
@@ -483,7 +587,11 @@
       "explanation_en": "Last-write-wins achieves convergence at the cost of durability: of two concurrent writes one vanishes without trace despite having been acknowledged. The first option is the most tempting because it is what you would want to happen to a shopping cart, and it is exactly what a set CRDT or Dynamo's sibling model does, but LWW does not look at the value's content: it compares timestamps and throws the rest away. The third inverts the rule. The fourth describes a store that returns conflicting versions (like Riak with allow_mult), a different and safer design choice, but not LWW. The practical aggravating factor is that these timestamps come from wall clocks on different machines: with a few milliseconds of skew, the write that 'wins' may genuinely be the earlier one.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 5 (Last Write Wins: Discarding Concurrent Writes)",
       "expected_time_ms": 44000,
-      "tags": ["consistency", "last-write-wins", "conflict-resolution"]
+      "tags": [
+        "consistency",
+        "last-write-wins",
+        "conflict-resolution"
+      ]
     },
     {
       "id": "q050403015",
@@ -498,7 +606,11 @@
       "explanation_en": "Monotonic reads guarantee that a user never moves backwards in time: once they have seen a value, a later read cannot unsee it. It is weaker than linearizability and stronger than plain eventual consistency, and it is implemented by having each user always read from the same replica (chosen by a hash of their identifier, not their IP address, which can change). Do not confuse it with read-your-own-writes, which protects what the user wrote, nor with consistent prefix reads, which protect the causal order between writes by different people: these are three distinct replication-lag anomalies, each needing its own remedy.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 5 (Monotonic Reads)",
       "expected_time_ms": 36000,
-      "tags": ["consistency", "monotonic-reads", "replication-lag"]
+      "tags": [
+        "consistency",
+        "monotonic-reads",
+        "replication-lag"
+      ]
     },
     {
       "id": "q050404008",
@@ -508,23 +620,27 @@
       "question_es": "En un timeline tipo Twitter, el enfoque de 'fan-out en escritura' (escribir cada publicacion en la bandeja precalculada de cada seguidor) funciona muy bien hasta que aparece una cuenta con 30 millones de seguidores. ¿Cual es la solucion que se usa en la practica?",
       "question_en": "In a Twitter-style timeline, 'fan-out on write' (writing each post into every follower's precomputed inbox) works very well until an account with 30 million followers shows up. What is the solution used in practice?",
       "options_es": [
-        "Volver por completo al fan-out en lectura para todos los usuarios, que es el unico enfoque que escala",
-        "Limitar por politica el numero maximo de seguidores que puede tener una cuenta",
         "Un enfoque hibrido: fan-out en escritura para la inmensa mayoria de cuentas, y para las pocas con muchisimos seguidores dejar sus publicaciones fuera de las bandejas y mezclarlas en el momento de leer el timeline",
+        "Limitar por politica el numero maximo de seguidores que puede tener una cuenta",
+        "Volver por completo al fan-out en lectura para todos los usuarios, que es el unico enfoque que escala",
         "Guardar todos los timelines en una unica tabla sin particionar, indexada por fecha de publicacion"
       ],
       "options_en": [
-        "Go fully back to fan-out on read for every user, which is the only approach that scales",
-        "Cap by policy the maximum number of followers an account may have",
         "A hybrid: fan-out on write for the vast majority of accounts, and for the few with enormous follower counts keep their posts out of the inboxes and merge them in at timeline read time",
+        "Cap by policy the maximum number of followers an account may have",
+        "Go fully back to fan-out on read for every user, which is the only approach that scales",
         "Store every timeline in a single unpartitioned table indexed by publication date"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "El fan-out en escritura convierte una publicacion en millones de escrituras, lo que es perfecto cuando las lecturas dominan (la gente abre el timeline mucho mas de lo que publica) y catastrofico para una celebridad. El fan-out en lectura tiene el problema inverso: cada apertura del timeline consulta a cientos de cuentas seguidas, y eso encarece la operacion mas frecuente del producto. La primera opcion es tentadora porque resuelve el caso extremo, pero paga el coste en el 99,99% del trafico que no lo necesita. La segunda 'resuelve' el problema tecnico eliminando el caso de uso que da valor al producto. La cuarta ignora que el volumen es precisamente lo que obliga a particionar. Lo hibrido gana porque las dos poblaciones tienen perfiles de carga distintos y merecen mecanismos distintos.",
       "explanation_en": "Fan-out on write turns one post into millions of writes, which is perfect when reads dominate (people open their timeline far more often than they post) and catastrophic for a celebrity. Fan-out on read has the opposite problem: every timeline open queries hundreds of followed accounts, making the product's most frequent operation the expensive one. The first option is tempting because it solves the extreme case, but it pays that cost on the 99.99% of traffic that does not need it. The second 'solves' the technical problem by deleting the use case that gives the product its value. The fourth ignores that the volume is exactly what forces partitioning. The hybrid wins because the two populations have different load profiles and deserve different mechanisms.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 1 (Describing Load: Twitter timelines)",
       "expected_time_ms": 46000,
-      "tags": ["system-design", "fan-out", "timelines"]
+      "tags": [
+        "system-design",
+        "fan-out",
+        "timelines"
+      ]
     },
     {
       "id": "q050404009",
@@ -535,22 +651,26 @@
       "question_en": "A payment gateway retries the request when its timeout expires, but the first attempt did arrive and was processed; only the response was lost. Which mechanism prevents the duplicate charge?",
       "options_es": [
         "Bajar el tiempo de espera para que no de tiempo a que el primer intento llegue al receptor",
-        "Envolver la operacion en una transaccion ACID dentro del servicio de pagos",
+        "Una clave de idempotencia por operacion: el receptor guarda la clave junto al resultado y, si vuelve a verla, devuelve el resultado original en lugar de ejecutar el cobro otra vez (receptor idempotente)",
         "Lanzar el reintento desde un nodo distinto del que hizo el primer intento",
-        "Una clave de idempotencia por operacion: el receptor guarda la clave junto al resultado y, si vuelve a verla, devuelve el resultado original en lugar de ejecutar el cobro otra vez (receptor idempotente)"
+        "Envolver la operacion en una transaccion ACID dentro del servicio de pagos"
       ],
       "options_en": [
         "Lower the timeout so the first attempt never has time to reach the receiver",
-        "Wrap the operation in an ACID transaction inside the payment service",
+        "An idempotency key per operation: the receiver stores the key alongside the result and, if it sees it again, returns the original result instead of charging again (idempotent receiver)",
         "Issue the retry from a different node than the one that made the first attempt",
-        "An idempotency key per operation: the receiver stores the key alongside the result and, if it sees it again, returns the original result instead of charging again (idempotent receiver)"
+        "Wrap the operation in an ACID transaction inside the payment service"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "En una red asincrona, un tiempo de espera agotado no distingue 'no llego' de 'llego y se perdio la respuesta', asi que cualquier entrega fiable acaba siendo al-menos-una-vez y la deduplicacion tiene que hacerla el receptor. La clave de idempotencia (generada por el cliente, unica por intencion de negocio, no por intento) es el mecanismo estandar. La opcion de ACID es la mas tentadora y la mas peligrosa: cada intento es una transaccion perfectamente atomica y correcta por separado, y dos transacciones correctas cobran dos veces; ACID protege la consistencia interna de UNA operacion, no la unicidad entre peticiones. Bajar el timeout solo cambia la probabilidad, nunca el caso. Y reintentar desde otro nodo empeora el problema al añadir una carrera entre nodos.",
       "explanation_en": "On an asynchronous network a timeout cannot distinguish 'it never arrived' from 'it arrived and the reply was lost', so any reliable delivery ends up at-least-once and deduplication has to be done by the receiver. An idempotency key (generated by the client, unique per business intent, not per attempt) is the standard mechanism. The ACID option is the most tempting and the most dangerous: each attempt is a perfectly atomic, correct transaction on its own, and two correct transactions charge twice; ACID protects the internal consistency of ONE operation, not uniqueness across requests. Lowering the timeout only changes the probability, never the case. And retrying from a different node makes things worse by adding a race between nodes.",
       "source": "Hohpe, G. & Woolf, B. - Enterprise Integration Patterns (Idempotent Receiver)",
       "expected_time_ms": 38000,
-      "tags": ["system-design", "idempotency", "retries"]
+      "tags": [
+        "system-design",
+        "idempotency",
+        "retries"
+      ]
     },
     {
       "id": "q050404010",
@@ -560,23 +680,27 @@
       "question_es": "Una API publica necesita absorber rafagas cortas de peticiones pero mantener la media de cada cliente en 100 req/s. ¿Que algoritmo de limitacion encaja mejor y por que?",
       "question_en": "A public API needs to absorb short bursts of requests while holding each client's average at 100 req/s. Which rate-limiting algorithm fits best, and why?",
       "options_es": [
-        "Token bucket: acumula fichas hasta un tope, asi una rafaga consume el saldo ahorrado mientras la recarga constante fija la media a largo plazo",
-        "Ventana fija por minuto: es exacta y, por construccion, no permite rafagas en ningun punto de la ventana",
         "Ninguno: basta con confiar en el autoescalado para absorber cualquier pico de un cliente",
+        "Ventana fija por minuto: es exacta y, por construccion, no permite rafagas en ningun punto de la ventana",
+        "Token bucket: acumula fichas hasta un tope, asi una rafaga consume el saldo ahorrado mientras la recarga constante fija la media a largo plazo",
         "Leaky bucket con salida a ritmo constante, que es la unica forma de permitir rafagas"
       ],
       "options_en": [
-        "Token bucket: it accumulates tokens up to a cap, so a burst spends the saved balance while the constant refill pins the long-run average",
-        "Fixed window per minute: it is exact and, by construction, permits no bursts anywhere in the window",
         "None: just trust autoscaling to absorb any single client's spike",
+        "Fixed window per minute: it is exact and, by construction, permits no bursts anywhere in the window",
+        "Token bucket: it accumulates tokens up to a cap, so a burst spends the saved balance while the constant refill pins the long-run average",
         "Leaky bucket with a constant drain rate, which is the only way to allow bursts"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "El token bucket separa los dos parametros que interesan: la tasa de recarga fija la media y el tamaño del cubo fija cuanta rafaga se tolera. La segunda opcion contiene la falsedad mas instructiva: la ventana fija es justo la que SI permite rafagas, y ademas en el peor sitio, porque un cliente puede gastar su cuota entera al final de un minuto y otra entera al principio del siguiente, logrando el doble del limite en un instante; ese es el fallo de borde que motivo la ventana deslizante. La cuarta invierte las semanticas: el leaky bucket alisa la salida a ritmo constante y por eso NO deja pasar rafagas, es el complemento del token bucket, no su version burstable. Y delegar en el autoescalado deja la puerta abierta a que un solo cliente convierta su error en tu factura y en la caida de todos los demas.",
       "explanation_en": "The token bucket separates the two parameters that matter: the refill rate pins the average and the bucket size pins how much burst is tolerated. The second option contains the most instructive falsehood: the fixed window is precisely the one that DOES allow bursts, and in the worst place, because a client can spend its whole quota at the end of one minute and another whole quota at the start of the next, achieving twice the limit in an instant; that boundary flaw is what motivated the sliding window. The fourth inverts the semantics: the leaky bucket smooths output at a constant rate and therefore does NOT let bursts through, it is the token bucket's complement, not its burstable version. And delegating to autoscaling leaves the door open for one client to turn its bug into your bill and everyone else's outage.",
       "source": "Google - Site Reliability Engineering, Cap. 21 (Handling Overload)",
       "expected_time_ms": 40000,
-      "tags": ["system-design", "rate-limiting", "token-bucket"]
+      "tags": [
+        "system-design",
+        "rate-limiting",
+        "token-bucket"
+      ]
     },
     {
       "id": "q050404011",
@@ -602,7 +726,11 @@
       "explanation_en": "Active-active across regions is multi-leader replication, and there write conflicts stop being a rare case and become part of domain design: for each entity you must decide whether the latest timestamp wins, whether versions are kept, whether a convergent structure is used, or whether that particular entity is pinned to a single region. The first option is what the brochure sells. The third reduces an architectural decision to a line on the invoice. The fourth is the most tempting because it sounds like the clean answer: synchronous replication does eliminate conflicts, but at the price of every write waiting for the cross-region round trip (tens to hundreds of milliseconds) and of one region being down blocking the other's writes, which is exactly what you were trying to avoid. Active-passive is simpler and more honest; its cost is measured in RPO and RTO during failover.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 5 (Multi-Leader Replication: Multi-Datacenter Operation)",
       "expected_time_ms": 46000,
-      "tags": ["system-design", "multi-region", "multi-leader"]
+      "tags": [
+        "system-design",
+        "multi-region",
+        "multi-leader"
+      ]
     },
     {
       "id": "q050404012",
@@ -611,14 +739,24 @@
       "difficulty_tier": "medium",
       "question_es": "Poner una cola entre la capa de ingesta y la de procesamiento elimina la necesidad de contrapresion, porque la cola absorbe cualquier desequilibrio entre la velocidad de entrada y la de salida.",
       "question_en": "Putting a queue between the ingestion layer and the processing layer removes the need for backpressure, because the queue absorbs any mismatch between input and output rates.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. Una cola absorbe rafagas, que son desequilibrios temporales, pero no absorbe un desequilibrio sostenido: si entran 1.000 mensajes por segundo y salen 800, la cola crece 200 por segundo para siempre, hasta llenar el disco, disparar el coste o hacer que la latencia de extremo a extremo llegue a horas, que es la misma indisponibilidad con otro nombre. Lo que si hace la cola es ocultar el problema durante un rato y hacerlo visible tarde. Por eso toda cola necesita un limite explicito y una politica de que hacer al alcanzarlo: rechazar la entrada (contrapresion hacia el productor), descartar lo menos valioso, o degradar. Una cola sin limite no es una salvaguarda, es un retardo antes del fallo.",
       "explanation_en": "False. A queue absorbs bursts, which are temporary mismatches, but it does not absorb a sustained one: if 1,000 messages a second arrive and 800 leave, the queue grows by 200 a second forever, until it fills the disk, blows the budget, or pushes end-to-end latency into hours, which is the same unavailability under another name. What the queue does do is hide the problem for a while and reveal it late. That is why every queue needs an explicit bound and a policy for hitting it: reject input (backpressure toward the producer), drop the least valuable work, or degrade. An unbounded queue is not a safeguard, it is a delay before the failure.",
       "source": "Nygard, M. - Release It! 2e, Cap. 5 (Stability Patterns: Backpressure) y Cap. 4 (Unbounded Result Sets)",
       "expected_time_ms": 32000,
-      "tags": ["system-design", "backpressure", "queues"]
+      "tags": [
+        "system-design",
+        "backpressure",
+        "queues"
+      ]
     },
     {
       "id": "q050404013",
@@ -627,14 +765,24 @@
       "difficulty_tier": "hard",
       "question_es": "Si un diseño exige consistencia fuerte entre dos regiones separadas por 100 ms de ida y vuelta, cada escritura confirmada pagara como minimo ese viaje de ida y vuelta.",
       "question_en": "If a design requires strong consistency between two regions separated by a 100 ms round trip, every acknowledged write will pay at least that round trip.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero, y es un limite fisico, no de implementacion: ningun producto lo esquiva. Para que una escritura sea visible de forma consistente en la otra region antes de confirmarla, la informacion tiene que llegar hasta alli, y la velocidad de la luz en fibra pone un suelo que ningun indice ni cache reduce. Esta es la parte 'ELC' de PACELC: incluso sin particion (Else), hay que elegir entre Latencia y Consistencia. Las consecuencias de diseño son concretas: anclar cada entidad a una region principal y aceptar lecturas algo viejas en las demas, mover a asincrono todo lo que no necesite el acuerdo global, o replantear el requisito, porque a menudo 'consistencia fuerte global' es una suposicion heredada y no una necesidad del negocio.",
       "explanation_en": "True, and it is a physical limit, not an implementation one: no product dodges it. For a write to be consistently visible in the other region before it is acknowledged, the information has to get there, and the speed of light in fibre sets a floor that no index or cache reduces. This is the 'ELC' half of PACELC: even with no partition (Else), you choose between Latency and Consistency. The design consequences are concrete: pin each entity to a home region and accept slightly stale reads elsewhere, move anything that does not need global agreement to asynchronous paths, or revisit the requirement, since 'global strong consistency' is often an inherited assumption rather than a business need.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 9 (The Cost of Linearizability)",
       "expected_time_ms": 34000,
-      "tags": ["system-design", "latency", "pacelc"]
+      "tags": [
+        "system-design",
+        "latency",
+        "pacelc"
+      ]
     },
     {
       "id": "q050404014",
@@ -649,7 +797,11 @@
       "explanation_en": "A canary release bounds the blast radius: if the new version is worse, only 1-5% of traffic suffers it and it is rolled back before anyone else notices. Making it actually work needs three things that are usually missing: comparable metrics between canary and baseline (error rate and latency per version, not aggregated), enough exposure time for the fault to surface, and automatic rollback when the comparison degrades. Distinguish it from blue-green deployment, which switches all traffic at once between two complete environments and is mainly about fast rollback, and from feature flags, which separate shipping the code from turning it on for a specific audience.",
       "source": "Google - Site Reliability Engineering, Cap. 27 (Reliable Product Launches at Scale)",
       "expected_time_ms": 34000,
-      "tags": ["system-design", "canary-release", "deployments"]
+      "tags": [
+        "system-design",
+        "canary-release",
+        "deployments"
+      ]
     },
     {
       "id": "q050404015",
@@ -660,22 +812,26 @@
       "question_en": "Back-of-the-envelope capacity estimate for a URL shortener:\n\n```python\nurls_per_day    = 100_000_000\nretention_days  = 365 * 5\nbytes_per_url   = 500\n\ntotal = urls_per_day * retention_days * bytes_per_url\nprint(round(total / 1024**4, 1), \"TiB\")\n```\n\nWhat does it print?",
       "options_es": [
         "0.1 TiB",
-        "182.5 TiB",
+        "83.0 TiB",
         "91.3 TiB",
-        "83.0 TiB"
+        "182.5 TiB"
       ],
       "options_en": [
         "0.1 TiB",
-        "182.5 TiB",
+        "83.0 TiB",
         "91.3 TiB",
-        "83.0 TiB"
+        "182.5 TiB"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "100.000.000 x 1.825 dias x 500 bytes = 9,125e13 bytes. La division es por 1024**4 = 1.099.511.627.776, asi que el resultado es 82,99..., que redondeado da 83,0 TiB. La opcion de 91,3 es la mas tentadora y la que sale casi siempre a mano: es el resultado de dividir entre 10**12, es decir, de calcular terabytes decimales (TB) y etiquetarlos como tebibytes (TiB). La diferencia del 10% no cambia la decision de arquitectura, pero si cambia una propuesta de presupuesto o un calculo de particiones, y es el error que mas se cuela en las estimaciones de servilleta. La de 182,5 duplica la retencion y la de 0,1 confunde el orden de magnitud. Lo importante de la estimacion no es el decimal: es saber que el dato cabe en decenas de maquinas y no en miles.",
       "explanation_en": "100,000,000 x 1,825 days x 500 bytes = 9.125e13 bytes. The division is by 1024**4 = 1,099,511,627,776, so the result is 82.99..., which rounds to 83.0 TiB. The 91.3 option is the most tempting and the one people produce by hand almost every time: it is the result of dividing by 10**12, that is, computing decimal terabytes (TB) and labelling them tebibytes (TiB). The 10% difference does not change the architecture decision, but it does change a budget proposal or a shard count, and it is the error that slips into napkin estimates most often. The 182.5 doubles the retention and the 0.1 misses the order of magnitude. What matters in the estimate is not the decimal: it is knowing the data fits in tens of machines rather than thousands.",
       "source": "Kleppmann, M. - Designing Data-Intensive Applications, Cap. 1 (Describing Load / capacity estimation)",
       "expected_time_ms": 42000,
-      "tags": ["system-design", "capacity-estimation", "storage"]
+      "tags": [
+        "system-design",
+        "capacity-estimation",
+        "storage"
+      ]
     }
   ]
 }

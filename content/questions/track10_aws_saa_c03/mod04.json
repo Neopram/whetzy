@@ -35,17 +35,17 @@
     "question_en": "What is the principle of least privilege in IAM?",
     "options_es": [
       "Permitir todos los permisos",
-      "Conceder solo los permisos necesarios",
+      "Cambiar permisos frecuentemente",
       "Usar permisos wildcard",
-      "Cambiar permisos frecuentemente"
+      "Conceder solo los permisos necesarios"
     ],
     "options_en": [
       "Allow all permissions",
-      "Grant only necessary permissions",
+      "Change permissions frequently",
       "Use wildcard permissions",
-      "Change permissions frequently"
+      "Grant only necessary permissions"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Least privilege: usuario obtiene mínimos permisos para su rol. Reduce riesgo de compromiso. Wildcard es lo opuesto.",
@@ -62,17 +62,17 @@
     "question_en": "How to allow EC2 app to access S3 securely without credentials in code?",
     "options_es": [
       "Almacenar AWS credentials en /root/.aws",
-      "Usar IAM Role atachado a instancia",
       "Usar hardcoded keys en env vars",
+      "Usar IAM Role atachado a instancia",
       "Usar S3 access keys versionadas"
     ],
     "options_en": [
       "Store AWS credentials in /root/.aws",
-      "Use IAM Role attached to instance",
       "Use hardcoded keys in env vars",
+      "Use IAM Role attached to instance",
       "Use versioned S3 access keys"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IAM Role proporciona credenciales temporales via IMDS. Aplicación no necesita almacenar secretos. Credentials en código es inseguro.",
@@ -115,18 +115,18 @@
     "question_es": "¿Qué es AWS STS (Security Token Service)?",
     "question_en": "What is AWS STS (Security Token Service)?",
     "options_es": [
-      "Servicio para obtener credenciales temporales",
-      "Almacén de secrets",
       "Autenticación de usuarios",
+      "Almacén de secrets",
+      "Servicio para obtener credenciales temporales",
       "Auditoría de permisos"
     ],
     "options_en": [
-      "Service for obtaining temporary credentials",
-      "Secrets store",
       "User authentication",
+      "Secrets store",
+      "Service for obtaining temporary credentials",
       "Permission audit"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "STS genera credenciales temporales (access key, secret key, token) válidas por tiempo limitado. IAM Roles usan STS.",
@@ -169,18 +169,18 @@
     "question_es": "¿Qué es MFA (Multi-Factor Authentication) en IAM?",
     "question_en": "What is MFA (Multi-Factor Authentication) in IAM?",
     "options_es": [
-      "Requerir múltiples factores de autenticación",
       "Cambio frecuente de contraseña",
+      "Requerir múltiples factores de autenticación",
       "Uso de VPN",
       "Encriptación de datos"
     ],
     "options_en": [
-      "Require multiple authentication factors",
       "Frequent password changes",
+      "Require multiple authentication factors",
       "VPN usage",
       "Data encryption"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "MFA requiere algo que sabes (contraseña) + algo que tienes (token MFA). Reduce riesgo de compromiso.",
@@ -223,18 +223,18 @@
     "question_es": "¿Qué es una política inline vs managed policy?",
     "question_en": "What is inline policy vs managed policy?",
     "options_es": [
-      "Inline: embebida en usuario, Managed: reutilizable",
       "No hay diferencia",
+      "Inline: embebida en usuario, Managed: reutilizable",
       "Managed es más segura",
       "Inline es mejor para testing"
     ],
     "options_en": [
-      "Inline: embedded in user, Managed: reusable",
       "No difference",
+      "Inline: embedded in user, Managed: reusable",
       "Managed is more secure",
       "Inline better for testing"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Inline es política individual embebida. Managed es reutilizable entre usuarios. Managed es mejor para escalabilidad.",
@@ -250,18 +250,18 @@
     "question_es": "¿Qué es el principal de AWS (Principal)?",
     "question_en": "What is an AWS Principal?",
     "options_es": [
-      "Usuario o Role que puede hacer acciones",
+      "Configuración de red",
       "Recurso de AWS",
       "Política de acceso",
-      "Configuración de red"
+      "Usuario o Role que puede hacer acciones"
     ],
     "options_en": [
-      "User or Role that can take actions",
+      "Network configuration",
       "AWS resource",
       "Access policy",
-      "Network configuration"
+      "User or Role that can take actions"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Principal es identidad (usuario, role, cuenta, servicio) que puede obtener credenciales y hacer acciones.",
@@ -304,18 +304,18 @@
     "question_es": "¿Cómo auditar cambios de IAM?",
     "question_en": "How to audit IAM changes?",
     "options_es": [
-      "AWS CloudTrail registra API calls",
+      "Todas las anteriores",
       "CloudWatch logs",
       "AWS Config",
-      "Todas las anteriores"
+      "AWS CloudTrail registra API calls"
     ],
     "options_en": [
-      "AWS CloudTrail logs API calls",
+      "All of the above",
       "CloudWatch logs",
       "AWS Config",
-      "All of the above"
+      "AWS CloudTrail logs API calls"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudTrail registra cambios de IAM. Config monitorea cambios de recursos. CloudWatch es para alertas.",
@@ -331,18 +331,18 @@
     "question_es": "¿Qué es una trust relationship en IAM Role?",
     "question_en": "What is a trust relationship in IAM Role?",
     "options_es": [
-      "Permiso de qué puede asumir el role",
+      "Backup automático",
       "Permiso de qué puede hacer el role",
       "Encriptación de datos",
-      "Backup automático"
+      "Permiso de qué puede asumir el role"
     ],
     "options_en": [
-      "Permission of who can assume the role",
+      "Automatic backup",
       "Permission of what role can do",
       "Data encryption",
-      "Automatic backup"
+      "Permission of who can assume the role"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Trust relationship (AssumeRolePolicyDocument) define quién puede asumir el role (service, usuario, cuenta).",
@@ -358,18 +358,18 @@
     "question_es": "¿Cómo implementar session tags para control granular de acceso en AWS?",
     "question_en": "How to implement session tags for granular access control in AWS?",
     "options_es": [
-      "Tags en IAM policy",
+      "Todas las anteriores",
       "SAML/OIDC federation con tag passing",
       "AssumeRole con tags",
-      "Todas las anteriores"
+      "Tags en IAM policy"
     ],
     "options_en": [
-      "Tags in IAM policy",
+      "All of the above",
       "SAML/OIDC federation with tag passing",
       "AssumeRole with tags",
-      "All of the above"
+      "Tags in IAM policy"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Session tags paso desde SAML/OIDC o AssumeRole. Policies pueden usar tags (aws:PrincipalTag) para decisiones de acceso.",
@@ -385,18 +385,18 @@
     "question_es": "¿Cómo usar AWS Identity Center para gestionar usuarios y permisos centralizados?",
     "question_en": "How to use AWS Identity Center for centralized user and permission management?",
     "options_es": [
-      "AWS Identity Center integra con AWS Organizations",
+      "Todas las anteriores",
       "Crea usuarios y roles centralmente",
       "Permite SSO a múltiples cuentas",
-      "Todas las anteriores"
+      "AWS Identity Center integra con AWS Organizations"
     ],
     "options_en": [
-      "AWS Identity Center integrates with AWS Organizations",
+      "All of the above",
       "Creates users and roles centrally",
       "Enables SSO across accounts",
-      "All of the above"
+      "AWS Identity Center integrates with AWS Organizations"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Identity Center (IAM Identity Center) gestiona identidades y permisos centralmente. SSO a múltiples cuentas. Reemplaza AWS SSO.",
@@ -412,18 +412,18 @@
     "question_es": "¿Qué es Amazon Cognito?",
     "question_en": "What is Amazon Cognito?",
     "options_es": [
-      "Servicio de autenticación y autorización",
-      "Base de datos de usuarios",
       "VPN",
+      "Base de datos de usuarios",
+      "Servicio de autenticación y autorización",
       "Firewall"
     ],
     "options_en": [
-      "Authentication and authorization service",
-      "User database",
       "VPN",
+      "User database",
+      "Authentication and authorization service",
       "Firewall"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cognito maneja sign-up, sign-in, MFA para aplicaciones móviles y web. Base de datos de usuarios es una parte.",
@@ -466,18 +466,18 @@
     "question_es": "¿Cómo implementar login social (Google, Facebook) con Cognito?",
     "question_en": "How to implement social login (Google, Facebook) with Cognito?",
     "options_es": [
-      "Cognito no soporta",
       "Configurar Identity Providers (IdP)",
+      "Cognito no soporta",
       "Usar OAuth 2.0 manualmente",
       "Usar API Gateway"
     ],
     "options_en": [
-      "Cognito doesn't support",
       "Configure Identity Providers (IdP)",
+      "Cognito doesn't support",
       "Manually OAuth 2.0",
       "Use API Gateway"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cognito User Pools soportan conexión con Google, Facebook, Apple via federated identities. Configurar en App Client.",
@@ -520,18 +520,18 @@
     "question_es": "¿Cuál es la diferencia entre AWS managed key y Customer managed key en KMS?",
     "question_en": "What is the difference between AWS managed and Customer managed key in KMS?",
     "options_es": [
-      "AWS managed: creada por AWS, Customer managed: creada por usuario",
+      "Ambas A y C",
       "AWS managed es más segura",
       "Customer managed tiene más costo",
-      "Ambas A y C"
+      "AWS managed: creada por AWS, Customer managed: creada por usuario"
     ],
     "options_en": [
-      "AWS managed: created by AWS, Customer managed: by user",
+      "Both A and C",
       "AWS managed is more secure",
       "Customer managed costs more",
-      "Both A and C"
+      "AWS managed: created by AWS, Customer managed: by user"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWS managed: AWS crea y gestiona. Customer managed: usuario crea y gestiona (más control, costo separado).",
@@ -548,17 +548,17 @@
     "question_en": "What is AWS CloudHSM?",
     "options_es": [
       "Dispositivo físico de seguridad de hardware",
-      "Servicio de gestión de claves en hardware dedicado",
+      "Todas las anteriores",
       "Alternativa a KMS",
-      "Todas las anteriores"
+      "Servicio de gestión de claves en hardware dedicado"
     ],
     "options_en": [
       "Physical security hardware device",
-      "Key management on dedicated hardware",
+      "All of the above",
       "Alternative to KMS",
-      "All of the above"
+      "Key management on dedicated hardware"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudHSM proporciona HSM (Hardware Security Module) dedicado. Mayor control y cumplimiento que KMS. Más caro.",
@@ -574,18 +574,18 @@
     "question_es": "¿Qué es AWS Secrets Manager?",
     "question_en": "What is AWS Secrets Manager?",
     "options_es": [
-      "Almacén de secrets como credenciales, tokens",
       "Encriptación de datos en reposo",
+      "Almacén de secrets como credenciales, tokens",
       "Firewall",
       "Servicio DNS"
     ],
     "options_en": [
-      "Secrets store for credentials, tokens",
       "Encryption at rest",
+      "Secrets store for credentials, tokens",
       "Firewall",
       "DNS service"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Secrets Manager almacena y rota automáticamente secrets (passwords, API keys). Integra con RDS, Lambda.",
@@ -601,18 +601,18 @@
     "question_es": "¿Cuál es la diferencia entre Secrets Manager y Systems Manager Parameter Store?",
     "question_en": "What is the difference between Secrets Manager and Parameter Store?",
     "options_es": [
-      "Secrets Manager: secrets, Parameter Store: configuración",
+      "Son lo mismo",
       "Parameter Store es más caro",
       "Secrets Manager es gratis",
-      "Son lo mismo"
+      "Secrets Manager: secrets, Parameter Store: configuración"
     ],
     "options_en": [
-      "Secrets Manager: secrets, Parameter Store: config",
+      "They are same",
       "Parameter Store more expensive",
       "Secrets Manager free",
-      "They are same"
+      "Secrets Manager: secrets, Parameter Store: config"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Secrets Manager para credenciales con rotación automática. Parameter Store para configuración (free tier). Secrets Manager cobra.",
@@ -628,18 +628,18 @@
     "question_es": "¿Qué es AWS WAF (Web Application Firewall)?",
     "question_en": "What is AWS WAF (Web Application Firewall)?",
     "options_es": [
-      "Firewall para proteger aplicaciones web",
-      "Firewall de red",
       "Encriptación",
+      "Firewall de red",
+      "Firewall para proteger aplicaciones web",
       "Servicio de backup"
     ],
     "options_en": [
-      "Firewall to protect web applications",
-      "Network firewall",
       "Encryption",
+      "Network firewall",
+      "Firewall to protect web applications",
       "Backup service"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF filtra tráfico HTTP/HTTPS basado en reglas. Protege contra SQL injection, XSS, etc. No es network firewall.",
@@ -655,18 +655,18 @@
     "question_es": "¿Dónde se puede adjuntar WAF?",
     "question_en": "Where can WAF be attached?",
     "options_es": [
-      "CloudFront y Application Load Balancer",
+      "VPC solo",
       "Solo CloudFront",
       "Solo ALB",
-      "VPC solo"
+      "CloudFront y Application Load Balancer"
     ],
     "options_en": [
-      "CloudFront and Application Load Balancer",
+      "VPC only",
       "CloudFront only",
       "ALB only",
-      "VPC only"
+      "CloudFront and Application Load Balancer"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF se adjunta a CloudFront, ALB (y API Gateway). Protege en edge o aplicación.",
@@ -682,18 +682,18 @@
     "question_es": "¿Qué es AWS Shield?",
     "question_en": "What is AWS Shield?",
     "options_es": [
-      "Protección DDoS automática (incluida)",
       "Firewall de aplicación",
+      "Protección DDoS automática (incluida)",
       "Encriptación",
       "Ambas A y B"
     ],
     "options_en": [
-      "Automatic DDoS protection (included)",
       "Application firewall",
+      "Automatic DDoS protection (included)",
       "Encryption",
       "Both A and B"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Shield Standard incluido contra DDoS comunes. Shield Advanced con protección mejorada. WAF es para aplicación.",
@@ -710,17 +710,17 @@
     "question_en": "How to protect VPC against DDoS at layer 3/4?",
     "options_es": [
       "AWS Shield Standard",
-      "AWS Shield Advanced + DDoS Response Team",
+      "Ambas A y B",
       "Security Groups",
-      "Ambas A y B"
+      "AWS Shield Advanced + DDoS Response Team"
     ],
     "options_en": [
       "AWS Shield Standard",
-      "AWS Shield Advanced + DDoS Response Team",
+      "Both A and B",
       "Security Groups",
-      "Both A and B"
+      "AWS Shield Advanced + DDoS Response Team"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Shield Standard incluido. Advanced con DDoS Response Team para ataques. Security Groups complementan.",
@@ -736,18 +736,18 @@
     "question_es": "¿Cómo crear reglas personalizadas en WAF?",
     "question_en": "How to create custom rules in WAF?",
     "options_es": [
-      "Usar Web ACL y statements",
+      "Todas las anteriores",
       "Configurar via CloudFront",
       "Usar Lambda",
-      "Todas las anteriores"
+      "Usar Web ACL y statements"
     ],
     "options_en": [
-      "Use Web ACL and statements",
+      "All of the above",
       "Configure via CloudFront",
       "Use Lambda",
-      "All of the above"
+      "Use Web ACL and statements"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Web ACL contiene reglas. Statements definen condiciones (IP, patrones, rate limiting). Lambda es complemento.",
@@ -763,18 +763,18 @@
     "question_es": "¿Cuál es la función principal de Amazon Cognito User Pools?",
     "question_en": "What is the primary function of Amazon Cognito User Pools?",
     "options_es": [
-      "A) Almacenar y gestionar credenciales de usuarios, autenticación y autorización",
-      "B) Gestionar roles IAM",
       "C) Almacenar secretos en Secrets Manager",
+      "B) Gestionar roles IAM",
+      "A) Almacenar y gestionar credenciales de usuarios, autenticación y autorización",
       "D) Monitorear acceso en CloudTrail"
     ],
     "options_en": [
-      "A) Store and manage user credentials, authentication and authorization",
-      "B) Manage IAM roles",
       "C) Store secrets in Secrets Manager",
+      "B) Manage IAM roles",
+      "A) Store and manage user credentials, authentication and authorization",
       "D) Monitor access in CloudTrail"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cognito User Pools proporciona autenticación de usuarios, gestión de credenciales y autorización sin necesidad de construir un sistema personalizado.",
@@ -817,18 +817,18 @@
     "question_es": "¿Cómo se implementa autenticación multifactor (MFA) en Cognito?",
     "question_en": "How do you implement multi-factor authentication (MFA) in Cognito?",
     "options_es": [
-      "A) Configurando MFA en la política de User Pool (SMS o authenticator apps)",
+      "D) No es posible en Cognito",
       "B) Usando solo contraseñas más largas",
       "C) Requiere implementación personalizada en Lambda",
-      "D) No es posible en Cognito"
+      "A) Configurando MFA en la política de User Pool (SMS o authenticator apps)"
     ],
     "options_en": [
-      "A) Configuring MFA in the User Pool policy (SMS or authenticator apps)",
+      "D) Not possible in Cognito",
       "B) Using only longer passwords",
       "C) Requires custom implementation in Lambda",
-      "D) Not possible in Cognito"
+      "A) Configuring MFA in the User Pool policy (SMS or authenticator apps)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cognito soporta MFA mediante SMS, email, o authenticator apps. Se configura en las políticas de contraseña del User Pool.",
@@ -844,18 +844,18 @@
     "question_es": "¿Cuál es el propósito de usar federación de identidades en Cognito?",
     "question_en": "What is the purpose of using identity federation in Cognito?",
     "options_es": [
-      "A) Permitir que usuarios de proveedores externos (Google, Facebook, SAML) accedan a aplicaciones AWS",
-      "B) Crear múltiples User Pools",
       "C) Almacenar datos de usuario",
+      "B) Crear múltiples User Pools",
+      "A) Permitir que usuarios de proveedores externos (Google, Facebook, SAML) accedan a aplicaciones AWS",
       "D) Encriptar contraseñas"
     ],
     "options_en": [
-      "A) Allow users from external providers (Google, Facebook, SAML) to access AWS applications",
-      "B) Create multiple User Pools",
       "C) Store user data",
+      "B) Create multiple User Pools",
+      "A) Allow users from external providers (Google, Facebook, SAML) to access AWS applications",
       "D) Encrypt passwords"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "La federación de identidades permite que usuarios se autentiquen usando proveedores externos, reduciendo necesidad de gestionar credenciales separadas.",
@@ -952,18 +952,18 @@
     "question_es": "¿Cómo se maneja la sincronización de identidades entre Cognito y directorios Active Directory externos?",
     "question_en": "How is identity synchronization between Cognito and external Active Directory handled?",
     "options_es": [
-      "A) Usando AWS Cognito Sync con servicios de SAML o OIDC",
-      "B) Cognito no puede sincronizar con AD",
       "C) Solo mediante migración de datos manual",
+      "B) Cognito no puede sincronizar con AD",
+      "A) Usando AWS Cognito Sync con servicios de SAML o OIDC",
       "D) Usando DynamoDB Streams"
     ],
     "options_en": [
-      "A) Using AWS Cognito Sync with SAML or OIDC services",
-      "B) Cognito cannot synchronize with AD",
       "C) Only through manual data migration",
+      "B) Cognito cannot synchronize with AD",
+      "A) Using AWS Cognito Sync with SAML or OIDC services",
       "D) Using DynamoDB Streams"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "La sincronización se logra mediante proveedores SAML u OIDC en Cognito User Pools, que puede conectar con directorios AD externos.",
@@ -1006,18 +1006,18 @@
     "question_es": "¿Cuál es la función principal de AWS Key Management Service (KMS)?",
     "question_en": "What is the primary function of AWS Key Management Service (KMS)?",
     "options_es": [
-      "A) Crear, gestionar y controlar claves de cifrado para encriptar datos",
       "B) Almacenar contraseñas de usuarios",
+      "A) Crear, gestionar y controlar claves de cifrado para encriptar datos",
       "C) Gestionar certificados SSL/TLS",
       "D) Monitorear el acceso a datos"
     ],
     "options_en": [
-      "A) Create, manage, and control encryption keys to encrypt data",
       "B) Store user passwords",
+      "A) Create, manage, and control encryption keys to encrypt data",
       "C) Manage SSL/TLS certificates",
       "D) Monitor data access"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "KMS permite crear y gestionar claves de encriptación que pueden usarse para cifrar datos en servicios AWS como S3, RDS, EBS, etc.",
@@ -1033,18 +1033,18 @@
     "question_es": "¿Cuál es la diferencia entre AWS-managed y Customer-managed keys en KMS?",
     "question_en": "What is the difference between AWS-managed and Customer-managed keys in KMS?",
     "options_es": [
-      "A) AWS-managed: AWS gestiona la clave; Customer-managed: el cliente controla la rotación y acceso",
+      "D) Customer-managed solo funciona para S3",
       "B) No hay diferencia",
       "C) AWS-managed es más seguro",
-      "D) Customer-managed solo funciona para S3"
+      "A) AWS-managed: AWS gestiona la clave; Customer-managed: el cliente controla la rotación y acceso"
     ],
     "options_en": [
-      "A) AWS-managed: AWS manages the key; Customer-managed: client controls rotation and access",
+      "D) Customer-managed only works for S3",
       "B) There is no difference",
       "C) AWS-managed is more secure",
-      "D) Customer-managed only works for S3"
+      "A) AWS-managed: AWS manages the key; Customer-managed: client controls rotation and access"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWS-managed keys son gestionadas completamente por AWS; Customer-managed keys permiten al usuario controlar políticas de rotación y acceso.",
@@ -1060,18 +1060,18 @@
     "question_es": "¿Cómo se implementa cifrado de datos en reposo en S3 usando KMS?",
     "question_en": "How do you implement encryption at rest in S3 using KMS?",
     "options_es": [
-      "A) Especificar el algoritmo de cifrado KMS en las propiedades de bucket de S3",
+      "D) No es posible con KMS",
       "B) Usar solo cifrado Server-Side Encryption (SSE)",
       "C) Configurar KMS key policy en la configuración del bucket",
-      "D) No es posible con KMS"
+      "A) Especificar el algoritmo de cifrado KMS en las propiedades de bucket de S3"
     ],
     "options_en": [
-      "A) Specify the KMS encryption algorithm in S3 bucket properties",
+      "D) Not possible with KMS",
       "B) Use only Server-Side Encryption (SSE)",
       "C) Configure KMS key policy in bucket settings",
-      "D) Not possible with KMS"
+      "A) Specify the KMS encryption algorithm in S3 bucket properties"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "S3 soporta cifrado SSE-KMS donde especificas la KMS key a usar. S3 cifrará automáticamente objetos con esa clave.",
@@ -1087,18 +1087,18 @@
     "question_es": "¿Cuál es el propósito de KMS Key Rotation?",
     "question_en": "What is the purpose of KMS Key Rotation?",
     "options_es": [
-      "A) Cambiar periódicamente la clave de encriptación para mejorar seguridad",
       "B) Aumentar el rendimiento de encriptación",
+      "A) Cambiar periódicamente la clave de encriptación para mejorar seguridad",
       "C) Eliminar claves antiguas",
       "D) Reducir costos de encriptación"
     ],
     "options_en": [
-      "A) Periodically change the encryption key to improve security",
       "B) Improve encryption performance",
+      "A) Periodically change the encryption key to improve security",
       "C) Delete old keys",
       "D) Reduce encryption costs"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Key Rotation rota periódicamente (cada año por defecto) las claves de encriptación, mejorando seguridad sin interrumpir desencriptación de datos antiguos.",
@@ -1168,18 +1168,18 @@
     "question_es": "¿Cuál es el proceso para migrar datos encriptados con una KMS key antigua a una nueva?",
     "question_en": "What is the process to migrate data encrypted with an old KMS key to a new one?",
     "options_es": [
-      "A) Desencriptar con la clave antigua y reencriptar con la nueva usando cifrado de envolvimiento",
+      "D) No es posible migrar datos entre claves",
       "B) Cambiar la clave en KMS automáticamente",
       "C) Copiar datos sin cambiar la encriptación",
-      "D) No es posible migrar datos entre claves"
+      "A) Desencriptar con la clave antigua y reencriptar con la nueva usando cifrado de envolvimiento"
     ],
     "options_en": [
-      "A) Decrypt with old key and re-encrypt with new using envelope encryption",
+      "D) It is not possible to migrate between keys",
       "B) KMS automatically changes the key",
       "C) Copy data without changing encryption",
-      "D) It is not possible to migrate between keys"
+      "A) Decrypt with old key and re-encrypt with new using envelope encryption"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "La migración requiere desencriptar datos con la clave antigua y reencriptar con la nueva. KMS soporta esto mediante Cipher operations.",
@@ -1195,18 +1195,18 @@
     "question_es": "¿Cómo se implementa cifrado de envolvimiento (Envelope Encryption) con KMS?",
     "question_en": "How do you implement Envelope Encryption with KMS?",
     "options_es": [
-      "A) Generar una Data Key en KMS, usar para cifrar datos, almacenar Data Key encriptada junto a los datos",
+      "D) No es soportado por KMS",
       "B) Cifrar directamente con la Customer Master Key",
       "C) Usar solo SSE-S3",
-      "D) No es soportado por KMS"
+      "A) Generar una Data Key en KMS, usar para cifrar datos, almacenar Data Key encriptada junto a los datos"
     ],
     "options_en": [
-      "A) Generate a Data Key in KMS, use to encrypt data, store encrypted Data Key with the data",
+      "D) Not supported by KMS",
       "B) Encrypt directly with Customer Master Key",
       "C) Use only SSE-S3",
-      "D) Not supported by KMS"
+      "A) Generate a Data Key in KMS, use to encrypt data, store encrypted Data Key with the data"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Envelope Encryption genera una Data Key temporal para cifrar datos voluminosos, luego cifra la Data Key con la KMS Master Key.",
@@ -1222,18 +1222,18 @@
     "question_es": "¿Cuál es el modelo de precios de AWS KMS?",
     "question_en": "What is the pricing model for AWS KMS?",
     "options_es": [
-      "A) Por claves almacenadas y operaciones criptográficas realizadas",
       "B) Suscripción plana mensual",
+      "A) Por claves almacenadas y operaciones criptográficas realizadas",
       "C) Basado en tamaño de datos encriptados",
       "D) Acceso gratuito"
     ],
     "options_en": [
-      "A) Per stored keys and cryptographic operations performed",
       "B) Flat monthly subscription",
+      "A) Per stored keys and cryptographic operations performed",
       "C) Based on size of encrypted data",
       "D) Free access"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "KMS cobra por cada clave almacenada (aproximadamente $1/mes) y por operación criptográfica realizada ($0.03 por 10,000 llamadas).",
@@ -1249,18 +1249,18 @@
     "question_es": "¿Cuál es la función principal de AWS Web Application Firewall (WAF)?",
     "question_en": "What is the primary function of AWS Web Application Firewall (WAF)?",
     "options_es": [
-      "A) Proteger aplicaciones web contra exploits y ataques comunes como SQL injection y XSS",
-      "B) Encriptar datos",
       "C) Gestionar certificados SSL",
+      "B) Encriptar datos",
+      "A) Proteger aplicaciones web contra exploits y ataques comunes como SQL injection y XSS",
       "D) Monitorear rendimiento de la aplicación"
     ],
     "options_en": [
-      "A) Protect web applications against exploits and common attacks like SQL injection and XSS",
-      "B) Encrypt data",
       "C) Manage SSL certificates",
+      "B) Encrypt data",
+      "A) Protect web applications against exploits and common attacks like SQL injection and XSS",
       "D) Monitor application performance"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF inspeciona solicitudes HTTP/HTTPS y bloquea basándose en reglas personalizadas, protegiendo contra ataques de capa 7.",
@@ -1330,18 +1330,18 @@
     "question_es": "¿Cuáles son los tipos de reglas que se pueden configurar en WAF?",
     "question_en": "What types of rules can be configured in WAF?",
     "options_es": [
-      "A) IP whitelisting/blacklisting, string matching, rate limiting, geo-blocking",
+      "D) WAF no permite reglas personalizadas",
       "B) Solo IP whitelisting",
       "C) Solo autenticación",
-      "D) WAF no permite reglas personalizadas"
+      "A) IP whitelisting/blacklisting, string matching, rate limiting, geo-blocking"
     ],
     "options_en": [
-      "A) IP whitelisting/blacklisting, string matching, rate limiting, geo-blocking",
+      "D) WAF does not allow custom rules",
       "B) Only IP whitelisting",
       "C) Only authentication",
-      "D) WAF does not allow custom rules"
+      "A) IP whitelisting/blacklisting, string matching, rate limiting, geo-blocking"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF permite múltiples tipos de reglas: bloqueo por IP, coincidencia de cadenas, rate limiting, geo-blocking y reglas de SQL injection.",
@@ -1411,18 +1411,18 @@
     "question_es": "¿Cómo se usa geo-blocking en WAF para restringir acceso por región?",
     "question_en": "How do you use geo-blocking in WAF to restrict access by region?",
     "options_es": [
-      "A) Crear reglas que bloquean basándose en códigos de país en las solicitudes",
       "B) Modificar Security Groups",
+      "A) Crear reglas que bloquean basándose en códigos de país en las solicitudes",
       "C) Cambiar el dominio de Route 53",
       "D) No es soportado por WAF"
     ],
     "options_en": [
-      "A) Create rules that block based on country codes in requests",
       "B) Modify Security Groups",
+      "A) Create rules that block based on country codes in requests",
       "C) Change Route 53 domain",
       "D) Not supported by WAF"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF puede detectar ubicación geográfica de solicitudes y bloquear/permitir basándose en país de origen.",
@@ -1438,18 +1438,18 @@
     "question_es": "¿Cuál es la diferencia entre AWS Shield Standard y AWS Shield Advanced?",
     "question_en": "What is the difference between AWS Shield Standard and AWS Shield Advanced?",
     "options_es": [
-      "A) Standard: protección gratuita contra DDoS básicos; Advanced: protección pagada contra DDoS sofisticados",
-      "B) Son idénticos",
       "C) Standard es más caro",
+      "B) Son idénticos",
+      "A) Standard: protección gratuita contra DDoS básicos; Advanced: protección pagada contra DDoS sofisticados",
       "D) Advanced solo funciona con EC2"
     ],
     "options_en": [
-      "A) Standard: free protection against basic DDoS; Advanced: paid protection against sophisticated DDoS",
-      "B) They are identical",
       "C) Standard is more expensive",
+      "B) They are identical",
+      "A) Standard: free protection against basic DDoS; Advanced: paid protection against sophisticated DDoS",
       "D) Advanced only works with EC2"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Shield Standard es gratuito y protege contra ataques DDoS comunes; Advanced es pagado ($3000/mes) con soporte y mitigación avanzada.",
@@ -1465,18 +1465,18 @@
     "question_es": "¿Cómo se combina WAF con CloudFront para protección multicapa?",
     "question_en": "How do you combine WAF with CloudFront for multi-layer protection?",
     "options_es": [
-      "A) Asociar WAF Web ACL a CloudFront distribution para inspeccionar solicitudes antes de llegar al origen",
       "B) WAF no puede funcionar con CloudFront",
+      "A) Asociar WAF Web ACL a CloudFront distribution para inspeccionar solicitudes antes de llegar al origen",
       "C) Usar solo CloudFront sin WAF",
       "D) Reemplazar CloudFront con WAF"
     ],
     "options_en": [
-      "A) Associate WAF Web ACL to CloudFront distribution to inspect requests before reaching origin",
       "B) WAF cannot work with CloudFront",
+      "A) Associate WAF Web ACL to CloudFront distribution to inspect requests before reaching origin",
       "C) Use only CloudFront without WAF",
       "D) Replace CloudFront with WAF"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudFront distribuye contenido y WAF la asociada inspecciona solicitudes en los edge locations, proporcionando protección en el perímetro.",
@@ -1492,18 +1492,18 @@
     "question_es": "¿Cuál es el proceso para monitorear y ajustar reglas WAF usando CloudWatch Logs?",
     "question_en": "What is the process to monitor and tune WAF rules using CloudWatch Logs?",
     "options_es": [
-      "A) Habilitar logging en WAF, analizar patrones, ajustar reglas basándose en falsos positivos y amenazas detectadas",
+      "D) No es posible monitorear WAF",
       "B) WAF no genera logs",
       "C) Usar solo CloudTrail",
-      "D) No es posible monitorear WAF"
+      "A) Habilitar logging en WAF, analizar patrones, ajustar reglas basándose en falsos positivos y amenazas detectadas"
     ],
     "options_en": [
-      "A) Enable logging in WAF, analyze patterns, tune rules based on false positives and detected threats",
+      "D) It is not possible to monitor WAF",
       "B) WAF does not generate logs",
       "C) Use CloudTrail only",
-      "D) It is not possible to monitor WAF"
+      "A) Enable logging in WAF, analyze patterns, tune rules based on false positives and detected threats"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF puede escribir logs a CloudWatch Logs y S3, permitiendo análisis de solicitudes bloqueadas y ajuste de reglas.",
@@ -1519,18 +1519,18 @@
     "question_es": "Una aplicación necesita almacenar contraseñas de base de datos que deben rotarse automáticamente cada 90 días. ¿Cuál es la solución más apropiada entre AWS Secrets Manager y Parameter Store?",
     "question_en": "An application needs to store database passwords that must be automatically rotated every 90 days. Which is the most appropriate solution between AWS Secrets Manager and Parameter Store?",
     "options_es": [
-      "AWS Secrets Manager con rotación automática integrada",
       "AWS Systems Manager Parameter Store con políticas de ciclo de vida",
+      "AWS Secrets Manager con rotación automática integrada",
       "AWS Secrets Manager solo para almacenamiento, rotación manual con Lambda",
       "Parameter Store con cifrado KMS y scripts de rotación personalizados"
     ],
     "options_en": [
-      "AWS Secrets Manager with built-in automatic rotation",
       "AWS Systems Manager Parameter Store with lifecycle policies",
+      "AWS Secrets Manager with built-in automatic rotation",
       "AWS Secrets Manager for storage only, manual rotation with Lambda",
       "Parameter Store with KMS encryption and custom rotation scripts"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWS Secrets Manager proporciona rotación automática integrada para secretos como contraseñas de RDS. Parameter Store no tiene soporte nativo para rotación automática y está diseñado para parámetros de configuración, no para secretos sensibles que requieren rotación.",
@@ -1547,17 +1547,17 @@
     "question_en": "What is the approximate monthly cost of storing 100 secrets in AWS Secrets Manager (2026 estimate)?",
     "options_es": [
       "$0.40 (sin costo de rotación)",
-      "$4.00 (sin costo de rotación)",
+      "$0.04 por secreto más costo de rotación adicional",
       "$40.00 (incluye rotación)",
-      "$0.04 por secreto más costo de rotación adicional"
+      "$4.00 (sin costo de rotación)"
     ],
     "options_en": [
       "$0.40 (no rotation cost)",
-      "$4.00 (no rotation cost)",
+      "$0.04 per secret plus additional rotation cost",
       "$40.00 (includes rotation)",
-      "$0.04 per secret plus additional rotation cost"
+      "$4.00 (no rotation cost)"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWS Secrets Manager cobra $0.40 por secreto por mes, así que 100 secretos costarían $40/mes. Los costos de rotación son adicionales ($0.05 por rotación). Parameter Store es más económico para parámetros simples.",
@@ -1574,17 +1574,17 @@
     "question_en": "An application in account A needs to access secrets stored in centralized account B's AWS Secrets Manager. Which combination of services enables this?",
     "options_es": [
       "Secretos Manager con replicación en múltiples regiones",
-      "Secretos Manager + IAM resource-based policy + STS AssumeRole",
       "Secretos Manager + VPC endpoints + Private Link",
+      "Secretos Manager + IAM resource-based policy + STS AssumeRole",
       "Parameter Store con permisos entre cuentas y KMS multi-cuenta"
     ],
     "options_en": [
       "Secrets Manager with multi-region replication",
-      "Secrets Manager + IAM resource-based policy + STS AssumeRole",
       "Secrets Manager + VPC endpoints + Private Link",
+      "Secrets Manager + IAM resource-based policy + STS AssumeRole",
       "Parameter Store with cross-account permissions and multi-account KMS"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Para acceso cross-account, Secrets Manager requiere una política de recurso en el secreto que permita AssumeRole, combinado con roles IAM en la cuenta consumidora. VPC endpoints ayudan con privacidad pero no resuelven el problema de acceso cross-account.",
@@ -1627,18 +1627,18 @@
     "question_es": "¿Cómo debería una aplicación obtener un secreto de AWS Secrets Manager mientras minimiza latencia?",
     "question_en": "How should an application retrieve a secret from AWS Secrets Manager while minimizing latency?",
     "options_es": [
-      "Llamar a GetSecretValue en cada solicitud HTTP",
       "Cachear el secreto en memoria de aplicación con TTL corto",
+      "Llamar a GetSecretValue en cada solicitud HTTP",
       "Usar AWS Lambda@Edge para almacenar en caché",
       "Replicar el secreto a Parameter Store para lectura local"
     ],
     "options_en": [
-      "Call GetSecretValue on every HTTP request",
       "Cache the secret in application memory with short TTL",
+      "Call GetSecretValue on every HTTP request",
       "Use AWS Lambda@Edge to cache",
       "Replicate secret to Parameter Store for local reading"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cachear en memoria de aplicación con TTL corto (ej: 1 hora) es la mejor práctica. Llamar en cada solicitud es ineficiente. Lambda@Edge no es para este caso. Replicar a Parameter Store es innecesario.",
@@ -1654,18 +1654,18 @@
     "question_es": "Una rotación de secreto en Secrets Manager falló y necesita revertirse. ¿Cuál es el procedimiento correcto?",
     "question_en": "A secret rotation in Secrets Manager failed and needs to be rolled back. What is the correct procedure?",
     "options_es": [
-      "Usar GetSecretValue con VersionId para recuperar la versión anterior",
       "Restaurar desde el snapshot de la versión anterior",
+      "Usar GetSecretValue con VersionId para recuperar la versión anterior",
       "Usar UpdateSecret para resetear a la versión anterior con AWSPENDING",
       "Contactar a AWS Support para restauración manual"
     ],
     "options_en": [
-      "Use GetSecretValue with VersionId to retrieve previous version",
       "Restore from previous version snapshot",
+      "Use GetSecretValue with VersionId to retrieve previous version",
       "Use UpdateSecret to reset to previous version with AWSPENDING",
       "Contact AWS Support for manual restoration"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Secrets Manager mantiene versiones de secretos. Puede recuperar una versión anterior usando GetSecretValue con VersionId. Luego actualizar el secreto a esa versión. No hay snapshots automáticos ni requiere AWS Support.",
@@ -1681,18 +1681,18 @@
     "question_es": "¿Cuál es el propósito de la etiqueta AWSPENDING en versiones de secretos?",
     "question_en": "What is the purpose of the AWSPENDING label on secret versions?",
     "options_es": [
-      "Marcar una versión que está siendo rotada",
+      "Mostrar que una versión está encriptada",
       "Indicar que una versión expirará pronto",
       "Señalar que una versión no tiene permisos de lectura",
-      "Mostrar que una versión está encriptada"
+      "Marcar una versión que está siendo rotada"
     ],
     "options_en": [
-      "Mark a version that is being rotated",
+      "Show that a version is encrypted",
       "Indicate that a version will expire soon",
       "Signal that a version lacks read permissions",
-      "Show that a version is encrypted"
+      "Mark a version that is being rotated"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWSPENDING marca una versión en proceso de rotación. Una vez que la rotación completa, esa versión se etiqueta como AWSCURRENT. La versión anterior se etiqueta como AWSPREVIOUS.",
@@ -1735,18 +1735,18 @@
     "question_es": "Un secreto debe ser rotado manualmente cada mes en una base de datos Oracle. ¿Qué servicio de Lambda debería usarse?",
     "question_en": "A secret must be manually rotated monthly on an Oracle database. Which Lambda service should be used?",
     "options_es": [
-      "AWS Lambda con rotación personalizada usando capas personalizadas",
-      "AWS Lambda Layers con función de rotación preconfigurada",
       "AWS Secrets Manager solo soporta rotación automática para RDS",
+      "AWS Lambda Layers con función de rotación preconfigurada",
+      "AWS Lambda con rotación personalizada usando capas personalizadas",
       "Usar EventBridge + Lambda para rotación programada manual"
     ],
     "options_en": [
-      "AWS Lambda with custom rotation using custom layers",
-      "AWS Lambda Layers with preconfigured rotation function",
       "AWS Secrets Manager only supports automatic rotation for RDS",
+      "AWS Lambda Layers with preconfigured rotation function",
+      "AWS Lambda with custom rotation using custom layers",
       "Use EventBridge + Lambda for scheduled manual rotation"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Para bases de datos no soportadas nativamente (como Oracle), se puede crear una función Lambda personalizada con capas que rooten el secreto. Secrets Manager permite esto mediante la configuración de rotación personalizada.",
@@ -1762,18 +1762,18 @@
     "question_es": "¿Cuál es la forma más segura de usar Secrets Manager en una aplicación Lambda?",
     "question_en": "What is the most secure way to use Secrets Manager in a Lambda application?",
     "options_es": [
-      "Código fuente con credenciales hardcodeadas",
-      "Variables de entorno Lambda sin cifrado",
       "AWS Secrets Manager API en el código Lambda",
+      "Variables de entorno Lambda sin cifrado",
+      "Código fuente con credenciales hardcodeadas",
       "Credenciales en archivos de configuración versionados"
     ],
     "options_en": [
-      "Source code with hardcoded credentials",
-      "Lambda environment variables without encryption",
       "AWS Secrets Manager API in Lambda code",
+      "Lambda environment variables without encryption",
+      "Source code with hardcoded credentials",
       "Credentials in versioned config files"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Usar Secrets Manager API en código Lambda es la forma más segura. Los secretos nunca se almacenan localmente, son recuperados en tiempo de ejecución y pueden ser rotados centralmente.",
@@ -1790,17 +1790,17 @@
     "question_en": "How is a staged rotation strategy implemented for secrets in an application without downtime?",
     "options_es": [
       "Cambiar secreto en Secrets Manager, luego actualizar todos los servidores",
-      "Crear versión con AWSPENDING, validar, luego cambiar con AWSCURRENT",
       "Usar dos secretos alternos con rotación cruzada",
+      "Crear versión con AWSPENDING, validar, luego cambiar con AWSCURRENT",
       "Pausar la aplicación, cambiar secreto, reiniciar"
     ],
     "options_en": [
       "Change secret in Secrets Manager, then update all servers",
-      "Create version with AWSPENDING, validate, then switch with AWSCURRENT",
       "Use two alternating secrets with cross rotation",
+      "Create version with AWSPENDING, validate, then switch with AWSCURRENT",
       "Pause application, change secret, restart"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "La rotación escalonada usa AWSPENDING para crear y validar una nueva versión sin afectar AWSCURRENT que las aplicaciones están usando. Solo después de validar exitosa se cambia a AWSCURRENT.",
@@ -1818,16 +1818,16 @@
     "options_es": [
       "7 días automáticamente",
       "30 días automáticamente",
-      "100 años (indefinido)",
-      "Configurable con mínimo de 7 días"
+      "Configurable con mínimo de 7 días",
+      "100 años (indefinido)"
     ],
     "options_en": [
       "7 days automatically",
       "30 days automatically",
-      "100 years (indefinite)",
-      "Configurable with 7-day minimum"
+      "Configurable with 7-day minimum",
+      "100 years (indefinite)"
     ],
-    "correct_index": 2,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AWS Secrets Manager retiene todas las versiones indefinidamente (100 años) para fines de auditoría. Las versiones antiguas no se eliminan automáticamente a menos que se elimine el secreto.",
@@ -1843,18 +1843,18 @@
     "question_es": "Una auditoría requiere rastrear todos los accesos a secretos. ¿Cómo se implementa esto?",
     "question_en": "An audit requires tracking all access to secrets. How is this implemented?",
     "options_es": [
-      "CloudTrail registra API calls a Secrets Manager automáticamente",
+      "Usar Secrets Manager audit trail feature",
       "Usar CloudWatch Logs integrado en Secrets Manager",
       "Implementar VPC Flow Logs en VPC endpoints",
-      "Usar Secrets Manager audit trail feature"
+      "CloudTrail registra API calls a Secrets Manager automáticamente"
     ],
     "options_en": [
-      "CloudTrail automatically logs API calls to Secrets Manager",
+      "Use Secrets Manager audit trail feature",
       "Use built-in CloudWatch Logs in Secrets Manager",
       "Implement VPC Flow Logs on VPC endpoints",
-      "Use Secrets Manager audit trail feature"
+      "CloudTrail automatically logs API calls to Secrets Manager"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudTrail captura automáticamente todas las llamadas API a Secrets Manager incluyendo GetSecretValue. Los logs pueden ser analizados para auditoría de cumplimiento.",
@@ -1897,18 +1897,18 @@
     "question_es": "Una app móvil necesita permitir login con Google y luego acceder a un bucket S3 privado. ¿Qué servicio de AWS gestiona esta federación?",
     "question_en": "A mobile app needs to allow Google login then access a private S3 bucket. Which AWS service manages this federation?",
     "options_es": [
-      "IAM con SAML provider",
       "Amazon Cognito Identity Pools",
+      "IAM con SAML provider",
       "AWS STS directamente",
       "AWS Directory Service"
     ],
     "options_en": [
-      "IAM with SAML provider",
       "Amazon Cognito Identity Pools",
+      "IAM with SAML provider",
       "AWS STS directly",
       "AWS Directory Service"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Cognito Identity Pools acepta tokens de proveedores externos (Google, Facebook, Apple, SAML, OpenID Connect) y los intercambia por credenciales temporales IAM que permiten acceder a S3.",
@@ -1979,17 +1979,17 @@
     "question_en": "A company must comply with regulations requiring their own dedicated HSM. Which AWS service should they use?",
     "options_es": [
       "AWS KMS con CMK",
-      "AWS CloudHSM",
+      "AWS Certificate Manager",
       "AWS Secrets Manager",
-      "AWS Certificate Manager"
+      "AWS CloudHSM"
     ],
     "options_en": [
       "AWS KMS with CMK",
-      "AWS CloudHSM",
+      "AWS Certificate Manager",
       "AWS Secrets Manager",
-      "AWS Certificate Manager"
+      "AWS CloudHSM"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CloudHSM provee HSMs dedicados de instancia única donde solo el cliente controla las claves. KMS es multi-tenant. Para regulaciones que exigen HSM dedicado o control exclusivo del cliente, CloudHSM es la respuesta.",
@@ -2006,17 +2006,17 @@
     "question_en": "What is envelope encryption in AWS KMS?",
     "options_es": [
       "Cifrar la clave maestra con otra clave maestra",
-      "Usar una data key para cifrar datos y luego cifrar esa data key con una CMK",
+      "Almacenar claves en sobres físicos",
       "Enviar claves cifradas por email",
-      "Almacenar claves en sobres físicos"
+      "Usar una data key para cifrar datos y luego cifrar esa data key con una CMK"
     ],
     "options_en": [
       "Encrypting the master key with another master key",
-      "Using a data key to encrypt data and then encrypting that data key with a CMK",
+      "Storing keys in physical envelopes",
       "Sending encrypted keys by email",
-      "Storing keys in physical envelopes"
+      "Using a data key to encrypt data and then encrypting that data key with a CMK"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Envelope encryption: KMS genera una data key de 256 bits para cifrar datos grandes (KMS solo cifra hasta 4KB directamente). La data key cifrada se almacena junto a los datos; para descifrar, KMS descifra la data key primero.",

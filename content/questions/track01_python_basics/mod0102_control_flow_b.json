@@ -7,14 +7,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nedad = 20\nmensaje = \"adulto\" if edad >= 18 else \"menor\"\nprint(mensaje)\n```",
       "question_en": "What does the following code print?\n\n```python\nage = 20\nmessage = \"adult\" if age >= 18 else \"minor\"\nprint(message)\n```",
-      "options_es": ["adulto", "menor", "True", "Lanza un error de sintaxis"],
-      "options_en": ["adult", "minor", "True", "It raises a syntax error"],
-      "correct_index": 0,
+      "options_es": [
+        "menor",
+        "adulto",
+        "True",
+        "Lanza un error de sintaxis"
+      ],
+      "options_en": [
+        "minor",
+        "adult",
+        "True",
+        "It raises a syntax error"
+      ],
+      "correct_index": 1,
       "explanation_es": "El operador ternario de Python se lee en el orden «valor si condición si-no otro»: primero el resultado, luego la condición. Es al revés que en C o JavaScript (`cond ? a : b`), y esa inversión es el tropiezo habitual al llegar de esos lenguajes.",
       "explanation_en": "Python's conditional expression reads as 'value if condition else other': the result comes first, the condition second. It is the reverse of C or JavaScript (`cond ? a : b`), and that inversion is the usual stumble for people arriving from those languages.",
       "source": "PEP 308 — Conditional Expressions",
       "expected_time_ms": 25000,
-      "tags": ["conditionals", "ternary"]
+      "tags": [
+        "conditionals",
+        "ternary"
+      ]
     },
     {
       "id": "q010201011",
@@ -25,22 +38,25 @@
       "question_en": "What is the difference between chaining `elif` and writing several consecutive `if` statements?",
       "options_es": [
         "Ninguna, `elif` es solo azúcar sintáctico",
-        "Con `elif` solo se ejecuta la primera rama verdadera; con `if` seguidos se evalúan todas",
         "`elif` es más lento porque evalúa todas las condiciones",
+        "Con `elif` solo se ejecuta la primera rama verdadera; con `if` seguidos se evalúan todas",
         "Varios `if` seguidos provocan un error de sintaxis"
       ],
       "options_en": [
         "None, `elif` is just syntactic sugar",
-        "With `elif` only the first true branch runs; with consecutive `if`s every condition is evaluated",
         "`elif` is slower because it evaluates every condition",
+        "With `elif` only the first true branch runs; with consecutive `if`s every condition is evaluated",
         "Several consecutive `if`s raise a syntax error"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`elif` forma una cadena excluyente: en cuanto una condición se cumple, el resto se salta. Con `if` independientes cada condición se comprueba por separado, así que pueden ejecutarse varias ramas y el resultado cambia si las condiciones se solapan.",
       "explanation_en": "`elif` forms an exclusive chain: as soon as one condition holds, the rest are skipped. With independent `if`s each condition is checked separately, so several branches can run and the outcome changes when the conditions overlap.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.1 (if statements)",
       "expected_time_ms": 30000,
-      "tags": ["conditionals", "control-flow"]
+      "tags": [
+        "conditionals",
+        "control-flow"
+      ]
     },
     {
       "id": "q010201012",
@@ -49,14 +65,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\ndatos = []\nif datos is not None:\n    print(\"tengo datos\")\nelse:\n    print(\"sin datos\")\n```",
       "question_en": "What does the following code print?\n\n```python\ndata = []\nif data is not None:\n    print(\"got data\")\nelse:\n    print(\"no data\")\n```",
-      "options_es": ["tengo datos", "sin datos", "No imprime nada", "Lanza un error"],
-      "options_en": ["got data", "no data", "It prints nothing", "It raises an error"],
-      "correct_index": 0,
+      "options_es": [
+        "No imprime nada",
+        "sin datos",
+        "tengo datos",
+        "Lanza un error"
+      ],
+      "options_en": [
+        "It prints nothing",
+        "no data",
+        "got data",
+        "It raises an error"
+      ],
+      "correct_index": 2,
       "explanation_es": "Una lista vacía no es `None`: existe, simplemente no tiene elementos. La comprobación pasa aunque no haya nada que procesar. Si lo que quieres es «hay elementos», la condición correcta es `if datos:`.",
       "explanation_en": "An empty list is not `None`: it exists, it just has no elements. The check passes even though there is nothing to process. If what you mean is 'there are elements', the right condition is `if data:`.",
       "source": "CPython docs 3.13 — Built-in Types: Truth Value Testing",
       "expected_time_ms": 35000,
-      "tags": ["conditionals", "none", "truthiness"]
+      "tags": [
+        "conditionals",
+        "none",
+        "truthiness"
+      ]
     },
     {
       "id": "q010201013",
@@ -65,14 +95,23 @@
       "difficulty_tier": "medium",
       "question_es": "En Python se puede escribir `if 0 <= x <= 100:` para comprobar que `x` está en un rango.",
       "question_en": "In Python you can write `if 0 <= x <= 100:` to check that `x` lies within a range.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Python encadena comparaciones como en matemáticas, y además evalúa `x` una sola vez. En la mayoría de lenguajes habría que escribir `0 <= x && x <= 100`, y quien lo traduce literalmente se pierde una de las expresiones más legibles de Python.",
       "explanation_en": "Python chains comparisons the way mathematics does, and evaluates `x` only once. Most languages would need `0 <= x && x <= 100`, and anyone translating literally misses one of Python's most readable expressions.",
       "source": "CPython docs 3.13 — The Python Language Reference: Comparisons",
       "expected_time_ms": 25000,
-      "tags": ["conditionals", "comparison"]
+      "tags": [
+        "conditionals",
+        "comparison"
+      ]
     },
     {
       "id": "q010201014",
@@ -81,14 +120,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\ndef caro():\n    print(\"evaluando\")\n    return True\n\nif False and caro():\n    pass\nprint(\"fin\")\n```",
       "question_en": "What does the following code print?\n\n```python\ndef expensive():\n    print(\"evaluating\")\n    return True\n\nif False and expensive():\n    pass\nprint(\"done\")\n```",
-      "options_es": ["fin", "evaluando\\nfin", "evaluando", "No imprime nada"],
-      "options_en": ["done", "evaluating\\ndone", "evaluating", "It prints nothing"],
-      "correct_index": 0,
+      "options_es": [
+        "No imprime nada",
+        "evaluando\\nfin",
+        "evaluando",
+        "fin"
+      ],
+      "options_en": [
+        "It prints nothing",
+        "evaluating\\ndone",
+        "evaluating",
+        "done"
+      ],
+      "correct_index": 3,
       "explanation_es": "`and` cortocircuita: si el primer operando es falso el resultado ya está decidido y el segundo no llega a evaluarse, así que `caro()` nunca se llama. Es lo que permite el patrón `if datos and datos[0] == x:` sin arriesgar un `IndexError`.",
       "explanation_en": "`and` short-circuits: if the first operand is falsy the result is already settled and the second is never evaluated, so `expensive()` is never called. This is what makes `if data and data[0] == x:` safe from an `IndexError`.",
       "source": "CPython docs 3.13 — Built-in Types: Boolean Operations",
       "expected_time_ms": 40000,
-      "tags": ["conditionals", "short-circuit"]
+      "tags": [
+        "conditionals",
+        "short-circuit"
+      ]
     },
     {
       "id": "q010201015",
@@ -114,7 +166,10 @@
       "explanation_en": "The assignment expression stores the value and yields it at the same time, so `n` is available inside the block without computing `len` twice or adding a line beforehand. The parentheses are required here because of precedence.",
       "source": "PEP 572 — Assignment Expressions",
       "expected_time_ms": 45000,
-      "tags": ["conditionals", "walrus"]
+      "tags": [
+        "conditionals",
+        "walrus"
+      ]
     },
     {
       "id": "q010201016",
@@ -129,9 +184,11 @@
       "explanation_en": "`else` runs when no earlier condition held. It carries no condition of its own, which is why it always comes last in the chain.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.1 (if statements)",
       "expected_time_ms": 12000,
-      "tags": ["conditionals", "syntax"]
+      "tags": [
+        "conditionals",
+        "syntax"
+      ]
     },
-
     {
       "id": "q010202010",
       "skill_id": "sk010202",
@@ -139,14 +196,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfor i in range(5, 0, -1):\n    print(i, end=\" \")\n```",
       "question_en": "What does the following code print?\n\n```python\nfor i in range(5, 0, -1):\n    print(i, end=\" \")\n```",
-      "options_es": ["5 4 3 2 1", "5 4 3 2 1 0", "1 2 3 4 5", "No imprime nada"],
-      "options_en": ["5 4 3 2 1", "5 4 3 2 1 0", "1 2 3 4 5", "It prints nothing"],
-      "correct_index": 0,
+      "options_es": [
+        "1 2 3 4 5",
+        "5 4 3 2 1 0",
+        "5 4 3 2 1",
+        "No imprime nada"
+      ],
+      "options_en": [
+        "1 2 3 4 5",
+        "5 4 3 2 1 0",
+        "5 4 3 2 1",
+        "It prints nothing"
+      ],
+      "correct_index": 2,
       "explanation_es": "`range(inicio, fin, paso)` excluye siempre el `fin`, también con paso negativo: baja de 5 hasta 1 y se detiene antes del 0. Para incluir el cero habría que escribir `range(5, -1, -1)`.",
       "explanation_en": "`range(start, stop, step)` always excludes `stop`, negative steps included: it counts down from 5 to 1 and stops before 0. To include zero you would write `range(5, -1, -1)`.",
       "source": "CPython docs 3.13 — Built-in Functions: range()",
       "expected_time_ms": 30000,
-      "tags": ["for", "range"]
+      "tags": [
+        "for",
+        "range"
+      ]
     },
     {
       "id": "q010202011",
@@ -155,14 +225,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nprecios = {\"pan\": 2, \"leche\": 1}\nfor x in precios:\n    print(x, end=\" \")\n```",
       "question_en": "What does the following code print?\n\n```python\nprices = {\"bread\": 2, \"milk\": 1}\nfor x in prices:\n    print(x, end=\" \")\n```",
-      "options_es": ["pan leche", "2 1", "('pan', 2) ('leche', 1)", "Lanza un error"],
-      "options_en": ["bread milk", "2 1", "('bread', 2) ('milk', 1)", "It raises an error"],
-      "correct_index": 0,
+      "options_es": [
+        "2 1",
+        "pan leche",
+        "('pan', 2) ('leche', 1)",
+        "Lanza un error"
+      ],
+      "options_en": [
+        "2 1",
+        "bread milk",
+        "('bread', 2) ('milk', 1)",
+        "It raises an error"
+      ],
+      "correct_index": 1,
       "explanation_es": "Iterar un diccionario directamente recorre sus **claves**, no sus valores ni los pares. Para los valores está `.values()` y para ambos `.items()`, que es lo que suele querer quien esperaba tuplas aquí.",
       "explanation_en": "Iterating a dictionary directly walks its **keys**, not its values nor the pairs. For values there is `.values()`, and for both `.items()`, which is what anyone expecting tuples here actually wanted.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.6 (looping techniques)",
       "expected_time_ms": 30000,
-      "tags": ["for", "dict"]
+      "tags": [
+        "for",
+        "dict"
+      ]
     },
     {
       "id": "q010202012",
@@ -173,22 +256,26 @@
       "question_en": "What is the idiomatic way to walk two lists of the same length in parallel?",
       "options_es": [
         "`for i in range(len(a)): ... a[i], b[i]`",
-        "`for x, y in zip(a, b):`",
+        "`for x, y in a, b:`",
         "`for x in a and b:`",
-        "`for x, y in a, b:`"
+        "`for x, y in zip(a, b):`"
       ],
       "options_en": [
         "`for i in range(len(a)): ... a[i], b[i]`",
-        "`for x, y in zip(a, b):`",
+        "`for x, y in a, b:`",
         "`for x in a and b:`",
-        "`for x, y in a, b:`"
+        "`for x, y in zip(a, b):`"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`zip` empareja los elementos y desaparece el índice, que solo servía de intermediario. Se detiene en la lista más corta; si necesitas detectar largos distintos, `zip(a, b, strict=True)` lanza error en Python 3.10+.",
       "explanation_en": "`zip` pairs the elements and removes the index, which was only ever a middleman. It stops at the shorter list; if you need to catch mismatched lengths, `zip(a, b, strict=True)` raises in Python 3.10+.",
       "source": "CPython docs 3.13 — Built-in Functions: zip()",
       "expected_time_ms": 30000,
-      "tags": ["for", "zip", "idioms"]
+      "tags": [
+        "for",
+        "zip",
+        "idioms"
+      ]
     },
     {
       "id": "q010202013",
@@ -197,14 +284,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfor i in range(3):\n    pass\nprint(i)\n```",
       "question_en": "What does the following code print?\n\n```python\nfor i in range(3):\n    pass\nprint(i)\n```",
-      "options_es": ["2", "3", "0", "Lanza un `NameError`"],
-      "options_en": ["2", "3", "0", "It raises a `NameError`"],
-      "correct_index": 0,
+      "options_es": [
+        "0",
+        "3",
+        "2",
+        "Lanza un `NameError`"
+      ],
+      "options_en": [
+        "0",
+        "3",
+        "2",
+        "It raises a `NameError`"
+      ],
+      "correct_index": 2,
       "explanation_es": "La variable del bucle sobrevive al bucle y conserva el último valor asignado, que es 2 porque `range(3)` llega hasta 2. Los bucles `for` no crean un ámbito propio en Python, a diferencia de otros lenguajes.",
       "explanation_en": "The loop variable outlives the loop and keeps the last value assigned, which is 2 because `range(3)` reaches 2. `for` loops do not create their own scope in Python, unlike in other languages.",
       "source": "CPython docs 3.13 — The Python Language Reference: The for statement",
       "expected_time_ms": 35000,
-      "tags": ["for", "scope"]
+      "tags": [
+        "for",
+        "scope"
+      ]
     },
     {
       "id": "q010202014",
@@ -213,14 +313,24 @@
       "difficulty_tier": "hard",
       "question_es": "Eliminar elementos de una lista mientras la recorres con `for` puede hacer que se salten elementos.",
       "question_en": "Removing items from a list while iterating it with `for` can cause items to be skipped.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "El bucle avanza por índice interno: al borrar un elemento todo lo posterior se desplaza una posición y el siguiente queda detrás del cursor, que ya pasó de largo. Lo seguro es construir una lista nueva con una comprensión o iterar sobre una copia.",
       "explanation_en": "The loop advances by an internal index: deleting an item shifts everything after it one place back, and the next item ends up behind the cursor, which has already moved past. The safe approach is to build a new list with a comprehension, or iterate over a copy.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.2 (for statements)",
       "expected_time_ms": 35000,
-      "tags": ["for", "mutation", "gotcha"]
+      "tags": [
+        "for",
+        "mutation",
+        "gotcha"
+      ]
     },
     {
       "id": "q010202015",
@@ -235,7 +345,10 @@
       "explanation_en": "`reversed` returns a lazy iterator, so it does not duplicate the list in memory. The slice `items[::-1]` works too, but builds a full copy.",
       "source": "CPython docs 3.13 — Built-in Functions: reversed()",
       "expected_time_ms": 20000,
-      "tags": ["for", "iteration"]
+      "tags": [
+        "for",
+        "iteration"
+      ]
     },
     {
       "id": "q010202016",
@@ -244,16 +357,29 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfor i in range(0):\n    print(\"dentro\")\nelse:\n    print(\"else\")\n```",
       "question_en": "What does the following code print?\n\n```python\nfor i in range(0):\n    print(\"inside\")\nelse:\n    print(\"else\")\n```",
-      "options_es": ["else", "dentro", "No imprime nada", "dentro\\nelse"],
-      "options_en": ["else", "inside", "It prints nothing", "inside\\nelse"],
-      "correct_index": 0,
+      "options_es": [
+        "dentro",
+        "else",
+        "No imprime nada",
+        "dentro\\nelse"
+      ],
+      "options_en": [
+        "inside",
+        "else",
+        "It prints nothing",
+        "inside\\nelse"
+      ],
+      "correct_index": 1,
       "explanation_es": "El `else` de un bucle se ejecuta cuando el bucle termina **sin** un `break`, incluido el caso de no iterar ninguna vez. No significa «si no hubo iteraciones»: leerlo como «si no hubo break» evita casi todos los malentendidos.",
       "explanation_en": "A loop's `else` runs when the loop finishes **without** a `break`, including when it never iterates at all. It does not mean 'if there were no iterations': reading it as 'if there was no break' avoids nearly every misunderstanding.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue, else on loops)",
       "expected_time_ms": 45000,
-      "tags": ["for", "else", "gotcha"]
+      "tags": [
+        "for",
+        "else",
+        "gotcha"
+      ]
     },
-
     {
       "id": "q010203010",
       "skill_id": "sk010203",
@@ -261,14 +387,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nn = 5\nwhile n > 10:\n    print(\"dentro\")\n    n -= 1\nprint(\"fuera\")\n```",
       "question_en": "What does the following code print?\n\n```python\nn = 5\nwhile n > 10:\n    print(\"inside\")\n    n -= 1\nprint(\"outside\")\n```",
-      "options_es": ["fuera", "dentro\\nfuera", "Bucle infinito", "No imprime nada"],
-      "options_en": ["outside", "inside\\noutside", "Infinite loop", "It prints nothing"],
-      "correct_index": 0,
+      "options_es": [
+        "No imprime nada",
+        "dentro\\nfuera",
+        "Bucle infinito",
+        "fuera"
+      ],
+      "options_en": [
+        "It prints nothing",
+        "inside\\noutside",
+        "Infinite loop",
+        "outside"
+      ],
+      "correct_index": 3,
       "explanation_es": "La condición se evalúa **antes** de la primera vuelta, así que un `while` puede ejecutarse cero veces. Python no tiene `do...while`, que garantizaría al menos una pasada.",
       "explanation_en": "The condition is evaluated **before** the first pass, so a `while` can run zero times. Python has no `do...while`, which would guarantee at least one pass.",
       "source": "CPython docs 3.13 — The Python Language Reference: The while statement",
       "expected_time_ms": 25000,
-      "tags": ["while", "control-flow"]
+      "tags": [
+        "while",
+        "control-flow"
+      ]
     },
     {
       "id": "q010203011",
@@ -279,22 +418,25 @@
       "question_en": "How do you emulate a `do...while` loop in Python, which must run at least once?",
       "options_es": [
         "`do: ... while cond`",
-        "`while True:` con un `if not cond: break` al final del cuerpo",
+        "No se puede: hay que duplicar el cuerpo antes del bucle",
         "`repeat: ... until cond`",
-        "No se puede: hay que duplicar el cuerpo antes del bucle"
+        "`while True:` con un `if not cond: break` al final del cuerpo"
       ],
       "options_en": [
         "`do: ... while cond`",
-        "`while True:` with an `if not cond: break` at the end of the body",
+        "It cannot be done: you must duplicate the body before the loop",
         "`repeat: ... until cond`",
-        "It cannot be done: you must duplicate the body before the loop"
+        "`while True:` with an `if not cond: break` at the end of the body"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "Es el patrón estándar: entrar siempre y decidir al final si se repite. Duplicar el cuerpo antes del bucle también «funciona», pero obliga a mantener el mismo código en dos sitios, que es justo lo que el patrón evita.",
       "explanation_en": "This is the standard pattern: always enter, then decide at the end whether to repeat. Duplicating the body before the loop also 'works', but forces you to maintain the same code in two places, which is exactly what the pattern avoids.",
       "source": "CPython docs 3.13 — The Python Language Reference: The while statement / break",
       "expected_time_ms": 30000,
-      "tags": ["while", "patterns"]
+      "tags": [
+        "while",
+        "patterns"
+      ]
     },
     {
       "id": "q010203012",
@@ -303,14 +445,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nn = 3\nwhile n:\n    print(n, end=\" \")\n    n -= 1\n```",
       "question_en": "What does the following code print?\n\n```python\nn = 3\nwhile n:\n    print(n, end=\" \")\n    n -= 1\n```",
-      "options_es": ["3 2 1", "3 2 1 0", "Bucle infinito", "Lanza un error"],
-      "options_en": ["3 2 1", "3 2 1 0", "Infinite loop", "It raises an error"],
-      "correct_index": 0,
+      "options_es": [
+        "3 2 1 0",
+        "3 2 1",
+        "Bucle infinito",
+        "Lanza un error"
+      ],
+      "options_en": [
+        "3 2 1 0",
+        "3 2 1",
+        "Infinite loop",
+        "It raises an error"
+      ],
+      "correct_index": 1,
       "explanation_es": "`while n:` aprovecha que el cero es falso: el bucle para cuando `n` llega a 0, sin escribir la comparación. Es idiomático, aunque con números negativos seguiría siendo verdadero, así que solo sirve si `n` decrece hacia cero.",
       "explanation_en": "`while n:` leans on zero being falsy: the loop stops when `n` reaches 0, with no comparison written. It is idiomatic, though negative numbers stay truthy, so it only works when `n` descends toward zero.",
       "source": "CPython docs 3.13 — Built-in Types: Truth Value Testing",
       "expected_time_ms": 35000,
-      "tags": ["while", "truthiness"]
+      "tags": [
+        "while",
+        "truthiness"
+      ]
     },
     {
       "id": "q010203013",
@@ -319,14 +474,23 @@
       "difficulty_tier": "medium",
       "question_es": "Un bucle `while` también admite una cláusula `else`, igual que el `for`.",
       "question_en": "A `while` loop also accepts an `else` clause, just as `for` does.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "`while ... else` existe y sigue la misma regla: el `else` corre si el bucle terminó porque la condición dejó de cumplirse, no si salió por `break`. Se usa poco, y por eso sorprende al encontrarlo.",
       "explanation_en": "`while ... else` exists and follows the same rule: the `else` runs if the loop ended because the condition became false, not if it exited via `break`. It is rarely used, which is why it surprises people who meet it.",
       "source": "CPython docs 3.13 — The Python Language Reference: The while statement",
       "expected_time_ms": 25000,
-      "tags": ["while", "else"]
+      "tags": [
+        "while",
+        "else"
+      ]
     },
     {
       "id": "q010203014",
@@ -335,14 +499,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\ni = 0\nwhile i < 3:\n    if i == 1:\n        i += 2\n        continue\n    print(i, end=\" \")\n    i += 1\n```",
       "question_en": "What does the following code print?\n\n```python\ni = 0\nwhile i < 3:\n    if i == 1:\n        i += 2\n        continue\n    print(i, end=\" \")\n    i += 1\n```",
-      "options_es": ["0", "0 1 2", "0 2", "Bucle infinito"],
-      "options_en": ["0", "0 1 2", "0 2", "Infinite loop"],
-      "correct_index": 0,
+      "options_es": [
+        "0 2",
+        "0 1 2",
+        "0",
+        "Bucle infinito"
+      ],
+      "options_en": [
+        "0 2",
+        "0 1 2",
+        "0",
+        "Infinite loop"
+      ],
+      "correct_index": 2,
       "explanation_es": "Se imprime 0 y `i` pasa a 1. En la vuelta siguiente entra en el `if`, suma 2 (i vale 3) y salta con `continue` sin imprimir. La condición ya no se cumple y el bucle termina. En un `while`, un `continue` que se salta el incremento normal es una fuente clásica de bucles infinitos.",
       "explanation_en": "0 is printed and `i` becomes 1. On the next pass it enters the `if`, adds 2 (i is 3) and skips with `continue` without printing. The condition no longer holds and the loop ends. In a `while`, a `continue` that bypasses the normal increment is a classic source of infinite loops.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
       "expected_time_ms": 45000,
-      "tags": ["while", "continue"]
+      "tags": [
+        "while",
+        "continue"
+      ]
     },
     {
       "id": "q010203015",
@@ -357,7 +534,10 @@
       "explanation_en": "`break` leaves the innermost loop immediately. It is what makes the `while True` pattern usable; without an exit it would be a genuine infinite loop.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
       "expected_time_ms": 15000,
-      "tags": ["while", "break"]
+      "tags": [
+        "while",
+        "break"
+      ]
     },
     {
       "id": "q010203016",
@@ -383,9 +563,12 @@
       "explanation_en": "0.1 has no exact binary representation, so the successive sums step past 1.0 without ever landing on it. With floats you compare by threshold (`n < 1.0`) or use `math.isclose`, never strict equality.",
       "source": "CPython docs 3.13 — The Python Tutorial §15 (floating-point arithmetic)",
       "expected_time_ms": 50000,
-      "tags": ["while", "float", "gotcha"]
+      "tags": [
+        "while",
+        "float",
+        "gotcha"
+      ]
     },
-
     {
       "id": "q010204010",
       "skill_id": "sk010204",
@@ -393,14 +576,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfor i in range(3):\n    for j in range(3):\n        if j == 1:\n            break\n        print(i, j, end=\"  \")\n```",
       "question_en": "What does the following code print?\n\n```python\nfor i in range(3):\n    for j in range(3):\n        if j == 1:\n            break\n        print(i, j, end=\"  \")\n```",
-      "options_es": ["0 0  1 0  2 0", "0 0", "0 0  0 1  0 2", "No imprime nada"],
-      "options_en": ["0 0  1 0  2 0", "0 0", "0 0  0 1  0 2", "It prints nothing"],
+      "options_es": [
+        "0 0  1 0  2 0",
+        "0 0",
+        "0 0  0 1  0 2",
+        "No imprime nada"
+      ],
+      "options_en": [
+        "0 0  1 0  2 0",
+        "0 0",
+        "0 0  0 1  0 2",
+        "It prints nothing"
+      ],
       "correct_index": 0,
       "explanation_es": "`break` sale solo del bucle **más interno**, así que el externo sigue girando tres veces. Para salir de ambos hace falta una bandera, un `return` dentro de una función, o refactorizar a una sola pasada.",
       "explanation_en": "`break` exits only the **innermost** loop, so the outer one keeps turning three times. Escaping both needs a flag, a `return` inside a function, or refactoring into a single pass.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
       "expected_time_ms": 40000,
-      "tags": ["break", "nested-loops"]
+      "tags": [
+        "break",
+        "nested-loops"
+      ]
     },
     {
       "id": "q010204011",
@@ -409,14 +605,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nfor n in [2, 4, 6]:\n    if n % 2 != 0:\n        break\nelse:\n    print(\"todos pares\")\n```",
       "question_en": "What does the following code print?\n\n```python\nfor n in [2, 4, 6]:\n    if n % 2 != 0:\n        break\nelse:\n    print(\"all even\")\n```",
-      "options_es": ["todos pares", "No imprime nada", "Lanza un error", "todos pares tres veces"],
-      "options_en": ["all even", "It prints nothing", "It raises an error", "all even three times"],
-      "correct_index": 0,
+      "options_es": [
+        "No imprime nada",
+        "todos pares",
+        "Lanza un error",
+        "todos pares tres veces"
+      ],
+      "options_en": [
+        "It prints nothing",
+        "all even",
+        "It raises an error",
+        "all even three times"
+      ],
+      "correct_index": 1,
       "explanation_es": "Ningún elemento dispara el `break`, así que el bucle termina de forma natural y el `else` se ejecuta una sola vez. Es el idiom para «no encontré ninguna excepción a la regla», mucho más limpio que llevar una bandera booleana.",
       "explanation_en": "No element triggers the `break`, so the loop ends naturally and the `else` runs exactly once. It is the idiom for 'I found no exception to the rule', far cleaner than carrying a boolean flag.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (else on loops)",
       "expected_time_ms": 40000,
-      "tags": ["else", "break", "idioms"]
+      "tags": [
+        "else",
+        "break",
+        "idioms"
+      ]
     },
     {
       "id": "q010204012",
@@ -426,23 +636,26 @@
       "question_es": "¿Qué hace `continue` dentro de un bucle?",
       "question_en": "What does `continue` do inside a loop?",
       "options_es": [
-        "Termina el bucle por completo",
         "Salta el resto del cuerpo y pasa a la siguiente iteración",
+        "Termina el bucle por completo",
         "Reinicia el bucle desde el principio",
         "Repite la iteración actual"
       ],
       "options_en": [
-        "It ends the loop entirely",
         "It skips the rest of the body and moves to the next iteration",
+        "It ends the loop entirely",
         "It restarts the loop from the beginning",
         "It repeats the current iteration"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "`continue` abandona la vuelta actual pero no el bucle: lo que quedaba del cuerpo se salta y la iteración siguiente arranca con normalidad. Confundirlo con «reiniciar» o «repetir» lleva a bucles infinitos en `while`.",
       "explanation_en": "`continue` abandons the current pass but not the loop: the rest of the body is skipped and the next iteration starts as usual. Confusing it with 'restart' or 'repeat' leads to infinite loops in `while`.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
       "expected_time_ms": 25000,
-      "tags": ["continue", "control-flow"]
+      "tags": [
+        "continue",
+        "control-flow"
+      ]
     },
     {
       "id": "q010204013",
@@ -451,14 +664,23 @@
       "difficulty_tier": "hard",
       "question_es": "Si un bucle `for ... else` sale por `break`, la cláusula `else` no se ejecuta.",
       "question_en": "If a `for ... else` loop exits via `break`, the `else` clause does not run.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Esa es exactamente la regla, y el nombre `else` la oscurece: se entiende mucho mejor leído como `nobreak`. Es lo que permite el patrón buscar-y-si-no-encuentro, sin banderas.",
       "explanation_en": "That is precisely the rule, and the name `else` obscures it: it reads far better as `nobreak`. It is what enables the search-and-otherwise pattern, without flags.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (else on loops)",
       "expected_time_ms": 30000,
-      "tags": ["else", "break"]
+      "tags": [
+        "else",
+        "break"
+      ]
     },
     {
       "id": "q010204014",
@@ -467,14 +689,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\ntotal = 0\nfor n in range(10):\n    if n % 3 != 0:\n        continue\n    total += n\nprint(total)\n```",
       "question_en": "What does the following code print?\n\n```python\ntotal = 0\nfor n in range(10):\n    if n % 3 != 0:\n        continue\n    total += n\nprint(total)\n```",
-      "options_es": ["18", "45", "9", "0"],
-      "options_en": ["18", "45", "9", "0"],
-      "correct_index": 0,
+      "options_es": [
+        "9",
+        "45",
+        "18",
+        "0"
+      ],
+      "options_en": [
+        "9",
+        "45",
+        "18",
+        "0"
+      ],
+      "correct_index": 2,
       "explanation_es": "Solo sobreviven al `continue` los múltiplos de 3 entre 0 y 9: 0, 3, 6 y 9, que suman 18. El 45 sería la suma de todos los números si el filtro no existiera.",
       "explanation_en": "Only the multiples of 3 between 0 and 9 survive the `continue`: 0, 3, 6 and 9, which add up to 18. The 45 would be the sum of every number if the filter were not there.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
       "expected_time_ms": 35000,
-      "tags": ["continue", "accumulator"]
+      "tags": [
+        "continue",
+        "accumulator"
+      ]
     },
     {
       "id": "q010204015",
@@ -489,7 +724,10 @@
       "explanation_en": "`continue` is the usual way to discard cases at the top of the body and avoid a giant `if` wrapping everything else, which removes one level of indentation.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
       "expected_time_ms": 18000,
-      "tags": ["continue", "style"]
+      "tags": [
+        "continue",
+        "style"
+      ]
     },
     {
       "id": "q010204016",
@@ -500,24 +738,27 @@
       "question_en": "You are searching a list inside a function. What advantage does `return` have over `break`?",
       "options_es": [
         "`return` es más rápido que `break`",
-        "`return` sale de todos los bucles anidados a la vez y entrega el resultado",
+        "No hay diferencia: `return` es un alias de `break`",
         "`break` no puede usarse dentro de funciones",
-        "No hay diferencia: `return` es un alias de `break`"
+        "`return` sale de todos los bucles anidados a la vez y entrega el resultado"
       ],
       "options_en": [
         "`return` is faster than `break`",
-        "`return` leaves every nested loop at once and delivers the result",
+        "There is no difference: `return` is an alias for `break`",
         "`break` cannot be used inside functions",
-        "There is no difference: `return` is an alias for `break`"
+        "`return` leaves every nested loop at once and delivers the result"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`break` solo abandona un nivel, así que con bucles anidados hay que arrastrar banderas. `return` sale de la función entera y además devuelve lo encontrado, lo que suele simplificar tanto el código que la búsqueda merece ser su propia función.",
       "explanation_en": "`break` leaves one level only, so nested loops force you to carry flags around. `return` exits the whole function and hands back what it found, which usually simplifies the code enough that the search deserves to be its own function.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.7 / §4.4",
       "expected_time_ms": 45000,
-      "tags": ["break", "return", "design"]
+      "tags": [
+        "break",
+        "return",
+        "design"
+      ]
     },
-
     {
       "id": "q010203017",
       "skill_id": "sk010203",
@@ -526,23 +767,26 @@
       "question_es": "¿Qué error tiene este bucle?\n\n```python\nn = 10\nwhile n > 0:\n    print(n)\n```",
       "question_en": "What is wrong with this loop?\n\n```python\nn = 10\nwhile n > 0:\n    print(n)\n```",
       "options_es": [
-        "Falta un `else`",
+        "`n` nunca cambia dentro del cuerpo, así que el bucle no termina",
         "`while` no admite comparaciones",
         "La condición está invertida",
-        "`n` nunca cambia dentro del cuerpo, así que el bucle no termina"
+        "Falta un `else`"
       ],
       "options_en": [
-        "It is missing an `else`",
+        "`n` never changes inside the body, so the loop never ends",
         "`while` does not accept comparisons",
         "The condition is inverted",
-        "`n` never changes inside the body, so the loop never ends"
+        "It is missing an `else`"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "Un `while` solo termina si algo del cuerpo acerca la condición a ser falsa. Aquí falta `n -= 1`. Es la diferencia práctica con `for`, que avanza solo sobre un iterable y no puede olvidarse de progresar.",
       "explanation_en": "A `while` ends only if something in the body moves the condition toward being false. Here `n -= 1` is missing. This is the practical difference from `for`, which advances through an iterable on its own and cannot forget to progress.",
       "source": "CPython docs 3.13 — The Python Language Reference: The while statement",
       "expected_time_ms": 30000,
-      "tags": ["while", "infinite-loop"]
+      "tags": [
+        "while",
+        "infinite-loop"
+      ]
     },
     {
       "id": "q010204017",
@@ -554,21 +798,24 @@
       "options_es": [
         "Devuelve el valor encontrado",
         "Marca el elemento como visitado",
-        "Reinicia la búsqueda desde el principio",
-        "Evita seguir recorriendo elementos que ya no hacen falta"
+        "Evita seguir recorriendo elementos que ya no hacen falta",
+        "Reinicia la búsqueda desde el principio"
       ],
       "options_en": [
         "It returns the value found",
         "It marks the element as visited",
-        "It restarts the search from the beginning",
-        "It avoids scanning elements that are no longer needed"
+        "It avoids scanning elements that are no longer needed",
+        "It restarts the search from the beginning"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "`break` no devuelve nada: corta el recorrido. La ganancia es no gastar tiempo en el resto de la lista una vez respondida la pregunta, algo que se nota cuando la colección es grande.",
       "explanation_en": "`break` returns nothing: it cuts the scan short. The gain is not spending time on the rest of the list once the question is answered, which shows when the collection is large.",
       "source": "CPython docs 3.13 — The Python Tutorial §4.4 (break and continue)",
       "expected_time_ms": 28000,
-      "tags": ["break", "search"]
+      "tags": [
+        "break",
+        "search"
+      ]
     },
     {
       "id": "q010205010",
@@ -577,14 +824,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nprint([x for x in range(6) if x % 2 == 0])\n```",
       "question_en": "What does the following code print?\n\n```python\nprint([x for x in range(6) if x % 2 == 0])\n```",
-      "options_es": ["`[0, 2, 4]`", "`[2, 4]`", "`[0, 2, 4, 6]`", "`[1, 3, 5]`"],
-      "options_en": ["`[0, 2, 4]`", "`[2, 4]`", "`[0, 2, 4, 6]`", "`[1, 3, 5]`"],
-      "correct_index": 0,
+      "options_es": [
+        "`[2, 4]`",
+        "`[0, 2, 4]`",
+        "`[0, 2, 4, 6]`",
+        "`[1, 3, 5]`"
+      ],
+      "options_en": [
+        "`[2, 4]`",
+        "`[0, 2, 4]`",
+        "`[0, 2, 4, 6]`",
+        "`[1, 3, 5]`"
+      ],
+      "correct_index": 1,
       "explanation_es": "`range(6)` va de 0 a 5 y el filtro conserva los pares, incluido el 0, que a menudo se olvida. El 6 no aparece porque `range` excluye el límite.",
       "explanation_en": "`range(6)` runs from 0 to 5 and the filter keeps the even ones, zero included — which is the one people forget. The 6 is absent because `range` excludes its stop value.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.1.3 (list comprehensions)",
       "expected_time_ms": 25000,
-      "tags": ["comprehensions", "filter"]
+      "tags": [
+        "comprehensions",
+        "filter"
+      ]
     },
     {
       "id": "q010205011",
@@ -594,23 +854,26 @@
       "question_es": "¿Dónde se coloca el `else` en una comprensión que transforma cada elemento?",
       "question_en": "Where does the `else` go in a comprehension that transforms each element?",
       "options_es": [
-        "`[x for x in xs if x > 0 else 0]`",
         "`[x if x > 0 else 0 for x in xs]`",
+        "`[x for x in xs if x > 0 else 0]`",
         "`[for x in xs: x if x > 0 else 0]`",
         "No se puede usar `else` en una comprensión"
       ],
       "options_en": [
-        "`[x for x in xs if x > 0 else 0]`",
         "`[x if x > 0 else 0 for x in xs]`",
+        "`[x for x in xs if x > 0 else 0]`",
         "`[for x in xs: x if x > 0 else 0]`",
         "`else` cannot be used in a comprehension"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Hay que distinguir dos cosas: el `if` **final** filtra y no admite `else`, mientras que `if/else` **delante del `for`** es el operador ternario que elige el valor. Quien mezcla ambas formas obtiene un `SyntaxError`.",
       "explanation_en": "Two different things are at play: the **trailing** `if` filters and takes no `else`, whereas `if/else` **before the `for`** is the conditional expression choosing the value. Mixing the two forms gives a `SyntaxError`.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.1.3 / PEP 308",
       "expected_time_ms": 45000,
-      "tags": ["comprehensions", "ternary"]
+      "tags": [
+        "comprehensions",
+        "ternary"
+      ]
     },
     {
       "id": "q010205012",
@@ -619,14 +882,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nprint({x % 3 for x in range(10)})\n```",
       "question_en": "What does the following code print?\n\n```python\nprint({x % 3 for x in range(10)})\n```",
-      "options_es": ["`{0, 1, 2}`", "`[0, 1, 2]`", "`{0: 1, 1: 2}`", "`{0, 1, 2, 3}`"],
-      "options_en": ["`{0, 1, 2}`", "`[0, 1, 2]`", "`{0: 1, 1: 2}`", "`{0, 1, 2, 3}`"],
-      "correct_index": 0,
+      "options_es": [
+        "`{0, 1, 2, 3}`",
+        "`[0, 1, 2]`",
+        "`{0: 1, 1: 2}`",
+        "`{0, 1, 2}`"
+      ],
+      "options_en": [
+        "`{0, 1, 2, 3}`",
+        "`[0, 1, 2]`",
+        "`{0: 1, 1: 2}`",
+        "`{0, 1, 2}`"
+      ],
+      "correct_index": 3,
       "explanation_es": "Las llaves sin dos puntos crean una **comprensión de conjunto**, que descarta los repetidos: los restos de dividir entre 3 solo pueden ser 0, 1 y 2. Con dos puntos sería una comprensión de diccionario.",
       "explanation_en": "Braces without a colon create a **set comprehension**, which drops duplicates: the remainders of division by 3 can only be 0, 1 and 2. With a colon it would be a dict comprehension.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.3 (set comprehensions)",
       "expected_time_ms": 40000,
-      "tags": ["comprehensions", "sets"]
+      "tags": [
+        "comprehensions",
+        "sets"
+      ]
     },
     {
       "id": "q010205013",
@@ -652,7 +928,11 @@
       "explanation_en": "The generator reserves no memory for all the elements, which matters with large or infinite data. In exchange it can be walked only once: once exhausted it is empty, and that is where it usually surprises people.",
       "source": "CPython docs 3.13 — The Python Tutorial §6.2.3 (generator expressions)",
       "expected_time_ms": 45000,
-      "tags": ["comprehensions", "generators", "memory"]
+      "tags": [
+        "comprehensions",
+        "generators",
+        "memory"
+      ]
     },
     {
       "id": "q010205014",
@@ -661,14 +941,27 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nmatriz = [[1, 2], [3, 4]]\nprint([x for fila in matriz for x in fila])\n```",
       "question_en": "What does the following code print?\n\n```python\nmatrix = [[1, 2], [3, 4]]\nprint([x for row in matrix for x in row])\n```",
-      "options_es": ["`[1, 2, 3, 4]`", "`[[1, 2], [3, 4]]`", "`[1, 3]`", "Lanza un error"],
-      "options_en": ["`[1, 2, 3, 4]`", "`[[1, 2], [3, 4]]`", "`[1, 3]`", "It raises an error"],
-      "correct_index": 0,
+      "options_es": [
+        "Lanza un error",
+        "`[[1, 2], [3, 4]]`",
+        "`[1, 3]`",
+        "`[1, 2, 3, 4]`"
+      ],
+      "options_en": [
+        "It raises an error",
+        "`[[1, 2], [3, 4]]`",
+        "`[1, 3]`",
+        "`[1, 2, 3, 4]`"
+      ],
+      "correct_index": 3,
       "explanation_es": "En una comprensión anidada los `for` se leen de izquierda a derecha, en el mismo orden en que se escribirían como bucles encajados. Es el idiom para aplanar una lista de listas; invertir el orden de los `for` da `NameError`.",
       "explanation_en": "In a nested comprehension the `for` clauses read left to right, in the same order you would write them as nested loops. It is the idiom for flattening a list of lists; swapping the `for` order gives a `NameError`.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.1.4 (nested list comprehensions)",
       "expected_time_ms": 50000,
-      "tags": ["comprehensions", "nested"]
+      "tags": [
+        "comprehensions",
+        "nested"
+      ]
     },
     {
       "id": "q010205015",
@@ -683,7 +976,10 @@
       "explanation_en": "A dict comprehension uses `key: value` before the `for`. The colon is the only thing distinguishing it from a set comprehension.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.5 (dictionary comprehensions)",
       "expected_time_ms": 25000,
-      "tags": ["comprehensions", "dict"]
+      "tags": [
+        "comprehensions",
+        "dict"
+      ]
     },
     {
       "id": "q010205016",
@@ -692,14 +988,24 @@
       "difficulty_tier": "hard",
       "question_es": "Una comprensión de lista siempre es preferible a un bucle `for`, por legible que sea el bucle.",
       "question_en": "A list comprehension is always preferable to a `for` loop, however readable the loop may be.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "La comprensión brilla cuando transforma o filtra en una línea que se lee de un vistazo. Con varias condiciones, anidamiento profundo o efectos secundarios, el bucle explícito es más claro — y PEP 8 antepone la legibilidad a la concisión.",
       "explanation_en": "A comprehension shines when it transforms or filters in one line you can take in at a glance. With several conditions, deep nesting or side effects, the explicit loop is clearer — and PEP 8 puts readability before brevity.",
       "source": "PEP 8 — Style Guide for Python Code / CPython docs 3.13 §5.1.3",
       "expected_time_ms": 35000,
-      "tags": ["comprehensions", "style", "readability"]
+      "tags": [
+        "comprehensions",
+        "style",
+        "readability"
+      ]
     }
   ]
 }

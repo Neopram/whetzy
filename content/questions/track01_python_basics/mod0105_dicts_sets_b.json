@@ -7,14 +7,27 @@
       "difficulty_tier": "easy",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {\"a\": 1}\nprint(d[\"b\"])\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {\"a\": 1}\nprint(d[\"b\"])\n```",
-      "options_es": ["None", "0", "Lanza un `KeyError`", "`{}`"],
-      "options_en": ["None", "0", "It raises a `KeyError`", "`{}`"],
+      "options_es": [
+        "None",
+        "0",
+        "Lanza un `KeyError`",
+        "`{}`"
+      ],
+      "options_en": [
+        "None",
+        "0",
+        "It raises a `KeyError`",
+        "`{}`"
+      ],
       "correct_index": 2,
       "explanation_es": "Acceder con corchetes a una clave inexistente falla de inmediato. Si la ausencia es un caso previsto, `d.get(\"b\")` devuelve `None` y `d.get(\"b\", 0)` permite fijar un valor por defecto.",
       "explanation_en": "Accessing a missing key with square brackets fails immediately. If absence is an expected case, `d.get(\"b\")` returns `None` and `d.get(\"b\", 0)` lets you set a default.",
       "source": "CPython docs 3.13 — Built-in Types: Mapping Types (dict)",
       "expected_time_ms": 22000,
-      "tags": ["dicts", "errors"]
+      "tags": [
+        "dicts",
+        "errors"
+      ]
     },
     {
       "id": "q010501011",
@@ -23,14 +36,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Cuál de estos objetos NO puede ser clave de un diccionario?",
       "question_en": "Which of these objects can NOT be a dictionary key?",
-      "options_es": ["`(1, 2)`", "`\"texto\"`", "`3.14`", "`[1, 2]`"],
-      "options_en": ["`(1, 2)`", "`\"text\"`", "`3.14`", "`[1, 2]`"],
-      "correct_index": 3,
+      "options_es": [
+        "`(1, 2)`",
+        "`\"texto\"`",
+        "`[1, 2]`",
+        "`3.14`"
+      ],
+      "options_en": [
+        "`(1, 2)`",
+        "`\"text\"`",
+        "`[1, 2]`",
+        "`3.14`"
+      ],
+      "correct_index": 2,
       "explanation_es": "Las claves deben ser hashables, y una lista no lo es porque puede cambiar: si mutara después de insertarla, su hash dejaría de coincidir y el valor sería irrecuperable. La tupla sí vale, siempre que su contenido también sea hashable.",
       "explanation_en": "Keys must be hashable, and a list is not because it can change: if it mutated after insertion, its hash would no longer match and the value would be unreachable. A tuple is fine, as long as its contents are hashable too.",
       "source": "CPython docs 3.13 — Built-in Types: Mapping Types / Glossary: hashable",
       "expected_time_ms": 30000,
-      "tags": ["dicts", "hashable"]
+      "tags": [
+        "dicts",
+        "hashable"
+      ]
     },
     {
       "id": "q010501012",
@@ -39,14 +65,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {\"a\": 1, \"a\": 2}\nprint(d)\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {\"a\": 1, \"a\": 2}\nprint(d)\n```",
-      "options_es": ["Lanza un error", "`{'a': 1}`", "`{'a': [1, 2]}`", "`{'a': 2}`"],
-      "options_en": ["It raises an error", "`{'a': 1}`", "`{'a': [1, 2]}`", "`{'a': 2}`"],
-      "correct_index": 3,
+      "options_es": [
+        "Lanza un error",
+        "`{'a': 2}`",
+        "`{'a': [1, 2]}`",
+        "`{'a': 1}`"
+      ],
+      "options_en": [
+        "It raises an error",
+        "`{'a': 2}`",
+        "`{'a': [1, 2]}`",
+        "`{'a': 1}`"
+      ],
+      "correct_index": 1,
       "explanation_es": "Las claves son únicas: la segunda asignación sobrescribe a la primera sin avisar. No hay error ni acumulación de valores; si quieres varios valores por clave, el valor tiene que ser una lista.",
       "explanation_en": "Keys are unique: the second assignment silently overwrites the first. There is no error and no accumulation; if you want several values per key, the value has to be a list.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.5 (dictionaries)",
       "expected_time_ms": 28000,
-      "tags": ["dicts", "keys"]
+      "tags": [
+        "dicts",
+        "keys"
+      ]
     },
     {
       "id": "q010501013",
@@ -55,14 +94,23 @@
       "difficulty_tier": "medium",
       "question_es": "Desde Python 3.7, un diccionario conserva el orden en que se insertaron las claves.",
       "question_en": "Since Python 3.7, a dictionary preserves the order in which keys were inserted.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Fue un detalle de implementación en 3.6 y pasó a ser garantía del lenguaje en 3.7. Aun así, `dict` no está ordenado *por clave*: conserva el orden de llegada, que es distinto de estar ordenado.",
       "explanation_en": "It was an implementation detail in 3.6 and became a language guarantee in 3.7. Even so, `dict` is not sorted *by key*: it preserves arrival order, which is a different thing from being sorted.",
       "source": "CPython docs 3.13 — Built-in Types: Mapping Types (dict) / What's New in Python 3.7",
       "expected_time_ms": 25000,
-      "tags": ["dicts", "ordering"]
+      "tags": [
+        "dicts",
+        "ordering"
+      ]
     },
     {
       "id": "q010501014",
@@ -71,14 +119,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {\"a\": 1, \"b\": 2}\nprint(\"a\" in d, 1 in d)\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {\"a\": 1, \"b\": 2}\nprint(\"a\" in d, 1 in d)\n```",
-      "options_es": ["True True", "False True", "False False", "True False"],
-      "options_en": ["True True", "False True", "False False", "True False"],
-      "correct_index": 3,
+      "options_es": [
+        "True True",
+        "True False",
+        "False False",
+        "False True"
+      ],
+      "options_en": [
+        "True True",
+        "True False",
+        "False False",
+        "False True"
+      ],
+      "correct_index": 1,
       "explanation_es": "`in` sobre un diccionario busca en las **claves**, no en los valores. Para buscar entre los valores hay que decirlo: `1 in d.values()`.",
       "explanation_en": "`in` on a dictionary searches the **keys**, not the values. To search the values you have to say so: `1 in d.values()`.",
       "source": "CPython docs 3.13 — Built-in Types: Mapping Types (dict)",
       "expected_time_ms": 28000,
-      "tags": ["dicts", "membership"]
+      "tags": [
+        "dicts",
+        "membership"
+      ]
     },
     {
       "id": "q010501015",
@@ -88,23 +149,27 @@
       "question_es": "¿Qué ventaja tiene `d.get(k, 0)` frente a `d[k] if k in d else 0`?",
       "question_en": "What advantage does `d.get(k, 0)` have over `d[k] if k in d else 0`?",
       "options_es": [
-        "Ninguna, son idénticos en todo",
+        "`get` busca una sola vez en lugar de dos, y se lee de un vistazo",
         "`get` acepta claves no hashables",
         "`get` modifica el diccionario si falta la clave",
-        "`get` busca una sola vez en lugar de dos, y se lee de un vistazo"
+        "Ninguna, son idénticos en todo"
       ],
       "options_en": [
-        "None, they are identical in every way",
+        "`get` performs one lookup instead of two, and reads at a glance",
         "`get` accepts unhashable keys",
         "`get` modifies the dictionary when the key is missing",
-        "`get` performs one lookup instead of two, and reads at a glance"
+        "None, they are identical in every way"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "La versión con `in` consulta el diccionario dos veces: una para comprobar y otra para leer. `get` lo resuelve en una. Y no inserta nada — quien quiera insertar el valor por defecto necesita `setdefault`.",
       "explanation_en": "The `in` version queries the dictionary twice: once to check and once to read. `get` settles it in one. And it inserts nothing — anyone wanting the default stored needs `setdefault`.",
       "source": "CPython docs 3.13 — Built-in Types: dict.get() / dict.setdefault()",
       "expected_time_ms": 35000,
-      "tags": ["dicts", "get", "idioms"]
+      "tags": [
+        "dicts",
+        "get",
+        "idioms"
+      ]
     },
     {
       "id": "q010501016",
@@ -119,7 +184,10 @@
       "explanation_en": "`items()` yields `(key, value)` tuples that unpack in the `for`. Without it, iterating the dictionary would give only the keys.",
       "source": "CPython docs 3.13 — Built-in Types: dict.items()",
       "expected_time_ms": 18000,
-      "tags": ["dicts", "iteration"]
+      "tags": [
+        "dicts",
+        "iteration"
+      ]
     },
     {
       "id": "q010501017",
@@ -128,16 +196,29 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {1: \"int\", True: \"bool\"}\nprint(len(d), d[1])\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {1: \"int\", True: \"bool\"}\nprint(len(d), d[1])\n```",
-      "options_es": ["2 int", "2 bool", "1 int", "1 bool"],
-      "options_en": ["2 int", "2 bool", "1 int", "1 bool"],
+      "options_es": [
+        "2 int",
+        "2 bool",
+        "1 int",
+        "1 bool"
+      ],
+      "options_en": [
+        "2 int",
+        "2 bool",
+        "1 int",
+        "1 bool"
+      ],
       "correct_index": 3,
       "explanation_es": "`True == 1` y ambos tienen el mismo hash, así que para el diccionario son **la misma clave**: la segunda entrada sobrescribe el valor pero conserva la clave original. Por eso hay un solo elemento y el valor es `\"bool\"`.",
       "explanation_en": "`True == 1` and both share a hash, so to the dictionary they are **the same key**: the second entry overwrites the value but keeps the original key. Hence a single element, with the value `\"bool\"`.",
       "source": "CPython docs 3.13 — Built-in Types: Mapping Types / PEP 285",
       "expected_time_ms": 50000,
-      "tags": ["dicts", "hashing", "gotcha"]
+      "tags": [
+        "dicts",
+        "hashing",
+        "gotcha"
+      ]
     },
-
     {
       "id": "q010502010",
       "skill_id": "sk010502",
@@ -162,7 +243,10 @@
       "explanation_en": "`update` adds the new keys and **overwrites** the ones already present. It does not merge values: if you want to keep the old one, you have to check for it beforehand.",
       "source": "CPython docs 3.13 — Built-in Types: dict.update()",
       "expected_time_ms": 30000,
-      "tags": ["dicts", "update"]
+      "tags": [
+        "dicts",
+        "update"
+      ]
     },
     {
       "id": "q010502011",
@@ -188,7 +272,10 @@
       "explanation_en": "It is a view, not a copy: adding a key afterwards makes it appear in the view. That is why modifying the dictionary while iterating `keys()` raises `RuntimeError`; to avoid it you iterate over `list(d.keys())`.",
       "source": "CPython docs 3.13 — Built-in Types: Dictionary view objects",
       "expected_time_ms": 35000,
-      "tags": ["dicts", "views"]
+      "tags": [
+        "dicts",
+        "views"
+      ]
     },
     {
       "id": "q010502012",
@@ -197,14 +284,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {\"a\": 1}\nprint(d.pop(\"z\", \"nada\"))\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {\"a\": 1}\nprint(d.pop(\"z\", \"none\"))\n```",
-      "options_es": ["Lanza un `KeyError`", "None", "1", "nada"],
-      "options_en": ["It raises a `KeyError`", "None", "1", "none"],
-      "correct_index": 3,
+      "options_es": [
+        "nada",
+        "None",
+        "1",
+        "Lanza un `KeyError`"
+      ],
+      "options_en": [
+        "none",
+        "None",
+        "1",
+        "It raises a `KeyError`"
+      ],
+      "correct_index": 0,
       "explanation_es": "`pop` con un segundo argumento devuelve ese valor cuando la clave no existe, en vez de fallar. Sin él, `d.pop(\"z\")` sí lanzaría `KeyError`.",
       "explanation_en": "`pop` with a second argument returns that value when the key is absent, instead of failing. Without it, `d.pop(\"z\")` would indeed raise `KeyError`.",
       "source": "CPython docs 3.13 — Built-in Types: dict.pop()",
       "expected_time_ms": 30000,
-      "tags": ["dicts", "pop", "defaults"]
+      "tags": [
+        "dicts",
+        "pop",
+        "defaults"
+      ]
     },
     {
       "id": "q010502013",
@@ -213,14 +314,28 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {}\nd.setdefault(\"xs\", []).append(1)\nd.setdefault(\"xs\", []).append(2)\nprint(d)\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {}\nd.setdefault(\"xs\", []).append(1)\nd.setdefault(\"xs\", []).append(2)\nprint(d)\n```",
-      "options_es": ["`{'xs': [2]}`", "`{'xs': []}`", "`{'xs': [1]}`", "`{'xs': [1, 2]}`"],
-      "options_en": ["`{'xs': [2]}`", "`{'xs': []}`", "`{'xs': [1]}`", "`{'xs': [1, 2]}`"],
+      "options_es": [
+        "`{'xs': [2]}`",
+        "`{'xs': []}`",
+        "`{'xs': [1]}`",
+        "`{'xs': [1, 2]}`"
+      ],
+      "options_en": [
+        "`{'xs': [2]}`",
+        "`{'xs': []}`",
+        "`{'xs': [1]}`",
+        "`{'xs': [1, 2]}`"
+      ],
       "correct_index": 3,
       "explanation_es": "`setdefault` inserta el valor solo si la clave falta, y en ambos casos devuelve el que hay. La segunda llamada recupera la lista ya creada y le añade el 2. Es el patrón clásico para agrupar, aunque `collections.defaultdict(list)` lo expresa mejor.",
       "explanation_en": "`setdefault` inserts the value only when the key is missing, and in both cases returns whatever is there. The second call retrieves the existing list and appends 2. It is the classic grouping pattern, though `collections.defaultdict(list)` expresses it better.",
       "source": "CPython docs 3.13 — Built-in Types: dict.setdefault() / collections.defaultdict",
       "expected_time_ms": 45000,
-      "tags": ["dicts", "setdefault", "grouping"]
+      "tags": [
+        "dicts",
+        "setdefault",
+        "grouping"
+      ]
     },
     {
       "id": "q010502014",
@@ -229,14 +344,23 @@
       "difficulty_tier": "medium",
       "question_es": "`d.copy()` sobre un diccionario cuyos valores son listas hace una copia profunda.",
       "question_en": "`d.copy()` on a dictionary whose values are lists makes a deep copy.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Es superficial, igual que `lista[:]`: el diccionario es nuevo, pero las listas de dentro se comparten. Mutar una de esas listas se ve desde las dos copias. Para independencia real, `copy.deepcopy`.",
       "explanation_en": "It is shallow, just like `items[:]`: the dictionary is new, but the inner lists are shared. Mutating one of those lists shows from both copies. For genuine independence, `copy.deepcopy`.",
       "source": "CPython docs 3.13 — copy — Shallow and deep copy operations",
       "expected_time_ms": 30000,
-      "tags": ["dicts", "copy"]
+      "tags": [
+        "dicts",
+        "copy"
+      ]
     },
     {
       "id": "q010502015",
@@ -247,22 +371,25 @@
       "question_en": "How do you sort a dictionary by its values, largest first?",
       "options_es": [
         "`d.sort(reverse=True)`",
-        "`sorted(d, reverse=True)`",
+        "`sorted(d.items(), key=lambda kv: kv[1], reverse=True)`",
         "`d.sort(key=d.values)`",
-        "`sorted(d.items(), key=lambda kv: kv[1], reverse=True)`"
+        "`sorted(d, reverse=True)`"
       ],
       "options_en": [
         "`d.sort(reverse=True)`",
-        "`sorted(d, reverse=True)`",
+        "`sorted(d.items(), key=lambda kv: kv[1], reverse=True)`",
         "`d.sort(key=d.values)`",
-        "`sorted(d.items(), key=lambda kv: kv[1], reverse=True)`"
+        "`sorted(d, reverse=True)`"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "Los diccionarios no tienen `.sort()`: hay que pedirle a `sorted` los pares y decirle que compare por el segundo. Devuelve una lista de tuplas; envolverla en `dict()` reconstruye un diccionario ya ordenado.",
       "explanation_en": "Dictionaries have no `.sort()`: you hand `sorted` the pairs and tell it to compare on the second. It returns a list of tuples; wrapping it in `dict()` rebuilds an already-ordered dictionary.",
       "source": "CPython docs 3.13 — Sorting HOW TO / dict.items()",
       "expected_time_ms": 40000,
-      "tags": ["dicts", "sorting"]
+      "tags": [
+        "dicts",
+        "sorting"
+      ]
     },
     {
       "id": "q010502016",
@@ -277,7 +404,10 @@
       "explanation_en": "`clear()` empties the object in place, so every name pointing at that dictionary sees it empty. Reassigning `d = {}` is different: it creates a new one and leaves the old intact for the other names.",
       "source": "CPython docs 3.13 — Built-in Types: dict.clear()",
       "expected_time_ms": 22000,
-      "tags": ["dicts", "methods"]
+      "tags": [
+        "dicts",
+        "methods"
+      ]
     },
     {
       "id": "q010502017",
@@ -289,23 +419,26 @@
       "options_es": [
         "`{'x': 1, 'y': 2}`",
         "Lanza un `TypeError`",
-        "`{'x': [1, 9], 'y': 2}`",
-        "`{'x': 9, 'y': 2}`"
+        "`{'x': 9, 'y': 2}`",
+        "`{'x': [1, 9], 'y': 2}`"
       ],
       "options_en": [
         "`{'x': 1, 'y': 2}`",
         "It raises a `TypeError`",
-        "`{'x': [1, 9], 'y': 2}`",
-        "`{'x': 9, 'y': 2}`"
+        "`{'x': 9, 'y': 2}`",
+        "`{'x': [1, 9], 'y': 2}`"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "El desempaquetado con `**` fusiona diccionarios, y lo que se escribe después gana: `\"x\": 9` pisa el 1 que venía de `a`. Desde Python 3.9 el operador `a | b` hace lo mismo de forma más legible.",
       "explanation_en": "Unpacking with `**` merges dictionaries, and whatever comes later wins: `\"x\": 9` overrides the 1 that came from `a`. Since Python 3.9 the `a | b` operator does the same more readably.",
       "source": "PEP 448 — Additional Unpacking Generalizations / PEP 584",
       "expected_time_ms": 45000,
-      "tags": ["dicts", "merging", "unpacking"]
+      "tags": [
+        "dicts",
+        "merging",
+        "unpacking"
+      ]
     },
-
     {
       "id": "q010503010",
       "skill_id": "sk010503",
@@ -313,14 +446,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\na = {1, 2, 3}\nb = {2, 3, 4}\nprint(a & b)\n```",
       "question_en": "What does the following code print?\n\n```python\na = {1, 2, 3}\nb = {2, 3, 4}\nprint(a & b)\n```",
-      "options_es": ["`{1, 4}`", "`{1, 2, 3, 4}`", "`{2, 3}`", "`{1}`"],
-      "options_en": ["`{1, 4}`", "`{1, 2, 3, 4}`", "`{2, 3}`", "`{1}`"],
+      "options_es": [
+        "`{1, 4}`",
+        "`{1, 2, 3, 4}`",
+        "`{2, 3}`",
+        "`{1}`"
+      ],
+      "options_en": [
+        "`{1, 4}`",
+        "`{1, 2, 3, 4}`",
+        "`{2, 3}`",
+        "`{1}`"
+      ],
       "correct_index": 2,
       "explanation_es": "`&` es la intersección: lo que está en ambos. Los otros operadores son `|` para la unión, `-` para la diferencia y `^` para los que están en uno pero no en los dos.",
       "explanation_en": "`&` is intersection: what is in both. The other operators are `|` for union, `-` for difference and `^` for those in one but not the other.",
       "source": "CPython docs 3.13 — Built-in Types: Set Types",
       "expected_time_ms": 28000,
-      "tags": ["sets", "operations"]
+      "tags": [
+        "sets",
+        "operations"
+      ]
     },
     {
       "id": "q010503011",
@@ -329,14 +475,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\ns = {3, 1, 2}\ns.add(1)\nprint(len(s))\n```",
       "question_en": "What does the following code print?\n\n```python\ns = {3, 1, 2}\ns.add(1)\nprint(len(s))\n```",
-      "options_es": ["4", "Lanza un error", "1", "3"],
-      "options_en": ["4", "It raises an error", "1", "3"],
+      "options_es": [
+        "4",
+        "Lanza un error",
+        "1",
+        "3"
+      ],
+      "options_en": [
+        "4",
+        "It raises an error",
+        "1",
+        "3"
+      ],
       "correct_index": 3,
       "explanation_es": "Añadir un elemento que ya está no hace nada ni provoca error: el conjunto no admite duplicados por definición. Esa idempotencia es lo que lo hace cómodo para acumular sin comprobar antes.",
       "explanation_en": "Adding an element already present does nothing and raises nothing: a set admits no duplicates by definition. That idempotence is what makes it convenient for accumulating without checking first.",
       "source": "CPython docs 3.13 — Built-in Types: Set Types",
       "expected_time_ms": 25000,
-      "tags": ["sets", "add"]
+      "tags": [
+        "sets",
+        "add"
+      ]
     },
     {
       "id": "q010503012",
@@ -347,22 +506,25 @@
       "question_en": "What is the difference between `s.remove(x)` and `s.discard(x)` on a set?",
       "options_es": [
         "Ninguna, son sinónimos",
-        "`discard` borra todas las apariciones",
+        "`remove` lanza `KeyError` si el elemento no está; `discard` no hace nada",
         "`remove` devuelve el elemento y `discard` no",
-        "`remove` lanza `KeyError` si el elemento no está; `discard` no hace nada"
+        "`discard` borra todas las apariciones"
       ],
       "options_en": [
         "None, they are synonyms",
-        "`discard` deletes every occurrence",
+        "`remove` raises `KeyError` if the element is absent; `discard` does nothing",
         "`remove` returns the element and `discard` does not",
-        "`remove` raises `KeyError` if the element is absent; `discard` does nothing"
+        "`discard` deletes every occurrence"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "La distinción es sobre la ausencia: `remove` la considera un error y `discard` la acepta en silencio. En un conjunto no cabe hablar de «todas las apariciones» porque nunca hay más de una.",
       "explanation_en": "The distinction is about absence: `remove` treats it as an error and `discard` accepts it silently. In a set there is no such thing as 'every occurrence', because there is never more than one.",
       "source": "CPython docs 3.13 — Built-in Types: Set Types",
       "expected_time_ms": 30000,
-      "tags": ["sets", "methods"]
+      "tags": [
+        "sets",
+        "methods"
+      ]
     },
     {
       "id": "q010503013",
@@ -371,14 +533,23 @@
       "difficulty_tier": "medium",
       "question_es": "Un conjunto puede contener listas como elementos.",
       "question_en": "A set can contain lists as elements.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Los elementos de un conjunto deben ser hashables, por la misma razón que las claves de un diccionario, y una lista no lo es. Una tupla de valores inmutables sí sirve.",
       "explanation_en": "Set elements must be hashable, for the same reason dictionary keys must, and a list is not. A tuple of immutable values works fine.",
       "source": "CPython docs 3.13 — Built-in Types: Set Types / Glossary: hashable",
       "expected_time_ms": 25000,
-      "tags": ["sets", "hashable"]
+      "tags": [
+        "sets",
+        "hashable"
+      ]
     },
     {
       "id": "q010503014",
@@ -387,14 +558,27 @@
       "difficulty_tier": "hard",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\na = {1, 2}\nb = {1, 2, 3}\nprint(a <= b, a == b)\n```",
       "question_en": "What does the following code print?\n\n```python\na = {1, 2}\nb = {1, 2, 3}\nprint(a <= b, a == b)\n```",
-      "options_es": ["False False", "True True", "False True", "True False"],
-      "options_en": ["False False", "True True", "False True", "True False"],
-      "correct_index": 3,
+      "options_es": [
+        "False False",
+        "True False",
+        "False True",
+        "True True"
+      ],
+      "options_en": [
+        "False False",
+        "True False",
+        "False True",
+        "True True"
+      ],
+      "correct_index": 1,
       "explanation_es": "Entre conjuntos, `<=` no compara tamaños: pregunta si el primero es subconjunto del segundo. `a` lo es, pero no son iguales. Es el mismo significado que `a.issubset(b)`.",
       "explanation_en": "Between sets, `<=` does not compare sizes: it asks whether the first is a subset of the second. `a` is, but they are not equal. It means the same as `a.issubset(b)`.",
       "source": "CPython docs 3.13 — Built-in Types: Set Types (comparisons)",
       "expected_time_ms": 40000,
-      "tags": ["sets", "subset"]
+      "tags": [
+        "sets",
+        "subset"
+      ]
     },
     {
       "id": "q010503015",
@@ -404,23 +588,27 @@
       "question_es": "¿Qué se pierde al convertir una lista en conjunto para eliminar duplicados?",
       "question_en": "What is lost when converting a list to a set to remove duplicates?",
       "options_es": [
-        "Los valores repetidos siguen presentes",
+        "El orden original y la posibilidad de indexar por posición",
         "El tipo de los elementos",
         "La capacidad de contar cuántos elementos hay",
-        "El orden original y la posibilidad de indexar por posición"
+        "Los valores repetidos siguen presentes"
       ],
       "options_en": [
-        "The repeated values remain present",
+        "The original order and the ability to index by position",
         "The type of the elements",
         "The ability to count how many elements there are",
-        "The original order and the ability to index by position"
+        "The repeated values remain present"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`set(lista)` descarta duplicados, pero el resultado no está ordenado ni admite `s[0]`. Si el orden importa, `list(dict.fromkeys(lista))` elimina duplicados conservando la primera aparición.",
       "explanation_en": "`set(items)` drops duplicates, but the result is unordered and does not support `s[0]`. If order matters, `list(dict.fromkeys(items))` removes duplicates while keeping first appearance.",
       "source": "CPython docs 3.13 — Built-in Types: Set Types / dict.fromkeys()",
       "expected_time_ms": 40000,
-      "tags": ["sets", "dedup", "ordering"]
+      "tags": [
+        "sets",
+        "dedup",
+        "ordering"
+      ]
     },
     {
       "id": "q010503016",
@@ -435,7 +623,10 @@
       "explanation_en": "The minus sign is set difference, equivalent to `a.difference(b)`. It is not symmetric: `b - a` gives a different result.",
       "source": "CPython docs 3.13 — Built-in Types: Set Types",
       "expected_time_ms": 22000,
-      "tags": ["sets", "operations"]
+      "tags": [
+        "sets",
+        "operations"
+      ]
     },
     {
       "id": "q010503017",
@@ -461,9 +652,12 @@
       "explanation_en": "`{}` creates an empty **dictionary**, not a set: the braces were already taken. The empty set can only be written as `set()`. With elements inside, `{1, 2}` is indeed a set.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.4 (sets)",
       "expected_time_ms": 40000,
-      "tags": ["sets", "dicts", "literals"]
+      "tags": [
+        "sets",
+        "dicts",
+        "literals"
+      ]
     },
-
     {
       "id": "q010504010",
       "skill_id": "sk010504",
@@ -471,14 +665,27 @@
       "difficulty_tier": "medium",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nprint({x: x * x for x in range(3)})\n```",
       "question_en": "What does the following code print?\n\n```python\nprint({x: x * x for x in range(3)})\n```",
-      "options_es": ["`{0, 1, 4}`", "`[0, 1, 4]`", "`{1: 1, 2: 4}`", "`{0: 0, 1: 1, 2: 4}`"],
-      "options_en": ["`{0, 1, 4}`", "`[0, 1, 4]`", "`{1: 1, 2: 4}`", "`{0: 0, 1: 1, 2: 4}`"],
-      "correct_index": 3,
+      "options_es": [
+        "`{0: 0, 1: 1, 2: 4}`",
+        "`[0, 1, 4]`",
+        "`{1: 1, 2: 4}`",
+        "`{0, 1, 4}`"
+      ],
+      "options_en": [
+        "`{0: 0, 1: 1, 2: 4}`",
+        "`[0, 1, 4]`",
+        "`{1: 1, 2: 4}`",
+        "`{0, 1, 4}`"
+      ],
+      "correct_index": 0,
       "explanation_es": "Los dos puntos hacen de esto una comprensión de **diccionario**: la izquierda es la clave y la derecha el valor. El 0 entra igual, que es lo que suele olvidarse al contar.",
       "explanation_en": "The colon makes this a **dict** comprehension: the left side is the key and the right the value. Zero is included like the rest, which is what people usually forget when counting.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.5 (dict comprehensions)",
       "expected_time_ms": 30000,
-      "tags": ["comprehensions", "dicts"]
+      "tags": [
+        "comprehensions",
+        "dicts"
+      ]
     },
     {
       "id": "q010504011",
@@ -488,23 +695,27 @@
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {\"a\": 1, \"b\": 2}\nprint({v: k for k, v in d.items()})\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {\"a\": 1, \"b\": 2}\nprint({v: k for k, v in d.items()})\n```",
       "options_es": [
-        "`{'a': 1, 'b': 2}`",
+        "`{1: 'a', 2: 'b'}`",
         "Lanza un `TypeError`",
         "`{'a': 'b', 1: 2}`",
-        "`{1: 'a', 2: 'b'}`"
+        "`{'a': 1, 'b': 2}`"
       ],
       "options_en": [
-        "`{'a': 1, 'b': 2}`",
+        "`{1: 'a', 2: 'b'}`",
         "It raises a `TypeError`",
         "`{'a': 'b', 1: 2}`",
-        "`{1: 'a', 2: 'b'}`"
+        "`{'a': 1, 'b': 2}`"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "Es el idiom para invertir un diccionario. Tiene dos condiciones: los valores deben ser hashables y únicos — si se repiten, las claves resultantes colisionan y solo sobrevive la última.",
       "explanation_en": "This is the idiom for inverting a dictionary. It carries two conditions: the values must be hashable and unique — if they repeat, the resulting keys collide and only the last survives.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.5 (dict comprehensions)",
       "expected_time_ms": 40000,
-      "tags": ["comprehensions", "dicts", "inversion"]
+      "tags": [
+        "comprehensions",
+        "dicts",
+        "inversion"
+      ]
     },
     {
       "id": "q010504012",
@@ -515,22 +726,25 @@
       "question_en": "What does `{x for x in data}` create?",
       "options_es": [
         "Un diccionario con claves y valores iguales",
-        "Una lista",
+        "Un conjunto sin duplicados",
         "Un generador",
-        "Un conjunto sin duplicados"
+        "Una lista"
       ],
       "options_en": [
         "A dictionary with equal keys and values",
-        "A list",
+        "A set with no duplicates",
         "A generator",
-        "A set with no duplicates"
+        "A list"
       ],
-      "correct_index": 3,
+      "correct_index": 1,
       "explanation_es": "Sin dos puntos, las llaves producen un conjunto. Para el diccionario habría que escribir `{x: x for x in datos}`, y ese matiz de un solo carácter cambia el tipo del resultado.",
       "explanation_en": "With no colon, braces produce a set. For a dictionary you would write `{x: x for x in data}`, and that one-character difference changes the result's type.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.4 (set comprehensions)",
       "expected_time_ms": 28000,
-      "tags": ["comprehensions", "sets"]
+      "tags": [
+        "comprehensions",
+        "sets"
+      ]
     },
     {
       "id": "q010504013",
@@ -540,23 +754,27 @@
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nd = {\"a\": 1, \"b\": 2, \"c\": 3}\nprint({k: v for k, v in d.items() if v > 1})\n```",
       "question_en": "What does the following code print?\n\n```python\nd = {\"a\": 1, \"b\": 2, \"c\": 3}\nprint({k: v for k, v in d.items() if v > 1})\n```",
       "options_es": [
-        "`{'a': 1}`",
+        "`{'b': 2, 'c': 3}`",
         "`{'b', 'c'}`",
         "`{'a': 1, 'b': 2, 'c': 3}`",
-        "`{'b': 2, 'c': 3}`"
+        "`{'a': 1}`"
       ],
       "options_en": [
-        "`{'a': 1}`",
+        "`{'b': 2, 'c': 3}`",
         "`{'b', 'c'}`",
         "`{'a': 1, 'b': 2, 'c': 3}`",
-        "`{'b': 2, 'c': 3}`"
+        "`{'a': 1}`"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "El `if` final filtra los pares y conserva la forma clave-valor. Es la manera idiomática de quedarse con un subconjunto de un diccionario sin mutar el original.",
       "explanation_en": "The trailing `if` filters the pairs while keeping the key-value shape. It is the idiomatic way to keep a subset of a dictionary without mutating the original.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.5 (dict comprehensions)",
       "expected_time_ms": 35000,
-      "tags": ["comprehensions", "dicts", "filter"]
+      "tags": [
+        "comprehensions",
+        "dicts",
+        "filter"
+      ]
     },
     {
       "id": "q010504014",
@@ -565,14 +783,24 @@
       "difficulty_tier": "hard",
       "question_es": "En una comprensión de diccionario, si dos claves resultan iguales, Python lanza un error.",
       "question_en": "In a dict comprehension, if two keys come out equal, Python raises an error.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Gana la última en silencio, igual que en un literal. Es la trampa de invertir diccionarios con valores repetidos: el resultado sale más corto de lo esperado y sin ningún aviso.",
       "explanation_en": "The last one wins silently, just as in a literal. This is the trap when inverting dictionaries with repeated values: the result comes out shorter than expected, with no warning at all.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.5 (dict comprehensions)",
       "expected_time_ms": 35000,
-      "tags": ["comprehensions", "dicts", "collisions"]
+      "tags": [
+        "comprehensions",
+        "dicts",
+        "collisions"
+      ]
     },
     {
       "id": "q010504015",
@@ -587,7 +815,11 @@
       "explanation_en": "Both the key and the value can be transformed in the same comprehension. Watch out if two distinct keys coincide once upper-cased: they would silently merge into one.",
       "source": "CPython docs 3.13 — Built-in Types: str.upper() / dict comprehensions",
       "expected_time_ms": 25000,
-      "tags": ["comprehensions", "dicts", "transform"]
+      "tags": [
+        "comprehensions",
+        "dicts",
+        "transform"
+      ]
     },
     {
       "id": "q010504016",
@@ -597,23 +829,27 @@
       "question_es": "¿Cuál construye un diccionario a partir de dos listas paralelas `claves` y `valores`?",
       "question_en": "Which one builds a dictionary from two parallel lists `keys` and `values`?",
       "options_es": [
-        "`dict(claves + valores)`",
+        "`dict(zip(claves, valores))`",
         "`{claves: valores}`",
         "`dict(claves, valores)`",
-        "`dict(zip(claves, valores))`"
+        "`dict(claves + valores)`"
       ],
       "options_en": [
-        "`dict(keys + values)`",
+        "`dict(zip(keys, values))`",
         "`{keys: values}`",
         "`dict(keys, values)`",
-        "`dict(zip(keys, values))`"
+        "`dict(keys + values)`"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`zip` empareja los elementos en tuplas y `dict` acepta directamente ese iterable de pares. Si las listas tienen largos distintos, se corta por la más corta sin avisar.",
       "explanation_en": "`zip` pairs the elements into tuples, and `dict` accepts that iterable of pairs directly. If the lists differ in length, it stops at the shorter one without warning.",
       "source": "CPython docs 3.13 — Built-in Functions: dict() / zip()",
       "expected_time_ms": 35000,
-      "tags": ["comprehensions", "dicts", "zip"]
+      "tags": [
+        "comprehensions",
+        "dicts",
+        "zip"
+      ]
     },
     {
       "id": "q010504017",
@@ -622,14 +858,28 @@
       "difficulty_tier": "expert",
       "question_es": "¿Qué imprime el siguiente código?\n\n```python\nprint(len({x % 2 for x in range(100)}))\n```",
       "question_en": "What does the following code print?\n\n```python\nprint(len({x % 2 for x in range(100)}))\n```",
-      "options_es": ["100", "50", "0", "2"],
-      "options_en": ["100", "50", "0", "2"],
-      "correct_index": 3,
+      "options_es": [
+        "100",
+        "2",
+        "0",
+        "50"
+      ],
+      "options_en": [
+        "100",
+        "2",
+        "0",
+        "50"
+      ],
+      "correct_index": 1,
       "explanation_es": "La comprensión genera cien valores, pero el conjunto solo guarda los distintos: el resto de dividir entre 2 es siempre 0 o 1. Es un recordatorio de que el tamaño del resultado depende de la **imagen** de la expresión, no del rango recorrido.",
       "explanation_en": "The comprehension generates a hundred values, but the set keeps only the distinct ones: the remainder of division by 2 is always 0 or 1. It is a reminder that the result's size depends on the expression's **range of outputs**, not on how many items were walked.",
       "source": "CPython docs 3.13 — The Python Tutorial §5.4 (set comprehensions)",
       "expected_time_ms": 45000,
-      "tags": ["comprehensions", "sets", "dedup"]
+      "tags": [
+        "comprehensions",
+        "sets",
+        "dedup"
+      ]
     }
   ]
 }

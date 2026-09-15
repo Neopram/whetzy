@@ -8,23 +8,28 @@
       "question_es": "¿Qué ocurre al ejecutar este código?\n```python\nimport asyncio\nasync def get():\n    return 1\nasync def main():\n    c = get()\n    print(await c)\n    print(await c)\nasyncio.run(main())\n```",
       "question_en": "What happens when this code runs?\n```python\nimport asyncio\nasync def get():\n    return 1\nasync def main():\n    c = get()\n    print(await c)\n    print(await c)\nasyncio.run(main())\n```",
       "options_es": [
-        "Imprime 1 y luego 1 otra vez",
         "Imprime 1 y luego lanza RuntimeError: cannot reuse already awaited coroutine",
+        "Imprime 1 y luego 1 otra vez",
         "Imprime 1 y luego None",
         "Lanza SyntaxError: no se puede hacer await dos veces sobre el mismo nombre"
       ],
       "options_en": [
-        "Prints 1 and then 1 again",
         "Prints 1 and then raises RuntimeError: cannot reuse already awaited coroutine",
+        "Prints 1 and then 1 again",
         "Prints 1 and then None",
         "Raises SyntaxError: the same name cannot be awaited twice"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "Un objeto corrutina es de un solo uso: guarda su estado de ejecución y, una vez agotado, no puede reiniciarse. El segundo `await c` lanza `RuntimeError: cannot reuse already awaited coroutine`. Tienta pensar que devuelve 1 otra vez (opción 1) porque `get()` parece una función pura, o que devuelve `None` (opción 3) por analogía con un generador agotado, que sí termina silenciosamente con StopIteration. Para volver a ejecutarla hay que llamar `get()` de nuevo y obtener un objeto corrutina nuevo. No es un error de sintaxis: el compilador no puede saber cuántas veces se hará await.",
       "explanation_en": "A coroutine object is single-use: it carries execution state and, once exhausted, cannot restart. The second `await c` raises `RuntimeError: cannot reuse already awaited coroutine`. It is tempting to expect 1 again (option 1) because `get()` looks like a pure function, or `None` (option 3) by analogy with an exhausted generator, which does end quietly via StopIteration. To run it again you must call `get()` once more for a fresh coroutine object. It is not a syntax error: the compiler cannot know how many times something will be awaited.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Coroutines",
       "expected_time_ms": 35000,
-      "tags": ["asyncio", "async-await", "coroutine", "gotcha"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "coroutine",
+        "gotcha"
+      ]
     },
     {
       "id": "q030201011",
@@ -50,7 +55,11 @@
       "explanation_en": "Since PEP 525, `yield` inside `async def` makes the function an asynchronous generator; it is consumed with `async for`, and comprehensions accept `async for` since PEP 530. The result is `[0, 1, 2]`. The SyntaxError option was true in Python 3.5, and many people remember it from then. The third confuses calling the generator (which does return an `async_generator` object) with iterating it: the `async for` is exactly what consumes it.",
       "source": "PEP 525 — Asynchronous Generators",
       "expected_time_ms": 38000,
-      "tags": ["asyncio", "async-await", "async-generator"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "async-generator"
+      ]
     },
     {
       "id": "q030201012",
@@ -62,21 +71,26 @@
       "options_es": [
         "Devuelve 42: await sobre un valor listo simplemente lo pasa a través",
         "Se queda esperando para siempre",
-        "Lanza TypeError: object int can't be used in 'await' expression",
-        "Lanza SyntaxError en tiempo de compilación"
+        "Lanza SyntaxError en tiempo de compilación",
+        "Lanza TypeError: object int can't be used in 'await' expression"
       ],
       "options_en": [
         "Returns 42: awaiting an already-ready value just passes it through",
         "Hangs forever",
-        "Raises TypeError: object int can't be used in 'await' expression",
-        "Raises SyntaxError at compile time"
+        "Raises SyntaxError at compile time",
+        "Raises TypeError: object int can't be used in 'await' expression"
       ],
-      "correct_index": 2,
+      "correct_index": 3,
       "explanation_es": "`await` solo acepta awaitables: objetos con `__await__`, corrutinas o Futures/Tasks. Un `int` no lo es, así que se lanza `TypeError` en tiempo de ejecución. La primera opción tienta porque en otros lenguajes `await` sobre un valor no-promesa lo envuelve automáticamente; Python no hace esa conversión. Y no es SyntaxError: la sintaxis `await <expr>` es válida, el fallo aparece al evaluar el operando, por eso ocurre en ejecución y no al compilar.",
       "explanation_en": "`await` only accepts awaitables: objects with `__await__`, coroutines, or Futures/Tasks. An `int` is none of those, so a `TypeError` is raised at runtime. The first option tempts because in other languages awaiting a non-promise value auto-wraps it; Python performs no such conversion. And it is not a SyntaxError: `await <expr>` is valid syntax, the failure comes from evaluating the operand, which is why it happens at runtime rather than compile time.",
       "source": "PEP 492 — Coroutines with async and await syntax: Await Expression",
       "expected_time_ms": 34000,
-      "tags": ["asyncio", "async-await", "awaitable", "gotcha"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "awaitable",
+        "gotcha"
+      ]
     },
     {
       "id": "q030201013",
@@ -102,7 +116,12 @@
       "explanation_en": "`async with` follows exactly the same order as `with`, it just awaits the methods: `await __aenter__()`, then the body, then `await __aexit__()`. Hence enter / body / exit. The AttributeError option captures the common belief that `async with` falls back to `__enter__` when no async version exists; it does not, it looks only for `__aenter__`/`__aexit__` (and conversely a plain `with` on this class would fail). The other two assume `__aenter__`/`__aexit__` run back to back before or after the block.",
       "source": "PEP 492 — Coroutines with async and await syntax: Asynchronous Context Managers",
       "expected_time_ms": 40000,
-      "tags": ["asyncio", "async-await", "async-with", "context-manager"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "async-with",
+        "context-manager"
+      ]
     },
     {
       "id": "q030201014",
@@ -112,23 +131,28 @@
       "question_es": "¿Qué hace exactamente la palabra clave `await` cuando la corrutina llega a ella?",
       "question_en": "What exactly does the `await` keyword do when a coroutine reaches it?",
       "options_es": [
-        "Suspende la corrutina actual y devuelve el control al event loop, que puede correr otras tareas hasta que el awaitable esté listo",
-        "Bloquea el hilo hasta que la operación termina, igual que time.sleep",
         "Lanza la operación en un hilo nuevo y sigue ejecutando la línea siguiente",
+        "Bloquea el hilo hasta que la operación termina, igual que time.sleep",
+        "Suspende la corrutina actual y devuelve el control al event loop, que puede correr otras tareas hasta que el awaitable esté listo",
         "Envía la operación a otro núcleo de CPU para que corra en paralelo"
       ],
       "options_en": [
-        "Suspends the current coroutine and hands control back to the event loop, which can run other tasks until the awaitable is ready",
-        "Blocks the thread until the operation finishes, just like time.sleep",
         "Launches the operation on a new thread and moves on to the next line",
+        "Blocks the thread until the operation finishes, just like time.sleep",
+        "Suspends the current coroutine and hands control back to the event loop, which can run other tasks until the awaitable is ready",
         "Dispatches the operation to another CPU core to run in parallel"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`await` marca un punto de suspensión: la corrutina cede el control al event loop, que aprovecha para avanzar otras tareas, y se reanuda cuando el awaitable tiene resultado. La segunda opción describe precisamente lo que NO pasa y es la confusión más costosa: si bloqueas el hilo (con `time.sleep`, `requests.get`, etc.) el loop entero se detiene. La tercera y la cuarta atribuyen a asyncio hilos o núcleos: todo ocurre en un solo hilo, la concurrencia viene de intercalar, no de paralelizar.",
       "explanation_en": "`await` marks a suspension point: the coroutine yields control to the event loop, which uses the gap to advance other tasks, and resumes when the awaitable has a result. The second option describes precisely what does NOT happen, and it is the costliest confusion: blocking the thread (with `time.sleep`, `requests.get`, and so on) stops the whole loop. The third and fourth attribute threads or cores to asyncio: everything runs on one thread, and concurrency comes from interleaving, not from parallelism.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Awaitables",
       "expected_time_ms": 24000,
-      "tags": ["asyncio", "async-await", "event-loop", "fundamentals"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "event-loop",
+        "fundamentals"
+      ]
     },
     {
       "id": "q030201015",
@@ -139,22 +163,26 @@
       "question_en": "What do you get when you write `yield` inside the body of a function declared with `async def`?",
       "options_es": [
         "Un SyntaxError: yield y async def son incompatibles",
-        "Una corrutina normal; el yield se ignora y actúa como return",
         "Una función generadora asíncrona: al llamarla devuelve un async generator que se consume con `async for`",
+        "Una corrutina normal; el yield se ignora y actúa como return",
         "Un generador clásico idéntico al que daría una def normal"
       ],
       "options_en": [
         "A SyntaxError: yield and async def are incompatible",
-        "An ordinary coroutine; the yield is ignored and behaves like return",
         "An asynchronous generator function: calling it returns an async generator consumed with `async for`",
+        "An ordinary coroutine; the yield is ignored and behaves like return",
         "A classic generator identical to what a plain def would give"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "PEP 525 añadió los generadores asíncronos: `async def` con `yield` produce un `async_generator`, que NO es awaitable y por tanto no se usa con `await`, sino con `async for` (o `__anext__`). La primera opción era correcta en 3.5 y sobrevive como recuerdo obsoleto. La cuarta es la trampa importante: un generador clásico se recorre con `for` y no puede contener `await`; el asíncrono sí puede suspenderse entre elementos, que es justo para lo que existe.",
       "explanation_en": "PEP 525 added asynchronous generators: `async def` with `yield` produces an `async_generator`, which is NOT awaitable and therefore is not used with `await` but with `async for` (or `__anext__`). The first option was correct in 3.5 and survives as stale memory. The fourth is the important trap: a classic generator is walked with `for` and cannot contain `await`; the async one can suspend between items, which is exactly why it exists.",
       "source": "PEP 525 — Asynchronous Generators",
       "expected_time_ms": 30000,
-      "tags": ["asyncio", "async-await", "async-generator"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "async-generator"
+      ]
     },
     {
       "id": "q030201016",
@@ -164,23 +192,28 @@
       "question_es": "Tienes una clase propia y quieres que sus instancias puedan usarse directamente con `await mi_objeto`. ¿Qué debe implementar la clase?",
       "question_en": "You have your own class and want its instances to work directly with `await my_object`. What must the class implement?",
       "options_es": [
-        "Los métodos `__aiter__` y `__anext__`",
         "El método `__await__`, que debe devolver un iterador",
+        "Los métodos `__aiter__` y `__anext__`",
         "El método `__next__`, igual que un iterador clásico",
         "Los métodos `__aenter__` y `__aexit__`"
       ],
       "options_en": [
-        "The `__aiter__` and `__anext__` methods",
         "The `__await__` method, which must return an iterator",
+        "The `__aiter__` and `__anext__` methods",
         "The `__next__` method, just like a classic iterator",
         "The `__aenter__` and `__aexit__` methods"
       ],
-      "correct_index": 1,
+      "correct_index": 0,
       "explanation_es": "PEP 492 define el protocolo awaitable: un objeto es awaitable si su tipo implementa `__await__` devolviendo un iterador, que es lo que `await` acciona. `__aiter__`/`__anext__` son el protocolo de iteración asíncrona, para `async for`, y `__aenter__`/`__aexit__` el de `async with`: los tres protocolos son distintos y se confunden con facilidad porque comparten el prefijo `a`. `__next__` es el protocolo síncrono y no interviene en absoluto.",
       "explanation_en": "PEP 492 defines the awaitable protocol: an object is awaitable if its type implements `__await__` returning an iterator, which is what `await` drives. `__aiter__`/`__anext__` are the async iteration protocol, for `async for`, and `__aenter__`/`__aexit__` the `async with` one: the three protocols are distinct and easily confused because they share the `a` prefix. `__next__` is the synchronous protocol and plays no part at all.",
       "source": "PEP 492 — Coroutines with async and await syntax: Await Expression",
       "expected_time_ms": 36000,
-      "tags": ["asyncio", "async-await", "awaitable", "protocol"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "awaitable",
+        "protocol"
+      ]
     },
     {
       "id": "q030201017",
@@ -189,14 +222,25 @@
       "difficulty_tier": "hard",
       "question_es": "Cada `await` suspende siempre la corrutina y cede el control al event loop, incluso si el awaitable ya tiene su resultado disponible.",
       "question_en": "Every `await` always suspends the coroutine and yields control to the event loop, even when the awaitable already has its result available.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. `await` es un punto de suspensión POSIBLE, no obligatorio: si el awaitable puede completarse sin esperar (una corrutina que retorna de inmediato, un Future ya resuelto), la ejecución continúa sin ceder el control al loop. Por eso `await asyncio.gather(sq(2), sq(3))` sobre corrutinas sin ningún `await` interno las ejecuta una tras otra sin intercalar. Suena verdadero porque se enseña `await` como 'aquí cede el control', y el matiz explica por qué a veces no se observa concurrencia alguna. Para forzar una cesión real existe `await asyncio.sleep(0)`.",
       "explanation_en": "False. `await` is a POSSIBLE suspension point, not a mandatory one: if the awaitable can complete without waiting (a coroutine that returns immediately, an already-resolved Future), execution continues without handing control to the loop. That is why `await asyncio.gather(sq(2), sq(3))` over coroutines with no inner `await` runs them one after another with no interleaving. It sounds true because `await` is taught as 'control is yielded here', and the nuance explains why sometimes no concurrency is observed at all. To force a real yield there is `await asyncio.sleep(0)`.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Coroutines",
       "expected_time_ms": 34000,
-      "tags": ["asyncio", "async-await", "event-loop", "gotcha"]
+      "tags": [
+        "asyncio",
+        "async-await",
+        "event-loop",
+        "gotcha"
+      ]
     },
     {
       "id": "q030201018",
@@ -211,9 +255,12 @@
       "explanation_en": "The asynchronous context manager protocol from PEP 492 is `__aenter__` and `__aexit__`, awaitable versions of `__enter__`/`__exit__`. `async with` does NOT fall back to the synchronous methods when the async ones are missing: defining only `__enter__` gets you a TypeError saying the object does not support the async context manager protocol.",
       "source": "PEP 492 — Coroutines with async and await syntax: Asynchronous Context Managers",
       "expected_time_ms": 28000,
-      "tags": ["asyncio", "async-with", "context-manager"]
+      "tags": [
+        "asyncio",
+        "async-with",
+        "context-manager"
+      ]
     },
-
     {
       "id": "q030202010",
       "skill_id": "sk030202",
@@ -238,7 +285,11 @@
       "explanation_en": "`asyncio.get_running_loop()` only works from inside a coroutine or callback that the loop is running; at module level nothing is running and it raises `RuntimeError: no running event loop`. Options 1 and 3 echo memories of the old `asyncio.get_event_loop()`, which did implicitly create a loop on the main thread: that behaviour is deprecated precisely because it hid bugs. Importing asyncio starts nothing.",
       "source": "CPython docs 3.13 — Event Loop: asyncio.get_running_loop()",
       "expected_time_ms": 30000,
-      "tags": ["asyncio", "event-loop", "gotcha"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "gotcha"
+      ]
     },
     {
       "id": "q030202011",
@@ -248,23 +299,28 @@
       "question_es": "¿En qué orden se imprimen las líneas?\n```python\nimport asyncio, time\nasync def a():\n    print(\"a1\")\n    time.sleep(1)\n    print(\"a2\")\nasync def b():\n    print(\"b1\")\n    await asyncio.sleep(0)\n    print(\"b2\")\nasync def main():\n    await asyncio.gather(a(), b())\nasyncio.run(main())\n```",
       "question_en": "In what order are the lines printed?\n```python\nimport asyncio, time\nasync def a():\n    print(\"a1\")\n    time.sleep(1)\n    print(\"a2\")\nasync def b():\n    print(\"b1\")\n    await asyncio.sleep(0)\n    print(\"b2\")\nasync def main():\n    await asyncio.gather(a(), b())\nasyncio.run(main())\n```",
       "options_es": [
-        "a1, a2, b1, b2",
-        "a1, b1, b2, a2",
         "a1, b1, a2, b2",
+        "a1, b1, b2, a2",
+        "a1, a2, b1, b2",
         "b1, b2, a1, a2"
       ],
       "options_en": [
-        "a1, a2, b1, b2",
-        "a1, b1, b2, a2",
         "a1, b1, a2, b2",
+        "a1, b1, b2, a2",
+        "a1, a2, b1, b2",
         "b1, b2, a1, a2"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`gather` agenda a() primero. a() imprime a1 y llama a `time.sleep(1)`, que bloquea el HILO: el event loop no puede avanzar nada durante ese segundo, así que a() llega hasta a2 y termina sin haber cedido el control ni una vez. Solo entonces corre b(). La opción 2 es la respuesta correcta si `time.sleep` fuera `await asyncio.sleep`, y por eso es la que casi todo el mundo elige: asume que entrar en una corrutina basta para intercalar. La diferencia entre bloquear el hilo y suspender la corrutina es todo el asunto.",
       "explanation_en": "`gather` schedules a() first. a() prints a1 and calls `time.sleep(1)`, which blocks the THREAD: the event loop cannot advance anything during that second, so a() runs all the way to a2 and finishes without ever yielding control. Only then does b() run. Option 2 is the right answer if `time.sleep` were `await asyncio.sleep`, which is why almost everyone picks it: it assumes that being inside a coroutine is enough to interleave. The difference between blocking the thread and suspending the coroutine is the whole point.",
       "source": "CPython docs 3.13 — Developing with asyncio: Running Blocking Code",
       "expected_time_ms": 48000,
-      "tags": ["asyncio", "event-loop", "blocking", "gotcha"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "blocking",
+        "gotcha"
+      ]
     },
     {
       "id": "q030202012",
@@ -290,7 +346,11 @@
       "explanation_en": "`await asyncio.sleep(0)` is the idiomatic way to give up your turn without waiting real time. A prints 'A 1' and yields; B prints 'B 1' and yields; the loop resumes A ('A 2') and then B ('B 2'). The first option is what you would get if the await did not suspend. The fourth attributes to the event loop a thread-style nondeterminism it does not have: with one thread and a FIFO queue of ready callbacks the order is reproducible; what varies is completion order when the waits have different durations.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Sleeping",
       "expected_time_ms": 40000,
-      "tags": ["asyncio", "event-loop", "scheduling"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "scheduling"
+      ]
     },
     {
       "id": "q030202013",
@@ -301,22 +361,26 @@
       "question_en": "What does this code print?\n```python\nimport asyncio\nasync def main():\n    return asyncio.get_running_loop()\nloop = asyncio.run(main())\nprint(loop.is_closed())\n```",
       "options_es": [
         "False: el loop sigue disponible para reutilizarlo",
-        "Lanza RuntimeError al salir de asyncio.run",
         "True",
+        "Lanza RuntimeError al salir de asyncio.run",
         "None, porque is_closed() no devuelve nada fuera del loop"
       ],
       "options_en": [
         "False: the loop is still available for reuse",
-        "Raises RuntimeError on leaving asyncio.run",
         "True",
+        "Raises RuntimeError on leaving asyncio.run",
         "None, because is_closed() returns nothing outside the loop"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`asyncio.run()` crea un event loop, ejecuta la corrutina y, al terminar, cancela lo pendiente, cierra los generadores asíncronos y CIERRA el loop. El objeto devuelto sobrevive como referencia, pero ya está cerrado: `is_closed()` da True. La primera opción es la suposición que lleva al error clásico 'Event loop is closed' cuando alguien guarda el loop y luego intenta `loop.run_until_complete(...)` con él. El cierre es parte del contrato de `run`, no un fallo.",
       "explanation_en": "`asyncio.run()` creates an event loop, runs the coroutine and, on finishing, cancels what is pending, shuts down async generators and CLOSES the loop. The returned object survives as a reference but is already closed: `is_closed()` gives True. The first option is the assumption behind the classic 'Event loop is closed' error when someone stores the loop and later tries `loop.run_until_complete(...)` on it. Closing is part of `run`'s contract, not a bug.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.run()",
       "expected_time_ms": 42000,
-      "tags": ["asyncio", "event-loop", "asyncio-run"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "asyncio-run"
+      ]
     },
     {
       "id": "q030202014",
@@ -326,23 +390,27 @@
       "question_es": "¿Qué hace `asyncio.run(coro)` además de ejecutar la corrutina?",
       "question_en": "What does `asyncio.run(coro)` do besides running the coroutine?",
       "options_es": [
-        "Reutiliza el event loop del hilo actual si ya existe, para no perder las tareas agendadas",
+        "Crea un event loop nuevo, al terminar cancela las tareas pendientes, apaga los generadores asíncronos y cierra el loop",
         "Ejecuta la corrutina en un hilo secundario y deja el principal libre",
         "Solo agenda la corrutina y retorna de inmediato; hay que sondear el resultado después",
-        "Crea un event loop nuevo, al terminar cancela las tareas pendientes, apaga los generadores asíncronos y cierra el loop"
+        "Reutiliza el event loop del hilo actual si ya existe, para no perder las tareas agendadas"
       ],
       "options_en": [
-        "Reuses the current thread's event loop if one exists, so scheduled tasks are not lost",
+        "Creates a fresh event loop, cancels remaining tasks on exit, shuts down async generators and closes the loop",
         "Runs the coroutine on a secondary thread and leaves the main one free",
         "Only schedules the coroutine and returns immediately; you poll for the result later",
-        "Creates a fresh event loop, cancels remaining tasks on exit, shuts down async generators and closes the loop"
+        "Reuses the current thread's event loop if one exists, so scheduled tasks are not lost"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`asyncio.run()` es el punto de entrada de alto nivel: loop nuevo, ejecución hasta completar, limpieza (cancelar tareas pendientes, `shutdown_asyncgens`, `shutdown_default_executor`) y cierre. Por eso no puede llamarse desde dentro de otro loop en ejecución. La primera opción invierte el comportamiento y explica por qué sorprende que las tareas creadas y no esperadas se cancelen al salir. La segunda confunde asyncio con hilos; la tercera lo confunde con `create_task`: `run` es bloqueante desde la perspectiva del código síncrono que lo llama.",
       "explanation_en": "`asyncio.run()` is the high-level entry point: new loop, run to completion, cleanup (cancel pending tasks, `shutdown_asyncgens`, `shutdown_default_executor`) and close. That is why it cannot be called from inside another running loop. The first option inverts the behaviour and explains the surprise when tasks created and never awaited get cancelled on exit. The second confuses asyncio with threads; the third confuses it with `create_task`: `run` is blocking from the perspective of the synchronous code calling it.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.run()",
       "expected_time_ms": 32000,
-      "tags": ["asyncio", "event-loop", "asyncio-run"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "asyncio-run"
+      ]
     },
     {
       "id": "q030202015",
@@ -368,7 +436,11 @@
       "explanation_en": "`loop.call_soon(cb, *args)` queues a synchronous callback for the loop's next iteration and returns a Handle; it is the low-level API meant for exactly this (with `call_soon_threadsafe` when calling from another thread). `await function()` fails because a plain function does not return an awaitable. `asyncio.run` would raise RuntimeError inside an already running loop and it waits for completion, the opposite of what was asked. `threading.Timer` adds a thread where none is needed and takes the callback out of the loop's single-threaded model.",
       "source": "CPython docs 3.13 — Event Loop: Scheduling Callbacks",
       "expected_time_ms": 38000,
-      "tags": ["asyncio", "event-loop", "callbacks"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "callbacks"
+      ]
     },
     {
       "id": "q030202016",
@@ -377,14 +449,24 @@
       "difficulty_tier": "medium",
       "question_es": "El event loop de asyncio ejecuta las corrutinas en un único hilo, de modo que una corrutina que nunca alcanza un `await` monopoliza el loop hasta que termina.",
       "question_en": "The asyncio event loop runs coroutines on a single thread, so a coroutine that never reaches an `await` monopolises the loop until it finishes.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero. El loop es cooperativo y de un solo hilo: solo puede cambiar de tarea en los puntos de suspensión. Sin `await`, o con trabajo intensivo de CPU entre awaits, ninguna otra tarea avanza, los timers se retrasan y las conexiones de red quedan sin atender. No hay preempción como en los hilos del sistema operativo, así que nadie va a interrumpir a esa corrutina por ti. La solución es sacar el trabajo bloqueante del loop con `asyncio.to_thread` o `loop.run_in_executor` (y un ProcessPoolExecutor si es CPU puro).",
       "explanation_en": "True. The loop is cooperative and single-threaded: it can only switch tasks at suspension points. With no `await`, or with CPU-heavy work between awaits, no other task advances, timers drift and network connections go unserviced. There is no preemption as with OS threads, so nothing will interrupt that coroutine for you. The fix is to move blocking work off the loop with `asyncio.to_thread` or `loop.run_in_executor` (and a ProcessPoolExecutor when it is pure CPU).",
       "source": "CPython docs 3.13 — Developing with asyncio: Concurrency and Multithreading",
       "expected_time_ms": 30000,
-      "tags": ["asyncio", "event-loop", "blocking"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "blocking"
+      ]
     },
     {
       "id": "q030202017",
@@ -399,7 +481,12 @@
       "explanation_en": "`asyncio.to_thread(func, *args)` wraps `loop.run_in_executor` with the default executor and propagates the current contextvars, making it the recommended way to call blocking code from a coroutine. It suits blocking I/O; for pure CPU work the GIL caps the gain and a ProcessPoolExecutor via `run_in_executor` is the better fit.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Running in Threads",
       "expected_time_ms": 30000,
-      "tags": ["asyncio", "event-loop", "blocking", "threads"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "blocking",
+        "threads"
+      ]
     },
     {
       "id": "q030202018",
@@ -414,9 +501,13 @@
       "explanation_en": "`asyncio.all_tasks()` returns the set of not-yet-completed tasks of the running loop; it is what a graceful shutdown uses to cancel and await them before closing. Watch for two confusions: `asyncio.current_task()` returns only the current task, and `all_tasks()` requires a running loop, so calling it from synchronous code raises RuntimeError.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.all_tasks()",
       "expected_time_ms": 32000,
-      "tags": ["asyncio", "event-loop", "tasks", "shutdown"]
+      "tags": [
+        "asyncio",
+        "event-loop",
+        "tasks",
+        "shutdown"
+      ]
     },
-
     {
       "id": "q030203010",
       "skill_id": "sk030203",
@@ -426,22 +517,26 @@
       "question_en": "What does this code print?\n```python\nimport asyncio\nasync def work():\n    try:\n        await asyncio.sleep(10)\n    except asyncio.CancelledError:\n        print(\"cancelled\")\n        raise\nasync def main():\n    t = asyncio.create_task(work())\n    await asyncio.sleep(0)\n    t.cancel()\n    try:\n        await t\n    except asyncio.CancelledError:\n        print(\"main saw it\")\nasyncio.run(main())\n```",
       "options_es": [
         "Solo 'cancelada': await sobre una tarea cancelada devuelve None",
-        "Nada: cancel() mata la tarea sin ejecutar el except",
         "'cancelada' y luego 'main lo vio'",
+        "Nada: cancel() mata la tarea sin ejecutar el except",
         "Tarda 10 segundos y no imprime nada"
       ],
       "options_en": [
         "Only 'cancelled': awaiting a cancelled task returns None",
-        "Nothing: cancel() kills the task without running the except",
         "'cancelled' and then 'main saw it'",
+        "Nothing: cancel() kills the task without running the except",
         "It takes 10 seconds and prints nothing"
       ],
-      "correct_index": 2,
+      "correct_index": 1,
       "explanation_es": "`cancel()` no mata nada de inmediato: pide al loop que lance `CancelledError` dentro de la tarea en su punto de suspensión, aquí el `asyncio.sleep(10)`. El `except` se ejecuta e imprime 'cancelada', y el `raise` vuelve a propagarla, por lo que `await t` también la recibe. La opción 2 asume una muerte abrupta al estilo de matar un hilo. La opción 1 es la trampa más fina: si `work()` se hubiera tragado la excepción sin `raise`, la tarea habría terminado normalmente y `await t` no habría lanzado nada; re-lanzar es justo lo que mantiene la semántica de cancelación.",
       "explanation_en": "`cancel()` kills nothing immediately: it asks the loop to raise `CancelledError` inside the task at its suspension point, here the `asyncio.sleep(10)`. The `except` runs and prints 'cancelled', and the `raise` re-propagates it, so `await t` receives it too. Option 2 assumes an abrupt kill in the style of killing a thread. Option 1 is the subtler trap: had `work()` swallowed the exception without `raise`, the task would have finished normally and `await t` would have raised nothing; re-raising is exactly what preserves cancellation semantics.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Task Cancellation",
       "expected_time_ms": 50000,
-      "tags": ["asyncio", "tasks", "cancellation"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "cancellation"
+      ]
     },
     {
       "id": "q030203011",
@@ -467,7 +562,11 @@
       "explanation_en": "`create_task` SCHEDULES the coroutine, it does not run it: control returns to main, which prints 'created'. The task only advances when main yields control, which happens at `await t`; then 'working' is printed. The first option is the belief that `create_task` starts the coroutine on the spot (as starting a thread would). The third gets the scheduling nuance right but forgets that the later `await` does provide the opportunity; it would be correct if main ended without awaiting and the loop closed first.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Creating Tasks",
       "expected_time_ms": 36000,
-      "tags": ["asyncio", "tasks", "scheduling"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "scheduling"
+      ]
     },
     {
       "id": "q030203012",
@@ -477,23 +576,28 @@
       "question_es": "¿Qué imprime este código y cuánto tarda aproximadamente?\n```python\nimport asyncio\nasync def lenta():\n    await asyncio.sleep(5)\n    return \"lista\"\nasync def main():\n    try:\n        return await asyncio.wait_for(lenta(), timeout=0.1)\n    except TimeoutError:\n        return \"tiempo agotado\"\nprint(asyncio.run(main()))\n```",
       "question_en": "What does this code print, and roughly how long does it take?\n```python\nimport asyncio\nasync def slow():\n    await asyncio.sleep(5)\n    return \"ready\"\nasync def main():\n    try:\n        return await asyncio.wait_for(slow(), timeout=0.1)\n    except TimeoutError:\n        return \"timed out\"\nprint(asyncio.run(main()))\n```",
       "options_es": [
-        "'tiempo agotado' tras unos 0.1 segundos",
-        "'lista' tras unos 5 segundos: el timeout solo avisa, no interrumpe",
         "'tiempo agotado' tras unos 5 segundos, cuando lenta() termina",
+        "'lista' tras unos 5 segundos: el timeout solo avisa, no interrumpe",
+        "'tiempo agotado' tras unos 0.1 segundos",
         "None, porque la excepción se lanza fuera del try"
       ],
       "options_en": [
-        "'timed out' after about 0.1 seconds",
-        "'ready' after about 5 seconds: the timeout only warns, it does not interrupt",
         "'timed out' after about 5 seconds, when slow() finishes",
+        "'ready' after about 5 seconds: the timeout only warns, it does not interrupt",
+        "'timed out' after about 0.1 seconds",
         "None, because the exception is raised outside the try"
       ],
-      "correct_index": 0,
+      "correct_index": 2,
       "explanation_es": "`wait_for` envuelve la corrutina en una tarea y, al vencer el plazo, la CANCELA y lanza TimeoutError: total, unos 0.1 s. La opción 2 supone que el timeout es informativo; la 3 supone que hay que esperar igualmente a que termine el trabajo, que es lo que pasaría con un timeout implementado por sondeo posterior. Detalle de versión: desde 3.11 `asyncio.TimeoutError` es un alias de `TimeoutError` incorporado, así que capturar el segundo funciona.",
       "explanation_en": "`wait_for` wraps the coroutine in a task and, when the deadline expires, CANCELS it and raises TimeoutError: about 0.1 s in total. Option 2 assumes the timeout is informational; option 3 assumes you must wait for the work to finish anyway, which is what a timeout implemented as an after-the-fact check would do. Version note: since 3.11 `asyncio.TimeoutError` is an alias of the built-in `TimeoutError`, so catching the latter works.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Timeouts",
       "expected_time_ms": 42000,
-      "tags": ["asyncio", "tasks", "timeout", "cancellation"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "timeout",
+        "cancellation"
+      ]
     },
     {
       "id": "q030203013",
@@ -519,7 +623,12 @@
       "explanation_en": "The task is scheduled but has not run yet, so `done()` is False. `result()` does NOT wait: if the task has not finished it raises `InvalidStateError`. Option 2 is the most tempting because `.result()` resembles `concurrent.futures.Future.result()`, which does block until a result exists; the asyncio Future cannot block, since doing so would freeze the loop's only thread. To get the 7 you must `await t`. Option 1 assumes it returns None when there is no result, a silent failure asyncio deliberately avoids.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Task Object",
       "expected_time_ms": 46000,
-      "tags": ["asyncio", "tasks", "future", "gotcha"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "future",
+        "gotcha"
+      ]
     },
     {
       "id": "q030203014",
@@ -529,23 +638,28 @@
       "question_es": "¿Cuál es la diferencia estructural entre un objeto corrutina y un `asyncio.Task`?",
       "question_en": "What is the structural difference between a coroutine object and an `asyncio.Task`?",
       "options_es": [
-        "El Task corre en un hilo propio; la corrutina corre en el hilo principal",
-        "No hay diferencia real: Task es solo un alias tipado de la corrutina",
         "Task es una subclase de Future que envuelve la corrutina y la agenda en el loop; el objeto corrutina es solo un valor perezoso que nadie ha agendado",
+        "No hay diferencia real: Task es solo un alias tipado de la corrutina",
+        "El Task corre en un hilo propio; la corrutina corre en el hilo principal",
         "La corrutina puede cancelarse y el Task no"
       ],
       "options_en": [
-        "The Task runs on its own thread; the coroutine runs on the main thread",
-        "There is no real difference: Task is just a typed alias of the coroutine",
         "Task is a Future subclass that wraps the coroutine and schedules it on the loop; the coroutine object is just a lazy value nobody has scheduled",
+        "There is no real difference: Task is just a typed alias of the coroutine",
+        "The Task runs on its own thread; the coroutine runs on the main thread",
         "The coroutine can be cancelled and the Task cannot"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Un objeto corrutina es inerte hasta que alguien lo hace avanzar. `Task` hereda de `Future`, envuelve la corrutina y le pide al loop que la ejecute; por eso expone `cancel()`, `done()`, `result()` y `add_done_callback()`, que la corrutina no tiene. La primera opción mete hilos donde no los hay. La cuarta invierte la realidad: cancelar es precisamente una capacidad del Task. La segunda es la confusión de fondo: `await coro()` y `await create_task(coro())` dan el mismo resultado en un caso aislado, y de ahí se deduce que son lo mismo, aunque solo el segundo permite concurrencia.",
       "explanation_en": "A coroutine object is inert until something drives it. `Task` inherits from `Future`, wraps the coroutine and asks the loop to run it; hence it exposes `cancel()`, `done()`, `result()` and `add_done_callback()`, which the coroutine lacks. The first option introduces threads where there are none. The fourth inverts reality: cancelling is precisely a Task capability. The second is the underlying confusion: `await coro()` and `await create_task(coro())` give the same result in isolation, from which people infer they are the same, though only the second enables concurrency.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Task Object",
       "expected_time_ms": 34000,
-      "tags": ["asyncio", "tasks", "coroutine", "future"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "coroutine",
+        "future"
+      ]
     },
     {
       "id": "q030203015",
@@ -556,22 +670,27 @@
       "question_en": "You have a critical operation (a remote commit) that must not be aborted even if whoever awaits it gets cancelled. Which asyncio tool protects it?",
       "options_es": [
         "asyncio.wait_for(coro, timeout=None)",
-        "asyncio.shield(coro)",
         "Capturar CancelledError dentro de la corrutina y no re-lanzarla",
+        "asyncio.shield(coro)",
         "asyncio.gather(coro, return_exceptions=True)"
       ],
       "options_en": [
         "asyncio.wait_for(coro, timeout=None)",
-        "asyncio.shield(coro)",
         "Catching CancelledError inside the coroutine and not re-raising it",
+        "asyncio.shield(coro)",
         "asyncio.gather(coro, return_exceptions=True)"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "`asyncio.shield()` envuelve la operación en una tarea interna y absorbe la cancelación: quien hace `await shield(...)` recibe CancelledError, pero la tarea protegida sigue corriendo hasta el final. La opción 3 parece equivalente y es la trampa: tragarse `CancelledError` sin re-lanzarla rompe el protocolo de cancelación, hace que un `TaskGroup` o un apagado ordenado se queden esperando, y en 3.11+ interfiere con el mecanismo de `uncancel()`. `wait_for` sirve para poner plazos, no para protegerlos, y `return_exceptions` solo cambia cómo gather reporta errores.",
       "explanation_en": "`asyncio.shield()` wraps the operation in an inner task and absorbs cancellation: whoever does `await shield(...)` receives CancelledError, but the shielded task keeps running to completion. Option 3 looks equivalent and is the trap: swallowing `CancelledError` without re-raising breaks the cancellation protocol, leaves a `TaskGroup` or a graceful shutdown waiting, and in 3.11+ interferes with the `uncancel()` mechanism. `wait_for` is for imposing deadlines, not protecting against them, and `return_exceptions` only changes how gather reports errors.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Shielding From Cancellation",
       "expected_time_ms": 44000,
-      "tags": ["asyncio", "tasks", "cancellation", "shield"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "cancellation",
+        "shield"
+      ]
     },
     {
       "id": "q030203016",
@@ -581,23 +700,28 @@
       "question_es": "¿Qué aporta `asyncio.TaskGroup` (3.11+) que `asyncio.gather` no da?",
       "question_en": "What does `asyncio.TaskGroup` (3.11+) give you that `asyncio.gather` does not?",
       "options_es": [
-        "Si una tarea falla, cancela automáticamente a sus hermanas y al salir del bloque agrupa los errores en un ExceptionGroup; ninguna tarea queda huérfana",
+        "Devuelve los resultados en orden de finalización en lugar de orden de envío",
         "Reparte las tareas entre varios núcleos de CPU",
         "Es más rápido porque evita pasar por el event loop",
-        "Devuelve los resultados en orden de finalización en lugar de orden de envío"
+        "Si una tarea falla, cancela automáticamente a sus hermanas y al salir del bloque agrupa los errores en un ExceptionGroup; ninguna tarea queda huérfana"
       ],
       "options_en": [
-        "If one task fails it automatically cancels its siblings, and on leaving the block it groups the errors into an ExceptionGroup; no task is left orphaned",
+        "It returns results in completion order instead of submission order",
         "It spreads tasks across several CPU cores",
         "It is faster because it bypasses the event loop",
-        "It returns results in completion order instead of submission order"
+        "If one task fails it automatically cancels its siblings, and on leaving the block it groups the errors into an ExceptionGroup; no task is left orphaned"
       ],
-      "correct_index": 0,
+      "correct_index": 3,
       "explanation_es": "`TaskGroup` implementa concurrencia estructurada: el `async with` no sale hasta que todas las tareas han terminado, una excepción cancela a las hermanas, y los errores llegan como `ExceptionGroup` para capturarse con `except*` (PEP 654). Con `gather` sin `return_exceptions`, la primera excepción se propaga pero las demás tareas siguen vivas y sus errores pueden acabar en 'Task exception was never retrieved'. Las opciones 2 y 3 repiten el malentendido de que asyncio paraleliza o esquiva el loop: TaskGroup se apoya en el mismo loop de un solo hilo. La 4 describe a `as_completed`.",
       "explanation_en": "`TaskGroup` implements structured concurrency: the `async with` does not exit until every task has finished, an exception cancels the siblings, and errors arrive as an `ExceptionGroup` to be caught with `except*` (PEP 654). With `gather` and no `return_exceptions`, the first exception propagates but the other tasks stay alive and their errors can end up as 'Task exception was never retrieved'. Options 2 and 3 repeat the misunderstanding that asyncio parallelises or bypasses the loop: TaskGroup relies on the same single-threaded loop. Option 4 describes `as_completed`.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Task Groups",
       "expected_time_ms": 42000,
-      "tags": ["asyncio", "tasks", "taskgroup", "structured-concurrency"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "taskgroup",
+        "structured-concurrency"
+      ]
     },
     {
       "id": "q030203017",
@@ -606,14 +730,25 @@
       "difficulty_tier": "medium",
       "question_es": "`asyncio.create_task()` puede llamarse desde código síncrono normal, fuera de cualquier corrutina, siempre que se haya importado asyncio antes.",
       "question_en": "`asyncio.create_task()` can be called from ordinary synchronous code, outside any coroutine, as long as asyncio has been imported first.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. `create_task` necesita un event loop EN EJECUCIÓN para agendar la tarea; fuera de él lanza `RuntimeError: no running event loop`. Suena verdadero porque la función vive en el espacio de nombres `asyncio` y no exige recibir un loop como argumento, lo que sugiere que se las arregla sola. Desde código síncrono las opciones son `asyncio.run(coro())` para arrancar el loop, o `asyncio.run_coroutine_threadsafe(coro(), loop)` si el loop ya corre en otro hilo.",
       "explanation_en": "False. `create_task` needs a RUNNING event loop to schedule the task; outside one it raises `RuntimeError: no running event loop`. It sounds true because the function lives in the `asyncio` namespace and does not require a loop argument, which suggests it sorts itself out. From synchronous code the options are `asyncio.run(coro())` to start the loop, or `asyncio.run_coroutine_threadsafe(coro(), loop)` when the loop is already running on another thread.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.create_task()",
       "expected_time_ms": 30000,
-      "tags": ["asyncio", "tasks", "event-loop", "gotcha"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "event-loop",
+        "gotcha"
+      ]
     },
     {
       "id": "q030203018",
@@ -628,9 +763,12 @@
       "explanation_en": "`Task.cancel()` stops nothing instantly: it records the request and the loop raises `CancelledError` inside the coroutine the next time it suspends. It returns a bool saying whether cancellation was requested, not whether it completed; to learn the outcome you await the task and check `cancelled()`. A coroutine with no suspension points ignores the request until it finishes.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: Task Cancellation",
       "expected_time_ms": 28000,
-      "tags": ["asyncio", "tasks", "cancellation"]
+      "tags": [
+        "asyncio",
+        "tasks",
+        "cancellation"
+      ]
     },
-
     {
       "id": "q030204010",
       "skill_id": "sk030204",
@@ -639,23 +777,27 @@
       "question_es": "¿Qué imprime este código?\n```python\nimport asyncio\nasync def w(n, d):\n    await asyncio.sleep(d)\n    return n\nasync def main():\n    return await asyncio.gather(w(\"a\", 0.3), w(\"b\", 0.1), w(\"c\", 0.2))\nprint(asyncio.run(main()))\n```",
       "question_en": "What does this code print?\n```python\nimport asyncio\nasync def w(n, d):\n    await asyncio.sleep(d)\n    return n\nasync def main():\n    return await asyncio.gather(w(\"a\", 0.3), w(\"b\", 0.1), w(\"c\", 0.2))\nprint(asyncio.run(main()))\n```",
       "options_es": [
-        "['b', 'c', 'a'], en orden de finalización",
+        "['a', 'b', 'c']",
         "Un orden distinto en cada ejecución",
         "Solo ['a'], el primer resultado disponible en orden de envío",
-        "['a', 'b', 'c']"
+        "['b', 'c', 'a'], en orden de finalización"
       ],
       "options_en": [
-        "['b', 'c', 'a'], in completion order",
+        "['a', 'b', 'c']",
         "A different order on each run",
         "Only ['a'], the first result available in submission order",
-        "['a', 'b', 'c']"
+        "['b', 'c', 'a'], in completion order"
       ],
-      "correct_index": 3,
+      "correct_index": 0,
       "explanation_es": "`gather` devuelve una lista de resultados en el ORDEN DE LOS ARGUMENTOS, no en el de finalización, aunque internamente 'b' termine primero. La opción 1 es la intuición más común (y es lo que da `asyncio.as_completed`, para lo que existe). La opción 2 supone un no determinismo que no hay: el índice de cada resultado está fijado al construir el gather. Duración total: unos 0.3 s, el máximo, no la suma.",
       "explanation_en": "`gather` returns a list of results in ARGUMENT ORDER, not completion order, even though 'b' finishes first internally. Option 1 is the most common intuition (and it is what `asyncio.as_completed` gives, which is why it exists). Option 2 assumes a nondeterminism that is not there: each result's index is fixed when the gather is built. Total duration: about 0.3 s, the maximum, not the sum.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.gather()",
       "expected_time_ms": 38000,
-      "tags": ["asyncio", "gather", "concurrency"]
+      "tags": [
+        "asyncio",
+        "gather",
+        "concurrency"
+      ]
     },
     {
       "id": "q030204011",
@@ -665,23 +807,27 @@
       "question_es": "¿Qué imprime este código?\n```python\nimport asyncio\nasync def ok():\n    return 1\nasync def falla():\n    raise ValueError(\"x\")\nasync def main():\n    r = await asyncio.gather(ok(), falla(), return_exceptions=True)\n    return [type(v).__name__ for v in r]\nprint(asyncio.run(main()))\n```",
       "question_en": "What does this code print?\n```python\nimport asyncio\nasync def ok():\n    return 1\nasync def fails():\n    raise ValueError(\"x\")\nasync def main():\n    r = await asyncio.gather(ok(), fails(), return_exceptions=True)\n    return [type(v).__name__ for v in r]\nprint(asyncio.run(main()))\n```",
       "options_es": [
-        "['int', 'ValueError']",
         "['int'] porque la corrutina fallida se omite de la lista",
+        "['int', 'ValueError']",
         "Lanza ValueError sin imprimir nada",
         "['int', 'NoneType']"
       ],
       "options_en": [
-        "['int', 'ValueError']",
         "['int'] because the failing coroutine is dropped from the list",
+        "['int', 'ValueError']",
         "Raises ValueError without printing anything",
         "['int', 'NoneType']"
       ],
-      "correct_index": 0,
+      "correct_index": 1,
       "explanation_es": "Con `return_exceptions=True`, gather no propaga el error: devuelve el objeto excepción COMO RESULTADO en la posición correspondiente, de ahí ['int', 'ValueError']. La opción 3 es el comportamiento por defecto (`return_exceptions=False`), que es de donde viene la confusión. La opción 2 rompería la correspondencia posicional entre entradas y salidas, que gather garantiza siempre. La consecuencia práctica es que hay que inspeccionar los resultados con `isinstance(v, Exception)`: un error silenciado aquí no lanza nada y pasa desapercibido.",
       "explanation_en": "With `return_exceptions=True`, gather does not propagate the error: it returns the exception object AS THE RESULT in the matching position, hence ['int', 'ValueError']. Option 3 is the default behaviour (`return_exceptions=False`), which is where the confusion comes from. Option 2 would break the positional correspondence between inputs and outputs, which gather always guarantees. The practical consequence is that you must inspect results with `isinstance(v, Exception)`: an error silenced here raises nothing and goes unnoticed.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.gather()",
       "expected_time_ms": 44000,
-      "tags": ["asyncio", "gather", "exceptions"]
+      "tags": [
+        "asyncio",
+        "gather",
+        "exceptions"
+      ]
     },
     {
       "id": "q030204012",
@@ -692,22 +838,27 @@
       "question_en": "What number does this code print?\n```python\nimport asyncio, time\nasync def w(sem):\n    async with sem:\n        await asyncio.sleep(1)\nasync def main():\n    sem = asyncio.Semaphore(2)\n    t0 = time.perf_counter()\n    await asyncio.gather(*(w(sem) for _ in range(4)))\n    print(round(time.perf_counter() - t0))\nasyncio.run(main())\n```",
       "options_es": [
         "4, porque el semáforo serializa las cuatro corrutinas",
-        "2",
         "1, porque gather las lanza todas a la vez",
+        "2",
         "0, porque asyncio.sleep no consume tiempo real"
       ],
       "options_en": [
         "4, because the semaphore serialises all four coroutines",
-        "2",
         "1, because gather launches them all at once",
+        "2",
         "0, because asyncio.sleep consumes no real time"
       ],
-      "correct_index": 1,
+      "correct_index": 2,
       "explanation_es": "El semáforo deja pasar 2 a la vez: dos tandas de 1 segundo, total 2. La opción 3 es la respuesta si no hubiera semáforo, y es el error típico de leer `gather` y olvidar el límite. La opción 1 confunde `Semaphore(2)` con un `Lock` (que sí serializaría y daría 4). La opción 4 confunde 'no bloquear el hilo' con 'no esperar': `asyncio.sleep` sí deja pasar el tiempo real, solo que sin congelar el loop. Con `asyncio.Semaphore` hay que usar `async with`, no `with`, porque adquirirlo puede suspender.",
       "explanation_en": "The semaphore lets 2 through at a time: two rounds of 1 second, total 2. Option 3 is the answer with no semaphore, and it is the typical error of reading `gather` and forgetting the limit. Option 1 confuses `Semaphore(2)` with a `Lock` (which would serialise and give 4). Option 4 confuses 'does not block the thread' with 'does not wait': `asyncio.sleep` does let real time pass, it simply does not freeze the loop. With `asyncio.Semaphore` you must use `async with`, not `with`, because acquiring it may suspend.",
       "source": "CPython docs 3.13 — Synchronization Primitives: Semaphore",
       "expected_time_ms": 50000,
-      "tags": ["asyncio", "gather", "semaphore", "synchronization"]
+      "tags": [
+        "asyncio",
+        "gather",
+        "semaphore",
+        "synchronization"
+      ]
     },
     {
       "id": "q030204013",
@@ -717,23 +868,28 @@
       "question_es": "Dentro de una corrutina necesitas proteger una sección crítica. ¿Por qué usar `asyncio.Lock` y no `threading.Lock`?",
       "question_en": "Inside a coroutine you need to protect a critical section. Why use `asyncio.Lock` rather than `threading.Lock`?",
       "options_es": [
-        "Porque threading.Lock no existe en Python 3.13",
-        "Porque asyncio.Lock es más rápido al estar escrito en C",
         "Porque threading.Lock.acquire() bloquea el hilo entero, y con él el event loop, mientras que asyncio.Lock se espera con await y cede el control durante la espera",
+        "Porque asyncio.Lock es más rápido al estar escrito en C",
+        "Porque threading.Lock no existe en Python 3.13",
         "Porque asyncio.Lock protege también contra accesos desde otros procesos"
       ],
       "options_en": [
-        "Because threading.Lock does not exist in Python 3.13",
-        "Because asyncio.Lock is faster, being written in C",
         "Because threading.Lock.acquire() blocks the entire thread, and with it the event loop, while asyncio.Lock is awaited and yields control while waiting",
+        "Because asyncio.Lock is faster, being written in C",
+        "Because threading.Lock does not exist in Python 3.13",
         "Because asyncio.Lock also guards against access from other processes"
       ],
-      "correct_index": 2,
+      "correct_index": 0,
       "explanation_es": "Es el mismo patrón que `time.sleep` frente a `asyncio.sleep`: la primitiva de hilos bloquea el único hilo del loop, y si quien tiene el lock es otra corrutina que necesita ese mismo loop para liberarlo, se produce un interbloqueo total. `asyncio.Lock` suspende solo a la corrutina que espera. La opción 4 confunde ámbitos: `asyncio.Lock` no es un lock entre procesos y ni siquiera es seguro entre hilos, es para corrutinas de un mismo loop. La opción 2 invierte la razón: no se elige por rendimiento sino por no bloquear.",
       "explanation_en": "It is the same pattern as `time.sleep` versus `asyncio.sleep`: the threading primitive blocks the loop's only thread, and if the lock holder is another coroutine that needs that same loop to release it, you get a total deadlock. `asyncio.Lock` suspends only the waiting coroutine. Option 4 confuses scopes: `asyncio.Lock` is not a cross-process lock and is not even thread-safe, it is for coroutines on one loop. Option 2 inverts the reason: the choice is about not blocking, not about speed.",
       "source": "CPython docs 3.13 — Synchronization Primitives: Lock",
       "expected_time_ms": 34000,
-      "tags": ["asyncio", "synchronization", "lock", "blocking"]
+      "tags": [
+        "asyncio",
+        "synchronization",
+        "lock",
+        "blocking"
+      ]
     },
     {
       "id": "q030204014",
@@ -745,21 +901,26 @@
       "options_es": [
         "asyncio.gather(*tareas) y luego iterar la lista devuelta",
         "asyncio.wait_for sobre cada tarea con un timeout corto",
-        "Un bucle con await sobre cada tarea, una por una",
-        "asyncio.as_completed(tareas), iterando y haciendo await de cada futuro conforme se completa"
+        "asyncio.as_completed(tareas), iterando y haciendo await de cada futuro conforme se completa",
+        "Un bucle con await sobre cada tarea, una por una"
       ],
       "options_en": [
         "asyncio.gather(*tasks) and then iterate the returned list",
         "asyncio.wait_for on each task with a short timeout",
-        "A loop awaiting each task one by one",
-        "asyncio.as_completed(tasks), iterating and awaiting each future as it completes"
+        "asyncio.as_completed(tasks), iterating and awaiting each future as it completes",
+        "A loop awaiting each task one by one"
       ],
-      "correct_index": 3,
+      "correct_index": 2,
       "explanation_es": "`as_completed` devuelve un iterador que entrega los awaitables en orden de finalización, que es exactamente 'procesar conforme llega'. `gather` es la tentación obvia y sí ejecuta concurrentemente, pero su lista solo está disponible cuando TODAS han acabado: la concurrencia es correcta y la latencia de primer resultado es la peor posible. La opción 3 no procesa antes: en el peor caso esperas a la más lenta sin ganar nada, y si las tareas no estaban ya creadas, elimina toda la concurrencia. `wait_for` impone plazos, no reordena por finalización.",
       "explanation_en": "`as_completed` returns an iterator yielding the awaitables in completion order, which is exactly 'process as it arrives'. `gather` is the obvious temptation and does run concurrently, but its list is only available once ALL have finished: the concurrency is right and the time-to-first-result is the worst possible. Option 3 does not process any earlier: in the worst case you wait for the slowest and gain nothing, and if the tasks were not already created it removes concurrency entirely. `wait_for` imposes deadlines, it does not reorder by completion.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.as_completed()",
       "expected_time_ms": 40000,
-      "tags": ["asyncio", "gather", "as-completed", "concurrency"]
+      "tags": [
+        "asyncio",
+        "gather",
+        "as-completed",
+        "concurrency"
+      ]
     },
     {
       "id": "q030204015",
@@ -770,22 +931,27 @@
       "question_en": "Which asyncio primitive would you use to pass items between producer and consumer coroutines, with a size limit that slows the producer when the consumer lags?",
       "options_es": [
         "Una lista de Python compartida con append() y pop()",
-        "asyncio.Queue(maxsize=N), con await q.put(x) y await q.get()",
+        "asyncio.Event, activándolo cada vez que hay un elemento nuevo",
         "queue.Queue(maxsize=N) del módulo estándar queue",
-        "asyncio.Event, activándolo cada vez que hay un elemento nuevo"
+        "asyncio.Queue(maxsize=N), con await q.put(x) y await q.get()"
       ],
       "options_en": [
         "A shared Python list with append() and pop()",
-        "asyncio.Queue(maxsize=N), with await q.put(x) and await q.get()",
+        "asyncio.Event, setting it each time a new item arrives",
         "queue.Queue(maxsize=N) from the standard queue module",
-        "asyncio.Event, setting it each time a new item arrives"
+        "asyncio.Queue(maxsize=N), with await q.put(x) and await q.get()"
       ],
-      "correct_index": 1,
+      "correct_index": 3,
       "explanation_es": "`asyncio.Queue` es la cola pensada para corrutinas: `await q.get()` suspende si está vacía y `await q.put()` suspende si está llena, que es justo el control de flujo (backpressure) pedido. `queue.Queue` es la trampa importante: su `get()` bloquea el HILO y por tanto congela el event loop entero. Una lista no ofrece espera ni límite: el consumidor tendría que sondear en un bucle. `Event` señala un hecho binario, no transporta elementos ni cuenta cuántos hay pendientes.",
       "explanation_en": "`asyncio.Queue` is the queue designed for coroutines: `await q.get()` suspends when empty and `await q.put()` suspends when full, which is exactly the backpressure asked for. `queue.Queue` is the important trap: its `get()` blocks the THREAD and therefore freezes the whole event loop. A list offers neither waiting nor a limit: the consumer would have to poll in a loop. `Event` signals a binary fact, it does not carry items nor track how many are outstanding.",
       "source": "CPython docs 3.13 — Queues: asyncio.Queue",
       "expected_time_ms": 34000,
-      "tags": ["asyncio", "synchronization", "queue", "producer-consumer"]
+      "tags": [
+        "asyncio",
+        "synchronization",
+        "queue",
+        "producer-consumer"
+      ]
     },
     {
       "id": "q030204016",
@@ -794,14 +960,24 @@
       "difficulty_tier": "medium",
       "question_es": "Si cancelas el future que devuelve `asyncio.gather(...)`, todas las corrutinas hijas que aún no han terminado también son canceladas.",
       "question_en": "If you cancel the future returned by `asyncio.gather(...)`, all child coroutines that have not finished yet are cancelled too.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 0,
       "explanation_es": "Verdadero: cancelar el future de gather propaga la cancelación a todos los hijos pendientes. Conviene no generalizarlo, porque la relación inversa NO se cumple: si una de las corrutinas hijas es cancelada por su cuenta, no se trata como un error de gather, se propaga CancelledError a quien espera pero las otras hijas siguen corriendo. Esa asimetría es una de las razones por las que `TaskGroup` se recomienda para código nuevo: allí el fallo o la cancelación de un miembro cancela al grupo entero de forma consistente.",
       "explanation_en": "True: cancelling the gather future propagates cancellation to every pending child. Do not generalise it, though, because the reverse does NOT hold: if one child coroutine is cancelled on its own, it is not treated as a gather error, CancelledError propagates to the waiter but the other children keep running. That asymmetry is one reason `TaskGroup` is recommended for new code: there a member's failure or cancellation consistently cancels the whole group.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.gather()",
       "expected_time_ms": 32000,
-      "tags": ["asyncio", "gather", "cancellation"]
+      "tags": [
+        "asyncio",
+        "gather",
+        "cancellation"
+      ]
     },
     {
       "id": "q030204017",
@@ -810,14 +986,25 @@
       "difficulty_tier": "hard",
       "question_es": "`asyncio.wait(tareas)` lanza en el punto de llamada la excepción de una tarea que haya fallado, igual que hace `gather` sin `return_exceptions`.",
       "question_en": "`asyncio.wait(tasks)` raises a failed task's exception at the call site, just as `gather` does without `return_exceptions`.",
-      "options_es": ["Verdadero", "Falso"],
-      "options_en": ["True", "False"],
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
       "correct_index": 1,
       "explanation_es": "Falso. `asyncio.wait()` nunca propaga las excepciones de las tareas: devuelve dos conjuntos, `(done, pending)`, y el error queda guardado en cada tarea hasta que alguien llame a `task.result()` o `task.exception()`. Suena verdadero porque `wait` y `gather` se leen como sinónimos, y el descuido es caro: si nadie consulta los resultados, el fallo solo aparece como el aviso 'Task exception was never retrieved' cuando la tarea se recolecta, a veces mucho después. Además `wait` no acepta corrutinas desnudas desde 3.11: hay que envolverlas en tareas.",
       "explanation_en": "False. `asyncio.wait()` never propagates task exceptions: it returns two sets, `(done, pending)`, and the error stays stored in each task until someone calls `task.result()` or `task.exception()`. It sounds true because `wait` and `gather` read as synonyms, and the oversight is costly: if nobody inspects the results, the failure only surfaces as the 'Task exception was never retrieved' warning when the task is collected, sometimes much later. Also, since 3.11 `wait` no longer accepts bare coroutines: they must be wrapped in tasks.",
       "source": "CPython docs 3.13 — Coroutines and Tasks: asyncio.wait()",
       "expected_time_ms": 36000,
-      "tags": ["asyncio", "gather", "wait", "exceptions"]
+      "tags": [
+        "asyncio",
+        "gather",
+        "wait",
+        "exceptions"
+      ]
     },
     {
       "id": "q030204018",
@@ -832,7 +1019,11 @@
       "explanation_en": "`Event.set()` raises the flag and wakes EVERY waiting coroutine, not just one: that is the difference from `Lock` or `Semaphore`, which release one at a time. `set()` is synchronous and is not awaited; the awaited one is `wait()`. And the flag is sticky: after `set()`, any later `wait()` returns immediately until `clear()` is called.",
       "source": "CPython docs 3.13 — Synchronization Primitives: Event",
       "expected_time_ms": 30000,
-      "tags": ["asyncio", "synchronization", "event"]
+      "tags": [
+        "asyncio",
+        "synchronization",
+        "event"
+      ]
     }
   ]
 }
