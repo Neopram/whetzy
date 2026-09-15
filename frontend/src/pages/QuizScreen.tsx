@@ -14,7 +14,7 @@ import { usePyodide } from '../hooks/usePyodide';
 import { useGlossary } from '../hooks/useGlossary';
 import styles from './QuizScreen.module.css';
 
-const EXEC_TYPES = new Set<QuestionPublic['type']>(['fill_blank_exec', 'fix_bug']);
+const EXEC_TYPES = new Set<QuestionPublic['type']>(['fill_blank_exec', 'fix_bug', 'fill_blank']);
 const TARGET_QUESTIONS = 10;
 
 /** Splits an optional fenced ``` code block out of the question text. */
@@ -210,6 +210,16 @@ export function QuizScreen() {
     setSelected(null);
     return submitAnswer(null, true);
   }, [submitAnswer]);
+
+  // ── fill_blank: text comparison, no Pyodide ────────────────────────────
+  const handleFillBlankSubmit = useCallback(async () => {
+    if (!question || feedback || submitting) return;
+    const expected = (
+      (language === 'es' ? question.correct_answer_es : question.correct_answer_en) ?? ''
+    ).trim();
+    const isCorrect = userInput.trim().toLowerCase() === expected.toLowerCase();
+    await submitAnswer(isCorrect ? 1 : 0);
+  }, [question, feedback, submitting, language, userInput, submitAnswer]);
 
   // ── Exec: run code in Pyodide ──────────────────────────────────────────
   const handleRun = useCallback(async () => {
@@ -414,6 +424,42 @@ export function QuizScreen() {
         {questionCard}
 
         <div className={styles.execArea}>
+          {question.type === 'fill_blank' && (
+            <>
+              <input
+                className={styles.blankInput}
+                type="text"
+                placeholder={t('quiz.fillBlankPlaceholder')}
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                disabled={answered}
+                onKeyDown={(e) => { if (e.key === 'Enter' && !answered) void handleFillBlankSubmit(); }}
+                autoFocus
+              />
+              {!answered && (
+                <button
+                  className={styles.btnRun}
+                  onClick={() => void handleFillBlankSubmit()}
+                  disabled={answered || submitting || !userInput.trim()}
+                >
+                  {submitting ? `⏳ ${t('quiz.submitting', 'Enviando...')}` : `✓ ${t('quiz.submit', 'Confirmar')}`}
+                </button>
+              )}
+              {answered && feedback && (
+                <div className={`${styles.outputBox} ${feedback.correct ? styles.outputCorrect : styles.outputWrong}`}>
+                  <span className={styles.outputLabel}>
+                    {feedback.correct ? `✅ ${t('quiz.correct')}` : `❌ ${t('quiz.outputWrong')}`}
+                  </span>
+                  {!feedback.correct && expected && (
+                    <p className={styles.expectedHint}>
+                      {t('quiz.expected')}: <code>{expected}</code>
+                    </p>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+
           {question.type === 'fill_blank_exec' && code && (
             <>
               <pre className={styles.codeBlock}>
@@ -442,7 +488,7 @@ export function QuizScreen() {
             />
           )}
 
-          {!answered && (
+          {question.type !== 'fill_blank' && !answered && (
             <button
               className={styles.btnRun}
               onClick={() => void handleRun()}
