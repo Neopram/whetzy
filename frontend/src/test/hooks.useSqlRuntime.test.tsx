@@ -96,6 +96,25 @@ describe('useSqlRuntime — enabled lifecycle', () => {
     expect(worker.terminate).toHaveBeenCalledTimes(1);
     await waitFor(() => expect(result.current.status).toBe('ready'));
   });
+
+  it('switching from disabled to enabled resets status to loading (bug 16.9 race)', async () => {
+    // Simulates the common path: question arrives as sql_exec after the hook
+    // was already mounted with disabled=true (question still loading).
+    // Without the setStatus('loading') call in the useEffect, status stays
+    // stale at 'ready' from the disabled phase → runCode() posts a message
+    // the worker silently drops (SQL===null guard) → output box never appears.
+    const { result, rerender } = renderHook(({ disabled }) => useSqlRuntime(disabled), {
+      initialProps: { disabled: true },
+    });
+    expect(result.current.status).toBe('ready'); // from disabled=true phase
+    rerender({ disabled: false }); // sql_exec question arrives
+    await waitFor(() => expect(result.current.status).toBe('loading')); // must reset
+    // Now the worker sends 'ready' → status becomes 'ready' again
+    act(() => {
+      MockWorker.instances[0].emit({ type: 'ready' });
+    });
+    await waitFor(() => expect(result.current.status).toBe('ready'));
+  });
 });
 
 describe('useSqlRuntime — runCode', () => {

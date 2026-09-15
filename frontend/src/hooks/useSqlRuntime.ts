@@ -52,6 +52,12 @@ export function useSqlRuntime(disabled = false) {
       setStatus('ready');
       return;
     }
+    // Reset to 'loading' so the run button stays disabled until the worker
+    // actually sends 'ready'.  Without this, the status is stale at 'ready'
+    // from the prior disabled=true phase, the button looks enabled while sql.js
+    // is still loading, runCode() posts a message the worker silently drops
+    // (SQL===null guard), and the output box never appears (race in 16.9).
+    setStatus('loading');
     const w = makeWorker();
     workerRef.current = w;
     attachWorker(w);
