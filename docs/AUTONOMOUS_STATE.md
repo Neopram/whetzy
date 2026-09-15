@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-15 (sesión ac) — F15 DONE · F16 DONE · F17 DONE · F18 DONE · F19 DONE · **F20 DONE** (Lesson model + migración p6q7r8s9t0u1, endpoint GET /lessons/{skill_id}, LessonScreen, 15 lecciones piloto track01 PSF, botón "Aprender" en TracksScreen, flujo Lección→Ejemplo→Practicar, build limpio 96 KB gz). Backlog activo: F21 (UI: path/mapa SVG, framer-motion, primitivos). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
+> Última actualización: 2026-09-15 (sesión ac) — F15 DONE · F16 DONE · F17 DONE · F18 DONE · F19 DONE · F20 DONE · **F21 DONE** (framer-motion page transitions + directional slide, XP count-up via useSpring en TopBar, MCQ option stagger + whileTap, feedback panel slide-in, TracksScreen animated expand/collapse, Skeleton+Badge primitivos, build limpio 96 KB gz). Backlog activo: F22 (evidence page + competitor teardown). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
 
 ---
 
