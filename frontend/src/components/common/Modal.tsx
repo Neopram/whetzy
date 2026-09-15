@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { backdropVariants, modalVariants } from '../../lib/motion';
 import styles from './Modal.module.css';
 
@@ -14,6 +15,7 @@ interface ModalProps {
 }
 
 export function Modal({ open, onClose, title, children, footer, closeOnBackdrop = true }: ModalProps) {
+  const { t } = useTranslation();
   const firstFocusRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -51,19 +53,20 @@ export function Modal({ open, onClose, title, children, footer, closeOnBackdrop 
             exit="exit"
             onClick={(e) => e.stopPropagation()}
           >
-            {(title != null || true) && (
-              <div className={styles.header}>
-                {title && <h2 className={styles.title}>{title}</h2>}
-                <button
-                  ref={firstFocusRef}
-                  className={styles.closeBtn}
-                  onClick={onClose}
-                  aria-label="Cerrar"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
+            {/* The header always renders: it carries the close button, which is
+                the focus target and the only way out for a keyboard user when
+                the modal has no title. */}
+            <div className={styles.header}>
+              {title && <h2 className={styles.title}>{title}</h2>}
+              <button
+                ref={firstFocusRef}
+                className={styles.closeBtn}
+                onClick={onClose}
+                aria-label={t('quiz.close')}
+              >
+                ✕
+              </button>
+            </div>
             <div className={styles.body}>{children}</div>
             {footer && <div className={styles.footer}>{footer}</div>}
           </motion.div>

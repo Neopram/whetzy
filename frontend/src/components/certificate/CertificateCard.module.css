@@ -1,0 +1,131 @@
+/* Certificate card (17.2). Everything comes from tokens: no literal colour,
+   spacing or radius, so the card follows the theme in light and dark without
+   a second definition to keep in sync. */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-lg);
+  border: 2px solid var(--le-green);
+  border-radius: var(--le-radius-lg);
+  background: var(--le-surface);
+  box-shadow: var(--le-shadow-md);
+  text-align: center;
+}
+
+.kicker {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* Green is reserved for success, and a certificate is the success state. */
+  color: var(--le-green-dark);
+}
+
+.track {
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+  line-height: 1.2;
+}
+
+.holderLabel {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.holder {
+  font-size: var(--le-fs-lg);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-2xs);
+  margin-top: var(--le-space-sm);
+  padding-top: var(--le-space-sm);
+  border-top: 1px solid var(--le-border);
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+}
+
+.metaRow dd {
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+.url {
+  /* A long code must wrap instead of pushing the card sideways: the page body
+     never scrolls horizontally. */
+  overflow-wrap: anywhere;
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-muted);
+  margin-top: var(--le-space-sm);
+}
+
+.copy {
+  align-self: center;
+  padding: var(--le-space-sm) var(--le-space-lg);
+  border: none;
+  border-radius: var(--le-radius-md);
+  background: var(--le-green);
+  color: var(--le-text-inverse);
+  font-weight: var(--le-fw-bold);
+  font-size: var(--le-fs-sm);
+  cursor: pointer;
+  box-shadow: var(--le-shadow-btn);
+  transition: var(--le-transition-base);
+  /* Comfortably over the 44px touch target minimum (WCAG 2.5.8). */
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.copy:active {
+  box-shadow: var(--le-shadow-btn-active);
+  transform: translateY(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy {
+    transition: none;
+  }
+
+  .copy:active {
+    transform: none;
+  }
+}
+
+.hint {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-muted);
+  line-height: 1.5;
+}
+
+.revoked {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-lg);
+  border: 2px solid var(--le-danger);
+  border-radius: var(--le-radius-lg);
+  background: var(--le-surface);
+  color: var(--le-text);
+  text-align: center;
+}
+
+.title {
+  font-size: var(--le-fs-lg);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}

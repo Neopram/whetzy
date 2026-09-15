@@ -614,6 +614,66 @@ export interface MockExamSubmitResponse {
   report: MockExamReport;
 }
 
+// ── Track final exam and module test-out (17.2) ─────────────────────────────
+
+export interface TrackExamBlueprint {
+  track_id: string;
+  skills: number;
+  questions: number;
+  duration_minutes: number;
+  pass_pct: number;
+}
+
+export interface TrackExamStartResponse {
+  attempt_id: string;
+  track_id: string;
+  module_id: string | null;
+  kind: 'track_final' | 'test_out';
+  duration_minutes: number;
+  pass_pct: number;
+  started_at: string;
+  expires_at: string;
+  questions: QuestionPublic[];
+}
+
+export interface TrackExamSkillResult {
+  skill_id: string;
+  name_es: string;
+  name_en: string;
+  correct: number;
+  total: number;
+  pct: number | null;
+}
+
+export interface TrackExamReport {
+  track_id: string;
+  module_id: string | null;
+  kind: string;
+  questions: number;
+  answered: number;
+  unanswered: number;
+  correct: number;
+  raw_pct: number;
+  pass_pct: number;
+  passed: boolean;
+  per_skill: TrackExamSkillResult[];
+  elapsed_seconds: number;
+  duration_minutes: number;
+  scoring_note_es: string;
+  scoring_note_en: string;
+}
+
+export interface TrackExamSubmitResponse {
+  attempt_id: string;
+  status: string;
+  expired: boolean;
+  report: TrackExamReport;
+  /** Only ever set for a passed, on-time track final. */
+  certificate: CertificatePublic | null;
+  /** Skill id -> mastery after the sitting. Only a passed test-out fills this. */
+  mastery_updated: Record<string, number>;
+}
+
 export const exams = {
   async startMock(trackId: string) {
     return request<MockExamStartResponse>('/exams/mock/start', {
@@ -636,5 +696,61 @@ export const exams = {
 
   async getMock(attemptId: string) {
     return request<MockExamSubmitResponse>(`/exams/mock/${attemptId}`);
+  },
+
+  // ── Track final exam and module test-out (17.2) ───────────────────────────
+
+  /** What the sitting will look like, so the learner can decide before starting. */
+  async trackBlueprint(trackId: string) {
+    return request<TrackExamBlueprint>(`/exams/track/${trackId}/blueprint`);
+  },
+
+  async startTrackExam(trackId: string) {
+    return request<TrackExamStartResponse>(`/exams/track/${trackId}/start`, { method: 'POST' });
+  },
+
+  async startTestOut(moduleId: string) {
+    return request<TrackExamStartResponse>(`/exams/module/${moduleId}/test-out/start`, {
+      method: 'POST',
+    });
+  },
+
+  /** Submits a sitting — the attempt id, not the track: you can sit a track twice. */
+  async submitTrackExam(attemptId: string, answers: Record<string, number>) {
+    return request<TrackExamSubmitResponse>(`/exams/track/${attemptId}/submit`, {
+      method: 'POST',
+      body: JSON.stringify({
+        answers: Object.entries(answers).map(([question_id, selected_index]) => ({
+          question_id,
+          selected_index,
+        })),
+      }),
+    });
+  },
+};
+
+// ── Certificates (17.2) ─────────────────────────────────────────────────────
+
+export interface CertificatePublic {
+  code: string;
+  username: string;
+  track_id: string;
+  track_name_es: string;
+  track_name_en: string;
+  score_pct: number;
+  questions: number;
+  issued_at: string;
+  revoked: boolean;
+}
+
+export const certificates = {
+  /** Public on purpose — whoever verifies a certificate has no account here.
+   *
+   * No special "anonymous" path is needed: the endpoint declares no auth
+   * dependency, so a visitor with no token is served exactly like one with a
+   * token, and the 401-refresh branch above can never fire on it.
+   */
+  async verify(code: string) {
+    return request<CertificatePublic>(`/exams/certificates/${code}`);
   },
 };

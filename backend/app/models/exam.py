@@ -1,11 +1,11 @@
-"""Timed certification mock exam (task 10.3)."""
+"""Timed exams: certification mock (10.3), track final and test-out (17.2)."""
 
 from __future__ import annotations
 
 import uuid
 from datetime import datetime
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 
@@ -35,6 +35,24 @@ class MockExamAttempt(Base):
         ForeignKey("tracks.id", ondelete="CASCADE"), nullable=False, index=True
     )
 
+    # "certification" (10.3) | "track_final" | "test_out" (17.2). The three
+    # share this table because they are the same object — a frozen draw with a
+    # server-side deadline — and differ only in how they are blueprinted and
+    # what passing earns.
+    kind: Mapped[str] = mapped_column(
+        String(20), default="certification", server_default="certification", nullable=False,
+        index=True,
+    )
+    # Set only for a test-out, which is scoped to one module.
+    module_id: Mapped[str | None] = mapped_column(
+        ForeignKey("modules.id", ondelete="CASCADE"), nullable=True, index=True
+    )
+    # Frozen at start on purpose: a pass mark that a later config change can
+    # move retroactively would turn yesterday's certificates into maybes.
+    # Null for the certification mock, which deliberately reports a raw
+    # percentage and refuses to declare a pass against an invented scale.
+    pass_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+
     # Ordered list of question ids, frozen when the attempt starts.
     question_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
     duration_minutes: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -55,3 +73,46 @@ class MockExamAttempt(Base):
     status: Mapped[str] = mapped_column(
         String(20), default="in_progress", nullable=False, index=True
     )
+
+
+class Certificate(Base):
+    """Proof that a learner passed a track's final exam (17.2).
+
+    The row is the certificate. It is minted once per (user, track): re-sitting
+    a track you already passed returns the same code rather than minting a
+    second one, so a URL someone put on their CV never goes dead and there is
+    never a question of which of two certificates is "the" one.
+
+    `score_pct` and `questions` are copied in rather than read back through
+    `attempt_id` at display time. The attempt is the audit trail; the
+    certificate is a statement made on a date, and a statement that silently
+    changes when the exam blueprint changes is not proof of anything.
+    """
+
+    __tablename__ = "certificates"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    # Public, unguessable handle. The verification page is unauthenticated, so
+    # this is the only thing that keeps certificates from being enumerable.
+    code: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
+
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    track_id: Mapped[str] = mapped_column(
+        ForeignKey("tracks.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    attempt_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("mock_exam_attempts.id", ondelete="CASCADE"), nullable=False
+    )
+
+    score_pct: Mapped[float] = mapped_column(Float, nullable=False)
+    questions: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    issued_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    # A certificate is withdrawn, never deleted: a URL that 404s cannot be told
+    # apart from one that was never issued, and "we revoked it" is information
+    # the person checking deserves.
+    revoked: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", nullable=False)

@@ -601,3 +601,65 @@ async def end_session(db: AsyncSession, user: User, req: QuizEndRequest) -> Quiz
         xp_earned=session.xp_earned,
         duration_seconds=duration,
     )
+
+
+async def apply_exam_evidence(
+    db: AsyncSession,
+    user: User,
+    question: Question,
+    correct: bool,
+    *,
+    response_time_ms: int,
+) -> float:
+    """Feeds one exam answer to the engine exactly as a quiz answer is fed (17.2).
+
+    This is what makes module test-out honest. The alternative — writing
+    `p_known = 1.0` across the module when someone passes — would put a mastery
+    figure on screen for skills the draw may never have asked about, which is
+    red line 1 in the one place a learner is most likely to believe us.
+
+    Going through BKT/Elo/FSRS instead means passing a test-out raises mastery
+    exactly as far as the answers support: enough to clear
+    `min_mastery_to_unlock` on the skills that were actually tested, and not one
+    point further. Skills the draw never touched keep the mastery they had.
+
+    No `Response` row is written and no XP is awarded: an exam is an assessment,
+    not a study session, and counting it as both would inflate streaks and the
+    answered-question totals that the analytics of 5.4 report.
+
+    Returns the skill's mastery after the update.
+    """
+    state = await _get_or_create_skill_state(db, user.id, question.skill_id)
+
+    user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
+    item_entity = EloEntity(rating=question.elo_rating, interactions=30)
+    user_entity, item_entity, _expected = elo.update(user_entity, item_entity, correct)
+    state.elo_rating = user_entity.rating
+    question.elo_rating = item_entity.rating
+
+    bkt_state = SkillState(
+        skill_id=question.skill_id,
+        p_known=state.p_known,
+        attempts=state.attempts,
+        correct=state.correct_count,
+    )
+    bkt.update(bkt_state, correct)
+    state.p_known = bkt_state.p_known
+    state.attempts = bkt_state.attempts
+    state.correct_count = bkt_state.correct
+
+    grade = _grade_from_response(correct, response_time_ms, question.expected_time_ms)
+    card = Card(
+        stability=state.fsrs_stability,
+        difficulty=state.fsrs_difficulty,
+        reps=max(0, bkt_state.attempts - 1),
+        due=_ensure_aware(state.fsrs_due),
+        last_review=_ensure_aware(state.updated_at),
+        state="new" if bkt_state.attempts <= 1 else "review",
+    )
+    card, _log = fsrs.review(card, grade, _now())
+    state.fsrs_stability = card.stability
+    state.fsrs_difficulty = card.difficulty
+    state.fsrs_due = card.due
+
+    return state.p_known
