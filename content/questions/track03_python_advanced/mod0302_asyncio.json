@@ -96,7 +96,7 @@
       "skill_id": "sk030201",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "La palabra clave await puede usarse en cualquier punto de un modulo Python, incluido el nivel superior, sin necesidad de estar dentro de una funcion async def.",
+      "question_es": "La palabra clave await puede usarse en cualquier punto de un módulo Python, incluido el nivel superior, sin necesidad de estar dentro de una función async def.",
       "question_en": "The await keyword can be used anywhere in a Python module, including at top level, without needing to be inside an async def function.",
       "options_es": [
         "Verdadero",
@@ -107,7 +107,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso: fuera de una funcion `async def`, `await` es un error de sintaxis. Lo que despista es que algunos entornos — el REPL lanzado con `python -m asyncio`, los notebooks de Jupyter — envuelven lo que escribes en una corrutina y dan la impresion de que el `await` de nivel superior funciona. En un script normal no lo hace: hay que entrar por `asyncio.run()`.",
+      "explanation_es": "Falso: fuera de una función `async def`, `await` es un error de sintaxis. Lo que despista es que algunos entornos — el REPL lanzado con `python -m asyncio`, los notebooks de Jupyter — envuelven lo que escribes en una corrutina y dan la impresión de que el `await` de nivel superior funciona. En un script normal no lo hace: hay que entrar por `asyncio.run()`.",
       "explanation_en": "False: outside an `async def` function, `await` is a syntax error. What misleads is that some environments - the REPL started with `python -m asyncio`, Jupyter notebooks - wrap what you type in a coroutine and give the impression that top-level `await` works. In a normal script it does not: you enter through `asyncio.run()`.",
       "source": "CPython docs 3.13 — Coroutines: await expression",
       "expected_time_ms": 25000,
@@ -303,7 +303,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso: `asyncio.run()` **crea un event loop nuevo**, y llamarlo cuando ya hay uno en ejecucion lanza `RuntimeError: asyncio.run() cannot be called from a running event loop`. Dentro de una corrutina se usa directamente `await otra_corrutina()`, o `asyncio.create_task()` si se quiere concurrencia. `asyncio.run()` es el punto de entrada del programa, no una forma de llamar a corrutinas.",
+      "explanation_es": "Falso: `asyncio.run()` **crea un event loop nuevo**, y llamarlo cuando ya hay uno en ejecución lanza `RuntimeError: asyncio.run() cannot be called from a running event loop`. Dentro de una corrutina se usa directamente `await otra_corrutina()`, o `asyncio.create_task()` si se quiere concurrencia. `asyncio.run()` es el punto de entrada del programa, no una forma de llamar a corrutinas.",
       "explanation_en": "False: `asyncio.run()` **creates a new event loop**, and calling it while one is already running raises `RuntimeError: asyncio.run() cannot be called from a running event loop`. Inside a coroutine you simply `await other_coroutine()`, or use `asyncio.create_task()` if you want concurrency. `asyncio.run()` is the program's entry point, not a way to call coroutines.",
       "source": "CPython docs 3.13 — asyncio.run",
       "expected_time_ms": 30000,
@@ -474,7 +474,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso, y es uno de los fallos mas escurridizos de asyncio. El loop solo guarda una referencia **debil**, asi que si no guardas la tarea en alguna variable o coleccion, el recolector de basura puede descartarla a mitad y la tarea desaparece sin completarse ni avisar. La practica recomendada es guardar las tareas en un conjunto y descartarlas en su callback de finalizacion.",
+      "explanation_es": "Falso, y es uno de los fallos más escurridizos de asyncio. El loop solo guarda una referencia **débil**, así que si no guardas la tarea en alguna variable o colección, el recolector de basura puede descartarla a mitad y la tarea desaparece sin completarse ni avisar. La práctica recomendada es guardar las tareas en un conjunto y descartarlas en su callback de finalización.",
       "explanation_en": "False, and it is one of asyncio's most slippery failures. The loop only keeps a **weak** reference, so if you do not store the task in a variable or collection, the garbage collector can discard it mid-flight and the task vanishes without completing or warning. The recommended practice is keeping tasks in a set and discarding them in their done callback.",
       "source": "CPython docs 3.13 — asyncio.create_task (keep a reference)",
       "expected_time_ms": 32000,
