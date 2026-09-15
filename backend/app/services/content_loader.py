@@ -17,7 +17,15 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import AsyncSessionLocal, init_db
-from app.models.content import Domain, GlossaryTerm, Lesson, Module, Question, Skill, Track
+from app.models.content import (
+    Domain,
+    GlossaryTerm,
+    Lesson,
+    Module,
+    Question,
+    Skill,
+    Track,
+)
 
 
 def _content_root() -> Path:
