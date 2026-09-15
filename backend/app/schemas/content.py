@@ -126,3 +126,20 @@ class QuestionPublic(BaseModel):
     correct_answer_es: str | None = None
     correct_answer_en: str | None = None
     expected_time_ms: int
+
+
+class LessonRead(BaseModel):
+    """Lesson payload — instructional content before adaptive practice."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    skill_id: str
+    title_es: str
+    title_en: str
+    body_es: str
+    body_en: str
+    example_code: str | None = None
+    example_output: str | None = None
+    source: str
+    order: int = 1

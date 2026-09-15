@@ -1,0 +1,12 @@
+{
+  "id": "l010304",
+  "skill_id": "sk010304",
+  "title_es": "Alcance de variables",
+  "title_en": "Variable scope",
+  "body_es": "El alcance define dónde una variable es accesible en tu programa. Las variables locales existen solo dentro de la función donde se definen. Las variables globales existen en todo el programa. Python busca variables en orden: scope local, scope global. Si defines una variable con el mismo nombre en una función, sombrea la global. Para modificar una variable global desde una función, usa global nombre_variable. De manera similar, nonlocal se usa en funciones anidadas. El módulo tiene su propio scope global. Entender el scope evita errores y hace el código más predecible.",
+  "body_en": "Scope defines where a variable is accessible in your program. Local variables exist only within the function where they are defined. Global variables exist throughout the program. Python searches for variables in order: local scope, global scope. If you define a variable with the same name in a function, it shadows the global one. To modify a global variable from a function, use global variable_name. Similarly, nonlocal is used in nested functions. Modules have their own global scope. Understanding scope prevents errors and makes code more predictable.",
+  "example_code": "x = 10\n\ndef test_local():\n    y = 20\n    print(\"Local y:\", y)\n    print(\"Global x:\", x)\n\ndef test_global():\n    global x\n    x = 30\n    print(\"Modified x:\", x)\n\ntest_local()\ntest_global()\nprint(\"Global x:\", x)",
+  "example_output": "Local y: 20\nGlobal x: 10\nModified x: 30\nGlobal x: 30",
+  "source": "Python Docs — https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces",
+  "order": 1
+}

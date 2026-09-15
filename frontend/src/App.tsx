@@ -33,6 +33,9 @@ const LandingScreen = lazy(() => import('./pages/LandingScreen').then((m) => ({ 
 const MockExamScreen = lazy(() =>
   import('./pages/MockExamScreen').then((m) => ({ default: m.MockExamScreen }))
 );
+const LessonScreen = lazy(() =>
+  import('./pages/LessonScreen').then((m) => ({ default: m.LessonScreen }))
+);
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -90,6 +93,8 @@ function App() {
   const mockExamTrackId = useAppStore((s) => s.mockExamTrackId);
   const mockExamQuestionCount = useAppStore((s) => s.mockExamQuestionCount);
   const mockExamDurationMinutes = useAppStore((s) => s.mockExamDurationMinutes);
+  const lessonSkillId = useAppStore((s) => s.lessonSkillId);
+  const startQuiz = useAppStore((s) => s.startQuiz);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
   const userId = useAppStore((s) => s.user.id);
@@ -168,6 +173,17 @@ function App() {
       case 'duels': return <DuelScreen />;
       case 'mockexam':
         return <MockExamScreen trackId={mockExamTrackId ?? 'track08'} questionCount={mockExamQuestionCount} durationMinutes={mockExamDurationMinutes} onExit={() => setScreen('tracks')} />;
+      case 'lesson':
+        return (
+          <LessonScreen
+            skillId={lessonSkillId ?? ''}
+            onExit={() => setScreen('tracks')}
+            onStartQuiz={() => {
+              startQuiz('study', 10, { skillId: lessonSkillId ?? undefined });
+              setScreen('quiz');
+            }}
+          />
+        );
       default: return <HomeScreen />;
     }
   };
@@ -178,7 +194,7 @@ function App() {
       <main className="app-content">
         <Screen>{renderScreen()}</Screen>
       </main>
-      {currentScreen !== 'quiz' && currentScreen !== 'placement' && currentScreen !== 'mockexam' && <BottomNav />}
+      {currentScreen !== 'quiz' && currentScreen !== 'placement' && currentScreen !== 'mockexam' && currentScreen !== 'lesson' && <BottomNav />}
       <Toast />
     </>
   );

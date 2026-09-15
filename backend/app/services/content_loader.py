@@ -17,7 +17,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import AsyncSessionLocal, init_db
-from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
+from app.models.content import Domain, GlossaryTerm, Lesson, Module, Question, Skill, Track
 
 
 def _content_root() -> Path:
@@ -152,9 +152,31 @@ async def _upsert_glossary_term(db: AsyncSession, t: dict[str, Any], order: int)
     return True
 
 
+async def _upsert_lesson(db: AsyncSession, data: dict[str, Any]) -> bool:
+    """Returns True if ingested, False if skipped (unknown skill)."""
+    skill = await db.get(Skill, data["skill_id"])
+    if skill is None:
+        return False
+
+    lesson = await db.get(Lesson, data["id"])
+    if lesson is None:
+        lesson = Lesson(id=data["id"], skill_id=data["skill_id"])
+        db.add(lesson)
+    lesson.skill_id = data["skill_id"]
+    lesson.title_es = data["title_es"]
+    lesson.title_en = data["title_en"]
+    lesson.body_es = data["body_es"]
+    lesson.body_en = data["body_en"]
+    lesson.example_code = data.get("example_code")
+    lesson.example_output = data.get("example_output")
+    lesson.source = data["source"]
+    lesson.order = data.get("order", 1)
+    return True
+
+
 async def load_content(db: AsyncSession) -> dict[str, Any]:
     root = _content_root()
-    stats = {"tracks": 0, "questions": 0, "skipped": 0, "files": 0, "glossary": 0}
+    stats = {"tracks": 0, "questions": 0, "skipped": 0, "files": 0, "glossary": 0, "lessons": 0}
 
     # 1) Curriculum
     tracks_file = root / "curriculum" / "tracks.json"
@@ -193,7 +215,22 @@ async def load_content(db: AsyncSession) -> dict[str, Any]:
                     stats["skipped"] += 1
         await db.flush()
 
-    # 4) Denormalized question count per track (explicit join — async has no lazy load)
+    # 4) Lessons (instructional content per skill). Optional dir.
+    lessons_dir = root / "lessons"
+    if lessons_dir.is_dir():
+        for lfile in sorted(lessons_dir.rglob("*.json")):
+            payload = json.loads(lfile.read_text(encoding="utf-8"))
+            items = payload if isinstance(payload, list) else payload.get("lessons", [])
+            stats["files"] += 1
+            for item in items:
+                ok = await _upsert_lesson(db, item)
+                if ok:
+                    stats["lessons"] += 1
+                else:
+                    stats["skipped"] += 1
+        await db.flush()
+
+    # 5) Denormalized question count per track (explicit join — async has no lazy load)
     await db.flush()
     counts = await db.execute(
         select(Module.track_id, func.count(Question.id))

@@ -31,6 +31,7 @@ function statusMeta(status: CurriculumModule['status']) {
 export function TracksScreen() {
   const lang = useAppStore((s) => s.user.language);
   const startQuiz = useAppStore((s) => s.startQuiz);
+  const startLesson = useAppStore((s) => s.startLesson);
   const startMockExam = useAppStore((s) => s.startMockExam);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
@@ -99,18 +100,19 @@ export function TracksScreen() {
       )}
 
       {view === 'curriculum'
-        ? <CurriculumView track={track} lang={lang} startQuiz={startQuiz} />
+        ? <CurriculumView track={track} lang={lang} startQuiz={startQuiz} startLesson={startLesson} />
         : <GlossaryView track={track} lang={lang} />}
     </div>
   );
 }
 
 function CurriculumView({
-  track, lang, startQuiz,
+  track, lang, startQuiz, startLesson,
 }: {
   track: string;
   lang: 'es' | 'en';
   startQuiz: (mode: 'study', total: number, opts?: { trackId?: string; skillId?: string }) => void;
+  startLesson: (skillId: string) => void;
 }) {
   const { t } = useTranslation();
   const cur = useApi(() => progressApi.curriculum(track), [track]);
@@ -200,12 +202,21 @@ function CurriculumView({
                     {locked ? (
                       <p className={styles.lockNote}>🔒 {t('tracks.lockNote')}</p>
                     ) : (
-                      <button
-                        className={styles.practiceBtn}
-                        onClick={() => startQuiz('study', 10, { trackId: track })}
-                      >
-                        {m.status === 'completed' ? t('tracks.reinforce') : t('tracks.practice')}
-                      </button>
+                      <div className={styles.skillActions}>
+                        <button
+                          className={styles.learnBtn}
+                          onClick={() => startLesson(m.skills?.[0]?.skill_id ?? '')}
+                          title={t('tracks.learn', 'Aprender')}
+                        >
+                          📖 {t('tracks.learn', 'Aprender')}
+                        </button>
+                        <button
+                          className={styles.practiceBtn}
+                          onClick={() => startQuiz('study', 10, { trackId: track })}
+                        >
+                          {m.status === 'completed' ? t('tracks.reinforce') : t('tracks.practice')}
+                        </button>
+                      </div>
                     )}
                   </div>
                 )}

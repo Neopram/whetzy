@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-15 (sesión ac) — F15 DONE · F16 DONE · F17 DONE · **F18 DONE** (tracks 09/10/11: PCEP/SAA-C03/AIF-C01 — 825 nuevas Q, 55 skills, 122 términos glosario, mock exam params dinámicos). Backlog activo: F19 (Monaco editor). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
+> Última actualización: 2026-09-15 (sesión ac) — F15 DONE · F16 DONE · F17 DONE · F18 DONE · **F19 DONE** (Monaco editor lazy-loaded, useRuntime abstraction, sql.js WASM worker self-hosted, sql_exec+js_exec en EXEC_TYPES, E2E sql-exec.spec.ts, initial bundle 96 KB gz). Backlog activo: F20 (capa de enseñanza: lecciones). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
 
 ---
 

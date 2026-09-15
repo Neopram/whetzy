@@ -178,3 +178,30 @@ class Question(Base):
     content_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
     skill: Mapped[Skill] = relationship(back_populates="questions")
+
+
+class Lesson(Base):
+    """Short instructional lesson tied to one skill.
+
+    Delivered before the adaptive quiz so learners see instruction before
+    practice (Sweller's worked-example effect). Contains the concept
+    explanation, a worked example with expected output, and a canonical source.
+    Multiple lessons per skill are allowed (order column sorts them).
+    """
+
+    __tablename__ = "lessons"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    skill_id: Mapped[str] = mapped_column(
+        ForeignKey("skills.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    title_es: Mapped[str] = mapped_column(String(200), nullable=False)
+    title_en: Mapped[str] = mapped_column(String(200), nullable=False)
+    body_es: Mapped[str] = mapped_column(Text, nullable=False)
+    body_en: Mapped[str] = mapped_column(Text, nullable=False)
+    example_code: Mapped[str | None] = mapped_column(Text, nullable=True)
+    example_output: Mapped[str | None] = mapped_column(Text, nullable=True)
+    source: Mapped[str] = mapped_column(Text, nullable=False)
+    order: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+
+    skill: Mapped[Skill] = relationship()

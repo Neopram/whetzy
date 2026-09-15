@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { auth, logout as apiLogout, type UserRead } from '../services/api';
 
 type Language = 'es' | 'en';
-type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks' | 'duels' | 'mockexam';
+type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks' | 'duels' | 'mockexam' | 'lesson';
 type LeagueTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
 interface UserProfile {
@@ -73,6 +73,10 @@ interface AppState {
   mockExamQuestionCount: number;
   mockExamDurationMinutes: number;
   startMockExam: (trackId: string, questionCount?: number, durationMinutes?: number) => void;
+
+  // Lesson
+  lessonSkillId: string | null;
+  startLesson: (skillId: string) => void;
 
   // Missions
   missions: Mission[];
@@ -225,6 +229,10 @@ export const useAppStore = create<AppState>()(
       mockExamDurationMinutes: 90,
       startMockExam: (trackId, questionCount = 65, durationMinutes = 90) =>
         set((s) => ({ mockExamTrackId: trackId, mockExamQuestionCount: questionCount, mockExamDurationMinutes: durationMinutes, previousScreen: s.currentScreen, currentScreen: 'mockexam' })),
+
+      lessonSkillId: null,
+      startLesson: (skillId) =>
+        set((s) => ({ lessonSkillId: skillId, previousScreen: s.currentScreen, currentScreen: 'lesson' })),
 
       missions: defaultMissions,
       updateMission: (id, progress) =>

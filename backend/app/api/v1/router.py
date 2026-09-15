@@ -13,6 +13,7 @@ from app.api.v1.endpoints import (
     exams,
     export,
     glossary,
+    lessons,
     ml,
     placement,
     progress,
@@ -30,6 +31,7 @@ api_router.include_router(quiz.router, prefix="/quiz", tags=["quiz"])
 api_router.include_router(placement.router, prefix="/placement", tags=["placement"])
 api_router.include_router(progress.router, prefix="/progress", tags=["progress"])
 api_router.include_router(glossary.router, prefix="/glossary", tags=["glossary"])
+api_router.include_router(lessons.router, prefix="/lessons", tags=["lessons"])
 api_router.include_router(tutor.router, prefix="/tutor", tags=["tutor"])
 api_router.include_router(social.router, tags=["social"])
 api_router.include_router(duels.router, prefix="/duels", tags=["duels"])

@@ -349,6 +349,25 @@ export const glossary = {
   },
 };
 
+export interface LessonRead {
+  id: string;
+  skill_id: string;
+  title_es: string;
+  title_en: string;
+  body_es: string;
+  body_en: string;
+  example_code: string | null;
+  example_output: string | null;
+  source: string;
+  order: number;
+}
+
+export const lessonsApi = {
+  async forSkill(skillId: string) {
+    return request<LessonRead[]>(`/lessons/${encodeURIComponent(skillId)}`);
+  },
+};
+
 export const placement = {
   async start() {
     return request<{ session_id: string; question: unknown; total_questions: number }>('/placement/start', {
