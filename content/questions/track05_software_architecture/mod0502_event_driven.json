@@ -63,7 +63,7 @@
       "skill_id": "sk050201",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "En una arquitectura event-driven, anadir un consumidor nuevo para un evento existente obliga a modificar y volver a desplegar el servicio productor.",
+      "question_es": "En una arquitectura event-driven, añadir un consumidor nuevo para un evento existente obliga a modificar y volver a desplegar el servicio productor.",
       "question_en": "In an event-driven architecture, adding a new consumer for an existing event requires modifying and redeploying the producer service.",
       "options_es": [
         "Verdadero",
@@ -74,7 +74,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso, y esa es justamente su ventaja principal. El productor emite el evento sin saber quien lo escucha, asi que se pueden anadir consumidores nuevos sin tocarlo. Con llamadas sincronas ocurriria lo contrario: cada destinatario nuevo exige un cambio en quien llama.",
+      "explanation_es": "Falso, y esa es justamente su ventaja principal. El productor emite el evento sin saber quien lo escucha, así que se pueden añadir consumidores nuevos sin tocarlo. Con llamadas síncronas ocurriría lo contrario: cada destinatario nuevo exige un cambio en quien llama.",
       "explanation_en": "False, and that is precisely its main advantage. The producer emits the event without knowing who listens, so new consumers can be added without touching it. With synchronous calls the opposite holds: every new recipient requires a change in the caller.",
       "source": "Kleppmann, M. — DDIA, Cap. 11",
       "expected_time_ms": 22000,
@@ -128,7 +128,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. 'Al menos una vez' significa literalmente que un mensaje puede llegar mas de una vez: si el consumidor procesa y muere antes de confirmar, el broker lo reentrega. La deduplicacion no es gratuita ni universal, asi que la responsabilidad de tolerar reentregas recae en el consumidor, que debe ser idempotente — cobrar dos veces un pago es el ejemplo caro.",
+      "explanation_es": "Falso. 'Al menos una vez' significa literalmente que un mensaje puede llegar más de una vez: si el consumidor procesa y muere antes de confirmar, el broker lo reentrega. La deduplicación no es gratuita ni universal, así que la responsabilidad de tolerar reentregas recae en el consumidor, que debe ser idempotente — cobrar dos veces un pago es el ejemplo caro.",
       "explanation_en": "False. At-least-once literally means a message may arrive more than once: if the consumer processes it and dies before acknowledging, the broker redelivers. Deduplication is neither free nor universal, so tolerating redelivery falls to the consumer, which must be idempotent - charging a payment twice is the expensive example.",
       "source": "Kleppmann, M. — DDIA (exactly-once / idempotence)",
       "expected_time_ms": 28000,
@@ -205,7 +205,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. La cola suaviza **picos**, que es distinto de absorber una sobrecarga sostenida. Si la tasa de llegada supera de forma continuada a la de procesamiento, la cola crece sin limite: aumenta la latencia extremo a extremo, se llena el almacenamiento y al final se descartan mensajes. Una cola compra tiempo; no sustituye a tener suficientes consumidores.",
+      "explanation_es": "Falso. La cola suaviza **picos**, que es distinto de absorber una sobrecarga sostenida. Si la tasa de llegada supera de forma continuada a la de procesamiento, la cola crece sin límite: aumenta la latencia extremo a extremo, se llena el almacenamiento y al final se descartan mensajes. Una cola compra tiempo; no sustituye a tener suficientes consumidores.",
       "explanation_en": "False. A queue smooths **spikes**, which is different from absorbing sustained overload. If the arrival rate continuously exceeds the processing rate, the queue grows without bound: end-to-end latency rises, storage fills and eventually messages are dropped. A queue buys time; it does not replace having enough consumers.",
       "source": "Azure Architecture Center — Queue-Based Load Leveling",
       "expected_time_ms": 24000,
@@ -278,7 +278,7 @@
       "skill_id": "sk050202",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Un sistema de mensajeria particionado garantiza el orden global de todos los mensajes, independientemente de cuantas particiones y consumidores en paralelo se usen.",
+      "question_es": "Un sistema de mensajería particionado garantiza el orden global de todos los mensajes, independientemente de cuántas particiones y consumidores en paralelo se usen.",
       "question_en": "A partitioned messaging system guarantees global ordering of all messages, regardless of how many partitions and parallel consumers are used.",
       "options_es": [
         "Verdadero",
@@ -289,7 +289,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. El orden se garantiza **dentro de una particion**, no entre particiones. Por eso, si el orden importa para una entidad, todos sus mensajes deben ir a la misma particion — tipicamente usando su identificador como clave. Repartirlos entre varias particiones y consumidores paralelos rompe la garantia.",
+      "explanation_es": "Falso. El orden se garantiza **dentro de una partición**, no entre particiones. Por eso, si el orden importa para una entidad, todos sus mensajes deben ir a la misma partición — típicamente usando su identificador como clave. Repartirlos entre varias particiones y consumidores paralelos rompe la garantía.",
       "explanation_en": "False. Ordering is guaranteed **within a partition**, not across partitions. That is why, when order matters for an entity, all its messages must go to the same partition - typically by using its identifier as the key. Spreading them across partitions and parallel consumers breaks the guarantee.",
       "source": "Kafka docs — Partitioning and ordering",
       "expected_time_ms": 30000,
@@ -396,7 +396,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso: de eso se encarga el broker o el topico, y por eso pub/sub desacopla. El publicador no sabe cuantos suscriptores hay ni quienes son, lo que permite anadirlos y quitarlos sin tocarlo. Si tuviera que conocerlos, el acoplamiento seria el mismo que con llamadas directas.",
+      "explanation_es": "Falso: de eso se encarga el broker o el tópico, y por eso pub/sub desacopla. El publicador no sabe cuántos suscriptores hay ni quiénes son, lo que permite añadirlos y quitarlos sin tocarlo. Si tuviera que conocerlos, el acoplamiento sería el mismo que con llamadas directas.",
       "explanation_en": "False: the broker or topic handles that, which is why pub/sub decouples. The publisher does not know how many subscribers there are or who they are, which is what allows adding and removing them without touching it. If it had to know them, the coupling would be the same as with direct calls.",
       "source": "Google Cloud Pub/Sub docs / EIP",
       "expected_time_ms": 24000,
@@ -440,7 +440,7 @@
       "skill_id": "sk050203",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "El uso de pub/sub elimina todo acoplamiento entre productores y consumidores, ya que no se conocen entre si.",
+      "question_es": "El uso de pub/sub elimina todo acoplamiento entre productores y consumidores, ya que no se conocen entre sí.",
       "question_en": "Using pub/sub removes all coupling between producers and consumers, since they do not know each other.",
       "options_es": [
         "Verdadero",
@@ -451,7 +451,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. Elimina el acoplamiento **temporal y de ubicacion**, pero queda uno mas silencioso: el del **esquema** del evento. Si el publicador cambia la estructura de lo que emite, rompe a todos los consumidores que la asumian, y encima lo hace en tiempo de ejecucion y sin un compilador que avise. Por eso se versionan los eventos y se evolucionan los esquemas de forma compatible.",
+      "explanation_es": "Falso. Elimina el acoplamiento **temporal y de ubicación**, pero queda uno más silencioso: el del **esquema** del evento. Si el publicador cambia la estructura de lo que emite, rompe a todos los consumidores que la asumían, y encima lo hace en tiempo de ejecución y sin un compilador que avise. Por eso se versionan los eventos y se evolucionan los esquemas de forma compatible.",
       "explanation_en": "False. It removes **temporal and location** coupling, but a quieter one remains: coupling through the event **schema**. If the publisher changes the structure of what it emits, it breaks every consumer that assumed it - at runtime, with no compiler to warn. That is why events are versioned and schemas evolved compatibly.",
       "source": "Newman, S. — Building Microservices 2e (event schemas)",
       "expected_time_ms": 30000,
@@ -546,7 +546,7 @@
       "skill_id": "sk050204",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "En event sourcing, cuando se detecta que un evento persistido era erroneo, lo correcto es editarlo o borrarlo del log para que el estado reconstruido sea el adecuado.",
+      "question_es": "En event sourcing, cuando se detecta que un evento persistido era erróneo, lo correcto es editarlo o borrarlo del log para que el estado reconstruido sea el adecuado.",
       "question_en": "In event sourcing, when a persisted event turns out to be wrong, the correct approach is to edit or delete it from the log so the rebuilt state is right.",
       "options_es": [
         "Verdadero",
@@ -557,7 +557,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso: los eventos ya persistidos son **inmutables**. Un error se corrige anadiendo un evento compensatorio, no reescribiendo la historia. Editar el log destruiria la propiedad que da valor a event sourcing — poder auditar y reconstruir cualquier estado pasado — e invalidaria proyecciones ya calculadas a partir de el.",
+      "explanation_es": "Falso: los eventos ya persistidos son **inmutables**. Un error se corrige añadiendo un evento compensatorio, no reescribiendo la historia. Editar el log destruiría la propiedad que da valor a event sourcing — poder auditar y reconstruir cualquier estado pasado — e invalidaría proyecciones ya calculadas a partir de él.",
       "explanation_en": "False: persisted events are **immutable**. A mistake is corrected by appending a compensating event, not by rewriting history. Editing the log would destroy the property that makes event sourcing valuable - being able to audit and rebuild any past state - and would invalidate projections already computed from it.",
       "source": "Fowler, M. — Event Sourcing (immutability)",
       "expected_time_ms": 24000,
@@ -600,7 +600,7 @@
       "skill_id": "sk050204",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "En un sistema CQRS con event sourcing, el lado de lectura refleja siempre de forma inmediata y transaccional cada escritura, porque ambos comparten el mismo almacen.",
+      "question_es": "En un sistema CQRS con event sourcing, el lado de lectura refleja siempre de forma inmediata y transaccional cada escritura, porque ambos comparten el mismo almacén.",
       "question_en": "In a CQRS system with event sourcing, the read side always reflects every write immediately and transactionally, because both share the same store.",
       "options_es": [
         "Verdadero",
@@ -611,7 +611,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. En CQRS los lados de lectura y escritura estan separados, y las proyecciones de lectura se actualizan de forma asincrona tras cada evento: el lado de lectura esta normalmente en **consistencia eventual**. Ignorarlo produce el bug clasico de que un usuario guarda algo y no lo ve al recargar.",
+      "explanation_es": "Falso. En CQRS los lados de lectura y escritura están separados, y las proyecciones de lectura se actualizan de forma asíncrona tras cada evento: el lado de lectura está normalmente en **consistencia eventual**. Ignorarlo produce el bug clásico de que un usuario guarda algo y no lo ve al recargar.",
       "explanation_en": "False. In CQRS the read and write sides are separate, and read projections are updated asynchronously after each event: the read side is normally **eventually consistent**. Ignoring that produces the classic bug where a user saves something and does not see it on reload.",
       "source": "Fowler, M. — CQRS (eventual consistency)",
       "expected_time_ms": 28000,

@@ -5,7 +5,7 @@
       "skill_id": "sk050101",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "Un equipo parte su monolito en 12 servicios, pero mantiene un unico repositorio, un unico pipeline y un despliegue conjunto cada viernes. ¿Que beneficio central de los microservicios han perdido por el camino?",
+      "question_es": "Un equipo parte su monolito en 12 servicios, pero mantiene un único repositorio, un único pipeline y un despliegue conjunto cada viernes. ¿Qué beneficio central de los microservicios han perdido por el camino?",
       "question_en": "A team splits its monolith into 12 services but keeps a single repository, a single pipeline and one joint release every Friday. Which core microservices benefit have they lost along the way?",
       "options_es": [
         "Ninguno: repartir el codigo en 12 servicios ya aporta todos los beneficios",
@@ -20,7 +20,7 @@
         "Process-level fault isolation"
       ],
       "correct_index": 2,
-      "explanation_es": "Esto es un monolito distribuido: se ha pagado el coste de la red (latencia, fallos parciales, depuracion distribuida) sin cobrar el beneficio, porque el despliegue sigue siendo un unico evento coordinado. Las opciones 1 y 2 son tentadoras porque suenan a microservicios, pero son justo las cosas que SI conservan: nada impide escribir cada servicio en otro lenguaje, y cada proceso sigue aislado del resto. Lo que define un microservicio no es que sea pequeño, sino que se pueda liberar solo; si hay que desplegar los 12 a la vez, la propiedad definitoria se ha perdido.",
+      "explanation_es": "Esto es un monolito distribuido: se ha pagado el coste de la red (latencia, fallos parciales, depuración distribuida) sin cobrar el beneficio, porque el despliegue sigue siendo un único evento coordinado. Las opciones 1 y 2 son tentadoras porque suenan a microservicios, pero son justo las cosas que SI conservan: nada impide escribir cada servicio en otro lenguaje, y cada proceso sigue aislado del resto. Lo que define un microservicio no es que sea pequeño, sino que se pueda liberar solo; si hay que desplegar los 12 a la vez, la propiedad definitoria se ha perdido.",
       "explanation_en": "This is a distributed monolith: the cost of the network (latency, partial failure, distributed debugging) has been paid without earning the benefit, because releasing is still one coordinated event. Options 1 and 2 are tempting because they sound like microservices, but they are exactly what the team still has: nothing stops each service using another language, and each process is still isolated. What defines a microservice is not being small, it is being releasable on its own; if all 12 must ship together, the defining property is gone.",
       "source": "Newman, S. — Building Microservices 2e, Cap. 1 (Independent Deployability)",
       "expected_time_ms": 28000,
@@ -35,7 +35,7 @@
       "skill_id": "sk050101",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "¿Cual es el criterio mas solido para decidir donde trazar la frontera de un microservicio?",
+      "question_es": "¿Cuál es el criterio más sólido para decidir donde trazar la frontera de un microservicio?",
       "question_en": "What is the soundest criterion for deciding where to draw a microservice boundary?",
       "options_es": [
         "Un contexto delimitado (bounded context) del dominio, con su propio lenguaje y sus propias reglas de negocio",
@@ -50,7 +50,7 @@
         "One service per developer on the team, to avoid merge conflicts"
       ],
       "correct_index": 0,
-      "explanation_es": "La frontera util es la del dominio: un contexto delimitado agrupa lo que cambia junto y por la misma razon, asi que un cambio de negocio cabe dentro de un servicio. El criterio de lineas de codigo tienta porque el prefijo 'micro' sugiere tamaño, pero el tamaño es una consecuencia, no un objetivo. Una tabla por servicio parece una descomposicion limpia y produce servicios CRUD anemicos que se llaman entre si para cada caso de uso: el acoplamiento no desaparece, se mueve a la red. Un servicio por persona confunde la ley de Conway (la organizacion condiciona el diseño) con una receta para diseñar.",
+      "explanation_es": "La frontera útil es la del dominio: un contexto delimitado agrupa lo que cambia junto y por la misma razón, así que un cambio de negocio cabe dentro de un servicio. El criterio de líneas de código tienta porque el prefijo 'micro' sugiere tamaño, pero el tamaño es una consecuencia, no un objetivo. Una tabla por servicio parece una descomposición limpia y produce servicios CRUD anémicos que se llaman entre sí para cada caso de uso: el acoplamiento no desaparece, se mueve a la red. Un servicio por persona confunde la ley de Conway (la organización condiciona el diseño) con una receta para diseñar.",
       "explanation_en": "The useful boundary is the domain's: a bounded context groups what changes together and for the same reason, so a business change fits inside one service. The lines-of-code rule tempts because the 'micro' prefix suggests size, but size is a consequence, not a goal. One table per service looks like clean decomposition and yields anaemic CRUD services that call each other for every use case: the coupling does not disappear, it moves onto the network. One service per person confuses Conway's law (the organisation shapes the design) with a design recipe.",
       "source": "Evans, E. — Domain-Driven Design (Bounded Context) / Newman, S. — Building Microservices 2e, Cap. 2",
       "expected_time_ms": 26000,
@@ -65,7 +65,7 @@
       "skill_id": "sk050101",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "Cinco servicios comparten una libreria interna `common-domain` que contiene sus entidades de negocio y sus DTOs. ¿Cual es el riesgo arquitectonico principal?",
+      "question_es": "Cinco servicios comparten una librería interna `common-domain` que contiene sus entidades de negocio y sus DTOs. ¿Cuál es el riesgo arquitectónico principal?",
       "question_en": "Five services share an internal `common-domain` library holding their business entities and DTOs. What is the main architectural risk?",
       "options_es": [
         "Las librerias compartidas estan prohibidas en microservicios sin excepcion",
@@ -80,7 +80,7 @@
         "The services will no longer be able to talk over HTTP"
       ],
       "correct_index": 1,
-      "explanation_es": "Compartir el modelo de dominio acopla los servicios por dentro: renombrar un campo en `common-domain` es un cambio que atraviesa cinco equipos y cinco despliegues, que es exactamente lo que se queria evitar. La opcion 1 es la sobrecorreccion tipica: compartir codigo transversal y tecnico (trazas, cliente HTTP, logging) es habitual y sano; lo que no se comparte es el dominio. La opcion 2 es cierta pero irrelevante: unos megabytes no son un riesgo arquitectonico. La opcion 3 es un no-sequitur; la libreria no toca el transporte. Si el modelo debe viajar entre servicios, viaja como contrato versionado, no como clase compilada compartida.",
+      "explanation_es": "Compartir el modelo de dominio acopla los servicios por dentro: renombrar un campo en `common-domain` es un cambio que atraviesa cinco equipos y cinco despliegues, que es exactamente lo que se queria evitar. La opción 1 es la sobrecorrección típica: compartir código transversal y técnico (trazas, cliente HTTP, logging) es habitual y sano; lo que no se comparte es el dominio. La opción 2 es cierta pero irrelevante: unos megabytes no son un riesgo arquitectónico. La opción 3 es un no-sequitur; la librería no toca el transporte. Si el modelo debe viajar entre servicios, viaja como contrato versionado, no como clase compilada compartida.",
       "explanation_en": "Sharing the domain model couples the services on the inside: renaming a field in `common-domain` is a change that crosses five teams and five deployments, which is precisely what was meant to be avoided. Option 1 is the usual overcorrection: sharing cross-cutting technical code (tracing, HTTP client, logging) is common and healthy; what you do not share is the domain. Option 2 is true but irrelevant: a few megabytes are not an architectural risk. Option 3 is a non sequitur; the library does not touch the transport. If the model must travel between services, it travels as a versioned contract, not as a shared compiled class.",
       "source": "Newman, S. — Building Microservices 2e, Cap. 5 (DRY and the Perils of Code Reuse in a Microservice World)",
       "expected_time_ms": 30000,
@@ -95,7 +95,7 @@
       "skill_id": "sk050101",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "El siguiente calculo estima cuantos pares de servicios pueden acabar integrandose entre si. ¿Que imprime?\n```python\ndef enlaces(n):\n    return n * (n - 1) // 2\n\nprint(enlaces(3), enlaces(10), enlaces(40))\n```",
+      "question_es": "El siguiente calculo estima cuántos pares de servicios pueden acabar integrándose entre sí. ¿Qué imprime?\n```python\ndef enlaces(n):\n    return n * (n - 1) // 2\n\nprint(enlaces(3), enlaces(10), enlaces(40))\n```",
       "question_en": "The following calculation estimates how many pairs of services can end up integrating with each other. What does it print?\n```python\ndef links(n):\n    return n * (n - 1) // 2\n\nprint(links(3), links(10), links(40))\n```",
       "options_es": [
         "6 90 1560",
@@ -110,7 +110,7 @@
         "2 9 39"
       ],
       "correct_index": 2,
-      "explanation_es": "`n * (n - 1) // 2` cuenta pares no ordenados: 3, 45 y 780. El numero importa porque pasar de 10 a 40 servicios no multiplica la complejidad de integracion por 4, sino por mas de 17: esa curva es el 'peaje' de los microservicios. La opcion 0 cuenta cada direccion por separado (`n*(n-1)`), tentadora si se piensa en llamadas dirigidas; la 1 es `n**2`, que ademas cuenta cada servicio consigo mismo; la 3 supone una cadena lineal, que es como se dibuja el sistema en la pizarra y casi nunca como acaba.",
+      "explanation_es": "`n * (n - 1) // 2` cuenta pares no ordenados: 3, 45 y 780. El número importa porque pasar de 10 a 40 servicios no multiplica la complejidad de integración por 4, sino por más de 17: esa curva es el 'peaje' de los microservicios. La opción 0 cuenta cada dirección por separado (`n*(n-1)`), tentadora si se piensa en llamadas dirigidas; la 1 es `n**2`, que además cuenta cada servicio consigo mismo; la 3 supone una cadena lineal, que es como se dibuja el sistema en la pizarra y casi nunca como acaba.",
       "explanation_en": "`n * (n - 1) // 2` counts unordered pairs: 3, 45 and 780. The number matters because going from 10 to 40 services does not multiply integration complexity by 4 but by more than 17: that curve is the microservices toll. Option 0 counts each direction separately (`n*(n-1)`), tempting if you think in directed calls; option 1 is `n**2`, which also counts each service against itself; option 3 assumes a linear chain, which is how the system is drawn on the whiteboard and almost never how it ends up.",
       "source": "Fowler, M. — MicroservicePremium (martinfowler.com) / Newman, S. — Building Microservices 2e, Cap. 1",
       "expected_time_ms": 27000,
@@ -125,7 +125,7 @@
       "skill_id": "sk050101",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Arrancar un producto nuevo directamente en microservicios, cuando el dominio todavia no se entiende bien y el equipo es pequeño, suele salir mas caro de lo que aporta: conviene empezar por un monolito bien modularizado y extraer servicios cuando las fronteras se vuelvan evidentes.",
+      "question_es": "Arrancar un producto nuevo directamente en microservicios, cuando el dominio todavía no se entiende bien y el equipo es pequeño, suele salir más caro de lo que aporta: conviene empezar por un monolito bien modularizado y extraer servicios cuando las fronteras se vuelvan evidentes.",
       "question_en": "Starting a brand-new product directly on microservices, when the domain is not yet well understood and the team is small, usually costs more than it returns: it is better to start with a well-modularised monolith and extract services once the boundaries become obvious.",
       "options_es": [
         "Verdadero",
@@ -136,7 +136,7 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verdadero. Los microservicios tienen un coste fijo de entrada (automatizacion de despliegue, monitorizacion, trazado distribuido, gestion de contratos) que hay que pagar antes de obtener nada, y en un equipo pequeño ese peaje se come la ventaja. El argumento decisivo, sin embargo, es otro: en un dominio nuevo las fronteras se trazan mal, y mover una frontera equivocada dentro de una base de codigo es una refactorizacion, mientras que moverla a traves de la red es un proyecto. El error habitual es leer esto como 'los microservicios son malos': no lo son, es que el momento de adoptarlos es cuando el dolor del monolito ya es concreto y las costuras ya se ven.",
+      "explanation_es": "Verdadero. Los microservicios tienen un coste fijo de entrada (automatización de despliegue, monitorización, trazado distribuido, gestión de contratos) que hay que pagar antes de obtener nada, y en un equipo pequeño ese peaje se come la ventaja. El argumento decisivo, sin embargo, es otro: en un dominio nuevo las fronteras se trazan mal, y mover una frontera equivocada dentro de una base de código es una refactorización, mientras que moverla a través de la red es un proyecto. El error habitual es leer esto como 'los microservicios son malos': no lo son, es que el momento de adoptarlos es cuando el dolor del monolito ya es concreto y las costuras ya se ven.",
       "explanation_en": "True. Microservices carry a fixed entry cost (deployment automation, monitoring, distributed tracing, contract management) that must be paid before anything is returned, and on a small team that toll eats the advantage. The decisive argument, though, is a different one: in a new domain the boundaries get drawn wrong, and moving a wrong boundary inside one codebase is a refactor, while moving it across the network is a project. The common misreading is 'microservices are bad': they are not, it is that the moment to adopt them is when the monolith's pain is concrete and the seams are already visible.",
       "source": "Fowler, M. — MonolithFirst / MicroservicePremium (martinfowler.com)",
       "expected_time_ms": 26000,
@@ -151,7 +151,7 @@
       "skill_id": "sk050101",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Como cada microservicio se despliega por separado, elegir un lenguaje y un almacen de datos distinto en cada servicio es siempre ventajoso: cada equipo usa la mejor herramienta para su problema.",
+      "question_es": "Como cada microservicio se despliega por separado, elegir un lenguaje y un almacén de datos distinto en cada servicio es siempre ventajoso: cada equipo usa la mejor herramienta para su problema.",
       "question_en": "Since each microservice deploys separately, picking a different language and data store for every service is always an advantage: each team uses the best tool for its problem.",
       "options_es": [
         "Verdadero",
@@ -162,7 +162,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. La heterogeneidad tecnologica es una libertad que los microservicios permiten, no un objetivo que convenga maximizar. Cada runtime y cada motor de datos añadido multiplica la superficie operativa: builds, parcheo de CVEs, copias de seguridad, ajuste fino, herramientas de diagnostico y, sobre todo, gente de guardia que sepa arreglarlo a las tres de la mañana. La frase suena bien porque el beneficio real existe: la eleccion deja de ser global y un servicio con necesidades raras puede salirse de la norma. Por eso los equipos maduros fijan una lista corta de opciones soportadas y exigen justificar cualquier salida de esa lista.",
+      "explanation_es": "Falso. La heterogeneidad tecnológica es una libertad que los microservicios permiten, no un objetivo que convenga maximizar. Cada runtime y cada motor de datos añadido multiplica la superficie operativa: builds, parcheo de CVEs, copias de seguridad, ajuste fino, herramientas de diagnóstico y, sobre todo, gente de guardia que sepa arreglarlo a las tres de la mañana. La frase suena bien porque el beneficio real existe: la elección deja de ser global y un servicio con necesidades raras puede salirse de la norma. Por eso los equipos maduros fijan una lista corta de opciones soportadas y exigen justificar cualquier salida de esa lista.",
       "explanation_en": "False. Technology heterogeneity is a freedom microservices allow, not a goal worth maximising. Every extra runtime and data engine multiplies the operational surface: builds, CVE patching, backups, tuning, diagnostic tooling and, above all, on-call people who can fix it at three in the morning. The claim sounds right because the real benefit does exist: the choice stops being global, and a service with unusual needs can step outside the norm. That is why mature teams fix a short list of supported options and require a case for anything off it.",
       "source": "Newman, S. — Building Microservices 2e, Cap. 1 (Technology Heterogeneity) / Richards & Ford — Fundamentals of Software Architecture",
       "expected_time_ms": 28000,
@@ -177,14 +177,14 @@
       "skill_id": "sk050101",
       "type": "fill_blank",
       "difficulty_tier": "expert",
-      "question_es": "Cuando un sistema esta partido en muchos servicios pero todos deben desplegarse a la vez, porque comparten esquema de base de datos, librerias de dominio o releases coordinadas, se le llama coloquialmente un monolito _____. (una palabra)",
+      "question_es": "Cuando un sistema está partido en muchos servicios pero todos deben desplegarse a la vez, porque comparten esquema de base de datos, librerías de dominio o releases coordinadas, se le llama coloquialmente un monolito _____. (una palabra)",
       "question_en": "When a system is split into many services but they all have to be deployed together, because they share a database schema, domain libraries or coordinated releases, it is colloquially called a _____ monolith. (one word)",
       "options_es": null,
       "options_en": null,
       "correct_index": null,
       "correct_answer_es": "distribuido",
       "correct_answer_en": "distributed",
-      "explanation_es": "Un 'monolito distribuido' es el peor de los dos mundos: sufre la latencia, los fallos parciales y la dificultad de depuracion de un sistema distribuido, y ademas conserva el acoplamiento de release del monolito, sin obtener a cambio ni la simplicidad de uno ni la independencia de los otros. El sintoma diagnostico es sencillo: si no puedes desplegar un servicio en produccion sin desplegar otro, tienes uno. La causa suele ser compartir base de datos o modelo de dominio, no el diseño de las APIs.",
+      "explanation_es": "Un 'monolito distribuido' es el peor de los dos mundos: sufre la latencia, los fallos parciales y la dificultad de depuración de un sistema distribuido, y además conserva el acoplamiento de release del monolito, sin obtener a cambio ni la simplicidad de uno ni la independencia de los otros. El síntoma diagnóstico es sencillo: si no puedes desplegar un servicio en producción sin desplegar otro, tienes uno. La causa suele ser compartir base de datos o modelo de dominio, no el diseño de las APIs.",
       "explanation_en": "A 'distributed monolith' is the worst of both worlds: it suffers the latency, partial failures and debugging difficulty of a distributed system while keeping the monolith's release coupling, getting neither the simplicity of one nor the independence of the other. The diagnostic symptom is simple: if you cannot deploy one service to production without deploying another, you have one. The cause is usually a shared database or domain model, not the API design.",
       "source": "Newman, S. — Building Microservices 2e, Cap. 1 / Richardson, C. — Microservices Patterns, Cap. 1",
       "expected_time_ms": 30000,
@@ -199,7 +199,7 @@
       "skill_id": "sk050102",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "El servicio de pedidos debe guardar el pedido en su base de datos y publicar `PedidoCreado` en el broker. Si escribe primero y publica despues, puede caerse en medio y perder el evento; si publica primero, puede anunciar un pedido que nunca llego a guardarse. ¿Que patron resuelve esta escritura dual?",
+      "question_es": "El servicio de pedidos debe guardar el pedido en su base de datos y publicar `PedidoCreado` en el broker. Si escribe primero y publica después, puede caerse en medio y perder el evento; si publica primero, puede anunciar un pedido que nunca llegó a guardarse. ¿Qué patrón resuelve esta escritura dual?",
       "question_en": "The orders service must save the order in its database and publish `OrderCreated` to the broker. Writing first and publishing second risks crashing in between and losing the event; publishing first risks announcing an order that was never saved. Which pattern solves this dual write?",
       "options_es": [
         "Two-phase commit (2PC) entre la base de datos y el broker, que es hoy la solucion estandar",
@@ -214,7 +214,7 @@
         "Publishing the event on the same thread as the write, so the operation is atomic"
       ],
       "correct_index": 2,
-      "explanation_es": "El outbox convierte dos escrituras en dos sistemas en una sola transaccion local: o se guardan el pedido y su evento, o no se guarda ninguno. Un relay lee luego la tabla y publica, lo que da entrega 'al menos una vez' y obliga a que el consumidor sea idempotente. El 2PC tienta porque es la respuesta de manual para atomicidad entre recursos, pero pocos brokers lo soportan bien y el protocolo bloquea si cae el coordinador: se cambia perdida de datos por perdida de disponibilidad. El `finally` no se ejecuta si el proceso muere, que es justo el caso que preocupa. Y el mismo hilo no da atomicidad entre dos sistemas distintos: la atomicidad la da la transaccion, no la concurrencia.",
+      "explanation_es": "El outbox convierte dos escrituras en dos sistemas en una sola transacción local: o se guardan el pedido y su evento, o no se guarda ninguno. Un relay lee luego la tabla y publica, lo que da entrega 'al menos una vez' y obliga a que el consumidor sea idempotente. El 2PC tienta porque es la respuesta de manual para atomicidad entre recursos, pero pocos brokers lo soportan bien y el protocolo bloquea si cae el coordinador: se cambia perdida de datos por perdida de disponibilidad. El `finally` no se ejecuta si el proceso muere, que es justo el caso que preocupa. Y el mismo hilo no da atomicidad entre dos sistemas distintos: la atomicidad la da la transacción, no la concurrencia.",
       "explanation_en": "The outbox turns two writes across two systems into one local transaction: either the order and its event are stored, or neither is. A relay then reads the table and publishes, which gives at-least-once delivery and requires an idempotent consumer. 2PC is tempting because it is the textbook answer for atomicity across resources, but few brokers support it well and the protocol blocks if the coordinator dies: you trade data loss for availability loss. The `finally` block does not run if the process is killed, which is exactly the case in question. And running on the same thread gives no atomicity across two different systems: atomicity comes from the transaction, not from concurrency.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 3 (Transactional outbox) / microservices.io",
       "expected_time_ms": 33000,
@@ -229,7 +229,7 @@
       "skill_id": "sk050102",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "El broker promete entrega 'al menos una vez' (at-least-once). ¿Que implica eso para quien consume los mensajes?",
+      "question_es": "El broker promete entrega 'al menos una vez' (at-least-once). ¿Qué implica eso para quien consume los mensajes?",
       "question_en": "The broker promises at-least-once delivery. What does that imply for whoever consumes the messages?",
       "options_es": [
         "Que puede recibir el mismo mensaje varias veces y debe ser idempotente, por ejemplo registrando los ids de mensaje ya procesados",
@@ -244,7 +244,7 @@
         "That it must process messages on a single thread, because duplicates come from concurrency"
       ],
       "correct_index": 0,
-      "explanation_es": "Los duplicados nacen del camino del acuse de recibo: el consumidor procesa el mensaje, el ack se pierde y el broker, que no puede distinguir 'no lo proceso' de 'no me llego la confirmacion', reentrega. Por eso la unica defensa real es que procesar dos veces tenga el mismo efecto que procesar una. La opcion 0 tienta porque muchos brokers anuncian 'exactly-once', pero esa garantia cubre el interior del sistema del broker, no los efectos externos que provoca tu handler (un cargo, un correo). La 2 cambia duplicados por perdidas, que casi siempre es peor. La 3 confunde origen: el duplicado es temporal, no concurrente, y llega igual con un solo hilo.",
+      "explanation_es": "Los duplicados nacen del camino del acuse de recibo: el consumidor procesa el mensaje, el ack se pierde y el broker, que no puede distinguir 'no lo proceso' de 'no me llegó la confirmación', reentrega. Por eso la única defensa real es que procesar dos veces tenga el mismo efecto que procesar una. La opción 0 tienta porque muchos brokers anuncian 'exactly-once', pero esa garantía cubre el interior del sistema del broker, no los efectos externos que provoca tu handler (un cargo, un correo). La 2 cambia duplicados por perdidas, que casi siempre es peor. La 3 confunde origen: el duplicado es temporal, no concurrente, y llega igual con un solo hilo.",
       "explanation_en": "Duplicates come from the acknowledgement path: the consumer processes the message, the ack is lost, and the broker, unable to tell 'not processed' from 'confirmation never arrived', redelivers. So the only real defence is making a second processing have the same effect as the first. Option 0 is tempting because many brokers advertise exactly-once, but that guarantee covers the inside of the broker's system, not the external side effects your handler causes (a charge, an email). Option 2 trades duplicates for losses, almost always worse. Option 3 misattributes the cause: the duplicate is temporal, not concurrent, and arrives just the same on one thread.",
       "source": "Kleppmann, M. — Designing Data-Intensive Applications, Cap. 11 / Richardson, C. — Microservices Patterns (Idempotent Consumer)",
       "expected_time_ms": 28000,
@@ -259,7 +259,7 @@
       "skill_id": "sk050102",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "En una saga, ¿cual es la diferencia entre coreografia y orquestacion?",
+      "question_es": "En una saga, ¿cuál es la diferencia entre coreografía y orquestación?",
       "question_en": "In a saga, what is the difference between choreography and orchestration?",
       "options_es": [
         "La coreografia usa HTTP y la orquestacion usa un broker de mensajes",
@@ -274,7 +274,7 @@
         "In choreography each service reacts to the others' events with no central coordinator; in orchestration an explicit coordinator tells each service which step to run"
       ],
       "correct_index": 3,
-      "explanation_es": "La distincion es quien conoce el flujo. En coreografia el proceso vive repartido en los suscriptores: acoplamiento bajo, pero nadie puede responder 'en que paso esta el pedido 42' sin reconstruirlo de los logs. En orquestacion el proceso es explicito y observable, a cambio de un componente que tiende a crecer hasta convertirse en un servicio dios. La opcion 1 es el error importante: ninguna de las dos da ACID. Una saga es una secuencia de transacciones locales con compensaciones, y una compensacion no es un rollback (el cobro revertido se vio). La opcion 0 confunde el estilo de coordinacion con el transporte: ambas se pueden implementar con mensajes o con llamadas.",
+      "explanation_es": "La distinción es quien conoce el flujo. En coreografía el proceso vive repartido en los suscriptores: acoplamiento bajo, pero nadie puede responder 'en qué paso está el pedido 42' sin reconstruirlo de los logs. En orquestación el proceso es explícito y observable, a cambio de un componente que tiende a crecer hasta convertirse en un servicio dios. La opción 1 es el error importante: ninguna de las dos da ACID. Una saga es una secuencia de transacciones locales con compensaciones, y una compensación no es un rollback (el cobro revertido se vio). La opción 0 confunde el estilo de coordinación con el transporte: ambas se pueden implementar con mensajes o con llamadas.",
       "explanation_en": "The distinction is who knows the flow. In choreography the process lives spread across the subscribers: low coupling, but nobody can answer 'what step is order 42 on' without reconstructing it from logs. In orchestration the process is explicit and observable, at the cost of a component that tends to grow into a god service. Option 1 is the important error: neither gives ACID. A saga is a sequence of local transactions with compensations, and a compensation is not a rollback (the reversed charge was visible). Option 0 confuses the coordination style with the transport: both can be built on messages or on calls.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 4 (Saga) / Newman, S. — Building Microservices 2e, Cap. 6",
       "expected_time_ms": 32000,
@@ -289,7 +289,7 @@
       "skill_id": "sk050102",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "El cliente reintenta una llamada al servicio de pagos que agota el tiempo de espera. ¿Que imprime?\n```python\nintentos = []\n\ndef cobrar(pedido, importe):\n    intentos.append(pedido)\n    raise TimeoutError(\"la respuesta no llego a tiempo\")\n\nfor _ in range(3):\n    try:\n        cobrar(\"p-1\", 10)\n    except TimeoutError:\n        pass\n\nprint(len(intentos), len(set(intentos)))\n```",
+      "question_es": "El cliente reintenta una llamada al servicio de pagos que agota el tiempo de espera. ¿Qué imprime?\n```python\nintentos = []\n\ndef cobrar(pedido, importe):\n    intentos.append(pedido)\n    raise TimeoutError(\"la respuesta no llego a tiempo\")\n\nfor _ in range(3):\n    try:\n        cobrar(\"p-1\", 10)\n    except TimeoutError:\n        pass\n\nprint(len(intentos), len(set(intentos)))\n```",
       "question_en": "The client retries a call to the payments service that times out. What does it print?\n```python\nattempts = []\n\ndef charge(order, amount):\n    attempts.append(order)\n    raise TimeoutError(\"the response did not arrive in time\")\n\nfor _ in range(3):\n    try:\n        charge(\"p-1\", 10)\n    except TimeoutError:\n        pass\n\nprint(len(attempts), len(set(attempts)))\n```",
       "options_es": [
         "0 0",
@@ -304,7 +304,7 @@
         "3 3"
       ],
       "correct_index": 2,
-      "explanation_es": "El cuerpo se ejecuta y añade a la lista antes de lanzar, asi que hay 3 intentos sobre 1 unico pedido: `3 1`. Eso es exactamente el problema del reintento ciego. Un timeout no dice que la operacion no ocurriera, solo que no llego la respuesta: el servicio de pagos puede haber cobrado tres veces mientras el cliente veia tres errores. La opcion 1 tienta si se cree que la excepcion 'cancela' la llamada ya hecha; la 2, si se piensa que la excepcion impide el `append`, que ocurre antes. La opcion 3 confunde numero de intentos con numero de pedidos distintos. Por eso todo reintento sobre una operacion con efectos necesita una clave de idempotencia, ademas de backoff para no amplificar la caida.",
+      "explanation_es": "El cuerpo se ejecuta y añade a la lista antes de lanzar, así que hay 3 intentos sobre 1 único pedido: `3 1`. Eso es exactamente el problema del reintento ciego. Un timeout no dice que la operación no ocurriera, solo que no llegó la respuesta: el servicio de pagos puede haber cobrado tres veces mientras el cliente veía tres errores. La opción 1 tienta si se cree que la excepción 'cancela' la llamada ya hecha; la 2, si se piensa que la excepción impide el `append`, que ocurre antes. La opción 3 confunde número de intentos con número de pedidos distintos. Por eso todo reintento sobre una operación con efectos necesita una clave de idempotencia, además de backoff para no amplificar la caída.",
       "explanation_en": "The body runs and appends before raising, so there are 3 attempts against 1 order: `3 1`. That is exactly the blind-retry problem. A timeout does not say the operation did not happen, only that no response arrived: payments may have charged three times while the client saw three errors. Option 1 tempts if you believe the exception 'cancels' the call already made; option 2, if you think the exception prevents the `append`, which happens first. Option 3 confuses attempt count with distinct order count. This is why any retry of an operation with side effects needs an idempotency key, plus backoff so it does not amplify the outage.",
       "source": "Nygard, M. — Release It! 2e, Cap. 4 (Stability Antipatterns) / Richardson, C. — Microservices Patterns (Idempotent Consumer)",
       "expected_time_ms": 30000,
@@ -319,7 +319,7 @@
       "skill_id": "sk050102",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "Un endpoint necesita datos de tres servicios con las latencias indicadas en milisegundos. ¿Que imprime?\n```python\nlatencias = [40, 55, 30]\n\nencadenado = sum(latencias)\nen_paralelo = max(latencias)\nprint(encadenado, en_paralelo)\n```",
+      "question_es": "Un endpoint necesita datos de tres servicios con las latencias indicadas en milisegundos. ¿Qué imprime?\n```python\nlatencias = [40, 55, 30]\n\nencadenado = sum(latencias)\nen_paralelo = max(latencias)\nprint(encadenado, en_paralelo)\n```",
       "question_en": "An endpoint needs data from three services with the latencies shown in milliseconds. What does it print?\n```python\nlatencies = [40, 55, 30]\n\nchained = sum(latencies)\nin_parallel = max(latencies)\nprint(chained, in_parallel)\n```",
       "options_es": [
         "125 55",
@@ -334,7 +334,7 @@
         "41 55"
       ],
       "correct_index": 0,
-      "explanation_es": "`sum` da 125 y `max` da 55. Lo que el codigo modela es la diferencia entre encadenar llamadas sincronas (A llama a B que llama a C: las latencias se suman y las probabilidades de fallo se multiplican) y abanicar en paralelo (el tiempo queda acotado por el mas lento). La opcion 1 es el error clasico: pensar que paralelizar deja el tiempo del mas rapido, cuando hay que esperar a todos. La 0 invierte los dos valores y la 3 usa la media como si el encadenado promediase. Conviene recordar el reverso: en paralelo la cola de latencia empeora, porque basta con que uno de los tres tenga un mal dia para que lo tenga la peticion entera.",
+      "explanation_es": "`sum` da 125 y `max` da 55. Lo que el código modela es la diferencia entre encadenar llamadas síncronas (A llama a B que llama a C: las latencias se suman y las probabilidades de fallo se multiplican) y abanicar en paralelo (el tiempo queda acotado por el más lento). La opción 1 es el error clásico: pensar que paralelizar deja el tiempo del más rápido, cuando hay que esperar a todos. La 0 invierte los dos valores y la 3 usa la media como si el encadenado promediase. Conviene recordar el reverso: en paralelo la cola de latencia empeora, porque basta con que uno de los tres tenga un mal día para que lo tenga la petición entera.",
       "explanation_en": "`sum` gives 125 and `max` gives 55. What the code models is the difference between chaining synchronous calls (A calls B which calls C: latencies add and failure probabilities multiply) and fanning out in parallel (time is bounded by the slowest). Option 1 is the classic error: thinking parallelism leaves you with the fastest, when you must wait for all of them. Option 0 swaps the two values and option 3 uses the mean as if chaining averaged. Worth remembering the flip side: in parallel the latency tail gets worse, because one of the three having a bad day is enough to give the whole request one.",
       "source": "Newman, S. — Building Microservices 2e, Cap. 4 (Communication Styles)",
       "expected_time_ms": 27000,
@@ -349,7 +349,7 @@
       "skill_id": "sk050102",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Al pasar de REST sincrono a mensajes por un broker, el productor sigue acoplado temporalmente al consumidor: si el consumidor esta caido, la publicacion del productor falla.",
+      "question_es": "Al pasar de REST síncrono a mensajes por un broker, el productor sigue acoplado temporalmente al consumidor: si el consumidor está caído, la publicación del productor falla.",
       "question_en": "When moving from synchronous REST to messages over a broker, the producer remains temporally coupled to the consumer: if the consumer is down, the producer's publish fails.",
       "options_es": [
         "Verdadero",
@@ -360,7 +360,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso, y ese desacoplamiento temporal es precisamente lo que se compra con el broker: al productor solo le hace falta que el broker este disponible; el mensaje queda persistido y se entrega cuando el consumidor vuelva. La afirmacion tienta porque se piensa que 'asincrono' es solo no bloquear el hilo, cuando lo que cambia es quien tiene que estar vivo al mismo tiempo. Lo que si cambia es la forma del fallo: ya no hay un error inmediato que devolver al usuario, hay retraso, acumulacion de cola y consistencia eventual. Por eso el indicador que hay que vigilar deja de ser la tasa de error y pasa a ser el lag del consumidor.",
+      "explanation_es": "Falso, y ese desacoplamiento temporal es precisamente lo que se compra con el broker: al productor solo le hace falta que el broker esté disponible; el mensaje queda persistido y se entrega cuando el consumidor vuelva. La afirmación tienta porque se piensa que 'asíncrono' es solo no bloquear el hilo, cuando lo que cambia es quien tiene que estar vivo al mismo tiempo. Lo que sí cambia es la forma del fallo: ya no hay un error inmediato que devolver al usuario, hay retraso, acumulación de cola y consistencia eventual. Por eso el indicador que hay que vigilar deja de ser la tasa de error y pasa a ser el lag del consumidor.",
       "explanation_en": "False, and that temporal decoupling is exactly what the broker buys: the producer only needs the broker to be available; the message is persisted and delivered when the consumer returns. The claim tempts because people read 'asynchronous' as merely not blocking a thread, when what changes is who has to be alive at the same time. What does change is the shape of failure: there is no longer an immediate error to hand the user, there is delay, queue build-up and eventual consistency. So the signal to watch stops being the error rate and becomes consumer lag.",
       "source": "Kleppmann, M. — Designing Data-Intensive Applications, Cap. 11 / Richardson, C. — Microservices Patterns, Cap. 3",
       "expected_time_ms": 27000,
@@ -375,7 +375,7 @@
       "skill_id": "sk050102",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Un consumidor 'tolerante' (tolerant reader), que ignora los campos que no conoce, permite al productor añadir campos opcionales a su respuesta sin romper a nadie; lo que si rompe a los consumidores es eliminar o renombrar un campo existente.",
+      "question_es": "Un consumidor 'tolerante' (tolerant reader), que ignora los campos que no conoce, permite al productor añadir campos opcionales a su respuesta sin romper a nadie; lo que sí rompe a los consumidores es eliminar o renombrar un campo existente.",
       "question_en": "A tolerant reader, which ignores fields it does not know, lets the producer add optional fields to its response without breaking anyone; what does break consumers is removing or renaming an existing field.",
       "options_es": [
         "Verdadero",
@@ -386,7 +386,7 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verdadero. Un cambio aditivo es compatible hacia atras siempre que el consumidor no se rompa al ver algo que no esperaba. El matiz que se pasa por alto es que la rigidez suele estar en el consumidor, no en el contrato: un deserializador configurado para fallar ante campos desconocidos convierte una adicion inofensiva en un cambio rompedor, y entonces el productor se ve obligado a publicar `/v2` por haber añadido un campo, multiplicando versiones que luego hay que mantener vivas. Quitar o renombrar si es rompedor por definicion: la via segura es añadir el campo nuevo, migrar a los consumidores y retirar el viejo despues, en tres despliegues y no en uno.",
+      "explanation_es": "Verdadero. Un cambio aditivo es compatible hacia atrás siempre que el consumidor no se rompa al ver algo que no esperaba. El matiz que se pasa por alto es que la rigidez suele estar en el consumidor, no en el contrato: un deserializador configurado para fallar ante campos desconocidos convierte una adición inofensiva en un cambio rompedor, y entonces el productor se ve obligado a publicar `/v2` por haber añadido un campo, multiplicando versiones que luego hay que mantener vivas. Quitar o renombrar si es rompedor por definición: la vía segura es añadir el campo nuevo, migrar a los consumidores y retirar el viejo después, en tres despliegues y no en uno.",
       "explanation_en": "True. An additive change is backward compatible as long as the consumer does not break on seeing something it did not expect. The overlooked nuance is that the rigidity usually sits in the consumer, not the contract: a deserializer configured to fail on unknown fields turns a harmless addition into a breaking change, and the producer then finds itself shipping `/v2` because it added a field, multiplying versions it must keep alive. Removing or renaming is breaking by definition: the safe route is to add the new field, migrate consumers, and retire the old one afterwards, in three deployments rather than one.",
       "source": "Fowler, M. — TolerantReader (martinfowler.com) / Newman, S. — Building Microservices 2e, Cap. 5",
       "expected_time_ms": 29000,
@@ -408,7 +408,7 @@
       "correct_index": null,
       "correct_answer_es": "DLQ",
       "correct_answer_en": "DLQ",
-      "explanation_es": "DLQ, de 'dead-letter queue'. Sin ella, un mensaje envenenado (uno que siempre falla, por ejemplo por un campo corrupto) se reintenta indefinidamente: consume los workers, y en un broker con orden por particion llega a bloquear esa particion entera, con lo que un solo mensaje malo detiene a todos los buenos que van detras. La DLQ convierte ese fallo en un elemento de trabajo visible: se alerta sobre su profundidad, se inspecciona y se reprocesa cuando el bug esta corregido. Tambien se acepta 'dead letter queue' o 'cola de mensajes muertos'.",
+      "explanation_es": "DLQ, de 'dead-letter queue'. Sin ella, un mensaje envenenado (uno que siempre falla, por ejemplo por un campo corrupto) se reintenta indefinidamente: consume los workers, y en un broker con orden por partición llega a bloquear esa partición entera, con lo que un solo mensaje malo detiene a todos los buenos que van detrás. La DLQ convierte ese fallo en un elemento de trabajo visible: se alerta sobre su profundidad, se inspecciona y se reprocesa cuando el bug está corregido. También se acepta 'dead letter queue' o 'cola de mensajes muertos'.",
       "explanation_en": "DLQ, for dead-letter queue. Without one, a poison message (one that always fails, say because of a corrupt field) is retried forever: it consumes workers, and in a broker with per-partition ordering it eventually blocks that whole partition, so one bad message stops every good one behind it. The DLQ turns that failure into a visible work item: you alert on its depth, inspect it, and reprocess once the bug is fixed. 'Dead letter queue' is also accepted.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 3 / Amazon SQS Developer Guide (dead-letter queues)",
       "expected_time_ms": 28000,
@@ -423,7 +423,7 @@
       "skill_id": "sk050103",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "¿Cual es la diferencia principal entre un API Gateway y un service mesh?",
+      "question_es": "¿Cuál es la diferencia principal entre un API Gateway y un service mesh?",
       "question_en": "What is the main difference between an API Gateway and a service mesh?",
       "options_es": [
         "El gateway gobierna el trafico norte-sur (clientes externos hacia el sistema); el mesh gobierna el trafico este-oeste (de servicio a servicio) mediante proxies sidecar",
@@ -438,7 +438,7 @@
         "They are the same component under two different product names"
       ],
       "correct_index": 0,
-      "explanation_es": "Lo que los separa es el eje del trafico y quien esta al otro lado. El gateway mira hacia fuera: clientes que no controlas, claves de API, planes de uso, autenticacion de terceros, una superficie publica que hay que versionar. El mesh mira hacia dentro: identidad de carga de trabajo con mTLS, reintentos, disyuntores y telemetria entre servicios que si controlas. La opcion 2 tienta porque ambos hacen reintentos, mTLS y metricas, pero el mesh no tiene respuesta para el cliente externo. La opcion 1 lo invierte: los dos operan sobre HTTP en capa 7; un balanceador de capa 4 es otra cosa, que reparte conexiones sin mirar la peticion.",
+      "explanation_es": "Lo que los separa es el eje del tráfico y quien está al otro lado. El gateway mira hacia fuera: clientes que no controlas, claves de API, planes de uso, autenticación de terceros, una superficie pública que hay que versionar. El mesh mira hacia dentro: identidad de carga de trabajo con mTLS, reintentos, disyuntores y telemetría entre servicios que sí controlas. La opción 2 tienta porque ambos hacen reintentos, mTLS y métricas, pero el mesh no tiene respuesta para el cliente externo. La opción 1 lo invierte: los dos operan sobre HTTP en capa 7; un balanceador de capa 4 es otra cosa, que reparte conexiones sin mirar la petición.",
       "explanation_en": "What separates them is the traffic axis and who sits on the other side. The gateway faces outward: clients you do not control, API keys, usage plans, third-party authentication, a public surface that has to be versioned. The mesh faces inward: workload identity with mTLS, retries, circuit breakers and telemetry between services you do control. Option 2 tempts because both do retries, mTLS and metrics, but the mesh has no answer for the external client. Option 1 inverts it: both operate on HTTP at layer 7; a layer 4 load balancer is a different thing, distributing connections without looking at the request.",
       "source": "Newman, S. — Building Microservices 2e, Cap. 5 (Service Meshes and API Gateways)",
       "expected_time_ms": 30000,
@@ -453,7 +453,7 @@
       "skill_id": "sk050103",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "El gateway valida en cada peticion la firma de un JWT con caducidad de 24 horas. Un usuario cierra sesion y, ademas, su token se filtra. ¿Que ocurre y como se aborda normalmente?",
+      "question_es": "El gateway valida en cada petición la firma de un JWT con caducidad de 24 horas. Un usuario cierra sesión y, además, su token se filtra. ¿Qué ocurre y como se aborda normalmente?",
       "question_en": "The gateway validates the signature of a JWT with a 24-hour expiry on every request. A user logs out and, on top of that, their token leaks. What happens, and how is it normally handled?",
       "options_es": [
         "Nada preocupante: al cerrar sesion el JWT queda invalidado automaticamente",
@@ -468,7 +468,7 @@
         "Deleting the cookie in the browser is enough for the gateway to reject it"
       ],
       "correct_index": 2,
-      "explanation_es": "La gran ventaja del JWT es tambien su gran limitacion: el gateway puede validarlo sin preguntar a nadie, y por eso nadie puede retirarlo. La opcion 0 confunde cerrar sesion con revocar: cerrar sesion es un gesto del cliente, y el servidor sin estado no se entera. La opcion 3 es la misma confusion: borrar la cookie hace que ese navegador olvide el token, pero la copia filtrada sigue sirviendo 24 horas. La opcion 1 es la mas instructiva: rotar la clave si invalida tokens, pero invalida TODOS a la vez, es decir, desconecta a todos los usuarios; llamarlo 'sin efectos secundarios' es justo lo que la hace falsa. De ahi el compromiso habitual: access tokens de minutos y refresh tokens revocables con estado.",
+      "explanation_es": "La gran ventaja del JWT es también su gran limitación: el gateway puede validarlo sin preguntar a nadie, y por eso nadie puede retirarlo. La opción 0 confunde cerrar sesión con revocar: cerrar sesión es un gesto del cliente, y el servidor sin estado no se entera. La opción 3 es la misma confusión: borrar la cookie hace que ese navegador olvide el token, pero la copia filtrada sigue sirviendo 24 horas. La opción 1 es la más instructiva: rotar la clave si invalida tokens, pero invalida TODOS a la vez, es decir, desconecta a todos los usuarios; llamarlo 'sin efectos secundarios' es justo lo que la hace falsa. De ahí el compromiso habitual: access tokens de minutos y refresh tokens revocables con estado.",
       "explanation_en": "The JWT's great advantage is also its great limitation: the gateway can validate it without asking anyone, and so nobody can withdraw it. Option 0 confuses logging out with revoking: logging out is a client-side gesture, and a stateless server never learns of it. Option 3 is the same confusion: deleting the cookie makes that browser forget the token, but the leaked copy works for 24 more hours. Option 1 is the most instructive: rotating the key does invalidate tokens, but it invalidates all of them at once, logging out every user; calling it side-effect-free is exactly what makes it wrong. Hence the usual compromise: access tokens lasting minutes and stateful, revocable refresh tokens.",
       "source": "RFC 7519 (JSON Web Token) / Newman, S. — Building Microservices 2e, Cap. 11 (Security)",
       "expected_time_ms": 33000,
@@ -483,7 +483,7 @@
       "skill_id": "sk050103",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "Una API publica necesita introducir un cambio incompatible en el recurso `/pedidos`, pero hay aplicaciones moviles antiguas que no se pueden forzar a actualizar. ¿Cual es el enfoque habitual en el gateway?",
+      "question_es": "Una API pública necesita introducir un cambio incompatible en el recurso `/pedidos`, pero hay aplicaciones móviles antiguas que no se pueden forzar a actualizar. ¿Cuál es el enfoque habitual en el gateway?",
       "question_en": "A public API needs to introduce a breaking change to the `/orders` resource, but there are old mobile apps that cannot be forced to update. What is the usual approach at the gateway?",
       "options_es": [
         "Desplegar el cambio y avisar por correo a los consumidores de la API",
@@ -498,7 +498,7 @@
         "Route `/v1/orders` and `/v2/orders` to different versions of the service and keep v1 alive while it has traffic, with an announced sunset date"
       ],
       "correct_index": 3,
-      "explanation_es": "El gateway es el sitio natural para esto porque la decision de enrutado mira al cliente, no al dominio: los servicios internos no deberian saber por que puerta entro la peticion. Las opciones 0 y 2 son el mismo cambio rompedor con distinto envoltorio; con moviles instalados en dispositivos ajenos, 'avisar' no evita la ruptura, porque el usuario que no actualiza sigue existiendo. La opcion 3 tienta porque parece aislar mas, pero dos despliegues permanentes por tipo de cliente se desincronizan y duplican coste operativo para siempre. La clave que suele olvidarse es la fecha de retirada: sin ella, v1 no muere nunca y cada version nueva añade una que mantener.",
+      "explanation_es": "El gateway es el sitio natural para esto porque la decisión de enrutado mira al cliente, no al dominio: los servicios internos no deberían saber por qué puerta entró la petición. Las opciones 0 y 2 son el mismo cambio rompedor con distinto envoltorio; con móviles instalados en dispositivos ajenos, 'avisar' no evita la ruptura, porque el usuario que no actualiza sigue existiendo. La opción 3 tienta porque parece aislar más, pero dos despliegues permanentes por tipo de cliente se desincronizan y duplican coste operativo para siempre. La clave que suele olvidarse es la fecha de retirada: sin ella, v1 no muere nunca y cada versión nueva añade una que mantener.",
       "explanation_en": "The gateway is the natural place for this because the routing decision faces the client, not the domain: internal services should not know which door the request came through. Options 0 and 2 are the same breaking change in different wrapping; with mobile apps installed on other people's devices, notifying does not prevent the break, because the user who does not update still exists. Option 3 tempts because it looks more isolated, but two permanent per-client deployments drift apart and double operational cost forever. The part usually forgotten is the sunset date: without it v1 never dies, and each new version adds one more to maintain.",
       "source": "Newman, S. — Building Microservices 2e, Cap. 5 (Handling Change Between Microservices) / Richardson, C. — Microservices Patterns, Cap. 8",
       "expected_time_ms": 28000,
@@ -513,7 +513,7 @@
       "skill_id": "sk050103",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "El gateway enruta por prefijo y reescribe la ruta antes de reenviar. ¿Que imprime?\n```python\nrutas = {\"/api/pedidos\": \"http://pedidos:8080\"}\n\nentrante = \"/api/pedidos/42/lineas\"\nprefijo = next(p for p in rutas if entrante.startswith(p))\nprint(rutas[prefijo] + entrante[len(prefijo):])\n```",
+      "question_es": "El gateway enruta por prefijo y reescribe la ruta antes de reenviar. ¿Qué imprime?\n```python\nrutas = {\"/api/pedidos\": \"http://pedidos:8080\"}\n\nentrante = \"/api/pedidos/42/lineas\"\nprefijo = next(p for p in rutas if entrante.startswith(p))\nprint(rutas[prefijo] + entrante[len(prefijo):])\n```",
       "question_en": "The gateway routes by prefix and rewrites the path before forwarding. What does it print?\n```python\nroutes = {\"/api/orders\": \"http://orders:8080\"}\n\nincoming = \"/api/orders/42/lines\"\nprefix = next(p for p in routes if incoming.startswith(p))\nprint(routes[prefix] + incoming[len(prefix):])\n```",
       "options_es": [
         "http://pedidos:8080",
@@ -528,7 +528,7 @@
         "/api/orders/42/lines"
       ],
       "correct_index": 2,
-      "explanation_es": "El corte `entrante[len(prefijo):]` elimina el prefijo publico y deja `/42/lineas`, que es lo que se concatena al destino interno. La opcion 1 es el fallo real mas comun en produccion: olvidar la reescritura y hacer que el servicio reciba una ruta que no tiene registrada, con lo que devuelve 404 y el sintoma parece del servicio cuando el error esta en el gateway. La opcion 2 supone que se descarta todo el camino, y la 3 que el gateway solo valida sin reenviar. El principio de fondo es que el servicio no debe conocer su ruta publica: si la conociera, mover el prefijo obligaria a redesplegarlo.",
+      "explanation_es": "El corte `entrante[len(prefijo):]` elimina el prefijo público y deja `/42/lineas`, que es lo que se concatena al destino interno. La opción 1 es el fallo real más común en producción: olvidar la reescritura y hacer que el servicio reciba una ruta que no tiene registrada, con lo que devuelve 404 y el síntoma parece del servicio cuando el error está en el gateway. La opción 2 supone que se descarta todo el camino, y la 3 que el gateway solo valida sin reenviar. El principio de fondo es que el servicio no debe conocer su ruta pública: si la conociera, mover el prefijo obligaría a redesplegarlo.",
       "explanation_en": "The slice `incoming[len(prefix):]` strips the public prefix and leaves `/42/lines`, which is concatenated to the internal target. Option 1 is the most common real production failure: forgetting the rewrite so the service receives a path it has no route for, returns 404, and the symptom looks like the service's fault when the bug is in the gateway. Option 2 assumes the whole path is discarded, and option 3 that the gateway only validates without forwarding. The underlying principle is that the service should not know its public path: if it did, moving the prefix would force a redeploy.",
       "source": "Envoy documentation — HTTP route configuration (prefix_rewrite) / NGINX documentation (proxy_pass)",
       "expected_time_ms": 28000,
@@ -543,7 +543,7 @@
       "skill_id": "sk050103",
       "type": "code_output",
       "difficulty_tier": "hard",
-      "question_es": "El gateway compone una respuesta con tres llamadas; la de `usuario` ha fallado y se ha degradado a `None`. ¿Que imprime?\n```python\nimport json\n\nparcial = {\"pedido\": {\"id\": 1}, \"usuario\": None, \"envio\": {\"eta\": \"2d\"}}\nprint(json.dumps({k: v for k, v in parcial.items() if v is not None}))\n```",
+      "question_es": "El gateway compone una respuesta con tres llamadas; la de `usuario` ha fallado y se ha degradado a `None`. ¿Qué imprime?\n```python\nimport json\n\nparcial = {\"pedido\": {\"id\": 1}, \"usuario\": None, \"envio\": {\"eta\": \"2d\"}}\nprint(json.dumps({k: v for k, v in parcial.items() if v is not None}))\n```",
       "question_en": "The gateway composes a response from three calls; the `user` one failed and was degraded to `None`. What does it print?\n```python\nimport json\n\npartial = {\"order\": {\"id\": 1}, \"user\": None, \"shipping\": {\"eta\": \"2d\"}}\nprint(json.dumps({k: v for k, v in partial.items() if v is not None}))\n```",
       "options_es": [
         "{\"pedido\": {\"id\": 1}, \"usuario\": null, \"envio\": {\"eta\": \"2d\"}}",
@@ -558,7 +558,7 @@
         "{\"order\": {\"id\": 1}, \"user\": \"\", \"shipping\": {\"eta\": \"2d\"}}"
       ],
       "correct_index": 1,
-      "explanation_es": "El filtro `if v is not None` elimina la clave entera, no la convierte en `null`: por eso la opcion 0 es falsa, aunque sea lo que mucha gente espera porque `json.dumps` si traduce `None` a `null` cuando lo dejas pasar. La opcion 1 confunde `None` con cadena vacia, y la 2 supone que un fallo parcial anula la respuesta completa. Lo que ilustra el codigo es la degradacion elegante: el gateway devuelve lo que si tiene en lugar de un 500 entero. La decision de diseño real es si omitir la clave o enviarla como `null`, porque con `null` cada cliente debe distinguir 'no hay usuario' de 'no pude leerlo'. Y el riesgo de fondo de agregar: sin degradacion, la disponibilidad del endpoint es el producto de las tres y su latencia la del mas lento.",
+      "explanation_es": "El filtro `if v is not None` elimina la clave entera, no la convierte en `null`: por eso la opción 0 es falsa, aunque sea lo que mucha gente espera porque `json.dumps` sí traduce `None` a `null` cuando lo dejas pasar. La opción 1 confunde `None` con cadena vacía, y la 2 supone que un fallo parcial anula la respuesta completa. Lo que ilustra el código es la degradación elegante: el gateway devuelve lo que sí tiene en lugar de un 500 entero. La decisión de diseño real es si omitir la clave o enviarla como `null`, porque con `null` cada cliente debe distinguir 'no hay usuario' de 'no pude leerlo'. Y el riesgo de fondo de agregar: sin degradación, la disponibilidad del endpoint es el producto de las tres y su latencia la del más lento.",
       "explanation_en": "The `if v is not None` filter drops the key entirely rather than turning it into `null`: that is why option 0 is wrong, even though many people expect it because `json.dumps` does render `None` as `null` when you let it through. Option 1 confuses `None` with an empty string, and option 2 assumes a partial failure voids the whole response. What the code illustrates is graceful degradation: the gateway returns what it does have instead of a whole 500. The real design decision is whether to omit the key or send it as `null`, because with `null` every client must distinguish 'there is no user' from 'I could not read it'. And the underlying aggregation risk: without degradation, the endpoint's availability is the product of all three and its latency that of the slowest.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 8 (API Gateway) / Nygard, M. — Release It! 2e (Graceful Degradation)",
       "expected_time_ms": 33000,
@@ -573,7 +573,7 @@
       "skill_id": "sk050103",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Como el gateway esta en el camino de todas las peticiones, su latencia y su consumo se suman a los de cada llamada; por eso conviene mantenerlo delgado (enrutado, autenticacion, limites de tasa) y escalarlo de forma independiente.",
+      "question_es": "Como el gateway está en el camino de todas las peticiones, su latencia y su consumo se suman a los de cada llamada; por eso conviene mantenerlo delgado (enrutado, autenticación, límites de tasa) y escalarlo de forma independiente.",
       "question_en": "Because the gateway sits on the path of every request, its latency and resource use add to those of each call; hence keeping it thin (routing, authentication, rate limiting) and scaling it independently.",
       "options_es": [
         "Verdadero",
@@ -584,7 +584,7 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verdadero, y el coste se paga N veces: unos pocos milisegundos añadidos alli aparecen en cada peticion del sistema, y una regla añadida alli la ejecutan todos los equipos. La lectura contraria es la tentadora: 'el gateway es infraestructura, su coste es despreciable'. No lo es, precisamente porque es el unico componente por el que pasa todo. Ademas del coste hay un efecto organizativo: cada trozo de logica que se le añade convierte al gateway en un tren de releases compartido, y los equipos vuelven a coordinarse para desplegar, que es lo que se queria evitar al separar los servicios.",
+      "explanation_es": "Verdadero, y el coste se paga N veces: unos pocos milisegundos añadidos allí aparecen en cada petición del sistema, y una regla añadida allí la ejecutan todos los equipos. La lectura contraria es la tentadora: 'el gateway es infraestructura, su coste es despreciable'. No lo es, precisamente porque es el único componente por el que pasa todo. Además del coste hay un efecto organizativo: cada trozo de lógica que se le añade convierte al gateway en un tren de releases compartido, y los equipos vuelven a coordinarse para desplegar, que es lo que se queria evitar al separar los servicios.",
       "explanation_en": "True, and the cost is paid N times: a few added milliseconds there show up on every request in the system, and a rule added there is executed by every team. The tempting opposite reading is 'the gateway is infrastructure, its cost is negligible'. It is not, precisely because it is the one component everything passes through. Beyond the cost there is an organisational effect: each piece of logic added turns the gateway into a shared release train, and teams go back to coordinating deployments, which is what splitting the services was meant to avoid.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 8 (API Gateway) / Newman, S. — Building Microservices 2e, Cap. 5",
       "expected_time_ms": 26000,
@@ -599,14 +599,14 @@
       "skill_id": "sk050103",
       "type": "fill_blank",
       "difficulty_tier": "hard",
-      "question_es": "El algoritmo de limitacion de peticiones que acumula fichas a un ritmo fijo hasta un maximo, de modo que tolera rafagas cortas sin superar la tasa media, se llama 'token _____'. (una palabra en ingles)",
+      "question_es": "El algoritmo de limitación de peticiones que acumula fichas a un ritmo fijo hasta un máximo, de modo que tolera ráfagas cortas sin superar la tasa media, se llama 'token _____'. (una palabra en ingles)",
       "question_en": "The rate-limiting algorithm that accrues tokens at a fixed rate up to a maximum, so it tolerates short bursts without exceeding the average rate, is called 'token _____'. (one word)",
       "options_es": null,
       "options_en": null,
       "correct_index": null,
       "correct_answer_es": "bucket",
       "correct_answer_en": "bucket",
-      "explanation_es": "El 'token bucket' separa dos cosas que la gente confunde: la tasa sostenida (el ritmo de reposicion) y la rafaga permitida (la capacidad del cubo). Un cliente que ha estado callado acumula fichas y puede gastar varias de golpe, que es exactamente lo que hace un movil al recuperar la conexion. La alternativa ingenua, el contador por ventana fija, es mas simple pero deja pasar hasta el doble del limite a caballo entre dos ventanas: 100 peticiones al final de una y 100 al principio de la siguiente son 200 en un segundo. El gateway es el sitio correcto para aplicarlo porque ahi se conoce la identidad del cliente, antes de gastar recursos de los servicios.",
+      "explanation_es": "El 'token bucket' separa dos cosas que la gente confunde: la tasa sostenida (el ritmo de reposición) y la ráfaga permitida (la capacidad del cubo). Un cliente que ha estado callado acumula fichas y puede gastar varias de golpe, que es exactamente lo que hace un móvil al recuperar la conexión. La alternativa ingenua, el contador por ventana fija, es más simple pero deja pasar hasta el doble del límite a caballo entre dos ventanas: 100 peticiones al final de una y 100 al principio de la siguiente son 200 en un segundo. El gateway es el sitio correcto para aplicarlo porque ahí se conoce la identidad del cliente, antes de gastar recursos de los servicios.",
       "explanation_en": "The token bucket separates two things people conflate: the sustained rate (the refill rate) and the allowed burst (the bucket's capacity). A client that has been quiet accrues tokens and can spend several at once, which is exactly what a phone does when it regains connectivity. The naive alternative, a fixed-window counter, is simpler but lets through up to twice the limit straddling two windows: 100 requests at the end of one and 100 at the start of the next is 200 in a second. The gateway is the right place to apply it because that is where the client's identity is known, before any service resources are spent.",
       "source": "Envoy documentation — Rate limiting (token bucket) / Nygard, M. — Release It! 2e",
       "expected_time_ms": 29000,
@@ -621,7 +621,7 @@
       "skill_id": "sk050104",
       "type": "mcq",
       "difficulty_tier": "expert",
-      "question_es": "Ante una particion de red, ¿que suele preferir un registro de servicios y por que?",
+      "question_es": "Ante una partición de red, ¿qué suele preferir un registro de servicios y por que?",
       "question_en": "Faced with a network partition, what does a service registry usually prefer, and why?",
       "options_es": [
         "Consistencia estricta siempre: devolver una instancia que ya no existe es el peor fallo posible",
@@ -636,7 +636,7 @@
         "Blocking every request until the partition heals, so no stale data is propagated"
       ],
       "correct_index": 2,
-      "explanation_es": "Hay que comparar las consecuencias de cada fallo, no su elegancia teorica. Una entrada obsoleta rompe una llamada, que el cliente reintenta contra otra instancia; un registro que no responde rompe todas las llamadas de todos los servicios a la vez, porque nadie puede resolver a nadie. Por eso el registro se diseña normalmente del lado AP. La opcion 0 suena responsable y es la trampa clasica de leer CAP como si consistencia fuese siempre lo prudente. La opcion 3 es la misma idea llevada al extremo: convierte una particion parcial en una caida total. La opcion 2 es falsa: aunque el registro no transporte los datos, si esta en el camino de cada resolucion, y sin resolucion no hay peticion. Existen registros CP (etcd, ZooKeeper, Consul con Raft) y son legitimos; lo importante es que la eleccion sea deliberada.",
+      "explanation_es": "Hay que comparar las consecuencias de cada fallo, no su elegancia teorica. Una entrada obsoleta rompe una llamada, que el cliente reintenta contra otra instancia; un registro que no responde rompe todas las llamadas de todos los servicios a la vez, porque nadie puede resolver a nadie. Por eso el registro se diseña normalmente del lado AP. La opción 0 suena responsable y es la trampa clásica de leer CAP como si consistencia fuese siempre lo prudente. La opción 3 es la misma idea llevada al extremo: convierte una partición parcial en una caída total. La opción 2 es falsa: aunque el registro no transporte los datos, sí está en el camino de cada resolución, y sin resolución no hay petición. Existen registros CP (etcd, ZooKeeper, Consul con Raft) y son legítimos; lo importante es que la elección sea deliberada.",
       "explanation_en": "You compare the consequences of each failure, not their theoretical elegance. A stale entry breaks one call, which the client retries against another instance; a registry that does not answer breaks every call in every service at once, because nobody can resolve anybody. That is why registries are normally designed on the AP side. Option 0 sounds responsible and is the classic trap of reading CAP as if consistency were always the prudent choice. Option 3 is the same idea taken to the extreme: it turns a partial partition into a total outage. Option 2 is false: the registry does not carry the data, but it is on the path of every resolution, and without resolution there is no request. CP registries (etcd, ZooKeeper, Consul with Raft) exist and are legitimate; what matters is that the choice is deliberate.",
       "source": "Kleppmann, M. — Designing Data-Intensive Applications, Cap. 9 / Newman, S. — Building Microservices 2e, Cap. 5",
       "expected_time_ms": 35000,
@@ -651,7 +651,7 @@
       "skill_id": "sk050104",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "En Kubernetes, ¿que sonda decide si un pod recibe trafico de su Service?",
+      "question_es": "En Kubernetes, ¿qué sonda decide si un pod recibe tráfico de su Service?",
       "question_en": "In Kubernetes, which probe decides whether a pod receives traffic from its Service?",
       "options_es": [
         "La liveness probe: si falla, el pod deja de recibir trafico",
@@ -666,7 +666,7 @@
         "None: the Service routes to every pod carrying the right label"
       ],
       "correct_index": 1,
-      "explanation_es": "Readiness controla la pertenencia a los Endpoints; liveness controla si el contenedor se reinicia. Confundirlas es el error mas caro de este tema: una liveness que comprueba una dependencia externa convierte un bache de esa dependencia en una tormenta de reinicios simultaneos en toda la flota, justo cuando menos capacidad te sobra. La opcion 1 describe el modelo mental ingenuo de 'etiqueta igual a trafico': la seleccion por etiquetas decide que pods son candidatos, la readiness decide cuales estan listos ahora mismo. La startup probe solo cubre el arranque lento y deja de aplicarse una vez pasa. La readiness es tambien lo que permite que un pod se retire limpiamente mientras calienta caches o drena conexiones.",
+      "explanation_es": "Readiness controla la pertenencia a los Endpoints; liveness controla si el contenedor se reinicia. Confundirlas es el error más caro de este tema: una liveness que comprueba una dependencia externa convierte un bache de esa dependencia en una tormenta de reinicios simultáneos en toda la flota, justo cuando menos capacidad te sobra. La opción 1 describe el modelo mental ingenuo de 'etiqueta igual a tráfico': la selección por etiquetas decide que pods son candidatos, la readiness decide cuáles están listos ahora mismo. La startup probe solo cubre el arranque lento y deja de aplicarse una vez pasa. La readiness es también lo que permite que un pod se retire limpiamente mientras calienta caches o drena conexiones.",
       "explanation_en": "Readiness controls Endpoints membership; liveness controls whether the container is restarted. Confusing them is the costliest mistake here: a liveness probe that checks an external dependency turns a blip in that dependency into a fleet-wide restart storm, exactly when you have least spare capacity. Option 1 describes the naive 'label equals traffic' model: label selection decides which pods are candidates, readiness decides which are ready right now. The startup probe only covers slow boot and stops applying once it passes. Readiness is also what lets a pod withdraw cleanly while it warms caches or drains connections.",
       "source": "Kubernetes documentation — Configure Liveness, Readiness and Startup Probes",
       "expected_time_ms": 28000,
@@ -681,7 +681,7 @@
       "skill_id": "sk050104",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "Un servicio resuelve a sus dependencias por DNS. Tras un despliegue, algunos clientes siguen llamando durante varios minutos a IPs de instancias que ya no existen. ¿Cual es la causa mas probable?",
+      "question_es": "Un servicio resuelve a sus dependencias por DNS. Tras un despliegue, algunos clientes siguen llamando durante varios minutos a IPs de instancias que ya no existen. ¿Cuál es la causa más probable?",
       "question_en": "A service resolves its dependencies through DNS. After a deployment, some clients keep calling IPs of instances that no longer exist for several minutes. What is the most likely cause?",
       "options_es": [
         "El cliente, o el runtime sobre el que corre, esta cacheando la resolucion DNS mas alla del TTL publicado",
@@ -696,7 +696,7 @@
         "The load balancer stopped working and requests go straight to the pods"
       ],
       "correct_index": 0,
-      "explanation_es": "El dato obsoleto no esta en el registro, esta en el cliente. Entre el registro y la llamada hay varias capas que cachean: el resolver del sistema operativo, una cache local o sidecar y, el caso famoso, la JVM, que historicamente cachea indefinidamente las resoluciones con exito salvo que se ajuste `networkaddress.cache.ttl`. Bajar el TTL solo sirve si toda la cadena lo respeta, y muchas no lo hacen. La opcion 1 es tentadora precisamente porque el registro SI esta correcto, lo que despista al diagnosticar; su segunda mitad, 'DNS nunca cachea', es la falsedad que la delata: cachear es el proposito del TTL. Las opciones 2 y 3 son falsas de base. Por eso el DNS es un mecanismo comodo pero grueso para instancias efimeras, y se complementa con timeouts, reintentos hacia otra instancia y comprobaciones de salud.",
+      "explanation_es": "El dato obsoleto no está en el registro, está en el cliente. Entre el registro y la llamada hay varias capas que cachean: el resolver del sistema operativo, una cache local o sidecar y, el caso famoso, la JVM, que históricamente cachea indefinidamente las resoluciones con éxito salvo que se ajuste `networkaddress.cache.ttl`. Bajar el TTL solo sirve si toda la cadena lo respeta, y muchas no lo hacen. La opción 1 es tentadora precisamente porque el registro SÍ está correcto, lo que despista al diagnosticar; su segunda mitad, 'DNS nunca cachea', es la falsedad que la delata: cachear es el propósito del TTL. Las opciones 2 y 3 son falsas de base. Por eso el DNS es un mecanismo cómodo pero grueso para instancias efímeras, y se complementa con timeouts, reintentos hacia otra instancia y comprobaciones de salud.",
       "explanation_en": "The stale data is not in the registry, it is in the client. Between registry and call several layers cache: the OS resolver, a local or sidecar cache and, the famous case, the JVM, which historically caches successful lookups indefinitely unless `networkaddress.cache.ttl` is set. Lowering the TTL only helps if the whole chain honours it, and many links do not. Option 1 is tempting precisely because the registry IS correct, which misleads the diagnosis; its second half, 'DNS does not cache anything', is the giveaway: caching is what the TTL is for. Options 2 and 3 are false outright. This is why DNS is a convenient but coarse mechanism for ephemeral instances, and is complemented with timeouts, retries to another instance and health checks.",
       "source": "Kubernetes documentation — DNS for Services and Pods / Newman, S. — Building Microservices 2e, Cap. 5",
       "expected_time_ms": 32000,
@@ -711,7 +711,7 @@
       "skill_id": "sk050104",
       "type": "code_output",
       "difficulty_tier": "easy",
-      "question_es": "Descubrimiento del lado del cliente: el cliente ya ha obtenido la lista de instancias del registro y reparte con round-robin. ¿Que imprime?\n```python\ninstancias = [\"10.0.0.1\", \"10.0.0.2\", \"10.0.0.3\"]\n\nfor i in range(5):\n    print(instancias[i % len(instancias)], end=\" \")\n```",
+      "question_es": "Descubrimiento del lado del cliente: el cliente ya ha obtenido la lista de instancias del registro y reparte con round-robin. ¿Qué imprime?\n```python\ninstancias = [\"10.0.0.1\", \"10.0.0.2\", \"10.0.0.3\"]\n\nfor i in range(5):\n    print(instancias[i % len(instancias)], end=\" \")\n```",
       "question_en": "Client-side discovery: the client already fetched the instance list from the registry and balances round-robin. What does it print?\n```python\ninstances = [\"10.0.0.1\", \"10.0.0.2\", \"10.0.0.3\"]\n\nfor i in range(5):\n    print(instances[i % len(instances)], end=\" \")\n```",
       "options_es": [
         "10.0.0.1 10.0.0.2 10.0.0.3 10.0.0.1 10.0.0.2",
@@ -726,7 +726,7 @@
         "IndexError: list index out of range"
       ],
       "correct_index": 0,
-      "explanation_es": "El modulo hace que el indice vuelva al principio, asi que los cinco turnos recorren la lista y la reinician. La opcion 3 tienta a quien espera que `instancias[3]` reviente, olvidando que `3 % 3` es 0; la 1, a quien cree que el bucle se detiene al acabar la lista. Lo que importa arquitectonicamente es de quien es esta logica: en descubrimiento del lado del cliente, la lista y la politica de reparto viven en el cliente. Eso evita un salto de red y permite politicas ricas (afinidad de zona, menos cargado), a cambio de necesitar la libreria en cada lenguaje y de que una lista obsoleta sea problema del cliente.",
+      "explanation_es": "El módulo hace que el índice vuelva al principio, así que los cinco turnos recorren la lista y la reinician. La opción 3 tienta a quien espera que `instancias[3]` reviente, olvidando que `3 % 3` es 0; la 1, a quien cree que el bucle se detiene al acabar la lista. Lo que importa arquitectónicamente es de quien es esta lógica: en descubrimiento del lado del cliente, la lista y la política de reparto viven en el cliente. Eso evita un salto de red y permite políticas ricas (afinidad de zona, menos cargado), a cambio de necesitar la librería en cada lenguaje y de que una lista obsoleta sea problema del cliente.",
       "explanation_en": "The modulo wraps the index back to the start, so the five turns walk the list and restart it. Option 3 tempts anyone expecting `instances[3]` to blow up, forgetting that `3 % 3` is 0; option 1 tempts anyone who thinks the loop stops at the end of the list. What matters architecturally is whose logic this is: in client-side discovery, the list and the balancing policy live in the client. That avoids a network hop and allows richer policies (zone affinity, least-loaded), at the cost of needing the library in every language and of a stale list being the client's problem.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 3 (Client-side discovery) / microservices.io",
       "expected_time_ms": 24000,
@@ -741,7 +741,7 @@
       "skill_id": "sk050104",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "El registro da de baja las instancias que no envian latido dentro del TTL. ¿Que imprime?\n```python\nTTL = 15\nsegundos_desde_el_ultimo_latido = {\"a\": 3, \"b\": 30, \"c\": 14}\n\nvivas = sorted(k for k, edad in segundos_desde_el_ultimo_latido.items() if edad <= TTL)\nprint(vivas)\n```",
+      "question_es": "El registro da de baja las instancias que no envían latido dentro del TTL. ¿Qué imprime?\n```python\nTTL = 15\nsegundos_desde_el_ultimo_latido = {\"a\": 3, \"b\": 30, \"c\": 14}\n\nvivas = sorted(k for k, edad in segundos_desde_el_ultimo_latido.items() if edad <= TTL)\nprint(vivas)\n```",
       "question_en": "The registry deregisters instances that miss heartbeats beyond the TTL. What does it print?\n```python\nTTL = 15\nseconds_since_last_heartbeat = {\"a\": 3, \"b\": 30, \"c\": 14}\n\nalive = sorted(k for k, age in seconds_since_last_heartbeat.items() if age <= TTL)\nprint(alive)\n```",
       "options_es": [
         "['a']",
@@ -756,7 +756,7 @@
         "['a', 'c']"
       ],
       "correct_index": 3,
-      "explanation_es": "`c`, con 14 segundos, todavia entra por uno; solo `b` supera el TTL. La opcion 0 tienta a quien redondea y da por muerta a `c`, y la 1 invierte el sentido de la comparacion (lista los muertos). Lo interesante es la ventana que revela el ejercicio: entre que una instancia muere y el registro se entera puede pasar un TTL completo, y durante ese tiempo el registro devuelve confiadamente una instancia que no responde. De ahi que registrar no baste y haga falta comprobacion de salud activa, y que el cliente necesite timeouts y reintento contra otra instancia. Bajar el TTL acorta la ventana pero multiplica el trafico de latidos y aumenta el riesgo de declarar muerta a una instancia sana por una pausa de recoleccion de basura.",
+      "explanation_es": "`c`, con 14 segundos, todavía entra por uno; solo `b` supera el TTL. La opción 0 tienta a quien redondea y da por muerta a `c`, y la 1 invierte el sentido de la comparación (lista los muertos). Lo interesante es la ventana que revela el ejercicio: entre que una instancia muere y el registro se entera puede pasar un TTL completo, y durante ese tiempo el registro devuelve confiadamente una instancia que no responde. De ahí que registrar no baste y haga falta comprobación de salud activa, y que el cliente necesite timeouts y reintento contra otra instancia. Bajar el TTL acorta la ventana pero multiplica el tráfico de latidos y aumenta el riesgo de declarar muerta a una instancia sana por una pausa de recolección de basura.",
       "explanation_en": "`c`, at 14 seconds, still makes it by one; only `b` exceeds the TTL. Option 0 tempts anyone who rounds and writes `c` off, and option 1 flips the comparison (listing the dead). What is interesting is the window the exercise reveals: a full TTL can pass between an instance dying and the registry noticing, and during that time the registry confidently returns an instance that does not answer. Hence registration alone is not enough and active health checking is needed, and the client needs timeouts and a retry against another instance. Lowering the TTL shortens the window but multiplies heartbeat traffic and raises the risk of declaring a healthy instance dead over a garbage-collection pause.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 3 (Service registry) / HashiCorp Consul documentation (Checks)",
       "expected_time_ms": 29000,
@@ -771,7 +771,7 @@
       "skill_id": "sk050104",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Con descubrimiento del lado del servidor (por ejemplo un balanceador, o el Service de Kubernetes), el cliente no necesita libreria de descubrimiento ni conocer el registro, a cambio de un salto de red adicional y de un componente mas que mantener disponible.",
+      "question_es": "Con descubrimiento del lado del servidor (por ejemplo un balanceador, o el Service de Kubernetes), el cliente no necesita librería de descubrimiento ni conocer el registro, a cambio de un salto de red adicional y de un componente más que mantener disponible.",
       "question_en": "With server-side discovery (a load balancer, or a Kubernetes Service, say), the client needs no discovery library and no knowledge of the registry, in exchange for an extra network hop and one more component that must stay available.",
       "options_es": [
         "Verdadero",
@@ -782,7 +782,7 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verdadero, y el enunciado describe el intercambio completo, que es lo que suele quedarse a medias. El descubrimiento del lado del servidor parece 'mas simple' porque el codigo del cliente vuelve a ser HTTP corriente contra un nombre estable, pero la complejidad no desaparece: se ha mudado a un componente cuya caida es la caida de todo el mundo, y que hay que dimensionar y vigilar. El error habitual es leer el 'salto adicional' como el unico coste y olvidar el segundo. En el lado contrario, el descubrimiento del lado del cliente evita el salto y permite politicas mas finas, pero exige la libreria en cada lenguaje y acopla a cada cliente al formato del registro.",
+      "explanation_es": "Verdadero, y el enunciado describe el intercambio completo, que es lo que suele quedarse a medias. El descubrimiento del lado del servidor parece 'más simple' porque el código del cliente vuelve a ser HTTP corriente contra un nombre estable, pero la complejidad no desaparece: se ha mudado a un componente cuya caída es la caída de todo el mundo, y que hay que dimensionar y vigilar. El error habitual es leer el 'salto adicional' como el único coste y olvidar el segundo. En el lado contrario, el descubrimiento del lado del cliente evita el salto y permite políticas más finas, pero exige la librería en cada lenguaje y acopla a cada cliente al formato del registro.",
       "explanation_en": "True, and the statement describes the full trade, which is the part usually left half-stated. Server-side discovery looks 'simpler' because the client code goes back to plain HTTP against a stable name, but the complexity has not vanished: it moved into a component whose outage is everyone's outage, and which must be sized and watched. The common error is reading the extra hop as the only cost and forgetting the second one. On the other side, client-side discovery avoids the hop and allows finer policies, but demands the library in every language and couples each client to the registry's format.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 3 (Server-side discovery) / Kubernetes documentation — Service",
       "expected_time_ms": 27000,
@@ -804,7 +804,7 @@
       "correct_index": null,
       "correct_answer_es": "headless",
       "correct_answer_en": "headless",
-      "explanation_es": "Un Service 'headless' devuelve la lista completa de direcciones de los pods en lugar de una sola IP virtual, asi que el reparto de carga deja de hacerlo kube-proxy y pasa a hacerlo el cliente. Es descubrimiento del lado del cliente montado sobre DNS, y es lo que se necesita cuando el cliente debe ver las instancias individuales: gRPC, que mantiene conexiones HTTP/2 persistentes y con una IP virtual acabaria clavado en un solo pod; bases de datos con replicas donde hay que distinguir el primario; o StatefulSets con identidad estable por pod. El precio es el de siempre en esta familia: el cliente hereda la cache de DNS y la lista obsoleta.",
+      "explanation_es": "Un Service 'headless' devuelve la lista completa de direcciones de los pods en lugar de una sola IP virtual, así que el reparto de carga deja de hacerlo kube-proxy y pasa a hacerlo el cliente. Es descubrimiento del lado del cliente montado sobre DNS, y es lo que se necesita cuando el cliente debe ver las instancias individuales: gRPC, que mantiene conexiones HTTP/2 persistentes y con una IP virtual acabaría clavado en un solo pod; bases de datos con réplicas donde hay que distinguir el primario; o StatefulSets con identidad estable por pod. El precio es el de siempre en esta familia: el cliente hereda la cache de DNS y la lista obsoleta.",
       "explanation_en": "A headless Service returns the full list of pod addresses instead of a single virtual IP, so load balancing moves from kube-proxy to the client. It is client-side discovery built on DNS, and it is what you need when the client must see individual instances: gRPC, which holds persistent HTTP/2 connections and with a virtual IP would end up pinned to one pod; replicated databases where the primary must be told apart; or StatefulSets with stable per-pod identity. The price is the usual one in this family: the client inherits DNS caching and the stale list.",
       "source": "Kubernetes documentation — Services, Load Balancing, and Networking (Headless Services)",
       "expected_time_ms": 30000,
@@ -819,14 +819,14 @@
       "skill_id": "sk050104",
       "type": "fill_blank",
       "difficulty_tier": "expert",
-      "question_es": "El patron alternativo al 'self-registration', en el que un componente externo detecta que instancias arrancan y paran y las da de alta y de baja en el registro por ellas, se llama registro por _____. (en ingles, 'third-party registration')",
+      "question_es": "El patrón alternativo al 'self-registration', en el que un componente externo detecta que instancias arrancan y paran y las da de alta y de baja en el registro por ellas, se llama registro por _____. (en ingles, 'third-party registration')",
       "question_en": "The alternative to self-registration, where an external component detects which instances start and stop and registers and deregisters them on their behalf, is called _____ registration. (one hyphenated word)",
       "options_es": null,
       "options_en": null,
       "correct_index": null,
       "correct_answer_es": "terceros",
       "correct_answer_en": "third-party",
-      "explanation_es": "El registro por terceros saca el registro del codigo del servicio: no hay libreria que integrar, ni acoplamiento al lenguaje, ni la posibilidad de que alguien olvide darse de baja al apagarse. Asi funciona Kubernetes, donde el plano de control rellena los Endpoints a partir de los selectores de etiquetas y el pod nunca se registra a si mismo. El coste es doble: el registrador es una pieza mas que debe estar viva, y deduce la salud desde fuera en lugar de que la reporte el propio proceso, que es quien mejor sabe si puede atender. Tambien se acepta 'third-party'.",
+      "explanation_es": "El registro por terceros saca el registro del código del servicio: no hay librería que integrar, ni acoplamiento al lenguaje, ni la posibilidad de que alguien olvide darse de baja al apagarse. Así funciona Kubernetes, donde el plano de control rellena los Endpoints a partir de los selectores de etiquetas y el pod nunca se registra a sí mismo. El coste es doble: el registrador es una pieza más que debe estar viva, y deduce la salud desde fuera en lugar de que la reporte el propio proceso, que es quien mejor sabe si puede atender. También se acepta 'third-party'.",
       "explanation_en": "Third-party registration takes registration out of the service's code: no library to integrate, no language coupling, no chance of someone forgetting to deregister on shutdown. This is how Kubernetes works, where the control plane populates Endpoints from label selectors and the pod never registers itself. The cost is twofold: the registrar is one more piece that must stay alive, and it infers health from the outside rather than having the process itself report it, and the process is what best knows whether it can serve.",
       "source": "Richardson, C. — Microservices Patterns, Cap. 3 (Third-party registration) / microservices.io",
       "expected_time_ms": 31000,

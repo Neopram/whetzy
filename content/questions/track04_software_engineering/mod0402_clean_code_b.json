@@ -5,7 +5,7 @@
       "skill_id": "sk040201",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "La clase `GestorNomina` expone un unico metodo publico, `procesar()`. Dentro de el calcula las retenciones segun las reglas de Hacienda, maqueta el recibo en PDF y lo archiva en el almacenamiento de la empresa. Desde el punto de vista del SRP, esta clase:",
+      "question_es": "La clase `GestorNomina` expone un único método público, `procesar()`. Dentro de él calcula las retenciones según las reglas de Hacienda, maqueta el recibo en PDF y lo archiva en el almacenamiento de la empresa. Desde el punto de vista del SRP, esta clase:",
       "question_en": "The class `PayrollManager` exposes a single public method, `process()`. Inside it, the method computes withholdings using the tax authority's rules, lays out the payslip as a PDF, and files it in company storage. From the point of view of the SRP, this class:",
       "options_es": [
         "Cumple el SRP mientras se mantenga por debajo de unas 200 lineas; el principio es una regla de tamano",
@@ -20,7 +20,7 @@
         "It violates the SRP only because it writes to disk; computing and laying out are one responsibility since both produce the payslip"
       ],
       "correct_index": 2,
-      "explanation_es": "Martin formula el SRP como 'un modulo debe tener una y solo una razon para cambiar', y aclara que una razon para cambiar equivale a un actor: el grupo de personas que puede pedir ese cambio. Aqui una reforma fiscal, un rediseno del recibo y una migracion de almacenamiento son peticiones de tres actores distintos que aterrizan en el mismo archivo. La opcion del 'unico metodo publico' es la confusion mas extendida: el SRP cuenta razones para cambiar, no metodos, y una clase con veinte metodos que sirven al mismo actor puede cumplirlo perfectamente. La regla de las lineas suena objetiva pero mide sintomas, no acoplamiento. Y separar solo el almacenamiento deja juntas la politica fiscal y la presentacion, que cambian por motivos y en calendarios completamente distintos.",
+      "explanation_es": "Martin formula el SRP como 'un módulo debe tener una y solo una razón para cambiar', y aclara que una razón para cambiar equivale a un actor: el grupo de personas que puede pedir ese cambio. Aquí una reforma fiscal, un rediseño del recibo y una migración de almacenamiento son peticiones de tres actores distintos que aterrizan en el mismo archivo. La opción del 'único método público' es la confusión más extendida: el SRP cuenta razones para cambiar, no métodos, y una clase con veinte métodos que sirven al mismo actor puede cumplirlo perfectamente. La regla de las líneas suena objetiva pero mide síntomas, no acoplamiento. Y separar solo el almacenamiento deja juntas la política fiscal y la presentación, que cambian por motivos y en calendarios completamente distintos.",
       "explanation_en": "Martin states the SRP as 'a module should have one, and only one, reason to change', and clarifies that a reason to change means an actor: the group of people who can request that change. Here a tax reform, a payslip redesign, and a storage migration are requests from three different actors landing in the same file. The 'single public method' option is the most widespread confusion: the SRP counts reasons to change, not methods, and a class with twenty methods serving one actor can satisfy it perfectly. The line-count rule sounds objective but measures symptoms, not coupling. And extracting only the storage step leaves tax policy and presentation together, though they change for entirely different reasons and on different schedules.",
       "source": "Clean Architecture (Robert C. Martin) - Cap. 7 The Single Responsibility Principle",
       "expected_time_ms": 40000,
@@ -35,7 +35,7 @@
       "skill_id": "sk040201",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "Cada vez que el negocio anade un medio de pago hay que abrir `procesar_pago()` y sumar una rama al `if/elif`. ?Que cambio satisface el Principio Abierto/Cerrado?",
+      "question_es": "Cada vez que el negocio añade un medio de pago hay que abrir `procesar_pago()` y sumar una rama al `if/elif`. ?Qué cambio satisface el Principio Abierto/Cerrado?",
       "question_en": "Every time the business adds a payment method, someone has to open `process_payment()` and add another branch to the `if/elif`. Which change satisfies the Open/Closed Principle?",
       "options_es": [
         "Sustituir el if/elif por un diccionario de cadena a funcion definido dentro de la misma funcion",
@@ -50,7 +50,7 @@
         "Declare a `PaymentMethod` abstraction and make each new method an implementation the module receives or discovers, without touching existing code"
       ],
       "correct_index": 3,
-      "explanation_es": "El OCP pide que una entidad este abierta a extension y cerrada a modificacion, y el mecanismo que lo consigue es la abstraccion polimorfica: el codigo existente depende de una interfaz y el comportamiento nuevo llega como una implementacion nueva. El diccionario de funciones es el distractor fuerte porque parece mas limpio, pero si la tabla vive dentro de la misma funcion sigues editando ese archivo para cada medio nuevo: has mejorado la legibilidad, no el OCP. Hacer privada la funcion no cierra nada a modificacion, solo restringe quien la llama. Y duplicar la funcion multiplica los puntos donde arreglar un fallo comun, que es exactamente el coste que el OCP intenta evitar.",
+      "explanation_es": "El OCP pide que una entidad esté abierta a extensión y cerrada a modificación, y el mecanismo que lo consigue es la abstracción polimórfica: el código existente depende de una interfaz y el comportamiento nuevo llega como una implementación nueva. El diccionario de funciones es el distractor fuerte porque parece más limpio, pero si la tabla vive dentro de la misma función sigues editando ese archivo para cada medio nuevo: has mejorado la legibilidad, no el OCP. Hacer privada la función no cierra nada a modificación, solo restringe quien la llama. Y duplicar la función multiplica los puntos donde arreglar un fallo común, que es exactamente el coste que el OCP intenta evitar.",
       "explanation_en": "The OCP asks that an entity be open for extension and closed for modification, and the mechanism that achieves it is polymorphic abstraction: existing code depends on an interface and new behavior arrives as a new implementation. The function dictionary is the strong distractor because it looks tidier, but if the table lives inside the same function you still edit that file for every new method: you improved readability, not OCP compliance. Making the function private closes nothing to modification, it only restricts who calls it. And duplicating the function multiplies the places where a shared bug must be fixed, which is exactly the cost the OCP exists to avoid.",
       "source": "Clean Architecture (Robert C. Martin) - Cap. 8 The Open-Closed Principle",
       "expected_time_ms": 45000,
@@ -65,7 +65,7 @@
       "skill_id": "sk040201",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "La inversion de dependencias y la inyeccion de dependencias no son lo mismo: el DIP es el principio de que tanto el modulo de alto nivel como el de bajo nivel dependan de una abstraccion, mientras que la inyeccion es una tecnica concreta para entregarle a un objeto sus colaboradores.",
+      "question_es": "La inversión de dependencias y la inyección de dependencias no son lo mismo: el DIP es el principio de que tanto el módulo de alto nivel como el de bajo nivel dependan de una abstracción, mientras que la inyección es una técnica concreta para entregarle a un objeto sus colaboradores.",
       "question_en": "Dependency inversion and dependency injection are not the same thing: the DIP is the principle that both the high-level and the low-level module depend on an abstraction, while injection is a concrete technique for handing an object its collaborators.",
       "options_es": [
         "Verdadero",
@@ -76,7 +76,7 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Son dos ideas de niveles distintos que comparten iniciales y por eso se confunden constantemente. El DIP habla de la direccion de las dependencias en el diseno: la politica de negocio no debe depender del detalle, ambos dependen de una abstraccion que pertenece al lado de la politica. La inyeccion es fontaneria: pasar el colaborador por constructor, por parametro o via un contenedor. Puedes inyectar dependencias y seguir violando el DIP si lo que inyectas es una clase concreta de infraestructura; y puedes cumplir el DIP sin ningun contenedor, simplemente programando contra una interfaz y construyendo el objeto a mano en el arranque.",
+      "explanation_es": "Son dos ideas de niveles distintos que comparten iniciales y por eso se confunden constantemente. El DIP habla de la dirección de las dependencias en el diseño: la política de negocio no debe depender del detalle, ambos dependen de una abstracción que pertenece al lado de la política. La inyección es fontanería: pasar el colaborador por constructor, por parámetro o vía un contenedor. Puedes inyectar dependencias y seguir violando el DIP si lo que inyectas es una clase concreta de infraestructura; y puedes cumplir el DIP sin ningún contenedor, simplemente programando contra una interfaz y construyendo el objeto a mano en el arranque.",
       "explanation_en": "These are two ideas at different levels that share initials, which is why they get conflated constantly. The DIP is about the direction of dependencies in a design: business policy must not depend on detail, and both depend on an abstraction owned by the policy side. Injection is plumbing: passing the collaborator through a constructor, a parameter, or a container. You can inject dependencies and still violate the DIP if what you inject is a concrete infrastructure class; and you can satisfy the DIP with no container at all, simply by coding against an interface and wiring the object by hand at startup.",
       "source": "Clean Architecture (Robert C. Martin) - Cap. 11 The Dependency Inversion Principle",
       "expected_time_ms": 35000,
@@ -91,7 +91,7 @@
       "skill_id": "sk040201",
       "type": "code_output",
       "difficulty_tier": "hard",
-      "question_es": "?Que imprime este programa?\n\n```python\nclass Coleccion:\n    def __init__(self, datos):\n        self.datos = list(datos)\n    def agregar(self, x):\n        self.datos.append(x)\n\nclass ColeccionInmutable(Coleccion):\n    def agregar(self, x):\n        raise NotImplementedError(\"solo lectura\")\n\ndef llenar(c):\n    c.agregar(1)\n    return \"ok\"\n\ntry:\n    print(llenar(ColeccionInmutable([])))\nexcept NotImplementedError:\n    print(\"roto\")\n```",
+      "question_es": "?Qué imprime este programa?\n\n```python\nclass Coleccion:\n    def __init__(self, datos):\n        self.datos = list(datos)\n    def agregar(self, x):\n        self.datos.append(x)\n\nclass ColeccionInmutable(Coleccion):\n    def agregar(self, x):\n        raise NotImplementedError(\"solo lectura\")\n\ndef llenar(c):\n    c.agregar(1)\n    return \"ok\"\n\ntry:\n    print(llenar(ColeccionInmutable([])))\nexcept NotImplementedError:\n    print(\"roto\")\n```",
       "question_en": "What does this program print?\n\n```python\nclass Collection:\n    def __init__(self, items):\n        self.items = list(items)\n    def add(self, x):\n        self.items.append(x)\n\nclass ImmutableCollection(Collection):\n    def add(self, x):\n        raise NotImplementedError(\"read only\")\n\ndef fill(c):\n    c.add(1)\n    return \"ok\"\n\ntry:\n    print(fill(ImmutableCollection([])))\nexcept NotImplementedError:\n    print(\"broken\")\n```",
       "options_es": [
         "ok",
@@ -106,7 +106,7 @@
         "NotImplementedError: read only (uncaught traceback)"
       ],
       "correct_index": 1,
-      "explanation_es": "`llenar()` esta escrita contra `Coleccion` y confia en que `agregar()` funcione. La subclase endurece la precondicion hasta hacerla imposible de cumplir, asi que el codigo cliente que era correcto con el tipo base se rompe con el subtipo: es la violacion del LSP en su forma mas comun, la que Martin describe como un subtipo que no puede sustituir al tipo del que hereda. La opcion 'ok' es la que elige quien supone que heredar garantiza compatibilidad. La traza sin capturar tienta a quien no ve que el `except` atrapa justamente esa excepcion. Y '1' confunde el elemento anadido con el valor devuelto. El arreglo no es capturar la excepcion en cada llamador, sino que la coleccion de solo lectura no herede un contrato que no puede honrar.",
+      "explanation_es": "`llenar()` está escrita contra `Coleccion` y confía en que `agregar()` funcione. La subclase endurece la precondición hasta hacerla imposible de cumplir, así que el código cliente que era correcto con el tipo base se rompe con el subtipo: es la violación del LSP en su forma más común, la que Martin describe como un subtipo que no puede sustituir al tipo del que hereda. La opción 'ok' es la que elige quien supone que heredar garantiza compatibilidad. La traza sin capturar tienta a quien no ve que el `except` atrapa justamente esa excepción. Y '1' confunde el elemento añadido con el valor devuelto. El arreglo no es capturar la excepción en cada llamador, sino que la colección de solo lectura no herede un contrato que no puede honrar.",
       "explanation_en": "`fill()` is written against `Collection` and trusts that `add()` works. The subclass strengthens the precondition until it cannot be met, so client code that was correct with the base type breaks with the subtype: this is the LSP violation in its most common form, what Martin describes as a subtype that cannot stand in for the type it inherits from. The 'ok' option is what you pick if you assume inheritance guarantees compatibility. The uncaught traceback tempts anyone who misses that the `except` catches precisely that exception. And '1' confuses the appended element with the returned value. The fix is not to catch the exception at every call site, but for the read-only collection not to inherit a contract it cannot honor.",
       "source": "Clean Architecture (Robert C. Martin) - Cap. 9 The Liskov Substitution Principle",
       "expected_time_ms": 50000,
@@ -121,7 +121,7 @@
       "skill_id": "sk040201",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "Una interfaz `Trabajador` declara `trabajar()`, `comer()` y `dormir()`. Al implementarla para un robot de la cadena de montaje, `comer()` y `dormir()` quedan vacios. ?Que principio se esta violando y cual es el arreglo?",
+      "question_es": "Una interfaz `Trabajador` declara `trabajar()`, `comer()` y `dormir()`. Al implementarla para un robot de la cadena de montaje, `comer()` y `dormir()` quedan vacíos. ?Qué principio se está violando y cuál es el arreglo?",
       "question_en": "A `Worker` interface declares `work()`, `eat()`, and `sleep()`. When implementing it for an assembly-line robot, `eat()` and `sleep()` are left empty. Which principle is being violated, and what is the fix?",
       "options_es": [
         "El OCP; la solucion es marcar la interfaz como abierta a extension anadiendo metodos por defecto",
@@ -136,7 +136,7 @@
         "The LSP; the fix is for `eat()` and `sleep()` to raise `NotImplementedError` instead of being left empty"
       ],
       "correct_index": 2,
-      "explanation_es": "Un metodo vacio que solo existe para satisfacer al compilador es la senal clasica del ISP: el cliente esta obligado a depender de una interfaz que no usa. Separar `Trabajable` de `Alimentable` y `Descansable` deja que el robot implemente unicamente el contrato que le corresponde. La opcion del LSP es la trampa util: lanzar una excepcion parece mas honesto que devolver en silencio, pero en realidad convierte un problema de ISP en una violacion adicional del LSP, porque ahora el subtipo revienta donde el tipo base prometia funcionar. Hacer privados los metodos no compila contra la interfaz, y los metodos por defecto solo esconden el mismo acoplamiento detras de una implementacion vacia heredada.",
+      "explanation_es": "Un método vacío que solo existe para satisfacer al compilador es la señal clásica del ISP: el cliente está obligado a depender de una interfaz que no usa. Separar `Trabajable` de `Alimentable` y `Descansable` deja que el robot implemente únicamente el contrato que le corresponde. La opción del LSP es la trampa útil: lanzar una excepción parece más honesto que devolver en silencio, pero en realidad convierte un problema de ISP en una violación adicional del LSP, porque ahora el subtipo revienta donde el tipo base prometía funcionar. Hacer privados los métodos no compila contra la interfaz, y los métodos por defecto solo esconden el mismo acoplamiento detrás de una implementación vacía heredada.",
       "explanation_en": "An empty method that exists only to satisfy the compiler is the classic ISP signal: the client is forced to depend on an interface it does not use. Splitting `Workable` from `Feedable` and `Restable` lets the robot implement only the contract that applies to it. The LSP option is the useful trap: raising an exception feels more honest than silently returning, but it actually converts an ISP problem into an additional LSP violation, because now the subtype blows up where the base type promised to work. Making the methods private does not satisfy the interface, and default methods only hide the same coupling behind an inherited empty implementation.",
       "source": "Clean Architecture (Robert C. Martin) - Cap. 10 The Interface Segregation Principle",
       "expected_time_ms": 40000,
@@ -151,11 +151,11 @@
       "skill_id": "sk040201",
       "type": "fill_blank",
       "difficulty_tier": "expert",
-      "question_es": "Completa el enunciado con el que Robert C. Martin formula el SRP en Clean Architecture: 'Un modulo debe tener una, y solo una, _____ para cambiar.' (una palabra)",
+      "question_es": "Completa el enunciado con el que Robert C. Martin formula el SRP en Clean Architecture: 'Un módulo debe tener una, y solo una, _____ para cambiar.' (una palabra)",
       "question_en": "Complete the statement Robert C. Martin uses to formulate the SRP in Clean Architecture: 'A module should have one, and only one, _____ to change.' (one word)",
-      "correct_answer_es": "razon",
+      "correct_answer_es": "razón",
       "correct_answer_en": "reason",
-      "explanation_es": "La palabra exacta importa porque es la que separa el principio de sus malinterpretaciones. Martin no dice 'una sola tarea' ni 'una sola funcion' ni 'una sola clase por fichero': dice una sola razon para cambiar, y en el mismo capitulo traduce razon como actor, el grupo de usuarios o interesados que puede pedir esa modificacion. Leerlo como 'hacer una sola cosa' lleva a trocear clases hasta el absurdo, porque a suficiente detalle todo metodo hace varias cosas. Leerlo como actores lleva a agrupar lo que cambia junto y separar lo que cambia por motivos distintos, que es el objetivo real.",
+      "explanation_es": "La palabra exacta importa porque es la que separa el principio de sus malinterpretaciones. Martin no dice 'una sola tarea' ni 'una sola función' ni 'una sola clase por fichero': dice una sola razón para cambiar, y en el mismo capítulo traduce razón como actor, el grupo de usuarios o interesados que puede pedir esa modificación. Leerlo como 'hacer una sola cosa' lleva a trocear clases hasta el absurdo, porque a suficiente detalle todo método hace varias cosas. Leerlo como actores lleva a agrupar lo que cambia junto y separar lo que cambia por motivos distintos, que es el objetivo real.",
       "explanation_en": "The exact word matters because it is what separates the principle from its misreadings. Martin does not say 'one task' or 'one function' or 'one class per file': he says one reason to change, and in the same chapter he translates reason as actor, the group of users or stakeholders who can request that modification. Reading it as 'do one thing' leads to shredding classes to absurdity, since at enough detail every method does several things. Reading it as actors leads to grouping what changes together and separating what changes for different reasons, which is the actual goal.",
       "source": "Clean Architecture (Robert C. Martin) - Cap. 7 The Single Responsibility Principle",
       "expected_time_ms": 30000,
@@ -170,7 +170,7 @@
       "skill_id": "sk040201",
       "type": "true_false",
       "difficulty_tier": "easy",
-      "question_es": "El Principio de Responsabilidad Unica significa que cada clase debe tener un unico metodo publico.",
+      "question_es": "El Principio de Responsabilidad Única significa que cada clase debe tener un único método público.",
       "question_en": "The Single Responsibility Principle means that every class must have exactly one public method.",
       "options_es": [
         "Verdadero",
@@ -181,7 +181,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso, y es probablemente la confusion mas repetida sobre SOLID. El SRP mide razones para cambiar, no numero de metodos. Una clase `Cliente` con `nombre_completo()`, `direccion_postal()` y `es_moroso()` tiene tres metodos publicos y una sola responsabilidad, porque los tres sirven al mismo actor y cambian por el mismo motivo. Al reves, una clase con un unico metodo `procesar()` que mezcla reglas de negocio, formato y persistencia viola el SRP a pesar de su fachada minimalista. La regla de 'un metodo por clase' produce una explosion de clases anemicas y un grafo de dependencias mas dificil de seguir que el codigo que pretendia arreglar.",
+      "explanation_es": "Falso, y es probablemente la confusión más repetida sobre SOLID. El SRP mide razones para cambiar, no número de métodos. Una clase `Cliente` con `nombre_completo()`, `direccion_postal()` y `es_moroso()` tiene tres métodos públicos y una sola responsabilidad, porque los tres sirven al mismo actor y cambian por el mismo motivo. Al revés, una clase con un único método `procesar()` que mezcla reglas de negocio, formato y persistencia viola el SRP a pesar de su fachada minimalista. La regla de 'un método por clase' produce una explosión de clases anémicas y un grafo de dependencias más difícil de seguir que el código que pretendía arreglar.",
       "explanation_en": "False, and this is probably the most repeated misreading of SOLID. The SRP measures reasons to change, not method counts. A `Customer` class with `full_name()`, `mailing_address()`, and `is_delinquent()` has three public methods and one responsibility, because all three serve the same actor and change for the same reason. Conversely, a class with a single `process()` method that mixes business rules, formatting, and persistence violates the SRP despite its minimalist facade. The 'one method per class' rule produces an explosion of anemic classes and a dependency graph harder to follow than the code it meant to fix.",
       "source": "Clean Code (Robert C. Martin) - Cap. 10 Classes",
       "expected_time_ms": 25000,
@@ -196,7 +196,7 @@
       "skill_id": "sk040202",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "En el patron Factory Method tal y como lo define GoF, ?quien decide finalmente que clase concreta se instancia?",
+      "question_es": "En el patrón Factory Method tal y como lo define GoF, ?quién decide finalmente que clase concreta se instancia?",
       "question_en": "In the Factory Method pattern as GoF defines it, who ultimately decides which concrete class gets instantiated?",
       "options_es": [
         "Un contenedor de inyeccion de dependencias configurado en el arranque de la aplicacion",
@@ -211,7 +211,7 @@
         "A single static factory class that centralizes every creation in one method with a `switch`"
       ],
       "correct_index": 1,
-      "explanation_es": "GoF enuncia Factory Method como 'define una interfaz para crear un objeto, pero deja que las subclases decidan que clase instanciar'. La creacion se difiere a la subclase mediante herencia, y por eso el patron encaja de forma natural dentro de un Template Method: el algoritmo esta en la base y el paso de creacion lo aporta el descendiente. La fabrica estatica con `switch` es el distractor mas comun porque en la industria se la llama 'factory' de forma coloquial, pero es el idiom de fabrica simple, no un patron de GoF, y cada tipo nuevo obliga a editarla. El contenedor de inyeccion resuelve el cableado, no la jerarquia de creacion. Y que el cliente llame al constructor concreto es justamente el acoplamiento que el patron elimina.",
+      "explanation_es": "GoF enuncia Factory Method como 'define una interfaz para crear un objeto, pero deja que las subclases decidan que clase instanciar'. La creación se difiere a la subclase mediante herencia, y por eso el patrón encaja de forma natural dentro de un Template Method: el algoritmo está en la base y el paso de creación lo aporta el descendiente. La fábrica estática con `switch` es el distractor más común porque en la industria se la llama 'factory' de forma coloquial, pero es el idiom de fábrica simple, no un patrón de GoF, y cada tipo nuevo obliga a editarla. El contenedor de inyección resuelve el cableado, no la jerarquía de creación. Y que el cliente llame al constructor concreto es justamente el acoplamiento que el patrón elimina.",
       "explanation_en": "GoF states Factory Method as 'define an interface for creating an object, but let subclasses decide which class to instantiate'. Creation is deferred to the subclass through inheritance, which is why the pattern slots naturally inside a Template Method: the algorithm lives in the base and the descendant supplies the creation step. The static factory with a `switch` is the most common distractor because the industry colloquially calls it a 'factory', but it is the simple-factory idiom, not a GoF pattern, and every new type forces an edit. A DI container solves wiring, not the creation hierarchy. And having the client call the concrete constructor is exactly the coupling the pattern removes.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Factory Method",
       "expected_time_ms": 45000,
@@ -226,7 +226,7 @@
       "skill_id": "sk040202",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "Un editor grafico debe crear objetos nuevos que empiezan siendo identicos a uno ya configurado en el lienzo, sin que la herramienta de creacion conozca su clase concreta. ?Que patron creacional encaja?",
+      "question_es": "Un editor gráfico debe crear objetos nuevos que empiezan siendo idénticos a uno ya configurado en el lienzo, sin que la herramienta de creación conozca su clase concreta. ?Qué patrón creacional encaja?",
       "question_en": "A graphics editor must create new objects that start out identical to one already configured on the canvas, without the creation tool knowing their concrete class. Which creational pattern fits?",
       "options_es": [
         "Singleton",
@@ -241,7 +241,7 @@
         "Abstract Factory"
       ],
       "correct_index": 1,
-      "explanation_es": "Prototype especifica los objetos a crear usando una instancia prototipica y crea los nuevos copiandola: el editor solo llama a `clonar()` sobre el objeto seleccionado y no necesita saber si es un circulo, una nota o un grupo. El ejemplo del editor grafico es precisamente el que GoF usa para motivar el patron. Builder tienta porque tambien construye objetos complejos, pero lo hace paso a paso desde cero, no partiendo de una instancia ya configurada por el usuario. Abstract Factory produce familias de productos conocidas en tiempo de diseno, mientras que aqui el conjunto de formas clonables crece en tiempo de ejecucion. Singleton no crea variedad, restringe la cantidad a una.",
+      "explanation_es": "Prototype especifica los objetos a crear usando una instancia prototípica y crea los nuevos copiándola: el editor solo llama a `clonar()` sobre el objeto seleccionado y no necesita saber si es un círculo, una nota o un grupo. El ejemplo del editor gráfico es precisamente el que GoF usa para motivar el patrón. Builder tienta porque también construye objetos complejos, pero lo hace paso a paso desde cero, no partiendo de una instancia ya configurada por el usuario. Abstract Factory produce familias de productos conocidas en tiempo de diseño, mientras que aquí el conjunto de formas clonables crece en tiempo de ejecución. Singleton no crea variedad, restringe la cantidad a una.",
       "explanation_en": "Prototype specifies the objects to create using a prototypical instance and creates new ones by copying it: the editor just calls `clone()` on the selected object and never needs to know whether it is a circle, a note, or a group. The graphics editor example is precisely the one GoF uses to motivate the pattern. Builder is tempting because it also constructs complex objects, but it does so step by step from scratch, not from an instance the user already configured. Abstract Factory produces families of products known at design time, whereas here the set of clonable shapes grows at runtime. Singleton creates no variety; it restricts the count to one.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Prototype",
       "expected_time_ms": 35000,
@@ -256,7 +256,7 @@
       "skill_id": "sk040202",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "?Que imprime este programa?\n\n```python\nclass Config:\n    _inst = None\n\n    def __new__(cls):\n        if cls._inst is None:\n            cls._inst = super().__new__(cls)\n            cls._inst.valor = 0\n        return cls._inst\n\na = Config()\na.valor = 42\nb = Config()\nprint(b.valor, a is b)\n```",
+      "question_es": "?Qué imprime este programa?\n\n```python\nclass Config:\n    _inst = None\n\n    def __new__(cls):\n        if cls._inst is None:\n            cls._inst = super().__new__(cls)\n            cls._inst.valor = 0\n        return cls._inst\n\na = Config()\na.valor = 42\nb = Config()\nprint(b.valor, a is b)\n```",
       "question_en": "What does this program print?\n\n```python\nclass Config:\n    _inst = None\n\n    def __new__(cls):\n        if cls._inst is None:\n            cls._inst = super().__new__(cls)\n            cls._inst.value = 0\n        return cls._inst\n\na = Config()\na.value = 42\nb = Config()\nprint(b.value, a is b)\n```",
       "options_es": [
         "0 False",
@@ -271,7 +271,7 @@
         "42 False"
       ],
       "correct_index": 1,
-      "explanation_es": "`__new__` solo construye la primera vez; a partir de ahi devuelve siempre el mismo objeto, asi que `b` es `a` y ve el 42 que se escribio a traves de `a`. Esa es la mecanica del Singleton y tambien su factura: una escritura en cualquier punto del programa es visible en todos los demas, que es estado global con otro nombre. Quien responde '0 True' asume que la inicializacion vuelve a ejecutarse en cada llamada; quien responde '42 False' reconoce el estado compartido pero cree que hay dos objetos distintos apuntando a los mismos datos. '0 False' es la lectura de quien no ve el `__new__` en absoluto y espera dos instancias independientes.",
+      "explanation_es": "`__new__` solo construye la primera vez; a partir de ahí devuelve siempre el mismo objeto, así que `b` es `a` y ve el 42 que se escribió a través de `a`. Esa es la mecánica del Singleton y también su factura: una escritura en cualquier punto del programa es visible en todos los demás, que es estado global con otro nombre. Quien responde '0 True' asume que la inicialización vuelve a ejecutarse en cada llamada; quien responde '42 False' reconoce el estado compartido pero cree que hay dos objetos distintos apuntando a los mismos datos. '0 False' es la lectura de quien no ve el `__new__` en absoluto y espera dos instancias independientes.",
       "explanation_en": "`__new__` only constructs on the first call; from then on it always returns the same object, so `b` is `a` and sees the 42 written through `a`. That is the mechanics of Singleton and also its bill: a write anywhere in the program is visible everywhere else, which is global state under another name. Answering '0 True' assumes initialization re-runs on every call; answering '42 False' recognizes the shared state but believes there are two distinct objects pointing at the same data. '0 False' is the reading of someone who does not notice `__new__` at all and expects two independent instances.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Singleton",
       "expected_time_ms": 45000,
@@ -297,7 +297,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Es falso, y la frase describe exactamente el motivo por el que el patron lleva decadas criticado. Compartir una unica instancia entre tests significa que el estado que deja un test lo hereda el siguiente: los tests dejan de ser independientes, empiezan a depender del orden de ejecucion y fallan en paralelo. Ademas el Singleton se obtiene desde dentro del codigo bajo prueba, no se recibe como parametro, asi que no hay costura por donde sustituirlo por un doble sin trucos de monkeypatching o de reinicio del atributo de clase. La alternativa habitual es crear una sola instancia en el arranque e inyectarla, que conserva la ventaja de instancia unica sin el punto de acceso global.",
+      "explanation_es": "Es falso, y la frase describe exactamente el motivo por el que el patrón lleva décadas criticado. Compartir una única instancia entre tests significa que el estado que deja un test lo hereda el siguiente: los tests dejan de ser independientes, empiezan a depender del orden de ejecución y fallan en paralelo. Además el Singleton se obtiene desde dentro del código bajo prueba, no se recibe como parámetro, así que no hay costura por donde sustituirlo por un doble sin trucos de monkeypatching o de reinicio del atributo de clase. La alternativa habitual es crear una sola instancia en el arranque e inyectarla, que conserva la ventaja de instancia única sin el punto de acceso global.",
       "explanation_en": "This is false, and the sentence describes exactly why the pattern has been criticized for decades. Sharing one instance across tests means the state one test leaves behind is inherited by the next: tests stop being independent, start depending on execution order, and fail under parallel runs. On top of that, a Singleton is fetched from inside the code under test rather than received as a parameter, so there is no seam for substituting a double without monkeypatching or resetting the class attribute. The usual alternative is to create a single instance at startup and inject it, which keeps the one-instance benefit without the global access point.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Singleton",
       "expected_time_ms": 30000,
@@ -312,11 +312,11 @@
       "skill_id": "sk040202",
       "type": "fill_blank",
       "difficulty_tier": "expert",
-      "question_es": "El patron creacional que provee una interfaz para crear familias de objetos relacionados o dependientes sin especificar sus clases concretas se llama Abstract _____ . (una palabra, en ingles)",
+      "question_es": "El patrón creacional que provee una interfaz para crear familias de objetos relacionados o dependientes sin especificar sus clases concretas se llama Abstract _____ . (una palabra, en ingles)",
       "question_en": "The creational pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes is called Abstract _____ . (one word)",
       "correct_answer_es": "Factory",
       "correct_answer_en": "Factory",
-      "explanation_es": "Abstract Factory se distingue de Factory Method en dos cosas que suelen mezclarse. Primero, la unidad: Factory Method crea un producto, Abstract Factory crea una familia coherente, y su valor esta en impedir que mezcles piezas de familias distintas. Segundo, el mecanismo: Factory Method usa herencia, la subclase sobrescribe el metodo de creacion; Abstract Factory usa composicion, el cliente recibe un objeto fabrica y le pide cada producto. En la practica una Abstract Factory suele implementar cada uno de sus metodos como un Factory Method, y de ahi viene buena parte de la confusion entre ambos.",
+      "explanation_es": "Abstract Factory se distingue de Factory Method en dos cosas que suelen mezclarse. Primero, la unidad: Factory Method crea un producto, Abstract Factory crea una familia coherente, y su valor está en impedir que mezcles piezas de familias distintas. Segundo, el mecanismo: Factory Method usa herencia, la subclase sobrescribe el método de creación; Abstract Factory usa composición, el cliente recibe un objeto fábrica y le pide cada producto. En la práctica una Abstract Factory suele implementar cada uno de sus métodos como un Factory Method, y de ahí viene buena parte de la confusión entre ambos.",
       "explanation_en": "Abstract Factory differs from Factory Method in two things that often get blurred. First, the unit: Factory Method creates one product, Abstract Factory creates a coherent family, and its value lies in preventing you from mixing pieces of different families. Second, the mechanism: Factory Method uses inheritance, with the subclass overriding the creation method; Abstract Factory uses composition, with the client holding a factory object and asking it for each product. In practice an Abstract Factory usually implements each of its methods as a Factory Method, and much of the confusion between the two comes from exactly that.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Abstract Factory",
       "expected_time_ms": 35000,
@@ -331,7 +331,7 @@
       "skill_id": "sk040202",
       "type": "mcq",
       "difficulty_tier": "easy",
-      "question_es": "?Que tienen en comun todos los patrones creacionales de GoF?",
+      "question_es": "?Qué tienen en común todos los patrones creacionales de GoF?",
       "question_en": "What do all of the GoF creational patterns have in common?",
       "options_es": [
         "Garantizan que exista una sola instancia de cada clase del sistema",
@@ -346,7 +346,7 @@
         "They describe how objects communicate and distribute responsibilities at runtime"
       ],
       "correct_index": 1,
-      "explanation_es": "GoF resume el proposito comun de los patrones creacionales en dos efectos: encapsulan que clases concretas se usan y ocultan como se crean y se ensamblan las instancias. Eso da libertad para cambiar el que y el como sin tocar a los clientes. Las otras tres opciones describen patrones o categorias concretas y por eso resultan familiares: la instancia unica es solo Singleton, adaptar una interfaz a otra es Adapter y pertenece a los estructurales, y repartir responsabilidades y comunicacion en tiempo de ejecucion es la definicion de la categoria de comportamiento.",
+      "explanation_es": "GoF resume el propósito común de los patrones creacionales en dos efectos: encapsulan que clases concretas se usan y ocultan cómo se crean y se ensamblan las instancias. Eso da libertad para cambiar el qué y el cómo sin tocar a los clientes. Las otras tres opciones describen patrones o categorías concretas y por eso resultan familiares: la instancia única es solo Singleton, adaptar una interfaz a otra es Adapter y pertenece a los estructurales, y repartir responsabilidades y comunicación en tiempo de ejecución es la definición de la categoría de comportamiento.",
       "explanation_en": "GoF summarizes the shared purpose of the creational patterns in two effects: they encapsulate which concrete classes are used, and they hide how instances are created and put together. That gives you freedom to change the what and the how without touching clients. The other three options describe specific patterns or categories, which is why they feel familiar: the single instance is only Singleton, converting one interface into another is Adapter and belongs to the structural family, and distributing responsibility and communication at runtime is the definition of the behavioral category.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Cap. 3 Creational Patterns",
       "expected_time_ms": 25000,
@@ -361,7 +361,7 @@
       "skill_id": "sk040202",
       "type": "code_output",
       "difficulty_tier": "hard",
-      "question_es": "Un prototipo se clona con `copy.copy`. ?Que imprime el programa?\n\n```python\nimport copy\n\nclass Plantilla:\n    def __init__(self):\n        self.etiquetas = []\n\nbase = Plantilla()\nclon = copy.copy(base)\nclon.etiquetas.append(\"nuevo\")\nprint(len(base.etiquetas), len(clon.etiquetas))\n```",
+      "question_es": "Un prototipo se clona con `copy.copy`. ?Qué imprime el programa?\n\n```python\nimport copy\n\nclass Plantilla:\n    def __init__(self):\n        self.etiquetas = []\n\nbase = Plantilla()\nclon = copy.copy(base)\nclon.etiquetas.append(\"nuevo\")\nprint(len(base.etiquetas), len(clon.etiquetas))\n```",
       "question_en": "A prototype is cloned with `copy.copy`. What does the program print?\n\n```python\nimport copy\n\nclass Template:\n    def __init__(self):\n        self.tags = []\n\nbase = Template()\nclone = copy.copy(base)\nclone.tags.append(\"new\")\nprint(len(base.tags), len(clone.tags))\n```",
       "options_es": [
         "0 1",
@@ -376,7 +376,7 @@
         "0 0"
       ],
       "correct_index": 1,
-      "explanation_es": "`copy.copy` hace una copia superficial: crea un objeto nuevo pero copia las referencias, de modo que `base.etiquetas` y `clon.etiquetas` son la misma lista y anadir en uno se ve en el otro. GoF senala esto como la parte dificil de Prototype: decidir si `clonar()` debe ser una copia superficial o profunda es una decision de diseno del patron, no un detalle de implementacion. '0 1' es la respuesta que espera casi todo el mundo, porque asume que clonar significa independencia total; es el fallo real que este patron produce en produccion cuando dos objetos supuestamente distintos comparten una coleccion mutable. La solucion cuando el prototipo tiene estado compuesto es `copy.deepcopy` o un `__copy__` explicito.",
+      "explanation_es": "`copy.copy` hace una copia superficial: crea un objeto nuevo pero copia las referencias, de modo que `base.etiquetas` y `clon.etiquetas` son la misma lista y añadir en uno se ve en el otro. GoF señala esto como la parte difícil de Prototype: decidir si `clonar()` debe ser una copia superficial o profunda es una decisión de diseño del patrón, no un detalle de implementación. '0 1' es la respuesta que espera casi todo el mundo, porque asume que clonar significa independencia total; es el fallo real que este patrón produce en producción cuando dos objetos supuestamente distintos comparten una colección mutable. La solución cuando el prototipo tiene estado compuesto es `copy.deepcopy` o un `__copy__` explícito.",
       "explanation_en": "`copy.copy` makes a shallow copy: it creates a new object but copies references, so `base.tags` and `clone.tags` are the same list and appending through one is visible through the other. GoF flags this as the hard part of Prototype: deciding whether `clone()` should be a shallow or deep copy is a design decision of the pattern, not an implementation detail. '0 1' is the answer almost everyone expects, because it assumes cloning means full independence; it is the real bug this pattern produces in production when two supposedly distinct objects share a mutable collection. The fix when the prototype has composite state is `copy.deepcopy` or an explicit `__copy__`.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Prototype (copia superficial y profunda)",
       "expected_time_ms": 50000,
@@ -391,7 +391,7 @@
       "skill_id": "sk040202",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "Una funcion `crear_forma(tipo)` con un `if/elif` que devuelve la clase concreta correspondiente es lo que GoF llama el patron Factory Method.",
+      "question_es": "Una función `crear_forma(tipo)` con un `if/elif` que devuelve la clase concreta correspondiente es lo que GoF llama el patrón Factory Method.",
       "question_en": "A `create_shape(kind)` function with an `if/elif` that returns the matching concrete class is what GoF calls the Factory Method pattern.",
       "options_es": [
         "Verdadero",
@@ -402,7 +402,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso: eso es el idiom de fabrica simple, que no aparece en el catalogo de GoF. La diferencia no es academica. En Factory Method el punto de variacion es la herencia: la clase base declara el metodo de creacion y cada subclase decide su producto, asi que anadir un producto nuevo significa anadir una subclase y no tocar nada existente, que es OCP. En la fabrica simple el punto de variacion es un condicional dentro de una funcion, asi que cada producto nuevo obliga a editar esa funcion. La fabrica simple es perfectamente legitima y a menudo suficiente; el error es creer que ya se esta aplicando el patron de GoF y esperar de ella la extensibilidad que no tiene.",
+      "explanation_es": "Falso: eso es el idiom de fábrica simple, que no aparece en el catálogo de GoF. La diferencia no es académica. En Factory Method el punto de variación es la herencia: la clase base declara el método de creación y cada subclase decide su producto, así que añadir un producto nuevo significa añadir una subclase y no tocar nada existente, que es OCP. En la fábrica simple el punto de variación es un condicional dentro de una función, así que cada producto nuevo obliga a editar esa función. La fábrica simple es perfectamente legítima y a menudo suficiente; el error es creer que ya se está aplicando el patrón de GoF y esperar de ella la extensibilidad que no tiene.",
       "explanation_en": "False: that is the simple-factory idiom, which does not appear in the GoF catalog. The difference is not academic. In Factory Method the variation point is inheritance: the base class declares the creation method and each subclass decides its product, so adding a new product means adding a subclass and touching nothing existing, which is OCP. In a simple factory the variation point is a conditional inside a function, so every new product forces an edit to that function. The simple factory is perfectly legitimate and often enough; the mistake is believing you are already applying the GoF pattern and expecting extensibility it does not have.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Factory Method",
       "expected_time_ms": 35000,
@@ -417,7 +417,7 @@
       "skill_id": "sk040203",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "Tienes `Envio` con las subclases `EnvioEstandar`, `EnvioExpres` y `EnvioInternacional`, que solo se diferencian en como calculan el coste. Ahora el coste debe poder cambiar mientras el pedido esta abierto, segun la promocion vigente. ?Que te da Strategy que la herencia no?",
+      "question_es": "Tienes `Envio` con las subclases `EnvioEstandar`, `EnvioExpres` y `EnvioInternacional`, que solo se diferencian en cómo calculan el coste. Ahora el coste debe poder cambiar mientras el pedido está abierto, según la promoción vigente. ?Qué te da Strategy que la herencia no?",
       "question_en": "You have `Shipment` with subclasses `StandardShipment`, `ExpressShipment`, and `InternationalShipment`, differing only in how they compute cost. Now the cost must be able to change while the order is open, depending on the active promotion. What does Strategy give you that inheritance does not?",
       "options_es": [
         "Menos clases en total, porque Strategy elimina la necesidad de definir una interfaz comun",
@@ -432,7 +432,7 @@
         "It lets you swap the cost algorithm on the same object during its lifetime, because the variation lives in a collaborator rather than in the type"
       ],
       "correct_index": 3,
-      "explanation_es": "Con herencia, el algoritmo queda soldado al tipo del objeto y cambiarlo exige sustituir la instancia por otra de otra subclase, algo que no puedes hacer sin perder la identidad del pedido. Strategy saca el algoritmo a un objeto aparte, asi que el envio puede cambiar de politica de coste con una asignacion. GoF lo enuncia justamente asi: define una familia de algoritmos, encapsula cada uno y hazlos intercambiables, permitiendo que el algoritmo varie independientemente de los clientes que lo usan. Strategy no reduce el numero de clases, normalmente lo aumenta, y tampoco es mas rapido: anade una indireccion. Y desde luego no unifica el calculo, su proposito es precisamente preservar las variantes de forma manejable.",
+      "explanation_es": "Con herencia, el algoritmo queda soldado al tipo del objeto y cambiarlo exige sustituir la instancia por otra de otra subclase, algo que no puedes hacer sin perder la identidad del pedido. Strategy saca el algoritmo a un objeto aparte, así que el envío puede cambiar de política de coste con una asignación. GoF lo enuncia justamente así: define una familia de algoritmos, encapsula cada uno y hazlos intercambiables, permitiendo que el algoritmo varíe independientemente de los clientes que lo usan. Strategy no reduce el número de clases, normalmente lo aumenta, y tampoco es más rápido: añade una indirección. Y desde luego no unifica el cálculo, su propósito es precisamente preservar las variantes de forma manejable.",
       "explanation_en": "With inheritance the algorithm is welded to the object's type, and changing it requires swapping the instance for one of another subclass, which you cannot do without losing the order's identity. Strategy lifts the algorithm into a separate object, so the shipment can change its costing policy with one assignment. GoF states it exactly that way: define a family of algorithms, encapsulate each one, and make them interchangeable, letting the algorithm vary independently of the clients that use it. Strategy does not reduce class count, it usually increases it, and it is not faster: it adds an indirection. And it certainly does not unify the calculation; its whole purpose is to keep the variants manageable.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Strategy",
       "expected_time_ms": 40000,
@@ -447,7 +447,7 @@
       "skill_id": "sk040203",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "Un metodo `exportar()` fija la secuencia abrir, escribir_cabecera, escribir_filas, cerrar, y deja que cada subclase redefina unicamente `escribir_cabecera` y `escribir_filas`. ?Que patron es?",
+      "question_es": "Un método `exportar()` fija la secuencia abrir, escribir_cabecera, escribir_filas, cerrar, y deja que cada subclase redefina únicamente `escribir_cabecera` y `escribir_filas`. ?Qué patrón es?",
       "question_en": "An `export()` method fixes the sequence open, write_header, write_rows, close, and lets each subclass redefine only `write_header` and `write_rows`. Which pattern is this?",
       "options_es": [
         "Template Method",
@@ -462,7 +462,7 @@
         "Builder"
       ],
       "correct_index": 0,
-      "explanation_es": "Template Method define el esqueleto de un algoritmo en una operacion y difiere algunos pasos a las subclases, que pueden redefinir esos pasos sin cambiar la estructura del algoritmo. Strategy es el distractor mas fuerte porque resuelve un problema parecido, pero por composicion y a nivel del algoritmo completo: alli el cliente cambia el objeto que calcula, aqui la subclase rellena huecos de un esqueleto que no controla. Decorator envuelve un objeto para anadirle responsabilidades por fuera, no rellena pasos por dentro. Builder tambien tiene un orden de construccion, pero su proposito es separar la construccion de un objeto complejo de su representacion, no parametrizar los pasos de un algoritmo ya existente.",
+      "explanation_es": "Template Method define el esqueleto de un algoritmo en una operación y difiere algunos pasos a las subclases, que pueden redefinir esos pasos sin cambiar la estructura del algoritmo. Strategy es el distractor más fuerte porque resuelve un problema parecido, pero por composición y a nivel del algoritmo completo: allí el cliente cambia el objeto que calcula, aquí la subclase rellena huecos de un esqueleto que no controla. Decorator envuelve un objeto para añadirle responsabilidades por fuera, no rellena pasos por dentro. Builder también tiene un orden de construcción, pero su propósito es separar la construcción de un objeto complejo de su representación, no parametrizar los pasos de un algoritmo ya existente.",
       "explanation_en": "Template Method defines the skeleton of an algorithm in an operation and defers some steps to subclasses, which can redefine those steps without changing the algorithm's structure. Strategy is the strongest distractor because it solves a similar problem, but through composition and at the level of the whole algorithm: there the client swaps the object that computes, here the subclass fills gaps in a skeleton it does not control. Decorator wraps an object to add responsibilities from the outside, it does not fill in steps from the inside. Builder also has a construction order, but its purpose is separating the construction of a complex object from its representation, not parameterizing the steps of an existing algorithm.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Template Method",
       "expected_time_ms": 35000,
@@ -477,7 +477,7 @@
       "skill_id": "sk040203",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "Proxy y Decorator implementan la misma interfaz que el objeto que envuelven y delegan en el. ?Cual es la diferencia de intencion segun GoF?",
+      "question_es": "Proxy y Decorator implementan la misma interfaz que el objeto que envuelven y delegan en el. ?Cuál es la diferencia de intención según GoF?",
       "question_en": "Proxy and Decorator both implement the same interface as the object they wrap and delegate to it. What is the difference in intent according to GoF?",
       "options_es": [
         "Decorator anade responsabilidades al objeto; Proxy controla el acceso a el (carga diferida, permisos, acceso remoto) sin ofrecer funcionalidad nueva al cliente",
@@ -492,7 +492,7 @@
         "Decorator is a behavioral pattern and Proxy is a structural one"
       ],
       "correct_index": 0,
-      "explanation_es": "La estructura de ambos es casi identica, asi que el catalogo los separa por proposito: Decorator existe para anadir comportamiento que el cliente si nota, y Proxy para mediar el acceso manteniendo la misma interfaz y la misma funcionalidad aparente. La opcion de las categorias es la trampa fina: los dos estan en el capitulo de patrones estructurales, asi que esa frase suena a taxonomia correcta y no lo es. Decorator se apila por diseno, es su rasgo distintivo, de modo que la afirmacion contraria esta invertida. Y la distincion compilacion contra ejecucion no aparece en ninguno de los dos: ambos se componen en tiempo de ejecucion.",
+      "explanation_es": "La estructura de ambos es casi idéntica, así que el catálogo los separa por propósito: Decorator existe para añadir comportamiento que el cliente sí nota, y Proxy para mediar el acceso manteniendo la misma interfaz y la misma funcionalidad aparente. La opción de las categorías es la trampa fina: los dos están en el capítulo de patrones estructurales, así que esa frase suena a taxonomía correcta y no lo es. Decorator se apila por diseño, es su rasgo distintivo, de modo que la afirmación contraria está invertida. Y la distinción compilación contra ejecución no aparece en ninguno de los dos: ambos se componen en tiempo de ejecución.",
       "explanation_en": "Their structure is nearly identical, so the catalog separates them by purpose: Decorator exists to add behavior the client does notice, and Proxy to mediate access while keeping the same interface and the same apparent functionality. The category option is the subtle trap: both live in the structural patterns chapter, so the sentence sounds like correct taxonomy and is not. Decorator is stackable by design, that is its defining trait, so the opposite claim is inverted. And the compile-time versus runtime distinction applies to neither: both are composed at runtime.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Proxy y Decorator",
       "expected_time_ms": 45000,
@@ -508,7 +508,7 @@
       "skill_id": "sk040203",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "?Que imprime este sujeto observable?\n\n```python\nclass Sujeto:\n    def __init__(self):\n        self.obs = []\n    def suscribir(self, f):\n        self.obs.append(f)\n    def notificar(self, v):\n        for f in self.obs:\n            f(v)\n\ns = Sujeto()\ns.suscribir(lambda v: print(\"A\", v))\ns.suscribir(lambda v: print(\"B\", v))\ns.notificar(7)\n```",
+      "question_es": "?Qué imprime este sujeto observable?\n\n```python\nclass Sujeto:\n    def __init__(self):\n        self.obs = []\n    def suscribir(self, f):\n        self.obs.append(f)\n    def notificar(self, v):\n        for f in self.obs:\n            f(v)\n\ns = Sujeto()\ns.suscribir(lambda v: print(\"A\", v))\ns.suscribir(lambda v: print(\"B\", v))\ns.notificar(7)\n```",
       "question_en": "What does this observable subject print?\n\n```python\nclass Subject:\n    def __init__(self):\n        self.obs = []\n    def subscribe(self, f):\n        self.obs.append(f)\n    def notify(self, v):\n        for f in self.obs:\n            f(v)\n\ns = Subject()\ns.subscribe(lambda v: print(\"A\", v))\ns.subscribe(lambda v: print(\"B\", v))\ns.notify(7)\n```",
       "options_es": [
         "A 7",
@@ -523,7 +523,7 @@
         "A 7\nB 7"
       ],
       "correct_index": 3,
-      "explanation_es": "`notificar` recorre la lista en orden de suscripcion y llama a cada observador una vez, asi que salen dos lineas, primero A y luego B. Lo interesante esta en lo que el ejercicio no garantiza: GoF advierte explicitamente que el patron Observer no define el orden en que se notifica a los observadores, de modo que apoyarse en que A se ejecuta antes que B es depender de un detalle de esta implementacion concreta. La opcion de una sola linea corresponde a quien cree que suscribir sustituye al observador anterior; el orden invertido, a quien supone una pila; y la salida cuadruple, a quien piensa que cada suscripcion vuelve a disparar las anteriores.",
+      "explanation_es": "`notificar` recorre la lista en orden de suscripción y llama a cada observador una vez, así que salen dos líneas, primero A y luego B. Lo interesante está en lo que el ejercicio no garantiza: GoF advierte explícitamente que el patrón Observer no define el orden en que se notifica a los observadores, de modo que apoyarse en que A se ejecuta antes que B es depender de un detalle de esta implementación concreta. La opción de una sola línea corresponde a quien cree que suscribir sustituye al observador anterior; el orden invertido, a quien supone una pila; y la salida cuadruple, a quien piensa que cada suscripción vuelve a disparar las anteriores.",
       "explanation_en": "`notify` walks the list in subscription order and calls each observer once, so two lines come out, A first and then B. The interesting part is what the exercise does not guarantee: GoF explicitly warns that the Observer pattern does not define the order in which observers are notified, so relying on A running before B is depending on a detail of this particular implementation. The single-line option is for whoever thinks subscribing replaces the previous observer; the reversed order, for whoever assumes a stack; and the four-line output, for whoever thinks each subscription re-fires the earlier ones.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Observer",
       "expected_time_ms": 40000,
@@ -538,7 +538,7 @@
       "skill_id": "sk040203",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "El patron Facade ofrece una interfaz simplificada a un subsistema, pero no impide que un cliente que necesite funcionalidad avanzada siga usando directamente las clases del subsistema.",
+      "question_es": "El patrón Facade ofrece una interfaz simplificada a un subsistema, pero no impide que un cliente que necesite funcionalidad avanzada siga usando directamente las clases del subsistema.",
       "question_en": "The Facade pattern offers a simplified interface to a subsystem, but it does not prevent a client that needs advanced functionality from still using the subsystem's classes directly.",
       "options_es": [
         "Verdadero",
@@ -549,7 +549,7 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "GoF lo dice de forma expresa: la fachada facilita el uso del subsistema pero no lo oculta, y los clientes que necesiten mas control pueden saltarsela. Esa es justamente la diferencia con un Adapter, que existe para hacer encajar una interfaz incompatible, y con una capa de encapsulacion estricta, que si prohibiria el acceso. La confusion habitual es tratar la fachada como una frontera de seguridad o de arquitectura: si necesitas que nadie pueda tocar el subsistema, eso lo consigue el sistema de modulos o de paquetes, no el patron. La fachada reduce el acoplamiento del caso comun; las excepciones siguen teniendo puerta.",
+      "explanation_es": "GoF lo dice de forma expresa: la fachada facilita el uso del subsistema pero no lo oculta, y los clientes que necesiten más control pueden saltarsela. Esa es justamente la diferencia con un Adapter, que existe para hacer encajar una interfaz incompatible, y con una capa de encapsulación estricta, que sí prohibiría el acceso. La confusión habitual es tratar la fachada como una frontera de seguridad o de arquitectura: si necesitas que nadie pueda tocar el subsistema, eso lo consigue el sistema de módulos o de paquetes, no el patrón. La fachada reduce el acoplamiento del caso común; las excepciones siguen teniendo puerta.",
       "explanation_en": "GoF says so explicitly: the facade makes the subsystem easier to use but does not hide it, and clients needing more control can bypass it. That is precisely the difference from an Adapter, which exists to make an incompatible interface fit, and from a strict encapsulation layer, which would forbid access. The common confusion is treating the facade as a security or architectural boundary: if you need nobody to touch the subsystem, that is achieved by your module or package system, not by the pattern. The facade lowers coupling for the common case; the exceptions still have a door.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Facade",
       "expected_time_ms": 30000,
@@ -564,11 +564,11 @@
       "skill_id": "sk040203",
       "type": "fill_blank",
       "difficulty_tier": "hard",
-      "question_es": "El patron estructural que compone objetos en estructuras de arbol para representar jerarquias parte-todo y permite tratar de forma uniforme a los objetos individuales y a sus composiciones se llama _____ . (una palabra, en ingles)",
+      "question_es": "El patrón estructural que compone objetos en estructuras de árbol para representar jerarquías parte-todo y permite tratar de forma uniforme a los objetos individuales y a sus composiciones se llama _____ . (una palabra, en ingles)",
       "question_en": "The structural pattern that composes objects into tree structures to represent part-whole hierarchies, letting clients treat individual objects and compositions uniformly, is called _____ . (one word)",
       "correct_answer_es": "Composite",
       "correct_answer_en": "Composite",
-      "explanation_es": "La clave del patron esta en la palabra uniforme: hoja y compuesto implementan la misma interfaz, asi que el cliente llama a `dibujar()` o a `precio_total()` sin preguntar si tiene delante un elemento o un grupo, y la recursion la resuelve el compuesto delegando en sus hijos. Es el patron detras de los arboles de widgets, los sistemas de ficheros y los documentos con grupos anidados. El compromiso que GoF senala es que la interfaz comun tiende a incluir operaciones de gestion de hijos que en una hoja no significan nada, lo que roza el ISP: hay que elegir entre transparencia para el cliente y seguridad de tipos.",
+      "explanation_es": "La clave del patrón está en la palabra uniforme: hoja y compuesto implementan la misma interfaz, así que el cliente llama a `dibujar()` o a `precio_total()` sin preguntar si tiene delante un elemento o un grupo, y la recursión la resuelve el compuesto delegando en sus hijos. Es el patrón detrás de los árboles de widgets, los sistemas de ficheros y los documentos con grupos anidados. El compromiso que GoF señala es que la interfaz común tiende a incluir operaciones de gestión de hijos que en una hoja no significan nada, lo que roza el ISP: hay que elegir entre transparencia para el cliente y seguridad de tipos.",
       "explanation_en": "The key to the pattern is the word uniformly: leaf and composite implement the same interface, so the client calls `draw()` or `total_price()` without asking whether it holds a single element or a group, and the composite resolves the recursion by delegating to its children. It is the pattern behind widget trees, file systems, and documents with nested groups. The trade-off GoF flags is that the shared interface tends to include child-management operations that mean nothing on a leaf, which brushes against the ISP: you must choose between transparency for the client and type safety.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Composite",
       "expected_time_ms": 35000,
@@ -583,7 +583,7 @@
       "skill_id": "sk040203",
       "type": "code_output",
       "difficulty_tier": "hard",
-      "question_es": "Strategy implementado con funciones de primera clase. ?Que imprime?\n\n```python\ndef con_iva(x):\n    return x * 1.21\n\ndef sin_iva(x):\n    return x\n\nclass Carrito:\n    def __init__(self, politica):\n        self.politica = politica\n    def total(self, base):\n        return round(self.politica(base), 2)\n\nc = Carrito(sin_iva)\nprint(c.total(100), end=\" \")\nc.politica = con_iva\nprint(c.total(100))\n```",
+      "question_es": "Strategy implementado con funciones de primera clase. ?Qué imprime?\n\n```python\ndef con_iva(x):\n    return x * 1.21\n\ndef sin_iva(x):\n    return x\n\nclass Carrito:\n    def __init__(self, politica):\n        self.politica = politica\n    def total(self, base):\n        return round(self.politica(base), 2)\n\nc = Carrito(sin_iva)\nprint(c.total(100), end=\" \")\nc.politica = con_iva\nprint(c.total(100))\n```",
       "question_en": "Strategy implemented with first-class functions. What does it print?\n\n```python\ndef with_vat(x):\n    return x * 1.21\n\ndef without_vat(x):\n    return x\n\nclass Cart:\n    def __init__(self, policy):\n        self.policy = policy\n    def total(self, base):\n        return round(self.policy(base), 2)\n\nc = Cart(without_vat)\nprint(c.total(100), end=\" \")\nc.policy = with_vat\nprint(c.total(100))\n```",
       "options_es": [
         "100 100",
@@ -598,7 +598,7 @@
         "100 121.0"
       ],
       "correct_index": 3,
-      "explanation_es": "El mismo objeto `c` cambia de algoritmo entre las dos llamadas, que es exactamente lo que Strategy promete y la herencia no da: la variacion vive en un colaborador sustituible. En la primera llamada `sin_iva(100)` devuelve el entero 100 y `round(100, 2)` sigue siendo 100; en la segunda `con_iva(100)` da 121.00000000000001 y `round` lo deja en 121.0, con decimal porque ya es un float. '100 100' corresponde a quien cree que la politica quedo fijada en el constructor. '121.0 121.0' invierte el orden de aplicacion. Y el TypeError tienta a quien piensa que un atributo de instancia que guarda una funcion se convierte en metodo ligado; en Python eso solo ocurre con funciones definidas en la clase, no con las asignadas a la instancia.",
+      "explanation_es": "El mismo objeto `c` cambia de algoritmo entre las dos llamadas, que es exactamente lo que Strategy promete y la herencia no da: la variación vive en un colaborador sustituible. En la primera llamada `sin_iva(100)` devuelve el entero 100 y `round(100, 2)` sigue siendo 100; en la segunda `con_iva(100)` da 121.00000000000001 y `round` lo deja en 121.0, con decimal porque ya es un float. '100 100' corresponde a quien cree que la política quedó fijada en el constructor. '121.0 121.0' invierte el orden de aplicación. Y el TypeError tienta a quien piensa que un atributo de instancia que guarda una función se convierte en método ligado; en Python eso solo ocurre con funciones definidas en la clase, no con las asignadas a la instancia.",
       "explanation_en": "The same object `c` changes algorithm between the two calls, which is exactly what Strategy promises and inheritance cannot give: the variation lives in a replaceable collaborator. On the first call `without_vat(100)` returns the integer 100 and `round(100, 2)` is still 100; on the second `with_vat(100)` yields 121.00000000000001 and `round` leaves 121.0, with a decimal because it is already a float. '100 100' is for whoever thinks the policy was frozen in the constructor. '121.0 121.0' reverses the order of application. And the TypeError tempts whoever believes an instance attribute holding a function becomes a bound method; in Python that only happens for functions defined on the class, not for ones assigned to the instance.",
       "source": "Design Patterns (Gamma, Helm, Johnson, Vlissides) - Strategy",
       "expected_time_ms": 55000,
@@ -613,7 +613,7 @@
       "skill_id": "sk040204",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "Por todo el codigo circulan `str` para el correo y `float` para el importe, y cada funcion que los recibe repite la misma validacion. ?Que huele mal y que refactorizacion propone Fowler?",
+      "question_es": "Por todo el código circulan `str` para el correo y `float` para el importe, y cada función que los recibe repite la misma validación. ?Qué huele mal y que refactorización propone Fowler?",
       "question_en": "Throughout the codebase, emails travel as `str` and amounts as `float`, and every function receiving them repeats the same validation. What is the smell, and which refactoring does Fowler propose?",
       "options_es": [
         "Envidia de funcionalidad; mover las funciones de validacion a la clase que mas datos consulta",
@@ -628,7 +628,7 @@
         "Primitive Obsession; Replace Primitive with Object, so the type carries its own rules"
       ],
       "correct_index": 3,
-      "explanation_es": "La validacion repetida es el sintoma; la causa es que un concepto del dominio se esta representando con un tipo del lenguaje. Fowler responde con Reemplazar Primitivo por Objeto: un `Email` que no puede construirse invalido hace que la validacion ocurra una vez, en la frontera, y desaparezca de las veinte funciones siguientes. La opcion de extraer una funcion compartida es la mas tentadora porque elimina la duplicacion visible y parece DRY bien aplicado, pero deja al programador la obligacion de acordarse de llamarla: el tipo sigue siendo `str` y nada impide que entre uno sin validar. Las otras dos nombran smells reales que aqui no son el problema: no hay demasiados parametros, y las funciones no estan envidiando los datos de otra clase.",
+      "explanation_es": "La validación repetida es el síntoma; la causa es que un concepto del dominio se está representando con un tipo del lenguaje. Fowler responde con Reemplazar Primitivo por Objeto: un `Email` que no puede construirse inválido hace que la validación ocurra una vez, en la frontera, y desaparezca de las veinte funciones siguientes. La opción de extraer una función compartida es la más tentadora porque elimina la duplicación visible y parece DRY bien aplicado, pero deja al programador la obligación de acordarse de llamarla: el tipo sigue siendo `str` y nada impide que entre uno sin validar. Las otras dos nombran smells reales que aquí no son el problema: no hay demasiados parámetros, y las funciones no están envidiando los datos de otra clase.",
       "explanation_en": "The repeated validation is the symptom; the cause is that a domain concept is being represented with a language type. Fowler answers with Replace Primitive with Object: an `Email` that cannot be constructed invalid makes validation happen once, at the boundary, and disappear from the next twenty functions. The extract-a-shared-function option is the most tempting because it removes the visible duplication and looks like DRY well applied, but it leaves the programmer responsible for remembering to call it: the type is still `str` and nothing stops an unvalidated one from getting in. The other two name real smells that are not the problem here: there are not too many parameters, and the functions are not envying another class's data.",
       "source": "Refactoring 2e (Martin Fowler) - Primitive Obsession / Replace Primitive with Object",
       "expected_time_ms": 40000,
@@ -643,7 +643,7 @@
       "skill_id": "sk040204",
       "type": "mcq",
       "difficulty_tier": "medium",
-      "question_es": "Encuentras el comentario `# incrementa i en uno` justo encima de la linea `i += 1`. Segun Clean Code, ?que hay que hacer?",
+      "question_es": "Encuentras el comentario `# incrementa i en uno` justo encima de la línea `i += 1`. Según Clean Code, ?qué hay que hacer?",
       "question_en": "You find the comment `# increment i by one` right above the line `i += 1`. According to Clean Code, what should you do?",
       "options_es": [
         "Dejarlo tal cual: todo comentario anade contexto y por tanto mejora la legibilidad",
@@ -658,7 +658,7 @@
         "Delete it: it restates what the code already says, it will rot unnoticed, and the comments worth keeping explain the why, not the what"
       ],
       "correct_index": 3,
-      "explanation_es": "Martin dedica el capitulo de comentarios a un argumento incomodo: un comentario es casi siempre un fracaso en expresarse con codigo, y los comentarios redundantes son peores que ninguno porque el compilador no los verifica y acaban mintiendo cuando el codigo cambia. Este comentario concreto no aporta nada que `i += 1` no diga ya. La opcion de convertirlo en docstring es la mas insidiosa en un equipo con cultura de documentacion: publicar una redundancia no la convierte en informacion, solo la hace mas dificil de borrar. Ampliarlo empeora el problema anadiendo mas texto que mantener. Y la idea de que todo comentario suma ignora el coste de mantenerlos sincronizados.",
+      "explanation_es": "Martin dedica el capítulo de comentarios a un argumento incómodo: un comentario es casi siempre un fracaso en expresarse con código, y los comentarios redundantes son peores que ninguno porque el compilador no los verifica y acaban mintiendo cuando el código cambia. Este comentario concreto no aporta nada que `i += 1` no diga ya. La opción de convertirlo en docstring es la más insidiosa en un equipo con cultura de documentación: publicar una redundancia no la convierte en información, solo la hace más difícil de borrar. Ampliarlo empeora el problema añadiendo más texto que mantener. Y la idea de que todo comentario suma ignora el coste de mantenerlos sincronizados.",
       "explanation_en": "Martin devotes the comments chapter to an uncomfortable argument: a comment is almost always a failure to express yourself in code, and redundant comments are worse than none because the compiler never checks them and they end up lying once the code changes. This particular comment adds nothing that `i += 1` does not already say. The docstring option is the most insidious one on a documentation-minded team: publishing a redundancy does not turn it into information, it only makes it harder to delete. Expanding it makes things worse by adding more text to maintain. And the idea that every comment adds value ignores the cost of keeping them in sync.",
       "source": "Clean Code (Robert C. Martin) - Cap. 4 Comments",
       "expected_time_ms": 30000,
@@ -673,7 +673,7 @@
       "skill_id": "sk040204",
       "type": "mcq",
       "difficulty_tier": "hard",
-      "question_es": "El metodo `Pedido.calcular_descuento()` apenas usa datos de `Pedido`: casi todo lo que lee son `cliente.nivel`, `cliente.antiguedad` y `cliente.saldo`. ?Que indica y cual es la refactorizacion natural?",
+      "question_es": "El método `Pedido.calcular_descuento()` apenas usa datos de `Pedido`: casi todo lo que lee son `cliente.nivel`, `cliente.antiguedad` y `cliente.saldo`. ?Qué indica y cuál es la refactorización natural?",
       "question_en": "The method `Order.calculate_discount()` barely uses `Order`'s own data: almost everything it reads is `customer.tier`, `customer.tenure`, and `customer.balance`. What does this indicate, and what is the natural refactoring?",
       "options_es": [
         "Clase grande; extraer una clase nueva a partir de `Pedido` para repartir su tamano",
@@ -688,7 +688,7 @@
         "Feature Envy; Move Function to bring the calculation to `Customer`, where the data it uses lives"
       ],
       "correct_index": 3,
-      "explanation_es": "Fowler describe Feature Envy como una funcion que parece mas interesada en los datos de otro modulo que en los del propio, y su heuristica es directa: la funcion quiere estar donde estan los datos con los que mas habla. Mover Funcion a `Cliente` reduce el acoplamiento y deja el descuento junto a las reglas que lo determinan. La opcion de los metodos delegados es el arreglo aparente que empeora el diseno: esconde los accesos anadiendo indireccion en `Pedido` sin mover el comportamiento, que es tratar el sintoma. Clase grande es otro smell y podria coexistir, pero nada en el enunciado habla de tamano. Y codigo muerto se refiere a codigo que ya nadie ejecuta, no a codigo que esta en el sitio equivocado.",
+      "explanation_es": "Fowler describe Feature Envy como una función que parece más interesada en los datos de otro módulo que en los del propio, y su heurística es directa: la función quiere estar donde están los datos con los que más habla. Mover Función a `Cliente` reduce el acoplamiento y deja el descuento junto a las reglas que lo determinan. La opción de los métodos delegados es el arreglo aparente que empeora el diseño: esconde los accesos añadiendo indirección en `Pedido` sin mover el comportamiento, que es tratar el síntoma. Clase grande es otro smell y podría coexistir, pero nada en el enunciado habla de tamaño. Y código muerto se refiere a código que ya nadie ejecuta, no a código que está en el sitio equivocado.",
       "explanation_en": "Fowler describes Feature Envy as a function that seems more interested in another module's data than in its own, and his heuristic is direct: the function wants to be where the data it talks to most lives. Move Function to `Customer` lowers coupling and puts the discount next to the rules that determine it. The delegating-methods option is the apparent fix that makes the design worse: it hides the accesses by adding indirection in `Order` without moving the behavior, which treats the symptom. Large Class is a different smell that could coexist, but nothing in the scenario mentions size. And Dead Code refers to code nobody executes any more, not to code sitting in the wrong place.",
       "source": "Refactoring 2e (Martin Fowler) - Feature Envy / Move Function",
       "expected_time_ms": 45000,
@@ -703,7 +703,7 @@
       "skill_id": "sk040204",
       "type": "true_false",
       "difficulty_tier": "easy",
-      "question_es": "Segun Fowler, refactorizar incluye anadir funcionalidad nueva siempre que el diseno resultante sea mejor que el de partida.",
+      "question_es": "Según Fowler, refactorizar incluye añadir funcionalidad nueva siempre que el diseño resultante sea mejor que el de partida.",
       "question_en": "According to Fowler, refactoring includes adding new functionality as long as the resulting design is better than what you started with.",
       "options_es": [
         "Verdadero",
@@ -714,7 +714,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso, y la precision es el nucleo de la disciplina. Fowler define refactorizar como cambiar la estructura interna de un software para hacerlo mas facil de entender y mas barato de modificar sin cambiar su comportamiento observable. Su metafora de los dos sombreros lo hace operativo: cuando anades una funcionalidad no tocas la estructura, y cuando refactorizas no anades funcionalidad; cambias de sombrero muchas veces al dia, pero nunca llevas los dos a la vez. La razon es practica: si el comportamiento no cambia, las pruebas existentes son un arnes fiable y cualquier fallo rojo senala tu refactorizacion. En cuanto mezclas ambas cosas pierdes esa senal y ya no sabes que rompio que.",
+      "explanation_es": "Falso, y la precisión es el núcleo de la disciplina. Fowler define refactorizar como cambiar la estructura interna de un software para hacerlo más fácil de entender y más barato de modificar sin cambiar su comportamiento observable. Su metáfora de los dos sombreros lo hace operativo: cuando añades una funcionalidad no tocas la estructura, y cuando refactorizas no añades funcionalidad; cambias de sombrero muchas veces al día, pero nunca llevas los dos a la vez. La razón es práctica: si el comportamiento no cambia, las pruebas existentes son un arnés fiable y cualquier fallo rojo señala tu refactorización. En cuanto mezclas ambas cosas pierdes esa señal y ya no sabes qué rompió qué.",
       "explanation_en": "False, and the precision is the core of the discipline. Fowler defines refactoring as changing the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. His two-hats metaphor makes that operational: when you add a feature you do not touch the structure, and when you refactor you do not add features; you swap hats many times a day, but never wear both at once. The reason is practical: if behavior does not change, your existing tests are a reliable harness and any red result points at your refactoring. The moment you mix the two, you lose that signal and no longer know what broke what.",
       "source": "Refactoring 2e (Martin Fowler) - Cap. 2 Principles in Refactoring",
       "expected_time_ms": 25000,
@@ -729,7 +729,7 @@
       "skill_id": "sk040204",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "Esta funcion se ha reescrito con clausulas de guarda. ?Que imprime?\n\n```python\ndef descuento(cliente):\n    if cliente is None:\n        return 0\n    if not cliente.get(\"activo\"):\n        return 0\n    return 10\n\nprint(descuento(None), descuento({\"activo\": False}), descuento({\"activo\": True}))\n```",
+      "question_es": "Esta función se ha reescrito con cláusulas de guarda. ?Qué imprime?\n\n```python\ndef descuento(cliente):\n    if cliente is None:\n        return 0\n    if not cliente.get(\"activo\"):\n        return 0\n    return 10\n\nprint(descuento(None), descuento({\"activo\": False}), descuento({\"activo\": True}))\n```",
       "question_en": "This function has been rewritten with guard clauses. What does it print?\n\n```python\ndef discount(customer):\n    if customer is None:\n        return 0\n    if not customer.get(\"active\"):\n        return 0\n    return 10\n\nprint(discount(None), discount({\"active\": False}), discount({\"active\": True}))\n```",
       "options_es": [
         "TypeError: argument of type 'NoneType' is not iterable",
@@ -744,7 +744,7 @@
         "0 0 10"
       ],
       "correct_index": 3,
-      "explanation_es": "Cada guarda atrapa su caso excepcional y sale de inmediato, dejando el camino normal sin anidar al final: `None` y el cliente inactivo devuelven 0, el activo devuelve 10. Es la refactorizacion Reemplazar Condicional Anidado por Clausulas de Guarda, y su valor esta en que el lector ya no tiene que sostener en la cabeza tres niveles de `else` para saber cual es el caso feliz. El TypeError es el distractor util: seria correcto si las guardas estuvieran en otro orden y se consultara el diccionario antes de comprobar el `None`, que es precisamente el fallo que aparece cuando alguien reordena las guardas sin pensar. 'None 0 10' confunde devolver 0 con no devolver nada, y '0 10 10' ignora la segunda guarda.",
+      "explanation_es": "Cada guarda atrapa su caso excepcional y sale de inmediato, dejando el camino normal sin anidar al final: `None` y el cliente inactivo devuelven 0, el activo devuelve 10. Es la refactorización Reemplazar Condicional Anidado por Cláusulas de Guarda, y su valor está en que el lector ya no tiene que sostener en la cabeza tres niveles de `else` para saber cuál es el caso feliz. El TypeError es el distractor útil: sería correcto si las guardas estuvieran en otro orden y se consultara el diccionario antes de comprobar el `None`, que es precisamente el fallo que aparece cuando alguien reordena las guardas sin pensar. 'None 0 10' confunde devolver 0 con no devolver nada, y '0 10 10' ignora la segunda guarda.",
       "explanation_en": "Each guard catches its exceptional case and returns immediately, leaving the normal path unnested at the end: `None` and the inactive customer return 0, the active one returns 10. This is the Replace Nested Conditional with Guard Clauses refactoring, and its value is that the reader no longer has to hold three levels of `else` in their head to find the happy path. The TypeError is the useful distractor: it would be correct if the guards were ordered differently and the dictionary were consulted before the `None` check, which is exactly the bug that appears when someone reorders guards without thinking. 'None 0 10' confuses returning 0 with returning nothing, and '0 10 10' ignores the second guard.",
       "source": "Refactoring 2e (Martin Fowler) - Replace Nested Conditional with Guard Clauses",
       "expected_time_ms": 40000,
@@ -759,11 +759,11 @@
       "skill_id": "sk040204",
       "type": "fill_blank",
       "difficulty_tier": "medium",
-      "question_es": "La refactorizacion que consiste en cambiar el nombre de una variable o de una funcion por otro que revele su intencion se llama _____ Variable en el catalogo de Fowler. (una palabra)",
+      "question_es": "La refactorización que consiste en cambiar el nombre de una variable o de una función por otro que revele su intención se llama _____ Variable en el catálogo de Fowler. (una palabra)",
       "question_en": "The refactoring that changes the name of a variable or function to one that reveals its intent is called _____ Variable in Fowler's catalog. (one word)",
       "correct_answer_es": "Renombrar",
       "correct_answer_en": "Rename",
-      "explanation_es": "Renombrar parece la refactorizacion mas trivial del catalogo y Fowler insiste en lo contrario: nombrar bien es de las cosas mas dificiles de la programacion y tambien de las que mas rinden, porque un nombre que revela la intencion elimina la necesidad de un comentario y a veces deja a la vista que la funcion hacia dos cosas. Es ademas la refactorizacion que mejor ilustra la mecanica del libro: un paso pequeno, el comportamiento intacto, las pruebas en verde, y repetir. Cuando el nombre no sale, suele ser senal de que el concepto todavia no esta claro, no de que falte vocabulario.",
+      "explanation_es": "Renombrar parece la refactorización más trivial del catálogo y Fowler insiste en lo contrario: nombrar bien es de las cosas más difíciles de la programación y también de las que más rinden, porque un nombre que revela la intención elimina la necesidad de un comentario y a veces deja a la vista que la función hacía dos cosas. Es además la refactorización que mejor ilustra la mecánica del libro: un paso pequeño, el comportamiento intacto, las pruebas en verde, y repetir. Cuando el nombre no sale, suele ser señal de que el concepto todavía no está claro, no de que falte vocabulario.",
       "explanation_en": "Renaming looks like the most trivial refactoring in the catalog, and Fowler insists on the opposite: naming well is among the hardest things in programming and among the highest-yielding, because a name that reveals intent removes the need for a comment and sometimes exposes that the function was doing two things. It is also the refactoring that best illustrates the book's mechanics: one small step, behavior untouched, tests green, repeat. When the name will not come, that is usually a sign the concept is not yet clear, not that vocabulary is missing.",
       "source": "Refactoring 2e (Martin Fowler) - Rename Variable",
       "expected_time_ms": 30000,
@@ -778,7 +778,7 @@
       "skill_id": "sk040204",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Toda deuda tecnica es consecuencia de un trabajo descuidado: un equipo competente y disciplinado nunca llega a contraerla.",
+      "question_es": "Toda deuda técnica es consecuencia de un trabajo descuidado: un equipo competente y disciplinado nunca llega a contraerla.",
       "question_en": "All technical debt is the result of sloppy work: a competent, disciplined team never takes any on.",
       "options_es": [
         "Verdadero",
@@ -789,7 +789,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. El cuadrante de deuda tecnica de Fowler cruza dos ejes, deliberada frente a inadvertida y prudente frente a imprudente, y la casilla deliberada y prudente describe una decision legitima: enviamos ahora sabiendo que el diseno no es el definitivo y asumimos el interes, porque llegar al mercado esta semana vale mas que el coste de arreglarlo despues. Eso es ingenieria, no descuido. La casilla que si describe mal trabajo es la imprudente. Lo que convierte cualquier deuda en un problema no es contraerla sino no registrarla ni pagarla: el interes se cobra en cada cambio futuro, y la deuda inadvertida es la peor porque el equipo ni siquiera sabe que la esta pagando.",
+      "explanation_es": "Falso. El cuadrante de deuda técnica de Fowler cruza dos ejes, deliberada frente a inadvertida y prudente frente a imprudente, y la casilla deliberada y prudente describe una decisión legítima: enviamos ahora sabiendo que el diseño no es el definitivo y asumimos el interés, porque llegar al mercado esta semana vale más que el coste de arreglarlo después. Eso es ingeniería, no descuido. La casilla que sí describe mal trabajo es la imprudente. Lo que convierte cualquier deuda en un problema no es contraerla sino no registrarla ni pagarla: el interés se cobra en cada cambio futuro, y la deuda inadvertida es la peor porque el equipo ni siquiera sabe que la está pagando.",
       "explanation_en": "False. Fowler's technical debt quadrant crosses two axes, deliberate versus inadvertent and prudent versus reckless, and the deliberate-and-prudent box describes a legitimate decision: we ship now knowing the design is not final and we accept the interest, because reaching the market this week is worth more than the cost of fixing it later. That is engineering, not carelessness. The box that does describe bad work is the reckless one. What turns any debt into a problem is not taking it on but failing to record and repay it: the interest is charged on every future change, and inadvertent debt is the worst kind because the team does not even know it is paying.",
       "source": "martinfowler.com - Technical Debt Quadrant",
       "expected_time_ms": 35000,
@@ -804,7 +804,7 @@
       "skill_id": "sk040204",
       "type": "code_output",
       "difficulty_tier": "medium",
-      "question_es": "Tras aplicar Reemplazar Literal Magico por Constante Simbolica, ?que imprime este codigo?\n\n```python\nIVA = 0.21\n\ndef con_impuesto(base):\n    return round(base * (1 + IVA), 2)\n\nprint(con_impuesto(100))\n```",
+      "question_es": "Tras aplicar Reemplazar Literal Mágico por Constante Simbólica, ?qué imprime este código?\n\n```python\nIVA = 0.21\n\ndef con_impuesto(base):\n    return round(base * (1 + IVA), 2)\n\nprint(con_impuesto(100))\n```",
       "question_en": "After applying Replace Magic Literal with a symbolic constant, what does this code print?\n\n```python\nVAT = 0.21\n\ndef with_tax(base):\n    return round(base * (1 + VAT), 2)\n\nprint(with_tax(100))\n```",
       "options_es": [
         "100",
@@ -819,7 +819,7 @@
         "121.0"
       ],
       "correct_index": 3,
-      "explanation_es": "`100 * 1.21` da 121.00000000000001 en coma flotante y `round(..., 2)` lo deja en 121.0, que Python imprime con el decimal porque el resultado sigue siendo un `float`. La refactorizacion en si no cambia nada del comportamiento, y ese es el punto: sustituir el 0.21 suelto por `IVA` hace visible la intencion y deja un unico sitio donde tocar si el tipo cambia, sin alterar el resultado. La opcion '121' es la mas elegida porque mentalmente redondeamos a entero y olvidamos que `round` sobre un float devuelve un float. '100' ignora el impuesto y '0.21' confunde la constante con el resultado.",
+      "explanation_es": "`100 * 1.21` da 121.00000000000001 en coma flotante y `round(..., 2)` lo deja en 121.0, que Python imprime con el decimal porque el resultado sigue siendo un `float`. La refactorización en sí no cambia nada del comportamiento, y ese es el punto: sustituir el 0.21 suelto por `IVA` hace visible la intención y deja un único sitio donde tocar si el tipo cambia, sin alterar el resultado. La opción '121' es la más elegida porque mentalmente redondeamos a entero y olvidamos que `round` sobre un float devuelve un float. '100' ignora el impuesto y '0.21' confunde la constante con el resultado.",
       "explanation_en": "`100 * 1.21` yields 121.00000000000001 in floating point and `round(..., 2)` leaves 121.0, which Python prints with the decimal because the result is still a `float`. The refactoring itself changes nothing about behavior, and that is the point: replacing the loose 0.21 with `VAT` makes the intent visible and leaves one place to edit if the rate changes, without altering the result. The '121' option is the most chosen because we round to an integer mentally and forget that `round` on a float returns a float. '100' ignores the tax and '0.21' confuses the constant with the result.",
       "source": "Refactoring 2e (Martin Fowler) - Replace Magic Literal",
       "expected_time_ms": 35000,

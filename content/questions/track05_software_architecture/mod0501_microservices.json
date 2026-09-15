@@ -34,7 +34,7 @@
       "skill_id": "sk050101",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "En microservicios, lo recomendable es que todos los servicios compartan una unica base de datos, porque asi se evita duplicar datos y se mantiene la integridad referencial con claves foraneas.",
+      "question_es": "En microservicios, lo recomendable es que todos los servicios compartan una única base de datos, porque así se evita duplicar datos y se mantiene la integridad referencial con claves foráneas.",
       "question_en": "In microservices, the recommended approach is for all services to share a single database, because that avoids duplicating data and preserves referential integrity with foreign keys.",
       "options_es": [
         "Verdadero",
@@ -45,7 +45,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso, y es justo al reves: el patron recomendado es 'database per service'. Cada servicio encapsula sus datos y solo los expone por su API. Compartir una base de datos acopla los servicios por su esquema — un cambio de tabla obliga a coordinar despliegues — y elimina la independencia que justificaba separarlos. La integridad referencial entre servicios se resuelve con consistencia eventual y eventos, no con claves foraneas.",
+      "explanation_es": "Falso, y es justo al revés: el patrón recomendado es 'database per service'. Cada servicio encapsula sus datos y solo los expone por su API. Compartir una base de datos acopla los servicios por su esquema — un cambio de tabla obliga a coordinar despliegues — y elimina la independencia que justificaba separarlos. La integridad referencial entre servicios se resuelve con consistencia eventual y eventos, no con claves foráneas.",
       "explanation_en": "False, and it is the other way round: the recommended pattern is database per service. Each service encapsulates its data and exposes it only through its API. Sharing a database couples services through the schema - one table change forces coordinated deploys - and removes the independence that justified splitting them. Cross-service referential integrity is handled with eventual consistency and events, not foreign keys.",
       "source": "Richardson, C. — Microservices Patterns (Database per Service)",
       "expected_time_ms": 26000,
@@ -194,7 +194,7 @@
       "skill_id": "sk050102",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "En una cadena de llamadas sincronas entre microservicios, la disponibilidad total del conjunto es igual a la del servicio menos disponible de la cadena.",
+      "question_es": "En una cadena de llamadas síncronas entre microservicios, la disponibilidad total del conjunto es igual a la del servicio menos disponible de la cadena.",
       "question_en": "In a chain of synchronous calls between microservices, the overall availability equals that of the least available service in the chain.",
       "options_es": [
         "Verdadero",
@@ -205,7 +205,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso: las disponibilidades se **multiplican**, no se toma la minima. Si A llama a B que llama a C y cada uno esta al 99,9 %, el conjunto queda en ~99,7 %, peor que cualquiera de ellos por separado. Esa es la razon de fondo por la que las cadenas sincronas largas son fragiles: cada salto anade latencia y resta disponibilidad.",
+      "explanation_es": "Falso: las disponibilidades se **multiplican**, no se toma la mínima. Si A llama a B que llama a C y cada uno está al 99,9 %, el conjunto queda en ~99,7 %, peor que cualquiera de ellos por separado. Esa es la razón de fondo por la que las cadenas síncronas largas son frágiles: cada salto añade latencia y resta disponibilidad.",
       "explanation_en": "False: availabilities **multiply**, you do not take the minimum. If A calls B which calls C and each is at 99.9 %, the chain lands at ~99.7 %, worse than any of them alone. That is the underlying reason long synchronous chains are fragile: every hop adds latency and subtracts availability.",
       "source": "Newman, S. — Building Microservices 2e (call chains)",
       "expected_time_ms": 28000,
@@ -280,7 +280,7 @@
       "skill_id": "sk050102",
       "type": "true_false",
       "difficulty_tier": "hard",
-      "question_es": "El patron 'API Composition' escala bien para consultas que cruzan muchos servicios y grandes volumenes de datos, porque delega el trabajo de union en cada servicio.",
+      "question_es": "El patrón 'API Composition' escala bien para consultas que cruzan muchos servicios y grandes volumenes de datos, porque delega el trabajo de unión en cada servicio.",
       "question_en": "The API Composition pattern scales well for queries spanning many services and large data volumes, because it delegates the join work to each service.",
       "options_es": [
         "Verdadero",
@@ -291,7 +291,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso, y es su principal limitacion. En API Composition el servicio compositor llama a varios y une los resultados **en memoria**, haciendo de hecho un join en la aplicacion: crece la latencia con cada servicio consultado y el volumen de datos transferido puede dispararse. Es una solucion sencilla y valida para casos acotados; para consultas grandes se recurre a CQRS con una vista materializada.",
+      "explanation_es": "Falso, y es su principal limitación. En API Composition el servicio compositor llama a varios y une los resultados **en memoria**, haciendo de hecho un join en la aplicación: crece la latencia con cada servicio consultado y el volumen de datos transferido puede dispararse. Es una solución sencilla y valida para casos acotados; para consultas grandes se recurre a CQRS con una vista materializada.",
       "explanation_en": "False, and that is its main limitation. In API Composition the composing service calls several others and joins the results **in memory**, effectively doing an application-side join: latency grows with each service queried and the data volume transferred can explode. It is a simple, valid solution for bounded cases; large queries call for CQRS with a materialized view.",
       "source": "Richardson, C. — Microservices Patterns (API Composition)",
       "expected_time_ms": 28000,
@@ -357,7 +357,7 @@
       "skill_id": "sk050103",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Concentrar la logica de negocio en el API Gateway es una buena practica, porque centraliza las reglas en un unico sitio y evita duplicarlas en cada servicio.",
+      "question_es": "Concentrar la lógica de negocio en el API Gateway es una buena práctica, porque centraliza las reglas en un único sitio y evita duplicarlas en cada servicio.",
       "question_en": "Concentrating business logic in the API Gateway is good practice, because it centralizes the rules in one place and avoids duplicating them in each service.",
       "options_es": [
         "Verdadero",
@@ -368,7 +368,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. El gateway debe limitarse a preocupaciones transversales — enrutado, autenticacion, limitacion de peticiones — y no a reglas de negocio. Si acumula logica, se convierte en un punto de acoplamiento que hay que modificar y desplegar cada vez que cambia cualquier servicio: un monolito nuevo, ahora en el camino critico de todo el trafico.",
+      "explanation_es": "Falso. El gateway debe limitarse a preocupaciones transversales — enrutado, autenticación, limitación de peticiones — y no a reglas de negocio. Si acumula lógica, se convierte en un punto de acoplamiento que hay que modificar y desplegar cada vez que cambia cualquier servicio: un monolito nuevo, ahora en el camino crítico de todo el tráfico.",
       "explanation_en": "False. The gateway should stay on cross-cutting concerns - routing, authentication, rate limiting - not business rules. If it accumulates logic it becomes a coupling point that must be modified and deployed whenever any service changes: a new monolith, now sitting on the critical path of all traffic.",
       "source": "Richardson, C. — Microservices Patterns (Gateway pitfalls)",
       "expected_time_ms": 26000,
@@ -550,7 +550,7 @@
       "skill_id": "sk050104",
       "type": "true_false",
       "difficulty_tier": "medium",
-      "question_es": "Un registro de servicios detecta por si solo que una instancia ha dejado de responder, sin necesidad de health checks ni de que la instancia se dé de baja.",
+      "question_es": "Un registro de servicios detecta por sí solo que una instancia ha dejado de responder, sin necesidad de health checks ni de que la instancia se dé de baja.",
       "question_en": "A service registry detects on its own that an instance has stopped responding, with no need for health checks or for the instance to deregister.",
       "options_es": [
         "Verdadero",
@@ -561,7 +561,7 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Falso. El registro solo sabe lo que se le dice: necesita **health checks** — sondas activas o latidos que la instancia envia — para retirar las que dejan de responder. Sin ese mecanismo, una instancia caida sigue anunciada y el trafico se enruta hacia ella, que es el fallo clasico de un descubrimiento de servicios mal configurado.",
+      "explanation_es": "Falso. El registro solo sabe lo que se le dice: necesita **health checks** — sondas activas o latidos que la instancia envía — para retirar las que dejan de responder. Sin ese mecanismo, una instancia caída sigue anunciada y el tráfico se enruta hacia ella, que es el fallo clásico de un descubrimiento de servicios mal configurado.",
       "explanation_en": "False. The registry only knows what it is told: it needs **health checks** - active probes, or heartbeats the instance sends - to remove those that stop responding. Without that mechanism a dead instance stays advertised and traffic is routed to it, which is the classic failure of a badly configured service discovery.",
       "source": "Richardson, C. — Microservices Patterns (health check API)",
       "expected_time_ms": 26000,
