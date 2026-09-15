@@ -14,8 +14,8 @@
       "term_es": "Closure (clausura)",
       "term_en": "Closure",
       "definition_es": "Función anidada que recuerda variables del ámbito que la encierra aunque este ya haya terminado. En bucles cuidado con el «late binding»: la variable se lee al invocar, no al definir.",
-      "definition_en": "A nested function that remembers variables from its enclosing scope even after that scope has finished. In loops beware “late binding”: the variable is read when called, not when defined.",
-      "source": "CPython docs 3.13 — Glossary (“closure”); Fluent Python 2e, ch. 9"
+      "definition_en": "A nested function that remembers variables from its enclosing scope even after that scope has finished. In loops beware "late binding": the variable is read when called, not when defined.",
+      "source": "CPython docs 3.13 — Glossary ("closure"); Fluent Python 2e, ch. 9"
     },
     {
       "id": "gl02_03",
@@ -23,15 +23,15 @@
       "term_en": "MRO (Method Resolution Order)",
       "definition_es": "Orden lineal en que Python busca un atributo en una jerarquía de herencia, calculado con el algoritmo C3. `super()` sigue el MRO, no la clase padre directa, lo que hace cooperativa la herencia múltiple.",
       "definition_en": "The linear order in which Python looks up an attribute across an inheritance hierarchy, computed with the C3 algorithm. `super()` follows the MRO rather than the direct parent, making multiple inheritance cooperative.",
-      "source": "CPython docs 3.13 — The Python Standard Library § type.__mro__; “The Python 2.3 MRO”"
+      "source": "CPython docs 3.13 — The Python Standard Library § type.__mro__; "The Python 2.3 MRO""
     },
     {
       "id": "gl02_04",
-      "term_es": "Iterador vs iterable",
-      "term_en": "Iterator vs iterable",
-      "definition_es": "Un iterable produce un iterador con `iter()`; un iterador entrega elementos con `__next__()` y se agota una sola vez. Todo iterador es iterable, pero no al revés.",
-      "definition_en": "An iterable produces an iterator via `iter()`; an iterator yields items with `__next__()` and is exhausted exactly once. Every iterator is iterable, but not vice versa.",
-      "source": "CPython docs 3.13 — Glossary (“iterator”, “iterable”)"
+      "term_es": "Iterador",
+      "term_en": "Iterator",
+      "definition_es": "Objeto que entrega elementos uno a uno con `__next__()` y se agota una sola vez. Un iterador es también iterable porque tiene `__iter__()`. Todo iterador implementa el protocolo de iteración.",
+      "definition_en": "An object that yields items one by one via `__next__()` and is exhausted exactly once. An iterator is also iterable because it has `__iter__()`. Every iterator implements the iteration protocol.",
+      "source": "CPython docs 3.13 — Glossary ("iterator", "iterable")"
     },
     {
       "id": "gl02_05",
@@ -43,8 +43,8 @@
     },
     {
       "id": "gl02_06",
-      "term_es": "Contrato __eq__ / __hash__",
-      "term_en": "__eq__ / __hash__ contract",
+      "term_es": "Protocolo __hash__",
+      "term_en": "__hash__ protocol",
       "definition_es": "Si dos objetos son iguales deben tener el mismo hash. Definir `__eq__` sin `__hash__` vuelve la clase no hasheable (no usable en sets ni claves de dict), salvo que se redefina `__hash__`.",
       "definition_en": "If two objects are equal they must have the same hash. Defining `__eq__` without `__hash__` makes the class unhashable (not usable in sets or as dict keys) unless `__hash__` is redefined.",
       "source": "CPython docs 3.13 — Data model § object.__hash__"
@@ -55,14 +55,14 @@
       "term_en": "Context manager",
       "definition_es": "Objeto que implementa `__enter__`/`__exit__` para gestionar recursos con `with`, garantizando la liberación aunque haya excepciones. `contextlib.contextmanager` lo crea desde un generador.",
       "definition_en": "An object implementing `__enter__`/`__exit__` to manage resources with `with`, guaranteeing release even on exceptions. `contextlib.contextmanager` builds one from a generator.",
-      "source": "PEP 343 — The “with” Statement; CPython docs 3.13 — contextlib"
+      "source": "PEP 343 — The "with" Statement; CPython docs 3.13 — contextlib"
     },
     {
       "id": "gl02_08",
-      "term_es": "Programación funcional (map/filter/reduce)",
-      "term_en": "Functional programming (map/filter/reduce)",
-      "definition_es": "Estilo basado en funciones puras y de orden superior. `map` transforma, `filter` selecciona y `functools.reduce` acumula; en Python suele preferirse la comprensión equivalente por legibilidad.",
-      "definition_en": "A style built on pure, higher-order functions. `map` transforms, `filter` selects and `functools.reduce` accumulates; in Python the equivalent comprehension is usually preferred for readability.",
+      "term_es": "Funciones de orden superior",
+      "term_en": "Higher-order functions",
+      "definition_es": "Funciones puras que reciben o retornan otras funciones. `map` transforma, `filter` selecciona y `functools.reduce` acumula; en Python la comprensión equivalente suele preferirse por legibilidad.",
+      "definition_en": "Pure functions that take or return other functions. `map` transforms, `filter` selects and `functools.reduce` accumulates; in Python the equivalent comprehension is usually preferred for readability.",
       "source": "CPython docs 3.13 — Functional Programming HOWTO; PEP 8"
     },
     {
@@ -80,6 +80,270 @@
       "definition_es": "Objeto de prueba que sustituye una dependencia y registra cómo se le llama. `unittest.mock.Mock` acepta cualquier atributo silenciosamente; `autospec`/`spec` evita falsos verdes por firmas incorrectas.",
       "definition_en": "A test double that replaces a dependency and records how it is called. `unittest.mock.Mock` accepts any attribute silently; `autospec`/`spec` prevents false passes caused by wrong signatures.",
       "source": "CPython docs 3.13 — unittest.mock"
+    },
+    {
+      "id": "gl02_11",
+      "term_es": "Propiedad",
+      "term_en": "Property",
+      "definition_es": "Descriptor que convierte un método en un atributo accesible mediante `@property`, opcionalmente con `@setter` y `@deleter`. Permite lógica de validación sin exposición de variables privadas.",
+      "definition_en": "A descriptor that exposes a method as an attribute via `@property`, optionally with `@setter` and `@deleter`. Allows validation logic without exposing private variables.",
+      "source": "CPython docs 3.13 — Data model § Implementing Descriptors; Fluent Python 2e, ch. 22"
+    },
+    {
+      "id": "gl02_12",
+      "term_es": "Clase abstracta",
+      "term_en": "Abstract base class",
+      "definition_es": "Clase que hereda de `abc.ABC` y marca métodos con `@abstractmethod` para forzar su implementación en subclases. Impide instanciación directa y define contratos.",
+      "definition_en": "A class inheriting from `abc.ABC` that marks methods with `@abstractmethod` to enforce implementation in subclasses. Prevents direct instantiation and defines contracts.",
+      "source": "CPython docs 3.13 — abc module; PEP 3119"
+    },
+    {
+      "id": "gl02_13",
+      "term_es": "Slots",
+      "term_en": "Slots",
+      "definition_es": "`__slots__` es una secuencia de nombres que restringe qué atributos puede tener una instancia, ahorrando memoria al evitar el diccionario `__dict__`. Invalida propiedades si la clase padre no usa `__slots__`.",
+      "definition_en": "`__slots__` is a sequence of attribute names that restricts which attributes an instance can have, saving memory by avoiding `__dict__`. Breaks properties if the parent class does not use `__slots__`.",
+      "source": "CPython docs 3.13 — Data model § Slots"
+    },
+    {
+      "id": "gl02_14",
+      "term_es": "Mixin",
+      "term_en": "Mixin",
+      "definition_es": "Clase que proporciona un conjunto de métodos reutilizables para otras clases sin ser una clase base independiente. Se combina por herencia múltiple; el MRO determina el orden de búsqueda.",
+      "definition_en": "A class that provides a set of reusable methods for other classes without being a standalone base. Combined via multiple inheritance; the MRO determines lookup order.",
+      "source": "Fluent Python 2e, ch. 11; CPython docs 3.13 — MRO"
+    },
+    {
+      "id": "gl02_15",
+      "term_es": "Monkey patching",
+      "term_en": "Monkey patching",
+      "definition_es": "Modificación dinámica de atributos o métodos en tiempo de ejecución en clases o módulos vivos. Es poderoso pero frágil; en tests usa mocks; en producción evítalo a menos que sea inevitable.",
+      "definition_en": "Dynamic modification of attributes or methods at runtime on live classes or modules. It is powerful but fragile; use mocks in tests; avoid in production unless unavoidable.",
+      "source": "CPython docs 3.13 — Glossary ("monkey patch")"
+    },
+    {
+      "id": "gl02_16",
+      "term_es": "Metaclase",
+      "term_en": "Metaclass",
+      "definition_es": "La clase de una clase: controla cómo se crea una clase con `type.__new__` y `type.__init__`. Hereda de `type` para personalizar la creación de clases, generación de métodos o validación en tiempo de compilación.",
+      "definition_en": "The class of a class: controls how a class is created via `type.__new__` and `type.__init__`. Inherits from `type` to customize class creation, generate methods, or validate at compile time.",
+      "source": "CPython docs 3.13 — Data model § Metaclasses; Fluent Python 2e, ch. 24"
+    },
+    {
+      "id": "gl02_17",
+      "term_es": "Classmethod",
+      "term_en": "Classmethod",
+      "definition_es": "Método decorado con `@classmethod` que recibe la clase como primer argumento (`cls`), no la instancia. Se usa para constructores alternativos o métodos que operan sobre la clase misma.",
+      "definition_en": "A method decorated with `@classmethod` that receives the class as the first argument (`cls`), not the instance. Used for alternative constructors or methods that operate on the class itself.",
+      "source": "CPython docs 3.13 — @classmethod; Fluent Python 2e, ch. 5"
+    },
+    {
+      "id": "gl02_18",
+      "term_es": "Staticmethod",
+      "term_en": "Staticmethod",
+      "definition_es": "Método decorado con `@staticmethod` que no recibe `self` ni `cls`. Es una función pura ligada a la clase por organización, no por estado. Evita la necesidad de crear instancias.",
+      "definition_en": "A method decorated with `@staticmethod` that receives neither `self` nor `cls`. It is a pure function bound to the class for organization, not state. Avoids needing to create instances.",
+      "source": "CPython docs 3.13 — @staticmethod; Fluent Python 2e, ch. 5"
+    },
+    {
+      "id": "gl02_19",
+      "term_es": "Protocolo __repr__",
+      "term_en": "__repr__ protocol",
+      "definition_es": "Método especial que retorna una representación textual de un objeto para debugging, idealmente evaluable con `eval()`. Debe ser inequívoco y útil; es lo que `repr()` y el intérprete muestran.",
+      "definition_en": "Special method that returns a textual representation of an object for debugging, ideally evaluable with `eval()`. Must be unambiguous and helpful; it is what `repr()` and the interpreter display.",
+      "source": "CPython docs 3.13 — Data model § object.__repr__; Fluent Python 2e, ch. 1"
+    },
+    {
+      "id": "gl02_20",
+      "term_es": "Protocolo __str__",
+      "term_en": "__str__ protocol",
+      "definition_es": "Método especial que retorna una representación legible de un objeto para el usuario final. Si no existe Python usa `__repr__` como fallback. Se invoca con `str()` y `print()`.",
+      "definition_en": "Special method that returns a readable representation of an object for the end user. Python falls back to `__repr__` if it is not defined. Invoked with `str()` and `print()`.",
+      "source": "CPython docs 3.13 — Data model § object.__str__; Fluent Python 2e, ch. 1"
+    },
+    {
+      "id": "gl02_21",
+      "term_es": "Corrutina",
+      "term_en": "Coroutine",
+      "definition_es": "Función que puede suspender su ejecución y ceder control, reanudándose después. En Python `async def` define corrutinas; `await` las ejecuta y suspende. Base del I/O asincrónico.",
+      "definition_en": "A function that can suspend execution and yield control, resuming later. In Python `async def` defines coroutines; `await` executes and suspends them. Foundation of async I/O.",
+      "source": "PEP 492 — Coroutines with async and await syntax; CPython docs 3.13 — asyncio"
+    },
+    {
+      "id": "gl02_22",
+      "term_es": "Corrutina async",
+      "term_en": "Async coroutine",
+      "definition_es": "Función definida con `async def` que retorna un objeto corrutina. No se ejecuta inmediatamente; requiere `await` o un event loop como `asyncio.run()` para iniciarse.",
+      "definition_en": "A function defined with `async def` that returns a coroutine object. It does not run immediately; it requires `await` or an event loop like `asyncio.run()` to start.",
+      "source": "PEP 492; CPython docs 3.13 — asyncio — Asynchronous I/O"
+    },
+    {
+      "id": "gl02_23",
+      "term_es": "Threading",
+      "term_en": "Threading",
+      "definition_es": "Concurrencia ligera dentro de un proceso mediante threads. En Python el GIL serializa bytecode, así que solo beneficia I/O; para CPU usa `multiprocessing`. Los locks como `threading.Lock` evitan condiciones de carrera.",
+      "definition_en": "Lightweight concurrency within a process via threads. In Python the GIL serializes bytecode, so it only benefits I/O; for CPU use `multiprocessing`. Locks like `threading.Lock` prevent race conditions.",
+      "source": "CPython docs 3.13 — threading module; PEP 371"
+    },
+    {
+      "id": "gl02_24",
+      "term_es": "Multiprocessing",
+      "term_en": "Multiprocessing",
+      "definition_es": "Concurrencia verdadera mediante procesos separados, cada uno con su propio intérprete y GIL. Comunican vía pipes, queues o shared memory. Más lento que threading pero paralelo de verdad para CPU.",
+      "definition_en": "True concurrency via separate processes, each with its own interpreter and GIL. They communicate via pipes, queues, or shared memory. Slower than threading but truly parallel for CPU-bound work.",
+      "source": "CPython docs 3.13 — multiprocessing module; PEP 371"
+    },
+    {
+      "id": "gl02_25",
+      "term_es": "GIL",
+      "term_en": "GIL (Global Interpreter Lock)",
+      "definition_es": "Mutex que solo deja un thread ejecutar bytecode Python a la vez, incluso en multi-core. Protege estructuras internas pero impide paralelismo real en CPU. El I/O y asyncio lo liberan.",
+      "definition_en": "A mutex that allows only one thread to execute Python bytecode at a time, even on multi-core. It protects internal structures but prevents true CPU parallelism. I/O and asyncio release it.",
+      "source": "CPython docs 3.13 — Global Interpreter Lock (GIL)"
+    },
+    {
+      "id": "gl02_26",
+      "term_es": "functools.lru_cache",
+      "term_en": "functools.lru_cache",
+      "definition_es": "Decorador que cachea los últimos N resultados de una función pura. Mejora rendimiento en cálculos repetidos; `@lru_cache(maxsize=128)` es típico. En Python 3.9+ usa `@cache` para tamaño ilimitado.",
+      "definition_en": "A decorator that caches the last N results of a pure function. Improves performance on repeated calls; `@lru_cache(maxsize=128)` is typical. In Python 3.9+ use `@cache` for unlimited size.",
+      "source": "CPython docs 3.13 — functools.lru_cache"
+    },
+    {
+      "id": "gl02_27",
+      "term_es": "functools.partial",
+      "term_en": "functools.partial",
+      "definition_es": "Retorna una función parcialmente aplicada fijando algunos argumentos. Útil para adaptar firmas de funciones sin crear una lambda. `partial(func, arg1)` devuelve una nueva función.",
+      "definition_en": "Returns a partially applied function with some arguments fixed. Useful for adapting function signatures without a lambda. `partial(func, arg1)` returns a new function.",
+      "source": "CPython docs 3.13 — functools.partial"
+    },
+    {
+      "id": "gl02_28",
+      "term_es": "itertools",
+      "term_en": "itertools",
+      "definition_es": "Módulo de funciones que retornan iteradores perezosos para composición eficiente. `chain`, `islice`, `product`, `combinations` evitan crear listas intermedias y son ideales para data streams.",
+      "definition_en": "A module of functions that return lazy iterators for efficient composition. `chain`, `islice`, `product`, `combinations` avoid creating intermediate lists and are ideal for data streams.",
+      "source": "CPython docs 3.13 — itertools"
+    },
+    {
+      "id": "gl02_29",
+      "term_es": "collections.defaultdict",
+      "term_en": "collections.defaultdict",
+      "definition_es": "Un dict que retorna un valor por defecto si falta una clave en lugar de lanzan KeyError. Se pasa una fábrica callable como `int`, `list` o `lambda: 0` al constructor.",
+      "definition_en": "A dict that returns a default value if a key is missing instead of raising KeyError. Pass a callable factory like `int`, `list`, or `lambda: 0` to the constructor.",
+      "source": "CPython docs 3.13 — collections.defaultdict"
+    },
+    {
+      "id": "gl02_30",
+      "term_es": "collections.Counter",
+      "term_en": "collections.Counter",
+      "definition_es": "Subclase de dict que cuenta ocurrencias de elementos. `Counter([1,1,2,3,3,3]).most_common(2)` retorna los N más frecuentes. Soporta aritmética de conjuntos.",
+      "definition_en": "A dict subclass that counts occurrences of items. `Counter([1,1,2,3,3,3]).most_common(2)` returns the N most frequent. Supports set arithmetic.",
+      "source": "CPython docs 3.13 — collections.Counter"
+    },
+    {
+      "id": "gl02_31",
+      "term_es": "collections.namedtuple",
+      "term_en": "collections.namedtuple",
+      "definition_es": "Fábrica que crea tuplas con atributos nombrados. `Point = namedtuple('Point', ['x', 'y']); p = Point(1, 2)` permite acceso tanto por índice como por `.x`. Más ligero que dataclass.",
+      "definition_en": "A factory that creates tuples with named fields. `Point = namedtuple('Point', ['x', 'y']); p = Point(1, 2)` allows access by index or `.x`. Lighter than dataclass.",
+      "source": "CPython docs 3.13 — collections.namedtuple"
+    },
+    {
+      "id": "gl02_32",
+      "term_es": "dataclasses",
+      "term_en": "dataclasses",
+      "definition_es": "Módulo que genera automáticamente `__init__`, `__repr__`, `__eq__` desde anotaciones de tipo. `@dataclass` simplifica la creación de clases de datos. Con `frozen=True` son inmutables.",
+      "definition_en": "A module that auto-generates `__init__`, `__repr__`, `__eq__` from type annotations. `@dataclass` simplifies data class creation. With `frozen=True` they are immutable.",
+      "source": "CPython docs 3.13 — dataclasses module; PEP 557"
+    },
+    {
+      "id": "gl02_33",
+      "term_es": "pathlib.Path",
+      "term_en": "pathlib.Path",
+      "definition_es": "Clase orientada a objetos para manipular rutas de archivos multiplataforma. `Path('/tmp').glob('*.txt')` retorna iterador de coincidencias. Prefiere esto a strings y `os.path`.",
+      "definition_en": "An object-oriented class for cross-platform file path manipulation. `Path('/tmp').glob('*.txt')` returns an iterator of matches. Prefer this to strings and `os.path`.",
+      "source": "CPython docs 3.13 — pathlib module; PEP 428"
+    },
+    {
+      "id": "gl02_34",
+      "term_es": "subprocess",
+      "term_en": "subprocess",
+      "definition_es": "Módulo para crear procesos secundarios y capturar su salida. `subprocess.run(['ls'], capture_output=True)` retorna un CompletedProcess. Evita `os.system` que es inseguro.",
+      "definition_en": "A module for spawning child processes and capturing output. `subprocess.run(['ls'], capture_output=True)` returns a CompletedProcess. Avoid `os.system` which is unsafe.",
+      "source": "CPython docs 3.13 — subprocess module"
+    },
+    {
+      "id": "gl02_35",
+      "term_es": "logging",
+      "term_en": "logging",
+      "definition_es": "Módulo para grabar mensajes de debug, info, warning, error, critical. Mejor que `print()` en producción; soporta niveles, handlers, formatters. Configura con `logging.basicConfig()`.",
+      "definition_en": "A module for recording debug, info, warning, error, critical messages. Better than `print()` in production; supports levels, handlers, formatters. Configure with `logging.basicConfig()`.",
+      "source": "CPython docs 3.13 — logging module"
+    },
+    {
+      "id": "gl02_36",
+      "term_es": "re (expresiones regulares)",
+      "term_en": "re (regular expressions)",
+      "definition_es": "Módulo para búsqueda y substitución de patrones de texto. `re.search()`, `re.findall()`, `re.sub()` son funciones clave. Compila con `re.compile()` para eficiencia en bucles.",
+      "definition_en": "A module for text pattern matching and substitution. `re.search()`, `re.findall()`, `re.sub()` are key functions. Compile with `re.compile()` for efficiency in loops.",
+      "source": "CPython docs 3.13 — re module"
+    },
+    {
+      "id": "gl02_37",
+      "term_es": "json",
+      "term_en": "json",
+      "definition_es": "Módulo para serializar y deserializar JSON. `json.dumps()` convierte objetos Python a string; `json.loads()` lo invierte. Soporta parámetros como `indent` para formato legible.",
+      "definition_en": "A module for serializing and deserializing JSON. `json.dumps()` converts Python objects to string; `json.loads()` reverses it. Supports parameters like `indent` for readable output.",
+      "source": "CPython docs 3.13 — json module"
+    },
+    {
+      "id": "gl02_38",
+      "term_es": "pickle",
+      "term_en": "pickle",
+      "definition_es": "Módulo para serializar objetos Python arbitrarios a bytes. Solo usa pickle en datos confiables; nunca en entrada de usuarios por riesgo de ejecución de código arbitrario.",
+      "definition_en": "A module for serializing arbitrary Python objects to bytes. Only use pickle on trusted data; never on user input due to arbitrary code execution risk.",
+      "source": "CPython docs 3.13 — pickle module; PEP 574"
+    },
+    {
+      "id": "gl02_39",
+      "term_es": "Copia superficial",
+      "term_en": "Shallow copy",
+      "definition_es": "Copia que duplica solo el contenedor externo; los elementos apuntan a los mismos objetos. `copy.copy()` o slicing `lista[:]` crean copias superficiales. Útil para evitar mutaciones del contenedor.",
+      "definition_en": "A copy that duplicates only the outer container; elements point to the same objects. `copy.copy()` or slicing `lista[:]` create shallow copies. Useful for avoiding mutations of the container.",
+      "source": "CPython docs 3.13 — copy module"
+    },
+    {
+      "id": "gl02_40",
+      "term_es": "Copia profunda",
+      "term_en": "Deep copy",
+      "definition_es": "Copia que duplica recursivamente el contenedor y todos los elementos anidados. `copy.deepcopy()` evita referencias compartidas. Más lenta que shallow copy pero totalmente independiente.",
+      "definition_en": "A copy that recursively duplicates the container and all nested elements. `copy.deepcopy()` avoids shared references. Slower than shallow copy but fully independent.",
+      "source": "CPython docs 3.13 — copy module"
+    },
+    {
+      "id": "gl02_41",
+      "term_es": "typing.Optional",
+      "term_en": "typing.Optional",
+      "definition_es": "Alias para `Union[T, None]` que anota que un valor puede ser de tipo T o None. Ayuda a type checkers a detectar errores; `Optional[int]` es más legible que `Union[int, None]`.",
+      "definition_en": "An alias for `Union[T, None]` that annotates a value can be type T or None. Helps type checkers catch errors; `Optional[int]` is more readable than `Union[int, None]`.",
+      "source": "CPython docs 3.13 — typing.Optional; PEP 484"
+    },
+    {
+      "id": "gl02_42",
+      "term_es": "typing.Union",
+      "term_en": "typing.Union",
+      "definition_es": "Anotación que declara un valor puede ser de uno de varios tipos. `Union[int, str]` significa int o str. En Python 3.10+ usa sintaxis `int | str` equivalente.",
+      "definition_en": "An annotation that declares a value can be one of several types. `Union[int, str]` means int or str. In Python 3.10+ use the equivalent `int | str` syntax.",
+      "source": "CPython docs 3.13 — typing.Union; PEP 484"
+    },
+    {
+      "id": "gl02_43",
+      "term_es": "Protocol (tipado estructural)",
+      "term_en": "Protocol (structural typing)",
+      "definition_es": "En `typing` y PEP 544, define un contrato estructural sin herencia explícita. `class Drawable(Protocol):` con métodos marca lo que un objeto debe soportar. Permite duck typing seguro.",
+      "definition_en": "In `typing` and PEP 544, defines a structural contract without explicit inheritance. `class Drawable(Protocol):` with methods marks what an object must support. Enables safe duck typing.",
+      "source": "CPython docs 3.13 — typing.Protocol; PEP 544"
     }
   ]
 }

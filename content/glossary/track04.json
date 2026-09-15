@@ -80,6 +80,222 @@
       "definition_es": "Integración Continua (mezclar y probar cambios pequeños a menudo) y Entrega/Despliegue Continuos (automatizar el paso a producción). La pirámide de tests y los feature flags reducen el riesgo de cada despliegue.",
       "definition_en": "Continuous Integration (merging and testing small changes often) and Continuous Delivery/Deployment (automating the path to production). The test pyramid and feature flags reduce each deploy's risk.",
       "source": "Humble & Farley — Continuous Delivery; GitHub Actions documentation"
+    },
+    {
+      "id": "gl04_11",
+      "term_es": "Commit",
+      "term_en": "Commit",
+      "definition_es": "Instantánea del repositorio registrada en el historial de Git con metadatos (autor, timestamp, mensaje descriptivo). Cada commit tiene un hash único (SHA-1 o SHA-256) que lo identifica.",
+      "definition_en": "A snapshot of the repository recorded in Git history with metadata (author, timestamp, descriptive message). Each commit has a unique hash (SHA-1 or SHA-256) identifying it.",
+      "source": "Git documentation — git-commit"
+    },
+    {
+      "id": "gl04_12",
+      "term_es": "Branch",
+      "term_en": "Branch",
+      "definition_es": "Puntero nombrado a un commit que permite desarrollo paralelo independiente. `main` o `master` es la rama por defecto; las ramas de feature aíslan cambios hasta integración.",
+      "definition_en": "A named pointer to a commit enabling independent parallel development. `main` or `master` is the default branch; feature branches isolate changes until integration.",
+      "source": "Git documentation — git-branch; GitHub Flow"
+    },
+    {
+      "id": "gl04_13",
+      "term_es": "Merge",
+      "term_en": "Merge",
+      "definition_es": "Integración de cambios de una rama en otra, creando un commit de fusión que registra ambos padres. Puede causar conflictos si se modificaron las mismas líneas.",
+      "definition_en": "Integrating changes from one branch into another, creating a merge commit recording both parents. Can cause conflicts if the same lines were modified.",
+      "source": "Git documentation — git-merge"
+    },
+    {
+      "id": "gl04_14",
+      "term_es": "Rebase",
+      "term_en": "Rebase",
+      "definition_es": "Reaaplicar commits de una rama sobre otra para linealizar el historial. Reescribe el historial (peligroso en ramas compartidas); `--interactive` permite editar/reorganizar commits.",
+      "definition_en": "Reapplying commits from one branch on top of another to linearize history. Rewrites history (dangerous on shared branches); `--interactive` allows editing/reorganizing commits.",
+      "source": "Git documentation — git-rebase"
+    },
+    {
+      "id": "gl04_15",
+      "term_es": "Pull Request",
+      "term_en": "Pull Request",
+      "definition_es": "Solicitud formal de integración de cambios de una rama en otra, típicamente con revisión de código y verificación de CI. Facilita discusión antes de mergear.",
+      "definition_en": "A formal request to integrate changes from one branch into another, typically with code review and CI verification. Enables discussion before merging.",
+      "source": "GitHub documentation — About pull requests"
+    },
+    {
+      "id": "gl04_16",
+      "term_es": "Code review",
+      "term_en": "Code review",
+      "definition_es": "Examen entre pares de cambios de código antes de integración. Detecta bugs, asegura calidad, difunde conocimiento y refuerza estándares del proyecto.",
+      "definition_en": "Peer examination of code changes before integration. Catches bugs, ensures quality, spreads knowledge and reinforces project standards.",
+      "source": "Google Engineering Practices — Code Review; Best Practices in Software Engineering"
+    },
+    {
+      "id": "gl04_17",
+      "term_es": "DRY",
+      "term_en": "DRY",
+      "definition_es": "Principio Don't Repeat Yourself: evitar duplicación de lógica extrayéndola en funciones/módulos reutilizables. Reduce carga de mantenimiento y riesgo de inconsistencias.",
+      "definition_en": "Don't Repeat Yourself principle: avoid duplicating logic by extracting it into reusable functions/modules. Reduces maintenance burden and inconsistency risk.",
+      "source": "Hunt & Thomas — The Pragmatic Programmer"
+    },
+    {
+      "id": "gl04_18",
+      "term_es": "YAGNI",
+      "term_en": "YAGNI",
+      "definition_es": "Principio You Aren't Gonna Need It: evitar codificar para necesidades hipotéticas futuras. Enfocarse en requisitos actuales y refactorizar después si es necesario.",
+      "definition_en": "You Aren't Gonna Need It principle: avoid writing code for hypothetical future needs. Focus on current requirements and refactor later if necessary.",
+      "source": "Extreme Programming practices; Martin Fowler — Code Smell"
+    },
+    {
+      "id": "gl04_19",
+      "term_es": "Deuda técnica",
+      "term_en": "Technical debt",
+      "definition_es": "Costo acumulado de elegir soluciones expeditas sobre diseño adecuado. Se compone como interés si no se atiende, degradando velocidad y confiabilidad.",
+      "definition_en": "The accumulated cost of choosing expedient solutions over proper design. Compounds like interest if left unaddressed, degrading velocity and reliability.",
+      "source": "Ward Cunningham — debt metaphor; Martin Fowler — Technical Debt Quadrant"
+    },
+    {
+      "id": "gl04_20",
+      "term_es": "Refactoring",
+      "term_en": "Refactoring",
+      "definition_es": "Reestructuración de código sin cambiar comportamiento externo. Mejora legibilidad, reduce complejidad y habilita cambios futuros; debe estar acompañado de tests.",
+      "definition_en": "Restructuring code without changing external behavior. Improves readability, reduces complexity and enables future changes; must be accompanied by tests.",
+      "source": "Martin Fowler — Refactoring: Improving the Design of Existing Code"
+    },
+    {
+      "id": "gl04_21",
+      "term_es": "Método HTTP",
+      "term_en": "HTTP method",
+      "definition_es": "Verbo que especifica operación sobre recurso: GET (recuperar), POST (crear), PUT (reemplazar), PATCH (actualización parcial), DELETE (eliminar). Cada uno tiene semántica y propiedades de idempotencia diferentes.",
+      "definition_en": "A verb specifying operation on a resource: GET (retrieve), POST (create), PUT (replace), PATCH (partial update), DELETE (remove). Each has different semantics and idempotency properties.",
+      "source": "RFC 9110 — HTTP Semantics, §9 (Methods)"
+    },
+    {
+      "id": "gl04_22",
+      "term_es": "Código HTTP",
+      "term_en": "HTTP status code",
+      "definition_es": "Número de tres dígitos indicando resultado de solicitud. 2xx (éxito), 3xx (redirección), 4xx (error del cliente), 5xx (error del servidor). Ej: 200 OK, 404 Not Found, 500 Internal Server Error.",
+      "definition_en": "A three-digit number indicating request outcome. 2xx (success), 3xx (redirect), 4xx (client error), 5xx (server error). Ex: 200 OK, 404 Not Found, 500 Internal Server Error.",
+      "source": "RFC 9110 — HTTP Semantics, §15 (Status Codes)"
+    },
+    {
+      "id": "gl04_23",
+      "term_es": "JSON",
+      "term_en": "JSON",
+      "definition_es": "Formato de intercambio de datos ligero basado en texto (arrays, objetos, strings, números, booleanos, null). Legible para humanos e independiente del lenguaje; estándar en APIs REST.",
+      "definition_en": "A lightweight text data format (arrays, objects, strings, numbers, booleans, null). Human-readable and language-agnostic; the standard in REST APIs.",
+      "source": "RFC 8259 — The JavaScript Object Notation (JSON) Data Interchange Format"
+    },
+    {
+      "id": "gl04_24",
+      "term_es": "OAuth 2.0",
+      "term_en": "OAuth 2.0",
+      "definition_es": "Protocolo de delegación para que apps terceras soliciten datos del usuario sin almacenar contraseñas. Usa tokens de acceso con scope limitado; soporta múltiples flujos (authorization code, implicit, client credentials).",
+      "definition_en": "A delegation protocol for third-party apps to request user data without storing passwords. Uses access tokens with limited scope; supports multiple flows (authorization code, implicit, client credentials).",
+      "source": "RFC 6749 — The OAuth 2.0 Authorization Framework"
+    },
+    {
+      "id": "gl04_25",
+      "term_es": "Autenticación",
+      "term_en": "Authentication",
+      "definition_es": "Verificación de identidad de un usuario o sistema (¿quién eres?). Típicamente mediante credenciales (usuario/contraseña), autenticación multifactor (MFA) o certificados.",
+      "definition_en": "Verifying the identity of a user or system (who are you?). Typically via credentials (username/password), multi-factor authentication (MFA) or certificates.",
+      "source": "OWASP Authentication Cheat Sheet"
+    },
+    {
+      "id": "gl04_26",
+      "term_es": "Autorización",
+      "term_en": "Authorization",
+      "definition_es": "Determinación de qué está permitido hacer a un usuario autenticado (permisos, control de acceso). Típicamente mediante roles (RBAC) o políticas (ABAC).",
+      "definition_en": "Determining what an authenticated user is allowed to do (permissions, access control). Typically via roles (RBAC) or policies (ABAC).",
+      "source": "OWASP Authorization Cheat Sheet"
+    },
+    {
+      "id": "gl04_27",
+      "term_es": "SQL JOIN",
+      "term_en": "SQL JOIN",
+      "definition_es": "Operación que combina filas de múltiples tablas basándose en columnas relacionadas. Tipos: INNER (intersección), LEFT (todas izquierda + matching), RIGHT (todas derecha + matching), FULL OUTER (unión).",
+      "definition_en": "An operation combining rows from multiple tables based on related columns. Types: INNER (intersection), LEFT (all left + matching), RIGHT (all right + matching), FULL OUTER (union).",
+      "source": "PostgreSQL 16 documentation — Joins Between Tables"
+    },
+    {
+      "id": "gl04_28",
+      "term_es": "Index (base de datos)",
+      "term_en": "Index (database)",
+      "definition_es": "Estructura de datos (B-tree, hash, etc.) que acelera búsquedas y ordenamientos en columnas. Intercambia costo de escritura por velocidad de lectura; crítico en tablas grandes.",
+      "definition_en": "A data structure (B-tree, hash, etc.) accelerating lookups and sorts on columns. Trades write overhead for read speed; critical on large tables.",
+      "source": "PostgreSQL 16 documentation — Indexes"
+    },
+    {
+      "id": "gl04_29",
+      "term_es": "ORM",
+      "term_en": "ORM",
+      "definition_es": "Librería que mapea tablas relacionales a objetos/clases del lenguaje (SQLAlchemy, Hibernate, Django ORM). Abstrae SQL permitiendo consultas en código; riesgo de N+1 si no se carga eagerly.",
+      "definition_en": "A library mapping relational tables to language objects/classes (SQLAlchemy, Hibernate, Django ORM). Abstracts SQL enabling queries in code; N+1 risk if not eager-loaded.",
+      "source": "Fowler — Patterns of Enterprise Application Architecture (Active Record, Data Mapper)"
+    },
+    {
+      "id": "gl04_30",
+      "term_es": "Docker image",
+      "term_en": "Docker image",
+      "definition_es": "Plantilla inmutable construida de Dockerfile en capas. Contiene OS base, librerías, dependencias y código de la app. Sirve como template para crear contenedores.",
+      "definition_en": "An immutable template built from a Dockerfile in layers. Contains base OS, libraries, dependencies and app code. Serves as template for creating containers.",
+      "source": "Docker documentation — Images"
+    },
+    {
+      "id": "gl04_31",
+      "term_es": "Container",
+      "term_en": "Container",
+      "definition_es": "Instancia en ejecución de una Docker image con una capa de escritura efímera. Aislado en proceso, filesystem y red; puede pausarse, reiniciarse y borrarse sin afectar la imagen.",
+      "definition_en": "A running instance of a Docker image with an ephemeral writable layer. Isolated in process, filesystem and network; can pause, restart and remove without affecting the image.",
+      "source": "Docker documentation — Containers"
+    },
+    {
+      "id": "gl04_32",
+      "term_es": "Docker Compose",
+      "term_en": "Docker Compose",
+      "definition_es": "Herramienta que define aplicaciones multi-contenedor en YAML (docker-compose.yml). Simplifica orquestación local para desarrollo y testing; comando `docker compose up` arranca toda la pila.",
+      "definition_en": "A tool defining multi-container applications in YAML (docker-compose.yml). Simplifies local orchestration for development and testing; `docker compose up` starts the entire stack.",
+      "source": "Docker documentation — Compose"
+    },
+    {
+      "id": "gl04_33",
+      "term_es": "Dockerfile",
+      "term_en": "Dockerfile",
+      "definition_es": "Archivo de texto con instrucciones (FROM, RUN, COPY, CMD, EXPOSE, etc.) que construye una Docker image capa a capa. Cada instrucción crea una capa; heredar de imágenes base pequeñas optimiza tamaño.",
+      "definition_en": "A text file with instructions (FROM, RUN, COPY, CMD, EXPOSE, etc.) building a Docker image layer by layer. Each instruction creates a layer; inheriting from small base images optimizes size.",
+      "source": "Docker documentation — Dockerfile Reference"
+    },
+    {
+      "id": "gl04_34",
+      "term_es": "Transacción",
+      "term_en": "Transaction",
+      "definition_es": "Unidad de trabajo atómicamente ejecutada y aislada en una base de datos. Debe satisfacer propiedades ACID: atomicidad (todo o nada), consistencia, aislamiento e durabilidad.",
+      "definition_en": "A unit of work atomically executed and isolated in a database. Must satisfy ACID properties: atomicity (all or nothing), consistency, isolation and durability.",
+      "source": "PostgreSQL 16 documentation — Transactions"
+    },
+    {
+      "id": "gl04_35",
+      "term_es": "Unit test",
+      "term_en": "Unit test",
+      "definition_es": "Prueba de una función/método aislada con mocks de dependencias. Rápida, enfocada, alta cobertura. Esencial para confianza en refactoring y mantenimiento de código.",
+      "definition_en": "A test of a single function/method in isolation with mocked dependencies. Fast, focused, high coverage. Essential for confidence in refactoring and code maintenance.",
+      "source": "xUnit Patterns; TDD literature"
+    },
+    {
+      "id": "gl04_36",
+      "term_es": "Integration test",
+      "term_en": "Integration test",
+      "definition_es": "Prueba de múltiples componentes interactuando (ej: API + DB real). Más lenta que unit tests pero detecta problemas de integración reales. Pirámide de tests: muchas unit, algunos integration, pocos end-to-end.",
+      "definition_en": "A test of multiple components interacting (e.g. API + real DB). Slower than unit tests but catches real integration issues. Test pyramid: many unit, some integration, few end-to-end.",
+      "source": "xUnit Patterns; Alister Scott — Test Automation"
+    },
+    {
+      "id": "gl04_37",
+      "term_es": "Logging",
+      "term_en": "Logging",
+      "definition_es": "Registro de eventos de la aplicación (errores, advertencias, info) para debugging, monitoreo y auditoría. Niveles: DEBUG (detalle), INFO (general), WARN (advertencia), ERROR (error). Estructurado (JSON) vs plaintext.",
+      "definition_en": "Recording application events (errors, warnings, info) for debugging, monitoring and audit trails. Levels: DEBUG (detail), INFO (general), WARN (warning), ERROR (error). Structured (JSON) vs plaintext.",
+      "source": "The Twelve-Factor App (Logs as Event Streams); Python logging documentation"
     }
   ]
 }

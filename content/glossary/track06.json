@@ -3,7 +3,7 @@
   "terms": [
     {
       "id": "gl06_01",
-      "term_es": "Sobreajuste (overfitting)",
+      "term_es": "Sobreajuste",
       "term_en": "Overfitting",
       "definition_es": "Cuando un modelo memoriza el ruido del conjunto de entrenamiento y generaliza mal a datos nuevos: error de entrenamiento bajo pero error de validación alto. Se mitiga con regularización, más datos o early stopping.",
       "definition_en": "When a model memorizes the noise in the training set and generalizes poorly to new data: low training error but high validation error. Mitigated with regularization, more data or early stopping.",
@@ -11,55 +11,55 @@
     },
     {
       "id": "gl06_02",
-      "term_es": "Compromiso sesgo-varianza",
-      "term_en": "Bias-variance tradeoff",
+      "term_es": "Compromiso Sesgo-Varianza",
+      "term_en": "Bias-Variance Tradeoff",
       "definition_es": "Descomposición del error de generalización: el sesgo alto (subajuste) simplifica en exceso; la varianza alta (sobreajuste) es demasiado sensible a los datos. El objetivo es equilibrarlos.",
       "definition_en": "A decomposition of generalization error: high bias (underfitting) oversimplifies; high variance (overfitting) is too sensitive to the data. The goal is to balance the two.",
       "source": "Hastie, Tibshirani & Friedman — The Elements of Statistical Learning, ch. 2/7"
     },
     {
       "id": "gl06_03",
-      "term_es": "Fuga de datos (data leakage)",
-      "term_en": "Data leakage",
+      "term_es": "Fuga de Datos",
+      "term_en": "Data Leakage",
       "definition_es": "Cuando información del conjunto de prueba se filtra al entrenamiento (p. ej. escalar antes de dividir train/test), inflando artificialmente el rendimiento. Todo preprocesado debe ajustarse solo con train.",
       "definition_en": "When information from the test set leaks into training (e.g. scaling before the train/test split), artificially inflating performance. All preprocessing must be fit on the training set only.",
       "source": "Géron — Hands-On Machine Learning 2e, ch. 2"
     },
     {
       "id": "gl06_04",
-      "term_es": "Validación cruzada (k-fold)",
-      "term_en": "Cross-validation (k-fold)",
+      "term_es": "Validación Cruzada",
+      "term_en": "Cross-Validation",
       "definition_es": "Técnica que divide los datos en k pliegues y entrena/valida k veces rotando el pliegue de validación, promediando el resultado. Para series temporales se usa TimeSeriesSplit (no barajar).",
       "definition_en": "A technique that splits data into k folds and trains/validates k times, rotating the validation fold and averaging the result. For time series use TimeSeriesSplit (no shuffling).",
       "source": "scikit-learn User Guide — Cross-validation"
     },
     {
       "id": "gl06_05",
-      "term_es": "Precisión, exhaustividad y F1",
-      "term_en": "Precision, recall and F1",
-      "definition_es": "Precisión = aciertos entre los predichos positivos; exhaustividad (recall) = aciertos entre los positivos reales; F1 = su media armónica. Con clases desbalanceadas, la accuracy engaña.",
-      "definition_en": "Precision = correct among predicted positives; recall = correct among actual positives; F1 = their harmonic mean. With imbalanced classes, accuracy is misleading.",
+      "term_es": "Precisión, Exhaustividad, F1",
+      "term_en": "Precision, Recall, F1",
+      "definition_es": "Tres métricas de evaluación de clasificadores: precisión = aciertos entre predichos positivos; exhaustividad (recall) = aciertos entre positivos reales; F1 = media armónica de ambas. Con clases desbalanceadas, accuracy engaña.",
+      "definition_en": "Three classification evaluation metrics: precision = correct among predicted positives; recall = correct among actual positives; F1 = their harmonic mean. With imbalanced classes, accuracy is misleading.",
       "source": "scikit-learn User Guide — Classification metrics; Bishop — PRML"
     },
     {
       "id": "gl06_06",
-      "term_es": "Regularización (L1/L2)",
-      "term_en": "Regularization (L1/L2)",
+      "term_es": "Regularización",
+      "term_en": "Regularization",
       "definition_es": "Penalización añadida a la función de pérdida para reducir la complejidad del modelo. L2 (Ridge) encoge los pesos; L1 (Lasso) los lleva a cero, haciendo selección de características.",
       "definition_en": "A penalty added to the loss function to reduce model complexity. L2 (Ridge) shrinks weights; L1 (Lasso) drives them to zero, performing feature selection.",
       "source": "Goodfellow et al. — Deep Learning, ch. 7; Hastie et al. — ESL"
     },
     {
       "id": "gl06_07",
-      "term_es": "Descenso de gradiente",
-      "term_en": "Gradient descent",
+      "term_es": "Descenso de Gradiente",
+      "term_en": "Gradient Descent",
       "definition_es": "Algoritmo de optimización que actualiza los parámetros en dirección opuesta al gradiente de la pérdida, escalado por la tasa de aprendizaje. Variantes: batch, estocástico (SGD), mini-batch y Adam.",
       "definition_en": "An optimization algorithm that updates parameters in the direction opposite the loss gradient, scaled by the learning rate. Variants: batch, stochastic (SGD), mini-batch and Adam.",
       "source": "Goodfellow et al. — Deep Learning, ch. 4/8; Kingma & Ba — Adam"
     },
     {
       "id": "gl06_08",
-      "term_es": "Retropropagación (backprop)",
+      "term_es": "Retropropagación",
       "term_en": "Backpropagation",
       "definition_es": "Algoritmo que calcula el gradiente de la pérdida respecto a cada peso aplicando la regla de la cadena hacia atrás por la red, para luego actualizar los pesos con descenso de gradiente.",
       "definition_en": "An algorithm that computes the gradient of the loss with respect to each weight by applying the chain rule backward through the network, then updates the weights via gradient descent.",
@@ -67,19 +67,259 @@
     },
     {
       "id": "gl06_09",
-      "term_es": "Gradiente evanescente",
-      "term_en": "Vanishing gradient",
+      "term_es": "Gradiente Evanescente",
+      "term_en": "Vanishing Gradient",
       "definition_es": "Problema en redes profundas o recurrentes donde los gradientes se hacen minúsculos al propagarse, frenando el aprendizaje de capas iniciales. ReLU, normalización y LSTM/GRU lo mitigan.",
       "definition_en": "A problem in deep or recurrent networks where gradients shrink to near zero as they propagate, stalling learning in early layers. ReLU, normalization and LSTM/GRU mitigate it.",
       "source": "Hochreiter & Schmidhuber — LSTM (1997); Goodfellow et al. — Deep Learning, ch. 10"
     },
     {
       "id": "gl06_10",
-      "term_es": "Análisis de componentes principales (PCA)",
-      "term_en": "Principal Component Analysis (PCA)",
+      "term_es": "PCA",
+      "term_en": "PCA",
       "definition_es": "Técnica de reducción de dimensionalidad que proyecta los datos sobre las direcciones de máxima varianza (componentes principales). Requiere estandarizar las variables antes de aplicarla.",
       "definition_en": "A dimensionality-reduction technique that projects data onto the directions of maximum variance (principal components). It requires standardizing the features beforehand.",
       "source": "Bishop — Pattern Recognition and Machine Learning, ch. 12"
+    },
+    {
+      "id": "gl06_11",
+      "term_es": "Tasa de Aprendizaje",
+      "term_en": "Learning Rate",
+      "definition_es": "Hiperparámetro que controla el tamaño del paso en descenso de gradiente. Valores muy altos causan divergencia; muy bajos ralentizan el entrenamiento. A menudo se reduce según el progreso (learning rate scheduling).",
+      "definition_en": "A hyperparameter controlling the step size in gradient descent. Too high causes divergence; too low slows training. Often reduced as training progresses (learning rate scheduling).",
+      "source": "Goodfellow et al. — Deep Learning, ch. 8; Kingma & Ba — Adam"
+    },
+    {
+      "id": "gl06_12",
+      "term_es": "Época",
+      "term_en": "Epoch",
+      "definition_es": "Una pasada completa del modelo a través de todo el conjunto de entrenamiento. En cada época se actualiza el modelo; después se valida. El número de épocas es un hiperparámetro clave.",
+      "definition_en": "One complete pass of the model through the entire training set. The model updates per epoch; validation occurs after. The number of epochs is a key hyperparameter.",
+      "source": "Goodfellow et al. — Deep Learning, ch. 8"
+    },
+    {
+      "id": "gl06_13",
+      "term_es": "Tamaño de Lote",
+      "term_en": "Batch Size",
+      "definition_es": "Número de muestras procesadas en una pasada antes de actualizar los pesos. Lotes pequeños: más ruidosos pero más actualizaciones; lotes grandes: más estables pero más lentos. Típico: 32, 64, 128.",
+      "definition_en": "Number of samples processed in one forward/backward pass before weight updates. Small batches: noisier but more updates; large batches: stable but slower. Typical: 32, 64, 128.",
+      "source": "Goodfellow et al. — Deep Learning, ch. 8; Géron — Hands-On ML 2e"
+    },
+    {
+      "id": "gl06_14",
+      "term_es": "Función de Activación",
+      "term_en": "Activation Function",
+      "definition_es": "Función no lineal aplicada a la salida de cada neurona, permitiendo que la red aprenda relaciones no lineales. Ejemplos: ReLU, Sigmoid, Tanh, Softmax. Sin ellas, redes profundas son lineales.",
+      "definition_en": "A non-linear function applied to each neuron's output, enabling the network to learn non-linear relationships. Examples: ReLU, Sigmoid, Tanh, Softmax. Without them, deep networks are linear.",
+      "source": "Goodfellow et al. — Deep Learning, ch. 6"
+    },
+    {
+      "id": "gl06_15",
+      "term_es": "ReLU",
+      "term_en": "ReLU",
+      "definition_es": "Rectified Linear Unit: función de activación f(x) = max(0, x). Muy popular en redes profundas; eficiente computacionalmente y mitiga gradientes evanescentes. Variante: Leaky ReLU permite pequeños gradientes negativos.",
+      "definition_en": "Rectified Linear Unit: activation function f(x) = max(0, x). Popular in deep networks; computationally efficient and mitigates vanishing gradients. Variant: Leaky ReLU allows small negative gradients.",
+      "source": "Krizhevsky, Sutskever & Hinton — ImageNet Classification (2012); Goodfellow et al. — Deep Learning"
+    },
+    {
+      "id": "gl06_16",
+      "term_es": "Sigmoide",
+      "term_en": "Sigmoid",
+      "definition_es": "Función de activación σ(x) = 1 / (1 + e^(-x)) que comprime valores al rango [0,1]. Clásica en clasificación binaria (última capa) pero sufre de gradientes evanescentes en capas ocultas.",
+      "definition_en": "Activation function σ(x) = 1 / (1 + e^(-x)) that squashes values to [0,1]. Classic for binary classification (output layer) but suffers vanishing gradients in hidden layers.",
+      "source": "Bishop — PRML, ch. 4; Goodfellow et al. — Deep Learning, ch. 6"
+    },
+    {
+      "id": "gl06_17",
+      "term_es": "Softmax",
+      "term_en": "Softmax",
+      "definition_es": "Función que convierte un vector de valores reales en una distribución de probabilidad sobre k clases. Usado en la capa de salida de clasificadores multiclase; garantiza que las probabilidades sumen 1.",
+      "definition_en": "A function that converts a vector of real values into a probability distribution over k classes. Used in the output layer of multiclass classifiers; guarantees probabilities sum to 1.",
+      "source": "Bishop — PRML, ch. 4; Goodfellow et al. — Deep Learning, ch. 6"
+    },
+    {
+      "id": "gl06_18",
+      "term_es": "Dropout",
+      "term_en": "Dropout",
+      "definition_es": "Técnica de regularización que desactiva aleatoriamente una fracción de neuronas durante el entrenamiento, reduciendo co-adaptación. Típicamente se aplica con tasa de dropout entre 0.2 y 0.5; en validación/test se desactiva.",
+      "definition_en": "A regularization technique that randomly deactivates a fraction of neurons during training, reducing co-adaptation. Typically applied with dropout rate between 0.2 and 0.5; disabled during validation/test.",
+      "source": "Hinton et al. — Dropout: A Simple Way to Prevent Neural Networks from Overfitting (2012)"
+    },
+    {
+      "id": "gl06_19",
+      "term_es": "Normalización por Lotes",
+      "term_en": "Batch Normalization",
+      "definition_es": "Técnica que normaliza la entrada de cada capa durante el entrenamiento, acelerando el aprendizaje y permitiendo mayores tasas de aprendizaje. Reduce sensibilidad a la inicialización; mantiene parámetros escalables durante la inferencia.",
+      "definition_en": "A technique that normalizes layer inputs during training, accelerating learning and enabling higher learning rates. Reduces initialization sensitivity; maintains learned scaling during inference.",
+      "source": "Ioffe & Szegedy — Batch Normalization: Accelerating Deep Network Training (2015)"
+    },
+    {
+      "id": "gl06_20",
+      "term_es": "Pérdida de Entropía Cruzada",
+      "term_en": "Cross-Entropy Loss",
+      "definition_es": "Función de pérdida para clasificación que mide la divergencia entre la distribución predicha y la real. Definida como -Σ y*log(ŷ), es la métrica estándar para multinomial, binaria y multilabel.",
+      "definition_en": "Loss function for classification measuring divergence between predicted and true distributions. Defined as -Σ y*log(ŷ), it is the standard metric for multinomial, binary and multilabel.",
+      "source": "Bishop — PRML, ch. 4; Goodfellow et al. — Deep Learning, ch. 6"
+    },
+    {
+      "id": "gl06_21",
+      "term_es": "Matriz de Confusión",
+      "term_en": "Confusion Matrix",
+      "definition_es": "Tabla que cruza predicciones vs. etiquetas reales, mostrando verdaderos positivos, falsos positivos, verdaderos negativos y falsos negativos. Base para calcular precisión, recall, F1 y otras métricas de desempeño.",
+      "definition_en": "A table that crosses predictions vs. true labels, showing true positives, false positives, true negatives and false negatives. Foundation for computing precision, recall, F1 and other performance metrics.",
+      "source": "scikit-learn User Guide — Confusion Matrix; Bishop — PRML"
+    },
+    {
+      "id": "gl06_22",
+      "term_es": "Precisión",
+      "term_en": "Precision",
+      "definition_es": "Métrica de clasificación: proporción de predicciones positivas que son correctas (TP / (TP + FP)). Importante cuando los falsos positivos son costosos (p. ej. diagnósticos médicos).",
+      "definition_en": "Classification metric: proportion of positive predictions that are correct (TP / (TP + FP)). Important when false positives are costly (e.g. medical diagnoses).",
+      "source": "scikit-learn User Guide — Classification Metrics; Hastie et al. — ESL"
+    },
+    {
+      "id": "gl06_23",
+      "term_es": "Exhaustividad",
+      "term_en": "Recall",
+      "definition_es": "Métrica de clasificación: proporción de positivos reales detectados correctamente (TP / (TP + FN)). Importante cuando los falsos negativos son costosos (p. ej. detección de fraude).",
+      "definition_en": "Classification metric: proportion of actual positives correctly detected (TP / (TP + FN)). Important when false negatives are costly (e.g. fraud detection).",
+      "source": "scikit-learn User Guide — Classification Metrics; Hastie et al. — ESL"
+    },
+    {
+      "id": "gl06_24",
+      "term_es": "Puntuación F1",
+      "term_en": "F1 Score",
+      "definition_es": "Media armónica de precisión y exhaustividad: F1 = 2 * (Precisión * Recall) / (Precisión + Recall). Equilibra ambas métricas; útil en conjuntos desbalanceados donde accuracy es engañosa.",
+      "definition_en": "Harmonic mean of precision and recall: F1 = 2 * (Precision * Recall) / (Precision + Recall). Balances both metrics; useful in imbalanced datasets where accuracy is misleading.",
+      "source": "scikit-learn User Guide — Classification Metrics; Bishop — PRML"
+    },
+    {
+      "id": "gl06_25",
+      "term_es": "Curva ROC",
+      "term_en": "ROC Curve",
+      "definition_es": "Gráfica que muestra tasa de verdaderos positivos vs. tasa de falsos positivos a diferentes umbrales de decisión. El área bajo la curva (AUC) resumen el desempeño; AUC = 1 es perfecto, AUC = 0.5 es aleatorio.",
+      "definition_en": "A plot showing true positive rate vs. false positive rate at different decision thresholds. The area under the curve (AUC) summarizes performance; AUC = 1 is perfect, AUC = 0.5 is random.",
+      "source": "scikit-learn User Guide — ROC; Hastie et al. — ESL"
+    },
+    {
+      "id": "gl06_26",
+      "term_es": "Ingeniería de Características",
+      "term_en": "Feature Engineering",
+      "definition_es": "Proceso de seleccionar, transformar y crear características a partir de datos crudos para mejorar el desempeño del modelo. Incluye escalado, one-hot encoding, binning, y creación de características derivadas.",
+      "definition_en": "The process of selecting, transforming and creating features from raw data to improve model performance. Includes scaling, one-hot encoding, binning and derived feature creation.",
+      "source": "Géron — Hands-On Machine Learning 2e, ch. 2; Hastie et al. — ESL"
+    },
+    {
+      "id": "gl06_27",
+      "term_es": "División Entrenamiento-Prueba",
+      "term_en": "Train-Test Split",
+      "definition_es": "División de datos en conjunto de entrenamiento (típicamente 70-80%) y prueba (20-30%). El modelo se entrena en train, se valida/ajusta en validación, y se evalúa en test. Crítico para evitar fuga de datos.",
+      "definition_en": "Division of data into training set (typically 70-80%) and test set (20-30%). Model trains on train, validates/tunes on validation, evaluates on test. Critical to prevent data leakage.",
+      "source": "scikit-learn User Guide — Train/Test Split; Géron — Hands-On ML 2e"
+    },
+    {
+      "id": "gl06_28",
+      "term_es": "Validación Cruzada",
+      "term_en": "Cross-Validation",
+      "definition_es": "Técnica avanzada que divide los datos en k pliegues (típicamente 5 o 10) y realiza k entrenamientos, rotando el pliegue de validación cada vez. Proporciona estimadores más robustos del desempeño que un único train/test split.",
+      "definition_en": "Advanced technique that splits data into k folds (typically 5 or 10) and performs k trainings, rotating the validation fold each time. Provides more robust performance estimates than a single train/test split.",
+      "source": "scikit-learn User Guide — Cross-Validation; Hastie et al. — ESL, ch. 7"
+    },
+    {
+      "id": "gl06_29",
+      "term_es": "Bosque Aleatorio",
+      "term_en": "Random Forest",
+      "definition_es": "Algoritmo de ensemble que entrena múltiples árboles de decisión en subconjuntos aleatorios de datos y características, promediando sus predicciones. Robusto, maneja no-linealidades y es interpretable; reduce la varianza de un árbol único.",
+      "definition_en": "An ensemble algorithm that trains multiple decision trees on random subsets of data and features, averaging their predictions. Robust, handles non-linearities and interpretable; reduces variance of a single tree.",
+      "source": "Breiman — Random Forests (2001); Hastie et al. — ESL, ch. 15"
+    },
+    {
+      "id": "gl06_30",
+      "term_es": "Boosting",
+      "term_en": "Boosting",
+      "definition_es": "Técnica de ensemble que entrena modelos débiles (weak learners) secuencialmente, donde cada modelo se enfoca en los errores del anterior. Reduce sesgo y varianza; ejemplos: AdaBoost, Gradient Boosting, XGBoost.",
+      "definition_en": "An ensemble technique that trains weak learners sequentially, where each model focuses on previous errors. Reduces bias and variance; examples: AdaBoost, Gradient Boosting, XGBoost.",
+      "source": "Freund & Schapire — Boosting (1997); Hastie et al. — ESL, ch. 10"
+    },
+    {
+      "id": "gl06_31",
+      "term_es": "Agrupamiento K-Medias",
+      "term_en": "K-Means Clustering",
+      "definition_es": "Algoritmo de aprendizaje no supervisado que particiona datos en k clústeres minimizando la varianza dentro de cada clúster. Iterativo: asigna puntos al centroide más cercano, actualiza centroides. Requiere elegir k de antemano.",
+      "definition_en": "An unsupervised learning algorithm that partitions data into k clusters minimizing within-cluster variance. Iterative: assigns points to nearest centroid, updates centroids. Requires choosing k in advance.",
+      "source": "Hastie et al. — ESL, ch. 14; MacQueen — K-Means (1967)"
+    },
+    {
+      "id": "gl06_32",
+      "term_es": "Análisis de Componentes Principales",
+      "term_en": "Principal Component Analysis",
+      "definition_es": "Técnica de reducción de dimensionalidad lineal que encuentra las direcciones de máxima varianza en los datos (componentes principales). Preserva 90%+ de varianza con ~50% de características; reduce ruido y acelera entrenamiento.",
+      "definition_en": "A linear dimensionality-reduction technique that finds directions of maximum variance (principal components). Preserves 90%+ variance with ~50% of features; reduces noise and speeds training.",
+      "source": "Bishop — PRML, ch. 12; Hastie et al. — ESL, ch. 14"
+    },
+    {
+      "id": "gl06_33",
+      "term_es": "Autocodificador",
+      "term_en": "Autoencoder",
+      "definition_es": "Red neuronal que aprende a comprimir datos en una representación latente (encoder) y luego reconstruirlos (decoder). Útil para reducción de dimensionalidad no lineal, denoising y detección de anomalías; es un modelo generativo.",
+      "definition_en": "A neural network that learns to compress data into a latent representation (encoder) then reconstruct it (decoder). Useful for non-linear dimensionality reduction, denoising and anomaly detection; is a generative model.",
+      "source": "Goodfellow et al. — Deep Learning, ch. 14; Bengio — Learning Deep Architectures (2013)"
+    },
+    {
+      "id": "gl06_34",
+      "term_es": "GAN",
+      "term_en": "GAN",
+      "definition_es": "Red Generativa Adversaria: dos redes (generador, discriminador) que compiten. El generador crea datos sintéticos; el discriminador los distingue de reales. A menudo capaz de generar imágenes y texto realistas; difícil de entrenar estable.",
+      "definition_en": "Generative Adversarial Network: two networks (generator, discriminator) that compete. Generator creates synthetic data; discriminator distinguishes it from real. Often produces realistic images and text; difficult to train stably.",
+      "source": "Goodfellow et al. — Generative Adversarial Nets (2014); Goodfellow et al. — Deep Learning, ch. 20"
+    },
+    {
+      "id": "gl06_35",
+      "term_es": "Modelo de Difusión",
+      "term_en": "Diffusion Model",
+      "definition_es": "Modelo generativo que aprende a revertir un proceso de difusión que añade ruido a datos. Entrena denoising iterativo; durante generación, comienza desde ruido puro y desruida paso a paso. Base de DALL-E, Stable Diffusion.",
+      "definition_en": "A generative model that learns to reverse a diffusion process adding noise to data. Trains iterative denoising; during generation, starts from pure noise and denoises step-by-step. Basis of DALL-E, Stable Diffusion.",
+      "source": "Ho, Jain & Abbeel — Denoising Diffusion Probabilistic Models (2020); Hugging Face Diffusers"
+    },
+    {
+      "id": "gl06_36",
+      "term_es": "Arquitectura Transformador",
+      "term_en": "Transformer Architecture",
+      "definition_es": "Arquitectura neuronal basada en atención que procesa secuencias en paralelo (no recurrencia). Consta de bloques codificador-decodificador; cada bloque usa atención multiencabezal y redes prealimentadas. Base de BERT, GPT, todos los LLMs.",
+      "definition_en": "Neural architecture based on attention that processes sequences in parallel (no recurrence). Consists of encoder-decoder blocks; each block uses multi-head attention and feedforward nets. Basis of BERT, GPT, all LLMs.",
+      "source": "Vaswani et al. — Attention Is All You Need (2017); Dive into Deep Learning — d2l.ai"
+    },
+    {
+      "id": "gl06_37",
+      "term_es": "Mecanismo de Atención",
+      "term_en": "Attention Mechanism",
+      "definition_es": "Componente que pondera la importancia relativa de diferentes partes de la entrada. En transformadores, atención = softmax(Q*K^T / √d_k) * V. Permite que el modelo se enfoque dinámicamente; escalable a secuencias largas.",
+      "definition_en": "A component that weights the relative importance of different input parts. In transformers, attention = softmax(Q*K^T / √d_k) * V. Enables dynamic focus; scalable to long sequences.",
+      "source": "Vaswani et al. — Attention Is All You Need (2017); Goodfellow et al. — Deep Learning, ch. 12"
+    },
+    {
+      "id": "gl06_38",
+      "term_es": "Aprendizaje por Transferencia",
+      "term_en": "Transfer Learning",
+      "definition_es": "Técnica que reutiliza un modelo preentrenado en una tarea similar/relacionada, ajustando solo las capas finales. Acelera convergencia, reduce datos necesarios y mejora desempeño. Estándar en vision (ImageNet) y NLP (BERT, GPT).",
+      "definition_en": "A technique that reuses a model pretrained on a similar/related task, fine-tuning only final layers. Accelerates convergence, reduces required data and improves performance. Standard in vision (ImageNet) and NLP (BERT, GPT).",
+      "source": "Yosinski et al. — How Transferable Are Features (2014); Géron — Hands-On ML 2e, ch. 11"
+    },
+    {
+      "id": "gl06_39",
+      "term_es": "Descenso de Gradiente",
+      "term_en": "Gradient Descent",
+      "definition_es": "Algoritmo fundamental de optimización que itera: computa gradiente ∇L, actualiza θ := θ - η∇L. Variantes: batch (toda data), estocástico (una muestra), mini-batch (subconjunto). Converge con tasa de aprendizaje apropiada.",
+      "definition_en": "Fundamental optimization algorithm that iterates: compute gradient ∇L, update θ := θ - η∇L. Variants: batch (all data), stochastic (one sample), mini-batch (subset). Converges with appropriate learning rate.",
+      "source": "Goodfellow et al. — Deep Learning, ch. 4; Dive into Deep Learning — d2l.ai"
+    },
+    {
+      "id": "gl06_40",
+      "term_es": "Retropropagación",
+      "term_en": "Backpropagation",
+      "definition_es": "Algoritmo de diferenciación automática que calcula ∂L/∂θ por cada parámetro usando la regla de la cadena, propagando errores hacia atrás. Eficiente: O(1) vez el costo de forward. Piedra angular de aprendizaje profundo moderno.",
+      "definition_en": "Automatic differentiation algorithm computing ∂L/∂θ for each parameter via the chain rule, propagating errors backward. Efficient: O(1) times forward cost. Cornerstone of modern deep learning.",
+      "source": "Rumelhart, Hinton & Williams — Learning Representations by Backpropagating Errors (1986)"
     }
   ]
 }

@@ -42,7 +42,6 @@ POST /auth/resend-verification   → {message} (200)
 ```
 POST /quiz/start                 → {session_id, question} 🔒
 POST /quiz/answer                → {correct, explanation_es, explanation_en, ...} 🔒
-POST /quiz/skip                  → next question or session_done 🔒
 POST /quiz/end                   → {total, correct, xp_earned} 🔒
 ```
 
@@ -83,7 +82,6 @@ POST /tutor/explain              → {explanation, provider, grounded, context_u
 
 ```
 GET  /glossary/track/{track_id}  → [{term_es, term_en, definition_es, definition_en}]
-GET  /glossary/term/{term_id}    → GlossaryTerm
 ```
 
 ## Health endpoints

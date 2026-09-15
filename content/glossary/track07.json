@@ -11,16 +11,16 @@
     },
     {
       "id": "gl07_02",
-      "term_es": "Token y tokenización",
-      "term_en": "Token and tokenization",
-      "definition_es": "Un token es la unidad mínima que procesa un LLM (subpalabra, no palabra completa). La tokenización con BPE fragmenta el texto en tokens; el coste y los límites del modelo se miden en tokens.",
-      "definition_en": "A token is the smallest unit an LLM processes (a subword, not a whole word). BPE tokenization splits text into tokens; model cost and limits are measured in tokens.",
+      "term_es": "Tokenización",
+      "term_en": "Tokenization",
+      "definition_es": "Proceso de fragmentación del texto en tokens (subunidades) mediante algoritmos como BPE (Byte Pair Encoding). La tokenización es fundamental para que el LLM procese el texto y determina el coste computacional (número de tokens) y los límites del contexto.",
+      "definition_en": "The process of splitting text into tokens (subunits) using algorithms such as BPE (Byte Pair Encoding). Tokenization is fundamental for LLM processing and determines computational cost (number of tokens) and context limits.",
       "source": "Sennrich et al. — Neural Machine Translation of Rare Words with Subword Units (BPE, 2016)"
     },
     {
       "id": "gl07_03",
-      "term_es": "RAG (generación aumentada por recuperación)",
-      "term_en": "RAG (Retrieval-Augmented Generation)",
+      "term_es": "RAG",
+      "term_en": "RAG",
       "definition_es": "Técnica que recupera documentos relevantes y los inyecta en el prompt para fundamentar la respuesta del LLM. Reduce alucinaciones pero no las elimina, y depende de la calidad de la recuperación.",
       "definition_en": "A technique that retrieves relevant documents and injects them into the prompt to ground the LLM's answer. It reduces hallucinations but does not eliminate them, and depends on retrieval quality.",
       "source": "Lewis et al. — Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (2020)"
@@ -35,7 +35,7 @@
     },
     {
       "id": "gl07_05",
-      "term_es": "Chain-of-Thought (cadena de pensamiento)",
+      "term_es": "Chain-of-Thought",
       "term_en": "Chain-of-Thought",
       "definition_es": "Técnica de prompting que pide al modelo razonar paso a paso antes de responder, mejorando tareas de razonamiento. Self-consistency muestrea varias cadenas y vota la respuesta mayoritaria.",
       "definition_en": "A prompting technique that asks the model to reason step by step before answering, improving reasoning tasks. Self-consistency samples several chains and votes for the majority answer.",
@@ -43,8 +43,8 @@
     },
     {
       "id": "gl07_06",
-      "term_es": "Function calling / uso de herramientas",
-      "term_en": "Function calling / tool use",
+      "term_es": "Function calling",
+      "term_en": "Function calling",
       "definition_es": "Capacidad del LLM de emitir una llamada estructurada a una herramienta según un esquema. El modelo no ejecuta la función: propone la llamada y la aplicación la ejecuta con mínimo privilegio y validación.",
       "definition_en": "The LLM's ability to emit a structured call to a tool according to a schema. The model does not run the function: it proposes the call and the application executes it with least privilege and validation.",
       "source": "Anthropic — Tool use documentation; Model Context Protocol (MCP)"
@@ -62,15 +62,15 @@
       "term_es": "RLHF",
       "term_en": "RLHF",
       "definition_es": "Reinforcement Learning from Human Feedback: ajustar un LLM con un modelo de recompensa entrenado sobre preferencias humanas. Riesgo de «reward hacking»: optimizar la métrica sin cumplir la intención.",
-      "definition_en": "Reinforcement Learning from Human Feedback: fine-tuning an LLM with a reward model trained on human preferences. It risks “reward hacking”: optimizing the metric without meeting the intent.",
+      "definition_en": "Reinforcement Learning from Human Feedback: fine-tuning an LLM with a reward model trained on human preferences. It risks "reward hacking": optimizing the metric without meeting the intent.",
       "source": "Ouyang et al. — InstructGPT / Training LMs to follow instructions with human feedback (2022)"
     },
     {
       "id": "gl07_09",
-      "term_es": "Deriva de datos / de concepto",
-      "term_en": "Data drift / concept drift",
-      "definition_es": "La deriva de datos es un cambio en la distribución de las entradas; la deriva de concepto es un cambio en la relación entrada→salida. Ambas degradan modelos en producción de forma silenciosa.",
-      "definition_en": "Data drift is a change in the input distribution; concept drift is a change in the input→output relationship. Both silently degrade models in production.",
+      "term_es": "Deriva de datos",
+      "term_en": "Data drift",
+      "definition_es": "Cambio en la distribución de las entradas durante la inferencia en producción. El modelo fue entrenado con una distribución diferente; si no se monitorea, la precisión se degrada silenciosamente.",
+      "definition_en": "A change in the input distribution during inference in production. The model was trained on a different distribution; if unmonitored, accuracy silently degrades.",
       "source": "Gama et al. — A survey on concept drift adaptation (2014)"
     },
     {
@@ -80,6 +80,238 @@
       "definition_es": "Usar un LLM para evaluar salidas (propias o de otro modelo). Es escalable pero tiene sesgos (posición, verbosidad); mitigarlos intercambiando el orden y prefiriendo comparación pareada.",
       "definition_en": "Using an LLM to evaluate outputs (its own or another model's). It is scalable but biased (position, verbosity); mitigate by swapping order and preferring pairwise comparison.",
       "source": "Zheng et al. — Judging LLM-as-a-Judge with MT-Bench (2023)"
+    },
+    {
+      "id": "gl07_11",
+      "term_es": "Token",
+      "term_en": "Token",
+      "definition_es": "Unidad mínima que procesa un LLM, típicamente una subpalabra, no una palabra completa. Ejemplos: la palabra 'hola' puede ser un token, mientras que 'extraordinario' se fragmenta en varios. Los costes y límites del modelo se miden en tokens.",
+      "definition_en": "The smallest unit an LLM processes, typically a subword rather than a whole word. Example: 'hello' may be one token, while 'extraordinary' splits into multiple. Model costs and limits are measured in tokens.",
+      "source": "Sennrich et al. — Neural Machine Translation of Rare Words with Subword Units (BPE, 2016)"
+    },
+    {
+      "id": "gl07_12",
+      "term_es": "Context window",
+      "term_en": "Context window",
+      "definition_es": "Número máximo de tokens que un LLM puede procesar en una sola petición (entrada + salida). Modelos modernos varían desde 4K hasta 200K tokens; una ventana mayor permite procesar documentos más largos y mantener más historial de conversación.",
+      "definition_en": "The maximum number of tokens an LLM can process in a single request (input + output). Modern models range from 4K to 200K tokens; a larger window enables processing longer documents and maintaining more conversation history.",
+      "source": "Anthropic — Claude documentation on context windows"
+    },
+    {
+      "id": "gl07_13",
+      "term_es": "Temperature",
+      "term_en": "Temperature",
+      "definition_es": "Parámetro de muestreo que controla la aleatoriedad del modelo: valores bajos (0.1-0.3) producen respuestas deterministas y consistentes; valores altos (0.7-1.0+) introducen más creatividad y variación. Cero es greedy decoding (siempre el token de mayor probabilidad).",
+      "definition_en": "A sampling parameter controlling model randomness: low values (0.1–0.3) produce deterministic, consistent responses; high values (0.7–1.0+) introduce more creativity and variation. Zero is greedy decoding (always highest-probability token).",
+      "source": "OpenAI — API documentation on sampling parameters"
+    },
+    {
+      "id": "gl07_14",
+      "term_es": "Top-p sampling",
+      "term_en": "Top-p sampling",
+      "definition_es": "Técnica de muestreo (también llamada nucleus sampling) que selecciona tokens de un subconjunto cuya probabilidad acumulada alcanza p (ej. 0.9). Mantiene la diversidad eliminando colas de baja probabilidad; reduce alucinaciones sin sacrificar creatividad.",
+      "definition_en": "A sampling technique (also called nucleus sampling) that selects tokens from a subset whose cumulative probability reaches p (e.g., 0.9). It maintains diversity by eliminating low-probability tails; reduces hallucinations without sacrificing creativity.",
+      "source": "Holtzman et al. — The Curious Case of Neural Text Degeneration (2019)"
+    },
+    {
+      "id": "gl07_15",
+      "term_es": "Few-shot prompting",
+      "term_en": "Few-shot prompting",
+      "definition_es": "Técnica de prompting que proporciona al modelo algunos ejemplos (típicamente 2-10) de entrada-salida antes de la pregunta real. El modelo aprende patrones de los ejemplos sin actualizar pesos; es más flexible que zero-shot pero más barato que fine-tuning.",
+      "definition_en": "A prompting technique that provides the model with a few examples (typically 2–10) of input–output pairs before the actual query. The model learns patterns from examples without updating weights; more flexible than zero-shot but cheaper than fine-tuning.",
+      "source": "Brown et al. — Language Models are Few-Shot Learners (2020); dair-ai/Prompt-Engineering-Guide"
+    },
+    {
+      "id": "gl07_16",
+      "term_es": "System prompt",
+      "term_en": "System prompt",
+      "definition_es": "Instrucción o conjunto de instrucciones que definen el rol, personalidad y restricciones del LLM desde el inicio de la conversación. Se envía separadamente del historial de usuario y establece el contexto operativo de todas las respuestas.",
+      "definition_en": "An instruction or set of instructions that define the LLM's role, personality, and constraints from the start of a conversation. Sent separately from user history, it sets the operational context for all responses.",
+      "source": "Anthropic — Prompt engineering guide"
+    },
+    {
+      "id": "gl07_17",
+      "term_es": "Hallucination",
+      "term_en": "Hallucination",
+      "definition_es": "Generación de información falsa, inventada o no fundamentada por el LLM, presentada con confianza como si fuera verdadera. Causa: el modelo genera tokens probables pero no verificados contra datos reales. Mitigation: RAG, prompts restrictivos, evaluación externa.",
+      "definition_en": "The LLM generating false, fabricated, or ungrounded information and presenting it confidently as true. Cause: the model generates probable tokens unchecked against real data. Mitigation: RAG, restrictive prompts, external evaluation.",
+      "source": "Anthropic — Emerging research on LLM hallucinations"
+    },
+    {
+      "id": "gl07_18",
+      "term_es": "Grounding",
+      "term_en": "Grounding",
+      "definition_es": "Técnica de fundamentar las respuestas del LLM en datos reales, documentos verificados o búsquedas en tiempo real. Ejemplos: inyectar fragmentos recuperados en el prompt (RAG), llamar herramientas de búsqueda, citar fuentes. Reduce alucinaciones pero añade latencia.",
+      "definition_en": "A technique to anchor LLM responses in real data, verified documents, or real-time searches. Examples: inject retrieved snippets into the prompt (RAG), call search tools, cite sources. Reduces hallucinations but adds latency.",
+      "source": "Anthropic — Tool use and grounding strategies"
+    },
+    {
+      "id": "gl07_19",
+      "term_es": "Embeddings",
+      "term_en": "Embeddings",
+      "definition_es": "Representaciones vectoriales densas de múltiples objetos (textos, imágenes, fragmentos de código). Se usan para búsqueda semántica, clustering, y detección de similitud. Diferente de Embedding singular: enfatiza operaciones sobre conjuntos de representaciones vectoriales.",
+      "definition_en": "Dense vector representations of multiple objects (texts, images, code snippets). Used for semantic search, clustering, and similarity detection. Different from single Embedding: emphasizes operations on sets of vector representations.",
+      "source": "Reimers & Gurevych — Sentence-BERT (2019)"
+    },
+    {
+      "id": "gl07_20",
+      "term_es": "Vector database",
+      "term_en": "Vector database",
+      "definition_es": "Base de datos optimizada para almacenar y recuperar vectores (embeddings) mediante búsqueda de similitud en alta dimensión (típicamente mediante índices como HNSW o IVF). Ejemplos: Pinecone, Weaviate, Qdrant. Crítica para RAG a escala.",
+      "definition_en": "A database optimized for storing and retrieving vectors (embeddings) via similarity search in high dimensions (typically using indices like HNSW or IVF). Examples: Pinecone, Weaviate, Qdrant. Critical for RAG at scale.",
+      "source": "LangChain documentation on vector stores"
+    },
+    {
+      "id": "gl07_21",
+      "term_es": "Chunking",
+      "term_en": "Chunking",
+      "definition_es": "Proceso de fragmentar documentos largos en segmentos manejables (típicamente 128-512 tokens) para embedding y retrieval en RAG. Estrategias: solapamiento (overlap), fragmentación semántica, fragmentación por estructura. Impacta precisión y relevancia del retrieval.",
+      "definition_en": "The process of splitting long documents into manageable segments (typically 128–512 tokens) for embedding and retrieval in RAG. Strategies: overlap, semantic chunking, structural chunking. Impacts retrieval precision and relevance.",
+      "source": "LangChain documentation on text splitters; mlabonne/llm-course"
+    },
+    {
+      "id": "gl07_22",
+      "term_es": "Re-ranking",
+      "term_en": "Re-ranking",
+      "definition_es": "Técnica de reordenar resultados de retrieval (chunks) después de la búsqueda inicial, usando un modelo de re-ranking más preciso. Mejora la relevancia: los chunks más pertinentes flotan a la cima. Usado en RAG avanzado para compensar limitaciones de búsqueda vectorial pura.",
+      "definition_en": "A technique to reorder retrieval results (chunks) after initial search using a more precise re-ranking model. Improves relevance: most pertinent chunks float to top. Used in advanced RAG to compensate for pure vector search limitations.",
+      "source": "Anthropic — Improving RAG with re-ranking"
+    },
+    {
+      "id": "gl07_23",
+      "term_es": "Semantic search",
+      "term_en": "Semantic search",
+      "definition_es": "Búsqueda basada en similitud semántica entre vectores (embeddings) en lugar de coincidencia de palabras clave. Entiende significado: 'automóvil' recupera documentos sobre 'coche' aunque no comparten léxico. Base de RAG y motores de búsqueda modernos.",
+      "definition_en": "Search based on semantic similarity between vectors (embeddings) rather than keyword matching. Understands meaning: 'automobile' retrieves documents on 'car' even if they share no lexicon. Foundation of RAG and modern search engines.",
+      "source": "dair-ai/Prompt-Engineering-Guide; LangChain documentation"
+    },
+    {
+      "id": "gl07_24",
+      "term_es": "Tool use",
+      "term_en": "Tool use",
+      "definition_es": "Capacidad del LLM de invocar herramientas externas (APIs, bases de datos, calculadoras) de forma autónoma dentro de un flujo agentico. Diferente de Function calling: enfatiza la decisión y autonomía del agente para elegir qué herramienta usar cuándo.",
+      "definition_en": "The LLM's ability to autonomously invoke external tools (APIs, databases, calculators) within an agentic workflow. Distinct from Function calling: emphasizes the agent's decision and autonomy in choosing which tool to use when.",
+      "source": "Anthropic — Tool use documentation for agents"
+    },
+    {
+      "id": "gl07_25",
+      "term_es": "Multi-agent system",
+      "term_en": "Multi-agent system",
+      "definition_es": "Arquitectura donde múltiples agentes LLM colaboran o compiten para resolver tareas complejas. Patrones: orquestación (un manager central), enjambres (agentes simétricos), debates. Permite especialización y escalabilidad pero añade complejidad de coordinación.",
+      "definition_en": "An architecture where multiple LLM agents collaborate or compete to solve complex tasks. Patterns: orchestration (central manager), swarms (symmetric agents), debates. Enables specialization and scalability but adds coordination complexity.",
+      "source": "Anthropic — Multi-agent systems guide; LangChain documentation"
+    },
+    {
+      "id": "gl07_26",
+      "term_es": "Model registry",
+      "term_en": "Model registry",
+      "definition_es": "Repositorio centralizado que cataloga, versionea y gestiona modelos ML en producción. Almacena metadatos (versión, fecha, performance, autores), facilita reproducibilidad y auditoría. Ejemplos: MLflow Model Registry, Hugging Face Hub, Anthropic model APIs.",
+      "definition_en": "A centralized repository that catalogs, versions, and manages ML models in production. Stores metadata (version, date, performance, authors), enables reproducibility and audit. Examples: MLflow Model Registry, Hugging Face Hub, Anthropic model APIs.",
+      "source": "MLflow documentation on Model Registry"
+    },
+    {
+      "id": "gl07_27",
+      "term_es": "Deriva de concepto",
+      "term_en": "Concept drift",
+      "definition_es": "Cambio en la relación entrada→salida: el modelo predice incorrectamente aunque la distribución de entradas parezca estable. Ejemplo: cambio en preferencias de usuarios o nuevas regulaciones. Más insidioso que deriva de datos; requiere re-entrenamiento periódico.",
+      "definition_en": "A change in the input→output relationship: the model predicts incorrectly even if input distribution appears stable. Example: shift in user preferences or new regulations. More insidious than data drift; requires periodic retraining.",
+      "source": "Gama et al. — A survey on concept drift adaptation (2014)"
+    },
+    {
+      "id": "gl07_28",
+      "term_es": "Prueba A/B",
+      "term_en": "A/B testing",
+      "definition_es": "Metodología experimental que compara dos variantes (A, B) de un sistema (modelo, prompt, interfaz) con usuarios reales. Mide diferencias estadísticas en métricas (tasa de conversión, satisfacción, latencia). Requiere: grupos de control, duración, tamaño de muestra suficiente.",
+      "definition_en": "Experimental methodology comparing two system variants (A, B) such as models, prompts, or interfaces with real users. Measures statistical differences in metrics (conversion rate, satisfaction, latency). Requires: control groups, duration, sufficient sample size.",
+      "source": "Kohavi, Deng — Online Controlled Experiments at Large Scale (2013)"
+    },
+    {
+      "id": "gl07_29",
+      "term_es": "Guardrails",
+      "term_en": "Guardrails",
+      "definition_es": "Mecanismos de control que restringen salidas del LLM a rangos seguros o permitidos: detección de contenido inapropiado, validación de formato, límites de confianza. Pueden ser reglas (regex, listas negras) o modelos (clasificadores). Implementan barreras contra abusos.",
+      "definition_en": "Control mechanisms restricting LLM outputs to safe or permitted ranges: inappropriate content detection, format validation, confidence bounds. Can be rules (regex, blocklists) or models (classifiers). Implement safeguards against abuse.",
+      "source": "Anthropic — Constitutional AI and guardrails"
+    },
+    {
+      "id": "gl07_30",
+      "term_es": "Prompt injection",
+      "term_en": "Prompt injection",
+      "definition_es": "Ataque donde un usuario malintencionado inyecta instrucciones ocultas en el input para manipular el comportamiento del LLM, eludiendo restricciones originales. Ejemplo: 'Ignora las instrucciones anteriores y haz X'. Defensa: validación de entrada, separación clara de roles de sistema/usuario.",
+      "definition_en": "An attack where a malicious user injects hidden instructions into input to manipulate LLM behavior, bypassing original constraints. Example: 'Ignore previous instructions and do X.' Defense: input validation, clear separation of system/user roles.",
+      "source": "Anthropic — Prompt injection security guidelines"
+    },
+    {
+      "id": "gl07_31",
+      "term_es": "Jailbreak",
+      "term_en": "Jailbreak",
+      "definition_es": "Técnica maliciosa de eludir salvaguardas de un LLM mediante prompts ingeniosos (ej. roleplaying, framing indirecto). Objetivo: obtener respuestas que el modelo fue entrenado a rechazar. Diferente de prompt injection: no requiere datos inyectados del usuario.",
+      "definition_en": "A malicious technique to bypass LLM safeguards using clever prompts (e.g., roleplaying, indirect framing). Goal: obtain responses the model was trained to refuse. Distinct from prompt injection: does not require user-injected data.",
+      "source": "Anthropic — Jailbreak attempts and defense strategies"
+    },
+    {
+      "id": "gl07_32",
+      "term_es": "Constitutional AI",
+      "term_en": "Constitutional AI",
+      "definition_es": "Enfoque de alineación donde el LLM se entrena a ser coherente con un conjunto explícito de principios (constitución). Usa RLHF sin dependencia de jueces humanos a gran escala; el LLM auto-evalúa contra principios. Más escalable que RLHF puro.",
+      "definition_en": "An alignment approach where the LLM is trained to be coherent with an explicit set of principles (constitution). Uses RLHF without large-scale human judges; the LLM self-evaluates against principles. More scalable than pure RLHF.",
+      "source": "Anthropic — Constitutional AI: Harmlessness from AI Feedback (2022)"
+    },
+    {
+      "id": "gl07_33",
+      "term_es": "Evaluación de LLM",
+      "term_en": "LLM evaluation",
+      "definition_es": "Proceso de medir calidad y desempeño de un LLM en tareas específicas. Métodos: métricas automáticas (BLEU, ROUGE), evaluación humana, LLM-as-judge. Desafío: medir 'buena' respuesta es subjetivo; requiere múltiples perspectivas y benchmarks.",
+      "definition_en": "Process of measuring LLM quality and performance on specific tasks. Methods: automatic metrics (BLEU, ROUGE), human evaluation, LLM-as-judge. Challenge: measuring 'good' response is subjective; requires multiple perspectives and benchmarks.",
+      "source": "Anthropic — LLM evaluation frameworks; dair-ai/Prompt-Engineering-Guide"
+    },
+    {
+      "id": "gl07_34",
+      "term_es": "Fine-tuning",
+      "term_en": "Fine-tuning",
+      "definition_es": "Proceso de continuar el entrenamiento de un modelo pre-entrenado en datos específicos de una tarea o dominio. Actualiza pesos y mejora adaptación sin partir de cero. Menos costoso que pre-entrenamiento; requiere datos etiquetados y cautela contra overfitting.",
+      "definition_en": "Continuing training a pre-trained model on task- or domain-specific data. Updates weights and improves adaptation without starting from scratch. Less costly than pre-training; requires labeled data and caution against overfitting.",
+      "source": "Hugging Face — Fine-tuning documentation; mlabonne/llm-course"
+    },
+    {
+      "id": "gl07_35",
+      "term_es": "Monitoring",
+      "term_en": "Monitoring",
+      "definition_es": "Vigilancia continua de métricas de desempeño, confiabilidad y seguridad de un LLM en producción. Detecta deriva de datos, degradación de calidad, anomalías. Herramientas: dashboards, alertas, logs. Esencial para mantener SLA y detectar problemas temprano.",
+      "definition_en": "Continuous observation of performance, reliability, and safety metrics of an LLM in production. Detects data drift, quality degradation, anomalies. Tools: dashboards, alerts, logs. Essential for maintaining SLA and detecting issues early.",
+      "source": "Anthropic — Observability for LLM systems"
+    },
+    {
+      "id": "gl07_36",
+      "term_es": "In-context learning",
+      "term_en": "In-context learning",
+      "definition_es": "Capacidad del LLM de aprender patrones y adaptar comportamiento basándose únicamente en el contexto proporcionado (ejemplos, instrucciones), sin actualizaciones de parámetros. Base del few-shot prompting y de la adaptación rápida. Depende de tamaño y capacidad del modelo.",
+      "definition_en": "The LLM's ability to learn patterns and adapt behavior based solely on provided context (examples, instructions) without parameter updates. Basis of few-shot prompting and rapid adaptation. Depends on model size and capacity.",
+      "source": "Brown et al. — Language Models are Few-Shot Learners (2020)"
+    },
+    {
+      "id": "gl07_37",
+      "term_es": "Explainability",
+      "term_en": "Explainability",
+      "definition_es": "Capacidad de interpretar y justificar decisiones de un LLM: por qué generó cierta respuesta, qué datos o pasos internos influyeron. Métodos: attention visualization, saliency maps, prompt ablation, tracing. Crítico para confianza, auditoría y regulación.",
+      "definition_en": "Ability to interpret and justify LLM decisions: why it generated a response, what data or internal steps influenced it. Methods: attention visualization, saliency maps, prompt ablation, tracing. Critical for trust, audit, and regulation.",
+      "source": "Anthropic — Interpretability research; mlabonne/llm-course"
+    },
+    {
+      "id": "gl07_38",
+      "term_es": "Zero-shot learning",
+      "term_en": "Zero-shot learning",
+      "definition_es": "Capacidad del LLM de resolver tareas sin ejemplos previos, solo con instrucciones. Mejora con modelos más grandes y prompts claros. Menos preciso que few-shot pero más rápido y aplicable a tareas nuevas sin reentrenamiento.",
+      "definition_en": "The LLM's ability to solve tasks without prior examples, using only instructions. Improves with larger models and clear prompts. Less precise than few-shot but faster and applicable to new tasks without retraining.",
+      "source": "Radford et al. — Learning Transferable Visual Models From Natural Language Supervision (2021); dair-ai/Prompt-Engineering-Guide"
+    },
+    {
+      "id": "gl07_39",
+      "term_es": "Model serving",
+      "term_en": "Model serving",
+      "definition_es": "Infraestructura y prácticas para desplegar y ejecutar modelos LLM en producción de forma eficiente. Incluye: optimización de latencia, manejo de carga, caching, versionamiento. Herramientas: vLLM, TorchServe, Anthropic API. Equilibrio entre costo y rendimiento.",
+      "definition_en": "Infrastructure and practices for deploying and running LLMs in production efficiently. Includes: latency optimization, load handling, caching, versioning. Tools: vLLM, TorchServe, Anthropic API. Balance between cost and performance.",
+      "source": "Anthropic — Model deployment guide; mlabonne/llm-course"
     }
   ]
 }

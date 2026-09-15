@@ -6,7 +6,7 @@
       "term_es": "Variable",
       "term_en": "Variable",
       "definition_es": "Un nombre enlazado a un objeto. En Python la variable no «contiene» el valor: es una etiqueta que referencia un objeto en memoria, por lo que varios nombres pueden apuntar al mismo objeto.",
-      "definition_en": "A name bound to an object. In Python a variable does not “contain” the value: it is a label referencing an object in memory, so several names can point to the same object.",
+      "definition_en": "A name bound to an object. In Python a variable does not "contain" the value: it is a label referencing an object in memory, so several names can point to the same object.",
       "source": "CPython docs 3.13 — The Python Tutorial §3 / Language Reference §4.2 (Naming and binding)"
     },
     {
@@ -22,12 +22,12 @@
       "term_es": "Duck typing",
       "term_en": "Duck typing",
       "definition_es": "Estilo de tipado en que la idoneidad de un objeto se determina por los métodos y atributos que ofrece, no por su tipo declarado. «Si camina como un pato y grazna como un pato, es un pato.»",
-      "definition_en": "A typing style where an object's suitability is determined by the methods and attributes it provides, not by its declared type. “If it walks like a duck and quacks like a duck, it's a duck.”",
-      "source": "CPython docs 3.13 — Glossary (“duck-typing”)"
+      "definition_en": "A typing style where an object's suitability is determined by the methods and attributes it provides, not by its declared type. "If it walks like a duck and quacks like a duck, it's a duck."",
+      "source": "CPython docs 3.13 — Glossary ("duck-typing")"
     },
     {
       "id": "gl01_04",
-      "term_es": "Truthiness (valor de verdad)",
+      "term_es": "Truthiness",
       "term_en": "Truthiness",
       "definition_es": "Regla por la que cualquier objeto se evalúa como verdadero o falso en un contexto booleano. Son falsos: None, False, el cero numérico y los contenedores vacíos (''、[]、{}); casi todo lo demás es verdadero.",
       "definition_en": "The rule by which any object evaluates as true or false in a boolean context. Falsy values are None, False, numeric zero and empty containers (''、[]、{}); almost everything else is truthy.",
@@ -35,11 +35,11 @@
     },
     {
       "id": "gl01_05",
-      "term_es": "is vs ==",
-      "term_en": "is vs ==",
-      "definition_es": "`==` compara igualdad de valor (invoca `__eq__`); `is` compara identidad (si dos nombres refieren al mismo objeto). Se usa `is` solo con singletons como None.",
-      "definition_en": "`==` compares value equality (calls `__eq__`); `is` compares identity (whether two names refer to the very same object). Use `is` only with singletons such as None.",
-      "source": "CPython docs 3.13 — Expressions § Comparisons; PEP 8 (“is None”)"
+      "term_es": "Operadores de comparación",
+      "term_en": "Comparison operators",
+      "definition_es": "`==` compara igualdad de valor (invoca `__eq__`); `is` compara identidad (si dos nombres refieren al mismo objeto en memoria). Se usa `is` solo con singletons como None, True o False.",
+      "definition_en": "`==` compares value equality (calls `__eq__`); `is` compares identity (whether two names refer to the very same object in memory). Use `is` only with singletons such as None, True or False.",
+      "source": "CPython docs 3.13 — Expressions § Comparisons; PEP 8 ("is None")"
     },
     {
       "id": "gl01_06",
@@ -78,8 +78,232 @@
       "term_es": "Excepción",
       "term_en": "Exception",
       "definition_es": "Objeto que señala un error o condición anómala interrumpiendo el flujo normal. Se captura con `try/except` y Python favorece el estilo EAFP («pide perdón, no permiso»).",
-      "definition_en": "An object that signals an error or anomalous condition by interrupting normal flow. It is caught with `try/except`, and Python favours the EAFP style (“easier to ask forgiveness than permission”).",
-      "source": "CPython docs 3.13 — The Python Tutorial §8 (Errors and Exceptions); Glossary (“EAFP”)"
+      "definition_en": "An object that signals an error or anomalous condition by interrupting normal flow. It is caught with `try/except`, and Python favours the EAFP style ("easier to ask forgiveness than permission").",
+      "source": "CPython docs 3.13 — The Python Tutorial §8 (Errors and Exceptions); Glossary ("EAFP")"
+    },
+    {
+      "id": "gl01_11",
+      "term_es": "Entero",
+      "term_en": "Integer",
+      "definition_es": "Tipo numérico para números enteros sin límite de magnitud. En Python 3, `int` es el único tipo entero (en Python 2 existía `long`). Soporta operaciones aritméticas, bit a bit y conversión directa de strings.",
+      "definition_en": "Numeric type for whole numbers with no magnitude limit. In Python 3, `int` is the only integer type (Python 2 had `long`). It supports arithmetic, bitwise operations, and direct string conversion.",
+      "source": "CPython docs 3.13 — Built-in Types § Numeric Types — int, float, complex"
+    },
+    {
+      "id": "gl01_12",
+      "term_es": "Flotante",
+      "term_en": "Float",
+      "definition_es": "Tipo numérico para números con punto decimal, representados en precisión doble (64 bits, estándar IEEE 754). Puede contener infinito (`inf`) y no-número (`nan`), con comportamientos especiales en comparaciones.",
+      "definition_en": "Numeric type for decimal numbers, represented in double precision (64 bits, IEEE 754 standard). Can contain infinity (`inf`) and not-a-number (`nan`), with special behavior in comparisons.",
+      "source": "CPython docs 3.13 — Built-in Types § Numeric Types — int, float, complex"
+    },
+    {
+      "id": "gl01_13",
+      "term_es": "Cadena",
+      "term_en": "String",
+      "definition_es": "Secuencia inmutable de caracteres Unicode. Se define con comillas simples, dobles o triples. Admite muchos métodos (`upper()`, `split()`, `replace()`) y operaciones como concatenación y repetición con `+` y `*`.",
+      "definition_en": "An immutable sequence of Unicode characters. Defined with single, double or triple quotes. Supports many methods (`upper()`, `split()`, `replace()`) and operations like concatenation and repetition with `+` and `*`.",
+      "source": "CPython docs 3.13 — Built-in Types § Text Sequence Type — str"
+    },
+    {
+      "id": "gl01_14",
+      "term_es": "Booleano",
+      "term_en": "Boolean",
+      "definition_es": "Tipo lógico con dos valores: `True` y `False`. Resulta de comparaciones y operaciones lógicas (`and`, `or`, `not`). En contextos booleanos, cualquier valor se convierte a verdadero o falso según sus reglas de truthiness.",
+      "definition_en": "Logical type with two values: `True` and `False`. Result of comparisons and logical operations (`and`, `or`, `not`). In boolean contexts, any value converts to true or false by truthiness rules.",
+      "source": "CPython docs 3.13 — Built-in Types § Boolean Type"
+    },
+    {
+      "id": "gl01_15",
+      "term_es": "None",
+      "term_en": "None",
+      "definition_es": "Singleton que representa la ausencia de valor. Toda función sin `return` explícito devuelve `None`. Se compara con `is None` (no `== None`), y su valor de verdad es falso.",
+      "definition_en": "Singleton representing the absence of a value. Any function without an explicit `return` returns `None`. It is compared with `is None` (not `== None`), and its truth value is false.",
+      "source": "CPython docs 3.13 — Built-in Types § The None Type"
+    },
+    {
+      "id": "gl01_16",
+      "term_es": "Tupla",
+      "term_en": "Tuple",
+      "definition_es": "Secuencia inmutable e indexable de objetos heterogéneos, creada con paréntesis `(a, b, c)` o coma `a, b, c`. No se puede modificar pero es más rápida que una lista y puede ser clave de dict.",
+      "definition_en": "An immutable and indexable sequence of heterogeneous objects, created with parentheses `(a, b, c)` or comma `a, b, c`. Cannot be modified but is faster than a list and can be a dict key.",
+      "source": "CPython docs 3.13 — Built-in Types § Sequence Types — list, tuple, range"
+    },
+    {
+      "id": "gl01_17",
+      "term_es": "Diccionario",
+      "term_en": "Dictionary",
+      "definition_es": "Colección mutable de pares clave-valor, creada con llaves `{\"clave\": valor}`. Las claves deben ser inmutables y únicas. El acceso es O(1) en promedio. Desde Python 3.7 preserva orden de inserción.",
+      "definition_en": "A mutable collection of key-value pairs, created with braces `{\"key\": value}`. Keys must be immutable and unique. Access is O(1) on average. Since Python 3.7 it preserves insertion order.",
+      "source": "CPython docs 3.13 — Built-in Types § Mapping Types — dict"
+    },
+    {
+      "id": "gl01_18",
+      "term_es": "Conjunto",
+      "term_en": "Set",
+      "definition_es": "Colección mutable de elementos únicos e inmutables, creada con llaves `{a, b, c}` (vacía: `set()`). Sin orden ni índice. Soporta operaciones matemáticas de conjunto: unión, intersección, diferencia.",
+      "definition_en": "A mutable collection of unique and immutable elements, created with braces `{a, b, c}` (empty: `set()`). No order or indexing. Supports mathematical set operations: union, intersection, difference.",
+      "source": "CPython docs 3.13 — Built-in Types § Set Types — set, frozenset"
+    },
+    {
+      "id": "gl01_19",
+      "term_es": "Rebanada",
+      "term_en": "Slice",
+      "definition_es": "Notación `[inicio:fin:paso]` para extraer una subsecuencia de un iterable. Los índices pueden ser negativos. Devuelve una nueva secuencia sin modificar el original. Se utiliza en strings, listas y tuplas.",
+      "definition_en": "Notation `[start:stop:step]` to extract a subsequence from an iterable. Indices can be negative. Returns a new sequence without modifying the original. Used on strings, lists and tuples.",
+      "source": "CPython docs 3.13 — The Python Tutorial §3.2 (Strings) / Built-in Types § Common Sequence Operations"
+    },
+    {
+      "id": "gl01_20",
+      "term_es": "Bloque try-except",
+      "term_en": "Try-except block",
+      "definition_es": "Estructura para capturar y manejar excepciones: `try: ... except TipoError: ...`. Permite continuar el programa tras un error. Puede haber múltiples `except`, `else` y `finally`.",
+      "definition_en": "Structure to catch and handle exceptions: `try: ... except ErrorType: ...`. Allows the program to continue after an error. Can have multiple `except`, `else` and `finally` blocks.",
+      "source": "CPython docs 3.13 — The Python Tutorial §8 (Errors and Exceptions)"
+    },
+    {
+      "id": "gl01_21",
+      "term_es": "Raise",
+      "term_en": "Raise",
+      "definition_es": "Sentencia que lanza una excepción explícitamente: `raise ValueError(\"mensaje\")`. Interrumpe el flujo normal e inicia la búsqueda de un manejador `except`. Puede re-lanzar con `raise` sin argumentos.",
+      "definition_en": "Statement that raises an exception explicitly: `raise ValueError(\"message\")`. Interrupts normal flow and starts searching for an `except` handler. Can re-raise with bare `raise`.",
+      "source": "CPython docs 3.13 — The Python Tutorial §8 (Errors and Exceptions)"
+    },
+    {
+      "id": "gl01_22",
+      "term_es": "Pass",
+      "term_en": "Pass",
+      "definition_es": "Sentencia nula que no hace nada. Se usa como relleno cuando la sintaxis requiere al menos un bloque (p. ej. en funciones vacías, clases o condiciones mientras se desarrolla el código).",
+      "definition_en": "A null statement that does nothing. Used as a placeholder when syntax requires at least one block (e.g. in empty functions, classes, or conditions while developing code).",
+      "source": "CPython docs 3.13 — The Python Tutorial §4 (More on Control Flow)"
+    },
+    {
+      "id": "gl01_23",
+      "term_es": "Lambda",
+      "term_en": "Lambda",
+      "definition_es": "Función anónima definida en una línea: `lambda x: x * 2`. No requiere `def` ni `return`. Se usa principalmente con `map()`, `filter()` y `sorted()` para pasar lógica simple.",
+      "definition_en": "Anonymous function defined in one line: `lambda x: x * 2`. Requires no `def` or `return`. Mainly used with `map()`, `filter()` and `sorted()` to pass simple logic.",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.7 (Lambda Expressions)"
+    },
+    {
+      "id": "gl01_24",
+      "term_es": "Alcance",
+      "term_en": "Scope",
+      "definition_es": "Región del código donde una variable es accesible. Python sigue la regla LEGB: Local, Enclosing, Global, Built-in. Una variable se busca primero localmente, luego en funciones envolventes, luego global, y finalmente en built-ins.",
+      "definition_en": "Region of code where a variable is accessible. Python follows the LEGB rule: Local, Enclosing, Global, Built-in. A variable is searched first locally, then in enclosing functions, then globally, and finally in built-ins.",
+      "source": "CPython docs 3.13 — The Python Tutorial §9.2 (Python Scopes and Namespaces)"
+    },
+    {
+      "id": "gl01_25",
+      "term_es": "Parámetro",
+      "term_en": "Parameter",
+      "definition_es": "Variable declarada en la definición de una función. Diferente del argumento (valor pasado al llamarla). Los parámetros pueden tener valores por defecto y se pueden capturar con `*args` o `**kwargs`.",
+      "definition_en": "Variable declared in a function definition. Different from an argument (value passed when calling it). Parameters can have default values and can be captured with `*args` or `**kwargs`.",
+      "source": "CPython docs 3.13 — Glossary (parameter / argument)"
+    },
+    {
+      "id": "gl01_26",
+      "term_es": "Argumentos variádicos",
+      "term_en": "Variadic arguments",
+      "definition_es": "Capacidad de aceptar un número variable de argumentos: `*args` para una tupla de posicionales, `**kwargs` para un diccionario de nombrados. Permiten funciones con aridad variable.",
+      "definition_en": "Ability to accept a variable number of arguments: `*args` for a tuple of positional ones, `**kwargs` for a dict of named ones. Allow functions with variable arity.",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.7 (More on Defining Functions) / PEP 448 (Additional Unpacking Generalizations)"
+    },
+    {
+      "id": "gl01_27",
+      "term_es": "Recursión",
+      "term_en": "Recursion",
+      "definition_es": "Técnica en que una función se llama a sí misma para resolver un problema dividiéndolo en subproblemas. Requiere un caso base para evitar loop infinito. Python limita la profundidad de recursión por defecto a ~1000.",
+      "definition_en": "Technique where a function calls itself to solve a problem by dividing it into subproblems. Requires a base case to avoid infinite loop. Python limits recursion depth to ~1000 by default.",
+      "source": "CPython docs 3.13 — The Python Tutorial §4.5 (Defining Functions)"
+    },
+    {
+      "id": "gl01_28",
+      "term_es": "Módulo",
+      "term_en": "Module",
+      "definition_es": "Archivo `.py` que contiene código Python reutilizable. Al importar un módulo con `import`, se ejecuta su código y se accede a sus funciones, clases y variables con el prefijo del nombre del módulo.",
+      "definition_en": "A `.py` file containing reusable Python code. When importing a module with `import`, its code is executed and its functions, classes and variables are accessed with the module name prefix.",
+      "source": "CPython docs 3.13 — The Python Tutorial §6 (Modules)"
+    },
+    {
+      "id": "gl01_29",
+      "term_es": "Paquete",
+      "term_en": "Package",
+      "definition_es": "Directorio que contiene un archivo `__init__.py` y módulos `.py`. Permite organizar código jerárquicamente y facilita importaciones como `from paquete.submódulo import función`.",
+      "definition_en": "Directory containing an `__init__.py` file and `.py` modules. Allows code to be organized hierarchically and facilitates imports like `from package.submodule import function`.",
+      "source": "CPython docs 3.13 — The Python Tutorial §6.4 (Packages)"
+    },
+    {
+      "id": "gl01_30",
+      "term_es": "Import",
+      "term_en": "Import",
+      "definition_es": "Mecanismo para cargar módulos y paquetes en el programa. `import módulo` carga el módulo completo; `from módulo import nombre` importa solo un elemento. Python busca en `sys.path` y cachea en `sys.modules`.",
+      "definition_en": "Mechanism to load modules and packages into the program. `import module` loads the whole module; `from module import name` imports only one element. Python searches `sys.path` and caches in `sys.modules`.",
+      "source": "CPython docs 3.13 — The Python Tutorial §6 (Modules) / Language Reference §5.10 (Import system)"
+    },
+    {
+      "id": "gl01_31",
+      "term_es": "Funciones incorporadas",
+      "term_en": "Built-in functions",
+      "definition_es": "Funciones disponibles sin importación, parte del namespace global. Incluyen `len()`, `range()`, `print()`, `type()`, `int()`, `str()`, etc. Python define 71+ funciones built-in en la versión 3.13.",
+      "definition_en": "Functions available without import, part of the global namespace. Include `len()`, `range()`, `print()`, `type()`, `int()`, `str()`, etc. Python defines 71+ built-in functions in version 3.13.",
+      "source": "CPython docs 3.13 — Built-in Functions"
+    },
+    {
+      "id": "gl01_32",
+      "term_es": "__name__ == \"__main__\"",
+      "term_en": "__name__ == \"__main__\"",
+      "definition_es": "Patrón idiomático que detecta si un script se ejecuta directamente (no como módulo importado). Permite escribir código de prueba que no se ejecuta al importar: `if __name__ == \"__main__\": ...`",
+      "definition_en": "Idiomatic pattern to detect if a script is run directly (not imported as a module). Allows writing test code that doesn't run on import: `if __name__ == \"__main__\": ...`",
+      "source": "CPython docs 3.13 — The Python Tutorial §6 (Modules) / Glossary ("__main__")"
+    },
+    {
+      "id": "gl01_33",
+      "term_es": "Operador morsa",
+      "term_en": "Walrus operator",
+      "definition_es": "Operador `:=` que asigna y devuelve el valor en una expresión, reduciendo líneas de código. Permite asignaciones dentro de condiciones: `if (n := len(lista)) > 10: ...`. Introducido en Python 3.8.",
+      "definition_en": "Operator `:=` that assigns and returns a value in an expression, reducing code lines. Allows assignments inside conditions: `if (n := len(list)) > 10: ...`. Introduced in Python 3.8.",
+      "source": "PEP 572 — Assignment Expressions"
+    },
+    {
+      "id": "gl01_34",
+      "term_es": "Anotación de tipo",
+      "term_en": "Type annotation",
+      "definition_es": "Declaración opcional del tipo esperado de variables, parámetros y retornos: `def f(x: int) -> str: ...`. No se ejecuta en tiempo de ejecución pero es útil para herramientas como `mypy`. Desde 3.5 con PEP 484.",
+      "definition_en": "Optional declaration of expected type for variables, parameters and returns: `def f(x: int) -> str: ...`. Not executed at runtime but useful for tools like `mypy`. Since 3.5 with PEP 484.",
+      "source": "PEP 484 — Type Hints"
+    },
+    {
+      "id": "gl01_35",
+      "term_es": "Dataclass",
+      "term_en": "Dataclass",
+      "definition_es": "Clase generada automáticamente con `@dataclass` que define `__init__`, `__repr__` y `__eq__` basados en atributos anotados. Reduce boilerplate al definir clases simples que almacenan datos.",
+      "definition_en": "Class automatically generated with `@dataclass` that defines `__init__`, `__repr__` and `__eq__` based on annotated attributes. Reduces boilerplate when defining simple data-holding classes.",
+      "source": "PEP 557 — Data Classes"
+    },
+    {
+      "id": "gl01_36",
+      "term_es": "enumerate",
+      "term_en": "enumerate",
+      "definition_es": "Función built-in que devuelve un iterador de tuplas `(índice, elemento)` a partir de un iterable. Útil para bucles que necesitan tanto el valor como su posición: `for i, v in enumerate(lista): ...`",
+      "definition_en": "Built-in function that returns an iterator of tuples `(index, element)` from an iterable. Useful for loops that need both the value and its position: `for i, v in enumerate(list): ...`",
+      "source": "CPython docs 3.13 — Built-in Functions § enumerate()"
+    },
+    {
+      "id": "gl01_37",
+      "term_es": "zip",
+      "term_en": "zip",
+      "definition_es": "Función built-in que combina múltiples iterables en tuplas paralelas: `list(zip([1,2], ['a','b']))` → `[(1, 'a'), (2, 'b')]`. Se detiene en el iterable más corto. Útil para iterar sobre múltiples secuencias simultáneamente.",
+      "definition_en": "Built-in function that combines multiple iterables into parallel tuples: `list(zip([1,2], ['a','b']))` → `[(1, 'a'), (2, 'b')]`. Stops at the shortest iterable. Useful to iterate over multiple sequences simultaneously.",
+      "source": "CPython docs 3.13 — Built-in Functions § zip()"
+    },
+    {
+      "id": "gl01_38",
+      "term_es": "isinstance",
+      "term_en": "isinstance",
+      "definition_es": "Función built-in que verifica si un objeto es instancia de una clase o tupla de clases: `isinstance(x, int)`. Respeta herencia: si `B` hereda de `A`, entonces `isinstance(b, A)` es verdadero. Preferible a `type(x) == ...`.",
+      "definition_en": "Built-in function that checks if an object is an instance of a class or tuple of classes: `isinstance(x, int)`. Respects inheritance: if `B` inherits from `A`, then `isinstance(b, A)` is true. Preferable to `type(x) == ...`.",
+      "source": "CPython docs 3.13 — Built-in Functions § isinstance()"
     }
   ]
 }

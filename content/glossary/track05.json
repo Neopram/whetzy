@@ -22,7 +22,7 @@
       "term_es": "Teorema CAP",
       "term_en": "CAP theorem",
       "definition_es": "Ante una partición de red (P), un sistema distribuido debe elegir entre Consistencia (C) y Disponibilidad (A). No es «elige 2 de 3»: sin partición se puede tener C y A a la vez.",
-      "definition_en": "Under a network partition (P), a distributed system must choose between Consistency (C) and Availability (A). It is not “pick 2 of 3”: with no partition you can have both C and A.",
+      "definition_en": "Under a network partition (P), a distributed system must choose between Consistency (C) and Availability (A). It is not "pick 2 of 3": with no partition you can have both C and A.",
       "source": "Gilbert & Lynch (2002); Kleppmann — DDIA, ch. 9"
     },
     {
@@ -54,7 +54,7 @@
       "term_es": "Circuit breaker",
       "term_en": "Circuit breaker",
       "definition_es": "Patrón de resiliencia que «abre el circuito» tras detectar fallos repetidos en una dependencia, dejando de llamarla temporalmente para no propagar la caída y permitir su recuperación.",
-      "definition_en": "A resilience pattern that “opens the circuit” after detecting repeated failures in a dependency, temporarily stopping calls to it to avoid cascading failure and allow recovery.",
+      "definition_en": "A resilience pattern that "opens the circuit" after detecting repeated failures in a dependency, temporarily stopping calls to it to avoid cascading failure and allow recovery.",
       "source": "Michael Nygard — Release It! 2e; Martin Fowler — CircuitBreaker"
     },
     {
@@ -75,11 +75,267 @@
     },
     {
       "id": "gl05_10",
-      "term_es": "SLO y presupuesto de error",
-      "term_en": "SLO and error budget",
-      "definition_es": "Un SLO es un objetivo de fiabilidad (p. ej. 99,9 % de éxito); el presupuesto de error es el complemento (0,1 %) que se puede «gastar» en fallos o despliegues antes de frenar cambios.",
-      "definition_en": "An SLO is a reliability target (e.g. 99.9% success); the error budget is its complement (0.1%) that can be “spent” on failures or releases before change is frozen.",
+      "term_es": "SLO",
+      "term_en": "SLO",
+      "definition_es": "Service Level Objective: un objetivo de confiabilidad (p. ej. 99,9 % de éxito) que guía decisiones de ingeniería y velocidad de desarrollo; derivado del SLA.",
+      "definition_en": "Service Level Objective: an internal reliability target (e.g. 99.9% success) that guides engineering decisions and development velocity; derived from the SLA.",
       "source": "Google — Site Reliability Engineering (The SRE Book), ch. 3–4"
+    },
+    {
+      "id": "gl05_11",
+      "term_es": "Malla de servicios",
+      "term_en": "Service mesh",
+      "definition_es": "Patrón de infraestructura para gestionar comunicaciones servicio-a-servicio en microservicios, típicamente usando un plano de datos (sidecars) y un plano de control para manejar enrutamiento, seguridad y observabilidad.",
+      "definition_en": "An infrastructure pattern for managing service-to-service communication in microservices, typically using a data plane (sidecars) and control plane to handle routing, security, and observability.",
+      "source": "Istio documentation; Chris Richardson — Microservices Patterns"
+    },
+    {
+      "id": "gl05_12",
+      "term_es": "Gateway de API",
+      "term_en": "API Gateway",
+      "definition_es": "Un único punto de entrada para solicitudes de clientes que las enruta a servicios backend apropiados, manejando preocupaciones transversales como autenticación, limitación de velocidad y transformación de solicitudes.",
+      "definition_en": "A single entry point for client requests that routes them to appropriate backend services, handling cross-cutting concerns like authentication, rate limiting, and request transformation.",
+      "source": "Sam Newman — Building Microservices 2e"
+    },
+    {
+      "id": "gl05_13",
+      "term_es": "Cola de mensajes",
+      "term_en": "Message queue",
+      "definition_es": "Un componente middleware que almacena asincronamente mensajes para consumo, permitiendo desacoplamiento flojo entre productor y consumidor y desacoplamiento temporal.",
+      "definition_en": "A middleware component that asynchronously stores messages for consumption, enabling loose coupling between producer and consumer services and temporal decoupling.",
+      "source": "Hohpe & Woolf — Enterprise Integration Patterns; RabbitMQ documentation"
+    },
+    {
+      "id": "gl05_14",
+      "term_es": "Patrón Pub-Sub",
+      "term_en": "Pub-Sub pattern",
+      "definition_es": "Un patrón de mensajería asincrónica donde publicadores envían mensajes a un tema sin conocer a los suscriptores, quienes reciben solo mensajes de temas de su interés.",
+      "definition_en": "An asynchronous messaging pattern where publishers send messages to a topic without knowing subscribers, and subscribers receive only messages for topics they are interested in.",
+      "source": "Hohpe & Woolf — Enterprise Integration Patterns; Google Cloud Pub/Sub documentation"
+    },
+    {
+      "id": "gl05_15",
+      "term_es": "Redis",
+      "term_en": "Redis cache",
+      "definition_es": "Un almacén de estructuras de datos en memoria comúnmente usado para caché, sesiones y análisis en tiempo real, gracias a sus operaciones rápidas de lectura/escritura y soporte de diversos tipos de datos.",
+      "definition_en": "An in-memory data structure store commonly used for caching, sessions, and real-time analytics due to its fast read/write operations and support for various data types.",
+      "source": "Redis documentation; Kleppmann — Designing Data-Intensive Applications, ch. 11"
+    },
+    {
+      "id": "gl05_16",
+      "term_es": "CDN",
+      "term_en": "CDN",
+      "definition_es": "Una red geográficamente distribuida de servidores que cachea y entrega contenido a usuarios desde ubicaciones más cercanas, reduciendo latencia y costos de ancho de banda.",
+      "definition_en": "A geographically distributed network of servers that caches and delivers content to users from locations closer to them, reducing latency and bandwidth costs.",
+      "source": "AWS CloudFront documentation; Akamai CDN documentation"
+    },
+    {
+      "id": "gl05_17",
+      "term_es": "Sharding",
+      "term_en": "Sharding",
+      "definition_es": "Una estrategia de particionamiento horizontal donde los datos se dividen y distribuyen entre múltiples instancias o servidores de BD basándose en una clave de sharding, permitiendo escalabilidad y paralelismo.",
+      "definition_en": "A horizontal partitioning strategy where data is divided and distributed across multiple database instances based on a shard key, enabling scalability and parallelism.",
+      "source": "Kleppmann — Designing Data-Intensive Applications, ch. 6; MongoDB sharding documentation"
+    },
+    {
+      "id": "gl05_18",
+      "term_es": "Replicación",
+      "term_en": "Replication",
+      "definition_es": "Una técnica de mantener copias de datos en múltiples nodos o servidores para mejorar disponibilidad, tolerancia a fallos y rendimiento de lectura, al costo de consistencia eventual.",
+      "definition_en": "A technique of maintaining copies of data across multiple nodes or servers to improve availability, fault tolerance, and read throughput at the cost of eventual consistency.",
+      "source": "Kleppmann — Designing Data-Intensive Applications, ch. 5; PostgreSQL replication documentation"
+    },
+    {
+      "id": "gl05_19",
+      "term_es": "Balanceador de carga",
+      "term_en": "Load balancer",
+      "definition_es": "Un componente de sistema que distribuye solicitudes entrantes entre múltiples servidores o instancias para evitar sobrecarga, mejorar disponibilidad y permitir escalado horizontal sin fricción.",
+      "definition_en": "A system component that distributes incoming requests across multiple servers or instances to avoid overload, improve availability, and enable seamless horizontal scaling.",
+      "source": "NGINX Load Balancer documentation; AWS Elastic Load Balancing"
+    },
+    {
+      "id": "gl05_20",
+      "term_es": "Propiedades BASE",
+      "term_en": "BASE properties",
+      "definition_es": "Basically Available, Soft state, Eventually consistent: una relajación de las propiedades ACID que favorece alta disponibilidad y tolerancia a particiones en sistemas distribuidos.",
+      "definition_en": "Basically Available, Soft state, Eventually consistent: a relaxation of ACID properties favoring high availability and partition tolerance in distributed systems.",
+      "source": "Pritchett — BASE: An Acid Alternative (2008); Werner Vogels — Eventually Consistent"
+    },
+    {
+      "id": "gl05_21",
+      "term_es": "Dominio (DDD)",
+      "term_en": "Domain (DDD)",
+      "definition_es": "En Domain-Driven Design, el espacio del problema de negocio y sus reglas asociadas, procesos y conocimiento; los expertos en el dominio entienden y operan dentro de él.",
+      "definition_en": "In Domain-Driven Design, the business problem space and its associated rules, processes, and knowledge; subject matter experts understand and operate within a domain.",
+      "source": "Eric Evans — Domain-Driven Design; Vaughn Vernon — Implementing Domain-Driven Design"
+    },
+    {
+      "id": "gl05_22",
+      "term_es": "Agregado (DDD)",
+      "term_en": "Aggregate (DDD)",
+      "definition_es": "Un clúster de objetos (entidades y objetos de valor) tratado como una unidad única para persistencia y consistencia; la entidad raíz controla acceso a objetos internos y mantiene invariantes.",
+      "definition_en": "A cluster of objects (entities and value objects) treated as a single unit for persistence and consistency; the root entity controls access to inner objects and maintains invariants.",
+      "source": "Eric Evans — Domain-Driven Design; Vaughn Vernon — Implementing Domain-Driven Design, ch. 5"
+    },
+    {
+      "id": "gl05_23",
+      "term_es": "Patrón Repository",
+      "term_en": "Repository pattern",
+      "definition_es": "Un patrón que abstrae la lógica de acceso a datos y presenta una interfaz similar a colecciones para recuperar y persistir entidades, aislando el modelo de dominio de preocupaciones de persistencia.",
+      "definition_en": "A pattern that abstracts data access logic and presents a collection-like interface to retrieve and persist entities, isolating the domain model from persistence concerns.",
+      "source": "Fowler — Patterns of Enterprise Application Architecture; Microsoft repository pattern guide"
+    },
+    {
+      "id": "gl05_24",
+      "term_es": "Arquitectura hexagonal",
+      "term_en": "Hexagonal architecture",
+      "definition_es": "Un patrón arquitectónico donde la lógica de negocio principal se aísla detrás de interfaces abstractas (puertos), permitiendo múltiples implementaciones (adaptadores) para preocupaciones de entrada/salida.",
+      "definition_en": "An architectural pattern where the business logic core is isolated behind abstract interfaces (ports), allowing multiple implementations (adapters) for I/O concerns.",
+      "source": "Alistair Cockburn — Hexagonal Architecture; Freeman & Pryce — Growing Object-Oriented Software, Guided by Tests"
+    },
+    {
+      "id": "gl05_25",
+      "term_es": "Patrón Strangler Fig",
+      "term_en": "Strangler fig pattern",
+      "definition_es": "Una técnica de refactorización donde un nuevo sistema se construye gradualmente alrededor de uno legado; capas de interposición redirigen solicitudes al sistema nuevo incrementalmente, hasta reemplazar por completo el legado.",
+      "definition_en": "A refactoring technique where a new system is gradually built around a legacy system; interception layers redirect requests to the new system incrementally, until the legacy is fully replaced.",
+      "source": "Martin Fowler — StranglerFigApplication; Sam Newman — Building Microservices 2e"
+    },
+    {
+      "id": "gl05_26",
+      "term_es": "Despliegue azul-verde",
+      "term_en": "Blue-green deployment",
+      "definition_es": "Una estrategia de despliegue donde dos entornos de producción idénticos (azul y verde) corren en paralelo; el tráfico se conmuta de uno a otro, permitiendo rollback rápido si surgen problemas.",
+      "definition_en": "A deployment strategy where two identical production environments (blue and green) run in parallel; traffic is switched from one to the other, allowing fast rollback if issues arise.",
+      "source": "Martin Fowler — BlueGreenDeployment; AWS deployment strategies documentation"
+    },
+    {
+      "id": "gl05_27",
+      "term_es": "Lanzamiento canario",
+      "term_en": "Canary release",
+      "definition_es": "Una técnica de despliegue donde código nuevo se libera primero a un subconjunto pequeño de usuarios (canarios), monitoreando problemas antes de hacer rollout al usuario base completo.",
+      "definition_en": "A deployment technique where new code is released to a small subset of users (canaries) first, monitoring for issues before rolling out to the full user base.",
+      "source": "Google Cloud documentation; Netflix Spinnaker documentation"
+    },
+    {
+      "id": "gl05_28",
+      "term_es": "Feature flag",
+      "term_en": "Feature flag",
+      "definition_es": "Un mecanismo de configuración que activa características en tiempo de ejecución sin redespliegue de código, permitiendo rollouts progresivos, pruebas A/B y rollback rápido.",
+      "definition_en": "A configuration mechanism that toggles feature activation at runtime without code redeployment, enabling progressive rollouts, A/B testing, and fast rollback.",
+      "source": "Pete Hodgson — Feature Toggles (martinfowler.com); LaunchDarkly documentation"
+    },
+    {
+      "id": "gl05_29",
+      "term_es": "Observabilidad",
+      "term_en": "Observability",
+      "definition_es": "La capacidad de entender el estado interno de un sistema a partir de sus salidas externas (logs, métricas, trazas); crítica para depuración de sistemas distribuidos sin instrumentación invasiva.",
+      "definition_en": "The ability to understand a system's internal state from its external outputs (logs, metrics, traces); critical for debugging distributed systems without invasive instrumentation.",
+      "source": "Google — Site Reliability Engineering Book, ch. 7; Charity Majors — The Three Pillars of Observability"
+    },
+    {
+      "id": "gl05_30",
+      "term_es": "SLA",
+      "term_en": "SLA",
+      "definition_es": "Service Level Agreement: un compromiso contractual que especifica disponibilidad, rendimiento y otros objetivos de calidad, con penalizaciones por incumplimiento.",
+      "definition_en": "Service Level Agreement: a contractual commitment specifying availability, performance, and other quality targets, with penalties for violations.",
+      "source": "Google — Site Reliability Engineering Book, ch. 2–4; ITIL Service Level Management"
+    },
+    {
+      "id": "gl05_31",
+      "term_es": "SLI",
+      "term_en": "SLI",
+      "definition_es": "Service Level Indicator: una métrica medida (p. ej. tasa de éxito de solicitudes) usada para rastrear si se está cumpliendo un SLO.",
+      "definition_en": "Service Level Indicator: a measured metric (e.g., request success rate) used to track whether an SLO is being met.",
+      "source": "Google — Site Reliability Engineering Book, ch. 3–4; Observability Engineering by Majors, Grafton & Peacock"
+    },
+    {
+      "id": "gl05_32",
+      "term_es": "MTTR",
+      "term_en": "MTTR",
+      "definition_es": "Mean Time To Recovery: el tiempo promedio requerido para restaurar un servicio fallido a operación normal; una métrica clave para respuesta ante incidentes y resiliencia.",
+      "definition_en": "Mean Time To Recovery: the average time required to restore a failed service to normal operation; a key metric for incident response and resilience.",
+      "source": "Google — Site Reliability Engineering Book; Michael Nygard — Release It! 2e"
+    },
+    {
+      "id": "gl05_33",
+      "term_es": "RPO",
+      "term_en": "RPO",
+      "definition_es": "Recovery Point Objective: la máxima pérdida de datos aceptable en un escenario de recuperación ante desastres, definida como el punto-en-tiempo al cual se deben recuperar los datos.",
+      "definition_en": "Recovery Point Objective: the maximum acceptable data loss in a disaster recovery scenario, defined as the point-in-time to which data must be recovered.",
+      "source": "AWS disaster recovery whitepaper; NIST disaster recovery planning"
+    },
+    {
+      "id": "gl05_34",
+      "term_es": "RTO",
+      "term_en": "RTO",
+      "definition_es": "Recovery Time Objective: el tiempo máximo aceptable para restaurar un sistema después de un fallo; impulsa el diseño de mecanismos de failover y recuperación ante desastres.",
+      "definition_en": "Recovery Time Objective: the maximum acceptable time to restore a system after a failure; drives the design of failover and disaster recovery mechanisms.",
+      "source": "AWS disaster recovery whitepaper; NIST disaster recovery planning"
+    },
+    {
+      "id": "gl05_35",
+      "term_es": "Idempotencia",
+      "term_en": "Idempotency",
+      "definition_es": "Una propiedad donde ejecutar una operación múltiples veces produce el mismo resultado que ejecutarla una sola vez; esencial para lógica de reintentos y confiabilidad en sistemas distribuidos.",
+      "definition_en": "A property where executing an operation multiple times produces the same result as executing it once; essential for retry logic and distributed system reliability.",
+      "source": "REST API design; Sam Newman — Building Microservices 2e; Google API design guide"
+    },
+    {
+      "id": "gl05_36",
+      "term_es": "Patrón de reintento",
+      "term_en": "Retry pattern",
+      "definition_es": "Una estrategia de resiliencia que reintenta automáticamente solicitudes fallidas con demoras configurables y backoff exponencial, mejorando confiabilidad en condiciones de red inestables.",
+      "definition_en": "A resilience strategy that automatically retries failed requests with configurable delays and exponential backoff, improving reliability in flaky network conditions.",
+      "source": "Michael Nygard — Release It! 2e; AWS best practices; Polly library documentation"
+    },
+    {
+      "id": "gl05_37",
+      "term_es": "Patrón de solicitud-respuesta",
+      "term_en": "Request-reply pattern",
+      "definition_es": "Un patrón de comunicación sincrónica donde un cliente envía una solicitud y espera una respuesta; más simple que pub/sub pero introduce acoplamiento temporal.",
+      "definition_en": "A synchronous communication pattern where a client sends a request and waits for a response; simpler than pub/sub but introduces temporal coupling.",
+      "source": "Hohpe & Woolf — Enterprise Integration Patterns; gRPC documentation"
+    },
+    {
+      "id": "gl05_38",
+      "term_es": "Cola de letra muerta",
+      "term_en": "Dead letter queue",
+      "definition_es": "Una cola que retiene mensajes que no se pueden procesar exitosamente después de reintentos repetidos, permitiendo investigación e intervención manual sin bloquear la cola principal.",
+      "definition_en": "A queue that holds messages that cannot be processed successfully after repeated retry attempts, allowing investigation and manual intervention without blocking the main queue.",
+      "source": "AWS SQS documentation; RabbitMQ DLQ documentation; Enterprise Integration Patterns"
+    },
+    {
+      "id": "gl05_39",
+      "term_es": "Patrón Bulkhead",
+      "term_en": "Bulkhead pattern",
+      "definition_es": "Una estrategia de aislamiento que compartimenta recursos (threads, conexiones, memoria) para prevenir fallos en cascada; si un compartimiento falla, otros permanecen operacionales.",
+      "definition_en": "An isolation strategy that compartmentalizes resources (threads, connections, memory) to prevent cascading failures; if one bulkhead fails, others remain operational.",
+      "source": "Michael Nygard — Release It! 2e; Michael Nygard — Stability Patterns"
+    },
+    {
+      "id": "gl05_40",
+      "term_es": "Limitación de velocidad",
+      "term_en": "Rate limiting",
+      "definition_es": "Una técnica que restringe el número de solicitudes u operaciones que un cliente puede hacer en una ventana de tiempo, protegiendo servicios de sobrecarga y permitiendo asignación justa de recursos.",
+      "definition_en": "A technique that restricts the number of requests or operations a client can make within a time window, protecting services from overload and enabling fair resource allocation.",
+      "source": "AWS API Gateway documentation; NGINX rate limiting guide"
+    },
+    {
+      "id": "gl05_41",
+      "term_es": "Vista materializada",
+      "term_en": "Materialized view",
+      "definition_es": "Una vista de base de datos cuyos resultados se precomputan y almacenan físicamente, usada en CQRS y sistemas de lectura intensiva para evitar joins y cálculos costosos en tiempo de consulta.",
+      "definition_en": "A database view whose results are precomputed and stored physically, used in CQRS and read-heavy systems to avoid expensive joins and computations at query time.",
+      "source": "Kleppmann — Designing Data-Intensive Applications, ch. 11; CQRS documentation by Microsoft"
+    },
+    {
+      "id": "gl05_42",
+      "term_es": "Patrón Saga coreografiada",
+      "term_en": "Choreography",
+      "definition_es": "Un tipo de Saga donde servicios coordinan transacciones distribuidas respondiendo a eventos entre sí, sin un orquestador central; cada servicio sabe cuándo actuar basándose en eventos recibidos.",
+      "definition_en": "A type of Saga where services coordinate distributed transactions by responding to events from each other, without a central orchestrator; each service knows when to act based on received events.",
+      "source": "Chris Richardson — Microservices Patterns, ch. 4; Sam Newman — Building Microservices 2e"
     }
   ]
 }
