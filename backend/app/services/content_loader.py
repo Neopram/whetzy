@@ -123,6 +123,8 @@ async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:
     question.correct_index = q.get("correct_index")
     question.correct_answer_es = q.get("correct_answer_es")
     question.correct_answer_en = q.get("correct_answer_en")
+    question.code_es = q.get("code_es")
+    question.code_en = q.get("code_en")
     question.explanation_es = q.get("explanation_es", "")
     question.explanation_en = q.get("explanation_en", "")
     question.source = q.get("source")

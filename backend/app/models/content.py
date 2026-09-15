@@ -162,6 +162,11 @@ class Question(Base):
     correct_index: Mapped[int | None] = mapped_column(Integer, nullable=True)
     correct_answer_es: Mapped[str | None] = mapped_column(Text, nullable=True)
     correct_answer_en: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Runnable code template for sql_exec questions (the full SQL script with
+    # ___ as the student's blank). fill_blank_exec/fix_bug embed code inside
+    # question_es/question_en as a fenced block instead (so these stay NULL).
+    code_es: Mapped[str | None] = mapped_column(Text, nullable=True)
+    code_en: Mapped[str | None] = mapped_column(Text, nullable=True)
     explanation_es: Mapped[str] = mapped_column(Text, default="", nullable=False)
     explanation_en: Mapped[str] = mapped_column(Text, default="", nullable=False)
     # Canonical source citation (CPython docs, a PEP, a named book+edition, etc.).

@@ -111,6 +111,8 @@ class QuestionPublic(BaseModel):
     Deliberately omits `correct_index` and the explanations.
     For exec types (fill_blank_exec, fix_bug) `correct_answer_es/en` carries
     the expected stdout so the client can grade locally via Pyodide.
+    For sql_exec, `code_es`/`code_en` carry the full SQL script with `___`
+    as the student's blank (fill_blank_exec embeds its code in question prose).
     """
 
     model_config = ConfigDict(from_attributes=True)
@@ -125,6 +127,8 @@ class QuestionPublic(BaseModel):
     options_en: list[str] | None = None
     correct_answer_es: str | None = None
     correct_answer_en: str | None = None
+    code_es: str | None = None
+    code_en: str | None = None
     expected_time_ms: int
 
 
