@@ -1,0 +1,37 @@
+# What `railway up` uploads. Mirrors .dockerignore, and exists because the CLI
+# does not apply .dockerignore to the upload: without this it sends the whole
+# working tree (434 MB of frontend/node_modules) and the upload times out
+# before the build ever starts. The Dockerfile only copies backend/ and
+# content/, so nothing below is needed to build the image.
+
+# Frontend — never enters the backend image
+frontend/
+node_modules/
+
+# Python local state
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Secrets — never leave this machine
+.env
+*.local.env
+
+# Tests / dev tooling
+backend/tests/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docs / legal / infra — not copied by the Dockerfile
+docs/
+legal/
+infra/
+assets/
+
+# VCS and local agent state
+.git/
+.github/
+.claude/
