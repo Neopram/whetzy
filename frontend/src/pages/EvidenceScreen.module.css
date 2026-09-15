@@ -1,0 +1,243 @@
+:root {
+  --ev-bg: #f8f9fa;
+  --ev-surface: #ffffff;
+  --ev-text: #1a1a2e;
+  --ev-muted: #666;
+  --ev-border: #e2e4e8;
+  --ev-brand: #7c3aed;
+  --ev-green: #16a34a;
+  --ev-orange: #d97706;
+  --ev-highlight: #faf5ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ev-bg: #0f0f1a;
+    --ev-surface: #1a1a2e;
+    --ev-text: #e8e8f0;
+    --ev-muted: #9999bb;
+    --ev-border: #2a2a3e;
+    --ev-highlight: #1e1830;
+  }
+}
+:root[data-theme='dark'] {
+  --ev-bg: #0f0f1a;
+  --ev-surface: #1a1a2e;
+  --ev-text: #e8e8f0;
+  --ev-muted: #9999bb;
+  --ev-border: #2a2a3e;
+  --ev-highlight: #1e1830;
+}
+
+.page {
+  min-height: 100dvh;
+  background: var(--ev-bg);
+  color: var(--ev-text);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, #4f1d96 0%, #7c3aed 60%, #a78bfa 100%);
+  color: #fff;
+  padding: 60px 20px 48px;
+}
+.heroInner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.heroLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  opacity: 0.92;
+}
+.heroLogoName {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.heroTitle {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  margin: 0 0 14px;
+  letter-spacing: -0.02em;
+}
+.heroSub {
+  font-size: 1.05rem;
+  opacity: 0.88;
+  max-width: 620px;
+  margin: 0 0 16px;
+}
+.captureDate {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* ── Layout ── */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 20px 64px;
+}
+.section {
+  margin-bottom: 56px;
+}
+.h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+  color: var(--ev-brand);
+  letter-spacing: -0.01em;
+}
+.lead {
+  color: var(--ev-muted);
+  margin: 0 0 20px;
+  max-width: 680px;
+}
+
+/* ── Engine grid ── */
+.engineGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.engineCard {
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.engineName {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ev-brand);
+  margin-bottom: 6px;
+}
+.engineDesc {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ev-muted);
+  line-height: 1.5;
+}
+
+/* ── Tables ── */
+.tableWrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--ev-border);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.table th {
+  background: var(--ev-surface);
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--ev-border);
+  white-space: nowrap;
+}
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ev-border);
+  vertical-align: middle;
+}
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: var(--ev-highlight); }
+.rowHighlight td { background: var(--ev-highlight) !important; }
+
+.tdScore { min-width: 80px; }
+.tdTotal { white-space: nowrap; font-size: 1rem; }
+.tdValue { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-weight: 700; }
+.pct { font-size: 0.75rem; color: var(--ev-muted); margin-left: 2px; }
+.noteCell { margin: 4px 0 0; font-size: 0.78rem; color: var(--ev-muted); }
+
+/* ── Score bar ── */
+.barWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+}
+.barFill {
+  height: 8px;
+  border-radius: 4px;
+  min-width: 3px;
+  transition: width 0.3s ease;
+}
+.barLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ev-text);
+  flex-shrink: 0;
+}
+
+/* ── Dimension legend ── */
+.dimLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.dimChip {
+  background: var(--ev-surface);
+  border: 1px solid var(--ev-border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+}
+.dimChip strong { color: var(--ev-brand); }
+
+/* ── BKT note ── */
+.benchmarkNote {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--ev-brand) 8%, var(--ev-surface));
+  border-left: 3px solid var(--ev-brand);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.88rem;
+  color: var(--ev-muted);
+}
+.benchmarkNote strong { color: var(--ev-text); }
+
+/* ── Behind list ── */
+.behindList {
+  padding-left: 20px;
+  color: var(--ev-muted);
+}
+.behindList li { margin-bottom: 8px; }
+.behindList strong { color: var(--ev-text); }
+
+/* ── Links ── */
+.link { color: var(--ev-brand); text-decoration: none; }
+.link:hover { text-decoration: underline; }
+
+.inlineCode {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.85em;
+  background: var(--ev-border);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.disclaimer {
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: var(--ev-muted);
+}
+
+/* ── Footer ── */
+.footer {
+  border-top: 1px solid var(--ev-border);
+  padding: 20px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--ev-muted);
+}

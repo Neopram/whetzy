@@ -37,6 +37,9 @@ const MockExamScreen = lazy(() =>
 const LessonScreen = lazy(() =>
   import('./pages/LessonScreen').then((m) => ({ default: m.LessonScreen }))
 );
+const EvidenceScreen = lazy(() =>
+  import('./pages/EvidenceScreen').then((m) => ({ default: m.EvidenceScreen }))
+);
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -44,6 +47,7 @@ const STANDALONE_DOC: Record<string, string> = {
   '/privacy': 'privacy',
   '/terms': 'terms',
   '/landing': 'landing',
+  '/evidence': 'evidence',
 };
 
 type AuthState = 'checking' | 'unauthed' | 'authed';
@@ -73,6 +77,7 @@ function StandalonePage({ path }: { path: string }) {
   if (path === '/delete-account') return <Screen><DeleteAccountScreen /></Screen>;
   if (path === '/privacy') return <Screen><LegalScreen doc="privacy" /></Screen>;
   if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
+  if (path === '/evidence') return <Screen><EvidenceScreen /></Screen>;
   return <Screen><LandingScreen /></Screen>;
 }
 
