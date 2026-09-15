@@ -109,6 +109,17 @@ function App() {
     void i18n.changeLanguage(userLanguage);
     document.documentElement.lang = userLanguage;
   }, [userLanguage]);
+
+  // Tracks the previous screen so the transition below knows which way to
+  // slide. These two hooks must stay ABOVE the early returns for `unauthed` /
+  // `checking` / `showOnboarding`: they used to sit next to the markup that
+  // consumes them, which meant the authenticated render called two more hooks
+  // than the unauthenticated one. React aborts that render with "Rendered more
+  // hooks than during the previous render", so the whole tree blanked the
+  // moment anyone signed in and the bottom nav never appeared.
+  const prevScreenRef = useRef(currentScreen);
+  useEffect(() => { prevScreenRef.current = currentScreen; }, [currentScreen]);
+
   const [authState, setAuthState] = useState<AuthState>(() =>
     isAuthenticated() ? 'checking' : 'unauthed'
   );
@@ -194,9 +205,7 @@ function App() {
     }
   };
 
-  const prevScreenRef = useRef(currentScreen);
   const dir = screenOrder(currentScreen) >= screenOrder(prevScreenRef.current) ? 1 : -1;
-  useEffect(() => { prevScreenRef.current = currentScreen; }, [currentScreen]);
 
   return (
     <>
