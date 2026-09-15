@@ -226,6 +226,29 @@ def test_body_length_is_within_the_bar(case: tuple[Path, dict[str, Any]]) -> Non
     assert not problems, f"{lesson.get('id')}: " + "; ".join(problems)
 
 
+# "Ã¡" / "Â·" and friends: UTF-8 bytes that were decoded as latin-1 and then
+# re-encoded as UTF-8. The file is still valid UTF-8, so nothing raises and every
+# other check passes — the text is simply wrong, and only in the accented
+# language. Caught for real: 8 of the 24 track02 lessons landed this way,
+# readable in English and garbled in Spanish (red line 3 broken without a single
+# failing test). Cheap to assert, impossible to notice by eye in review.
+MOJIBAKE_RE = re.compile(r"[ÃÂ][\x80-\xbf\xa0-\xff]")
+
+
+@pytest.mark.parametrize("case", LESSONS, ids=_lesson_id)
+def test_no_double_encoded_text(case: tuple[Path, dict[str, Any]]) -> None:
+    _path, lesson = case
+    problems = [
+        f"{field}: {MOJIBAKE_RE.search(str(value)).group()!r}"  # type: ignore[union-attr]
+        for field, value in lesson.items()
+        if isinstance(value, str) and MOJIBAKE_RE.search(value)
+    ]
+    assert not problems, (
+        f"{lesson.get('id')}: text was decoded as latin-1 somewhere before being "
+        f"saved — {'; '.join(problems)}"
+    )
+
+
 @pytest.mark.parametrize("case", LESSONS, ids=_lesson_id)
 def test_the_two_languages_are_not_the_same_text(case: tuple[Path, dict[str, Any]]) -> None:
     """Content is written natively in both, never translated by copy-paste — an
