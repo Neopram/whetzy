@@ -52,7 +52,16 @@ TF_BAND = (0.35, 0.65)
 # --- executable practice (17.3) -------------------------------------------
 #
 # Question types the learner actually runs, rather than picks an option for.
-EXEC_TYPES = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
+#
+# `js_exec` is deliberately NOT here, even though the type exists end to end
+# (backend `_EXEC_TYPES`, `runtimeForQuestion`, the quiz screen). Its runtime is
+# a stub: `useRuntime`'s 'js' branch returns a fixed
+# `{output: '', error: 'JS runtime not yet available'}` without executing
+# anything. Counting it would let the ratio rise by authoring questions that
+# cannot run — inflating the exact number the competitive scorecard reads, which
+# is red line 1 wearing a progress bar. Add it back the day a real sandboxed JS
+# worker exists, and not before.
+EXEC_TYPES = {"fill_blank_exec", "fix_bug", "sql_exec"}
 EXEC_TARGET = 0.15
 
 # Tracks and modules that do NOT chase the 15 % bar, each with the reason.
