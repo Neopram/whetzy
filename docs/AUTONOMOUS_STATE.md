@@ -17,7 +17,7 @@
 | Backend prod | `https://api-production-9751.up.railway.app` |
 | Frontend prod | `https://whetzy.com` / `https://whetzy.pages.dev` |
 | Repo | `github.com/Neopram/whetzy` branch `master` |
-| Alembic HEAD | `o5p6q7r8s9t0` (16 migraciones — verificado 2026-09-15). Siempre recomputar con `cd backend && alembic heads` |
+| Alembic HEAD | `p6q7r8s9t0u1` (17 migraciones — verificado 2026-09-15 contra Postgres real). Siempre recomputar con `cd backend && alembic heads` |
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |

@@ -29,7 +29,6 @@ def upgrade() -> None:
             sa.String(64),
             sa.ForeignKey("skills.id", ondelete="CASCADE"),
             nullable=False,
-            index=True,
         ),
         sa.Column("title_es", sa.String(200), nullable=False),
         sa.Column("title_en", sa.String(200), nullable=False),
