@@ -104,7 +104,10 @@ EXEC_FLOOR = {
     "track02": 0.15,
     "track03": 0.15,
     "track04": 0.07,
-    "track06": 0.01,
+    # 1,9 % hasta que la sesion ar autoro 68 ejecutables. Sus 8 originales
+    # importaban numpy/pandas y no podian correr en el navegador del alumno,
+    # asi que el ratio de antes contaba preguntas rotas. Ver ADR-9 y 17.3.
+    "track06": 0.15,
     "track07": 0.00,
     # 0 % until session ar authored 42 executable questions for it. PCEP is the
     # wedge of lane 1 and it is a *Python* certification, so a zero here was
