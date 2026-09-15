@@ -109,10 +109,26 @@ INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
 # spans are skipped too: under-detecting is the right way to be wrong here,
 # because a guard with false positives gets switched off.
 QUOTED_RE = re.compile(r"'[^'\n]{1,60}'|\"[^\"\n]{1,60}\"")
+# Code written inline with no marker at all, which several lessons do:
+# `nombre_modulo.funcion()`, `reduce(funcion, iterable)`, `dis.dis(funcion)`.
+# The words inside are identifiers, not Spanish that lost an accent, and
+# flagging them sends an author to "fix" a code sample.
+# NO whitespace before the paren, deliberately. Allowing `\s*` made this match
+# ordinary Spanish parentheticals — `CloudWatch Logs (que registro la aplicacion
+# o el sistema)` and `la replica (elegida por un hash ... no por su direccion
+# IP)` both parse as "call" — and stripping those HID TWO REAL DEFECTS. A guard
+# that suppresses findings is worse than no guard, so the cost of being wrong
+# here falls on the false-positive side: `DVC (Data Version Control)` stays
+# flagged and stays in the debt list, which is the harmless way to be wrong.
+CALL_RE = re.compile(r"\b[A-Za-z_]\w*\([^)\n]{0,100}\)")
+DOTTED_RE = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+")
+SNAKE_RE = re.compile(r"\b[A-Za-z]\w*_\w+\b")
 
 
 def _prose_only(text: str) -> str:
-    return QUOTED_RE.sub(" ", INLINE_CODE_RE.sub(" ", FENCE_RE.sub(" ", text)))
+    for pattern in (FENCE_RE, INLINE_CODE_RE, QUOTED_RE, CALL_RE, DOTTED_RE, SNAKE_RE):
+        text = pattern.sub(" ", text)
+    return text
 
 
 def _offences(text: str) -> list[str]:
@@ -159,6 +175,21 @@ def test_the_guard_recognises_unaccented_spanish() -> None:
     assert _offences("usa `codigo` para el valor") == []
     assert _offences("```python\ncodigo = 1\n```\nTexto correcto.") == []
     assert _offences("la forma 'import modulo' carga el módulo entero") == []
+    # Code written inline with no marker at all, straight from real lessons.
+    assert _offences("escribes nombre_modulo.funcion() para llamarla") == []
+    assert _offences("reduce(funcion, iterable) aplica la función acumulando") == []
+    assert _offences("dis.dis(funcion) imprime cada instrucción") == []
+    # ...but stripping code must not swallow the prose around it.
+    assert _offences("dis.dis(funcion) imprime la operacion") == ["operacion"]
+    # And a Spanish parenthetical is prose, not a call. Both of these are real
+    # sentences from the bank that an earlier version of CALL_RE swallowed,
+    # hiding the defect they contain.
+    assert _offences("CloudWatch Logs (que registro la aplicacion o el sistema)") == [
+        "aplicacion"
+    ]
+    assert _offences("la replica (elegida por un hash, no por su direccion IP)") == [
+        "direccion"
+    ]
 
 
 # Content that already shipped without its accents, as (id, field) pairs.
