@@ -119,7 +119,8 @@ QUOTED_RE = re.compile(r"'[^'\n]{1,60}'|\"[^\"\n]{1,60}\"")
 # IP)` both parse as "call" — and stripping those HID TWO REAL DEFECTS. A guard
 # that suppresses findings is worse than no guard, so the cost of being wrong
 # here falls on the false-positive side: `DVC (Data Version Control)` stays
-# flagged and stays in the debt list, which is the harmless way to be wrong.
+# flagged and lives in the exception list with its reason, which is the
+# harmless way to be wrong.
 CALL_RE = re.compile(r"\b[A-Za-z_]\w*\([^)\n]{0,100}\)")
 DOTTED_RE = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+")
 SNAKE_RE = re.compile(r"\b[A-Za-z]\w*_\w+\b")
@@ -192,30 +193,42 @@ def test_the_guard_recognises_unaccented_spanish() -> None:
     ]
 
 
-# Content that already shipped without its accents, as (id, field) pairs.
+# Strings this guard flags that are NOT defects, each with its reason.
 #
-# Turning this guard on found the problem is far wider than the eight questions
-# that prompted it: whole lessons in track08 and track09 mix correct Spanish with
-# unaccented Spanish inside one paragraph, which is what happens when text is
-# generated in two passes and only one of them was careful.
+# This file started life as a debt list of 315 strings: turning the guard on
+# showed the problem was far wider than the eight questions that prompted it,
+# with whole lessons mixing correct and unaccented Spanish inside one paragraph.
+# Paying that debt off left only these, so the file was renamed rather than left
+# claiming to hold debt it no longer holds.
 #
-# Fixing them is authoring work, not a mechanical replace - `practica` is a verb
-# as often as it is a noun, and a bulk substitution would corrupt the correct
-# half. So the debt is written down instead of hidden: this list may only ever
-# SHRINK. New content fails the moment it is added, which is the point; the
-# backlog carries the job of emptying it.
-DEBT_PATH = Path(__file__).parent / "spanish_accent_debt.json"
-KNOWN_UNACCENTED: set[tuple[str, str]] = {
-    (entry["id"], entry["field"])
-    for entry in json.loads(DEBT_PATH.read_text(encoding="utf-8"))["known"]
-}
+# What is left is three kinds of thing the checker cannot tell from prose: code
+# written without backticks (`for linea in f:`), English proper nouns (`Data
+# Version Control`), and `correct_answer_es` fields that are a program's
+# expected stdout - accenting those would break the test that compares them
+# against what CPython actually printed.
+#
+# Every entry needs a written reason. Without that rule this file becomes the
+# place where anything tedious to fix quietly goes to live.
+EXCEPTIONS_PATH = Path(__file__).parent / "spanish_accent_exceptions.json"
+_EXCEPTIONS = json.loads(EXCEPTIONS_PATH.read_text(encoding="utf-8"))["known"]
+KNOWN_UNACCENTED: set[tuple[str, str]] = {(e["id"], e["field"]) for e in _EXCEPTIONS}
 
 
-def test_the_debt_list_only_covers_real_offences() -> None:
-    """An entry that no longer offends must be removed, or the list never shrinks.
+def test_every_exception_carries_a_reason() -> None:
+    """An exception without a reason is a defect someone got tired of."""
+    missing = [
+        f"{e['id']}.{e['field']}" for e in _EXCEPTIONS if not (e.get("reason") or "").strip()
+    ]
+    assert not missing, (
+        f"{len(missing)} entries in spanish_accent_exceptions.json have no reason: {missing}"
+    )
 
-    Without this, fixing a string would leave its id sitting in the allowlist
-    for ever and the ratchet would quietly stop being one.
+
+def test_the_exception_list_only_covers_strings_that_still_flag() -> None:
+    """An entry that no longer flags must be removed, or the list never shrinks.
+
+    Without this, fixing a string would leave its id sitting in the list for
+    ever and the ratchet would quietly stop being one.
     """
     still_offending = {
         (source_id, field)
@@ -224,15 +237,15 @@ def test_the_debt_list_only_covers_real_offences() -> None:
     }
     stale = sorted(KNOWN_UNACCENTED - still_offending)
     assert not stale, (
-        f"{len(stale)} entries in spanish_accent_debt.json no longer contain "
-        f"unaccented Spanish and must be deleted from it: {stale[:10]}"
+        f"{len(stale)} entries in spanish_accent_exceptions.json no longer flag and "
+        f"must be deleted from it: {stale[:10]}"
     )
 
 
 @pytest.mark.parametrize("source_id,field,text", _spanish_strings())
 def test_spanish_text_keeps_its_accents(source_id: str, field: str, text: str) -> None:
     if (source_id, field) in KNOWN_UNACCENTED:
-        pytest.xfail("known unaccented content, tracked in spanish_accent_debt.json")
+        pytest.xfail("known false positive, with its reason in spanish_accent_exceptions.json")
     offences = _offences(text)
     assert not offences, (
         f"{source_id}.{field} contains unaccented Spanish: "
