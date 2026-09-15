@@ -59,10 +59,15 @@ def _load_exec_questions() -> list[dict[str, Any]]:
     """Every fill_blank_exec / fix_bug question under content/questions/track01-03."""
     root = _content_root()
     questions: list[dict[str, Any]] = []
-    for track_dir in ("track01_python_basics", "track02_python_intermediate", "track03_python_advanced"):
-        qdir = root / "questions" / track_dir
-        if not qdir.is_dir():
-            continue
+    # Every track, not a hardcoded track01-03. The list was written when only
+    # those three had executable questions, and it silently stopped being true:
+    # track04 and track06 already carry exec questions that this harness has
+    # never run, so their advertised answers were never checked against CPython.
+    # 17.3 adds many more, and content that claims "run this" while nothing ever
+    # ran it is exactly what this file exists to prevent.
+    questions_root = root / "questions"
+    for track_dir in sorted(p for p in questions_root.iterdir() if p.is_dir()):
+        qdir = track_dir
         for qfile in sorted(qdir.rglob("*.json")):
             payload = json.loads(qfile.read_text(encoding="utf-8"))
             items = payload if isinstance(payload, list) else payload.get("questions", [])
