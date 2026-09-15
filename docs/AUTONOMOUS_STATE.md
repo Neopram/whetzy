@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-15 (sesión ac) — F15 DONE · F16 DONE · F17 DONE · F18 DONE · F19 DONE · F20 DONE · **F21 DONE** (framer-motion page transitions + directional slide, XP count-up via useSpring en TopBar, MCQ option stagger + whileTap, feedback panel slide-in, TracksScreen animated expand/collapse, Skeleton+Badge primitivos, build limpio 96 KB gz). Backlog activo: F22 (evidence page + competitor teardown). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
+> Última actualización: 2026-09-15 (sesión ac) — F15 DONE · F16 DONE · F17 DONE · F18 DONE · F19 DONE · F20 DONE · F21 DONE · **F22 DONE** (página /evidence: motor stack (BKT/FSRS/Elo/bandit/DKT), tabla de parámetros BKT, teardown de 11 competidores con 6 dimensiones ponderadas, sección "dónde estamos por detrás"; build limpio). **Plan F15–F22 completo.** Próximo paso: H.11 (redespliegue Cloudflare Pages) + H.SEED (4 353 Q a prod) + H.10 (≥30 beta users).
 
 ---
 
