@@ -446,6 +446,7 @@ Archivos disjuntos garantizados. Pueden correr como workers simultáneos
 | v | 2026-09-08 | 229 back + 39 front | ≥60% cov | 87.6% stmts | F401 limpio | 0 err | 0 err (strict) | Q.7(front),Q.8,Q.9,Q.10 | 0,1,Q |
 | w | 2026-09-08 | 230 back + 39 front + 6 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.1 | 0,1,Q |
 | ab | 2026-09-08 | 241 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | P.10,4.4,2.3,8.3 | 0,1,Q |
+| **ao** | 2026-09-15 | **788 back** (0 failed; venia de 783+4 failed) · 141 front · e2e 23/26 en CI real | **83 %** | stmts 90,6 / **func 80,35** / **branch 86,80** | limpio (`app tests`) | Success, 89 files | `tsc -b` 0 err | 16.1, 16.2, 16.3, 16.4, 16.5a, 16.5b, 16.6, 16.7, 16.8, 16.8b, 16.9 | 0,1,2,3,4,5,6,8,Q,P,12 |
 | ac | 2026-09-08 | 261 back | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 8.2 (k6), P.9 (content versioning) | 0,1,Q |
 | ad | 2026-09-08 | 310 back + 39 front + 8 E2E | ≥60% cov | 87.6% stmts | limpio | 0 err | 0 err | 4.5(churn),5.4(analytics),7.2(Stripe),7.3(entitlements),3.3(push),P.9(content versioning) | 0,1,Q |
 | aj | 2026-09-11 | 451 back (exit 0) + 0 err tsc | ≥60% cov | 87.6% stmts | — | 0 err | 0 err | Phase 8 corregida a 100%; launch console publicada; backend prod CAÍDO (H.1 vigente) | 0,1,2,3,4,5,6,Q,8 |
