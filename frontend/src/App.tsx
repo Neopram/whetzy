@@ -88,6 +88,8 @@ function App() {
   const currentScreen = useAppStore((s) => s.currentScreen);
   const setScreen = useAppStore((s) => s.setScreen);
   const mockExamTrackId = useAppStore((s) => s.mockExamTrackId);
+  const mockExamQuestionCount = useAppStore((s) => s.mockExamQuestionCount);
+  const mockExamDurationMinutes = useAppStore((s) => s.mockExamDurationMinutes);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
   const userId = useAppStore((s) => s.user.id);
@@ -165,7 +167,7 @@ function App() {
       case 'placement': return <PlacementScreen />;
       case 'duels': return <DuelScreen />;
       case 'mockexam':
-        return <MockExamScreen trackId={mockExamTrackId ?? 'track08'} questionCount={65} durationMinutes={90} onExit={() => setScreen('tracks')} />;
+        return <MockExamScreen trackId={mockExamTrackId ?? 'track08'} questionCount={mockExamQuestionCount} durationMinutes={mockExamDurationMinutes} onExit={() => setScreen('tracks')} />;
       default: return <HomeScreen />;
     }
   };

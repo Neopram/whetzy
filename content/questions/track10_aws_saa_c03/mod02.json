@@ -1,0 +1,2027 @@
+[
+  {
+    "id": "q100201mc001",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la clase de almacenamiento S3 más rentable para archivos accedidos raramente?",
+    "question_en": "Which S3 storage class is most cost-effective for rarely accessed files?",
+    "options_es": [
+      "S3 Standard",
+      "S3 Intelligent-Tiering",
+      "S3 Glacier Deep Archive",
+      "S3 Glacier Instant Retrieval"
+    ],
+    "options_en": [
+      "S3 Standard",
+      "S3 Intelligent-Tiering",
+      "S3 Glacier Deep Archive",
+      "S3 Glacier Instant Retrieval"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "S3 Glacier Deep Archive ofrece el almacenamiento más barato pero requiere 12 horas para recuperación. Ideal para archivos históricos. S3 Standard es costoso. Intelligent-Tiering es bueno para patrones impredecibles. Instant Retrieval es más rápido pero más caro.",
+    "explanation_en": "S3 Glacier Deep Archive offers cheapest storage but requires 12 hours for retrieval. Ideal for historical archives. S3 Standard is expensive. Intelligent-Tiering is good for unpredictable patterns. Instant Retrieval is faster but pricier.",
+    "source": "AWS S3 Storage Classes — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100201mc002",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es el S3 Object Lock?",
+    "question_en": "What is S3 Object Lock?",
+    "options_es": [
+      "Método de cifrado",
+      "Previene eliminación o sobrescritura de objetos",
+      "Restricción de acceso basada en IP",
+      "Control de versiones"
+    ],
+    "options_en": [
+      "Encryption method",
+      "Prevents deletion or overwriting of objects",
+      "IP-based access restriction",
+      "Version control"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Object Lock implementa WORM (Write Once Read Many). Previene eliminación/modificación por tiempo especificado. No es cifrado, restricción de IP, ni versioning (aunque requiere versionado).",
+    "explanation_en": "Object Lock implements WORM (Write Once Read Many). Prevents deletion/modification for specified time. Not encryption, IP restriction, or versioning (though requires versioning).",
+    "source": "AWS S3 Object Lock — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100201mc003",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la mejor estrategia de costo para una aplicación que requiere acceso frecuente a 1TB de datos durante el día y raramente durante la noche?",
+    "question_en": "What is the best cost strategy for an app requiring frequent access to 1TB during day and rarely at night?",
+    "options_es": [
+      "S3 Standard todo el tiempo",
+      "S3 Standard durante el día, mover a Glacier noche",
+      "S3 Intelligent-Tiering",
+      "Usar CloudFront cache"
+    ],
+    "options_en": [
+      "S3 Standard all the time",
+      "S3 Standard during day, move to Glacier at night",
+      "S3 Intelligent-Tiering",
+      "Use CloudFront cache"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "S3 Intelligent-Tiering automáticamente mueve objetos entre tiers basado en patrones de acceso. Es ideal para workloads impredecibles. Mover manualmente a Glacier es tedioso. Standard todo el tiempo es costoso. CloudFront cacha datos en borde.",
+    "explanation_en": "S3 Intelligent-Tiering automatically moves objects between tiers based on access patterns. Ideal for unpredictable workloads. Manually moving to Glacier is tedious. Standard all-time is expensive. CloudFront caches data at edge.",
+    "source": "AWS S3 Intelligent-Tiering — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100201mc004",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo garantizar que datos en S3 se repliquen a otra región automáticamente ante desastre?",
+    "question_en": "How to ensure S3 data automatically replicates to another region for disaster recovery?",
+    "options_es": [
+      "Usar S3 Cross-Region Replication (CRR)",
+      "Usar Backup diariamente a otra región",
+      "Usar S3 Object Lock",
+      "Usar CloudFront"
+    ],
+    "options_en": [
+      "Use S3 Cross-Region Replication (CRR)",
+      "Daily backup to another region",
+      "Use S3 Object Lock",
+      "Use CloudFront"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CRR replica automáticamente objetos a bucket en otra región. Permite disaster recovery. Backup manual es reactivo. Object Lock no es replicación. CloudFront es caché, no replicación de datos.",
+    "explanation_en": "CRR automatically replicates objects to bucket in another region. Enables disaster recovery. Manual backup is reactive. Object Lock is not replication. CloudFront is cache, not data replication.",
+    "source": "AWS S3 Cross-Region Replication — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100201mc005",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es S3 Batch Operations?",
+    "question_en": "What is S3 Batch Operations?",
+    "options_es": [
+      "Descarga múltiple de archivos",
+      "Ejecutar operaciones en lote en miles de objetos",
+      "Importar datos a S3",
+      "Cifrado automático"
+    ],
+    "options_en": [
+      "Multiple file download",
+      "Run operations in batch on thousands of objects",
+      "Import data to S3",
+      "Automatic encryption"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "S3 Batch Operations permite aplicar operaciones (copiar, etiquetar, cambiar ACL) a miles de objetos de una vez. Es más eficiente que scripts individuales. No es descarga, importación, ni solo cifrado.",
+    "explanation_en": "S3 Batch Operations allows applying operations (copy, tag, change ACL) to thousands of objects at once. More efficient than individual scripts. Not download, import, or just encryption.",
+    "source": "AWS S3 Batch Operations — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100201mc006",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el método recomendado para cifrar datos en S3?",
+    "question_en": "What is the recommended method for encrypting data in S3?",
+    "options_es": [
+      "SSE-S3 (Server-Side Encryption)",
+      "SSE-KMS para control clave",
+      "Client-side encryption",
+      "Ambas A y B son recomendadas"
+    ],
+    "options_en": [
+      "SSE-S3 (Server-Side Encryption)",
+      "SSE-KMS for key control",
+      "Client-side encryption",
+      "Both A and B are recommended"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "SSE-S3 es cifrado simple. SSE-KMS permite control de claves con CloudTrail. Ambas son recomendadas según caso de uso. Cifrado cliente-side es adicional si se requiere. La respuesta correcta es que ambas son viables.",
+    "explanation_en": "SSE-S3 is simple encryption. SSE-KMS enables key control with CloudTrail. Both are recommended depending on use case. Client-side is additional if needed. Correct answer is both are viable.",
+    "source": "AWS S3 Encryption — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100201mc007",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo prevenir accidental eliminación de un bucket S3 importante?",
+    "question_en": "How to prevent accidental deletion of important S3 bucket?",
+    "options_es": [
+      "Usar S3 Object Lock",
+      "Deshabilitar eliminar bucket en bucket policy",
+      "Usar MFA Delete",
+      "Usar IAM policy deny"
+    ],
+    "options_en": [
+      "Use S3 Object Lock",
+      "Disable bucket deletion in bucket policy",
+      "Use MFA Delete",
+      "Use IAM policy deny"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "MFA Delete requiere autenticación MFA para eliminar versiones de objetos o el bucket. Es el método más robusto. Object Lock es para objetos individuales. Bucket policy no puede prevenir eliminación de bucket (solo objeto). IAM deny es parcial.",
+    "explanation_en": "MFA Delete requires MFA authentication to delete object versions or bucket. Most robust method. Object Lock is for individual objects. Bucket policy cannot prevent bucket deletion (only object). IAM deny is partial.",
+    "source": "AWS S3 MFA Delete — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100201mc008",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo optimizar la transferencia de 100GB de datos a S3 desde un datacenter on-premise?",
+    "question_en": "How to optimize transfer of 100GB data to S3 from on-premise datacenter?",
+    "options_es": [
+      "Usar CLI de AWS simple",
+      "Usar AWS DataSync para sincronización managed",
+      "Usar AWS Snowball para transferencia física",
+      "Usar S3 Transfer Acceleration"
+    ],
+    "options_en": [
+      "Use simple AWS CLI",
+      "Use AWS DataSync for managed sync",
+      "Use AWS Snowball for physical transfer",
+      "Use S3 Transfer Acceleration"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DataSync es servicio managed que optimiza transferencia de datos. Ofrece paralelismo automático. CLI es básico. Snowball es para transferencias masivas (PB). Transfer Acceleration es para conexiones internet lentas.",
+    "explanation_en": "DataSync is managed service optimizing data transfer. Offers automatic parallelism. CLI is basic. Snowball for massive transfers (PB). Transfer Acceleration for slow internet.",
+    "source": "AWS DataSync — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100201mc009",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un S3 Lifecycle Policy?",
+    "question_en": "What is an S3 Lifecycle Policy?",
+    "options_es": [
+      "Política de acceso a objetos",
+      "Reglas automáticas para cambiar storage class o eliminar objetos",
+      "Versioning de objetos",
+      "Política de backup"
+    ],
+    "options_en": [
+      "Object access policy",
+      "Automatic rules to change storage class or delete objects",
+      "Object versioning",
+      "Backup policy"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Lifecycle Policy define reglas automáticas: transicionar a Glacier después de 30 días, eliminar después de 1 año, etc. Reduce costo. No es acceso, versioning, ni backup específicamente.",
+    "explanation_en": "Lifecycle Policy defines automatic rules: transition to Glacier after 30 days, delete after 1 year, etc. Reduces cost. Not access, versioning, or backup specifically.",
+    "source": "AWS S3 Lifecycle Policies — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100201mc010",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el costo principal de usar S3 Standard vs S3 Infrequent Access?",
+    "question_en": "What is the main cost difference between S3 Standard vs S3 Infrequent Access?",
+    "options_es": [
+      "Standard es más barato en almacenamiento",
+      "Infrequent Access es más barato pero tiene costo de acceso",
+      "Mismo costo",
+      "Standard es más rápido"
+    ],
+    "options_en": [
+      "Standard is cheaper for storage",
+      "Infrequent Access cheaper but has access fee",
+      "Same cost",
+      "Standard is faster"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Infrequent Access tiene almacenamiento más barato pero costo de acceso por lectura. Standard no tiene costo de acceso pero almacenamiento más caro. Velocidad es similar.",
+    "explanation_en": "Infrequent Access has cheaper storage but per-read access fee. Standard has no access fee but pricier storage. Speed is similar.",
+    "source": "AWS S3 Pricing — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100201mc011",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo compartir un objeto S3 privado con un usuario externo de forma segura sin exponer credenciales?",
+    "question_en": "How to securely share a private S3 object with external user without exposing credentials?",
+    "options_es": [
+      "Hacer objeto público",
+      "Usar Presigned URLs con TTL corto",
+      "Usar CloudFront con OAI",
+      "Cambiar bucket policy"
+    ],
+    "options_en": [
+      "Make object public",
+      "Use Presigned URLs with short TTL",
+      "Use CloudFront with OAI",
+      "Change bucket policy"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Presigned URLs generan links temporales válidos por tiempo limitado (ej: 5 minutos). No requiere credenciales públicas. Hacer objeto público es inseguro. CloudFront+OAI es para distribución. Bucket policy exposición es riesgosa.",
+    "explanation_en": "Presigned URLs generate temporary links valid for limited time (e.g., 5 minutes). No public credentials needed. Making public is unsafe. CloudFront+OAI is for distribution. Bucket policy exposure is risky.",
+    "source": "AWS S3 Presigned URLs — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100201mc012",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo minimizar costos de transferencia de datos cuando sirving contenido estático a usuarios globales desde S3?",
+    "question_en": "How to minimize data transfer costs serving static content globally from S3?",
+    "options_es": [
+      "Usar S3 en región central",
+      "Usar CloudFront con S3 como origen",
+      "Usar S3 Transfer Acceleration",
+      "Descargar todo localmente"
+    ],
+    "options_en": [
+      "Use S3 in central region",
+      "Use CloudFront with S3 as origin",
+      "Use S3 Transfer Acceleration",
+      "Download everything locally"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudFront cacha en edge locations y reduce transferencia de S3. Transfer Acceleration es para uploads. Region central tiene latencia. Descargar localmente no es viable.",
+    "explanation_en": "CloudFront caches at edge locations reducing S3 transfer. Transfer Acceleration is for uploads. Central region has latency. Local download not viable.",
+    "source": "AWS CloudFront with S3 — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100201mc013",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es el S3 Transfer Acceleration?",
+    "question_en": "What is S3 Transfer Acceleration?",
+    "options_es": [
+      "Caché para lectura",
+      "Acelera uploads usando CloudFront edge locations",
+      "Compresión automática",
+      "Paralelismo de descarga"
+    ],
+    "options_en": [
+      "Cache for reading",
+      "Accelerates uploads using CloudFront edge locations",
+      "Automatic compression",
+      "Download parallelism"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Transfer Acceleration usa la red global de CloudFront para acelerar uploads a S3. No es caché, compresión, ni paralelismo nativo.",
+    "explanation_en": "Transfer Acceleration uses CloudFront global network to accelerate S3 uploads. Not cache, compression, or native parallelism.",
+    "source": "AWS S3 Transfer Acceleration — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100201mc014",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo monitorear acceso a objetos S3 para auditoría de cumplimiento?",
+    "question_en": "How to monitor access to S3 objects for compliance audit?",
+    "options_es": [
+      "Ver logs en CloudWatch",
+      "Usar S3 Access Logging",
+      "Usar CloudTrail para API calls",
+      "Ver Access Points"
+    ],
+    "options_en": [
+      "View logs in CloudWatch",
+      "Use S3 Access Logging",
+      "Use CloudTrail for API calls",
+      "View Access Points"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudTrail registra todas las llamadas API a S3. S3 Access Logging registra acceso a nivel de objeto (más detallado pero costo). CloudWatch es para métricas, no logs de acceso. Access Points son puntos de acceso gestionados.",
+    "explanation_en": "CloudTrail logs all S3 API calls. S3 Access Logging logs object-level access (more detailed but costly). CloudWatch is for metrics, not access logs. Access Points are managed access.",
+    "source": "AWS S3 Access Logging and CloudTrail — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100201mc015",
+    "skill_id": "sk100201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia de consistencia que S3 garantiza para lecturas después de escritura?",
+    "question_en": "What consistency guarantee does S3 provide for reads after writes?",
+    "options_es": [
+      "Eventual consistency siempre",
+      "Strong read-after-write consistency",
+      "Eventual consistency para GETs en objetos nuevos",
+      "No hay garantía"
+    ],
+    "options_en": [
+      "Always eventual consistency",
+      "Strong read-after-write consistency",
+      "Eventual for GETs on new objects",
+      "No guarantee"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "S3 garantiza strong consistency: PUTs nuevos son legibles inmediatamente. Histórico era eventual consistency pero cambió en 2020. DELETE tiene comportamiento específico.",
+    "explanation_en": "S3 guarantees strong consistency: new PUTs are readable immediately. Historical was eventual but changed in 2020. DELETE has specific behavior.",
+    "source": "AWS S3 Consistency Model — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100202mc001",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la diferencia principal entre EBS y EFS?",
+    "question_en": "What is the primary difference between EBS and EFS?",
+    "options_es": [
+      "EBS es block storage, EFS es file storage accesible desde múltiples instancias",
+      "EBS es más rápido que EFS",
+      "EFS es más barato que EBS",
+      "Son lo mismo"
+    ],
+    "options_en": [
+      "EBS is block storage, EFS is file storage accessible from multiple instances",
+      "EBS is faster than EFS",
+      "EFS is cheaper than EBS",
+      "They are the same"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "EBS es block device para instancia única. EFS es NFS accesible desde múltiples instancias. EBS puede ser más rápido en algunos casos. EBS es generalmente más barato. Son tecnologías distintas.",
+    "explanation_en": "EBS is block device for single instance. EFS is NFS accessible from multiple instances. EBS can be faster in some cases. EBS generally cheaper. Different technologies.",
+    "source": "AWS EBS vs EFS — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100202mc002",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el tipo de volumen EBS que ofrece mejor rendimiento?",
+    "question_en": "Which EBS volume type offers best performance?",
+    "options_es": [
+      "gp3 (uso general)",
+      "io2 (IOPS provisionadas)",
+      "st1 (throughput)",
+      "sc1 (cold)"
+    ],
+    "options_en": [
+      "gp3 (general purpose)",
+      "io2 (provisioned IOPS)",
+      "st1 (throughput)",
+      "sc1 (cold)"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "io2 ofrece IOPS más altas (hasta 64,000). Es ideal para cargas transaccionales. gp3 es versátil. st1 es para throughput secuencial. sc1 es para archivos fríos.",
+    "explanation_en": "io2 offers highest IOPS (up to 64,000). Ideal for transactional workloads. gp3 is versatile. st1 for sequential throughput. sc1 for cold archives.",
+    "source": "AWS EBS Volume Types — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100202mc003",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo migrar datos de un volumen EBS a otro sin downtime?",
+    "question_en": "How to migrate data between EBS volumes without downtime?",
+    "options_es": [
+      "Detener instancia y copiar volumen",
+      "Usar snapshot de EBS y restaurar",
+      "Usar AWS DataSync para sincronización",
+      "Usar AWS Storage Gateway"
+    ],
+    "options_en": [
+      "Stop instance and copy volume",
+      "Use EBS snapshot and restore",
+      "Use AWS DataSync for sync",
+      "Use AWS Storage Gateway"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snapshot permite copiar volumen sin downtime: crear snapshot, restaurar en nuevo volumen, cambiar attachment. Detener causa downtime. DataSync es para datos entre sistemas. Storage Gateway es hybrid.",
+    "explanation_en": "Snapshot allows copying volume without downtime: create snapshot, restore to new volume, change attachment. Stopping causes downtime. DataSync is for systems sync. Storage Gateway is hybrid.",
+    "source": "AWS EBS Snapshots — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100202mc004",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo garantizar latencia consistente para una base de datos con EBS en producción?",
+    "question_en": "How to ensure consistent latency for database with EBS in production?",
+    "options_es": [
+      "Usar gp3 con IOPS provisionadas",
+      "Usar io2 block express con throughput garantizado",
+      "Usar EBS-optimized instances",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Use gp3 with provisioned IOPS",
+      "Use io2 block express with guaranteed throughput",
+      "Use EBS-optimized instances",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar io2 (IOPS dedicadas), EBS-optimized instances (ancho de banda dedicado), y provisioning adecuado garantiza latencia. gp3 es alternativa más económica.",
+    "explanation_en": "Combining io2 (dedicated IOPS), EBS-optimized instances (dedicated bandwidth), and proper provisioning ensures latency. gp3 is cheaper alternative.",
+    "source": "AWS EBS Performance — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100202mc005",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuándo usar EFS en lugar de EBS para datos compartidos?",
+    "question_en": "When to use EFS instead of EBS for shared data?",
+    "options_es": [
+      "EFS nunca es mejor",
+      "Cuando múltiples instancias requieren acceso simultáneo",
+      "EFS es solo para test",
+      "Usar siempre EBS"
+    ],
+    "options_en": [
+      "EFS never better",
+      "When multiple instances need simultaneous access",
+      "EFS is testing only",
+      "Always use EBS"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "EFS es ideal cuando múltiples instancias (o Fargate, EKS) requieren acceso concurrente a mismos datos. NFS con permisos permite colaboración. EBS no permite attachments múltiples.",
+    "explanation_en": "EFS is ideal when multiple instances (or Fargate, EKS) need concurrent access to same data. NFS with permissions enables collaboration. EBS doesn't allow multiple attachments.",
+    "source": "AWS EFS Use Cases — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100202mc006",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un EBS Snapshot?",
+    "question_en": "What is an EBS Snapshot?",
+    "options_es": [
+      "Punto de recuperación de volumen",
+      "Copia de seguridad incremental del volumen",
+      "Ambas son correctas",
+      "Eliminación temporal de datos"
+    ],
+    "options_en": [
+      "Volume recovery point",
+      "Incremental backup of volume",
+      "Both are correct",
+      "Temporary data deletion"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snapshots son copias incrementales de volumen que se pueden restaurar. Actúan como puntos de recuperación. Solo el cambio desde última copia se almacena.",
+    "explanation_en": "Snapshots are incremental copies of volume that can be restored. Act as recovery points. Only changes since last copy are stored.",
+    "source": "AWS EBS Snapshots — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100202mc007",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo encriptar un volumen EBS existente sin downtime?",
+    "question_en": "How to encrypt an existing EBS volume without downtime?",
+    "options_es": [
+      "No es posible",
+      "Crear snapshot, restaurar con cifrado en nuevo volumen",
+      "Cambiar volumen en vivo",
+      "Usar AWS KMS directamente"
+    ],
+    "options_en": [
+      "Not possible",
+      "Create snapshot, restore with encryption to new volume",
+      "Change volume live",
+      "Use AWS KMS directly"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snapshots permiten restaurar volumen cifrado. Cambiar cifrado en vivo no es soportado. KMS gestiona claves pero no encripta directamente el volumen.",
+    "explanation_en": "Snapshots allow restoring encrypted volume. Changing encryption live not supported. KMS manages keys but doesn't directly encrypt volume.",
+    "source": "AWS EBS Encryption — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100202mc008",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia de backup óptima para una base de datos crítica con EBS?",
+    "question_en": "What is optimal backup strategy for critical database with EBS?",
+    "options_es": [
+      "Snapshots manuales diarios",
+      "Snapshots automáticos + backup a S3 Glacier",
+      "AWS Backup para automatizar snapshots",
+      "Replicación a otra región"
+    ],
+    "options_en": [
+      "Manual daily snapshots",
+      "Automatic snapshots + backup to S3 Glacier",
+      "AWS Backup for automated snapshots",
+      "Replication to another region"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "AWS Backup automatiza y centraliza snapshots con retención configurada. Manualmente es propenso a errores. Replicación es complementaria. Glacier es para archivos históricos.",
+    "explanation_en": "AWS Backup automates and centralizes snapshots with configured retention. Manual is error-prone. Replication is complementary. Glacier for historical archives.",
+    "source": "AWS Backup — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100202mc009",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es el throughput provisionado en EBS?",
+    "question_en": "What is provisioned throughput in EBS?",
+    "options_es": [
+      "Velocidad de lectura/escritura garantizada",
+      "Capacidad de almacenamiento máxima",
+      "Costo mensual fijo",
+      "Tipo de volumen"
+    ],
+    "options_en": [
+      "Guaranteed read/write speed",
+      "Maximum storage capacity",
+      "Fixed monthly cost",
+      "Volume type"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Throughput es MiB/s garantizado. Se configura para cargas con I/O predecible. No es capacidad, costo fijo, ni tipo de volumen.",
+    "explanation_en": "Throughput is guaranteed MiB/s. Configured for predictable I/O workloads. Not capacity, cost, or type.",
+    "source": "AWS EBS Throughput — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100202mc010",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo minimizar costo de EFS para aplicación que accede raramente a datos históricos?",
+    "question_en": "How to minimize EFS cost for app rarely accessing historical data?",
+    "options_es": [
+      "Usar EFS Standard siempre",
+      "Usar EFS Infrequent Access (EFS-IA) con lifecycle",
+      "Mover a S3",
+      "Usar EBS snapshot"
+    ],
+    "options_en": [
+      "Use EFS Standard always",
+      "Use EFS Infrequent Access (EFS-IA) with lifecycle",
+      "Move to S3",
+      "Use EBS snapshot"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "EFS-IA automáticamente mueve archivos sin acceso a storage más barato. Lifecycle configura transición. S3 no es NFS. EBS snapshots no comparten datos.",
+    "explanation_en": "EFS-IA automatically moves unaccessed files to cheaper storage. Lifecycle configures transition. S3 not NFS. EBS snapshots don't share data.",
+    "source": "AWS EFS Infrequent Access — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100202mc011",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es Instance Store y cuándo usarlo?",
+    "question_en": "What is Instance Store and when to use it?",
+    "options_es": [
+      "Almacenamiento persistente como EBS",
+      "Almacenamiento temporal de alto rendimiento en la instancia",
+      "Caché para CloudFront",
+      "Base de datos temporal"
+    ],
+    "options_en": [
+      "Persistent storage like EBS",
+      "High-performance temporary storage on instance",
+      "CloudFront cache",
+      "Temporary database"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Instance Store es almacenamiento SSD/HDD local rápido pero efímero. Se pierde al detener instancia. Ideal para caché, datos temporales. No es persistente como EBS.",
+    "explanation_en": "Instance Store is fast local SSD/HDD storage but ephemeral. Lost on shutdown. Ideal for cache, temp data. Not persistent like EBS.",
+    "source": "AWS Instance Store — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100202mc012",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo garantizar que EFS tiene alta disponibilidad en múltiples zonas de disponibilidad?",
+    "question_en": "How to ensure EFS is highly available across multiple availability zones?",
+    "options_es": [
+      "EFS automáticamente es multi-AZ",
+      "Crear EFS en cada AZ",
+      "Usar backup a otra región",
+      "Usar Route 53"
+    ],
+    "options_en": [
+      "EFS automatically multi-AZ",
+      "Create EFS in each AZ",
+      "Backup to another region",
+      "Use Route 53"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "EFS automáticamente distribuye datos entre AZs en la región. Proporciona high availability nativa. No requiere múltiples EFS. Backup es complementario. Route 53 es DNS.",
+    "explanation_en": "EFS automatically distributes data across AZs in region. Provides native high availability. No need for multiple EFS. Backup is complementary. Route 53 is DNS.",
+    "source": "AWS EFS High Availability — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100202mc013",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo optimizar I/O de base de datos en EC2 con múltiples EBS volumes?",
+    "question_en": "How to optimize database I/O in EC2 with multiple EBS volumes?",
+    "options_es": [
+      "Usar un volumen grande",
+      "Striping de datos en múltiples volúmenes io2",
+      "Usar EBS-optimized instances con dedicada bandwidth",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Use single large volume",
+      "Data striping across multiple io2 volumes",
+      "Use EBS-optimized instances with dedicated bandwidth",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Striping en io2 con EBS-optimized instances maximiza IOPS y throughput. Multiple volumes permiten parallelismo. Ancho dedicado asegura performance consistente.",
+    "explanation_en": "Striping on io2 with EBS-optimized instances maximizes IOPS and throughput. Multiple volumes enable parallelism. Dedicated bandwidth ensures consistent performance.",
+    "source": "AWS EBS Performance Best Practices — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100202mc014",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es el AWS DataSync?",
+    "question_en": "What is AWS DataSync?",
+    "options_es": [
+      "Herramienta de sincronización on-premise a AWS",
+      "Backup de S3",
+      "Replicación de base de datos",
+      "Cifrado de datos"
+    ],
+    "options_en": [
+      "On-premise to AWS sync tool",
+      "S3 backup",
+      "Database replication",
+      "Data encryption"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DataSync sincroniza datos entre on-premise, AWS storage, y entre servicios AWS. No es backup específico, replicación de base de datos, ni cifrado.",
+    "explanation_en": "DataSync syncs data between on-premise, AWS storage, and between AWS services. Not specific backup, DB replication, or encryption.",
+    "source": "AWS DataSync — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100202mc015",
+    "skill_id": "sk100202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo garantizar que datos de EBS se replican a otra región para DR?",
+    "question_en": "How to ensure EBS data replicates to another region for DR?",
+    "options_es": [
+      "EBS automáticamente replica",
+      "Usar snapshots y copiar a otra región",
+      "Usar AWS Backup con cross-region",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "EBS auto-replicates",
+      "Use snapshots and copy to another region",
+      "Use AWS Backup with cross-region",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snapshots pueden copiarse a otra región manualmente o AWS Backup puede automatizar cross-region. Ambas son métodos válidos para disaster recovery.",
+    "explanation_en": "Snapshots can be copied to another region manually or AWS Backup can automate cross-region. Both are valid for disaster recovery.",
+    "source": "AWS EBS Cross-Region Backup — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc001",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la principal ventaja de Aurora sobre RDS MySQL?",
+    "question_en": "What is the primary advantage of Aurora over RDS MySQL?",
+    "options_es": [
+      "Mejor costo",
+      "Mejor rendimiento y confiabilidad",
+      "Mayor capacidad de almacenamiento",
+      "Mejor seguridad"
+    ],
+    "options_en": [
+      "Better cost",
+      "Better performance and reliability",
+      "Higher storage capacity",
+      "Better security"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Aurora ofrece hasta 3x mejor rendimiento que MySQL y replicación automática. Mayor confiabilidad y failover automático. El costo puede ser similar o mayor para uso bajo.",
+    "explanation_en": "Aurora offers up to 3x better performance than MySQL with automatic replication. Higher reliability and automatic failover. Cost can be similar or higher for low usage.",
+    "source": "AWS Aurora Benefits — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100203mc002",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Auto Scaling en RDS?",
+    "question_en": "What is Auto Scaling in RDS?",
+    "options_es": [
+      "Aumenta CPU automáticamente",
+      "Agrega réplicas de lectura cuando carga sube",
+      "Aumenta storage cuando acaba espacio",
+      "Copia automática a otra región"
+    ],
+    "options_en": [
+      "Auto increases CPU",
+      "Adds read replicas when load increases",
+      "Increases storage when full",
+      "Auto copy to another region"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Auto Scaling en RDS aumenta storage automáticamente cuando alcanza límite. No agrega réplicas de lectura (eso es manual). CPU no escala. Replicación a otra región es distinto.",
+    "explanation_en": "RDS Auto Scaling increases storage automatically when reaching limit. Doesn't add read replicas (manual). CPU doesn't scale. Replication to another region is different.",
+    "source": "AWS RDS Auto Scaling — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100203mc003",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la mejor estrategia para escalado de lectura en una base de datos RDS?",
+    "question_en": "What is the best scaling strategy for read load on RDS database?",
+    "options_es": [
+      "Aumentar size de instancia",
+      "Agregar Read Replicas",
+      "Usar ElastiCache como caché",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Increase instance size",
+      "Add Read Replicas",
+      "Use ElastiCache as cache",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Read Replicas distribuyen lecturas. Aumentar instancia ayuda pero limitado. ElastiCache reduce hits a BD. Combinar todas las estrategias es óptimo.",
+    "explanation_en": "Read Replicas distribute reads. Increasing instance helps but limited. ElastiCache reduces DB hits. Combining all strategies is optimal.",
+    "source": "AWS RDS Read Replicas — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc004",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo manejar una base de datos RDS que debe mantener 99.99% uptime con RPO < 1 minuto?",
+    "question_en": "How to handle RDS database needing 99.99% uptime with RPO < 1 minute?",
+    "options_es": [
+      "Single AZ es suficiente",
+      "Usar Multi-AZ RDS con failover automático",
+      "Usar Aurora Global Database",
+      "Usar lambda triggers"
+    ],
+    "options_en": [
+      "Single AZ sufficient",
+      "Use Multi-AZ RDS with automatic failover",
+      "Use Aurora Global Database",
+      "Use lambda triggers"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Aurora Global Database proporciona RPO < 1 segundo y failover < 1 minuto. Multi-AZ es bueno pero puede tener RTO más alto. Lambda triggers no es solución de BD.",
+    "explanation_en": "Aurora Global Database provides RPO < 1 second and failover < 1 minute. Multi-AZ is good but may have higher RTO. Lambda triggers not DB solution.",
+    "source": "AWS Aurora Global Database — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100203mc005",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es AWS Database Migration Service (DMS)?",
+    "question_en": "What is AWS Database Migration Service (DMS)?",
+    "options_es": [
+      "Backup de base de datos",
+      "Herramienta migrar bases de datos on-premise a AWS",
+      "Servicio de replicación en tiempo real",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Database backup",
+      "Tool to migrate on-premise databases to AWS",
+      "Real-time replication service",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DMS migra bases de datos, realiza backup e replicación en tiempo real. Es herramienta integral para migración con mínimo downtime.",
+    "explanation_en": "DMS migrates databases, performs backup and real-time replication. Integral tool for migration with minimal downtime.",
+    "source": "AWS DMS — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc006",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo proteger datos en RDS contra pérdida accidental?",
+    "question_en": "How to protect RDS data against accidental loss?",
+    "options_es": [
+      "Backups automáticos solo",
+      "Backup + Delete Protection + IAM policies",
+      "Snapshots manuales",
+      "Replicación a otra región"
+    ],
+    "options_en": [
+      "Automatic backups only",
+      "Backups + Delete Protection + IAM policies",
+      "Manual snapshots",
+      "Replication to another region"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar backups automáticos, Delete Protection, y IAM policies que denieguen deleteDBInstance es defensa de capas. Replicación es complementaria.",
+    "explanation_en": "Combining automatic backups, Delete Protection, and IAM policies denying deleteDBInstance is layered defense. Replication is complementary.",
+    "source": "AWS RDS Data Protection — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc007",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un RDS Snapshot?",
+    "question_en": "What is an RDS Snapshot?",
+    "options_es": [
+      "Copia de seguridad manual de la base de datos",
+      "Punto de recuperación automático",
+      "Replicación en tiempo real",
+      "Log de transacciones"
+    ],
+    "options_en": [
+      "Manual backup of database",
+      "Automatic recovery point",
+      "Real-time replication",
+      "Transaction log"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snapshots son copias de seguridad manuales de toda la BD. Puntos de recuperación automáticos vienen de backups automáticos. Replicación es distinto.",
+    "explanation_en": "Snapshots are manual full database backups. Automatic recovery points come from automatic backups. Replication is different.",
+    "source": "AWS RDS Snapshots — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100203mc008",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia para minimizar downtime en upgrade de motor de base de datos en RDS?",
+    "question_en": "What strategy minimizes downtime for database engine upgrade on RDS?",
+    "options_es": [
+      "Upgrade directo (30min-2h downtime)",
+      "Usar Blue/Green deployment",
+      "Crear Read Replica en versión nueva",
+      "Upgrade en off-peak hours"
+    ],
+    "options_en": [
+      "Direct upgrade (30min-2h downtime)",
+      "Use Blue/Green deployment",
+      "Create Read Replica on new version",
+      "Upgrade during off-peak"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Blue/Green deployment crea ambiente nuevo con motor actualizado y switcha en segundos. Upgrade directo tiene downtime. Read Replica es para distribución, no para upgrade. Off-peak reduce impacto pero no elimina downtime.",
+    "explanation_en": "Blue/Green deployment creates new environment with upgraded engine and switches in seconds. Direct upgrade has downtime. Read Replica is for distribution. Off-peak reduces impact but doesn't eliminate downtime.",
+    "source": "AWS RDS Blue/Green Deployment — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100203mc009",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo monitorear salud de una base de datos RDS?",
+    "question_en": "How to monitor health of RDS database?",
+    "options_es": [
+      "CloudWatch metrics solo",
+      "Enhanced Monitoring + Performance Insights + CloudWatch",
+      "AWS Config",
+      "Security Hub"
+    ],
+    "options_en": [
+      "CloudWatch metrics only",
+      "Enhanced Monitoring + Performance Insights + CloudWatch",
+      "AWS Config",
+      "Security Hub"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Enhanced Monitoring proporciona métricas a nivel de OS. Performance Insights muestra bottlenecks de BD. CloudWatch es para alertas generales. Config es para cambios. Security Hub es para cumplimiento.",
+    "explanation_en": "Enhanced Monitoring provides OS-level metrics. Performance Insights shows DB bottlenecks. CloudWatch for general alerts. Config for changes. Security Hub for compliance.",
+    "source": "AWS RDS Monitoring — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc010",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Amazon Aurora Serverless?",
+    "question_en": "What is Amazon Aurora Serverless?",
+    "options_es": [
+      "Aurora que no requiere gestión",
+      "Aurora que escala automáticamente sin provisioning",
+      "Aurora sin base de datos",
+      "Aurora para desarrollo solo"
+    ],
+    "options_en": [
+      "Aurora requiring no management",
+      "Aurora auto-scales without provisioning",
+      "Aurora without database",
+      "Aurora for dev only"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Aurora Serverless escala automáticamente la capacidad sin provisioning de instancias. Ideal para workloads variables. Requiere gestión mínima pero BD sigue siendo relacional.",
+    "explanation_en": "Aurora Serverless auto-scales capacity without instance provisioning. Ideal for variable workloads. Minimal management but still relational database.",
+    "source": "AWS Aurora Serverless — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100203mc011",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo garantizar encriptación de datos en tránsito para conexiones RDS?",
+    "question_en": "How to ensure data in transit encryption for RDS connections?",
+    "options_es": [
+      "RDS es automáticamente cifrado",
+      "Habilitar SSL/TLS y usar certificate",
+      "Usar Security Group restrictivo",
+      "Usar VPC endpoint"
+    ],
+    "options_en": [
+      "RDS automatically encrypted",
+      "Enable SSL/TLS and use certificate",
+      "Use restrictive Security Group",
+      "Use VPC endpoint"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "SSL/TLS cifra datos en tránsito. Requiere certificate en cliente y servidor. Security Group previene acceso pero no cifra. VPC endpoint es para servicios, no bases de datos.",
+    "explanation_en": "SSL/TLS encrypts data in transit. Requires certificate on client and server. Security Group prevents access but doesn't encrypt. VPC endpoint is for services, not databases.",
+    "source": "AWS RDS Encryption — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc012",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia para soportar transacciones ACID con consistencia fuerte en una arquitectura de microservicios usando RDS?",
+    "question_en": "What strategy supports ACID transactions with strong consistency in microservices using RDS?",
+    "options_es": [
+      "Cada microservicio tiene su propia BD",
+      "Base de datos compartida con transacciones distribuidas",
+      "Usar DynamoDB para consistencia eventual",
+      "Usar Saga pattern para transacciones distribuidas"
+    ],
+    "options_en": [
+      "Each microservice has own DB",
+      "Shared database with distributed transactions",
+      "Use DynamoDB for eventual consistency",
+      "Use Saga pattern for distributed transactions"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Saga pattern orquesta transacciones entre servicios con compensación. BD compartida viola principio de microservicios. DynamoDB es para eventual consistency. BD separadas requieren coordinación externa.",
+    "explanation_en": "Saga pattern orchestrates transactions across services with compensation. Shared DB violates microservices principle. DynamoDB for eventual consistency. Separate DBs require external coordination.",
+    "source": "AWS Microservices Patterns — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100203mc013",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo escalar writes en RDS cuando está limitado por capacidad de escritura?",
+    "question_en": "How to scale writes in RDS when limited by write capacity?",
+    "options_es": [
+      "Aumentar size de instancia",
+      "Usar particionamiento manual",
+      "Usar Aurora con sharding aplicativo",
+      "Usar DynamoDB en lugar de RDS"
+    ],
+    "options_en": [
+      "Increase instance size",
+      "Use manual partitioning",
+      "Use Aurora with application sharding",
+      "Use DynamoDB instead"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Sharding aplicativo distribuye datos entre múltiples BD Aurora. Aumentar instancia tiene límite. Particionamiento manual es tedioso. DynamoDB es alternativa si eventual consistency es aceptable.",
+    "explanation_en": "Application sharding distributes data across multiple Aurora databases. Increasing instance has limits. Manual partitioning is tedious. DynamoDB alternative if eventual consistency acceptable.",
+    "source": "AWS Database Sharding — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc014",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Aurora Global Database?",
+    "question_en": "What is Aurora Global Database?",
+    "options_es": [
+      "Replicación de BD entre regiones",
+      "Backup automático",
+      "Lectura local desde cualquier región",
+      "Ambas A y C"
+    ],
+    "options_en": [
+      "DB replication across regions",
+      "Automatic backup",
+      "Local reads from any region",
+      "Both A and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Global Database replica BD a múltiples regiones permitiendo lecturas locales con baja latencia. Replicación cross-region es automática. Combinación de A y C es correcta.",
+    "explanation_en": "Global Database replicates DB across regions enabling local reads with low latency. Cross-region replication is automatic. Combination of A and C is correct.",
+    "source": "AWS Aurora Global Database — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100203mc015",
+    "skill_id": "sk100203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el RPO y RTO para Multi-AZ RDS?",
+    "question_en": "What are RPO and RTO for Multi-AZ RDS?",
+    "options_es": [
+      "RPO: 0, RTO: <1 minuto",
+      "RPO: <1 segundo, RTO: 1-2 minutos",
+      "RPO: 1 hora, RTO: 4 horas",
+      "No hay garantía"
+    ],
+    "options_en": [
+      "RPO: 0, RTO: <1 minute",
+      "RPO: <1 second, RTO: 1-2 minutes",
+      "RPO: 1 hour, RTO: 4 hours",
+      "No guarantee"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Multi-AZ RDS tiene RPO < 1 segundo (replicación síncrona) y RTO 1-2 minutos (failover automático). Aurora Global es mejor para crítico.",
+    "explanation_en": "Multi-AZ RDS has RPO < 1 second (synchronous replication) and RTO 1-2 minutes (automatic failover). Aurora Global better for critical.",
+    "source": "AWS Multi-AZ RDS — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100204mc001",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la principal diferencia entre RDS (relacional) y DynamoDB (NoSQL)?",
+    "question_en": "What is the main difference between RDS (relational) and DynamoDB (NoSQL)?",
+    "options_es": [
+      "RDS para datos estructurados, DynamoDB para no estructurados",
+      "RDS requiere schema, DynamoDB es flexible",
+      "DynamoDB siempre más rápido",
+      "Son lo mismo"
+    ],
+    "options_en": [
+      "RDS for structured, DynamoDB for unstructured",
+      "RDS requires schema, DynamoDB flexible",
+      "DynamoDB always faster",
+      "They are same"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "RDS requiere schema definido. DynamoDB permite flexibilidad de atributos dinámicos. Ambos pueden tener datos estructurados. Velocidad depende del caso de uso.",
+    "explanation_en": "RDS requires defined schema. DynamoDB allows flexible dynamic attributes. Both can have structured data. Speed depends on use case.",
+    "source": "AWS RDS vs DynamoDB — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100204mc002",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es una Partition Key en DynamoDB?",
+    "question_en": "What is a Partition Key in DynamoDB?",
+    "options_es": [
+      "Clave única de tabla",
+      "Atributo que determina partición de almacenamiento",
+      "Índice secundario",
+      "Clave de encriptación"
+    ],
+    "options_en": [
+      "Table unique key",
+      "Attribute determining storage partition",
+      "Secondary index",
+      "Encryption key"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Partition Key distribuye datos entre particiones. Es obligatoria en DynamoDB. Índices secundarios son distintos. Encriptación es aparte.",
+    "explanation_en": "Partition Key distributes data across partitions. Required in DynamoDB. Secondary indexes are different. Encryption is separate.",
+    "source": "AWS DynamoDB Partition Key — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100204mc003",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuándo usar DynamoDB en lugar de RDS?",
+    "question_en": "When to use DynamoDB instead of RDS?",
+    "options_es": [
+      "DynamoDB siempre es mejor",
+      "Workloads con alta throughput, baja latencia, datos flexibles",
+      "Para datos complejos",
+      "Cuando hay presupuesto limitado"
+    ],
+    "options_en": [
+      "DynamoDB always better",
+      "High-throughput workloads, low latency, flexible data",
+      "For complex data",
+      "When budget limited"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DynamoDB es ideal para alta throughput, baja latencia, datos semi-estructurados. RDS es mejor para datos relacionales complejos. Costo puede ser mayor en DynamoDB.",
+    "explanation_en": "DynamoDB ideal for high throughput, low latency, semi-structured data. RDS better for complex relational data. Cost can be higher in DynamoDB.",
+    "source": "AWS Database Comparison — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100204mc004",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia para minimizar costo de DynamoDB con workload variable (picos de 10000 WCU a valles de 100 WCU)?",
+    "question_en": "Strategy to minimize DynamoDB cost with variable workload (peaks 10000 WCU to valleys 100 WCU)?",
+    "options_es": [
+      "Provisionar 10000 WCU siempre",
+      "Usar On-Demand pricing",
+      "Usar autoscaling con Target Tracking",
+      "Ambas B y C son viables"
+    ],
+    "options_en": [
+      "Provision 10000 WCU always",
+      "Use On-Demand pricing",
+      "Use autoscaling with Target Tracking",
+      "Both B and C viable"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "On-Demand paga por capacidad usada (ideal para variable). Autoscaling ajusta provisioning automáticamente. Ambas son viables según patrón. Provisionar máximo siempre es caro.",
+    "explanation_en": "On-Demand pays for used capacity (ideal for variable). Autoscaling adjusts provisioning automatically. Both viable depending on pattern. Always provisioning max is expensive.",
+    "source": "AWS DynamoDB Pricing — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100204mc005",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un Global Secondary Index (GSI) en DynamoDB?",
+    "question_en": "What is a Global Secondary Index (GSI) in DynamoDB?",
+    "options_es": [
+      "Réplica de tabla en otra región",
+      "Índice que permite queries en atributos diferentes",
+      "Copia de backup",
+      "Partición adicional"
+    ],
+    "options_en": [
+      "Table replica in another region",
+      "Index allowing queries on different attributes",
+      "Backup copy",
+      "Additional partition"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "GSI permite queries en atributos que no son Partition Key. Tiene su propia throughput. No es replicación, backup, ni partición.",
+    "explanation_en": "GSI allows queries on attributes other than Partition Key. Has own throughput. Not replication, backup, or partition.",
+    "source": "AWS DynamoDB GSI — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100204mc006",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo garantizar consistencia fuerte en una lectura de DynamoDB?",
+    "question_en": "How to ensure strong consistency in DynamoDB read?",
+    "options_es": [
+      "DynamoDB es eventual consistency siempre",
+      "Usar ConsistentRead = true",
+      "Usar DAX caché",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "DynamoDB always eventual consistency",
+      "Use ConsistentRead = true",
+      "Use DAX cache",
+      "Both B and C"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "ConsistentRead = true obtiene datos más recientes. Default es eventual consistency. DAX es caché que puede servir datos stale. ConsistentRead tiene costo double.",
+    "explanation_en": "ConsistentRead = true gets freshest data. Default is eventual consistency. DAX is cache serving stale data. ConsistentRead costs double.",
+    "source": "AWS DynamoDB Consistency — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100204mc007",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un Write Capacity Unit (WCU) en DynamoDB?",
+    "question_en": "What is a Write Capacity Unit (WCU) in DynamoDB?",
+    "options_es": [
+      "Número máximo de writes",
+      "Capacidad para 1 write de 1KB por segundo",
+      "Costo de almacenamiento",
+      "Velocidad de red"
+    ],
+    "options_en": [
+      "Max write number",
+      "Capacity for 1 write of 1KB per second",
+      "Storage cost",
+      "Network speed"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "1 WCU = 1 write de hasta 1KB por segundo. Writes más grandes consumen múltiples WCUs. No es número máximo absoluto, ni almacenamiento, ni red.",
+    "explanation_en": "1 WCU = 1 write up to 1KB per second. Larger writes consume multiple WCUs. Not absolute max, not storage, not network.",
+    "source": "AWS DynamoDB Capacity Units — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100204mc008",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo escalar para soportar 1 millón de reads por segundo en DynamoDB?",
+    "question_en": "How to scale to support 1M reads per second in DynamoDB?",
+    "options_es": [
+      "Provisionar 1M RCU",
+      "Usar particionamiento con hot keys distribuidas",
+      "Usar DAX caché frente a DynamoDB",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Provision 1M RCU",
+      "Use partitioning with distributed hot keys",
+      "Use DAX cache in front of DynamoDB",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar RCU provisioning, particionamiento sin hot keys, y DAX caché es la estrategia completa. DAX puede servir 10M reads/sec.",
+    "explanation_en": "Combining RCU provisioning, partitioning without hot keys, and DAX cache is complete strategy. DAX can serve 10M reads/sec.",
+    "source": "AWS DynamoDB Scaling — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100204mc009",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es AWS DAX (DynamoDB Accelerator)?",
+    "question_en": "What is AWS DAX (DynamoDB Accelerator)?",
+    "options_es": [
+      "Servicio de encriptación",
+      "Caché en memoria para DynamoDB",
+      "Replicación de datos",
+      "Herramienta de migración"
+    ],
+    "options_en": [
+      "Encryption service",
+      "In-memory cache for DynamoDB",
+      "Data replication",
+      "Migration tool"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DAX es caché en memoria que reduce latencia de DynamoDB de ms a microsegundos. No es encriptación, replicación, ni migración.",
+    "explanation_en": "DAX is in-memory cache reducing DynamoDB latency from ms to microseconds. Not encryption, replication, or migration.",
+    "source": "AWS DAX — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100204mc010",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo prevenir problemas de hot partition en DynamoDB?",
+    "question_en": "How to prevent hot partition issues in DynamoDB?",
+    "options_es": [
+      "Usar Partition Key que distribuya uniformemente",
+      "Usar Adaptive Capacity",
+      "Agregar prefijo aleatorio a Partition Key",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Use Partition Key that distributes evenly",
+      "Use Adaptive Capacity",
+      "Add random prefix to Partition Key",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar diseño de Partition Key, Adaptive Capacity de AWS, y prefijo aleatorio (temporal) es defensa completa contra hot partitions.",
+    "explanation_en": "Combining Partition Key design, AWS Adaptive Capacity, and random prefix (temporary) is complete defense against hot partitions.",
+    "source": "AWS DynamoDB Hot Partitions — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100204mc011",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un DynamoDB Stream?",
+    "question_en": "What is a DynamoDB Stream?",
+    "options_es": [
+      "Flujo de datos en vivo",
+      "Registro de cambios de items",
+      "Backup de tabla",
+      "Replicación a otra región"
+    ],
+    "options_en": [
+      "Live data flow",
+      "Log of item changes",
+      "Table backup",
+      "Replication to another region"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Streams registran cambios (INSERT, UPDATE, DELETE) de items para procesar con Lambda. No es flujo vivo, backup, ni replicación directa.",
+    "explanation_en": "Streams log item changes (INSERT, UPDATE, DELETE) for Lambda processing. Not live flow, backup, or direct replication.",
+    "source": "AWS DynamoDB Streams — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100204mc012",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo diseñar una tabla DynamoDB para máxima escalabilidad en aplicación de redes sociales (millones de usuarios)?",
+    "question_en": "How to design DynamoDB table for max scalability in social network app (millions of users)?",
+    "options_es": [
+      "Partition Key = UserID",
+      "Partition Key = UserID, Sort Key = Timestamp",
+      "Usar GSI para queries alternativas",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Partition Key = UserID",
+      "Partition Key = UserID, Sort Key = Timestamp",
+      "Use GSI for alternate queries",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar Partition Key para distribución, Sort Key para ordenamiento temporal, y GSI para queries (followers, feed) es diseño completo.",
+    "explanation_en": "Combining Partition Key for distribution, Sort Key for temporal ordering, and GSI for queries (followers, feed) is complete design.",
+    "source": "AWS DynamoDB Design Patterns — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100204mc013",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo garantizar transacciones ACID en DynamoDB para múltiples items?",
+    "question_en": "How to ensure ACID transactions in DynamoDB for multiple items?",
+    "options_es": [
+      "DynamoDB no soporta transacciones",
+      "Usar TransactWriteItems para escrituras atómicas",
+      "Usar DynamoDB Transactions",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "DynamoDB doesn't support transactions",
+      "Use TransactWriteItems for atomic writes",
+      "Use DynamoDB Transactions",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "TransactWriteItems y TransactGetItems proporcionan transacciones ACID en DynamoDB. Soportan hasta 25 items por transacción.",
+    "explanation_en": "TransactWriteItems and TransactGetItems provide ACID transactions in DynamoDB. Support up to 25 items per transaction.",
+    "source": "AWS DynamoDB Transactions — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100204mc014",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es DynamoDB Point-in-Time Recovery (PITR)?",
+    "question_en": "What is DynamoDB Point-in-Time Recovery (PITR)?",
+    "options_es": [
+      "Recuperación a punto específico en el tiempo",
+      "Backup manual",
+      "Replicación",
+      "Snapshots"
+    ],
+    "options_en": [
+      "Recovery to specific point in time",
+      "Manual backup",
+      "Replication",
+      "Snapshots"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "PITR permite restaurar tabla a cualquier punto en últimos 35 días. Es automático si habilitado. No requiere snapshots manuales.",
+    "explanation_en": "PITR allows restoring table to any point in last 35 days. Automatic if enabled. No manual snapshots needed.",
+    "source": "AWS DynamoDB PITR — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100204mc015",
+    "skill_id": "sk100204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia para migrar base de datos de SQL Server a DynamoDB minimizando cambios de aplicación?",
+    "question_en": "What strategy to migrate SQL Server DB to DynamoDB minimizing app changes?",
+    "options_es": [
+      "Reescribir aplicación completamente",
+      "Usar AWS DMS para replicación + aplicar cambios graduales",
+      "Usar API Gateway como capa de abstracción",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "Completely rewrite application",
+      "Use AWS DMS for replication + apply changes gradually",
+      "Use API Gateway as abstraction layer",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DMS puede replicar datos iniciales. Aplicar cambios graduales con API Gateway abstrayendo la BD permite transición sin reescritura completa.",
+    "explanation_en": "DMS can replicate initial data. Applying changes gradually with API Gateway abstracting DB enables transition without complete rewrite.",
+    "source": "AWS Database Migration to DynamoDB — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100205mc001",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la principal diferencia entre ElastiCache y Redshift?",
+    "question_en": "What is the main difference between ElastiCache and Redshift?",
+    "options_es": [
+      "ElastiCache es caché, Redshift es data warehouse",
+      "Redshift es para real-time, ElastiCache para batch",
+      "Son similares",
+      "ElastiCache es relacional, Redshift es NoSQL"
+    ],
+    "options_en": [
+      "ElastiCache is cache, Redshift is data warehouse",
+      "Redshift for real-time, ElastiCache for batch",
+      "They are similar",
+      "ElastiCache relational, Redshift NoSQL"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "ElastiCache (Redis, Memcached) es caché en memoria. Redshift es data warehouse columnar. Velocidad y propósito son distintos.",
+    "explanation_en": "ElastiCache (Redis, Memcached) is in-memory cache. Redshift is columnar data warehouse. Speed and purpose different.",
+    "source": "AWS ElastiCache vs Redshift — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100205mc002",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuándo usar Redis vs Memcached en ElastiCache?",
+    "question_en": "When to use Redis vs Memcached in ElastiCache?",
+    "options_es": [
+      "Siempre Redis",
+      "Redis para datos persistentes, Memcached para caché simple",
+      "Memcached es más rápido",
+      "Son iguales"
+    ],
+    "options_en": [
+      "Always Redis",
+      "Redis for persistent data, Memcached for simple cache",
+      "Memcached faster",
+      "They are same"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Redis soporta persistencia y estructuras de datos complejas. Memcached es caché simple key-value. Ambos rápidos, diferente funcionalidad.",
+    "explanation_en": "Redis supports persistence and complex data structures. Memcached is simple key-value cache. Both fast, different functionality.",
+    "source": "AWS ElastiCache Redis vs Memcached — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100205mc003",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo usar ElastiCache para reducir latencia de lectura de RDS?",
+    "question_en": "How to use ElastiCache to reduce RDS read latency?",
+    "options_es": [
+      "Caché transparente con replicación automática",
+      "Implementar caching logic en aplicación",
+      "Usar CloudFront",
+      "Usar read replicas"
+    ],
+    "options_en": [
+      "Transparent cache with auto replication",
+      "Implement caching logic in application",
+      "Use CloudFront",
+      "Use read replicas"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Lógica de caché en aplicación (cache-aside pattern) permite control fino. Check cache, si miss ir a RDS y actualizar cache. No es automático.",
+    "explanation_en": "Caching logic in application (cache-aside pattern) enables fine control. Check cache, miss goes to RDS and updates cache. Not automatic.",
+    "source": "AWS ElastiCache Patterns — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100205mc004",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia para mantener cache consistente cuando RDS se actualiza?",
+    "question_en": "What strategy maintains cache consistency when RDS is updated?",
+    "options_es": [
+      "TTL en cache + invalidación manual",
+      "Usar DynamoDB Streams para invalidar cache",
+      "Usar application events para invalidar",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "TTL in cache + manual invalidation",
+      "Use DynamoDB Streams for cache invalidation",
+      "Use application events for invalidation",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar TTL (expiración automática), invalidación basada en eventos de aplicación, y streams es estrategia robusta. Write-through y write-behind son patrones adicionales.",
+    "explanation_en": "Combining TTL (automatic expiration), event-based invalidation, and streams is robust strategy. Write-through and write-behind are additional patterns.",
+    "source": "AWS Cache Consistency Patterns — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100205mc005",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es Amazon Redshift?",
+    "question_en": "What is Amazon Redshift?",
+    "options_es": [
+      "Data warehouse relacional",
+      "Base de datos transaccional",
+      "Servicio de caché",
+      "Data lake"
+    ],
+    "options_en": [
+      "Relational data warehouse",
+      "Transactional database",
+      "Caching service",
+      "Data lake"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Redshift es data warehouse columnar optimizado para análisis de grandes volúmenes. No es para transacciones, caché, ni data lake.",
+    "explanation_en": "Redshift is columnar data warehouse optimized for analyzing large volumes. Not for transactions, cache, or data lake.",
+    "source": "AWS Redshift — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100205mc006",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo cargar datos en Redshift desde S3?",
+    "question_en": "How to load data into Redshift from S3?",
+    "options_es": [
+      "Copiar manualmente archivos",
+      "Usar comando COPY en SQL",
+      "Usar Redshift Spectrum",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "Manually copy files",
+      "Use COPY command in SQL",
+      "Use Redshift Spectrum",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "COPY carga datos de S3 a Redshift en paralelo (bulk load). Spectrum permite queries directas a S3. Ambas son métodos válidos.",
+    "explanation_en": "COPY loads data from S3 to Redshift in parallel (bulk load). Spectrum allows querying S3 directly. Both valid methods.",
+    "source": "AWS Redshift Data Loading — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100205mc007",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Redshift Spectrum?",
+    "question_en": "What is Redshift Spectrum?",
+    "options_es": [
+      "Extensión de Redshift",
+      "Consultar datos en S3 directamente desde Redshift",
+      "Tipo de almacenamiento",
+      "Herramienta de ETL"
+    ],
+    "options_en": [
+      "Redshift extension",
+      "Query S3 data directly from Redshift",
+      "Storage type",
+      "ETL tool"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Spectrum permite ejecutar queries SQL en datos no cargados en Redshift, directamente desde S3. No requiere cargar datos.",
+    "explanation_en": "Spectrum allows running SQL queries on data not loaded into Redshift, directly from S3. No need to load data.",
+    "source": "AWS Redshift Spectrum — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100205mc008",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia de distribución óptima para tabla grande en Redshift?",
+    "question_en": "What is optimal distribution strategy for large table in Redshift?",
+    "options_es": [
+      "Distribución por clave que se usa en joins",
+      "Distribución aleatoria para balance",
+      "Distribución única para una columna",
+      "Todas tienen igual rendimiento"
+    ],
+    "options_en": [
+      "Distribute by key used in joins",
+      "Random distribution for balance",
+      "Single column distribution",
+      "All equal performance"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Distribuir por clave de join coloca datos relacionados en mismo nodo, reduciendo shuffle. Aleatoria balancea pero causa shuffle. Rendimiento es diferente.",
+    "explanation_en": "Distributing by join key co-locates related data on same node, reducing shuffle. Random balances but causes shuffle. Performance differs.",
+    "source": "AWS Redshift Distribution — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100205mc009",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo optimizar queries en Redshift para mejor rendimiento?",
+    "question_en": "How to optimize queries in Redshift for performance?",
+    "options_es": [
+      "Usar EXPLAIN para análisis",
+      "Crear índices columnar",
+      "Optimizar distribución y sort keys",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Use EXPLAIN for analysis",
+      "Create columnar indexes",
+      "Optimize distribution and sort keys",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "EXPLAIN muestra plan de query. Sort keys permiten eliminación de bloques. Distribución correcta reduce shuffle. Combinación es estrategia completa.",
+    "explanation_en": "EXPLAIN shows query plan. Sort keys enable block pruning. Correct distribution reduces shuffle. Combination is complete strategy.",
+    "source": "AWS Redshift Query Optimization — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100205mc010",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo escalar Redshift para más recursos?",
+    "question_en": "How to scale Redshift for more resources?",
+    "options_es": [
+      "Resize cluster a nodos más grandes",
+      "Agregar más nodos",
+      "Usar Redshift RA3 para escalado flexible",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Resize cluster to larger nodes",
+      "Add more nodes",
+      "Use Redshift RA3 for flexible scaling",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Resize cambia tipo de nodo. Agregar nodos aumenta capacidad. RA3 permite escalado de compute y storage independiente.",
+    "explanation_en": "Resize changes node type. Adding nodes increases capacity. RA3 allows independent compute and storage scaling.",
+    "source": "AWS Redshift Scaling — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100205mc011",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un Redshift Snapshot?",
+    "question_en": "What is a Redshift Snapshot?",
+    "options_es": [
+      "Fotografía de estado del cluster",
+      "Backup del cluster",
+      "Datos en S3",
+      "Ambas A y B"
+    ],
+    "options_en": [
+      "Cluster state photo",
+      "Cluster backup",
+      "Data in S3",
+      "Both A and B"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snapshots son backups del cluster Redshift completo. Almacenados en S3. Permite restauración a punto en tiempo.",
+    "explanation_en": "Snapshots are backups of entire Redshift cluster. Stored in S3. Enables point-in-time restore.",
+    "source": "AWS Redshift Snapshots — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100205mc012",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo diseñar un data warehouse Redshift para análisis de hechos multidimensionales con 10B rows?",
+    "question_en": "How to design Redshift data warehouse for multidimensional fact analysis with 10B rows?",
+    "options_es": [
+      "Tabla única desnormalizada",
+      "Esquema estrella (fact + dimensions)",
+      "Esquema copo de nieve",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "Single denormalized table",
+      "Star schema (fact + dimensions)",
+      "Snowflake schema",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Esquema estrella es estándar en data warehouse. Separa facts de dimensions permitiendo queries eficientes. Copo de nieve normaliza más pero agrega complejidad.",
+    "explanation_en": "Star schema is standard for data warehouse. Separates facts from dimensions enabling efficient queries. Snowflake normalizes more but adds complexity.",
+    "source": "AWS Redshift Data Modeling — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100205mc013",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué ventaja proporciona Redshift RA3 sobre dense compute?",
+    "question_en": "What advantage does Redshift RA3 provide over dense compute?",
+    "options_es": [
+      "Escalado independiente de compute y storage",
+      "Mejor rendimiento general",
+      "Menor costo",
+      "Ambas A y B"
+    ],
+    "options_en": [
+      "Independent scaling of compute and storage",
+      "Better overall performance",
+      "Lower cost",
+      "Both A and B"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "RA3 permite escalar compute y storage por separado usando managed storage. Dense compute escala juntos. RA3 es más flexible.",
+    "explanation_en": "RA3 allows independent scaling of compute and storage using managed storage. Dense compute scales together. RA3 more flexible.",
+    "source": "AWS Redshift RA3 — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100205mc014",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Amazon QuickSight?",
+    "question_en": "What is Amazon QuickSight?",
+    "options_es": [
+      "Herramienta de análisis y visualización",
+      "Base de datos",
+      "Herramienta de ETL",
+      "Servicio de caché"
+    ],
+    "options_en": [
+      "Analytics and visualization tool",
+      "Database",
+      "ETL tool",
+      "Caching service"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "QuickSight es servicio de BI para crear dashboards e insights. No es BD, ETL, ni caché.",
+    "explanation_en": "QuickSight is BI service for creating dashboards and insights. Not DB, ETL, or cache.",
+    "source": "AWS QuickSight — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100205mc015",
+    "skill_id": "sk100205",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia para data pipeline ETL que ingiere 1TB/día desde múltiples fuentes a Redshift?",
+    "question_en": "What strategy for ETL data pipeline ingesting 1TB/day from multiple sources to Redshift?",
+    "options_es": [
+      "AWS Glue para ETL + COPY a Redshift",
+      "Lambda para orquestación",
+      "Manual scripts con EC2",
+      "Ambas A y B"
+    ],
+    "options_en": [
+      "AWS Glue for ETL + COPY to Redshift",
+      "Lambda for orchestration",
+      "Manual scripts with EC2",
+      "Both A and B"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Glue ejecuta trabajos ETL en paralelo. Lambda orquesta workflow. Combinar proporciona pipeline escalable y automático. Scripts manuales no escalan.",
+    "explanation_en": "Glue runs ETL jobs in parallel. Lambda orchestrates workflow. Combining provides scalable automated pipeline. Manual scripts don't scale.",
+    "source": "AWS ETL Patterns — AWS documentation",
+    "expected_time_ms": 120000
+  }
+]

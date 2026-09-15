@@ -1,0 +1,2027 @@
+[
+  {
+    "id": "q100301mc001",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es una VPC (Virtual Private Cloud)?",
+    "question_en": "What is a VPC (Virtual Private Cloud)?",
+    "options_es": [
+      "Red privada virtual en AWS",
+      "Contenedor de instancias EC2",
+      "Servicio de almacenamiento",
+      "Base de datos"
+    ],
+    "options_en": [
+      "Private virtual network in AWS",
+      "Container of EC2 instances",
+      "Storage service",
+      "Database"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "VPC es red privada virtualizada donde lanchas recursos AWS. Aislada de otras VPCs. Define CIDR, subnets, routing, security.",
+    "explanation_en": "VPC is virtualized private network where you launch AWS resources. Isolated from other VPCs. Defines CIDR, subnets, routing, security.",
+    "source": "AWS VPC — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100301mc002",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la diferencia entre subred pública y privada?",
+    "question_en": "What is the difference between public and private subnet?",
+    "options_es": [
+      "Pública tiene acceso a internet, privada no",
+      "Privada tiene más seguridad",
+      "Son lo mismo",
+      "Pública es para bases de datos"
+    ],
+    "options_en": [
+      "Public has internet access, private doesn't",
+      "Private has more security",
+      "They are same",
+      "Public for databases"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Subred pública tiene ruta a Internet Gateway. Privada no tiene ruta directa (usa NAT Gateway). Ambas pueden tener seguridad igual con Security Groups.",
+    "explanation_en": "Public subnet has route to Internet Gateway. Private doesn't (uses NAT Gateway). Both can have equal security with Security Groups.",
+    "source": "AWS Subnets — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100301mc003",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la mejor práctica para seguridad de red en AWS?",
+    "question_en": "What is the best practice for network security in AWS?",
+    "options_es": [
+      "Una VPC sin subnets",
+      "Múltiples subnets con Security Groups restrictivos",
+      "Todo acceso permitido, confiar en IAM",
+      "Publicar todo en internet"
+    ],
+    "options_en": [
+      "Single VPC no subnets",
+      "Multiple subnets with restrictive Security Groups",
+      "Allow all, trust IAM",
+      "Publish everything online"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Segmentación de red con subnets + Security Groups restrictivos es defensa de capas. IAM es para identidad, no red. Publicar todo es inseguro.",
+    "explanation_en": "Network segmentation with subnets + restrictive Security Groups is layered defense. IAM is for identity, not network. Publishing all is unsafe.",
+    "source": "AWS Security Best Practices — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100301mc004",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo diseñar VPC para arquitectura de alta disponibilidad multi-AZ con bastion host?",
+    "question_en": "How to design VPC for multi-AZ high availability architecture with bastion host?",
+    "options_es": [
+      "Una subred pública con bastion, subredes privadas en múltiples AZs",
+      "Todas subnets públicas",
+      "Un bastion por AZ",
+      "Usar EC2 Systems Manager Session Manager"
+    ],
+    "options_en": [
+      "One public subnet with bastion, private in multiple AZs",
+      "All public subnets",
+      "One bastion per AZ",
+      "Use EC2 Systems Manager Session Manager"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Bastion en subred pública permite acceso SSH a instancias privadas. Subredes privadas en múltiples AZs para HA. Un bastion es suficiente si está en ALB. Session Manager es alternativa sin bastion.",
+    "explanation_en": "Bastion in public subnet enables SSH to private instances. Private subnets in multiple AZs for HA. Single bastion sufficient if behind ALB. Session Manager is bastion-less alternative.",
+    "source": "AWS VPC Architecture — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100301mc005",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un NAT Gateway y cuándo usarlo?",
+    "question_en": "What is a NAT Gateway and when to use it?",
+    "options_es": [
+      "Dispositivo de red física",
+      "Permite instancias privadas acceso saliente a internet",
+      "Reemplaza Security Groups",
+      "Solo para debugging"
+    ],
+    "options_en": [
+      "Physical network device",
+      "Allows private instances outbound internet access",
+      "Replaces Security Groups",
+      "Debugging only"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "NAT Gateway es servicio AWS que permite salida a internet desde instancias privadas. Requiere Elastic IP. No es dispositivo físico, no reemplaza Security Groups.",
+    "explanation_en": "NAT Gateway is AWS service enabling outbound internet from private instances. Requires Elastic IP. Not physical device, doesn't replace Security Groups.",
+    "source": "AWS NAT Gateway — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100301mc006",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un Internet Gateway (IGW)?",
+    "question_en": "What is an Internet Gateway (IGW)?",
+    "options_es": [
+      "Acceso a internet desde VPC",
+      "Base de datos",
+      "Servicio de monitoreo",
+      "Caché"
+    ],
+    "options_en": [
+      "Internet access from VPC",
+      "Database",
+      "Monitoring service",
+      "Cache"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "IGW proporciona acceso bidireccional entre instancias en VPC e internet. Requerido para subredes públicas. No es BD, monitoreo, ni caché.",
+    "explanation_en": "IGW provides bidirectional access between VPC instances and internet. Required for public subnets. Not DB, monitoring, or cache.",
+    "source": "AWS Internet Gateway — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100301mc007",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre Security Groups y Network ACLs (NACLs)?",
+    "question_en": "What is the difference between Security Groups and Network ACLs?",
+    "options_es": [
+      "Security Groups operan en instancia, NACLs en subred",
+      "NACLs son más restrictivas",
+      "Security Groups usan allowlist, NACLs denylist",
+      "Son lo mismo"
+    ],
+    "options_en": [
+      "Security Groups at instance level, NACLs at subnet",
+      "NACLs more restrictive",
+      "Security Groups allowlist, NACLs denylist",
+      "They are same"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Security Groups: instancia, stateful, default deny. NACLs: subred, stateless, pueden denegar explícitamente. Ambas capas de defensa.",
+    "explanation_en": "Security Groups: instance-level, stateful, default deny. NACLs: subnet-level, stateless, can explicitly deny. Both defense layers.",
+    "source": "AWS Security Groups and NACLs — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100301mc008",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo garantizar comunicación entre dos VPCs en diferentes regiones sin exponer a internet?",
+    "question_en": "How to enable communication between VPCs in different regions without internet exposure?",
+    "options_es": [
+      "Usar VPC Peering simple",
+      "Usar VPC Peering inter-regional",
+      "Usar Transit Gateway con replicación",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "Use simple VPC Peering",
+      "Use inter-regional VPC Peering",
+      "Use Transit Gateway with replication",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "VPC Peering inter-regional permite conexión privada. Transit Gateway centraliza para múltiples VPCs. Ambas son seguras sin exposición a internet.",
+    "explanation_en": "Inter-regional VPC Peering enables private connection. Transit Gateway centralizes for multiple VPCs. Both secure without internet exposure.",
+    "source": "AWS VPC Peering and Transit Gateway — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100301mc009",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un VPC Flow Logs?",
+    "question_en": "What are VPC Flow Logs?",
+    "options_es": [
+      "Registra tráfico de red en VPC",
+      "Monitoreo de performance",
+      "Caché de datos",
+      "Historial de cambios"
+    ],
+    "options_en": [
+      "Records network traffic in VPC",
+      "Performance monitoring",
+      "Data cache",
+      "Change history"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Flow Logs captura metadata de flujos de tráfico IP (source, dest, puerto, protocolo). Útil para debugging y seguridad. No es monitoreo de performance.",
+    "explanation_en": "Flow Logs captures IP traffic flow metadata (source, dest, port, protocol). Useful for debugging and security. Not performance monitoring.",
+    "source": "AWS VPC Flow Logs — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100301mc010",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un Elastic IP (EIP)?",
+    "question_en": "What is an Elastic IP (EIP)?",
+    "options_es": [
+      "Dirección IP pública estática",
+      "IP privada",
+      "Certificado SSL",
+      "Registro DNS"
+    ],
+    "options_en": [
+      "Static public IP address",
+      "Private IP",
+      "SSL certificate",
+      "DNS record"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "EIP es IP pública estática que persiste aunque detengues instancia. Puede reasignarse. No es IP privada, certificado, ni DNS.",
+    "explanation_en": "EIP is static public IP that persists if you stop instance. Can be reassigned. Not private IP, certificate, or DNS.",
+    "source": "AWS Elastic IP — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100301mc011",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo monitorear y alertar sobre cambios no autorizados en VPC?",
+    "question_en": "How to monitor and alert on unauthorized VPC changes?",
+    "options_es": [
+      "AWS Config + CloudTrail",
+      "Security Hub",
+      "AWS Trusted Advisor",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "AWS Config + CloudTrail",
+      "Security Hub",
+      "AWS Trusted Advisor",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudTrail registra API calls. Config monitorea cambios de recursos. Security Hub centraliza hallazgos. Trusted Advisor da recomendaciones.",
+    "explanation_en": "CloudTrail logs API calls. Config monitors resource changes. Security Hub centralizes findings. Trusted Advisor recommends.",
+    "source": "AWS VPC Monitoring — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100301mc012",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la estrategia para conectar 100 VPCs en la misma región de forma escalable?",
+    "question_en": "What strategy to connect 100 VPCs in same region scalably?",
+    "options_es": [
+      "Crear VPC Peering entre todas",
+      "Usar AWS Transit Gateway como hub centralizado",
+      "Usar VPN entre todas",
+      "Hacer todas en una VPC"
+    ],
+    "options_en": [
+      "Create VPC Peering between all",
+      "Use AWS Transit Gateway as central hub",
+      "Use VPN between all",
+      "Make all in one VPC"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Transit Gateway centraliza conectividad (conexiones O(n) vs O(n²)). Peering entre todas es no-escable. VPN es lento. Una VPC anula aislamiento.",
+    "explanation_en": "Transit Gateway centralizes connectivity (O(n) vs O(n²) connections). Peering all is unscalable. VPN slow. Single VPC defeats isolation.",
+    "source": "AWS Transit Gateway — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100301mc013",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo asignar rangos CIDR sin conflictos en arquitectura multi-VPC?",
+    "question_en": "How to assign CIDR ranges without conflicts in multi-VPC architecture?",
+    "options_es": [
+      "Usar registros centrales de IPAM",
+      "AWS IPAM (IP Address Manager)",
+      "Planificación manual en spreadsheet",
+      "Ambas A y B"
+    ],
+    "options_en": [
+      "Use central IPAM registry",
+      "AWS IPAM (IP Address Manager)",
+      "Manual planning in spreadsheet",
+      "Both A and B"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "AWS IPAM automatiza asignación de CIDR, evitando conflictos. Registros centrales manuales funcionan pero propensos a errores.",
+    "explanation_en": "AWS IPAM automates CIDR assignment, preventing conflicts. Manual central registry works but error-prone.",
+    "source": "AWS IPAM — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100301mc014",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un VPC Endpoint?",
+    "question_en": "What is a VPC Endpoint?",
+    "options_es": [
+      "Conexión privada a servicios AWS",
+      "Puerto de red",
+      "Dirección IP",
+      "Gateway externo"
+    ],
+    "options_en": [
+      "Private connection to AWS services",
+      "Network port",
+      "IP address",
+      "External gateway"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "VPC Endpoint permite acceso privado a servicios S3, DynamoDB, SNS sin ir por internet. Hay Gateway y Interface tipos.",
+    "explanation_en": "VPC Endpoint enables private access to S3, DynamoDB, SNS without internet. Gateway and Interface types exist.",
+    "source": "AWS VPC Endpoints — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100301mc015",
+    "skill_id": "sk100301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo minimizar costo de data transfer en arquitectura multi-AZ?",
+    "question_en": "How to minimize data transfer cost in multi-AZ architecture?",
+    "options_es": [
+      "Mantener datos en una AZ",
+      "Replicación entre AZs (no hay costo)",
+      "Usar CloudFront para distribución",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "Keep data in one AZ",
+      "Replication between AZs (free)",
+      "Use CloudFront for distribution",
+      "Both B and C"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Data transfer entre AZs en misma región es gratis. CloudFront reduce transferencia a usuarios externos pero costo separado.",
+    "explanation_en": "Data transfer between AZs in same region is free. CloudFront reduces external transfer but separate cost.",
+    "source": "AWS Data Transfer Pricing — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100302mc001",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Route 53?",
+    "question_en": "What is Route 53?",
+    "options_es": [
+      "Servicio DNS y domain name registrar",
+      "Balanceador de carga",
+      "Servicio de almacenamiento",
+      "Herramienta de monitoreo"
+    ],
+    "options_en": [
+      "DNS service and domain registrar",
+      "Load balancer",
+      "Storage service",
+      "Monitoring tool"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Route 53 es DNS y registrar combinados. Soporta alias a recursos AWS y políticas de routing. No es ALB, S3, ni monitoreo.",
+    "explanation_en": "Route 53 is DNS and registrar combined. Supports aliases to AWS resources and routing policies. Not ALB, S3, or monitoring.",
+    "source": "AWS Route 53 — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100302mc002",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la política de enrutamiento más simple en Route 53?",
+    "question_en": "What is the simplest routing policy in Route 53?",
+    "options_es": [
+      "Simple routing (round-robin)",
+      "Weighted routing",
+      "Latency-based routing",
+      "Failover routing"
+    ],
+    "options_en": [
+      "Simple routing (round-robin)",
+      "Weighted routing",
+      "Latency-based routing",
+      "Failover routing"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Simple routing retorna todos los registros. Weighted permite distribución % personalizada. Latency-based minimiza latencia. Failover para DR.",
+    "explanation_en": "Simple routing returns all records. Weighted allows custom % distribution. Latency-based minimizes latency. Failover for DR.",
+    "source": "AWS Route 53 Routing Policies — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100302mc003",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo implementar multi-region failover automático con Route 53?",
+    "question_en": "How to implement multi-region auto failover with Route 53?",
+    "options_es": [
+      "Usar Failover routing policy + health checks",
+      "Weighted routing",
+      "Latency routing",
+      "Geolocation routing"
+    ],
+    "options_en": [
+      "Use Failover routing policy + health checks",
+      "Weighted routing",
+      "Latency routing",
+      "Geolocation routing"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Failover routing + health checks detecta región primaria caída y cambia a secundaria automáticamente. Otras políticas son para distribución.",
+    "explanation_en": "Failover routing + health checks detect primary region failure and switch to secondary automatically. Other policies for distribution.",
+    "source": "AWS Route 53 Failover — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100302mc004",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un Route 53 Health Check?",
+    "question_en": "What is a Route 53 Health Check?",
+    "options_es": [
+      "Monitoreo de salud de endpoint",
+      "Verificación de disponibilidad",
+      "Puede activar routing change automático",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Endpoint health monitoring",
+      "Availability verification",
+      "Can trigger automatic routing change",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Health Checks monitorean endpoints (HTTP, TCP, etc.). Si fallan, Route 53 puede cambiar routing automáticamente. Combinación de A, B, C.",
+    "explanation_en": "Health Checks monitor endpoints (HTTP, TCP, etc.). If fail, Route 53 can auto-change routing. Combination of A, B, C.",
+    "source": "AWS Route 53 Health Checks — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100302mc005",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuándo usar alias resource vs record DNS tradicional en Route 53?",
+    "question_en": "When to use alias resource vs traditional DNS record in Route 53?",
+    "options_es": [
+      "Alias para recursos AWS (ALB, CloudFront)",
+      "Alias siempre",
+      "DNS tradicional siempre",
+      "Son iguales"
+    ],
+    "options_en": [
+      "Alias for AWS resources (ALB, CloudFront)",
+      "Always alias",
+      "Always traditional DNS",
+      "They are same"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Alias mapea a recursos AWS nativamente sin costo de query. Tradicional es para externos. Alias es preferido para AWS.",
+    "explanation_en": "Alias maps to AWS resources natively without query cost. Traditional for external. Alias preferred for AWS.",
+    "source": "AWS Route 53 Alias Records — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100302mc006",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cómo enrutar tráfico basado en geolocalización del usuario?",
+    "question_en": "How to route traffic based on user geolocation?",
+    "options_es": [
+      "Geolocation routing policy",
+      "Latency-based routing",
+      "Simple routing",
+      "Weighted routing"
+    ],
+    "options_en": [
+      "Geolocation routing policy",
+      "Latency-based routing",
+      "Simple routing",
+      "Weighted routing"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Geolocation routing usa origen del cliente para decidir destino. Latency-based es automático pero puede cruzar regiones.",
+    "explanation_en": "Geolocation routing uses client origin to decide destination. Latency-based is automatic but may cross regions.",
+    "source": "AWS Route 53 Geolocation Routing — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100302mc007",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo manejar resolución DNS privada en VPC con dominios personalizados?",
+    "question_en": "How to handle private DNS resolution in VPC with custom domains?",
+    "options_es": [
+      "Route 53 Private Hosted Zone",
+      "DHCP option sets",
+      "Resolver endpoints",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Route 53 Private Hosted Zone",
+      "DHCP option sets",
+      "Resolver endpoints",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Private Hosted Zone para dominios internos. DHCP options configuran servidores DNS. Resolver endpoints permiten DNS condicional entre on-prem y AWS.",
+    "explanation_en": "Private Hosted Zone for internal domains. DHCP options configure DNS servers. Resolver endpoints enable conditional DNS between on-prem and AWS.",
+    "source": "AWS Route 53 Private Hosted Zones — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100302mc008",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es Route 53 Resolver?",
+    "question_en": "What is Route 53 Resolver?",
+    "options_es": [
+      "DNS resolver para VPC",
+      "Reenvío de queries DNS entre on-premise y AWS",
+      "Ambas",
+      "Balanceador de carga DNS"
+    ],
+    "options_en": [
+      "DNS resolver for VPC",
+      "DNS query forwarding between on-prem and AWS",
+      "Both",
+      "DNS load balancer"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Resolver proporciona DNS recursivo en VPC y permite reenvío condicional. Útil para hybrid cloud con dominios privados.",
+    "explanation_en": "Resolver provides recursive DNS in VPC and enables conditional forwarding. Useful for hybrid cloud with private domains.",
+    "source": "AWS Route 53 Resolver — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100302mc009",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el TTL (Time To Live) recomendado para records en Route 53?",
+    "question_en": "What is recommended TTL (Time To Live) for Route 53 records?",
+    "options_es": [
+      "1 segundo para cambios frecuentes",
+      "300 segundos como default",
+      "3600 segundos para estabilidad",
+      "Depende del caso"
+    ],
+    "options_en": [
+      "1 second for frequent changes",
+      "300 seconds as default",
+      "3600 seconds for stability",
+      "Depends on use case"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "TTL bajo permite cambios rápidos pero más queries. TTL alto reduce queries pero cambios lentos. Balance según necesidad.",
+    "explanation_en": "Low TTL allows quick changes but more queries. High TTL reduces queries but slow changes. Balance per need.",
+    "source": "AWS Route 53 TTL — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100302mc010",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo implementar DNSSEC en Route 53?",
+    "question_en": "How to implement DNSSEC in Route 53?",
+    "options_es": [
+      "Habilitar DNSSEC en Hosted Zone",
+      "Firmar records manualmente",
+      "Usar CloudFlare",
+      "No soportado"
+    ],
+    "options_en": [
+      "Enable DNSSEC in Hosted Zone",
+      "Manually sign records",
+      "Use CloudFlare",
+      "Not supported"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Route 53 soporta DNSSEC: habilitar en Hosted Zone, AWS genera y gestiona claves. Protege contra DNS spoofing.",
+    "explanation_en": "Route 53 supports DNSSEC: enable in Hosted Zone, AWS generates and manages keys. Protects against DNS spoofing.",
+    "source": "AWS Route 53 DNSSEC — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100302mc011",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo monitorear cambios DNS y alertar sobre modificaciones no autorizadas?",
+    "question_en": "How to monitor DNS changes and alert on unauthorized modifications?",
+    "options_es": [
+      "Route 53 change logs",
+      "CloudTrail para API calls",
+      "EventBridge para cambios",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Route 53 change logs",
+      "CloudTrail for API calls",
+      "EventBridge for changes",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar CloudTrail (quién cambió qué), EventBridge (alertas en tiempo real), y logs proporciona auditoría completa.",
+    "explanation_en": "Combining CloudTrail (who changed what), EventBridge (real-time alerts), and logs provides complete audit.",
+    "source": "AWS Route 53 Monitoring — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100303mc001",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Amazon CloudFront?",
+    "question_en": "What is Amazon CloudFront?",
+    "options_es": [
+      "Red de distribución de contenido (CDN)",
+      "Balanceador de carga",
+      "Servicio DNS",
+      "Firewall"
+    ],
+    "options_en": [
+      "Content Delivery Network (CDN)",
+      "Load balancer",
+      "DNS service",
+      "Firewall"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudFront es CDN de AWS que cacha contenido en edge locations globales. Reduce latencia. No es ALB, Route 53, ni WAF.",
+    "explanation_en": "CloudFront is AWS CDN caching content at global edge locations. Reduces latency. Not ALB, Route 53, or WAF.",
+    "source": "AWS CloudFront — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100303mc002",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el beneficio principal de usar CloudFront?",
+    "question_en": "What is the primary benefit of using CloudFront?",
+    "options_es": [
+      "Reduce latencia para usuarios globales",
+      "Balanceo de carga",
+      "Encriptación de datos",
+      "Backup automático"
+    ],
+    "options_en": [
+      "Reduce latency for global users",
+      "Load balancing",
+      "Data encryption",
+      "Automatic backup"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudFront cacha cerca del usuario, reduciendo latencia. ALB balancea. Encriptación es separado. Backup es otra función.",
+    "explanation_en": "CloudFront caches near user, reducing latency. ALB balances. Encryption separate. Backup different function.",
+    "source": "AWS CloudFront Benefits — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100303mc003",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo configurar CloudFront para servir contenido estático y dinámico eficientemente?",
+    "question_en": "How to configure CloudFront for static and dynamic content efficiently?",
+    "options_es": [
+      "Un distribution para todo",
+      "Usar behaviors con different cache policies",
+      "Behaviors con Cache-Control headers",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "Single distribution for all",
+      "Use behaviors with different cache policies",
+      "Behaviors with Cache-Control headers",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Behaviors permite diferentes políticas por path. Estático (jpg, css) con TTL alto. Dinámico (API) con TTL bajo o no cachear. Headers personalizados.",
+    "explanation_en": "Behaviors allow different policies per path. Static (jpg, css) with high TTL. Dynamic (API) with low TTL or no caching. Custom headers.",
+    "source": "AWS CloudFront Behaviors — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100303mc004",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es Origin Access Identity (OAI) en CloudFront?",
+    "question_en": "What is Origin Access Identity (OAI) in CloudFront?",
+    "options_es": [
+      "Permite acceso directo a S3 desde internet",
+      "Asegura acceso a origen solo via CloudFront",
+      "Autenticación de usuario",
+      "Certificado SSL"
+    ],
+    "options_en": [
+      "Allows direct S3 access from internet",
+      "Ensures origin access only via CloudFront",
+      "User authentication",
+      "SSL certificate"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "OAI (ahora Origin Access Control/OAC) previene acceso directo a S3. CloudFront accede como OAI, S3 bucket policy lo permite.",
+    "explanation_en": "OAI (now Origin Access Control/OAC) prevents direct S3 access. CloudFront accesses as OAI, S3 bucket policy allows.",
+    "source": "AWS CloudFront OAI — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100303mc005",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo invalidar caché en CloudFront después de actualizar contenido?",
+    "question_en": "How to invalidate cache in CloudFront after updating content?",
+    "options_es": [
+      "Crear Invalidation request",
+      "Esperar TTL",
+      "Usar AWS CLI invalidate",
+      "Ambas A y C"
+    ],
+    "options_en": [
+      "Create Invalidation request",
+      "Wait for TTL",
+      "Use AWS CLI invalidate",
+      "Both A and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Invalidation Request limpia caché inmediatamente por patrón. CLI permite automatizar. Esperar TTL es pasivo. Ambas activas son válidas.",
+    "explanation_en": "Invalidation Request clears cache immediately by pattern. CLI automates. Waiting TTL is passive. Both active methods valid.",
+    "source": "AWS CloudFront Invalidation — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100303mc006",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el número de edge locations de CloudFront?",
+    "question_en": "How many edge locations does CloudFront have?",
+    "options_es": [
+      "10 ubicaciones",
+      "50+ ubicaciones",
+      "500+ ubicaciones",
+      "Depende de la región"
+    ],
+    "options_en": [
+      "10 locations",
+      "50+ locations",
+      "500+ locations",
+      "Depends on region"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudFront tiene 500+ edge locations globales. Proporciona cobertura casi universal.",
+    "explanation_en": "CloudFront has 500+ global edge locations. Provides near-universal coverage.",
+    "source": "AWS CloudFront Infrastructure — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100303mc007",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo proteger CloudFront contra ataques DDoS?",
+    "question_en": "How to protect CloudFront against DDoS attacks?",
+    "options_es": [
+      "AWS Shield Standard (incluido)",
+      "AWS Shield Advanced + WAF",
+      "Security Groups",
+      "Ambas A y B"
+    ],
+    "options_en": [
+      "AWS Shield Standard (included)",
+      "AWS Shield Advanced + WAF",
+      "Security Groups",
+      "Both A and B"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Shield Standard incluido contra DDoS comunes. Shield Advanced + WAF para protección avanzada. Security Groups no aplica a CloudFront.",
+    "explanation_en": "Shield Standard included against common DDoS. Shield Advanced + WAF for advanced protection. Security Groups don't apply to CloudFront.",
+    "source": "AWS Shield and WAF — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100303mc008",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo usar CloudFront con aplicación dinámica (API)?",
+    "question_en": "How to use CloudFront with dynamic application (API)?",
+    "options_es": [
+      "CloudFront no funciona con APIs",
+      "Usar query string caching",
+      "Cachear solo responses GET sin cambios",
+      "Usar Lambda@Edge para transformar"
+    ],
+    "options_en": [
+      "CloudFront doesn't work with APIs",
+      "Use query string caching",
+      "Cache only stable GET responses",
+      "Use Lambda@Edge to transform"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudFront cachea APIs pero con cuidado: GET estables sí, POST/PUT/DELETE por defecto no cachea. Lambda@Edge permite lógica avanzada.",
+    "explanation_en": "CloudFront can cache APIs carefully: stable GETs yes, POST/PUT/DELETE defaults no caching. Lambda@Edge enables advanced logic.",
+    "source": "AWS CloudFront with APIs — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100303mc009",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo minimizar costo de CloudFront?",
+    "question_en": "How to minimize CloudFront cost?",
+    "options_es": [
+      "TTL bajo",
+      "Comprimir contenido + cache agresivo",
+      "Usar Data Transfer Out menos",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "Low TTL",
+      "Compress content + aggressive cache",
+      "Use less Data Transfer Out",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Compresión reduce bytes transferidos. Cache agresivo (alto TTL) reduce solicitudes origen. Ambas reducen costo.",
+    "explanation_en": "Compression reduces bytes transferred. Aggressive cache (high TTL) reduces origin requests. Both reduce cost.",
+    "source": "AWS CloudFront Cost Optimization — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100303mc010",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es Lambda@Edge?",
+    "question_en": "What is Lambda@Edge?",
+    "options_es": [
+      "Lambda en edge locations de CloudFront",
+      "Función serverless normal",
+      "Servicio de caché",
+      "Balanceador de carga"
+    ],
+    "options_en": [
+      "Lambda at CloudFront edge locations",
+      "Normal serverless function",
+      "Caching service",
+      "Load balancer"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Lambda@Edge ejecuta código en edge locations para transformar requests/responses. Permite lógica personalizada cerca del usuario.",
+    "explanation_en": "Lambda@Edge runs code at edge locations to transform requests/responses. Enables custom logic near user.",
+    "source": "AWS Lambda@Edge — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100303mc011",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo implementar autenticación en CloudFront para contenido privado?",
+    "question_en": "How to implement authentication in CloudFront for private content?",
+    "options_es": [
+      "CloudFront no soporta autenticación",
+      "Usar signed URLs o signed cookies",
+      "Usar Lambda@Edge para validar",
+      "Ambas B y C"
+    ],
+    "options_en": [
+      "CloudFront doesn't support authentication",
+      "Use signed URLs or signed cookies",
+      "Use Lambda@Edge to validate",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Signed URLs/cookies permiten acceso temporal. Lambda@Edge puede validar JWT u otros tokens. Combinación permite autenticación flexible.",
+    "explanation_en": "Signed URLs/cookies allow temporary access. Lambda@Edge can validate JWT or other tokens. Combination enables flexible auth.",
+    "source": "AWS CloudFront Authentication — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100303mc012",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo monitorear performance de CloudFront?",
+    "question_en": "How to monitor CloudFront performance?",
+    "options_es": [
+      "CloudWatch metrics automáticas",
+      "CloudFront access logs",
+      "AWS CloudTrail",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Automatic CloudWatch metrics",
+      "CloudFront access logs",
+      "AWS CloudTrail",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudWatch proporciona métricas estándar. Access logs dan detalle de cada request. CloudTrail rastrea cambios de configuración.",
+    "explanation_en": "CloudWatch provides standard metrics. Access logs give per-request detail. CloudTrail tracks config changes.",
+    "source": "AWS CloudFront Monitoring — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100303mc013",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué tipos de origen soporta CloudFront?",
+    "question_en": "What origin types does CloudFront support?",
+    "options_es": [
+      "S3 solo",
+      "S3, ALB, EC2, HTTP endpoints, S3 con OAI",
+      "Solo endpoints HTTP",
+      "Cualquier HTTP"
+    ],
+    "options_en": [
+      "S3 only",
+      "S3, ALB, EC2, HTTP endpoints, S3 with OAI",
+      "HTTP endpoints only",
+      "Any HTTP"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CloudFront soporta múltiples orígenes: S3, ALB, EC2, custom HTTP. OAI asegura acceso.",
+    "explanation_en": "CloudFront supports multiple origins: S3, ALB, EC2, custom HTTP. OAI secures access.",
+    "source": "AWS CloudFront Origins — AWS documentation",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100303mc014",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo servir contenido en múltiples idiomas usando CloudFront?",
+    "question_en": "How to serve content in multiple languages using CloudFront?",
+    "options_es": [
+      "Crear distribution separado por idioma",
+      "Usar cache basado en Accept-Language header",
+      "CloudFront no soporta idiomas",
+      "Usar Lambda@Edge para redirigir"
+    ],
+    "options_en": [
+      "Create separate distribution per language",
+      "Use cache based on Accept-Language header",
+      "CloudFront doesn't support languages",
+      "Use Lambda@Edge to redirect"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Accept-Language permite cachear versiones distintas. Lambda@Edge puede redirigir. Un distribution es más simple.",
+    "explanation_en": "Accept-Language allows caching different versions. Lambda@Edge can redirect. Single distribution simpler.",
+    "source": "AWS CloudFront Cache Key — AWS documentation",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q100303mc015",
+    "skill_id": "sk100303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo optimizar CloudFront para maximizar hit ratio?",
+    "question_en": "How to optimize CloudFront for maximum hit ratio?",
+    "options_es": [
+      "TTL muy bajo",
+      "Cache headers optimizados + versionado de URLs",
+      "Comportamientos específicos por tipo de contenido",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Very low TTL",
+      "Optimized cache headers + URL versioning",
+      "Specific behaviors by content type",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Combinar: headers Cache-Control óptimos, versionar URLs (assets-v1.js), behaviors específicos, TTL adecuado. Maximiza hit ratio.",
+    "explanation_en": "Combine: optimal Cache-Control headers, URL versioning (assets-v1.js), specific behaviors, appropriate TTL. Maximizes hit ratio.",
+    "source": "AWS CloudFront Performance — AWS documentation",
+    "expected_time_ms": 120000
+  },
+  {
+    "id": "q100302mc012",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es una Route 53 Health Check y cuándo la usarías?",
+    "question_en": "What is a Route 53 Health Check and when would you use it?",
+    "options_es": [
+      "Verifica si un endpoint está disponible; usada para failover automático de tráfico",
+      "Backup automático de registros DNS",
+      "Validación de certificados SSL",
+      "Compresión de datos DNS"
+    ],
+    "options_en": [
+      "Verifies if an endpoint is available; used for automatic traffic failover",
+      "Automatic DNS record backup",
+      "SSL certificate validation",
+      "DNS data compression"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Health Checks monitorizan endpoints HTTP/HTTPS/TCP. Si uno falla, Route 53 puede automaticamente dirigir tráfico a alternativas saludables.",
+    "explanation_en": "Health Checks monitor HTTP/HTTPS/TCP endpoints. If one fails, Route 53 can automatically route traffic to healthy alternatives.",
+    "source": "AWS Documentation — Route 53 health checks",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100302mc013",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre Route 53 Simple Routing y Weighted Routing?",
+    "question_en": "What is the difference between Route 53 Simple Routing and Weighted Routing?",
+    "options_es": [
+      "Simple: una IP. Weighted: distribuye porcentaje de tráfico según peso asignado",
+      "Simple es más rápido",
+      "Weighted no soporta failover",
+      "Son idénticos"
+    ],
+    "options_en": [
+      "Simple: one IP. Weighted: distributes percentage of traffic by assigned weight",
+      "Simple is faster",
+      "Weighted does not support failover",
+      "They are identical"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Simple Routing retorna una sola IP (o múltiples sin control). Weighted asigna pesos (ej: 70% server A, 30% server B) para distribución controlada.",
+    "explanation_en": "Simple Routing returns a single IP (or multiple without control). Weighted assigns weights (e.g., 70% server A, 30% server B) for controlled distribution.",
+    "source": "AWS Documentation — Route 53 routing policies",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100302mc014",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo implementas failover automático en Route 53?",
+    "question_en": "How do you implement automatic failover in Route 53?",
+    "options_es": [
+      "Usar Failover routing policy con primario y secundario; health checks activados",
+      "Cambiar DNS manualmente",
+      "Usar solo Geolocation routing",
+      "No es posible"
+    ],
+    "options_en": [
+      "Use Failover routing policy with primary and secondary; health checks enabled",
+      "Change DNS manually",
+      "Use only Geolocation routing",
+      "Not possible"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Failover policy define un registro primario y otro secundario (standby). Health checks monitorean el primario; si falla, Route 53 dirige a secundario.",
+    "explanation_en": "Failover policy defines a primary and secondary (standby) record. Health checks monitor the primary; if it fails, Route 53 directs to secondary.",
+    "source": "AWS Documentation — Route 53 failover routing",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100302mc015",
+    "skill_id": "sk100302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es Route 53 Geolocation Routing y para qué se usa?",
+    "question_en": "What is Route 53 Geolocation Routing and what is it used for?",
+    "options_es": [
+      "Dirige tráfico basado en ubicación geográfica del cliente; compliance local o idioma",
+      "Optimiza latencia automáticamente",
+      "Balanceo de carga igual",
+      "Failover basado en región"
+    ],
+    "options_en": [
+      "Routes traffic based on client's geographic location; local compliance or language",
+      "Automatically optimizes latency",
+      "Equal load balancing",
+      "Region-based failover"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Geolocation permite servir contenido específico por país/continente: ej, usuarios EU→servidor EU, usuarios APAC→servidor APAC, útil para compliance GDPR.",
+    "explanation_en": "Geolocation allows serving country/continent-specific content: e.g., EU users→EU server, APAC users→APAC server, useful for GDPR compliance.",
+    "source": "AWS Documentation — Route 53 geolocation routing",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc001",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es AWS Direct Connect y cuál es su principal ventaja?",
+    "question_en": "What is AWS Direct Connect and what is its main advantage?",
+    "options_es": [
+      "Conexión dedicada de red privada entre on-premises y AWS; baja latencia y ancho de banda consistente",
+      "Conexión VPN convencional",
+      "Servicio de DNS",
+      "Acelerador de red"
+    ],
+    "options_en": [
+      "Dedicated private network connection between on-premises and AWS; low latency and consistent bandwidth",
+      "Conventional VPN connection",
+      "DNS service",
+      "Network accelerator"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Direct Connect proporciona conexión física dedicada con bandwidth garantizado (1/10/100 Gbps) y latencia previsible, sin competir por internet público.",
+    "explanation_en": "Direct Connect provides dedicated physical connection with guaranteed bandwidth (1/10/100 Gbps) and predictable latency, not competing on public internet.",
+    "source": "AWS Documentation — Direct Connect",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc002",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre Direct Connect y VPN?",
+    "question_en": "What is the difference between Direct Connect and VPN?",
+    "options_es": [
+      "DC: dedicado, fisico, consistente. VPN: compartido, internet, variable latencia",
+      "VPN es más rápido",
+      "DC solo para on-premises",
+      "No hay diferencia"
+    ],
+    "options_en": [
+      "DC: dedicated, physical, consistent. VPN: shared, internet, variable latency",
+      "VPN is faster",
+      "DC only for on-premises",
+      "No difference"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Direct Connect es conexión física dedicada con SLA de 99.99%. VPN usa internet público encriptado, más flexible pero con latencia impredecible.",
+    "explanation_en": "Direct Connect is dedicated physical connection with 99.99% SLA. VPN uses encrypted public internet, more flexible but unpredictable latency.",
+    "source": "AWS Documentation — Direct Connect vs VPN",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc003",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un Virtual Interface (VIF) en Direct Connect?",
+    "question_en": "What is a Virtual Interface (VIF) in Direct Connect?",
+    "options_es": [
+      "Interfaz virtual que asigna conexión DC a VPC o AWS service específico",
+      "Servidor virtual en la nube",
+      "Interfaz de usuario gráfica",
+      "Tipo de instancia EC2"
+    ],
+    "options_en": [
+      "Virtual interface that assigns DC connection to specific VPC or AWS service",
+      "Virtual server in the cloud",
+      "Graphical user interface",
+      "EC2 instance type"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "VIF es un tunel virtual dentro de la conexión DC. Puedes tener múltiples VIFs: Private (a VPC), Public (a servicios AWS), Transit (a Transit Gateway).",
+    "explanation_en": "VIF is a virtual tunnel within the DC connection. You can have multiple VIFs: Private (to VPC), Public (to AWS services), Transit (to Transit Gateway).",
+    "source": "AWS Documentation — Direct Connect virtual interfaces",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc004",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuántos Mbps ofrece Direct Connect para ancho de banda?",
+    "question_en": "What bandwidth options does Direct Connect offer?",
+    "options_es": [
+      "50 Mbps, 100 Mbps, 1 Gbps, 10 Gbps, 100 Gbps",
+      "Solo 1 Gbps",
+      "Ancho de banda ilimitado",
+      "50 Mbps solamente"
+    ],
+    "options_en": [
+      "50 Mbps, 100 Mbps, 1 Gbps, 10 Gbps, 100 Gbps",
+      "Only 1 Gbps",
+      "Unlimited bandwidth",
+      "50 Mbps only"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Direct Connect ofrece múltiples opciones de velocidad: 50 Mbps, 100 Mbps, 1 Gbps, 10 Gbps, y 100 Gbps para conectividad de ultra alta velocidad.",
+    "explanation_en": "Direct Connect offers multiple speed options: 50 Mbps, 100 Mbps, 1 Gbps, 10 Gbps, and 100 Gbps for ultra-high-speed connectivity.",
+    "source": "AWS Documentation — Direct Connect speeds",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc005",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo activas redundancia en Direct Connect?",
+    "question_en": "How do you enable redundancy in Direct Connect?",
+    "options_es": [
+      "Crear múltiples conexiones DC a diferentes ubicaciones; use failover automático",
+      "Una sola conexión es suficiente",
+      "Requiere standby manual",
+      "No es posible"
+    ],
+    "options_en": [
+      "Create multiple DC connections to different locations; use automatic failover",
+      "Single connection is sufficient",
+      "Requires manual standby",
+      "Not possible"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "AWS recomienda 2+ conexiones DC a diferentes locaciones para alta disponibilidad. Puedes usar BGP para failover automático entre conexiones.",
+    "explanation_en": "AWS recommends 2+ DC connections to different locations for high availability. You can use BGP for automatic failover between connections.",
+    "source": "AWS Documentation — Direct Connect redundancy",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc006",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es Direct Connect Gateway y para qué sirve?",
+    "question_en": "What is Direct Connect Gateway and what is it for?",
+    "options_es": [
+      "Conecta múltiples VPCs/regiones a una sola conexión DC; distribuye ancho de banda",
+      "Router de internet",
+      "Servicio de DNS",
+      "Acelerador de transferencia"
+    ],
+    "options_en": [
+      "Connects multiple VPCs/regions to single DC connection; distributes bandwidth",
+      "Internet router",
+      "DNS service",
+      "Transfer accelerator"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DX Gateway permite compartir una sola conexión Direct Connect con múltiples VPCs en múltiples regiones, centralizando la conectividad.",
+    "explanation_en": "DX Gateway allows sharing a single Direct Connect connection with multiple VPCs across multiple regions, centralizing connectivity.",
+    "source": "AWS Documentation — Direct Connect Gateway",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc007",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la latencia típica de una conexión VPN respecto a Direct Connect?",
+    "question_en": "What is the typical latency of a VPN connection compared to Direct Connect?",
+    "options_es": [
+      "VPN: 20-50ms típico. DC: <5ms típico",
+      "VPN es más rápido",
+      "Igual latencia",
+      "VPN es 10x más rápido"
+    ],
+    "options_en": [
+      "VPN: 20-50ms typical. DC: <5ms typical",
+      "VPN is faster",
+      "Equal latency",
+      "VPN is 10x faster"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "VPN va por internet público, latencia variable 20-50ms. DC es conexión dedicada con latencia sub-milisegundo <5ms, predecible.",
+    "explanation_en": "VPN goes over public internet, variable 20-50ms latency. DC is dedicated connection with sub-millisecond <5ms, predictable latency.",
+    "source": "AWS Documentation — Direct Connect latency",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc008",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es BGP (Border Gateway Protocol) en Direct Connect?",
+    "question_en": "What is BGP (Border Gateway Protocol) in Direct Connect?",
+    "options_es": [
+      "Protocolo de ruteo que comunica IPs entre on-premises y AWS automáticamente",
+      "Protocolo de seguridad",
+      "Compresión de datos",
+      "Encriptación de tráfico"
+    ],
+    "options_en": [
+      "Routing protocol that communicates IPs between on-premises and AWS automatically",
+      "Security protocol",
+      "Data compression",
+      "Traffic encryption"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "BGP automáticamente comunica rutas entre tu router on-premises y AWS. Permite failover automático sin intervención manual.",
+    "explanation_en": "BGP automatically communicates routes between your on-premises router and AWS. Enables automatic failover without manual intervention.",
+    "source": "AWS Documentation — Direct Connect BGP",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc009",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué tiempo toma provision una conexión Direct Connect desde solicitud?",
+    "question_en": "How long does it take to provision a Direct Connect connection from request?",
+    "options_es": [
+      "Típicamente 1-3 semanas (incluye coordinación con proveedor de colocation)",
+      "Días",
+      "Minutos",
+      "Instantáneo"
+    ],
+    "options_en": [
+      "Typically 1-3 weeks (includes coordination with colocation provider)",
+      "Days",
+      "Minutes",
+      "Instant"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DC requiere coordinación con AWS y proveedores de colocation/carriers. Típico 1-3 semanas desde solicitud hasta tráfico activo.",
+    "explanation_en": "DC requires coordination with AWS and colocation/carrier providers. Typical 1-3 weeks from request to active traffic.",
+    "source": "AWS Documentation — Direct Connect provisioning timeline",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc010",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la estructura de costos de Direct Connect?",
+    "question_en": "What is the cost structure of Direct Connect?",
+    "options_es": [
+      "Conexión mensual + datos transferidos (outbound chargeable)",
+      "Solo outbound",
+      "Pago único",
+      "Gratis con commitment de 1 año"
+    ],
+    "options_en": [
+      "Monthly connection + data transferred (outbound chargeable)",
+      "Outbound only",
+      "One-time fee",
+      "Free with 1-year commitment"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DC tiene cargo mensual por conexión (varía por velocidad) + tarifa por GB de datos salientes. Datos entrantes son gratis.",
+    "explanation_en": "DC has monthly connection charge (varies by speed) + per-GB fee for outbound data. Inbound data is free.",
+    "source": "AWS Documentation — Direct Connect pricing",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc011",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es AWS Direct Connect Hosted Connection?",
+    "question_en": "What is AWS Direct Connect Hosted Connection?",
+    "options_es": [
+      "Conexión DC provisionada por partners; más rápido setup que conexión estándar",
+      "Conexión VPN",
+      "Servicio deprecated",
+      "Solo para startups"
+    ],
+    "options_en": [
+      "DC connection provisioned by partners; faster setup than standard connection",
+      "VPN connection",
+      "Deprecated service",
+      "Only for startups"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Hosted Connection es provisionada por AWS partners (carriers, proveedores cloud), reduciendo tiempo de setup a días en lugar de semanas.",
+    "explanation_en": "Hosted Connection is provisioned by AWS partners (carriers, cloud providers), reducing setup time to days instead of weeks.",
+    "source": "AWS Documentation — Direct Connect Hosted Connections",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc012",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se encripta el tráfico en Direct Connect?",
+    "question_en": "How is traffic encrypted in Direct Connect?",
+    "options_es": [
+      "DC es física privada (no internet); aplicación encripta o usa MACsec para capa 2",
+      "Encriptación automática",
+      "No se encripta",
+      "Solo con VPN superpuesta"
+    ],
+    "options_en": [
+      "DC is private physical (not internet); application encrypts or uses MACsec for Layer 2",
+      "Automatic encryption",
+      "Not encrypted",
+      "Only with overlaid VPN"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DC es privada físicamente pero sin encriptación de red por defecto. Puedes usar MACsec (IEEE 802.1AE) o superponer VPN IPsec.",
+    "explanation_en": "DC is physically private but has no network encryption by default. You can use MACsec (IEEE 802.1AE) or overlay IPsec VPN.",
+    "source": "AWS Documentation — Direct Connect security",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc013",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es AWS Direct Connect Local Connection?",
+    "question_en": "What is AWS Direct Connect Local Connection?",
+    "options_es": [
+      "Conexión DC a locación/región AWS local cercana; reduce costo vs conexión regional",
+      "Conexión a instancias EC2 locales",
+      "VPN local",
+      "Cache distribuida"
+    ],
+    "options_en": [
+      "DC connection to nearby AWS location/local region; reduces cost vs regional connection",
+      "Connection to local EC2 instances",
+      "Local VPN",
+      "Distributed cache"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Local Connection conecta a una locación AWS cercana en tu región, con costos menores que conexiones a regiones lejanas.",
+    "explanation_en": "Local Connection connects to a nearby AWS location in your region, with lower costs than connections to distant regions.",
+    "source": "AWS Documentation — Direct Connect Local Connections",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc014",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo monitoreas una conexión Direct Connect?",
+    "question_en": "How do you monitor a Direct Connect connection?",
+    "options_es": [
+      "CloudWatch metrics (estado, BWth, conexión), logs, notificaciones SNS",
+      "Solo mediante consola manual",
+      "No hay monitoreo",
+      "Scripts personalizado solamente"
+    ],
+    "options_en": [
+      "CloudWatch metrics (state, BWth, connection), logs, SNS notifications",
+      "Manual console only",
+      "No monitoring",
+      "Custom scripts only"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Monitorea DC con CloudWatch (physical/logical state, bandwidth utilization). Configura alarmas y SNS para alertas de desconexiones.",
+    "explanation_en": "Monitor DC with CloudWatch (physical/logical state, bandwidth utilization). Configure alarms and SNS for disconnection alerts.",
+    "source": "AWS Documentation — Direct Connect monitoring",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100304mc015",
+    "skill_id": "sk100304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuándo elegir Direct Connect vs VPN vs AWS Global Accelerator?",
+    "question_en": "When to choose Direct Connect vs VPN vs AWS Global Accelerator?",
+    "options_es": [
+      "DC: banda consistente, on-premises. VPN: flexible, fallback. GA: optimizar latencia internet",
+      "Son idénticos",
+      "GA reemplaza a DC",
+      "Solo usar DC"
+    ],
+    "options_en": [
+      "DC: consistent bandwidth, on-premises. VPN: flexible, fallback. GA: optimize internet latency",
+      "They are identical",
+      "GA replaces DC",
+      "Only use DC"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DC para producción on-premises. VPN para backup/fallback. Global Accelerator para optimizar usuarios internet globales sin on-premises.",
+    "explanation_en": "DC for on-premises production. VPN for backup/fallback. Global Accelerator to optimize global internet users without on-premises.",
+    "source": "AWS Documentation — Connectivity options comparison",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc001",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la ventaja principal de usar API Gateway con integración directa a Lambda en lugar de usar EC2?",
+    "question_en": "What is the main advantage of using API Gateway with direct Lambda integration instead of EC2?",
+    "options_es": [
+      "A) Mejor rendimiento en operaciones CPU-intensivas",
+      "B) Escalado automático sin gestión de servidores",
+      "C) Menor costo de computación para APIs de alto volumen",
+      "D) Mayor control sobre la configuración del sistema operativo"
+    ],
+    "options_en": [
+      "A) Better performance for CPU-intensive operations",
+      "B) Automatic scaling without server management",
+      "C) Lower compute costs for high-volume APIs",
+      "D) Greater control over operating system configuration"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "API Gateway con Lambda proporciona escalado automático sin necesidad de administrar servidores EC2, pagando solo por las invocaciones realizadas.",
+    "explanation_en": "API Gateway with Lambda provides automatic scaling without managing EC2 servers, paying only for actual invocations.",
+    "source": "AWS Documentation — API Gateway and Lambda Integration",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc002",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se configura CORS en API Gateway para permitir solicitudes desde un dominio específico?",
+    "question_en": "How do you configure CORS in API Gateway to allow requests from a specific domain?",
+    "options_es": [
+      "A) A través de headers de respuesta en el método OPTIONS",
+      "B) En la configuración de la fase de API Gateway",
+      "C) Modificando las reglas del Security Group",
+      "D) En la política de bucket de S3 asociado"
+    ],
+    "options_en": [
+      "A) Through response headers in the OPTIONS method",
+      "B) In the API Gateway stage configuration",
+      "C) By modifying Security Group rules",
+      "D) In the associated S3 bucket policy"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "CORS se configura respondiendo apropiadamente a solicitudes OPTIONS con headers como Access-Control-Allow-Origin, Access-Control-Allow-Methods, etc.",
+    "explanation_en": "CORS is configured by responding appropriately to OPTIONS requests with headers like Access-Control-Allow-Origin, Access-Control-Allow-Methods, etc.",
+    "source": "AWS Documentation — API Gateway CORS Configuration",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc003",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el propósito principal de usar un modelo de mapeo (Mapping Template) en API Gateway?",
+    "question_en": "What is the primary purpose of using a Mapping Template in API Gateway?",
+    "options_es": [
+      "A) Transformar solicitudes y respuestas entre diferentes formatos",
+      "B) Encriptar datos en tránsito",
+      "C) Registrar todas las invocaciones de API",
+      "D) Implementar autenticación OAuth2"
+    ],
+    "options_en": [
+      "A) Transform requests and responses between different formats",
+      "B) Encrypt data in transit",
+      "C) Log all API invocations",
+      "D) Implement OAuth2 authentication"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Los Mapping Templates permiten transformar solicitudes entrada a JSON, XML u otros formatos que entienda el backend, y transformar las respuestas.",
+    "explanation_en": "Mapping Templates allow transforming incoming requests to JSON, XML, or other formats understood by the backend, and transforming responses.",
+    "source": "AWS Documentation — API Gateway Mapping Templates",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc004",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el tiempo máximo de espera (timeout) para un invocación síncrona de Lambda a través de API Gateway?",
+    "question_en": "What is the maximum timeout duration for a synchronous Lambda invocation through API Gateway?",
+    "options_es": [
+      "A) 5 segundos",
+      "B) 15 segundos",
+      "C) 30 segundos",
+      "D) 60 segundos"
+    ],
+    "options_en": [
+      "A) 5 seconds",
+      "B) 15 seconds",
+      "C) 30 seconds",
+      "D) 60 seconds"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El timeout para invocaciones síncronas de Lambda a través de API Gateway es de 29 segundos (redondeado a 30). Esto es importante para diseñar funciones que completen dentro de este límite.",
+    "explanation_en": "The timeout for synchronous Lambda invocations through API Gateway is 29 seconds (rounded to 30). This is critical for designing functions that complete within this limit.",
+    "source": "AWS Documentation — API Gateway Integration Timeout",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc005",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo maneja API Gateway las solicitudes duplicadas que llegan dentro de poco tiempo?",
+    "question_en": "How does API Gateway handle duplicate requests that arrive in quick succession?",
+    "options_es": [
+      "A) Las rechaza automáticamente",
+      "B) Las procesa por separado (API Gateway no proporciona deduplicación automática)",
+      "C) Las pone en cola para procesamiento ordenado",
+      "D) Las almacena en caché durante 1 minuto"
+    ],
+    "options_en": [
+      "A) Automatically rejects them",
+      "B) Processes them separately (API Gateway does not provide automatic deduplication)",
+      "C) Queues them for ordered processing",
+      "D) Caches them for 1 minute"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "API Gateway no proporciona deduplicación automática de solicitudes. Es responsabilidad de la aplicación implementar idempotencia si es necesaria.",
+    "explanation_en": "API Gateway does not provide automatic request deduplication. It is the application's responsibility to implement idempotency if needed.",
+    "source": "AWS Documentation — API Gateway Request Handling",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc006",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre autorización de API Gateway y autenticación en Lambda?",
+    "question_en": "What is the difference between API Gateway authorization and authentication in Lambda?",
+    "options_es": [
+      "A) API Gateway maneja quién eres (autenticación), Lambda verifica qué puedes hacer (autorización)",
+      "B) API Gateway verifica qué puedes hacer, Lambda verifica quién eres",
+      "C) Son lo mismo, solo con nombres diferentes",
+      "D) API Gateway no puede manejar autorización"
+    ],
+    "options_en": [
+      "A) API Gateway handles who you are (authentication), Lambda verifies what you can do (authorization)",
+      "B) API Gateway verifies what you can do, Lambda verifies who you are",
+      "C) They are the same, just with different names",
+      "D) API Gateway cannot handle authorization"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "API Gateway autentica (verifica identidad) mediante authorizers, mientras que Lambda típicamente implementa la lógica de autorización (qué puede hacer ese usuario).",
+    "explanation_en": "API Gateway authenticates (verifies identity) through authorizers, while Lambda typically implements authorization logic (what that user can do).",
+    "source": "AWS Documentation — API Gateway Authorization",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc007",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la mejor estrategia para implementar un patrón de circuit breaker en una arquitectura serverless con API Gateway?",
+    "question_en": "What is the best strategy to implement a circuit breaker pattern in a serverless architecture with API Gateway?",
+    "options_es": [
+      "A) Usar Lambda para mantener estado de intentos fallidos en DynamoDB",
+      "B) Configurar rate limiting en API Gateway",
+      "C) Usar VPC Endpoints con caché",
+      "D) Implementar reintentos automáticos en CloudFront"
+    ],
+    "options_en": [
+      "A) Use Lambda to maintain failed attempt state in DynamoDB",
+      "B) Configure rate limiting in API Gateway",
+      "C) Use VPC Endpoints with caching",
+      "D) Implement automatic retries in CloudFront"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El patrón circuit breaker se implementa mejor usando una función Lambda que mantiene estado en DynamoDB sobre el estado de los intentos fallidos.",
+    "explanation_en": "The circuit breaker pattern is best implemented using a Lambda function that maintains state in DynamoDB about failed attempts.",
+    "source": "AWS Well-Architected Framework — Resilience Patterns",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc008",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el modelo de precios de API Gateway?",
+    "question_en": "What is the pricing model for API Gateway?",
+    "options_es": [
+      "A) Por cantidad de API creadas",
+      "B) Por cantidad de solicitudes más datos transferidos",
+      "C) Por tiempo de ejecución de funciones Lambda",
+      "D) Acceso ilimitado con suscripción mensual"
+    ],
+    "options_en": [
+      "A) By number of APIs created",
+      "B) By number of requests plus data transfer",
+      "C) By execution time of Lambda functions",
+      "D) Unlimited access with monthly subscription"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "API Gateway cobra por millones de solicitudes HTTP recibidas y por cantidad de datos transferidos, siguiendo un modelo de pago por uso.",
+    "explanation_en": "API Gateway charges per million HTTP requests received and for data transfer, following a pay-as-you-go model.",
+    "source": "AWS Documentation — API Gateway Pricing",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc009",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se configura una WebSocket API en API Gateway para mantener conexiones bidireccionales?",
+    "question_en": "How do you configure a WebSocket API in API Gateway to maintain bidirectional connections?",
+    "options_es": [
+      "A) Creando rutas para $connect, $default y $disconnect",
+      "B) Usando solo HTTP methods POST y GET",
+      "C) Configurando un Classic Load Balancer",
+      "D) Implementando un protocolo MQTT en Lambda"
+    ],
+    "options_en": [
+      "A) Creating routes for $connect, $default and $disconnect",
+      "B) Using only HTTP methods POST and GET",
+      "C) Configuring a Classic Load Balancer",
+      "D) Implementing an MQTT protocol in Lambda"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Las WebSocket APIs en API Gateway utilizan rutas especiales: $connect para conexiones nuevas, $default para mensajes, y $disconnect para cierres.",
+    "explanation_en": "WebSocket APIs in API Gateway use special routes: $connect for new connections, $default for messages, and $disconnect for disconnections.",
+    "source": "AWS Documentation — API Gateway WebSocket APIs",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc010",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el mecanismo para implementar versioning de APIs en API Gateway?",
+    "question_en": "What is the mechanism to implement API versioning in API Gateway?",
+    "options_es": [
+      "A) Usar stages diferentes (v1, v2, etc.) con endpoints separados",
+      "B) Crear diferentes VPCs para cada versión",
+      "C) Modificar el nombre del dominio personalizado",
+      "D) Usar CloudFront distributions"
+    ],
+    "options_en": [
+      "A) Use different stages (v1, v2, etc.) with separate endpoints",
+      "B) Create different VPCs for each version",
+      "C) Modify the custom domain name",
+      "D) Use CloudFront distributions"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El versioning se implementa típicamente usando stages de API Gateway (ej: api.example.com/v1, api.example.com/v2) con diferentes configuraciones.",
+    "explanation_en": "Versioning is typically implemented using API Gateway stages (e.g., api.example.com/v1, api.example.com/v2) with different configurations.",
+    "source": "AWS Documentation — API Gateway Stages and Versioning",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc011",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un AWS Lambda Authorizer y cuándo lo usarías?",
+    "question_en": "What is an AWS Lambda Authorizer and when would you use it?",
+    "options_es": [
+      "A) Una función Lambda que valida JWT o tokens OAuth en solicitudes API",
+      "B) Un servicio que gestiona credenciales en IAM",
+      "C) Un componente que encripta datos",
+      "D) Un servicio que registra todas las acciones en CloudTrail"
+    ],
+    "options_en": [
+      "A) A Lambda function that validates JWT or OAuth tokens in API requests",
+      "B) A service that manages credentials in IAM",
+      "C) A component that encrypts data",
+      "D) A service that logs all actions in CloudTrail"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Un Lambda Authorizer es una función Lambda personalizada que valida tokens JWT, OAuth o credenciales personalizadas en solicitudes a API Gateway.",
+    "explanation_en": "A Lambda Authorizer is a custom Lambda function that validates JWT, OAuth, or custom credentials in requests to API Gateway.",
+    "source": "AWS Documentation — API Gateway Lambda Authorizers",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc012",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se maneja la concurrencia de solicitudes simultáneas en API Gateway cuando el backend tiene límites?",
+    "question_en": "How do you handle concurrent request concurrency in API Gateway when the backend has limits?",
+    "options_es": [
+      "A) Implementar throttling (aceleración) basado en tasa de solicitudes",
+      "B) Aumentar automáticamente la capacidad del backend",
+      "C) Usar un queue como SQS con invocación asíncrona",
+      "D) Rechazar todas las solicitudes después de cierto número"
+    ],
+    "options_en": [
+      "A) Implement throttling based on request rate",
+      "B) Automatically increase backend capacity",
+      "C) Use a queue like SQS with asynchronous invocation",
+      "D) Reject all requests after a certain number"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "API Gateway permite configurar throttling para limitar la tasa de solicitudes y proteger el backend, retornando 429 Too Many Requests cuando se excede.",
+    "explanation_en": "API Gateway allows configuring throttling to limit the request rate and protect the backend, returning 429 Too Many Requests when exceeded.",
+    "source": "AWS Documentation — API Gateway Throttling",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc013",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la ventaja de usar API Gateway con caché de respuestas?",
+    "question_en": "What is the advantage of using API Gateway with response caching?",
+    "options_es": [
+      "A) Reduce la latencia sirviendo respuestas desde caché, reduciendo invocaciones al backend",
+      "B) Encripta todas las respuestas",
+      "C) Permite almacenar datos en S3",
+      "D) Implementa automáticamente HTTPS"
+    ],
+    "options_en": [
+      "A) Reduces latency by serving responses from cache, reducing backend invocations",
+      "B) Encrypts all responses",
+      "C) Allows storing data in S3",
+      "D) Automatically implements HTTPS"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El caché en API Gateway almacena respuestas durante un TTL específico, reduce latencia y costo al servir respuestas cacheadas sin invocar el backend.",
+    "explanation_en": "Caching in API Gateway stores responses for a specified TTL, reducing latency and cost by serving cached responses without invoking the backend.",
+    "source": "AWS Documentation — API Gateway Caching",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc014",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el tamaño máximo de carga útil (payload) que API Gateway puede aceptar?",
+    "question_en": "What is the maximum payload size that API Gateway can accept?",
+    "options_es": [
+      "A) 1 MB",
+      "B) 5 MB",
+      "C) 10 MB",
+      "D) 50 MB"
+    ],
+    "options_en": [
+      "A) 1 MB",
+      "B) 5 MB",
+      "C) 10 MB",
+      "D) 50 MB"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "API Gateway tiene un límite de tamaño de payload de 10 MB para solicitudes y respuestas en integraciones Lambda, aunque puede variar según el tipo.",
+    "explanation_en": "API Gateway has a payload size limit of 10 MB for requests and responses in Lambda integrations, though this can vary by type.",
+    "source": "AWS Documentation — API Gateway Limits",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q100305mc015",
+    "skill_id": "sk100305",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se integra API Gateway con IAM para control de acceso?",
+    "question_en": "How does API Gateway integrate with IAM for access control?",
+    "options_es": [
+      "A) Mediante IAM roles y políticas que especifican quién puede invocar APIs",
+      "B) IAM solo controla acceso a la consola, no a las APIs",
+      "C) API Gateway no puede usar IAM",
+      "D) Solo funciona con IAM users, no con roles"
+    ],
+    "options_en": [
+      "A) Through IAM roles and policies that specify who can invoke APIs",
+      "B) IAM only controls console access, not APIs",
+      "C) API Gateway cannot use IAM",
+      "D) Only works with IAM users, not roles"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "API Gateway se integra con IAM permitiendo crear políticas que especifican quién puede invocar métodos específicos de la API.",
+    "explanation_en": "API Gateway integrates with IAM by allowing you to create policies that specify who can invoke specific API methods.",
+    "source": "AWS Documentation — API Gateway IAM Authorization",
+    "expected_time_ms": 60000
+  }
+]

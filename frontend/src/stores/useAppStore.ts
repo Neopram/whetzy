@@ -70,7 +70,9 @@ interface AppState {
 
   // Mock exam
   mockExamTrackId: string | null;
-  startMockExam: (trackId: string) => void;
+  mockExamQuestionCount: number;
+  mockExamDurationMinutes: number;
+  startMockExam: (trackId: string, questionCount?: number, durationMinutes?: number) => void;
 
   // Missions
   missions: Mission[];
@@ -219,8 +221,10 @@ export const useAppStore = create<AppState>()(
       resetQuiz: () => set({ quiz: defaultQuiz }),
 
       mockExamTrackId: null,
-      startMockExam: (trackId) =>
-        set((s) => ({ mockExamTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'mockexam' })),
+      mockExamQuestionCount: 65,
+      mockExamDurationMinutes: 90,
+      startMockExam: (trackId, questionCount = 65, durationMinutes = 90) =>
+        set((s) => ({ mockExamTrackId: trackId, mockExamQuestionCount: questionCount, mockExamDurationMinutes: durationMinutes, previousScreen: s.currentScreen, currentScreen: 'mockexam' })),
 
       missions: defaultMissions,
       updateMission: (id, progress) =>

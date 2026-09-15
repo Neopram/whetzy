@@ -6,7 +6,7 @@
 >
 > Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
 >
-> Última actualización: 2026-09-15 (sesión ac) — F15 DONE (docs P0/P1 + bugs), F16 DONE (glosario 101→321 términos), F17 DONE (exec ratio 3.2%→16.8%, todos los tracks ≥15%; fill_blank activado 373Q + 109 nuevas). Backlog activo: F18 (certs PCEP/SAA/AIF). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
+> Última actualización: 2026-09-15 (sesión ac) — F15 DONE · F16 DONE · F17 DONE · **F18 DONE** (tracks 09/10/11: PCEP/SAA-C03/AIF-C01 — 825 nuevas Q, 55 skills, 122 términos glosario, mock exam params dinámicos). Backlog activo: F19 (Monaco editor). H.11 (redesplegar frontend) sigue siendo el principal bloqueante humano.
 
 ---
 
@@ -21,7 +21,7 @@
 | DB local | Docker :5433, user `neurium`, pass `neurium_dev`, db `neurium` |
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Railway deploy | **MANUAL** — sin webhook GitHub. CLI token viejo expirado |
-| Contenido | **3.528 preguntas** / 8 tracks / 226 skills / **321 términos glosario** (593 exec = 16.8%). Track 08 = AWS CLF-C02 (355 Q, 19 skills). fill_blank activado en frontend+backend. |
+| Contenido | **4.353 preguntas** / 11 tracks / 281 skills / **443 términos glosario** (653 exec = 15.0%). Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). fill_blank activado. Mock exam params dinámicos. |
 
 ### Gotchas verificados (no redescubrir)
 - **`npx tsc --noEmit` en `frontend/` NO comprueba nada.** `tsconfig.json` es solution-style

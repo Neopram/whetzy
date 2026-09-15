@@ -88,7 +88,7 @@ export function TracksScreen() {
       {/* Only a certification track offers a mock exam, and it says what it
           costs in time before the clock starts. */}
       {selected?.is_certification && selected.exam_question_count && selected.exam_duration_minutes && (
-        <button className={styles.mockExamCta} onClick={() => selected && startMockExam(selected.id)}>
+        <button className={styles.mockExamCta} onClick={() => selected && startMockExam(selected.id, selected.exam_question_count ?? 65, selected.exam_duration_minutes ?? 90)}>
           <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
           <span className={styles.mockExamMeta}>
             {t('mockExam.format', {
