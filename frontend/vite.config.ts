@@ -159,9 +159,107 @@ const MIME: Record<string, string> = {
   '.json': 'application/json',
 };
 
+/**
+ * Monaco's `editor.main` entry pulls in four language *features* — css, html,
+ * json and typescript — and each ships a language-service web worker. Together
+ * they are ~2 MB gzip of the build, and not one byte of it can ever run:
+ * `src/lib/monacoSetup.ts` points MonacoEnvironment.getWorkerUrl at a single
+ * self-hosted stub for every label, so these workers are never instantiated.
+ * Exec questions need Python and SQL syntax highlighting, which Monaco tokenizes
+ * on the main thread.
+ *
+ * So they are resolved to an empty module instead of being built and uploaded.
+ * The editor keeps every feature a learner touches — find, folding, bracket
+ * matching, multi-cursor — because those are editor contribs, not these.
+ *
+ * Each id is asserted to have matched at least once at build end: a Monaco
+ * upgrade that moves these paths fails the build rather than silently putting
+ * the 2 MB back.
+ */
+function monacoDropUnusedLanguageServices(): Plugin {
+  const DROPPED = ['css', 'html', 'json', 'typescript'];
+  const hits = new Map<string, number>(DROPPED.map((n) => [n, 0]));
+  const EMPTY = '\0monaco-dropped-language-service';
+  // `npm run build` runs twice: the client build, then the SSR build that
+  // prerenders the landing hero (11.11). Only the client build contains Monaco,
+  // so only it can be held to this assertion.
+  let isSsrBuild = false;
+  let cdnRepoints = 0;
+
+  return {
+    name: 'monaco-drop-unused-language-services',
+    apply: 'build',
+    enforce: 'pre',
+    configResolved(config) {
+      isSsrBuild = Boolean(config.build.ssr);
+    },
+    resolveId(source) {
+      const m = source.match(/languages\/features\/([a-z]+)\/register(?:\.js)?$/);
+      if (m && hits.has(m[1])) {
+        hits.set(m[1], (hits.get(m[1]) ?? 0) + 1);
+        return EMPTY;
+      }
+      return null;
+    },
+    load(id) {
+      return id === EMPTY ? 'export {};' : null;
+    },
+    /**
+     * @monaco-editor/loader ships a default config pointing `paths.vs` at
+     * jsDelivr. It is dead here — monacoSetup.ts calls `loader.config({ monaco })`
+     * with the bundled instance, and the loader's init() resolves from
+     * `state.monaco` and returns before it ever reaches the script injection that
+     * would read `paths.vs`. Verified in the loader source, not assumed.
+     *
+     * Dead or not, it is a third-party URL sitting in what we upload, and the one
+     * edit that would revive it (dropping that loader.config call) gives no
+     * warning. So it is repointed at our own origin, the way 12.9 repointed
+     * Pyodide's: if anything ever does try to load Monaco this way it 404s here,
+     * loudly, instead of quietly fetching from someone else's CDN. That also
+     * keeps KNOWN_EXCEPTIONS empty, which is the point of that list.
+     */
+    transform(code, id) {
+      if (!id.includes('@monaco-editor') || !id.includes('config')) return null;
+      const MARKER = 'https://cdn.jsdelivr.net/npm/monaco-editor@';
+      if (!code.includes(MARKER)) return null;
+      const replaced = code.replace(
+        /https:\/\/cdn\.jsdelivr\.net\/npm\/monaco-editor@[^'"]*/g,
+        '/monaco-unused-cdn-path',
+      );
+      cdnRepoints += 1;
+      return { code: replaced, map: null };
+    },
+    buildEnd() {
+      if (isSsrBuild) return;
+      if (cdnRepoints === 0) {
+        this.error(
+          `the @monaco-editor/loader jsDelivr default was not found, so nothing was ` +
+            `repointed. Either the package changed or it is no longer in the graph — ` +
+            `check which before removing this, because silently shipping a third-party ` +
+            `CDN URL is exactly what this prevents.`,
+        );
+      }
+      const missed = DROPPED.filter((n) => (hits.get(n) ?? 0) === 0);
+      if (missed.length > 0) {
+        this.error(
+          `monaco-drop-unused-language-services matched nothing for: ${missed.join(', ')}. ` +
+            `Monaco's layout changed, so those language-service workers are back in the ` +
+            `bundle. Update the matcher or drop them a different way — do not delete this ` +
+            `check.`,
+        );
+      }
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), cloudflarePrettyUrlsPreviewPlugin(), pyodideSelfHostPlugin()],
+  plugins: [
+    react(),
+    cloudflarePrettyUrlsPreviewPlugin(),
+    pyodideSelfHostPlugin(),
+    monacoDropUnusedLanguageServices(),
+  ],
   build: {
     // Read by scripts/prerender-landing.mjs to find the exact hashed CSS
     // chunk LandingScreen.tsx needs (task 11.11) — its styles (incl. the
@@ -177,6 +275,23 @@ export default defineConfig({
   server: {
     // Cross-Origin isolation required by SharedArrayBuffer (pyodide interrupt).
     // COEP credentialless allows CDN resources without opt-in CORP headers.
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'credentialless',
+    },
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+      },
+    },
+  },
+  // `vite preview` serves dist/, which is the artifact that actually ships — so
+  // it is the only place a build-only plugin can be exercised before deploying.
+  // Without the same headers and API proxy as the dev server, preview can load
+  // the app but not sign in or run an exec question, which is most of what is
+  // worth checking there.
+  preview: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'credentialless',

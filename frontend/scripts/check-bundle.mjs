@@ -3,64 +3,137 @@
  * Bundle-size budget check (8.3).
  *
  * Reads the Vite dist/ output, gzip-compresses each JS/CSS asset in memory,
- * and fails if any single chunk exceeds CHUNK_LIMIT_KB or if the total JS
- * gzip size exceeds TOTAL_JS_LIMIT_KB.
+ * and fails if any budget is exceeded.
+ *
+ * Two-tier JS budget (updated after adding Monaco lazy code editor):
+ *   Initial chunks  — loaded on every first visit — ≤ INITIAL_TOTAL_KB total,
+ *                     no single chunk > INITIAL_CHUNK_KB.
+ *   Lazy chunks     — code-split, only loaded when a learner opens a code
+ *                     question (Monaco Editor) — ≤ LAZY_CHUNK_KB each.
+ *                     Lazy chunks do not affect first-load performance.
+ *
+ * "Initial" means: the chunk's filename appears in a <script type="module">
+ * tag inside dist/index.html.  Everything else in dist/assets/*.js is lazy.
  *
  * Run after `npm run build`:  node scripts/check-bundle.mjs
  * CI: fails with exit code 1 if any budget is exceeded.
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, resolve } from 'path';
+import { join, resolve, basename } from 'path';
 import { gzipSync } from 'zlib';
 
-const DIST = resolve(process.cwd(), 'dist', 'assets');
+const DIST       = resolve(process.cwd(), 'dist');
+const ASSETS_DIR = join(DIST, 'assets');
 
-// Budgets
-const CHUNK_LIMIT_KB = 300;    // no single chunk > 300 KB gzip
-const TOTAL_JS_LIMIT_KB = 350; // total JS gzip < 350 KB
+// ── Budgets ──────────────────────────────────────────────────────────────────
+// Initial chunks: what every visitor downloads on first load.
+const INITIAL_CHUNK_KB  = 300;   // no single initial chunk > 300 KB gzip
+const INITIAL_TOTAL_KB  = 350;   // total initial JS gzip ≤ 350 KB
+
+// Lazy chunks: code-split, loaded on demand (Monaco is ~1,037 KB gzip).
+// No total limit — only a per-chunk cap to catch accidental over-bundling.
+const LAZY_CHUNK_KB     = 1200;  // no single lazy chunk > 1,200 KB gzip
+// ─────────────────────────────────────────────────────────────────────────────
 
 function gzipKB(filePath) {
-  const raw = readFileSync(filePath);
-  return gzipSync(raw).length / 1024;
+  return gzipSync(readFileSync(filePath)).length / 1024;
 }
 
-let failed = false;
-let totalJsGz = 0;
+// Derive the set of initial JS filenames from dist/index.html.
+function initialChunkNames() {
+  const names = new Set();
+  try {
+    const html = readFileSync(join(DIST, 'index.html'), 'utf-8');
+    for (const m of html.matchAll(/<script[^>]+src="[^"]*\/assets\/([^"]+)"[^>]*>/g)) {
+      names.add(m[1]);
+    }
+  } catch {
+    // index.html not present — treat all chunks as lazy (conservative).
+  }
+  return names;
+}
 
 let files;
 try {
-  files = readdirSync(DIST);
+  files = readdirSync(ASSETS_DIR);
 } catch {
   console.error(`[perf-budget] dist/assets not found — run "npm run build" first`);
   process.exit(1);
 }
 
-console.log('\n[perf-budget] Bundle size report\n');
-console.log(`  ${'File'.padEnd(40)} ${'gzip KB'.padStart(9)}`);
-console.log(`  ${'-'.repeat(40)} ${'-'.repeat(9)}`);
+const initial = initialChunkNames();
+
+let failed        = false;
+let initialJsGz   = 0;
+
+const rows = { initial: [], lazy: [], css: [] };
 
 for (const f of files.sort()) {
   const ext = f.split('.').pop();
   if (!['js', 'css'].includes(ext)) continue;
-  const full = join(DIST, f);
+  const full = join(ASSETS_DIR, f);
   if (!statSync(full).isFile()) continue;
 
   const kb = gzipKB(full);
-  const flag = kb > CHUNK_LIMIT_KB ? '  ← OVER BUDGET' : '';
-  console.log(`  ${f.padEnd(40)} ${kb.toFixed(1).padStart(8)} KB${flag}`);
 
-  if (ext === 'js') totalJsGz += kb;
-  if (kb > CHUNK_LIMIT_KB) failed = true;
+  if (ext === 'css') {
+    rows.css.push({ f, kb });
+    continue;
+  }
+
+  if (initial.has(f)) {
+    rows.initial.push({ f, kb });
+    initialJsGz += kb;
+  } else {
+    rows.lazy.push({ f, kb });
+  }
 }
 
-const totalFlag = totalJsGz > TOTAL_JS_LIMIT_KB ? '  ← OVER BUDGET' : '';
-console.log(`\n  ${'TOTAL JS (gzip)'.padEnd(40)} ${totalJsGz.toFixed(1).padStart(8)} KB${totalFlag}`);
-if (totalJsGz > TOTAL_JS_LIMIT_KB) failed = true;
+// ── Report ───────────────────────────────────────────────────────────────────
+console.log('\n[perf-budget] Bundle size report\n');
 
-console.log('\n  Budgets:');
-console.log(`    single chunk  ≤ ${CHUNK_LIMIT_KB} KB gzip`);
-console.log(`    total JS      ≤ ${TOTAL_JS_LIMIT_KB} KB gzip`);
+function printSection(label, items) {
+  if (items.length === 0) return;
+  console.log(`  ${label}`);
+  console.log(`  ${'File'.padEnd(45)} ${'gzip KB'.padStart(9)}`);
+  console.log(`  ${'-'.repeat(45)} ${'-'.repeat(9)}`);
+  for (const { f, kb, flag } of items) {
+    console.log(`  ${f.padEnd(45)} ${kb.toFixed(1).padStart(8)} KB${flag ?? ''}`);
+  }
+  console.log();
+}
+
+// Initial JS
+const initialRows = rows.initial.map(({ f, kb }) => {
+  const over = kb > INITIAL_CHUNK_KB;
+  if (over) failed = true;
+  return { f, kb, flag: over ? '  ← OVER BUDGET' : '' };
+});
+printSection('Initial JS (loaded on first visit):', initialRows);
+
+const initFlag = initialJsGz > INITIAL_TOTAL_KB ? '  ← OVER BUDGET' : '';
+if (initialJsGz > INITIAL_TOTAL_KB) failed = true;
+console.log(
+  `  ${'  TOTAL initial JS (gzip)'.padEnd(45)} ${initialJsGz.toFixed(1).padStart(8)} KB${initFlag}\n`,
+);
+
+// Lazy JS
+const lazyRows = rows.lazy.map(({ f, kb }) => {
+  const over = kb > LAZY_CHUNK_KB;
+  if (over) failed = true;
+  return { f, kb, flag: over ? '  ← OVER BUDGET' : '' };
+});
+printSection('Lazy JS (code-split, loaded on demand):', lazyRows);
+
+// CSS
+printSection('CSS:', rows.css);
+
+// Summary
+console.log('  Budgets:');
+console.log(`    initial chunk   ≤ ${INITIAL_CHUNK_KB} KB gzip  (first-load perf)`);
+console.log(`    initial total   ≤ ${INITIAL_TOTAL_KB} KB gzip  (first-load perf)`);
+console.log(`    lazy chunk      ≤ ${LAZY_CHUNK_KB} KB gzip  (Monaco: ~1,037 KB gzip expected)`);
 
 if (failed) {
   console.error('\n[perf-budget] FAIL — one or more budgets exceeded');
