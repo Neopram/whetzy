@@ -34,6 +34,22 @@ function parseQuestion(text: string): { prose: string; code: string | null } {
   return { prose: text, code: null };
 }
 
+/**
+ * `code_es`/`code_en` carry the runnable template for question types like
+ * `sql_exec` that don't embed a fenced ``` block in the prose (unlike
+ * `fill_blank_exec`/`fix_bug`, which do). Prefer those explicit fields when
+ * present, falling back to the fenced-block parse otherwise.
+ */
+function resolveCode(
+  question: QuestionPublic,
+  text: string,
+  lang: 'es' | 'en'
+): { prose: string; code: string | null } {
+  const explicit = lang === 'es' ? question.code_es : question.code_en;
+  if (explicit) return { prose: text, code: explicit };
+  return parseQuestion(text);
+}
+
 export function QuizScreen() {
   const mode = useAppStore((s) => s.quiz.mode);
   const trackId = useAppStore((s) => s.quiz.trackId);
@@ -235,10 +251,10 @@ export function QuizScreen() {
     if (!question || runLoading || feedback) return;
 
     const qText = language === 'es' ? question.question_es : question.question_en;
-    const { code } = parseQuestion(qText);
+    const { code } = resolveCode(question, qText, language);
 
     let codeToRun: string;
-    if (question.type === 'fill_blank_exec') {
+    if (question.type === 'fill_blank_exec' || question.type === 'sql_exec') {
       codeToRun = (code ?? '').replace('___', userInput);
     } else {
       codeToRun = userInput;
@@ -316,7 +332,7 @@ export function QuizScreen() {
 
   const qText = viewLang === 'es' ? question.question_es : question.question_en;
   const options = (viewLang === 'es' ? question.options_es : question.options_en) ?? [];
-  const { prose, code } = parseQuestion(qText);
+  const { prose, code } = resolveCode(question, qText, viewLang);
   const answered = feedback !== null;
   const otherLang: 'es' | 'en' = viewLang === 'es' ? 'en' : 'es';
 
@@ -425,7 +441,7 @@ export function QuizScreen() {
       runResult.output.trim() === expected;
 
     const engineLoadingLabel =
-      runtimeType === 'sql' ? `⚙ ${t('quiz.engineLoadingSql', 'Cargando motor SQL…')}`
+      runtimeType === 'sql' ? `⚙ ${t('quiz.engineLoadingSql')}`
       : `⚙ ${t('quiz.engineLoading')}`;
     const engineLabel =
       runtimeStatus === 'loading'
@@ -490,6 +506,28 @@ export function QuizScreen() {
                 onChange={(e) => setUserInput(e.target.value)}
                 disabled={answered}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !answered && !runLoading) void handleRun(); }}
+              />
+            </>
+          )}
+
+          {question.type === 'sql_exec' && code && (
+            <>
+              <pre className={styles.codeBlock}>
+                <code>{code.replace('___', `[${t('quiz.yourAnswer')}]`)}</code>
+              </pre>
+              <label htmlFor="sql-exec-answer" className="visually-hidden">
+                {t('quiz.fillBlankPlaceholder')}
+              </label>
+              <input
+                id="sql-exec-answer"
+                className={styles.blankInput}
+                type="text"
+                placeholder={t('quiz.fillBlankPlaceholder')}
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                disabled={answered}
+                onKeyDown={(e) => { if (e.key === 'Enter' && !answered && !runLoading) void handleRun(); }}
+                autoFocus
               />
             </>
           )}

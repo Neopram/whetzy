@@ -154,6 +154,11 @@ export interface QuestionPublic {
   /** Expected stdout for exec types (fill_blank_exec, fix_bug). Used for client-side Pyodide grading. */
   correct_answer_es: string | null;
   correct_answer_en: string | null;
+  /** Runnable template for types that don't embed a fenced ``` block in the
+   *  prose (sql_exec). `fill_blank_exec`/`fix_bug` carry theirs inside
+   *  question_es/question_en instead, so these stay absent for them. */
+  code_es?: string | null;
+  code_en?: string | null;
   expected_time_ms: number;
 }
 
