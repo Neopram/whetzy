@@ -24,6 +24,17 @@ from app.services.content_loader import _content_root, load_content
 # ── helpers ───────────────────────────────────────────────────────────────────
 
 
+def _declared_track_count() -> int:
+    """How many tracks the shipped curriculum declares.
+
+    Read from `tracks.json` instead of hard-coded so that adding a track is a
+    one-file change: the literal this replaced (8) silently went stale when
+    tracks 09-11 shipped and turned the whole backend CI job red.
+    """
+    payload = json.loads((_content_root() / "curriculum" / "tracks.json").read_text("utf-8"))
+    return len(payload if isinstance(payload, list) else payload["tracks"])
+
+
 def _track_payload(**over: Any) -> dict[str, Any]:
     data: dict[str, Any] = {
         "id": "trackX",
@@ -550,13 +561,23 @@ class TestCertificationDomains:
     async def test_learning_tracks_have_no_domains(
         self, db_session, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        """Only certification tracks mirror a blueprint; the other seven must
-        not acquire domains as a side effect."""
+        """Only certification tracks mirror a blueprint; the learning tracks must
+        not acquire domains as a side effect.
+
+        Derived from `Track.is_certification` rather than naming a track id: this
+        assertion used to read `!= "track08"` and broke the moment tracks 09-11
+        (PCEP, SAA-C03, AIF-C01) shipped their own blueprints, flagging correct
+        data as stray.
+        """
         monkeypatch.delenv("CONTENT_DIR", raising=False)
         await load_content(db_session)
 
         stray = (
-            await db_session.scalars(select(Domain).where(Domain.track_id != "track08"))
+            await db_session.scalars(
+                select(Domain)
+                .join(Track, Domain.track_id == Track.id)
+                .where(Track.is_certification.is_(False))
+            )
         ).all()
         assert stray == []
 
@@ -595,7 +616,11 @@ class TestRealCorpus:
         stats = await load_content(db_session)
 
         assert stats["skipped"] == 0, f"orphaned content items: {stats}"
-        assert stats["tracks"] == 8  # 7 de aprendizaje + track08 (AWS CLF-C02, tarea 10.2)
+        # 7 de aprendizaje + 4 de certificacion (track08 CLF-C02, track09 PCEP,
+        # track10 SAA-C03, track11 AIF-C01). Se cuenta contra tracks.json en vez
+        # de contra un literal: el numero anterior (8) se quedo viejo en cuanto
+        # aterrizaron los tracks 09-11 y tumbo la job de CI.
+        assert stats["tracks"] == _declared_track_count()
         assert stats["questions"] >= 1253
         assert stats["glossary"] >= 70
 
