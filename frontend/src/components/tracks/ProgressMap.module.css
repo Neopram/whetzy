@@ -1,0 +1,92 @@
+.container {
+  width: 100%;
+  padding: 8px 0 16px;
+  overflow-x: hidden;
+}
+
+.svg {
+  width: 100%;
+  display: block;
+}
+
+/* Path track line */
+.trackPath {
+  stroke: var(--le-border);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 8 6;
+}
+
+.trackPathProgress {
+  stroke: var(--le-brand);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+}
+
+/* Node wrappers */
+.nodeGroup { cursor: pointer; }
+.nodeGroup:focus-visible { outline: none; }
+
+/* Node circle states */
+.nodeCircle {
+  transition: filter 0.2s ease;
+}
+.nodeGroup:hover .nodeCircle { filter: brightness(1.1); }
+.nodeGroup:focus-visible .nodeCircle { filter: drop-shadow(0 0 6px var(--le-brand)); }
+
+/* Labels */
+.nodeLabel {
+  font-family: var(--le-font);
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--le-text-secondary);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nodeIcon {
+  font-size: 14px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Mastery badge */
+.masteryBadge {
+  font-family: var(--le-font);
+  font-size: 9px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding: 0 16px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--le-text-secondary);
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

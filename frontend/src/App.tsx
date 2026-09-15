@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy, Suspense, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
 import { useAppStore } from './stores/useAppStore';
@@ -208,16 +208,21 @@ function App() {
   const dir = screenOrder(currentScreen) >= screenOrder(prevScreenRef.current) ? 1 : -1;
 
   return (
-    <>
+    // `reducedMotion="user"` es lo unico que hace que framer-motion respete
+    // prefers-reduced-motion. El bloque de global.css solo apaga animaciones y
+    // transiciones CSS; framer escribe transforms en linea desde JS, asi que
+    // sin esto los `repeat: Infinity` de lib/motion.ts (pulso del nodo actual,
+    // parpadeo de la racha) siguen moviendose para quien pidio que no.
+    <MotionConfig reducedMotion="user">
       <TopBar />
       <main className="app-content">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={currentScreen}
-            initial={{ opacity: 0, x: dir * 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: dir * -20 }}
-            transition={{ duration: 0.18, ease: 'easeOut' }}
+            initial={{ opacity: 0, x: dir * 24, scale: 0.985 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: dir * -16, scale: 0.99 }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             style={{ height: '100%' }}
           >
             <Screen>{renderScreen()}</Screen>
@@ -226,7 +231,7 @@ function App() {
       </main>
       {currentScreen !== 'quiz' && currentScreen !== 'placement' && currentScreen !== 'mockexam' && currentScreen !== 'lesson' && <BottomNav />}
       <Toast />
-    </>
+    </MotionConfig>
   );
 }
 

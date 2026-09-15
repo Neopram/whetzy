@@ -1,0 +1,122 @@
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--le-radius-md);
+  font-family: var(--le-font);
+  font-weight: var(--le-fw-bold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--le-transition-fast), color var(--le-transition-fast),
+              box-shadow var(--le-transition-fast), border-color var(--le-transition-fast);
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--le-brand);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Sizes ─────────────────────────────────────────────────────────────────── */
+.xs { padding: 4px 10px;  font-size: var(--le-fs-xs);   border-radius: var(--le-radius-sm); }
+.sm { padding: 8px 16px;  font-size: var(--le-fs-sm);  }
+.md { padding: 12px 24px; font-size: var(--le-fs-base); }
+.lg { padding: 16px 32px; font-size: var(--le-fs-md);  border-radius: var(--le-radius-lg); }
+.xl { padding: 18px 40px; font-size: var(--le-fs-lg);  border-radius: var(--le-radius-lg); }
+
+.full { width: 100%; }
+
+/* ── Primary ────────────────────────────────────────────────────────────────── */
+.primary {
+  background: var(--le-brand);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--le-brand-dark), var(--le-shadow-md);
+}
+.primary:hover:not(:disabled) {
+  background: var(--le-brand-dark);
+  box-shadow: 0 4px 0 var(--le-brand-deep), var(--le-shadow-md);
+}
+.primary:active:not(:disabled) {
+  box-shadow: 0 2px 0 var(--le-brand-dark);
+  translate: 0 2px;
+}
+
+/* ── Success ────────────────────────────────────────────────────────────────── */
+.success {
+  background: var(--le-green);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--le-green-dark), var(--le-shadow-md);
+}
+.success:hover:not(:disabled)  { background: var(--le-green-dark); }
+.success:active:not(:disabled) { box-shadow: 0 2px 0 var(--le-green-dark); translate: 0 2px; }
+
+/* ── Danger ─────────────────────────────────────────────────────────────────── */
+.danger {
+  background: var(--le-danger);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--le-red-dark), var(--le-shadow-md);
+}
+.danger:hover:not(:disabled)  { background: var(--le-red-dark); }
+.danger:active:not(:disabled) { box-shadow: 0 2px 0 var(--le-red-dark); translate: 0 2px; }
+
+/* ── Secondary ──────────────────────────────────────────────────────────────── */
+.secondary {
+  background: var(--le-bg-elevated);
+  color: var(--le-brand-text);
+  border: 2px solid var(--le-brand);
+}
+.secondary:hover:not(:disabled)  { background: var(--le-brand-light); }
+.secondary:active:not(:disabled) { background: color-mix(in srgb, var(--le-brand) 20%, transparent); }
+
+/* ── Ghost ──────────────────────────────────────────────────────────────────── */
+.ghost {
+  background: transparent;
+  color: var(--le-text-secondary);
+  border: 2px solid var(--le-border);
+}
+.ghost:hover:not(:disabled)  { background: var(--le-border-light); color: var(--le-text); border-color: var(--le-border); }
+.ghost:active:not(:disabled) { background: var(--le-border); }
+
+/* ── Text (no bg/border) ────────────────────────────────────────────────────── */
+.text {
+  background: transparent;
+  color: var(--le-brand-text);
+  padding-inline: 4px;
+}
+.text:hover:not(:disabled)  { text-decoration: underline; }
+
+/* ── Icon-only ───────────────────────────────────────────────────────────────── */
+.icon { padding: 0; aspect-ratio: 1; border-radius: var(--le-radius-full); }
+.xs.icon { width: 28px; }
+.sm.icon { width: 36px; }
+.md.icon { width: 44px; }
+.lg.icon { width: 52px; }
+
+/* ── Loading spinner ────────────────────────────────────────────────────────── */
+.spinner {
+  width: 1em; height: 1em;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+}
+.primary   .spinner, .success .spinner, .danger .spinner { border-top-color: #fff; }
+.secondary .spinner, .ghost   .spinner, .text   .spinner {
+  border-color: rgba(0,0,0,0.2);
+  border-top-color: var(--le-brand);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; opacity: 0.5; } }

@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
+import { ProgressMap } from '../components/tracks/ProgressMap';
 import { useApi } from '../hooks/useApi';
+import { pageVariants } from '../lib/motion';
 import {
   content as contentApi,
   progress as progressApi,
@@ -14,7 +16,7 @@ import {
 } from '../services/api';
 import styles from './TracksScreen.module.css';
 
-type View = 'curriculum' | 'glossary';
+type View = 'curriculum' | 'map' | 'glossary';
 
 // No hardcoded track list: it is fetched from the API (task Q.14). Keeping a
 // copy here is how the AWS certification track stayed invisible in the app for
@@ -50,46 +52,53 @@ export function TracksScreen() {
       {/* Track selector */}
       <div className={styles.trackRow} role="tablist" aria-label={t('tracks.title')}>
         {trackList.map((tr) => (
-          <button
+          <motion.button
             key={tr.id}
             role="tab"
             aria-selected={track === tr.id}
             className={`${styles.trackChip} ${track === tr.id ? styles.trackChipActive : ''}`}
             onClick={() => setTrack(tr.id)}
+            whileTap={{ scale: 0.93 }}
           >
             <span className={styles.trackChipIcon}>{tr.icon || ICON_FALLBACK}</span>
             <span>{lang === 'es' ? tr.name_es : tr.name_en}</span>
-          </button>
+          </motion.button>
         ))}
         {tracksLoading && trackList.length === 0 && (
           <span className={styles.trackChip}>{t('loading')}</span>
         )}
       </div>
 
-      {/* Without this the screen just renders an empty selector and says
-          nothing, which is what it did when the endpoint 404'd during
-          development - silence looks identical to "no tracks exist". */}
       {!tracksLoading && trackList.length === 0 && (
         <p className={styles.tracksError} role="alert">
           {tracksError ?? t('tracks.empty')}
         </p>
       )}
-      {/* View toggle */}
-      <div className={styles.viewToggle}>
-        <button
-          className={`${styles.viewBtn} ${view === 'curriculum' ? styles.viewBtnActive : ''}`}
-          onClick={() => setView('curriculum')}
-        >{t('tracks.curriculum')}</button>
-        <button
-          className={`${styles.viewBtn} ${view === 'glossary' ? styles.viewBtnActive : ''}`}
-          onClick={() => setView('glossary')}
-        >{t('tracks.glossary')}</button>
+
+      {/* View toggle — 3 tabs: Curriculum | Map | Glossary */}
+      <div className={styles.viewToggle} role="tablist">
+        {(['curriculum', 'map', 'glossary'] as View[]).map((v) => (
+          <button
+            key={v}
+            role="tab"
+            aria-selected={view === v}
+            className={`${styles.viewBtn} ${view === v ? styles.viewBtnActive : ''}`}
+            onClick={() => setView(v)}
+          >
+            {v === 'curriculum' ? t('tracks.curriculum') : v === 'map' ? t('tracks.map') : t('tracks.glossary')}
+          </button>
+        ))}
       </div>
 
-      {/* Only a certification track offers a mock exam, and it says what it
-          costs in time before the clock starts. */}
       {selected?.is_certification && selected.exam_question_count && selected.exam_duration_minutes && (
-        <button className={styles.mockExamCta} onClick={() => selected && startMockExam(selected.id, selected.exam_question_count ?? 65, selected.exam_duration_minutes ?? 90)}>
+        <motion.button
+          className={styles.mockExamCta}
+          onClick={() => selected && startMockExam(selected.id, selected.exam_question_count ?? 65, selected.exam_duration_minutes ?? 90)}
+          whileTap={{ scale: 0.97 }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
           <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
           <span className={styles.mockExamMeta}>
             {t('mockExam.format', {
@@ -97,14 +106,45 @@ export function TracksScreen() {
               minutes: selected.exam_duration_minutes,
             })}
           </span>
-        </button>
+        </motion.button>
       )}
 
-      {view === 'curriculum'
-        ? <CurriculumView track={track} lang={lang} startQuiz={startQuiz} startLesson={startLesson} />
-        : <GlossaryView track={track} lang={lang} />}
+      <AnimatePresence mode="wait">
+        <motion.div key={`${track}-${view}`} variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          {view === 'curriculum'
+            ? <CurriculumView track={track} lang={lang} startQuiz={startQuiz} startLesson={startLesson} />
+            : view === 'map'
+              ? <MapView track={track} lang={lang} startQuiz={startQuiz} startLesson={startLesson} />
+              : <GlossaryView track={track} lang={lang} />}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
+}
+
+function MapView({
+  track, lang, startQuiz,
+}: {
+  track: string;
+  lang: 'es' | 'en';
+  startQuiz: (mode: 'study', total: number, opts?: { trackId?: string; skillId?: string }) => void;
+  startLesson: (skillId: string) => void;
+}) {
+  const { t } = useTranslation();
+  const cur = useApi(() => progressApi.curriculum(track), [track]);
+
+  if (cur.loading) return <p className={styles.muted}>{t('tracks.loading')}</p>;
+  if (cur.error || !cur.data) return <p className={styles.muted}>{cur.error ?? t('tracks.loading')}</p>;
+
+  const modules = cur.data.modules;
+
+  const handleSelect = (mod: CurriculumModule) => {
+    if (mod.status !== 'locked') {
+      startQuiz('study', 10, { trackId: track });
+    }
+  };
+
+  return <ProgressMap modules={modules} lang={lang} onSelect={handleSelect} />;
 }
 
 function CurriculumView({
@@ -228,9 +268,9 @@ function CurriculumView({
                         <button
                           className={styles.learnBtn}
                           onClick={() => startLesson(m.skills?.[0]?.skill_id ?? '')}
-                          title={t('tracks.learn', 'Aprender')}
+                          title={t('tracks.learn')}
                         >
-                          📖 {t('tracks.learn', 'Aprender')}
+                          📖 {t('tracks.learn')}
                         </button>
                         <button
                           className={styles.practiceBtn}
