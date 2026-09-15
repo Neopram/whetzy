@@ -135,3 +135,48 @@ def test_cached_call_faster_than_1ms() -> None:
     predict(HISTORY, SKILL_INDEX)  # cache hit
     elapsed_ms = (time.perf_counter() - start) * 1000
     assert elapsed_ms < 1.0, f"Cache hit took {elapsed_ms:.3f} ms — must be < 1 ms"
+
+
+# ── bug 15.1: skill_index must use checkpoint ordering ────────────────────────
+
+def test_predict_uses_checkpoint_skill_ids_when_registry_loaded() -> None:
+    """When a registry model with skill_ids is loaded, predict() must build
+    skill_index from the checkpoint order, not from history order.  Without
+    the fix, skills appearing at position >n_skills in history caused IndexError
+    inside nn.Embedding (bug 15.1)."""
+    from unittest.mock import MagicMock, PropertyMock
+    import app.services.dkt as dkt_module
+    from app.services.dkt import predict, dkt_cache_clear
+
+    dkt_cache_clear()
+
+    # Simulate a registry loaded with 3 skills in sorted order
+    ckpt_skills = ["sk_a", "sk_b", "sk_c"]
+    mock_reg = MagicMock()
+    type(mock_reg).skill_ids = PropertyMock(return_value=ckpt_skills)
+    mock_reg.get_model.return_value = None  # torch path, but no trained model
+
+    captured: list[dict] = []
+    original = dkt_module._predict_uncached
+
+    def capturing_predict(history: Any, si: Any) -> dict:
+        captured.append(dict(si))
+        return original(history, si)
+
+    # history has skills in NON-sorted order
+    history = [
+        {"skill_id": "sk_c", "correct": True},
+        {"skill_id": "sk_a", "correct": False},
+    ]
+
+    with patch.object(dkt_module, "_TORCH_AVAILABLE", True), \
+         patch("app.ml.registry.registry", mock_reg), \
+         patch.object(dkt_module, "_predict_uncached", side_effect=capturing_predict):
+        predict(history)  # skill_index=None → should use checkpoint order
+
+    assert captured, "predict_uncached was not called"
+    used_index = captured[0]
+    # checkpoint order: sk_a→0, sk_b→1, sk_c→2
+    assert used_index == {"sk_a": 0, "sk_b": 1, "sk_c": 2}, (
+        f"Expected checkpoint ordering {{sk_a:0, sk_b:1, sk_c:2}}, got {used_index}"
+    )

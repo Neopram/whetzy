@@ -127,14 +127,24 @@ def predict(
     if not history:
         return {}
 
-    # Build skill index if not provided
+    # Build skill index if not provided.
+    # When a registry checkpoint is loaded we MUST use its trained skill ordering
+    # (sorted skill_ids from metadata.json).  Building from history order produces
+    # wrong embedding indices and causes IndexError when n_distinct_in_history >
+    # n_skills the model was trained on (bug 15.1).
     if skill_index is None:
-        seen: list[str] = []
-        for rec in history:
-            sid = rec["skill_id"]
-            if sid not in seen:
-                seen.append(sid)
-        skill_index = {sid: i for i, sid in enumerate(seen)}
+        if _TORCH_AVAILABLE:
+            from app.ml.registry import registry as _reg  # local import avoids cycle
+            ckpt_ids = _reg.skill_ids
+            if ckpt_ids:
+                skill_index = {sid: i for i, sid in enumerate(ckpt_ids)}
+        if skill_index is None:
+            seen: list[str] = []
+            for rec in history:
+                sid = rec["skill_id"]
+                if sid not in seen:
+                    seen.append(sid)
+            skill_index = {sid: i for i, sid in enumerate(seen)}
 
     cached = _cache_get(_cache_key(history, skill_index))
     if cached is not None:

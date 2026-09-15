@@ -145,6 +145,11 @@ class _Registry:
     def get_model(self) -> _Net | None:
         return self._model
 
+    @property
+    def skill_ids(self) -> list[str]:
+        """Ordered skill IDs the checkpoint was trained on (from metadata.json)."""
+        return self._metadata.get("skill_ids", [])
+
     def current_info(self) -> dict[str, Any]:
         return {
             "version": self._version,
