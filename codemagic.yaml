@@ -1,0 +1,139 @@
+# Codemagic CI/CD — Whetzy mobile builds
+# Free tier: 500 build minutes/month  (https://codemagic.io/pricing/)
+# iOS requires Apple Developer Program (H.2) — certificates set up via Codemagic UI
+# Android signing keystore configured via Codemagic environment variables
+#
+# ONE-TIME SETUP (human tasks):
+#   1. Connect GitHub repo in Codemagic dashboard → Apps → Add application
+#   2. iOS: Settings → Code signing → upload .p12 + provisioning profile (H.2 required)
+#   3. Android: Settings → Environment variables → KEYSTORE_FILE (base64), KEYSTORE_PASSWORD,
+#               KEY_ALIAS, KEY_PASSWORD (H.3 required: create signing key first)
+#   4. Apple App Store Connect API key → Settings → Integrations (H.2 required)
+#   5. Google Play JSON key → Settings → Google Play (H.3 required)
+
+definitions:
+  node_setup: &node_setup
+    - name: Install Node dependencies
+      script: |
+        cd frontend
+        npm ci
+    - name: Build web assets
+      script: |
+        cd frontend
+        npm run build
+    - name: Sync Capacitor
+      script: |
+        cd frontend
+        npx cap sync
+
+workflows:
+  # ── Android release ─────────────────────────────────────────────────────────
+  android-release:
+    name: Android — Release AAB
+    max_build_duration: 60
+    instance_type: linux_x2
+    environment:
+      groups:
+        - android_credentials  # KEYSTORE_FILE, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD
+      node: 20
+      java: 17
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: 'v*'
+          include: true
+    scripts:
+      - *node_setup
+      - name: Decode keystore
+        script: |
+          echo "$KEYSTORE_FILE" | base64 --decode > $CM_BUILD_DIR/keystore.jks
+      - name: Build release AAB
+        script: |
+          cd frontend/android
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file=$CM_BUILD_DIR/keystore.jks \
+            -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD \
+            -Pandroid.injected.signing.key.alias=$KEY_ALIAS \
+            -Pandroid.injected.signing.key.password=$KEY_PASSWORD
+    artifacts:
+      - frontend/android/app/build/outputs/bundle/release/*.aab
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+
+  # ── iOS release ─────────────────────────────────────────────────────────────
+  # BLOCKED: requires macOS runner (paid plan) or Codemagic Mac mini
+  # Free tier only runs Linux — iOS builds need to be triggered from a Mac
+  # or upgrade to paid plan ($299/month for Mac mini fleet).
+  # ALTERNATIVE (free): GitHub Actions with self-hosted macOS runner (your own Mac)
+  # or use EAS Build (Expo) if migrating to Expo — free tier 30 builds/month.
+  ios-release:
+    name: iOS — Release IPA  [REQUIRES PAID PLAN or Mac runner]
+    max_build_duration: 90
+    instance_type: mac_mini_m2   # paid
+    environment:
+      groups:
+        - ios_credentials  # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
+        - certificate_credentials  # CERTIFICATE_PRIVATE_KEY, PROVISIONING_PROFILE
+      node: 20
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - tag
+      tag_patterns:
+        - pattern: 'v*'
+          include: true
+    scripts:
+      - *node_setup
+      - name: Add iOS platform (if not present)
+        script: |
+          cd frontend
+          [ -d ios ] || npx cap add ios
+          npx cap copy ios
+      - name: Set up code signing
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files \
+            $(xcode-project detect-bundle-id --project frontend/ios/App/App.xcodeproj) \
+            --type IOS_APP_STORE \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
+      - name: Build IPA
+        script: |
+          cd frontend/ios
+          xcode-project build-ipa \
+            --workspace App/App.xcworkspace \
+            --scheme App
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+
+  # ── Android CI (on every PR) ─────────────────────────────────────────────────
+  android-ci:
+    name: Android — PR build check
+    max_build_duration: 30
+    instance_type: linux_x2
+    environment:
+      node: 20
+      java: 17
+    triggering:
+      events:
+        - pull_request
+    scripts:
+      - *node_setup
+      - name: Debug build
+        script: |
+          cd frontend/android
+          ./gradlew assembleDebug
+    artifacts:
+      - frontend/android/app/build/outputs/apk/debug/*.apk

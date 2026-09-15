@@ -1,0 +1,154 @@
+# Whetzy — iOS App Store Listing
+
+> Guía de publicación · actualizado 2026-09-15 · requiere H.2 (Apple Developer) + H.14 (macOS)
+
+---
+
+## App metadata
+
+| Campo | ES | EN |
+|---|---|---|
+| **Nombre de la app** | Whetzy | Whetzy |
+| **Subtítulo** (30 chars) | Aprende a programar en serio | Learn to code for real |
+| **Bundle ID** | app.whetzy | app.whetzy |
+| **SKU** | whetzy-ios-001 | whetzy-ios-001 |
+| **Categoría primaria** | Educación | Education |
+| **Categoría secundaria** | Productividad | Productivity |
+| **Clasificación de contenido** | 4+ | 4+ |
+
+---
+
+## Descripción corta (30 chars para búsqueda / subtítulo)
+
+**ES:** Aprende a programar en serio  
+**EN:** Learn to code for real
+
+---
+
+## Descripción larga (máx. 4.000 chars)
+
+### ES
+
+Whetzy es la academia de programación bilingüe que se adapta a lo que ya sabes — y lo que aún no.
+
+Cubre el camino completo: desde las primeras líneas de Python hasta arquitecturas de microservicios, bases de datos, cloud AWS y modelos de IA. Cada concepto tiene una lección escrita por expertos, un ejemplo que puedes ejecutar dentro de la app, y preguntas adaptativas que ajustan la dificultad según tu progreso real.
+
+**¿Por qué Whetzy?**
+- **Motor adaptativo verificado.** BKT + FSRS calibrados sobre datos reales. No adivinamos cuándo repasas: lo calculamos.
+- **100 % ejecutable.** Los ejemplos de Python y SQL corren de verdad en la app, sin servidor externo, sin copiar y pegar.
+- **Bilingüe nativo.** Todo el contenido está escrito en español e inglés por separado — no es una traducción automática.
+- **11 tracks. 281 habilidades.** Python avanzado, arquitectura de software, IA/ML, AWS CLF-C02, SAA-C03, AIF-C01, PCEP y más.
+- **Sin anuncios. Sin rastreo.**
+
+**Cómo funciona**
+1. Completa el placement test (5 min) — empezamos donde tú estás, no desde cero.
+2. Estudia con lecciones breves (150–300 palabras) y ejecuta el ejemplo directamente.
+3. Practica con preguntas adaptativas: el motor elige lo que más te cuesta justo cuando más lo necesitas.
+4. Compite en ligas semanales con otros estudiantes.
+5. Cuando dominas un módulo, desbloqueas el siguiente.
+
+**Certificaciones**
+Prepárate para AWS CLF-C02, SAA-C03, AIF-C01 y PCEP con simulacros cronometrados de 65 preguntas — el mismo formato que el examen real.
+
+### EN
+
+Whetzy is the bilingual coding academy that adapts to what you already know — and what you don't yet.
+
+It covers the full path: from your first lines of Python to microservice architectures, databases, AWS cloud, and AI models. Every concept has an expert-written lesson, a runnable example inside the app, and adaptive questions that adjust difficulty based on your real progress.
+
+**Why Whetzy?**
+- **Verified adaptive engine.** BKT + FSRS calibrated on real data. We don't guess when you need review: we calculate it.
+- **100% runnable.** Python and SQL examples actually execute inside the app — no external server, no copy-paste.
+- **Natively bilingual.** All content is written in Spanish and English separately — not machine-translated.
+- **11 tracks. 281 skills.** Advanced Python, software architecture, AI/ML, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, and more.
+- **No ads. No tracking.**
+
+**How it works**
+1. Complete the placement test (5 min) — we start where you are, not from scratch.
+2. Study with short lessons (150–300 words) and run the example directly.
+3. Practice with adaptive questions: the engine picks what challenges you most, right when you need it.
+4. Compete in weekly leagues with other learners.
+5. Master a module to unlock the next one.
+
+**Certifications**
+Prepare for AWS CLF-C02, SAA-C03, AIF-C01, and PCEP with timed 65-question mock exams — the same format as the real exam.
+
+---
+
+## Palabras clave (100 chars, separadas por coma, sin espacios)
+
+**ES:** programar,python,aws,aprender,código,algoritmos,cursos,certificaciones,ia,machine learning  
+**EN:** coding,python,aws,learn,algorithms,courses,certifications,ai,machine learning,backend
+
+---
+
+## URL de soporte
+
+`https://whetzy.com/privacy`
+
+## URL de marketing
+
+`https://whetzy.com`
+
+## URL de política de privacidad
+
+`https://whetzy.com/privacy`
+
+---
+
+## Screenshots requeridos
+
+| Dispositivo | Tamaño | Mínimo |
+|---|---|---|
+| iPhone 15 Pro Max (6.7") | 1290×2796 px | 3 |
+| iPhone 8 Plus (5.5") | 1242×2208 px | 3 |
+| iPad Pro 12.9" (6ª gen) | 2048×2732 px | 3 |
+
+Generar con Playwright (`npm run screenshots:ios`) o manualmente en simulador.
+
+**Pantallas recomendadas para screenshots:**
+1. HomeScreen (dashboard con racha y XP)
+2. TracksScreen (currículo de un track)
+3. QuizScreen (pregunta activa con feedback)
+4. LessonScreen (lección con ejemplo ejecutado)
+5. StatsScreen (gráfico de progreso)
+
+---
+
+## Notas para el revisor de Apple (Review Notes)
+
+**Cuenta demo:**
+- Email: `reviewer@whetzy.com`
+- Password: (crear antes del submit y actualizar aquí)
+
+**Notas:**
+- La app requiere creación de cuenta para acceder al contenido principal (sistema de progreso adaptativo).
+- El pago (subscripción Plus) usa RevenueCat + StoreKit — no Stripe (cumple App Store Review Guideline 3.1.1).
+- No hay contenido generado por usuarios ni funcionalidad de chat entre usuarios.
+- Las preguntas de código ejecutan Python/SQL en un sandbox WebAssembly local (Pyodide/sql.js), sin llamadas externas durante la ejecución.
+
+---
+
+## Versión de Info.plist requerida
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>Whetzy no usa la cámara.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Whetzy no accede a tus fotos.</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<!-- NO incluir: no usamos localización -->
+```
+
+> Solo incluir las claves para las APIs que realmente usa la app. Apple rechaza apps con claves vacías para APIs no usadas.
+
+---
+
+## IAP (In-App Purchases) — RevenueCat (7.6)
+
+| Product ID | Tipo | Precio sugerido |
+|---|---|---|
+| `app.whetzy.plus.monthly` | Auto-renovable | $4.99/mes |
+| `app.whetzy.plus.yearly` | Auto-renovable | $39.99/año |
+
+> 7.6 está HUMAN-BLOCKED (H.2 + H.5). Sin estos productos configurados en App Store Connect, Apple rechaza cualquier referencia a compras en la app.
