@@ -73,11 +73,11 @@ function makeWorker(): Worker {
   return new Worker('/pyodide-worker.js');
 }
 
-export function usePyodide() {
+export function usePyodide(disabled = false) {
   const workerRef = useRef<Worker | null>(null);
   const interruptRef = useRef<Int32Array | null>(null);
   const pendingRef = useRef<Pending | null>(null);
-  const [status, setStatus] = useState<PyodideStatus>('loading');
+  const [status, setStatus] = useState<PyodideStatus>(disabled ? 'ready' : 'loading');
 
   const attachWorker = useCallback((w: Worker) => {
     w.onmessage = ({ data }) => {
@@ -121,12 +121,16 @@ export function usePyodide() {
   }, [attachWorker]);
 
   useEffect(() => {
+    if (disabled) {
+      setStatus('ready');
+      return;
+    }
     restartWorker();
     return () => {
       workerRef.current?.terminate();
       workerRef.current = null;
     };
-  }, [restartWorker]);
+  }, [disabled, restartWorker]);
 
   const runCode = useCallback(
     (code: string, timeoutMs = 5000): Promise<RunResult> => {

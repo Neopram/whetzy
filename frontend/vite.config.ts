@@ -169,6 +169,10 @@ export default defineConfig({
     // isn't otherwise linked from the static HTML shell, only pulled in at
     // runtime when the lazy route import resolves.
     manifest: true,
+    // Monaco Editor lazy-chunks are intentionally large (~4 MB unminified /
+    // ~1 MB gz). They are code-split and only loaded when a fix_bug or
+    // fill_blank_exec question is first shown. The initial bundle stays ≤300 KB gz.
+    chunkSizeWarningLimit: 5000,
   },
   server: {
     // Cross-Origin isolation required by SharedArrayBuffer (pyodide interrupt).

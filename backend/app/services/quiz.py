@@ -57,8 +57,9 @@ TARGET_SUCCESS_PROBABILITY = 0.75
 CANDIDATE_POOL_SIZE = 5
 
 # Question types graded by answer-comparison (exec output or plain text).
-# fill_blank_exec/fix_bug: Pyodide runs the code; fill_blank: text compare only.
-_EXEC_TYPES = frozenset({"fill_blank_exec", "fix_bug", "fill_blank"})
+# fill_blank_exec/fix_bug: Pyodide (Python); fill_blank: text compare only.
+# sql_exec: sql.js worker; js_exec: sandboxed JS worker (F19+).
+_EXEC_TYPES = frozenset({"fill_blank_exec", "fix_bug", "fill_blank", "sql_exec", "js_exec"})
 
 
 def _now() -> datetime:

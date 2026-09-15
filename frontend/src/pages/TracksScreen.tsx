@@ -31,7 +31,6 @@ function statusMeta(status: CurriculumModule['status']) {
 export function TracksScreen() {
   const lang = useAppStore((s) => s.user.language);
   const startQuiz = useAppStore((s) => s.startQuiz);
-  const setScreen = useAppStore((s) => s.setScreen);
   const startMockExam = useAppStore((s) => s.startMockExam);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');

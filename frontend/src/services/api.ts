@@ -145,7 +145,7 @@ export const auth = {
 export interface QuestionPublic {
   id: string;
   skill_id: string;
-  type: 'mcq' | 'true_false' | 'code_output' | 'fill_blank' | 'fill_blank_exec' | 'fix_bug';
+  type: 'mcq' | 'true_false' | 'code_output' | 'fill_blank' | 'fill_blank_exec' | 'fix_bug' | 'sql_exec' | 'js_exec';
   difficulty_tier: 'easy' | 'medium' | 'hard' | 'expert';
   question_es: string;
   question_en: string;

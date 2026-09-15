@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
@@ -10,11 +10,16 @@ import { WhyButton } from '../components/quiz/WhyButton';
 import { GlossaryText } from '../components/quiz/GlossaryText';
 import { TermCard } from '../components/quiz/TermCard';
 import { SourceLine } from '../components/quiz/SourceLine';
-import { usePyodide } from '../hooks/usePyodide';
+import { useRuntime, runtimeForQuestion } from '../hooks/useRuntime';
 import { useGlossary } from '../hooks/useGlossary';
 import styles from './QuizScreen.module.css';
 
-const EXEC_TYPES = new Set<QuestionPublic['type']>(['fill_blank_exec', 'fix_bug', 'fill_blank']);
+// Monaco is ~2 MB — lazy-load so the initial bundle stays small.
+const MonacoCodeEditor = lazy(() =>
+  import('../components/quiz/MonacoCodeEditor').then((m) => ({ default: m.MonacoCodeEditor }))
+);
+
+const EXEC_TYPES = new Set<QuestionPublic['type']>(['fill_blank_exec', 'fix_bug', 'fill_blank', 'sql_exec', 'js_exec']);
 const TARGET_QUESTIONS = 10;
 
 /** Splits an optional fenced ``` code block out of the question text. */
@@ -70,7 +75,10 @@ export function QuizScreen() {
   const [verifyLoading, setVerifyLoading] = useState(false);
 
   const questionStart = useRef<number>(Date.now());
-  const { status: pyodideStatus, runCode } = usePyodide();
+  const runtimeType = runtimeForQuestion(question?.type);
+  const { status: runtimeStatus, runCode } = useRuntime(runtimeType);
+  // Alias kept for backward-compat with remaining references in this file.
+  const pyodideStatus = runtimeStatus;
 
   const isExecType = question != null && EXEC_TYPES.has(question.type);
 
@@ -410,10 +418,13 @@ export function QuizScreen() {
       !runResult.timedOut &&
       runResult.output.trim() === expected;
 
+    const engineLoadingLabel =
+      runtimeType === 'sql' ? `⚙ ${t('quiz.engineLoadingSql', 'Cargando motor SQL…')}`
+      : `⚙ ${t('quiz.engineLoading')}`;
     const engineLabel =
-      pyodideStatus === 'loading'
-        ? `⚙ ${t('quiz.engineLoading')}`
-        : pyodideStatus === 'error'
+      runtimeStatus === 'loading'
+        ? engineLoadingLabel
+        : runtimeStatus === 'error'
           ? `⚠ ${t('quiz.engineError')}`
           : null;
 
@@ -478,14 +489,15 @@ export function QuizScreen() {
           )}
 
           {question.type === 'fix_bug' && (
-            <textarea
-              className={styles.codeEditor}
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              disabled={answered}
-              spellCheck={false}
-              rows={Math.max(4, (userInput.match(/\n/g) ?? []).length + 2)}
-            />
+            <Suspense fallback={<div className={styles.codeEditor} style={{ minHeight: 88 }} />}>
+              <MonacoCodeEditor
+                value={userInput}
+                onChange={answered ? undefined : setUserInput}
+                language={runtimeType === 'sql' ? 'sql' : 'python'}
+                disabled={answered}
+                minLines={Math.max(4, (userInput.match(/\n/g) ?? []).length + 2)}
+              />
+            </Suspense>
           )}
 
           {question.type !== 'fill_blank' && !answered && (
