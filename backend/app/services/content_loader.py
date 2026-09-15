@@ -220,7 +220,16 @@ async def load_content(db: AsyncSession) -> dict[str, Any]:
     if lessons_dir.is_dir():
         for lfile in sorted(lessons_dir.rglob("*.json")):
             payload = json.loads(lfile.read_text(encoding="utf-8"))
-            items = payload if isinstance(payload, list) else payload.get("lessons", [])
+            # One file per lesson is the shape content/lessons/ actually uses, so a
+            # bare lesson object has to count. Without this it matched neither branch
+            # and became an empty list: every lesson silently failed to load while
+            # the run still reported success.
+            if isinstance(payload, list):
+                items = payload
+            elif "lessons" in payload:
+                items = payload["lessons"]
+            else:
+                items = [payload]
             stats["files"] += 1
             for item in items:
                 ok = await _upsert_lesson(db, item)
