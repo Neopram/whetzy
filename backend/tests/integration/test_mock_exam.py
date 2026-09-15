@@ -441,3 +441,52 @@ async def test_different_sittings_draw_different_exams(
         db_session, user, cert_seed["track_id"], rng=random.Random(2)
     )
     assert set(first.question_ids) != set(second.question_ids)
+
+
+@pytest.mark.asyncio
+async def test_option_less_questions_are_never_drawn_into_an_exam(
+    db_session: AsyncSession, cert_seed: dict, user
+) -> None:
+    """A `fill_blank` has no options, and the exam screen is a radiogroup.
+
+    Drawn into a sitting it paints an empty radiogroup — nothing to click — and
+    `_grade` still scores it as failed, so the candidate loses a mark on a
+    question the product never let them answer. The draw has to exclude them at
+    the source; the blueprint mix must survive the exclusion unchanged.
+    """
+    for suffix, _weight in _WEIGHTS:
+        for n in range(6):
+            db_session.add(
+                Question(
+                    id=f"qfb_{suffix}_{n:02d}",
+                    skill_id=f"sk_{suffix}",
+                    type="fill_blank",
+                    difficulty_tier="medium",
+                    question_es=f"El pilar de ___ reduce gastos ({n})",
+                    question_en=f"The ___ pillar reduces spend ({n})",
+                    options_es=None,
+                    options_en=None,
+                    correct_answer_es="coste",
+                    correct_answer_en="cost",
+                    explanation_es="porque si",
+                    explanation_en="because",
+                    expected_time_ms=20000,
+                    source="test fixture",
+                )
+            )
+    await db_session.flush()
+
+    attempt = await mock_exam_service.start_attempt(
+        db_session, user, cert_seed["track_id"], rng=random.Random(11)
+    )
+
+    drawn_without_options = [qid for qid in attempt.question_ids if qid.startswith("qfb_")]
+    assert drawn_without_options == [], (
+        "the exam drew questions it cannot render or score: "
+        f"{drawn_without_options}"
+    )
+
+    mix: dict[str, int] = {}
+    for qid in attempt.question_ids:
+        mix[qid.split("_")[1]] = mix.get(qid.split("_")[1], 0) + 1
+    assert mix == _EXPECTED_MIX

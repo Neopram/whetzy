@@ -74,16 +74,30 @@ def _domain_allocation(weights: dict[str, float], total: int) -> dict[str, int]:
 
 
 async def _questions_by_domain(db: AsyncSession, track_id: str) -> dict[str, list[str]]:
+    """Answerable questions per domain, keyed by domain id.
+
+    Only option-bearing questions qualify. The exam screen renders the draw as a
+    radiogroup and scores it by `correct_index`, so a `fill_blank` pulled into an
+    exam paints an *empty* radiogroup: the sitting cannot answer it, and
+    `_grade` still counts it as failed. That is a score the candidate did not
+    earn, which is red line 1 in the one place that is meant to predict a real
+    exam result. Both languages must carry options or the same exam would be
+    answerable in Spanish and not in English (red line 3).
+    """
     rows = (
         await db.execute(
-            select(Skill.domain_id, Question.id)
+            select(Skill.domain_id, Question.id, Question.options_es, Question.options_en)
             .join(Question, Question.skill_id == Skill.id)
             .join(Module, Skill.module_id == Module.id)
             .where(Module.track_id == track_id, Skill.domain_id.is_not(None))
         )
     ).all()
     pool: dict[str, list[str]] = {}
-    for domain_id, question_id in rows:
+    for domain_id, question_id, options_es, options_en in rows:
+        # JSON null decodes to None and an authored-but-empty list is just as
+        # unanswerable, so both are dropped by the same falsy check.
+        if not options_es or not options_en:
+            continue
         pool.setdefault(str(domain_id), []).append(str(question_id))
     return pool
 
