@@ -54,7 +54,11 @@ def load() -> list[tuple[Path, dict]]:
     items = []
     for path in sorted(CONTENT.rglob("*.json")):
         data = json.loads(path.read_text(encoding="utf-8"))
-        for q in data.get("questions", data if isinstance(data, list) else []):
+        # Both shapes exist in content/: a bare list, or {"questions": [...]}.
+        # Checking the type first matters — data.get() on a list raises before
+        # any default can apply, which silently excluded every list-shaped file.
+        questions = data if isinstance(data, list) else data.get("questions", [])
+        for q in questions:
             items.append((path, q))
     return items
 
