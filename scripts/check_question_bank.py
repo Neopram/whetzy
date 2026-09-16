@@ -108,7 +108,12 @@ EXEC_FLOOR = {
     # importaban numpy/pandas y no podian correr en el navegador del alumno,
     # asi que el ratio de antes contaba preguntas rotas. Ver ADR-9 y 17.3.
     "track06": 0.15,
-    "track07": 0.00,
+    # 0 % hasta que la sesion as autoro 78 ejecutables (mod0701-0706). AI
+    # Engineering parecia un track no ejecutable y no lo es: atencion escalada,
+    # softmax, BPE, top-p, coseno, chunking, RRF, ReAct, sha256 de datasets,
+    # canary, paridad demografica, p95 y coste en tokens se implementan con
+    # stdlib y corren en el navegador. Lo que no cabe es numpy. Ver 17.3.
+    "track07": 0.15,
     # 0 % until session ar authored 42 executable questions for it. PCEP is the
     # wedge of lane 1 and it is a *Python* certification, so a zero here was
     # never a limitation of the medium - only of the bank.
