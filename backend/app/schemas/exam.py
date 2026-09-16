@@ -70,6 +70,30 @@ class MockExamSubmitResponse(BaseModel):
     report: MockExamReport
 
 
+# ── Certification readiness (18.1) ───────────────────────────────────────────
+
+
+class DomainReadiness(BaseModel):
+    """BKT-based readiness score for one exam domain."""
+
+    domain_id: str
+    name_es: str
+    name_en: str
+    weight_pct: float
+    p_known_mean: float
+    skills_assessed: int
+    skills_total: int
+    ready: bool
+
+
+class CertificationReadiness(BaseModel):
+    """Per-domain BKT readiness for a certification track."""
+
+    track_id: str
+    domains: list[DomainReadiness]
+    overall_p_known: float
+
+
 # ── Track final exam and module test-out (17.2) ─────────────────────────────
 
 

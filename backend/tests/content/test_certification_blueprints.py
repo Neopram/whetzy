@@ -26,10 +26,12 @@ Already fixed by the commit that added this file:
     the block table at all - a citation that did not support its own claim.
   * SAA-C03 `exam_guide_url` returned 403. A dead citation (red line 2).
 
-Still broken, each a strict xfail below carrying its measured consequence. They
-are xfail rather than fixed here because fixing them is curriculum surgery
-(splitting modules, moving skills, authoring the two missing AIF-C01 domains),
-not a metadata edit. See ledger 17.13.
+Fixed in ledger 18.1:
+  * PCEP split to four blocks (18/29/25/28); mod0904 "Functions and Exceptions" added.
+  * SAA-C03 de-duplicated Domain 1; mod1001 remapped to Domain 3 (Networking module
+    carries no exam_domain — cross-domain support content). Weights 24/26/30/20 = 100.
+  * AIF-C01 expanded to five domains (20/24/28/14/14); mod1104 "Guidelines for
+    Responsible AI" and mod1105 "Security, Compliance, and Governance" added.
 """
 
 from __future__ import annotations
@@ -111,17 +113,12 @@ class TestBlueprintInvariants:
     def test_pcep_weights_sum_to_one_hundred(self) -> None:
         assert sum(_weights(_track("track09"))) == 100
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "Ledger 17.13. track10 declares 'Domain 1: Design Secure "
-            "Architectures' twice - as '(partial)' at 20 % and again at 30 %. "
-            "This is the same defect as the weights summing to 120, seen from "
-            "the report's side instead of the allocator's: the candidate gets "
-            "two half-sized samples of one domain and no way to tell they are "
-            "the same thing. Goes green when the track10 modules are merged."
-        ),
-    )
+    def test_saa_weights_sum_to_one_hundred(self) -> None:
+        assert sum(_weights(_track("track10"))) == 100
+
+    def test_aif_weights_sum_to_one_hundred(self) -> None:
+        assert sum(_weights(_track("track11"))) == 100
+
     def test_no_track_declares_the_same_exam_domain_twice(self) -> None:
         """A duplicated domain splits one row of the report in two, and the
         candidate reads two half-sized samples of the same thing."""
@@ -137,52 +134,5 @@ class TestBlueprintInvariants:
                 offenders.append(f"{track['id']}: {sorted(dupes)}")
         assert offenders == [], f"duplicated exam domains: {offenders}"
 
-
-class TestKnownBrokenBlueprints:
-    """Real defects with measured consequences. Strict xfails: the day one is
-    fixed its test goes green and must be moved out of this class."""
-
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "Ledger 17.13. Official PCEP-30-02 has FOUR blocks (18/29/25/28); "
-            "this track declares THREE (18/29/53) - block 3 carries its own 25 % "
-            "plus block 4's 28 %. Measured on the real allocator: the 30-item "
-            "rehearsal draws 16 from Data Collections where the real exam draws "
-            "7, and 'Functions and Exceptions' (8 items, joint-largest block) "
-            "has no domain at all, so the per-domain report can never name it - "
-            "which is the one thing that report exists to do."
-        ),
-    )
     def test_pcep_matches_the_four_official_blocks(self) -> None:
         assert _weights(_track("track09")) == [w for _n, w in OFFICIAL_BLOCKS["track09"]]
-
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "Ledger 17.13. SAA-C03 has FOUR domains summing to 100 (30/26/24/20). "
-            "track10 declares FIVE summing to 120, because 'Domain 1: Design "
-            "Secure Architectures' appears twice - once as '(partial)' at 20 % "
-            "and once at 30 %. Measured on the real allocator: a 65-question "
-            "rehearsal hands out 76, and Domain 1 takes 32 of them (42 %) "
-            "against a real 30 %."
-        ),
-    )
-    def test_saa_weights_sum_to_one_hundred(self) -> None:
-        assert sum(_weights(_track("track10"))) == 100
-
-    @pytest.mark.xfail(
-        strict=True,
-        reason=(
-            "Ledger 17.13. AIF-C01 has FIVE domains (20/24/28/14/14). track11 "
-            "declares only the first THREE, summing to 72: 'Guidelines for "
-            "Responsible AI' and 'Security, Compliance, and Governance for AI "
-            "Solutions' - 28 % of the scored exam - are absent from the bank, "
-            "from the rehearsal and from the report. Measured on the real "
-            "allocator: an 85-question rehearsal hands out 63. Worth noticing "
-            "that the domain we skipped on our own AI certification is the "
-            "responsible-AI one."
-        ),
-    )
-    def test_aif_weights_sum_to_one_hundred(self) -> None:
-        assert sum(_weights(_track("track11"))) == 100

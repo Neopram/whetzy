@@ -14,7 +14,7 @@ const CAPTURE_DATE = '2026-09-15';
 // nadie se entere. Si cambias uno a mano sin que el contenido lo respalde,
 // CI se pone en rojo — que es la idea.
 const CATALOG_TRACKS = 12;
-const CATALOG_COURSES = 36;
+const CATALOG_COURSES = 37;
 const CATALOG_QUESTIONS = 5024;
 
 // Competitor dimensions and weights (fixed — §7.1 of the master plan)

@@ -228,7 +228,8 @@ function App() {
       case 'placement': return <PlacementScreen />;
       case 'duels': return <DuelScreen />;
       case 'mockexam':
-        return <MockExamScreen trackId={mockExamTrackId ?? 'track08'} questionCount={mockExamQuestionCount} durationMinutes={mockExamDurationMinutes} onExit={() => setScreen('tracks')} />;
+        if (!mockExamTrackId) return null;
+        return <MockExamScreen trackId={mockExamTrackId} questionCount={mockExamQuestionCount} durationMinutes={mockExamDurationMinutes} onExit={() => setScreen('tracks')} />;
       case 'trackexam':
         // Without a target there is nothing to sit; bouncing to the catalogue
         // beats rendering an exam screen that can only fail on start.

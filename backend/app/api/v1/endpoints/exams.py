@@ -11,12 +11,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.core.security import get_current_user
-from app.models.content import Question, Track
+from app.models.content import Domain, Question, Skill, Track
+from app.models.user import UserSkillState
 from app.models.exam import Certificate, MockExamAttempt
 from app.models.user import User
 from app.schemas.content import QuestionPublic
 from app.schemas.exam import (
     CertificatePublic,
+    CertificationReadiness,
+    DomainReadiness,
     MockExamStartRequest,
     MockExamStartResponse,
     MockExamSubmitRequest,
@@ -177,6 +180,93 @@ async def get_track_exam_blueprint(
     except track_exam_service.TrackExamError as err:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(err)) from err
     return TrackExamBlueprint(**blueprint)
+
+
+@router.get("/certification/{track_id}/readiness", response_model=CertificationReadiness)
+async def get_certification_readiness(
+    track_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> CertificationReadiness:
+    """BKT-based domain readiness for a certification track.
+
+    For each exam domain returns the user's mean p_known (BKT posterior) across
+    all skills in that domain, weighted by exam_weight_pct. A domain is marked
+    'ready' when p_known_mean >= 0.75, i.e. the learner knows three quarters of
+    the content at a satisfying confidence. Skills the user has never touched
+    contribute p_known = 0.1 (the BKT prior at first exposure), so unstarted
+    domains show up as genuinely not ready rather than simply absent.
+    """
+    track = await db.get(Track, track_id)
+    if track is None or not track.is_certification:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "certification track not found")
+
+    domains = (
+        await db.scalars(
+            select(Domain).where(Domain.track_id == track_id).order_by(Domain.order)
+        )
+    ).all()
+    if not domains:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"{track_id} has no exam domains")
+
+    # Fetch all skills and the user's known states in one round-trip each.
+    all_skills = (
+        await db.scalars(
+            select(Skill)
+            .join(Domain, Skill.domain_id == Domain.id)
+            .where(Domain.track_id == track_id)
+        )
+    ).all()
+    skill_ids = [s.id for s in all_skills]
+
+    known_states = (
+        await db.scalars(
+            select(UserSkillState).where(
+                UserSkillState.user_id == current_user.id,
+                UserSkillState.skill_id.in_(skill_ids),
+            )
+        )
+    ).all()
+    p_known_by_skill: dict[str, float] = {uss.skill_id: uss.p_known for uss in known_states}
+    BKT_PRIOR = 0.1  # p_known for a skill the user has never touched
+
+    # Group skills by domain.
+    skills_by_domain: dict[str, list[Skill]] = {d.id: [] for d in domains}
+    for skill in all_skills:
+        if skill.domain_id in skills_by_domain:
+            skills_by_domain[skill.domain_id].append(skill)
+
+    READY_THRESHOLD = 0.75
+    domain_results: list[DomainReadiness] = []
+    weighted_sum = 0.0
+    total_weight = 0.0
+
+    for domain in domains:
+        skills = skills_by_domain[domain.id]
+        p_values = [p_known_by_skill.get(s.id, BKT_PRIOR) for s in skills]
+        mean_p = sum(p_values) / len(p_values) if p_values else BKT_PRIOR
+        assessed = sum(1 for s in skills if s.id in p_known_by_skill)
+        domain_results.append(
+            DomainReadiness(
+                domain_id=domain.id,
+                name_es=domain.name_es,
+                name_en=domain.name_en,
+                weight_pct=domain.weight_pct,
+                p_known_mean=round(mean_p, 4),
+                skills_assessed=assessed,
+                skills_total=len(skills),
+                ready=mean_p >= READY_THRESHOLD,
+            )
+        )
+        weighted_sum += mean_p * domain.weight_pct
+        total_weight += domain.weight_pct
+
+    overall = weighted_sum / total_weight if total_weight else BKT_PRIOR
+    return CertificationReadiness(
+        track_id=track_id,
+        domains=domain_results,
+        overall_p_known=round(overall, 4),
+    )
 
 
 @router.post("/track/{track_id}/start", response_model=TrackExamStartResponse, status_code=201)
