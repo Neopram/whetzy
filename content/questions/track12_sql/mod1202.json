@@ -1,0 +1,1430 @@
+[
+  {
+    "id": "q120201sql001",
+    "skill_id": "sk120201",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuáles son los nombres de empleados que trabajan en el departamento de Ventas Y ganando más de 30000?",
+    "question_en": "What are the names of employees working in Sales department AND earning more than 30000?",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES (1,'Alice','Sales',35000);\nINSERT INTO employees VALUES (2,'Bob','IT',40000);\nINSERT INTO employees VALUES (3,'Carlos','Sales',25000);\nINSERT INTO employees VALUES (4,'Diana','Sales',32000);\nINSERT INTO employees VALUES (5,'Eve','HR',28000);\nSELECT name FROM employees WHERE ___",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, department TEXT, salary INTEGER);\nINSERT INTO employees VALUES (1,'Alice','Sales',35000);\nINSERT INTO employees VALUES (2,'Bob','IT',40000);\nINSERT INTO employees VALUES (3,'Carlos','Sales',25000);\nINSERT INTO employees VALUES (4,'Diana','Sales',32000);\nINSERT INTO employees VALUES (5,'Eve','HR',28000);\nSELECT name FROM employees WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n-----\nAlice\nDiana",
+    "correct_answer_en": "name\n-----\nAlice\nDiana",
+    "explanation_es": "Se usan AND para combinar dos condiciones: department='Sales' AND salary>30000. Solo Alice y Diana cumplen ambas.",
+    "explanation_en": "Use AND to combine two conditions: department='Sales' AND salary>30000. Only Alice and Diana meet both criteria.",
+    "source": "SQLite WHERE – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120201sql002",
+    "skill_id": "sk120201",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuáles son los IDs de clientes cuyo país es España O cuya edad es mayor a 50?",
+    "question_en": "What are the IDs of customers whose country is Spain OR whose age is greater than 50?",
+    "code_es": "CREATE TABLE customers (id INTEGER, name TEXT, country TEXT, age INTEGER);\nINSERT INTO customers VALUES (1,'Ana','Spain',35);\nINSERT INTO customers VALUES (2,'Bob','France',55);\nINSERT INTO customers VALUES (3,'Carlos','Spain',48);\nINSERT INTO customers VALUES (4,'Diana','Germany',52);\nINSERT INTO customers VALUES (5,'Eve','Italy',60);\nSELECT id FROM customers WHERE ___",
+    "code_en": "CREATE TABLE customers (id INTEGER, name TEXT, country TEXT, age INTEGER);\nINSERT INTO customers VALUES (1,'Ana','Spain',35);\nINSERT INTO customers VALUES (2,'Bob','France',55);\nINSERT INTO customers VALUES (3,'Carlos','Spain',48);\nINSERT INTO customers VALUES (4,'Diana','Germany',52);\nINSERT INTO customers VALUES (5,'Eve','Italy',60);\nSELECT id FROM customers WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id\n--\n1\n2\n3\n4\n5",
+    "correct_answer_en": "id\n--\n1\n2\n3\n4\n5",
+    "explanation_es": "Usando OR, se devuelven todos los clientes que están en España (1,3) o tienen más de 50 años (2,4,5).",
+    "explanation_en": "Using OR, all customers from Spain (1,3) or older than 50 (2,4,5) are returned.",
+    "source": "SQLite WHERE – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120201sql003",
+    "skill_id": "sk120201",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuáles son los nombres de productos cuyo precio es mayor a 100 Y (categoría es 'Electronics' O el stock es menor a 5)?",
+    "question_en": "What are the names of products whose price is greater than 100 AND (category is 'Electronics' OR stock is less than 5)?",
+    "code_es": "CREATE TABLE products (id INTEGER, name TEXT, price INTEGER, category TEXT, stock INTEGER);\nINSERT INTO products VALUES (1,'Laptop',1200,'Electronics',2);\nINSERT INTO products VALUES (2,'Mouse',25,'Electronics',50);\nINSERT INTO products VALUES (3,'Desk',150,'Furniture',3);\nINSERT INTO products VALUES (4,'Chair',120,'Furniture',10);\nINSERT INTO products VALUES (5,'Monitor',300,'Electronics',8);\nSELECT name FROM products WHERE ___",
+    "code_en": "CREATE TABLE products (id INTEGER, name TEXT, price INTEGER, category TEXT, stock INTEGER);\nINSERT INTO products VALUES (1,'Laptop',1200,'Electronics',2);\nINSERT INTO products VALUES (2,'Mouse',25,'Electronics',50);\nINSERT INTO products VALUES (3,'Desk',150,'Furniture',3);\nINSERT INTO products VALUES (4,'Chair',120,'Furniture',10);\nINSERT INTO products VALUES (5,'Monitor',300,'Electronics',8);\nSELECT name FROM products WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n--------\nLaptop\nDesk\nMonitor",
+    "correct_answer_en": "name\n--------\nLaptop\nDesk\nMonitor",
+    "explanation_es": "Se necesita precio>100 Y (categoría='Electronics' O stock<5). Laptop: 1200>100 Y (Electronics O 2<5)✓. Desk: 150>100 Y (Furniture O 3<5)✓. Monitor: 300>100 Y (Electronics O 8<5)✓.",
+    "explanation_en": "Requires price>100 AND (category='Electronics' OR stock<5). Laptop, Desk, and Monitor all meet these criteria.",
+    "source": "SQLite WHERE with AND/OR – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120201mc001",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis correcta para combinar dos condiciones en una cláusula WHERE?",
+    "question_en": "What is the correct syntax to combine two conditions in a WHERE clause?",
+    "options_es": [
+      "WHERE condition1 AND condition2",
+      "WHERE condition1 + condition2",
+      "WHERE condition1 & condition2",
+      "WHERE condition1 , condition2"
+    ],
+    "options_en": [
+      "WHERE condition1 AND condition2",
+      "WHERE condition1 + condition2",
+      "WHERE condition1 & condition2",
+      "WHERE condition1 , condition2"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La sintaxis correcta es usar AND u OR entre dos condiciones. Las otras opciones no son válidas en SQL.",
+    "explanation_en": "The correct syntax is to use AND or OR between two conditions. Other options are not valid SQL syntax.",
+    "source": "SQL WHERE – https://www.w3schools.com/sql/sql_where.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120201mc002",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuándo devuelve filas una condición AND?",
+    "question_en": "When does an AND condition return rows?",
+    "options_es": [
+      "Cuando ambas condiciones son verdaderas",
+      "Cuando al menos una condición es verdadera",
+      "Cuando una condición es falsa",
+      "Siempre que haya datos"
+    ],
+    "options_en": [
+      "When both conditions are true",
+      "When at least one condition is true",
+      "When one condition is false",
+      "Whenever there is data"
+    ],
+    "correct_index": 0,
+    "explanation_es": "AND devuelve filas solo cuando AMBAS condiciones son verdaderas. Si una es falsa, no se devuelve la fila.",
+    "explanation_en": "AND returns rows only when BOTH conditions are true. If either is false, the row is not returned.",
+    "source": "SQL AND – https://www.w3schools.com/sql/sql_and_or_not.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120201mc003",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuándo devuelve filas una condición OR?",
+    "question_en": "When does an OR condition return rows?",
+    "options_es": [
+      "Solo cuando ambas condiciones son verdaderas",
+      "Cuando hay NULL",
+      "Cuando ninguna condición es verdadera",
+      "Cuando al menos una condición es verdadera"
+    ],
+    "options_en": [
+      "Only when both conditions are true",
+      "When there is NULL",
+      "When no condition is true",
+      "When at least one condition is true"
+    ],
+    "correct_index": 3,
+    "explanation_es": "OR devuelve filas cuando AL MENOS UNA condición es verdadera. Ambas pueden ser verdaderas o solo una.",
+    "explanation_en": "OR returns rows when AT LEAST ONE condition is true. One or both can be true.",
+    "source": "SQL OR – https://www.w3schools.com/sql/sql_and_or_not.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120201mc004",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la precedencia en 'WHERE age > 18 OR age < 13 AND status = 'active''?",
+    "question_en": "What is the precedence in 'WHERE age > 18 OR age < 13 AND status = 'active''?",
+    "options_es": [
+      "OR se evalúa primero",
+      "AND se evalúa primero",
+      "Se evalúan de izquierda a derecha",
+      "Dependiendo de la base de datos"
+    ],
+    "options_en": [
+      "OR is evaluated first",
+      "AND is evaluated first",
+      "They are evaluated left to right",
+      "It depends on the database"
+    ],
+    "correct_index": 1,
+    "explanation_es": "AND tiene mayor precedencia que OR. Entonces: age > 18 OR (age < 13 AND status='active')",
+    "explanation_en": "AND has higher precedence than OR. So: age > 18 OR (age < 13 AND status='active')",
+    "source": "SQL Operator Precedence – https://www.sqlite.org/lang_expr.html",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120201mc005",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál consulta devuelve clientes de Madrid O Barcelona con edad > 25?",
+    "question_en": "Which query returns customers from Madrid OR Barcelona with age > 25?",
+    "options_es": [
+      "SELECT * FROM customers WHERE city='Madrid' OR city='Barcelona' AND age > 25",
+      "SELECT * FROM customers WHERE city IN ('Madrid','Barcelona') WHERE age > 25",
+      "SELECT * FROM customers WHERE city='Madrid' OR city='Barcelona' OR age > 25",
+      "SELECT * FROM customers WHERE (city='Madrid' OR city='Barcelona') AND age > 25"
+    ],
+    "options_en": [
+      "SELECT * FROM customers WHERE city='Madrid' OR city='Barcelona' AND age > 25",
+      "SELECT * FROM customers WHERE city IN ('Madrid','Barcelona') WHERE age > 25",
+      "SELECT * FROM customers WHERE city='Madrid' OR city='Barcelona' OR age > 25",
+      "SELECT * FROM customers WHERE (city='Madrid' OR city='Barcelona') AND age > 25"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Sin paréntesis, AND tiene precedencia y solo devuelve Barcelona + edad>25. Los paréntesis aseguran que ambas ciudades sean filtradas por edad.",
+    "explanation_en": "Without parentheses, AND has precedence. Parentheses ensure both cities are filtered by age.",
+    "source": "SQL AND/OR Precedence – https://www.w3schools.com/sql/sql_and_or_not.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120201mc006",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué resultado devuelve: WHERE (status='active' AND role='admin') OR salary > 50000?",
+    "question_en": "What does this return: WHERE (status='active' AND role='admin') OR salary > 50000?",
+    "options_es": [
+      "Solo admins activos",
+      "Solo empleados con salario > 50000",
+      "Admins activos O cualquier empleado con salario > 50000",
+      "Solo empleados con ambas condiciones"
+    ],
+    "options_en": [
+      "Only active admins",
+      "Only employees with salary > 50000",
+      "Active admins OR any employee with salary > 50000",
+      "Only employees with both conditions"
+    ],
+    "correct_index": 2,
+    "explanation_es": "El OR combina dos grupos: (admins activos) O (cualquiera con salario alto). Se devuelven ambos grupos.",
+    "explanation_en": "OR combines two groups: (active admins) OR (anyone with high salary). Both groups are returned.",
+    "source": "SQL AND/OR Logic – https://www.w3schools.com/sql/sql_and_or_not.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120201mc007",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el resultado de: WHERE country='Spain' AND (status='active' OR status='pending')?",
+    "question_en": "What is the result of: WHERE country='Spain' AND (status='active' OR status='pending')?",
+    "options_es": [
+      "Registros de España que estén activos O pendientes",
+      "Registros de España que estén activos Y pendientes",
+      "Registros de cualquier país con estado activo o pendiente",
+      "Solo registros activos de España"
+    ],
+    "options_en": [
+      "Records from Spain that are active OR pending",
+      "Records from Spain that are active AND pending",
+      "Records from any country with active or pending status",
+      "Only active records from Spain"
+    ],
+    "correct_index": 0,
+    "explanation_es": "AND requiere país='Spain', y el paréntesis OR permite estatus 'active' o 'pending'. Se devuelven registros españoles con cualquiera de ambos estatus.",
+    "explanation_en": "AND requires country='Spain', and the OR clause allows status 'active' or 'pending'. Spanish records with either status are returned.",
+    "source": "SQL AND/OR with Parentheses – https://www.w3schools.com/sql/sql_and_or_not.asp",
+    "expected_time_ms": 50000
+  },
+  {
+    "id": "q120201mc008",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se reescribe 'WHERE a=1 OR a=2 OR a=3' de forma más compacta?",
+    "question_en": "How to rewrite 'WHERE a=1 OR a=2 OR a=3' more compactly?",
+    "options_es": [
+      "WHERE a IN (1,2,3)",
+      "WHERE a AND (1,2,3)",
+      "WHERE a = OR 1,2,3",
+      "WHERE a BETWEEN 1 AND 3"
+    ],
+    "options_en": [
+      "WHERE a IN (1,2,3)",
+      "WHERE a AND (1,2,3)",
+      "WHERE a = OR 1,2,3",
+      "WHERE a BETWEEN 1 AND 3"
+    ],
+    "correct_index": 0,
+    "explanation_es": "IN es más compacto que múltiples OR. BETWEEN sería para rangos continuos.",
+    "explanation_en": "IN is more compact than multiple ORs. BETWEEN is for continuous ranges.",
+    "source": "SQL IN – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120201mc009",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuántos operadores lógicos hay en: WHERE (a AND b) OR (c AND d) OR e?",
+    "question_en": "How many logical operators are in: WHERE (a AND b) OR (c AND d) OR e?",
+    "options_es": [
+      "2",
+      "5",
+      "4",
+      "3"
+    ],
+    "options_en": [
+      "2",
+      "5",
+      "4",
+      "3"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Hay 4 operadores: AND (entre a y b), AND (entre c y d), OR (entre grupos 1 y 2), OR (entre grupo 2 e). Pero solo 3 únicos: 2 AND y 2 OR.",
+    "explanation_en": "Counting: AND (between a,b), AND (between c,d), OR (between first two groups), OR (with e). That's 4 total logical operators.",
+    "source": "SQL Logical Operators – https://www.w3schools.com/sql/sql_and_or_not.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120201mc010",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Es válida esta sintaxis? WHERE condition1 AND condition2 AND condition3",
+    "question_en": "Is this syntax valid? WHERE condition1 AND condition2 AND condition3",
+    "options_es": [
+      "Sí, se pueden encadenar AND",
+      "No, máximo 2 condiciones",
+      "No, hay que usar paréntesis",
+      "Sí pero lento"
+    ],
+    "options_en": [
+      "Yes, AND can be chained",
+      "No, maximum 2 conditions",
+      "No, parentheses required",
+      "Yes but slow"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Sí, AND se puede encadenar sin límite. Se evalúan de izquierda a derecha.",
+    "explanation_en": "Yes, AND can be chained without limit. Evaluated left to right.",
+    "source": "SQL WHERE – https://www.w3schools.com/sql/sql_where.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120201mc011",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el equivalente de 'NOT (a OR b)' usando De Morgan?",
+    "question_en": "What is the equivalent of 'NOT (a OR b)' using De Morgan's law?",
+    "options_es": [
+      "NOT a AND NOT b",
+      "NOT a OR NOT b",
+      "a AND b",
+      "a OR b"
+    ],
+    "options_en": [
+      "NOT a AND NOT b",
+      "NOT a OR NOT b",
+      "a AND b",
+      "a OR b"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La ley de De Morgan: NOT (a OR b) = (NOT a) AND (NOT b).",
+    "explanation_en": "De Morgan's law: NOT (a OR b) = (NOT a) AND (NOT b).",
+    "source": "Boolean Logic – https://en.wikipedia.org/wiki/De_Morgan%27s_laws",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120201mc012",
+    "skill_id": "sk120201",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál consulta tiene precedencia de operadores correcta para: ciudad=A o (ciudad=B y edad>30)?",
+    "question_en": "Which query has correct operator precedence for: city=A OR (city=B AND age>30)?",
+    "options_es": [
+      "SELECT * FROM t WHERE city='A' OR city='B' AND age > 30",
+      "SELECT * FROM t WHERE city='A' OR city='B' OR age > 30",
+      "SELECT * FROM t WHERE (city='A') OR (city='B' AND age > 30)",
+      "SELECT * FROM t WHERE (city='A' OR city='B') AND age > 30"
+    ],
+    "options_en": [
+      "SELECT * FROM t WHERE city='A' OR city='B' AND age > 30",
+      "SELECT * FROM t WHERE city='A' OR city='B' OR age > 30",
+      "SELECT * FROM t WHERE (city='A') OR (city='B' AND age > 30)",
+      "SELECT * FROM t WHERE (city='A' OR city='B') AND age > 30"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Sin paréntesis, AND tiene precedencia y devolvería 'A' o ('B' y edad>30). La opción 1 es casi correcta por precedencia pero los paréntesis clarifican la intención.",
+    "explanation_en": "AND has higher precedence, so option 1 actually means A or (B and age>30). Option 2 makes this explicit.",
+    "source": "SQL Operator Precedence – https://www.sqlite.org/lang_expr.html",
+    "expected_time_ms": 50000
+  },
+  {
+    "id": "q120202sql001",
+    "skill_id": "sk120202",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuáles son los nombres de productos con precio igual a 50?",
+    "question_en": "What are the names of products with price equal to 50?",
+    "code_es": "CREATE TABLE products (id INTEGER, name TEXT, price INTEGER);\nINSERT INTO products VALUES (1,'Pen',10);\nINSERT INTO products VALUES (2,'Book',50);\nINSERT INTO products VALUES (3,'Notebook',50);\nINSERT INTO products VALUES (4,'Pencil',5);\nSELECT name FROM products WHERE ___",
+    "code_en": "CREATE TABLE products (id INTEGER, name TEXT, price INTEGER);\nINSERT INTO products VALUES (1,'Pen',10);\nINSERT INTO products VALUES (2,'Book',50);\nINSERT INTO products VALUES (3,'Notebook',50);\nINSERT INTO products VALUES (4,'Pencil',5);\nSELECT name FROM products WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n--------\nBook\nNotebook",
+    "correct_answer_en": "name\n--------\nBook\nNotebook",
+    "explanation_es": "El operador = compara igualdad. price=50 devuelve Book y Notebook.",
+    "explanation_en": "The = operator compares equality. price=50 returns Book and Notebook.",
+    "source": "SQLite Comparison Operators – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120202sql002",
+    "skill_id": "sk120202",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuáles son los IDs de órdenes con total mayor que 500 pero menor o igual a 1000?",
+    "question_en": "What are the IDs of orders with total greater than 500 and less than or equal to 1000?",
+    "code_es": "CREATE TABLE orders (id INTEGER, customer TEXT, total INTEGER);\nINSERT INTO orders VALUES (1,'Alice',300);\nINSERT INTO orders VALUES (2,'Bob',750);\nINSERT INTO orders VALUES (3,'Carlos',1000);\nINSERT INTO orders VALUES (4,'Diana',1200);\nINSERT INTO orders VALUES (5,'Eve',600);\nSELECT id FROM orders WHERE ___",
+    "code_en": "CREATE TABLE orders (id INTEGER, customer TEXT, total INTEGER);\nINSERT INTO orders VALUES (1,'Alice',300);\nINSERT INTO orders VALUES (2,'Bob',750);\nINSERT INTO orders VALUES (3,'Carlos',1000);\nINSERT INTO orders VALUES (4,'Diana',1200);\nINSERT INTO orders VALUES (5,'Eve',600);\nSELECT id FROM orders WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id\n--\n2\n3\n5",
+    "correct_answer_en": "id\n--\n2\n3\n5",
+    "explanation_es": "Usando > y <=: total > 500 AND total <= 1000. Bob (750), Carlos (1000) y Eve (600) cumplen.",
+    "explanation_en": "Using > and <=: total > 500 AND total <= 1000. Bob (750), Carlos (1000), and Eve (600) qualify.",
+    "source": "SQLite Comparison Operators – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120202sql003",
+    "skill_id": "sk120202",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuáles son los nombres de empleados cuyo salario NO es igual a 30000 pero es menor a 40000?",
+    "question_en": "What are the names of employees whose salary is NOT equal to 30000 but is less than 40000?",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, salary INTEGER);\nINSERT INTO employees VALUES (1,'Alice',25000);\nINSERT INTO employees VALUES (2,'Bob',30000);\nINSERT INTO employees VALUES (3,'Carlos',35000);\nINSERT INTO employees VALUES (4,'Diana',40000);\nINSERT INTO employees VALUES (5,'Eve',50000);\nSELECT name FROM employees WHERE ___",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, salary INTEGER);\nINSERT INTO employees VALUES (1,'Alice',25000);\nINSERT INTO employees VALUES (2,'Bob',30000);\nINSERT INTO employees VALUES (3,'Carlos',35000);\nINSERT INTO employees VALUES (4,'Diana',40000);\nINSERT INTO employees VALUES (5,'Eve',50000);\nSELECT name FROM employees WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n-------\nAlice\nCarlos",
+    "correct_answer_en": "name\n-------\nAlice\nCarlos",
+    "explanation_es": "Condición: salary != 30000 AND salary < 40000. Alice (25000) y Carlos (35000) cumplen.",
+    "explanation_en": "Condition: salary != 30000 AND salary < 40000. Alice (25000) and Carlos (35000) qualify.",
+    "source": "SQLite Comparison Operators – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120202mc001",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el operador de igualdad en SQL?",
+    "question_en": "What is the equality operator in SQL?",
+    "options_es": [
+      "<>",
+      "=",
+      "===",
+      "=="
+    ],
+    "options_en": [
+      "<>",
+      "=",
+      "===",
+      "=="
+    ],
+    "correct_index": 1,
+    "explanation_es": "El operador de igualdad en SQL es = (un solo igual). == es de otros lenguajes.",
+    "explanation_en": "The equality operator in SQL is = (single equals). == is from other languages.",
+    "source": "SQL Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120202mc002",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el operador de desigualdad en SQL?",
+    "question_en": "What is the inequality operator in SQL?",
+    "options_es": [
+      "<>",
+      "!=",
+      "Both <> and !=",
+      "!=="
+    ],
+    "options_en": [
+      "<>",
+      "!=",
+      "Both <> and !=",
+      "!=="
+    ],
+    "correct_index": 2,
+    "explanation_es": "Ambos <> y != funcionan en la mayoría de bases de datos SQL. SQLite acepta ambos.",
+    "explanation_en": "Both <> and != work in most SQL databases. SQLite accepts both.",
+    "source": "SQL Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120202mc003",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál devuelve valores mayores a 100?",
+    "question_en": "Which returns values greater than 100?",
+    "options_es": [
+      "WHERE value > 100",
+      "WHERE value >= 100",
+      "WHERE value == 100",
+      "WHERE value < 100"
+    ],
+    "options_en": [
+      "WHERE value > 100",
+      "WHERE value >= 100",
+      "WHERE value == 100",
+      "WHERE value < 100"
+    ],
+    "correct_index": 0,
+    "explanation_es": "> devuelve mayores. >= devolvería mayores O iguales. > 100 excluye 100.",
+    "explanation_en": "> returns greater than. >= returns greater than or equal. > 100 excludes 100.",
+    "source": "SQL Comparison Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120202mc004",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál operador devuelve >= 100 (mayor o igual a 100)?",
+    "question_en": "Which operator returns >= 100 (greater than or equal to 100)?",
+    "options_es": [
+      "> 100",
+      "> = 100",
+      "=> 100",
+      ">= 100"
+    ],
+    "options_en": [
+      "> 100",
+      "> = 100",
+      "=> 100",
+      ">= 100"
+    ],
+    "correct_index": 3,
+    "explanation_es": ">= devuelve mayores o iguales. => es incorrecto. > 100 solo devuelve mayores.",
+    "explanation_en": ">= returns greater than or equal. => is incorrect. > 100 only returns greater than.",
+    "source": "SQL Comparison Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120202mc005",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre > y >=?",
+    "question_en": "What is the difference between > and >=?",
+    "options_es": [
+      "> incluye el valor, >= no",
+      "> es más lento",
+      "No hay diferencia",
+      "> no incluye el valor, >= sí"
+    ],
+    "options_en": [
+      "> includes the value, >= does not",
+      "> is slower",
+      "There is no difference",
+      "> does not include the value, >= does"
+    ],
+    "correct_index": 3,
+    "explanation_es": "> devuelve mayores (sin incluir el valor). >= devuelve mayores E iguales (incluyendo el valor).",
+    "explanation_en": "> returns greater than (excluding). >= returns greater than or equal (including).",
+    "source": "SQL Comparison Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120202mc006",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál consulta devuelve IDs de 1 a 5 inclusive?",
+    "question_en": "Which query returns IDs from 1 to 5 inclusive?",
+    "options_es": [
+      "SELECT * FROM t WHERE id > 1 AND id < 5",
+      "SELECT * FROM t WHERE id > 1 AND id <= 5",
+      "SELECT * FROM t WHERE id >= 1 AND id <= 5",
+      "SELECT * FROM t WHERE id = 1 AND id = 5"
+    ],
+    "options_en": [
+      "SELECT * FROM t WHERE id > 1 AND id < 5",
+      "SELECT * FROM t WHERE id > 1 AND id <= 5",
+      "SELECT * FROM t WHERE id >= 1 AND id <= 5",
+      "SELECT * FROM t WHERE id = 1 AND id = 5"
+    ],
+    "correct_index": 2,
+    "explanation_es": ">= y <= incluyen los extremos. > y < los excluyen.",
+    "explanation_en": ">= and <= include the boundaries. > and < exclude them.",
+    "source": "SQL Comparison Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120202mc007",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuáles son los números devueltos por WHERE x > 5 AND x < 10 de [3,5,7,9,10,12]?",
+    "question_en": "Which numbers are returned by WHERE x > 5 AND x < 10 from [3,5,7,9,10,12]?",
+    "options_es": [
+      "5,7,9,10",
+      "6,7,8,9",
+      "7,9",
+      "5,7,9"
+    ],
+    "options_en": [
+      "5,7,9,10",
+      "6,7,8,9",
+      "7,9",
+      "5,7,9"
+    ],
+    "correct_index": 2,
+    "explanation_es": "> 5 excluye 5. < 10 excluye 10. Solo 7 y 9 están entre 5 y 10 (exclusivo).",
+    "explanation_en": "> 5 excludes 5. < 10 excludes 10. Only 7 and 9 are between 5 and 10 (exclusive).",
+    "source": "SQL Comparison Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 50000
+  },
+  {
+    "id": "q120202mc008",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuántas comparaciones hace WHERE a = 1 AND b != 2 AND c > 3?",
+    "question_en": "How many comparisons does WHERE a = 1 AND b != 2 AND c > 3 perform?",
+    "options_es": [
+      "1",
+      "2",
+      "3",
+      "6"
+    ],
+    "options_en": [
+      "1",
+      "2",
+      "3",
+      "6"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Tres comparadores: = , != y >. Se compara a con 1, b con 2, y c con 3.",
+    "explanation_en": "Three comparisons: = , != and >. Comparing a to 1, b to 2, and c to 3.",
+    "source": "SQL Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120202mc009",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál operador devuelve menor o igual?",
+    "question_en": "Which operator returns less than or equal?",
+    "options_es": [
+      "<",
+      "=<",
+      "<=",
+      "<<"
+    ],
+    "options_en": [
+      "<",
+      "=<",
+      "<=",
+      "<<"
+    ],
+    "correct_index": 2,
+    "explanation_es": "<= devuelve menores o iguales. =< es incorrecto. < solo devuelve menores.",
+    "explanation_en": "<= returns less than or equal. =< is incorrect. < only returns less than.",
+    "source": "SQL Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120202mc010",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué devuelve precio != 100 para [50, 100, 150]?",
+    "question_en": "What does price != 100 return for [50, 100, 150]?",
+    "options_es": [
+      "50, 150",
+      "50, 100, 150",
+      "100",
+      "Ninguno"
+    ],
+    "options_en": [
+      "50, 150",
+      "50, 100, 150",
+      "100",
+      "None"
+    ],
+    "correct_index": 0,
+    "explanation_es": "!= devuelve todos excepto los que son iguales a 100. Solo 50 y 150 cumplen.",
+    "explanation_en": "!= returns all except those equal to 100. Only 50 and 150 qualify.",
+    "source": "SQL Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120202mc011",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Es 5 > 5 verdadero o falso?",
+    "question_en": "Is 5 > 5 true or false?",
+    "options_es": [
+      "Verdadero",
+      "Falso",
+      "Depende del contexto",
+      "Ninguno"
+    ],
+    "options_en": [
+      "True",
+      "False",
+      "Depends on context",
+      "Neither"
+    ],
+    "correct_index": 1,
+    "explanation_es": "> es 'mayor que', no 'mayor o igual'. 5 no es mayor que 5, es igual. Falso.",
+    "explanation_en": "> is 'greater than', not 'greater than or equal'. 5 is not greater than 5, it equals 5. False.",
+    "source": "SQL Comparison Operators – https://www.w3schools.com/sql/sql_operators.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120202mc012",
+    "skill_id": "sk120202",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el orden de precedencia entre =, <, y AND?",
+    "question_en": "What is the operator precedence for =, <, and AND?",
+    "options_es": [
+      "Todos iguales",
+      "= y < primero, luego AND",
+      "AND primero",
+      "De izquierda a derecha"
+    ],
+    "options_en": [
+      "All equal",
+      "= and < first, then AND",
+      "AND first",
+      "Left to right"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Los operadores de comparación (=, <, etc.) se evalúan antes que AND.",
+    "explanation_en": "Comparison operators (=, <, etc.) are evaluated before AND.",
+    "source": "SQL Operator Precedence – https://www.sqlite.org/lang_expr.html",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120203sql001",
+    "skill_id": "sk120203",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuáles son los nombres de clientes cuyo nombre empieza con 'A'?",
+    "question_en": "What are the names of customers whose name starts with 'A'?",
+    "code_es": "CREATE TABLE customers (id INTEGER, name TEXT);\nINSERT INTO customers VALUES (1,'Alice');\nINSERT INTO customers VALUES (2,'Bob');\nINSERT INTO customers VALUES (3,'Amy');\nINSERT INTO customers VALUES (4,'Carlos');\nINSERT INTO customers VALUES (5,'Andrea');\nSELECT name FROM customers WHERE ___",
+    "code_en": "CREATE TABLE customers (id INTEGER, name TEXT);\nINSERT INTO customers VALUES (1,'Alice');\nINSERT INTO customers VALUES (2,'Bob');\nINSERT INTO customers VALUES (3,'Amy');\nINSERT INTO customers VALUES (4,'Carlos');\nINSERT INTO customers VALUES (5,'Andrea');\nSELECT name FROM customers WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n-------\nAlice\nAmy\nAndrea",
+    "correct_answer_en": "name\n-------\nAlice\nAmy\nAndrea",
+    "explanation_es": "LIKE 'A%' devuelve nombres que empiezan con 'A'. % es comodín para cualquier cantidad de caracteres.",
+    "explanation_en": "LIKE 'A%' returns names starting with 'A'. % is a wildcard for any characters.",
+    "source": "SQLite LIKE – https://www.sqlite.org/lang_expr.html#like",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120203sql002",
+    "skill_id": "sk120203",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuáles son los IDs de productos con precio entre 50 y 150 (inclusive)?",
+    "question_en": "What are the IDs of products with price between 50 and 150 (inclusive)?",
+    "code_es": "CREATE TABLE products (id INTEGER, name TEXT, price INTEGER);\nINSERT INTO products VALUES (1,'Pen',10);\nINSERT INTO products VALUES (2,'Book',50);\nINSERT INTO products VALUES (3,'Monitor',150);\nINSERT INTO products VALUES (4,'Laptop',1200);\nINSERT INTO products VALUES (5,'Mouse',25);\nSELECT id FROM products WHERE ___",
+    "code_en": "CREATE TABLE products (id INTEGER, name TEXT, price INTEGER);\nINSERT INTO products VALUES (1,'Pen',10);\nINSERT INTO products VALUES (2,'Book',50);\nINSERT INTO products VALUES (3,'Monitor',150);\nINSERT INTO products VALUES (4,'Laptop',1200);\nINSERT INTO products VALUES (5,'Mouse',25);\nSELECT id FROM products WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id\n--\n2\n3",
+    "correct_answer_en": "id\n--\n2\n3",
+    "explanation_es": "BETWEEN 50 AND 150 incluye 50 y 150. Book (50) y Monitor (150) están en el rango.",
+    "explanation_en": "BETWEEN 50 AND 150 includes 50 and 150. Book (50) and Monitor (150) are in range.",
+    "source": "SQLite BETWEEN – https://www.sqlite.org/lang_expr.html#between",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120203sql003",
+    "skill_id": "sk120203",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuáles son los nombres de ciudades cuya ciudad está en ('Madrid', 'Barcelona', 'Valencia')?",
+    "question_en": "What are the names of cities whose city is in ('Madrid', 'Barcelona', 'Valencia')?",
+    "code_es": "CREATE TABLE offices (id INTEGER, city TEXT);\nINSERT INTO offices VALUES (1,'Madrid');\nINSERT INTO offices VALUES (2,'Lisbon');\nINSERT INTO offices VALUES (3,'Barcelona');\nINSERT INTO offices VALUES (4,'Paris');\nINSERT INTO offices VALUES (5,'Valencia');\nSELECT city FROM offices WHERE ___",
+    "code_en": "CREATE TABLE offices (id INTEGER, city TEXT);\nINSERT INTO offices VALUES (1,'Madrid');\nINSERT INTO offices VALUES (2,'Lisbon');\nINSERT INTO offices VALUES (3,'Barcelona');\nINSERT INTO offices VALUES (4,'Paris');\nINSERT INTO offices VALUES (5,'Valencia');\nSELECT city FROM offices WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "city\n---------\nMadrid\nBarcelona\nValencia",
+    "correct_answer_en": "city\n---------\nMadrid\nBarcelona\nValencia",
+    "explanation_es": "IN lista valores específicos. city IN ('Madrid','Barcelona','Valencia') devuelve las ciudades en la lista.",
+    "explanation_en": "IN lists specific values. city IN ('Madrid','Barcelona','Valencia') returns cities in the list.",
+    "source": "SQLite IN – https://www.sqlite.org/lang_expr.html#in",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120203mc001",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve LIKE 'A%'?",
+    "question_en": "What does LIKE 'A%' return?",
+    "options_es": [
+      "Palabras que contienen A",
+      "Palabras que terminan con A",
+      "Palabras que empiezan con A",
+      "Solo la letra A"
+    ],
+    "options_en": [
+      "Words containing A",
+      "Words ending with A",
+      "Words starting with A",
+      "Only letter A"
+    ],
+    "correct_index": 2,
+    "explanation_es": "'A%' coincide con A al inicio y % con cualquier cosa después. Así 'A%' = empieza con A.",
+    "explanation_en": "'A%' matches A at start and % with anything after. So 'A%' = starts with A.",
+    "source": "SQL LIKE Wildcards – https://www.w3schools.com/sql/sql_like.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120203mc002",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve LIKE '%o'?",
+    "question_en": "What does LIKE '%o' return?",
+    "options_es": [
+      "Palabras que empiezan con o",
+      "Palabras que contienen o",
+      "Palabras que terminan con o",
+      "Palabras de 1 carácter"
+    ],
+    "options_en": [
+      "Words starting with o",
+      "Words containing o",
+      "Words ending with o",
+      "One-character words"
+    ],
+    "correct_index": 2,
+    "explanation_es": "'%o' coincide con cualquier cosa antes (%) y 'o' al final.",
+    "explanation_en": "'%o' matches anything before (%) and 'o' at the end.",
+    "source": "SQL LIKE Wildcards – https://www.w3schools.com/sql/sql_like.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120203mc003",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve LIKE '%o%'?",
+    "question_en": "What does LIKE '%o%' return?",
+    "options_es": [
+      "Solo o",
+      "Empieza con o",
+      "Termina con o",
+      "Contiene o en cualquier lugar"
+    ],
+    "options_en": [
+      "Only o",
+      "Starts with o",
+      "Ends with o",
+      "Contains o anywhere"
+    ],
+    "correct_index": 3,
+    "explanation_es": "'%o%' tiene comodín antes y después de 'o', así que coincide con cualquier cadena que contenga 'o'.",
+    "explanation_en": "'%o%' has wildcards before and after 'o', so it matches any string containing 'o'.",
+    "source": "SQL LIKE Wildcards – https://www.w3schools.com/sql/sql_like.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120203mc004",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál patrón LIKE coincide con 'test', 'testing', 'tested'?",
+    "question_en": "Which LIKE pattern matches 'test', 'testing', 'tested'?",
+    "options_es": [
+      "'test'",
+      "'test_'",
+      "'test%'",
+      "'_test%'"
+    ],
+    "options_en": [
+      "'test'",
+      "'test_'",
+      "'test%'",
+      "'_test%'"
+    ],
+    "correct_index": 2,
+    "explanation_es": "'test%' coincide con 'test' seguido de cualquier cantidad de caracteres (0 o más).",
+    "explanation_en": "'test%' matches 'test' followed by any characters (0 or more).",
+    "source": "SQL LIKE Wildcards – https://www.w3schools.com/sql/sql_like.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120203mc005",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre % y _ en LIKE?",
+    "question_en": "What is the difference between % and _ in LIKE?",
+    "options_es": [
+      "% = cualquier número de caracteres, _ = exactamente 1 carácter",
+      "Ninguna diferencia",
+      "_ = cualquier número, % = exactamente 1",
+      "% = números, _ = letras"
+    ],
+    "options_en": [
+      "% = any number of characters, _ = exactly 1 character",
+      "No difference",
+      "_ = any number, % = exactly 1",
+      "% = numbers, _ = letters"
+    ],
+    "correct_index": 0,
+    "explanation_es": "% es comodín para cualquier cantidad (0 o más). _ es comodín para exactamente 1 carácter.",
+    "explanation_en": "% is wildcard for any amount (0+). _ is wildcard for exactly 1 character.",
+    "source": "SQL LIKE Wildcards – https://www.w3schools.com/sql/sql_like.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120203mc006",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál patrón LIKE coincide con cadenas de exactamente 5 caracteres comenzando con 'a'?",
+    "question_en": "Which LIKE pattern matches exactly 5 characters starting with 'a'?",
+    "options_es": [
+      "'a%'",
+      "'a____'",
+      "'a____%'",
+      "'a%5'"
+    ],
+    "options_en": [
+      "'a%'",
+      "'a____'",
+      "'a____%'",
+      "'a%5'"
+    ],
+    "correct_index": 1,
+    "explanation_es": "'a____' = 'a' + 4 caracteres (cada _ = 1 carácter). Total = 5 caracteres.",
+    "explanation_en": "'a____' = 'a' + 4 characters (each _ = 1). Total = 5 characters.",
+    "source": "SQL LIKE Wildcards – https://www.w3schools.com/sql/sql_like.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120203mc007",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿BETWEEN 1 AND 10 incluye 1 y 10?",
+    "question_en": "Does BETWEEN 1 AND 10 include 1 and 10?",
+    "options_es": [
+      "Ambos inclusivo",
+      "Ambos exclusivo",
+      "1 inclusivo, 10 exclusivo",
+      "1 exclusivo, 10 inclusivo"
+    ],
+    "options_en": [
+      "Both inclusive",
+      "Both exclusive",
+      "1 inclusive, 10 exclusive",
+      "1 exclusive, 10 inclusive"
+    ],
+    "correct_index": 0,
+    "explanation_es": "BETWEEN es inclusivo en ambos extremos. BETWEEN 1 AND 10 incluye 1, 2, ..., 10.",
+    "explanation_en": "BETWEEN is inclusive on both ends. BETWEEN 1 AND 10 includes 1, 2, ..., 10.",
+    "source": "SQL BETWEEN – https://www.w3schools.com/sql/sql_between.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120203mc008",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es equivalente a BETWEEN 1 AND 10?",
+    "question_en": "What is equivalent to BETWEEN 1 AND 10?",
+    "options_es": [
+      "WHERE value > 1 AND value < 10",
+      "WHERE value >= 1 AND value <= 10",
+      "WHERE value >= 1 AND value < 10",
+      "WHERE value > 1 AND value <= 10"
+    ],
+    "options_en": [
+      "WHERE value > 1 AND value < 10",
+      "WHERE value >= 1 AND value <= 10",
+      "WHERE value >= 1 AND value < 10",
+      "WHERE value > 1 AND value <= 10"
+    ],
+    "correct_index": 1,
+    "explanation_es": "BETWEEN es inclusivo: >= AND <=",
+    "explanation_en": "BETWEEN is inclusive: >= AND <=",
+    "source": "SQL BETWEEN – https://www.w3schools.com/sql/sql_between.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120203mc009",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis correcta de IN?",
+    "question_en": "What is the correct syntax for IN?",
+    "options_es": [
+      "WHERE value IN 1, 2, 3",
+      "WHERE IN value (1, 2, 3)",
+      "WHERE value = IN (1, 2, 3)",
+      "WHERE value IN (1, 2, 3)"
+    ],
+    "options_en": [
+      "WHERE value IN 1, 2, 3",
+      "WHERE IN value (1, 2, 3)",
+      "WHERE value = IN (1, 2, 3)",
+      "WHERE value IN (1, 2, 3)"
+    ],
+    "correct_index": 3,
+    "explanation_es": "IN requiere paréntesis alrededor de la lista de valores.",
+    "explanation_en": "IN requires parentheses around the list of values.",
+    "source": "SQL IN – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120203mc010",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es equivalente a WHERE status IN ('active','pending')?",
+    "question_en": "What is equivalent to WHERE status IN ('active','pending')?",
+    "options_es": [
+      "WHERE status = 'active' OR status = 'pending'",
+      "WHERE status = 'active' AND status = 'pending'",
+      "WHERE status LIKE 'active%'",
+      "WHERE status BETWEEN 'active' AND 'pending'"
+    ],
+    "options_en": [
+      "WHERE status = 'active' OR status = 'pending'",
+      "WHERE status = 'active' AND status = 'pending'",
+      "WHERE status LIKE 'active%'",
+      "WHERE status BETWEEN 'active' AND 'pending'"
+    ],
+    "correct_index": 0,
+    "explanation_es": "IN es sintaxis compacta para múltiples OR.",
+    "explanation_en": "IN is compact syntax for multiple ORs.",
+    "source": "SQL IN – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120203mc011",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puede IN usarse con rangos como IN (1..10)?",
+    "question_en": "Can IN be used with ranges like IN (1..10)?",
+    "options_es": [
+      "No, hay que usar BETWEEN",
+      "Sí",
+      "Sí pero lento",
+      "Depende de la BD"
+    ],
+    "options_en": [
+      "No, use BETWEEN",
+      "Yes",
+      "Yes but slow",
+      "Depends on DB"
+    ],
+    "correct_index": 0,
+    "explanation_es": "IN es para valores específicos. Para rangos, BETWEEN es más apropiado.",
+    "explanation_en": "IN is for specific values. For ranges, BETWEEN is more appropriate.",
+    "source": "SQL IN vs BETWEEN – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120203mc012",
+    "skill_id": "sk120203",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es más eficiente: 'a LIKE '%test%'' O 'a IN ('...test...')'?",
+    "question_en": "Which is more efficient: 'a LIKE '%test%'' OR 'a IN ('...test...')?",
+    "options_es": [
+      "LIKE es más rápido",
+      "Igual velocidad",
+      "IN es más rápido",
+      "Depende del contenido"
+    ],
+    "options_en": [
+      "LIKE is faster",
+      "Equal speed",
+      "IN is faster",
+      "Depends on content"
+    ],
+    "correct_index": 2,
+    "explanation_es": "IN es más eficiente para búsqueda de valores exactos. LIKE usa patrones y es más lento.",
+    "explanation_en": "IN is more efficient for exact value matching. LIKE uses patterns and is slower.",
+    "source": "SQL Performance – https://www.sqlite.org/bestindex.html",
+    "expected_time_ms": 50000
+  },
+  {
+    "id": "q120204sql001",
+    "skill_id": "sk120204",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuáles son los nombres de empleados sin teléfono registrado?",
+    "question_en": "What are the names of employees with no phone registered?",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, phone TEXT);\nINSERT INTO employees VALUES (1,'Alice','555-1234');\nINSERT INTO employees VALUES (2,'Bob',NULL);\nINSERT INTO employees VALUES (3,'Carlos','555-5678');\nINSERT INTO employees VALUES (4,'Diana',NULL);\nSELECT name FROM employees WHERE ___",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, phone TEXT);\nINSERT INTO employees VALUES (1,'Alice','555-1234');\nINSERT INTO employees VALUES (2,'Bob',NULL);\nINSERT INTO employees VALUES (3,'Carlos','555-5678');\nINSERT INTO employees VALUES (4,'Diana',NULL);\nSELECT name FROM employees WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n-----\nBob\nDiana",
+    "correct_answer_en": "name\n-----\nBob\nDiana",
+    "explanation_es": "IS NULL devuelve filas donde el valor es NULL. Bob y Diana tienen NULL en phone.",
+    "explanation_en": "IS NULL returns rows where value is NULL. Bob and Diana have NULL phone.",
+    "source": "SQLite NULL – https://www.sqlite.org/lang_expr.html#isnull",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120204sql002",
+    "skill_id": "sk120204",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuáles son los nombres y teléfonos de empleados, mostrando 'N/A' si el teléfono es NULL?",
+    "question_en": "What are the names and phones of employees, showing 'N/A' if phone is NULL?",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, phone TEXT);\nINSERT INTO employees VALUES (1,'Alice','555-1234');\nINSERT INTO employees VALUES (2,'Bob',NULL);\nINSERT INTO employees VALUES (3,'Carlos','555-5678');\nSELECT name, ___ FROM employees",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, phone TEXT);\nINSERT INTO employees VALUES (1,'Alice','555-1234');\nINSERT INTO employees VALUES (2,'Bob',NULL);\nINSERT INTO employees VALUES (3,'Carlos','555-5678');\nSELECT name, ___ FROM employees",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name|phone\n--------|----------\nAlice|555-1234\nBob|N/A\nCarlos|555-5678",
+    "correct_answer_en": "name|phone\n--------|----------\nAlice|555-1234\nBob|N/A\nCarlos|555-5678",
+    "explanation_es": "COALESCE(phone, 'N/A') devuelve phone si no es NULL, o 'N/A' si lo es.",
+    "explanation_en": "COALESCE(phone, 'N/A') returns phone if not NULL, or 'N/A' if it is.",
+    "source": "SQLite COALESCE – https://www.sqlite.org/lang_corefunc.html#coalesce",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120204sql003",
+    "skill_id": "sk120204",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuáles son los IDs de clientes que sí tienen una dirección registrada?",
+    "question_en": "What are the IDs of customers who have an address registered?",
+    "code_es": "CREATE TABLE customers (id INTEGER, name TEXT, address TEXT);\nINSERT INTO customers VALUES (1,'Alice','123 Main St');\nINSERT INTO customers VALUES (2,'Bob',NULL);\nINSERT INTO customers VALUES (3,'Carlos','456 Oak Ave');\nINSERT INTO customers VALUES (4,'Diana',NULL);\nINSERT INTO customers VALUES (5,'Eve','789 Elm Rd');\nSELECT id FROM customers WHERE ___",
+    "code_en": "CREATE TABLE customers (id INTEGER, name TEXT, address TEXT);\nINSERT INTO customers VALUES (1,'Alice','123 Main St');\nINSERT INTO customers VALUES (2,'Bob',NULL);\nINSERT INTO customers VALUES (3,'Carlos','456 Oak Ave');\nINSERT INTO customers VALUES (4,'Diana',NULL);\nINSERT INTO customers VALUES (5,'Eve','789 Elm Rd');\nSELECT id FROM customers WHERE ___",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id\n--\n1\n3\n5",
+    "correct_answer_en": "id\n--\n1\n3\n5",
+    "explanation_es": "IS NOT NULL devuelve filas donde el valor NO es NULL. Alice, Carlos y Eve tienen dirección.",
+    "explanation_en": "IS NOT NULL returns rows where value is NOT NULL. Alice, Carlos, and Eve have addresses.",
+    "source": "SQLite NULL – https://www.sqlite.org/lang_expr.html#isnull",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120204mc001",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis correcta para buscar valores NULL?",
+    "question_en": "What is the correct syntax to search for NULL values?",
+    "options_es": [
+      "WHERE column IS NULL",
+      "WHERE column = NULL",
+      "WHERE column == NULL",
+      "WHERE NULL in column"
+    ],
+    "options_en": [
+      "WHERE column IS NULL",
+      "WHERE column = NULL",
+      "WHERE column == NULL",
+      "WHERE NULL in column"
+    ],
+    "correct_index": 0,
+    "explanation_es": "En SQL, IS NULL es la sintaxis correcta. = NULL siempre es falso (NULL != NULL).",
+    "explanation_en": "In SQL, IS NULL is correct. = NULL is always false (NULL != NULL).",
+    "source": "SQL NULL – https://www.w3schools.com/sql/sql_null_values.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120204mc002",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve NULL = NULL?",
+    "question_en": "What does NULL = NULL return?",
+    "options_es": [
+      "Verdadero",
+      "Falso",
+      "Unknown/NULL",
+      "Error"
+    ],
+    "options_en": [
+      "True",
+      "False",
+      "Unknown/NULL",
+      "Error"
+    ],
+    "correct_index": 2,
+    "explanation_es": "NULL = NULL devuelve NULL (unknown), no Verdadero. Por eso hay que usar IS NULL.",
+    "explanation_en": "NULL = NULL returns NULL (unknown), not True. That's why we use IS NULL.",
+    "source": "SQL NULL Behavior – https://www.w3schools.com/sql/sql_null_values.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120204mc003",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis correcta para buscar valores NO NULL?",
+    "question_en": "What is the correct syntax to search for NOT NULL values?",
+    "options_es": [
+      "WHERE column != NULL",
+      "WHERE column <> NULL",
+      "WHERE column IS NOT NULL",
+      "WHERE NOT NULL in column"
+    ],
+    "options_en": [
+      "WHERE column != NULL",
+      "WHERE column <> NULL",
+      "WHERE column IS NOT NULL",
+      "WHERE NOT NULL in column"
+    ],
+    "correct_index": 2,
+    "explanation_es": "IS NOT NULL es la sintaxis correcta. != NULL y <> NULL no funcionan.",
+    "explanation_en": "IS NOT NULL is correct. != NULL and <> NULL don't work.",
+    "source": "SQL NULL – https://www.w3schools.com/sql/sql_null_values.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120204mc004",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué hace COALESCE?",
+    "question_en": "What does COALESCE do?",
+    "options_es": [
+      "Devuelve el primer valor NO NULL",
+      "Devuelve NULL si hay valores nulos",
+      "Devuelve todos los valores NULL",
+      "Elimina NULL de la tabla"
+    ],
+    "options_en": [
+      "Returns the first NOT NULL value",
+      "Returns NULL if there are null values",
+      "Returns all NULL values",
+      "Removes NULL from table"
+    ],
+    "correct_index": 0,
+    "explanation_es": "COALESCE devuelve el primer argumento que no es NULL. Si todos son NULL, devuelve NULL.",
+    "explanation_en": "COALESCE returns the first non-NULL argument. If all are NULL, it returns NULL.",
+    "source": "SQL COALESCE – https://www.w3schools.com/sql/func_mysql_coalesce.asp",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120204mc005",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la sintaxis de COALESCE correcta?",
+    "question_en": "What is the correct COALESCE syntax?",
+    "options_es": [
+      "COALESCE value1 value2 value3",
+      "COALESCE(value1, value2, value3)",
+      "COALESCE [value1, value2, value3]",
+      "COALESCE value1|value2|value3"
+    ],
+    "options_en": [
+      "COALESCE value1 value2 value3",
+      "COALESCE(value1, value2, value3)",
+      "COALESCE [value1, value2, value3]",
+      "COALESCE value1|value2|value3"
+    ],
+    "correct_index": 1,
+    "explanation_es": "COALESCE usa paréntesis y comas para separar argumentos.",
+    "explanation_en": "COALESCE uses parentheses and commas to separate arguments.",
+    "source": "SQL COALESCE – https://www.sqlite.org/lang_corefunc.html#coalesce",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120204mc006",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es IFNULL exactamente igual a?",
+    "question_en": "What is IFNULL exactly equivalent to?",
+    "options_es": [
+      "IF(condition, value1, value2)",
+      "COALESCE(value1, value2)",
+      "CASE WHEN value1 IS NULL THEN value2 ELSE value1 END",
+      "Both B and C"
+    ],
+    "options_en": [
+      "IF(condition, value1, value2)",
+      "COALESCE(value1, value2)",
+      "CASE WHEN value1 IS NULL THEN value2 ELSE value1 END",
+      "Both B and C"
+    ],
+    "correct_index": 3,
+    "explanation_es": "IFNULL(value1, value2) y COALESCE(value1, value2) son iguales. También equivalentes al CASE mostrado.",
+    "explanation_en": "IFNULL(value1, value2) and COALESCE(value1, value2) are equivalent. Also to the CASE shown.",
+    "source": "SQL IFNULL – https://www.w3schools.com/sql/func_mysql_ifnull.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120204mc007",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el resultado de COALESCE(NULL, NULL, 'hello')?",
+    "question_en": "What is the result of COALESCE(NULL, NULL, 'hello')?",
+    "options_es": [
+      "NULL",
+      "Desconocido",
+      "Error",
+      "'hello'"
+    ],
+    "options_en": [
+      "NULL",
+      "Unknown",
+      "Error",
+      "'hello'"
+    ],
+    "correct_index": 3,
+    "explanation_es": "COALESCE devuelve el primer NO NULL. Saltando los dos primeros NULL, devuelve 'hello'.",
+    "explanation_en": "COALESCE returns the first non-NULL. Skipping the first two NULLs, it returns 'hello'.",
+    "source": "SQL COALESCE – https://www.sqlite.org/lang_corefunc.html#coalesce",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120204mc008",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el resultado de COALESCE(NULL, NULL, NULL)?",
+    "question_en": "What is the result of COALESCE(NULL, NULL, NULL)?",
+    "options_es": [
+      "NULL",
+      "0",
+      "Empty string",
+      "False"
+    ],
+    "options_en": [
+      "NULL",
+      "0",
+      "Empty string",
+      "False"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Si todos los argumentos son NULL, COALESCE devuelve NULL.",
+    "explanation_en": "If all arguments are NULL, COALESCE returns NULL.",
+    "source": "SQL COALESCE – https://www.sqlite.org/lang_corefunc.html#coalesce",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q120204mc009",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuántas columnas puede comprobar IS NULL?",
+    "question_en": "How many columns can IS NULL check?",
+    "options_es": [
+      "Solo 1",
+      "Máximo 2",
+      "Cualquier número",
+      "Con paréntesis máximo 3"
+    ],
+    "options_en": [
+      "Only 1",
+      "Maximum 2",
+      "Any number",
+      "With parentheses maximum 3"
+    ],
+    "correct_index": 0,
+    "explanation_es": "IS NULL comprueba una columna. Para múltiples, se usa IS NULL con AND/OR.",
+    "explanation_en": "IS NULL checks one column. For multiple, use IS NULL with AND/OR.",
+    "source": "SQL NULL – https://www.w3schools.com/sql/sql_null_values.asp",
+    "expected_time_ms": 35000
+  },
+  {
+    "id": "q120204mc010",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el equivalente de 'WHERE email IS NULL'?",
+    "question_en": "What is equivalent to 'WHERE email IS NULL'?",
+    "options_es": [
+      "WHERE NOT (email IS NOT NULL)",
+      "WHERE email = ''",
+      "WHERE email IS EMPTY",
+      "WHERE email LIKE ''"
+    ],
+    "options_en": [
+      "WHERE NOT (email IS NOT NULL)",
+      "WHERE email = ''",
+      "WHERE email IS EMPTY",
+      "WHERE email LIKE ''"
+    ],
+    "correct_index": 0,
+    "explanation_es": "NOT (email IS NOT NULL) es lógicamente equivalente a email IS NULL.",
+    "explanation_en": "NOT (email IS NOT NULL) is logically equivalent to email IS NULL.",
+    "source": "SQL NULL Logic – https://www.w3schools.com/sql/sql_null_values.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120204mc011",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuántos parámetros acepta COALESCE?",
+    "question_en": "How many parameters does COALESCE accept?",
+    "options_es": [
+      "Máximo 2",
+      "Máximo 5",
+      "Un número variable (mínimo 1)",
+      "Un número variable (mínimo 2)"
+    ],
+    "options_en": [
+      "Maximum 2",
+      "Maximum 5",
+      "Variable number (minimum 1)",
+      "Variable number (minimum 2)"
+    ],
+    "correct_index": 3,
+    "explanation_es": "COALESCE acepta un número variable de argumentos, pero mínimo 2 para ser útil.",
+    "explanation_en": "COALESCE accepts a variable number of arguments, but minimum 2 to be useful.",
+    "source": "SQL COALESCE – https://www.sqlite.org/lang_corefunc.html#coalesce",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120204mc012",
+    "skill_id": "sk120204",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál resultado tiene el riesgo de devolver NULL inesperadamente? A) SELECT COALESCE(col1, col2, NULL) B) SELECT IFNULL(col1, col2)",
+    "question_en": "Which result risks returning NULL unexpectedly? A) SELECT COALESCE(col1, col2, NULL) B) SELECT IFNULL(col1, col2)",
+    "options_es": [
+      "A",
+      "B",
+      "Ambas",
+      "Ninguna"
+    ],
+    "options_en": [
+      "A",
+      "B",
+      "Both",
+      "Neither"
+    ],
+    "correct_index": 0,
+    "explanation_es": "A corre riesgo: si col1 y col2 son NULL, devuelve NULL (el tercer arg). B es seguro: siempre devuelve algo.",
+    "explanation_en": "A has risk: if col1 and col2 are NULL, it returns NULL. B is safe: always returns something.",
+    "source": "SQL NULL Handling – https://www.sqlite.org/lang_corefunc.html#coalesce",
+    "expected_time_ms": 50000
+  }
+]

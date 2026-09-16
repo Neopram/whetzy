@@ -1,0 +1,1430 @@
+[
+  {
+    "id": "q120501sql001",
+    "skill_id": "sk120501",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Asigna un número de fila a cada empleado ordenado por salario descendente usando ROW_NUMBER().",
+    "question_en": "Assign a row number to each employee ordered by salary descending using ROW_NUMBER().",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL, dept TEXT);\nINSERT INTO employees VALUES (1,'Ana',50000,'Eng');\nINSERT INTO employees VALUES (2,'Bob',80000,'Eng');\nINSERT INTO employees VALUES (3,'Carlos',65000,'Mkt');\nINSERT INTO employees VALUES (4,'Diana',90000,'Eng');\nSELECT name, salary, ___()*OVER(ORDER BY salary DESC) AS rn FROM employees;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL, dept TEXT);\nINSERT INTO employees VALUES (1,'Ana',50000,'Eng');\nINSERT INTO employees VALUES (2,'Bob',80000,'Eng');\nINSERT INTO employees VALUES (3,'Carlos',65000,'Mkt');\nINSERT INTO employees VALUES (4,'Diana',90000,'Eng');\nSELECT name, salary, ___()*OVER(ORDER BY salary DESC) AS rn FROM employees;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | salary  | rn\nDiana  | 90000.0 | 1\nBob    | 80000.0 | 2\nCarlos | 65000.0 | 3\nAna    | 50000.0 | 4",
+    "correct_answer_en": "name   | salary  | rn\nDiana  | 90000.0 | 1\nBob    | 80000.0 | 2\nCarlos | 65000.0 | 3\nAna    | 50000.0 | 4",
+    "explanation_es": "ROW_NUMBER() asigna un número único a cada fila dentro de la ventana. A diferencia de RANK(), no deja huecos.",
+    "explanation_en": "ROW_NUMBER() assigns a unique number to each row within the window. Unlike RANK(), it does not leave gaps.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120501sql002",
+    "skill_id": "sk120501",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Usa RANK() para clasificar empleados por salario. Observa cómo maneja los empates.",
+    "question_en": "Use RANK() to rank employees by salary. Observe how it handles ties.",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',80000);\nINSERT INTO employees VALUES (3,'Carlos',80000);\nINSERT INTO employees VALUES (4,'Diana',90000);\nSELECT name, salary, ___()*OVER(ORDER BY salary DESC) AS rnk FROM employees;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',80000);\nINSERT INTO employees VALUES (3,'Carlos',80000);\nINSERT INTO employees VALUES (4,'Diana',90000);\nSELECT name, salary, ___()*OVER(ORDER BY salary DESC) AS rnk FROM employees;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | salary  | rnk\nDiana  | 90000.0 | 1\nBob    | 80000.0 | 2\nCarlos | 80000.0 | 2\nAna    | 50000.0 | 4",
+    "correct_answer_en": "name   | salary  | rnk\nDiana  | 90000.0 | 1\nBob    | 80000.0 | 2\nCarlos | 80000.0 | 2\nAna    | 50000.0 | 4",
+    "explanation_es": "RANK() deja huecos cuando hay empates. Bob y Carlos ambos reciben rango 2, y Diana recibe 4 (no 3).",
+    "explanation_en": "RANK() leaves gaps when there are ties. Bob and Carlos both get rank 2, and the next rank is 4 (not 3).",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120501sql003",
+    "skill_id": "sk120501",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Compara DENSE_RANK() vs RANK(). DENSE_RANK() no deja huecos.",
+    "question_en": "Compare DENSE_RANK() vs RANK(). DENSE_RANK() does not leave gaps.",
+    "code_es": "CREATE TABLE scores (id INTEGER, player TEXT, score REAL);\nINSERT INTO scores VALUES (1,'Alice',100);\nINSERT INTO scores VALUES (2,'Bob',100);\nINSERT INTO scores VALUES (3,'Charlie',85);\nSELECT player, score, ___()*OVER(ORDER BY score DESC) AS dr FROM scores;",
+    "code_en": "CREATE TABLE scores (id INTEGER, player TEXT, score REAL);\nINSERT INTO scores VALUES (1,'Alice',100);\nINSERT INTO scores VALUES (2,'Bob',100);\nINSERT INTO scores VALUES (3,'Charlie',85);\nSELECT player, score, ___()*OVER(ORDER BY score DESC) AS dr FROM scores;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "player  | score | dr\nAlice   | 100.0 | 1\nBob     | 100.0 | 1\nCharlie | 85.0  | 2",
+    "correct_answer_en": "player  | score | dr\nAlice   | 100.0 | 1\nBob     | 100.0 | 1\nCharlie | 85.0  | 2",
+    "explanation_es": "DENSE_RANK() es continuo sin huecos: Alice=1, Bob=1, Charlie=2. Con RANK() sería Alice=1, Bob=1, Charlie=3.",
+    "explanation_en": "DENSE_RANK() is continuous with no gaps: Alice=1, Bob=1, Charlie=2. With RANK() it would be Alice=1, Bob=1, Charlie=3.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120501mc001",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia principal entre ROW_NUMBER() y RANK()?",
+    "question_en": "What is the main difference between ROW_NUMBER() and RANK()?",
+    "options_es": [
+      "No hay diferencia, son sinónimos",
+      "ROW_NUMBER() se reinicia en cada partición; RANK() continúa",
+      "ROW_NUMBER() nunca deja huecos; RANK() deja huecos en empates",
+      "ROW_NUMBER() requiere ORDER BY; RANK() no"
+    ],
+    "options_en": [
+      "No difference, they are synonyms",
+      "ROW_NUMBER() resets per partition; RANK() continues",
+      "ROW_NUMBER() never leaves gaps; RANK() leaves gaps on ties",
+      "ROW_NUMBER() requires ORDER BY; RANK() does not"
+    ],
+    "correct_index": 2,
+    "explanation_es": "ROW_NUMBER() asigna números secuenciales sin huecos. RANK() asigna el mismo rango a valores iguales y deja huecos.",
+    "explanation_en": "ROW_NUMBER() assigns sequential numbers without gaps. RANK() gives the same rank to equal values and leaves gaps.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc002",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "En una ventana OVER(ORDER BY salary DESC), si tres empleados tienen el mismo salario, ¿qué valores asigna DENSE_RANK()?",
+    "question_en": "In a window OVER(ORDER BY salary DESC), if three employees have the same salary, what values does DENSE_RANK() assign?",
+    "options_es": [
+      "1, 1, 1 (después el siguiente es 2)",
+      "1, 2, 3 (cada uno obtiene su número)",
+      "1, 1, 2 (algo intermedio)",
+      "1, 1, 1 (el siguiente siempre es 4)"
+    ],
+    "options_en": [
+      "1, 1, 1 (then the next is 2)",
+      "1, 2, 3 (each gets its own number)",
+      "1, 1, 2 (something in between)",
+      "1, 1, 1 (the next is always 4)"
+    ],
+    "correct_index": 0,
+    "explanation_es": "DENSE_RANK() asigna el mismo rango a valores iguales y continúa sin huecos: 1, 1, 1, 2 (no 1, 1, 1, 4).",
+    "explanation_en": "DENSE_RANK() assigns the same rank to equal values and continues without gaps: 1, 1, 1, 2 (not 1, 1, 1, 4).",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc003",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Es posible usar ROW_NUMBER() sin una cláusula ORDER BY en la ventana?",
+    "question_en": "Is it possible to use ROW_NUMBER() without an ORDER BY clause in the window?",
+    "options_es": [
+      "No, ORDER BY es obligatorio",
+      "Sí, pero el orden de filas es no determinista",
+      "Sí, se ordena automáticamente por ID",
+      "Solo en SQLite, no en otros dialectos"
+    ],
+    "options_en": [
+      "No, ORDER BY is mandatory",
+      "Yes, but the row order is non-deterministic",
+      "Yes, it automatically sorts by ID",
+      "Only in SQLite, not in other dialects"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Técnicamente es permitido, pero sin ORDER BY el orden de asignación de números es impredecible.",
+    "explanation_en": "Technically allowed, but without ORDER BY the assignment order is unpredictable.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc004",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "Si ejecutas ROW_NUMBER() OVER(ORDER BY salary) dos veces en la misma consulta, ¿obtienen diferente número de fila?",
+    "question_en": "If you execute ROW_NUMBER() OVER(ORDER BY salary) twice in the same query, do they get different row numbers?",
+    "options_es": [
+      "No, obtienen los mismos números",
+      "Sí, cada ocurrencia es independiente",
+      "Depende del índice",
+      "Imposible usar ROW_NUMBER() dos veces"
+    ],
+    "options_en": [
+      "No, they get the same numbers",
+      "Yes, each occurrence is independent",
+      "It depends on the index",
+      "Impossible to use ROW_NUMBER() twice"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Cada ventana es evaluada independientemente. La misma definición OVER produce el mismo resultado en ambas columnas.",
+    "explanation_en": "Each window is evaluated independently. The same OVER definition produces the same result in both columns.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc005",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el propósito principal de usar ROW_NUMBER() en consultas analíticas?",
+    "question_en": "What is the main purpose of using ROW_NUMBER() in analytical queries?",
+    "options_es": [
+      "Crear un identificador único y ordinal para cada fila dentro de una ventana",
+      "Contar el número total de filas en la tabla",
+      "Reemplazar la cláusula LIMIT",
+      "Optimizar índices automáticamente"
+    ],
+    "options_en": [
+      "Create a unique and ordinal identifier for each row within a window",
+      "Count the total number of rows in the table",
+      "Replace the LIMIT clause",
+      "Automatically optimize indexes"
+    ],
+    "correct_index": 0,
+    "explanation_es": "ROW_NUMBER() asigna un número único y ordenado a cada fila dentro de una ventana, útil para paginación, deduplicación, etc.",
+    "explanation_en": "ROW_NUMBER() assigns a unique and ordered number to each row within a window, useful for pagination, deduplication, etc.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc006",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se comporta RANK() cuando todos los valores en la ventana son idénticos?",
+    "question_en": "How does RANK() behave when all values in the window are identical?",
+    "options_es": [
+      "Produce error",
+      "Se reparten números secuenciales 1, 2, 3...",
+      "Todos obtienen rango 1, el siguiente sería n+1",
+      "Solo el primero obtiene 1, el resto obtiene NULL"
+    ],
+    "options_en": [
+      "Produces an error",
+      "Sequential numbers are distributed 1, 2, 3...",
+      "All get rank 1, the next would be n+1",
+      "Only the first gets 1, the rest get NULL"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Si todos son iguales, RANK() asigna 1 a todos. El siguiente rango diferente sería n+1 (dejando huecos).",
+    "explanation_en": "If all are equal, RANK() assigns 1 to all. The next different rank would be n+1 (leaving gaps).",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc007",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál de estas ventanas es válida para ROW_NUMBER()?",
+    "question_en": "Which of these window definitions is valid for ROW_NUMBER()?",
+    "options_es": [
+      "OVER(ORDER BY id)",
+      "OVER(PARTITION BY dept, ORDER BY salary DESC)",
+      "OVER()",
+      "Ambas A y C"
+    ],
+    "options_en": [
+      "OVER(ORDER BY id)",
+      "OVER(PARTITION BY dept, ORDER BY salary DESC)",
+      "OVER()",
+      "Both A and C"
+    ],
+    "correct_index": 3,
+    "explanation_es": "ROW_NUMBER() funciona con OVER() vacío (no determinista) o con ORDER BY. La opción B tiene sintaxis incorrecta (coma extra).",
+    "explanation_en": "ROW_NUMBER() works with empty OVER() (non-deterministic) or with ORDER BY. Option B has incorrect syntax (extra comma).",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc008",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "Cuando usas RANK() sin PARTITION BY, ¿abarca el rango toda la tabla o solo la primera partición?",
+    "question_en": "When you use RANK() without PARTITION BY, does the ranking cover the entire table or only the first partition?",
+    "options_es": [
+      "Solo la primera partición",
+      "Toda la tabla (una sola ventana global)",
+      "Se divide automáticamente en particiones",
+      "Es un error de sintaxis"
+    ],
+    "options_en": [
+      "Only the first partition",
+      "The entire table (one global window)",
+      "Automatically divided into partitions",
+      "It is a syntax error"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Sin PARTITION BY, se forma una única ventana global que abarca toda la tabla.",
+    "explanation_en": "Without PARTITION BY, a single global window is formed that spans the entire table.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc009",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puedes usar DISTINCT en combinación con ROW_NUMBER()?",
+    "question_en": "Can you use DISTINCT in combination with ROW_NUMBER()?",
+    "options_es": [
+      "No, produce error de sintaxis",
+      "Sí, pero la numeración ocurre después del DISTINCT",
+      "Sí, pero solo en subconsultas",
+      "Solo en PostgreSQL, no en SQLite"
+    ],
+    "options_en": [
+      "No, it produces a syntax error",
+      "Yes, but numbering occurs after DISTINCT",
+      "Yes, but only in subqueries",
+      "Only in PostgreSQL, not in SQLite"
+    ],
+    "correct_index": 1,
+    "explanation_es": "SELECT DISTINCT con ROW_NUMBER() es válido: primero se elimina duplicados, luego se numera.",
+    "explanation_en": "SELECT DISTINCT with ROW_NUMBER() is valid: duplicates are eliminated first, then numbered.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc010",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puede ROW_NUMBER() reiniciarse dentro de una partición?",
+    "question_en": "Can ROW_NUMBER() restart within a partition?",
+    "options_es": [
+      "No, siempre es global",
+      "Sí, si se usa PARTITION BY",
+      "Solo si es explícitamente reiniciado",
+      "Depende de la base de datos"
+    ],
+    "options_en": [
+      "No, it is always global",
+      "Yes, if PARTITION BY is used",
+      "Only if explicitly reset",
+      "It depends on the database"
+    ],
+    "correct_index": 1,
+    "explanation_es": "PARTITION BY hace que ROW_NUMBER() reinicie en 1 para cada partición.",
+    "explanation_en": "PARTITION BY causes ROW_NUMBER() to restart at 1 for each partition.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc011",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "Cuando tienes un empate en ORDER BY, ¿cuál es el orden de ROW_NUMBER() entre los empatados?",
+    "question_en": "When you have a tie in ORDER BY, what is the order of ROW_NUMBER() among the tied rows?",
+    "options_es": [
+      "Debe ser definido explícitamente",
+      "Siempre alfabético",
+      "Siempre por ID",
+      "No determinista (depende del orden físico o de detalles de implementación)"
+    ],
+    "options_en": [
+      "Must be explicitly defined",
+      "Always alphabetical",
+      "Always by ID",
+      "Non-deterministic (depends on physical order or implementation details)"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Sin un ORDER BY secundario que desempate, el orden de ROW_NUMBER() entre filas empatadas es no determinista.",
+    "explanation_en": "Without a secondary ORDER BY to break ties, the order of ROW_NUMBER() among tied rows is non-deterministic.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120501mc012",
+    "skill_id": "sk120501",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puedes usar funciones de agregación (SUM, AVG) junto con ROW_NUMBER() en la misma consulta?",
+    "question_en": "Can you use aggregate functions (SUM, AVG) together with ROW_NUMBER() in the same query?",
+    "options_es": [
+      "Sí, siempre y cuando ambas estén en OVER()",
+      "No, son incompatibles",
+      "Sí, pero solo como funciones de ventana",
+      "Solo en PostgreSQL"
+    ],
+    "options_en": [
+      "Yes, as long as both are in OVER()",
+      "No, they are incompatible",
+      "Yes, but only as window functions",
+      "Only in PostgreSQL"
+    ],
+    "correct_index": 1,
+    "explanation_es": "ROW_NUMBER() devuelve un número ordinal, no agregaciones. No pueden usarse en la misma columna SELECT.",
+    "explanation_en": "ROW_NUMBER() returns an ordinal number, not aggregates. They cannot be used in the same SELECT column.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502sql001",
+    "skill_id": "sk120502",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Usa LAG() para obtener el salario anterior de cada empleado ordenado por ID.",
+    "question_en": "Use LAG() to get the previous salary for each employee ordered by ID.",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',60000);\nINSERT INTO employees VALUES (3,'Carlos',70000);\nSELECT id, name, salary, ___(salary)*OVER(ORDER BY id) AS prev_salary FROM employees;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',60000);\nINSERT INTO employees VALUES (3,'Carlos',70000);\nSELECT id, name, salary, ___(salary)*OVER(ORDER BY id) AS prev_salary FROM employees;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | name   | salary  | prev_salary\n1  | Ana    | 50000.0 | NULL\n2  | Bob    | 60000.0 | 50000.0\n3  | Carlos | 70000.0 | 60000.0",
+    "correct_answer_en": "id | name   | salary  | prev_salary\n1  | Ana    | 50000.0 | NULL\n2  | Bob    | 60000.0 | 50000.0\n3  | Carlos | 70000.0 | 60000.0",
+    "explanation_es": "LAG() obtiene el valor de la fila anterior en la ventana. La primera fila devuelve NULL porque no hay fila anterior.",
+    "explanation_en": "LAG() retrieves the value from the previous row in the window. The first row returns NULL because there is no previous row.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120502sql002",
+    "skill_id": "sk120502",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Usa LEAD() para obtener el próximo valor de una serie de transacciones.",
+    "question_en": "Use LEAD() to get the next value in a transaction series.",
+    "code_es": "CREATE TABLE transactions (id INTEGER, amount REAL, date TEXT);\nINSERT INTO transactions VALUES (1,100.0,'2025-01-01');\nINSERT INTO transactions VALUES (2,150.0,'2025-01-02');\nINSERT INTO transactions VALUES (3,200.0,'2025-01-03');\nSELECT id, amount, ___(amount)*OVER(ORDER BY date) AS next_amount FROM transactions;",
+    "code_en": "CREATE TABLE transactions (id INTEGER, amount REAL, date TEXT);\nINSERT INTO transactions VALUES (1,100.0,'2025-01-01');\nINSERT INTO transactions VALUES (2,150.0,'2025-01-02');\nINSERT INTO transactions VALUES (3,200.0,'2025-01-03');\nSELECT id, amount, ___(amount)*OVER(ORDER BY date) AS next_amount FROM transactions;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | amount  | next_amount\n1  | 100.0   | 150.0\n2  | 150.0   | 200.0\n3  | 200.0   | NULL",
+    "correct_answer_en": "id | amount  | next_amount\n1  | 100.0   | 150.0\n2  | 150.0   | 200.0\n3  | 200.0   | NULL",
+    "explanation_es": "LEAD() obtiene el valor de la fila siguiente. La última fila devuelve NULL porque no hay fila siguiente.",
+    "explanation_en": "LEAD() retrieves the value from the next row. The last row returns NULL because there is no next row.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120502sql003",
+    "skill_id": "sk120502",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Calcula la diferencia de ventas entre el mes actual y el mes anterior usando LAG().",
+    "question_en": "Calculate the sales difference between the current month and the previous month using LAG().",
+    "code_es": "CREATE TABLE sales (month TEXT, revenue REAL);\nINSERT INTO sales VALUES ('2025-01',1000.0);\nINSERT INTO sales VALUES ('2025-02',1500.0);\nINSERT INTO sales VALUES ('2025-03',1200.0);\nSELECT month, revenue, revenue - ___(revenue, 0)*OVER(ORDER BY month) AS diff FROM sales;",
+    "code_en": "CREATE TABLE sales (month TEXT, revenue REAL);\nINSERT INTO sales VALUES ('2025-01',1000.0);\nINSERT INTO sales VALUES ('2025-02',1500.0);\nINSERT INTO sales VALUES ('2025-03',1200.0);\nSELECT month, revenue, revenue - ___(revenue, 0)*OVER(ORDER BY month) AS diff FROM sales;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "month   | revenue | diff\n2025-01 | 1000.0  | 1000.0\n2025-02 | 1500.0  | 500.0\n2025-03 | 1200.0  | -300.0",
+    "correct_answer_en": "month   | revenue | diff\n2025-01 | 1000.0  | 1000.0\n2025-02 | 1500.0  | 500.0\n2025-03 | 1200.0  | -300.0",
+    "explanation_es": "LAG(revenue, 0) devuelve el valor anterior o 0 si no existe. La diferencia muestra el cambio respecto al mes anterior.",
+    "explanation_en": "LAG(revenue, 0) returns the previous value or 0 if none exists. The difference shows the change from the previous month.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120502mc001",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre LAG() y LEAD()?",
+    "question_en": "What is the difference between LAG() and LEAD()?",
+    "options_es": [
+      "No hay diferencia, son sinónimos",
+      "LAG() es más lento que LEAD()",
+      "LAG() accede a la fila anterior; LEAD() accede a la fila siguiente",
+      "LAG() requiere PARTITION BY; LEAD() no"
+    ],
+    "options_en": [
+      "No difference, they are synonyms",
+      "LAG() is slower than LEAD()",
+      "LAG() accesses the previous row; LEAD() accesses the next row",
+      "LAG() requires PARTITION BY; LEAD() does not"
+    ],
+    "correct_index": 2,
+    "explanation_es": "LAG() obtiene datos de filas anteriores; LEAD() obtiene datos de filas siguientes, dentro de la ventana definida.",
+    "explanation_en": "LAG() gets data from previous rows; LEAD() gets data from next rows, within the defined window.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc002",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué devuelve LAG() cuando no hay fila anterior?",
+    "question_en": "What does LAG() return when there is no previous row?",
+    "options_es": [
+      "La primera fila de la tabla",
+      "0",
+      "Error",
+      "NULL"
+    ],
+    "options_en": [
+      "The first row of the table",
+      "0",
+      "Error",
+      "NULL"
+    ],
+    "correct_index": 3,
+    "explanation_es": "LAG() devuelve NULL cuando no hay fila anterior, a menos que se especifique un valor predeterminado.",
+    "explanation_en": "LAG() returns NULL when there is no previous row, unless a default value is specified.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc003",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puedes especificar una distancia en LAG(), como LAG(salary, 2)?",
+    "question_en": "Can you specify an offset in LAG(), like LAG(salary, 2)?",
+    "options_es": [
+      "Sí, pero solo en PostgreSQL",
+      "No, solo se puede acceder a la fila inmediatamente anterior",
+      "Sí, accede a 2 filas anteriores",
+      "No, el segundo parámetro solo es para valores predeterminados"
+    ],
+    "options_en": [
+      "Yes, but only in PostgreSQL",
+      "No, you can only access the immediately previous row",
+      "Yes, it accesses 2 rows back",
+      "No, the second parameter is only for default values"
+    ],
+    "correct_index": 2,
+    "explanation_es": "LAG(column, offset) accede a filas anteriores a una distancia especificada. LAG(salary, 2) obtiene el valor de hace 2 filas.",
+    "explanation_en": "LAG(column, offset) accesses previous rows at a specified distance. LAG(salary, 2) gets the value from 2 rows back.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc004",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la sintaxis correcta de LAG() con valor predeterminado?",
+    "question_en": "What is the correct syntax for LAG() with a default value?",
+    "options_es": [
+      "LAG(column, offset, default_value)",
+      "LAG(column DEFAULT default_value)",
+      "LAG(column) OR default_value",
+      "LAG(column, default_value)"
+    ],
+    "options_en": [
+      "LAG(column, offset, default_value)",
+      "LAG(column DEFAULT default_value)",
+      "LAG(column) OR default_value",
+      "LAG(column, default_value)"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La sintaxis es LAG(column, [offset], [default]). Ambos parámetros adicionales son opcionales.",
+    "explanation_en": "The syntax is LAG(column, [offset], [default]). Both additional parameters are optional.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc005",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Respeta LAG() la cláusula PARTITION BY?",
+    "question_en": "Does LAG() respect the PARTITION BY clause?",
+    "options_es": [
+      "No, LAG() ignora PARTITION BY",
+      "Sí, LAG() no cruza límites de partición",
+      "Solo en ciertos dialectos SQL",
+      "Depende de la versión de SQLite"
+    ],
+    "options_en": [
+      "No, LAG() ignores PARTITION BY",
+      "Yes, LAG() does not cross partition boundaries",
+      "Only in certain SQL dialects",
+      "It depends on the SQLite version"
+    ],
+    "correct_index": 1,
+    "explanation_es": "LAG() respeta PARTITION BY. Dentro de cada partición, LAG() accede solo a filas de esa partición.",
+    "explanation_en": "LAG() respects PARTITION BY. Within each partition, LAG() only accesses rows from that partition.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc006",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es un caso de uso típico para LEAD()?",
+    "question_en": "What is a typical use case for LEAD()?",
+    "options_es": [
+      "Reemplazar valores NULL",
+      "Contar el número total de filas",
+      "Detectar cambios entre períodos consecutivos",
+      "Crear índices de base de datos"
+    ],
+    "options_en": [
+      "Replace NULL values",
+      "Count the total number of rows",
+      "Detect changes between consecutive periods",
+      "Create database indexes"
+    ],
+    "correct_index": 2,
+    "explanation_es": "LEAD() se usa para comparar el valor actual con el siguiente (ej: detectar incrementos de precio, comparar métricas).",
+    "explanation_en": "LEAD() is used to compare the current value with the next (e.g., detect price increases, compare metrics).",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc007",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Pueden LAG() y LEAD() usarse juntas en la misma consulta?",
+    "question_en": "Can LAG() and LEAD() be used together in the same query?",
+    "options_es": [
+      "Sí, con ventanas compatibles",
+      "No, causan conflicto",
+      "Solo en subqueries",
+      "No, producen resultados ambiguos"
+    ],
+    "options_en": [
+      "Yes, with compatible windows",
+      "No, they cause conflict",
+      "Only in subqueries",
+      "No, they produce ambiguous results"
+    ],
+    "correct_index": 0,
+    "explanation_es": "LAG() y LEAD() pueden usarse juntas si comparten PARTITION BY y ORDER BY compatible.",
+    "explanation_en": "LAG() and LEAD() can be used together if they share compatible PARTITION BY and ORDER BY.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc008",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el comportamiento de LAG() si ORDER BY contiene múltiples columnas?",
+    "question_en": "What is the behavior of LAG() if ORDER BY contains multiple columns?",
+    "options_es": [
+      "Ignora todas salvo la última",
+      "Solo usa la primera columna",
+      "Produce un error",
+      "LAG() usa el orden lexicográfico de todas las columnas"
+    ],
+    "options_en": [
+      "Ignores all except the last",
+      "It only uses the first column",
+      "Produces an error",
+      "LAG() uses the lexicographic order of all columns"
+    ],
+    "correct_index": 3,
+    "explanation_es": "ORDER BY con múltiples columnas establece un orden compuesto. LAG() respeta ese orden para determinar la fila anterior.",
+    "explanation_en": "ORDER BY with multiple columns establishes a composite order. LAG() respects that order to determine the previous row.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc009",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué ocurre al usar LAG() con ROWS BETWEEN en la ventana?",
+    "question_en": "What happens when using LAG() with ROWS BETWEEN in the window?",
+    "options_es": [
+      "ROWS BETWEEN no afecta LAG()",
+      "LAG() falla",
+      "LAG() solo accede a filas en el rango BETWEEN",
+      "Produce comportamiento indefinido"
+    ],
+    "options_en": [
+      "ROWS BETWEEN does not affect LAG()",
+      "LAG() fails",
+      "LAG() only accesses rows in the BETWEEN range",
+      "Produces undefined behavior"
+    ],
+    "correct_index": 0,
+    "explanation_es": "LAG() accede a filas de la tabla, no del frame ROWS. ROWS BETWEEN se ignora para funciones de acceso como LAG().",
+    "explanation_en": "LAG() accesses rows from the table, not from the ROWS frame. ROWS BETWEEN is ignored for offset functions like LAG().",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc010",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué tipo de valor puede usarse como offset en LAG(salary, offset)?",
+    "question_en": "What type of value can be used as offset in LAG(salary, offset)?",
+    "options_es": [
+      "Cualquier número (incluido negativo)",
+      "Solo números enteros positivos",
+      "Solo constantes, no expresiones",
+      "Solo 0 o 1"
+    ],
+    "options_en": [
+      "Any number (including negative)",
+      "Only positive integers",
+      "Only constants, not expressions",
+      "Only 0 or 1"
+    ],
+    "correct_index": 1,
+    "explanation_es": "El offset debe ser un entero positivo. Representa cuántas filas hacia atrás se accede.",
+    "explanation_en": "The offset must be a positive integer. It represents how many rows backward to access.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc011",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puede LAG() usarse con funciones agregadas como LAG(SUM(salary))?",
+    "question_en": "Can LAG() be used with aggregate functions like LAG(SUM(salary))?",
+    "options_es": [
+      "No, solo con columnas base",
+      "Sí, LAG() puede envolver cualquier expresión",
+      "Solo en subconsultas",
+      "Depende del dialecto SQL"
+    ],
+    "options_en": [
+      "No, only with base columns",
+      "Yes, LAG() can wrap any expression",
+      "Only in subqueries",
+      "Depends on the SQL dialect"
+    ],
+    "correct_index": 1,
+    "explanation_es": "LAG() puede envolver cualquier expresión, incluidas agregaciones como SUM(salary).",
+    "explanation_en": "LAG() can wrap any expression, including aggregations like SUM(salary).",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120502mc012",
+    "skill_id": "sk120502",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el comportamiento de LEAD() en la última fila de una partición?",
+    "question_en": "What is the behavior of LEAD() on the last row of a partition?",
+    "options_es": [
+      "Devuelve NULL",
+      "Devuelve la primera fila de la siguiente partición",
+      "Produce un error",
+      "Devuelve 0"
+    ],
+    "options_en": [
+      "Returns NULL",
+      "Returns the first row of the next partition",
+      "Produces an error",
+      "Returns 0"
+    ],
+    "correct_index": 0,
+    "explanation_es": "LEAD() devuelve NULL cuando no hay fila siguiente dentro de la misma partición.",
+    "explanation_en": "LEAD() returns NULL when there is no next row within the same partition.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503sql001",
+    "skill_id": "sk120503",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Usa PARTITION BY dept para asignar números de fila por departamento.",
+    "question_en": "Use PARTITION BY dept to assign row numbers by department.",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana','Eng',50000);\nINSERT INTO employees VALUES (2,'Bob','Eng',80000);\nINSERT INTO employees VALUES (3,'Carlos','Mkt',65000);\nINSERT INTO employees VALUES (4,'Diana','Mkt',90000);\nSELECT dept, name, salary, ROW_NUMBER()OVER(PARTITION BY ___ ORDER BY salary DESC) AS rn FROM employees;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana','Eng',50000);\nINSERT INTO employees VALUES (2,'Bob','Eng',80000);\nINSERT INTO employees VALUES (3,'Carlos','Mkt',65000);\nINSERT INTO employees VALUES (4,'Diana','Mkt',90000);\nSELECT dept, name, salary, ROW_NUMBER()OVER(PARTITION BY ___ ORDER BY salary DESC) AS rn FROM employees;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "dept | name   | salary  | rn\nEng  | Bob    | 80000.0 | 1\nEng  | Ana    | 50000.0 | 2\nMkt  | Diana  | 90000.0 | 1\nMkt  | Carlos | 65000.0 | 2",
+    "correct_answer_en": "dept | name   | salary  | rn\nEng  | Bob    | 80000.0 | 1\nEng  | Ana    | 50000.0 | 2\nMkt  | Diana  | 90000.0 | 1\nMkt  | Carlos | 65000.0 | 2",
+    "explanation_es": "PARTITION BY dept divide la ventana en dos: una para Eng y otra para Mkt. Cada partición cuenta desde 1.",
+    "explanation_en": "PARTITION BY dept splits the window into two: one for Eng and one for Mkt. Each partition counts from 1.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120503sql002",
+    "skill_id": "sk120503",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Calcula el promedio salarial por departamento usando OVER().",
+    "question_en": "Calculate the average salary by department using OVER().",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana','Eng',50000);\nINSERT INTO employees VALUES (2,'Bob','Eng',80000);\nINSERT INTO employees VALUES (3,'Carlos','Mkt',65000);\nSELECT name, dept, salary, AVG(salary)___(PARTITION BY dept) AS avg_salary FROM employees;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana','Eng',50000);\nINSERT INTO employees VALUES (2,'Bob','Eng',80000);\nINSERT INTO employees VALUES (3,'Carlos','Mkt',65000);\nSELECT name, dept, salary, AVG(salary)___(PARTITION BY dept) AS avg_salary FROM employees;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | dept | salary  | avg_salary\nAna    | Eng  | 50000.0 | 65000.0\nBob    | Eng  | 80000.0 | 65000.0\nCarlos | Mkt  | 65000.0 | 65000.0",
+    "correct_answer_en": "name   | dept | salary  | avg_salary\nAna    | Eng  | 50000.0 | 65000.0\nBob    | Eng  | 80000.0 | 65000.0\nCarlos | Mkt  | 65000.0 | 65000.0",
+    "explanation_es": "OVER(PARTITION BY dept) divide la agregación por departamento. Eng promedia 65k, Mkt es 65k (un empleado).",
+    "explanation_en": "OVER(PARTITION BY dept) divides the aggregation by department. Eng averages 65k, Mkt is 65k (one employee).",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120503sql003",
+    "skill_id": "sk120503",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Usa PARTITION BY con múltiples columnas para crear ventanas independientes.",
+    "question_en": "Use PARTITION BY with multiple columns to create independent windows.",
+    "code_es": "CREATE TABLE sales (year INTEGER, quarter INTEGER, amount REAL);\nINSERT INTO sales VALUES (2025,1,1000);\nINSERT INTO sales VALUES (2025,1,1500);\nINSERT INTO sales VALUES (2025,2,2000);\nSELECT year, quarter, amount, SUM(amount)OVER(PARTITION BY ___, ___) AS total FROM sales;",
+    "code_en": "CREATE TABLE sales (year INTEGER, quarter INTEGER, amount REAL);\nINSERT INTO sales VALUES (2025,1,1000);\nINSERT INTO sales VALUES (2025,1,1500);\nINSERT INTO sales VALUES (2025,2,2000);\nSELECT year, quarter, amount, SUM(amount)OVER(PARTITION BY ___, ___) AS total FROM sales;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "year | quarter | amount | total\n2025 | 1       | 1000.0 | 2500.0\n2025 | 1       | 1500.0 | 2500.0\n2025 | 2       | 2000.0 | 2000.0",
+    "correct_answer_en": "year | quarter | amount | total\n2025 | 1       | 1000.0 | 2500.0\n2025 | 1       | 1500.0 | 2500.0\n2025 | 2       | 2000.0 | 2000.0",
+    "explanation_es": "PARTITION BY año y trimestre crea ventanas separadas. Q1 suma 2500, Q2 suma 2000.",
+    "explanation_en": "PARTITION BY year and quarter creates separate windows. Q1 totals 2500, Q2 totals 2000.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120503mc001",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué hace PARTITION BY en una cláusula OVER?",
+    "question_en": "What does PARTITION BY do in an OVER clause?",
+    "options_es": [
+      "Limita el número de filas",
+      "Ordena los datos",
+      "Divide los datos en grupos independientes para la ventana",
+      "Crea una subconsulta"
+    ],
+    "options_en": [
+      "Limits the number of rows",
+      "Sorts the data",
+      "Divides the data into independent groups for the window",
+      "Creates a subquery"
+    ],
+    "correct_index": 2,
+    "explanation_es": "PARTITION BY divide el conjunto de datos en particiones. Cada función de ventana se calcula por separado en cada partición.",
+    "explanation_en": "PARTITION BY divides the data set into partitions. Each window function is calculated separately for each partition.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc002",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Es obligatorio ORDER BY en una ventana OVER?",
+    "question_en": "Is ORDER BY mandatory in an OVER window?",
+    "options_es": [
+      "Solo si usas funciones como LAG()",
+      "Sí, siempre es requerido",
+      "No, es opcional",
+      "Solo si usas agregaciones"
+    ],
+    "options_en": [
+      "Only if you use functions like LAG()",
+      "Yes, it is always required",
+      "No, it is optional",
+      "Only if you use aggregations"
+    ],
+    "correct_index": 2,
+    "explanation_es": "ORDER BY es opcional en OVER. Su ausencia hace que el orden de filas sea no determinista, válido para algunas funciones.",
+    "explanation_en": "ORDER BY is optional in OVER. Its absence makes row order non-deterministic, which is valid for some functions.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc003",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Pueden coexistir PARTITION BY y ORDER BY en la misma ventana?",
+    "question_en": "Can PARTITION BY and ORDER BY coexist in the same window?",
+    "options_es": [
+      "Solo en algunas bases de datos",
+      "No, son mutuamente excluyentes",
+      "Sí, pero no tiene sentido",
+      "Sí, y la sintaxis es PARTITION BY ... ORDER BY ..."
+    ],
+    "options_en": [
+      "Only in some databases",
+      "No, they are mutually exclusive",
+      "Yes, but it makes no sense",
+      "Yes, and the syntax is PARTITION BY ... ORDER BY ..."
+    ],
+    "correct_index": 3,
+    "explanation_es": "PARTITION BY y ORDER BY se complementan. PARTITION BY agrupa, ORDER BY ordena dentro de cada grupo.",
+    "explanation_en": "PARTITION BY and ORDER BY complement each other. PARTITION BY groups, ORDER BY orders within each group.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc004",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué ocurre si usas una columna no existente en PARTITION BY?",
+    "question_en": "What happens if you use a non-existent column in PARTITION BY?",
+    "options_es": [
+      "Se crea una partición NULL",
+      "Se ignora silenciosamente",
+      "Error de sintaxis",
+      "Se usa la primera columna por defecto"
+    ],
+    "options_en": [
+      "A NULL partition is created",
+      "It is silently ignored",
+      "Syntax error",
+      "The first column is used by default"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Usar una columna no existente en PARTITION BY causa un error SQL.",
+    "explanation_en": "Using a non-existent column in PARTITION BY causes a SQL error.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc005",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puede una función de ventana usar PARTITION BY sin necesariamente usar ORDER BY?",
+    "question_en": "Can a window function use PARTITION BY without necessarily using ORDER BY?",
+    "options_es": [
+      "Sí, agregaciones como SUM() no requieren ORDER BY",
+      "No, ORDER BY es obligatorio con PARTITION BY",
+      "Solo funciones de offset como LAG()",
+      "Depende de la versión de SQLite"
+    ],
+    "options_en": [
+      "Yes, aggregations like SUM() do not require ORDER BY",
+      "No, ORDER BY is mandatory with PARTITION BY",
+      "Only offset functions like LAG()",
+      "It depends on the SQLite version"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Agregaciones (SUM, AVG, COUNT) pueden usar solo PARTITION BY sin ORDER BY. Funciones de acceso (LAG, LEAD, ROW_NUMBER) típicamente requieren ORDER BY.",
+    "explanation_en": "Aggregations (SUM, AVG, COUNT) can use PARTITION BY alone without ORDER BY. Offset functions (LAG, LEAD, ROW_NUMBER) typically require ORDER BY.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc006",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre GROUP BY y PARTITION BY?",
+    "question_en": "What is the difference between GROUP BY and PARTITION BY?",
+    "options_es": [
+      "GROUP BY reduce filas; PARTITION BY mantiene todas las filas",
+      "No hay diferencia, son sinónimos",
+      "PARTITION BY solo funciona en PostgreSQL",
+      "GROUP BY es más rápido que PARTITION BY"
+    ],
+    "options_en": [
+      "GROUP BY reduces rows; PARTITION BY keeps all rows",
+      "No difference, they are synonyms",
+      "PARTITION BY only works in PostgreSQL",
+      "GROUP BY is faster than PARTITION BY"
+    ],
+    "correct_index": 0,
+    "explanation_es": "GROUP BY condensa filas en resumen. PARTITION BY mantiene todas las filas originales pero calcula dentro de grupos.",
+    "explanation_en": "GROUP BY condenses rows into summary. PARTITION BY keeps all original rows but calculates within groups.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc007",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puede PARTITION BY aplicarse a una columna derivada (resultado de cálculo)?",
+    "question_en": "Can PARTITION BY be applied to a derived column (calculation result)?",
+    "options_es": [
+      "Sí, si se define un alias",
+      "No, solo funciona con columnas de tabla",
+      "Sí, pero solo en subconsultas",
+      "No, causaría ambigüedad"
+    ],
+    "options_en": [
+      "Yes, if an alias is defined",
+      "No, it only works with table columns",
+      "Yes, but only in subqueries",
+      "No, it would cause ambiguity"
+    ],
+    "correct_index": 2,
+    "explanation_es": "PARTITION BY no puede usar directamente alias de columnas derivadas. Se requiere una subconsulta o CTE.",
+    "explanation_en": "PARTITION BY cannot directly use aliases of derived columns. A subquery or CTE is required.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc008",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuántas particiones puede crear PARTITION BY en una tabla de 1000 filas?",
+    "question_en": "How many partitions can PARTITION BY create in a 1000-row table?",
+    "options_es": [
+      "Depende de la memoria disponible",
+      "Máximo 100",
+      "Máximo 1 por definición",
+      "Hasta 1000 (una por fila única en la columna de partición)"
+    ],
+    "options_en": [
+      "Depends on available memory",
+      "Maximum 100",
+      "Maximum 1 by definition",
+      "Up to 1000 (one per unique value in the partition column)"
+    ],
+    "correct_index": 3,
+    "explanation_es": "PARTITION BY crea una partición por cada valor único en la columna de partición. Máximo = número de filas si todos los valores son únicos.",
+    "explanation_en": "PARTITION BY creates one partition per unique value in the partition column. Maximum = number of rows if all values are unique.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc009",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puede un PARTITION BY contener un agregado como SUM(salary)?",
+    "question_en": "Can a PARTITION BY contain an aggregate like SUM(salary)?",
+    "options_es": [
+      "Sí, pero dentro de una subconsulta",
+      "Sí, en cualquier contexto",
+      "No, PARTITION BY solo acepta nombres de columnas",
+      "Depende de la función de ventana usada"
+    ],
+    "options_en": [
+      "Yes, but within a subquery",
+      "Yes, in any context",
+      "No, PARTITION BY only accepts column names",
+      "Depends on the window function used"
+    ],
+    "correct_index": 2,
+    "explanation_es": "PARTITION BY solo acepta referencias de columna, no expresiones agregadas.",
+    "explanation_en": "PARTITION BY only accepts column references, not aggregate expressions.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc010",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué sucede si PARTITION BY referencia una columna que no existe en SELECT?",
+    "question_en": "What happens if PARTITION BY references a column not in SELECT?",
+    "options_es": [
+      "La columna se añade automáticamente a SELECT",
+      "Error de sintaxis",
+      "Es permitido, funciona normalmente",
+      "Se ignora silenciosamente"
+    ],
+    "options_en": [
+      "The column is automatically added to SELECT",
+      "Syntax error",
+      "It is allowed, works normally",
+      "It is silently ignored"
+    ],
+    "correct_index": 2,
+    "explanation_es": "PARTITION BY puede referenciar cualquier columna disponible en el FROM, incluso si no está en SELECT.",
+    "explanation_en": "PARTITION BY can reference any available column in the FROM, even if not in SELECT.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc011",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puede PARTITION BY crear particiones vacías?",
+    "question_en": "Can PARTITION BY create empty partitions?",
+    "options_es": [
+      "Depende de la base de datos",
+      "Sí, con valores NULL",
+      "Sí, explícitamente con un rango",
+      "No, las particiones solo existen si hay filas que las respalden"
+    ],
+    "options_en": [
+      "Depends on the database",
+      "Yes, with NULL values",
+      "Yes, explicitly with a range",
+      "No, partitions only exist if there are rows supporting them"
+    ],
+    "correct_index": 3,
+    "explanation_es": "PARTITION BY divide solo según los valores que existen en los datos. No hay particiones vacías.",
+    "explanation_en": "PARTITION BY divides only by values that exist in the data. No empty partitions.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120503mc012",
+    "skill_id": "sk120503",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el rendimiento de PARTITION BY comparado con GROUP BY?",
+    "question_en": "How does PARTITION BY perform compared to GROUP BY?",
+    "options_es": [
+      "GROUP BY es siempre más rápido",
+      "PARTITION BY es siempre más rápido",
+      "Similar, pero PARTITION BY mantiene todas las filas",
+      "No se pueden comparar"
+    ],
+    "options_en": [
+      "GROUP BY is always faster",
+      "PARTITION BY is always faster",
+      "Similar, but PARTITION BY keeps all rows",
+      "Cannot be compared"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Rendimiento comparable, pero lógica diferente: GROUP BY resume, PARTITION BY calcula dentro de grupos manteniendo filas.",
+    "explanation_en": "Comparable performance, but different logic: GROUP BY summarizes, PARTITION BY calculates within groups keeping rows.",
+    "source": "SQLite window functions – https://www.sqlite.org/windowfunctions.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504sql001",
+    "skill_id": "sk120504",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Crea un índice B-tree en la columna customer_id y observa EXPLAIN QUERY PLAN.",
+    "question_en": "Create a B-tree index on customer_id column and observe EXPLAIN QUERY PLAN.",
+    "code_es": "CREATE TABLE orders (id INTEGER, customer_id INTEGER, amount REAL);\nINSERT INTO orders VALUES (1,10,100.0);\nINSERT INTO orders VALUES (2,20,200.0);\nINSERT INTO orders VALUES (3,10,150.0);\nCREATE ___ idx_customer ON orders(customer_id);\nEXPLAIN QUERY PLAN SELECT * FROM orders WHERE customer_id = 10;",
+    "code_en": "CREATE TABLE orders (id INTEGER, customer_id INTEGER, amount REAL);\nINSERT INTO orders VALUES (1,10,100.0);\nINSERT INTO orders VALUES (2,20,200.0);\nINSERT INTO orders VALUES (3,10,150.0);\nCREATE ___ idx_customer ON orders(customer_id);\nEXPLAIN QUERY PLAN SELECT * FROM orders WHERE customer_id = 10;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | parent | notused | detail\n0  | 0      | 0       | SEARCH orders USING INDEX idx_customer (customer_id=?)",
+    "correct_answer_en": "id | parent | notused | detail\n0  | 0      | 0       | SEARCH orders USING INDEX idx_customer (customer_id=?)",
+    "explanation_es": "CREATE INDEX crea un índice. EXPLAIN QUERY PLAN muestra que SQLite usa SEARCH con el índice, no una búsqueda de tabla completa.",
+    "explanation_en": "CREATE INDEX creates an index. EXPLAIN QUERY PLAN shows SQLite uses SEARCH with the index, not a full table scan.",
+    "source": "SQLite EXPLAIN – https://www.sqlite.org/eqp.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120504sql002",
+    "skill_id": "sk120504",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Crea un índice compuesto en (dept, salary) y verifica su uso en una consulta.",
+    "question_en": "Create a composite index on (dept, salary) and verify its use in a query.",
+    "code_es": "CREATE TABLE employees (id INTEGER, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Eng',50000);\nINSERT INTO employees VALUES (2,'Eng',80000);\nINSERT INTO employees VALUES (3,'Mkt',65000);\nCREATE ___ idx_dept_salary ON employees(dept, salary);\nEXPLAIN QUERY PLAN SELECT * FROM employees WHERE dept='Eng' AND salary > 60000;",
+    "code_en": "CREATE TABLE employees (id INTEGER, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Eng',50000);\nINSERT INTO employees VALUES (2,'Eng',80000);\nINSERT INTO employees VALUES (3,'Mkt',65000);\nCREATE ___ idx_dept_salary ON employees(dept, salary);\nEXPLAIN QUERY PLAN SELECT * FROM employees WHERE dept='Eng' AND salary > 60000;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | parent | notused | detail\n0  | 0      | 0       | SEARCH employees USING INDEX idx_dept_salary (dept=? AND salary>?)",
+    "correct_answer_en": "id | parent | notused | detail\n0  | 0      | 0       | SEARCH employees USING INDEX idx_dept_salary (dept=? AND salary>?)",
+    "explanation_es": "El índice compuesto permite una búsqueda eficiente en ambas columnas. EXPLAIN muestra SEARCH usando el índice.",
+    "explanation_en": "The composite index enables efficient search on both columns. EXPLAIN shows SEARCH using the index.",
+    "source": "SQLite indexes – https://www.sqlite.org/rowidtable.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120504sql003",
+    "skill_id": "sk120504",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Crea un índice covering que incluya todas las columnas necesarias para la consulta.",
+    "question_en": "Create a covering index that includes all columns needed for the query.",
+    "code_es": "CREATE TABLE products (id INTEGER, name TEXT, price REAL, stock INTEGER);\nINSERT INTO products VALUES (1,'Laptop',1000.0,5);\nINSERT INTO products VALUES (2,'Mouse',30.0,50);\nCREATE ___ idx_covering ON products(price) ___ (name, stock);\nEXPLAIN QUERY PLAN SELECT name, stock FROM products WHERE price > 100;",
+    "code_en": "CREATE TABLE products (id INTEGER, name TEXT, price REAL, stock INTEGER);\nINSERT INTO products VALUES (1,'Laptop',1000.0,5);\nINSERT INTO products VALUES (2,'Mouse',30.0,50);\nCREATE ___ idx_covering ON products(price) ___ (name, stock);\nEXPLAIN QUERY PLAN SELECT name, stock FROM products WHERE price > 100;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | parent | notused | detail\n0  | 0      | 0       | SEARCH products USING COVERING INDEX idx_covering (price>?)",
+    "correct_answer_en": "id | parent | notused | detail\n0  | 0      | 0       | SEARCH products USING COVERING INDEX idx_covering (price>?)",
+    "explanation_es": "Un índice covering incluye todas las columnas necesarias. SQLite no necesita acceder a la tabla base, solo al índice.",
+    "explanation_en": "A covering index includes all necessary columns. SQLite does not need to access the base table, only the index.",
+    "source": "SQLite covering indexes – https://www.sqlite.org/selectopt.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120504mc001",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el propósito principal de crear un índice en una base de datos?",
+    "question_en": "What is the main purpose of creating an index in a database?",
+    "options_es": [
+      "Aumentar la capacidad de almacenamiento",
+      "Reducir el tamaño de la base de datos",
+      "Reemplazar backups",
+      "Acelerar búsquedas reduciendo escaneos de tabla completa"
+    ],
+    "options_en": [
+      "Increase storage capacity",
+      "Reduce database size",
+      "Replace backups",
+      "Speed up searches by reducing full table scans"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Los índices aceleran búsquedas al permitir acceso rápido a datos sin leer toda la tabla.",
+    "explanation_en": "Indexes speed up searches by allowing quick data access without reading the entire table.",
+    "source": "SQLite indexes – https://www.sqlite.org/rowidtable.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc002",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el costo de crear un índice?",
+    "question_en": "What is the cost of creating an index?",
+    "options_es": [
+      "Solo ralentización de inserciones",
+      "Espacio en disco adicional y ralentización de inserciones",
+      "Solo espacio en disco",
+      "Sin costo, es gratuito"
+    ],
+    "options_en": [
+      "Only slower inserts",
+      "Additional disk space and slower inserts",
+      "Only disk space",
+      "No cost, it is free"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Los índices ocupan espacio en disco y ralentizan operaciones de inserción/actualización porque deben mantenerse sincronizados.",
+    "explanation_en": "Indexes consume disk space and slow down insert/update operations because they must stay synchronized.",
+    "source": "SQLite indexes – https://www.sqlite.org/rowidtable.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc003",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué es un índice compuesto o multi-columna?",
+    "question_en": "What is a composite or multi-column index?",
+    "options_es": [
+      "Un índice sobre múltiples columnas en un orden específico",
+      "Múltiples índices en la misma tabla",
+      "Un índice que se replica en varias tablas",
+      "Un índice que cambia dinámicamente"
+    ],
+    "options_en": [
+      "An index on multiple columns in a specific order",
+      "Multiple indexes on the same table",
+      "An index that replicates across multiple tables",
+      "An index that changes dynamically"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Un índice compuesto ordena datos por múltiples columnas. Es útil para consultas que filtran/ordenan por varias columnas.",
+    "explanation_en": "A composite index orders data by multiple columns. It is useful for queries filtering/ordering by multiple columns.",
+    "source": "SQLite indexes – https://www.sqlite.org/rowidtable.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc004",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué muestra EXPLAIN QUERY PLAN?",
+    "question_en": "What does EXPLAIN QUERY PLAN show?",
+    "options_es": [
+      "El historial de cambios",
+      "El plan de backup",
+      "Las definiciones de tablas",
+      "El plan de ejecución de una consulta"
+    ],
+    "options_en": [
+      "Change history",
+      "The backup plan",
+      "Table definitions",
+      "The execution plan of a query"
+    ],
+    "correct_index": 3,
+    "explanation_es": "EXPLAIN QUERY PLAN muestra cómo SQLite ejecutará una consulta: tabla completa vs índice, orden de joins, etc.",
+    "explanation_en": "EXPLAIN QUERY PLAN shows how SQLite will execute a query: full table vs index, join order, etc.",
+    "source": "SQLite EXPLAIN – https://www.sqlite.org/eqp.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc005",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuándo SQLite decide usar un índice en lugar de un escaneo de tabla completa?",
+    "question_en": "When does SQLite decide to use an index instead of a full table scan?",
+    "options_es": [
+      "Siempre que existe un índice",
+      "Cuando el índice reduce significativamente el número de filas examinadas",
+      "Nunca, los escaneos son más rápidos",
+      "Solo para consultas muy grandes"
+    ],
+    "options_en": [
+      "Whenever an index exists",
+      "When the index significantly reduces the number of rows examined",
+      "Never, scans are faster",
+      "Only for very large queries"
+    ],
+    "correct_index": 1,
+    "explanation_es": "SQLite usa el query optimizer para evaluar si un índice es más eficiente. Considera el tamaño de la tabla, selectividad, etc.",
+    "explanation_en": "SQLite uses a query optimizer to evaluate if an index is more efficient. It considers table size, selectivity, etc.",
+    "source": "SQLite query optimizer – https://www.sqlite.org/optoverview.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc006",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es la selectividad de un índice?",
+    "question_en": "What is index selectivity?",
+    "options_es": [
+      "El número de columnas en el índice",
+      "El porcentaje de filas distintas respecto al total de filas",
+      "La velocidad del índice",
+      "El tamaño del índice"
+    ],
+    "options_en": [
+      "The number of columns in the index",
+      "The percentage of distinct values relative to total rows",
+      "The speed of the index",
+      "The size of the index"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Una alta selectividad (muchos valores distintos) hace el índice más efectivo. Baja selectividad (pocos valores distintos) reduce su utilidad.",
+    "explanation_en": "High selectivity (many distinct values) makes an index effective. Low selectivity (few distinct values) reduces its usefulness.",
+    "source": "SQLite indexes – https://www.sqlite.org/rowidtable.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc007",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el problema N+1 en consultas?",
+    "question_en": "What is the N+1 problem in queries?",
+    "options_es": [
+      "Un patrón de nomenclatura",
+      "Usar N+1 índices",
+      "Tener N+1 tablas",
+      "Ejecutar N+1 consultas en lugar de una (una por entidad principal + una para detalles)"
+    ],
+    "options_en": [
+      "A naming pattern",
+      "Using N+1 indexes",
+      "Having N+1 tables",
+      "Executing N+1 queries instead of one (one per main entity + one for details)"
+    ],
+    "correct_index": 3,
+    "explanation_es": "N+1: se ejecuta 1 consulta para obtener N registros, luego N consultas adicionales para detalles. Solución: join o batch.",
+    "explanation_en": "N+1: execute 1 query to get N records, then N additional queries for details. Solution: join or batch.",
+    "source": "SQLite query performance – https://www.sqlite.org/optoverview.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc008",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre índice unique y normal?",
+    "question_en": "What is the difference between a unique index and a normal index?",
+    "options_es": [
+      "Unique es más lento",
+      "Unique garantiza que no hay valores duplicados; normal permite duplicados",
+      "Normal no acelera búsquedas",
+      "Unique ocupa menos espacio"
+    ],
+    "options_en": [
+      "Unique is slower",
+      "Unique guarantees no duplicate values; normal allows duplicates",
+      "Normal does not accelerate searches",
+      "Unique takes up less space"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Un índice UNIQUE fuerza la unicidad de valores. Un índice normal permite duplicados pero acelera búsquedas.",
+    "explanation_en": "A UNIQUE index enforces value uniqueness. A normal index allows duplicates but speeds up searches.",
+    "source": "SQLite indexes – https://www.sqlite.org/rowidtable.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc009",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuándo debe el DBA evitar crear un índice en una columna?",
+    "question_en": "When should a DBA avoid creating an index on a column?",
+    "options_es": [
+      "Cuando la columna tiene baja selectividad (pocos valores distintos)",
+      "Siempre, los índices ralentizan todo",
+      "Cuando la tabla es pequeña",
+      "Nunca, todos los índices ayudan"
+    ],
+    "options_en": [
+      "When the column has low selectivity (few distinct values)",
+      "Always, indexes slow everything down",
+      "When the table is small",
+      "Never, all indexes help"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Índices en columnas con baja selectividad (ej: boolean) ofrecen poco beneficio y consumen espacio.",
+    "explanation_en": "Indexes on low-selectivity columns (e.g., boolean) offer little benefit and consume space.",
+    "source": "SQLite indexes – https://www.sqlite.org/rowidtable.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc010",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la ventaja de un índice covering sobre un índice simple?",
+    "question_en": "What is the advantage of a covering index over a simple index?",
+    "options_es": [
+      "Reduce la selectividad",
+      "Ocupa menos espacio",
+      "Es más rápido de crear",
+      "Evita accesos a la tabla base; toda la información está en el índice"
+    ],
+    "options_en": [
+      "Reduces selectivity",
+      "Takes up less space",
+      "Is faster to create",
+      "Avoids base table access; all info is in the index"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Un índice covering incluye todas las columnas necesarias para una consulta. SQLite usa solo el índice sin acceder la tabla.",
+    "explanation_en": "A covering index includes all columns needed for a query. SQLite uses only the index without accessing the table.",
+    "source": "SQLite covering indexes – https://www.sqlite.org/selectopt.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc011",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo SQLite decide entre múltiples índices disponibles para una consulta?",
+    "question_en": "How does SQLite choose among multiple available indexes for a query?",
+    "options_es": [
+      "Requiere que el usuario especifique cuál usar",
+      "Usa el primer índice en el orden de creación",
+      "Usa siempre el índice más reciente",
+      "Usa el query optimizer para estimar el costo; elige el más eficiente"
+    ],
+    "options_en": [
+      "Requires the user to specify which one",
+      "Uses the first index in creation order",
+      "Always uses the most recent index",
+      "Uses query optimizer to estimate cost; chooses the most efficient"
+    ],
+    "correct_index": 3,
+    "explanation_es": "SQLite tiene un query optimizer que evalúa múltiples opciones y elige la más eficiente considerando selectividad.",
+    "explanation_en": "SQLite has a query optimizer that evaluates multiple options and chooses the most efficient considering selectivity.",
+    "source": "SQLite query optimizer – https://www.sqlite.org/optoverview.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120504mc012",
+    "skill_id": "sk120504",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puede EXPLAIN QUERY PLAN optimizar automáticamente una consulta?",
+    "question_en": "Can EXPLAIN QUERY PLAN automatically optimize a query?",
+    "options_es": [
+      "No, solo muestra el plan; la optimización es responsabilidad del DBA/developer",
+      "Sí, EXPLAIN optimiza y ejecuta",
+      "Solo en ciertas versiones",
+      "Depende del dialecto SQL"
+    ],
+    "options_en": [
+      "No, it only shows the plan; optimization is DBA/developer responsibility",
+      "Yes, EXPLAIN optimizes and executes",
+      "Only in certain versions",
+      "Depends on the SQL dialect"
+    ],
+    "correct_index": 0,
+    "explanation_es": "EXPLAIN QUERY PLAN es una herramienta de análisis. El DBA usa sus resultados para crear índices y reescribir consultas.",
+    "explanation_en": "EXPLAIN QUERY PLAN is an analysis tool. DBAs use its results to create indexes and rewrite queries.",
+    "source": "SQLite EXPLAIN – https://www.sqlite.org/eqp.html",
+    "expected_time_ms": 30000
+  }
+]

@@ -118,6 +118,8 @@ EXEC_FLOOR = {
     # wedge of lane 1 and it is a *Python* certification, so a zero here was
     # never a limitation of the medium - only of the bank.
     "track09": 0.15,
+    # SQL — browser-executable with sql.js; all skills run queries
+    "track12": 0.15,
 }
 
 

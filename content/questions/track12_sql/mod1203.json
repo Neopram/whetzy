@@ -1,0 +1,1430 @@
+[
+  {
+    "id": "q120301sql001",
+    "skill_id": "sk120301",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuántos usuarios hay por ciudad?",
+    "question_en": "How many users are there per city?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, ___ FROM users GROUP BY city ORDER BY city;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, ___ FROM users GROUP BY city ORDER BY city;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "city   | COUNT(*)\n--------+---------\nBogotá | 1\nLima   | 2\nMadrid | 2",
+    "correct_answer_en": "city   | COUNT(*)\n--------+---------\nBogotá | 1\nLima   | 2\nMadrid | 2",
+    "explanation_es": "COUNT(*) cuenta todas las filas en cada grupo. GROUP BY city agrupa las filas por ciudad.",
+    "explanation_en": "COUNT(*) counts all rows in each group. GROUP BY city groups rows by city.",
+    "source": "SQL GROUP BY – https://www.w3schools.com/sql/sql_groupby.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120301sql002",
+    "skill_id": "sk120301",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la edad promedio de usuarios por ciudad?",
+    "question_en": "What is the average age of users per city?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, ___ FROM users GROUP BY city ORDER BY city;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, ___ FROM users GROUP BY city ORDER BY city;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "city   | AVG(age)\n--------+---------\nBogotá | 22.0\nLima   | 32.5\nMadrid | 26.5",
+    "correct_answer_en": "city   | AVG(age)\n--------+---------\nBogotá | 22.0\nLima   | 32.5\nMadrid | 26.5",
+    "explanation_es": "AVG() calcula el promedio del campo age agrupado por ciudad.",
+    "explanation_en": "AVG() calculates the average of the age field grouped by city.",
+    "source": "SQL AVG() – https://www.w3schools.com/sql/sql_min_max.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120301sql003",
+    "skill_id": "sk120301",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuáles son la edad mínima y máxima por ciudad?",
+    "question_en": "What are the minimum and maximum ages per city?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, MIN(age) as min_age, ___ as max_age FROM users GROUP BY city ORDER BY city;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, MIN(age) as min_age, ___ as max_age FROM users GROUP BY city ORDER BY city;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "city   | min_age | max_age\n--------+---------+---------\nBogotá | 22      | 22\nLima   | 30      | 35\nMadrid | 25      | 28",
+    "correct_answer_en": "city   | min_age | max_age\n--------+---------+---------\nBogotá | 22      | 22\nLima   | 30      | 35\nMadrid | 25      | 28",
+    "explanation_es": "MIN() y MAX() obtienen el mínimo y máximo de un campo. Se pueden usar múltiples funciones de agregación en un mismo GROUP BY.",
+    "explanation_en": "MIN() and MAX() get the minimum and maximum of a field. Multiple aggregate functions can be used in the same GROUP BY.",
+    "source": "SQL MIN() and MAX() – https://www.w3schools.com/sql/sql_min_max.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120301mc001",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la función de agregación correcta para contar filas en SQL?",
+    "question_en": "Which is the correct aggregate function to count rows in SQL?",
+    "options_es": [
+      "COUNT(*)",
+      "SUM(*)",
+      "TOTAL(*)",
+      "AVERAGE(*)"
+    ],
+    "options_en": [
+      "COUNT(*)",
+      "SUM(*)",
+      "TOTAL(*)",
+      "AVERAGE(*)"
+    ],
+    "correct_index": 0,
+    "explanation_es": "COUNT(*) es la función para contar todas las filas. SUM se usa para sumar valores numéricos.",
+    "explanation_en": "COUNT(*) is the function to count all rows. SUM is used to sum numeric values.",
+    "source": "SQL COUNT() – https://www.w3schools.com/sql/sql_count.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc002",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué cláusula se usa después de agregaciones en SELECT?",
+    "question_en": "Which clause is used after aggregations in SELECT?",
+    "options_es": [
+      "WHERE",
+      "ORDER BY",
+      "GROUP BY",
+      "HAVING"
+    ],
+    "options_en": [
+      "WHERE",
+      "ORDER BY",
+      "GROUP BY",
+      "HAVING"
+    ],
+    "correct_index": 2,
+    "explanation_es": "GROUP BY agrupa filas por valores comunes antes de aplicar funciones de agregación.",
+    "explanation_en": "GROUP BY groups rows by common values before applying aggregate functions.",
+    "source": "SQL GROUP BY – https://www.w3schools.com/sql/sql_groupby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc003",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el resultado de SUM(salary) con valores [1000, 2000, 1500]?",
+    "question_en": "What is the result of SUM(salary) with values [1000, 2000, 1500]?",
+    "options_es": [
+      "1500",
+      "2000",
+      "4500",
+      "1666"
+    ],
+    "options_en": [
+      "1500",
+      "2000",
+      "4500",
+      "1666"
+    ],
+    "correct_index": 2,
+    "explanation_es": "SUM() suma todos los valores: 1000 + 2000 + 1500 = 4500.",
+    "explanation_en": "SUM() adds all values: 1000 + 2000 + 1500 = 4500.",
+    "source": "SQL SUM() – https://www.w3schools.com/sql/sql_sum.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc004",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el promedio de [10, 20, 30, 40]?",
+    "question_en": "What is the average of [10, 20, 30, 40]?",
+    "options_es": [
+      "25",
+      "30",
+      "35",
+      "20"
+    ],
+    "options_en": [
+      "25",
+      "30",
+      "35",
+      "20"
+    ],
+    "correct_index": 0,
+    "explanation_es": "AVG() calcula: (10 + 20 + 30 + 40) / 4 = 100 / 4 = 25.",
+    "explanation_en": "AVG() calculates: (10 + 20 + 30 + 40) / 4 = 100 / 4 = 25.",
+    "source": "SQL AVG() – https://www.w3schools.com/sql/sql_avg.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc005",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el mínimo de [5, 2, 8, 3, 9]?",
+    "question_en": "What is the minimum of [5, 2, 8, 3, 9]?",
+    "options_es": [
+      "2",
+      "5",
+      "3",
+      "9"
+    ],
+    "options_en": [
+      "2",
+      "5",
+      "3",
+      "9"
+    ],
+    "correct_index": 0,
+    "explanation_es": "MIN() retorna el valor más pequeño del conjunto: 2.",
+    "explanation_en": "MIN() returns the smallest value in the set: 2.",
+    "source": "SQL MIN() – https://www.w3schools.com/sql/sql_min_max.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc006",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el máximo de [5, 2, 8, 3, 9]?",
+    "question_en": "What is the maximum of [5, 2, 8, 3, 9]?",
+    "options_es": [
+      "5",
+      "8",
+      "3",
+      "9"
+    ],
+    "options_en": [
+      "5",
+      "8",
+      "3",
+      "9"
+    ],
+    "correct_index": 3,
+    "explanation_es": "MAX() retorna el valor más grande del conjunto: 9.",
+    "explanation_en": "MAX() returns the largest value in the set: 9.",
+    "source": "SQL MAX() – https://www.w3schools.com/sql/sql_min_max.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc007",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Se puede usar COUNT(DISTINCT category) para contar categorías únicas?",
+    "question_en": "Can you use COUNT(DISTINCT category) to count unique categories?",
+    "options_es": [
+      "No, DISTINCT no funciona en SQL",
+      "Solo en algunos gestores",
+      "Sí, cuenta valores únicos",
+      "Siempre retorna NULL"
+    ],
+    "options_en": [
+      "No, DISTINCT does not work in SQL",
+      "Only in some databases",
+      "Yes, it counts unique values",
+      "Always returns NULL"
+    ],
+    "correct_index": 2,
+    "explanation_es": "COUNT(DISTINCT) cuenta solo valores únicos en la columna especificada.",
+    "explanation_en": "COUNT(DISTINCT) counts only unique values in the specified column.",
+    "source": "SQL COUNT(DISTINCT) – https://www.w3schools.com/sql/sql_count.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc008",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué sucede si agrupas por un campo sin incluirlo en SELECT?",
+    "question_en": "What happens if you group by a field without including it in SELECT?",
+    "options_es": [
+      "Error de sintaxis",
+      "Se ignora el GROUP BY",
+      "El campo se incluye automáticamente",
+      "Retorna un resultado vacío"
+    ],
+    "options_en": [
+      "Syntax error",
+      "GROUP BY is ignored",
+      "The field is auto-included",
+      "Returns empty result"
+    ],
+    "correct_index": 0,
+    "explanation_es": "En SQL estricto, todos los campos sin agregación en SELECT deben estar en GROUP BY.",
+    "explanation_en": "In strict SQL, all non-aggregated fields in SELECT must be in GROUP BY.",
+    "source": "SQL GROUP BY rules – https://www.w3schools.com/sql/sql_groupby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc009",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuántas funciones de agregación se pueden usar en un mismo SELECT con GROUP BY?",
+    "question_en": "How many aggregate functions can be used in the same SELECT with GROUP BY?",
+    "options_es": [
+      "Solo una",
+      "Máximo dos",
+      "Cuantas sean necesarias",
+      "Máximo cuatro"
+    ],
+    "options_en": [
+      "Only one",
+      "Maximum two",
+      "As many as needed",
+      "Maximum four"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Puedes usar tantas funciones de agregación como necesites en un SELECT con GROUP BY.",
+    "explanation_en": "You can use as many aggregate functions as needed in a SELECT with GROUP BY.",
+    "source": "SQL Aggregate Functions – https://www.w3schools.com/sql/sql_count.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc010",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "Si una tabla tiene 0 filas, ¿qué retorna COUNT(*)?",
+    "question_en": "If a table has 0 rows, what does COUNT(*) return?",
+    "options_es": [
+      "0",
+      "NULL",
+      "Un error",
+      "Indefinido"
+    ],
+    "options_en": [
+      "0",
+      "NULL",
+      "An error",
+      "Undefined"
+    ],
+    "correct_index": 0,
+    "explanation_es": "COUNT(*) retorna 0 para una tabla vacía, no NULL ni un error.",
+    "explanation_en": "COUNT(*) returns 0 for an empty table, not NULL or an error.",
+    "source": "SQL COUNT() behavior – https://www.w3schools.com/sql/sql_count.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc011",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre COUNT(*) y COUNT(column)?",
+    "question_en": "What is the difference between COUNT(*) and COUNT(column)?",
+    "options_es": [
+      "COUNT(*) falla",
+      "COUNT(column) ignora NULLs",
+      "No hay diferencia",
+      "COUNT(*) es más lento"
+    ],
+    "options_en": [
+      "COUNT(*) fails",
+      "COUNT(column) ignores NULLs",
+      "There is no difference",
+      "COUNT(*) is slower"
+    ],
+    "correct_index": 1,
+    "explanation_es": "COUNT(column) no cuenta filas con NULL en esa columna, mientras COUNT(*) sí.",
+    "explanation_en": "COUNT(column) does not count rows with NULL in that column, while COUNT(*) does.",
+    "source": "SQL COUNT() – https://www.w3schools.com/sql/sql_count.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120301mc012",
+    "skill_id": "sk120301",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Se puede usar ORDER BY en las funciones de agregación como ORDER BY SUM(salary)?",
+    "question_en": "Can you use ORDER BY on aggregate functions like ORDER BY SUM(salary)?",
+    "options_es": [
+      "No, no permitido",
+      "Solo con GROUP BY",
+      "Sí, se ordena por el resultado",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "No, not allowed",
+      "Only with GROUP BY",
+      "Yes, orders by the result",
+      "Depends on the database"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Sí, puedes ordenar por funciones agregadas como SUM, COUNT, AVG, etc.",
+    "explanation_en": "Yes, you can order by aggregate functions like SUM, COUNT, AVG, etc.",
+    "source": "SQL ORDER BY with aggregates – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302sql001",
+    "skill_id": "sk120302",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué ciudades tienen más de 1 usuario?",
+    "question_en": "Which cities have more than 1 user?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, COUNT(*) as total FROM users GROUP BY city ___ ORDER BY city;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, COUNT(*) as total FROM users GROUP BY city ___ ORDER BY city;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "city  | total\n-------+-------\nLima  | 2\nMadrid| 2",
+    "correct_answer_en": "city  | total\n-------+-------\nLima  | 2\nMadrid| 2",
+    "explanation_es": "HAVING COUNT(*) > 1 filtra los grupos que tienen más de un usuario.",
+    "explanation_en": "HAVING COUNT(*) > 1 filters groups that have more than one user.",
+    "source": "SQL HAVING – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120302sql002",
+    "skill_id": "sk120302",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué ciudades tienen una edad promedio mayor a 25?",
+    "question_en": "Which cities have an average age greater than 25?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, AVG(age) as avg_age FROM users GROUP BY city ___ ORDER BY city;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, AVG(age) as avg_age FROM users GROUP BY city ___ ORDER BY city;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "city  | avg_age\n-------+--------\nLima  | 32.5\nMadrid| 26.5",
+    "correct_answer_en": "city  | avg_age\n-------+--------\nLima  | 32.5\nMadrid| 26.5",
+    "explanation_es": "HAVING AVG(age) > 25 filtra los grupos cuya edad promedio es mayor a 25.",
+    "explanation_en": "HAVING AVG(age) > 25 filters groups with average age greater than 25.",
+    "source": "SQL HAVING with AVG – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120302sql003",
+    "skill_id": "sk120302",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué ciudades tienen edad mínima menor a 25 pero máxima mayor a 28?",
+    "question_en": "Which cities have minimum age less than 25 but maximum age greater than 28?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, MIN(age) as min_age, MAX(age) as max_age FROM users GROUP BY city ___ ORDER BY city;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT city, MIN(age) as min_age, MAX(age) as max_age FROM users GROUP BY city ___ ORDER BY city;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "city | min_age | max_age\n------+---------+---------\nLima | 30      | 35",
+    "correct_answer_en": "city | min_age | max_age\n------+---------+---------\nLima | 30      | 35",
+    "explanation_es": "HAVING MIN(age) < 25 AND MAX(age) > 28 filtra grupos con edad mínima < 25 y máxima > 28.",
+    "explanation_en": "HAVING MIN(age) < 25 AND MAX(age) > 28 filters groups with min age < 25 and max age > 28.",
+    "source": "SQL HAVING with multiple conditions – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120302mc001",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la diferencia entre WHERE y HAVING?",
+    "question_en": "What is the difference between WHERE and HAVING?",
+    "options_es": [
+      "Ninguna",
+      "WHERE no existe en SQL",
+      "HAVING es más rápido",
+      "WHERE filtra filas; HAVING filtra grupos"
+    ],
+    "options_en": [
+      "None",
+      "WHERE does not exist",
+      "HAVING is faster",
+      "WHERE filters rows; HAVING filters groups"
+    ],
+    "correct_index": 3,
+    "explanation_es": "WHERE se aplica antes de GROUP BY a las filas individuales. HAVING se aplica después a los grupos.",
+    "explanation_en": "WHERE is applied before GROUP BY to individual rows. HAVING is applied after to groups.",
+    "source": "SQL WHERE vs HAVING – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc002",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Se puede usar HAVING sin GROUP BY?",
+    "question_en": "Can you use HAVING without GROUP BY?",
+    "options_es": [
+      "No, siempre necesita GROUP BY",
+      "Sí, funciona igual",
+      "Solo en algunos gestores",
+      "Depende del contexto"
+    ],
+    "options_en": [
+      "No, always needs GROUP BY",
+      "Yes, works the same",
+      "Only in some databases",
+      "Depends on context"
+    ],
+    "correct_index": 0,
+    "explanation_es": "HAVING siempre debe ir con GROUP BY porque filtra los resultados de la agregación.",
+    "explanation_en": "HAVING must always go with GROUP BY because it filters aggregation results.",
+    "source": "SQL HAVING syntax – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc003",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué sintaxis es correcta: HAVING COUNT(*) = 5 o HAVING (COUNT(*)) = 5?",
+    "question_en": "Which syntax is correct: HAVING COUNT(*) = 5 or HAVING (COUNT(*)) = 5?",
+    "options_es": [
+      "Solo la primera",
+      "Solo la segunda",
+      "Ambas son correctas",
+      "Ninguna es correcta"
+    ],
+    "options_en": [
+      "Only the first",
+      "Only the second",
+      "Both are correct",
+      "Neither is correct"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Ambas sintaxis son válidas. Los paréntesis en HAVING son opcionales.",
+    "explanation_en": "Both syntaxes are valid. Parentheses in HAVING are optional.",
+    "source": "SQL HAVING syntax – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc004",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué retorna HAVING COUNT(*) < 0?",
+    "question_en": "What does HAVING COUNT(*) < 0 return?",
+    "options_es": [
+      "Ningún grupo",
+      "Todos los grupos",
+      "Un error",
+      "NULL"
+    ],
+    "options_en": [
+      "No groups",
+      "All groups",
+      "An error",
+      "NULL"
+    ],
+    "correct_index": 0,
+    "explanation_es": "COUNT(*) nunca es menor que 0, por lo que HAVING COUNT(*) < 0 no retorna ningún grupo.",
+    "explanation_en": "COUNT(*) is never less than 0, so HAVING COUNT(*) < 0 returns no groups.",
+    "source": "SQL HAVING logic – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc005",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el orden correcto de las cláusulas SQL?",
+    "question_en": "What is the correct order of SQL clauses?",
+    "options_es": [
+      "SELECT, WHERE, GROUP BY, HAVING",
+      "SELECT, GROUP BY, WHERE, HAVING",
+      "SELECT, HAVING, GROUP BY, WHERE",
+      "HAVING, GROUP BY, WHERE, SELECT"
+    ],
+    "options_en": [
+      "SELECT, WHERE, GROUP BY, HAVING",
+      "SELECT, GROUP BY, WHERE, HAVING",
+      "SELECT, HAVING, GROUP BY, WHERE",
+      "HAVING, GROUP BY, WHERE, SELECT"
+    ],
+    "correct_index": 0,
+    "explanation_es": "El orden correcto es: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY.",
+    "explanation_en": "The correct order is: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY.",
+    "source": "SQL Clause Order – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc006",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Se pueden usar condiciones complejas en HAVING como AND/OR?",
+    "question_en": "Can you use complex conditions in HAVING like AND/OR?",
+    "options_es": [
+      "No, HAVING solo acepta =",
+      "Sí, se pueden usar AND/OR",
+      "Solo AND, no OR",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "No, HAVING only accepts =",
+      "Yes, AND/OR can be used",
+      "Only AND, not OR",
+      "Depends on database"
+    ],
+    "correct_index": 1,
+    "explanation_es": "HAVING soporta condiciones complejas con AND, OR, y otros operadores lógicos.",
+    "explanation_en": "HAVING supports complex conditions with AND, OR, and other logical operators.",
+    "source": "SQL HAVING – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc007",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué sucede si usas HAVING sin una función de agregación?",
+    "question_en": "What happens if you use HAVING without an aggregate function?",
+    "options_es": [
+      "Funciona igual que WHERE",
+      "Error de sintaxis",
+      "Se ignora HAVING",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "Works like WHERE",
+      "Syntax error",
+      "HAVING is ignored",
+      "Depends on database"
+    ],
+    "correct_index": 1,
+    "explanation_es": "HAVING debe contener una función de agregación o una comparación con una.",
+    "explanation_en": "HAVING must contain an aggregate function or a comparison with one.",
+    "source": "SQL HAVING – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc008",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar HAVING SUM(salary) = 1000 sin incluir SUM(salary) en SELECT?",
+    "question_en": "Can you use HAVING SUM(salary) = 1000 without including SUM(salary) in SELECT?",
+    "options_es": [
+      "Sí, se usa solo en HAVING",
+      "No, debe estar en SELECT",
+      "Depende del gestor",
+      "Siempre falla"
+    ],
+    "options_en": [
+      "Yes, only used in HAVING",
+      "No, must be in SELECT",
+      "Depends on database",
+      "Always fails"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Puedes usar funciones de agregación en HAVING sin mostrarlas en SELECT.",
+    "explanation_en": "You can use aggregate functions in HAVING without displaying them in SELECT.",
+    "source": "SQL HAVING – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc009",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es más eficiente: usar WHERE o HAVING para filtrar grupos?",
+    "question_en": "Which is more efficient: using WHERE or HAVING to filter groups?",
+    "options_es": [
+      "WHERE es más eficiente",
+      "HAVING es más eficiente",
+      "Son iguales",
+      "Depende de los datos"
+    ],
+    "options_en": [
+      "WHERE is more efficient",
+      "HAVING is more efficient",
+      "They are equal",
+      "Depends on data"
+    ],
+    "correct_index": 0,
+    "explanation_es": "WHERE es más eficiente porque filtra antes de la agregación, reduciendo el trabajo.",
+    "explanation_en": "WHERE is more efficient because it filters before aggregation, reducing work.",
+    "source": "SQL Performance – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc010",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre HAVING COUNT(*) = 0 y un resultado vacío?",
+    "question_en": "What is the difference between HAVING COUNT(*) = 0 and an empty result?",
+    "options_es": [
+      "No hay diferencia",
+      "El primero retorna nada",
+      "HAVING COUNT(*) = 0 es inválido",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "No difference",
+      "The first returns nothing",
+      "HAVING COUNT(*) = 0 is invalid",
+      "Depends on database"
+    ],
+    "correct_index": 0,
+    "explanation_es": "HAVING COUNT(*) = 0 y un resultado vacío son lo mismo: sin grupos que cumplan.",
+    "explanation_en": "HAVING COUNT(*) = 0 and an empty result are the same: no groups match.",
+    "source": "SQL HAVING logic – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc011",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar ORDER BY en el resultado de HAVING?",
+    "question_en": "Can you use ORDER BY on the result of HAVING?",
+    "options_es": [
+      "Sí, como en cualquier SELECT",
+      "No, ORDER BY no funciona con HAVING",
+      "Solo en algunos gestores",
+      "Siempre falla"
+    ],
+    "options_en": [
+      "Yes, like in any SELECT",
+      "No, ORDER BY does not work with HAVING",
+      "Only in some databases",
+      "Always fails"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Sí, puedes usar ORDER BY después de HAVING para ordenar los grupos resultantes.",
+    "explanation_en": "Yes, you can use ORDER BY after HAVING to order the resulting groups.",
+    "source": "SQL HAVING and ORDER BY – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120302mc012",
+    "skill_id": "sk120302",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué hace HAVING 1 = 1?",
+    "question_en": "What does HAVING 1 = 1 do?",
+    "options_es": [
+      "Filtra todos los grupos",
+      "Depende del gestor",
+      "Retorna un error",
+      "No filtra nada, retorna todos"
+    ],
+    "options_en": [
+      "Filters all groups",
+      "Depends on database",
+      "Returns an error",
+      "Does not filter, returns all"
+    ],
+    "correct_index": 3,
+    "explanation_es": "HAVING 1 = 1 es una condición siempre verdadera, así que retorna todos los grupos.",
+    "explanation_en": "HAVING 1 = 1 is always true, so it returns all groups.",
+    "source": "SQL HAVING logic – https://www.w3schools.com/sql/sql_having.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303sql001",
+    "skill_id": "sk120303",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué empleados pertenecen a qué departamento?",
+    "question_en": "Which employees belong to which department?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.name, d.dept_name FROM users u ___ departments d ON u.dept_id = d.id;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.name, d.dept_name FROM users u ___ departments d ON u.dept_id = d.id;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | dept_name\n--------+-----------\nAna    | IT\nBob    | HR\nCarlos | IT\nDiana  | Finance\nEve    | HR",
+    "correct_answer_en": "name   | dept_name\n--------+-----------\nAna    | IT\nBob    | HR\nCarlos | IT\nDiana  | Finance\nEve    | HR",
+    "explanation_es": "INNER JOIN devuelve solo las filas que tienen coincidencias en ambas tablas.",
+    "explanation_en": "INNER JOIN returns only rows that have matches in both tables.",
+    "source": "SQL INNER JOIN – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120303sql002",
+    "skill_id": "sk120303",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el nombre del empleado y su ID de departamento?",
+    "question_en": "What is the employee name and their department ID?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT ___, d.id FROM users u INNER JOIN departments d ON u.dept_id = d.id;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT ___, d.id FROM users u INNER JOIN departments d ON u.dept_id = d.id;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | id\n--------+----\nAna    | 1\nBob    | 2\nCarlos | 1\nDiana  | 3\nEve    | 2",
+    "correct_answer_en": "name   | id\n--------+----\nAna    | 1\nBob    | 2\nCarlos | 1\nDiana  | 3\nEve    | 2",
+    "explanation_es": "Se selecciona u.name (nombre del usuario) y d.id (ID del departamento) del INNER JOIN.",
+    "explanation_en": "Select u.name (user name) and d.id (department ID) from the INNER JOIN.",
+    "source": "SQL INNER JOIN – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120303sql003",
+    "skill_id": "sk120303",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué empleados están en IT o HR, con sus IDs?",
+    "question_en": "Which employees are in IT or HR, with their IDs?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.id, u.name, d.dept_name FROM users u INNER JOIN departments d ON u.dept_id = d.id ___ ORDER BY u.id;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.id, u.name, d.dept_name FROM users u INNER JOIN departments d ON u.dept_id = d.id ___ ORDER BY u.id;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | name   | dept_name\n----+--------+-----------\n1  | Ana    | IT\n2  | Bob    | HR\n3  | Carlos | IT\n5  | Eve    | HR",
+    "correct_answer_en": "id | name   | dept_name\n----+--------+-----------\n1  | Ana    | IT\n2  | Bob    | HR\n3  | Carlos | IT\n5  | Eve    | HR",
+    "explanation_es": "WHERE d.dept_name IN ('IT', 'HR') filtra el resultado del INNER JOIN.",
+    "explanation_en": "WHERE d.dept_name IN ('IT', 'HR') filters the INNER JOIN result.",
+    "source": "SQL INNER JOIN with WHERE – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120303mc001",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve INNER JOIN?",
+    "question_en": "What does INNER JOIN return?",
+    "options_es": [
+      "Todas las filas de ambas tablas",
+      "Solo filas coincidentes",
+      "Filas sin coincidencia",
+      "La tabla izquierda"
+    ],
+    "options_en": [
+      "All rows from both tables",
+      "Only matching rows",
+      "Non-matching rows",
+      "The left table"
+    ],
+    "correct_index": 1,
+    "explanation_es": "INNER JOIN retorna solo las filas que tienen coincidencias en ambas tablas.",
+    "explanation_en": "INNER JOIN returns only rows that have matches in both tables.",
+    "source": "SQL INNER JOIN – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc002",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis correcta de INNER JOIN?",
+    "question_en": "What is the correct syntax for INNER JOIN?",
+    "options_es": [
+      "FROM t1 INNER JOIN t2",
+      "FROM t1 JOIN t2 INNER ON",
+      "SELECT INNER JOIN FROM t1 t2",
+      "INNER JOIN ON FROM"
+    ],
+    "options_en": [
+      "FROM t1 INNER JOIN t2",
+      "FROM t1 JOIN t2 INNER ON",
+      "SELECT INNER JOIN FROM t1 t2",
+      "INNER JOIN ON FROM"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La sintaxis correcta es: FROM tabla1 INNER JOIN tabla2 ON condición.",
+    "explanation_en": "The correct syntax is: FROM table1 INNER JOIN table2 ON condition.",
+    "source": "SQL INNER JOIN syntax – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc003",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar INNER JOIN sin la cláusula ON?",
+    "question_en": "Can you use INNER JOIN without the ON clause?",
+    "options_es": [
+      "No, ON es obligatoria",
+      "Sí, se asume automática",
+      "Depende del gestor",
+      "Solo con USING"
+    ],
+    "options_en": [
+      "No, ON is mandatory",
+      "Yes, it is assumed automatically",
+      "Depends on database",
+      "Only with USING"
+    ],
+    "correct_index": 0,
+    "explanation_es": "INNER JOIN siempre requiere una condición de unión en ON (o USING).",
+    "explanation_en": "INNER JOIN always requires a join condition in ON (or USING).",
+    "source": "SQL INNER JOIN – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc004",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuántas tablas se pueden unir con INNER JOIN?",
+    "question_en": "How many tables can be joined with INNER JOIN?",
+    "options_es": [
+      "Solo 2",
+      "Como máximo 5",
+      "Sin límite",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "Only 2",
+      "Maximum 5",
+      "No limit",
+      "Depends on database"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Se pueden unir múltiples tablas anidando INNER JOINs.",
+    "explanation_en": "Multiple tables can be joined by nesting INNER JOINs.",
+    "source": "SQL Multiple INNER JOINs – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc005",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre JOIN e INNER JOIN?",
+    "question_en": "What is the difference between JOIN and INNER JOIN?",
+    "options_es": [
+      "Son diferentes",
+      "INNER JOIN no existe",
+      "JOIN es más lento",
+      "No hay diferencia"
+    ],
+    "options_en": [
+      "They are different",
+      "INNER JOIN does not exist",
+      "JOIN is slower",
+      "No difference"
+    ],
+    "correct_index": 3,
+    "explanation_es": "JOIN sin especificar tipo es equivalente a INNER JOIN. Son sinónimos.",
+    "explanation_en": "JOIN without specifying type is equivalent to INNER JOIN. They are synonymous.",
+    "source": "SQL JOIN – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc006",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Se puede usar INNER JOIN con un ON usando funciones?",
+    "question_en": "Can you use INNER JOIN with ON using functions?",
+    "options_es": [
+      "No",
+      "Sí, como UPPER(t1.col) = UPPER(t2.col)",
+      "Solo con SUM",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "No",
+      "Yes, like UPPER(t1.col) = UPPER(t2.col)",
+      "Only with SUM",
+      "Depends on database"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Sí, puedes usar funciones en la condición ON del INNER JOIN.",
+    "explanation_en": "Yes, you can use functions in the ON condition of INNER JOIN.",
+    "source": "SQL INNER JOIN – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc007",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la diferencia de rendimiento entre INNER JOIN y WHERE con condición?",
+    "question_en": "What is the performance difference between INNER JOIN and WHERE condition?",
+    "options_es": [
+      "INNER JOIN es más lento",
+      "WHERE es más lento",
+      "Son iguales",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "INNER JOIN is slower",
+      "WHERE is slower",
+      "They are equal",
+      "Depends on database"
+    ],
+    "correct_index": 2,
+    "explanation_es": "El optimizador SQL genera el mismo plan de ejecución para ambos.",
+    "explanation_en": "The SQL optimizer generates the same execution plan for both.",
+    "source": "SQL INNER JOIN performance – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc008",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar INNER JOIN con alias de tabla?",
+    "question_en": "Can you use INNER JOIN with table aliases?",
+    "options_es": [
+      "Sí, como t1 INNER JOIN t2",
+      "No",
+      "Solo con prefijos",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "Yes, like t1 INNER JOIN t2",
+      "No",
+      "Only with prefixes",
+      "Depends on database"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Sí, se pueden usar alias para simplificar la sintaxis: FROM users u INNER JOIN departments d.",
+    "explanation_en": "Yes, aliases can be used to simplify syntax: FROM users u INNER JOIN departments d.",
+    "source": "SQL INNER JOIN with aliases – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc009",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué ocurre con las filas NULL en INNER JOIN?",
+    "question_en": "What happens to NULL rows in INNER JOIN?",
+    "options_es": [
+      "Se incluyen",
+      "Se excluyen",
+      "Se convierten a 0",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "They are included",
+      "They are excluded",
+      "They are converted to 0",
+      "Depends on database"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Las filas con NULL en la clave de unión se excluyen en INNER JOIN.",
+    "explanation_en": "Rows with NULL in the join key are excluded in INNER JOIN.",
+    "source": "SQL INNER JOIN and NULL – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc010",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar WHERE después de INNER JOIN?",
+    "question_en": "Can you use WHERE after INNER JOIN?",
+    "options_es": [
+      "No",
+      "Siempre falla",
+      "Solo en algunos gestores",
+      "Sí, para filtrar más"
+    ],
+    "options_en": [
+      "No",
+      "Always fails",
+      "Only in some databases",
+      "Yes, to filter more"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Sí, puedes usar WHERE después de INNER JOIN para filtrar los resultados.",
+    "explanation_en": "Yes, you can use WHERE after INNER JOIN to filter the results.",
+    "source": "SQL INNER JOIN with WHERE – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc011",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar ORDER BY en el resultado de INNER JOIN?",
+    "question_en": "Can you use ORDER BY on INNER JOIN results?",
+    "options_es": [
+      "No",
+      "Sí, como en cualquier SELECT",
+      "Solo con GROUP BY",
+      "Siempre falla"
+    ],
+    "options_en": [
+      "No",
+      "Yes, like in any SELECT",
+      "Only with GROUP BY",
+      "Always fails"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Sí, puedes usar ORDER BY para ordenar los resultados del INNER JOIN.",
+    "explanation_en": "Yes, you can use ORDER BY to sort INNER JOIN results.",
+    "source": "SQL INNER JOIN with ORDER BY – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120303mc012",
+    "skill_id": "sk120303",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuántas veces aparecen las filas duplicadas en INNER JOIN?",
+    "question_en": "How many times do duplicate rows appear in INNER JOIN?",
+    "options_es": [
+      "Una vez",
+      "Dos veces",
+      "Por cada coincidencia",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "Once",
+      "Twice",
+      "For each match",
+      "Depends on database"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Si hay múltiples coincidencias, la fila aparece por cada combinación de coincidencia.",
+    "explanation_en": "If there are multiple matches, the row appears for each matching combination.",
+    "source": "SQL INNER JOIN cardinality – https://www.w3schools.com/sql/sql_join_inner.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304sql001",
+    "skill_id": "sk120304",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué empleados están en la empresa con o sin departamento?",
+    "question_en": "Which employees are in the company with or without department?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.name, d.dept_name FROM users u ___ departments d ON u.dept_id = d.id;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.name, d.dept_name FROM users u ___ departments d ON u.dept_id = d.id;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | dept_name\n--------+-----------\nAna    | IT\nBob    | HR\nCarlos | IT\nDiana  | Finance\nEve    | HR",
+    "correct_answer_en": "name   | dept_name\n--------+-----------\nAna    | IT\nBob    | HR\nCarlos | IT\nDiana  | Finance\nEve    | HR",
+    "explanation_es": "LEFT JOIN devuelve todas las filas de la tabla izquierda (users) con las coincidencias de la derecha.",
+    "explanation_en": "LEFT JOIN returns all rows from the left table (users) with matches from the right.",
+    "source": "SQL LEFT JOIN – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120304sql002",
+    "skill_id": "sk120304",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué departamentos tienen empleados o no?",
+    "question_en": "Which departments have employees or not?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT d.dept_name, u.name FROM departments d ___ users u ON d.id = u.dept_id;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT d.dept_name, u.name FROM departments d ___ users u ON d.id = u.dept_id;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "dept_name | name\n-----------+--------\nIT        | Ana\nIT        | Carlos\nHR        | Bob\nHR        | Eve\nFinance   | Diana",
+    "correct_answer_en": "dept_name | name\n-----------+--------\nIT        | Ana\nIT        | Carlos\nHR        | Bob\nHR        | Eve\nFinance   | Diana",
+    "explanation_es": "RIGHT JOIN devuelve todas las filas de la tabla derecha (users) con coincidencias de la izquierda.",
+    "explanation_en": "RIGHT JOIN returns all rows from the right table (users) with matches from the left.",
+    "source": "SQL RIGHT JOIN – https://www.w3schools.com/sql/sql_join_right.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120304sql003",
+    "skill_id": "sk120304",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué empleados y departamentos existen, coincidan o no?",
+    "question_en": "Which employees and departments exist, matching or not?",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.name, d.dept_name FROM users u ___ departments d ON u.dept_id = d.id;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, dept_id INTEGER);\nCREATE TABLE departments (id INTEGER, dept_name TEXT);\nINSERT INTO users VALUES (1,'Ana',1),(2,'Bob',2),(3,'Carlos',1),(4,'Diana',3),(5,'Eve',2);\nINSERT INTO departments VALUES (1,'IT'),(2,'HR'),(3,'Finance');\nSELECT u.name, d.dept_name FROM users u ___ departments d ON u.dept_id = d.id;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | dept_name\n--------+-----------\nAna    | IT\nBob    | HR\nCarlos | IT\nDiana  | Finance\nEve    | HR",
+    "correct_answer_en": "name   | dept_name\n--------+-----------\nAna    | IT\nBob    | HR\nCarlos | IT\nDiana  | Finance\nEve    | HR",
+    "explanation_es": "FULL OUTER JOIN devuelve todas las filas de ambas tablas, con coincidencias donde sea posible.",
+    "explanation_en": "FULL OUTER JOIN returns all rows from both tables, with matches where possible.",
+    "source": "SQL FULL OUTER JOIN – https://www.w3schools.com/sql/sql_join_full.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120304mc001",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve LEFT JOIN?",
+    "question_en": "What does LEFT JOIN return?",
+    "options_es": [
+      "Todas las filas de la tabla derecha",
+      "Todas las filas de la tabla izquierda",
+      "Solo coincidencias",
+      "Ninguna fila"
+    ],
+    "options_en": [
+      "All rows from the right table",
+      "All rows from the left table",
+      "Only matches",
+      "No rows"
+    ],
+    "correct_index": 1,
+    "explanation_es": "LEFT JOIN devuelve todas las filas de la tabla izquierda con coincidencias de la derecha.",
+    "explanation_en": "LEFT JOIN returns all rows from the left table with matches from the right.",
+    "source": "SQL LEFT JOIN – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc002",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve RIGHT JOIN?",
+    "question_en": "What does RIGHT JOIN return?",
+    "options_es": [
+      "Todas las filas de la tabla izquierda",
+      "Ninguna fila",
+      "Solo coincidencias",
+      "Todas las filas de la tabla derecha"
+    ],
+    "options_en": [
+      "All rows from the left table",
+      "No rows",
+      "Only matches",
+      "All rows from the right table"
+    ],
+    "correct_index": 3,
+    "explanation_es": "RIGHT JOIN devuelve todas las filas de la tabla derecha con coincidencias de la izquierda.",
+    "explanation_en": "RIGHT JOIN returns all rows from the right table with matches from the left.",
+    "source": "SQL RIGHT JOIN – https://www.w3schools.com/sql/sql_join_right.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc003",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve FULL OUTER JOIN?",
+    "question_en": "What does FULL OUTER JOIN return?",
+    "options_es": [
+      "Todas las filas de ambas tablas",
+      "Solo coincidencias",
+      "Todas las filas de la izquierda",
+      "Todas las filas de la derecha"
+    ],
+    "options_en": [
+      "All rows from both tables",
+      "Only matches",
+      "All rows from the left",
+      "All rows from the right"
+    ],
+    "correct_index": 0,
+    "explanation_es": "FULL OUTER JOIN devuelve todas las filas de ambas tablas, con coincidencias donde existan.",
+    "explanation_en": "FULL OUTER JOIN returns all rows from both tables, with matches where they exist.",
+    "source": "SQL FULL OUTER JOIN – https://www.w3schools.com/sql/sql_join_full.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc004",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre LEFT JOIN y INNER JOIN?",
+    "question_en": "What is the difference between LEFT JOIN and INNER JOIN?",
+    "options_es": [
+      "No hay diferencia",
+      "LEFT siempre falla",
+      "INNER es más lento",
+      "LEFT incluye filas sin coincidencia de la izquierda"
+    ],
+    "options_en": [
+      "No difference",
+      "LEFT always fails",
+      "INNER is slower",
+      "LEFT includes non-matching rows from left"
+    ],
+    "correct_index": 3,
+    "explanation_es": "LEFT JOIN incluye todas las filas de la izquierda aunque no tengan coincidencia.",
+    "explanation_en": "LEFT JOIN includes all rows from the left even if there is no match.",
+    "source": "SQL LEFT JOIN – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc005",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿FULL OUTER JOIN está soportado en todos los gestores SQL?",
+    "question_en": "Is FULL OUTER JOIN supported in all SQL databases?",
+    "options_es": [
+      "No, algunos usan UNION",
+      "Sí, siempre",
+      "Solo en Oracle",
+      "Depende de la versión"
+    ],
+    "options_en": [
+      "No, some use UNION",
+      "Yes, always",
+      "Only in Oracle",
+      "Depends on version"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Algunos gestores no soportan FULL OUTER JOIN y lo simulan con UNION de LEFT y RIGHT.",
+    "explanation_en": "Some databases do not support FULL OUTER JOIN and simulate it with UNION of LEFT and RIGHT.",
+    "source": "SQL FULL OUTER JOIN – https://www.w3schools.com/sql/sql_join_full.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc006",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Se pueden combinar múltiples tipos de JOIN en una consulta?",
+    "question_en": "Can you combine multiple JOIN types in one query?",
+    "options_es": [
+      "No",
+      "Solo en algunos gestores",
+      "Sí, como LEFT JOIN seguido de RIGHT JOIN",
+      "Siempre falla"
+    ],
+    "options_en": [
+      "No",
+      "Only in some databases",
+      "Yes, like LEFT JOIN followed by RIGHT JOIN",
+      "Always fails"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Sí, puedes usar diferentes tipos de JOIN en la misma consulta.",
+    "explanation_en": "Yes, you can use different JOIN types in the same query.",
+    "source": "SQL Multiple JOINs – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc007",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuántas filas retorna LEFT JOIN si la tabla izquierda tiene 10 filas sin coincidencia?",
+    "question_en": "How many rows does LEFT JOIN return if the left table has 10 non-matching rows?",
+    "options_es": [
+      "0",
+      "5",
+      "10",
+      "Depende de la derecha"
+    ],
+    "options_en": [
+      "0",
+      "5",
+      "10",
+      "Depends on the right"
+    ],
+    "correct_index": 2,
+    "explanation_es": "LEFT JOIN retorna todas las filas de la izquierda, incluso sin coincidencia, así que 10.",
+    "explanation_en": "LEFT JOIN returns all rows from the left, even without match, so 10.",
+    "source": "SQL LEFT JOIN behavior – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc008",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar WHERE con LEFT JOIN?",
+    "question_en": "Can you use WHERE with LEFT JOIN?",
+    "options_es": [
+      "No",
+      "Solo con GROUP BY",
+      "Sí, como en cualquier SELECT",
+      "Siempre falla"
+    ],
+    "options_en": [
+      "No",
+      "Only with GROUP BY",
+      "Yes, like in any SELECT",
+      "Always fails"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Sí, se puede usar WHERE después de LEFT JOIN para filtrar resultados.",
+    "explanation_en": "Yes, you can use WHERE after LEFT JOIN to filter results.",
+    "source": "SQL LEFT JOIN with WHERE – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc009",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué sucede con los NULLs en el lado derecho de LEFT JOIN?",
+    "question_en": "What happens to NULLs on the right side of LEFT JOIN?",
+    "options_es": [
+      "Se convierten a 0",
+      "Causan error",
+      "Se ignoran",
+      "Se mantienen como NULL"
+    ],
+    "options_en": [
+      "Converted to 0",
+      "Cause error",
+      "They are ignored",
+      "Remain as NULL"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Los campos de la tabla derecha son NULL cuando no hay coincidencia en LEFT JOIN.",
+    "explanation_en": "Fields from the right table are NULL when there is no match in LEFT JOIN.",
+    "source": "SQL LEFT JOIN and NULL – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc010",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿LEFT JOIN y LEFT OUTER JOIN son lo mismo?",
+    "question_en": "Are LEFT JOIN and LEFT OUTER JOIN the same?",
+    "options_es": [
+      "No",
+      "LEFT OUTER es más lento",
+      "Sí, son sinónimos",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "No",
+      "LEFT OUTER is slower",
+      "Yes, they are synonyms",
+      "Depends on database"
+    ],
+    "correct_index": 2,
+    "explanation_es": "LEFT JOIN y LEFT OUTER JOIN son sinónimos y funcionan idénticamente.",
+    "explanation_en": "LEFT JOIN and LEFT OUTER JOIN are synonyms and work identically.",
+    "source": "SQL LEFT JOIN – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc011",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar ORDER BY con FULL OUTER JOIN?",
+    "question_en": "Can you use ORDER BY with FULL OUTER JOIN?",
+    "options_es": [
+      "No",
+      "Solo en algunos gestores",
+      "Sí, como en cualquier SELECT",
+      "Siempre falla"
+    ],
+    "options_en": [
+      "No",
+      "Only in some databases",
+      "Yes, like in any SELECT",
+      "Always fails"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Sí, puedes usar ORDER BY para ordenar los resultados de FULL OUTER JOIN.",
+    "explanation_en": "Yes, you can use ORDER BY to sort FULL OUTER JOIN results.",
+    "source": "SQL FULL OUTER JOIN – https://www.w3schools.com/sql/sql_join_full.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120304mc012",
+    "skill_id": "sk120304",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es más eficiente: LEFT JOIN o RIGHT JOIN?",
+    "question_en": "Which is more efficient: LEFT JOIN or RIGHT JOIN?",
+    "options_es": [
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "Son iguales",
+      "Depende del gestor"
+    ],
+    "options_en": [
+      "LEFT JOIN",
+      "RIGHT JOIN",
+      "They are equal",
+      "Depends on database"
+    ],
+    "correct_index": 2,
+    "explanation_es": "El optimizador SQL genera planes equivalentes para LEFT y RIGHT JOIN.",
+    "explanation_en": "The SQL optimizer generates equivalent plans for LEFT and RIGHT JOIN.",
+    "source": "SQL JOIN performance – https://www.w3schools.com/sql/sql_join_left.asp",
+    "expected_time_ms": 30000
+  }
+]

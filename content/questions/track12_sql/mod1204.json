@@ -1,0 +1,1430 @@
+[
+  {
+    "id": "q120401sql001",
+    "skill_id": "sk120401",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Selecciona empleados con salario mayor que el promedio.",
+    "question_en": "Select employees with salary above the average.",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',80000);\nINSERT INTO employees VALUES (3,'Carlos',65000);\nINSERT INTO employees VALUES (4,'Diana',90000);\nSELECT name, salary FROM employees WHERE salary > (SELECT ___(salary) FROM employees) ORDER BY salary;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',80000);\nINSERT INTO employees VALUES (3,'Carlos',65000);\nINSERT INTO employees VALUES (4,'Diana',90000);\nSELECT name, salary FROM employees WHERE salary > (SELECT ___(salary) FROM employees) ORDER BY salary;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name  | salary\n------+--------\nBob   | 80000.0\nDiana | 90000.0",
+    "correct_answer_en": "name  | salary\n------+--------\nBob   | 80000.0\nDiana | 90000.0",
+    "explanation_es": "AVG(salary) calcula el promedio de salarios (71250). La subconsulta devuelve ese valor; el WHERE exterior filtra empleados con salario superior.",
+    "explanation_en": "AVG(salary) calculates the average salary (71250). The subquery returns that value; the outer WHERE filters employees earning more.",
+    "source": "SQL Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120401sql002",
+    "skill_id": "sk120401",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Encuentra departamentos cuyos empleados tienen más de un empleado.",
+    "question_en": "Find departments that have more than one employee.",
+    "code_es": "CREATE TABLE departments (dept_id INTEGER, dept_name TEXT);\nCREATE TABLE staff (id INTEGER, dept_id INTEGER, name TEXT);\nINSERT INTO departments VALUES (1,'IT');\nINSERT INTO departments VALUES (2,'HR');\nINSERT INTO staff VALUES (1, 1, 'Alice');\nINSERT INTO staff VALUES (2, 1, 'Bob');\nINSERT INTO staff VALUES (3, 2, 'Charlie');\nSELECT dept_name FROM departments WHERE dept_id IN (SELECT ___(dept_id) FROM staff GROUP BY dept_id HAVING COUNT(*) > 1);",
+    "code_en": "CREATE TABLE departments (dept_id INTEGER, dept_name TEXT);\nCREATE TABLE staff (id INTEGER, dept_id INTEGER, name TEXT);\nINSERT INTO departments VALUES (1,'IT');\nINSERT INTO departments VALUES (2,'HR');\nINSERT INTO staff VALUES (1, 1, 'Alice');\nINSERT INTO staff VALUES (2, 1, 'Bob');\nINSERT INTO staff VALUES (3, 2, 'Charlie');\nSELECT dept_name FROM departments WHERE dept_id IN (SELECT ___(dept_id) FROM staff GROUP BY dept_id HAVING COUNT(*) > 1);",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "dept_name\n---------\nIT",
+    "correct_answer_en": "dept_name\n---------\nIT",
+    "explanation_es": "La subconsulta GROUP BY devuelve dept_id donde hay más de un empleado. El IN filtra departamentos que coinciden.",
+    "explanation_en": "The subquery GROUP BY returns dept_id where there is more than one employee. The IN filters matching departments.",
+    "source": "SQL IN with Subqueries – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120401sql003",
+    "skill_id": "sk120401",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Selecciona productos con precio máximo en su categoría.",
+    "question_en": "Select products with maximum price in their category.",
+    "code_es": "CREATE TABLE products (id INTEGER, name TEXT, category TEXT, price REAL);\nINSERT INTO products VALUES (1,'Laptop','Electronics',1200);\nINSERT INTO products VALUES (2,'Mouse','Electronics',25);\nINSERT INTO products VALUES (3,'Desk','Furniture',300);\nINSERT INTO products VALUES (4,'Chair','Furniture',200);\nSELECT name, category, price FROM products WHERE price = (SELECT ___(price) FROM products p2 WHERE p2.category = products.category);",
+    "code_en": "CREATE TABLE products (id INTEGER, name TEXT, category TEXT, price REAL);\nINSERT INTO products VALUES (1,'Laptop','Electronics',1200);\nINSERT INTO products VALUES (2,'Mouse','Electronics',25);\nINSERT INTO products VALUES (3,'Desk','Furniture',300);\nINSERT INTO products VALUES (4,'Chair','Furniture',200);\nSELECT name, category, price FROM products WHERE price = (SELECT ___(price) FROM products p2 WHERE p2.category = products.category);",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | category    | price\n-------+-------------+-------\nLaptop | Electronics | 1200.0\nDesk   | Furniture   | 300.0",
+    "correct_answer_en": "name   | category    | price\n-------+-------------+-------\nLaptop | Electronics | 1200.0\nDesk   | Furniture   | 300.0",
+    "explanation_es": "Subconsulta escalar que encuentra el precio máximo por categoría. Max(price) compara cada producto con el máximo de su categoría.",
+    "explanation_en": "Scalar subquery finding the maximum price per category. MAX(price) compares each product to its category's max.",
+    "source": "Scalar Subqueries in SQL – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q120401mc001",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve una subconsulta escalar?",
+    "question_en": "What does a scalar subquery return?",
+    "options_es": [
+      "Una tabla",
+      "Una sola fila y una columna",
+      "Múltiples filas",
+      "Una lista de valores"
+    ],
+    "options_en": [
+      "A table",
+      "A single row and column",
+      "Multiple rows",
+      "A list of values"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Una subconsulta escalar devuelve exactamente un valor: una fila y una columna.",
+    "explanation_en": "A scalar subquery returns exactly one value: one row and one column.",
+    "source": "SQL Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120401mc002",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Dónde se puede usar una subconsulta en una instrucción SELECT?",
+    "question_en": "Where can a subquery be used in a SELECT statement?",
+    "options_es": [
+      "Solo en WHERE",
+      "Solo en HAVING",
+      "En WHERE, HAVING, FROM, SELECT",
+      "Solo en FROM"
+    ],
+    "options_en": [
+      "Only in WHERE",
+      "Only in HAVING",
+      "In WHERE, HAVING, FROM, SELECT",
+      "Only in FROM"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Las subconsultas pueden usarse en múltiples cláusulas: WHERE, HAVING, FROM (como tabla derivada) y SELECT (como columna derivada).",
+    "explanation_en": "Subqueries can be used in multiple clauses: WHERE, HAVING, FROM (as derived table), and SELECT (as derived column).",
+    "source": "Subquery Placement – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120401mc003",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre IN y = en subconsultas?",
+    "question_en": "What is the difference between IN and = in subqueries?",
+    "options_es": [
+      "No hay diferencia",
+      "IN compara con múltiples valores, = compara con uno",
+      "= es más rápido que IN",
+      "IN solo funciona con strings"
+    ],
+    "options_en": [
+      "No difference",
+      "IN compares to multiple values, = compares to one",
+      "= is faster than IN",
+      "IN only works with strings"
+    ],
+    "correct_index": 1,
+    "explanation_es": "IN se usa cuando la subconsulta retorna múltiples filas; = se usa para subconsultas escalares (un valor).",
+    "explanation_en": "IN is used when subquery returns multiple rows; = is used for scalar subqueries (one value).",
+    "source": "IN vs = in SQL – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120401mc004",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es una subconsulta correlacionada?",
+    "question_en": "What is a correlated subquery?",
+    "options_es": [
+      "Una subconsulta que referencia columnas de la consulta externa",
+      "Una subconsulta que usa JOIN",
+      "Una subconsulta que ordena datos",
+      "Una subconsulta dentro de otra subconsulta"
+    ],
+    "options_en": [
+      "A subquery that references columns from outer query",
+      "A subquery that uses JOIN",
+      "A subquery that sorts data",
+      "A subquery inside another subquery"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Una subconsulta correlacionada hace referencia a columnas de la consulta exterior, evaluándose para cada fila de esa consulta.",
+    "explanation_en": "A correlated subquery references columns from the outer query, evaluated for each row of that query.",
+    "source": "Correlated Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120401mc005",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la sintaxis correcta de una subconsulta en WHERE?",
+    "question_en": "What is the correct syntax of a subquery in WHERE?",
+    "options_es": [
+      "WHERE columna (SELECT ...)",
+      "WHERE (SELECT ...) columna",
+      "WHERE columna > (SELECT ...)",
+      "WHERE SELECT ... FROM tabla"
+    ],
+    "options_en": [
+      "WHERE column (SELECT ...)",
+      "WHERE (SELECT ...) column",
+      "WHERE column > (SELECT ...)",
+      "WHERE SELECT ... FROM table"
+    ],
+    "correct_index": 2,
+    "explanation_es": "La sintaxis es: WHERE columna > (SELECT ...). El operador de comparación va entre la columna y la subconsulta.",
+    "explanation_en": "The syntax is: WHERE column > (SELECT ...). The comparison operator goes between the column and subquery.",
+    "source": "SQL Syntax – https://www.w3schools.com/sql/sql_where.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120401mc006",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo optimizar una subconsulta en WHERE que se ejecuta para cada fila?",
+    "question_en": "How to optimize a subquery in WHERE that runs for each row?",
+    "options_es": [
+      "Usar DISTINCT",
+      "Usar LIMIT 1",
+      "Usar un JOIN en lugar de subconsulta",
+      "No se puede optimizar"
+    ],
+    "options_en": [
+      "Use DISTINCT",
+      "Use LIMIT 1",
+      "Use a JOIN instead of subquery",
+      "Cannot be optimized"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Un JOIN suele ser más eficiente que una subconsulta correlacionada porque evita evaluar la subconsulta múltiples veces.",
+    "explanation_en": "A JOIN is usually more efficient than a correlated subquery because it avoids evaluating the subquery multiple times.",
+    "source": "SQL Performance Tips – https://www.w3schools.com/sql/sql_join.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120401mc007",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el resultado de WHERE 1 IN (SELECT ___)?",
+    "question_en": "What is the result of WHERE 1 IN (SELECT ___)?",
+    "options_es": [
+      "Error de sintaxis",
+      "Devuelve todas las filas si la subconsulta contiene 1",
+      "Devuelve 0 filas",
+      "Depende del contenido de la subconsulta"
+    ],
+    "options_en": [
+      "Syntax error",
+      "Returns all rows if subquery contains 1",
+      "Returns 0 rows",
+      "Depends on subquery content"
+    ],
+    "correct_index": 1,
+    "explanation_es": "WHERE 1 IN (SELECT ...) devuelve todas las filas si el resultado de la subconsulta incluye el número 1.",
+    "explanation_en": "WHERE 1 IN (SELECT ...) returns all rows if the subquery result includes the number 1.",
+    "source": "SQL IN Clause – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120401mc008",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué hace NOT IN en una subconsulta?",
+    "question_en": "What does NOT IN do in a subquery?",
+    "options_es": [
+      "Invierte el resultado",
+      "Excluye valores NULL",
+      "Retorna filas que NO coinciden con la subconsulta",
+      "Ordena en reversa"
+    ],
+    "options_en": [
+      "Inverts the result",
+      "Excludes NULL values",
+      "Returns rows that do NOT match the subquery",
+      "Orders in reverse"
+    ],
+    "correct_index": 2,
+    "explanation_es": "NOT IN devuelve filas cuyo valor NO está en el conjunto de resultados de la subconsulta.",
+    "explanation_en": "NOT IN returns rows whose value is NOT in the subquery result set.",
+    "source": "SQL NOT IN – https://www.w3schools.com/sql/sql_in.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120401mc009",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el problema potencial con NOT IN y valores NULL?",
+    "question_en": "What is the potential problem with NOT IN and NULL values?",
+    "options_es": [
+      "NOT IN ignora NULL",
+      "NOT IN devuelve siempre cero filas",
+      "NOT IN retorna NULL en lugar de filas",
+      "No hay problema"
+    ],
+    "options_en": [
+      "NOT IN ignores NULL",
+      "NOT IN always returns zero rows",
+      "NOT IN returns NULL instead of rows",
+      "No problem"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Si la subconsulta contiene NULL, NOT IN devuelve NULL para todas las filas, resultando en ninguna fila retornada.",
+    "explanation_en": "If the subquery contains NULL, NOT IN returns NULL for all rows, resulting in no rows returned.",
+    "source": "SQL NULL Handling – https://www.w3schools.com/sql/sql_null.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120401mc010",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la ventaja de usar ANY en lugar de IN?",
+    "question_en": "What is the advantage of using ANY instead of IN?",
+    "options_es": [
+      "ANY es más rápido",
+      "ANY evita NULL",
+      "ANY permite operadores como > y <",
+      "No hay ventaja"
+    ],
+    "options_en": [
+      "ANY is faster",
+      "ANY avoids NULL",
+      "ANY allows operators like > and <",
+      "No advantage"
+    ],
+    "correct_index": 2,
+    "explanation_es": "ANY permite usar operadores de comparación (=, >, <, etc.), mientras que IN solo verifica igualdad.",
+    "explanation_en": "ANY allows comparison operators (=, >, <, etc.), while IN only checks equality.",
+    "source": "SQL ANY – https://www.w3schools.com/sql/sql_any.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120401mc011",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se comporta ALL con valores NULL?",
+    "question_en": "How does ALL behave with NULL values?",
+    "options_es": [
+      "ALL ignora NULL",
+      "ALL funciona igual que ANY",
+      "ALL retorna NULL si hay NULL en el resultado",
+      "ALL causa error"
+    ],
+    "options_en": [
+      "ALL ignores NULL",
+      "ALL works like ANY",
+      "ALL returns NULL if NULL exists in result",
+      "ALL causes error"
+    ],
+    "correct_index": 2,
+    "explanation_es": "ALL retorna verdadero solo si la condición es verdadera para TODOS los valores. Si hay NULL, el resultado es NULL.",
+    "explanation_en": "ALL returns true only if condition is true for ALL values. If NULL exists, result is NULL.",
+    "source": "SQL ALL – https://www.w3schools.com/sql/sql_all.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120401mc012",
+    "skill_id": "sk120401",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la diferencia entre subconsulta en FROM vs subconsulta en WHERE?",
+    "question_en": "What is the difference between subquery in FROM vs WHERE?",
+    "options_es": [
+      "FROM crea tabla derivada, WHERE filtra filas",
+      "No hay diferencia",
+      "FROM filtra filas, WHERE crea tabla",
+      "FROM es más lento"
+    ],
+    "options_en": [
+      "FROM creates derived table, WHERE filters rows",
+      "No difference",
+      "FROM filters rows, WHERE creates table",
+      "FROM is slower"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Subconsulta en FROM crea una tabla derivada; subconsulta en WHERE filtra basado en una condición.",
+    "explanation_en": "Subquery in FROM creates a derived table; subquery in WHERE filters based on a condition.",
+    "source": "SQL Derived Tables – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120402sql001",
+    "skill_id": "sk120402",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Selecciona clientes que tienen al menos un pedido.",
+    "question_en": "Select customers who have at least one order.",
+    "code_es": "CREATE TABLE customers (id INTEGER, name TEXT);\nCREATE TABLE orders (id INTEGER, customer_id INTEGER, amount REAL);\nINSERT INTO customers VALUES (1,'Alice');\nINSERT INTO customers VALUES (2,'Bob');\nINSERT INTO customers VALUES (3,'Charlie');\nINSERT INTO orders VALUES (1, 1, 100);\nINSERT INTO orders VALUES (2, 1, 200);\nINSERT INTO orders VALUES (3, 3, 150);\nSELECT name FROM customers WHERE ___(SELECT 1 FROM orders WHERE orders.customer_id = customers.id);",
+    "code_en": "CREATE TABLE customers (id INTEGER, name TEXT);\nCREATE TABLE orders (id INTEGER, customer_id INTEGER, amount REAL);\nINSERT INTO customers VALUES (1,'Alice');\nINSERT INTO customers VALUES (2,'Bob');\nINSERT INTO customers VALUES (3,'Charlie');\nINSERT INTO orders VALUES (1, 1, 100);\nINSERT INTO orders VALUES (2, 1, 200);\nINSERT INTO orders VALUES (3, 3, 150);\nSELECT name FROM customers WHERE ___(SELECT 1 FROM orders WHERE orders.customer_id = customers.id);",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n-----\nAlice\nCharlie",
+    "correct_answer_en": "name\n-----\nAlice\nCharlie",
+    "explanation_es": "EXISTS verifica si la subconsulta correlacionada devuelve al menos una fila. Si es verdad, se incluye el cliente.",
+    "explanation_en": "EXISTS checks if the correlated subquery returns at least one row. If true, the customer is included.",
+    "source": "SQL EXISTS – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120402sql002",
+    "skill_id": "sk120402",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Selecciona clientes que NO tienen pedidos.",
+    "question_en": "Select customers who have NO orders.",
+    "code_es": "CREATE TABLE customers (id INTEGER, name TEXT);\nCREATE TABLE orders (id INTEGER, customer_id INTEGER, amount REAL);\nINSERT INTO customers VALUES (1,'Alice');\nINSERT INTO customers VALUES (2,'Bob');\nINSERT INTO customers VALUES (3,'Charlie');\nINSERT INTO orders VALUES (1, 1, 100);\nINSERT INTO orders VALUES (2, 3, 150);\nSELECT name FROM customers WHERE ___(SELECT 1 FROM orders WHERE orders.customer_id = customers.id);",
+    "code_en": "CREATE TABLE customers (id INTEGER, name TEXT);\nCREATE TABLE orders (id INTEGER, customer_id INTEGER, amount REAL);\nINSERT INTO customers VALUES (1,'Alice');\nINSERT INTO customers VALUES (2,'Bob');\nINSERT INTO customers VALUES (3,'Charlie');\nINSERT INTO orders VALUES (1, 1, 100);\nINSERT INTO orders VALUES (2, 3, 150);\nSELECT name FROM customers WHERE ___(SELECT 1 FROM orders WHERE orders.customer_id = customers.id);",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n-----\nBob",
+    "correct_answer_en": "name\n-----\nBob",
+    "explanation_es": "NOT EXISTS devuelve verdadero si la subconsulta NO retorna filas. Bob no tiene pedidos, entonces se incluye.",
+    "explanation_en": "NOT EXISTS returns true if the subquery returns NO rows. Bob has no orders, so he is included.",
+    "source": "SQL NOT EXISTS – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120402sql003",
+    "skill_id": "sk120402",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Selecciona empleados con salario mayor que todos los salarios de su departamento anterior.",
+    "question_en": "Select employees earning more than all salaries in their previous department.",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Alice','IT',60000);\nINSERT INTO employees VALUES (2,'Bob','HR',45000);\nINSERT INTO employees VALUES (3,'Charlie','IT',55000);\nINSERT INTO employees VALUES (4,'Diana','Marketing',80000);\nSELECT name FROM employees e WHERE salary > ___(salary FROM employees WHERE dept = 'IT');",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, dept TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Alice','IT',60000);\nINSERT INTO employees VALUES (2,'Bob','HR',45000);\nINSERT INTO employees VALUES (3,'Charlie','IT',55000);\nINSERT INTO employees VALUES (4,'Diana','Marketing',80000);\nSELECT name FROM employees e WHERE salary > ___(salary FROM employees WHERE dept = 'IT');",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n-----\nDiana",
+    "correct_answer_en": "name\n-----\nDiana",
+    "explanation_es": "ALL compara si el salario es mayor que TODOS los salarios del departamento IT (máximo 60000). Solo Diana (80000) cumple.",
+    "explanation_en": "ALL compares if salary is greater than ALL IT department salaries (max 60000). Only Diana (80000) qualifies.",
+    "source": "SQL ALL Operator – https://www.w3schools.com/sql/sql_all.asp",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120402mc001",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve EXISTS si la subconsulta no retorna filas?",
+    "question_en": "What does EXISTS return if subquery returns no rows?",
+    "options_es": [
+      "Verdadero",
+      "Error",
+      "NULL",
+      "Falso"
+    ],
+    "options_en": [
+      "True",
+      "Error",
+      "NULL",
+      "False"
+    ],
+    "correct_index": 3,
+    "explanation_es": "EXISTS devuelve FALSO si la subconsulta no retorna filas.",
+    "explanation_en": "EXISTS returns FALSE if the subquery returns no rows.",
+    "source": "SQL EXISTS – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120402mc002",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es una subconsulta correlacionada?",
+    "question_en": "What is a correlated subquery?",
+    "options_es": [
+      "Una que referencia a la consulta externa",
+      "Una que nunca se ejecuta",
+      "Una que devuelve NULL",
+      "Una que usa JOIN"
+    ],
+    "options_en": [
+      "One that references the outer query",
+      "One that never executes",
+      "One that returns NULL",
+      "One that uses JOIN"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Una subconsulta correlacionada referencia columnas de la consulta externa, evaluándose para cada fila.",
+    "explanation_en": "A correlated subquery references columns from outer query, evaluated for each row.",
+    "source": "SQL Correlated Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120402mc003",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuándo es más eficiente NOT EXISTS que NOT IN?",
+    "question_en": "When is NOT EXISTS more efficient than NOT IN?",
+    "options_es": [
+      "Nunca",
+      "Depende del DBMS",
+      "Siempre",
+      "Cuando hay valores NULL"
+    ],
+    "options_en": [
+      "Never",
+      "Depends on DBMS",
+      "Always",
+      "When there are NULL values"
+    ],
+    "correct_index": 3,
+    "explanation_es": "NOT EXISTS evita el problema de NULL que tiene NOT IN, siendo más seguro y a menudo más eficiente.",
+    "explanation_en": "NOT EXISTS avoids the NULL problem that NOT IN has, making it safer and often more efficient.",
+    "source": "SQL Optimization – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120402mc004",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué significa 'correlacionado' en una subconsulta?",
+    "question_en": "What does 'correlated' mean in a subquery?",
+    "options_es": [
+      "Depende de datos de la fila actual externa",
+      "Devuelve muchas filas",
+      "Usa múltiples tablas",
+      "Es una tabla temporal"
+    ],
+    "options_en": [
+      "Depends on current outer row's data",
+      "Returns many rows",
+      "Uses multiple tables",
+      "Is a temporary table"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Correlacionado significa que la subconsulta hace referencia y depende de la fila actual de la consulta externa.",
+    "explanation_en": "Correlated means the subquery references and depends on the current row of the outer query.",
+    "source": "Correlated Subqueries – https://www.w3schools.com/sql/sql_subqueries.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120402mc005",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la sintaxis correcta para EXISTS?",
+    "question_en": "What is the correct syntax for EXISTS?",
+    "options_es": [
+      "WHERE EXISTS (SELECT ...)",
+      "WHERE COUNT(*) EXISTS",
+      "EXISTS SELECT ...",
+      "WHERE (SELECT ...) EXISTS"
+    ],
+    "options_en": [
+      "WHERE EXISTS (SELECT ...)",
+      "WHERE COUNT(*) EXISTS",
+      "EXISTS SELECT ...",
+      "WHERE (SELECT ...) EXISTS"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La sintaxis correcta es WHERE EXISTS (SELECT ...). EXISTS es un operador booleano.",
+    "explanation_en": "The correct syntax is WHERE EXISTS (SELECT ...). EXISTS is a boolean operator.",
+    "source": "SQL EXISTS Syntax – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120402mc006",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Por qué EXISTS es más eficiente que IN en algunos casos?",
+    "question_en": "Why is EXISTS more efficient than IN in some cases?",
+    "options_es": [
+      "Porque usa menos memoria",
+      "Porque detiene la búsqueda cuando encuentra la primera fila",
+      "Porque ordena automáticamente",
+      "Porque es más antiguo"
+    ],
+    "options_en": [
+      "Because it uses less memory",
+      "Because it stops searching after first row found",
+      "Because it auto-sorts",
+      "Because it is older"
+    ],
+    "correct_index": 1,
+    "explanation_es": "EXISTS detiene la evaluación tan pronto como encuentra una fila, mientras que IN puede evaluar todas las filas.",
+    "explanation_en": "EXISTS stops evaluation as soon as it finds one row, while IN may evaluate all rows.",
+    "source": "SQL Performance – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120402mc007",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué es un 'alias de tabla correlacionado'?",
+    "question_en": "What is a 'correlated table alias'?",
+    "options_es": [
+      "Un nombre para la tabla en la subconsulta",
+      "Un nombre de columna alternativo",
+      "Una tabla virtual",
+      "Un tipo de JOIN"
+    ],
+    "options_en": [
+      "A name for the table in subquery",
+      "An alternative column name",
+      "A virtual table",
+      "A type of JOIN"
+    ],
+    "correct_index": 0,
+    "explanation_es": "En subconsultas correlacionadas, se usan alias (p.ej., e1, e2) para distinguir la tabla externa de la interna.",
+    "explanation_en": "In correlated subqueries, aliases (e.g., e1, e2) are used to distinguish outer table from inner.",
+    "source": "SQL Table Aliases – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120402mc008",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el resultado de NOT EXISTS con una subconsulta vacía?",
+    "question_en": "What is the result of NOT EXISTS with an empty subquery?",
+    "options_es": [
+      "Falso",
+      "NULL",
+      "Verdadero",
+      "Error"
+    ],
+    "options_en": [
+      "False",
+      "NULL",
+      "True",
+      "Error"
+    ],
+    "correct_index": 2,
+    "explanation_es": "NOT EXISTS devuelve VERDADERO si la subconsulta no retorna filas (está vacía).",
+    "explanation_en": "NOT EXISTS returns TRUE if subquery returns no rows (is empty).",
+    "source": "SQL NOT EXISTS – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120402mc009",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre EXISTS e IN en términos de NULL?",
+    "question_en": "What is the difference between EXISTS and IN regarding NULL?",
+    "options_es": [
+      "Ambos ignoran NULL",
+      "EXISTS ignora NULL, IN puede tener problemas",
+      "Ambos tienen problemas",
+      "IN ignora NULL, EXISTS no"
+    ],
+    "options_en": [
+      "Both ignore NULL",
+      "EXISTS ignores NULL, IN can have issues",
+      "Both have issues",
+      "IN ignores NULL, EXISTS doesn't"
+    ],
+    "correct_index": 1,
+    "explanation_es": "EXISTS solo verifica si hay filas (ignora NULL); IN puede retornar NULL si la subconsulta contiene NULL.",
+    "explanation_en": "EXISTS only checks if rows exist (ignores NULL); IN can return NULL if subquery contains NULL.",
+    "source": "SQL NULL Handling – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120402mc010",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuándo NOT EXISTS es preferible a LEFT JOIN?",
+    "question_en": "When is NOT EXISTS preferable to LEFT JOIN?",
+    "options_es": [
+      "Nunca",
+      "Cuando solo importa la existencia, no los valores",
+      "Siempre",
+      "Cuando hay NULL"
+    ],
+    "options_en": [
+      "Never",
+      "When only existence matters, not values",
+      "Always",
+      "When there are NULLs"
+    ],
+    "correct_index": 1,
+    "explanation_es": "NOT EXISTS es preferible cuando solo necesitas saber si existen filas, sin necesitar sus valores.",
+    "explanation_en": "NOT EXISTS is preferable when you only need to know if rows exist, without needing their values.",
+    "source": "SQL EXISTS vs JOIN – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120402mc011",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el impacto de rendimiento de usar EXISTS múltiples veces?",
+    "question_en": "What is the performance impact of using EXISTS multiple times?",
+    "options_es": [
+      "No hay impacto",
+      "Cada EXISTS se ejecuta para cada fila",
+      "Se ejecuta una sola vez",
+      "Depende del índice"
+    ],
+    "options_en": [
+      "No impact",
+      "Each EXISTS executes for each row",
+      "Executes only once",
+      "Depends on index"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Cada subconsulta EXISTS se ejecuta para CADA fila de la consulta externa, lo que puede ser lento con muchas filas.",
+    "explanation_en": "Each EXISTS subquery executes for EACH row of outer query, which can be slow with many rows.",
+    "source": "SQL Performance Tuning – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120402mc012",
+    "skill_id": "sk120402",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo convertir NOT EXISTS a una condición equivalente?",
+    "question_en": "How to convert NOT EXISTS to an equivalent condition?",
+    "options_es": [
+      "Usar COUNT(*) = 0",
+      "Usar NOT IN",
+      "Usar LEFT JOIN con IS NULL",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "Use COUNT(*) = 0",
+      "Use NOT IN",
+      "Use LEFT JOIN with IS NULL",
+      "All of the above"
+    ],
+    "correct_index": 3,
+    "explanation_es": "NOT EXISTS puede reemplazarse por COUNT(*) = 0, NOT IN (sin NULL), o LEFT JOIN con IS NULL.",
+    "explanation_en": "NOT EXISTS can be replaced by COUNT(*) = 0, NOT IN (without NULL), or LEFT JOIN with IS NULL.",
+    "source": "SQL Equivalent Conditions – https://www.w3schools.com/sql/sql_exists.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120403sql001",
+    "skill_id": "sk120403",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Usa CTE para seleccionar empleados con salario mayor al promedio.",
+    "question_en": "Use CTE to select employees earning more than average.",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',80000);\nINSERT INTO employees VALUES (3,'Carlos',65000);\nINSERT INTO employees VALUES (4,'Diana',90000);\n___ avg_salary AS (SELECT AVG(salary) as avg_sal FROM employees)\nSELECT e.name, e.salary FROM employees e, avg_salary WHERE e.salary > avg_salary.avg_sal;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, salary REAL);\nINSERT INTO employees VALUES (1,'Ana',50000);\nINSERT INTO employees VALUES (2,'Bob',80000);\nINSERT INTO employees VALUES (3,'Carlos',65000);\nINSERT INTO employees VALUES (4,'Diana',90000);\n___ avg_salary AS (SELECT AVG(salary) as avg_sal FROM employees)\nSELECT e.name, e.salary FROM employees e, avg_salary WHERE e.salary > avg_salary.avg_sal;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name  | salary\n------+--------\nBob   | 80000.0\nDiana | 90000.0",
+    "correct_answer_en": "name  | salary\n------+--------\nBob   | 80000.0\nDiana | 90000.0",
+    "explanation_es": "WITH crea una tabla temporal (CTE). avg_salary contiene el promedio. Luego se usa en la consulta principal.",
+    "explanation_en": "WITH creates a temporary table (CTE). avg_salary contains the average. Then used in main query.",
+    "source": "SQL CTE (WITH clause) – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120403sql002",
+    "skill_id": "sk120403",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Define CTE para categorizar productos por precio.",
+    "question_en": "Define CTE to categorize products by price.",
+    "code_es": "CREATE TABLE products (id INTEGER, name TEXT, price REAL);\nINSERT INTO products VALUES (1,'Laptop',1200);\nINSERT INTO products VALUES (2,'Mouse',25);\nINSERT INTO products VALUES (3,'Monitor',300);\n___ price_categories AS (SELECT name, price, CASE WHEN price < 100 THEN 'Cheap' ELSE 'Expensive' END as category FROM products)\nSELECT * FROM price_categories WHERE category = 'Expensive';",
+    "code_en": "CREATE TABLE products (id INTEGER, name TEXT, price REAL);\nINSERT INTO products VALUES (1,'Laptop',1200);\nINSERT INTO products VALUES (2,'Mouse',25);\nINSERT INTO products VALUES (3,'Monitor',300);\n___ price_categories AS (SELECT name, price, CASE WHEN price < 100 THEN 'Cheap' ELSE 'Expensive' END as category FROM products)\nSELECT * FROM price_categories WHERE category = 'Expensive';",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name    | price | category\n--------+-------+----------\nLaptop  | 1200.0| Expensive\nMonitor | 300.0 | Expensive",
+    "correct_answer_en": "name    | price | category\n--------+-------+----------\nLaptop  | 1200.0| Expensive\nMonitor | 300.0 | Expensive",
+    "explanation_es": "WITH define un CTE que categoriza productos. Luego se filtra por categoría 'Expensive'.",
+    "explanation_en": "WITH defines a CTE that categorizes products. Then filtered by 'Expensive' category.",
+    "source": "SQL CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120403sql003",
+    "skill_id": "sk120403",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Crea múltiples CTEs con salarios y bonificaciones.",
+    "question_en": "Create multiple CTEs with salaries and bonuses.",
+    "code_es": "CREATE TABLE staff (id INTEGER, name TEXT, salary REAL);\nINSERT INTO staff VALUES (1,'Alice',50000);\nINSERT INTO staff VALUES (2,'Bob',80000);\n___ base_salary AS (SELECT id, name, salary FROM staff),\nbonus_calc AS (SELECT id, name, salary, salary * 0.1 as bonus FROM base_salary)\nSELECT name, salary, bonus, salary + bonus as total FROM bonus_calc;",
+    "code_en": "CREATE TABLE staff (id INTEGER, name TEXT, salary REAL);\nINSERT INTO staff VALUES (1,'Alice',50000);\nINSERT INTO staff VALUES (2,'Bob',80000);\n___ base_salary AS (SELECT id, name, salary FROM staff),\nbonus_calc AS (SELECT id, name, salary, salary * 0.1 as bonus FROM base_salary)\nSELECT name, salary, bonus, salary + bonus as total FROM bonus_calc;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name  | salary | bonus | total\n------+--------+-------+-------\nAlice | 50000.0| 5000.0| 55000.0\nBob   | 80000.0| 8000.0| 88000.0",
+    "correct_answer_en": "name  | salary | bonus | total\n------+--------+-------+-------\nAlice | 50000.0| 5000.0| 55000.0\nBob   | 80000.0| 8000.0| 88000.0",
+    "explanation_es": "Múltiples CTEs pueden definirse con comas. base_salary es usado por bonus_calc, que es usado por la consulta final.",
+    "explanation_en": "Multiple CTEs can be defined with commas. base_salary is used by bonus_calc, which is used by final query.",
+    "source": "SQL Multiple CTEs – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120403mc001",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué significa CTE?",
+    "question_en": "What does CTE mean?",
+    "options_es": [
+      "Common Table Expression",
+      "Common Table Exception",
+      "Conditional Table Extract",
+      "Column Table Editor"
+    ],
+    "options_en": [
+      "Common Table Expression",
+      "Common Table Exception",
+      "Conditional Table Extract",
+      "Column Table Editor"
+    ],
+    "correct_index": 0,
+    "explanation_es": "CTE significa Common Table Expression (Expresión de Tabla Común), una tabla temporal en SQL.",
+    "explanation_en": "CTE means Common Table Expression, a temporary table in SQL.",
+    "source": "SQL CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120403mc002",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la palabra clave para definir un CTE?",
+    "question_en": "What keyword defines a CTE?",
+    "options_es": [
+      "CREATE TEMP TABLE",
+      "DEFINE",
+      "WITH",
+      "TEMP"
+    ],
+    "options_en": [
+      "CREATE TEMP TABLE",
+      "DEFINE",
+      "WITH",
+      "TEMP"
+    ],
+    "correct_index": 2,
+    "explanation_es": "La palabra clave WITH se usa para definir un CTE.",
+    "explanation_en": "The WITH keyword is used to define a CTE.",
+    "source": "SQL CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120403mc003",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el alcance de un CTE?",
+    "question_en": "What is the scope of a CTE?",
+    "options_es": [
+      "Solo para la instrucción que lo sigue",
+      "Se mantiene para toda la sesión",
+      "Se reutiliza en todas las consultas",
+      "Permanente en la base de datos"
+    ],
+    "options_en": [
+      "Only for the following statement",
+      "Persists for entire session",
+      "Reused in all queries",
+      "Permanent in database"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Un CTE existe solo para la instrucción SELECT que lo sigue inmediatamente.",
+    "explanation_en": "A CTE exists only for the SELECT statement that immediately follows it.",
+    "source": "SQL CTE Scope – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120403mc004",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se relacionan múltiples CTEs?",
+    "question_en": "How do multiple CTEs relate to each other?",
+    "options_es": [
+      "Con comas separando sus definiciones",
+      "Con UNION",
+      "Con JOIN",
+      "No se pueden usar múltiples"
+    ],
+    "options_en": [
+      "With commas separating definitions",
+      "With UNION",
+      "With JOIN",
+      "Cannot use multiple"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Múltiples CTEs se definen separando sus definiciones con comas.",
+    "explanation_en": "Multiple CTEs are defined by separating their definitions with commas.",
+    "source": "SQL Multiple CTEs – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120403mc005",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la ventaja de usar CTE sobre una subconsulta?",
+    "question_en": "What is the advantage of CTE over a subquery?",
+    "options_es": [
+      "CTE es más legible",
+      "CTE es más rápido",
+      "CTE es más seguro",
+      "Todas las anteriores"
+    ],
+    "options_en": [
+      "CTE is more readable",
+      "CTE is faster",
+      "CTE is more secure",
+      "All of above"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Los CTEs mejoran la legibilidad al separar lógica compleja en partes nombradas.",
+    "explanation_en": "CTEs improve readability by separating complex logic into named parts.",
+    "source": "SQL CTE Benefits – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120403mc006",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Puede un CTE hace referencia a otro CTE anterior?",
+    "question_en": "Can a CTE reference another earlier CTE?",
+    "options_es": [
+      "No, es imposible",
+      "Sí, pero solo si se usan comas",
+      "Sí, solo CTEs anteriores",
+      "No, causa error de sintaxis"
+    ],
+    "options_en": [
+      "No, it's impossible",
+      "Yes, but only with commas",
+      "Yes, only earlier CTEs",
+      "No, syntax error"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Un CTE puede hacer referencia a CTEs definidos anteriormente en la misma instrucción WITH.",
+    "explanation_en": "A CTE can reference earlier CTEs defined in the same WITH clause.",
+    "source": "SQL CTE References – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120403mc007",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la diferencia entre CTE y vista?",
+    "question_en": "What is the difference between CTE and view?",
+    "options_es": [
+      "No hay diferencia",
+      "CTE requiere autenticación",
+      "Vista es temporal, CTE es permanente",
+      "CTE es temporal, vista es permanente"
+    ],
+    "options_en": [
+      "No difference",
+      "CTE requires authentication",
+      "View is temporary, CTE is permanent",
+      "CTE is temporary, view is permanent"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Un CTE es temporal (existe solo durante la instrucción), mientras que una vista es permanente en la base de datos.",
+    "explanation_en": "A CTE is temporary (exists only during the statement), while a view is permanent in database.",
+    "source": "CTE vs View – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120403mc008",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la sintaxis para usar un CTE?",
+    "question_en": "What is the syntax for using a CTE?",
+    "options_es": [
+      "WITH nombre AS (SELECT ...) SELECT ... FROM nombre",
+      "CTE nombre AS (SELECT ...) SELECT ...",
+      "CREATE CTE nombre AS ...",
+      "TEMP nombre AS (SELECT ...)"
+    ],
+    "options_en": [
+      "WITH name AS (SELECT ...) SELECT ... FROM name",
+      "CTE name AS (SELECT ...) SELECT ...",
+      "CREATE CTE name AS ...",
+      "TEMP name AS (SELECT ...)"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La sintaxis correcta es: WITH nombre AS (SELECT ...) seguido de la consulta principal que referencia al CTE.",
+    "explanation_en": "The correct syntax is: WITH name AS (SELECT ...) followed by main query referencing the CTE.",
+    "source": "SQL CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120403mc009",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puede un CTE ser usado múltiples veces en la misma consulta?",
+    "question_en": "Can a CTE be used multiple times in the same query?",
+    "options_es": [
+      "Sí, tantas veces como sea necesario",
+      "No, solo una vez",
+      "Sí, pero con aliasing",
+      "No, requiere CREATE"
+    ],
+    "options_en": [
+      "Yes, as many times as needed",
+      "No, only once",
+      "Yes, but with aliasing",
+      "No, requires CREATE"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Un CTE puede referenciarse múltiples veces dentro de la misma instrucción WITH.",
+    "explanation_en": "A CTE can be referenced multiple times within the same WITH statement.",
+    "source": "SQL CTE Usage – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120403mc010",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuándo deberías usar CTE en lugar de LEFT JOIN?",
+    "question_en": "When should you use CTE instead of LEFT JOIN?",
+    "options_es": [
+      "Nunca",
+      "Cuando no hay índices",
+      "Siempre",
+      "Cuando la lógica es compleja y necesita claridad"
+    ],
+    "options_en": [
+      "Never",
+      "When no indexes",
+      "Always",
+      "When logic is complex and needs clarity"
+    ],
+    "correct_index": 3,
+    "explanation_es": "CTEs son mejores para mejorar legibilidad cuando la lógica es compleja.",
+    "explanation_en": "CTEs are better for clarity when logic is complex.",
+    "source": "SQL Best Practices – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120403mc011",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el impacto de rendimiento de un CTE?",
+    "question_en": "What is the performance impact of a CTE?",
+    "options_es": [
+      "CTEs son siempre más lentos",
+      "CTEs siempre mejoran rendimiento",
+      "CTEs no afectan rendimiento",
+      "CTEs pueden ser optimizados por el DBMS"
+    ],
+    "options_en": [
+      "CTEs are always slower",
+      "CTEs always improve performance",
+      "CTEs don't affect performance",
+      "CTEs can be optimized by DBMS"
+    ],
+    "correct_index": 3,
+    "explanation_es": "La mayoría de DBMS modernos optimizan CTEs. El rendimiento depende de la consulta, no del CTE en sí.",
+    "explanation_en": "Modern DBMs optimize CTEs. Performance depends on the query, not the CTE itself.",
+    "source": "SQL Performance Tuning – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120403mc012",
+    "skill_id": "sk120403",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la función de AS en un CTE?",
+    "question_en": "What is the purpose of AS in a CTE?",
+    "options_es": [
+      "Define un alias",
+      "Convierte tipos de datos",
+      "Define la estructura del CTE",
+      "Crea un índice"
+    ],
+    "options_en": [
+      "Define an alias",
+      "Converts data types",
+      "Defines CTE structure",
+      "Creates an index"
+    ],
+    "correct_index": 2,
+    "explanation_es": "AS define la estructura y contenido del CTE, indicando qué SELECT define el CTE.",
+    "explanation_en": "AS defines the structure and content of the CTE, indicating what SELECT defines it.",
+    "source": "SQL CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120404sql001",
+    "skill_id": "sk120404",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Genera números del 1 al 5 usando CTE recursivo.",
+    "question_en": "Generate numbers 1 to 5 using recursive CTE.",
+    "code_es": "WITH ___ numbers AS (\n  SELECT 1 AS n\n  UNION ALL\n  SELECT n + 1 FROM numbers WHERE n < 5\n)\nSELECT * FROM numbers;",
+    "code_en": "WITH ___ numbers AS (\n  SELECT 1 AS n\n  UNION ALL\n  SELECT n + 1 FROM numbers WHERE n < 5\n)\nSELECT * FROM numbers;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "n\n---\n1\n2\n3\n4\n5",
+    "correct_answer_en": "n\n---\n1\n2\n3\n4\n5",
+    "explanation_es": "RECURSIVE permite que el CTE se refiera a sí mismo. Parte base: SELECT 1. Parte recursiva: SELECT n+1 mientras n < 5.",
+    "explanation_en": "RECURSIVE allows CTE to reference itself. Base: SELECT 1. Recursive: SELECT n+1 while n < 5.",
+    "source": "SQL Recursive CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120404sql002",
+    "skill_id": "sk120404",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Crea una jerarquía de empleados con sus supervisores usando recursión.",
+    "question_en": "Create employee hierarchy with supervisors using recursion.",
+    "code_es": "CREATE TABLE employees (id INTEGER, name TEXT, manager_id INTEGER);\nINSERT INTO employees VALUES (1,'CEO',NULL);\nINSERT INTO employees VALUES (2,'Manager',1);\nINSERT INTO employees VALUES (3,'Dev',2);\nWITH ___ hierarchy AS (\n  SELECT id, name, manager_id, 0 as level FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, e.manager_id, h.level + 1 FROM employees e INNER JOIN hierarchy h ON e.manager_id = h.id\n)\nSELECT * FROM hierarchy;",
+    "code_en": "CREATE TABLE employees (id INTEGER, name TEXT, manager_id INTEGER);\nINSERT INTO employees VALUES (1,'CEO',NULL);\nINSERT INTO employees VALUES (2,'Manager',1);\nINSERT INTO employees VALUES (3,'Dev',2);\nWITH ___ hierarchy AS (\n  SELECT id, name, manager_id, 0 as level FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, e.manager_id, h.level + 1 FROM employees e INNER JOIN hierarchy h ON e.manager_id = h.id\n)\nSELECT * FROM hierarchy;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | name    | manager_id | level\n---+---------+------------+------\n1  | CEO     | NULL       | 0\n2  | Manager | 1          | 1\n3  | Dev     | 2          | 2",
+    "correct_answer_en": "id | name    | manager_id | level\n---+---------+------------+------\n1  | CEO     | NULL       | 0\n2  | Manager | 1          | 1\n3  | Dev     | 2          | 2",
+    "explanation_es": "Parte base: CEO (sin manager). Parte recursiva: JOIN con tabla anterior para encontrar empleados de cada manager.",
+    "explanation_en": "Base: CEO (no manager). Recursive: JOIN to find employees under each manager.",
+    "source": "SQL Recursive Hierarchy – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q120404sql003",
+    "skill_id": "sk120404",
+    "type": "sql_exec",
+    "difficulty_tier": "hard",
+    "question_es": "Calcula potencias de 2 hasta 32 usando CTE recursivo.",
+    "question_en": "Calculate powers of 2 up to 32 using recursive CTE.",
+    "code_es": "WITH ___ powers AS (\n  SELECT 1 AS value\n  UNION ALL\n  SELECT value * 2 FROM powers WHERE value < 32\n)\nSELECT * FROM powers;",
+    "code_en": "WITH ___ powers AS (\n  SELECT 1 AS value\n  UNION ALL\n  SELECT value * 2 FROM powers WHERE value < 32\n)\nSELECT * FROM powers;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "value\n------\n1\n2\n4\n8\n16\n32",
+    "correct_answer_en": "value\n------\n1\n2\n4\n8\n16\n32",
+    "explanation_es": "CTE recursivo que duplica el valor en cada iteración. Comienza con 1, para cuando alcanza o supera 32.",
+    "explanation_en": "Recursive CTE doubling value each iteration. Starts at 1, stops when reaching 32.",
+    "source": "SQL Recursive Computations – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 75000
+  },
+  {
+    "id": "q120404mc001",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué palabra clave habilita la recursión en un CTE?",
+    "question_en": "What keyword enables recursion in a CTE?",
+    "options_es": [
+      "WITH RECURSIVE",
+      "WITH LOOP",
+      "RECURSIVE",
+      "WHILE"
+    ],
+    "options_en": [
+      "WITH RECURSIVE",
+      "WITH LOOP",
+      "RECURSIVE",
+      "WHILE"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La palabra clave WITH RECURSIVE (no solo WITH) habilita los CTEs recursivos.",
+    "explanation_en": "The WITH RECURSIVE keyword (not just WITH) enables recursive CTEs.",
+    "source": "SQL Recursive CTE Syntax – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120404mc002",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuáles son las dos partes de un CTE recursivo?",
+    "question_en": "What are the two parts of a recursive CTE?",
+    "options_es": [
+      "Base y recursiva",
+      "SELECT y INSERT",
+      "WHERE y GROUP BY",
+      "JOIN y UNION"
+    ],
+    "options_en": [
+      "Base and recursive",
+      "SELECT and INSERT",
+      "WHERE and GROUP BY",
+      "JOIN and UNION"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Un CTE recursivo tiene dos partes: la parte BASE (caso inicial) y la parte RECURSIVA (auto-referencia).",
+    "explanation_en": "A recursive CTE has two parts: BASE (initial case) and RECURSIVE (self-reference).",
+    "source": "SQL Recursive CTE – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120404mc003",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué conecta las dos partes de un CTE recursivo?",
+    "question_en": "What connects the two parts of a recursive CTE?",
+    "options_es": [
+      "UNION",
+      "INTERSECT",
+      "JOIN",
+      "UNION ALL"
+    ],
+    "options_en": [
+      "UNION",
+      "INTERSECT",
+      "JOIN",
+      "UNION ALL"
+    ],
+    "correct_index": 3,
+    "explanation_es": "UNION ALL conecta la parte base con la parte recursiva, permitiendo duplicados.",
+    "explanation_en": "UNION ALL connects base part to recursive part, allowing duplicates.",
+    "source": "SQL Recursive CTE Structure – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120404mc004",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué evita un bucle infinito en un CTE recursivo?",
+    "question_en": "What prevents infinite loop in recursive CTE?",
+    "options_es": [
+      "Condición de parada en WHERE",
+      "LIMIT",
+      "DEPTH LIMIT",
+      "Timeout automático"
+    ],
+    "options_en": [
+      "Stop condition in WHERE",
+      "LIMIT",
+      "DEPTH LIMIT",
+      "Auto timeout"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La condición de parada en la cláusula WHERE de la parte recursiva evita bucles infinitos.",
+    "explanation_en": "Stop condition in WHERE clause of recursive part prevents infinite loops.",
+    "source": "SQL Recursive CTE Termination – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120404mc005",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el caso de uso principal de CTEs recursivos?",
+    "question_en": "What is the main use case for recursive CTEs?",
+    "options_es": [
+      "Cálculos simples",
+      "Jerarquías y gráficos de árbol",
+      "Filtrado de datos",
+      "Ordenamiento"
+    ],
+    "options_en": [
+      "Simple calculations",
+      "Hierarchies and tree graphs",
+      "Data filtering",
+      "Sorting"
+    ],
+    "correct_index": 1,
+    "explanation_es": "CTEs recursivos son ideales para representar jerarquías (org, árbol de categorías, etc.) y gráficos.",
+    "explanation_en": "Recursive CTEs are ideal for representing hierarchies (org, category trees, etc.) and graphs.",
+    "source": "SQL Recursive CTE Use Cases – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q120404mc006",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué es 'profundidad de recursión'?",
+    "question_en": "What is 'recursion depth'?",
+    "options_es": [
+      "Número de columnas",
+      "Número de JOINs",
+      "Tamaño de la tabla",
+      "Número de iteraciones antes de parar"
+    ],
+    "options_en": [
+      "Number of columns",
+      "Number of JOINs",
+      "Table size",
+      "Number of iterations before stopping"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Profundidad de recursión es cuántas veces se ejecuta la parte recursiva antes de cumplir la condición de parada.",
+    "explanation_en": "Recursion depth is how many times recursive part executes before stop condition is met.",
+    "source": "SQL Recursive Depth – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120404mc007",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se limita la profundidad de recursión en SQL?",
+    "question_en": "How to limit recursion depth in SQL?",
+    "options_es": [
+      "No se puede",
+      "Con LIMIT en WHERE",
+      "Con MAXRECURSION option o ciclo de detección",
+      "Solo con aplicación"
+    ],
+    "options_en": [
+      "Cannot",
+      "With LIMIT in WHERE",
+      "With MAXRECURSION option or cycle detection",
+      "Only in application"
+    ],
+    "correct_index": 2,
+    "explanation_es": "SQL Server usa MAXRECURSION; otros DBMS usan detección de ciclos o condiciones de parada explícitas.",
+    "explanation_en": "SQL Server uses MAXRECURSION; other DBMs use cycle detection or explicit stop conditions.",
+    "source": "SQL Recursion Limits – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120404mc008",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puede un CTE recursivo acceder a dos tablas?",
+    "question_en": "Can a recursive CTE access two tables?",
+    "options_es": [
+      "No",
+      "Sí, en la parte base solamente",
+      "Sí, con JOINs",
+      "No, violaría recursión"
+    ],
+    "options_en": [
+      "No",
+      "Yes, only in base part",
+      "Yes, with JOINs",
+      "No, violates recursion"
+    ],
+    "correct_index": 2,
+    "explanation_es": "CTEs recursivos pueden hacer JOINs con otras tablas en tanto que mantengan la estructura correcta.",
+    "explanation_en": "Recursive CTEs can JOIN other tables as long as they maintain correct structure.",
+    "source": "SQL Recursive CTE with JOINs – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120404mc009",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el peligro de olvidar la condición de parada?",
+    "question_en": "What is the danger of forgetting stop condition?",
+    "options_es": [
+      "Nada, se detiene automáticamente",
+      "Bucle infinito o error",
+      "Resultado incorrecto",
+      "Pérdida de datos"
+    ],
+    "options_en": [
+      "Nothing, stops automatically",
+      "Infinite loop or error",
+      "Incorrect result",
+      "Data loss"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Sin condición de parada, el CTE puede entrar en bucle infinito hasta alcanzar el límite de recursión del DBMS.",
+    "explanation_en": "Without stop condition, CTE can loop infinitely until DBMS recursion limit is hit.",
+    "source": "SQL Recursion Errors – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120404mc010",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se optimiza un CTE recursivo?",
+    "question_en": "How to optimize a recursive CTE?",
+    "options_es": [
+      "No se puede optimizar",
+      "Usar índices en columnas de unión",
+      "Reducir profundidad de recursión",
+      "Ambas opciones 2 y 3"
+    ],
+    "options_en": [
+      "Cannot optimize",
+      "Use indexes on join columns",
+      "Reduce recursion depth",
+      "Both options 2 and 3"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Optimizar CTEs recursivos implica usar índices y reducir la profundidad innecesaria.",
+    "explanation_en": "Optimizing recursive CTEs involves using indexes and reducing unnecessary depth.",
+    "source": "SQL Performance Tuning – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120404mc011",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuándo usar CTE recursivo vs materializar una tabla?",
+    "question_en": "When to use recursive CTE vs materialized table?",
+    "options_es": [
+      "Siempre CTE",
+      "Siempre tabla",
+      "CTE para datos dinámicos, tabla para estáticos",
+      "No importa"
+    ],
+    "options_en": [
+      "Always CTE",
+      "Always table",
+      "CTE for dynamic data, table for static",
+      "Doesn't matter"
+    ],
+    "correct_index": 2,
+    "explanation_es": "CTEs recursivos para datos que cambian; tablas materializadas para datos estáticos frecuentes.",
+    "explanation_en": "Recursive CTEs for changing data; materialized tables for frequent static data.",
+    "source": "SQL Design Patterns – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120404mc012",
+    "skill_id": "sk120404",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la diferencia entre nivel y profundidad en recursión?",
+    "question_en": "What is difference between level and depth in recursion?",
+    "options_es": [
+      "Son lo mismo",
+      "No están relacionados",
+      "Profundidad es la iteración actual",
+      "Nivel es la iteración actual, profundidad es máximo"
+    ],
+    "options_en": [
+      "They're the same",
+      "Unrelated",
+      "Depth is current iteration",
+      "Level is current iteration, depth is maximum"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Nivel es la iteración actual en un CTE recursivo; profundidad es el máximo nivel permitido.",
+    "explanation_en": "Level is current iteration in recursive CTE; depth is maximum level allowed.",
+    "source": "SQL Recursion Terminology – https://www.w3schools.com/sql/sql_cte.asp",
+    "expected_time_ms": 60000
+  }
+]

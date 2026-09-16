@@ -1,0 +1,1430 @@
+[
+  {
+    "id": "q120101sql001",
+    "skill_id": "sk120101",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "Selecciona todas las columnas y filas de la tabla users.",
+    "question_en": "Select all columns and rows from the users table.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT ___ FROM users;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT ___ FROM users;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | name   | age | city\n---+--------+-----+--------\n1  | Ana    | 25  | Madrid\n2  | Bob    | 30  | Lima\n3  | Carlos | 22  | Bogotá\n4  | Diana  | 28  | Madrid\n5  | Eve    | 35  | Lima",
+    "correct_answer_en": "id | name   | age | city\n---+--------+-----+--------\n1  | Ana    | 25  | Madrid\n2  | Bob    | 30  | Lima\n3  | Carlos | 22  | Bogotá\n4  | Diana  | 28  | Madrid\n5  | Eve    | 35  | Lima",
+    "explanation_es": "SELECT * recupera todas las columnas de la tabla. El asterisco (*) es un comodín que expande a la lista completa de columnas definidas en la tabla.",
+    "explanation_en": "SELECT * retrieves all columns from the table. The asterisk (*) is a wildcard that expands to the full list of columns defined in the table.",
+    "source": "SQLite SELECT – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120101sql002",
+    "skill_id": "sk120101",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "Selecciona solo las columnas name y city de la tabla users.",
+    "question_en": "Select only the name and city columns from the users table.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, ___ FROM users;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, ___ FROM users;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | city\n--------+--------\nAna    | Madrid\nBob    | Lima\nCarlos | Bogotá\nDiana  | Madrid\nEve    | Lima",
+    "correct_answer_en": "name   | city\n--------+--------\nAna    | Madrid\nBob    | Lima\nCarlos | Bogotá\nDiana  | Madrid\nEve    | Lima",
+    "explanation_es": "Para seleccionar columnas específicas se lista su nombre separado por comas. Solo se devuelven esas dos columnas, en el orden indicado.",
+    "explanation_en": "To select specific columns list their names separated by commas. Only those two columns are returned, in the order given.",
+    "source": "SQLite SELECT – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120101sql003",
+    "skill_id": "sk120101",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Selecciona la columna age de forma que el resultado no contenga duplicados.",
+    "question_en": "Select the age column so the result contains no duplicates.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT ___ age FROM users;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT ___ age FROM users;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "age\n---\n22\n25\n28\n30\n35",
+    "correct_answer_en": "age\n---\n22\n25\n28\n30\n35",
+    "explanation_es": "DISTINCT elimina filas duplicadas del resultado. Aquí no hay edades repetidas, pero DISTINCT es la cláusula correcta para deduplicar.",
+    "explanation_en": "DISTINCT removes duplicate rows from the result. Here no ages are repeated, but DISTINCT is the correct clause to deduplicate.",
+    "source": "SQLite DISTINCT – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120101mc001",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué cláusula devuelve todas las columnas de una tabla?",
+    "question_en": "Which clause returns all columns from a table?",
+    "options_es": [
+      "SELECT *",
+      "SELECT ALL",
+      "GET ALL",
+      "FETCH *"
+    ],
+    "options_en": [
+      "SELECT *",
+      "SELECT ALL",
+      "GET ALL",
+      "FETCH *"
+    ],
+    "correct_index": 0,
+    "explanation_es": "SELECT * es la sintaxis estándar SQL para recuperar todas las columnas. SELECT ALL es una cláusula válida pero controla filas duplicadas, no columnas.",
+    "explanation_en": "SELECT * is standard SQL syntax to retrieve all columns. SELECT ALL is a valid clause but controls duplicate rows, not columns.",
+    "source": "SQL SELECT – https://www.w3schools.com/sql/sql_select.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc002",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué palabra clave elimina filas duplicadas en el resultado de una SELECT?",
+    "question_en": "Which keyword removes duplicate rows from a SELECT result?",
+    "options_es": [
+      "UNIQUE",
+      "DISTINCT",
+      "DEDUPE",
+      "NODUPS"
+    ],
+    "options_en": [
+      "UNIQUE",
+      "DISTINCT",
+      "DEDUPE",
+      "NODUPS"
+    ],
+    "correct_index": 1,
+    "explanation_es": "DISTINCT se escribe justo después de SELECT y hace que el motor compare cada fila candidata con las ya seleccionadas, descartando duplicados exactos.",
+    "explanation_en": "DISTINCT is written right after SELECT and causes the engine to compare each candidate row with those already selected, discarding exact duplicates.",
+    "source": "SQL DISTINCT – https://www.w3schools.com/sql/sql_distinct.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc003",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "En SQL estándar, ¿de qué cláusula es obligatoria en una sentencia SELECT?",
+    "question_en": "In standard SQL, which clause is mandatory in a SELECT statement?",
+    "options_es": [
+      "GROUP BY",
+      "WHERE",
+      "ORDER BY",
+      "FROM"
+    ],
+    "options_en": [
+      "GROUP BY",
+      "WHERE",
+      "ORDER BY",
+      "FROM"
+    ],
+    "correct_index": 3,
+    "explanation_es": "FROM indica la tabla o fuente de datos que se consulta. Sin FROM no hay tabla de la que seleccionar (en SQLite `SELECT 1` funciona sin FROM, pero en SQL estándar FROM es obligatoria).",
+    "explanation_en": "FROM indicates the table or data source being queried. Without FROM there is no table to select from (SQLite allows `SELECT 1` without FROM, but in standard SQL FROM is required).",
+    "source": "SQL SELECT – ISO/IEC 9075:2016 §7.14",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc004",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué devuelve `SELECT 1+1` en SQLite sin cláusula FROM?",
+    "question_en": "What does `SELECT 1+1` return in SQLite without a FROM clause?",
+    "options_es": [
+      "Error de sintaxis",
+      "2",
+      "NULL",
+      "0"
+    ],
+    "options_en": [
+      "Syntax error",
+      "2",
+      "NULL",
+      "0"
+    ],
+    "correct_index": 1,
+    "explanation_es": "SQLite permite SELECT sin FROM para evaluar expresiones. SELECT 1+1 devuelve la fila única con el valor 2.",
+    "explanation_en": "SQLite allows SELECT without FROM to evaluate expressions. SELECT 1+1 returns a single row with value 2.",
+    "source": "SQLite expressions – https://www.sqlite.org/lang_expr.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc005",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿En qué orden devuelve filas un SELECT sin ORDER BY?",
+    "question_en": "In what order does a SELECT without ORDER BY return rows?",
+    "options_es": [
+      "Orden por clave primaria",
+      "Orden de inserción",
+      "Orden alfabético",
+      "Orden indefinido"
+    ],
+    "options_en": [
+      "Primary key order",
+      "Insertion order",
+      "Alphabetical order",
+      "Undefined order"
+    ],
+    "correct_index": 3,
+    "explanation_es": "SQL no garantiza ningún orden sin ORDER BY. El motor puede devolver filas en cualquier orden según su plan de acceso. Asumir inserción o clave primaria es un error común.",
+    "explanation_en": "SQL guarantees no order without ORDER BY. The engine may return rows in any order depending on its access plan. Assuming insertion or primary key order is a common mistake.",
+    "source": "SQL SELECT – ISO/IEC 9075:2016 §7.14",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc006",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre `SELECT *` y `SELECT col1, col2`?",
+    "question_en": "What is the difference between `SELECT *` and `SELECT col1, col2`?",
+    "options_es": [
+      "Son idénticos en resultado",
+      "SELECT * es más lento siempre",
+      "SELECT * devuelve todas las columnas; SELECT col1,col2 solo las indicadas",
+      "SELECT col1,col2 no es SQL válido"
+    ],
+    "options_en": [
+      "They are identical in result",
+      "SELECT * is always slower",
+      "SELECT * returns all columns; SELECT col1,col2 only the listed ones",
+      "SELECT col1,col2 is not valid SQL"
+    ],
+    "correct_index": 2,
+    "explanation_es": "SELECT * expande a todas las columnas definidas en la tabla. SELECT col1,col2 solo proyecta esas dos columnas. Usar columnas explícitas es una buena práctica en producción.",
+    "explanation_en": "SELECT * expands to all columns defined in the table. SELECT col1,col2 projects only those two columns. Using explicit columns is a best practice in production.",
+    "source": "SQL SELECT – https://www.w3schools.com/sql/sql_select.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc007",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué problema puede causar `SELECT *` en código de producción cuando se modifica el esquema?",
+    "question_en": "What problem can `SELECT *` cause in production code when the schema changes?",
+    "options_es": [
+      "El código puede recibir columnas inesperadas y romperse",
+      "La consulta falla con error de sintaxis",
+      "Se ignoran las nuevas columnas automáticamente",
+      "SELECT * está prohibido en producción"
+    ],
+    "options_en": [
+      "Code may receive unexpected columns and break",
+      "The query fails with a syntax error",
+      "New columns are automatically ignored",
+      "SELECT * is forbidden in production"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Si se añade una columna a la tabla, SELECT * la incluirá automáticamente. El código que deserializa el resultado por posición o que espera N columnas puede romperse silenciosamente.",
+    "explanation_en": "If a column is added to the table, SELECT * will automatically include it. Code that deserializes results positionally or expects N columns can break silently.",
+    "source": "SQL best practices – https://use-the-index-luke.com/sql/where-clause/the-equals-operator/concatenated-keys",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc008",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la forma correcta de seleccionar las columnas `name` y `age` de la tabla `employees`?",
+    "question_en": "What is the correct way to select the `name` and `age` columns from the `employees` table?",
+    "options_es": [
+      "GET name, age FROM employees",
+      "SELECT name AND age FROM employees",
+      "SELECT name, age FROM employees",
+      "SELECT (name, age) FROM employees"
+    ],
+    "options_en": [
+      "GET name, age FROM employees",
+      "SELECT name AND age FROM employees",
+      "SELECT name, age FROM employees",
+      "SELECT (name, age) FROM employees"
+    ],
+    "correct_index": 2,
+    "explanation_es": "La sintaxis correcta lista las columnas separadas por comas. AND es un operador lógico, no un separador de columnas; GET y paréntesis no son sintaxis SQL estándar para SELECT.",
+    "explanation_en": "The correct syntax lists columns separated by commas. AND is a logical operator, not a column separator; GET and parentheses are not standard SQL SELECT syntax.",
+    "source": "SQL SELECT – https://www.w3schools.com/sql/sql_select.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc009",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuándo devuelve exactamente una fila una sentencia `SELECT COUNT(*) FROM tabla`?",
+    "question_en": "When does `SELECT COUNT(*) FROM table` return exactly one row?",
+    "options_es": [
+      "Solo cuando la tabla tiene exactamente una fila",
+      "Siempre, independientemente del número de filas de la tabla",
+      "Solo cuando la tabla está vacía",
+      "Solo cuando hay una clave primaria definida"
+    ],
+    "options_en": [
+      "Only when the table has exactly one row",
+      "Always, regardless of how many rows the table has",
+      "Only when the table is empty",
+      "Only when a primary key is defined"
+    ],
+    "correct_index": 1,
+    "explanation_es": "COUNT(*) es una función de agregación sin GROUP BY, por lo que reduce todas las filas a un único valor: el recuento total. El resultado siempre es una sola fila.",
+    "explanation_en": "COUNT(*) is an aggregate function without GROUP BY, so it reduces all rows to a single value: the total count. The result is always a single row.",
+    "source": "SQL COUNT – https://www.w3schools.com/sql/sql_count_avg_sum.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc010",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué ocurre si ejecutas `SELECT id, name FROM users` cuando la tabla tiene también columnas `age` y `city`?",
+    "question_en": "What happens if you execute `SELECT id, name FROM users` when the table also has `age` and `city` columns?",
+    "options_es": [
+      "Error porque no se seleccionan todas las columnas",
+      "Solo se devuelven id y name; age y city no aparecen",
+      "Se devuelven todas las columnas igualmente",
+      "La consulta falla si hay NULL en age o city"
+    ],
+    "options_en": [
+      "Error because not all columns are selected",
+      "Only id and name are returned; age and city do not appear",
+      "All columns are returned anyway",
+      "The query fails if age or city has NULL"
+    ],
+    "correct_index": 1,
+    "explanation_es": "SELECT proyecta solo las columnas listadas. age y city se ignoran completamente en el resultado aunque existan en la tabla.",
+    "explanation_en": "SELECT projects only the listed columns. age and city are completely ignored in the result even though they exist in the table.",
+    "source": "SQL SELECT – https://www.w3schools.com/sql/sql_select.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc011",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué valor devuelve `SELECT DISTINCT city FROM users` si todos los usuarios son de Madrid?",
+    "question_en": "What does `SELECT DISTINCT city FROM users` return if all users are from Madrid?",
+    "options_es": [
+      "NULL",
+      "Tantas filas como usuarios",
+      "Error porque todos los valores son iguales",
+      "Una sola fila con 'Madrid'"
+    ],
+    "options_en": [
+      "NULL",
+      "As many rows as there are users",
+      "Error because all values are equal",
+      "A single row with 'Madrid'"
+    ],
+    "correct_index": 3,
+    "explanation_es": "DISTINCT colapsa todos los valores iguales en uno. Si todos los usuarios son de Madrid, el resultado es exactamente una fila.",
+    "explanation_en": "DISTINCT collapses all equal values into one. If all users are from Madrid, the result is exactly one row.",
+    "source": "SQL DISTINCT – https://www.w3schools.com/sql/sql_distinct.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120101mc012",
+    "skill_id": "sk120101",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Es válido `SELECT DISTINCT col1, col2 FROM t`?",
+    "question_en": "Is `SELECT DISTINCT col1, col2 FROM t` valid?",
+    "options_es": [
+      "Solo si col1 y col2 son de tipo TEXT",
+      "No; DISTINCT solo acepta una columna",
+      "Sí; elimina filas donde la combinación (col1,col2) es duplicada",
+      "Solo si hay una clave primaria"
+    ],
+    "options_en": [
+      "Only if col1 and col2 are TEXT type",
+      "No; DISTINCT only accepts one column",
+      "Yes; it removes rows where the (col1,col2) combination is duplicate",
+      "Only if there is a primary key"
+    ],
+    "correct_index": 2,
+    "explanation_es": "DISTINCT opera sobre la combinación completa de columnas del SELECT. Si se listan dos columnas, el par (col1,col2) debe ser único para que la fila se incluya.",
+    "explanation_en": "DISTINCT operates on the full combination of columns in the SELECT. If two columns are listed, the pair (col1,col2) must be unique for the row to be included.",
+    "source": "SQL DISTINCT – https://www.w3schools.com/sql/sql_distinct.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102sql001",
+    "skill_id": "sk120102",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "Selecciona la columna name con el alias 'nombre' y age con el alias 'edad'.",
+    "question_en": "Select the name column with alias 'nombre' and age with alias 'edad'.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name AS ___, age AS edad FROM users LIMIT 3;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name AS ___, age AS edad FROM users LIMIT 3;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "nombre | edad\n--------+------\nAna    | 25\nBob    | 30\nCarlos | 22",
+    "correct_answer_en": "nombre | edad\n--------+------\nAna    | 25\nBob    | 30\nCarlos | 22",
+    "explanation_es": "AS renombra la columna en el resultado. El alias aparece como cabecera de columna en lugar del nombre original.",
+    "explanation_en": "AS renames the column in the result. The alias appears as the column header instead of the original name.",
+    "source": "SQLite SELECT – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120102sql002",
+    "skill_id": "sk120102",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Calcula el doble de la edad y muéstralo con alias 'doble_edad'.",
+    "question_en": "Calculate double the age and show it with alias 'double_age'.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, age * 2 ___ double_age FROM users LIMIT 3;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, age * 2 ___ double_age FROM users LIMIT 3;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | double_age\n--------+-----------\nAna    | 50\nBob    | 60\nCarlos | 44",
+    "correct_answer_en": "name   | double_age\n--------+-----------\nAna    | 50\nBob    | 60\nCarlos | 44",
+    "explanation_es": "AS es opcional — `age * 2 AS double_age` y `age * 2 double_age` son equivalentes. La expresión aritmética se evalúa antes de aplicar el alias.",
+    "explanation_en": "AS is optional — `age * 2 AS double_age` and `age * 2 double_age` are equivalent. The arithmetic expression is evaluated before the alias is applied.",
+    "source": "SQLite SELECT – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120102sql003",
+    "skill_id": "sk120102",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Concatena name y city con un separador y ponle el alias 'info'.",
+    "question_en": "Concatenate name and city with a separator and give it the alias 'info'.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name || ' - ' || city ___ info FROM users LIMIT 3;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name || ' - ' || city ___ info FROM users LIMIT 3;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "info\n--------------\nAna - Madrid\nBob - Lima\nCarlos - Bogotá",
+    "correct_answer_en": "info\n--------------\nAna - Madrid\nBob - Lima\nCarlos - Bogotá",
+    "explanation_es": "|| es el operador de concatenación en SQLite. AS se puede omitir escribiendo el alias directamente después de la expresión.",
+    "explanation_en": "|| is the concatenation operator in SQLite. AS can be omitted by writing the alias directly after the expression.",
+    "source": "SQLite string functions – https://www.sqlite.org/lang_corefunc.html",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120102mc001",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis para dar el alias 'total' a la expresión `SUM(amount)`?",
+    "question_en": "What is the syntax to give the alias 'total' to the expression `SUM(amount)`?",
+    "options_es": [
+      "SUM(amount) AS total",
+      "SUM(amount) = total",
+      "ALIAS SUM(amount) total",
+      "SUM(amount) NAMED total"
+    ],
+    "options_en": [
+      "SUM(amount) AS total",
+      "SUM(amount) = total",
+      "ALIAS SUM(amount) total",
+      "SUM(amount) NAMED total"
+    ],
+    "correct_index": 0,
+    "explanation_es": "La sintaxis es `expresión AS alias`. ALIAS y NAMED no existen en SQL estándar; = es un operador de comparación, no de asignación en contexto SELECT.",
+    "explanation_en": "The syntax is `expression AS alias`. ALIAS and NAMED do not exist in standard SQL; = is a comparison operator, not an assignment operator in SELECT context.",
+    "source": "SQL AS – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc002",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Es obligatorio el uso de AS para definir un alias de columna?",
+    "question_en": "Is AS required to define a column alias?",
+    "options_es": [
+      "No; el alias puede ir directamente después de la expresión",
+      "Sí; AS es obligatorio",
+      "Solo en MySQL",
+      "Solo cuando el alias contiene espacios"
+    ],
+    "options_en": [
+      "No; the alias can go directly after the expression",
+      "Yes; AS is required",
+      "Only in MySQL",
+      "Only when the alias contains spaces"
+    ],
+    "correct_index": 0,
+    "explanation_es": "AS es opcional en la mayoría de motores SQL. `SELECT age edad` y `SELECT age AS edad` son equivalentes. Sin embargo, usar AS mejora la legibilidad.",
+    "explanation_en": "AS is optional in most SQL engines. `SELECT age edad` and `SELECT age AS edad` are equivalent. However, using AS improves readability.",
+    "source": "SQL AS – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc003",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puede usarse un alias de columna en la cláusula WHERE?",
+    "question_en": "Can a column alias be used in the WHERE clause?",
+    "options_es": [
+      "Solo en PostgreSQL",
+      "Sí, siempre",
+      "No; WHERE se evalúa antes de SELECT",
+      "Solo con subconsultas"
+    ],
+    "options_en": [
+      "Only in PostgreSQL",
+      "Yes, always",
+      "No; WHERE is evaluated before SELECT",
+      "Only with subqueries"
+    ],
+    "correct_index": 2,
+    "explanation_es": "El orden lógico de evaluación es FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY. WHERE se procesa antes de que los alias de SELECT sean asignados, por eso no están disponibles en WHERE.",
+    "explanation_en": "The logical evaluation order is FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY. WHERE is processed before SELECT aliases are assigned, so aliases are not available in WHERE.",
+    "source": "SQL logical processing order – https://www.sqlshack.com/sql-query-order-of-execution/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc004",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿En qué cláusula sí se puede usar un alias de columna definido en SELECT?",
+    "question_en": "In which clause can a column alias defined in SELECT be used?",
+    "options_es": [
+      "HAVING",
+      "WHERE",
+      "GROUP BY",
+      "ORDER BY"
+    ],
+    "options_en": [
+      "HAVING",
+      "WHERE",
+      "GROUP BY",
+      "ORDER BY"
+    ],
+    "correct_index": 3,
+    "explanation_es": "ORDER BY se evalúa después de SELECT, por lo que los alias ya están disponibles. WHERE, GROUP BY y HAVING se evalúan antes de SELECT (con algunas excepciones propietarias como MySQL que lo permite en GROUP BY).",
+    "explanation_en": "ORDER BY is evaluated after SELECT, so aliases are already available. WHERE, GROUP BY and HAVING are evaluated before SELECT (with some proprietary exceptions like MySQL that allows it in GROUP BY).",
+    "source": "SQL execution order – https://www.sqlshack.com/sql-query-order-of-execution/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc005",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se define un alias que contiene un espacio, por ejemplo 'nombre completo'?",
+    "question_en": "How do you define an alias that contains a space, for example 'full name'?",
+    "options_es": [
+      "Sin comillas es válido",
+      "Con corchetes: AS [full name]",
+      "Con comillas dobles: AS \"full name\"",
+      "Con apóstrofo: AS 'full name'"
+    ],
+    "options_en": [
+      "Without quotes is valid",
+      "With brackets: AS [full name]",
+      "With double quotes: AS \"full name\"",
+      "With single quotes: AS 'full name'"
+    ],
+    "correct_index": 2,
+    "explanation_es": "En SQL estándar los identificadores con espacios se delimitan con comillas dobles. SQL Server acepta corchetes también. Los apóstrofes son para literales de cadena, no para identificadores.",
+    "explanation_en": "In standard SQL, identifiers with spaces are delimited with double quotes. SQL Server also accepts brackets. Single quotes are for string literals, not identifiers.",
+    "source": "SQL AS – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc006",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Para qué se usa habitualmente un alias de tabla además de un alias de columna?",
+    "question_en": "What is a table alias commonly used for besides a column alias?",
+    "options_es": [
+      "Acortar nombres de tabla en JOINs y subconsultas",
+      "Renombrar permanentemente la tabla",
+      "Mejorar el rendimiento de la consulta",
+      "Controlar permisos de acceso"
+    ],
+    "options_en": [
+      "Shorten table names in JOINs and subqueries",
+      "Permanently rename the table",
+      "Improve query performance",
+      "Control access permissions"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Un alias de tabla es temporal y solo válido dentro de la consulta. Permite escribir `e.name` en lugar de `employees.name` cuando se trabaja con múltiples tablas.",
+    "explanation_en": "A table alias is temporary and only valid within the query. It allows writing `e.name` instead of `employees.name` when working with multiple tables.",
+    "source": "SQL AS – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc007",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué devuelve `SELECT age AS a, age * 2 AS b FROM users LIMIT 1`?",
+    "question_en": "What does `SELECT age AS a, age * 2 AS b FROM users LIMIT 1` return?",
+    "options_es": [
+      "Una fila con a=25, b=25",
+      "Error porque `age` aparece dos veces",
+      "Una fila con a=25, b=50 (primera fila)",
+      "Dos filas"
+    ],
+    "options_en": [
+      "One row with a=25, b=25",
+      "Error because `age` appears twice",
+      "One row with a=25, b=50 (first row)",
+      "Two rows"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Una columna puede referenciarse varias veces en el SELECT con alias distintos. LIMIT 1 retorna solo la primera fila (Ana, 25), así que a=25 y b=50.",
+    "explanation_en": "A column can be referenced multiple times in SELECT with different aliases. LIMIT 1 returns only the first row (Ana, 25), so a=25 and b=50.",
+    "source": "SQLite SELECT – https://www.sqlite.org/lang_select.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc008",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué ocurre si el alias de columna coincide con el nombre de otra columna de la tabla?",
+    "question_en": "What happens if the column alias matches another column's name in the table?",
+    "options_es": [
+      "Error de ambigüedad",
+      "El alias se usa en el resultado sin conflicto",
+      "El alias es ignorado",
+      "La columna original desaparece"
+    ],
+    "options_en": [
+      "Ambiguity error",
+      "The alias is used in the result without conflict",
+      "The alias is ignored",
+      "The original column disappears"
+    ],
+    "correct_index": 1,
+    "explanation_es": "El alias solo afecta al encabezado del resultado. No crea ningún conflicto con otras columnas porque el motor ya ha resuelto todas las referencias antes de aplicar los alias.",
+    "explanation_en": "The alias only affects the result header. It creates no conflict with other columns because the engine has already resolved all references before applying aliases.",
+    "source": "SQL AS – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc009",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Es posible usar un alias de columna en una expresión CASE WHEN dentro del mismo SELECT?",
+    "question_en": "Is it possible to use a column alias in a CASE WHEN expression within the same SELECT?",
+    "options_es": [
+      "No; todos los alias del SELECT se asignan al mismo tiempo",
+      "Sí, siempre",
+      "Solo si el alias se define antes",
+      "Solo en PostgreSQL"
+    ],
+    "options_en": [
+      "No; all aliases in the SELECT are assigned at the same time",
+      "Yes, always",
+      "Only if the alias is defined first",
+      "Only in PostgreSQL"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Las expresiones del SELECT se evalúan simultáneamente desde la perspectiva del motor. No puedes referenciar un alias definido en la misma cláusula SELECT en otra expresión del mismo SELECT.",
+    "explanation_en": "SELECT expressions are evaluated simultaneously from the engine's perspective. You cannot reference an alias defined in the same SELECT clause in another expression of the same SELECT.",
+    "source": "SQL execution order – https://www.sqlshack.com/sql-query-order-of-execution/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc010",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué devuelve `SELECT name AS n FROM users WHERE n = 'Ana'`?",
+    "question_en": "What does `SELECT name AS n FROM users WHERE n = 'Ana'` return?",
+    "options_es": [
+      "Error; n no está disponible en WHERE",
+      "Una fila con n='Ana'",
+      "Todas las filas",
+      "NULL"
+    ],
+    "options_en": [
+      "Error; n is not available in WHERE",
+      "One row with n='Ana'",
+      "All rows",
+      "NULL"
+    ],
+    "correct_index": 0,
+    "explanation_es": "WHERE se evalúa antes de SELECT, por lo que el alias 'n' no existe todavía. La consulta falla o devuelve error dependiendo del motor.",
+    "explanation_en": "WHERE is evaluated before SELECT, so the alias 'n' does not exist yet. The query fails or returns an error depending on the engine.",
+    "source": "SQL execution order – https://www.sqlshack.com/sql-query-order-of-execution/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc011",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "Un alias de tabla se define como `FROM users u`. ¿Cómo se usa en SELECT?",
+    "question_en": "A table alias is defined as `FROM users u`. How is it used in SELECT?",
+    "options_es": [
+      "SELECT users.name FROM users u",
+      "SELECT u.name, u.age FROM users u",
+      "SELECT name FROM u",
+      "SELECT u FROM users"
+    ],
+    "options_en": [
+      "SELECT users.name FROM users u",
+      "SELECT u.name, u.age FROM users u",
+      "SELECT name FROM u",
+      "SELECT u FROM users"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Una vez definido el alias `u`, se usa como prefijo de columna: `u.name`. En esa consulta, `users.name` también funciona pero mezcla alias y nombre original; el patrón correcto es usar el alias consistentemente.",
+    "explanation_en": "Once the alias `u` is defined, it is used as a column prefix: `u.name`. In that query `users.name` also works but mixes alias and original name; the correct pattern is to use the alias consistently.",
+    "source": "SQL AS – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120102mc012",
+    "skill_id": "sk120102",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué pasa si defines el mismo alias para dos columnas distintas en un SELECT?",
+    "question_en": "What happens if you define the same alias for two different columns in a SELECT?",
+    "options_es": [
+      "Error siempre",
+      "El resultado tendrá dos columnas con el mismo nombre (comportamiento definido por el motor)",
+      "La segunda sobreescribe la primera",
+      "Solo se devuelve la primera columna"
+    ],
+    "options_en": [
+      "Always an error",
+      "The result will have two columns with the same name (engine-defined behavior)",
+      "The second overwrites the first",
+      "Only the first column is returned"
+    ],
+    "correct_index": 1,
+    "explanation_es": "La mayoría de motores SQL permiten alias duplicados en el resultado y simplemente muestran dos columnas con el mismo encabezado. El comportamiento exacto al referenciarlas en ORDER BY varía por motor.",
+    "explanation_en": "Most SQL engines allow duplicate aliases in the result and simply show two columns with the same header. The exact behavior when referencing them in ORDER BY varies by engine.",
+    "source": "SQL AS – https://www.w3schools.com/sql/sql_alias.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103sql001",
+    "skill_id": "sk120103",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "Devuelve solo las 3 primeras filas de users.",
+    "question_en": "Return only the first 3 rows from users.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT id, name FROM users ___ 3;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT id, name FROM users ___ 3;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | name\n---+--------\n1  | Ana\n2  | Bob\n3  | Carlos",
+    "correct_answer_en": "id | name\n---+--------\n1  | Ana\n2  | Bob\n3  | Carlos",
+    "explanation_es": "LIMIT n restringe el resultado a las primeras n filas. Sin ORDER BY el orden no está garantizado, pero aquí es predecible por la forma en que SQLite almacena las filas.",
+    "explanation_en": "LIMIT n restricts the result to the first n rows. Without ORDER BY the order is not guaranteed, but here it is predictable because of how SQLite stores rows.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120103sql002",
+    "skill_id": "sk120103",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Devuelve 2 filas empezando por la tercera (OFFSET 2).",
+    "question_en": "Return 2 rows starting from the third one (OFFSET 2).",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT id, name FROM users LIMIT 2 ___ 2;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT id, name FROM users LIMIT 2 ___ 2;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "id | name\n---+--------\n3  | Carlos\n4  | Diana",
+    "correct_answer_en": "id | name\n---+--------\n3  | Carlos\n4  | Diana",
+    "explanation_es": "OFFSET n salta las primeras n filas. LIMIT 2 OFFSET 2 omite id=1 y id=2 y devuelve id=3 y id=4. Es la base de la paginación.",
+    "explanation_en": "OFFSET n skips the first n rows. LIMIT 2 OFFSET 2 skips id=1 and id=2 and returns id=3 and id=4. It is the basis of pagination.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120103sql003",
+    "skill_id": "sk120103",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Devuelve el segundo y tercer usuario ordenados por name.",
+    "question_en": "Return the second and third user ordered by name.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name FROM users ORDER BY name ___ 2 OFFSET 1;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name FROM users ORDER BY name ___ 2 OFFSET 1;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n------\nBob\nCarlos",
+    "correct_answer_en": "name\n------\nBob\nCarlos",
+    "explanation_es": "Ordenados alfabéticamente: Ana(1), Bob(2), Carlos(3), Diana(4), Eve(5). OFFSET 1 salta Ana; LIMIT 2 devuelve Bob y Carlos.",
+    "explanation_en": "Alphabetically ordered: Ana(1), Bob(2), Carlos(3), Diana(4), Eve(5). OFFSET 1 skips Ana; LIMIT 2 returns Bob and Carlos.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120103mc001",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué cláusula restringe el número de filas devueltas por un SELECT?",
+    "question_en": "Which clause restricts the number of rows returned by a SELECT?",
+    "options_es": [
+      "FETCH",
+      "TOP",
+      "LIMIT",
+      "ROWNUM"
+    ],
+    "options_en": [
+      "FETCH",
+      "TOP",
+      "LIMIT",
+      "ROWNUM"
+    ],
+    "correct_index": 2,
+    "explanation_es": "LIMIT es la sintaxis de SQLite/MySQL/PostgreSQL. TOP es de SQL Server; FETCH FIRST n ROWS ONLY es SQL estándar; ROWNUM es de Oracle.",
+    "explanation_en": "LIMIT is the SQLite/MySQL/PostgreSQL syntax. TOP is SQL Server; FETCH FIRST n ROWS ONLY is standard SQL; ROWNUM is Oracle.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc002",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué hace `LIMIT 10 OFFSET 20`?",
+    "question_en": "What does `LIMIT 10 OFFSET 20` do?",
+    "options_es": [
+      "Devuelve solo 20 filas",
+      "Devuelve las filas 10 a 20",
+      "Devuelve 20 filas desde la fila 10",
+      "Salta 20 filas y devuelve las siguientes 10"
+    ],
+    "options_en": [
+      "Returns only 20 rows",
+      "Returns rows 10 to 20",
+      "Returns 20 rows from row 10",
+      "Skips 20 rows and returns the next 10"
+    ],
+    "correct_index": 3,
+    "explanation_es": "OFFSET indica cuántas filas se omiten al principio. LIMIT indica cuántas se devuelven después. Así se implementa la paginación: página 3 con 10 ítems/página sería LIMIT 10 OFFSET 20.",
+    "explanation_en": "OFFSET indicates how many rows to skip at the beginning. LIMIT indicates how many to return after that. This implements pagination: page 3 with 10 items/page would be LIMIT 10 OFFSET 20.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc003",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Por qué es importante usar ORDER BY junto con LIMIT en paginación?",
+    "question_en": "Why is it important to use ORDER BY together with LIMIT in pagination?",
+    "options_es": [
+      "ORDER BY es obligatorio con LIMIT",
+      "Sin ORDER BY el orden es indefinido y la paginación produce resultados inconsistentes",
+      "Sin ORDER BY LIMIT devuelve filas aleatorias",
+      "Para mejorar el rendimiento"
+    ],
+    "options_en": [
+      "ORDER BY is mandatory with LIMIT",
+      "Without ORDER BY the order is undefined and pagination produces inconsistent results",
+      "Without ORDER BY LIMIT returns random rows",
+      "To improve performance"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Sin ORDER BY la base de datos puede devolver las mismas filas en distinto orden en distintas consultas. La paginación requiere un orden determinista para que la página 2 no repita ni omita filas de la página 1.",
+    "explanation_en": "Without ORDER BY the database can return the same rows in different order in different queries. Pagination requires a deterministic order so that page 2 does not repeat or skip rows from page 1.",
+    "source": "SQL LIMIT – https://www.w3schools.com/sql/sql_top.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc004",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué devuelve `LIMIT 0`?",
+    "question_en": "What does `LIMIT 0` return?",
+    "options_es": [
+      "Ninguna fila (resultado vacío)",
+      "Error",
+      "Todas las filas",
+      "NULL"
+    ],
+    "options_en": [
+      "No rows (empty result)",
+      "Error",
+      "All rows",
+      "NULL"
+    ],
+    "correct_index": 0,
+    "explanation_es": "LIMIT 0 es válido y devuelve un conjunto vacío de filas. Es útil para obtener solo los metadatos de la consulta (nombres de columnas) sin datos.",
+    "explanation_en": "LIMIT 0 is valid and returns an empty set of rows. It is useful to retrieve only query metadata (column names) without data.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc005",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el problema de rendimiento conocido de `LIMIT n OFFSET m` para valores grandes de m?",
+    "question_en": "What is the known performance problem of `LIMIT n OFFSET m` for large values of m?",
+    "options_es": [
+      "El motor lee y descarta las m filas iniciales, coste O(m)",
+      "El motor no puede usar índices",
+      "El resultado puede tener duplicados",
+      "No hay ningún problema"
+    ],
+    "options_en": [
+      "The engine reads and discards the first m rows, cost O(m)",
+      "The engine cannot use indexes",
+      "The result may have duplicates",
+      "There is no problem"
+    ],
+    "correct_index": 0,
+    "explanation_es": "Para OFFSET 10000 el motor debe leer y desechar 10000 filas antes de devolver las n siguientes. La alternativa eficiente es keyset/cursor pagination: WHERE id > last_id LIMIT n.",
+    "explanation_en": "For OFFSET 10000 the engine must read and discard 10000 rows before returning the next n. The efficient alternative is keyset/cursor pagination: WHERE id > last_id LIMIT n.",
+    "source": "Use The Index Luke – https://use-the-index-luke.com/no-offset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc006",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis estándar SQL:2008 equivalente a `LIMIT 5 OFFSET 10`?",
+    "question_en": "What is the standard SQL:2008 syntax equivalent to `LIMIT 5 OFFSET 10`?",
+    "options_es": [
+      "OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY",
+      "TOP 5 START AT 10",
+      "ROWS 10 TO 15",
+      "SKIP 10 TAKE 5"
+    ],
+    "options_en": [
+      "OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY",
+      "TOP 5 START AT 10",
+      "ROWS 10 TO 15",
+      "SKIP 10 TAKE 5"
+    ],
+    "correct_index": 0,
+    "explanation_es": "SQL:2008 introdujo FETCH FIRST/NEXT n ROWS ONLY y OFFSET n ROWS como sintaxis portable. LIMIT es una extensión muy extendida pero no estándar.",
+    "explanation_en": "SQL:2008 introduced FETCH FIRST/NEXT n ROWS ONLY and OFFSET n ROWS as portable syntax. LIMIT is a widely-used extension but not standard.",
+    "source": "SQL:2008 §9.10 – FETCH clause",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc007",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué hace `SELECT * FROM t LIMIT 1`?",
+    "question_en": "What does `SELECT * FROM t LIMIT 1` do?",
+    "options_es": [
+      "Devuelve una fila aleatoria",
+      "Devuelve la fila con el menor id",
+      "Devuelve exactamente una fila (la primera según el motor)",
+      "Error si hay más de una fila"
+    ],
+    "options_en": [
+      "Returns a random row",
+      "Returns the row with the smallest id",
+      "Returns exactly one row (the first according to the engine)",
+      "Error if there is more than one row"
+    ],
+    "correct_index": 2,
+    "explanation_es": "LIMIT 1 devuelve la primera fila según el plan de ejecución del motor. Sin ORDER BY no está garantizado cuál es, pero no es error.",
+    "explanation_en": "LIMIT 1 returns the first row according to the engine's execution plan. Without ORDER BY there is no guarantee which one it is, but it is not an error.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc008",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "Para implementar 'página 4' con 10 ítems por página, ¿cuál es el OFFSET correcto?",
+    "question_en": "To implement 'page 4' with 10 items per page, what is the correct OFFSET?",
+    "options_es": [
+      "10",
+      "40",
+      "4",
+      "30"
+    ],
+    "options_en": [
+      "10",
+      "40",
+      "4",
+      "30"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Página 1: OFFSET 0; página 2: OFFSET 10; página 3: OFFSET 20; página 4: OFFSET 30. Fórmula: OFFSET = (página - 1) × tamaño.",
+    "explanation_en": "Page 1: OFFSET 0; page 2: OFFSET 10; page 3: OFFSET 20; page 4: OFFSET 30. Formula: OFFSET = (page - 1) × size.",
+    "source": "SQL pagination – https://use-the-index-luke.com/no-offset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc009",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué devuelve `LIMIT 100` sobre una tabla con solo 3 filas?",
+    "question_en": "What does `LIMIT 100` return on a table with only 3 rows?",
+    "options_es": [
+      "Error",
+      "Las 3 filas disponibles",
+      "NULL",
+      "Solo la primera fila"
+    ],
+    "options_en": [
+      "Error",
+      "The 3 available rows",
+      "NULL",
+      "Only the first row"
+    ],
+    "correct_index": 1,
+    "explanation_es": "LIMIT n devuelve hasta n filas. Si hay menos filas que n, devuelve todas las disponibles sin error.",
+    "explanation_en": "LIMIT n returns up to n rows. If there are fewer rows than n, it returns all available rows without error.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc010",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la sintaxis alternativa a `LIMIT 5 OFFSET 10` soportada por SQLite?",
+    "question_en": "What is the alternative syntax to `LIMIT 5 OFFSET 10` supported by SQLite?",
+    "options_es": [
+      "FIRST 5 SKIP 10",
+      "LIMIT 5, 10",
+      "TOP 5 SKIP 10",
+      "LIMIT 10, 5"
+    ],
+    "options_en": [
+      "FIRST 5 SKIP 10",
+      "LIMIT 5, 10",
+      "TOP 5 SKIP 10",
+      "LIMIT 10, 5"
+    ],
+    "correct_index": 3,
+    "explanation_es": "SQLite y MySQL soportan `LIMIT offset, count` (en ese orden: primero el offset, luego el count). Es confuso y propenso a errores; la forma `LIMIT count OFFSET offset` es más clara.",
+    "explanation_en": "SQLite and MySQL support `LIMIT offset, count` (in that order: first the offset, then the count). It is confusing and error-prone; the `LIMIT count OFFSET offset` form is clearer.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc011",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puede OFFSET usarse sin LIMIT?",
+    "question_en": "Can OFFSET be used without LIMIT?",
+    "options_es": [
+      "No; genera un error de sintaxis",
+      "No; OFFSET siempre requiere LIMIT",
+      "Sí en todos los motores SQL",
+      "Depende del motor; en SQLite sí (LIMIT -1 OFFSET n devuelve todo desde n)"
+    ],
+    "options_en": [
+      "No; it generates a syntax error",
+      "No; OFFSET always requires LIMIT",
+      "Yes in all SQL engines",
+      "Depends on the engine; in SQLite yes (LIMIT -1 OFFSET n returns everything from n)"
+    ],
+    "correct_index": 3,
+    "explanation_es": "En SQLite `LIMIT -1 OFFSET 3` devuelve todas las filas a partir de la cuarta. En SQL estándar (FETCH FIRST) OFFSET puede ir sin FETCH.",
+    "explanation_en": "In SQLite `LIMIT -1 OFFSET 3` returns all rows from the fourth onwards. In standard SQL (FETCH FIRST), OFFSET can go without FETCH.",
+    "source": "SQLite LIMIT – https://www.sqlite.org/lang_select.html#limitoffset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120103mc012",
+    "skill_id": "sk120103",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Por qué `LIMIT n OFFSET m` no escala bien para paginación en tablas de millones de filas?",
+    "question_en": "Why does `LIMIT n OFFSET m` not scale well for pagination in tables of millions of rows?",
+    "options_es": [
+      "Bloquea la tabla entera",
+      "Aumenta el tamaño de los índices",
+      "El motor escanea m+n filas aunque solo devuelva n",
+      "El plan de consulta cambia con OFFSET"
+    ],
+    "options_en": [
+      "It locks the entire table",
+      "It increases index size",
+      "The engine scans m+n rows even though it only returns n",
+      "The query plan changes with OFFSET"
+    ],
+    "correct_index": 2,
+    "explanation_es": "El motor no puede saltar directamente a la fila m en la mayoría de accesos secuenciales. Debe leer y descartar m filas primero, lo que es O(m). Para m=1.000.000 esto es muy costoso.",
+    "explanation_en": "The engine cannot jump directly to row m in most sequential accesses. It must read and discard m rows first, which is O(m). For m=1,000,000 this is very expensive.",
+    "source": "Use The Index Luke – https://use-the-index-luke.com/no-offset",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104sql001",
+    "skill_id": "sk120104",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "Devuelve users ordenados por age de menor a mayor.",
+    "question_en": "Return users ordered by age from smallest to largest.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, age FROM users ORDER BY age ___;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, age FROM users ORDER BY age ___;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | age\n--------+-----\nCarlos | 22\nAna    | 25\nDiana  | 28\nBob    | 30\nEve    | 35",
+    "correct_answer_en": "name   | age\n--------+-----\nCarlos | 22\nAna    | 25\nDiana  | 28\nBob    | 30\nEve    | 35",
+    "explanation_es": "ASC (ascending) ordena de menor a mayor. Es el orden predeterminado cuando no se especifica la dirección.",
+    "explanation_en": "ASC (ascending) orders from smallest to largest. It is the default order when no direction is specified.",
+    "source": "SQLite ORDER BY – https://www.sqlite.org/lang_select.html#orderby",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120104sql002",
+    "skill_id": "sk120104",
+    "type": "sql_exec",
+    "difficulty_tier": "easy",
+    "question_es": "Devuelve users ordenados por name de Z a A.",
+    "question_en": "Return users ordered by name from Z to A.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name FROM users ORDER BY name ___;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name FROM users ORDER BY name ___;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name\n------\nEve\nDiana\nCarlos\nBob\nAna",
+    "correct_answer_en": "name\n------\nEve\nDiana\nCarlos\nBob\nAna",
+    "explanation_es": "DESC (descending) invierte el orden. Para cadenas de texto, DESC ordena de Z a A (orden lexicográfico inverso).",
+    "explanation_en": "DESC (descending) reverses the order. For text strings, DESC orders from Z to A (reverse lexicographic order).",
+    "source": "SQLite ORDER BY – https://www.sqlite.org/lang_select.html#orderby",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120104sql003",
+    "skill_id": "sk120104",
+    "type": "sql_exec",
+    "difficulty_tier": "medium",
+    "question_es": "Ordena por city ASC y dentro de cada city por age DESC.",
+    "question_en": "Order by city ASC and within each city by age DESC.",
+    "code_es": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, city, age FROM users ORDER BY city ASC, ___ DESC;",
+    "code_en": "CREATE TABLE users (id INTEGER, name TEXT, age INTEGER, city TEXT);\nINSERT INTO users VALUES (1,'Ana',25,'Madrid');\nINSERT INTO users VALUES (2,'Bob',30,'Lima');\nINSERT INTO users VALUES (3,'Carlos',22,'Bogotá');\nINSERT INTO users VALUES (4,'Diana',28,'Madrid');\nINSERT INTO users VALUES (5,'Eve',35,'Lima');\nSELECT name, city, age FROM users ORDER BY city ASC, ___ DESC;",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "name   | city   | age\n--------+--------+-----\nCarlos | Bogotá | 22\nDiana  | Madrid | 28\nAna    | Madrid | 25\nEve    | Lima   | 35\nBob    | Lima   | 30",
+    "correct_answer_en": "name   | city   | age\n--------+--------+-----\nCarlos | Bogotá | 22\nDiana  | Madrid | 28\nAna    | Madrid | 25\nEve    | Lima   | 35\nBob    | Lima   | 30",
+    "explanation_es": "Se pueden indicar múltiples columnas en ORDER BY separadas por coma. La primera columna es el criterio principal; la segunda rompe empates.",
+    "explanation_en": "Multiple columns can be listed in ORDER BY separated by commas. The first column is the primary criterion; the second breaks ties.",
+    "source": "SQLite ORDER BY – https://www.sqlite.org/lang_select.html#orderby",
+    "expected_time_ms": 60000
+  },
+  {
+    "id": "q120104mc001",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el orden predeterminado de `ORDER BY col`?",
+    "question_en": "What is the default order of `ORDER BY col`?",
+    "options_es": [
+      "Aleatorio",
+      "DESC (descendente)",
+      "ASC (ascendente)",
+      "Por inserción"
+    ],
+    "options_en": [
+      "Random",
+      "DESC (descending)",
+      "ASC (ascending)",
+      "By insertion"
+    ],
+    "correct_index": 2,
+    "explanation_es": "Sin especificar ASC o DESC, el motor asume ASC. Escribir ORDER BY col ASC y ORDER BY col son equivalentes.",
+    "explanation_en": "Without specifying ASC or DESC, the engine assumes ASC. Writing ORDER BY col ASC and ORDER BY col are equivalent.",
+    "source": "SQL ORDER BY – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc002",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la sintaxis para ordenar por múltiples columnas?",
+    "question_en": "What is the syntax to order by multiple columns?",
+    "options_es": [
+      "ORDER BY col1 AND col2",
+      "ORDER BY col1 ASC, col2 DESC",
+      "ORDER BY (col1, col2)",
+      "SORT BY col1, col2"
+    ],
+    "options_en": [
+      "ORDER BY col1 AND col2",
+      "ORDER BY col1 ASC, col2 DESC",
+      "ORDER BY (col1, col2)",
+      "SORT BY col1, col2"
+    ],
+    "correct_index": 1,
+    "explanation_es": "Se separan las columnas por comas. Cada columna puede tener su propia dirección ASC/DESC. SORT BY es sintaxis de HiveQL, no SQL estándar.",
+    "explanation_en": "Columns are separated by commas. Each column can have its own ASC/DESC direction. SORT BY is HiveQL syntax, not standard SQL.",
+    "source": "SQL ORDER BY – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc003",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se ordenan los valores NULL en ORDER BY ASC en SQLite?",
+    "question_en": "How are NULL values ordered in ORDER BY ASC in SQLite?",
+    "options_es": [
+      "Los NULL aparecen al final",
+      "Los NULL aparecen primero (se consideran menores que cualquier valor)",
+      "Los NULL generan error",
+      "El orden de NULL es aleatorio"
+    ],
+    "options_en": [
+      "NULLs appear last",
+      "NULLs appear first (treated as smaller than any value)",
+      "NULLs generate an error",
+      "NULL order is random"
+    ],
+    "correct_index": 1,
+    "explanation_es": "En SQLite, NULL se considera menor que cualquier otro valor en ORDER BY ASC, por lo que aparece primero. En PostgreSQL es al contrario (NULLS LAST es el default para ASC).",
+    "explanation_en": "In SQLite, NULL is considered smaller than any other value in ORDER BY ASC, so it appears first. In PostgreSQL it is the opposite (NULLS LAST is the default for ASC).",
+    "source": "SQLite ORDER BY – https://www.sqlite.org/nulls.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc004",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Se puede usar ORDER BY con una columna que no aparece en SELECT?",
+    "question_en": "Can ORDER BY be used with a column that does not appear in SELECT?",
+    "options_es": [
+      "Solo en consultas con GROUP BY",
+      "No; la columna debe estar en SELECT",
+      "Solo si se usa un alias",
+      "Sí; ORDER BY puede referenciar cualquier columna de la tabla"
+    ],
+    "options_en": [
+      "Only in queries with GROUP BY",
+      "No; the column must be in SELECT",
+      "Only if an alias is used",
+      "Yes; ORDER BY can reference any column from the table"
+    ],
+    "correct_index": 3,
+    "explanation_es": "ORDER BY puede referenciar columnas de la tabla aunque no estén proyectadas en SELECT. La excepción es con DISTINCT: si se usa SELECT DISTINCT, ORDER BY solo puede referenciar columnas del SELECT.",
+    "explanation_en": "ORDER BY can reference columns from the table even if they are not projected in SELECT. The exception is with DISTINCT: if SELECT DISTINCT is used, ORDER BY can only reference columns from the SELECT.",
+    "source": "SQL ORDER BY – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc005",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué hace `ORDER BY 2 DESC`?",
+    "question_en": "What does `ORDER BY 2 DESC` do?",
+    "options_es": [
+      "Ordena por la columna con id=2",
+      "Ordena por el valor 2",
+      "Error de sintaxis",
+      "Ordena por la segunda columna del SELECT de forma descendente"
+    ],
+    "options_en": [
+      "Orders by the column with id=2",
+      "Orders by the value 2",
+      "Syntax error",
+      "Orders by the second column of the SELECT in descending order"
+    ],
+    "correct_index": 3,
+    "explanation_es": "SQL permite ORDER BY con posición numérica. ORDER BY 2 DESC ordena por la segunda columna listada en SELECT de forma descendente. Es válido pero menos legible que usar el nombre.",
+    "explanation_en": "SQL allows ORDER BY with a numeric position. ORDER BY 2 DESC orders by the second column listed in SELECT in descending order. It is valid but less readable than using the column name.",
+    "source": "SQL ORDER BY – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc006",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "easy",
+    "question_es": "¿En qué posición del SELECT aparece ORDER BY?",
+    "question_en": "In which position of the SELECT statement does ORDER BY appear?",
+    "options_es": [
+      "Antes de FROM",
+      "Al final, después de WHERE y GROUP BY",
+      "Después de SELECT pero antes de FROM",
+      "Después de INTO"
+    ],
+    "options_en": [
+      "Before FROM",
+      "At the end, after WHERE and GROUP BY",
+      "After SELECT but before FROM",
+      "After INTO"
+    ],
+    "correct_index": 1,
+    "explanation_es": "El orden de cláusulas en un SELECT completo es: SELECT → FROM → JOIN → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT. ORDER BY siempre al final.",
+    "explanation_en": "The clause order in a full SELECT is: SELECT → FROM → JOIN → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT. ORDER BY always at the end.",
+    "source": "SQL SELECT – https://www.w3schools.com/sql/sql_select.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc007",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Por qué es mala práctica ordenar por posición numérica (`ORDER BY 1`) en código de producción?",
+    "question_en": "Why is ordering by numeric position (`ORDER BY 1`) bad practice in production code?",
+    "options_es": [
+      "Genera errores con NULL",
+      "Es más lento que usar el nombre",
+      "No es SQL estándar",
+      "Si se reordena el SELECT, la columna de ordenación cambia silenciosamente"
+    ],
+    "options_en": [
+      "It generates errors with NULL",
+      "It is slower than using the name",
+      "It is not standard SQL",
+      "If the SELECT is reordered, the sort column changes silently"
+    ],
+    "correct_index": 3,
+    "explanation_es": "Si alguien cambia el orden de columnas en el SELECT, ORDER BY 1 ordena por una columna distinta sin error ni warning. Es un bug silencioso difícil de detectar.",
+    "explanation_en": "If someone changes the column order in the SELECT, ORDER BY 1 sorts by a different column without error or warning. It is a silent bug that is hard to detect.",
+    "source": "SQL ORDER BY best practices – https://use-the-index-luke.com",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc008",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Puede ORDER BY usar un alias definido en el mismo SELECT?",
+    "question_en": "Can ORDER BY use an alias defined in the same SELECT?",
+    "options_es": [
+      "Sí; ORDER BY se evalúa después de SELECT",
+      "No; ORDER BY solo acepta nombres de columna",
+      "Solo en MySQL",
+      "Solo con subconsultas"
+    ],
+    "options_en": [
+      "Yes; ORDER BY is evaluated after SELECT",
+      "No; ORDER BY only accepts column names",
+      "Only in MySQL",
+      "Only with subqueries"
+    ],
+    "correct_index": 0,
+    "explanation_es": "ORDER BY es la única cláusula que se evalúa después de SELECT, por lo que puede usar alias definidos en SELECT. WHERE, GROUP BY y HAVING no pueden.",
+    "explanation_en": "ORDER BY is the only clause evaluated after SELECT, so it can use aliases defined in SELECT. WHERE, GROUP BY and HAVING cannot.",
+    "source": "SQL execution order – https://www.sqlshack.com/sql-query-order-of-execution/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc009",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "Tienes `SELECT name, salary FROM emp ORDER BY salary DESC LIMIT 1`. ¿Qué devuelve?",
+    "question_en": "You have `SELECT name, salary FROM emp ORDER BY salary DESC LIMIT 1`. What does it return?",
+    "options_es": [
+      "Error",
+      "El empleado con el menor salario",
+      "El primer empleado insertado",
+      "El empleado con el mayor salario"
+    ],
+    "options_en": [
+      "Error",
+      "The employee with the lowest salary",
+      "The first inserted employee",
+      "The employee with the highest salary"
+    ],
+    "correct_index": 3,
+    "explanation_es": "ORDER BY salary DESC ordena de mayor a menor salario. LIMIT 1 toma solo la primera fila, que es la del mayor salario. Es el patrón estándar para obtener el máximo con contexto.",
+    "explanation_en": "ORDER BY salary DESC orders from highest to lowest salary. LIMIT 1 takes only the first row, which is the highest salary. It is the standard pattern to get the maximum with context.",
+    "source": "SQL ORDER BY – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc010",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se ordenan las cadenas de texto en `ORDER BY col ASC`?",
+    "question_en": "How are text strings ordered in `ORDER BY col ASC`?",
+    "options_es": [
+      "Por longitud de cadena",
+      "Siempre en mayúsculas primero",
+      "En orden lexicográfico según el collation de la base de datos",
+      "Por orden de inserción"
+    ],
+    "options_en": [
+      "By string length",
+      "Always uppercase first",
+      "In lexicographic order according to the database collation",
+      "By insertion order"
+    ],
+    "correct_index": 2,
+    "explanation_es": "El orden de texto depende del collation configurado. El collation por defecto de SQLite (BINARY) distingue mayúsculas y las ordena antes que minúsculas ('A' < 'a').",
+    "explanation_en": "Text ordering depends on the configured collation. SQLite's default collation (BINARY) is case-sensitive and orders uppercase before lowercase ('A' < 'a').",
+    "source": "SQLite collation – https://www.sqlite.org/datatype3.html#collation",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc011",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "hard",
+    "question_es": "¿Qué pasa si ORDER BY referencia una columna que tiene alias en SELECT y el mismo nombre existe como columna de tabla?",
+    "question_en": "What happens if ORDER BY references a name that exists as both a SELECT alias and a table column?",
+    "options_es": [
+      "El comportamiento varía por motor; en general el alias del SELECT tiene precedencia",
+      "Siempre se usa la columna de la tabla",
+      "Siempre se usa el alias",
+      "Error de ambigüedad"
+    ],
+    "options_en": [
+      "Behavior varies by engine; generally the SELECT alias takes precedence",
+      "The table column is always used",
+      "The alias is always used",
+      "Ambiguity error"
+    ],
+    "correct_index": 0,
+    "explanation_es": "En PostgreSQL el alias del SELECT tiene precedencia sobre la columna de la tabla en ORDER BY. En MySQL y SQLite el comportamiento puede diferir. Es una fuente de bugs sutiles.",
+    "explanation_en": "In PostgreSQL the SELECT alias takes precedence over the table column in ORDER BY. In MySQL and SQLite behavior may differ. It is a source of subtle bugs.",
+    "source": "SQL ORDER BY – https://www.w3schools.com/sql/sql_orderby.asp",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q120104mc012",
+    "skill_id": "sk120104",
+    "type": "multiple_choice",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el resultado de `ORDER BY col NULLS LAST` cuando hay NULL en col?",
+    "question_en": "What is the result of `ORDER BY col NULLS LAST` when col has NULLs?",
+    "options_es": [
+      "Los NULL se eliminan",
+      "Los NULL aparecen al principio",
+      "Los NULL aparecen al final del resultado",
+      "Error si hay NULL"
+    ],
+    "options_en": [
+      "NULLs are eliminated",
+      "NULLs appear at the beginning",
+      "NULLs appear at the end of the result",
+      "Error if there are NULLs"
+    ],
+    "correct_index": 2,
+    "explanation_es": "NULLS LAST fuerza a los NULL a aparecer al final independientemente de la dirección ASC/DESC. NULLS FIRST los pone al principio. Esta sintaxis es SQL estándar pero SQLite no la soporta (usa CASE WHEN workaround).",
+    "explanation_en": "NULLS LAST forces NULLs to appear at the end regardless of ASC/DESC direction. NULLS FIRST puts them at the beginning. This syntax is standard SQL but SQLite does not support it (use CASE WHEN workaround).",
+    "source": "SQL ORDER BY NULLS – https://www.postgresql.org/docs/current/queries-order.html",
+    "expected_time_ms": 30000
+  }
+]
