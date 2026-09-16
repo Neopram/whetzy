@@ -1,0 +1,13 @@
+{
+  "id": "l120404",
+  "skill_id": "sk120404",
+  "title_es": "CTEs recursivas",
+  "title_en": "Recursive CTEs",
+  "body_es": "Una CTE recursiva es una expresión de tabla común que hace referencia a sí misma. Se utiliza con la palabra clave WITH RECURSIVE para generar secuencias numéricas, jerarquías organizacionales, o conjuntos de datos iterativos. La estructura típica consta de dos partes claramente definidas: el caso base (la consulta inicial) y el caso recursivo (que se ejecuta iterativamente).\n\nEl caso base proporciona las filas iniciales a partir de las cuales comienza la recursión. El caso recursivo toma el resultado anterior y genera nuevas filas hasta que se alcanza una condición de término especificada. La unión entre el caso base y el caso recursivo es automática en SQL, utilizando UNION ALL.\n\nUn error común es olvidar la condición de término en el caso recursivo, lo que puede provocar un bucle infinito y un consumo ilimitado de recursos. Debes especificar un criterio claro de parada, como un número máximo de iteraciones o una condición lógica específica. Otro error es usar UNION en lugar de UNION ALL, aunque esto es menos grave. Las CTEs recursivas son muy útiles para trabajar con estructuras jerárquicas complejas, como organigramas empresariales o categorías de productos anidadas.",
+  "body_en": "A recursive CTE is a common table expression that references itself. It is used with the WITH RECURSIVE keyword to generate numeric sequences, organizational hierarchies, or iterative datasets. The typical structure consists of two clearly defined parts: the base case (the initial query) and the recursive case (which executes iteratively).\n\nThe base case provides the initial rows from which recursion begins. The recursive case takes the previous result and generates new rows until a specified termination condition is reached. The union between the base case and recursive case is automatic in SQL, using UNION ALL.\n\nA common mistake is forgetting the termination condition in the recursive case, which can cause an infinite loop and unlimited resource consumption. You must specify a clear stopping criterion, such as a maximum number of iterations or a specific logical condition. Another error is using UNION instead of UNION ALL, though this is less serious. Recursive CTEs are very useful for working with complex hierarchical structures, such as corporate organizational charts or nested product categories.",
+  "example_code": "WITH RECURSIVE numbers AS (SELECT 1 as n UNION ALL SELECT n + 1 FROM numbers WHERE n < 5) SELECT n FROM numbers ORDER BY n;",
+  "example_output": "n\n-\n1\n2\n3\n4\n5",
+  "language": "sql",
+  "source": "SQLite Documentation — https://www.sqlite.org/lang_with.html",
+  "order": 4
+}

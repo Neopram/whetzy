@@ -40,7 +40,7 @@ MAX_BODY_WORDS = 300
 # rises as authoring lands and never falls, so a session cannot quietly delete
 # lessons to make a run green. 17.1 closes when this equals the skill count and
 # `test_every_skill_has_a_lesson` is turned from a report into an assertion.
-MIN_LESSONS = 281
+MIN_LESSONS = 301
 
 
 def _load_lessons() -> list[tuple[Path, dict[str, Any]]]:
