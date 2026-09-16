@@ -62,6 +62,7 @@ class Module(Base):
     description_es: Mapped[str] = mapped_column(Text, default="", nullable=False)
     description_en: Mapped[str] = mapped_column(Text, default="", nullable=False)
     min_mastery_to_unlock: Mapped[float] = mapped_column(Float, default=0.7, nullable=False)
+    level: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
     track: Mapped[Track] = relationship(back_populates="modules")
     skills: Mapped[list[Skill]] = relationship(

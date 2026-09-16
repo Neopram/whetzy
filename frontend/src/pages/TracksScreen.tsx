@@ -205,6 +205,14 @@ function CurriculumView({
   const threshold = cur.data.mastery_threshold;
   const completed = modules.filter((m) => m.status === 'completed').length;
 
+  const LEVEL_LABELS: Record<number, { es: string; en: string }> = {
+    1: { es: 'Fundamentos', en: 'Fundamentals' },
+    2: { es: 'Intermedio', en: 'Intermediate' },
+    3: { es: 'Avanzado', en: 'Advanced' },
+  };
+
+  const levels = [1, 2, 3].filter((lvl) => modules.some((m) => m.level === lvl));
+
   return (
     <>
       <Card className={styles.overviewCard}>
@@ -224,8 +232,20 @@ function CurriculumView({
         />
       </Card>
 
-      <div className={styles.spine}>
-        {modules.map((m, i) => {
+      {levels.map((lvl) => {
+        const lvlMods = modules.filter((m) => m.level === lvl);
+        const lvlLabel = LEVEL_LABELS[lvl] ?? { es: `Nivel ${lvl}`, en: `Level ${lvl}` };
+        const lvlCompleted = lvlMods.filter((m) => m.status === 'completed').length;
+        return (
+          <div key={lvl} className={styles.levelSection}>
+            <div className={styles.levelHeader}>
+              <span className={styles.levelBadge}>{lvl}</span>
+              <span className={styles.levelTitle}>{lang === 'es' ? lvlLabel.es : lvlLabel.en}</span>
+              <span className={styles.levelMeta}>{lvlCompleted}/{lvlMods.length}</span>
+            </div>
+            <div className={styles.spine}>
+        {lvlMods.map((m, _i) => {
+          const i = modules.indexOf(m);
           const meta = statusMeta(m.status);
           const isOpen = openModule === m.id;
           const locked = m.status === 'locked';
@@ -326,7 +346,10 @@ function CurriculumView({
             </div>
           );
         })}
-      </div>
+            </div>
+          </div>
+        );
+      })}
       <p className={styles.footnote}>{t('tracks.thresholdNote', { n: Math.round(threshold * 100) })}</p>
     </>
   );

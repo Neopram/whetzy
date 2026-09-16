@@ -241,6 +241,7 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
                 description_es=module.description_es,
                 description_en=module.description_en,
                 min_mastery_to_unlock=module.min_mastery_to_unlock,
+                level=module.level,
                 average_mastery=round(avg, 4),
                 status=module_status,
                 prerequisite_id=prerequisite_id,

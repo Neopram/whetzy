@@ -79,6 +79,7 @@ class CurriculumModule(BaseModel):
     description_es: str
     description_en: str
     min_mastery_to_unlock: float
+    level: int = 1
     average_mastery: float
     # 'locked' | 'available' | 'completed'
     status: str

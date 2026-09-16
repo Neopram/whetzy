@@ -71,6 +71,7 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
         module.description_es = m.get("description_es", "")
         module.description_en = m.get("description_en", "")
         module.min_mastery_to_unlock = m.get("min_mastery_to_unlock", 0.7)
+        module.level = m.get("level", 1)
 
         # One exam domain per module, for certification tracks. The domain id is
         # derived from the module id rather than stored separately: a module IS

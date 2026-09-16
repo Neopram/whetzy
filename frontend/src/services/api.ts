@@ -290,6 +290,7 @@ export interface CurriculumModule {
   description_es: string;
   description_en: string;
   min_mastery_to_unlock: number;
+  level: number;
   average_mastery: number;
   status: 'locked' | 'available' | 'completed';
   prerequisite_id: string | null;
