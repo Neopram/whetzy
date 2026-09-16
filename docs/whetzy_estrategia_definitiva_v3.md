@@ -4,6 +4,18 @@
 
 ---
 
+> **Adenda 2026-09-16 (sesión au).** Tres cosas de este documento quedan
+> sustituidas, no reescritas, para conservar el original del dueño:
+> 1. **La tabla de certificaciones de la Parte II** (8 filas) la sustituye
+>    `docs/CATALOGO_MAESTRO.md` §3 (≈ 55 certificaciones sobre 27 tracks) y el
+>    estado real: 4 construidas, 3 con blueprint incorrecto (ledger 17.13).
+> 2. **Partes III, IV y VII (marketplace de creadores) se posponen** hasta
+>    ≥ 100 usuarios activos verificados (catálogo §9). El razonamiento sigue
+>    siendo válido; el momento no: con 0 usuarios no hay mercado.
+> 3. **El orden de ejecución de la Parte X** lo sustituye la Serie 18 del ledger
+>    (`AUTONOMOUS_STATE.md`), que va urgente × difícil primero y se mide.
+> Todo lo demás (tesis, modelo de negocio, líneas de «lo que no se hace») sigue en pie.
+
 ## Qué cambia en v3
 
 v2 definía qué construir y cómo aprender dentro de Whetzy. v3 abre el sistema hacia afuera: cualquier experto puede construir un bootcamp sobre el motor de Whetzy, cobrarlo, y ser remunerado por sus resultados — no solo por sus ventas. Eso convierte a Whetzy en infraestructura, no en producto.

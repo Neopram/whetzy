@@ -1,66 +1,56 @@
-# Whetzy — Backend Documentation
+# Whetzy — Índice de documentación
 
-Whetzy is an adaptive learning platform for Python + data engineering. The backend is a FastAPI monolith backed by PostgreSQL, providing a REST API consumed by the React/Capacitor frontend.
+Whetzy es una escuela bilingüe (ES/EN) de informática con motor adaptativo
+(BKT · FSRS · Elo · bandit · DKT), ejecución de código en el navegador (Python,
+SQL) y preparación de certificaciones. Backend: monolito FastAPI + PostgreSQL.
+Frontend: React + Capacitor.
 
-## Quick start (local dev)
+## Qué leer, según lo que vengas a hacer
+
+| Quieres… | Lee |
+|---|---|
+| Saber qué construye Whetzy y qué falta (tracks, certs, fuentes, coste) | **`CATALOGO_MAESTRO.md`** |
+| Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad) |
+| Operar una sesión autónoma | `ORCHESTRATOR.md` + `../CLAUDE.md` |
+| Desplegar, migrar, restaurar, diagnosticar | `RUNBOOK.md`, `runbook_db_backup_restore.md`, `RELEASE.md` |
+| Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
+| Ver la posición frente a la competencia, con pesos fijos | `competitive-teardown.md` |
+| Leer la estrategia del dueño (con su adenda de 2026-09-16) | `whetzy_estrategia_definitiva_v3.md` |
+| Historia narrativa por fase | `STATUS.md`, `CHANGELOG.md` |
+| Tiendas (listing, privacidad, iconos) | `store/` |
+
+## Arranque local
 
 ```bash
-# 1. Start Postgres (Docker)
-docker compose up -d
-
-# 2. Install dependencies
+docker compose up -d                          # Postgres en :5433
 cd backend && pip install -r requirements.txt
-
-# 3. Copy env config
 cp .env.example .env
-
-# 4. Run migrations
-alembic upgrade head
-
-# 5. Load question bank
-python -m app.scripts.content_loader
-
-# 6. Start the API
-uvicorn app.main:app --reload
-# → http://localhost:8000/docs
+python -m alembic upgrade head
+python -m app.services.content_loader         # carga tracks, preguntas, glosario y lecciones
+uvicorn app.main:app --reload                 # http://localhost:8000/api/v1/openapi.json
 ```
 
-## Environment variables (key ones)
+## Verificación — los comandos que sostienen cada número de los docs
 
-| Variable | Default | Notes |
-|---|---|---|
-| `DATABASE_URL` | postgres at :5432 | Local Docker uses :5433 |
-| `SECRET_KEY` | insecure dev key | **Change in production** |
-| `GROQ_API_KEY` | — | Required for AI tutor |
-| `EMAIL_PROVIDER` | `smtp` | `smtp` / `resend` / `log` |
-| `SMTP_USER` / `SMTP_PASSWORD` | — | Required when EMAIL_PROVIDER=smtp |
-| `RESEND_API_KEY` | — | Required when EMAIL_PROVIDER=resend |
-| `FRONTEND_BASE_URL` | https://whetzy.com | Used in email links |
+```bash
+python scripts/check_question_bank.py         # banco: ids, idiomas, opciones, sesgo, ratio ejecutable
+python scripts/check_docs.py                  # docs y /evidence coinciden con el contenido y Alembic
+cd backend && python -m pytest tests/content  # lecciones, ejecutables, sql_exec, tildes, blueprints
+cd backend && python -m pytest -q             # suite completa
+cd frontend && npx tsc -b --force && npx vitest run && npm run build
+```
 
-## Production URLs
+Un número en un doc sin uno de estos comandos detrás es un bug. Las cifras del
+banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
+`CATALOGO_MAESTRO.md` §1, y `check_docs.py` falla si divergen del código.
 
-| Surface | URL |
+## URLs de producción
+
+| Superficie | URL |
 |---|---|
 | API | https://api-production-9751.up.railway.app |
 | Frontend | https://whetzy.com |
 | OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
 
-## Tests
-
-```bash
-cd backend
-COVERAGE_FILE=C:\Temp\.coverage_whetzy python -m pytest tests/ --tb=short
-```
-
-229 tests (134 unit + 95 integration) running against SQLite in-memory. No external services required.
-
-## Key files
-
-| File | Purpose |
-|---|---|
-| `docs/ARCHITECTURE.md` | System design and component overview |
-| `docs/API.md` | API conventions and key endpoints |
-| `docs/RUNBOOK.md` | Deploy, migrate, rollback, troubleshoot |
-| `docs/DECISIONS.md` | Architecture decision log |
-| `docs/AUTONOMOUS_STATE.md` | Task backlog and progress ledger |
-| `docs/STATUS.md` | Honest status report per phase |
+`git push origin master` **despliega** el backend (Railway, auto-deploy verificado
+2026-09-16). El frontend en Cloudflare Pages se redespliega a mano (H.11).

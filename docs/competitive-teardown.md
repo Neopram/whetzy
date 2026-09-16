@@ -289,3 +289,33 @@ En el marcador global, no — ni con el backlog entero cerrado. La pregunta úti
 **Para un autodidacta hispanohablante que quiere aprender Python en serio**, Whetzy ya gana hoy en las dimensiones que le importan a esa persona: contenido técnico nativo en su idioma con fuente canónica citada (Duolingo no tiene tracks técnicos; DataCamp, Brilliant y Codecademy son EN-only), motor que no infla el progreso, tutor que dice cuándo no sabe, offline real y accesibilidad AA. Ese segmento no lo atiende bien nadie del set, y no es pequeño.
 
 La estrategia defendible no es «superar a toda la competencia». Es **ser incuestionablemente el mejor en un nicho que los cuatro ignoran**, y dejar que el marcador global suba solo cuando ese nicho traiga usuarios. Lo primero que hace falta para empezar a comprobarlo es que alguien pueda *ver* el producto: H.11.
+
+---
+
+## 9. Catálogo frente al mercado — 2026-09-16 (sesión au)
+
+El dueño preguntó si Whetzy puede «abarcar todo el mundo informático». La respuesta
+completa está en **`CATALOGO_MAESTRO.md`**; aquí sólo lo que afecta al marcador.
+
+**El marcador no cambia.** Mismos pesos de §7.1, ninguna evidencia de mercado
+nueva: sigue en **≈ 42** y el techo sin usuarios en **≈ 61** (§8.3). Añadir
+tracks mueve *Contenido* (peso 0,14) unos puntos como mucho; no toca *Distribución*
+(0,34), que vale 5 mientras el frontend de prod sea un build viejo (H.11).
+
+**Lo que sí queda escrito, porque antes no lo estaba:**
+
+| Dimensión | Whetzy hoy (medido) | Objetivo del catálogo | Liga en la que compite ese objetivo |
+|---|---|---|---|
+| Tracks / cursos | 12 / 36 | 27 / ≈ 80 | Boot.dev · Sololearn · Mimo *(≈ 15-40 cursos, estimación sin verificar — 18.12)* |
+| Certificaciones | 4 (3 con blueprint incorrecto, 17.13) | ≈ 55 | Whizlabs · Tutorials Dojo · KodeKloud |
+| Lecciones | 301/301 skills | 1/skill en 27 tracks | Codecademy (texto) |
+| Ejecución en navegador | Python + SQL reales; JS stub | Python + SQL + JS | Brilliant (celdas), DataCamp (IDE) |
+| Proyectos | 0 | 10/track ejecutable | Exercism · Boot.dev |
+| Vídeo | 0 | explicadores Manim (piloto 18.9) | nadie de la liga objetivo; Platzi/Udemy son otra liga |
+
+**Lectura honesta.** Con el catálogo entero, Whetzy es un **Sololearn/Boot.dev con
+motor auditado, ES/EN nativo y ejecución sin servidor** — eso es competir. **No**
+es un Platzi (≈ 1.500 cursos, creadores externos, años) ni un Udemy; ese juego no
+se gana con agentes. Las cifras de la competencia de esta sección y de
+`CATALOGO_MAESTRO.md` §8 son **estimaciones de memoria** hasta que 18.12 las
+sustituya por URL + fecha; por eso no se usan para mover ningún número.

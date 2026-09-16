@@ -40,19 +40,24 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 - **NO** voz. **NO** OCR. Cuando aparezca la tentación, no.
 - Groq + `qwen/qwen3.8-27b` tras la abstracción `LLMProvider`. Cambiar de
   proveedor es config, no refactor.
-- 7 tracks lineales con espina de prerequisitos BKT. No hay atajos.
+- Catálogo: **`docs/CATALOGO_MAESTRO.md`** — 27 tracks de aprendizaje y ~55
+  certificaciones, espina de prerequisitos BKT por track. Hoy 12/27 y 4/55. Es la
+  única lista; cuando otro doc la contradiga, manda el catálogo. No hay atajos.
 - Contenido redactado nativo en ES y EN — no traducido. Toda pregunta cita fuente.
 - Registro obligatorio. Sin modo invitado.
-- Glosario por track. Objetivo de banco: **1.500+ preguntas**.
+- Molde por track (catálogo §2): **20 skills · 300 Q · 3 niveles · 20 lecciones ·
+  ≥ 36 términos · ≥ 15 % ejecutable** donde el navegador ejecute (Python, SQL, JS)
+  o exento con razón (ADR-9). Un track por debajo del molde no existe.
 - Marca: azul cielo `#1CB0F6`; el verde **solo** para éxito; modo claro por
   defecto; logo de triángulo neural.
 - Monolito FastAPI mientras un solo equipo lo mantenga.
-- Dirección estratégica: marketplace de certificaciones. **Hoja unificada en
-  `whetzy_estrategia_definitiva_v3.md` Parte II** (decisión #10) — dos carriles,
-  no dos hojas rivales. Carril 1, una cert por track, empezando por **PCEP**
-  (track 01, $59, donde entra la cuña). Carril 2, catálogo suelto por demanda:
-  AWS CLF-C02 (ya construida) → Security+ → AWS SAA → Azure AI-102 → Google ML.
-  El carril 1 manda mientras no haya usuarios.
+- Dirección estratégica: **catálogo completo + certificaciones con readiness por
+  dominio** (catálogo §3). Carril 1 sigue mandando mientras no haya usuarios:
+  **PCEP** (track01, $59, la cuña) — hoy con blueprint incorrecto (17.13, PRI 0).
+  **Marketplace de creadores: no antes de ≥ 100 usuarios activos verificados**
+  (catálogo §9). La fase 10 queda en 10.1-10.3; 10.4 espera H.4 *y* usuarios.
+- Presupuesto no es estrategia. Si el cupo semanal obliga a racionar, se anota
+  como límite de la sesión — nunca se presenta «una tarea por sesión» como plan.
 
 ### Líneas rojas — se cumplen o no se lanza
 1. **Motor honesto.** El % de dominio es BKT/DKT real. Nunca se infla, nunca se
@@ -122,12 +127,13 @@ puede construirlo un proceso que sí lo hace.
 
 ## MODELOS
 
-El hilo principal corre en **Sonnet 4.6** (lo fija `settings.json`; no lo cambies).
+El hilo principal corre en el modelo que fije `settings.json` o la app (Sonnet 4.6
+por defecto; Fable 5.1 cuando el dueño lo elige). No lo cambies desde una sesión.
 Tú decides el modelo de cada subagente:
 
 | Modelo | Para | Cómo |
 |---|---|---|
-| **Haiku** | Inventarios, greps masivos, leer 20 archivos, scaffolding repetitivo, formateo | `Agent` + `model: "haiku"` |
+| **Haiku** | Inventarios, greps masivos, leer 20 archivos, scaffolding repetitivo, formateo, **autoría de contenido por fichero** (preguntas, lecciones, glosario) — **siempre** detrás de la puerta de calidad de `CATALOGO_MAESTRO.md` §7: verificador propio fuera del scratchpad, ejecución real, tildes, sesgo de posición | `Agent` + `model: "haiku"`; bloques grandes con `Workflow` |
 | **Sonnet** | Implementar, verificar, integrar, decidir lo reversible | Tú, o `Agent` + `model: "sonnet"` como worker |
 | **Opus** | Solo arquitectura irreversible: diseño del modelo DKT, threat model, sistema de diseño, límites de servicio | `Agent` + `model: "opus"`. **Máximo 2 por sesión.** Cada uso va a la bitácora |
 
@@ -145,9 +151,15 @@ reorganizar docs · borrar código muerto **tras** grep que pruebe cero referenc
 linters, type checkers, formatters y sus fixes · gestionar el scheduled task
 `whetzy-orch-*` · añadir tareas al ledger cuando el criterio de dueño lo exija.
 
+**`git push origin master` DESPLIEGA** backend, migraciones y `content_loader`
+(H.16, verificado 2026-09-16). Por eso, antes de cada push: `pytest tests/content`,
+`check_question_bank.py` y `check_docs.py` verdes; migraciones solo aditivas con
+`downgrade` probado; **nunca un track a medias** (el schema equivocado de track12
+llegó a producción y `start.sh` se tragó el error del loader).
+
 ### Detente y escribe en `HUMAN-BLOCKED`
-Operaciones destructivas sobre la **DB de producción** · deploy a Railway (manual —
-prepáralo y déjalo listo) · claves live de Stripe o cualquier gasto · submisión a
+Operaciones destructivas sobre la **DB de producción** · desconectar o cambiar el
+auto-deploy de Railway (decisión de dueño, H.16) · claves live de Stripe o cualquier gasto · submisión a
 stores · DNS o dominio · datos de usuarios reales · rotar o exponer secretos ·
 tocar `~/.claude/settings.json` · reabrir una decisión cerrada.
 
@@ -245,7 +257,9 @@ Agent({
 })
 ```
 
-- **Máximo 3 simultáneos**
+- **Máximo 3 workers Sonnet simultáneos.** Autoría de contenido: hasta **8 Haiku**
+  sobre ficheros disjuntos, o un `Workflow` — y el bloque entero pasa la puerta de
+  calidad (`CATALOGO_MAESTRO.md` §7) antes de un solo commit
 - Cada worker toca **solo** los archivos de su tarea; la disjunción la garantiza
   el ledger. Si dudas, no paralelices
 - Los workers no commitean ni escriben el ledger. Solo tú
@@ -300,6 +314,8 @@ tarea y el cron reanuda.
 6. Componente nuevo = teclado + contraste AA + `prefers-reduced-motion` + ES/EN
 7. Escribe como el código que te rodea: misma densidad, mismos nombres, mismo idioma
 8. Lo que se borra se borra con grep que lo justifique en el mensaje de commit
+9. Documentación en **español**. Contenido y UI en **ES y EN nativos**. Un doc que
+   mezcla idiomas o un número sin comando que lo reproduzca es un bug (`check_docs.py`)
 
 ---
 

@@ -797,3 +797,13 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 - **Railway CLI token expirado**: UUID de sesión antigua rechazado por CLI v5+. Usar dashboard o nuevo API token.
 - **Sandbox Python invisibility**: archivos Write-tool de sesiones previas → invisibles a `os.listdir()` en subprocess. Fix: reescribir en la sesión actual.
 - **`whetzy.com/health`** retorna HTML (SPA) — el endpoint real de health es `https://api-production-9751.up.railway.app/health`.
+
+---
+
+## 2026-09-16 — Sesión au: catálogo maestro y reparación de track12
+
+- **Nuevo `docs/CATALOGO_MAESTRO.md`**: 27 tracks de aprendizaje, ~55 certificaciones, fuentes con licencia, coste en tokens (≈ 25 M Haiku, 18-20 sesiones con `Workflow`), puerta de calidad obligatoria (§7) y lo que no se construye (marketplace hasta ≥ 100 usuarios). Sustituye las tablas de alcance de la estrategia v3 y del plan «de quiz a escuela».
+- **track12 (SQL) reparado**: entró a `master` con schema inválido (`title_es`), 60 `sql_exec` sin ejecutar y sin lecciones ni glosario. Ahora: 300 Q · 20 lecciones · 36 términos · 60 `sql_exec` con salida real del motor. `pytest tests/content` 14.153 passed; `check_question_bank.py` y `check_docs.py` PASS.
+- **Docs corregidos**: `CLAUDE.md` («deploy manual» era falso: push despliega), `ORCHESTRATOR.md` (catálogo, molde por track, Haiku solo tras puerta de calidad, docs en español), `docs/README.md` (comando de loader inexistente, conteos viejos), estrategia v3 (adenda), teardown §9.
+- **Serie 18 abierta** en el ledger: 18.0 DONE; 18.1 (blueprints + readiness) es PRI 0.
+- Banco: **5.024 Q · 12 tracks · 36 cursos · 301 skills · 301 lecciones · 480 términos.**
