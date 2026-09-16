@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter, defaultdict
+from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -151,6 +152,25 @@ def load() -> list[tuple[Path, dict]]:
     return items
 
 
+@lru_cache(maxsize=1)
+def declared_skills() -> frozenset[str]:
+    """Every skill id the curriculum declares - the denominator for coverage.
+
+    `tracks.json` is the authority here for the same reason `check_docs.py`
+    reads it: a skill exists because a track declares it, not because some
+    question happens to name it.
+    """
+    data = json.loads(
+        (ROOT / "content" / "curriculum" / "tracks.json").read_text(encoding="utf-8")
+    )
+    return frozenset(
+        skill["id"]
+        for track in data["tracks"]
+        for module in track.get("modules", [])
+        for skill in module.get("skills", [])
+    )
+
+
 def main() -> int:
     items = load()
     problems: list[str] = []
@@ -253,10 +273,27 @@ def main() -> int:
         flag(track, dist)
 
     # --- per-skill floor ---
+    # Counted over the skills the CURRICULUM declares, not over the skills the
+    # questions mention. Those are not the same set, and the difference is the
+    # worst case rather than a corner one: a skill with zero questions never
+    # appears as a key in a Counter built from the bank, so the version of this
+    # check that iterated the questions reported PASS while track13 shipped
+    # three skills - `Politicas y marcos de seguridad (NIST CSF)`, `TLS/HTTPS y
+    # certificados digitales` and `Seguridad inalambrica (WPA2/WPA3)` - that a
+    # learner could open and find completely empty. Same shape as the
+    # `test_exec_questions.py` hard-coded track list (17.3): the check could
+    # only ever see what was already there.
     per_skill = Counter(q.get("skill_id") for _, q in items)
-    for skill, n in sorted(per_skill.items()):
+    for skill in sorted(declared_skills()):
+        n = per_skill.get(skill, 0)
         if n < MIN_PER_SKILL:
             problems.append(f"skill {skill} has {n} question(s); the floor is {MIN_PER_SKILL}")
+    orphans = sorted(set(per_skill) - declared_skills())
+    for skill in orphans:
+        problems.append(
+            f"{per_skill[skill]} question(s) point at skill {skill}, which no track "
+            f"declares; the loader drops them silently"
+        )
 
     # --- engine density, per track ---
     # Reported per track because that is the unit authoring happens in, and
