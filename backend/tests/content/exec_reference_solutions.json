@@ -2234,5 +2234,114 @@
   "q070604ex103": {
     "fill": "spans",
     "kind": "exec"
+  },
+  "q130203_fb001": {
+    "fixed": "import hashlib\nresult = hashlib.sha256(b'test')\nprint(len(result.hexdigest()))",
+    "kind": "fb"
+  },
+  "q130203_fb002": {
+    "fixed": "import hashlib\ndata = b'hello'\ncomputed = hashlib.sha256(data).hexdigest()\nexpected = hashlib.sha256(data).hexdigest()\nprint(computed == expected)",
+    "kind": "fb"
+  },
+  "q130203_fb003": {
+    "fixed": "import hashlib\nimport hmac\nkey = b'secret'\nmessage = b'hello'\ncomputed = hmac.new(key, message, hashlib.sha256).hexdigest()\nexpected = hmac.new(key, message, hashlib.sha256).hexdigest()\nif hmac.compare_digest(computed, expected):\n    print(True)\nelse:\n    print(False)",
+    "kind": "fb"
+  },
+  "q130403006": {
+    "code": "import html\nuser_input = '<script>alert(1)</script>'\nsafe = html.___(user_input)\nprint(safe)",
+    "fill": "escape",
+    "kind": "exec"
+  },
+  "q130403008": {
+    "code": "import re\nuser_input = 'valid_user'\npattern = r'^[a-zA-Z0-9_]+$'\nis_valid = bool(re.___(pattern, user_input))\nprint(is_valid)",
+    "fill": "match",
+    "kind": "exec"
+  },
+  "q130403009": {
+    "code": "import re\nuser_input = 'bad user!'\npattern = r'^[a-zA-Z0-9_]+$'\nis_valid = bool(re.___(pattern, user_input))\nprint(is_valid)",
+    "fill": "match",
+    "kind": "exec"
+  },
+  "q130403010": {
+    "code": "import urllib.parse\nuser_input = 'hello world'\nencoded = urllib.parse.___(user_input)\nprint(encoded)",
+    "fill": "quote",
+    "kind": "exec"
+  },
+  "q130403012": {
+    "fixed": "import re\nuser_input = 'valid_user123'\npattern = r'^[a-zA-Z0-9_]+$'\nis_valid = bool(re.match(pattern, user_input))\nprint(is_valid)",
+    "kind": "fb"
+  },
+  "q130504001": {
+    "code": "import secrets\ntoken = secrets.token_hex(8)\nprint(len(token))",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504002": {
+    "code": "import secrets\nrandom_bytes = secrets.token_bytes(16)\nprint(len(random_bytes))",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504003": {
+    "code": "import hashlib\ndata = b'data'\nhash1 = hashlib.sha256(data).hexdigest()\nhash2 = hashlib.sha256(data).hexdigest()\nprint(hash1 == hash2)",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504004": {
+    "code": "import hmac, hashlib\nkey = b'secret_key'\nmessage = b'message'\nh = hmac.new(key, message, hashlib.sha256)\nprint(len(h.hexdigest()))",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504005": {
+    "code": "import hmac\nvalue1 = 'abc'\nvalue2 = 'abc'\nprint(hmac.compare_digest(value1, value2))",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504006": {
+    "code": "import hmac\nvalue1 = 'abc'\nvalue2 = 'xyz'\nprint(hmac.compare_digest(value1, value2))",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504007": {
+    "code": "import hashlib\nprint(hashlib.algorithms_guaranteed.__contains__('sha256'))",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504008": {
+    "fixed": "import hmac\ntoken_from_user = 'abc123'\ntoken_expected = 'abc123'\nif hmac.compare_digest(token_from_user, token_expected):\n    print('True')\nelse:\n    print('False')",
+    "kind": "fb"
+  },
+  "q130504009": {
+    "code": "import secrets\ntoken = secrets.token_urlsafe(12)\nprint(type(token).__name__)",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504010": {
+    "code": "import hashlib\nm = hashlib.sha256()\nm.update(b'part1')\nm.update(b'part2')\nprint(len(m.hexdigest()))",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504011": {
+    "code": "import secrets\ntoken = secrets.token_hex(8)\nprint(len(token) > 0)",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504012": {
+    "code": "import hmac, hashlib\nkey1 = b'key1'\nkey2 = b'key2'\nmessage = b'same_message'\nh1 = hmac.new(key1, message, hashlib.sha256).hexdigest()\nh2 = hmac.new(key2, message, hashlib.sha256).hexdigest()\nprint(h1 == h2)",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504013": {
+    "fixed": "import hashlib, secrets\npassword = 'mypassword'\nsalt = secrets.token_hex(16)\npassword_hash = hashlib.sha256((salt + password).encode()).hexdigest()\nprint('True')",
+    "kind": "fb"
+  },
+  "q130504014": {
+    "code": "import hmac, hashlib\nkey = b'shared_secret'\nmessage = b'data'\nh1 = hmac.new(key, message, hashlib.sha256).hexdigest()\nh2 = hmac.new(key, message, hashlib.sha256).hexdigest()\nprint(h1 == h2)",
+    "fill": "",
+    "kind": "exec"
+  },
+  "q130504015": {
+    "code": "import secrets\ntoken1 = secrets.token_hex(16)\ntoken2 = secrets.token_hex(16)\nprint(token1 != token2)",
+    "fill": "",
+    "kind": "exec"
   }
 }

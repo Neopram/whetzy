@@ -1,0 +1,1217 @@
+[
+  {
+    "id": "q130301001",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un firewall en ciberseguridad?",
+    "question_en": "What is a firewall in cybersecurity?",
+    "options_es": [
+      "Un virus de computadora",
+      "Barrera de seguridad que controla tráfico entre redes basado en reglas",
+      "Un tipo de antivirus",
+      "Un servidor web"
+    ],
+    "options_en": [
+      "A computer virus",
+      "Security barrier controlling network traffic based on rules",
+      "A type of antivirus",
+      "A web server"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Firewall: dispositivo/software que filtra tráfico entrante/saliente. Basado en reglas: IP, puerto, protocolo. Impide acceso no autorizado. Tipos: stateless (simple), stateful (context-aware), application-layer (WAF).",
+    "explanation_en": "Firewall: device/software filtering incoming/outgoing traffic. Based on rules: IP, port, protocol. Prevents unauthorized access. Types: stateless (simple), stateful (context-aware), application-layer (WAF).",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130301002",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la diferencia entre un firewall 'stateless' y 'stateful'?",
+    "question_en": "What is the difference between 'stateless' and 'stateful' firewall?",
+    "options_es": [
+      "No hay diferencia",
+      "Stateless: examina paquetes individual. Stateful: recuerda conexiones, más inteligente",
+      "Stateful es más rápido",
+      "Stateless es más seguro"
+    ],
+    "options_en": [
+      "No difference",
+      "Stateless: examines packets individually. Stateful: remembers connections, smarter",
+      "Stateful is faster",
+      "Stateless is more secure"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Stateless: cada paquete evaluado aisladamente contra reglas (simple, rápido). Stateful: mantiene tabla de conexiones activas. Rechaza tráfico que no corresponde a conexión establecida. Stateful es más seguro, usado hoy.",
+    "explanation_en": "Stateless: each packet evaluated individually against rules (simple, fast). Stateful: maintains table of active connections. Rejects traffic not matching established connection. Stateful is more secure, used today.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130301003",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es una 'DMZ' (Zona Desmilitarizada)?",
+    "question_en": "What is a 'DMZ' (Demilitarized Zone)?",
+    "options_es": [
+      "Un país sin ejército",
+      "Subred entre firewall externo e interno; aísla servidores públicos de red interna",
+      "Un tipo de protocolo",
+      "Un software de encriptación"
+    ],
+    "options_en": [
+      "A country without military",
+      "Subnet between external and internal firewall; isolates public servers from internal network",
+      "A protocol type",
+      "Encryption software"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DMZ: zona de seguridad intermedia. Servidores públicos (web, mail, DNS) están en DMZ. Usuarios externos acceden DMZ. DMZ no accede directo a red interna. Si servidor DMZ compromised, red interna sigue protegida.",
+    "explanation_en": "DMZ: intermediate security zone. Public servers (web, mail, DNS) sit in DMZ. External users access DMZ. DMZ cannot directly access internal network. If DMZ server compromised, internal network still protected.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130301004",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es 'VLAN' (Red Local Virtual)?",
+    "question_en": "What is 'VLAN' (Virtual Local Area Network)?",
+    "options_es": [
+      "Conexión a internet virtual",
+      "Partición lógica de switch para segmentar tráfico sin hardware adicional",
+      "Un tipo de VPN",
+      "Un protocolo de enrutamiento"
+    ],
+    "options_en": [
+      "Virtual internet connection",
+      "Logical switch partition to segment traffic without additional hardware",
+      "A type of VPN",
+      "A routing protocol"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "VLAN: red virtual en layer 2 (switch). Aísla lógicamente dispositivos. VLAN 10 (HR) no ve VLAN 20 (Finance) sin router/firewall. Reduce dominio broadcast. Herramienta fundamental de segmentación de red.",
+    "explanation_en": "VLAN: virtual network at layer 2 (switch). Logically isolates devices. VLAN 10 (HR) can't see VLAN 20 (Finance) without router/firewall. Reduces broadcast domain. Fundamental network segmentation tool.",
+    "source": "NIST SP 800-53 Rev 5 SC-7 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130301005",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un 'WAF' (Web Application Firewall)?",
+    "question_en": "What is a 'WAF' (Web Application Firewall)?",
+    "options_es": [
+      "Firewall para redes inalámbricas",
+      "Firewall layer 7 que inspecciona aplicación; detecta SQL injection, XSS, etc.",
+      "Un protocolo de seguridad",
+      "Un certificado SSL"
+    ],
+    "options_en": [
+      "Wireless network firewall",
+      "Layer 7 firewall inspecting application; detects SQL injection, XSS, etc.",
+      "A security protocol",
+      "An SSL certificate"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "WAF: capa 7 (aplicación). Entiende HTTP/HTTPS, inspecciona payloads. Bloquea ataques web (SQL injection, XSS, CSRF). Tradicional firewall no ve estas amenazas (opaco en layer 3-4). Ejemplo: ModSecurity, CloudFlare WAF.",
+    "explanation_en": "WAF: layer 7 (application). Understands HTTP/HTTPS, inspects payloads. Blocks web attacks (SQL injection, XSS, CSRF). Traditional firewall can't see these threats (opaque at layer 3-4). Example: ModSecurity, CloudFlare WAF.",
+    "source": "NIST SP 800-53 Rev 5 SC-7 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130301006",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la limitación principal de 'packet filtering' (filtrado de paquetes)?",
+    "question_en": "What is the main limitation of 'packet filtering'?",
+    "options_es": [
+      "Es lento",
+      "Solo examina headers; no ve payload; vulnerable a ataques layer 7",
+      "No puede bloquear nada",
+      "Es muy seguro"
+    ],
+    "options_en": [
+      "It's slow",
+      "Only examines headers; doesn't see payload; vulnerable to layer 7 attacks",
+      "Can't block anything",
+      "It's very secure"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Packet filtering examina: IP origen/destino, puerto, protocolo. No examina contenido HTTP/aplicación. Ataque: payload malicioso en HTTP request válido. Solución: WAF (inspecciona contenido) o IPS.",
+    "explanation_en": "Packet filtering examines: source/dest IP, port, protocol. Doesn't examine HTTP/application content. Attack: malicious payload in valid HTTP request. Solution: WAF (inspects content) or IPS.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130301007",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se relacionan NAT (Network Address Translation) y seguridad?",
+    "question_en": "How does NAT (Network Address Translation) relate to security?",
+    "options_es": [
+      "NAT es apenas performance",
+      "NAT oculta IPs internas (ocultación), pero NO es control seguridad verdadero",
+      "NAT es firewall completo",
+      "NAT solo capa 2"
+    ],
+    "options_en": [
+      "NAT is just performance",
+      "NAT hides internal IPs (obfuscation), but NOT true security control",
+      "NAT is full firewall",
+      "NAT is only layer 2"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "NAT: traduce IPs privadas (10.0.0.0) a pública. Beneficio: oculta topología interna (seguridad por obscuridad). Limitación: no es control de acceso verdadero. Requiere firewall para seguridad real. NAT + firewall stateful = buena práctica.",
+    "explanation_en": "NAT: translates private IPs (10.0.0.0) to public. Benefit: hides internal topology (security by obscurity). Limitation: not true access control. Requires firewall for real security. NAT + stateful firewall = best practice.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130301008",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es 'Zero Trust Network' en segmentación?",
+    "question_en": "What is 'Zero Trust Network' in segmentation?",
+    "options_es": [
+      "No usar segmentación",
+      "No confiar en red interna; verificar cada conexión, micro-segmentación, identidad",
+      "Usar solo VPN",
+      "Confiar en todos"
+    ],
+    "options_en": [
+      "Don't use segmentation",
+      "Don't trust internal network; verify each connection, micro-segmentation, identity",
+      "Use only VPN",
+      "Trust everyone"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Zero Trust Network: paradigma 'nunca confies, siempre verifica'. Cada usuario/dispositivo/flujo requiere autenticación/autorización. Micro-segmentación: múltiples zonas, cada una con acceso restringido. Defensa contra insider threat, movimiento lateral.",
+    "explanation_en": "Zero Trust Network: paradigm 'never trust, always verify'. Every user/device/flow requires authentication/authorization. Micro-segmentation: multiple zones, each with restricted access. Defense against insider threat, lateral movement.",
+    "source": "NIST SP 800-207 — https://csrc.nist.gov/publications/detail/sp/800-207/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130301009",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la arquitectura de firewall más común en empresas grandes?",
+    "question_en": "What is the most common firewall architecture in large enterprises?",
+    "options_es": [
+      "Un solo firewall",
+      "DMZ con firewall externo e interno (defense in depth)",
+      "Sin firewall",
+      "Apenas VPN"
+    ],
+    "options_en": [
+      "Single firewall",
+      "DMZ with external and internal firewalls (defense in depth)",
+      "No firewall",
+      "VPN only"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Arquitectura: Internet → Firewall 1 (externo, publica) → DMZ (servidores web, mail) → Firewall 2 (interno) → Red Interna (privada). Si DMZ comprometida, Firewall 2 protege red interna. Defensa en profundidad.",
+    "explanation_en": "Architecture: Internet → Firewall 1 (external, public) → DMZ (web, mail servers) → Firewall 2 (internal) → Internal Network (private). If DMZ compromised, Firewall 2 protects internal. Defense in depth.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130301010",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se implementa 'micro-segmentación' en la práctica?",
+    "question_en": "How is 'micro-segmentation' implemented in practice?",
+    "options_es": [
+      "No implementarse",
+      "VLANs, firewalls internos, políticas software-defined, cero acceso por defecto",
+      "Solo NAT",
+      "Desactivar switches"
+    ],
+    "options_en": [
+      "Not implemented",
+      "VLANs, internal firewalls, software-defined policies, zero access by default",
+      "NAT only",
+      "Disable switches"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Micro-segmentación: VLANs (layer 2), firewalls internos (layer 3), controles de acceso software (aplicación). Ejemplo: servidor app solo conecta a servidor DB específico, no a todos. Identidad + contexto + reglas granulares.",
+    "explanation_en": "Micro-segmentation: VLANs (layer 2), internal firewalls (layer 3), software access controls (application). Example: app server only connects to specific DB server, not all. Identity + context + granular rules.",
+    "source": "NIST SP 800-207 — https://csrc.nist.gov/publications/detail/sp/800-207/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130301011",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el desafío principal de diseñar reglas firewall sin impactar legitimidad?",
+    "question_en": "What is the main challenge designing firewall rules without impacting legitimacy?",
+    "options_es": [
+      "No hay desafío",
+      "Balance: restrictivo (seguridad) vs. permisivo (usabilidad); false positives bloquean usuarios legítimos",
+      "Usar un solo puerto",
+      "Confiar en todo"
+    ],
+    "options_en": [
+      "No challenge",
+      "Balance: restrictive (security) vs. permissive (usability); false positives block legitimate users",
+      "Use single port",
+      "Trust everything"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Dilema: rules muy restrictivas = bloquean usuarios legítimos (false positive). Rules muy permisivas = permiten ataques. Solución: baselines (netflow analysis), whitelist (aplicaciones legítimas), logging/monitoring (iterar).",
+    "explanation_en": "Dilemma: overly restrictive rules = block legitimate users (false positive). Overly permissive = allow attacks. Solution: baselines (netflow analysis), whitelist (legitimate apps), logging/iterate.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130301012",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se implementa 'default deny' en firewall sin paralizarlo?",
+    "question_en": "How is 'default deny' implemented in firewall without paralyzing it?",
+    "options_es": [
+      "Es imposible",
+      "Solo para intranet",
+      "Permitir todo",
+      "Bloquear todo, permitir solo tráfico conocido legítimo; descubrimiento (netflow), whitelist iterativo"
+    ],
+    "options_en": [
+      "It's impossible",
+      "Only for intranet",
+      "Allow everything",
+      "Block all, allow only known legitimate traffic; discovery (netflow), iterative whitelist"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Default deny: política implícita de bloqueo. Requiere: 1) Descubrimiento tráfico legítimo (packet capture, netflow). 2) Whitelist iterativo. 3) Monitoreo de bloques. 4) Ajuste dinámico. Implementación: inicial permisivo, lentamente más restrictivo.",
+    "explanation_en": "Default deny: implicit block policy. Requires: 1) Discover legitimate traffic (packet capture, netflow). 2) Iterative whitelist. 3) Monitor blocks. 4) Dynamic adjustment. Implementation: start permissive, gradually restrictive.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130301013",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la diferencia entre Firewall Tradicional y Next-Generation Firewall (NGFW)?",
+    "question_en": "What is difference between Traditional Firewall and Next-Generation Firewall (NGFW)?",
+    "options_es": [
+      "Tradicional: IP/puerto. NGFW: aplicación, identidad, antimalware, IPS integrado",
+      "No hay diferencia",
+      "NGFW es anticuado",
+      "Solo tamaño"
+    ],
+    "options_en": [
+      "Traditional: IP/port. NGFW: application, identity, antimalware, integrated IPS",
+      "No difference",
+      "NGFW is outdated",
+      "Just size"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Tradicional: capa 3-4, IP/puerto. NGFW: entiende aplicaciones (YouTube, Skype, etc.), inspecciona payloads, integra IPS/antimalware, usa identidad del usuario. Ejemplo: Palo Alto, Fortinet. Previene ataques layer 7.",
+    "explanation_en": "Traditional: layer 3-4, IP/port. NGFW: understands applications (YouTube, Skype, etc.), inspects payloads, integrates IPS/antimalware, uses user identity. Example: Palo Alto, Fortinet. Prevents layer 7 attacks.",
+    "source": "NIST SP 800-41 Rev 1 — https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130301014",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo cambió Zero Trust la arquitectura tradicional de firewall/DMZ?",
+    "question_en": "How did Zero Trust change traditional firewall/DMZ architecture?",
+    "options_es": [
+      "No cambió nada",
+      "Hizo obsoleto el firewall",
+      "De perímetro (DMZ) a identidad; cada usuario/dispositivo verificado; firewall por usuario (BeyondCorp)",
+      "Requiere solo VPN"
+    ],
+    "options_en": [
+      "Changed nothing",
+      "Made firewall obsolete",
+      "From perimeter (DMZ) to identity; every user/device verified; per-user firewall (BeyondCorp)",
+      "Requires only VPN"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Tradicional: firewall perímetro = confianza interna. Zero Trust: no perímetro, identidad. Arquitectura: usuario auth → dispositivo check → acceso micro-segmentado. Ejemplo: Google BeyondCorp (permitir empleado remoto sin VPN). Firewall aún necesario, pero rol cambia.",
+    "explanation_en": "Traditional: perimeter firewall = trust inside. Zero Trust: no perimeter, identity. Architecture: user auth → device check → micro-segmented access. Example: Google BeyondCorp (allow remote employee no VPN). Firewall still needed, role changes.",
+    "source": "NIST SP 800-207 — https://csrc.nist.gov/publications/detail/sp/800-207/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130301015",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la métrica principal para evaluar eficacia de segmentación?",
+    "question_en": "What is the primary metric to evaluate segmentation effectiveness?",
+    "options_es": [
+      "Número de reglas",
+      "Movimiento lateral bloqueado; reducción del blastradius si una zona comprometida",
+      "Ancho de banda disponible",
+      "Velocidad de firewall"
+    ],
+    "options_en": [
+      "Number of rules",
+      "Blocked lateral movement; reduced blast radius if one zone compromised",
+      "Available bandwidth",
+      "Firewall speed"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Métrica: ¿si servidor web comprometido, puede atacante llegar a servidor DB interno? Con buena segmentación: NO (movimiento lateral bloqueado). Sin segmentación: SÍ (blastradius = toda red). Pruebas: red team intenta lateral movement; buena segmentación detiene.",
+    "explanation_en": "Metric: if web server compromised, can attacker reach internal DB server? With good segmentation: NO (lateral movement blocked). Without: YES (blast radius = entire network). Tests: red team attempts lateral movement; good segmentation stops.",
+    "source": "NIST SP 800-207 — https://csrc.nist.gov/publications/detail/sp/800-207/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130302001",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un 'IDS' (Intrusion Detection System)?",
+    "question_en": "What is an 'IDS' (Intrusion Detection System)?",
+    "options_es": [
+      "Monitor que detecta actividad maliciosa; ALERTA pero NO bloquea",
+      "Sistema que bloquea ataques",
+      "Un firewall",
+      "Un antivirus"
+    ],
+    "options_en": [
+      "Monitor that detects malicious activity; ALERTS but doesn't block",
+      "System that blocks attacks",
+      "A firewall",
+      "An antivirus"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "IDS: detecta + alerta. IPS: detecta + bloquea. IDS es pasivo (NIDS monitores red, HIDS monitorea host). Análisis: firma (conocidos) o anomalía (comportamiento inusual). Requiere humano revisar alertas.",
+    "explanation_en": "IDS: detects + alerts. IPS: detects + blocks. IDS is passive (NIDS monitors network, HIDS monitors host). Analysis: signature (known) or anomaly (unusual behavior). Requires human to review alerts.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130302002",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la diferencia entre IDS y IPS?",
+    "question_en": "What is the difference between IDS and IPS?",
+    "options_es": [
+      "Son lo mismo",
+      "IDS: detecta. IPS: detecta + bloquea en tiempo real",
+      "IPS es más antiguo",
+      "Solo diferencia de precio"
+    ],
+    "options_en": [
+      "They're the same",
+      "IDS: detects. IPS: detects + blocks in real-time",
+      "IPS is older",
+      "Just price difference"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "IDS: pasivo, alerta. IPS: inline, bloquea. IPS debe estar en path tráfico (entre firewall y red). Ventaja IPS: prevención inmediata. Riesgo: false positive bloquea usuario legítimo. Solución: tuning cuidadoso, auditoría.",
+    "explanation_en": "IDS: passive, alerts. IPS: inline, blocks. IPS must be in traffic path (between firewall and network). Advantage IPS: immediate prevention. Risk: false positive blocks legitimate user. Solution: careful tuning, audit.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130302003",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es 'SNORT'?",
+    "question_en": "What is 'SNORT'?",
+    "options_es": [
+      "Un protocolo de red",
+      "Un firewall",
+      "IDS/IPS open-source para detección basada en reglas/análisis tráfico",
+      "Un antimalware"
+    ],
+    "options_en": [
+      "A network protocol",
+      "A firewall",
+      "IDS/IPS open-source for signature/traffic analysis detection",
+      "Antimalware"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snort: open-source IDS/IPS más popular. Usa reglas (firmas) para detectar. Compatible NIDS (monitorea interfaces). Alternativa: Suricata. Requisitos: reglas actualizadas, tuning, almacenamiento logs.",
+    "explanation_en": "Snort: most popular open-source IDS/IPS. Uses rules (signatures) for detection. Can be NIDS (monitors interfaces). Alternative: Suricata. Requirements: updated rules, tuning, log storage.",
+    "source": "https://www.snort.org/",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130302004",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuáles son los dos principales métodos de detección en IDS?",
+    "question_en": "What are the two main detection methods in IDS?",
+    "options_es": [
+      "HTTP y FTP",
+      "Encriptado y Plaintext",
+      "Entrada y Salida",
+      "Firma (patrones conocidos) y Anomalía (comportamiento inusual)"
+    ],
+    "options_en": [
+      "HTTP and FTP",
+      "Encrypted and Plaintext",
+      "Input and Output",
+      "Signature (known patterns) and Anomaly (unusual behavior)"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Firma: compara tráfico con patrones ataques conocidos. Rápido pero falla con variantes. Anomalía: compara contra baseline normal. Detecta zero-days pero más false positives. Ideal: combinación ambos.",
+    "explanation_en": "Signature: compares traffic against known attack patterns. Fast but fails on variants. Anomaly: compares against normal baseline. Detects zero-days but more false positives. Ideal: both combined.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130302005",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es un 'false positive' en IDS/IPS?",
+    "question_en": "What is a 'false positive' in IDS/IPS?",
+    "options_es": [
+      "Alerta por tráfico legítimo (no es ataque)",
+      "Ataque que no se detecta",
+      "Servidor apagado",
+      "Puerto cerrado"
+    ],
+    "options_en": [
+      "Alert on legitimate traffic (not an attack)",
+      "Attack not detected",
+      "Server down",
+      "Closed port"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "False positive: IDS alerta falsamente (usuario legítimo bloqueado). False negative: no alerta ante ataque real. Métrica: falso positivo rate (FPR) debe ser bajo (<1%) para no causar rechazo operacional.",
+    "explanation_en": "False positive: IDS falsely alerts (legitimate user blocked). False negative: doesn't alert on real attack. Metric: false positive rate (FPR) must be low (<1%) to avoid operational rejection.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130302006",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre 'NIDS' y 'HIDS'?",
+    "question_en": "What is the difference between 'NIDS' and 'HIDS'?",
+    "options_es": [
+      "No hay diferencia",
+      "NIDS: red, infrared. HIDS: host, monitorea sistema individual",
+      "NIDS monitorea usuarios",
+      "HIDS es antiguo"
+    ],
+    "options_en": [
+      "No difference",
+      "NIDS: network, monitors traffic. HIDS: host, monitors individual system",
+      "NIDS monitors users",
+      "HIDS is old"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "NIDS (Network IDS): monitorea interfaces de red, tráfico. Ventaja: cubre múltiples hosts. HIDS (Host IDS): agente en servidor, logs/archivos. Ventaja: detecta ataques internos, cambios integridad. Ideal: ambos.",
+    "explanation_en": "NIDS (Network IDS): monitors network interfaces, traffic. Advantage: covers multiple hosts. HIDS (Host IDS): agent on server, logs/files. Advantage: detects internal attacks, integrity changes. Ideal: both.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130302007",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el desafío de detectar anomalías en IDS?",
+    "question_en": "What is the challenge of anomaly detection in IDS?",
+    "options_es": [
+      "Es muy fácil",
+      "Es imposible",
+      "Definir baseline normal; cambios en negocio alteran baseline; tuning constante requerido",
+      "No requiere datos históricos"
+    ],
+    "options_en": [
+      "Very easy",
+      "It's impossible",
+      "Define normal baseline; business changes alter baseline; constant tuning required",
+      "Doesn't require historical data"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Baseline: comportamiento normal (tráfico típico, usuarios típicos). Problema: nueva aplicación deployada = tráfico anómalo pero legítimo. Solución: reentrenamiento periódico, machine learning adaptativo.",
+    "explanation_en": "Baseline: normal behavior (typical traffic, typical users). Problem: new app deployed = anomalous but legitimate traffic. Solution: periodic retraining, adaptive machine learning.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130302008",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es 'PCAP' (Packet Capture)?",
+    "question_en": "What is 'PCAP' (Packet Capture)?",
+    "options_es": [
+      "Un tipo de firewall",
+      "Un certificado",
+      "Un protocolo de seguridad",
+      "Archivo que contiene paquetes de red capturados para análisis post-incident"
+    ],
+    "options_en": [
+      "A firewall type",
+      "A certificate",
+      "A security protocol",
+      "File containing captured network packets for post-incident analysis"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "PCAP: formato para almacenar tráfico capturado. Herramienta: tcpdump (Linux), Wireshark (GUI). Uso: análisis forense, reproducción incidente. Cuidado: PCAP puede contener datos sensibles (passwords, datos usuario).",
+    "explanation_en": "PCAP: format for storing captured traffic. Tools: tcpdump (Linux), Wireshark (GUI). Use: forensic analysis, incident replay. Caution: PCAP can contain sensitive data (passwords, user data).",
+    "source": "https://www.tcpdump.org/papers/sniffing-faq.html",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130302009",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es 'NetFlow' o 'sFlow' en monitoreo de red?",
+    "question_en": "What is 'NetFlow' or 'sFlow' in network monitoring?",
+    "options_es": [
+      "Exporta metadatos de flujos (origen, destino, puerto, duración) SIN capturar payloads",
+      "Un protocolo de enrutamiento",
+      "Un firewall avanzado",
+      "Un sistema de detección"
+    ],
+    "options_en": [
+      "Exports flow metadata (source, dest, port, duration) WITHOUT capturing payloads",
+      "A routing protocol",
+      "An advanced firewall",
+      "A detection system"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "NetFlow/sFlow: exporta estadísticas de conversaciones de red. Ventaja: bajo overhead (no captura payloads). Útil: análisis tráfico, detección anomalías, forensica. Complementa IDS (IDS examina payloads, NetFlow examina flows).",
+    "explanation_en": "NetFlow/sFlow: exports network conversation statistics. Advantage: low overhead (no payload capture). Useful: traffic analysis, anomaly detection, forensics. Complements IDS (IDS examines payloads, NetFlow examines flows).",
+    "source": "https://www.cisco.com/c/en/us/support/docs/netflow/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130302010",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cómo se implementa IPS sin paralizarlo por false positives?",
+    "question_en": "How is IPS implemented without paralyzing with false positives?",
+    "options_es": [
+      "Bloquear todo",
+      "Modo learning (alertar, no bloquear), tuning, whitelist, después strict mode",
+      "No es posible",
+      "Usar solo signatures"
+    ],
+    "options_en": [
+      "Block everything",
+      "Learning mode (alert, don't block), tuning, whitelist, then strict mode",
+      "Not possible",
+      "Use only signatures"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Implementación: 1) Modo aprendizaje (alert-only, no bloquear). 2) Revisar alertas, crear whitelist de tráfico legítimo. 3) Tuning: deshabilitar reglas ruidosas. 4) Transición a strict mode (bloquear). Gradual, no abrupto.",
+    "explanation_en": "Implementation: 1) Learning mode (alert-only, don't block). 2) Review alerts, whitelist legitimate traffic. 3) Tuning: disable noisy rules. 4) Transition to strict mode (block). Gradual, not abrupt.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130302011",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la diferencia entre Suricata y Snort?",
+    "question_en": "What is difference between Suricata and Snort?",
+    "options_es": [
+      "Son idénticos",
+      "Snort mejor",
+      "Ambos IDS/IPS; Suricata multithreaded, más rápido; Snort más maduro",
+      "Solo diferencia de nombre"
+    ],
+    "options_en": [
+      "Identical",
+      "Snort better",
+      "Both IDS/IPS; Suricata multithreaded, faster; Snort more mature",
+      "Just name difference"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Snort: original, maduro, reglas OpenRules. Suricata: más reciente, multithreaded (más CPU efficient), soporte IPv6 mejor. Ambas usan reglas compatible. Elección: Snort si ecosistema existente, Suricata si nuevo deployment.",
+    "explanation_en": "Snort: original, mature, OpenRules. Suricata: newer, multithreaded (CPU efficient), better IPv6 support. Both use compatible rules. Choice: Snort if existing ecosystem, Suricata if new deployment.",
+    "source": "https://suricata.io/ vs https://www.snort.org/",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130302012",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se mitigaría un ataque de evasión contra IDS/IPS (ej: fragmentación)?",
+    "question_en": "How to mitigate evasion attack against IDS/IPS (e.g., fragmentation)?",
+    "options_es": [
+      "No se puede mitigar",
+      "Confiar en firewall",
+      "Deshabilitar IDS",
+      "Normalización de tráfico, defragmentación, verificación de integridad; tuning reglas"
+    ],
+    "options_en": [
+      "Can't be mitigated",
+      "Trust firewall",
+      "Disable IDS",
+      "Traffic normalization, defragmentation, integrity checks; rule tuning"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Evasión: atacante fragmenta payload para eludir firmas IDS. Ataque: TCP retransmisión, desbordamiento opciones IP. Defensa: normalización (reconstruir paquetes), verificar secuencias TCP, opciones IP válidas. IPS mejor que IDS (bloquea antes).",
+    "explanation_en": "Evasion: attacker fragments payload to evade IDS signatures. Attack: TCP retransmission, IP option overflow. Defense: normalization (rebuild packets), verify TCP sequences, valid IP options. IPS better than IDS (blocks before).",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130302013",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el rol de SIEM en relación a IDS/IPS?",
+    "question_en": "What is SIEM's role in relation to IDS/IPS?",
+    "options_es": [
+      "SIEM correlaciona alertas IDS/IPS con otros logs (firewall, auth); detección incidente",
+      "No tiene rol",
+      "Reemplaza IDS",
+      "Solo monitoreo performance"
+    ],
+    "options_en": [
+      "SIEM correlates IDS/IPS alerts with other logs (firewall, auth); incident detection",
+      "No role",
+      "Replaces IDS",
+      "Just performance monitoring"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Integración: IDS/IPS genera alertas → SIEM ingesta → correlaciona con firewall blocks, failed logins, endpoint activity. Ejemplo: IDS alerta puerto scaning + SIEM ve failed logins = probable ataque. Requiere: normalización datos, reglas correlación.",
+    "explanation_en": "Integration: IDS/IPS generates alerts → SIEM ingests → correlates with firewall blocks, failed logins, endpoint activity. Example: IDS alerts port scanning + SIEM sees failed logins = probable attack. Requires: data normalization, correlation rules.",
+    "source": "NIST SP 800-61 Rev 3 — https://csrc.nist.gov/publications/detail/sp/800-61/rev-3/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130302014",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el principal limitación de IDS basado en firmas contra ataques zero-day?",
+    "question_en": "What is main IDS signature-based limitation against zero-day attacks?",
+    "options_es": [
+      "Ninguna limitación",
+      "No hay firma del zero-day; debe esperarse descubrimiento público + actualización de reglas",
+      "Firma-based es inmune",
+      "Requiere clave privada"
+    ],
+    "options_en": [
+      "No limitation",
+      "No zero-day signature; must wait for public disclosure + rule update",
+      "Signature-based is immune",
+      "Requires private key"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Zero-day: vulnerabilidad desconocida = sin firma. IDS firma-based no detecta. Solución: anomalía-based (detecta comportamiento inusual), IPS (bloquea automáticamente), 0-day patch rápido. Combinación múltiples métodos = mejor cobertura.",
+    "explanation_en": "Zero-day: unknown vulnerability = no signature. Signature-based IDS won't detect. Solution: anomaly-based (detects unusual behavior), IPS (auto-blocks), rapid zero-day patch. Multiple method combination = better coverage.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130302015",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es la métrica más importante: TP (True Positive) o FN (False Negative) en IDS?",
+    "question_en": "What is most important metric: TP (True Positive) or FN (False Negative) in IDS?",
+    "options_es": [
+      "TP es más importante",
+      "FP es lo único que importa",
+      "FN: false negative es peor (atacante no se detecta); mejor sensibilidad que especificidad",
+      "Todas son iguales"
+    ],
+    "options_en": [
+      "TP is more important",
+      "FP only matters",
+      "FN: false negative worse (attacker undetected); better sensitivity than specificity",
+      "All equal"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Métricas: TP (alerta correcta), FN (ataque no detectado), FP (falsa alerta), TN (normal no alertado). En seguridad: FN es peor que FP. Mejor perder tiempo investigando FP que dejar ataque sin detectar. Sensibilidad > especificidad.",
+    "explanation_en": "Metrics: TP (correct alert), FN (attack undetected), FP (false alert), TN (normal no alert). In security: FN worse than FP. Better waste time investigating FP than miss attack. Sensitivity > specificity.",
+    "source": "NIST SP 800-94 — https://csrc.nist.gov/publications/detail/sp/800-94/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130303001",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es una 'VPN' (Red Privada Virtual)?",
+    "question_en": "What is a 'VPN' (Virtual Private Network)?",
+    "options_es": [
+      "Túnel encriptado sobre internet pública; proporciona privacidad y acceso remoto seguro",
+      "Red física privada",
+      "Un firewall",
+      "Un antivirus"
+    ],
+    "options_en": [
+      "Encrypted tunnel over public internet; provides privacy and secure remote access",
+      "Physical private network",
+      "A firewall",
+      "An antivirus"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "VPN: usuario remoto conecta a servidor VPN. Tráfico encriptado sobre internet. Usuario parece estar en red corporativa (IP privada). Uso: acceso remoto seguro, privacidad en wifi público. Protocolo: OpenVPN, WireGuard, IPSec.",
+    "explanation_en": "VPN: remote user connects to VPN server. Traffic encrypted over internet. User appears on corporate network (private IP). Use: secure remote access, privacy on public wifi. Protocols: OpenVPN, WireGuard, IPSec.",
+    "source": "RFC 2401 IPSec — https://www.rfc-editor.org/rfc/rfc2401",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130303002",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuáles son los dos principales protocolos de VPN?",
+    "question_en": "What are the two main VPN protocols?",
+    "options_es": [
+      "HTTP y FTP",
+      "IPSec (layer 3) y SSL/TLS (layer 7)",
+      "SSH y Telnet",
+      "DNS y DHCP"
+    ],
+    "options_en": [
+      "HTTP and FTP",
+      "IPSec (layer 3) and SSL/TLS (layer 7)",
+      "SSH and Telnet",
+      "DNS and DHCP"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "IPSec: layer 3, túnel entero encriptado. SSL/TLS VPN: layer 7, basado web. Diferencia: IPSec más completo, SSL/TLS más fácil en firewall. OpenVPN usa SSL/TLS. WireGuard es moderno (basado IPSec).",
+    "explanation_en": "IPSec: layer 3, entire tunnel encrypted. SSL/TLS VPN: layer 7, web-based. Difference: IPSec more complete, SSL/TLS easier through firewalls. OpenVPN uses SSL/TLS. WireGuard is modern (IPSec-based).",
+    "source": "RFC 2401 IPSec — https://www.rfc-editor.org/rfc/rfc2401",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130303003",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es 'split tunneling' en VPN?",
+    "question_en": "What is 'split tunneling' in VPN?",
+    "options_es": [
+      "Dos VPN simultáneas",
+      "Dividir ancho de banda",
+      "Enviar tráfico de algunas aplicaciones fuera VPN (no encriptado)",
+      "Usar dos servidores"
+    ],
+    "options_en": [
+      "Two simultaneous VPNs",
+      "Split bandwidth",
+      "Send traffic of some apps outside VPN (unencrypted)",
+      "Use two servers"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Split tunneling: Netflix (no encriptado) vs Gmail (encriptado VPN). Ventaja: ancho de banda. Riesgo de seguridad: tráfico sensible podría filtrarse si split mal. Política: prohibir o permitir selectivamente. Defensa: monitoreo.",
+    "explanation_en": "Split tunneling: Netflix (unencrypted) vs Gmail (encrypted VPN). Advantage: bandwidth. Security risk: sensitive traffic could leak if split misconfigured. Policy: prohibit or selectively allow. Defense: monitoring.",
+    "source": "NIST SP 800-46 Rev 2 — https://csrc.nist.gov/publications/detail/sp/800-46/rev-2/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130303004",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es 'IPSec' y cuáles son sus componentes?",
+    "question_en": "What is 'IPSec' and what are its components?",
+    "options_es": [
+      "Un firewall",
+      "Solo para SSH",
+      "Un tipo de VPN específicamente",
+      "Protocolo layer 3; componentes: AH (autenticación), ESP (encriptación), IKE (intercambio clave)"
+    ],
+    "options_en": [
+      "A firewall",
+      "Only for SSH",
+      "A specific VPN type",
+      "Layer 3 protocol; components: AH (authentication), ESP (encryption), IKE (key exchange)"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "IPSec: suite de protocolos. AH: autenticación, integridad (no encriptación). ESP: encriptación + autenticación + integridad. IKE: negocia claves/parámetros. Modo túnel vs transporte. Usado en site-to-site VPN, remote access.",
+    "explanation_en": "IPSec: protocol suite. AH: authentication, integrity (no encryption). ESP: encryption + authentication + integrity. IKE: negotiates keys/parameters. Tunnel vs transport mode. Used in site-to-site VPN, remote access.",
+    "source": "RFC 2401 IPSec — https://www.rfc-editor.org/rfc/rfc2401",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130303005",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es 'L2TP' (Layer 2 Tunneling Protocol)?",
+    "question_en": "What is 'L2TP' (Layer 2 Tunneling Protocol)?",
+    "options_es": [
+      "Protocolo para crear túneles VPN layer 2; generalmente usado con IPSec",
+      "Un firewall layer 2",
+      "Solo para redes inalámbricas",
+      "Un tipo de encriptación"
+    ],
+    "options_en": [
+      "Protocol for creating layer 2 VPN tunnels; typically used with IPSec",
+      "Layer 2 firewall",
+      "Only for wireless networks",
+      "An encryption type"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "L2TP: tunnela frames layer 2. NO encripta por sí solo (por eso + IPSec). L2TP/IPSec es combinación común. Ventaja: multiprotocolo (no solo IP). Desventaja: lento (2 niveles encapsulación). Usado menos hoy (OpenVPN, WireGuard preferidos).",
+    "explanation_en": "L2TP: tunnels layer 2 frames. No encryption alone (why + IPSec). L2TP/IPSec common combination. Advantage: multiprotocol (not just IP). Disadvantage: slow (2 encapsulation levels). Less used today (OpenVPN, WireGuard preferred).",
+    "source": "RFC 2661 — https://www.rfc-editor.org/rfc/rfc2661",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130303006",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre 'site-to-site VPN' y 'remote access VPN'?",
+    "question_en": "What is difference between 'site-to-site VPN' and 'remote access VPN'?",
+    "options_es": [
+      "No hay diferencia",
+      "Site-to-site: conecta redes corporativas. Remote: usuario individual a red corporativa",
+      "Site-to-site solo para WAN",
+      "Remote es más rápido"
+    ],
+    "options_en": [
+      "No difference",
+      "Site-to-site: connects corporate networks. Remote: individual user to corporate network",
+      "Site-to-site only for WAN",
+      "Remote is faster"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Site-to-site: Oficina A ↔ Oficina B. Gateway VPN en cada sitio. Permanente. Remote: usuario remoto (laptop) → servidor VPN corporativo. Temporal (sesión usuario). Ambas usan IPSec/OpenVPN pero configuración diferente.",
+    "explanation_en": "Site-to-site: Office A ↔ Office B. VPN gateway at each site. Permanent. Remote: remote user (laptop) → corporate VPN server. Temporary (user session). Both use IPSec/OpenVPN but different configuration.",
+    "source": "NIST SP 800-46 Rev 2 — https://csrc.nist.gov/publications/detail/sp/800-46/rev-2/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130303007",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es 'OpenVPN'?",
+    "question_en": "What is 'OpenVPN'?",
+    "options_es": [
+      "Firewall de código abierto",
+      "Un tipo de IPSec",
+      "VPN de código abierto basado SSL/TLS; multiplataforma, configurable",
+      "Un antivirus"
+    ],
+    "options_en": [
+      "Open-source firewall",
+      "A type of IPSec",
+      "Open-source VPN based on SSL/TLS; multiplatform, configurable",
+      "An antivirus"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "OpenVPN: popular VPN open-source. USA SSL/TLS (no IPSec). Fácil firewall (un puerto UDP/TCP). Rápido configuración. Usado empresas, usuarios individuales. Alternativa moderna: WireGuard (más simple, más rápido).",
+    "explanation_en": "OpenVPN: popular open-source VPN. Uses SSL/TLS (not IPSec). Easy through firewall (single UDP/TCP port). Quick setup. Used by enterprises, individuals. Modern alternative: WireGuard (simpler, faster).",
+    "source": "https://openvpn.net/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130303008",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es 'WireGuard'?",
+    "question_en": "What is 'WireGuard'?",
+    "options_es": [
+      "Protocolo muy antiguo",
+      "Requiere X.509",
+      "Solo para Linux",
+      "VPN moderno ultra-simple; <600 líneas código; criptografía contemporánea"
+    ],
+    "options_en": [
+      "Very old protocol",
+      "Requires X.509",
+      "Linux only",
+      "Modern ultra-simple VPN; <600 LOC; contemporary cryptography"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "WireGuard: VPN minimalista, ~600 líneas Go, crypto moderna (ChaCha20, Curve25519). Mucho más rápido que OpenVPN. Configuración simple (llave pública, nada más). Desventaja: menos maduro que OpenVPN. Tendencia: adoption creciente.",
+    "explanation_en": "WireGuard: minimalist VPN, ~600 LOC in Go, modern crypto (ChaCha20, Curve25519). Much faster than OpenVPN. Simple config (public key, that's it). Disadvantage: less mature than OpenVPN. Trend: growing adoption.",
+    "source": "https://www.wireguard.com/",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130303009",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el rol de 'IKE' (Internet Key Exchange) en IPSec?",
+    "question_en": "What is role of 'IKE' (Internet Key Exchange) in IPSec?",
+    "options_es": [
+      "Negocia y establece claves/parámetros IPSec entre extremos",
+      "No tiene rol",
+      "Encripta tráfico",
+      "Autentica usuarios"
+    ],
+    "options_en": [
+      "Negotiates and establishes IPSec keys/parameters between endpoints",
+      "No role",
+      "Encrypts traffic",
+      "Authenticates users"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "IKE: protocolo layer 3. Fases: 1) autenticación mutua, 2) negocia algoritmos crypto (AES, HMAC), 3) genera claves de sesión. Sin IKE, IPSec requeriría configuración manual de claves (impracticable). Versiones: IKEv1, IKEv2.",
+    "explanation_en": "IKE: layer 3 protocol. Phases: 1) mutual authentication, 2) negotiate crypto algorithms (AES, HMAC), 3) generate session keys. Without IKE, IPSec requires manual key config (impractical). Versions: IKEv1, IKEv2.",
+    "source": "RFC 7539 ChaCha20 — https://www.rfc-editor.org/rfc/rfc7539",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130303010",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre 'túnel' y 'transporte' en IPSec?",
+    "question_en": "What is difference between 'tunnel' and 'transport' mode in IPSec?",
+    "options_es": [
+      "No hay diferencia",
+      "Túnel: encapsula IP entero (usado gateway). Transporte: solo payload, IP original se modifica",
+      "Transporte es más antiguo",
+      "Túnel solo para hardware"
+    ],
+    "options_en": [
+      "No difference",
+      "Tunnel: encapsulates entire IP (used gateway). Transport: only payload, original IP modified",
+      "Transport is older",
+      "Tunnel only for hardware"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Túnel: IP origen original preservado, nueva IP agregada (host original invisible). Usado: site-to-site VPN. Transporte: encabezado IP original modificado (host conoce IPSec). Usado: host-to-host, remote access. Túnel más versátil.",
+    "explanation_en": "Tunnel: original source IP preserved, new IP added (original host hidden). Used: site-to-site VPN. Transport: original IP header modified (host knows IPSec). Used: host-to-host, remote access. Tunnel more versatile.",
+    "source": "RFC 2401 IPSec — https://www.rfc-editor.org/rfc/rfc2401",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130303011",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el ataque 'Man-in-the-Middle' contra VPN y cómo prevenirlo?",
+    "question_en": "What is 'Man-in-the-Middle' attack against VPN and how prevent?",
+    "options_es": [
+      "No es posible atacar VPN",
+      "VPN es inmune",
+      "Interceptar handshake VPN, impersonar servidor. Prevención: certificados cliente/servidor validados",
+      "Solo si no hay encriptación"
+    ],
+    "options_en": [
+      "Can't attack VPN",
+      "VPN is immune",
+      "Intercept VPN handshake, impersonate server. Prevention: validated client/server certificates",
+      "Only if no encryption"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "MITM VPN: atacante intercepta handshake SSL/IPSec, presenta certificado falso. Cliente acepta (no valida) = comprometido. Prevención: validar certificado servidor (chain, hostname), certificado cliente (mutual auth), pinning.",
+    "explanation_en": "MITM VPN: attacker intercepts SSL/IPSec handshake, presents fake certificate. Client accepts (doesn't validate) = compromised. Prevention: validate server certificate (chain, hostname), client certificate (mutual auth), pinning.",
+    "source": "RFC 5246 TLS — https://www.rfc-editor.org/rfc/rfc5246",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130303012",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el desafío de implementar VPN en organizaciones grandes?",
+    "question_en": "What is challenge of implementing VPN in large organizations?",
+    "options_es": [
+      "Ninguno",
+      "No requiere mantenimiento",
+      "Es muy fácil",
+      "Escalabilidad (miles usuarios), rendimiento (latencia), gestión certificados, compatibilidad cliente"
+    ],
+    "options_en": [
+      "None",
+      "No maintenance needed",
+      "Very easy",
+      "Scalability (thousands users), performance (latency), certificate management, client compatibility"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Desafíos: 1) Escalabilidad (múltiples servidores VPN, load balancing). 2) Performance (encriptación overhead). 3) Certificados (emisión, revocación, renovación). 4) Compatibilidad (Windows/Mac/Linux/mobile). 5) Auditoría (quién conecta cuándo).",
+    "explanation_en": "Challenges: 1) Scalability (multiple VPN servers, load balancing). 2) Performance (encryption overhead). 3) Certificates (issuance, revocation, renewal). 4) Compatibility (Windows/Mac/Linux/mobile). 5) Audit (who connects when).",
+    "source": "NIST SP 800-46 Rev 2 — https://csrc.nist.gov/publications/detail/sp/800-46/rev-2/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130303013",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo compararía seguridad entre IPSec, OpenVPN y WireGuard?",
+    "question_en": "How would you compare security between IPSec, OpenVPN and WireGuard?",
+    "options_es": [
+      "IPSec: robusto; OpenVPN: probado; WireGuard: crypto moderno, menos ataque surface",
+      "Son idénticas",
+      "IPSec mejor",
+      "Depende del proveedor"
+    ],
+    "options_en": [
+      "IPSec: robust; OpenVPN: proven; WireGuard: modern crypto, smaller attack surface",
+      "Identical",
+      "IPSec better",
+      "Depends on vendor"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Seguridad: IPSec maduro (pero complejo, más vulnerabilidades). OpenVPN probado, robusto (más auditoría). WireGuard: crypto contemporánea, código minimal (menos bugs), pero menos auditoría. Elección: IPSec enterprise (FIPS), OpenVPN balance, WireGuard futuro.",
+    "explanation_en": "Security: IPSec mature (but complex, more vulnerabilities). OpenVPN proven, robust (audited). WireGuard: contemporary crypto, minimal code (fewer bugs), less audited. Choice: IPSec enterprise (FIPS), OpenVPN balanced, WireGuard future.",
+    "source": "https://www.wireguard.com/protocol/",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130303014",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cómo se integra VPN con Zero Trust?",
+    "question_en": "How does VPN integrate with Zero Trust?",
+    "options_es": [
+      "VPN reemplaza Zero Trust",
+      "Son lo mismo",
+      "VPN es solo transporte; Zero Trust requiere identidad+contexto; BeyondCorp modelo",
+      "No se integran"
+    ],
+    "options_en": [
+      "VPN replaces Zero Trust",
+      "They're the same",
+      "VPN is just transport; Zero Trust requires identity+context; BeyondCorp model",
+      "Don't integrate"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Integración: VPN antigua = confíe si conectado. Zero Trust: no confíe aunque conectado. Modelo: usuario autentica (MFA) + dispositivo verificado (antimalware, actualizado) + política acceso granular. VPN es transporte; identidad + contexto lo hace Zero Trust.",
+    "explanation_en": "Integration: old VPN = trust if connected. Zero Trust: don't trust even if connected. Model: user authenticates (MFA) + device verified (antimalware, patched) + granular access policy. VPN is transport; identity + context makes it Zero Trust.",
+    "source": "NIST SP 800-207 — https://csrc.nist.gov/publications/detail/sp/800-207/final",
+    "expected_time_ms": 45000
+  },
+  {
+    "id": "q130303015",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "¿Cuál es el futuro de VPN con adopción de contenedores/edge computing?",
+    "question_en": "What is future of VPN with container/edge computing adoption?",
+    "options_es": [
+      "VPN será obsoleto",
+      "VPN más importante",
+      "Evolución: mTLS (mutual TLS) entre servicios, service mesh (Istio), encriptación nativa",
+      "No cambiará"
+    ],
+    "options_en": [
+      "VPN will be obsolete",
+      "VPN more important",
+      "Evolution: mTLS between services, service mesh (Istio), native encryption",
+      "Won't change"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Futuro: VPN tradicional menos necesaria en cloud nativo. Alternativas: mTLS (certificados autenticación), service mesh (control tráfico), network policies (Kubernetes). Pero VPN sigue relevante para híbrido (datacenter + cloud, usuarios remotos).",
+    "explanation_en": "Future: traditional VPN less needed in cloud native. Alternatives: mTLS (cert auth), service mesh (traffic control), network policies (Kubernetes). But VPN still relevant for hybrid (datacenter + cloud, remote users).",
+    "source": "NIST SP 800-207 — https://csrc.nist.gov/publications/detail/sp/800-207/final",
+    "expected_time_ms": 45000
+  }
+]

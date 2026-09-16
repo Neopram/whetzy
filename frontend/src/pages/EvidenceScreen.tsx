@@ -13,9 +13,9 @@ const CAPTURE_DATE = '2026-09-15';
 // así que la próxima vez que el banco crezca el guardia avisa en vez de que
 // nadie se entere. Si cambias uno a mano sin que el contenido lo respalde,
 // CI se pone en rojo — que es la idea.
-const CATALOG_TRACKS = 12;
-const CATALOG_COURSES = 37;
-const CATALOG_QUESTIONS = 5024;
+const CATALOG_TRACKS = 14;
+const CATALOG_COURSES = 42;
+const CATALOG_QUESTIONS = 5579;
 
 // Competitor dimensions and weights (fixed — §7.1 of the master plan)
 const WEIGHTS = {
@@ -365,3 +365,4 @@ export function EvidenceScreen() {
     </div>
   );
 }
+
