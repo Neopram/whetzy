@@ -39,6 +39,7 @@ BACKEND = ROOT / "backend"
 CONTENT = ROOT / "content"
 DOCS_STATE = ROOT / "docs" / "AUTONOMOUS_STATE.md"
 CLAUDE_MD = ROOT / "CLAUDE.md"
+EVIDENCE_TSX = ROOT / "frontend" / "src" / "pages" / "EvidenceScreen.tsx"
 
 # La consola de Windows no es UTF-8. Reconfigurar es lo que evita que el
 # checker muera al imprimir su propio fallo; el fallback ASCII cubre el caso
@@ -83,6 +84,13 @@ for _t in _tracks:
         for _s in _m.get("skills", []):
             real_skill_ids.add(_s["id"] if isinstance(_s, dict) else _s)
 real_skills = len(real_skill_ids)
+
+# Un "curso" es un track x nivel (17.4): `tracks.json` da un `level` por
+# modulo, y el catalogo que ve el usuario agrupa por (track, level).
+real_courses = sum(
+    len({m.get("level") for m in t.get("modules", []) if m.get("level") is not None})
+    for t in _tracks
+)
 
 real_questions = 0
 for qfile in sorted((CONTENT / "questions").rglob("*.json")):
@@ -210,6 +218,39 @@ check(
     real_lessons == real_skills,
     f"faltan {real_skills - real_lessons}",
 )
+
+
+# ---------------------------------------------------------------------------
+# [4] La pagina publica de evidencia
+#
+# `/evidence` existe para publicar numeros reproducibles, y publicaba dos que
+# eran falsos: «8 tracks 3 419 Q» cuando el banco ya iba por 11 tracks y 4.724
+# preguntas. Nadie lo noto porque estaban escritos a mano dentro de dos
+# cadenas y ningun check miraba el frontend. Una pagina de evidencia con
+# cifras caducas no es un despiste de marketing: es la linea roja 1 aplicada
+# justo en el sitio donde mas se nota.
+# ---------------------------------------------------------------------------
+print()
+print("[4] Pagina publica de evidencia (EvidenceScreen.tsx)")
+if not EVIDENCE_TSX.exists():
+    check("EvidenceScreen.tsx existe", False, f"no esta en {EVIDENCE_TSX}")
+else:
+    evidence_text = EVIDENCE_TSX.read_text(encoding="utf-8")
+    for const_name, label, real_value in (
+        ("CATALOG_TRACKS", "Tracks en /evidence", real_tracks),
+        ("CATALOG_COURSES", "Cursos en /evidence", real_courses),
+        ("CATALOG_QUESTIONS", "Preguntas en /evidence", real_questions),
+    ):
+        m = re.search(r"^const " + const_name + r"\s*=\s*(\d+);", evidence_text, re.MULTILINE)
+        if not m:
+            check(label, False, "no se encuentra `const " + const_name + " = ...`")
+            continue
+        shown = int(m.group(1))
+        check(
+            f"{label}: code={real_value} page={shown}",
+            shown == real_value,
+            f"off by {real_value - shown}",
+        )
 
 
 print()

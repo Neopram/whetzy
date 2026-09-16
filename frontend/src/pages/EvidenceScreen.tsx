@@ -3,6 +3,20 @@ import styles from './EvidenceScreen.module.css';
 
 const CAPTURE_DATE = '2026-09-15';
 
+// Catálogo real, y la única copia de estos números en esta página.
+//
+// Estaban escritos a mano dentro de dos cadenas y se quedaron en «8 tracks
+// 3 419 Q» mientras el banco crecía a 11 tracks y 4.724 preguntas: la página
+// que existe para publicar evidencia reproducible publicaba dos cifras falsas.
+// `scripts/check_docs.py` (sección 4) los compara contra
+// `content/curriculum/tracks.json` y `content/questions/` y FALLA si mienten,
+// así que la próxima vez que el banco crezca el guardia avisa en vez de que
+// nadie se entere. Si cambias uno a mano sin que el contenido lo respalde,
+// CI se pone en rojo — que es la idea.
+const CATALOG_TRACKS = 11;
+const CATALOG_COURSES = 33;
+const CATALOG_QUESTIONS = 4724;
+
 // Competitor dimensions and weights (fixed — §7.1 of the master plan)
 const WEIGHTS = {
   engine: 20,     // adaptive engine with public evidence
@@ -31,7 +45,7 @@ const COMPETITORS: Competitor[] = [
     name: 'Whetzy (actual)',
     url: 'https://whetzy.com',
     engine: 14, bilingual: 14, runtime: 13, algorithm: 13, catalog: 7, ui: 10,
-    notes: 'BKT+FSRS+Elo+bandit, "no lo sé", 8 tracks 3 419 Q, build obsoleto H.11',
+    notes: `BKT+FSRS+Elo+bandit, "no lo sé", ${CATALOG_TRACKS} tracks ${CATALOG_QUESTIONS} Q, build obsoleto H.11`,
   },
   {
     name: 'Whetzy (H.11+H.10)',
@@ -333,7 +347,7 @@ export function EvidenceScreen() {
         <section className={styles.section}>
           <h2 className={styles.h2}>05 — Where we're behind</h2>
           <ul className={styles.behindList}>
-            <li><strong>Catalog breadth:</strong> 8 tracks vs. Platzi's 500+ courses. We're adding ~2 tracks/week.</li>
+            <li><strong>Catalog breadth:</strong> {CATALOG_TRACKS} tracks / {CATALOG_COURSES} courses vs. Platzi&apos;s 500+ courses. Breadth is our weakest dimension and we are not claiming a delivery rate we cannot show.</li>
             <li><strong>Video content:</strong> We have none. We use code examples and worked examples instead.</li>
             <li><strong>Community:</strong> Zero users today (H.10). Forums, peer review, and leaderboards need people.</li>
             <li><strong>Mobile native:</strong> PWA only. No App Store / Play Store listing yet (H.2/H.3).</li>
