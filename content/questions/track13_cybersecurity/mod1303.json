@@ -18,7 +18,7 @@
       "A type of antivirus",
       "A web server"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Firewall: dispositivo/software que filtra tráfico entrante/saliente. Basado en reglas: IP, puerto, protocolo. Impide acceso no autorizado. Tipos: stateless (simple), stateful (context-aware), application-layer (WAF).",
@@ -72,7 +72,7 @@
       "A protocol type",
       "Encryption software"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DMZ: zona de seguridad intermedia. Servidores públicos (web, mail, DNS) están en DMZ. Usuarios externos acceden DMZ. DMZ no accede directo a red interna. Si servidor DMZ compromised, red interna sigue protegida.",
@@ -99,7 +99,7 @@
       "A type of VPN",
       "A routing protocol"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "VLAN: red virtual en layer 2 (switch). Aísla lógicamente dispositivos. VLAN 10 (HR) no ve VLAN 20 (Finance) sin router/firewall. Reduce dominio broadcast. Herramienta fundamental de segmentación de red.",
@@ -126,7 +126,7 @@
       "A security protocol",
       "An SSL certificate"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF: capa 7 (aplicación). Entiende HTTP/HTTPS, inspecciona payloads. Bloquea ataques web (SQL injection, XSS, CSRF). Tradicional firewall no ve estas amenazas (opaco en layer 3-4). Ejemplo: ModSecurity, CloudFlare WAF.",
@@ -180,7 +180,7 @@
       "NAT is full firewall",
       "NAT is only layer 2"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NAT: traduce IPs privadas (10.0.0.0) a pública. Beneficio: oculta topología interna (seguridad por obscuridad). Limitación: no es control de acceso verdadero. Requiere firewall para seguridad real. NAT + firewall stateful = buena práctica.",
@@ -207,7 +207,7 @@
       "Use only VPN",
       "Trust everyone"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Zero Trust Network: paradigma 'nunca confies, siempre verifica'. Cada usuario/dispositivo/flujo requiere autenticación/autorización. Micro-segmentación: múltiples zonas, cada una con acceso restringido. Defensa contra insider threat, movimiento lateral.",
@@ -234,7 +234,7 @@
       "No firewall",
       "VPN only"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Arquitectura: Internet → Firewall 1 (externo, publica) → DMZ (servidores web, mail) → Firewall 2 (interno) → Red Interna (privada). Si DMZ comprometida, Firewall 2 protege red interna. Defensa en profundidad.",
@@ -288,7 +288,7 @@
       "Use single port",
       "Trust everything"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Dilema: rules muy restrictivas = bloquean usuarios legítimos (false positive). Rules muy permisivas = permiten ataques. Solución: baselines (netflow analysis), whitelist (aplicaciones legítimas), logging/monitoring (iterar).",
@@ -369,7 +369,7 @@
       "From perimeter (DMZ) to identity; every user/device verified; per-user firewall (BeyondCorp)",
       "Requires only VPN"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Tradicional: firewall perímetro = confianza interna. Zero Trust: no perímetro, identidad. Arquitectura: usuario auth → dispositivo check → acceso micro-segmentado. Ejemplo: Google BeyondCorp (permitir empleado remoto sin VPN). Firewall aún necesario, pero rol cambia.",
@@ -396,7 +396,7 @@
       "Available bandwidth",
       "Firewall speed"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Métrica: ¿si servidor web comprometido, puede atacante llegar a servidor DB interno? Con buena segmentación: NO (movimiento lateral bloqueado). Sin segmentación: SÍ (blastradius = toda red). Pruebas: red team intenta lateral movement; buena segmentación detiene.",
@@ -1179,7 +1179,7 @@
       "VPN is just transport; Zero Trust requires identity+context; BeyondCorp model",
       "Don't integrate"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Integración: VPN antigua = confíe si conectado. Zero Trust: no confíe aunque conectado. Modelo: usuario autentica (MFA) + dispositivo verificado (antimalware, actualizado) + política acceso granular. VPN es transporte; identidad + contexto lo hace Zero Trust.",

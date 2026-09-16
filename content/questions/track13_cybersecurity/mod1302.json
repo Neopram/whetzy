@@ -18,7 +18,7 @@
       "1024 bits",
       "512 bits"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AES (Advanced Encryption Standard) soporta tamaños de clave: 128, 192 y 256 bits. AES-256 es el más fuerte. DES de 56 bits es inseguro. RSA usa 1024-4096 bits (asimétrico).",
@@ -72,7 +72,7 @@
       "An algorithm version number",
       "A user password"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IV es un valor aleatorio (generalmente 128 bits para AES) usado en modos CBC, CTR, GCM. Asegura que el mismo plaintext con misma clave produce ciphertext diferente si IV es diferente. IV no es secreto pero debe ser único.",
@@ -99,7 +99,7 @@
       "Only safe for internal communications",
       "More secure than AES"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DES es INSEGURO. Su clave de 56 bits puede quebrarse en horas con fuerza bruta. 3DES (Triple DES) con 168 bits es más seguro pero lento. Reemplazado por AES. No usar DES en sistemas nuevos.",
@@ -126,7 +126,7 @@
       "Stream is more secure",
       "Block only for numbers"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Stream cipher: RC4, ChaCha20. Cifra dato bit o byte continuo. Block cipher: AES, DES. Cifra bloques fijos. Modos como CBC convierten block ciphers en stream-like. Ambos tienen uso; stream más rápido, block más versátil.",
@@ -180,7 +180,7 @@
       "Doesn't require IV",
       "Only works with DES"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CBC: cada bloque depende del anterior (XOR con ciphertext bloque anterior). IV aleatorio. Mismo plaintext + misma clave + diferente IV = diferente ciphertext. Seguro contra ataques de patrón. Standard para HTTPS, SSH.",
@@ -207,7 +207,7 @@
       "256 bits",
       "512 bits"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AES siempre cifra bloques de 128 bits, sin importar tamaño de clave (128, 192, 256). DES usa 64 bits. AES-256 significa clave de 256 bits, pero bloque sigue siendo 128. CTR/GCM conceptualmente cifran más.",
@@ -234,7 +234,7 @@
       "It's not reversible",
       "Only works online"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Problema de Intercambio de Clave: Alice y Bob necesitan compartir clave secreta, pero canal inseguro. Solución: Diffie-Hellman o encriptación asimétrica (RSA/ECDH) para acordar clave. Luego usar simétrica para velocidad.",
@@ -288,7 +288,7 @@
       "Encrypts half the message",
       "Requires physical hardware access"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Meet-in-the-Middle: en lugar de probar 2^112 combinaciones K1/K2, atacante: 1) cifra plaintext con todos 2^56 K1, guarda intermedios. 2) descifra ciphertext con todos 2^56 K2. 3) busca coincidencias. O(2^57) + espacio O(2^56).",
@@ -369,7 +369,7 @@
       "Based on desired security level: 128 for general, 192/256 for classified, 30-50 year horizon",
       "Depends on IV"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NIST recomendación: AES-128 protege hasta 2030s. AES-192 para datos secretos. AES-256 para secretos de 50+ años. No 'siempre 256' por overhead. Evaluar: amenaza actual, tiempo de validez datos, recursos adversario.",
@@ -396,7 +396,7 @@
       "Attack during restart",
       "Attack network synchronization"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Timing attack: implementación no constante-tiempo revela información. Ejemplo: comparación password que retorna rápido si primer byte es incorrecto. Defensa: operaciones constant-time, enmascaramiento. Criptografía debe ser timing-safe.",
@@ -504,7 +504,7 @@
       "A firewall type",
       "An authentication system"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Diffie-Hellman: Alice y Bob intercambian valores públicos, calculan privados. Ambos llegan a clave secreta común. Vulnerable a Man-in-the-Middle si no autentificado. Usado en ECDH (versión curva elíptica). Base de TLS.",
@@ -612,7 +612,7 @@
       "16384 bits",
       "512 bits"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NIST: RSA-2048 hasta 2030. RSA-3072/4096 para secretos de 30+ años. RSA-1024 es INSEGURO (puede quebrarse en días). RSA-512 quebrado hace 20 años. Migración gradual a ECC recomendada por eficiencia.",
@@ -747,7 +747,7 @@
       "Not possible to attack",
       "Only affects RSA"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "MITM DH: atacante intercepta gA de Alice, gB de Bob. Envia gX a Alice (pretendiendo ser Bob), gY a Bob (pretendiendo ser Alice). Establece clave con Alice (gAX), con Bob (gBY). Descifra/re-encifra tráfico. Prevención: firmar intercambio DH con certificados.",
@@ -801,7 +801,7 @@
       "Use only self-signed certs",
       "Trust all certificates"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Zero Trust PKI: no asumir confianza por certificado. 1) Validar certificado (CA raíz, vigencia, revocación OCSP). 2) Verificar identidad del certificado (DNS, hostname). 3) Verificar continua durante sesión (re-autenticar). 4) Auditoría completa.",
