@@ -59,6 +59,28 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
         track.exam_duration_minutes = cert.get("exam_duration_minutes")
         track.passing_score_pct = cert.get("passing_score_pct")
 
+    # A learning module and an exam domain are two different axes, and a track
+    # that declares `exam_domains` says so: the modules stay cut by subject (the
+    # way somebody studies) while the domains stay cut by the vendor's blueprint
+    # (the way somebody is examined). Forcing them to be the same object is what
+    # made SAA-C03 report a candidate's "Design Cost-Optimized Architectures"
+    # score out of a module holding CloudFormation and CloudWatch (18.13).
+    declared_domains = data.get("exam_domains")
+    domain_by_id: dict[str, Domain] = {}
+    if declared_domains:
+        for d in declared_domains:
+            domain = await db.get(Domain, d["id"])
+            if domain is None:
+                domain = Domain(id=d["id"], track_id=track.id)
+                db.add(domain)
+            domain.track_id = track.id
+            domain.name_en = d["name_en"]
+            domain.name_es = d["name_es"]
+            domain.weight_pct = float(d["weight_pct"])
+            domain.order = d["order"]
+            domain_by_id[d["id"]] = domain
+
+    module_domain_ids: set[str] = set()
     for m_order, m in enumerate(data.get("modules", []), start=1):
         module = await db.get(Module, m["id"])
         if module is None:
@@ -78,8 +100,11 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
         # a domain in a certification track, and inventing a second identifier
         # would let the two drift apart.
         domain_id: str | None = None
-        if m.get("exam_domain") is not None:
+        if declared_domains:
+            pass  # the domain comes from each skill, below
+        elif m.get("exam_domain") is not None:
             domain_id = f"dom{module.id[3:]}"
+            module_domain_ids.add(domain_id)
             domain = await db.get(Domain, domain_id)
             if domain is None:
                 domain = Domain(id=domain_id, track_id=track.id)
@@ -101,7 +126,37 @@ async def _upsert_track(db: AsyncSession, data: dict[str, Any]) -> None:
             skill.name_es = s["name_es"]
             skill.name_en = s["name_en"]
             skill.order = s.get("order", s_order)
-            skill.domain_id = domain_id
+            if declared_domains:
+                # `null` is deliberate, not missing: a skill the vendor's
+                # blueprint does not score (SAA-C03 has no operations domain).
+                # It stays in the curriculum and out of the rehearsal draw and
+                # the per-domain report, which is the honest place for it.
+                declared = s.get("exam_domain")
+                if declared is not None and declared not in domain_by_id:
+                    raise ValueError(
+                        f"{s['id']} maps to undeclared exam domain {declared!r} "
+                        f"in {track.id}"
+                    )
+                skill.domain_id = declared
+            else:
+                skill.domain_id = domain_id
+
+    # Either flavour of domain declaration must leave no orphans behind: a
+    # leftover Domain row scores the BKT prior (10 %) in a section the exam
+    # no longer has, making the readiness report actively misleading.
+    active_domain_ids = set(domain_by_id) if declared_domains else module_domain_ids
+    if active_domain_ids:
+        await db.flush()
+        stale = (
+            await db.scalars(
+                select(Domain).where(
+                    Domain.track_id == track.id,
+                    Domain.id.notin_(list(active_domain_ids)),
+                )
+            )
+        ).all()
+        for domain in stale:
+            await db.delete(domain)
 
 
 async def _upsert_question(db: AsyncSession, q: dict[str, Any]) -> bool:

@@ -48,6 +48,9 @@ const LessonScreen = lazy(() =>
 const EvidenceScreen = lazy(() =>
   import('./pages/EvidenceScreen').then((m) => ({ default: m.EvidenceScreen }))
 );
+const ReadinessScreen = lazy(() =>
+  import('./pages/ReadinessScreen').then((m) => ({ default: m.ReadinessScreen }))
+);
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -139,6 +142,7 @@ function App() {
   const trackExamDurationMinutes = useAppStore((s) => s.trackExamDurationMinutes);
   const trackExamPassPct = useAppStore((s) => s.trackExamPassPct);
   const lessonSkillId = useAppStore((s) => s.lessonSkillId);
+  const readinessTrackId = useAppStore((s) => s.readinessTrackId);
   const startQuiz = useAppStore((s) => s.startQuiz);
   const hydrateFromApi = useAppStore((s) => s.hydrateFromApi);
   const userLanguage = useAppStore((s) => s.user.language);
@@ -256,6 +260,12 @@ function App() {
             }}
           />
         );
+      case 'readiness':
+        return readinessTrackId ? (
+          <ReadinessScreen trackId={readinessTrackId} onExit={() => setScreen('tracks')} />
+        ) : (
+          <TracksScreen />
+        );
       default: return <HomeScreen />;
     }
   };
@@ -294,11 +304,11 @@ function App() {
  *  mid-exam. It is a set rather than a chain of `!==` so adding a screen is one
  *  entry instead of one more clause nobody remembers to extend — 'trackexam'
  *  was the fifth, and the chain was already four deep. */
-const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson']);
+const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam', 'lesson', 'readiness']);
 
 const SCREEN_ORDER: Record<string, number> = {
   home: 0, tracks: 1, stats: 2, league: 3, profile: 4,
-  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10,
+  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10, readiness: 11,
 };
 function screenOrder(s: string) { return SCREEN_ORDER[s] ?? 0; }
 

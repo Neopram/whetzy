@@ -39,6 +39,7 @@ export function TracksScreen() {
   const startLesson = useAppStore((s) => s.startLesson);
   const startMockExam = useAppStore((s) => s.startMockExam);
   const startTrackExam = useAppStore((s) => s.startTrackExam);
+  const startReadiness = useAppStore((s) => s.startReadiness);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
   const { t } = useTranslation();
@@ -100,22 +101,35 @@ export function TracksScreen() {
       </div>
 
       {selected?.is_certification && selected.exam_question_count && selected.exam_duration_minutes && (
-        <motion.button
-          className={styles.mockExamCta}
-          onClick={() => selected && startMockExam(selected.id, selected.exam_question_count ?? 65, selected.exam_duration_minutes ?? 90)}
-          whileTap={{ scale: 0.97 }}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
-          <span className={styles.mockExamMeta}>
-            {t('mockExam.format', {
-              count: selected.exam_question_count,
-              minutes: selected.exam_duration_minutes,
-            })}
-          </span>
-        </motion.button>
+        <>
+          <motion.button
+            className={styles.mockExamCta}
+            onClick={() => selected && startMockExam(selected.id, selected.exam_question_count ?? 65, selected.exam_duration_minutes ?? 90)}
+            whileTap={{ scale: 0.97 }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <span className={styles.mockExamTitle}>{t('mockExam.title')}</span>
+            <span className={styles.mockExamMeta}>
+              {t('mockExam.format', {
+                count: selected.exam_question_count,
+                minutes: selected.exam_duration_minutes,
+              })}
+            </span>
+          </motion.button>
+          <motion.button
+            className={styles.readinessCta}
+            onClick={() => selected && startReadiness(selected.id)}
+            whileTap={{ scale: 0.97 }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <span className={styles.mockExamTitle}>{t('readiness.title')}</span>
+            <span className={styles.mockExamMeta}>{t('readiness.ctaSubtitle')}</span>
+          </motion.button>
+        </>
       )}
 
       {/* Final exam, for the tracks that are courses rather than rehearsals of

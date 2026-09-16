@@ -716,6 +716,10 @@ export const exams = {
     });
   },
 
+  async certificationReadiness(trackId: string) {
+    return request<CertificationReadiness>(`/exams/certification/${trackId}/readiness`);
+  },
+
   /** Submits a sitting — the attempt id, not the track: you can sit a track twice. */
   async submitTrackExam(attemptId: string, answers: Record<string, number>) {
     return request<TrackExamSubmitResponse>(`/exams/track/${attemptId}/submit`, {
@@ -729,6 +733,25 @@ export const exams = {
     });
   },
 };
+
+// ── Certification readiness (18.1) ──────────────────────────────────────────
+
+export interface DomainReadiness {
+  domain_id: string;
+  name_es: string;
+  name_en: string;
+  weight_pct: number;
+  p_known_mean: number;
+  skills_assessed: number;
+  skills_total: number;
+  ready: boolean;
+}
+
+export interface CertificationReadiness {
+  track_id: string;
+  domains: DomainReadiness[];
+  overall_p_known: number;
+}
 
 // ── Certificates (17.2) ─────────────────────────────────────────────────────
 

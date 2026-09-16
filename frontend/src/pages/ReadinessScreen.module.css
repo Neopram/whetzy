@@ -1,0 +1,243 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  padding-bottom: calc(var(--le-space-xl) + 60px);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+}
+
+.btnClose {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--le-text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--le-radius-sm);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.btnClose:hover {
+  color: var(--le-text);
+  background: var(--le-surface-alt);
+}
+
+.title {
+  font-size: var(--le-fs-xl);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+  margin: 0;
+}
+
+/* ===== Overall gauge card ===== */
+.gaugeCard {
+  background: var(--le-surface);
+  border: 2px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  padding: var(--le-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-xs);
+  transition: border-color 0.2s;
+}
+
+.gaugeCardReady {
+  border-color: var(--le-green);
+}
+
+.gaugeRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--le-space-sm);
+}
+
+.gaugePct {
+  font-size: 2.5rem;
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.gaugeBadge {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--le-border-light);
+  color: var(--le-text-muted);
+}
+
+.gaugeBadgeReady {
+  background: var(--le-green-light);
+  color: var(--le-green);
+}
+
+.gaugeSub {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-secondary);
+  margin: 0;
+}
+
+.overallBar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--le-border-light);
+  overflow: hidden;
+  margin-top: var(--le-space-xs);
+}
+
+.overallFill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--le-brand);
+  transition: width 0.4s ease;
+}
+
+.overallFillReady {
+  background: var(--le-green);
+}
+
+.gaugeThreshold {
+  font-size: var(--le-fs-xs, 11px);
+  color: var(--le-text-muted);
+  margin: 0;
+}
+
+/* ===== Per-domain list ===== */
+.domainList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-sm);
+}
+
+.domainCard {
+  background: var(--le-surface);
+  border: 1.5px solid var(--le-border);
+  border-radius: var(--le-radius-md);
+  padding: var(--le-space-sm) var(--le-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.domainCardReady {
+  border-color: var(--le-green);
+}
+
+.domainTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+}
+
+.domainName {
+  font-size: var(--le-fs-base);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+  flex: 1;
+}
+
+.domainChip {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--le-border-light);
+  color: var(--le-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.domainChipReady {
+  background: var(--le-green-light);
+  color: var(--le-green);
+}
+
+.barTrack {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--le-border-light);
+  overflow: hidden;
+  position: relative;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--le-brand);
+  transition: width 0.4s ease;
+}
+
+.barReady {
+  background: var(--le-green);
+}
+
+.barWeight {
+  position: absolute;
+  right: 4px;
+  top: -14px;
+  font-size: 10px;
+  color: var(--le-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.domainMeta {
+  font-size: var(--le-fs-xs, 11px);
+  color: var(--le-text-muted);
+  margin: 0;
+}
+
+/* ===== CTA ===== */
+.ctaBtn {
+  width: 100%;
+  padding: var(--le-space-md);
+  border-radius: var(--le-radius-md);
+  border: none;
+  background: var(--le-brand);
+  color: #fff;
+  font-size: var(--le-fs-base);
+  font-weight: var(--le-fw-black);
+  cursor: pointer;
+  min-height: 48px;
+  transition: opacity 0.15s;
+}
+
+.ctaBtn:hover {
+  opacity: 0.88;
+}
+
+.explainer {
+  font-size: var(--le-fs-xs, 11px);
+  color: var(--le-text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+.muted {
+  color: var(--le-text-muted);
+  text-align: center;
+  padding: var(--le-space-xl) 0;
+}
+
+.btnBack {
+  display: block;
+  margin: 0 auto;
+  background: none;
+  border: 1.5px solid var(--le-border);
+  border-radius: var(--le-radius-sm);
+  padding: 8px 20px;
+  color: var(--le-text);
+  cursor: pointer;
+  font-size: var(--le-fs-sm);
+}

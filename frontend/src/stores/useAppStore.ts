@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { auth, logout as apiLogout, type UserRead } from '../services/api';
 
 type Language = 'es' | 'en';
-type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks' | 'duels' | 'mockexam' | 'lesson' | 'trackexam';
+type Screen = 'home' | 'quiz' | 'stats' | 'league' | 'profile' | 'placement' | 'tracks' | 'duels' | 'mockexam' | 'lesson' | 'trackexam' | 'readiness';
 type LeagueTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond';
 
 interface UserProfile {
@@ -91,6 +91,10 @@ interface AppState {
   // Lesson
   lessonSkillId: string | null;
   startLesson: (skillId: string) => void;
+
+  // Certification readiness (18.1)
+  readinessTrackId: string | null;
+  startReadiness: (trackId: string) => void;
 
   // Missions
   missions: Mission[];
@@ -267,6 +271,10 @@ export const useAppStore = create<AppState>()(
       lessonSkillId: null,
       startLesson: (skillId) =>
         set((s) => ({ lessonSkillId: skillId, previousScreen: s.currentScreen, currentScreen: 'lesson' })),
+
+      readinessTrackId: null,
+      startReadiness: (trackId) =>
+        set((s) => ({ readinessTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'readiness' })),
 
       missions: defaultMissions,
       updateMission: (id, progress) =>
