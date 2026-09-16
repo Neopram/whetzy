@@ -89,6 +89,99 @@ MISSING_ACCENT = {
     "tendria": "tendría",
     "seria": None,  # "seria" is a valid adjective - removed below
     "mas": None,  # "mas" is a valid (if literary) conjunction - removed below
+    # Added in 18.13, after extending the scan to `tracks.json`. Every one of
+    # these was sitting in a track, module or skill name that the curriculum
+    # screen renders verbatim - `Python Basico` was the display name of the
+    # flagship track - and the guard could not see the file at all. They follow
+    # the same rule as the rest: none is a Spanish word without its accent.
+    "algebra": "álgebra",
+    "algoritmica": "algorítmica",
+    "anomalias": "anomalías",
+    "arboles": "árboles",
+    "asimetrico": "asimétrico",
+    "asincrona": "asíncrona",
+    "autenticacion": "autenticación",
+    "autorizacion": "autorización",
+    "basica": "básica",
+    "basicos": "básicos",
+    "calculo": None,  # "calculo" is a valid verb form - removed below
+    "categorias": "categorías",
+    "clasico": "clásico",
+    "clasificacion": "clasificación",
+    "codigos": "códigos",
+    "computo": None,  # "computo" is a valid verb form - removed below
+    "concienciacion": "concienciación",
+    "contencion": "contención",
+    "contrasenas": "contraseñas",
+    "conversion": "conversión",
+    "criptografia": "criptografía",
+    "decision": "decisión",
+    "deteccion": "detección",
+    "dinamica": "dinámica",
+    "diseno": "diseño",
+    "documentacion": "documentación",
+    "economia": "economía",
+    "encapsulacion": "encapsulación",
+    "erradicacion": "erradicación",
+    "estadistica": "estadística",
+    "estandar": "estándar",
+    "estatica": "estática",
+    "etica": "ética",
+    "evaluacion": "evaluación",
+    "facturacion": "facturación",
+    "federacion": "federación",
+    "fisico": "físico",
+    "fisicos": "físicos",
+    "generacion": "generación",
+    "gestion": "gestión",
+    "hibrida": "híbrida",
+    "identificacion": "identificación",
+    "inalambrica": "inalámbrica",
+    "indices": "índices",
+    "ingenieria": "ingeniería",
+    "integracion": "integración",
+    "invalidacion": "invalidación",
+    "inyeccion": "inyección",
+    "iteracion": "iteración",
+    "jerarquico": "jerárquico",
+    "leccion": "lección",
+    "libreria": "librería",
+    "logicos": "lógicos",
+    "logistica": "logística",
+    "matematicas": "matemáticas",
+    "metricas": "métricas",
+    "migracion": "migración",
+    "numericos": "numéricos",
+    "optimizacion": "optimización",
+    "orquestacion": "orquestación",
+    "parametrizacion": "parametrización",
+    "patron": "patrón",
+    "politicas": "políticas",
+    "produccion": "producción",
+    "programacion": "programación",
+    "recuperacion": "recuperación",
+    "recursion": "recursión",
+    "reduccion": "reducción",
+    "refactorizacion": "refactorización",
+    "regresion": "regresión",
+    "replicacion": "replicación",
+    "resolucion": "resolución",
+    "sanitizacion": "sanitización",
+    "segmentacion": "segmentación",
+    "separacion": "separación",
+    "serializacion": "serialización",
+    "simetrico": "simétrico",
+    "sincronizacion": "sincronización",
+    "tecnicas": "técnicas",
+    "tecnicos": "técnicos",
+    "tecnologia": "tecnología",
+    "tokenizacion": "tokenización",
+    "triada": "tríada",
+    "tunel": "túnel",
+    "validacion": "validación",
+    "verificacion": "verificación",
+    "visualizacion": "visualización",
+    "volumenes": "volúmenes",
 }
 # NOTE: entries whose unaccented spelling is itself a real Spanish word are
 # dropped here rather than never written, so the reason they are excluded stays
@@ -97,6 +190,11 @@ MISSING_ACCENT = {k: v for k, v in MISSING_ACCENT.items() if v is not None and k
 
 SPANISH_FIELDS = ("question_es", "explanation_es", "correct_answer_es")
 LESSON_FIELDS = ("title_es", "body_es")
+# `tracks.json` is the highest-visibility Spanish in the product and was the
+# last file this guard could not see: every one of these strings is rendered
+# verbatim on the curriculum screen, the track card and the module header.
+CURRICULUM_FIELDS = ("name_es", "description_es")
+GLOSSARY_FIELDS = ("term_es", "definition_es")
 
 # Code is not prose: `print(len(x))` and a variable called `codigo` are not
 # Spanish that lost an accent. Fenced blocks and inline spans are stripped
@@ -159,7 +257,35 @@ def _spanish_strings() -> list[tuple[str, str, str]]:
             if isinstance(value, str) and value.strip():
                 out.append((lesson.get("id", lfile.name), field, value))
 
+    payload = json.loads(
+        (root / "curriculum" / "tracks.json").read_text(encoding="utf-8")
+    )
+    for track in payload["tracks"]:
+        for node in _curriculum_nodes(track):
+            for field in CURRICULUM_FIELDS:
+                value = node.get(field)
+                if isinstance(value, str) and value.strip():
+                    out.append((node["id"], field, value))
+
+    for gfile in sorted((root / "glossary").rglob("*.json")):
+        payload = json.loads(gfile.read_text(encoding="utf-8"))
+        terms = payload if isinstance(payload, list) else payload.get("terms", [])
+        for term in terms:
+            for field in GLOSSARY_FIELDS:
+                value = term.get(field)
+                if isinstance(value, str) and value.strip():
+                    out.append((term.get("id", gfile.name), field, value))
+
     return out
+
+
+def _curriculum_nodes(track: dict) -> list[dict]:
+    """The track itself, its modules and its skills - each one a named node."""
+    nodes = [track]
+    for module in track.get("modules", []):
+        nodes.append(module)
+        nodes.extend(module.get("skills", []))
+    return nodes
 
 
 def test_the_guard_recognises_unaccented_spanish() -> None:
@@ -240,6 +366,44 @@ def test_the_exception_list_only_covers_strings_that_still_flag() -> None:
         f"{len(stale)} entries in spanish_accent_exceptions.json no longer flag and "
         f"must be deleted from it: {stale[:10]}"
     )
+
+
+# NOTE (18.13): an accent-*density* guard was written here and then deleted,
+# because the data refuted it. The idea was that a word list only catches words
+# somebody thought to list, so instead require any Spanish text of 40+ words to
+# carry at least one accent. The bank's distribution looked like it supported
+# that - median 8,8 %, p1 1,3 %, then a cliff to 29 texts at exactly 0,00 % -
+# but reading those 29 showed almost all were correct Spanish that simply never
+# needs an accent: «Mantener el build verde es un pilar de la CI: un build roto
+# en la rama principal bloquea a todo el equipo...» is 50 words, flawless, and
+# unaccented. The premise was wrong, so the guard was a false-positive machine,
+# and this file's own doctrine is that a guard that cries wolf gets deleted.
+# What actually caught the half-unaccented lesson bodies was the word list, once
+# it was rich enough. Widening that list is the lever; density is not.
+
+
+def test_the_scan_reaches_every_content_file() -> None:
+    """A guard that scans nothing passes, which is how this one missed a file.
+
+    Until 18.13 `_spanish_strings` walked only `questions/` and `lessons/`, so
+    `tracks.json` - the most visible Spanish in the product, rendered verbatim
+    on every track card - was never looked at once. It held 160 unaccented
+    strings, `Python Basico` (the flagship track's display name) among them,
+    while this file sat green. The lesson from 17.3 and 17.8 applies exactly:
+    *a check that has never failed is not the same as a check that passes.*
+    So assert the sources are non-empty rather than trusting the walk.
+    """
+    seen = {field for _, field, _ in _spanish_strings()}
+    for group, fields in (
+        ("questions", SPANISH_FIELDS),
+        ("lessons", LESSON_FIELDS),
+        ("curriculum", CURRICULUM_FIELDS),
+        ("glossary", GLOSSARY_FIELDS),
+    ):
+        assert seen & set(fields), (
+            f"the scan returned no {group} strings at all, so that whole source "
+            f"is unguarded. Expected at least one of {fields}."
+        )
 
 
 @pytest.mark.parametrize("source_id,field,text", _spanish_strings())
