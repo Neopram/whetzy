@@ -120,6 +120,14 @@ class Settings(BaseSettings):
     # Max push reminders per user per day (enforced client-side; limit at backend too).
     STREAK_REMINDER_MAX_PER_DAY: int = 1
 
+    # --- OAuth social login (19.1) ------------------------------------------
+    GITHUB_CLIENT_ID: str = ""
+    GITHUB_CLIENT_SECRET: str = ""
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    # Base URL used to build OAuth callback URIs (should be the backend origin).
+    OAUTH_REDIRECT_BASE_URL: str = "https://api-production-9751.up.railway.app"
+
     # --- Stripe (7.2) -------------------------------------------------------
     STRIPE_SECRET_KEY: str = ""         # sk_test_... or sk_live_...
     STRIPE_WEBHOOK_SECRET: str = ""     # whsec_...

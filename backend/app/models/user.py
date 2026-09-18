@@ -27,7 +27,7 @@ class User(Base):
 
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
     username: Mapped[str] = mapped_column(String(50), unique=True, index=True, nullable=False)
-    hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    hashed_password: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     display_name: Mapped[str] = mapped_column(String(100), nullable=False)
     avatar_emoji: Mapped[str] = mapped_column(String(16), default="🦉", nullable=False)

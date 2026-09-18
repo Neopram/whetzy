@@ -108,7 +108,8 @@ async def login(
     user = result.scalar_one_or_none()
 
     # Always call verify_password to prevent timing-based user enumeration (ASVS V2.2).
-    hash_to_check = user.hashed_password if user is not None else _DUMMY_HASH
+    # OAuth-only accounts have hashed_password=None — treat as wrong password.
+    hash_to_check = (user.hashed_password if user is not None and user.hashed_password else _DUMMY_HASH)
     password_ok = verify_password(form_data.password, hash_to_check)
 
     if user is None or not password_ok:

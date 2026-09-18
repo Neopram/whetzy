@@ -2,6 +2,26 @@
 // in production set VITE_API_URL to the deployed backend origin + /api/v1.
 const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
+// Consume OAuth tokens from URL params immediately at module-import time.
+// The backend redirects here after OAuth callback with ?oauth_token=...&oauth_refresh=...
+// Writing directly to localStorage (not via persistTokens) avoids the TDZ problem:
+// `accessToken` / `refreshToken` are declared with `let` AFTER this code, so they
+// are in the Temporal Dead Zone here. localStorage is always available.
+(function consumeOAuthParams() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('oauth_token');
+    const refresh = params.get('oauth_refresh');
+    if (token) {
+      localStorage.setItem('whetzy_access_token', token);
+      if (refresh) localStorage.setItem('whetzy_refresh_token', refresh);
+      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+    }
+  } catch {
+    /* storage unavailable in this context */
+  }
+})();
+
 const ACCESS_KEY = 'whetzy_access_token';
 const REFRESH_KEY = 'whetzy_refresh_token';
 
@@ -139,6 +159,11 @@ export const auth = {
 
   async me() {
     return request<UserRead>('/auth/me');
+  },
+
+  /** Navigate the browser to the OAuth provider start URL (full page redirect, no SDK). */
+  startOAuth(provider: 'github' | 'google') {
+    window.location.href = `${BASE_URL}/auth/oauth/${provider}/start`;
   },
 };
 
