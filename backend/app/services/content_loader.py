@@ -274,6 +274,10 @@ async def load_content(db: AsyncSession) -> dict[str, Any]:
             for order, t in enumerate(terms, start=1):
                 # track_id may be declared once at file level or per term.
                 t = {**t, "track_id": t.get("track_id", file_track_id)}
+                # Generate id if missing (for glossaries that lack it, e.g., track14/15/16)
+                if "id" not in t:
+                    track_num = t["track_id"].replace("track", "") if t["track_id"] else "00"
+                    t["id"] = f"gl{track_num}_{order:02d}"
                 ok = await _upsert_glossary_term(db, t, order)
                 if ok:
                     stats["glossary"] += 1
