@@ -303,6 +303,42 @@ visible, **ES y EN a la vez**
 Exactamente la evidencia del criterio de aceptación. Si no se cumple: arregla o
 `BLOCKED` con detalle. No avances.
 
+**Antes de escribir `DONE`, lanza el verificador adversario (ADR-20):**
+
+```
+Agent({
+  subagent_type: "Explore",
+  model: "haiku",
+  prompt: `Tu única misión es demostrar que la tarea <ID> del ledger NO está hecha, o que su
+evidencia es falsa, incompleta o no reproducible. No confíes en resúmenes: ejecuta
+los comandos. Contexto: criterio de aceptación = «<criterio literal de la fila>».
+Evidencia que se te presenta = «<evidencia literal>». Rutas que dice haber tocado =
+<rutas>. Repo: C:\\Users\\feder\\Desktop\\Banco de preguntas\\python\\learning-engine.
+
+Haz, en este orden y sin saltarte ninguno:
+1. \`git show --stat <hash>\` — ¿toca esas rutas? ¿Existe el hash?
+2. Vuelve a ejecutar cada comando de la evidencia. Pega las últimas 5 líneas de cada uno.
+3. Busca la forma más barata de romperlo: un input vacío, el otro idioma, el caso
+   límite del criterio, la ruta que el criterio nombra y el commit no toca.
+4. Si el criterio nombra un número (Q, %, ms, KB), mídelo tú.
+5. Si hay UI, comprueba que la cadena i18n existe en ES y EN y que no hay
+   fallback silencioso al otro idioma.
+
+Devuelve EXACTAMENTE este formato, ≤ 250 palabras:
+VEREDICTO: CONFIRMADA | REFUTADA | NO REPRODUCIBLE
+PRUEBAS: <comando → salida corta>, una por línea
+FALLO ENCONTRADO: <uno, el más grave, o «ninguno»>`
+})
+```
+
+- `CONFIRMADA` → escribe `DONE` con la evidencia **del verificador** y la fecha.
+- `REFUTADA` → la fila vuelve a `TODO` con el fallo pegado; se reasigna; el worker original no la verifica nunca.
+- `NO REPRODUCIBLE` → `BLOCKED (evidencia)`; abre tarea para hacerla reproducible.
+- Dos refutaciones seguidas del mismo worker en la misma sesión → esa tarea pasa a Sonnet aunque no esté en la lista de riesgo.
+- El verificador **no escribe** nada en el repo. Si necesita un script, va al scratchpad.
+
+El VEREDICTO se registra en la celda de evidencia del ledger (columna Evidencia de la fila).
+
 ### 5. Consolidar
 ```bash
 git add <archivos específicos>      # nunca -A a ciegas
