@@ -40,7 +40,7 @@ MAX_BODY_WORDS = 300
 # rises as authoring lands and never falls, so a session cannot quietly delete
 # lessons to make a run green. 17.1 closes when this equals the skill count and
 # `test_every_skill_has_a_lesson` is turned from a report into an assertion.
-MIN_LESSONS = 341
+MIN_LESSONS = 342
 
 
 def _load_lessons() -> list[tuple[Path, dict[str, Any]]]:
@@ -145,7 +145,7 @@ EXECUTABLE_LANGUAGES = {"python", "sql"}
 # both more useful and more honest — but it is NOT verified, so it must say so in
 # the file ("executable": false) and it is counted on every run. The count is the
 # point: an unverified example is a cost, and a cost that is not measured grows.
-ILLUSTRATIVE_LANGUAGES = {"shell", "dockerfile", "yaml", "http", "text"}
+ILLUSTRATIVE_LANGUAGES = {"shell", "dockerfile", "yaml", "http", "text", "javascript"}
 
 
 def _language(lesson: dict[str, Any]) -> str:

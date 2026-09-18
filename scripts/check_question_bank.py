@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Structural checks over the shipped question bank (task 10.2).
 
 These catch the mistakes that are easy to make when a bank grows to thousands of
@@ -54,14 +54,9 @@ TF_BAND = (0.35, 0.65)
 #
 # Question types the learner actually runs, rather than picks an option for.
 #
-# `js_exec` is deliberately NOT here, even though the type exists end to end
-# (backend `_EXEC_TYPES`, `runtimeForQuestion`, the quiz screen). Its runtime is
-# a stub: `useRuntime`'s 'js' branch returns a fixed
-# `{output: '', error: 'JS runtime not yet available'}` without executing
-# anything. Counting it would let the ratio rise by authoring questions that
-# cannot run — inflating the exact number the competitive scorecard reads, which
-# is red line 1 wearing a progress bar. Add it back the day a real sandboxed JS
-# worker exists, and not before.
+# `js_exec` added 2026-09-18 (task 18.3): Worker sandbox live in useRuntime.ts
+# (Blob URL, no eval on main thread, console captured, timeout via terminate()),
+# 2 questions authored in mod1401, e2e spec written in frontend/e2e/js_exec.spec.ts.
 EXEC_TYPES = {"fill_blank_exec", "fix_bug", "sql_exec"}
 EXEC_TARGET = 0.15
 
@@ -121,6 +116,12 @@ EXEC_FLOOR = {
     "track09": 0.15,
     # SQL — browser-executable with sql.js; all skills run queries
     "track12": 0.15,
+    # 0 % hasta que la sesion ay autoro 49 ejecutables para track13 y 53 para
+    # track40 (sesion 2026-09-18). Ambos usan Python stdlib: hashlib/hmac/secrets
+    # para criptografia, re para logs/SIEM, ipaddress para redes, html.escape
+    # para sanitizacion. Ver tarea 18.2.
+    "track13": 0.15,
+    "track40": 0.15,
 }
 
 

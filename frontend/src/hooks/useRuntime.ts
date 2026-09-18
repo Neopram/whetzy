@@ -8,7 +8,8 @@
 // Supported runtimes:
 //   'python' — Pyodide WASM, used for fill_blank_exec and fix_bug questions
 //   'sql'    — sql.js WASM (SQLite), used for sql_exec questions
-//   'js'     — stub (future: sandboxed JS Worker or iframe)
+//   'js'     — Blob URL Web Worker sandbox: no eval on main thread, console
+//              captured, timeout via terminate(), no DOM access
 
 import { usePyodide } from './usePyodide';
 import { useSqlRuntime } from './useSqlRuntime';
@@ -16,11 +17,52 @@ import type { RunResult } from './usePyodide';
 
 export type RuntimeType = 'python' | 'sql' | 'js';
 
-const JS_STUB_RESULT: RunResult = {
-  output: '',
-  error: 'JS runtime not yet available',
-  timedOut: false,
+// Worker source is inlined as a string so it can be loaded via Blob URL with
+// no extra build step and no CDN dependency (red line 5). The Worker has no
+// DOM access by design (Workers never do), and `new Function` runs in the
+// Worker global scope — isolated from the main thread. console.log/warn/error/
+// info are all redirected to the logs array so the learner sees full output.
+const JS_WORKER_SRC = `
+self.onmessage = function(e) {
+  var logs = [];
+  var _log = function() {
+    var args = Array.prototype.slice.call(arguments);
+    logs.push(args.map(function(x) {
+      return typeof x === 'object' ? JSON.stringify(x) : String(x);
+    }).join(' '));
+  };
+  var c = { log: _log, error: _log, warn: _log, info: _log, debug: _log };
+  try {
+    new Function('console', e.data.code)(c);
+    self.postMessage({ output: logs.join('\\n'), error: null, timedOut: false });
+  } catch (err) {
+    self.postMessage({ output: logs.join('\\n'), error: err.message, timedOut: false });
+  }
 };
+`;
+
+function runJs(code: string, timeoutMs = 5000): Promise<RunResult> {
+  return new Promise<RunResult>((resolve) => {
+    const blob = new Blob([JS_WORKER_SRC], { type: 'application/javascript' });
+    const url = URL.createObjectURL(blob);
+    const worker = new Worker(url);
+    let settled = false;
+    const settle = (result: RunResult) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      resolve(result);
+    };
+    const timer = setTimeout(() => {
+      settle({ output: '', error: null, timedOut: true });
+    }, timeoutMs);
+    worker.onmessage = (e) => settle(e.data as RunResult);
+    worker.onerror = (e) => settle({ output: '', error: e.message ?? 'Worker error', timedOut: false });
+    worker.postMessage({ code });
+  });
+}
 
 export function useRuntime(type: RuntimeType) {
   const python = usePyodide(type !== 'python');
@@ -30,7 +72,7 @@ export function useRuntime(type: RuntimeType) {
   if (type === 'js') {
     return {
       status: 'ready' as const,
-      runCode: (_code: string) => Promise.resolve(JS_STUB_RESULT),
+      runCode: runJs,
     };
   }
   return { status: python.status, runCode: python.runCode };

@@ -254,7 +254,7 @@ export function QuizScreen() {
     const { code } = resolveCode(question, qText, language);
 
     let codeToRun: string;
-    if (question.type === 'fill_blank_exec' || question.type === 'sql_exec') {
+    if (question.type === 'fill_blank_exec' || question.type === 'sql_exec' || question.type === 'js_exec') {
       codeToRun = (code ?? '').replace('___', userInput);
     } else {
       codeToRun = userInput;
@@ -502,7 +502,7 @@ export function QuizScreen() {
             </>
           )}
 
-          {question.type === 'fill_blank_exec' && code && (
+          {(question.type === 'fill_blank_exec' || question.type === 'js_exec') && code && (
             <>
               <pre className={styles.codeBlock}>
                 <code>{code.replace('___', `[${t('quiz.yourAnswer')}]`)}</code>
