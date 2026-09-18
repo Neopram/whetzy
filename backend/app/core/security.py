@@ -359,6 +359,7 @@ async def create_session(
             "session_evoked",
             ip=oldest.ip,
             metadata={"evicted_session_id": str(oldest.id)},
+            db=db,
         )
 
     session = UserSession(
@@ -378,6 +379,7 @@ async def create_session(
         ip=request_ip,
         user_agent=user_agent,
         metadata={"session_id": str(session.id)},
+        db=db,
     )
 
     return session.id
@@ -425,6 +427,7 @@ async def revoke_session(
         "session_revoked",
         ip=session.ip,
         metadata={"session_id": str(session.id)},
+        db=db,
     )
 
 
@@ -572,17 +575,16 @@ async def log_audit_event(
     result: str = "success",
     error_message: str | None = None,
     metadata: dict | None = None,
+    db: AsyncSession | None = None,
 ) -> None:
     """Log security-relevant action; immutable append-only.
 
-    Silently fails to not interrupt main flow.
+    Silently fails to not interrupt main flow. Uses provided db session if available.
     """
     from app.models.auth import AuditLog
 
     try:
-        from app.core.db import AsyncSessionLocal
-
-        async with AsyncSessionLocal() as session:
+        if db is not None:
             audit_entry = AuditLog(
                 user_id=user_id,
                 action=action,
@@ -590,13 +592,27 @@ async def log_audit_event(
                 user_agent=user_agent,
                 result=result,
                 error_message=error_message,
-                metadata=metadata,
+                event_data=metadata,
             )
-            session.add(audit_entry)
-            await session.commit()
-    except (OSError, RuntimeError):
+            db.add(audit_entry)
+            await db.commit()
+        else:
+            from app.core.db import AsyncSessionLocal
+
+            async with AsyncSessionLocal() as session:
+                audit_entry = AuditLog(
+                    user_id=user_id,
+                    action=action,
+                    ip=ip,
+                    user_agent=user_agent,
+                    result=result,
+                    error_message=error_message,
+                    event_data=metadata,
+                )
+                session.add(audit_entry)
+                await session.commit()
+    except Exception:
         # Silently fail audit logging to not interrupt main flow
-        # DB connection errors, transaction errors, etc.
         pass
 
 
@@ -634,6 +650,8 @@ def parse_user_agent(user_agent: str) -> str:
         browser = "Unknown"
 
     return f"{browser} on {os_name}"
+
+
 
 
 

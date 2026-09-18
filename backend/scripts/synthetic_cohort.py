@@ -23,9 +23,8 @@ import logging
 import os
 import random
 import time
-import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -65,7 +64,7 @@ class Persona:
     abandon_prob: float
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Persona":
+    def from_dict(cls, d: dict[str, Any]) -> Persona:
         return cls(
             id=d["id"],
             name=d["name"],
@@ -168,7 +167,7 @@ async def _login(client: httpx.AsyncClient, email: str) -> str | None:
             )
             if r2.status_code == 200:
                 return r2.json().get("access_token")
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.debug("login error: %s", exc)
     return None
 
@@ -213,7 +212,7 @@ async def register_or_login(
             if r2.status_code == 409:
                 return await _login(client, persona.email)
         log.debug("register %s: HTTP %d %s", persona.id, r.status_code, r.text[:200])
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.debug("register error for %s: %s", persona.id, exc)
 
     return None
@@ -231,7 +230,7 @@ async def start_session(
             return None, None
         data = r.json()
         return str(data["session_id"]), data.get("question")
-    except Exception:
+    except Exception:  # noqa: BLE001
         return None, None
 
 
@@ -258,7 +257,7 @@ async def submit_answer(
         if r.status_code != 200:
             return None
         return r.json()
-    except Exception:
+    except Exception:  # noqa: BLE001
         return None
 
 
@@ -269,7 +268,7 @@ async def end_session(
     try:
         r = await client.post("/quiz/end", json={"session_id": session_id}, headers=headers)
         return r.status_code == 200
-    except Exception:
+    except Exception:  # noqa: BLE001
         return False
 
 
@@ -291,8 +290,7 @@ async def simulate_persona(
     )
     t0 = time.monotonic()
 
-    async with semaphore:
-        async with httpx.AsyncClient(base_url=base_url, timeout=30.0) as client:
+    async with semaphore, httpx.AsyncClient(base_url=base_url, timeout=30.0) as client:
 
             # Internal "true mastery" — independent from BKT estimates
             true_mastery = persona.prior_knowledge
@@ -438,7 +436,7 @@ def build_report(results: list[PersonaResult]) -> dict:
             "user accuracy, calibrate BKT, or publish AUC. Benchmark AUC comes "
             "from synthetic-5 (Piech 2015) — a fixed third-party dataset."
         ),
-        "run_at": datetime.now(timezone.utc).isoformat(),
+        "run_at": datetime.now(UTC).isoformat(),
         "n_personas": len(results),
         "aggregate": {
             "sessions_completed": total_sessions,
@@ -463,7 +461,7 @@ def load_personas(personas_dir: Path) -> list[Persona]:
         try:
             data = json.loads(p.read_text(encoding="utf-8"))
             personas.append(Persona.from_dict(data))
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             log.warning("Skipping %s: %s", p.name, exc)
     return personas
 
@@ -520,7 +518,7 @@ async def run(
     out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
 
     agg = report["aggregate"]
-    print(f"\n=== Synthetic Cohort - System Validation Report ===")
+    print("\n=== Synthetic Cohort - System Validation Report ===")
     print(f"Personas          : {report['n_personas']}")
     print(f"Sessions completed: {agg['sessions_completed']}")
     print(f"Sessions abandoned: {agg['sessions_abandoned']}")

@@ -12,7 +12,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.core.security import get_current_user
-from app.models.admin import AuditLog, CreditLedger, GDPRRequest, LoginAttempt, Referral
+from app.models.admin import CreditLedger, GDPRRequest, Referral
+from app.models.auth import AuditLog, LoginAttempt
 from app.models.content import Question, Skill
 from app.models.session import Response, StudySession
 from app.models.user import User
@@ -141,7 +142,7 @@ async def get_security_auth_events(
     action: str | None = Query(default=None),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
-    query = select(AuditLog).order_by(desc(AuditLog.created_at))
+    query = select(AuditLog).order_by(desc(AuditLog.timestamp))
     if action:
         query = query.where(AuditLog.action == action)
     
@@ -154,9 +155,9 @@ async def get_security_auth_events(
                 "id": str(e.id),
                 "user_id": str(e.user_id) if e.user_id else None,
                 "action": e.action,
-                "resource_type": e.resource_type,
-                "ip_address": e.ip_address,
-                "created_at": e.created_at.isoformat(),
+                "result": e.result,
+                "ip": e.ip,
+                "timestamp": e.timestamp.isoformat(),
             }
             for e in events
         ],
@@ -265,7 +266,7 @@ async def get_ops_health(
     try:
         await db.execute(select(func.now()))
         db_status = "ok"
-    except Exception:
+    except Exception:  # noqa: BLE001
         db_status = "error"
     
     return {
@@ -528,4 +529,6 @@ async def get_economy_k_factor(
         "total_users": total,
         "successful_referrals": completed,
     }
+
+
 

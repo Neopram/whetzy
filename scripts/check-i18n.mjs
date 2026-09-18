@@ -198,7 +198,7 @@ function checkBackendEmails() {
 }
 
 function checkLegalDocs() {
-  const legalDir = path.join(projectRoot, 'legal');
+  const legalDir = path.join(projectRoot, 'docs', 'legal');
 
   const result = {
     category: 'legal-docs',

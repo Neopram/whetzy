@@ -11,53 +11,6 @@ from sqlalchemy.sql import func
 
 from app.core.db import Base
 
-
-class AuditLog(Base):
-    __tablename__ = "audit_log"
-
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    user_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
-    )
-    action: Mapped[str] = mapped_column(String(64), nullable=False)
-    resource_type: Mapped[str] = mapped_column(String(64), nullable=False)
-    resource_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    ip_address: Mapped[str | None] = mapped_column(String(45), nullable=True)
-    user_agent: Mapped[str | None] = mapped_column(String(512), nullable=True)
-    details: Mapped[dict | None] = mapped_column(JSON(), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
-    )
-
-
-class LoginAttempt(Base):
-    __tablename__ = "login_attempts"
-
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    email: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
-    ip_address: Mapped[str | None] = mapped_column(String(45), nullable=True)
-    success: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
-    )
-
-
-class UserSession(Base):
-    __tablename__ = "user_sessions"
-
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
-    )
-    device_type: Mapped[str | None] = mapped_column(String(32), nullable=True)
-    device_os: Mapped[str | None] = mapped_column(String(64), nullable=True)
-    ip_address: Mapped[str | None] = mapped_column(String(45), nullable=True)
-    last_active_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
-    )
-
-
 class PromoCode(Base):
     __tablename__ = "promo_codes"
 
@@ -74,7 +27,6 @@ class PromoCode(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
-
 class CreditLedger(Base):
     __tablename__ = "credit_ledger"
 
@@ -90,7 +42,6 @@ class CreditLedger(Base):
         DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
     )
 
-
 class GDPRRequest(Base):
     __tablename__ = "gdpr_requests"
 
@@ -105,7 +56,6 @@ class GDPRRequest(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
-
 
 class Referral(Base):
     __tablename__ = "referrals"

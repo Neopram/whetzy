@@ -9,7 +9,6 @@ from __future__ import annotations
 import asyncio
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -18,6 +17,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 # Import all models so every table is registered on Base.metadata before
 # autogenerate compares it against the database.
 import app.models  # noqa: F401 — side-effect: registers all ORM classes
+from alembic import context
 from app.core.config import settings
 from app.core.db import Base
 

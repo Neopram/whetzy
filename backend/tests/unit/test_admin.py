@@ -1,13 +1,11 @@
 """Admin panel endpoints tests."""
 
+
 import pytest
 from fastapi import status
 from httpx import AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession
-import uuid
 
 from app.models.user import User
-from app.models.admin import AuditLog, LoginAttempt, CreditLedger, GDPRRequest, Referral
 
 
 @pytest.mark.asyncio

@@ -30,6 +30,12 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from app.core.db import Base, get_db
 from app.core.security import create_access_token, get_password_hash
+
+# CRITICAL: Import all models BEFORE app.main so they're registered on Base
+# when the app creates its engine
+import app.models
+
+# Now safe to import the app
 from app.main import app
 from app.models.content import Module, Question, Skill, Track
 from app.models.user import User

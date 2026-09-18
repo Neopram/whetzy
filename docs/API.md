@@ -32,6 +32,7 @@ POST  /auth/refresh               → Token (200)
 GET   /auth/me                    → UserRead (200) 🔒
 PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name)
 DELETE /auth/me/account           → {message} (200) 🔒
+POST  /auth/logout                 → {message} (200) 🔒
 PATCH /auth/me/password           → {message} (200) 🔒  — body {current_password, new_password}
 
 POST /auth/forgot-password        → {message} (200) — no enumeration
@@ -207,6 +208,58 @@ POST  /content/qa/batch                     → batch QA pass
 POST  /content/duplicates                   → embedding-based duplicate detection
 ```
 
+
+## Admin endpoints
+
+All admin routes require `X-Admin-Key` header.
+
+### Content management
+```
+GET  /admin/content/gaps                 → gaps in question coverage
+GET  /admin/content/parity               → parity check across languages
+```
+
+### Economy & credits
+```
+GET  /admin/economy/credits              → credit allocation summary
+GET  /admin/economy/k-factor             → K-factor statistics
+GET  /admin/economy/referrals            → referral program analytics
+```
+
+### GDPR & user management
+```
+GET  /admin/gdpr/deletions               → pending deletion requests
+GET  /admin/gdpr/exports                 → pending data export requests
+POST /admin/gdpr/deletions/{user_id}/cancel → cancel deletion request
+```
+
+### Metrics & analytics
+```
+GET  /admin/metrics/funnel               → conversion funnel metrics
+GET  /admin/metrics/ttfq                 → time-to-first-question metrics
+GET  /admin/metrics/users                → user engagement metrics
+```
+
+### Operations
+```
+GET  /admin/ops/database                 → database health & stats
+GET  /admin/ops/errors                   → recent error logs
+GET  /admin/ops/health                   → system health status
+```
+
+### Revenue
+```
+GET  /admin/revenue/churn                → churn analysis
+GET  /admin/revenue/conversions          → conversion funnel (trial → paid)
+GET  /admin/revenue/mrr                  → monthly recurring revenue
+```
+
+### Security
+```
+GET  /admin/security/auth-events         → authentication event log
+GET  /admin/security/ip-analysis         → IP reputation & geo analysis
+GET  /admin/security/lockouts            → account lockout events
+```
 ## Export endpoints
 
 ```
@@ -237,3 +290,7 @@ GET  /              → {name, status, version}
 71 paths (67 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
 Some paths have multiple HTTP methods, giving **73 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
+
+
+
+

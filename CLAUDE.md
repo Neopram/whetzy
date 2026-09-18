@@ -21,7 +21,7 @@ qué hacer; el ledger lo sabe.
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA espera H.LIC; CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
-- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `t0u1v2w3x4y5` (20 migraciones)
+- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `w3x4y5z6a7b8` (22 migraciones)
 - LLM: `qwen/qwen3.8-27b` en Groq
 - OpenAPI en `/api/v1/openapi.json`; `POST /quiz/start` devuelve el id en `.question.id`
 
@@ -43,3 +43,4 @@ Tests con el código, no después. Escribe como el código que te rodea. Evidenc
 ejecutable o no pasó. Documentación en español; contenido y UI en ES y EN nativos.
 El schema de `tracks.json` es `name_es/name_en/order/color/icon` (nunca `title_*`):
 el loader hace `data["name_es"]` y revienta con otra forma.
+

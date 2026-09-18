@@ -6,7 +6,6 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import (
-    ARRAY,
     JSON,
     Boolean,
     DateTime,
@@ -88,7 +87,7 @@ class User2FA(Base):
     )
     secret_key: Mapped[str] = mapped_column(String(32), nullable=False)  # Base32-encoded TOTP secret
     backup_codes: Mapped[list[str]] = mapped_column(
-        ARRAY(String(64)), nullable=False, server_default="{}"
+        JSON(), nullable=False, server_default="[]"
     )  # Array of hashed one-time codes
     enabled: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False, index=True)
     created_at: Mapped[datetime] = mapped_column(
@@ -115,3 +114,4 @@ class AuditLog(Base):
     result: Mapped[str] = mapped_column(String(16), default="success", nullable=False)  # success, failed, blocked
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
     event_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+
