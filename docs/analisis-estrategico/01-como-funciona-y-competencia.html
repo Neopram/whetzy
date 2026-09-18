@@ -1,0 +1,783 @@
+<title>Whetzy — Análisis Estratégico</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,700;12..96,800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --bg: #f3f5fb;
+  --surface: #ffffff;
+  --surface-2: #edf0f8;
+  --border: #dde2ef;
+  --text: #080d1c;
+  --muted: #59688a;
+  --accent: #1CB0F6;
+  --accent-lo: rgba(28,176,246,0.10);
+  --success: #16a34a;
+  --success-lo: rgba(22,163,74,0.10);
+  --warning: #b45309;
+  --warning-lo: rgba(180,83,9,0.10);
+  --danger: #dc2626;
+  --danger-lo: rgba(220,38,38,0.10);
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --body: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #060910;
+    --surface: #0e1422;
+    --surface-2: #141d30;
+    --border: #1f2d48;
+    --text: #e5ecff;
+    --muted: #7b8fb5;
+    --accent: #3dc3ff;
+    --accent-lo: rgba(61,195,255,0.10);
+    --success: #4ade80;
+    --success-lo: rgba(74,222,128,0.10);
+    --warning: #fbbf24;
+    --warning-lo: rgba(251,191,36,0.10);
+    --danger: #f87171;
+    --danger-lo: rgba(248,113,113,0.10);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #060910;
+  --surface: #0e1422;
+  --surface-2: #141d30;
+  --border: #1f2d48;
+  --text: #e5ecff;
+  --muted: #7b8fb5;
+  --accent: #3dc3ff;
+  --accent-lo: rgba(61,195,255,0.10);
+  --success: #4ade80;
+  --success-lo: rgba(74,222,128,0.10);
+  --warning: #fbbf24;
+  --warning-lo: rgba(251,191,36,0.10);
+  --danger: #f87171;
+  --danger-lo: rgba(248,113,113,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+  padding-inline: 20px;
+  padding-block: 48px 96px;
+}
+
+.doc { max-width: 840px; margin: 0 auto; }
+
+/* ── Header ──────────────────────────────────────── */
+.header {
+  padding-bottom: 36px;
+  margin-bottom: 64px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.header-stripe {
+  width: 48px; height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-family: var(--display);
+  font-size: clamp(30px, 5.5vw, 50px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  margin-bottom: 16px;
+  text-wrap: balance;
+}
+
+.header h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.header-sub {
+  color: var(--muted);
+  font-size: 14.5px;
+  max-width: 540px;
+  line-height: 1.6;
+}
+
+.header-date {
+  position: absolute;
+  top: 0; right: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .05em;
+}
+
+@media (max-width: 500px) { .header-date { position: static; margin-bottom: 16px; } }
+
+/* ── Section ─────────────────────────────────────── */
+section { margin-bottom: 72px; }
+
+.sec-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+h2 {
+  font-family: var(--display);
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 700;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+
+h3 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 14.5px;
+  color: var(--text);
+  max-width: 64ch;
+  margin-bottom: 14px;
+}
+p:last-child { margin-bottom: 0; }
+
+/* ── Metric pillars ──────────────────────────────── */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.pillar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px 16px;
+}
+
+.pillar-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+
+.pillar-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.pillar-val {
+  font-family: var(--mono);
+  font-size: clamp(20px, 3vw, 24px);
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.pillar-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+/* ── Stack table ─────────────────────────────────── */
+.stack {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.stack-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 11px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.stack-row:last-child { border-bottom: none; }
+.stack-row:nth-child(even) { background: var(--surface-2); }
+
+.st-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding-top: 2px;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.st-val { font-size: 13px; color: var(--text); flex: 1; }
+
+.tag {
+  display: inline-flex; align-items: center;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  padding: 1px 7px; border-radius: 4px; margin-left: 7px;
+  vertical-align: middle; line-height: 1.8;
+}
+.tag-green { background: var(--success-lo); color: var(--success); }
+.tag-blue  { background: var(--accent-lo);  color: var(--accent);  }
+.tag-amber { background: var(--warning-lo); color: var(--warning); }
+
+/* ── Phase list ──────────────────────────────────── */
+.phases { margin: 16px 0; display: flex; flex-direction: column; gap: 6px; }
+
+.ph {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 12px;
+  font-size: 13.5px;
+  align-items: baseline;
+}
+
+.ph-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.done  .ph-id { color: var(--success); }
+.active .ph-id { color: var(--warning); }
+.pending .ph-id { color: var(--muted); }
+.done  .ph-text { color: var(--text); }
+.active .ph-text { color: var(--text); }
+.pending .ph-text { color: var(--muted); }
+
+/* ── Score chart ─────────────────────────────────── */
+.score-chart { margin: 24px 0; display: flex; flex-direction: column; gap: 10px; }
+
+.sc-row {
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  align-items: center;
+}
+
+.sc-row.self {
+  border-color: var(--accent);
+  background: var(--accent-lo);
+}
+
+.sc-row.self-ceiling {
+  border-color: var(--border);
+  border-style: dashed;
+}
+
+.sc-left {}
+
+.sc-name {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.sc-meta { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+
+.bar-bg {
+  height: 7px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.bar-fill { height: 100%; border-radius: 4px; }
+
+.sc-score-block { text-align: right; }
+
+.sc-score {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.sc-of {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── Probability cards ───────────────────────────── */
+.prob-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.prob-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 18px;
+}
+
+.prob-card.bad    { border-top: 3px solid var(--danger); }
+.prob-card.warn   { border-top: 3px solid var(--warning); }
+.prob-card.good   { border-top: 3px solid var(--success); }
+
+.prob-pct {
+  font-family: var(--mono);
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.prob-card.bad  .prob-pct { color: var(--danger); }
+.prob-card.warn .prob-pct { color: var(--warning); }
+.prob-card.good .prob-pct { color: var(--success); }
+
+.prob-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.prob-body { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+/* ── Revenue scenarios ───────────────────────────── */
+.rev-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.rev-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 18px;
+  position: relative;
+}
+
+.rev-card.base {
+  border-color: var(--accent);
+}
+
+.base-badge {
+  position: absolute;
+  top: 10px; right: 12px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rev-name {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.rev-total {
+  font-family: var(--mono);
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.rev-card:nth-child(1) .rev-total { color: var(--muted); }
+.rev-card:nth-child(2) .rev-total { color: var(--accent); }
+.rev-card:nth-child(3) .rev-total { color: var(--success); }
+
+.rev-period { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+
+.rev-lines { display: flex; flex-direction: column; gap: 5px; }
+
+.rv {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  gap: 8px;
+}
+
+.rv-num {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.rv.total-line {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Callout ─────────────────────────────────────── */
+.callout {
+  padding: 14px 18px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-lo);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 20px 0;
+  max-width: none;
+}
+
+.callout.warn { border-color: var(--warning); background: var(--warning-lo); }
+.callout.success { border-color: var(--success); background: var(--success-lo); }
+
+.callout strong { color: var(--accent); }
+.callout.warn strong { color: var(--warning); }
+.callout.success strong { color: var(--success); }
+
+/* ── Infra table ─────────────────────────────────── */
+.infra-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+
+.infra-table th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.infra-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.infra-table tr:last-child td {
+  border-bottom: none;
+  font-weight: 600;
+  background: var(--surface-2);
+}
+
+.infra-table tr:nth-child(even) td { background: var(--surface-2); }
+.infra-table tr:last-child td { background: var(--accent-lo); }
+
+/* ── Divider ─────────────────────────────────────── */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 64px 0;
+}
+
+@media (max-width: 480px) {
+  .pillars { grid-template-columns: 1fr 1fr; }
+  .prob-grid, .rev-grid { grid-template-columns: 1fr; }
+  .sc-row { grid-template-columns: 1fr 60px; }
+  .sc-score { font-size: 22px; }
+}
+</style>
+
+<div class="doc">
+  <div style="border:2px solid var(--warning);background:var(--warning-lo);border-radius:10px;padding:12px 16px;margin-bottom:28px;font-size:13px;line-height:1.5"><strong style="color:var(--warning)">ERRATA (2026-09-18, sesión bf):</strong> esta página se escribió desde el estado del proyecto del 08-sep. Hoy Stripe (test-mode), entitlements, login social GitHub/Google, email/reset/onboarding, Capacitor Android, observabilidad, WCAG y 5.024+ preguntas están <strong>DONE</strong> en el ledger. Las etiquetas «Pendiente» de esta página no son fiables; manda <code>docs/AUTONOMOUS_STATE.md</code>. Tabla completa de erratas en <code>README.md</code> de esta carpeta.</div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-date">18 SEP 2026</div>
+    <div class="header-stripe"></div>
+    <h1>Whetzy:<br>cómo funciona, dónde<br>está, y a qué puede llegar</h1>
+    <p class="header-sub">Resumen ejecutivo honesto. Arquitectura real, posición competitiva con pesos fijos, y proyección de ingresos a 20 K usuarios en tres escenarios.</p>
+  </header>
+
+  <!-- SECTION 01 -->
+  <section>
+    <div class="sec-num">01 — arquitectura</div>
+    <h2>Cómo funciona Whetzy</h2>
+
+    <p>Whetzy es una plataforma de aprendizaje adaptativo que lleva a alguien de Python básico hasta ingeniero de IA con certificaciones. No es un catálogo de cursos ni un YouTube con quizzes: es un motor que ajusta la dificultad, el ritmo y las explicaciones pregunta a pregunta usando tres algoritmos al mismo tiempo.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="pillar-icon">📚</span>
+        <div class="pillar-label">Contenido</div>
+        <div class="pillar-val">1,253</div>
+        <div class="pillar-desc">preguntas en 7 tracks, 207 habilidades, 70 términos bilingüe ES/EN</div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">🧠</span>
+        <div class="pillar-label">Motor</div>
+        <div class="pillar-val">BKT+FSRS</div>
+        <div class="pillar-desc">Bayesian Knowledge Tracing + spaced repetition + Elo + DKT LSTM</div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">🤖</span>
+        <div class="pillar-label">Tutor IA</div>
+        <div class="pillar-val">Groq</div>
+        <div class="pillar-desc">memoria 3 capas: corta, larga y episódica; adapta tono a historial de errores</div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">🌐</span>
+        <div class="pillar-label">En producción</div>
+        <div class="pillar-val">LIVE</div>
+        <div class="pillar-desc">whetzy.com en Cloudflare Pages + API en Railway + PWA offline</div>
+      </div>
+    </div>
+
+    <h3>Stack técnico</h3>
+    <div class="stack">
+      <div class="stack-row"><span class="st-label">Frontend</span><span class="st-val">React + TypeScript, Vite, Cloudflare Pages<span class="tag tag-green">LIVE</span></span></div>
+      <div class="stack-row"><span class="st-label">Backend</span><span class="st-val">FastAPI + PostgreSQL + Railway, 1,253 Q en DB<span class="tag tag-green">LIVE</span></span></div>
+      <div class="stack-row"><span class="st-label">Motor</span><span class="st-val">BKT / FSRS / Elo / DKT (LSTM con fallback EWA)<span class="tag tag-green">LIVE</span></span></div>
+      <div class="stack-row"><span class="st-label">Tutor IA</span><span class="st-val">Groq Qwen3.8-27b, grounded=true, explicaciones ES+EN<span class="tag tag-green">LIVE</span></span></div>
+      <div class="stack-row"><span class="st-label">Ejecución</span><span class="st-val">Pyodide WebWorker — Python en browser, timeout 5 s<span class="tag tag-amber">Fase 2 — 98%</span></span></div>
+      <div class="stack-row"><span class="st-label">Social</span><span class="st-val">Duelos 1v1 async, XP/racha, Lottie, PWA offline sync<span class="tag tag-blue">Fase 3 ✓</span></span></div>
+      <div class="stack-row"><span class="st-label">Pagos</span><span class="st-val">Stripe web + RevenueCat native — NO construidos aún<span class="tag tag-amber">Pendiente</span></span></div>
+      <div class="stack-row"><span class="st-label">Auth social</span><span class="st-val">GitHub + Google web → Sign in with Apple (bloqueante App Store)<span class="tag tag-amber">Pendiente</span></span></div>
+      <div class="stack-row"><span class="st-label">Marketplace</span><span class="st-val">AWS CP, CompTIA Sec+, Azure AI-102, Google ML — Fase 10<span class="tag tag-amber">Fase 10</span></span></div>
+    </div>
+
+    <h3>Estado actual de fases</h3>
+    <div class="phases">
+      <div class="ph done"><span class="ph-id">Fase 0</span><span class="ph-text">Deploy inicial — whetzy.com live, backend Railway, E2E verificado ✓</span></div>
+      <div class="ph done"><span class="ph-id">Fase 1</span><span class="ph-text">Contenido completo: 1,253 Q, 207 skills ≥ 6 preguntas, glosario 70 términos ✓</span></div>
+      <div class="ph active"><span class="ph-id">Fase 2</span><span class="ph-text">Pyodide browser test + Alembic migraciones — 98 %, casi cerrada</span></div>
+      <div class="ph done"><span class="ph-id">Fase 3</span><span class="ph-text">Duelos 1v1, gamificación, PWA offline, animaciones Lottie ✓</span></div>
+      <div class="ph done"><span class="ph-id">Fase 4</span><span class="ph-text">DKT LSTM, orquestador autónomo, ledger de 67 tareas ✓</span></div>
+      <div class="ph pending"><span class="ph-id">Fases 5-9</span><span class="ph-text">Auth social, Stripe/IAP, onboarding, test infra, app nativa Android/iOS</span></div>
+      <div class="ph pending"><span class="ph-id">Fase 10</span><span class="ph-text">Marketplace de certificaciones — AWS CP, CompTIA Sec+, Azure AI-102…</span></div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- SECTION 02 -->
+  <section>
+    <div class="sec-num">02 — posición competitiva</div>
+    <h2>Dónde estás respecto a los competidores</h2>
+
+    <p>Estos scores usan un sistema de pesos fijos auditado desde la Serie 30. Los pesos no se cambian entre mediciones: distribución 34 %, motor 14 %, contenido 14 %, tutor 9 %, ejecución 7 %, gamificación 6 %, bilingüe 6 %, PWA 5 %, accesibilidad 5 %. Una feature que existe en el código pero tiene cero usuarios cuenta como <em>capacidad</em>, no como <em>ventaja</em>.</p>
+
+    <div class="callout warn">
+      <strong>La regla más importante:</strong> distribución vale 0.34 del total. Es el único indicador que mide si alguien usa el producto. Mientras Whetzy tenga ~0 usuarios activos, ningún trabajo de ingeniería puede mover el marcador por encima de ~66/100. Esto hay que decirlo en voz alta, no disfrazarlo.
+    </div>
+
+    <div class="score-chart">
+      <div class="sc-row">
+        <div class="sc-left">
+          <div class="sc-name">DataCamp</div>
+          <div class="sc-meta">10 M+ usuarios · Fortaleza: distribución, catálogo, certs empresariales</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:68%;background:#818cf8"></div></div>
+        </div>
+        <div class="sc-score-block">
+          <div class="sc-score" style="color:#818cf8">68</div>
+          <div class="sc-of">/100</div>
+        </div>
+      </div>
+
+      <div class="sc-row">
+        <div class="sc-left">
+          <div class="sc-name">Duolingo</div>
+          <div class="sc-meta">50 M+ usuarios · Fortaleza: gamificación, FSRS, red masiva, apps #1</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:65%;background:#818cf8"></div></div>
+        </div>
+        <div class="sc-score-block">
+          <div class="sc-score" style="color:#818cf8">65</div>
+          <div class="sc-of">/100</div>
+        </div>
+      </div>
+
+      <div class="sc-row">
+        <div class="sc-left">
+          <div class="sc-name">Brilliant</div>
+          <div class="sc-meta">8 M+ usuarios · Fortaleza: calidad pedagógica, interactividad STEM</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:63%;background:#818cf8"></div></div>
+        </div>
+        <div class="sc-score-block">
+          <div class="sc-score" style="color:#818cf8">63</div>
+          <div class="sc-of">/100</div>
+        </div>
+      </div>
+
+      <div class="sc-row">
+        <div class="sc-left">
+          <div class="sc-name">Educative.io</div>
+          <div class="sc-meta">1 M+ usuarios · Fortaleza: catálogo coding interviews, texto interactivo<br><small style="color:var(--success)">0 gamificación · 0 adaptativo · 0 bilingüe · 0 mobile real</small></div>
+          <div class="bar-bg"><div class="bar-fill" style="width:51%;background:#818cf8"></div></div>
+        </div>
+        <div class="sc-score-block">
+          <div class="sc-score" style="color:#818cf8">51</div>
+          <div class="sc-of">/100</div>
+        </div>
+      </div>
+
+      <div class="sc-row self">
+        <div class="sc-left">
+          <div class="sc-name">Whetzy <span style="font-size:12px;font-weight:400;color:var(--muted)">(ahora — ~0 usuarios)</span></div>
+          <div class="sc-meta">Fortaleza: motor, tutor IA, bilingüe · Debilidad crítica: distribución = 0</div>
+          <div class="bar-bg" style="background:var(--surface)"><div class="bar-fill" style="width:44%;background:var(--accent)"></div></div>
+        </div>
+        <div class="sc-score-block">
+          <div class="sc-score" style="color:var(--accent)">44</div>
+          <div class="sc-of">/100</div>
+        </div>
+      </div>
+
+      <div class="sc-row self-ceiling">
+        <div class="sc-left">
+          <div class="sc-name" style="color:var(--muted)">Whetzy <span style="font-size:12px;font-weight:400">(techo real — backlog cerrado + 30 beta users)</span></div>
+          <div class="sc-meta">Con stores + social login + 30 usuarios activos verificados</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:66%;background:var(--accent);opacity:.5"></div></div>
+        </div>
+        <div class="sc-score-block">
+          <div class="sc-score" style="color:var(--muted)">~66</div>
+          <div class="sc-of">/100</div>
+        </div>
+      </div>
+    </div>
+
+    <p>El gap con DataCamp no es de ingeniería. Tu motor adaptativo ya supera al de Educative y está más cerca de Brilliant que de cero. Lo que falta es el 34 % que solo se mueve con usuarios reales.</p>
+  </section>
+
+  <hr>
+
+  <!-- SECTION 03 -->
+  <section>
+    <div class="sec-num">03 — competencia</div>
+    <h2>¿Puedes alcanzar o superar a estos competidores?</h2>
+
+    <p>La respuesta depende de qué significa "superar". En mercado global no tiene sentido intentarlo. En tu nicho real, la pregunta es diferente y la respuesta es mucho más interesante.</p>
+
+    <div class="prob-grid">
+      <div class="prob-card bad">
+        <div class="prob-title">Superar a Duolingo o DataCamp globalmente</div>
+        <div class="prob-pct">&lt;3%</div>
+        <div class="prob-body">Tienen 10–50 M usuarios, budgets de $100 M+/año, 500+ personas, y efectos de red que se auto-componen. Alcanzarlos en usuarios requeriría un hit viral de escala TikTok o una adquisición estratégica. No es el juego.</div>
+      </div>
+      <div class="prob-card warn">
+        <div class="prob-title">Igualar a Educative en score auditable</div>
+        <div class="prob-pct">~70%</div>
+        <div class="prob-body">Educative tiene 0 gamificación, 0 adaptativo real, 0 bilingüe, 0 mobile. Con el backlog cerrado y ~1,000 usuarios activos, Whetzy ya supera su score técnico. El cuándo depende solo de distribución, no de producto.</div>
+      </div>
+      <div class="prob-card good">
+        <div class="prob-title">Dominar el nicho hispanohablante Python → IA</div>
+        <div class="prob-pct">50–65%</div>
+        <div class="prob-body">Ninguno de los cuatro sirve al learner hispanohablante que quiere Python serio + certs de IA con gamificación en móvil. Ese segmento son ~50 M personas. Ganarlo no requiere vencer a Duolingo; requiere llegar antes que ellos decidan que vale la pena.</div>
+      </div>
+    </div>
+
+    <h3>La ventaja real no es tecnológica, es de timing</h3>
+    <p>DataCamp tiene 10 M usuarios pero el 95 % habla inglés. Brilliant tiene 8 M pero ninguno busca certificaciones AWS o CompTIA Security+. Duolingo no tiene un track de Python con duelos y tutor IA. Educative no tiene app mobile que valga. </p>
+    <p>Tu ventaja es que ninguno de estos cuatro ha decidido construir específicamente para el profesional hispanohablante que quiere aprender Python serio con ruta hacia IA. Ese mercado existe, tiene dinero para pagar $10–20/mes por una herramienta que funcione, y ninguno lo está trabajando activamente. Llegar con calidad suficiente antes de que alguno lo haga es el único camino real.</p>
+
+    <div class="callout success">
+      <strong>El marco correcto:</strong> No "superar a Duolingo". Sí "ser la referencia para Python→IA en español, un mercado de 50 M personas que los cuatro competidores ignoran". Ese es un objetivo alcanzable y con valor real.
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- SECTION 04 -->
+  <section>
+    <div class="sec-num">04 — ingresos</div>
+    <h2>Proyección de ingresos a 20,000 usuarios</h2>
+
+    <p>Planes: <strong>Free $0</strong> · <strong>Pro $9.99/mes</strong> · <strong>Premium $19.99/mes</strong>. Las tasas de conversión de edtech con gamificación fuerte y nicho definido oscilan entre 5–15 %. Los tres escenarios asumen distribución orgánica/paid normal sin un spike viral.</p>
+
+    <div class="rev-grid">
+      <div class="rev-card">
+        <div class="rev-name">Conservador</div>
+        <div class="rev-total">$26K</div>
+        <div class="rev-period">bruto / mes</div>
+        <div class="rev-lines">
+          <div class="rv"><span>Free (90 % · 18,000)</span><span class="rv-num">$0</span></div>
+          <div class="rv"><span>Pro 9.99 (7 % · 1,400)</span><span class="rv-num">$13,986</span></div>
+          <div class="rv"><span>Premium 19.99 (3 % · 600)</span><span class="rv-num">$11,994</span></div>
+          <div class="rv total-line"><span>Neto tras costos</span><span class="rv-num">~$25K</span></div>
+        </div>
+      </div>
+
+      <div class="rev-card base">
+        <div class="base-badge">BASE</div>
+        <div class="rev-name">Escenario base</div>
+        <div class="rev-total">$40K</div>
+        <div class="rev-period">bruto / mes</div>
+        <div class="rev-lines">
+          <div class="rv"><span>Free (85 % · 17,000)</span><span class="rv-num">$0</span></div>
+          <div class="rv"><span>Pro 9.99 (10 % · 2,000)</span><span class="rv-num">$19,980</span></div>
+          <div class="rv"><span>Premium 19.99 (5 % · 1,000)</span><span class="rv-num">$19,990</span></div>
+          <div class="rv total-line"><span>Neto tras costos</span><span class="rv-num">~$38.5K</span></div>
+        </div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rev-name">Optimista</div>
+        <div class="rev-total">$60K</div>
+        <div class="rev-period">bruto / mes</div>
+        <div class="rev-lines">
+          <div class="rv"><span>Free (78 % · 15,600)</span><span class="rv-num">$0</span></div>
+          <div class="rv"><span>Pro 9.99 (14 % · 2,800)</span><span class="rv-num">$27,972</span></div>
+          <div class="rv"><span>Premium 19.99 (8 % · 1,600)</span><span class="rv-num">$31,984</span></div>
+          <div class="rv total-line"><span>Neto tras costos</span><span class="rv-num">~$57.5K</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Costos operativos a 20,000 usuarios</h3>
+    <table class="infra-table">
+      <thead>
+        <tr><th>Servicio</th><th>Costo mensual estimado</th><th>Nota</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Railway (API + PostgreSQL)</td><td>$150–400</td><td>Autoscale a la demanda</td></tr>
+        <tr><td>Cloudflare Pages</td><td>$0–20</td><td>Free tier es amplio; Pro si superas límites</td></tr>
+        <tr><td>Groq API (tutor IA)</td><td>$50–200</td><td>Depende de uso del tutor por sesión</td></tr>
+        <tr><td>RevenueCat (IAP)</td><td>$0 → $119</td><td>Gratis hasta $2.5K MRR, luego 1.25%</td></tr>
+        <tr><td>Stripe (web)</td><td>2.9% + $0.30/tx</td><td>~$1,100–1,700 en escenario base</td></tr>
+        <tr><td><strong>Total costos</strong></td><td><strong>$1,400–2,400/mes</strong></td><td><strong>Menos del 6% de ingresos en escenario base</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Upside adicional: Marketplace de certificaciones (Fase 10)</h3>
+    <p>Si el 5 % de 20 K usuarios compra 1 prep de certificación al año a $49 (AWS CP, CompTIA Sec+, etc.) usando únicamente fuentes libres (ADR-11), son 1,000 × $49 = <strong>$49,000/año adicionales</strong> (~$4,000/mes) sin costo incremental de contenido.</p>
+
+    <div class="callout success">
+      <strong>Resumen:</strong> A 20 K usuarios con conversión edtech normal, Whetzy genera entre <strong>$25 K y $58 K brutos por mes</strong>. Escenario base: ~$38–40 K/mes → <strong>~$460 K/año</strong>. En IKE griega con 9% flat, la carga fiscal es baja. Los costos de infraestructura son mínimos (&lt; 6%). El multiplicador real está en la Fase 10 y en el churn: cada mes que un usuario paga y no se va vale más que el CAC.
+    </div>
+
+    <div class="callout warn">
+      <strong>La variable que manda sobre todo:</strong> llegar a 20 K usuarios. El producto está; la monetización es trivial de encender (Stripe ya está en el roadmap). La única palanca que importa ahora mismo es distribución — SEO, redes, comunidad, boca a boca en LatAm. Sin usuarios, los escenarios de arriba son teoría.
+    </div>
+  </section>
+
+</div>

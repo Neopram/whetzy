@@ -1,0 +1,688 @@
+<title>Whetzy — Hito 1M Usuarios</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --bg: #f3f5fb;
+  --surface: #ffffff;
+  --surface-2: #edf0f8;
+  --border: #dde2ef;
+  --text: #080d1c;
+  --muted: #59688a;
+  --accent: #1CB0F6;
+  --accent-lo: rgba(28,176,246,0.10);
+  --s1: #1CB0F6;   /* subs */
+  --s2: #f59e0b;   /* certs */
+  --s3: #16a34a;   /* boots async */
+  --s4: #a78bfa;   /* boots live */
+  --s5: #fb923c;   /* marketplace */
+  --success: #16a34a;
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --body: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #060910;
+    --surface: #0e1422;
+    --surface-2: #141d30;
+    --border: #1f2d48;
+    --text: #e5ecff;
+    --muted: #7b8fb5;
+    --accent: #3dc3ff;
+    --accent-lo: rgba(61,195,255,0.10);
+    --s1: #3dc3ff;
+    --s2: #fbbf24;
+    --s3: #4ade80;
+    --s4: #c4b5fd;
+    --s5: #fb923c;
+    --success: #4ade80;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #060910;
+  --surface: #0e1422;
+  --surface-2: #141d30;
+  --border: #1f2d48;
+  --text: #e5ecff;
+  --muted: #7b8fb5;
+  --accent: #3dc3ff;
+  --accent-lo: rgba(61,195,255,0.10);
+  --s1: #3dc3ff;
+  --s2: #fbbf24;
+  --s3: #4ade80;
+  --s4: #c4b5fd;
+  --s5: #fb923c;
+  --success: #4ade80;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.65;
+  padding-inline: 20px;
+  padding-block: 44px 96px;
+}
+.doc { max-width: 880px; margin: 0 auto; }
+
+/* ── Header ── */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+h1 {
+  font-family: var(--display);
+  font-size: clamp(28px, 6vw, 54px);
+  font-weight: 800;
+  letter-spacing: -.028em;
+  line-height: 1.04;
+  margin-bottom: 16px;
+  text-wrap: balance;
+}
+h1 .hi { color: var(--accent); }
+.header-sub { font-size: 14px; color: var(--muted); max-width: 520px; line-height: 1.6; margin-bottom: 48px; }
+
+/* ── Hero block ── */
+.hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.hero-left {
+  padding: 32px 36px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 240px;
+}
+
+.hero-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.hero-yr {
+  font-family: var(--mono);
+  font-size: clamp(42px, 7vw, 68px);
+  font-weight: 600;
+  color: var(--success);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+
+.hero-mo {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.hero-mo span {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.hero-right {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.hero-right-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.stream-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.stream-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.stream-name { flex: 1; color: var(--muted); }
+.stream-val {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: right;
+  min-width: 80px;
+}
+
+.stream-divider {
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+.stream-row.total .stream-name { color: var(--text); font-weight: 600; }
+.stream-row.total .stream-val { color: var(--text); font-weight: 600; font-size: 15px; }
+
+@media (max-width: 580px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 20px; min-width: unset; }
+  .hero-right { padding: 20px 20px; }
+}
+
+/* ── Stack bar ── */
+.big-bar-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 36px;
+}
+.big-bar-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.big-bar {
+  display: flex;
+  height: 22px;
+  border-radius: 8px;
+  overflow: hidden;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+.big-bar div { border-radius: 4px; }
+
+.bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+.bl-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.bl-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.bl-val { font-family: var(--mono); font-size: 11.5px; color: var(--text); }
+
+/* ── Sections ── */
+h2 {
+  font-family: var(--display);
+  font-size: clamp(17px, 3vw, 22px);
+  font-weight: 700;
+  letter-spacing: -.015em;
+  margin-bottom: 16px;
+  text-wrap: balance;
+}
+
+/* ── Streams detail ── */
+.streams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 44px;
+}
+
+.stream-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+  border-top: 3px solid transparent;
+}
+
+.sc-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.sc-mo {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.sc-yr {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.sc-logic { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.sc-logic strong { color: var(--text); font-weight: 500; }
+
+.sc-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.tag-existing { background: rgba(28,176,246,0.1); color: var(--accent); }
+.tag-unlocked { background: rgba(167,139,250,0.12); color: var(--s4); }
+.tag-marketplace { background: rgba(251,146,60,0.12); color: var(--s5); }
+
+/* ── Costs table ── */
+.costs-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 44px;
+  font-variant-numeric: tabular-nums;
+}
+.costs-table thead th {
+  background: var(--surface-2);
+  padding: 9px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.costs-table thead th:last-child { text-align: right; }
+.costs-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+}
+.costs-table tbody tr:nth-child(even) td { background: var(--surface-2); }
+.costs-table tbody tr:last-child td { border-bottom: none; background: var(--surface-2); font-weight: 600; }
+.costs-table td:last-child { text-align: right; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.costs-table tr:last-child td:last-child { color: var(--text); }
+.costs-table td .tag-new {
+  display: inline-flex; font-size: 9px; font-family: var(--mono); font-weight: 600;
+  background: rgba(167,139,250,0.12); color: var(--s4);
+  padding: 1px 6px; border-radius: 3px; margin-left: 6px;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* ── Comparison ── */
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin-bottom: 44px;
+}
+.comp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+}
+.comp-card.whetzy { border-color: var(--accent); background: var(--accent-lo); }
+.comp-name { font-size: 14px; font-weight: 700; font-family: var(--display); margin-bottom: 4px; }
+.comp-users { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.comp-arr { font-family: var(--mono); font-size: 22px; font-weight: 600; line-height: 1; margin-bottom: 2px; }
+.comp-card.whetzy .comp-arr { color: var(--accent); }
+.comp-label { font-size: 11px; color: var(--muted); }
+
+/* ── Team note ── */
+.team-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 36px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.team-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.team-text { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.team-text strong { color: var(--text); }
+
+/* ── Callout ── */
+.callout {
+  padding: 14px 18px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-lo);
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+.callout strong { color: var(--accent); }
+.callout.warn { border-color: var(--s2); background: rgba(245,158,11,0.08); }
+.callout.warn strong { color: var(--s2); }
+
+/* ── Unlock checklist ── */
+.unlock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  margin-bottom: 36px;
+}
+.unlock-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+}
+.unlock-title { font-family: var(--display); font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+.unlock-list { display: flex; flex-direction: column; gap: 8px; }
+.unlock-item { display: flex; gap: 10px; font-size: 13px; align-items: flex-start; }
+.u-icon { flex-shrink: 0; margin-top: 1px; }
+.u-text { line-height: 1.4; }
+.u-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.note { font-size: 12px; color: var(--muted); line-height: 1.55; }
+</style>
+
+<div class="doc">
+  <div style="border:2px solid var(--s2);background:rgba(245,158,11,0.08);border-radius:10px;padding:12px 16px;margin-bottom:28px;font-size:13px;line-height:1.5"><strong style="color:var(--s2)">NOTA (2026-09-18, sesión bf):</strong> escenario hipotético. Las cifras de coste de equipo, vídeo y marketplace son estimaciones de mercado, no del ledger. El marketplace de creadores está explícitamente pospuesto hasta ≥ 100 usuarios activos (<code>CATALOGO_MAESTRO.md</code> §9) y «NO voice» es una decisión cerrada; nada de esta página autoriza a reabrirlas.</div>
+
+  <!-- Header -->
+  <div style="margin-bottom:44px">
+    <div class="eyebrow">Hito hipotético — 1,000,000 usuarios</div>
+    <h1>Whetzy desbloqueada:<br><span class="hi">¿cuánto genera</span> a escala real?</h1>
+    <p class="header-sub">Cinco fuentes de ingreso activas, incluyendo live bootcamps e instructor marketplace. Números netos después de equipo, infraestructura y 9% IKE. Con honestidad brutal.</p>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-label">Neto anual estimado</div>
+      <div class="hero-yr">$30.4M</div>
+      <div class="hero-mo">~<span>$2,535,000</span>/mes neto</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-title">5 fuentes de ingreso — gross/mes</div>
+      <div class="stream-row">
+        <span class="stream-dot" style="background:var(--s1)"></span>
+        <span class="stream-name">Suscripciones Pro + Premium</span>
+        <span class="stream-val" style="color:var(--s1)">$1,998,500</span>
+      </div>
+      <div class="stream-row">
+        <span class="stream-dot" style="background:var(--s2)"></span>
+        <span class="stream-name">Certificaciones (4% × $49/año)</span>
+        <span class="stream-val" style="color:var(--s2)">$163,333</span>
+      </div>
+      <div class="stream-row">
+        <span class="stream-dot" style="background:var(--s3)"></span>
+        <span class="stream-name">Bootcamps self-paced (3% × $99/año)</span>
+        <span class="stream-val" style="color:var(--s3)">$247,500</span>
+      </div>
+      <div class="stream-row">
+        <span class="stream-dot" style="background:var(--s4)"></span>
+        <span class="stream-name">Bootcamps live <em style="font-size:11px;color:var(--muted);font-style:normal">(desbloqueado)</em></span>
+        <span class="stream-val" style="color:var(--s4)">$373,750</span>
+      </div>
+      <div class="stream-row">
+        <span class="stream-dot" style="background:var(--s5)"></span>
+        <span class="stream-name">Instructor marketplace 30% <em style="font-size:11px;color:var(--muted);font-style:normal">(desbloqueado)</em></span>
+        <span class="stream-val" style="color:var(--s5)">$450,000</span>
+      </div>
+      <div class="stream-divider"></div>
+      <div class="stream-row total">
+        <span class="stream-dot" style="background:transparent"></span>
+        <span class="stream-name">Gross total / mes</span>
+        <span class="stream-val">$3,233,083</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stacked bar -->
+  <div class="big-bar-wrap">
+    <div class="big-bar-title">Composición del ingreso bruto mensual ($3.23M)</div>
+    <div class="big-bar">
+      <div style="flex:1999;background:var(--s1)"></div>
+      <div style="flex:163;background:var(--s2)"></div>
+      <div style="flex:248;background:var(--s3)"></div>
+      <div style="flex:374;background:var(--s4)"></div>
+      <div style="flex:450;background:var(--s5)"></div>
+    </div>
+    <div class="bar-legend">
+      <div class="bl-item"><span class="bl-dot" style="background:var(--s1)"></span>Suscripciones <span class="bl-val">$2.0M (61.8%)</span></div>
+      <div class="bl-item"><span class="bl-dot" style="background:var(--s2)"></span>Certs <span class="bl-val">$163K (5.1%)</span></div>
+      <div class="bl-item"><span class="bl-dot" style="background:var(--s3)"></span>Boots async <span class="bl-val">$248K (7.7%)</span></div>
+      <div class="bl-item"><span class="bl-dot" style="background:var(--s4)"></span>Boots live <span class="bl-val">$374K (11.6%)</span></div>
+      <div class="bl-item"><span class="bl-dot" style="background:var(--s5)"></span>Marketplace <span class="bl-val">$450K (13.9%)</span></div>
+    </div>
+  </div>
+
+  <!-- Streams detail -->
+  <h2>Detalle por fuente de ingreso</h2>
+  <div class="streams-grid">
+    <div class="stream-card" style="border-top-color:var(--s1)">
+      <div class="sc-tag tag-existing">Ya existe</div>
+      <div class="sc-label">Suscripciones</div>
+      <div class="sc-mo" style="color:var(--s1)">$1,998,500</div>
+      <div class="sc-yr">$23,982,000/año</div>
+      <div class="sc-logic"><strong>100K Pro</strong> ($9.99) + <strong>50K Premium</strong> ($19.99) = 15% de 1M pagan mensualmente.</div>
+    </div>
+    <div class="stream-card" style="border-top-color:var(--s2)">
+      <div class="sc-tag tag-existing">Fase 10</div>
+      <div class="sc-label">Certificaciones</div>
+      <div class="sc-mo" style="color:var(--s2)">$163,333</div>
+      <div class="sc-yr">$1,960,000/año</div>
+      <div class="sc-logic"><strong>40,000 usuarios/año</strong> (4%) compran 1 prep a $49 avg. Solo fuentes libres (ADR-11).</div>
+    </div>
+    <div class="stream-card" style="border-top-color:var(--s3)">
+      <div class="sc-tag tag-existing">Fase 10</div>
+      <div class="sc-label">Bootcamps self-paced</div>
+      <div class="sc-mo" style="color:var(--s3)">$247,500</div>
+      <div class="sc-yr">$2,970,000/año</div>
+      <div class="sc-logic"><strong>30,000 usuarios/año</strong> (3%) compran 1 bootcamp async de 4-8 sem. a $99 avg.</div>
+    </div>
+    <div class="stream-card" style="border-top-color:var(--s4)">
+      <div class="sc-tag tag-unlocked">Desbloqueado</div>
+      <div class="sc-label">Bootcamps live</div>
+      <div class="sc-mo" style="color:var(--s4)">$373,750</div>
+      <div class="sc-yr">$4,485,000/año</div>
+      <div class="sc-logic"><strong>15,000 usuarios/año</strong> (1.5%) pagan $299/cohort live. Requiere voz/video — actualmente bloqueado por ADR.</div>
+    </div>
+    <div class="stream-card" style="border-top-color:var(--s5)">
+      <div class="sc-tag tag-marketplace">Desbloqueado</div>
+      <div class="sc-label">Instructor marketplace</div>
+      <div class="sc-mo" style="color:var(--s5)">$450,000</div>
+      <div class="sc-yr">$5,400,000/año</div>
+      <div class="sc-logic"><strong>30% de $1.5M</strong> gross de instructores externos. Requiere Stripe Connect + KYC + soporte multi-rol.</div>
+    </div>
+  </div>
+
+  <!-- Costs -->
+  <h2>Costos a 1M usuarios — la parte que duele</h2>
+  <table class="costs-table">
+    <thead>
+      <tr><th>Concepto</th><th>Nota</th><th>$/mes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Cloud infra (K8s, multi-región, DB clusters)</td><td style="font-size:12px;color:var(--muted)">Railway no alcanza a este nivel — necesitas AWS/GCP</td><td>$35,000</td></tr>
+      <tr><td>Video / streaming <span class="tag-new">nuevo</span></td><td style="font-size:12px;color:var(--muted)">Agora/Daily.co/Zoom SDK a escala</td><td>$25,000</td></tr>
+      <tr><td>AI API (Groq a 1M usuarios)</td><td style="font-size:12px;color:var(--muted)">Tutor IA con uso masivo del motor</td><td>$15,000</td></tr>
+      <tr><td>CDN + Cloudflare Enterprise</td><td style="font-size:12px;color:var(--muted)">Assets, caché global, WAF</td><td>$2,000</td></tr>
+      <tr><td>Payment processing (Stripe 3.5% × $2.78M directo)</td><td style="font-size:12px;color:var(--muted)">Sobre suscripciones + certs + boots</td><td>$97,300</td></tr>
+      <tr><td>Stripe Connect (marketplace) <span class="tag-new">nuevo</span></td><td style="font-size:12px;color:var(--muted)">Pagos a instructores, fraud, KYC</td><td>$15,000</td></tr>
+      <tr><td>Equipo (~10-15 personas remotas) <span class="tag-new">nuevo</span></td><td style="font-size:12px;color:var(--muted)">Ingenieros, soporte, producto — no hay 1M users sin equipo</td><td>$200,000</td></tr>
+      <tr><td>Legal + compliance a escala <span class="tag-new">nuevo</span></td><td style="font-size:12px;color:var(--muted)">Contratos instructores, GDPR, términos de servicio</td><td>$10,000</td></tr>
+      <tr><td><strong>Total costos / mes</strong></td><td style="font-size:12px;color:var(--muted)"><strong>Margen bruto ajustado: ~$2.83M (87.6%)</strong></td><td>$399,300</td></tr>
+    </tbody>
+  </table>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:36px">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-variant-numeric:tabular-nums">
+      <div>
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Gross/mes</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:600;color:var(--text)">$3,233,083</div>
+      </div>
+      <div style="color:var(--muted);font-size:24px;display:flex;align-items:center">−</div>
+      <div>
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Costos/mes</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:600;color:var(--muted)">$399,300</div>
+      </div>
+      <div style="color:var(--muted);font-size:24px;display:flex;align-items:center">−</div>
+      <div>
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">IKE 9%</div>
+        <div style="font-family:var(--mono);font-size:26px;font-weight:600;color:var(--muted)">$298,783</div>
+      </div>
+      <div style="color:var(--muted);font-size:24px;display:flex;align-items:center">=</div>
+      <div>
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--success);margin-bottom:6px">NETO/mes</div>
+        <div style="font-family:var(--mono);font-size:32px;font-weight:700;color:var(--success)">$2,535,000</div>
+        <div style="font-family:var(--mono);font-size:13px;color:var(--success);opacity:.7">$30,420,000 / año</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team note -->
+  <div class="team-note">
+    <span class="team-icon">⚠️</span>
+    <div class="team-text"><strong>La línea de equipo ($200K/mo) cambia todo el modelo mental.</strong> A 1M usuarios ya no eres un indie dev — eres una empresa. El 87% de margen bruto es real, pero entre ese gross y tu bolsillo hay un equipo que construye y mantiene el producto. Los $30.4M son el resultado de la empresa como tal, no necesariamente el tuyo personal como fundador (dependiendo de qué porcentaje retienes en dividendos IKE vs. reinviertes). La IKE griega al 9% aplica sobre el beneficio distribuido.</div>
+  </div>
+
+  <!-- Comparisons -->
+  <h2>Contexto: ¿a qué nivel te pone esto?</h2>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="comp-name">Brilliant</div>
+      <div class="comp-users">~8M usuarios estimados</div>
+      <div class="comp-arr" style="color:var(--muted)">$50–100M</div>
+      <div class="comp-label">ARR estimado (no público)</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">Educative.io</div>
+      <div class="comp-users">~1M usuarios</div>
+      <div class="comp-arr" style="color:var(--muted)">$15–25M</div>
+      <div class="comp-label">ARR estimado</div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">DataCamp</div>
+      <div class="comp-users">~10M usuarios</div>
+      <div class="comp-arr" style="color:var(--muted)">$100M+</div>
+      <div class="comp-label">ARR reportado</div>
+    </div>
+    <div class="comp-card whetzy">
+      <div class="comp-name">Whetzy (hipotético)</div>
+      <div class="comp-users">1M usuarios · todo desbloqueado</div>
+      <div class="comp-arr">$38.8M</div>
+      <div class="comp-label">ARR proyectado (gross)</div>
+    </div>
+  </div>
+
+  <!-- What needs to be unlocked -->
+  <h2>¿Qué hay que construir para desbloquear esto?</h2>
+  <div class="unlock-grid">
+    <div class="unlock-card">
+      <div class="unlock-title" style="color:var(--s4)">Para live bootcamps</div>
+      <div class="unlock-list">
+        <div class="unlock-item">
+          <span class="u-icon">🎥</span>
+          <div>
+            <div class="u-text">Cambiar la ADR de "NO voice"</div>
+            <div class="u-sub">Decisión arquitectural bloqueada — requiere debate explícito del owner.</div>
+          </div>
+        </div>
+        <div class="unlock-item">
+          <span class="u-icon">🔧</span>
+          <div>
+            <div class="u-text">Integración de video SDK (Agora / Daily.co)</div>
+            <div class="u-sub">~4-6 semanas de backend + frontend.</div>
+          </div>
+        </div>
+        <div class="unlock-item">
+          <span class="u-icon">📅</span>
+          <div>
+            <div class="u-text">Cohort management (fechas, inscripción, deadlines)</div>
+            <div class="u-sub">~2-3 semanas adicionales.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title" style="color:var(--s5)">Para instructor marketplace</div>
+      <div class="unlock-list">
+        <div class="unlock-item">
+          <span class="u-icon">💳</span>
+          <div>
+            <div class="u-text">Stripe Connect (pagos a terceros)</div>
+            <div class="u-sub">Verificación de identidad, onboarding de instructores, pagos internacionales.</div>
+          </div>
+        </div>
+        <div class="unlock-item">
+          <span class="u-icon">👥</span>
+          <div>
+            <div class="u-text">Rol instructor + dashboard de cursos</div>
+            <div class="u-sub">Backend multi-rol, panel de creación de contenido, analytics.</div>
+          </div>
+        </div>
+        <div class="unlock-item">
+          <span class="u-icon">⚖️</span>
+          <div>
+            <div class="u-text">Legal: contratos de instructor, calidad, DMCA</div>
+            <div class="u-sub">Sin esto, el marketplace es un pasivo legal, no un activo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>El camino real:</strong> El primer millón de usuarios no llega con live bootcamps ni con instructor marketplace. Llega con el producto que ya tienes funcionando, bien distribuido. Las features desbloqueadas multiplican el ingreso por usuario, pero primero necesitas los usuarios. El modelo base (solo suscripciones + certs + boots async) a 1M usuarios genera <strong>$2.41M gross/mes = $28.9M ARR</strong> — sin tocar las ADRs bloqueadas.
+  </div>
+
+  <div class="callout warn">
+    <strong>Honestidad sobre el $30M:</strong> Este número asume 15% de conversión mantenida a 1M usuarios, que el instructor marketplace funcione a $1.5M gross/mes (competencia de Udemy), y que los live bootcamps conviertan al 1.5%. Son suposiciones razonables pero optimistas. La diferencia entre $15M y $30M ARR a esa escala depende de execution, retención y churn — variables que el código no controla.
+  </div>
+
+  <p class="note">Bases de cálculo: Pro $9.99 × 10% de 1M = 100K users. Premium $19.99 × 5% = 50K users. Certs: 4% × 1M × $49/12. Boots async: 3% × 1M × $99/12. Boots live: 1.5% × 1M × $299/12. Marketplace: $1.5M gross × 30% platform cut. Costos de equipo estimados en 10-15 personas a $15-20K/persona/mes (ingenieros senior + soporte + producto, remote). IKE 9% sobre beneficio neto (ingreso − todos los costos). La comparación con Brilliant/DataCamp usa estimaciones de ARR de fuentes secundarias (no son cifras auditadas).</p>
+
+</div>

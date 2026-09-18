@@ -18,8 +18,11 @@ Frontend: React + Capacitor.
 | Ver la posición frente a la competencia, con pesos fijos (última: §11, Educative y los 3 canales) | `competitive-teardown.md` |
 | Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
 | Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
+| Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
+| Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
 
-Esos son los **diez documentos vivos** (más `store/`). Todo lo demás está en
+Esos son los **once documentos vivos** (más `store/`). `analisis-estrategico/` y
+`legal/` (raíz) no mandan sobre el código. Todo lo demás está en
 `archive/` — incluida la estrategia v3 del dueño, superada por el catálogo — y **no
 manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo.
 

@@ -124,27 +124,35 @@ Nada se marca `DONE` sin salida ejecutable pegada en el ledger.
 | "Tipos limpios" | `mypy`/`tsc` con `0 errors` |
 | "La UI está bien" | Screenshot del Browser pane |
 | "Está desplegado" | HTTP contra la URL pública |
+| "CI está verde" **mientras H.13/H.17 bloqueen Actions** | **Imposible.** Escribe `CI-LOCAL <fecha> exit <n>` con la salida de `scripts/verify_ci_local.ps1` (20.7) **y** el run id que murió en < 10 s. «CI ✓» está prohibido |
 
 Sin evidencia → `BLOCKED` con la razón. Un ledger al 30 % honesto vale más que
 uno al 90 % inflado: el segundo hace que treinta sesiones construyan sobre
 mentiras. Y viola la línea roja 1 — un producto que no se miente a sí mismo no
 puede construirlo un proceso que sí lo hace.
 
+Cada `DONE` pasa antes por el **verificador adversario** de `PROTOCOLO_VERIFICACION.md`
+§7 (ADR-20): la evidencia que queda en la fila es la del verificador, no la del worker.
+
 ---
 
 ## MODELOS
 
-El hilo principal corre en el modelo que fije `settings.json` o la app (Sonnet 4.6
-por defecto; Fable 5.1 cuando el dueño lo elige). No lo cambies desde una sesión.
-Tú decides el modelo de cada subagente:
+El hilo principal corre en el modelo que fije `settings.json` (Sonnet 4.6). No lo
+cambies desde una sesión. **Opus y Fable están prohibidos en sesiones autónomas**
+(ADR-14, propuesta del dueño 2026-09-18: cupo semanal y presupuesto incierto; ninguna
+tarea del backlog es arquitectura irreversible). Tú decides el modelo de cada subagente:
 
 | Modelo | Para | Cómo |
 |---|---|---|
-| **Haiku** | Inventarios, greps masivos, leer 20 archivos, scaffolding repetitivo, formateo, **autoría de contenido por fichero** (preguntas, lecciones, glosario) — **siempre** detrás de la puerta de calidad de `CATALOGO_MAESTRO.md` §7: verificador propio fuera del scratchpad, ejecución real, tildes, sesgo de posición | `Agent` + `model: "haiku"`; bloques grandes con `Workflow` |
-| **Sonnet** | Implementar, verificar, integrar, decidir lo reversible | Tú, o `Agent` + `model: "sonnet"` como worker |
-| **Opus** | Solo arquitectura irreversible: diseño del modelo DKT, threat model, sistema de diseño, límites de servicio | `Agent` + `model: "opus"`. **Máximo 2 por sesión.** Cada uso va a la bitácora |
+| **Haiku** (por defecto) | Inventarios, greps masivos, leer 20 archivos, diffs doc↔código, **verificación adversaria** (`PROTOCOLO_VERIFICACION.md` §7), scaffolding repetitivo, formateo, borradores, **autoría de contenido por fichero** (preguntas, lecciones, glosario) — **siempre** detrás de la puerta de calidad de `CATALOGO_MAESTRO.md` §7: verificador propio fuera del scratchpad, ejecución real, tildes, sesgo de posición | `Agent` + `model: "haiku"`; bloques grandes con `Workflow` |
+| **Sonnet** | Integrar y decidir lo reversible (tú), y como worker **solo** si la tarea escribe en la lista de ficheros de riesgo del protocolo §2 (core, auth/oauth, billing, entitlements, engine, alembic, main, api.ts, App.tsx, `legal/`) o tras dos refutaciones seguidas de un worker Haiku | Tú, o `Agent` + `model: "sonnet"` |
+| ~~Opus~~ / ~~Fable~~ | — | **No.** Si crees que hace falta, es `HUMAN-BLOCKED`: describe la decisión irreversible y sigue con otra tarea |
 
-Antes de Opus: *¿revertir esto costaría semanas?* Si no, Sonnet.
+**Dieta de contexto (ADR-14):** lee `AUTONOMOUS_STATE.md` **por secciones** (`## 0`,
+`## 1`, la serie abierta de menor PRI, `## 3`, últimas 3 filas de `## 6`), nunca entero;
+no leas `STATUS.md` ni `archive/`; un worker recibe rutas exactas y el criterio
+literal, y devuelve ≤ 300 palabras más la salida de sus comandos.
 
 ---
 
@@ -194,6 +202,16 @@ mcp__scheduled-tasks__list_scheduled_tasks
 Así un corte por límite de uso no rompe nada: el siguiente disparo continúa
 donde el ledger diga. Una sesión que no puede arrancar no gasta; una que arranca
 sin trabajo sale en segundos.
+
+### 0b. Cerrojo — una sola sesión sobre el árbol (`PROTOCOLO_VERIFICACION.md` §3)
+```
+mcp__scheduled-tasks__list_task_runs → si hay OTRO run en `running`, sal (una línea en `## 6`).
+Test-Path .session.lock → si existe, tiene < 6 h y no es tuyo, sal igual.
+Escribe .session.lock { sessionId, startedAt, model }; bórralo en tu último paso. (gitignored, tarea 20.0)
+```
+Precedente: sesiones `as`/`at` en el mismo árbol (2026-09-16). Un corte por límite de
+uso no necesita nada más: cada tarea cierra con su commit y ningún worker escribe
+fuera de sus rutas.
 
 ### 1-6. Estado del sistema
 ```powershell

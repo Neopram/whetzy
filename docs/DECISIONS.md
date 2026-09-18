@@ -238,3 +238,131 @@ el registro por email es la fricción máxima; GitHub es lo que un desarrollador
 **Alternativas descartadas:** seguir email-only (conversión); OAuth de Google/GitHub
 sin Apple (rechazo garantizado en revisión); SDK de proveedor en el bundle (línea
 roja 5: redirección pura).
+
+---
+
+> **ADR-14 a ADR-20: estado `PROPUESTA` (sesión bf, 2026-09-18).** Redactados a
+> petición del dueño y **pendientes de su orden explícita**. Hasta entonces las
+> series 20-23 del ledger están `BLOCKED (orden del dueño)` y ninguna sesión las
+> ejecuta. Cuando el dueño confirme, la sesión que lo lea cambia `PROPUESTA` →
+> `ACEPTADA` con la fecha y desbloquea las filas.
+
+## ADR-14 — Modelos y tokens: sin Opus ni Fable en sesiones autónomas; Haiku por defecto (PROPUESTA 2026-09-18)
+
+**Decisión:** El hilo principal autónomo corre en Sonnet 4.6 (`settings.json`, sin
+cambios). Los workers son **Haiku 4.5 por defecto**; Sonnet solo cuando la tarea
+**escribe** en la lista de ficheros de riesgo de `PROTOCOLO_VERIFICACION.md` §2.
+**Opus y Fable quedan prohibidos** en sesiones programadas: si una tarea parece
+necesitarlos, es `HUMAN-BLOCKED`. Dieta de contexto obligatoria: el ledger se lee por
+secciones, `STATUS.md` y `archive/` no se leen, un worker recibe rutas y criterio.
+
+**Razón:** El dueño tiene cupo semanal y presupuesto incierto más allá del
+2026-10-06. Opus/Fable consumen 5-15× más cupo por token que Haiku; el ledger no
+contiene ninguna tarea de arquitectura irreversible que los justifique; y una
+sesión que lee 293 KB de ledger gasta más en leer que en trabajar.
+
+**Alternativas descartadas:** Haiku también como orquestador (las decisiones de qué
+commitear y qué cerrar necesitan juicio; el precedente de sesiones que cerraron
+tareas sin evidencia es el argumento); mantener Opus ≤ 2/sesión (nadie lo ha
+necesitado en 19 series).
+
+## ADR-15 — Coste cero hasta 5.000 usuarios (PROPUESTA 2026-09-18)
+
+**Decisión:** Ningún gasto nuevo —suscripción, add-on, cuenta de desarrollador,
+servicio— sin pasar por `HUMAN-BLOCKED` con el coste en € y la evidencia de que no
+existe alternativa gratuita. Lista blanca de servicios gratuitos: Railway (plan
+actual), Cloudflare Pages/WAF/rate-rules (free), Groq (free tier), proveedor de email
+en free tier, Sentry free, Dependabot, gitleaks, semgrep/bandit OSS, Instatus/Cloudflare
+status free, UptimeRobot free. Todo lo «preparado para 1 M» se construye como
+abstracción con backend gratuito hoy (memoria/DB) y backend de pago detrás de una
+variable de entorno (Redis, réplicas, CDN de pago).
+
+**Razón:** El dueño no tiene liquidez ahora; el valor acumulado es el trabajo. Un
+producto que necesita 5.000 usuarios para pagarse no puede costar antes de tenerlos.
+
+**Alternativas descartadas:** «Preparar para 1 M» comprando infraestructura ahora;
+posponer toda la preparación (las abstracciones cuestan casi nada y evitan reescribir).
+
+## ADR-16 — Rail de pagos y entidad: decidir con datos, no con prisa (PROPUESTA 2026-09-18)
+
+**Decisión:** Antes de activar cobros se ejecutan 21.1 (entidad/fiscalidad) y 21.2
+(rail de pagos). Opciones sobre la mesa: (a) Stripe como particular en Grecia (H.4),
+(b) *Merchant of Record* (Paddle / Lemon Squeezy: ellos liquidan IVA UE/OSS, sales tax
+EE. UU. y facturan; pagan al particular), (c) solo IAP de tiendas (Apple/Google son
+MoR, 15-30 %). **Revolut personal**: solo para recibir pagos de prueba; sus
+condiciones prohíben uso comercial continuado, así que la investigación debe decir
+cuándo y con qué coste se pasa a Revolut Business (plan €0) o a cuenta de empresa.
+Entidad: se mantiene la decisión previa (autónomo griego → IKE a €2 K MRR) **hasta que
+21.1 demuestre con fuentes oficiales fechadas** que otra vía (e-Residency, LLC) es
+legal para un residente fiscal en Grecia y más barata en total.
+
+**Razón:** Hoy no hay ingresos ni empresa; el error caro es cobrar sin IVA/OSS
+correcto o usar una cuenta personal contra sus términos. Un MoR elimina casi todo
+ese riesgo a cambio de ~5 % y no requiere sociedad.
+
+**Alternativas descartadas:** Activar Stripe live sin investigación; constituir
+sociedad ahora (coste fijo sin ingresos).
+
+## ADR-17 — Español e inglés son dos segmentos, un producto (PROPUESTA 2026-09-18)
+
+**Decisión:** Un usuario ve **un solo idioma** en toda su experiencia: UI, contenido,
+tutor, emails, push, PDF, páginas legales, tienda y landing. Nunca hay fallback
+silencioso al otro idioma: si una pieza no existe en el idioma del usuario, se oculta
+y se registra como deuda, no se muestra en el otro. Landing/SEO/pricing/soporte se
+diseñan por segmento (`/es`, `/en`, monedas y comunidades distintas). La paridad de
+contenido sigue siendo obligatoria (línea roja 3); la **experiencia** no se mezcla.
+
+**Razón:** Orden del dueño («sin combinar idiomas, son dos segmentos separados»). El
+comprador hispanohablante y el anglófono llegan por canales, precios y competidores
+distintos; una pantalla mezclada destruye la confianza en ambos.
+
+**Alternativas descartadas:** Fallback al inglés cuando falte español (la deuda se
+esconde); dos productos separados (duplica todo).
+
+## ADR-18 — Despliegue autónomo: un solo push verificado por sesión (PROPUESTA 2026-09-18; resuelve H.16)
+
+**Decisión:** Las sesiones autónomas commitean en `master` **en local** y hacen
+**un único `git push origin master` al final de la sesión**, solo con las cuatro
+guardias en verde (`pytest tests/content`, `check_question_bank.py`, `check_docs.py`,
+`npm run build`) y el verificador adversario aplicado a cada `DONE` de la sesión.
+Migraciones: solo aditivas, con `downgrade` probado, y **nunca** en el mismo push que
+un cambio de contenido. Si una guardia falla, no hay push; la sesión lo anota y el
+siguiente disparo lo arregla primero. (Es la opción 1 de H.16 conservando la
+autonomía: el «humano» que decide el merge es la puerta de verificación.)
+
+**Razón:** `push` despliega (H.16) y provoca 60-90 s de 502; 28 pushes en un día
+(sesión ar) son 28 cortes y 28 oportunidades de romper prod. Una rama separada
+obligaría al dueño a hacer merges a mano, lo que contradice «control total mientras
+duermo».
+
+**Alternativas descartadas:** desconectar el auto-deploy (nadie despliega); rama +
+merge humano (rompe la autonomía); seguir pusheando por tarea.
+
+## ADR-19 — Preparado para un millón sin pagar por un millón (PROPUESTA 2026-09-18)
+
+**Decisión:** Lo que se construye ahora para escala es **arquitectura, no
+infraestructura**: rate limiting y caché tras una interfaz con implementación en
+memoria (Redis detrás de `REDIS_URL` vacío), pool de conexiones parametrizado, paginación
+en todo listado, trabajos asíncronos con cola en DB (email, DKT, exports), cabeceras de
+caché en GET públicos, `capacity.md` con la tabla usuarios → réplicas → coste, k6 a
+1.000 VUs contra local, simulacro de restore de backup. Nada de Kubernetes, multi-región
+ni servicios gestionados hasta que el admin (22.1) muestre > 1.000 usuarios activos.
+
+**Razón:** Orden del dueño: empezar al mínimo coste y dejar todo preparado para 1 M.
+Las abstracciones cuestan horas; la infraestructura cuesta euros al mes.
+
+**Alternativas descartadas:** Comprar Redis/réplicas ahora; ignorar la escala hasta que duela.
+
+## ADR-20 — Verificación adversaria obligatoria para cada DONE (PROPUESTA 2026-09-18)
+
+**Decisión:** Ninguna fila del ledger pasa a `DONE` sin el veredicto `CONFIRMADA` de
+un verificador independiente (Haiku, prompt fijo de `PROTOCOLO_VERIFICACION.md` §7)
+que reejecuta la evidencia e intenta refutarla. La evidencia que queda en la fila es
+la del verificador. Mientras Actions esté bloqueado, «CI verde» está prohibido; se
+escribe `CI-LOCAL` con la salida de `scripts/verify_ci_local.ps1` y el run id fallido.
+
+**Razón:** Sesiones am, ao, ar y bf documentan `DONE` falsos o no reproducibles. El
+dueño exige cero errores; el mecanismo más barato es que nadie se verifique a sí mismo.
+
+**Alternativas descartadas:** Confiar en el resumen del worker; verificación solo en
+el cierre (demasiado tarde: ya se construyó encima).

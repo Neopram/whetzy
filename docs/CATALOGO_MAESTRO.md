@@ -127,6 +127,90 @@ Sin libros de pago. Sin PDFs pirateados. Toda fuente citada en una pregunta o le
 
 Lo que esta tabla cambia en el coste: **los tres tracks de 18.4 (Linux, Algoritmos, Redes) tienen fuente [reusar] de libro completo** (Erickson, Peterson/Davie) y ya no dependen de H.LIC; los de cloud (22, 23) y certificaciones de proveedor siguen siendo cita + preguntas propias, como siempre fue.
 
+### 2.2 Repositorios y fuentes a clonar (sesión bf, 2026-09-18 — alimenta 19.7 y la Serie 20)
+
+Reglas de uso, por encima de la tabla:
+
+1. **Clonar fuera del repo**: `git clone --depth 1 <url> C:\Users\feder\whetzy-sources\<nombre>` (fuera de Desktop/Documents por *Controlled Folder Access*; la carpeta no se versiona).
+2. **La licencia que manda es el fichero `LICENSE`/`NOTICE` del commit clonado**, no esta tabla. Al clonar se anota `sha`, fecha y licencia leída en `content/sources/index.json` (19.7). Si difiere de la columna «Licencia», gana el fichero y se corrige la tabla **en el mismo commit**. `scripts/check_source_licenses.py` (20.5) lo comprueba.
+3. Muchos repos tienen **código y prosa con licencias distintas** (columna «Qué extraer»). Código MIT/BSD/Apache es [reusar] aunque el texto sea (cita).
+4. Docs de proveedor (AWS, Azure, GCP, CompTIA, ISC2) son (cita) salvo donde se indique CC BY: se leen, se escribe original, se enlaza.
+5. Marca `verificar` = licencia probable pero no confirmada por esta sesión; **no se extrae nada** hasta que 20.5 la confirme.
+
+| Área | Repositorio / fuente | Licencia (esperada) | Marca | Qué extraer |
+|---|---|---|---|---|
+| Python | `github.com/python/cpython` (`Doc/`) | PSF-2.0 | [reusar] | tutorial, referencia de biblioteca, ejemplos |
+| Python | `github.com/python/python-docs-es` | PSF-2.0 | [reusar] | **la misma docs en español nativo** |
+| Python | `github.com/python/peps` | dominio público / Open Publication (cabecera de cada PEP) | [reusar] verificar por PEP | PEP 8, 20, 484, 557, 3107… |
+| Python | `github.com/exercism/python` | MIT | [reusar] | ejercicios con tests (moldes de `fill_blank_exec`) |
+| Python | `github.com/TheAlgorithms/Python` | MIT | [reusar] | implementaciones de referencia |
+| Python | `github.com/realpython/materials` | MIT (código) | [reusar] código · (cita) artículos | snippets ejecutables |
+| Python | `github.com/fluentpython/example-code-2e` | MIT (código) | [reusar] código · (cita) libro | ejemplos avanzados |
+| Python | `github.com/swaroopch/byte-of-python` | CC BY-SA 4.0 | [H.LIC] | prosa introductoria |
+| Python | OpenStax *Introduction to Python Programming* (openstax.org) | CC BY 4.0 | [reusar] | capítulos completos, ejercicios |
+| Python | `github.com/AllenDowney/ThinkPython` · `github.com/csev/py4e` | CC BY-NC-SA | (cita) | estructura pedagógica, ideas de ejercicios |
+| Algoritmos | `jeffe.cs.illinois.edu/teaching/algorithms` (`github.com/jeffgerickson/algorithms`) | CC BY 4.0 | [reusar] | libro completo |
+| Algoritmos | `github.com/patmorin/ods` (*Open Data Structures*) | CC BY 2.5 | [reusar] | estructuras de datos con código |
+| Algoritmos | `github.com/keon/algorithms` · `github.com/TheAlgorithms/Python` | MIT | [reusar] | implementaciones |
+| Algoritmos | `github.com/yangshun/tech-interview-handbook` | MIT | [reusar] | patrones de entrevista |
+| Algoritmos | `github.com/jwasham/coding-interview-university` | CC BY-SA 4.0 | [H.LIC] | plan de estudio |
+| Ingeniería / Git / QA | `github.com/aosabook/aosabook` | CC BY 3.0 | [reusar] | arquitectura de proyectos reales |
+| Ingeniería / Git / QA | `github.com/google/eng-practices` | CC BY 3.0 | [reusar] | code review |
+| Ingeniería / Git / QA | `github.com/github/docs` | CC BY 4.0 (contenido) · MIT (código) | [reusar] | Git, Actions, PRs |
+| Ingeniería / Git / QA | `github.com/faif/python-patterns` | MIT | [reusar] | patrones con código |
+| Ingeniería / Git / QA | `github.com/pytest-dev/pytest` (`doc/`) · `github.com/microsoft/playwright` (`docs/`) | MIT · Apache-2.0 | [reusar] | testing |
+| Ingeniería / Git / QA | `github.com/progit/progit2` · `progit2-es` · `github.com/git/git` (`Documentation/`, GPL-2) | CC BY-NC-SA 3.0 · GPL-2.0 | (cita) | conceptos; nunca prosa |
+| Arquitectura | `github.com/donnemartin/system-design-primer` | CC BY 4.0 | [reusar] | diseño de sistemas (tiene ES parcial) |
+| Arquitectura | `github.com/heroku/12factor` | verificar (MIT probable) | verificar | doce factores |
+| Arquitectura | `microservices.io` · AWS Well-Architected | propietario | (cita) | patrones |
+| IA / ML | `github.com/microsoft/ML-For-Beginners` · `AI-For-Beginners` · `Data-Science-For-Beginners` · `generative-ai-for-beginners` | MIT (con `translations/es`) | [reusar] | **cursos completos con español nativo** |
+| IA / ML | Google *ML Crash Course* (developers.google.com/machine-learning) | CC BY 4.0 (contenido) · Apache-2.0 (código) | [reusar] | curso, también en ES |
+| IA / ML | `github.com/huggingface/course` | Apache-2.0 | [reusar] | NLP/LLM (tiene ES) |
+| IA / ML | `github.com/probml/pml-book` (Murphy, *Probabilistic ML*) | MIT | [reusar] | libro completo |
+| IA / ML | `github.com/d2l-ai/d2l-en` · `d2l-es` | CC BY-SA 4.0 (texto) · MIT (código) | [H.LIC] texto · [reusar] código | deep learning |
+| IA / ML | `github.com/dair-ai/Prompt-Engineering-Guide` · `github.com/mlabonne/llm-course` | MIT · Apache-2.0 | [reusar] | prompting, LLM engineering |
+| IA / ML | `github.com/Kaggle/learntools` | Apache-2.0 | [reusar] | ejercicios Kaggle Learn |
+| IA / ML | `github.com/scikit-learn/scikit-learn` · `pandas-dev/pandas` · `numpy/numpy` · `pytorch/tutorials` · `keras-team/keras-io` (docs) | BSD-3 · BSD-3 · BSD-3 · BSD-3 · Apache-2.0 | [reusar] | referencia y tutoriales |
+| IA / ML | `github.com/openai/openai-cookbook` · `anthropics/anthropic-cookbook` · `anthropics/courses` · `langchain-ai/langchain` (docs) | MIT · verificar · verificar · MIT | [reusar] / verificar | agentes, tool use, RAG |
+| IA / ML | `github.com/fastai/fastbook` · *UDL* (Prince) · *Deep Learning* (Goodfellow) · *MML* · *ISLP* · *SLP* (Jurafsky) · Nielsen | GPL-3 código / © texto · CC BY-NC-ND · © · © · © · © · CC BY-NC | (cita) | ideas, no prosa |
+| SQL / Datos | `github.com/postgres/postgres` (`doc/`) · sqlite.org/docs | PostgreSQL License · dominio público | [reusar] | referencia SQL |
+| SQL / Datos | `github.com/duckdb/duckdb-web` | MIT | [reusar] | SQL analítico |
+| SQL / Datos | `github.com/wesm/pydata-book` | MIT (código) · CC BY-NC-ND (texto) | [reusar] código · (cita) texto | pandas |
+| SQL / Datos | `github.com/redis/redis-doc` · MongoDB docs | CC BY-SA 4.0 · CC BY-NC-SA 3.0 | [H.LIC] · (cita) | NoSQL |
+| SQL / Datos | *Use The Index, Luke* · pgexercises | CC BY-NC-ND · © | (cita) | índices, ejercicios |
+| Datasets | UCI ML Repository · Eurostat · Our World in Data · `datos.gob.es` · data.gov | CC BY 4.0 · CC BY 4.0 · CC BY 4.0 · CC BY 4.0 · dominio público | [reusar] verificar por dataset | datos para `sql_exec` y DS |
+| Datasets | `github.com/mwaskom/seaborn-data` · `github.com/vega/vega-datasets` | BSD-3 | [reusar] | datasets pequeños |
+| Seguridad | NIST CSRC (SP 800-53/61/63/115/144) · CISA | dominio público (US gov) | [reusar] | controles, respuesta a incidentes |
+| Seguridad | `github.com/OWASP/CheatSheetSeries` · `OWASP/wstg` · `OWASP/Top10` · `OWASP/ASVS` | CC BY-SA 4.0 (ASVS 3.0) | [H.LIC] | checklists |
+| Seguridad | `github.com/mitre-attack/attack-stix-data` | Apache-2.0 (datos) · términos ATT&CK | [reusar] verificar términos | tácticas y técnicas |
+| Seguridad | `github.com/juice-shop/juice-shop` · `swisskyrepo/PayloadsAllTheThings` | MIT | [reusar] (uso defensivo/educativo) | laboratorios |
+| Seguridad | *Crypto 101* · *Handbook of Applied Cryptography* · CIS Controls · Security+ SY0-701 · ISC2 CC outline | (cita) | (cita) | temarios |
+| Frontend / Backend | `github.com/mdn/content` · `mdn/translated-content` (`files/es`) | CC BY-SA 2.5 (prosa) · CC0 (código) | [H.LIC] prosa · [reusar] código | web, **ES nativo** |
+| Frontend / Backend | `github.com/freeCodeCamp/freeCodeCamp` | BSD-3 | [reusar] | currículo completo, **tiene ES** |
+| Frontend / Backend | `github.com/reactjs/react.dev` · `reactjs/es.react.dev` | CC BY 4.0 (contenido) · MIT (código) | [reusar] | React, **ES nativo** |
+| Frontend / Backend | `github.com/fastapi/fastapi` (`docs/es`) · `django/django` (`docs/`) · `pallets/flask` (`docs/`) · `nodejs/node` (`doc/`) | MIT · BSD-3 · BSD-3 · MIT | [reusar] | backend |
+| Frontend / Backend | `github.com/microsoft/TypeScript-Website` | MIT (código) · verificar (handbook) | verificar | TypeScript |
+| Frontend / Backend | `github.com/GoogleChrome/web.dev` | CC BY 4.0 (contenido) · Apache-2.0 (código) | [reusar] | rendimiento, PWA |
+| Frontend / Backend | `github.com/lydiahallie/javascript-questions` · `microsoft/Web-Dev-For-Beginners` · `mattmakai/fullstackpython.com` | MIT | [reusar] | preguntas JS (tiene ES), curso web (tiene ES) |
+| Frontend / Backend | `github.com/expressjs/expressjs.com` | CC BY-SA 3.0 | [H.LIC] | Express |
+| Frontend / Backend | javascript.info · *Eloquent JavaScript* · *YDKJS* · The Odin Project | CC BY-NC-SA (verificar) · CC BY-NC · CC BY-NC-ND · CC BY-NC-SA | (cita) | ideas |
+| Frontend / Backend | RFC 9110-9114 (IETF) | IETF Trust (reproducción con atribución) | [reusar] | HTTP |
+| Linux / Redes | `github.com/SystemsApproach/book` (Peterson/Davie) | CC BY 4.0 | [reusar] | redes, libro completo |
+| Linux / Redes | `github.com/obonaventure/cnp3` (*CNP3*) | CC BY 3.0/4.0 | [reusar] | redes |
+| Linux / Redes | `github.com/exercism/bash` | MIT | [reusar] | ejercicios shell |
+| Linux / Redes | ArchWiki (`wiki.archlinux.org`) | GFDL 1.3 | [H.LIC] | administración |
+| Linux / Redes | *Beej's Guide* · *HPBN* · man-pages (varias) · *TLCL* (Shotts) · Cobbaut · LPI Learning Materials · *OSTEP* · `missing-semester` | © · CC BY-NC-ND · mixtas · CC BY-NC-ND · © · CC BY-NC-ND · © · CC BY-NC-SA | (cita) | temarios, ideas |
+| DevOps / Cloud | `github.com/kubernetes/website` (`content/es`) | CC BY 4.0 | [reusar] | Kubernetes, **ES nativo** |
+| DevOps / Cloud | `github.com/docker/docs` | Apache-2.0 | [reusar] | Docker |
+| DevOps / Cloud | `github.com/prometheus/docs` · `github.com/actions/*` · `github.com/github/docs` | Apache-2.0 · MIT · CC BY 4.0 | [reusar] | observabilidad, CI/CD |
+| DevOps / Cloud | `github.com/MicrosoftDocs/azure-docs` (archivado; `learn.microsoft.com` ES) | CC BY 4.0 (contenido) · MIT (código) | [reusar] verificar por página | Azure, AZ-900/AI-900/DP-900 |
+| DevOps / Cloud | `cloud.google.com/docs` · `github.com/GoogleCloudPlatform/*` (samples) | CC BY 4.0 · Apache-2.0 | [reusar] | GCP |
+| DevOps / Cloud | `github.com/awsdocs/*` (archivados 2023) · docs.aws.amazon.com | CC BY-SA 4.0 · propietario | [H.LIC] · (cita) | AWS |
+| DevOps / Cloud | `github.com/cncf/curriculum` · HashiCorp docs · Ansible docs · Grafana docs | verificar · verificar (MPL/©) · GPL-3 · AGPL | verificar / (cita) | KCNA/CKA, IaC |
+| Móvil | `github.com/swiftlang/swift-book` · `developer.android.com` · `github.com/JetBrains/kotlin-web-site` · `github.com/flutter/website` · `github.com/facebook/react-native-website` | CC BY 4.0 · CC BY 2.5 · Apache-2.0 · CC BY 4.0 (verificar) · MIT | [reusar] | móvil |
+| Español nativo (transversal) | `python-docs-es` · `*-For-Beginners/translations/es` · `mdn/translated-content` · `kubernetes/website/content/es` · `es.react.dev` · `fastapi/docs/es` · freeCodeCamp ES · `d2l-es` · Microsoft Learn ES · ML Crash Course ES | ver filas | ver filas | **fuentes en español que no son traducción automática**; prioridad para la línea roja 3 |
+| Español (cita) | *Aprende con Alf* · *El Libro de Python* · *Python para todos* (González Duque) · Wikipedia/Wikilibros ES (CC BY-SA → [H.LIC]) | CC BY-NC-SA · verificar · CC BY-NC-SA 2.5 · CC BY-SA | (cita) / [H.LIC] | terminología y enfoque en español |
+
 ---
 
 ## 3. Certificaciones — 55 objetivo, 4 construidas

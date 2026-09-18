@@ -11,6 +11,7 @@ qué hacer; el ledger lo sabe.
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §11)
 - Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login)
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
+- Protocolo de verificación (cada `DONE`, cada doc, modelos y tokens): `docs/PROTOCOLO_VERIFICACION.md`
 - Documentos vivos: los del índice `docs/README.md`; `docs/archive/` no manda
 
 ## Invariantes
@@ -26,11 +27,15 @@ qué hacer; el ledger lo sabe.
 
 ## Modelos
 
-Hilo principal: el que fije la app o `settings.json` (Sonnet 4.6 por defecto; Fable 5.1
-si el dueño lo elige). Subagentes: Haiku para inventarios, lecturas masivas y **autoría
-de contenido por fichero** (siempre con la puerta de calidad de `CATALOGO_MAESTRO.md` §7),
-Sonnet para implementar y verificar, Opus solo arquitectura irreversible y máximo 2 por
-sesión. Bloques de contenido grandes: `Workflow` paralelo, un bloque = un commit verde.
+Hilo principal: el que fije `settings.json` (Sonnet 4.6). **Sesiones autónomas: sin
+Opus ni Fable** (ADR-14, propuesta del dueño 2026-09-18). Subagentes: **Haiku por
+defecto** — inventarios, lecturas masivas, diffs doc↔código, verificación adversaria y
+**autoría de contenido por fichero** (siempre con la puerta de calidad de
+`CATALOGO_MAESTRO.md` §7); Sonnet solo cuando la tarea escribe en la lista de ficheros de
+riesgo de `docs/PROTOCOLO_VERIFICACION.md` §2. Dieta de contexto: el ledger se lee por
+secciones, nunca entero; `STATUS.md` y `archive/` no se leen. Bloques de contenido
+grandes: `Workflow` paralelo, un bloque = un commit verde. Cada `DONE` pasa por el
+verificador adversario (protocolo §7) antes de escribirse.
 
 ## Estilo
 
