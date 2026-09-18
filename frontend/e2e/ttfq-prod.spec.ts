@@ -8,7 +8,7 @@
  * never runs against the local dev server by accident.
  */
 import { test, expect, CDPSession } from '@playwright/test';
-import { registerUser, suppressOnboarding, uniqueUsername } from './helpers';
+import { registerUser, uniqueUsername } from './helpers';
 
 const PROD_URL = process.env.E2E_BASE_URL ?? '';
 

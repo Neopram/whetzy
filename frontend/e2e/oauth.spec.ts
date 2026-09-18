@@ -10,9 +10,8 @@
  *   npx playwright test e2e/oauth.spec.ts
  */
 import { test, expect } from '@playwright/test';
-import { uniqueUsername } from './helpers';
 
-const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:5173';
+export const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:5173';
 const API_URL = process.env.API_BASE_URL ?? 'http://localhost:8000';
 
 test.describe('19.1 — OAuth test provider flow', () => {
