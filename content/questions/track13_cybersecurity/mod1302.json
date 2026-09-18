@@ -35,17 +35,17 @@
     "question_en": "Which of these encryption algorithms is SYMMETRIC?",
     "options_es": [
       "RSA",
-      "AES",
+      "Diffie-Hellman",
       "ECC",
-      "Diffie-Hellman"
+      "AES"
     ],
     "options_en": [
       "RSA",
-      "AES",
+      "Diffie-Hellman",
       "ECC",
-      "Diffie-Hellman"
+      "AES"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AES es encriptación simétrica: misma clave para cifrar y descifrar. RSA, ECC, Diffie-Hellman son asimétricos: clave pública diferente de privada. Simétrica es más rápida pero requiere intercambio seguro de clave.",
@@ -62,17 +62,17 @@
     "question_en": "What is an 'IV' (Initialization Vector) in cryptography?",
     "options_es": [
       "Una segunda clave de encriptación",
-      "Un valor aleatorio que inicializa el modo de cifrado para mayor seguridad",
       "Un número de versión del algoritmo",
+      "Un valor aleatorio que inicializa el modo de cifrado para mayor seguridad",
       "Una contraseña del usuario"
     ],
     "options_en": [
       "A second encryption key",
-      "A random value initializing cipher mode for added security",
       "An algorithm version number",
+      "A random value initializing cipher mode for added security",
       "A user password"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IV es un valor aleatorio (generalmente 128 bits para AES) usado en modos CBC, CTR, GCM. Asegura que el mismo plaintext con misma clave produce ciphertext diferente si IV es diferente. IV no es secreto pero debe ser único.",
@@ -88,18 +88,18 @@
     "question_es": "¿Cuál es el estado de seguridad del algoritmo DES (Data Encryption Standard)?",
     "question_en": "What is the security status of DES (Data Encryption Standard) algorithm?",
     "options_es": [
-      "Sigue siendo seguro para aplicaciones modernas",
       "Obsoleto y quebrado; clave de 56 bits es insuficiente",
+      "Más seguro que AES",
       "Solo seguro para comunicaciones internas",
-      "Más seguro que AES"
+      "Sigue siendo seguro para aplicaciones modernas"
     ],
     "options_en": [
-      "Still secure for modern applications",
       "Obsolete and broken; 56-bit key is insufficient",
+      "More secure than AES",
       "Only safe for internal communications",
-      "More secure than AES"
+      "Still secure for modern applications"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DES es INSEGURO. Su clave de 56 bits puede quebrarse en horas con fuerza bruta. 3DES (Triple DES) con 168 bits es más seguro pero lento. Reemplazado por AES. No usar DES en sistemas nuevos.",
@@ -115,18 +115,18 @@
     "question_es": "¿Cuál es la diferencia entre un 'cipher de flujo' y un 'cipher de bloque'?",
     "question_en": "What is the difference between 'stream cipher' and 'block cipher'?",
     "options_es": [
+      "Block solo para números",
       "No hay diferencia",
-      "Stream: cifra bit/byte por vez; Block: cifra bloques fijos (ej: 128 bits)",
       "Stream es más seguro",
-      "Block solo para números"
+      "Stream: cifra bit/byte por vez; Block: cifra bloques fijos (ej: 128 bits)"
     ],
     "options_en": [
+      "Block only for numbers",
       "No difference",
-      "Stream: encrypts bit/byte at a time; Block: encrypts fixed blocks (e.g., 128 bits)",
       "Stream is more secure",
-      "Block only for numbers"
+      "Stream: encrypts bit/byte at a time; Block: encrypts fixed blocks (e.g., 128 bits)"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Stream cipher: RC4, ChaCha20. Cifra dato bit o byte continuo. Block cipher: AES, DES. Cifra bloques fijos. Modos como CBC convierten block ciphers en stream-like. Ambos tienen uso; stream más rápido, block más versátil.",
@@ -143,17 +143,17 @@
     "question_en": "What is ECB (Electronic Codebook) mode and why is it NOT recommended?",
     "options_es": [
       "Es demasiado rápido",
-      "Cifra cada bloque idénticamente; patrones iguales en plaintext producen ciphertext igual",
+      "No tiene IV",
       "Requiere comunicación externa",
-      "No tiene IV"
+      "Cifra cada bloque idénticamente; patrones iguales en plaintext producen ciphertext igual"
     ],
     "options_en": [
       "It's too fast",
-      "Encrypts each block identically; identical plaintext patterns produce same ciphertext",
+      "It has no IV",
       "Requires external communication",
-      "It has no IV"
+      "Encrypts each block identically; identical plaintext patterns produce same ciphertext"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "ECB (Electronic Codebook): cada bloque se cifra con misma clave, idénticamente. Problema: plaintext idéntico → ciphertext idéntico, revelando patrones. Famoso: imagen ECB vs CBC muestra claramente logo en ECB. Usar CBC, CTR, GCM.",
@@ -169,18 +169,18 @@
     "question_es": "¿Cuál es la ventaja del modo 'CBC' (Cipher Block Chaining) sobre ECB?",
     "question_en": "What is the advantage of CBC (Cipher Block Chaining) mode over ECB?",
     "options_es": [
-      "Es más rápido",
       "Cada bloque depende del anterior; IV aleatorio asegura diferentes ciphertext para mismo plaintext",
       "No requiere IV",
+      "Es más rápido",
       "Solo funciona con DES"
     ],
     "options_en": [
-      "It's faster",
       "Each block depends on previous; random IV ensures different ciphertext for same plaintext",
       "Doesn't require IV",
+      "It's faster",
       "Only works with DES"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CBC: cada bloque depende del anterior (XOR con ciphertext bloque anterior). IV aleatorio. Mismo plaintext + misma clave + diferente IV = diferente ciphertext. Seguro contra ataques de patrón. Standard para HTTPS, SSH.",
@@ -197,17 +197,17 @@
     "question_en": "What is the standard block size for AES?",
     "options_es": [
       "64 bits",
+      "512 bits",
       "128 bits",
-      "256 bits",
-      "512 bits"
+      "256 bits"
     ],
     "options_en": [
       "64 bits",
+      "512 bits",
       "128 bits",
-      "256 bits",
-      "512 bits"
+      "256 bits"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "AES siempre cifra bloques de 128 bits, sin importar tamaño de clave (128, 192, 256). DES usa 64 bits. AES-256 significa clave de 256 bits, pero bloque sigue siendo 128. CTR/GCM conceptualmente cifran más.",
@@ -223,18 +223,18 @@
     "question_es": "¿Cuál es el problema fundamental de la encriptación simétrica?",
     "question_en": "What is the fundamental problem of symmetric encryption?",
     "options_es": [
+      "No es reversible",
       "Es lenta",
       "Intercambio de clave: ambas partes necesitan clave, pero ¿cómo acuerdan sin ser espiadas?",
-      "No es reversible",
       "Solo funciona online"
     ],
     "options_en": [
+      "It's not reversible",
       "It's slow",
       "Key exchange: both parties need key, but how agree without being eavesdropped?",
-      "It's not reversible",
       "Only works online"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Problema de Intercambio de Clave: Alice y Bob necesitan compartir clave secreta, pero canal inseguro. Solución: Diffie-Hellman o encriptación asimétrica (RSA/ECDH) para acordar clave. Luego usar simétrica para velocidad.",
@@ -250,18 +250,18 @@
     "question_es": "¿Qué es 3DES (Triple DES) y cuál es su limitación?",
     "question_en": "What is 3DES (Triple DES) and what is its limitation?",
     "options_es": [
-      "Usa 3 claves de 256 bits cada una",
       "Aplica DES tres veces con diferentes claves; más seguro pero lento",
+      "Usa 3 claves de 256 bits cada una",
       "Usa 3 cifrados diferentes juntos",
       "Solo para datos de 384 bits"
     ],
     "options_en": [
-      "Uses 3 keys of 256 bits each",
       "Applies DES three times with different keys; safer but slow",
+      "Uses 3 keys of 256 bits each",
       "Uses 3 different ciphers together",
       "Only for 384-bit data"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "3DES: E(K3, D(K2, E(K1, plaintext))). Usa 56 bits × 3 = 168 bits clave efectiva. Más seguro que DES pero lento: 3 operaciones por bloque. Reemplazado completamente por AES. No usar en sistemas nuevos.",
@@ -305,17 +305,17 @@
     "question_en": "Why is AES resistant to brute-force attacks compared to DES?",
     "options_es": [
       "Usa matemáticas más complejas",
-      "Requiere mayor poder computacional del adversario",
+      "Clave de 128-256 bits vs 56 bits de DES; 2^128 >> 2^56",
       "No usa XOR",
-      "Clave de 128-256 bits vs 56 bits de DES; 2^128 >> 2^56"
+      "Requiere mayor poder computacional del adversario"
     ],
     "options_en": [
       "Uses more complex math",
-      "Requires adversary to have more compute",
+      "128-256 bit key vs DES's 56 bits; 2^128 >> 2^56",
       "Doesn't use XOR",
-      "128-256 bit key vs DES's 56 bits; 2^128 >> 2^56"
+      "Requires adversary to have more compute"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DES: 2^56 = 72 cuadrillones combinaciones. Con computadora moderna (1B intentos/seg) = quebrante en horas. AES-128: 2^128 (10^38) combinaciones. Incluso con toda energía del universo = imposible. Clave más larga es defensa principal.",
@@ -386,17 +386,17 @@
     "question_en": "What is a 'timing attack' against symmetric encryption?",
     "options_es": [
       "Atacar exactamente a las 12 PM",
-      "Explorar diferencias de tiempo de ejecución para inferir bits de clave",
       "Atacar durante reinicio",
-      "Ataque a sincronización de red"
+      "Ataque a sincronización de red",
+      "Explorar diferencias de tiempo de ejecución para inferir bits de clave"
     ],
     "options_en": [
       "Attack exactly at 12 PM",
-      "Exploit execution time differences to infer key bits",
       "Attack during restart",
-      "Attack network synchronization"
+      "Attack network synchronization",
+      "Exploit execution time differences to infer key bits"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Timing attack: implementación no constante-tiempo revela información. Ejemplo: comparación password que retorna rápido si primer byte es incorrecto. Defensa: operaciones constant-time, enmascaramiento. Criptografía debe ser timing-safe.",
@@ -412,18 +412,18 @@
     "question_es": "¿Cuál es la característica principal de la encriptación asimétrica?",
     "question_en": "What is the main characteristic of asymmetric encryption?",
     "options_es": [
-      "Usa par de claves: pública (cifra) y privada (descifra)",
+      "No necesita intercambio de clave",
       "Usa la misma clave para cifrar y descifrar",
       "Es más rápida que simétrica",
-      "No necesita intercambio de clave"
+      "Usa par de claves: pública (cifra) y privada (descifra)"
     ],
     "options_en": [
-      "Uses key pair: public (encrypts) and private (decrypts)",
+      "No key exchange needed",
       "Uses same key to encrypt and decrypt",
       "It's faster than symmetric",
-      "No key exchange needed"
+      "Uses key pair: public (encrypts) and private (decrypts)"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Encriptación asimétrica: clave pública se distribuye libremente. Clave privada es secreta. Alice cifra con clave pública de Bob; Bob descifra con su privada. Ejemplo: RSA. Matemáticamente basado en funciones de un sentido.",
@@ -440,17 +440,17 @@
     "question_en": "What is a 'digital signature'?",
     "options_es": [
       "Un escaneo de firma manuscrita",
-      "Prueba criptográfica de autoría; usa clave privada para firmar, pública para verificar",
       "Una contraseña",
+      "Prueba criptográfica de autoría; usa clave privada para firmar, pública para verificar",
       "Un certificado digital"
     ],
     "options_en": [
       "A scanned handwritten signature",
-      "Cryptographic proof of authorship; uses private key to sign, public to verify",
       "A password",
+      "Cryptographic proof of authorship; uses private key to sign, public to verify",
       "A digital certificate"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Firma digital: autor cifra hash de documento con clave privada. Receptor descifra con clave pública del autor. Si coincide hash, documento es auténtico (no repudio). Asegura integridad + autenticación + no repudio.",
@@ -467,17 +467,17 @@
     "question_en": "What is the difference between RSA and ECC?",
     "options_es": [
       "RSA es antiguo, ECC es nuevo (ambos funcionan bien)",
-      "Son idénticos",
       "RSA usa factorización; ECC usa problema logaritmo discreto en curvas elípticas",
+      "Son idénticos",
       "RSA es más rápido"
     ],
     "options_en": [
       "RSA is old, ECC is new (both work)",
-      "They're identical",
       "RSA uses factorization; ECC uses discrete logarithm on elliptic curves",
+      "They're identical",
       "RSA is faster"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "RSA: basado en dificultad de factorizar n=p×q. Clave 2048-4096 bits. ECC: basado en logaritmo discreto. Clave 256-384 bits = seguridad equivalente. ECC más rápido, menor almacenamiento. Ambos usados en TLS.",
@@ -494,17 +494,17 @@
     "question_en": "What is 'Diffie-Hellman'?",
     "options_es": [
       "Un algoritmo de encriptación simétrica",
+      "Un sistema de autenticación",
       "Protocolo para acordar clave secreta sobre canal público sin intercambio directo",
-      "Un tipo de firewall",
-      "Un sistema de autenticación"
+      "Un tipo de firewall"
     ],
     "options_en": [
       "A symmetric encryption algorithm",
+      "An authentication system",
       "Protocol to agree on secret key over public channel without direct exchange",
-      "A firewall type",
-      "An authentication system"
+      "A firewall type"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Diffie-Hellman: Alice y Bob intercambian valores públicos, calculan privados. Ambos llegan a clave secreta común. Vulnerable a Man-in-the-Middle si no autentificado. Usado en ECDH (versión curva elíptica). Base de TLS.",
@@ -520,18 +520,18 @@
     "question_es": "¿Qué es una 'Autoridad Certificadora' (CA)?",
     "question_en": "What is a 'Certificate Authority' (CA)?",
     "options_es": [
-      "Entidad de confianza que verifica identidad y emite certificados digitales",
       "Una empresa que vende certificados SSL",
+      "Entidad de confianza que verifica identidad y emite certificados digitales",
       "Un servidor web",
       "Un protocolo de encriptación"
     ],
     "options_en": [
-      "Trusted entity that verifies identity and issues digital certificates",
       "A company that sells SSL certificates",
+      "Trusted entity that verifies identity and issues digital certificates",
       "A web server",
       "An encryption protocol"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CA: entidad de confianza (DigiCert, Let's Encrypt, Comodo). Verifica identidad del solicitante. Emite certificado X.509 firmado con su clave privada. Navegador confía en CA raíz (root store). Cadena de confianza: Root CA → Intermediate CA → End Entity.",
@@ -548,17 +548,17 @@
     "question_en": "What is an 'X.509 certificate'?",
     "options_es": [
       "Un tipo de virus",
-      "Estructura estándar que contiene clave pública, identidad, firma CA",
+      "Un protocolo de red",
       "Un algoritmo de encriptación",
-      "Un protocolo de red"
+      "Estructura estándar que contiene clave pública, identidad, firma CA"
     ],
     "options_en": [
       "A type of virus",
-      "Standard structure containing public key, identity, CA signature",
+      "A network protocol",
       "An encryption algorithm",
-      "A network protocol"
+      "Standard structure containing public key, identity, CA signature"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "X.509: estándar ITU. Contiene: versión, número serie, firma algoritmo, issuer, subject, clave pública, validez (inicio/fin), extensiones. Firmado por CA. Formato: DER (binario), PEM (base64). Usado en HTTPS, LDAP, S/MIME.",
@@ -576,16 +576,16 @@
     "options_es": [
       "Una lista de contraseñas",
       "Un tipo de certificado",
-      "Lista de certificados revocados por CA (clave comprometida, cambio empresa, expiración)",
-      "Un protocolo de encriptación"
+      "Un protocolo de encriptación",
+      "Lista de certificados revocados por CA (clave comprometida, cambio empresa, expiración)"
     ],
     "options_en": [
       "A password list",
       "A certificate type",
-      "List of certificates revoked by CA (compromised key, company change, expiration)",
-      "An encryption protocol"
+      "An encryption protocol",
+      "List of certificates revoked by CA (compromised key, company change, expiration)"
     ],
-    "correct_index": 2,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "CRL: lista de números serie de certificados revocados. Publicada periódicamente por CA. Problema: latencia (descarga periódica), tamaño grande. OCSP (Online Certificate Status Protocol) es alternativa en tiempo real. Navegador verifica CRL/OCSP.",
@@ -601,18 +601,18 @@
     "question_es": "¿Cuál es el tamaño de clave RSA recomendado actualmente?",
     "question_en": "What is the currently recommended RSA key size?",
     "options_es": [
-      "1024 bits",
       "2048 bits para general; 3072-4096 para datos sensibles",
+      "512 bits",
       "16384 bits",
-      "512 bits"
+      "1024 bits"
     ],
     "options_en": [
-      "1024 bits",
       "2048 bits for general; 3072-4096 for sensitive data",
+      "512 bits",
       "16384 bits",
-      "512 bits"
+      "1024 bits"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NIST: RSA-2048 hasta 2030. RSA-3072/4096 para secretos de 30+ años. RSA-1024 es INSEGURO (puede quebrarse en días). RSA-512 quebrado hace 20 años. Migración gradual a ECC recomendada por eficiencia.",
@@ -628,18 +628,18 @@
     "question_es": "¿Cómo funciona ECDH (Elliptic Curve Diffie-Hellman)?",
     "question_en": "How does ECDH (Elliptic Curve Diffie-Hellman) work?",
     "options_es": [
-      "Procesa coordenadas X,Y en la curva; multiplicación puntual sustituye exponenciación",
+      "No requiere clave privada",
       "Igual que DH tradicional pero usando curvas elípticas",
       "Solo para criptografía simétrica",
-      "No requiere clave privada"
+      "Procesa coordenadas X,Y en la curva; multiplicación puntual sustituye exponenciación"
     ],
     "options_en": [
-      "Processes X,Y coordinates on curve; point multiplication replaces exponentiation",
+      "Doesn't require private key",
       "Same as traditional DH but using elliptic curves",
       "Only for symmetric cryptography",
-      "Doesn't require private key"
+      "Processes X,Y coordinates on curve; point multiplication replaces exponentiation"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "ECDH: DH sobre curva elíptica y = x³ + ax + b. Punto base G. Alice: privada a, pública aG. Bob: privada b, pública bG. Secreto compartido: abG (ambos calculan, secreto es coordenada X). 256-bit ECDH ≈ 3072-bit DH.",
@@ -655,18 +655,18 @@
     "question_es": "¿Qué es 'OCSP' (Online Certificate Status Protocol)?",
     "question_en": "What is 'OCSP' (Online Certificate Status Protocol)?",
     "options_es": [
-      "Un protocolo antiguo de encriptación",
       "Permite verificar estado de certificado (válido/revocado) en tiempo real sin descargar CRL",
+      "Un protocolo antiguo de encriptación",
       "Una autoridad certificadora",
       "Un tipo de firma digital"
     ],
     "options_en": [
-      "An old encryption protocol",
       "Allows real-time certificate status check (valid/revoked) without downloading CRL",
+      "An old encryption protocol",
       "A certificate authority",
       "A type of digital signature"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "OCSP: cliente consulta responder OCSP (mantenido por CA) con número serie certificado. Respuesta: válido/revocado con timestamp. Más eficiente que CRL. OCSP Stapling: servidor obtiene respuesta e la incluye en TLS handshake.",
@@ -709,18 +709,18 @@
     "question_es": "¿Cuál es la vulnerabilidad de PKI tradicional (Web CA) y cómo se intenta mitigar?",
     "question_en": "What is the vulnerability of traditional PKI (Web CA) and how is it mitigated?",
     "options_es": [
-      "No hay vulnerabilidad",
+      "100+ CAs en navegador; uno comprometido = todos en riesgo. Mitigación: pinning, DANE, CT",
       "Solo afecta a HTTP",
       "Certificados expiran",
-      "100+ CAs en navegador; uno comprometido = todos en riesgo. Mitigación: pinning, DANE, CT"
+      "No hay vulnerabilidad"
     ],
     "options_en": [
-      "No vulnerability",
+      "100+ CAs in browser; one compromised = all at risk. Mitigation: pinning, DANE, CT",
       "Only affects HTTP",
       "Certificates expire",
-      "100+ CAs in browser; one compromised = all at risk. Mitigation: pinning, DANE, CT"
+      "No vulnerability"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Problema: cualquier CA comprometida (Comodo 2011, DigiNotar 2012) puede emitir certificado falso para cualquier dominio. Mitigaciones: Certificate Transparency (verificar certs en log público), HPKP pinning (fijar clave específica), DANE (DNSSEC binding).",
@@ -764,17 +764,17 @@
     "question_en": "What is the security difference between self-signed and CA-issued certificates?",
     "options_es": [
       "No hay diferencia",
-      "Autofirmado: sujeto = issuer, no verificación externa. CA: issuer = entidad confiable, verificable",
       "Autofirmado es más seguro",
+      "Autofirmado: sujeto = issuer, no verificación externa. CA: issuer = entidad confiable, verificable",
       "Solo relevante para HTTPS"
     ],
     "options_en": [
       "No difference",
-      "Self-signed: subject = issuer, no external verification. CA: issuer = trusted entity, verifiable",
       "Self-signed is more secure",
+      "Self-signed: subject = issuer, no external verification. CA: issuer = trusted entity, verifiable",
       "Only relevant to HTTPS"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Autofirmado: X = signer (sin verificación de identidad). Usuario debe confiar manualmente (navegador warn). CA: X ≠ issuer (CA verificó identidad). Navegador confía automáticamente si CA está en root store. Autofirmado: aceptable para dev, test. CA: producción.",
@@ -817,18 +817,18 @@
     "question_es": "¿Cuál es el propósito de una función hash criptográfica?",
     "question_en": "What is the purpose of a cryptographic hash function?",
     "options_es": [
-      "Producir un valor fijo (digest) único para dato; cualquier cambio produce hash diferente",
-      "Encriptar datos",
       "Generar números aleatorios",
+      "Encriptar datos",
+      "Producir un valor fijo (digest) único para dato; cualquier cambio produce hash diferente",
       "Autenticar usuarios"
     ],
     "options_en": [
-      "Produce a fixed (digest) value unique to data; any change produces different hash",
-      "Encrypt data",
       "Generate random numbers",
+      "Encrypt data",
+      "Produce a fixed (digest) value unique to data; any change produces different hash",
       "Authenticate users"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Hash criptográfica: entrada → salida fija (determinista, no reversible, colisión imposible teóricamente). Usos: HMAC, firmas, integridad, almacenamiento passwords. Ejemplo: SHA-256 produce 256 bits (64 caracteres hex).",
@@ -845,17 +845,17 @@
     "question_en": "What is the security status of MD5?",
     "options_es": [
       "Sigue siendo seguro",
-      "INSEGURO; colisiones encontradas, puede falsificarse",
       "Mejor que SHA-256",
+      "INSEGURO; colisiones encontradas, puede falsificarse",
       "Recomendado para passwords"
     ],
     "options_en": [
       "Still secure",
-      "INSECURE; collisions found, can be forged",
       "Better than SHA-256",
+      "INSECURE; collisions found, can be forged",
       "Recommended for passwords"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "MD5 (128 bits) es quebrado. Colisiones deliberadas encontradas (2004). Attacker puede crear dos archivos diferentes con mismo MD5. No usar para integridad crítica, firmas. SHA-1 también débil pero no completamente comprometido. Usar SHA-256+.",
@@ -871,18 +871,18 @@
     "question_es": "¿Cuál es la recomendación actual de NIST para funciones hash?",
     "question_en": "What is NIST's current recommendation for hash functions?",
     "options_es": [
-      "MD5",
-      "SHA-1",
       "SHA-256 o superior (SHA-3 para futuro)",
+      "SHA-1",
+      "MD5",
       "SHA-512 es el máximo"
     ],
     "options_en": [
-      "MD5",
-      "SHA-1",
       "SHA-256 or better (SHA-3 for future)",
+      "SHA-1",
+      "MD5",
       "SHA-512 is maximum"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NIST: SHA-256 es mandatorio hoy. SHA-512 para futuro (50+ años). SHA-3 es alternativa moderna (Keccak, 2012). NO usar SHA-1 (deprecated), NO usar MD5. Transición a SHA-3 recomendada a largo plazo.",
@@ -925,18 +925,18 @@
     "question_es": "¿Qué es 'HMAC' (Hash-based Message Authentication Code)?",
     "question_en": "What is 'HMAC' (Hash-based Message Authentication Code)?",
     "options_es": [
-      "Combina hash + clave secreta para autenticar mensaje; detecta tampering",
+      "Una función de compresión",
       "Un tipo de malware",
       "Un algoritmo de encriptación",
-      "Una función de compresión"
+      "Combina hash + clave secreta para autenticar mensaje; detecta tampering"
     ],
     "options_en": [
-      "Combines hash + secret key to authenticate message; detects tampering",
+      "A compression function",
       "A type of malware",
       "An encryption algorithm",
-      "A compression function"
+      "Combines hash + secret key to authenticate message; detects tampering"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "HMAC: HMAC-SHA256 = función(clave, mensaje). Ambas partes conocen clave. Verifica: integridad (hash) + autenticidad (clave). Diferencia con firma digital: simétrica vs asimétrica. Usado en OAuth, cookies de sesión, APIs.",
@@ -953,17 +953,17 @@
     "question_en": "What is the security status of SHA-1?",
     "options_es": [
       "Completamente seguro",
-      "Colisiones encontradas; deprecado oficialmente; aún usado en GIT pero no para seguridad",
+      "No tiene limitaciones",
       "Mejor que SHA-256",
-      "No tiene limitaciones"
+      "Colisiones encontradas; deprecado oficialmente; aún usado en GIT pero no para seguridad"
     ],
     "options_en": [
       "Completely secure",
-      "Collisions found; officially deprecated; still used in GIT but not security",
+      "No limitations",
       "Better than SHA-256",
-      "No limitations"
+      "Collisions found; officially deprecated; still used in GIT but not security"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "SHA-1 (160 bits): colisión práctica encontrada (Google 2017, SHAttered). NIST deprecó (2015). Aún en certificates antiguos, GIT (no por seguridad sino compatibilidad). NO usar SHA-1 para integridad crítica. Migrar a SHA-256.",
@@ -980,17 +980,17 @@
     "question_en": "What is 'bcrypt' and when to use it?",
     "options_es": [
       "Una función hash rápida",
-      "Un cifrado simétrico",
       "Algoritmo de hash de passwords con cost adaptable (se ralentiza con tiempo)",
+      "Un cifrado simétrico",
       "Una firma digital"
     ],
     "options_en": [
       "A fast hash function",
-      "A symmetric cipher",
       "Password hash algorithm with adaptive cost (slows over time)",
+      "A symmetric cipher",
       "A digital signature"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "bcrypt: Blowfish-based, incorpora salt automático. Cost factor (rounds) ajustable. Hoy: cost 12+ = ~100ms/hash. Resistente a GPU/ASIC attacks. Alternativas: scrypt, Argon2 (mejor). Usar bcrypt para passwords, NO para integridad archivos.",
@@ -1007,17 +1007,17 @@
     "question_en": "What is a 'rainbow table' and how is it prevented?",
     "options_es": [
       "Tabla de colores",
-      "Un algoritmo de sorting",
+      "Tabla precomputada de hash password comunes; prevención: usar salt único por usuario",
       "Un tipo de encriptación",
-      "Tabla precomputada de hash password comunes; prevención: usar salt único por usuario"
+      "Un algoritmo de sorting"
     ],
     "options_en": [
       "Color table",
-      "A sorting algorithm",
+      "Precomputed table of common password hashes; prevention: unique salt per user",
       "An encryption type",
-      "Precomputed table of common password hashes; prevention: unique salt per user"
+      "A sorting algorithm"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Rainbow table: atacante precomputa hashes de 100B passwords (diccionario + variaciones). Busca hash robado rápidamente. Prevención: salt = hace rainbow table inútil (diferente por usuario). Tamaño table crece exponencialmente con salt.",
@@ -1060,18 +1060,18 @@
     "question_es": "¿Cuál es la diferencia entre .digest() y .hexdigest() en Python hashlib?",
     "question_en": "What is the difference between .digest() and .hexdigest() in Python hashlib?",
     "options_es": [
-      "Son idénticos",
       ".digest() retorna bytes; .hexdigest() retorna string hexadecimal",
+      "Son idénticos",
       ".hexdigest() es más rápido",
       ".digest() es más seguro"
     ],
     "options_en": [
-      "They're identical",
       ".digest() returns bytes; .hexdigest() returns hex string",
+      "They're identical",
       ".hexdigest() is faster",
       ".digest() is more secure"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "hashlib.sha256(b'test').digest() → retorna 32 bytes (256 bits). .hexdigest() → retorna 64 caracteres hex. Ejemplo: digest()[0] es byte 0-255. hexdigest()[0:2] es hex '9f'. Ambas contienen misma información; representa diferente.",
@@ -1132,17 +1132,17 @@
     "question_en": "What is a 'collision attack' and how differs from 'preimage'?",
     "options_es": [
       "No hay diferencia",
-      "Preimage es más fácil",
+      "Colisión: dos entradas diferentes → mismo hash. Preimage: dado hash, encontrar entrada",
       "Colisión requiere clave privada",
-      "Colisión: dos entradas diferentes → mismo hash. Preimage: dado hash, encontrar entrada"
+      "Preimage es más fácil"
     ],
     "options_en": [
       "No difference",
-      "Preimage is easier",
+      "Collision: two different inputs → same hash. Preimage: given hash, find input",
       "Collision requires private key",
-      "Collision: two different inputs → same hash. Preimage: given hash, find input"
+      "Preimage is easier"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Colisión: M1 ≠ M2 pero hash(M1) = hash(M2). Preimage: dado H, encontrar M donde hash(M) = H. Colisión es ataque más fácil (birthday paradox O(2^n/2)). Ejemplo colisión: MD5, SHA-1 quebrados.",
@@ -1183,5 +1183,410 @@
     "explanation_en": "Security bug: using == to compare HMAC is vulnerable to timing attack. Solution: use hmac.compare_digest(computed, expected) for constant-time comparison. Both are equal, so output is True.",
     "source": "Python hmac docs — https://docs.python.org/3/library/hmac.html",
     "expected_time_ms": 45000
+  },
+  {
+    "id": "q130204001",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el propósito principal del protocolo TLS (Transport Layer Security)?",
+    "question_en": "What is the primary purpose of the TLS (Transport Layer Security) protocol?",
+    "options_es": [
+      "Cifrar la comunicación entre cliente y servidor para proteger la confidencialidad e integridad de datos",
+      "Aumentar la velocidad de transferencia de datos en redes",
+      "Reemplazar completamente el protocolo HTTP",
+      "Eliminar la necesidad de autenticación de usuarios"
+    ],
+    "options_en": [
+      "Encrypt communication between client and server to protect data confidentiality and integrity",
+      "Increase data transfer speed on networks",
+      "Completely replace the HTTP protocol",
+      "Eliminate the need for user authentication"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El Seguridad de la Capa de Transporte (TLS, por sus siglas en inglés) es un protocolo criptográfico que proporciona privacidad e integridad de datos en la comunicación por Internet. TLS cifra los datos transmitidos entre un cliente (como un navegador) y un servidor utilizando criptografía de clave pública y privada, impidiendo que terceros intercepten o modifiquen la información. HTTPS es simplemente HTTP utilizado sobre TLS.",
+    "explanation_en": "Transport Layer Security (TLS) is a cryptographic protocol that provides privacy and data integrity in Internet communications. TLS encrypts data transmitted between a client (such as a browser) and a server using public and private key cryptography, preventing third parties from intercepting or modifying information. HTTPS is simply HTTP used over TLS.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130204002",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuáles son las dos claves criptográficas principales utilizadas en el proceso de TLS?",
+    "question_en": "What are the two main cryptographic keys used in the TLS process?",
+    "options_es": [
+      "Clave de compresión y clave de descompresión",
+      "Clave pública (conocida públicamente) y clave privada (secreta del servidor)",
+      "Clave maestra y clave esclava",
+      "Clave de sesión y clave de backup"
+    ],
+    "options_en": [
+      "Compression key and decompression key",
+      "Public key (publicly known) and private key (server's secret)",
+      "Master key and slave key",
+      "Session key and backup key"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "La criptografía de clave pública es fundamental en TLS. Cada servidor tiene una clave privada (que mantiene secreta) y una clave pública (que comparte con todos). El cliente cifra datos con la clave pública del servidor, y solo el servidor puede descifrarlos usando su clave privada. Para verificar autenticidad, el servidor firma datos con su clave privada y el cliente verifica la firma con la clave pública. Este sistema permite autenticación segura y cifrado sin necesidad de compartir previamente un secreto.",
+    "explanation_en": "Public key cryptography is fundamental in TLS. Each server has a private key (which it keeps secret) and a public key (which it shares with everyone). The client encrypts data with the server's public key, and only the server can decrypt it using its private key. To verify authenticity, the server signs data with its private key and the client verifies the signature with the public key. This system enables secure authentication and encryption without needing to share a secret beforehand.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204003",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un certificado digital X.509 en la infraestructura de clave pública (PKI)?",
+    "question_en": "What is a digital X.509 certificate in public key infrastructure (PKI)?",
+    "options_es": [
+      "Un documento que vincula la clave pública de una entidad con su identidad verificada por una autoridad de certificación",
+      "Una contraseña encriptada almacenada en el servidor",
+      "Un archivo de configuración de red",
+      "Un permiso temporal para acceder a un servidor"
+    ],
+    "options_en": [
+      "A document that links an entity's public key to its verified identity by a certification authority",
+      "An encrypted password stored on the server",
+      "A network configuration file",
+      "A temporary permission to access a server"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Un certificado digital X.509 es un documento que une la clave pública de una entidad (como un sitio web) con información de identidad verificada (nombre del dominio, organización, etc.). El certificado es emitido por una Autoridad Certificadora (AC/CA) que verifica la identidad del solicitante antes de emitir el certificado. El certificado X.509 contiene: la clave pública, información de identidad, fecha de emisión, fecha de expiración, y la firma digital de la AC. Los navegadores utilizan estos certificados para verificar la autenticidad de los sitios web.",
+    "explanation_en": "A digital X.509 certificate is a document that binds an entity's public key (such as a website) to verified identity information (domain name, organization, etc.). The certificate is issued by a Certificate Authority (CA) that verifies the identity of the requestor before issuing it. The X.509 certificate contains: the public key, identity information, issuance date, expiration date, and the CA's digital signature. Browsers use these certificates to verify the authenticity of websites.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204004",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Qué es una Autoridad Certificadora (AC/CA)?",
+    "question_en": "What is a Certificate Authority (CA)?",
+    "options_es": [
+      "Una entidad confiable que verifica la identidad de solicitantes y emite certificados digitales",
+      "Una persona que administra copias de seguridad de servidores",
+      "Una herramienta para cifrar archivos locales",
+      "Un protocolo de comunicación entre navegadores"
+    ],
+    "options_en": [
+      "A trusted entity that verifies the identity of applicants and issues digital certificates",
+      "A person who manages server backups",
+      "A tool for encrypting local files",
+      "A communication protocol between browsers"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Una Autoridad Certificadora (AC) es una entidad de confianza responsable de verificar la identidad de organizaciones e individuos que solicitan certificados digitales. Tras verificar la identidad (mediante auditoría de documentos, validación de dominio, etc.), la AC emite un certificado firmado digitalmente. Las ACs raíz, como VeriSign, DigiCert o GlobalSign, son ampliamente confiables y sus certificados raíz vienen preinstalados en navegadores y sistemas operativos. Las organizaciones también pueden ejecutar sus propias ACs privadas.",
+    "explanation_en": "A Certificate Authority (CA) is a trusted entity responsible for verifying the identity of organizations and individuals requesting digital certificates. After verifying identity (through document auditing, domain validation, etc.), the CA issues a digitally signed certificate. Root CAs, such as VeriSign, DigiCert, or GlobalSign, are widely trusted and their root certificates come preinstalled in browsers and operating systems. Organizations can also run their own private CAs.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130204005",
+    "skill_id": "sk130104",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la cadena de confianza (chain of trust) en PKI?",
+    "question_en": "What is the chain of trust in PKI?",
+    "options_es": [
+      "Un protocolo para actualizar certificados automáticamente",
+      "Una lista de dominios bloqueados en un cortafuegos",
+      "El número de intentos fallidos de autenticación permitidos",
+      "La secuencia jerárquica de certificados que conecta un certificado de servidor con una AC raíz confiable"
+    ],
+    "options_en": [
+      "A protocol for automatically updating certificates",
+      "A list of blocked domains in a firewall",
+      "The number of failed authentication attempts allowed",
+      "The hierarchical sequence of certificates connecting a server certificate to a trusted root CA"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "La cadena de confianza es una secuencia jerárquica de certificados que conecta un certificado de servidor con una Autoridad Certificadora (AC) raíz de confianza. Típicamente incluye: el certificado del servidor (hoja), uno o más certificados intermedios de las ACs, y el certificado raíz de la AC raíz. Durante el proceso TLS, el cliente valida que el certificado del servidor está firmado por una AC de confianza, verificando la cadena completa hasta llegar a la AC raíz preinstalada. Si la cadena es válida, el cliente confía en que se está comunicando con el servidor legítimo.",
+    "explanation_en": "The chain of trust is a hierarchical sequence of certificates connecting a server certificate to a trusted root Certificate Authority (CA). It typically includes: the server certificate (leaf), one or more intermediate certificates from CAs, and the root certificate from the root CA. During the TLS process, the client validates that the server certificate is signed by a trusted CA, verifying the entire chain up to the preinstalled root CA. If the chain is valid, the client trusts that it is communicating with the legitimate server.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204006",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es una firma digital en el contexto de certificados digitales?",
+    "question_en": "What is a digital signature in the context of digital certificates?",
+    "options_es": [
+      "Un valor criptográfico que demuestra que un certificado fue emitido por una AC y no ha sido alterado",
+      "Un mensaje de texto enviado al correo de verificación",
+      "Un número de identificación único del servidor",
+      "Una foto escaneada de la firma del CEO de la empresa"
+    ],
+    "options_en": [
+      "A cryptographic value that proves a certificate was issued by a CA and has not been altered",
+      "A text message sent to verification email",
+      "A unique identification number of the server",
+      "A scanned photo of the company CEO's signature"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Una firma digital es un valor criptográfico producido cuando la Autoridad Certificadora (AC) firma digitalmente el certificado utilizando su clave privada. La firma garantiza dos cosas: autenticidad (el certificado fue emitido realmente por la AC) e integridad (el certificado no ha sido modificado después de su emisión). El cliente verifica la firma utilizando la clave pública de la AC. Si la firma es válida, el cliente puede confiar en que el certificado es auténtico y proviene de la AC de confianza.",
+    "explanation_en": "A digital signature is a cryptographic value produced when the Certificate Authority (CA) digitally signs the certificate using its private key. The signature guarantees two things: authenticity (the certificate was actually issued by the CA) and integrity (the certificate has not been modified after issuance). The client verifies the signature using the CA's public key. If the signature is valid, the client can trust that the certificate is authentic and comes from the trusted CA.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204007",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la principal diferencia entre CRL y OCSP en revocación de certificados?",
+    "question_en": "What is the main difference between CRL and OCSP in certificate revocation?",
+    "options_es": [
+      "CRL es una lista descargable; OCSP es un protocolo que valida estados en tiempo real",
+      "CRL solo funciona en navegadores Firefox",
+      "OCSP es obsoleto y no se usa más",
+      "No hay diferencia, son sinónimos"
+    ],
+    "options_en": [
+      "CRL is a downloadable list; OCSP is a protocol that validates statuses in real-time",
+      "CRL only works in Firefox browsers",
+      "OCSP is obsolete and no longer used",
+      "There is no difference; they are synonyms"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "La Lista de Revocación de Certificados (CRL, Certificate Revocation List) es un archivo que contiene una lista de certificados que han sido revocados antes de su fecha de expiración. El protocolo de Estado de Certificados en Línea (OCSP, Online Certificate Status Protocol) es un método más eficiente que permite al cliente consultar el estado de un certificado específico en tiempo real a un servidor OCSP. OCSP es preferible porque consume menos ancho de banda y proporciona información más actual, mientras que CRL requiere descargar y procesar toda la lista.",
+    "explanation_en": "A Certificate Revocation List (CRL) is a file containing a list of certificates that have been revoked before their expiration date. The Online Certificate Status Protocol (OCSP) is a more efficient method that allows the client to query the status of a specific certificate in real-time from an OCSP server. OCSP is preferable because it consumes less bandwidth and provides more current information, while CRL requires downloading and processing the entire list.",
+    "source": "https://tools.ietf.org/html/rfc6960",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204008",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuáles son las principales mejoras de TLS 1.3 comparado con versiones anteriores?",
+    "question_en": "What are the main improvements of TLS 1.3 compared to earlier versions?",
+    "options_es": [
+      "Usa solo algoritmos de cifrado simétrico sin criptografía de clave pública",
+      "Eliminó protocolos débiles, redujo el handshake a un viaje redondo y mejoró la privacidad de datos históricos",
+      "Aumentó la complejidad del handshake para mayor seguridad",
+      "Requiere la renovación de certificados cada mes"
+    ],
+    "options_en": [
+      "It uses only symmetric encryption algorithms without public key cryptography",
+      "It removed weak protocols, reduced handshake to one round trip, and improved historical data privacy",
+      "It increased handshake complexity for greater security",
+      "It requires certificate renewal every month"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "TLS 1.3, ratificado en 2018, introduce varias mejoras significativas sobre versiones anteriores: eliminó algoritmos criptográficos débiles y deprecated, redujo el handshake TLS de tres viajes redondos a uno solo (1-RTT), proporcionando mejor rendimiento. También mejoró la privacidad mediante el cifrado de más de la comunicación inicial y introdujo 0-RTT (cifrado temprano de datos) para conexiones futuras. Asimismo, simplificó la arquitectura y eliminó muchas opciones complicadas que podían ser configuradas inseguramente.",
+    "explanation_en": "TLS 1.3, ratified in 2018, introduces several significant improvements over earlier versions: it removed weak cryptographic algorithms and deprecated others, reduced the TLS handshake from three round trips to just one (1-RTT), providing better performance. It also improved privacy by encrypting more of the initial communication and introduced 0-RTT (early data encryption) for future connections. Additionally, it simplified the architecture and eliminated many complex options that could be configured insecurely.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204009",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el objetivo de implementar HTTPS (HTTP Secure) en un sitio web?",
+    "question_en": "What is the objective of implementing HTTPS (HTTP Secure) on a website?",
+    "options_es": [
+      "Aumentar la capacidad de almacenamiento del servidor",
+      "Cifrar la comunicación entre navegador y servidor para proteger datos sensibles del usuario",
+      "Reemplazar completamente la base de datos del sitio",
+      "Eliminar la necesidad de autenticación de usuarios"
+    ],
+    "options_en": [
+      "Increase server storage capacity",
+      "Encrypt communication between browser and server to protect sensitive user data",
+      "Completely replace the website's database",
+      "Eliminate the need for user authentication"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "HTTPS es HTTP (HyperText Transfer Protocol) utilizado sobre TLS/SSL. Su objetivo principal es cifrar toda la comunicación entre el navegador web del usuario y el servidor, protegiendo datos sensibles como credenciales de inicio de sesión, números de tarjetas de crédito y información personal. HTTPS también proporciona autenticidad del servidor mediante certificados digitales. Los navegadores modernos muestran un ícono de candado para sitios HTTPS y advierten a los usuarios sobre sitios HTTP no seguros.",
+    "explanation_en": "HTTPS is HTTP (HyperText Transfer Protocol) used over TLS/SSL. Its primary objective is to encrypt all communication between the user's web browser and the server, protecting sensitive data such as login credentials, credit card numbers, and personal information. HTTPS also provides server authenticity through digital certificates. Modern browsers display a padlock icon for HTTPS sites and warn users about non-secure HTTP sites.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130204010",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es HSTS (HTTP Strict Transport Security)?",
+    "question_en": "What is HSTS (HTTP Strict Transport Security)?",
+    "options_es": [
+      "Un mecanismo que fuerza a los navegadores a usar HTTPS y rechaza conexiones HTTP posteriores",
+      "Un certificado de seguridad adicional que se renueva mensualmente",
+      "Un protocolo para bloquear todos los accesos desde ciertos países",
+      "Una herramienta para monitorear fallos de servidores"
+    ],
+    "options_en": [
+      "A mechanism that forces browsers to use HTTPS and rejects subsequent HTTP connections",
+      "An additional security certificate that renews monthly",
+      "A protocol for blocking all access from certain countries",
+      "A tool for monitoring server failures"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "HSTS (Strict-Transport-Security) es un mecanismo de seguridad implementado mediante un encabezado HTTP que instruye a los navegadores a: 1) usar HTTPS exclusivamente para comunicarse con el sitio, 2) rechazar conexiones HTTP no seguras, y 3) recordar esta política durante un período especificado. HSTS protege contra ataques de degradación (downgrade attacks) donde un atacante intenta forzar al navegador a usar HTTP en lugar de HTTPS. Los navegadores modernos también incluyen listas de precargas HSTS de sitios populares.",
+    "explanation_en": "HSTS (Strict-Transport-Security) is a security mechanism implemented via an HTTP header that instructs browsers to: 1) use HTTPS exclusively to communicate with the site, 2) reject insecure HTTP connections, and 3) remember this policy for a specified period. HSTS protects against downgrade attacks where an attacker attempts to force the browser to use HTTP instead of HTTPS. Modern browsers also include HSTS preload lists for popular sites.",
+    "source": "https://tools.ietf.org/html/rfc6797",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204011",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el propósito del certificate pinning en seguridad de aplicaciones?",
+    "question_en": "What is the purpose of certificate pinning in application security?",
+    "options_es": [
+      "Renovar certificados automáticamente cada mes",
+      "Fijar (anclar) certificados específicos en la aplicación para prevenir ataques con certificados falsificados",
+      "Permitir que cualquier certificado válido sea aceptado por la aplicación",
+      "Almacenar contraseñas en los certificados"
+    ],
+    "options_en": [
+      "Automatically renew certificates every month",
+      "Pin specific certificates in the application to prevent attacks with forged certificates",
+      "Allow any valid certificate to be accepted by the application",
+      "Store passwords in certificates"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El certificate pinning es una técnica de seguridad donde una aplicación valida que el certificado del servidor coincide con un certificado específico (o clave pública) que ha sido previamente guardado ('pinned') en la aplicación. Esto protege contra ataques sofisticados donde un atacante podría obtener un certificado válido (pero falso) de una Autoridad Certificadora comprometida. El pinning es especialmente importante en aplicaciones móviles y críticas donde es necesario proteger contra MITM (Man-in-the-Middle) avanzados.",
+    "explanation_en": "Certificate pinning is a security technique where an application verifies that the server certificate matches a specific certificate (or public key) that has been previously stored ('pinned') in the application. This protects against sophisticated attacks where an attacker could obtain a valid (but false) certificate from a compromised Certificate Authority. Pinning is especially important in mobile and critical applications where protection against advanced MITM (Man-in-the-Middle) attacks is necessary.",
+    "source": "https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204012",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la estructura básica de un certificado X.509?",
+    "question_en": "What is the basic structure of an X.509 certificate?",
+    "options_es": [
+      "Solo contiene la clave pública del servidor",
+      "Contiene clave pública, identidad verificada, fechas de validez, firma de la AC y otros metadatos",
+      "Solo se usa en conexiones LAN locales",
+      "Es un archivo de texto plano sin encriptación"
+    ],
+    "options_en": [
+      "Contains only the server's public key",
+      "Contains public key, verified identity, validity dates, CA signature, and other metadata",
+      "It is only used in local LAN connections",
+      "It is a plain text file without encryption"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Un certificado X.509 contiene varios componentes cruciales: 1) Clave pública del sujeto, 2) Información de identidad (nombre común, organización, país), 3) Fechas de validez (desde y hasta), 4) Número de serie único, 5) Identificador del algoritmo criptográfico, 6) Información del emisor (AC), y 7) Firma digital de la AC. Esta estructura está definida en el estándar X.509 e ITU-T. Los certificados se codifican típicamente en formato PEM (Privacy Enhanced Mail) o DER (Distinguished Encoding Rules).",
+    "explanation_en": "An X.509 certificate contains several crucial components: 1) Subject's public key, 2) Identity information (common name, organization, country), 3) Validity dates (from and to), 4) Unique serial number, 5) Cryptographic algorithm identifier, 6) Issuer information (CA), and 7) CA's digital signature. This structure is defined in the X.509 standard and ITU-T. Certificates are typically encoded in PEM (Privacy Enhanced Mail) or DER (Distinguished Encoding Rules) format.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204013",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el rol de la clave pública en una comunicación TLS?",
+    "question_en": "What is the role of the public key in a TLS communication?",
+    "options_es": [
+      "Cifrar el tráfico y garantizar que solo el servidor pueda descifrarlo con su clave privada",
+      "Almacenar contraseñas de los usuarios",
+      "Identificar el navegador del cliente",
+      "Registrar todas las transacciones en un archivo"
+    ],
+    "options_en": [
+      "Encrypt traffic and ensure only the server can decrypt it with its private key",
+      "Store user passwords",
+      "Identify the client browser",
+      "Record all transactions in a file"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "En TLS, la clave pública del servidor sirve para dos propósitos: 1) Cifrado: el cliente la utiliza para cifrar datos (como la clave de sesión previa) que solo el servidor puede descifrar con su clave privada, 2) Verificación: el cliente la utiliza para verificar que los datos firmados por el servidor fueron realmente generados por este. La clave pública se distribuye públicamente en el certificado digital, mientras que la clave privada permanece en secreto en el servidor.",
+    "explanation_en": "In TLS, the server's public key serves two purposes: 1) Encryption: the client uses it to encrypt data (such as the pre-shared session key) that only the server can decrypt with its private key, 2) Verification: the client uses it to verify that data signed by the server was actually generated by it. The public key is distributed publicly in the digital certificate, while the private key remains secret on the server.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130204014",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué sucede cuando un navegador recibe un certificado con fecha de expiración vencida?",
+    "question_en": "What happens when a browser receives an expired certificate?",
+    "options_es": [
+      "El navegador lo acepta automáticamente sin verificación",
+      "La conexión se establece con velocidad de transferencia reducida",
+      "El certificado se renueva automáticamente en el servidor",
+      "El navegador muestra una advertencia de seguridad y puede permitir que el usuario continúe bajo su propio riesgo"
+    ],
+    "options_en": [
+      "The browser automatically accepts it without verification",
+      "The connection is established at reduced transfer speed",
+      "The certificate is automatically renewed on the server",
+      "The browser displays a security warning and may allow the user to continue at their own risk"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Cuando un navegador recibe un certificado expirado (con fecha de expiración anterior a la fecha actual), realiza las siguientes acciones: 1) Detecta la expiración durante la validación del certificado, 2) Muestra una advertencia de seguridad prominente al usuario, 3) Advierte que la conexión puede no ser segura, 4) Permite al usuario decidir si desea continuar bajo su propio riesgo (aunque la mayoría de navegadores modernos hacen que continuar sea muy difícil o imposible). Los certificados expirados son un indicador de que el propietario del sitio no ha actualizado su infraestructura de seguridad.",
+    "explanation_en": "When a browser receives an expired certificate (with an expiration date earlier than the current date), it performs the following actions: 1) Detects the expiration during certificate validation, 2) Displays a prominent security warning to the user, 3) Warns that the connection may not be secure, 4) Allows the user to decide whether to continue at their own risk (although most modern browsers make continuing very difficult or impossible). Expired certificates are an indicator that the website owner has not updated their security infrastructure.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130204015",
+    "skill_id": "sk130204",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el protocolo TLS handshake (apretón de manos)?",
+    "question_en": "What is the TLS handshake process?",
+    "options_es": [
+      "Un procedimiento para cambiar contraseñas periódicamente",
+      "Un método para eliminar conexiones inactivas",
+      "El intercambio inicial de mensajes entre cliente y servidor para negociar parámetros de seguridad y establecer una conexión cifrada",
+      "Un protocolo para detectar fallos de servidores"
+    ],
+    "options_en": [
+      "A procedure for periodically changing passwords",
+      "A method for removing inactive connections",
+      "The initial exchange of messages between client and server to negotiate security parameters and establish an encrypted connection",
+      "A protocol for detecting server failures"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El TLS handshake es el proceso inicial que ocurre cuando un cliente (navegador) se conecta a un servidor HTTPS. Durante el handshake: 1) ClientHello: el cliente envía versión de TLS, algoritmos soportados, 2) ServerHello: el servidor responde con sus parámetros, 3) Intercambio de certificados y verificación, 4) Intercambio de claves: cliente y servidor acuerdan una clave de sesión, 5) Establecimiento de conexión cifrada. En TLS 1.3, este proceso se reduce a un solo viaje redondo (1-RTT), mejorando el rendimiento significativamente.",
+    "explanation_en": "The TLS handshake is the initial process that occurs when a client (browser) connects to an HTTPS server. During the handshake: 1) ClientHello: the client sends TLS version, supported algorithms, 2) ServerHello: the server responds with its parameters, 3) Exchange and verification of certificates, 4) Key exchange: client and server agree on a session key, 5) Establishment of encrypted connection. In TLS 1.3, this process is reduced to a single round trip (1-RTT), significantly improving performance.",
+    "source": "https://tools.ietf.org/html/rfc8446",
+    "expected_time_ms": 25000
   }
 ]

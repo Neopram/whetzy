@@ -7,18 +7,18 @@
     "question_es": "¿Qué es un firewall en ciberseguridad?",
     "question_en": "What is a firewall in cybersecurity?",
     "options_es": [
-      "Un virus de computadora",
       "Barrera de seguridad que controla tráfico entre redes basado en reglas",
+      "Un virus de computadora",
       "Un tipo de antivirus",
       "Un servidor web"
     ],
     "options_en": [
-      "A computer virus",
       "Security barrier controlling network traffic based on rules",
+      "A computer virus",
       "A type of antivirus",
       "A web server"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Firewall: dispositivo/software que filtra tráfico entrante/saliente. Basado en reglas: IP, puerto, protocolo. Impide acceso no autorizado. Tipos: stateless (simple), stateful (context-aware), application-layer (WAF).",
@@ -61,18 +61,18 @@
     "question_es": "¿Qué es una 'DMZ' (Zona Desmilitarizada)?",
     "question_en": "What is a 'DMZ' (Demilitarized Zone)?",
     "options_es": [
-      "Un país sin ejército",
       "Subred entre firewall externo e interno; aísla servidores públicos de red interna",
       "Un tipo de protocolo",
+      "Un país sin ejército",
       "Un software de encriptación"
     ],
     "options_en": [
-      "A country without military",
       "Subnet between external and internal firewall; isolates public servers from internal network",
       "A protocol type",
+      "A country without military",
       "Encryption software"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "DMZ: zona de seguridad intermedia. Servidores públicos (web, mail, DNS) están en DMZ. Usuarios externos acceden DMZ. DMZ no accede directo a red interna. Si servidor DMZ compromised, red interna sigue protegida.",
@@ -89,17 +89,17 @@
     "question_en": "What is 'VLAN' (Virtual Local Area Network)?",
     "options_es": [
       "Conexión a internet virtual",
-      "Partición lógica de switch para segmentar tráfico sin hardware adicional",
+      "Un protocolo de enrutamiento",
       "Un tipo de VPN",
-      "Un protocolo de enrutamiento"
+      "Partición lógica de switch para segmentar tráfico sin hardware adicional"
     ],
     "options_en": [
       "Virtual internet connection",
-      "Logical switch partition to segment traffic without additional hardware",
+      "A routing protocol",
       "A type of VPN",
-      "A routing protocol"
+      "Logical switch partition to segment traffic without additional hardware"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "VLAN: red virtual en layer 2 (switch). Aísla lógicamente dispositivos. VLAN 10 (HR) no ve VLAN 20 (Finance) sin router/firewall. Reduce dominio broadcast. Herramienta fundamental de segmentación de red.",
@@ -115,18 +115,18 @@
     "question_es": "¿Qué es un 'WAF' (Web Application Firewall)?",
     "question_en": "What is a 'WAF' (Web Application Firewall)?",
     "options_es": [
+      "Un protocolo de seguridad",
       "Firewall para redes inalámbricas",
       "Firewall layer 7 que inspecciona aplicación; detecta SQL injection, XSS, etc.",
-      "Un protocolo de seguridad",
       "Un certificado SSL"
     ],
     "options_en": [
+      "A security protocol",
       "Wireless network firewall",
       "Layer 7 firewall inspecting application; detects SQL injection, XSS, etc.",
-      "A security protocol",
       "An SSL certificate"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WAF: capa 7 (aplicación). Entiende HTTP/HTTPS, inspecciona payloads. Bloquea ataques web (SQL injection, XSS, CSRF). Tradicional firewall no ve estas amenazas (opaco en layer 3-4). Ejemplo: ModSecurity, CloudFlare WAF.",
@@ -142,18 +142,18 @@
     "question_es": "¿Cuál es la limitación principal de 'packet filtering' (filtrado de paquetes)?",
     "question_en": "What is the main limitation of 'packet filtering'?",
     "options_es": [
-      "Es lento",
       "Solo examina headers; no ve payload; vulnerable a ataques layer 7",
+      "Es lento",
       "No puede bloquear nada",
       "Es muy seguro"
     ],
     "options_en": [
-      "It's slow",
       "Only examines headers; doesn't see payload; vulnerable to layer 7 attacks",
+      "It's slow",
       "Can't block anything",
       "It's very secure"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Packet filtering examina: IP origen/destino, puerto, protocolo. No examina contenido HTTP/aplicación. Ataque: payload malicioso en HTTP request válido. Solución: WAF (inspecciona contenido) o IPS.",
@@ -170,17 +170,17 @@
     "question_en": "How does NAT (Network Address Translation) relate to security?",
     "options_es": [
       "NAT es apenas performance",
-      "NAT oculta IPs internas (ocultación), pero NO es control seguridad verdadero",
       "NAT es firewall completo",
+      "NAT oculta IPs internas (ocultación), pero NO es control seguridad verdadero",
       "NAT solo capa 2"
     ],
     "options_en": [
       "NAT is just performance",
-      "NAT hides internal IPs (obfuscation), but NOT true security control",
       "NAT is full firewall",
+      "NAT hides internal IPs (obfuscation), but NOT true security control",
       "NAT is only layer 2"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NAT: traduce IPs privadas (10.0.0.0) a pública. Beneficio: oculta topología interna (seguridad por obscuridad). Limitación: no es control de acceso verdadero. Requiere firewall para seguridad real. NAT + firewall stateful = buena práctica.",
@@ -197,17 +197,17 @@
     "question_en": "What is 'Zero Trust Network' in segmentation?",
     "options_es": [
       "No usar segmentación",
-      "No confiar en red interna; verificar cada conexión, micro-segmentación, identidad",
+      "Confiar en todos",
       "Usar solo VPN",
-      "Confiar en todos"
+      "No confiar en red interna; verificar cada conexión, micro-segmentación, identidad"
     ],
     "options_en": [
       "Don't use segmentation",
-      "Don't trust internal network; verify each connection, micro-segmentation, identity",
+      "Trust everyone",
       "Use only VPN",
-      "Trust everyone"
+      "Don't trust internal network; verify each connection, micro-segmentation, identity"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Zero Trust Network: paradigma 'nunca confies, siempre verifica'. Cada usuario/dispositivo/flujo requiere autenticación/autorización. Micro-segmentación: múltiples zonas, cada una con acceso restringido. Defensa contra insider threat, movimiento lateral.",
@@ -223,18 +223,18 @@
     "question_es": "¿Cuál es la arquitectura de firewall más común en empresas grandes?",
     "question_en": "What is the most common firewall architecture in large enterprises?",
     "options_es": [
+      "Sin firewall",
       "Un solo firewall",
       "DMZ con firewall externo e interno (defense in depth)",
-      "Sin firewall",
       "Apenas VPN"
     ],
     "options_en": [
+      "No firewall",
       "Single firewall",
       "DMZ with external and internal firewalls (defense in depth)",
-      "No firewall",
       "VPN only"
     ],
-    "correct_index": 1,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Arquitectura: Internet → Firewall 1 (externo, publica) → DMZ (servidores web, mail) → Firewall 2 (interno) → Red Interna (privada). Si DMZ comprometida, Firewall 2 protege red interna. Defensa en profundidad.",
@@ -278,17 +278,17 @@
     "question_en": "What is the main challenge designing firewall rules without impacting legitimacy?",
     "options_es": [
       "No hay desafío",
-      "Balance: restrictivo (seguridad) vs. permisivo (usabilidad); false positives bloquean usuarios legítimos",
       "Usar un solo puerto",
-      "Confiar en todo"
+      "Confiar en todo",
+      "Balance: restrictivo (seguridad) vs. permisivo (usabilidad); false positives bloquean usuarios legítimos"
     ],
     "options_en": [
       "No challenge",
-      "Balance: restrictive (security) vs. permissive (usability); false positives block legitimate users",
       "Use single port",
-      "Trust everything"
+      "Trust everything",
+      "Balance: restrictive (security) vs. permissive (usability); false positives block legitimate users"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Dilema: rules muy restrictivas = bloquean usuarios legítimos (false positive). Rules muy permisivas = permiten ataques. Solución: baselines (netflow analysis), whitelist (aplicaciones legítimas), logging/monitoring (iterar).",
@@ -305,17 +305,17 @@
     "question_en": "How is 'default deny' implemented in firewall without paralyzing it?",
     "options_es": [
       "Es imposible",
-      "Solo para intranet",
+      "Bloquear todo, permitir solo tráfico conocido legítimo; descubrimiento (netflow), whitelist iterativo",
       "Permitir todo",
-      "Bloquear todo, permitir solo tráfico conocido legítimo; descubrimiento (netflow), whitelist iterativo"
+      "Solo para intranet"
     ],
     "options_en": [
       "It's impossible",
-      "Only for intranet",
+      "Block all, allow only known legitimate traffic; discovery (netflow), iterative whitelist",
       "Allow everything",
-      "Block all, allow only known legitimate traffic; discovery (netflow), iterative whitelist"
+      "Only for intranet"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Default deny: política implícita de bloqueo. Requiere: 1) Descubrimiento tráfico legítimo (packet capture, netflow). 2) Whitelist iterativo. 3) Monitoreo de bloques. 4) Ajuste dinámico. Implementación: inicial permisivo, lentamente más restrictivo.",
@@ -331,18 +331,18 @@
     "question_es": "¿Cuál es la diferencia entre Firewall Tradicional y Next-Generation Firewall (NGFW)?",
     "question_en": "What is difference between Traditional Firewall and Next-Generation Firewall (NGFW)?",
     "options_es": [
-      "Tradicional: IP/puerto. NGFW: aplicación, identidad, antimalware, IPS integrado",
-      "No hay diferencia",
       "NGFW es anticuado",
+      "No hay diferencia",
+      "Tradicional: IP/puerto. NGFW: aplicación, identidad, antimalware, IPS integrado",
       "Solo tamaño"
     ],
     "options_en": [
-      "Traditional: IP/port. NGFW: application, identity, antimalware, integrated IPS",
-      "No difference",
       "NGFW is outdated",
+      "No difference",
+      "Traditional: IP/port. NGFW: application, identity, antimalware, integrated IPS",
       "Just size"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Tradicional: capa 3-4, IP/puerto. NGFW: entiende aplicaciones (YouTube, Skype, etc.), inspecciona payloads, integra IPS/antimalware, usa identidad del usuario. Ejemplo: Palo Alto, Fortinet. Previene ataques layer 7.",
@@ -359,17 +359,17 @@
     "question_en": "How did Zero Trust change traditional firewall/DMZ architecture?",
     "options_es": [
       "No cambió nada",
-      "Hizo obsoleto el firewall",
       "De perímetro (DMZ) a identidad; cada usuario/dispositivo verificado; firewall por usuario (BeyondCorp)",
+      "Hizo obsoleto el firewall",
       "Requiere solo VPN"
     ],
     "options_en": [
       "Changed nothing",
-      "Made firewall obsolete",
       "From perimeter (DMZ) to identity; every user/device verified; per-user firewall (BeyondCorp)",
+      "Made firewall obsolete",
       "Requires only VPN"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Tradicional: firewall perímetro = confianza interna. Zero Trust: no perímetro, identidad. Arquitectura: usuario auth → dispositivo check → acceso micro-segmentado. Ejemplo: Google BeyondCorp (permitir empleado remoto sin VPN). Firewall aún necesario, pero rol cambia.",
@@ -385,18 +385,18 @@
     "question_es": "¿Cuál es la métrica principal para evaluar eficacia de segmentación?",
     "question_en": "What is the primary metric to evaluate segmentation effectiveness?",
     "options_es": [
-      "Número de reglas",
       "Movimiento lateral bloqueado; reducción del blastradius si una zona comprometida",
       "Ancho de banda disponible",
+      "Número de reglas",
       "Velocidad de firewall"
     ],
     "options_en": [
-      "Number of rules",
       "Blocked lateral movement; reduced blast radius if one zone compromised",
       "Available bandwidth",
+      "Number of rules",
       "Firewall speed"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Métrica: ¿si servidor web comprometido, puede atacante llegar a servidor DB interno? Con buena segmentación: NO (movimiento lateral bloqueado). Sin segmentación: SÍ (blastradius = toda red). Pruebas: red team intenta lateral movement; buena segmentación detiene.",
@@ -412,18 +412,18 @@
     "question_es": "¿Qué es un 'IDS' (Intrusion Detection System)?",
     "question_en": "What is an 'IDS' (Intrusion Detection System)?",
     "options_es": [
-      "Monitor que detecta actividad maliciosa; ALERTA pero NO bloquea",
+      "Un antivirus",
       "Sistema que bloquea ataques",
       "Un firewall",
-      "Un antivirus"
+      "Monitor que detecta actividad maliciosa; ALERTA pero NO bloquea"
     ],
     "options_en": [
-      "Monitor that detects malicious activity; ALERTS but doesn't block",
+      "An antivirus",
       "System that blocks attacks",
       "A firewall",
-      "An antivirus"
+      "Monitor that detects malicious activity; ALERTS but doesn't block"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IDS: detecta + alerta. IPS: detecta + bloquea. IDS es pasivo (NIDS monitores red, HIDS monitorea host). Análisis: firma (conocidos) o anomalía (comportamiento inusual). Requiere humano revisar alertas.",
@@ -439,18 +439,18 @@
     "question_es": "¿Cuál es la diferencia entre IDS y IPS?",
     "question_en": "What is the difference between IDS and IPS?",
     "options_es": [
-      "Son lo mismo",
       "IDS: detecta. IPS: detecta + bloquea en tiempo real",
+      "Son lo mismo",
       "IPS es más antiguo",
       "Solo diferencia de precio"
     ],
     "options_en": [
-      "They're the same",
       "IDS: detects. IPS: detects + blocks in real-time",
+      "They're the same",
       "IPS is older",
       "Just price difference"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IDS: pasivo, alerta. IPS: inline, bloquea. IPS debe estar en path tráfico (entre firewall y red). Ventaja IPS: prevención inmediata. Riesgo: false positive bloquea usuario legítimo. Solución: tuning cuidadoso, auditoría.",
@@ -494,17 +494,17 @@
     "question_en": "What are the two main detection methods in IDS?",
     "options_es": [
       "HTTP y FTP",
-      "Encriptado y Plaintext",
+      "Firma (patrones conocidos) y Anomalía (comportamiento inusual)",
       "Entrada y Salida",
-      "Firma (patrones conocidos) y Anomalía (comportamiento inusual)"
+      "Encriptado y Plaintext"
     ],
     "options_en": [
       "HTTP and FTP",
-      "Encrypted and Plaintext",
+      "Signature (known patterns) and Anomaly (unusual behavior)",
       "Input and Output",
-      "Signature (known patterns) and Anomaly (unusual behavior)"
+      "Encrypted and Plaintext"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Firma: compara tráfico con patrones ataques conocidos. Rápido pero falla con variantes. Anomalía: compara contra baseline normal. Detecta zero-days pero más false positives. Ideal: combinación ambos.",
@@ -520,18 +520,18 @@
     "question_es": "¿Qué es un 'false positive' en IDS/IPS?",
     "question_en": "What is a 'false positive' in IDS/IPS?",
     "options_es": [
-      "Alerta por tráfico legítimo (no es ataque)",
-      "Ataque que no se detecta",
       "Servidor apagado",
+      "Ataque que no se detecta",
+      "Alerta por tráfico legítimo (no es ataque)",
       "Puerto cerrado"
     ],
     "options_en": [
-      "Alert on legitimate traffic (not an attack)",
-      "Attack not detected",
       "Server down",
+      "Attack not detected",
+      "Alert on legitimate traffic (not an attack)",
       "Closed port"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "False positive: IDS alerta falsamente (usuario legítimo bloqueado). False negative: no alerta ante ataque real. Métrica: falso positivo rate (FPR) debe ser bajo (<1%) para no causar rechazo operacional.",
@@ -548,17 +548,17 @@
     "question_en": "What is the difference between 'NIDS' and 'HIDS'?",
     "options_es": [
       "No hay diferencia",
-      "NIDS: red, infrared. HIDS: host, monitorea sistema individual",
+      "HIDS es antiguo",
       "NIDS monitorea usuarios",
-      "HIDS es antiguo"
+      "NIDS: red, infrared. HIDS: host, monitorea sistema individual"
     ],
     "options_en": [
       "No difference",
-      "NIDS: network, monitors traffic. HIDS: host, monitors individual system",
+      "HIDS is old",
       "NIDS monitors users",
-      "HIDS is old"
+      "NIDS: network, monitors traffic. HIDS: host, monitors individual system"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "NIDS (Network IDS): monitorea interfaces de red, tráfico. Ventaja: cubre múltiples hosts. HIDS (Host IDS): agente en servidor, logs/archivos. Ventaja: detecta ataques internos, cambios integridad. Ideal: ambos.",
@@ -575,17 +575,17 @@
     "question_en": "What is the challenge of anomaly detection in IDS?",
     "options_es": [
       "Es muy fácil",
-      "Es imposible",
       "Definir baseline normal; cambios en negocio alteran baseline; tuning constante requerido",
+      "Es imposible",
       "No requiere datos históricos"
     ],
     "options_en": [
       "Very easy",
-      "It's impossible",
       "Define normal baseline; business changes alter baseline; constant tuning required",
+      "It's impossible",
       "Doesn't require historical data"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Baseline: comportamiento normal (tráfico típico, usuarios típicos). Problema: nueva aplicación deployada = tráfico anómalo pero legítimo. Solución: reentrenamiento periódico, machine learning adaptativo.",
@@ -603,16 +603,16 @@
     "options_es": [
       "Un tipo de firewall",
       "Un certificado",
-      "Un protocolo de seguridad",
-      "Archivo que contiene paquetes de red capturados para análisis post-incident"
+      "Archivo que contiene paquetes de red capturados para análisis post-incident",
+      "Un protocolo de seguridad"
     ],
     "options_en": [
       "A firewall type",
       "A certificate",
-      "A security protocol",
-      "File containing captured network packets for post-incident analysis"
+      "File containing captured network packets for post-incident analysis",
+      "A security protocol"
     ],
-    "correct_index": 3,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "PCAP: formato para almacenar tráfico capturado. Herramienta: tcpdump (Linux), Wireshark (GUI). Uso: análisis forense, reproducción incidente. Cuidado: PCAP puede contener datos sensibles (passwords, datos usuario).",
@@ -655,18 +655,18 @@
     "question_es": "¿Cómo se implementa IPS sin paralizarlo por false positives?",
     "question_en": "How is IPS implemented without paralyzing with false positives?",
     "options_es": [
-      "Bloquear todo",
       "Modo learning (alertar, no bloquear), tuning, whitelist, después strict mode",
+      "Bloquear todo",
       "No es posible",
       "Usar solo signatures"
     ],
     "options_en": [
-      "Block everything",
       "Learning mode (alert, don't block), tuning, whitelist, then strict mode",
+      "Block everything",
       "Not possible",
       "Use only signatures"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Implementación: 1) Modo aprendizaje (alert-only, no bloquear). 2) Revisar alertas, crear whitelist de tráfico legítimo. 3) Tuning: deshabilitar reglas ruidosas. 4) Transición a strict mode (bloquear). Gradual, no abrupto.",
@@ -684,16 +684,16 @@
     "options_es": [
       "Son idénticos",
       "Snort mejor",
-      "Ambos IDS/IPS; Suricata multithreaded, más rápido; Snort más maduro",
-      "Solo diferencia de nombre"
+      "Solo diferencia de nombre",
+      "Ambos IDS/IPS; Suricata multithreaded, más rápido; Snort más maduro"
     ],
     "options_en": [
       "Identical",
       "Snort better",
-      "Both IDS/IPS; Suricata multithreaded, faster; Snort more mature",
-      "Just name difference"
+      "Just name difference",
+      "Both IDS/IPS; Suricata multithreaded, faster; Snort more mature"
     ],
-    "correct_index": 2,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Snort: original, maduro, reglas OpenRules. Suricata: más reciente, multithreaded (más CPU efficient), soporte IPv6 mejor. Ambas usan reglas compatible. Elección: Snort si ecosistema existente, Suricata si nuevo deployment.",
@@ -709,18 +709,18 @@
     "question_es": "¿Cómo se mitigaría un ataque de evasión contra IDS/IPS (ej: fragmentación)?",
     "question_en": "How to mitigate evasion attack against IDS/IPS (e.g., fragmentation)?",
     "options_es": [
-      "No se puede mitigar",
+      "Normalización de tráfico, defragmentación, verificación de integridad; tuning reglas",
       "Confiar en firewall",
       "Deshabilitar IDS",
-      "Normalización de tráfico, defragmentación, verificación de integridad; tuning reglas"
+      "No se puede mitigar"
     ],
     "options_en": [
-      "Can't be mitigated",
+      "Traffic normalization, defragmentation, integrity checks; rule tuning",
       "Trust firewall",
       "Disable IDS",
-      "Traffic normalization, defragmentation, integrity checks; rule tuning"
+      "Can't be mitigated"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Evasión: atacante fragmenta payload para eludir firmas IDS. Ataque: TCP retransmisión, desbordamiento opciones IP. Defensa: normalización (reconstruir paquetes), verificar secuencias TCP, opciones IP válidas. IPS mejor que IDS (bloquea antes).",
@@ -736,18 +736,18 @@
     "question_es": "¿Cuál es el rol de SIEM en relación a IDS/IPS?",
     "question_en": "What is SIEM's role in relation to IDS/IPS?",
     "options_es": [
-      "SIEM correlaciona alertas IDS/IPS con otros logs (firewall, auth); detección incidente",
-      "No tiene rol",
       "Reemplaza IDS",
+      "No tiene rol",
+      "SIEM correlaciona alertas IDS/IPS con otros logs (firewall, auth); detección incidente",
       "Solo monitoreo performance"
     ],
     "options_en": [
-      "SIEM correlates IDS/IPS alerts with other logs (firewall, auth); incident detection",
-      "No role",
       "Replaces IDS",
+      "No role",
+      "SIEM correlates IDS/IPS alerts with other logs (firewall, auth); incident detection",
       "Just performance monitoring"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Integración: IDS/IPS genera alertas → SIEM ingesta → correlaciona con firewall blocks, failed logins, endpoint activity. Ejemplo: IDS alerta puerto scaning + SIEM ve failed logins = probable ataque. Requiere: normalización datos, reglas correlación.",
@@ -764,17 +764,17 @@
     "question_en": "What is main IDS signature-based limitation against zero-day attacks?",
     "options_es": [
       "Ninguna limitación",
-      "No hay firma del zero-day; debe esperarse descubrimiento público + actualización de reglas",
+      "Requiere clave privada",
       "Firma-based es inmune",
-      "Requiere clave privada"
+      "No hay firma del zero-day; debe esperarse descubrimiento público + actualización de reglas"
     ],
     "options_en": [
       "No limitation",
-      "No zero-day signature; must wait for public disclosure + rule update",
+      "Requires private key",
       "Signature-based is immune",
-      "Requires private key"
+      "No zero-day signature; must wait for public disclosure + rule update"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Zero-day: vulnerabilidad desconocida = sin firma. IDS firma-based no detecta. Solución: anomalía-based (detecta comportamiento inusual), IPS (bloquea automáticamente), 0-day patch rápido. Combinación múltiples métodos = mejor cobertura.",
@@ -791,17 +791,17 @@
     "question_en": "What is most important metric: TP (True Positive) or FN (False Negative) in IDS?",
     "options_es": [
       "TP es más importante",
-      "FP es lo único que importa",
       "FN: false negative es peor (atacante no se detecta); mejor sensibilidad que especificidad",
+      "FP es lo único que importa",
       "Todas son iguales"
     ],
     "options_en": [
       "TP is more important",
-      "FP only matters",
       "FN: false negative worse (attacker undetected); better sensitivity than specificity",
+      "FP only matters",
       "All equal"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Métricas: TP (alerta correcta), FN (ataque no detectado), FP (falsa alerta), TN (normal no alertado). En seguridad: FN es peor que FP. Mejor perder tiempo investigando FP que dejar ataque sin detectar. Sensibilidad > especificidad.",
@@ -817,18 +817,18 @@
     "question_es": "¿Qué es una 'VPN' (Red Privada Virtual)?",
     "question_en": "What is a 'VPN' (Virtual Private Network)?",
     "options_es": [
-      "Túnel encriptado sobre internet pública; proporciona privacidad y acceso remoto seguro",
+      "Un antivirus",
       "Red física privada",
       "Un firewall",
-      "Un antivirus"
+      "Túnel encriptado sobre internet pública; proporciona privacidad y acceso remoto seguro"
     ],
     "options_en": [
-      "Encrypted tunnel over public internet; provides privacy and secure remote access",
+      "An antivirus",
       "Physical private network",
       "A firewall",
-      "An antivirus"
+      "Encrypted tunnel over public internet; provides privacy and secure remote access"
     ],
-    "correct_index": 0,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "VPN: usuario remoto conecta a servidor VPN. Tráfico encriptado sobre internet. Usuario parece estar en red corporativa (IP privada). Uso: acceso remoto seguro, privacidad en wifi público. Protocolo: OpenVPN, WireGuard, IPSec.",
@@ -844,18 +844,18 @@
     "question_es": "¿Cuáles son los dos principales protocolos de VPN?",
     "question_en": "What are the two main VPN protocols?",
     "options_es": [
-      "HTTP y FTP",
       "IPSec (layer 3) y SSL/TLS (layer 7)",
+      "HTTP y FTP",
       "SSH y Telnet",
       "DNS y DHCP"
     ],
     "options_en": [
-      "HTTP and FTP",
       "IPSec (layer 3) and SSL/TLS (layer 7)",
+      "HTTP and FTP",
       "SSH and Telnet",
       "DNS and DHCP"
     ],
-    "correct_index": 1,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IPSec: layer 3, túnel entero encriptado. SSL/TLS VPN: layer 7, basado web. Diferencia: IPSec más completo, SSL/TLS más fácil en firewall. OpenVPN usa SSL/TLS. WireGuard es moderno (basado IPSec).",
@@ -872,17 +872,17 @@
     "question_en": "What is 'split tunneling' in VPN?",
     "options_es": [
       "Dos VPN simultáneas",
-      "Dividir ancho de banda",
       "Enviar tráfico de algunas aplicaciones fuera VPN (no encriptado)",
+      "Dividir ancho de banda",
       "Usar dos servidores"
     ],
     "options_en": [
       "Two simultaneous VPNs",
-      "Split bandwidth",
       "Send traffic of some apps outside VPN (unencrypted)",
+      "Split bandwidth",
       "Use two servers"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Split tunneling: Netflix (no encriptado) vs Gmail (encriptado VPN). Ventaja: ancho de banda. Riesgo de seguridad: tráfico sensible podría filtrarse si split mal. Política: prohibir o permitir selectivamente. Defensa: monitoreo.",
@@ -899,17 +899,17 @@
     "question_en": "What is 'IPSec' and what are its components?",
     "options_es": [
       "Un firewall",
-      "Solo para SSH",
+      "Protocolo layer 3; componentes: AH (autenticación), ESP (encriptación), IKE (intercambio clave)",
       "Un tipo de VPN específicamente",
-      "Protocolo layer 3; componentes: AH (autenticación), ESP (encriptación), IKE (intercambio clave)"
+      "Solo para SSH"
     ],
     "options_en": [
       "A firewall",
-      "Only for SSH",
+      "Layer 3 protocol; components: AH (authentication), ESP (encryption), IKE (key exchange)",
       "A specific VPN type",
-      "Layer 3 protocol; components: AH (authentication), ESP (encryption), IKE (key exchange)"
+      "Only for SSH"
     ],
-    "correct_index": 3,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IPSec: suite de protocolos. AH: autenticación, integridad (no encriptación). ESP: encriptación + autenticación + integridad. IKE: negocia claves/parámetros. Modo túnel vs transporte. Usado en site-to-site VPN, remote access.",
@@ -925,18 +925,18 @@
     "question_es": "¿Qué es 'L2TP' (Layer 2 Tunneling Protocol)?",
     "question_en": "What is 'L2TP' (Layer 2 Tunneling Protocol)?",
     "options_es": [
-      "Protocolo para crear túneles VPN layer 2; generalmente usado con IPSec",
       "Un firewall layer 2",
+      "Protocolo para crear túneles VPN layer 2; generalmente usado con IPSec",
       "Solo para redes inalámbricas",
       "Un tipo de encriptación"
     ],
     "options_en": [
-      "Protocol for creating layer 2 VPN tunnels; typically used with IPSec",
       "Layer 2 firewall",
+      "Protocol for creating layer 2 VPN tunnels; typically used with IPSec",
       "Only for wireless networks",
       "An encryption type"
     ],
-    "correct_index": 0,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "L2TP: tunnela frames layer 2. NO encripta por sí solo (por eso + IPSec). L2TP/IPSec es combinación común. Ventaja: multiprotocolo (no solo IP). Desventaja: lento (2 niveles encapsulación). Usado menos hoy (OpenVPN, WireGuard preferidos).",
@@ -953,17 +953,17 @@
     "question_en": "What is difference between 'site-to-site VPN' and 'remote access VPN'?",
     "options_es": [
       "No hay diferencia",
-      "Site-to-site: conecta redes corporativas. Remote: usuario individual a red corporativa",
+      "Remote es más rápido",
       "Site-to-site solo para WAN",
-      "Remote es más rápido"
+      "Site-to-site: conecta redes corporativas. Remote: usuario individual a red corporativa"
     ],
     "options_en": [
       "No difference",
-      "Site-to-site: connects corporate networks. Remote: individual user to corporate network",
+      "Remote is faster",
       "Site-to-site only for WAN",
-      "Remote is faster"
+      "Site-to-site: connects corporate networks. Remote: individual user to corporate network"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Site-to-site: Oficina A ↔ Oficina B. Gateway VPN en cada sitio. Permanente. Remote: usuario remoto (laptop) → servidor VPN corporativo. Temporal (sesión usuario). Ambas usan IPSec/OpenVPN pero configuración diferente.",
@@ -979,18 +979,18 @@
     "question_es": "¿Qué es 'OpenVPN'?",
     "question_en": "What is 'OpenVPN'?",
     "options_es": [
-      "Firewall de código abierto",
-      "Un tipo de IPSec",
       "VPN de código abierto basado SSL/TLS; multiplataforma, configurable",
+      "Un tipo de IPSec",
+      "Firewall de código abierto",
       "Un antivirus"
     ],
     "options_en": [
-      "Open-source firewall",
-      "A type of IPSec",
       "Open-source VPN based on SSL/TLS; multiplatform, configurable",
+      "A type of IPSec",
+      "Open-source firewall",
       "An antivirus"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "OpenVPN: popular VPN open-source. USA SSL/TLS (no IPSec). Fácil firewall (un puerto UDP/TCP). Rápido configuración. Usado empresas, usuarios individuales. Alternativa moderna: WireGuard (más simple, más rápido).",
@@ -1006,18 +1006,18 @@
     "question_es": "¿Qué es 'WireGuard'?",
     "question_en": "What is 'WireGuard'?",
     "options_es": [
-      "Protocolo muy antiguo",
+      "VPN moderno ultra-simple; <600 líneas código; criptografía contemporánea",
       "Requiere X.509",
       "Solo para Linux",
-      "VPN moderno ultra-simple; <600 líneas código; criptografía contemporánea"
+      "Protocolo muy antiguo"
     ],
     "options_en": [
-      "Very old protocol",
+      "Modern ultra-simple VPN; <600 LOC; contemporary cryptography",
       "Requires X.509",
       "Linux only",
-      "Modern ultra-simple VPN; <600 LOC; contemporary cryptography"
+      "Very old protocol"
     ],
-    "correct_index": 3,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "WireGuard: VPN minimalista, ~600 líneas Go, crypto moderna (ChaCha20, Curve25519). Mucho más rápido que OpenVPN. Configuración simple (llave pública, nada más). Desventaja: menos maduro que OpenVPN. Tendencia: adoption creciente.",
@@ -1033,18 +1033,18 @@
     "question_es": "¿Cuál es el rol de 'IKE' (Internet Key Exchange) en IPSec?",
     "question_en": "What is role of 'IKE' (Internet Key Exchange) in IPSec?",
     "options_es": [
-      "Negocia y establece claves/parámetros IPSec entre extremos",
-      "No tiene rol",
       "Encripta tráfico",
+      "No tiene rol",
+      "Negocia y establece claves/parámetros IPSec entre extremos",
       "Autentica usuarios"
     ],
     "options_en": [
-      "Negotiates and establishes IPSec keys/parameters between endpoints",
-      "No role",
       "Encrypts traffic",
+      "No role",
+      "Negotiates and establishes IPSec keys/parameters between endpoints",
       "Authenticates users"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "IKE: protocolo layer 3. Fases: 1) autenticación mutua, 2) negocia algoritmos crypto (AES, HMAC), 3) genera claves de sesión. Sin IKE, IPSec requeriría configuración manual de claves (impracticable). Versiones: IKEv1, IKEv2.",
@@ -1061,17 +1061,17 @@
     "question_en": "What is difference between 'tunnel' and 'transport' mode in IPSec?",
     "options_es": [
       "No hay diferencia",
-      "Túnel: encapsula IP entero (usado gateway). Transporte: solo payload, IP original se modifica",
+      "Túnel solo para hardware",
       "Transporte es más antiguo",
-      "Túnel solo para hardware"
+      "Túnel: encapsula IP entero (usado gateway). Transporte: solo payload, IP original se modifica"
     ],
     "options_en": [
       "No difference",
-      "Tunnel: encapsulates entire IP (used gateway). Transport: only payload, original IP modified",
+      "Tunnel only for hardware",
       "Transport is older",
-      "Tunnel only for hardware"
+      "Tunnel: encapsulates entire IP (used gateway). Transport: only payload, original IP modified"
     ],
-    "correct_index": 1,
+    "correct_index": 3,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Túnel: IP origen original preservado, nueva IP agregada (host original invisible). Usado: site-to-site VPN. Transporte: encabezado IP original modificado (host conoce IPSec). Usado: host-to-host, remote access. Túnel más versátil.",
@@ -1087,18 +1087,18 @@
     "question_es": "¿Cuál es el ataque 'Man-in-the-Middle' contra VPN y cómo prevenirlo?",
     "question_en": "What is 'Man-in-the-Middle' attack against VPN and how prevent?",
     "options_es": [
-      "No es posible atacar VPN",
-      "VPN es inmune",
       "Interceptar handshake VPN, impersonar servidor. Prevención: certificados cliente/servidor validados",
+      "VPN es inmune",
+      "No es posible atacar VPN",
       "Solo si no hay encriptación"
     ],
     "options_en": [
-      "Can't attack VPN",
-      "VPN is immune",
       "Intercept VPN handshake, impersonate server. Prevention: validated client/server certificates",
+      "VPN is immune",
+      "Can't attack VPN",
       "Only if no encryption"
     ],
-    "correct_index": 2,
+    "correct_index": 0,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "MITM VPN: atacante intercepta handshake SSL/IPSec, presenta certificado falso. Cliente acepta (no valida) = comprometido. Prevención: validar certificado servidor (chain, hostname), certificado cliente (mutual auth), pinning.",
@@ -1141,18 +1141,18 @@
     "question_es": "¿Cómo compararía seguridad entre IPSec, OpenVPN y WireGuard?",
     "question_en": "How would you compare security between IPSec, OpenVPN and WireGuard?",
     "options_es": [
-      "IPSec: robusto; OpenVPN: probado; WireGuard: crypto moderno, menos ataque surface",
-      "Son idénticas",
       "IPSec mejor",
+      "Son idénticas",
+      "IPSec: robusto; OpenVPN: probado; WireGuard: crypto moderno, menos ataque surface",
       "Depende del proveedor"
     ],
     "options_en": [
-      "IPSec: robust; OpenVPN: proven; WireGuard: modern crypto, smaller attack surface",
-      "Identical",
       "IPSec better",
+      "Identical",
+      "IPSec: robust; OpenVPN: proven; WireGuard: modern crypto, smaller attack surface",
       "Depends on vendor"
     ],
-    "correct_index": 0,
+    "correct_index": 2,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Seguridad: IPSec maduro (pero complejo, más vulnerabilidades). OpenVPN probado, robusto (más auditoría). WireGuard: crypto contemporánea, código minimal (menos bugs), pero menos auditoría. Elección: IPSec enterprise (FIPS), OpenVPN balance, WireGuard futuro.",
@@ -1196,22 +1196,427 @@
     "question_en": "What is future of VPN with container/edge computing adoption?",
     "options_es": [
       "VPN será obsoleto",
-      "VPN más importante",
       "Evolución: mTLS (mutual TLS) entre servicios, service mesh (Istio), encriptación nativa",
+      "VPN más importante",
       "No cambiará"
     ],
     "options_en": [
       "VPN will be obsolete",
-      "VPN more important",
       "Evolution: mTLS between services, service mesh (Istio), native encryption",
+      "VPN more important",
       "Won't change"
     ],
-    "correct_index": 2,
+    "correct_index": 1,
     "correct_answer_es": null,
     "correct_answer_en": null,
     "explanation_es": "Futuro: VPN tradicional menos necesaria en cloud nativo. Alternativas: mTLS (certificados autenticación), service mesh (control tráfico), network policies (Kubernetes). Pero VPN sigue relevante para híbrido (datacenter + cloud, usuarios remotos).",
     "explanation_en": "Future: traditional VPN less needed in cloud native. Alternatives: mTLS (cert auth), service mesh (traffic control), network policies (Kubernetes). But VPN still relevant for hybrid (datacenter + cloud, remote users).",
     "source": "NIST SP 800-207 — https://csrc.nist.gov/publications/detail/sp/800-207/final",
     "expected_time_ms": 45000
+  },
+  {
+    "id": "q130304001",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la diferencia principal entre WPA2-PSK y WPA2-Enterprise?",
+    "question_en": "What is the main difference between WPA2-PSK and WPA2-Enterprise?",
+    "options_es": [
+      "WPA2-Enterprise es solo para routers de marca Cisco",
+      "WPA2-PSK usa una contraseña compartida; WPA2-Enterprise usa autenticación individual 802.1X con servidor RADIUS",
+      "WPA2-PSK es más seguro que WPA2-Enterprise",
+      "No hay diferencia de seguridad, solo de precio"
+    ],
+    "options_en": [
+      "WPA2-Enterprise is only for Cisco brand routers",
+      "WPA2-PSK uses a shared password; WPA2-Enterprise uses individual 802.1X authentication with RADIUS server",
+      "WPA2-PSK is more secure than WPA2-Enterprise",
+      "There is no security difference, only in price"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "WPA2-PSK (Pre-Shared Key) es apropiado para redes pequeñas donde todos los usuarios comparten la misma contraseña (passphrase). WPA2-Enterprise es más seguro para redes corporativas: requiere un servidor RADIUS que autentica a cada usuario individualmente usando credenciales únicas (usuario/contraseña, certificados, etc.). En WPA2-Enterprise, si un usuario olvida su credencial o debe ser removido, no es necesario cambiar la contraseña de toda la red. Además, WPA2-Enterprise proporciona mejor monitoreo y auditoría de acceso.",
+    "explanation_en": "WPA2-PSK (Pre-Shared Key) is appropriate for small networks where all users share the same password (passphrase). WPA2-Enterprise is more secure for corporate networks: it requires a RADIUS server that authenticates each user individually using unique credentials (username/password, certificates, etc.). In WPA2-Enterprise, if a user forgets their credential or must be removed, there is no need to change the password for the entire network. Additionally, WPA2-Enterprise provides better access monitoring and auditing.",
+    "source": "https://www.wi-fi.org/",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130304002",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la principal mejora de seguridad que introduce WPA3 en comparación con WPA2?",
+    "question_en": "What is the main security improvement that WPA3 introduces compared to WPA2?",
+    "options_es": [
+      "Aumenta la velocidad de transferencia de datos",
+      "Utiliza el algoritmo SAE (Simultaneous Authentication of Equals) en lugar de PSK, protegiendo contra ataques de diccionario offline",
+      "Elimina la necesidad de contraseñas",
+      "Solo funciona con dispositivos 5G"
+    ],
+    "options_en": [
+      "Increases data transfer speed",
+      "Uses the SAE (Simultaneous Authentication of Equals) algorithm instead of PSK, protecting against offline dictionary attacks",
+      "Eliminates the need for passwords",
+      "Only works with 5G devices"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "WPA3 introduce varias mejoras significativas: 1) SAE (Simultaneous Authentication of Equals) en lugar de PSK: reemplaza el protocolo de intercambio de claves, haciéndolo resistente a ataques de diccionario offline (donde un atacante intenta adivinar la contraseña analizando tráfico capturado); 2) Dragonfly: es el algoritmo específico usado en SAE; 3) Encriptación de datos incluso en redes abiertas (Opportunistic Wireless Encryption); 4) Mayor protección en dispositivos IoT débiles. Estas mejoras hacen que WPA3 sea significativamente más seguro que WPA2.",
+    "explanation_en": "WPA3 introduces several significant improvements: 1) SAE (Simultaneous Authentication of Equals) instead of PSK: replaces the key exchange protocol, making it resistant to offline dictionary attacks (where an attacker attempts to guess the password by analyzing captured traffic); 2) Dragonfly: is the specific algorithm used in SAE; 3) Data encryption even on open networks (Opportunistic Wireless Encryption); 4) Greater protection on weak IoT devices. These improvements make WPA3 significantly more secure than WPA2.",
+    "source": "https://www.wi-fi.org/certification/wi-fi-6",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304003",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es el protocolo 802.1X en seguridad de redes inalámbricas?",
+    "question_en": "What is the 802.1X protocol in wireless network security?",
+    "options_es": [
+      "Un estándar IEEE que proporciona control de acceso a nivel de puerto basado en autenticación individual",
+      "Un algoritmo de encriptación de datos",
+      "Un protocolo para aumentar la velocidad de WiFi",
+      "Una herramienta para detectar intrusiones"
+    ],
+    "options_en": [
+      "An IEEE standard that provides port-based access control based on individual authentication",
+      "A data encryption algorithm",
+      "A protocol to increase WiFi speed",
+      "A tool for detecting intrusions"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El protocolo 802.1X es un estándar IEEE que implementa el control de acceso a la red basado en la autenticación individual del usuario. En redes inalámbricas con 802.1X: 1) El usuario intenta conectarse a la red inalámbrica, 2) El punto de acceso (AP) requiere que el usuario se autentique contra un servidor de autenticación (típicamente RADIUS), 3) Solo después de la autenticación exitosa, se otorga acceso a la red. Esto es fundamental para WPA2-Enterprise y WPA3-Enterprise, permitiendo autenticación fuerte basada en credenciales individuales.",
+    "explanation_en": "The 802.1X protocol is an IEEE standard that implements network access control based on individual user authentication. In wireless networks with 802.1X: 1) The user attempts to connect to the wireless network, 2) The access point (AP) requires the user to authenticate against an authentication server (typically RADIUS), 3) Only after successful authentication is network access granted. This is fundamental to WPA2-Enterprise and WPA3-Enterprise, enabling strong authentication based on individual credentials.",
+    "source": "https://standards.ieee.org/",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304004",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el propósito del servidor RADIUS en una red inalámbrica empresarial?",
+    "question_en": "What is the purpose of a RADIUS server in an enterprise wireless network?",
+    "options_es": [
+      "Crear copias de seguridad de los dispositivos conectados",
+      "Amplificar la señal inalámbrica",
+      "Comprimir los datos transmitidos",
+      "Autenticar usuarios individuales y autorizar su acceso a la red basándose en sus credenciales"
+    ],
+    "options_en": [
+      "Create backups of connected devices",
+      "Amplify the wireless signal",
+      "Compress transmitted data",
+      "Authenticate individual users and authorize their network access based on their credentials"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "RADIUS (Remote Authentication Dial-In User Service) es un protocolo de autenticación, autorización y auditoría (AAA) ampliamente utilizado en redes empresariales. El servidor RADIUS es responsable de: 1) Autenticar usuarios verificando sus credenciales (usuario/contraseña, certificados, OTP, etc.), 2) Autorizar qué recursos pueden acceder según políticas, 3) Registrar (auditar) los intentos de conexión y acceso. En redes inalámbricas, el punto de acceso actúa como cliente RADIUS que envía solicitudes de autenticación al servidor. Esto permite escalabilidad en redes con muchos usuarios.",
+    "explanation_en": "RADIUS (Remote Authentication Dial-In User Service) is an authentication, authorization, and accounting (AAA) protocol widely used in enterprise networks. The RADIUS server is responsible for: 1) Authenticating users by verifying their credentials (username/password, certificates, OTP, etc.), 2) Authorizing what resources they can access according to policies, 3) Recording (auditing) connection and access attempts. In wireless networks, the access point acts as a RADIUS client that sends authentication requests to the server. This enables scalability in networks with many users.",
+    "source": "https://tools.ietf.org/html/rfc2865",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130304005",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un ataque de 'evil twin' (gemelo malvado) en redes inalámbricas?",
+    "question_en": "What is an 'evil twin' attack in wireless networks?",
+    "options_es": [
+      "Un atacante crea un punto de acceso falso con el mismo SSID que la red legítima para interceptar tráfico",
+      "Un virus que daña el firmware del router",
+      "Una contraseña débil fácil de adivinar",
+      "Un corte de energía en la estación base"
+    ],
+    "options_en": [
+      "An attacker creates a fake access point with the same SSID as the legitimate network to intercept traffic",
+      "A virus that damages the router firmware",
+      "A weak password easy to guess",
+      "A power cut at the base station"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Un ataque de 'evil twin' (o punto de acceso falso) es una técnica de suplantación donde el atacante: 1) Crea un punto de acceso inalámbrico que emite el mismo SSID (nombre de red) que la red legítima, 2) Posiciona el punto falso más cerca del usuario o con mayor potencia de señal, 3) El usuario se conecta al punto falso sin saberlo, 4) El atacante intercepta todo el tráfico del usuario (credenciales, datos sensibles, etc.). Este ataque es especialmente efectivo en lugares públicos (cafeterías, aeropuertos) donde los usuarios se conectan a redes desconocidas. La prevención incluye: usar VPN, verificar certificados, HTTPS obligatorio, y estar atento a redes desconocidas.",
+    "explanation_en": "An 'evil twin' attack (or fake access point) is a spoofing technique where the attacker: 1) Creates a wireless access point that broadcasts the same SSID (network name) as the legitimate network, 2) Positions the fake access point closer to the user or with stronger signal strength, 3) The user connects to the fake access point unknowingly, 4) The attacker intercepts all user traffic (credentials, sensitive data, etc.). This attack is especially effective in public places (coffee shops, airports) where users connect to unknown networks. Prevention includes: using VPN, verifying certificates, enforcing HTTPS, and being cautious of unknown networks.",
+    "source": "https://www.nist.gov/cyberframework",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304006",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es un ataque de desautenticación (deauthentication attack) en WiFi?",
+    "question_en": "What is a deauthentication attack in WiFi?",
+    "options_es": [
+      "El atacante envía tramas de desautenticación forjadas para desconectar usuarios legítimos de la red",
+      "Un procedimiento de autenticación en dos pasos",
+      "Un método para cambiar la contraseña del router",
+      "Una técnica para encriptar contraseñas locales"
+    ],
+    "options_en": [
+      "The attacker sends forged deauthentication frames to disconnect legitimate users from the network",
+      "A two-step authentication procedure",
+      "A method to change the router password",
+      "A technique to encrypt local passwords"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Un ataque de desautenticación es una técnica de denegación de servicio (DoS) en redes WiFi donde el atacante: 1) Captura tráfico inalámbrico para identificar direcciones MAC de clientes y del punto de acceso, 2) Envía tramas de desautenticación forjadas (spoofed deauth frames) pretendiendo ser del punto de acceso, 3) Los clientes reciben estas tramas y se desconectan de la red, 4) El atacante puede capturar el tráfico de reconexión (handshake) para intentar romper la contraseña, o crear un punto de acceso falso para interceptar la reconexión. Este ataque es relativamente fácil de ejecutar usando herramientas como Aircrack-ng y afecta la disponibilidad de la red.",
+    "explanation_en": "A deauthentication attack is a denial of service (DoS) technique in WiFi networks where the attacker: 1) Captures wireless traffic to identify MAC addresses of clients and the access point, 2) Sends spoofed deauthentication frames pretending to be from the access point, 3) Clients receive these frames and disconnect from the network, 4) The attacker can capture reconnection traffic (handshake) to attempt to crack the password, or create a fake access point to intercept reconnection. This attack is relatively easy to execute using tools like Aircrack-ng and affects network availability.",
+    "source": "https://standards.ieee.org/standard/802_11-2020.html",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304007",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la limitación principal del filtrado de dirección MAC en seguridad inalámbrica?",
+    "question_en": "What is the main limitation of MAC address filtering in wireless security?",
+    "options_es": [
+      "Las direcciones MAC pueden ser falsificadas (spoofed) fácilmente por atacantes",
+      "Solo funciona con dispositivos Apple",
+      "Requiere un servidor RADIUS",
+      "Aumenta significativamente la velocidad de la red"
+    ],
+    "options_en": [
+      "MAC addresses can be easily spoofed by attackers",
+      "It only works with Apple devices",
+      "It requires a RADIUS server",
+      "It significantly increases network speed"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El filtrado de dirección MAC (Media Access Control) es una medida de control de acceso que permite solo dispositivos con direcciones MAC específicas conectarse a la red inalámbrica. Sin embargo, su limitación principal es que las direcciones MAC pueden ser falsificadas (spoofed) muy fácilmente: un atacante puede: 1) Monitorear la red para capturar direcciones MAC de dispositivos autorizados, 2) Cambiar su dirección MAC local para que coincida con una autorizada, 3) Conectarse a la red evitando el filtro. Por lo tanto, el filtrado de MAC no debe ser la única medida de seguridad; debe combinarse con cifrado fuerte (WPA2/WPA3) y otros controles.",
+    "explanation_en": "MAC address filtering is an access control measure that allows only devices with specific MAC addresses to connect to the wireless network. However, its main limitation is that MAC addresses can be spoofed very easily: an attacker can: 1) Monitor the network to capture MAC addresses of authorized devices, 2) Change their local MAC address to match an authorized one, 3) Connect to the network bypassing the filter. Therefore, MAC filtering should not be the only security measure; it must be combined with strong encryption (WPA2/WPA3) and other controls.",
+    "source": "https://standards.ieee.org/standard/802_11-2020.html",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130304008",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la limitación principal de ocultarle el SSID a una red inalámbrica?",
+    "question_en": "What is the main limitation of hiding the SSID of a wireless network?",
+    "options_es": [
+      "Previene todos los ataques de seguridad",
+      "Disminuye la velocidad de la conexión WiFi",
+      "Solo funciona con redes empresariales",
+      "El SSID puede ser descubierto fácilmente monitoreando tramas de beacon y asociación"
+    ],
+    "options_en": [
+      "It prevents all security attacks",
+      "It decreases WiFi connection speed",
+      "It only works with enterprise networks",
+      "The SSID can be easily discovered by monitoring beacon and association frames"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Ocultar el SSID (Service Set Identifier) de una red inalámbrica es una medida de seguridad por oscuridad que proporciona mínima protección: 1) Aunque el SSID no se transmite en tramas de beacon, aún se transmite en las tramas de asociación y prueba de autenticidad, 2) Un atacante puede fácilmente capturar estas tramas usando herramientas como Wireshark, 3) El SSID también se transmite cuando los clientes legítimos se reconectan, 4) Ocultar el SSID solo evita que usuarios casual vean la red, no a atacantes dedicados. La seguridad real proviene del cifrado fuerte (WPA2/WPA3), no de ocultar el SSID.",
+    "explanation_en": "Hiding the SSID (Service Set Identifier) of a wireless network is a security through obscurity measure that provides minimal protection: 1) Although the SSID is not transmitted in beacon frames, it is still transmitted in association and authentication frames, 2) An attacker can easily capture these frames using tools like Wireshark, 3) The SSID is also transmitted when legitimate clients reconnect, 4) Hiding the SSID only prevents casual users from seeing the network, not dedicated attackers. Real security comes from strong encryption (WPA2/WPA3), not hiding the SSID.",
+    "source": "https://standards.ieee.org/standard/802_11-2020.html",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130304009",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué es la vulnerabilidad KRACK (Key Reinstallation Attack) en WPA2?",
+    "question_en": "What is the KRACK (Key Reinstallation Attack) vulnerability in WPA2?",
+    "options_es": [
+      "Una herramienta para cambiar contraseñas automáticamente",
+      "Un ataque que permite reinstalar claves de cifrado previamente negociadas, permitiendo descifrar tráfico capturado",
+      "Un protocolo para detectar fallos de seguridad",
+      "Una técnica para mejorar la cobertura inalámbrica"
+    ],
+    "options_en": [
+      "A tool to automatically change passwords",
+      "An attack that allows reinstalling previously negotiated encryption keys, enabling decryption of captured traffic",
+      "A protocol to detect security failures",
+      "A technique to improve wireless coverage"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "KRACK (Key Reinstallation Attack) es una vulnerabilidad crítica descubierta en 2017 que afecta a WPA2. El ataque funciona así: 1) El atacante manipula y reinvía mensajes del protocolo de negociación de claves (handshake), 2) Esto fuerza a los dispositivos a reinstalar claves criptográficas previamente negociadas, 3) Las claves se reinstalan con números de secuencia reiniciados a valores bajos, 4) El atacante puede descifrar tráfico previamente capturado o interceptar tráfico en tiempo real. KRACK afecta virtualmente todos los dispositivos WPA2. La mitigación incluye: actualizar firmware, usar WPA3 (que es inmune), y usar VPN adicional. Este ataque demostró la importancia de WPA3.",
+    "explanation_en": "KRACK (Key Reinstallation Attack) is a critical vulnerability discovered in 2017 that affects WPA2. The attack works as follows: 1) The attacker manipulates and retransmits messages from the key negotiation protocol (handshake), 2) This forces devices to reinstall previously negotiated cryptographic keys, 3) Keys are reinstalled with sequence numbers reset to low values, 4) The attacker can decrypt previously captured traffic or intercept real-time traffic. KRACK affects virtually all WPA2 devices. Mitigation includes: updating firmware, using WPA3 (which is immune), and using additional VPN. This attack demonstrated the importance of WPA3.",
+    "source": "https://www.krackattacks.com/",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304010",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Qué tipos de EAP (Extensible Authentication Protocol) se utilizan comúnmente en redes empresariales inalámbricas?",
+    "question_en": "What types of EAP (Extensible Authentication Protocol) are commonly used in enterprise wireless networks?",
+    "options_es": [
+      "EAP-TLS (certificados), EAP-TTLS (contraseñas túneladas) y EAP-PEAP (protegido)",
+      "Las redes WiFi no usan EAP en absoluto",
+      "LDAP y Kerberos como únicos métodos",
+      "EAP-PSK solo, que es el más seguro"
+    ],
+    "options_en": [
+      "EAP-TLS (certificates), EAP-TTLS (tunneled passwords), and EAP-PEAP (protected)",
+      "WiFi networks do not use EAP at all",
+      "LDAP and Kerberos as the only methods",
+      "EAP-PSK only, which is the most secure"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "EAP (Protocolo de Autenticación Extensible) es un marco de autenticación utilizado en redes empresariales 802.1X/WPA2-Enterprise. Los tipos comunes incluyen: 1) EAP-TLS: utiliza certificados digitales X.509 para cliente y servidor, proporciona máxima seguridad, recomendado para redes muy sensibles; 2) EAP-TTLS: túnela contraseñas dentro de un canal TLS seguro, más fácil de implementar que EAP-TLS; 3) EAP-PEAP: encapsula credenciales dentro de un túnel TLS protegido, similar a TTLS. Cada tipo tiene ventajas/desventajas en términos de seguridad, implementación y mantenimiento.",
+    "explanation_en": "EAP (Extensible Authentication Protocol) is an authentication framework used in enterprise 802.1X/WPA2-Enterprise networks. Common types include: 1) EAP-TLS: uses digital X.509 certificates for both client and server, provides maximum security, recommended for highly sensitive networks; 2) EAP-TTLS: tunnels passwords inside a secure TLS channel, easier to implement than EAP-TLS; 3) EAP-PEAP: encapsulates credentials inside a protected TLS tunnel, similar to TTLS. Each type has advantages/disadvantages in terms of security, implementation, and maintenance.",
+    "source": "https://tools.ietf.org/html/rfc3748",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304011",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el propósito de un Sistema de Detección de Intrusiones Inalámbrico (WIDS)?",
+    "question_en": "What is the purpose of a Wireless Intrusion Detection System (WIDS)?",
+    "options_es": [
+      "Detectar y alertar sobre actividades maliciosas en la red inalámbrica como ataques y puntos de acceso rogue",
+      "Aumentar la potencia de transmisión del router",
+      "Cambiar automáticamente el tipo de cifrado WiFi",
+      "Eliminar archivos sospechosos de dispositivos conectados"
+    ],
+    "options_en": [
+      "Detect and alert about malicious activities on the wireless network such as attacks and rogue access points",
+      "Increase the transmission power of the router",
+      "Automatically change the type of WiFi encryption",
+      "Delete suspicious files from connected devices"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Un Sistema de Detección de Intrusiones Inalámbrico (WIDS) es una solución de seguridad que monitorea continuamente la actividad inalámbrica para detectar: 1) Puntos de acceso rogue (no autorizados), 2) Ataques de desautenticación, 3) Ataques de fuerza bruta, 4) Cambios maliciosos de configuración, 5) Cambios en canales WiFi, 6) Emisión de SSIDs no autorizados, 7) Evil twins, 8) Intentos de roaming malicioso. Cuando WIDS detecta actividad sospechosa, genera alertas que permiten al equipo de seguridad responder. WIDS es especialmente importante en entornos empresariales donde la seguridad inalámbrica es crítica.",
+    "explanation_en": "A Wireless Intrusion Detection System (WIDS) is a security solution that continuously monitors wireless activity to detect: 1) Rogue (unauthorized) access points, 2) Deauthentication attacks, 3) Brute force attacks, 4) Malicious configuration changes, 5) WiFi channel changes, 6) Unauthorized SSID broadcasts, 7) Evil twins, 8) Malicious roaming attempts. When WIDS detects suspicious activity, it generates alerts that allow the security team to respond. WIDS is especially important in enterprise environments where wireless security is critical.",
+    "source": "https://www.nist.gov/cyberframework",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304012",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuáles son las medidas efectivas para detectar un punto de acceso rogue (no autorizado)?",
+    "question_en": "What are effective measures to detect a rogue (unauthorized) access point?",
+    "options_es": [
+      "Monitoreo continuo de la actividad inalámbrica, WIDS, escaneo de puntos de acceso cercanos e inventario de equipos autorizados",
+      "Instalando más routers WiFi",
+      "Ocultando el SSID de todos los puntos de acceso",
+      "Solo cambiar la contraseña del router regularmente"
+    ],
+    "options_en": [
+      "Continuous monitoring of wireless activity, WIDS, scanning nearby access points, and maintaining inventory of authorized devices",
+      "Installing more WiFi routers",
+      "Hiding the SSID of all access points",
+      "Only changing router password regularly"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Para detectar puntos de acceso rogue efectivamente: 1) Mantener un inventario actualizado de todos los puntos de acceso autorizados (SSID, direcciones MAC, ubicaciones), 2) Usar herramientas de escaneo WiFi (como Ekahau Site Survey, NetSpot) para identificar puntos de acceso desconocidos en el rango, 3) Implementar un WIDS que monitoree continuamente la actividad inalámbrica, 4) Configurar alertas para nuevas redes detectadas, 5) Realizar auditorías de seguridad inalámbrica regulares, 6) Entrenar al personal sobre el riesgo de conectarse a redes desconocidas. Este enfoque multicapa ayuda a identificar intentos de comprometer la red inalámbrica.",
+    "explanation_en": "To effectively detect rogue access points: 1) Maintain an updated inventory of all authorized access points (SSID, MAC addresses, locations), 2) Use WiFi scanning tools (such as Ekahau Site Survey, NetSpot) to identify unknown access points in range, 3) Implement a WIDS that continuously monitors wireless activity, 4) Configure alerts for newly detected networks, 5) Conduct regular wireless security audits, 6) Train personnel about the risk of connecting to unknown networks. This multilayered approach helps identify attempts to compromise the wireless network.",
+    "source": "https://www.nist.gov/cyberframework",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304013",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es la importancia de usar una VPN al conectarse a redes WiFi públicas?",
+    "question_en": "What is the importance of using a VPN when connecting to public WiFi networks?",
+    "options_es": [
+      "Aumentar la velocidad de la conexión",
+      "Encriptar todo el tráfico entre el dispositivo y el servidor VPN, protegiendo contra interception incluso en redes no seguras",
+      "Permitir acceder a más sitios web",
+      "Cambiar automáticamente la contraseña"
+    ],
+    "options_en": [
+      "Increase connection speed",
+      "Encrypt all traffic between the device and the VPN server, protecting against interception even on unsecured networks",
+      "Allow access to more websites",
+      "Automatically change passwords"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Una Red Privada Virtual (VPN) es esencial en redes WiFi públicas porque: 1) Encripta todo el tráfico del usuario entre su dispositivo y el servidor VPN, 2) Hace que sea imposible para atacantes en la red capturar o interceptar datos sensibles (credenciales, números de tarjetas de crédito, etc.), 3) Oculta la dirección IP real del usuario, 4) Protege contra ataques de hombre en el medio (MITM) y sniffer de red, 5) Funciona incluso si la red WiFi pública no tiene ninguna seguridad. Las redes públicas son particularmente vulnerables a ataques porque no están controladas y muchos atacantes se dedican específicamente a redes públicas.",
+    "explanation_en": "A Virtual Private Network (VPN) is essential on public WiFi networks because: 1) It encrypts all user traffic between their device and the VPN server, 2) It makes it impossible for attackers on the network to capture or intercept sensitive data (credentials, credit card numbers, etc.), 3) It hides the user's real IP address, 4) It protects against man-in-the-middle (MITM) attacks and network sniffers, 5) It works even if the public WiFi has no security. Public networks are particularly vulnerable to attacks because they are not controlled and many attackers specifically target public networks.",
+    "source": "https://www.nist.gov/cyberframework",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130304014",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la función del protocolo 4-way handshake en WPA2/WPA3?",
+    "question_en": "What is the function of the 4-way handshake protocol in WPA2/WPA3?",
+    "options_es": [
+      "Establecer una conexión física inicial entre cliente y punto de acceso",
+      "Detectar dispositivos conectados en la red",
+      "Confirmar credenciales del usuario y establecer claves de cifrado para la sesión inalámbrica",
+      "Cambiar el canal WiFi automáticamente"
+    ],
+    "options_en": [
+      "Establish initial physical connection between client and access point",
+      "Detect connected devices on the network",
+      "Confirm user credentials and establish encryption keys for the wireless session",
+      "Automatically change WiFi channel"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El 4-way handshake es un protocolo de WPA2/WPA3 que se ejecuta después que el usuario proporciona la contraseña correcta. Su propósito es: 1) Verificar que tanto el cliente como el punto de acceso poseen la contraseña correcta, 2) Generar y acordar claves de cifrado únicas (PTK - Pairwise Transient Key) para cifrar el tráfico de esa sesión, 3) Establecer claves de difusión de grupo (GTK) para tráfico dirigido a todos los clientes. El handshake se llama '4-way' porque implica 4 mensajes intercambiados. La vulnerabilidad KRACK explotaba este handshake reinstalando las claves. El tráfico capturado durante el handshake puede ser objetivo para ataques de diccionario.",
+    "explanation_en": "The 4-way handshake is a WPA2/WPA3 protocol that runs after the user provides the correct password. Its purpose is to: 1) Verify that both client and access point possess the correct password, 2) Generate and agree on unique encryption keys (PTK - Pairwise Transient Key) to encrypt that session's traffic, 3) Establish group broadcast keys (GTK) for traffic directed to all clients. The handshake is called '4-way' because it involves 4 exchanged messages. The KRACK vulnerability exploited this handshake by reinstalling the keys. Traffic captured during the handshake can be targeted for dictionary attacks.",
+    "source": "https://standards.ieee.org/standard/802_11-2020.html",
+    "expected_time_ms": 25000
+  },
+  {
+    "id": "q130304015",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es la diferencia entre WPA2 y WPA3 en términos de cifrado de datos?",
+    "question_en": "What is the difference between WPA2 and WPA3 in terms of data encryption?",
+    "options_es": [
+      "WPA2 usa CCMP/AES; WPA3 usa CCMP/AES y también GCMP-256 para mayores niveles de seguridad",
+      "WPA3 elimina completamente la encriptación de datos",
+      "WPA2 es más rápido que WPA3",
+      "Ambos usan exactamente el mismo algoritmo de cifrado"
+    ],
+    "options_en": [
+      "WPA2 uses CCMP/AES; WPA3 uses CCMP/AES and also GCMP-256 for higher security levels",
+      "WPA3 completely eliminates data encryption",
+      "WPA2 is faster than WPA3",
+      "Both use exactly the same encryption algorithm"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "En cuanto a cifrado de datos: WPA2 utiliza CCMP (Counter Mode with CBC-MAC Protocol) basado en AES como el algoritmo principal de cifrado. WPA3 introduce opciones adicionales: CCMP (compatible con WPA2), pero también introduce GCMP-256 (Galois/Counter Mode con clave de 256 bits) que proporciona mayores niveles de seguridad criptográfica. Además, WPA3 introduce Opportunistic Wireless Encryption (OWE) que cifra el tráfico incluso en redes abiertas sin contraseña. WPA3-192 (para redes empresariales de alto nivel) utiliza cifrado de 192 bits. Estas mejoras hacen que WPA3 sea más robusto contra futuros ataques criptográficos.",
+    "explanation_en": "Regarding data encryption: WPA2 uses CCMP (Counter Mode with CBC-MAC Protocol) based on AES as the primary encryption algorithm. WPA3 introduces additional options: CCMP (compatible with WPA2), but also introduces GCMP-256 (Galois/Counter Mode with 256-bit key) which provides higher levels of cryptographic security. Additionally, WPA3 introduces Opportunistic Wireless Encryption (OWE) which encrypts traffic even on open networks without passwords. WPA3-192 (for high-level enterprise networks) uses 192-bit encryption. These improvements make WPA3 more robust against future cryptographic attacks.",
+    "source": "https://www.wi-fi.org/certification/wi-fi-6",
+    "expected_time_ms": 25000
   }
 ]
