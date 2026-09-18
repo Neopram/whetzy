@@ -41,10 +41,17 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 - Groq + `qwen/qwen3.8-27b` tras la abstracción `LLMProvider`. Cambiar de
   proveedor es config, no refactor.
 - Catálogo: **`docs/CATALOGO_MAESTRO.md`** — 27 tracks de aprendizaje y ~55
-  certificaciones, espina de prerequisitos BKT por track. Hoy 15/27 y 4/55 (11 completos + track13 ciberseg + track14 JS frontend en progreso). Es la
+  certificaciones, espina de prerequisitos BKT por track. Hoy 15/27 y 5/55 (11 completos + track13 ciberseg + track40 ISC2 CC + track14 JS stub). Es la
   única lista; cuando otro doc la contradiga, manda el catálogo. No hay atajos.
 - Contenido redactado nativo en ES y EN — no traducido. Toda pregunta cita fuente.
-- Registro obligatorio. Sin modo invitado.
+- **Fuentes solo gratuitas y legales** (ADR-11, catálogo §2.1): reutilizar solo
+  MIT / Apache / BSD / CC BY / CC0 / PSF / dominio público; CC BY-SA espera H.LIC;
+  lo CC BY-NC y lo propietario se lee y se cita. Sin libros de pago, sin PDFs piratas.
+- Registro obligatorio. Sin modo invitado. **Social login antes de tiendas** (ADR-13):
+  GitHub + Google en web → **Sign in with Apple, obligatorio por App Store 4.8** en
+  cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 7.6.
+- Herramientas externas (`claude-webkit`, `banana-claude`, `editor-pro-max`) solo
+  fuera de la app; `notebooklm-mcp` no se instala (ADR-12).
 - Molde por track (catálogo §2): **20 skills · 300 Q · 3 niveles · 20 lecciones ·
   ≥ 36 términos · ≥ 15 % ejecutable** donde el navegador ejecute (Python, SQL, JS)
   o exento con razón (ADR-9). Un track por debajo del molde no existe.
@@ -90,7 +97,7 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 | Revisión de stores | Aprobada a la primera | Checklists 9.5 / 9.6 completos con evidencia |
 | Motor adaptativo con evidencia | DKT AUC ≥ 0,70 y > BKT en benchmark público | `app/ml/benchmark_kt.py` (11.3), no el eval interno con 3 secuencias |
 | Tutor grounded en prod | ≥ 95 % self-retrieval top-3; `grounded` refleja un hit real | Test de 11.1 contra la DB de contenido |
-| Posición competitiva | Score honesto ≥ 60/100 | `docs/competitive-teardown.md`, sección de recálculo más reciente (§8 el 14-sep: **42**; techo del backlog entero: **61**). Los pesos están fijados en §7.1 — **no se tocan entre mediciones**, o la serie 30 → 36 → 42 deja de ser comparable y el marcador vuelve a ser opinión |
+| Posición competitiva | Score honesto ≥ 60/100 | `docs/competitive-teardown.md`, sección de recálculo más reciente (§11 el 18-sep: **44**; techo sin usuarios **61**; con tiendas + social login + 30 beta ≈ **66**; Educative ≈ 51). Los pesos están fijados en §7.1 — **no se tocan entre mediciones**, o la serie 30 → 36 → 42 deja de ser comparable y el marcador vuelve a ser opinión |
 
 ### Cómo decide un dueño cuando hay tensión
 1. Estabilidad de producción por encima de todo.

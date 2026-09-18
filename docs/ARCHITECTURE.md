@@ -25,7 +25,7 @@ Backend (FastAPI)              api-production-9751.up.railway.app
 
 ```
 app/
-├── api/v1/endpoints/     # HTTP layer — thin, delegates to services. 61 routes.
+├── api/v1/endpoints/     # HTTP layer — thin, delegates to services. 67 routes (+4 root: health, ready, …).
 │   ├── auth.py           # register, login, refresh, me, password reset, email verify, delete
 │   ├── quiz.py           # start, answer, end, review-due
 │   ├── progress.py       # dashboard, skills, curriculum, DKT predictions, churn risk
@@ -112,11 +112,16 @@ These are pure functions in `services/engine/` — no DB I/O, fully unit-tested.
 
 ## Content
 
-1807 questions across 8 tracks / 226 skills, every one with a canonical `source`;
-70 bilingual glossary terms. Track 8 is the AWS Cloud Practitioner certification
-(300 questions, 19 skills, 4 official domains). 111 questions are executable
-(`fill_blank_exec` / `fix_bug`) and their expected stdout is verified in CI by
-actually running the reference code in CPython.
+Live numbers come from `python scripts/check_docs.py` (they are also the `Contenido`
+row of `docs/AUTONOMOUS_STATE.md`); as of 2026-09-18: **5,715 questions / 15 tracks /
+342 skills / 342 lessons / 586 glossary terms**, every question with a canonical
+`source`. Five certification tracks (AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC)
+carry official domains with verified weights (`exam_domain` + `exam_weight_pct`).
+Executable questions (`fill_blank_exec` / `fix_bug` / `sql_exec` / `js_exec`) have
+their expected output verified in CI by actually running the reference code in
+CPython / sqlite3; every non-exempt track is ≥ 15 % executable (ADR-9). Sources are
+free and legally reusable or cited only (ADR-11; inventory in
+`docs/CATALOGO_MAESTRO.md` §2.1).
 
 Questions are versioned: `Question.content_version` bumps on edit and
 `Response.question_version` stamps the version answered, so correcting a question
@@ -131,7 +136,9 @@ never rewrites history.
 
 ## Invariants (never break)
 
-- Railway deploy is **manual** — no GitHub webhook. Push code, then deploy via Railway UI.
+- Railway deploy is **automatic** from `master` (verified 2026-09-16, ledger H.16): `git push origin master` runs migrations + `content_loader` in production. Push only with `pytest tests/content` and `check_question_bank.py` green.
+- Cloudflare Pages deploy is **manual**: `npx wrangler pages deploy dist --project-name whetzy --branch main` from `frontend/` (RUNBOOK §1).
+- Auth is email + password today; social login lands in Serie 19 (GitHub/Google web → Sign in with Apple → Google native), and Sign in with Apple is mandatory before any App Store submission once another OAuth exists (ADR-13).
 - Alembic migrations via `alembic revision --autogenerate`, **never** `Base.metadata.create_all` in production.
 - JWT secret lives in `SECRET_KEY` env var. Access tokens expire in 30 min; refresh tokens in 30 days.
 - Raw password reset / email verification tokens never stored — only SHA-256 hash.

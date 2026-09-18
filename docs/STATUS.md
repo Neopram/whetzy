@@ -807,3 +807,13 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 - **Docs corregidos**: `CLAUDE.md` («deploy manual» era falso: push despliega), `ORCHESTRATOR.md` (catálogo, molde por track, Haiku solo tras puerta de calidad, docs en español), `docs/README.md` (comando de loader inexistente, conteos viejos), estrategia v3 (adenda), teardown §9.
 - **Serie 18 abierta** en el ledger: 18.0 DONE; 18.1 (blueprints + readiness) es PRI 0.
 - Banco: **5.024 Q · 12 tracks · 36 cursos · 301 skills · 301 lecciones · 480 términos.**
+
+---
+
+## 2026-09-18 — Sesión bc: H.11 cerrado, Educative, fuentes libres, docs unificados
+
+- **H.11 cerrado**: `npx wrangler pages deploy dist --project-name whetzy --branch main` desde `frontend/` — 153 ficheros, `whetzy.com` sirve `8015fe4`. Sin `--branch main` el deploy va a Preview (primer intento); con él, a Production.
+- **Scorecard 44/100** (Distribución 5 → 10). **Educative.io** evaluado en vivo: ≈ 51/100 — gana en distribución y catálogo, cero en móvil, bilingüe, gamificación y adaptativo. Teardown §11 con lo que falta para vender en web, App Store y Play Store.
+- **Decisiones del dueño**: contenido solo desde fuentes gratuitas y legales (ADR-11, biblioteca por área en catálogo §2.1); social login antes de tiendas con **Sign in with Apple obligatorio** por App Store 4.8 (ADR-13); herramientas externas fuera de la app y `notebooklm-mcp` descartado por archivado (ADR-12).
+- **Docs unificados**: `whetzy_estrategia_definitiva_v3.md` y `runbook_db_backup_restore.md` → `docs/archive/`; ARCHITECTURE, README, RELEASE, CHANGELOG, ORCHESTRATOR, CLAUDE y checklist de Apple sincronizados; tabla `## 0` del ledger restaurada (perdida en `be78d68`). Este fichero se conserva intacto como registro histórico.
+- **Serie 19 abierta** en el ledger. Banco sin cambios: **5.715 Q · 15 tracks · 43 cursos · 342 skills · 342 lecciones · 586 términos.**

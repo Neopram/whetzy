@@ -62,7 +62,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 | 4.3 | Spam | N/A | — |
 | 4.5.6 | Apple Pay | N/A | Not using Apple Pay currently |
 | 4.7 | HTML5 Games / Bots | ✅ | Not primarily a game; educational app with native shell |
-| 4.8 | Sign in with Apple | ✅ | App uses email/password auth only; no third-party social login → SIWA requirement does NOT apply |
+| 4.8 | Sign in with Apple | ⚠️ | Today email/password only, so 4.8 does not apply **yet**. Serie 19 adds GitHub + Google OAuth (19.1); from that moment 4.8 **requires** Sign in with Apple (19.2, needs H.2 Services ID + `.p8` key). Do not ship 19.1 in the iOS build before 19.2 is live (ADR-13) |
 
 ---
 
@@ -104,6 +104,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 | A4 | Source coverage for all questions | 100% of questions must have non-empty `source` field (monitor via `GET /api/v1/content/questions?source=null`) |
 | A5 | Privacy policy URL in App Store Connect | Enter `https://whetzy.com/privacy` in the ASC app record |
 | A6 | Support URL and email in App Store Connect | Enter `https://whetzy.com` and support email |
+| A7 | Sign in with Apple (4.8) once any other social login exists | Ship 19.2 together with (or before) 19.1 in the iOS build; requires H.2 |
 
 ### ✅ Already Compliant
 
@@ -112,7 +113,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 - GDPR data export and deletion (P.7, 9.4)
 - Push notifications opt-in (user-initiated, P.13)
 - No IDFA / ATT not required
-- No social login → SIWA not required
+- No social login *today* → SIWA not required *yet* (see A7: changes with 19.1)
 - No loot boxes or gambling mechanics
 - Accessibility WCAG 2.2 AA (9.2)
 - Prefers-reduced-motion support (9.1)

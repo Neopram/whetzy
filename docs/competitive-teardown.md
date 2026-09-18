@@ -327,6 +327,82 @@ Lo que cambió en este intervalo: los dos stubs (track13 y track14) demuestran q
 
 ---
 
+## 11. Recálculo — 2026-09-18 (sesión bc): H.11 cerrado, Educative.io entra en el set
+
+Mismos pesos de §7.1. Dos cosas nuevas y las dos con evidencia: el frontend de producción
+sirve por fin el build actual, y un quinto competidor evaluado **en vivo** (no de memoria).
+
+### 11.1 Qué se movió
+
+| Dimensión | §10 | Ahora | Evidencia — y qué la limita |
+|---|---|---|---|
+| **Distribución** | 5 | **10** | **H.11 cerrado**: `npx wrangler pages deploy dist --project-name whetzy --branch main` → 153 ficheros, commit `8015fe4`, `https://8c077b9a.whetzy.pages.dev` como Production de `whetzy.com`, verificado en el dashboard de Cloudflare Pages (Production → main). Los «+5 en depósito» de §7.2/§8.1 se cobran: landing, onboarding, `hreflang`, code-splitting, Pyodide autohospedado y el CSS sin `fonts.googleapis.com` (línea roja 5) llegan a quien entre. No sube más porque sigue sin haber usuarios (H.10), sin tiendas (H.2/H.3) y sin TTFQ medido contra prod (11.6, ya desbloqueado) |
+| Motor · Contenido · Tutor · Exec · Gamif · Bilingüe · PWA · Acc | = | = | Sin evidencia nueva desde §10 |
+
+### 11.2 El número
+
+```
+0,34×10 + 0,14×55 + 0,14×52 + 0,09×80 + 0,07×57
+        + 0,06×40 + 0,06×80 + 0,05×70 + 0,05×75   =  44,02
+```
+
+**Whetzy ≈ 44 / 100** (≈ 43 en §10). Un punto por cerrar el bloqueo humano más antiguo del ledger: esa es la aritmética con distribución al 34 %.
+
+### 11.3 Educative.io — verificado en vivo el 2026-09-18 (sesión logueada)
+
+Propuesta: cursos de **texto interactivo, sin vídeo**, para desarrolladores con experiencia. Foco en System Design, Interview Prep y AI/ML. Declara 3 M de usuarios, 2.200+ cursos, 330+ proyectos, 330+ Cloud Labs (AWS/GCP reales), AI Mock Interviews (3-7/mes según plan), Code Debugger paso a paso, Breakout Sessions con expertos, plan Business, certificados de finalización y **social login Google / GitHub / Apple / LinkedIn**. Precios anuales: Standard 7 $/mes · Premium 10 $/mes · Premium Plus 13 $/mes. Solo inglés. **Sin app móvil nativa, sin offline, sin gamificación, sin motor adaptativo** (avance lineal por curso). 448 partners de tracking en el banner de privacidad.
+
+| Dimensión | Peso | Educative | Por qué |
+|---|---|---|---|
+| Distribución | 0,34 | 65 | 3 M de usuarios y marca establecida en su nicho; pierde por no tener app en ninguna tienda |
+| Motor adaptativo | 0,14 | 15 | Lineal; ni BKT ni SRS ni diagnóstico de dominio |
+| Contenido | 0,14 | 75 | 2.200+ cursos y 330+ proyectos, texto + código ejecutable en servidor |
+| Tutor AI | 0,09 | 70 | AI Tutor, Code Feedback, Mock Interviews |
+| Ejecución de código | 0,07 | 70 | Ejecución server-side, Cloud Labs reales, debugger |
+| Gamificación | 0,06 | 10 | Ninguna |
+| Bilingüe | 0,06 | 5 | Solo EN |
+| PWA / offline | 0,05 | 20 | Web-only |
+| Accesibilidad | 0,05 | 55 | Sin verificar; se asume el estándar del sector |
+
+```
+0,34×65 + 0,14×15 + 0,14×75 + 0,09×70 + 0,07×70
+        + 0,06×10 + 0,06×5  + 0,05×20 + 0,05×55   =  50,55
+```
+
+**Educative ≈ 51 / 100.** Set completo: Duolingo 72 · DataCamp 68 · Brilliant 66 · Codecademy 58 · **Educative 51** · **Whetzy 44**.
+
+**Lectura honesta.** Educative gana en distribución y catálogo y pierde el tercio de la tabla por no tener móvil, y las tres dimensiones donde Whetzy invirtió (adaptativo, bilingüe, PWA) ahí valen cero. La superposición real es pequeña: Educative vende *interview prep y system design a seniors angloparlantes*; Whetzy vende *aprendizaje técnico adaptativo ES/EN con certificaciones cloud y ejecución en navegador*. El riesgo no es que nos quite usuarios; es que un hispanohablante lo encuentre antes por el SEO de «system design interview».
+
+### 11.4 Lo que Educative tiene y Whetzy no — y qué hacer con cada cosa
+
+| Tienen | ¿Lo necesitamos? | Decisión |
+|---|---|---|
+| Social login (Google / GitHub / Apple / LinkedIn) | **Sí** — fricción de registro; y **App Store 4.8 exige Sign in with Apple** en cuanto haya cualquier otro OAuth | Serie 19: 19.1 web → 19.2 Apple (H.2) → 19.3 Android (ADR-13) |
+| Roadmap por rol visible sin cuenta | Sí (conversión) | 19.8 |
+| 330+ proyectos guiados | Sí, a escala de nicho: 10/track ejecutable | 18.8 / 19.6 |
+| Certificados de finalización | Sí | 17.2 ya lo tiene; falta exponerlo en el listing |
+| Plan Business | Más adelante; sin usuarios es una sala vacía | catálogo §9 |
+| Cloud Labs reales | **No** — coste de servidor y contrario al diferenciador WASM sin servidor | no se construye |
+| AI Mock Interviews | **No ahora** — fuera del nicho (cert prep + Python) y LLM caro | fase ≥ 20 |
+| 2.200+ cursos | **No por volumen** — profundidad > amplitud; el techo del catálogo es 27 tracks / ≈ 80 cursos | catálogo §2 |
+| Testimoniales FAANG | No inventar ninguno; prueba social solo con cifras de `/evidence` | 19.8 |
+
+### 11.5 Qué falta para vender en cada canal
+
+| Canal | Bloqueante | Acción |
+|---|---|---|
+| **Web** (`whetzy.com`, live desde hoy) | Social login ausente; sin prueba social; TTFQ sin medir en prod | 19.1 · 19.8 · 11.6 |
+| **App Store** | 3.1.1 IAP (7.6) · **4.8 Sign in with Apple (19.2)** · H.2 · H.14 (macOS) | Ninguna submission sin 7.6 + 19.1 + 19.2 |
+| **Play Store** | Google Play Billing (19.3) · Google Sign-In (19.3) · H.3 | Educative **no está** en Play Store: el nicho «aprendizaje técnico ES/EN en Android» está vacío |
+
+### 11.6 El techo, revisado
+
+- Con todo el backlog técnico (Series 17-19) hecho y medido, sin usuarios: **≈ 61** (§8.3, sin cambio — el contenido sigue saliendo solo de fuentes libres, ADR-11, y eso no baja el 55 de Contenido: lo que hace profundo a un track es la verificación, no el precio del libro).
+- Con tiendas publicadas, social login y una cohorte de 30 beta midiendo retención (H.10): Distribución ≈ 50 → **≈ 66**. Paridad con Brilliant, por encima de Codecademy y Educative, por debajo de DataCamp y Duolingo.
+- Media aritmética de los cinco competidores: **63**. Whetzy hoy está 19 por debajo; con el backlog cerrado, 2 por debajo; con usuarios, 3 por encima. **El marcador global no se gana construyendo**; lo que se gana construyendo es no tener ningún rival en ES/EN + adaptativo + offline.
+
+---
+
 ## 9. Catálogo frente al mercado — 2026-09-16 (sesión au)
 
 El dueño preguntó si Whetzy puede «abarcar todo el mundo informático». La respuesta

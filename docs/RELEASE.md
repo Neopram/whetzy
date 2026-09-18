@@ -1,6 +1,6 @@
 # Whetzy — Guía de release definitiva
 
-> Actualizado: 2026-09-15. Serie 17.9 — DONE.
+> Actualizado: 2026-09-18 (sesión bc — H.11 cerrado, deploy web con wrangler; requisito 4.8 de Apple añadido). Serie 17.9 — DONE.
 > Changelog completo: [docs/CHANGELOG.md](CHANGELOG.md)
 > iOS listing y PrivacyInfo: [docs/store/ios/](store/ios/)
 > Play Store Data Safety: [docs/store/play-store-data-safety.md](store/play-store-data-safety.md)
@@ -19,13 +19,17 @@ cd frontend
 npm run build          # NO usar `vite build` directamente — scripts pre/post-build corren con npm
 ```
 
-La rama `master` de GitHub está conectada al proyecto de Cloudflare Pages (`whetzy`).
-**El deploy es MANUAL** (no hay webhook automático — H.11).
+El proyecto de Cloudflare Pages (`whetzy`) **no está conectado a Git**: el deploy es
+**MANUAL por subida directa** con wrangler (primera vez por máquina: `npx wrangler login`).
 
 ```bash
-# Verificar que el build nuevo está activo
-curl -s https://whetzy.com/assets/ | head -5   # debe mostrar index-HASH.js del build reciente
+cd frontend
+npm run build
+npx wrangler pages deploy dist --project-name whetzy --branch main   # --branch main = Production (whetzy.com)
 ```
+
+Sin `--branch main` el deploy va a *Preview* y `whetzy.com` no cambia. Verificado el
+2026-09-18 (H.11 cerrado): 153 ficheros, `https://8c077b9a.whetzy.pages.dev` → Production.
 
 ### Checks antes de publicar
 ```bash
@@ -34,7 +38,7 @@ node scripts/check-bundle.mjs                   # bundle < 300 KB gz
 node scripts/check-no-third-party.mjs           # 0 terceros en dist/
 ```
 
-### Verificar que el deploy está activo (tras H.11)
+### Verificar que el deploy está activo (tras cada `wrangler pages deploy`)
 ```bash
 cd frontend
 npm run check:deployed                          # 6/6 checks PASS
@@ -56,19 +60,21 @@ npm run check:deployed https://whetzy.pages.dev
 
 ## 2. Backend (Railway)
 
-```bash
-# Deploy manual desde CLI — Railway token se configura en la UI
-railway up --service backend
+**El deploy es AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16):
+`git push origin master` reconstruye la imagen y `start.sh` ejecuta `alembic upgrade
+head` → `content_loader` → seed de gamificación → gunicorn. Cada push provoca ~60-90 s
+de 502 para quien esté dentro.
 
-# O vía dashboard: railway.app → Deployments → Deploy from GitHub
+### Antes de cualquier push a `master`
+```bash
+cd backend && python -m pytest tests/content -q     # lecciones, ejecutables, blueprints
+python ../scripts/check_question_bank.py            # banco
+python ../scripts/check_docs.py                     # docs = código
+# Si hay migración: backup de prod ANTES del push (RUNBOOK → DB backup / restore)
 ```
 
-### Antes de cualquier deploy
-```bash
-cd backend
-alembic upgrade head        # migraciones pendientes
-python -m app.services.content_loader   # cargar contenido si hay cambios (H.SEED)
-```
+Verificar después: `curl https://api-production-9751.up.railway.app/health` →
+`{"status":"healthy"}`; si hubo contenido nuevo, `GET /api/v1/glossary/<track>` lo sirve.
 
 ---
 
@@ -235,9 +241,9 @@ Ver [docs/store/ios/listing.md](store/ios/listing.md) para el listing completo E
 
 | Bloqueo | Acción | Desbloquea |
 |---|---|---|
-| **H.11** | Redesplegar frontend en Cloudflare desde `master` | Web visible a usuarios |
-| **H.SEED** | `alembic upgrade head` + content loader en prod | Contenido accesible en prod |
-| **H.2** | Registrarse en Apple Developer Program ($99/año) | iOS build y App Store |
-| **H.3** | Google Play Console ($25) + crear keystore de firma | Android Play Store |
+| ~~H.11~~ | **Cerrado 2026-09-18** — `wrangler pages deploy … --branch main` | Web visible a usuarios ✅ |
+| ~~H.SEED~~ | **Caducado**: el loader corre en cada deploy (glosario de prod = repo, término a término) | Contenido en prod ✅ |
+| **H.2** | Apple Developer Program ($99/año) **+ Services ID y clave `.p8` para Sign in with Apple** (obligatorio por 4.8 en cuanto exista otro OAuth — 19.2) | iOS build, App Store, 19.2 |
+| **H.3** | Google Play Console ($25) + crear keystore de firma | Android Play Store, 19.3 |
 | **H.14** | Mac propio/Codemagic/cloud builder para compilar iOS | App Store submission |
-| **H.5** | Completar H.2+H.3+H.14+RevenueCat → submit a tiendas | App en tiendas |
+| **H.5** | Completar H.2 + H.3 + H.14 + 7.6 (IAP) + **19.1 + 19.2 (social login con Apple)** → submit a tiendas | App en tiendas |

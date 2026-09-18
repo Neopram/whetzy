@@ -154,3 +154,38 @@ FRONTEND_BASE_URL=https://whetzy.com
 
 1. In Railway: Deployments → click the last-good deploy → "Redeploy"
 2. If migration was applied: `alembic downgrade -1` against the prod DB (needs direct DB access)
+
+## DB backup / restore
+
+Scripts (all read `PGPASSWORD`, `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_NAME` from the
+environment; defaults match the local Docker DB):
+
+| Script | Purpose |
+|---|---|
+| `scripts/db_backup.sh [out.dump]` | Dump the DB to a compressed custom-format file (`backups/neurium_YYYYMMDD_HHMMSS.dump`) |
+| `scripts/db_restore.sh <file> [db]` | Restore into an existing (empty) database; filters the benign `transaction_timeout` warning from `pg_dump ≥ 17` against `pg16` and verifies `users` exists |
+| `scripts/db_restore_test.sh [file]` | Backup → restore into a temp DB → row-parity check → cleanup (`trap cleanup EXIT`, also on failure) |
+
+```bash
+# Local: backup, and a full restore smoke test
+PGPASSWORD=neurium_dev ./scripts/db_backup.sh
+PGPASSWORD=neurium_dev ./scripts/db_restore_test.sh
+
+# Production (Railway): tunnel with the CLI, then dump
+railway connect --service whetzy-db
+DB_HOST=localhost DB_PORT=5432 PGPASSWORD=<railway-password> \
+  ./scripts/db_backup.sh backups/prod_$(date +%Y%m%d).dump
+
+# Restore into a fresh local DB
+PGPASSWORD=neurium_dev createdb --host=localhost --port=5433 --username=neurium neurium_recovery
+PGPASSWORD=neurium_dev ./scripts/db_restore.sh backups/<file>.dump neurium_recovery
+```
+
+**Before a production migration**: take a `pre_migration_<ts>.dump` first. Since
+`git push origin master` deploys and runs `alembic upgrade head` automatically, do
+the backup *before* the push. Store production backups off-machine; never commit them.
+
+Recovery: pick the last clean dump (`ls -lht backups/`) → `createdb` an empty target →
+`db_restore.sh` → point `DATABASE_URL` at it → `GET /health/ready` → `db_restore_test.sh <dump>`
+for row parity → swap traffic. Last full test: 2026-09-08 (7 tracks / 1253 questions
+at the time, < 5 s from a 544 KB dump); the scripts have not changed since.

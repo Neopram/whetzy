@@ -5,6 +5,26 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-09-18 (sesión bc)
+
+**ES**
+
+- **Frontend desplegado a producción** (H.11 cerrado): `whetzy.com` sirve el build `8015fe4` vía `wrangler pages deploy --branch main`.
+- **Documentación unificada**: estrategia v3 y runbook de backups a `docs/archive/`; ARCHITECTURE, README, RELEASE, ORCHESTRATOR y CLAUDE sincronizados; tabla de invariantes del ledger restaurada.
+- **Política de fuentes** (ADR-11): solo gratuitas y legales; biblioteca por área en `CATALOGO_MAESTRO.md` §2.1.
+- **Teardown §11**: Educative.io evaluado en vivo (≈ 51/100); Whetzy 44/100; qué falta para vender en web, App Store y Play Store.
+- **Serie 19** abierta: social login (Sign in with Apple obligatorio — ADR-13), bootcamps, playground, biblioteca RAG de autoría, landing, assets, vídeo con Remotion.
+
+**EN**
+
+- **Frontend deployed to production** (H.11 closed): `whetzy.com` serves build `8015fe4` via `wrangler pages deploy --branch main`.
+- **Docs unified**: v3 strategy and backup runbook moved to `docs/archive/`; ARCHITECTURE, README, RELEASE, ORCHESTRATOR and CLAUDE synced; ledger invariants table restored.
+- **Sources policy** (ADR-11): free and legal only; per-area library in `CATALOGO_MAESTRO.md` §2.1.
+- **Teardown §11**: Educative.io assessed live (≈ 51/100); Whetzy 44/100; what each sales channel (web, App Store, Play Store) still needs.
+- **Serie 19** opened: social login (Sign in with Apple mandatory — ADR-13), bootcamps, playground, authoring RAG library, landing, store assets, Remotion video post-production.
+
+---
+
 ## [1.2.0] — 2026-09-18
 
 ### Sesiones ay–bb
@@ -79,6 +99,6 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ## Versiones futuras / Future versions
 
-- **1.1.0**: editor Monaco en preguntas de código, fill_blank con validación de fragmento.
-- **1.2.0**: track Frontend (JavaScript, React, CSS) y track Algoritmos.
-- **2.0.0**: vídeos explicativos generados con Manim, proyectos multi-paso con tests.
+- **1.3.0**: social login (GitHub + Google web; Sign in with Apple tras H.2), bootcamps, playground libre, TTFQ medido en prod (Serie 19 / 11.6).
+- **1.4.0**: Linux, Algoritmos y Redes (18.4, con Erickson y Peterson/Davie CC BY), certificaciones P1 (18.5).
+- **2.0.0**: proyectos multi-paso con tests en runtime (18.8), vídeos Manim + Remotion (19.10), resto del catálogo de 27 tracks.

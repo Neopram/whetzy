@@ -12,12 +12,16 @@ Frontend: React + Capacitor.
 | Saber qué construye Whetzy y qué falta (tracks, certs, fuentes, coste) | **`CATALOGO_MAESTRO.md`** |
 | Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad) |
 | Operar una sesión autónoma | `ORCHESTRATOR.md` + `../CLAUDE.md` |
-| Desplegar, migrar, restaurar, diagnosticar | `RUNBOOK.md`, `runbook_db_backup_restore.md`, `RELEASE.md` |
+| Saber qué fuentes se pueden usar (solo gratuitas y legales) y cómo | **`CATALOGO_MAESTRO.md` §2.1** + `DECISIONS.md` ADR-11 |
+| Desplegar (Cloudflare con wrangler, Railway automático), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
 | Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
-| Ver la posición frente a la competencia, con pesos fijos | `competitive-teardown.md` |
-| Leer la estrategia del dueño (con su adenda de 2026-09-16) | `whetzy_estrategia_definitiva_v3.md` |
-| Historia narrativa por fase | `STATUS.md`, `CHANGELOG.md` |
-| Tiendas (listing, privacidad, iconos) | `store/` |
+| Ver la posición frente a la competencia, con pesos fijos (última: §11, Educative y los 3 canales) | `competitive-teardown.md` |
+| Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
+| Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
+
+Esos son los **diez documentos vivos** (más `store/`). Todo lo demás está en
+`archive/` — incluida la estrategia v3 del dueño, superada por el catálogo — y **no
+manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo.
 
 ## Arranque local
 
@@ -53,4 +57,6 @@ banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
 | OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
 
 `git push origin master` **despliega** el backend (Railway, auto-deploy verificado
-2026-09-16). El frontend en Cloudflare Pages se redespliega a mano (H.11).
+2026-09-16). El frontend en Cloudflare Pages se despliega a mano con
+`npx wrangler pages deploy dist --project-name whetzy --branch main` desde
+`frontend/` (RUNBOOK §1; H.11 cerrado el 2026-09-18).

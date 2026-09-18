@@ -163,3 +163,78 @@ allowing the captured `logs` array to be `postMessage`-d back.
 sandbox>` (CSP relaxation needed, DOM reachable); server-side execution (latency,
 stateful server, no offline); Pyodide for JS (800 KB overhead for a language the
 browser already runs natively).
+
+---
+
+## ADR-11 — Contenido solo desde fuentes gratuitas y legales (2026-09-18)
+
+**Decisión:** ninguna pregunta, lección, término de glosario, bootcamp o proyecto se
+escribe a partir de un libro de pago ni de un PDF obtenido fuera de su canal legal.
+Las fuentes se clasifican en tres marcas, y solo la primera admite reutilizar texto:
+
+1. **[reusar]** — MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público
+   (NIST, RFC, docs de gobierno de EE. UU.). Puede entrar en la app con atribución.
+2. **[H.LIC]** — CC BY-SA. Solo si el dueño acepta que lo derivado herede la licencia.
+3. **(cita)** — gratis online pero CC BY-NC-* o propietario (AWS, Azure, GCP,
+   CompTIA, ISC2, Cisco, MDN). Se lee, se aprende, se escribe original en ES y EN,
+   se enlaza. Nunca se pega.
+
+Inventario por área y track en `docs/CATALOGO_MAESTRO.md` §2.1.
+
+**Razón:** decisión del dueño el 2026-09-18 tras el análisis de Educative y de la
+lista de libros por track. Comprar un libro no da derecho a copiarlo, y «parafrasear»
+texto protegido párrafo a párrafo es obra derivada. Con lo que ya es libre hay
+material completo para los 27 tracks — incluidos libros enteros CC BY para los tres
+tracks de 18.4 (Erickson, Peterson/Davie) — así que la restricción no encarece nada:
+la autoría de Whetzy siempre fue original y citada (regla 5 del orquestador).
+
+**Alternativas descartadas:** comprar manuales (coste, sin derecho de reutilización,
+y el parafraseo sigue siendo derivado); PDFs pirateados (ilegal — no entran ni como
+cita); depender de CC BY-SA sin decisión (hereda licencia sobre contenido propio).
+
+---
+
+## ADR-12 — Herramientas externas de autoría fuera de la app; `notebooklm-mcp` no se adopta (2026-09-18)
+
+**Decisión:** las herramientas evaluadas el 2026-09-18 se usan, si se usan, como
+utilidades de autoría en el PC del dueño y jamás entran en el bundle ni en el backend:
+
+| Herramienta | Uso |
+|---|---|
+| `hainrixz/claude-webkit` (MIT) | referencia de skills de diseño/SEO para la landing (19.8); no se adopta Next.js ni Vercel |
+| `AgriciDaniel/banana-claude` (MIT, Gemini de pago) | iconos y assets de tiendas (19.9); nunca diagramas técnicos |
+| `Hainrixz/editor-pro-max` (MIT; Remotion gratis ≤ 3 personas) | post-producción del vídeo Manim (19.10) |
+| Maia (Matillion) | no aplica: Whetzy no tiene pipelines de datos |
+| `PleasePrompto/notebooklm-mcp` | **no se instala** |
+
+**Razón:** línea roja 5 (sin terceros en prod) y mantenimiento. `notebooklm-mcp`
+está **archivado desde septiembre de 2026**, no usa API (NotebookLM no tiene) sino
+un Chrome con Patchright — evasión de detección de bots — que rasca la interfaz de
+Google; es zona gris de sus términos, pone en riesgo la cuenta que se use, no crea
+cuadernos ni sube PDFs por herramienta, y el siguiente cambio de interfaz lo rompe
+para siempre. Lo único que aportaba —grounding con cita sobre un corpus cerrado— ya lo
+da el BM25 propio de `services/ai/rag.py` apuntado a las fuentes libres (19.7).
+
+**Alternativas descartadas:** depender del scraper archivado; usar la cuenta de Google
+del dueño en un scraper; adoptar Next.js/Vercel por la landing (dos stacks para una
+página).
+
+---
+
+## ADR-13 — Social login antes de tiendas; Sign in with Apple obligatorio en cuanto exista otro OAuth (2026-09-18)
+
+**Decisión:** Whetzy deja de ser email-only. Orden de implantación: **19.1** GitHub +
+Google en web por redirección OAuth 2.0 (sin SDK de terceros en el bundle) → **19.2**
+Sign in with Apple (bloqueado por H.2: Services ID + clave `.p8`) → **19.3** Google
+Sign-In nativo en Android + Google Play Billing vía RevenueCat. **Ninguna submission a
+App Store sin 19.1 + 19.2 + 7.6.** Una cuenta existente con el mismo email verificado
+se vincula, nunca se duplica; los tokens emitidos son los mismos que en `/auth/login`.
+
+**Razón:** App Store Review Guideline 4.8 exige ofrecer Sign in with Apple si la app
+ofrece cualquier otro login de terceros; el checklist de Apple decía «no aplica» solo
+porque no había ninguno. Educative ofrece Google / GitHub / Apple / LinkedIn y en 2026
+el registro por email es la fricción máxima; GitHub es lo que un desarrollador espera.
+
+**Alternativas descartadas:** seguir email-only (conversión); OAuth de Google/GitHub
+sin Apple (rechazo garantizado en revisión); SDK de proveedor en el bundle (línea
+roja 5: redirección pura).

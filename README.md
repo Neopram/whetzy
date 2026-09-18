@@ -2,16 +2,19 @@
 
 > **El motor que te aprende mientras aprendes.** / *The engine that learns you while you learn.*
 
-Adaptive learning platform that takes a learner from basic Python to employable AI
-Engineer. Bilingual (ES/EN, natively authored). A layered adaptive engine
-(FSRS-6 + Elo + BKT + Thompson-sampling bandit, DKT planned) selects the next
-question that maximizes learning, gated by mastery-verified prerequisites.
+Bilingual (ES/EN, natively authored) school of computing: Python, software
+engineering, AI/ML, SQL, cybersecurity, cloud certifications. A layered adaptive
+engine (BKT + FSRS + Elo + Thompson-sampling bandit, DKT with fallback) selects the
+next question that maximizes learning, gated by mastery-verified prerequisites. Code
+runs in the browser (Python via Pyodide, SQL via sql.js, JavaScript in a Worker
+sandbox) — no execution server.
 
 ## Stack
-- **Frontend:** React + TypeScript + Vite (PWA, Capacitor-ready). Light-first, sky-blue identity.
-- **Backend:** FastAPI + SQLAlchemy 2.0 (async) + PostgreSQL + Redis.
-- **AI tutor:** Groq/Llama 3 via a swappable `LLMProvider` (Claude later); grounded fallback when no key.
-- **Security:** OWASP ASVS 5.0-aligned headers + per-IP rate limiting; Argon2/JWT-ready.
+- **Frontend:** React + TypeScript + Vite (PWA, Capacitor). Light-first, sky-blue identity. Hosted on Cloudflare Pages (`whetzy.com`).
+- **Backend:** FastAPI + SQLAlchemy 2.0 (async) + PostgreSQL on Railway (auto-deploy from `master`).
+- **AI tutor:** Groq `qwen/qwen3.8-27b` behind a swappable `LLMProvider`, grounded with an in-memory BM25 index; grounded fallback when no key.
+- **Security:** OWASP ASVS 5.0-aligned headers + per-IP rate limiting; JWT access/refresh; GDPR export + delete.
+- **Content:** every question cites a source; sources are free and legally reusable or cited only (ADR-11).
 
 ## Run locally (Docker)
 ```bash
@@ -45,14 +48,17 @@ npm run dev     # Vite proxies /api -> http://127.0.0.1:8000 (see vite.config.ts
 ```
 backend/    FastAPI app — engine/, services/, api/, models/, schemas/
 frontend/   React PWA — pages/, components/, services/api.ts, stores/
-content/    curriculum (tracks.json) + question bank + placement exam
+content/    curriculum (tracks.json) + questions + lessons + glossary + placement exam
+docs/       ledger (AUTONOMOUS_STATE.md), catalog, runbook, ADRs, competitive teardown
 legal/      privacy policy, terms of service
 docker-compose.yml, .github/workflows/ci.yml, .env.example
 ```
 
 ## Status
-See `docs/STATUS.md` for the honest, per-domain completion breakdown and the
-competitive scorecard.
+Start at `docs/README.md`. The source of truth for progress and human blockers is
+`docs/AUTONOMOUS_STATE.md`; the scope is `docs/CATALOGO_MAESTRO.md`; the honest
+competitive position (fixed weights, latest recalculation in §11) is
+`docs/competitive-teardown.md`. `docs/STATUS.md` is a historical per-session log.
 
 ## License
 Proprietary — © Whetzy.
