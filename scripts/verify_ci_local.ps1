@@ -63,7 +63,7 @@ function Step([string]$name, [scriptblock]$cmd, [bool]$skip=$false, [string]$ski
     }
 }
 
-Log "=== verify_ci_local.ps1 — $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
+Log "=== verify_ci_local.ps1 - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
 Log "Log: $LogFile"
 Log ""
 
@@ -198,7 +198,7 @@ if ($FailCount -eq 0) {
 } else {
     Log "RESULT: FAIL — $FailCount failures: $($Failures -join ', ')"
     Write-Host ""
-    Write-Host "CI-LOCAL $(Get-Date -Format 'yyyy-MM-dd') exit 1 — failures: $($Failures -join ', ')" -ForegroundColor Red
+    Write-Host "CI-LOCAL $(Get-Date -Format 'yyyy-MM-dd') exit 1 - failures: $($Failures -join ', ')" -ForegroundColor Red
     Set-Location $Root
     exit 1
 }
