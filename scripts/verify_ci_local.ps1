@@ -170,6 +170,11 @@ Step "frontend: check-no-third-party" {
     node scripts/check-no-third-party.mjs 2>&1
 }
 
+Step "frontend: check:i18n" {
+    Set-Location $FrontendDir
+    npm run check:i18n 2>&1
+}
+
 # ── E2E JOB — SKIP (Docker/Postgres unavailable locally) ──────────────────────
 Log ""
 Log "--- JOB: e2e ---"
@@ -202,3 +207,4 @@ if ($FailCount -eq 0) {
     Set-Location $Root
     exit 1
 }
+

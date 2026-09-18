@@ -5,6 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
+    admin,
     analytics,
     auth,
     billing,
@@ -45,3 +46,4 @@ api_router.include_router(content.router, prefix="/content", tags=["content"])
 api_router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
 api_router.include_router(billing.router, prefix="/billing", tags=["billing"])
 api_router.include_router(push.router, prefix="/push", tags=["push"])
+api_router.include_router(admin.router, prefix="/admin", tags=["admin"])

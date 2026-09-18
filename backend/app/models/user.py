@@ -60,6 +60,7 @@ class User(Base):
     subscription_status: Mapped[str | None] = mapped_column(String(32), nullable=True)  # active|canceled|past_due|trialing
     subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro
     subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 
     skill_states: Mapped[list[UserSkillState]] = relationship(
         back_populates="user", cascade="all, delete-orphan"

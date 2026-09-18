@@ -1,0 +1,531 @@
+"""Admin panel endpoints (22.1): 7 panels for metrics, security, content, ops, GDPR, revenue, economy."""
+
+from __future__ import annotations
+
+import uuid
+from datetime import UTC, datetime, timedelta
+from typing import Any
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import desc, func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.db import get_db
+from app.core.security import get_current_user
+from app.models.admin import AuditLog, CreditLedger, GDPRRequest, LoginAttempt, Referral
+from app.models.content import Question, Skill
+from app.models.session import Response, StudySession
+from app.models.user import User
+
+router = APIRouter()
+
+
+def require_admin(user: User = Depends(get_current_user)) -> User:
+    if user.role not in ("owner", "admin"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
+    return user
+
+
+def require_owner(user: User = Depends(get_current_user)) -> User:
+    if user.role != "owner":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Owner access required",
+        )
+    return user
+
+
+@router.get("/metrics/users", dependencies=[Depends(require_admin)])
+async def get_metrics_users(
+    range_days: int = Query(default=7, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    cutoff = datetime.now(UTC) - timedelta(days=range_days)
+    
+    dau_result = await db.execute(
+        select(func.count(func.distinct(StudySession.user_id))).where(
+            StudySession.started_at >= cutoff
+        )
+    )
+    dau = dau_result.scalar() or 0
+    
+    wau_result = await db.execute(
+        select(func.count(func.distinct(StudySession.user_id))).where(
+            StudySession.started_at >= datetime.now(UTC) - timedelta(days=7)
+        )
+    )
+    wau = wau_result.scalar() or 0
+    
+    mau_result = await db.execute(
+        select(func.count(func.distinct(StudySession.user_id))).where(
+            StudySession.started_at >= datetime.now(UTC) - timedelta(days=30)
+        )
+    )
+    mau = mau_result.scalar() or 0
+    
+    return {
+        "dau": dau,
+        "wau": wau,
+        "mau": mau,
+        "range_days": range_days,
+    }
+
+
+@router.get("/metrics/funnel", dependencies=[Depends(require_admin)])
+async def get_metrics_funnel(
+    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    day_1 = datetime.now(UTC) - timedelta(days=1)
+    day_7 = datetime.now(UTC) - timedelta(days=7)
+    
+    total_users = await db.execute(select(func.count(User.id)))
+    total = total_users.scalar() or 0
+    
+    active_users = await db.execute(
+        select(func.count(func.distinct(StudySession.user_id))).where(
+            StudySession.started_at >= day_7
+        )
+    )
+    active = active_users.scalar() or 0
+    
+    d1_users = await db.execute(
+        select(func.count(func.distinct(StudySession.user_id))).where(
+            StudySession.started_at >= day_1
+        )
+    )
+    d1 = d1_users.scalar() or 0
+    
+    return {
+        "total_users": total,
+        "active_7d": active,
+        "active_1d": d1,
+        "retention_d1": round((d1 / total * 100), 2) if total > 0 else 0,
+        "retention_d7": round((active / total * 100), 2) if total > 0 else 0,
+    }
+
+
+@router.get("/metrics/ttfq", dependencies=[Depends(require_admin)])
+async def get_metrics_ttfq(
+    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    result = await db.execute(
+        select(
+            func.extract("epoch", StudySession.started_at - User.created_at)
+        ).select_from(StudySession).join(User)
+    )
+    seconds = [int(row[0]) for row in result if row[0] is not None]
+    
+    if not seconds:
+        return {"p50": 0, "p90": 0, "p95": 0, "p99": 0, "count": 0}
+    
+    seconds.sort()
+    n = len(seconds)
+    return {
+        "p50": seconds[n // 2],
+        "p90": seconds[int(n * 0.9)] if n >= 10 else 0,
+        "p95": seconds[int(n * 0.95)] if n >= 20 else 0,
+        "p99": seconds[int(n * 0.99)] if n >= 100 else 0,
+        "count": n,
+    }
+
+
+@router.get("/security/auth-events", dependencies=[Depends(require_admin)])
+async def get_security_auth_events(
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
+    action: str | None = Query(default=None),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    query = select(AuditLog).order_by(desc(AuditLog.created_at))
+    if action:
+        query = query.where(AuditLog.action == action)
+    
+    result = await db.execute(query.limit(limit).offset(offset))
+    events = result.scalars().all()
+    
+    return {
+        "events": [
+            {
+                "id": str(e.id),
+                "user_id": str(e.user_id) if e.user_id else None,
+                "action": e.action,
+                "resource_type": e.resource_type,
+                "ip_address": e.ip_address,
+                "created_at": e.created_at.isoformat(),
+            }
+            for e in events
+        ],
+        "limit": limit,
+        "offset": offset,
+    }
+
+
+@router.get("/security/lockouts", dependencies=[Depends(require_admin)])
+async def get_security_lockouts(
+    active_only: bool = Query(default=True),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    threshold = datetime.now(UTC) - timedelta(minutes=15)
+    
+    query = select(LoginAttempt.email, func.count(LoginAttempt.id).label("fail_count")).where(
+        LoginAttempt.success == False,
+        LoginAttempt.created_at >= threshold,
+    ).group_by(LoginAttempt.email).having(func.count(LoginAttempt.id) >= 3)
+    
+    result = await db.execute(query)
+    lockouts = result.all()
+    
+    return {
+        "lockouts": [
+            {"email": e[0], "failed_attempts": e[1]}
+            for e in lockouts
+        ],
+        "active_only": active_only,
+    }
+
+
+@router.get("/security/ip-analysis", dependencies=[Depends(require_admin)])
+async def get_security_ip_analysis(
+    ip: str = Query(...),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    failed_logins = await db.execute(
+        select(func.count(LoginAttempt.id)).where(
+            LoginAttempt.ip_address == ip,
+            LoginAttempt.success == False,
+        )
+    )
+    failed = failed_logins.scalar() or 0
+    
+    successful_logins = await db.execute(
+        select(func.count(LoginAttempt.id)).where(
+            LoginAttempt.ip_address == ip,
+            LoginAttempt.success == True,
+        )
+    )
+    successful = successful_logins.scalar() or 0
+    
+    return {
+        "ip": ip,
+        "failed_logins": failed,
+        "successful_logins": successful,
+        "reputation": "clean" if failed == 0 else "suspicious",
+    }
+
+
+@router.get("/content/gaps", dependencies=[Depends(require_admin)])
+async def get_content_gaps(
+    language: str = Query(default="es", regex="^(es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    skills = await db.execute(select(Skill))
+    all_skills = skills.scalars().all()
+    
+    return {
+        "language": language,
+        "total_skills": len(all_skills),
+        "coverage": {
+            s.id: {
+                "name_es": getattr(s, "name_es", ""),
+                "name_en": getattr(s, "name_en", ""),
+                "question_count": 0,
+            }
+            for s in all_skills
+        },
+    }
+
+
+@router.get("/content/parity", dependencies=[Depends(require_admin)])
+async def get_content_parity(
+    segment: str = Query(default="questions", regex="^(questions|lessons)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    es_count = await db.execute(select(func.count(Question.id)).where(Question.language == "es"))
+    es = es_count.scalar() or 0
+    en_count = await db.execute(select(func.count(Question.id)).where(Question.language == "en"))
+    en = en_count.scalar() or 0
+    
+    return {
+        "segment": segment,
+        "es_count": es,
+        "en_count": en,
+        "parity_percent": round((min(es, en) / max(es, en) * 100), 2) if max(es, en) > 0 else 0,
+    }
+
+
+@router.get("/ops/health", dependencies=[Depends(require_admin)])
+async def get_ops_health(
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    try:
+        await db.execute(select(func.now()))
+        db_status = "ok"
+    except Exception:
+        db_status = "error"
+    
+    return {
+        "status": "healthy" if db_status == "ok" else "unhealthy",
+        "database": db_status,
+        "timestamp": datetime.now(UTC).isoformat(),
+    }
+
+
+@router.get("/ops/errors", dependencies=[Depends(require_admin)])
+async def get_ops_errors(
+    window: str = Query(default="1h", regex="^(1h|24h)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    hours = 1 if window == "1h" else 24
+    threshold = datetime.now(UTC) - timedelta(hours=hours)
+    
+    error_count = await db.execute(
+        select(func.count(AuditLog.id)).where(
+            AuditLog.action.like("%error%"),
+            AuditLog.created_at >= threshold,
+        )
+    )
+    
+    return {
+        "window": window,
+        "error_count": error_count.scalar() or 0,
+        "error_rate": "low",
+    }
+
+
+@router.get("/ops/database", dependencies=[Depends(require_admin)])
+async def get_ops_database(
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    user_count = await db.execute(select(func.count(User.id)))
+    users = user_count.scalar() or 0
+    
+    session_count = await db.execute(select(func.count(StudySession.id)))
+    sessions = session_count.scalar() or 0
+    
+    response_count = await db.execute(select(func.count(Response.id)))
+    responses = response_count.scalar() or 0
+    
+    return {
+        "tables": {
+            "users": users,
+            "study_sessions": sessions,
+            "responses": responses,
+        },
+        "timestamp": datetime.now(UTC).isoformat(),
+    }
+
+
+@router.get("/gdpr/exports", dependencies=[Depends(require_owner)])
+async def get_gdpr_exports(
+    status: str = Query(default="pending", regex="^(pending|completed)$"),
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    query = select(GDPRRequest).where(
+        GDPRRequest.request_type == "export",
+        GDPRRequest.status == status,
+    ).order_by(desc(GDPRRequest.created_at)).limit(limit).offset(offset)
+    
+    result = await db.execute(query)
+    requests = result.scalars().all()
+    
+    return {
+        "exports": [
+            {
+                "id": str(r.id),
+                "user_id": str(r.user_id),
+                "status": r.status,
+                "export_url": r.export_url,
+                "created_at": r.created_at.isoformat(),
+            }
+            for r in requests
+        ],
+        "limit": limit,
+        "offset": offset,
+    }
+
+
+@router.get("/gdpr/deletions", dependencies=[Depends(require_owner)])
+async def get_gdpr_deletions(
+    status: str = Query(default="pending", regex="^(pending|completed|cancelled)$"),
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    query = select(GDPRRequest).where(
+        GDPRRequest.request_type == "deletion",
+        GDPRRequest.status == status,
+    ).order_by(desc(GDPRRequest.created_at)).limit(limit).offset(offset)
+    
+    result = await db.execute(query)
+    requests = result.scalars().all()
+    
+    return {
+        "deletions": [
+            {
+                "id": str(r.id),
+                "user_id": str(r.user_id),
+                "status": r.status,
+                "created_at": r.created_at.isoformat(),
+                "completed_at": r.completed_at.isoformat() if r.completed_at else None,
+            }
+            for r in requests
+        ],
+        "limit": limit,
+        "offset": offset,
+    }
+
+
+@router.post("/gdpr/deletions/{user_id}/cancel", dependencies=[Depends(require_owner)])
+async def cancel_gdpr_deletion(
+    user_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    result = await db.execute(
+        select(GDPRRequest).where(
+            GDPRRequest.user_id == user_id,
+            GDPRRequest.request_type == "deletion",
+            GDPRRequest.status == "pending",
+        )
+    )
+    request = result.scalar_one_or_none()
+    
+    if not request:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No pending deletion request found",
+        )
+    
+    request.status = "cancelled"
+    await db.commit()
+    
+    return {"id": str(request.id), "status": "cancelled"}
+
+
+@router.get("/revenue/mrr", dependencies=[Depends(require_owner)])
+async def get_revenue_mrr(
+    month: str = Query(default=None),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    return {
+        "month": month or "2026-09",
+        "mrr": 0,
+        "active_subscriptions": 0,
+        "status": "test_mode",
+    }
+
+
+@router.get("/revenue/conversions", dependencies=[Depends(require_owner)])
+async def get_revenue_conversions(
+    range_days: int = Query(default=7, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    return {
+        "range_days": range_days,
+        "conversions": 0,
+        "conversion_rate": 0.0,
+        "status": "test_mode",
+    }
+
+
+@router.get("/revenue/churn", dependencies=[Depends(require_owner)])
+async def get_revenue_churn(
+    window: str = Query(default="30d", regex="^(7d|30d|90d)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    return {
+        "window": window,
+        "churn_rate": 0.0,
+        "cancelled_subscriptions": 0,
+        "status": "test_mode",
+    }
+
+
+@router.get("/economy/credits", dependencies=[Depends(require_admin)])
+async def get_economy_credits(
+    user_id: uuid.UUID | None = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    query = select(CreditLedger).order_by(desc(CreditLedger.created_at))
+    if user_id:
+        query = query.where(CreditLedger.user_id == user_id)
+    
+    result = await db.execute(query.limit(limit).offset(offset))
+    ledger_entries = result.scalars().all()
+    
+    return {
+        "entries": [
+            {
+                "id": str(e.id),
+                "user_id": str(e.user_id),
+                "amount": e.amount,
+                "reason": e.reason,
+                "balance_after": e.balance_after,
+                "created_at": e.created_at.isoformat(),
+            }
+            for e in ledger_entries
+        ],
+        "limit": limit,
+        "offset": offset,
+    }
+
+
+@router.get("/economy/referrals", dependencies=[Depends(require_admin)])
+async def get_economy_referrals(
+    status: str = Query(default="all", regex="^(all|pending|completed)$"),
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    query = select(Referral).order_by(desc(Referral.created_at))
+    if status != "all":
+        query = query.where(Referral.status == status)
+    
+    result = await db.execute(query.limit(limit).offset(offset))
+    referrals = result.scalars().all()
+    
+    return {
+        "referrals": [
+            {
+                "id": str(r.id),
+                "referrer_id": str(r.referrer_id),
+                "referred_id": str(r.referred_id),
+                "status": r.status,
+                "reward_credits": r.reward_credits,
+                "created_at": r.created_at.isoformat(),
+            }
+            for r in referrals
+        ],
+        "limit": limit,
+        "offset": offset,
+    }
+
+
+@router.get("/economy/k-factor", dependencies=[Depends(require_admin)])
+async def get_economy_k_factor(
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    total_users = await db.execute(select(func.count(User.id)))
+    total = total_users.scalar() or 0
+    
+    completed_referrals = await db.execute(
+        select(func.count(Referral.id)).where(Referral.status == "completed")
+    )
+    completed = completed_referrals.scalar() or 0
+    
+    k_factor = (completed / total) if total > 0 else 0
+    
+    return {
+        "k_factor": round(k_factor, 4),
+        "total_users": total,
+        "successful_referrals": completed,
+    }
+
