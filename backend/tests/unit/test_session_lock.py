@@ -2,12 +2,8 @@
 import json
 import subprocess
 import sys
-import tempfile
-import time
-from datetime import datetime, timezone, timedelta
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
-
-import pytest
 
 # Locate the script relative to this test file
 SCRIPT = Path(__file__).resolve().parents[3] / "scripts" / "session_lock.py"
@@ -22,7 +18,7 @@ def _run(args: list[str], env_lock_path: Path | None = None) -> subprocess.Compl
         env["WHETZY_LOCK_PATH"] = str(env_lock_path)
     return subprocess.run(
         [sys.executable, str(SCRIPT)] + args,
-        capture_output=True, text=True, env=env
+        capture_output=True, text=True, env=env, check=False
     )
 
 
@@ -77,7 +73,7 @@ class TestSessionLock:
     def test_stale_lock_overwritten(self, tmp_path: Path) -> None:
         lock_file = tmp_path / ".session.lock"
         # Write a lock older than 6 hours
-        old_time = (datetime.now(timezone.utc) - timedelta(hours=7)).isoformat()
+        old_time = (datetime.now(UTC) - timedelta(hours=7)).isoformat()
         lock_file.write_text(json.dumps({
             "sessionId": "session-old",
             "startedAt": old_time,
@@ -115,7 +111,7 @@ class TestSessionLock:
         # First run: acquire
         r1 = subprocess.run(
             [sys.executable, str(SCRIPT), "acquire", "session-first", "sonnet"],
-            capture_output=True, text=True, env=env
+            capture_output=True, text=True, env=env, check=False
         )
         assert r1.returncode == 0, f"First run failed: {r1.stderr}"
         assert lock_file.exists()
@@ -123,7 +119,7 @@ class TestSessionLock:
         # Second run: should exit 3
         r2 = subprocess.run(
             [sys.executable, str(SCRIPT), "acquire", "session-second", "sonnet"],
-            capture_output=True, text=True, env=env
+            capture_output=True, text=True, env=env, check=False
         )
         assert r2.returncode == 3, f"Expected exit 3, got {r2.returncode}. stderr={r2.stderr}"
         # One line in stderr naming the holder
