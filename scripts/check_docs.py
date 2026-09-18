@@ -253,6 +253,25 @@ else:
         )
 
 
+print("\n[5] API docs vs OpenAPI spec")
+try:
+    api_check = subprocess.run(
+        [sys.executable, str(Path(__file__).parent / "check_api_docs.py")],
+        cwd=BACKEND,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    for line in api_check.stdout.strip().splitlines():
+        print(f"  {line}")
+    if api_check.returncode != 0:
+        check("API.md ↔ OpenAPI bidirectional check", False, "see lines above")
+    else:
+        check("API.md ↔ OpenAPI bidirectional check", True, "")
+except Exception as e:
+    check("API.md ↔ OpenAPI bidirectional check", False, str(e))
+
+
 print()
 if errors:
     head = f"{len(errors)} check(s) FAILED:"

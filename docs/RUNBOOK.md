@@ -46,7 +46,7 @@ in the Railway dashboard.
    curl -s https://api-production-9751.up.railway.app/api/v1/openapi.json | head -c 200
    ```
    `/health` must return `{"status":"healthy"}` and the OpenAPI document must
-   list **70** paths.
+   list **71** paths.
 5. In the deploy logs, confirm `start.sh` got through all four stages:
    `alembic upgrade head` → `content loaded` → `gamification seeded` →
    `launching gunicorn`. Content load should report **0 skipped** questions;

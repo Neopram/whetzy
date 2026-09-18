@@ -18,63 +18,76 @@ Full interactive spec: `/api/v1/openapi.json` (dev: http://localhost:8000/docs)
 | `POST /auth/login` | Uses form-urlencoded, not JSON |
 | `POST /quiz/start` | Returns `{session_id, question: {id, ...}}` — `question_id` is at `.question.id` |
 | `POST /quiz/answer` | `session_id` is in the **JSON body**, not the URL path |
+| `POST /placement/start` | `session_id` is returned in the body; pass it in the body of subsequent calls, not the URL |
 | `POST /duels/{id}/answer` | Requires `selected_index` + `response_time_ms` |
 | `POST /duels/challenge` | Returns `questions[]` not `question_ids[]` |
-| `GET /api/v1/glossary/track/{track_id}` | `track_id` is a string (`"track01"`), not an int |
+| `GET /glossary/{track_id}` | `track_id` is a string (`"track01"`), not an int |
 
 ## Auth endpoints
 
 ```
-POST /auth/register              → Token (201)
-POST /auth/login                 → Token (200, form-urlencoded)
-POST /auth/refresh               → Token (200)
-GET  /auth/me                    → UserRead (200) 🔒
-DELETE /auth/me/account          → {message} (200) 🔒
+POST  /auth/register              → Token (201)
+POST  /auth/login                 → Token (200, form-urlencoded)
+POST  /auth/refresh               → Token (200)
+GET   /auth/me                    → UserRead (200) 🔒
+PATCH /auth/me                    → UserRead (200) 🔒  — update profile (language, display_name)
+DELETE /auth/me/account           → {message} (200) 🔒
+PATCH /auth/me/password           → {message} (200) 🔒  — body {current_password, new_password}
 
-POST /auth/forgot-password       → {message} (200) — no enumeration
-POST /auth/reset-password        → {message} (200)
-POST /auth/verify-email          → {message} (200)
-POST /auth/resend-verification   → {message} (200)
+POST /auth/forgot-password        → {message} (200) — no enumeration
+POST /auth/reset-password         → {message} (200) — body {token, new_password}
+POST /auth/verify-email           → {message} (200) — body {token}
+POST /auth/resend-verification    → {message} (200)
+
+GET  /auth/oauth/{provider}/start     → 302 redirect to provider
+GET  /auth/oauth/{provider}/callback  → sets cookie + redirect to frontend
 ```
+
+OAuth providers: `github`, `google`.
+Sign in with Apple is mandatory before any App Store submission once another OAuth provider exists (ADR-13).
 
 ## Quiz endpoints
 
 ```
-POST /quiz/start                 → {session_id, question} 🔒
-POST /quiz/answer                → {correct, explanation_es, explanation_en, ...} 🔒
-POST /quiz/end                   → {total, correct, xp_earned} 🔒
+POST /quiz/start                  → {session_id, question} 🔒
+POST /quiz/answer                 → {correct, explanation_es, explanation_en, ...} 🔒
+POST /quiz/end                    → {total, correct, xp_earned} 🔒
+GET  /quiz/review-due             → {questions[], count} 🔒  — FSRS review queue
 ```
 
 ## Progress endpoints
 
 ```
-GET  /progress/dashboard         → overall stats 🔒
-GET  /progress/skills?track_id=  → skill mastery list 🔒
-GET  /progress/curriculum?track_id= → module/skill tree with BKT gates 🔒
-GET  /progress/predictions?track_id= → DKT probability per skill 🔒
+GET  /progress/dashboard          → overall stats 🔒
+GET  /progress/skills             → skill mastery list (?track_id= filter) 🔒
+GET  /progress/curriculum         → module/skill tree with BKT gates (?track_id= filter) 🔒
+GET  /progress/predictions        → DKT probability per skill (?track_id= filter) 🔒
+GET  /progress/risk               → churn risk score 🔒
+GET  /progress/decaying           → skills whose FSRS stability is decaying 🔒
 ```
 
 ## Placement endpoints
 
 ```
-POST /placement/start            → {session_id, question} 🔒
-POST /placement/{session_id}/answer → next question or {finished, result} 🔒
-GET  /placement/{session_id}/result → placement result 🔒
+POST /placement/start             → {session_id, question} 🔒
+POST /placement/answer            → next question or {finished: true, result} 🔒
+GET  /placement/result            → placement result (last completed placement) 🔒
 ```
 
 ## Duel endpoints
 
 ```
-POST /duels/challenge            → {duel_id, questions[]} 🔒
-GET  /duels/my                   → list of my duels 🔒
-POST /duels/{id}/answer          → {answered, completed} 🔒
-GET  /duels/{id}/result          → {status, winner_id, scores} 🔒
+POST /duels/challenge                → {duel_id, questions[]} 🔒
+GET  /duels/my                       → list of my duels 🔒
+GET  /duels/{duel_id}/join           → join a duel (returns questions) 🔒
+POST /duels/{duel_id}/answer         → {answered, completed} 🔒
+GET  /duels/{duel_id}/result         → {status, winner_id, scores} 🔒
 ```
 
 ## Tutor endpoint
 
 ```
-POST /tutor/explain              → {explanation, provider, grounded, context_used} 🔒
+POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒
   Body: {question_id, conversation_history?: [...]}
 ```
 
@@ -93,24 +106,111 @@ POST /exams/track/{track_id}/start          → course final exam (17.2)
 POST /exams/module/{module_id}/test-out/start → module test-out (17.2)
 POST /exams/track/{attempt_id}/submit       → per-skill report + verdict + certificate
 
+GET  /exams/certification/{track_id}/readiness → readiness score + domain gaps 🔒
 GET  /exams/certificates/{code}             → PUBLIC, no auth
 ```
 
 | Endpoint | Gotcha |
 |---|---|
-| `POST /exams/track/{...}/submit` | The path parameter is the **attempt id**, not the track id — you submit a *sitting*, and a track can be sat more than once. Starting takes a track id; submitting takes an attempt id |
-| `POST /exams/track/{track_id}/start` | 400 on a certification track. Those have a published blueprint and go to `/exams/mock/start`; routing them here would replace it with our invented one |
-| `POST /exams/mock/{...}/submit` | Never reports a pass or a scaled score. AWS computes its 100–1000 scale from item statistics we do not have, so the report gives the raw percentage and says why it refuses to convert |
-| Certification mock `pass_pct` | `null`, for the same reason. Only `track_final` and `test_out` carry a pass mark |
-| Late submission | Still graded — the work was done — but `status` becomes `expired` and it earns **no** certificate |
-| Test-out mastery | A passed, on-time test-out feeds every answer through the same BKT/Elo/FSRS update a quiz answer gets, and returns `mastery_updated` (skill id → new mastery). It never grants mastery wholesale. A **failed** test-out changes nothing |
-| `GET /exams/certificates/{code}` | **Unauthenticated on purpose**: whoever verifies a certificate has no account here. The 128-bit code is the only key, so certificates are not enumerable. A revoked certificate returns 200 with `revoked: true` — a 404 cannot be told apart from a code that never existed |
-| Certificate uniqueness | One per (user, track), enforced by a unique index. Re-sitting a track you already passed returns the same code, so a shared URL never goes dead |
+| `POST /exams/track/{...}/submit` | The path parameter is the **attempt id**, not the track id |
+| `POST /exams/track/{track_id}/start` | 400 on a certification track — use `/exams/mock/start` instead |
+| `POST /exams/mock/{...}/submit` | Never reports a pass or a scaled score |
+| Certification mock `pass_pct` | `null` — only `track_final` and `test_out` carry a pass mark |
+| Late submission | Still graded but `status` becomes `expired` and earns **no** certificate |
+| `GET /exams/certificates/{code}` | **Unauthenticated**: the 128-bit code is the only key |
+| Certificate uniqueness | One per (user, track); re-sitting returns the same code |
 
 ## Glossary endpoints
 
 ```
-GET  /glossary/track/{track_id}  → [{term_es, term_en, definition_es, definition_en}]
+GET  /glossary/{track_id}  → [{term_es, term_en, definition_es, definition_en}]
+```
+
+`track_id` is a string like `"track01"`. Unauthenticated.
+
+## Lessons endpoints
+
+```
+GET  /lessons/{skill_id}   → {skill_id, lesson_es, lesson_en, example_code} 🔒
+```
+
+## Badges & missions endpoints
+
+```
+GET  /badges               → user's earned badges 🔒
+GET  /missions             → active missions + progress 🔒
+```
+
+## League endpoints
+
+```
+GET  /league/current       → current week's league standings 🔒
+GET  /league/history       → past league results for current user 🔒
+```
+
+## Reports endpoints
+
+```
+POST /reports/question                      → submit a broken-question report 🔒
+GET  /reports/question/{question_id}        → get reports for a question (admin) 🔒
+```
+
+Admin routes require `X-Admin-Key` header.
+
+## Push notification endpoints
+
+```
+GET    /push/vapid-key            → {public_key} — VAPID public key for ServiceWorker
+POST   /push/subscribe            → subscribe to web push 🔒
+DELETE /push/subscribe            → unsubscribe 🔒
+PATCH  /push/preferences          → update notification preferences 🔒
+POST   /push/streak-reminder      → trigger a streak reminder (debug/admin) 🔒
+```
+
+## ML endpoints
+
+```
+GET  /ml/version           → {version, accuracy, deployed_at} — current model info
+GET  /ml/ab-stats          → A/B cohort stats (BKT vs DKT) (admin)
+POST /ml/rollback          → roll back to previous model version (admin)
+```
+
+Admin routes require `X-Admin-Key` header.
+
+## Analytics endpoints
+
+```
+GET  /analytics/dashboard  → funnel + retention dashboard (admin)
+GET  /analytics/funnel     → per-step funnel counts (admin)
+```
+
+Admin routes require `X-Admin-Key` header.
+
+## Billing endpoints
+
+```
+POST /billing/checkout     → {checkout_url} 🔒  — Stripe checkout session
+GET  /billing/subscription → {plan, status, renews_at} 🔒
+POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
+```
+
+## Content endpoints (admin)
+
+All content routes require `X-Admin-Key` header.
+
+```
+GET   /content/tracks                       → all tracks with stats
+PATCH /content/questions/{question_id}      → versioned edit (bumps content_version)
+POST  /content/generate                     → LLM author agent — generate questions
+POST  /content/qa                           → run QA checks on a question
+POST  /content/qa/batch                     → batch QA pass
+POST  /content/duplicates                   → embedding-based duplicate detection
+```
+
+## Export endpoints
+
+```
+GET  /export/data          → GDPR data export (JSON) 🔒
 ```
 
 ## Health endpoints
@@ -131,3 +231,9 @@ GET  /              → {name, status, version}
 | All other routes | 120 req/min per IP |
 
 429 responses include `Retry-After` header.
+
+## Route count
+
+71 paths (67 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **73 method+path endpoints** total.
+Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
