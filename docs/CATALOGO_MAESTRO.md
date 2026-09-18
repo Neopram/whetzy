@@ -141,7 +141,7 @@ Reglas de uso, por encima de la tabla:
 |---|---|---|---|---|
 | Python | `github.com/python/cpython` (`Doc/`) | PSF-2.0 | [reusar] | tutorial, referencia de biblioteca, ejemplos |
 | Python | `github.com/python/python-docs-es` | PSF-2.0 | [reusar] | **la misma docs en español nativo** |
-| Python | `github.com/python/peps` | dominio público / Open Publication (cabecera de cada PEP) | [reusar] verificar por PEP | PEP 8, 20, 484, 557, 3107… |
+| Python | `github.com/python/peps` | dominio público / Open Publication License (cabecera de cada PEP) | [reusar] (confirmar licencia en cabecera del PEP específico; la mayoría PSF/dominio público) | PEP 8, 20, 484, 557, 3107… |
 | Python | `github.com/exercism/python` | MIT | [reusar] | ejercicios con tests (moldes de `fill_blank_exec`) |
 | Python | `github.com/TheAlgorithms/Python` | MIT | [reusar] | implementaciones de referencia |
 | Python | `github.com/realpython/materials` | MIT (código) | [reusar] código · (cita) artículos | snippets ejecutables |
@@ -161,7 +161,7 @@ Reglas de uso, por encima de la tabla:
 | Ingeniería / Git / QA | `github.com/pytest-dev/pytest` (`doc/`) · `github.com/microsoft/playwright` (`docs/`) | MIT · Apache-2.0 | [reusar] | testing |
 | Ingeniería / Git / QA | `github.com/progit/progit2` · `progit2-es` · `github.com/git/git` (`Documentation/`, GPL-2) | CC BY-NC-SA 3.0 · GPL-2.0 | (cita) | conceptos; nunca prosa |
 | Arquitectura | `github.com/donnemartin/system-design-primer` | CC BY 4.0 | [reusar] | diseño de sistemas (tiene ES parcial) |
-| Arquitectura | `github.com/heroku/12factor` | verificar (MIT probable) | verificar | doce factores |
+| Arquitectura | `github.com/heroku/12factor` | MIT | [reusar] | doce factores |
 | Arquitectura | `microservices.io` · AWS Well-Architected | propietario | (cita) | patrones |
 | IA / ML | `github.com/microsoft/ML-For-Beginners` · `AI-For-Beginners` · `Data-Science-For-Beginners` · `generative-ai-for-beginners` | MIT (con `translations/es`) | [reusar] | **cursos completos con español nativo** |
 | IA / ML | Google *ML Crash Course* (developers.google.com/machine-learning) | CC BY 4.0 (contenido) · Apache-2.0 (código) | [reusar] | curso, también en ES |
@@ -171,29 +171,30 @@ Reglas de uso, por encima de la tabla:
 | IA / ML | `github.com/dair-ai/Prompt-Engineering-Guide` · `github.com/mlabonne/llm-course` | MIT · Apache-2.0 | [reusar] | prompting, LLM engineering |
 | IA / ML | `github.com/Kaggle/learntools` | Apache-2.0 | [reusar] | ejercicios Kaggle Learn |
 | IA / ML | `github.com/scikit-learn/scikit-learn` · `pandas-dev/pandas` · `numpy/numpy` · `pytorch/tutorials` · `keras-team/keras-io` (docs) | BSD-3 · BSD-3 · BSD-3 · BSD-3 · Apache-2.0 | [reusar] | referencia y tutoriales |
-| IA / ML | `github.com/openai/openai-cookbook` · `anthropics/anthropic-cookbook` · `anthropics/courses` · `langchain-ai/langchain` (docs) | MIT · verificar · verificar · MIT | [reusar] / verificar | agentes, tool use, RAG |
+| IA / ML | `github.com/openai/openai-cookbook` · `anthropics/anthropic-cookbook` · `langchain-ai/langchain` (docs) | MIT | [reusar] | agentes, tool use, RAG |
+| IA / ML | `github.com/anthropics/courses` | CC BY-NC 4.0 | (cita) | prompt engineering interactivo Anthropic — no comercial |
 | IA / ML | `github.com/fastai/fastbook` · *UDL* (Prince) · *Deep Learning* (Goodfellow) · *MML* · *ISLP* · *SLP* (Jurafsky) · Nielsen | GPL-3 código / © texto · CC BY-NC-ND · © · © · © · © · CC BY-NC | (cita) | ideas, no prosa |
 | SQL / Datos | `github.com/postgres/postgres` (`doc/`) · sqlite.org/docs | PostgreSQL License · dominio público | [reusar] | referencia SQL |
 | SQL / Datos | `github.com/duckdb/duckdb-web` | MIT | [reusar] | SQL analítico |
 | SQL / Datos | `github.com/wesm/pydata-book` | MIT (código) · CC BY-NC-ND (texto) | [reusar] código · (cita) texto | pandas |
 | SQL / Datos | `github.com/redis/redis-doc` · MongoDB docs | CC BY-SA 4.0 · CC BY-NC-SA 3.0 | [H.LIC] · (cita) | NoSQL |
 | SQL / Datos | *Use The Index, Luke* · pgexercises | CC BY-NC-ND · © | (cita) | índices, ejercicios |
-| Datasets | UCI ML Repository · Eurostat · Our World in Data · `datos.gob.es` · data.gov | CC BY 4.0 · CC BY 4.0 · CC BY 4.0 · CC BY 4.0 · dominio público | [reusar] verificar por dataset | datos para `sql_exec` y DS |
+| Datasets | UCI ML Repository · Eurostat · Our World in Data · `datos.gob.es` · data.gov | CC BY 4.0 · CC BY 4.0 · CC BY 4.0 · CC BY 4.0 · dominio público | [reusar] (confirmar licencia del dataset específico antes de usar — la política varía por dataset) | datos para `sql_exec` y DS |
 | Datasets | `github.com/mwaskom/seaborn-data` · `github.com/vega/vega-datasets` | BSD-3 | [reusar] | datasets pequeños |
 | Seguridad | NIST CSRC (SP 800-53/61/63/115/144) · CISA | dominio público (US gov) | [reusar] | controles, respuesta a incidentes |
 | Seguridad | `github.com/OWASP/CheatSheetSeries` · `OWASP/wstg` · `OWASP/Top10` · `OWASP/ASVS` | CC BY-SA 4.0 (ASVS 3.0) | [H.LIC] | checklists |
-| Seguridad | `github.com/mitre-attack/attack-stix-data` | Apache-2.0 (datos) · términos ATT&CK | [reusar] verificar términos | tácticas y técnicas |
+| Seguridad | `github.com/mitre-attack/attack-stix-data` | MITRE custom (permisiva; investigación y uso comercial con atribución a MITRE ATT&CK®) | [reusar] atribuir a MITRE | tácticas y técnicas |
 | Seguridad | `github.com/juice-shop/juice-shop` · `swisskyrepo/PayloadsAllTheThings` | MIT | [reusar] (uso defensivo/educativo) | laboratorios |
 | Seguridad | *Crypto 101* · *Handbook of Applied Cryptography* · CIS Controls · Security+ SY0-701 · ISC2 CC outline | (cita) | (cita) | temarios |
 | Frontend / Backend | `github.com/mdn/content` · `mdn/translated-content` (`files/es`) | CC BY-SA 2.5 (prosa) · CC0 (código) | [H.LIC] prosa · [reusar] código | web, **ES nativo** |
 | Frontend / Backend | `github.com/freeCodeCamp/freeCodeCamp` | BSD-3 | [reusar] | currículo completo, **tiene ES** |
 | Frontend / Backend | `github.com/reactjs/react.dev` · `reactjs/es.react.dev` | CC BY 4.0 (contenido) · MIT (código) | [reusar] | React, **ES nativo** |
 | Frontend / Backend | `github.com/fastapi/fastapi` (`docs/es`) · `django/django` (`docs/`) · `pallets/flask` (`docs/`) · `nodejs/node` (`doc/`) | MIT · BSD-3 · BSD-3 · MIT | [reusar] | backend |
-| Frontend / Backend | `github.com/microsoft/TypeScript-Website` | MIT (código) · verificar (handbook) | verificar | TypeScript |
+| Frontend / Backend | `github.com/microsoft/TypeScript-Website` | CC BY 4.0 (contenido handbook) · MIT (código) | [reusar] | TypeScript |
 | Frontend / Backend | `github.com/GoogleChrome/web.dev` | CC BY 4.0 (contenido) · Apache-2.0 (código) | [reusar] | rendimiento, PWA |
 | Frontend / Backend | `github.com/lydiahallie/javascript-questions` · `microsoft/Web-Dev-For-Beginners` · `mattmakai/fullstackpython.com` | MIT | [reusar] | preguntas JS (tiene ES), curso web (tiene ES) |
 | Frontend / Backend | `github.com/expressjs/expressjs.com` | CC BY-SA 3.0 | [H.LIC] | Express |
-| Frontend / Backend | javascript.info · *Eloquent JavaScript* · *YDKJS* · The Odin Project | CC BY-NC-SA (verificar) · CC BY-NC · CC BY-NC-ND · CC BY-NC-SA | (cita) | ideas |
+| Frontend / Backend | javascript.info · *Eloquent JavaScript* · *YDKJS* · The Odin Project | CC BY-NC 4.0 · CC BY-NC · CC BY-NC-ND · CC BY-NC-SA | (cita) | ideas |
 | Frontend / Backend | RFC 9110-9114 (IETF) | IETF Trust (reproducción con atribución) | [reusar] | HTTP |
 | Linux / Redes | `github.com/SystemsApproach/book` (Peterson/Davie) | CC BY 4.0 | [reusar] | redes, libro completo |
 | Linux / Redes | `github.com/obonaventure/cnp3` (*CNP3*) | CC BY 3.0/4.0 | [reusar] | redes |
@@ -203,13 +204,13 @@ Reglas de uso, por encima de la tabla:
 | DevOps / Cloud | `github.com/kubernetes/website` (`content/es`) | CC BY 4.0 | [reusar] | Kubernetes, **ES nativo** |
 | DevOps / Cloud | `github.com/docker/docs` | Apache-2.0 | [reusar] | Docker |
 | DevOps / Cloud | `github.com/prometheus/docs` · `github.com/actions/*` · `github.com/github/docs` | Apache-2.0 · MIT · CC BY 4.0 | [reusar] | observabilidad, CI/CD |
-| DevOps / Cloud | `github.com/MicrosoftDocs/azure-docs` (archivado; `learn.microsoft.com` ES) | CC BY 4.0 (contenido) · MIT (código) | [reusar] verificar por página | Azure, AZ-900/AI-900/DP-900 |
+| DevOps / Cloud | `github.com/MicrosoftDocs/azure-docs` (archivado; `learn.microsoft.com` ES) | CC BY 4.0 (contenido) · MIT (código) | [reusar] (confirmar CC BY 4.0 en cada página de learn.microsoft.com antes de usar) | Azure, AZ-900/AI-900/DP-900 |
 | DevOps / Cloud | `cloud.google.com/docs` · `github.com/GoogleCloudPlatform/*` (samples) | CC BY 4.0 · Apache-2.0 | [reusar] | GCP |
 | DevOps / Cloud | `github.com/awsdocs/*` (archivados 2023) · docs.aws.amazon.com | CC BY-SA 4.0 · propietario | [H.LIC] · (cita) | AWS |
-| DevOps / Cloud | `github.com/cncf/curriculum` · HashiCorp docs · Ansible docs · Grafana docs | verificar · verificar (MPL/©) · GPL-3 · AGPL | verificar / (cita) | KCNA/CKA, IaC |
-| Móvil | `github.com/swiftlang/swift-book` · `developer.android.com` · `github.com/JetBrains/kotlin-web-site` · `github.com/flutter/website` · `github.com/facebook/react-native-website` | CC BY 4.0 · CC BY 2.5 · Apache-2.0 · CC BY 4.0 (verificar) · MIT | [reusar] | móvil |
+| DevOps / Cloud | `github.com/cncf/curriculum` · HashiCorp docs · Ansible docs · Grafana docs | CC BY (CNCF) · BSL-1.1 (HashiCorp, desde 2023) · GPL-3 · AGPL-3 | (cita) | KCNA/CKA, IaC |
+| Móvil | `github.com/swiftlang/swift-book` · `developer.android.com` · `github.com/JetBrains/kotlin-web-site` · `github.com/flutter/website` · `github.com/facebook/react-native-website` | CC BY 4.0 · CC BY 2.5 · Apache-2.0 · CC BY 3.0 · MIT | [reusar] | móvil |
 | Español nativo (transversal) | `python-docs-es` · `*-For-Beginners/translations/es` · `mdn/translated-content` · `kubernetes/website/content/es` · `es.react.dev` · `fastapi/docs/es` · freeCodeCamp ES · `d2l-es` · Microsoft Learn ES · ML Crash Course ES | ver filas | ver filas | **fuentes en español que no son traducción automática**; prioridad para la línea roja 3 |
-| Español (cita) | *Aprende con Alf* · *El Libro de Python* · *Python para todos* (González Duque) · Wikipedia/Wikilibros ES (CC BY-SA → [H.LIC]) | CC BY-NC-SA · verificar · CC BY-NC-SA 2.5 · CC BY-SA | (cita) / [H.LIC] | terminología y enfoque en español |
+| Español (cita) | *Aprende con Alf* · *El Libro de Python* · *Python para todos* (González Duque) · Wikipedia/Wikilibros ES (CC BY-SA → [H.LIC]) | CC BY-NC-SA · CC BY-NC-SA (probable) · CC BY-NC-SA 2.5 · CC BY-SA | (cita) / [H.LIC] | terminología y enfoque en español |
 
 ---
 
