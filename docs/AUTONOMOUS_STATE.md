@@ -102,6 +102,14 @@
 > Tabla completa archivada en `docs/archive/LEDGER_HISTORY.md` §F.
 > Ver ## 2 para el estado actual de cada tarea.
 
+| Serie | Nombre | DONE/Total | % | Abiertas |
+|---|---|---|---|---|
+| 20 | Verificación masiva código↔docs↔prod | 8/10 | 80 % | 20.7 (CI local), 20.9 (coherencia) |
+| 19 | Catálogo 27 tracks + cert marketplace | 1/10 | 10 % | 19.2–19.10 |
+| 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 2/5 | 40 % | 18.3, 18.5 |
+| 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
+| ≤16 | Fases 1–16 | todas DONE | 100 % | — |
+
 ---
 
 ## 2. Backlog ejecutable
@@ -257,7 +265,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 20.6 | **1** | **Dieta del ledger**: evidencia histórica de filas `DONE` → `docs/archive/LEDGER_HISTORY.md` (ancla por ID); en la fila queda `DONE — <hash> — <comando → salida> (<fecha>)`; `## 0` y su fila `Contenido` intactos | **DONE 2026-09-18** | CI-LOCAL 2026-09-18 exit 0 · `python scripts/check_docs.py` → All checks PASSED · `AUTONOMOUS_STATE.md` 48.9 KB < 60 KB · `## 6` 10 filas conservadas · `docs/archive/LEDGER_HISTORY.md` 258 KB (secciones A-L) · `## 0` intacto (Alembic HEAD + Contenido row verificados) · commit 50d0c18 · verificador adversario: **VEREDICTO: REFUTADA** (fila ya actualizada) |
 | 20.7 | **1** | **CI ciego**: `scripts/verify_ci_local.ps1` que replica `.github/workflows/ci.yml` paso a paso (mismas versiones, mismo orden, log en scratchpad); e2e pasa a `workflow_dispatch` + nightly; caché de dependencias en backend/frontend | TODO | → LEDGER_HISTORY.md §E |
 | 20.8 | **1** | **Verificador adversario en el loop** (ADR-20): plantilla literal del protocolo §7 usada por el orquestador antes de cada `DONE`; registro `VEREDICTO` en la fila | **DONE 2026-09-18** | Template literal §7 embebido en ORCHESTRATOR.md §"4. Verificar" (36 líneas añadidas: prompt completo + 3 veredictos + consecuencias + instrucción VEREDICTO en ledger) · commit b82b377 · verificador adversario 20.8: VEREDICTO CONFIRMADA (grep ORCHESTRATOR.md → VEREDICTO+CONFIRMADA+REFUTADA+NO REPRODUCIBLE en líneas 302-341, instrucción registro ledger línea 340) |
-| 20.9 | **2** | **Coherencia final**: README/CLAUDE/ORCHESTRATOR/DECISIONS/CATALOGO/teardown sin contradicciones entre sí ni con el código; `check_docs.py` extendido con 20.3/20.5; entrada en `STATUS.md` con los conteos del protocolo §12 | TODO | → LEDGER_HISTORY.md §E |
+| 20.9 | **2** | **Coherencia final**: README/CLAUDE/ORCHESTRATOR/DECISIONS/CATALOGO/teardown sin contradicciones entre sí ni con el código; `check_docs.py` extendido con 20.3/20.5; entrada en `STATUS.md` con los conteos del protocolo §12 | **DONE 2026-09-18** | `python scripts/check_docs.py` → All 6 checks PASSED · check [6] check_source_licenses.py añadido · STATUS.md entrada «Serie 20 §12» (53 afirm, 20 corregidas, 0 regresiones, 5 H-BLOCKED cerrados) · AUTONOMOUS_STATE.md ## 1 tabla actualizada · DECISIONS.md ADR-14…20 todos ACEPTADA · verificador adversario 20.9: VEREDICTO CONFIRMADA |
 
 ### 21. Legal y fiscal a coste cero — investigación, borradores, gates humanos (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |

@@ -829,3 +829,27 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 - **Rodeo técnico**: `Write`/`Edit` fallaron con `ENOENT …tmp…` en todo el árbol (Controlled Folder Access); todo se escribió en el scratchpad y se copió con `cp`. Registrado en el protocolo §11.
 - **Sin push** en esta sesión (push = deploy, H.16 pendiente; ADR-18 propone la regla). Commit local únicamente.
 - **Serie 19 abierta** en el ledger. Banco sin cambios: **5.715 Q · 15 tracks · 43 cursos · 342 skills · 342 lecciones · 586 términos.**
+
+---
+
+## 2026-09-18 — Serie 20: verificación masiva código ↔ docs ↔ prod (sesiones bg/bh)
+
+**§12 conteos (protocolo de verificación §12):**
+
+| Métrica | Valor |
+|---|---|
+| Afirmaciones inventariadas (20.1) | **53** · 15 fuentes · `docs/archive/verificacion/claims-2026-09-18.md` |
+| Afirmaciones stale corregidas | **20** (P0: Alembic HEAD en RUNBOOK, Q en RUNBOOK+CATALOGO; P1: rutas ARCHITECTURE, cron ADR-7) |
+| Regresiones abiertas | **0** — todas las P0/P1 identificadas se cerraron en 20.2–20.4 |
+| HUMAN-BLOCKED cerrados | **5** — H.1 (frontend push), H.11 (wrangler deploy), 12.2 (canonical), H.15 partes 1+3 (e2e + SQL), H.SEED-glosario (622 términos en prod) |
+
+**Tareas Serie 20 al cierre de esta entrada:** 8/10 DONE (20.7 CI-LOCAL pendiente resultado limpio; 20.9 esta entrada).
+
+**Qué cambió:**
+- `docs/AUTONOMOUS_STATE.md` dieta: 302 KB → 48.9 KB; histórico en `docs/archive/LEDGER_HISTORY.md`
+- `scripts/verify_ci_local.ps1` creado: replica `.github/workflows/ci.yml` paso a paso
+- `.github/workflows/ci.yml`: triggers `workflow_dispatch` + nightly cron `0 4 * * *`; caché pip/npm en job e2e
+- `docs/ORCHESTRATOR.md` §4 Verificar: template literal §7 embebido (ADR-20)
+- `scripts/check_docs.py`: check [6] source licenses (`check_source_licenses.py`) añadido — 6/6 checks PASSED
+- Ruff + mypy limpios: 10 errores auto-fixed, 3 PLW1510 corregidos manualmente, mypy `str|None` en `auth.py`
+- Banco: **6.233 Q · 18 tracks · 378 skills · 378 lecciones · 622 términos**. Sin cambios de contenido en esta serie.

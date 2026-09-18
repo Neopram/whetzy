@@ -253,7 +253,7 @@ else:
         )
 
 
-print("\n[5] API docs vs OpenAPI spec")
+print("\n[5] API docs vs OpenAPI spec — check_api_docs.py (20.3)")
 try:
     api_check = subprocess.run(
         [sys.executable, str(Path(__file__).parent / "check_api_docs.py")],
@@ -270,6 +270,25 @@ try:
         check("API.md ↔ OpenAPI bidirectional check", True, "")
 except Exception as e:
     check("API.md ↔ OpenAPI bidirectional check", False, str(e))
+
+
+print("\n[6] Source licenses (content/sources/index.json + CATALOGO_MAESTRO.md §2.2 — 20.5)")
+try:
+    src_check = subprocess.run(
+        [sys.executable, str(Path(__file__).parent / "check_source_licenses.py")],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    for line in src_check.stdout.strip().splitlines():
+        print(f"  {line}")
+    if src_check.returncode != 0:
+        check("Source licenses (index.json + §2.2 verificar)", False, "see lines above")
+    else:
+        check("Source licenses (index.json + §2.2 verificar)", True, "")
+except Exception as e:
+    check("Source licenses (index.json + §2.2 verificar)", False, str(e))
 
 
 print()
