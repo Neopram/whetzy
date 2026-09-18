@@ -57,7 +57,7 @@ TF_BAND = (0.35, 0.65)
 # `js_exec` added 2026-09-18 (task 18.3): Worker sandbox live in useRuntime.ts
 # (Blob URL, no eval on main thread, console captured, timeout via terminate()),
 # 2 questions authored in mod1401, e2e spec written in frontend/e2e/js_exec.spec.ts.
-EXEC_TYPES = {"fill_blank_exec", "fix_bug", "sql_exec"}
+EXEC_TYPES = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
 EXEC_TARGET = 0.15
 
 # Tracks and modules that do NOT chase the 15 % bar, each with the reason.
@@ -122,6 +122,8 @@ EXEC_FLOOR = {
     # para sanitizacion. Ver tarea 18.2.
     "track13": 0.15,
     "track40": 0.15,
+    # 16.7 % on first commit (2 js_exec / 12 Q in mod1401 stub). Task 18.3.
+    "track14": 0.15,
 }
 
 

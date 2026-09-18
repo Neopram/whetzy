@@ -41,7 +41,7 @@ Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos t
 - Groq + `qwen/qwen3.8-27b` tras la abstracción `LLMProvider`. Cambiar de
   proveedor es config, no refactor.
 - Catálogo: **`docs/CATALOGO_MAESTRO.md`** — 27 tracks de aprendizaje y ~55
-  certificaciones, espina de prerequisitos BKT por track. Hoy 12/27 y 4/55. Es la
+  certificaciones, espina de prerequisitos BKT por track. Hoy 15/27 y 4/55 (11 completos + track13 ciberseg + track14 JS frontend en progreso). Es la
   única lista; cuando otro doc la contradiga, manda el catálogo. No hay atajos.
 - Contenido redactado nativo en ES y EN — no traducido. Toda pregunta cita fuente.
 - Registro obligatorio. Sin modo invitado.

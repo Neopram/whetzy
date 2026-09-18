@@ -5,6 +5,34 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [1.2.0] — 2026-09-18
+
+### Sesiones ay–bb
+
+**ES**
+
+- **Runtime JavaScript real**: sandbox Web Worker (Blob URL, sin eval en el hilo principal, console capturado, timeout via `terminate()`). Tipo `js_exec` añadido al banco; EXEC_FLOOR ratchet para track14.
+- **Track14 Frontend JS** (stub): 12 preguntas bilingües (10 MCQ + 2 `js_exec`), 1 lección, 6 términos de glosario. Habilidades: variables, tipos de datos y alcance. Fuente: MDN Web Docs.
+- **Track13 Ciberseguridad + track40**: 79 preguntas `fill_blank_exec` nuevas (Python stdlib: `hashlib`, `hmac`, `secrets`, `html`, `re`, `ipaddress`). Ambos tracks alcanzan ≥ 15 % ejecutable.
+- **Blueprints certificaciones corregidos**: PCEP (4 dominios correctos), SAA-C03 (4 dominios sin duplicado), AIF-C01 (5 dominios). `test_certification_blueprints.py` 8 passed / 0 xfail.
+- **Readiness por dominio**: `GET /exams/certification/{track_id}/readiness` — «listo / no listo» por dominio × peso oficial.
+- **Niveles de curso**: cada módulo gana `level 1|2|3`; `TracksScreen` agrupa en Fundamentos/Intermedio/Avanzado.
+- **Tildes en todo el catálogo**: 202 cadenas corregidas en `tracks.json`, preguntas, lecciones y glosario. Guard `test_spanish_accents.py` extendido a `tracks.json`.
+- **Banco**: 5.715 preguntas / 15 tracks / 342 skills / 342 lecciones / 586 términos. Deploy automático verificado (H.16).
+
+**EN**
+
+- **Real JavaScript runtime**: Blob-URL Web Worker sandbox (no eval on main thread, console captured, timeout via `terminate()`). `js_exec` type added to bank; EXEC_FLOOR ratchet for track14.
+- **Track14 Frontend JS** (stub): 12 bilingual questions (10 MCQ + 2 `js_exec`), 1 lesson, 6 glossary terms. Skills: variables, data types and scope. Source: MDN Web Docs.
+- **Track13 Cybersecurity + track40**: 79 new `fill_blank_exec` questions (Python stdlib: `hashlib`, `hmac`, `secrets`, `html`, `re`, `ipaddress`). Both tracks reach ≥ 15% executable.
+- **Certification blueprints fixed**: PCEP (4 correct domains), SAA-C03 (4 domains, no duplicate), AIF-C01 (5 domains). `test_certification_blueprints.py` 8 passed / 0 xfail.
+- **Domain readiness**: `GET /exams/certification/{track_id}/readiness` — "ready / not ready" per domain × official weight.
+- **Course levels**: each module gains `level 1|2|3`; `TracksScreen` groups under Fundamentals/Intermediate/Advanced.
+- **Spanish accents across catalog**: 202 strings fixed in `tracks.json`, questions, lessons, and glossary. `test_spanish_accents.py` guard extended to `tracks.json`.
+- **Bank**: 5,715 questions / 15 tracks / 342 skills / 342 lessons / 586 terms. Auto-deploy verified (H.16).
+
+---
+
 ## [1.0.0] — 2026-09-15
 
 ### Primera versión pública

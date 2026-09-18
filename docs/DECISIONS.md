@@ -128,3 +128,38 @@ build red for authoring not yet done); exempting every non-Python track (would
 have swallowed track09, the one that matters most commercially); counting
 `code_output` as executable (the learner predicts output, they do not run it —
 counting it would have reported ~22 % today by redefining the word).
+
+---
+
+## ADR-10 — JavaScript runtime via Blob-URL Web Worker, not eval or iframe (2026-09-18)
+
+**Decision:** `useRuntime('js')` in `frontend/src/hooks/useRuntime.ts` uses a
+Blob-URL Web Worker with `new Function('console', code)(fakeConsole)` inside the
+worker. The worker is terminated after `timeoutMs` (default 5 000 ms).
+
+**Reason:** Three constraints ruled out the alternatives in order:
+
+1. `eval()` on the main thread: blocked by the app's `Content-Security-Policy`
+   (`script-src 'self'`), and would block the UI while running.
+2. `<iframe sandbox>`: would require a relaxed CSP (`sandbox allow-scripts`),
+   adds a second document lifecycle, and DOM APIs would be reachable — the goal
+   is a headless execution environment, not a browser.
+3. An origin-isolated Worker loaded from a file (e.g. `/worker.js`): requires
+   a separate build artifact, complicates the Vite setup, and is unnecessary
+   when `URL.createObjectURL` with `{type: 'application/javascript'}` achieves
+   the same isolation from a string literal in the component.
+
+A Blob-URL Worker satisfies all three constraints: it runs off the main thread,
+the Blob URL has no script-src CSP restriction in Chrome/Firefox/Safari, it
+cannot access the DOM, and `worker.terminate()` provides hard timeout semantics
+without a `try/catch` around `setTimeout` on the main thread.
+
+**`new Function` instead of raw `eval`:** `new Function('console', code)(c)`
+scopes `console` as a parameter, preventing the worker's native `console` from
+printing to DevTools (where it would be invisible to the question runner) and
+allowing the captured `logs` array to be `postMessage`-d back.
+
+**Alternatives discarded:** `eval` on main thread (CSP + blocks UI); `<iframe
+sandbox>` (CSP relaxation needed, DOM reachable); server-side execution (latency,
+stateful server, no offline); Pyodide for JS (800 KB overhead for a language the
+browser already runs natively).

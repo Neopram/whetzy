@@ -11,7 +11,7 @@
 > memoria del modelo, no una captura: la tarea **18.12** la sustituye por URL + fecha
 > o la borra. Un número sin comando ni URL es un bug de este doc.
 >
-> Última medición: 2026-09-16 (sesión **au**). Estado del banco: ver `## 1`.
+> Última medición: 2026-09-18 (sesión **bb**). Estado del banco: ver `## 1`.
 
 ---
 
@@ -33,15 +33,15 @@ profundidad de producto*, no adquisición.
 
 ## 1. Estado del banco hoy (fuente: `check_question_bank.py` + `check_docs.py`)
 
-| Métrica | Valor 2026-09-16 | Comando |
+| Métrica | Valor 2026-09-18 | Comando |
 |---|---|---|
-| Tracks | **12** (11 + SQL) | `python scripts/check_docs.py` |
-| Cursos (track × nivel) | **36** | ídem |
-| Skills | **301** | ídem |
-| Preguntas | **5.024** | `python scripts/check_question_bank.py` |
-| Lecciones | 301/301 tras 18.0 (281 antes) | `pytest tests/content/test_lessons.py` |
-| Glosario | 444 + track12 tras 18.0 | `check_docs.py` |
-| Ejecutables | 8 tracks no exentos ≥ 15 % (track12 20 %) | `check_question_bank.py` |
+| Tracks | **15** (11 + SQL + ciberseg + JS stub) | `python scripts/check_docs.py` |
+| Cursos (track × nivel) | **43** | ídem |
+| Skills | **342** | ídem |
+| Preguntas | **5.715** | `python scripts/check_question_bank.py` |
+| Lecciones | 342/342 (100 %) | `pytest tests/content/test_lessons.py` |
+| Glosario | **586** (444 + track12 36 + track13 + track14 6) | `check_docs.py` |
+| Ejecutables | 10 tracks no exentos ≥ 15 % (track12 20 %, track13/40 15 %, track14 JS sandbox) | `check_question_bank.py` |
 | Certificaciones | 4 (CLF-C02, PCEP, SAA-C03, AIF-C01) — **3 con blueprint incorrecto (17.13, PRI 0)** | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |
@@ -73,8 +73,8 @@ de 17.13).
 | 6 | IA | Fundamentos de IA/ML | track06 | ✅ | `microsoft/ML-For-Beginners` MIT, Google MLCC CC BY | Python stdlib | AI-900 |
 | 7 | IA | Ingeniería de IA / LLMs | track07 | ✅ | `generative-ai-for-beginners` MIT, `dair-ai/PEG` MIT, arXiv | Python stdlib | AIF-C01 ✅, AI-102 |
 | 8 | Datos | SQL | track12 | ✅ (18.0 lo deja verde) | SQLite docs (dominio público), PostgreSQL docs | **SQL (sql.js)** | PostgreSQL Associate, DP-900 |
-| 9 | Seguridad | Ciberseguridad — fundamentos | track13 | ❌ | NIST SP 800-53/61/63 (dominio público), MITRE ATT&CK (atribución), RFC; OWASP solo cita (BY-SA) | Python `fix_bug` (validación, hashing, sanitización) | ISC2 CC, Security+ |
-| 10 | Web | Frontend (JS/TS/React) | track14 | ❌ | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS (sandbox iframe+Worker, 18.3)** | JSE-1 |
+| 9 | Seguridad | Ciberseguridad — fundamentos | track13 | stub ✅ (18.2) — 326 Q, 15 % exec, ≥15 Q/skill | NIST SP 800-53/61/63 (dominio público), MITRE ATT&CK (atribución), RFC; OWASP solo cita (BY-SA) | Python `fix_bug`/`fill_blank_exec` (hashlib, hmac, secrets, html, re, ipaddress) | ISC2 CC, Security+ |
+| 10 | Web | Frontend (JS/TS/React) | track14 | stub ✅ (18.3) — 12 Q, 2 js_exec, 1 lección, 6 términos | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS Worker sandbox real (18.3)** | JSE-1 |
 | 11 | Fundamentos | Linux / shell | track15 | ❌ | `exercism/bash` MIT, man-pages (cita), *The Linux Command Line* (cita) | exento (fill_blank de comandos) | LPIC-1, Linux+, LFCS |
 | 12 | Fundamentos | Algoritmos y estructuras | track16 | ❌ | `TheAlgorithms/Python` MIT, `tech-interview-handbook` MIT; `coding-interview-university` (BY-SA → H.LIC) | Python (≥ 30 %) | — |
 | 13 | Fundamentos | Redes | track17 | ❌ | RFCs (IETF), *Computer Networking* (cita), Cisco docs (cita) | Python (`socket`, `ipaddress`) | CCNA, Network+ |
@@ -93,7 +93,7 @@ de 17.13).
 | 26 | Ingeniería | Agile y producto | track30 | ❌ | Scrum Guide (CC BY-SA → cita), Agile Manifesto (cita) | exento | PSM I |
 | 27 | Móvil | Móvil (Android/Kotlin · iOS/Swift · Flutter/RN) | track31 | ❌ (último: sin runtime en navegador) | Android docs Apache-2, Flutter docs BSD, Apple docs (cita) | exento | — |
 
-**Cobertura hoy: 8 de 27 filas (30 %).** Ciberseguridad, Frontend, Linux, Redes,
+**Cobertura hoy: 11 de 27 filas (41 %).** 8 tracks completados + track13 ciberseg (stub, 326 Q) + track14 Frontend JS (stub, 12 Q). Linux, Redes,
 DevOps, Azure/GCP, Data Eng, Móvil: **cero**.
 
 ---
@@ -160,7 +160,7 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 | **Readiness por dominio** | **0** | «P(aprobar)» por cert con BKT × peso oficial | 18.1 |
 | Glosario | 444 + 36 | ≥ 36/track | `check_docs.py` |
 | **Vídeo explicativo** | **0** | 1 animación de 30-90 s por skill donde aporte (algoritmos, redes, arquitectura, SQL) | 18.9 |
-| Runtimes en navegador | Python (Pyodide) ✅ · SQL (sql.js) ✅ · **JS stub** · shell ❌ | JS real (18.3); shell = `fill_blank` (v86 descartado por peso, línea roja 8) | `useRuntime` + e2e por runtime |
+| Runtimes en navegador | Python (Pyodide) ✅ · SQL (sql.js) ✅ · **JS (Worker sandbox) ✅ (18.3)** · shell ❌ | shell = `fill_blank` (v86 descartado por peso, línea roja 8) | `useRuntime` + e2e por runtime |
 
 ---
 
@@ -241,7 +241,7 @@ existe: no se cuenta, no se anota, no se despliega.
 | Boot.dev | ≈ 40 cursos | *(estimación sin verificar — 18.12)* |
 | Sololearn | ≈ 30 cursos | *(estimación sin verificar — 18.12)* |
 | Mimo | ≈ 15 rutas | *(estimación sin verificar — 18.12)* |
-| **Whetzy** | **12 tracks · 36 cursos · 5.024 Q** | `check_docs.py` |
+| **Whetzy** | **15 tracks · 43 cursos · 5.715 Q** | `check_docs.py` |
 
 Lectura honesta: con 27 tracks × 3 niveles ≈ 80 cursos, Whetzy queda en la liga
 de **Boot.dev / Sololearn / Mimo** — que son exactamente las apps que monetizan

@@ -292,6 +292,41 @@ La estrategia defendible no es «superar a toda la competencia». Es **ser incue
 
 ---
 
+## 10. Recálculo — 2026-09-18 (sesiones ay–bb)
+
+Mismos pesos de §7.1. Se aplican sólo los movimientos con evidencia.
+
+### 10.1 Qué se movió
+
+| Dimensión | §8 | Ahora | Evidencia — y qué la limita |
+|---|---|---|---|
+| **Ejecución de código** | 55 | **57** | 18.3 DONE: runtime JS real — Blob URL Web Worker, sin eval en hilo principal, console capturado, timeout via `terminate()`. Tercer entorno de ejecución en el navegador (Python + SQL ya contados). 2 preguntas `js_exec` en track14; EXEC_FLOOR ratchet activo. No sube más porque DataCamp *es* un IDE con datasets reales y el banco de js_exec son 2 preguntas en un stub de 12 |
+| **Contenido** | 50 | **52** | Track13 ciberseguridad: 326 Q reales, 15 % exec (hashlib/hmac/secrets/html/re/ipaddress stdlib). Track14 Frontend JS: 12 Q stub. Banco total: **5.715 Q** / 15 tracks / 342 skills. Sigue siendo texto frente a horas de vídeo de DataCamp; el 52 se compra con 691 preguntas nuevas bien citadas, no con video ni proyectos |
+| **Distribución** | 5 | **5** | H.11 sigue sin resolver. API prod `healthy` (verificado). Frontend en whetzy.com es el build anterior a 9.8/11.2. Los +5 en depósito esperan a que Pages sirva el build nuevo |
+| Motor adaptativo | 55 | 55 | Sin evidencia nueva desde 11.3 |
+| Tutor AI | 80 | 80 | Sin cambio desde §7 |
+| Gamificación | 40 | 40 | Cero usuarios |
+| Bilingüe | 80 | 80 | 202 tildes corregidas — el 80 pasa de afirmado a más ganado |
+| PWA / offline | 70 | 70 | Sin medición en Android real |
+| Accesibilidad | 75 | 75 | 9.7 bloqueada (H.9) |
+
+### 10.2 El número
+
+```
+0,34×5  + 0,14×55 + 0,14×52 + 0,09×80 + 0,07×57
+        + 0,06×40 + 0,06×80 + 0,05×70 + 0,05×75   =  42,73
+```
+
+**Whetzy ≈ 43 / 100** (≈ 42 en §8). Un punto. Toda la ingeniería de sesiones ay–bb compra exactamente un punto porque la distribución sigue valiendo 5 y pesa 0,34. Eso es la aritmética honesta, no una crítica al trabajo.
+
+### 10.3 Lo que de verdad falta
+
+El análisis de §8.4 no cambia. La tesis de nicho ES/EN + motor auditado + ejecución multi-runtime en navegador es real y se ha fortalecido (tres runtimes reales). Pero el tercio del marcador que mide si alguien *usa* el producto sigue en 5. **H.11** (frontend build) y **H.10** (30 usuarios beta) valen más que todo el backlog técnico pendiente junto.
+
+Lo que cambió en este intervalo: los dos stubs (track13 y track14) demuestran que el pipeline funciona. Son evidencia de velocidad de autoría, no de producto terminado.
+
+---
+
 ## 9. Catálogo frente al mercado — 2026-09-16 (sesión au)
 
 El dueño preguntó si Whetzy puede «abarcar todo el mundo informático». La respuesta
@@ -306,10 +341,10 @@ tracks mueve *Contenido* (peso 0,14) unos puntos como mucho; no toca *Distribuci
 
 | Dimensión | Whetzy hoy (medido) | Objetivo del catálogo | Liga en la que compite ese objetivo |
 |---|---|---|---|
-| Tracks / cursos | 12 / 36 | 27 / ≈ 80 | Boot.dev · Sololearn · Mimo *(≈ 15-40 cursos, estimación sin verificar — 18.12)* |
-| Certificaciones | 4 (3 con blueprint incorrecto, 17.13) | ≈ 55 | Whizlabs · Tutorials Dojo · KodeKloud |
-| Lecciones | 301/301 skills | 1/skill en 27 tracks | Codecademy (texto) |
-| Ejecución en navegador | Python + SQL reales; JS stub | Python + SQL + JS | Brilliant (celdas), DataCamp (IDE) |
+| Tracks / cursos | 15 / 43 (11 completos + 2 stubs) | 27 / ≈ 80 | Boot.dev · Sololearn · Mimo *(≈ 15-40 cursos, estimación sin verificar — 18.12)* |
+| Certificaciones | 4 (blueprints corregidos en 18.1) | ≈ 55 | Whizlabs · Tutorials Dojo · KodeKloud |
+| Lecciones | 342/342 skills | 1/skill en 27 tracks | Codecademy (texto) |
+| Ejecución en navegador | Python + SQL + **JS Worker (18.3)** | Python + SQL + JS + shell (v86 descartado, ADR-9) | Brilliant (celdas), DataCamp (IDE) |
 | Proyectos | 0 | 10/track ejecutable | Exercism · Boot.dev |
 | Vídeo | 0 | explicadores Manim (piloto 18.9) | nadie de la liga objetivo; Platzi/Udemy son otra liga |
 

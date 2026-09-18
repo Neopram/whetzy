@@ -2,7 +2,7 @@
 
 Whetzy es una escuela bilingüe (ES/EN) de informática con motor adaptativo
 (BKT · FSRS · Elo · bandit · DKT), ejecución de código en el navegador (Python,
-SQL) y preparación de certificaciones. Backend: monolito FastAPI + PostgreSQL.
+SQL, JavaScript) y preparación de certificaciones. Backend: monolito FastAPI + PostgreSQL.
 Frontend: React + Capacitor.
 
 ## Qué leer, según lo que vengas a hacer

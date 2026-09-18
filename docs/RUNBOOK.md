@@ -2,12 +2,11 @@
 
 ## Deploy to Railway (backend)
 
-**Deploy is MANUAL** — no GitHub webhook active. After pushing code:
+**Deploy is AUTOMATIC** — Railway deploys from `master` automatically (verified 2026-09-16, H.16). After `git push origin master`, Railway runs migrations and content_loader without manual intervention.
 
-1. Log in to railway.app → select the Whetzy service
-2. Click "Deploy" on the latest commit
-3. Monitor logs for startup message: `Starting Whetzy (env=production ...)`
-4. Verify: `curl https://api-production-9751.up.railway.app/health/ready`
+To monitor deployment:
+1. Check Railway dashboard for build status
+2. Verify: `curl https://api-production-9751.up.railway.app/health`
 
 ### Recovering from "Application not found" (incident H.1)
 
@@ -42,7 +41,7 @@ in the Railway dashboard.
    unknown skill_id — check the deploy log for the traceback.
 
 **Note on question count:** the bank grows over time. Verify the loaded count
-matches `check_question_bank.py` output (currently 3419), not a hardcoded
+matches `check_question_bank.py` output (currently 5715), not a hardcoded
 number. Any non-zero `skipped` count means a question references a skill_id
 that does not exist in `curriculum/tracks.json`.
 
@@ -64,8 +63,8 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `o5p6q7r8s9t0` (16 migrations, single head — verified 2026-09-15)
-Chain: `<base> → a1b2 → b2c3 → c3d4 → d4e5 → e5f6 → f6a7 → g7h8 → h8i9 → i9j0 → j0k1 → k1l2 → l2m3 → m3n4 → n4o5 → o5p6q7r8s9t0`
+Current Alembic HEAD: `s9t0u1v2w3x4` (19 migrations, single head — verified 2026-09-18)
+Chain: `<base> → a1b2 → … → o5p6q7r8s9t0 → p6q7r8s9t0u1 → q7r8s9t0u1v2 → r8s9t0u1v2w3 → s9t0u1v2w3x4`
 
 Always recompute — never trust this line:
 
