@@ -1,0 +1,1508 @@
+{
+  "questions": [
+    {
+      "id": "q170301001",
+      "skill_id": "sk170301",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es la función socket() en Python?",
+      "question_en": "What is the socket() function in Python?",
+      "options_es": [
+        "Crear un archivo",
+        "Crear un socket de red",
+        "Enviar datos",
+        "Recibir datos"
+      ],
+      "options_en": [
+        "Create a file",
+        "Create a network socket",
+        "Send data",
+        "Receive data"
+      ],
+      "correct_index": 1,
+      "explanation_es": "socket.socket() crea un nuevo socket. Sintaxis: socket.socket(AF_INET, SOCK_STREAM) para TCP IPv4. AF_INET es dirección IPv4, SOCK_STREAM es TCP.",
+      "explanation_en": "socket.socket() creates a new socket. Syntax: socket.socket(AF_INET, SOCK_STREAM) for TCP IPv4. AF_INET is IPv4 address family, SOCK_STREAM is TCP.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "socket",
+        "creación"
+      ]
+    },
+    {
+      "id": "q170301002",
+      "skill_id": "sk170301",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué método se usa para conectar a un servidor TCP?",
+      "question_en": "Which method is used to connect to a TCP server?",
+      "options_es": [
+        "send()",
+        "connect()",
+        "bind()",
+        "listen()"
+      ],
+      "options_en": [
+        "send()",
+        "connect()",
+        "bind()",
+        "listen()"
+      ],
+      "correct_index": 1,
+      "explanation_es": "connect() establece conexión con un servidor remoto. Sintaxis: socket.connect((host, puerto)). send() envía datos, bind() vincula a un puerto local, listen() espera conexiones.",
+      "explanation_en": "connect() establishes connection with a remote server. Syntax: socket.connect((host, port)). send() sends data, bind() binds to local port, listen() waits for connections.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.connect",
+      "expected_time_ms": 15000,
+      "tags": [
+        "tcp",
+        "connect"
+      ]
+    },
+    {
+      "id": "q170301003",
+      "skill_id": "sk170301",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Crea un socket TCP e imprime su tipo de familia de direcciones.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint(s.family)\n```",
+      "question_en": "Create a TCP socket and print its address family type.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint(s.family)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "2",
+      "correct_answer_en": "2",
+      "explanation_es": "En Python 3.12+, s.family imprime el valor entero del enum: 2 (AF_INET = IPv4). El atributo .family almacena el tipo de dirección del socket.",
+      "explanation_en": "In Python 3.12+, s.family prints the integer value of the enum: 2 (AF_INET = IPv4). The .family attribute stores the socket address type.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html",
+      "expected_time_ms": 45000,
+      "tags": [
+        "socket",
+        "familia"
+      ]
+    },
+    {
+      "id": "q170301004",
+      "skill_id": "sk170301",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "TCP garantiza la entrega ordenada de datos.",
+      "question_en": "TCP guarantees ordered delivery of data.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, TCP es confiable y garantiza orden. Los datos llegan en el orden enviado. UDP no lo garantiza.",
+      "explanation_en": "Yes, TCP is reliable and guarantees order. Data arrives in the order sent. UDP does not guarantee this.",
+      "source": "RFC 793 — https://www.rfc-editor.org/rfc/rfc793",
+      "expected_time_ms": 15000,
+      "tags": [
+        "tcp",
+        "confiabilidad"
+      ]
+    },
+    {
+      "id": "q170301005",
+      "skill_id": "sk170301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es el máximo número de conexiones pendientes (backlog) en listen()?",
+      "question_en": "What is the maximum number of pending connections (backlog) in listen()?",
+      "options_es": [
+        "Según el sistema operativo",
+        "Indefinido",
+        "Siempre 1",
+        "Siempre 128"
+      ],
+      "options_en": [
+        "Depends on OS",
+        "Undefined",
+        "Always 1",
+        "Always 128"
+      ],
+      "correct_index": 0,
+      "explanation_es": "listen(backlog) especifica el número máximo de conexiones pendientes. El SO puede limitar este valor. Típicamente entre 1-128 según la plataforma.",
+      "explanation_en": "listen(backlog) specifies the maximum number of pending connections. The OS may limit this value. Typically 1-128 depending on platform.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.listen",
+      "expected_time_ms": 20000,
+      "tags": [
+        "listen",
+        "backlog"
+      ]
+    },
+    {
+      "id": "q170301006",
+      "skill_id": "sk170301",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Imprime el tipo de socket (SOCK_STREAM para TCP).\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint(s.type)\n```",
+      "question_en": "Print the socket type (SOCK_STREAM for TCP).\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint(s.type)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "1",
+      "correct_answer_en": "1",
+      "explanation_es": "En Python 3.12+, s.type imprime el valor entero del enum: 1 (SOCK_STREAM = TCP). El atributo .type almacena el tipo de socket.",
+      "explanation_en": "In Python 3.12+, s.type prints the integer value of the enum: 1 (SOCK_STREAM = TCP). The .type attribute stores the socket type.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html",
+      "expected_time_ms": 45000,
+      "tags": [
+        "socket",
+        "tipo"
+      ]
+    },
+    {
+      "id": "q170301007",
+      "skill_id": "sk170301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué método recibe datos de un socket?",
+      "question_en": "Which method receives data from a socket?",
+      "options_es": [
+        "send()",
+        "recv()",
+        "read()",
+        "get()"
+      ],
+      "options_en": [
+        "send()",
+        "recv()",
+        "read()",
+        "get()"
+      ],
+      "correct_index": 1,
+      "explanation_es": "recv(bufsize) recibe datos. Retorna una cadena de bytes. send() envía datos. El argumento bufsize especifica el máximo número de bytes a recibir.",
+      "explanation_en": "recv(bufsize) receives data. Returns a bytes string. send() sends data. The bufsize argument specifies the max bytes to receive.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.recv",
+      "expected_time_ms": 15000,
+      "tags": [
+        "recv",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170301008",
+      "skill_id": "sk170301",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "close() cierra un socket.",
+      "question_en": "close() closes a socket.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, socket.close() cierra la conexión y libera recursos. Es buena práctica usar context managers (with) para cerrar automáticamente.",
+      "explanation_en": "Yes, socket.close() closes the connection and releases resources. It is good practice to use context managers (with) to close automatically.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.close",
+      "expected_time_ms": 15000,
+      "tags": [
+        "close",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170301009",
+      "skill_id": "sk170301",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Crea un socket y ciérralo, luego imprime 'cerrado'.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\ns.close()\nprint('cerrado')\n```",
+      "question_en": "Create a socket and close it, then print 'closed'.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\ns.close()\nprint('closed')\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "cerrado",
+      "correct_answer_en": "closed",
+      "explanation_es": "close() cierra el socket sin error si ya está cerrado. Python se reinicia el contexto para cada prueba.",
+      "explanation_en": "close() closes the socket without error if already closed. Python resets context for each test.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html",
+      "expected_time_ms": 45000,
+      "tags": [
+        "close",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170301010",
+      "skill_id": "sk170301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Cuál es la diferencia entre send() y sendall()?",
+      "question_en": "What is the difference between send() and sendall()?",
+      "options_es": [
+        "send() puede enviar solo parte de los datos, sendall() garantiza todo",
+        "No hay diferencia",
+        "sendall() es más lento",
+        "send() es más seguro"
+      ],
+      "options_en": [
+        "send() may send only part of data, sendall() guarantees all",
+        "No difference",
+        "sendall() is slower",
+        "send() is safer"
+      ],
+      "correct_index": 0,
+      "explanation_es": "send() retorna cuántos bytes envió (puede ser menor que el buffer). sendall() continúa hasta enviar todo o fallar. sendall() es más seguro para aplicaciones.",
+      "explanation_en": "send() returns how many bytes were sent (may be less than buffer). sendall() continues until all sent or fails. sendall() is safer for applications.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.sendall",
+      "expected_time_ms": 20000,
+      "tags": [
+        "send",
+        "sendall"
+      ]
+    },
+    {
+      "id": "q170301011",
+      "skill_id": "sk170301",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Crea un socket TCP y verifica si es bloqueante.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint(s.getblocking())\n```",
+      "question_en": "Create a TCP socket and check if it is blocking.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint(s.getblocking())\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "True",
+      "correct_answer_en": "True",
+      "explanation_es": "Por defecto, los sockets TCP son bloqueantes (True). getblocking() retorna True si es bloqueante, False si no.",
+      "explanation_en": "By default, TCP sockets are blocking (True). getblocking() returns True if blocking, False otherwise.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.getblocking",
+      "expected_time_ms": 45000,
+      "tags": [
+        "blocking",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170301012",
+      "skill_id": "sk170301",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Un socket bloqueante suspende el programa si no hay datos disponibles.",
+      "question_en": "A blocking socket suspends the program if no data is available.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, en modo bloqueante recv() espera hasta recibir datos. En no-bloqueante lanzaría una excepción. Usar select() o threading para no bloquear.",
+      "explanation_en": "Yes, in blocking mode recv() waits until data arrives. In non-blocking mode it would raise an exception. Use select() or threading to avoid blocking.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html",
+      "expected_time_ms": 20000,
+      "tags": [
+        "blocking",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170301013",
+      "skill_id": "sk170301",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es el timeout de un socket?",
+      "question_en": "What is socket timeout?",
+      "options_es": [
+        "El tiempo entre paquetes",
+        "El tiempo de vida de la conexión",
+        "El máximo tiempo para que complete una operación",
+        "La latencia del servidor"
+      ],
+      "options_en": [
+        "Time between packets",
+        "Connection lifetime",
+        "Max time for an operation to complete",
+        "Server latency"
+      ],
+      "correct_index": 2,
+      "explanation_es": "El timeout define cuánto esperar antes de abandonar una operación (recv, connect, etc.). Se establece con settimeout(segundos). Evita bloqueos indefinidos.",
+      "explanation_en": "Timeout defines how long to wait before abandoning an operation (recv, connect, etc.). Set with settimeout(seconds). Prevents indefinite blocking.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.settimeout",
+      "expected_time_ms": 20000,
+      "tags": [
+        "timeout",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170301014",
+      "skill_id": "sk170301",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "hard",
+      "question_es": "Obtén el nombre del host local.\n\n```python\nimport socket\nprint(socket.gethostbyname('localhost'))\n```",
+      "question_en": "Get the local hostname.\n\n```python\nimport socket\nprint(socket.gethostbyname('localhost'))\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "127.0.0.1",
+      "correct_answer_en": "127.0.0.1",
+      "explanation_es": "socket.gethostbyname('localhost') traduce el nombre de host 'localhost' a su dirección IP: 127.0.0.1 (loopback IPv4).",
+      "explanation_en": "socket.gethostbyname('localhost') translates the hostname 'localhost' to its IP address: 127.0.0.1 (IPv4 loopback).",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.gethostname",
+      "expected_time_ms": 45000,
+      "tags": [
+        "hostname",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170301015",
+      "skill_id": "sk170301",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué retorna accept() en un servidor?",
+      "question_en": "What does accept() return on a server?",
+      "options_es": [
+        "Un entero",
+        "Una cadena",
+        "Un booleano",
+        "Una tupla (socket, dirección)"
+      ],
+      "options_en": [
+        "An integer",
+        "A string",
+        "A boolean",
+        "A tuple (socket, address)"
+      ],
+      "correct_index": 3,
+      "explanation_es": "accept() retorna una tupla (socket_conexión, dirección_remota). El socket es la nueva conexión, la dirección es (host, puerto) del cliente.",
+      "explanation_en": "accept() returns a tuple (connection_socket, remote_address). The socket is the new connection, address is (host, port) of client.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.accept",
+      "expected_time_ms": 20000,
+      "tags": [
+        "accept",
+        "socket"
+      ]
+    },
+    {
+      "id": "q170302001",
+      "skill_id": "sk170302",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Cuál es el tipo de socket para UDP?",
+      "question_en": "Which socket type is for UDP?",
+      "options_es": [
+        "SOCK_STREAM",
+        "SOCK_RAW",
+        "SOCK_DGRAM",
+        "SOCK_RDM"
+      ],
+      "options_en": [
+        "SOCK_STREAM",
+        "SOCK_RAW",
+        "SOCK_DGRAM",
+        "SOCK_RDM"
+      ],
+      "correct_index": 2,
+      "explanation_es": "socket.SOCK_DGRAM es para UDP (datagramas, sin conexión). SOCK_STREAM es para TCP (stream, orientado a conexión).",
+      "explanation_en": "socket.SOCK_DGRAM is for UDP (datagrams, connectionless). SOCK_STREAM is for TCP (stream, connection-oriented).",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "udp",
+        "dgram"
+      ]
+    },
+    {
+      "id": "q170302002",
+      "skill_id": "sk170302",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "UDP requiere establecer una conexión antes de enviar datos.",
+      "question_en": "UDP requires establishing a connection before sending data.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 1,
+      "explanation_es": "No, UDP es sin conexión. Puedes enviar datos directamente con sendto(). TCP requiere connect() primero.",
+      "explanation_en": "No, UDP is connectionless. You can send data directly with sendto(). TCP requires connect() first.",
+      "source": "RFC 768 — https://www.rfc-editor.org/rfc/rfc768",
+      "expected_time_ms": 15000,
+      "tags": [
+        "udp",
+        "sin-conexión"
+      ]
+    },
+    {
+      "id": "q170302003",
+      "skill_id": "sk170302",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué método se usa para enviar datos en UDP?",
+      "question_en": "Which method is used to send data in UDP?",
+      "options_es": [
+        "send()",
+        "sendto()",
+        "write()",
+        "put()"
+      ],
+      "options_en": [
+        "send()",
+        "sendto()",
+        "write()",
+        "put()"
+      ],
+      "correct_index": 1,
+      "explanation_es": "sendto(datos, (host, puerto)) envía un datagrama. send() es para TCP. recvfrom() recibe en UDP (retorna datos y dirección).",
+      "explanation_en": "sendto(data, (host, port)) sends a datagram. send() is for TCP. recvfrom() receives in UDP (returns data and address).",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.sendto",
+      "expected_time_ms": 15000,
+      "tags": [
+        "udp",
+        "sendto"
+      ]
+    },
+    {
+      "id": "q170302004",
+      "skill_id": "sk170302",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Crea un socket UDP e imprime su tipo.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\nprint(s.type)\n```",
+      "question_en": "Create a UDP socket and print its type.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\nprint(s.type)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "2",
+      "correct_answer_en": "2",
+      "explanation_es": "En Python 3.12+, s.type para UDP imprime el valor entero del enum: 2 (SOCK_DGRAM = UDP). El valor 2 identifica sockets de datagramas.",
+      "explanation_en": "In Python 3.12+, s.type for UDP prints the integer value of the enum: 2 (SOCK_DGRAM = UDP). The value 2 identifies datagram sockets.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html",
+      "expected_time_ms": 45000,
+      "tags": [
+        "udp",
+        "tipo"
+      ]
+    },
+    {
+      "id": "q170302005",
+      "skill_id": "sk170302",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "UDP es ideal para aplicaciones que requieren velocidad pero pueden tolerar pérdida de paquetes.",
+      "question_en": "UDP is ideal for applications that require speed but can tolerate packet loss.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, UDP prioriza velocidad sobre confiabilidad. Videoconferencia, streaming, juegos usan UDP. Correo, transfer de archivos usan TCP.",
+      "explanation_en": "Yes, UDP prioritizes speed over reliability. Video conferencing, streaming, games use UDP. Email, file transfer use TCP.",
+      "source": "RFC 768 — https://www.rfc-editor.org/rfc/rfc768",
+      "expected_time_ms": 20000,
+      "tags": [
+        "udp",
+        "velocidad"
+      ]
+    },
+    {
+      "id": "q170302006",
+      "skill_id": "sk170302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué retorna recvfrom()?",
+      "question_en": "What does recvfrom() return?",
+      "options_es": [
+        "Una tupla (datos, dirección)",
+        "Solo datos",
+        "Solo dirección",
+        "Un booleano"
+      ],
+      "options_en": [
+        "A tuple (data, address)",
+        "Only data",
+        "Only address",
+        "A boolean"
+      ],
+      "correct_index": 0,
+      "explanation_es": "recvfrom(bufsize) retorna una tupla (datos, (host, puerto)). Permite conocer quién envió el datagrama.",
+      "explanation_en": "recvfrom(bufsize) returns a tuple (data, (host, port)). It allows knowing who sent the datagram.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.recvfrom",
+      "expected_time_ms": 15000,
+      "tags": [
+        "recvfrom",
+        "udp"
+      ]
+    },
+    {
+      "id": "q170302007",
+      "skill_id": "sk170302",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Crea un socket UDP, vincula al puerto 9999 y ciérralo, luego imprime 'listo'.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.bind(('localhost', 9999))\ns.close()\nprint('listo')\n```",
+      "question_en": "Create a UDP socket, bind to port 9999 and close it, then print 'ready'.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.bind(('localhost', 9999))\ns.close()\nprint('ready')\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "listo",
+      "correct_answer_en": "ready",
+      "explanation_es": "bind() vincula el socket a una dirección local. Es necesario antes de recvfrom() en UDP.",
+      "explanation_en": "bind() binds the socket to a local address. It is required before recvfrom() in UDP.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.bind",
+      "expected_time_ms": 45000,
+      "tags": [
+        "udp",
+        "bind"
+      ]
+    },
+    {
+      "id": "q170302008",
+      "skill_id": "sk170302",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Los datagramas UDP están limitados a 65535 bytes.",
+      "question_en": "UDP datagrams are limited to 65535 bytes.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, UDP tiene límite de 65535 bytes (2^16 - 1) debido al tamaño del campo de longitud. TCP no tiene límite teórico.",
+      "explanation_en": "Yes, UDP has a limit of 65535 bytes (2^16 - 1) due to the length field size. TCP has no theoretical limit.",
+      "source": "RFC 768 — https://www.rfc-editor.org/rfc/rfc768",
+      "expected_time_ms": 15000,
+      "tags": [
+        "udp",
+        "límite"
+      ]
+    },
+    {
+      "id": "q170302009",
+      "skill_id": "sk170302",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es broadcast en UDP?",
+      "question_en": "What is broadcast in UDP?",
+      "options_es": [
+        "Enviar a un grupo de hosts",
+        "Enviar a un servidor",
+        "Enviar a todos los hosts en la red local",
+        "Un error de red"
+      ],
+      "options_en": [
+        "Send to a group of hosts",
+        "Send to a server",
+        "Send to all hosts on the local network",
+        "A network error"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Broadcast envía a la dirección de broadcast (última dirección de la red, ej. 192.168.1.255). Todos los hosts en la red reciben el datagrama.",
+      "explanation_en": "Broadcast sends to the broadcast address (last address of network, e.g., 192.168.1.255). All hosts on the network receive the datagram.",
+      "source": "RFC 768 — https://www.rfc-editor.org/rfc/rfc768",
+      "expected_time_ms": 20000,
+      "tags": [
+        "broadcast",
+        "udp"
+      ]
+    },
+    {
+      "id": "q170302010",
+      "skill_id": "sk170302",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "Multicast es similar a broadcast pero solo ciertos hosts reciben.",
+      "question_en": "Multicast is similar to broadcast but only certain hosts receive.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, multicast es un tipo de emisión selectiva. Los hosts se unen a un grupo multicast (rango 224.0.0.0/4) solo reciben los datagramas.",
+      "explanation_en": "Yes, multicast is selective broadcast. Hosts join a multicast group (range 224.0.0.0/4) and only they receive the datagrams.",
+      "source": "RFC 1112 — https://www.rfc-editor.org/rfc/rfc1112",
+      "expected_time_ms": 20000,
+      "tags": [
+        "multicast",
+        "udp"
+      ]
+    },
+    {
+      "id": "q170302011",
+      "skill_id": "sk170302",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "hard",
+      "question_es": "Envía datos UDP a 127.0.0.1:5000 y cierra el socket.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.sendto(b'hola', ('127.0.0.1', 5000))\ns.close()\nprint('enviado')\n```",
+      "question_en": "Send UDP data to 127.0.0.1:5000 and close the socket.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.sendto(b'hello', ('127.0.0.1', 5000))\ns.close()\nprint('sent')\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "enviado",
+      "correct_answer_en": "sent",
+      "explanation_es": "sendto() envía un datagrama. No necesita connect(). Retorna el número de bytes enviados.",
+      "explanation_en": "sendto() sends a datagram. No need for connect(). Returns number of bytes sent.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.sendto",
+      "expected_time_ms": 45000,
+      "tags": [
+        "sendto",
+        "udp"
+      ]
+    },
+    {
+      "id": "q170302012",
+      "skill_id": "sk170302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿UDP es mejor o peor que TCP en términos de latencia?",
+      "question_en": "Is UDP better or worse than TCP in terms of latency?",
+      "options_es": [
+        "Peor",
+        "Depende del SO",
+        "Igual",
+        "Mejor"
+      ],
+      "options_en": [
+        "Worse",
+        "Depends on OS",
+        "Same",
+        "Better"
+      ],
+      "correct_index": 3,
+      "explanation_es": "UDP tiene menor latencia porque no requiere handshake ni control de flujo. TCP es más confiable pero con mayor overhead.",
+      "explanation_en": "UDP has lower latency because it does not require handshake or flow control. TCP is more reliable but with more overhead.",
+      "source": "RFC 768 (UDP) — https://www.rfc-editor.org/rfc/rfc768",
+      "expected_time_ms": 15000,
+      "tags": [
+        "udp",
+        "latencia"
+      ]
+    },
+    {
+      "id": "q170302013",
+      "skill_id": "sk170302",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "En UDP, el emisor puede llamar connect() para asociar el socket a un destino.",
+      "question_en": "In UDP, the sender can call connect() to associate the socket with a destination.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, UDP permite llamar connect() (aunque no establece conexión real) para asociar un destino. Luego puede usar send() en lugar de sendto().",
+      "explanation_en": "Yes, UDP allows calling connect() (though not a real connection) to associate a destination. Then you can use send() instead of sendto().",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.connect",
+      "expected_time_ms": 20000,
+      "tags": [
+        "udp",
+        "connect"
+      ]
+    },
+    {
+      "id": "q170302014",
+      "skill_id": "sk170302",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es el puerto máximo que puede usar UDP?",
+      "question_en": "What is the maximum port UDP can use?",
+      "options_es": [
+        "1024",
+        "65535",
+        "32768",
+        "99999"
+      ],
+      "options_en": [
+        "1024",
+        "65535",
+        "32768",
+        "99999"
+      ],
+      "correct_index": 1,
+      "explanation_es": "El número máximo de puerto es 65535 (2^16 - 1). Los puertos 0-1023 son bien conocidos, 1024-49151 registrados, 49152-65535 dinámicos.",
+      "explanation_en": "The maximum port number is 65535 (2^16 - 1). Ports 0-1023 are well-known, 1024-49151 registered, 49152-65535 dynamic.",
+      "source": "IANA — https://www.iana.org/assignments/service-names-port-numbers/",
+      "expected_time_ms": 15000,
+      "tags": [
+        "puertos",
+        "máximo"
+      ]
+    },
+    {
+      "id": "q170302015",
+      "skill_id": "sk170302",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "hard",
+      "question_es": "Obtén el número de puerto de un socket vinculado a 'localhost:8888'.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.bind(('localhost', 8888))\nport = s.getsockname()[1]\ns.close()\nprint(port)\n```",
+      "question_en": "Get the port number of a socket bound to 'localhost:8888'.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.bind(('localhost', 8888))\nport = s.getsockname()[1]\ns.close()\nprint(port)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "8888",
+      "correct_answer_en": "8888",
+      "explanation_es": "getsockname() retorna una tupla (host, puerto). El índice [1] obtiene el puerto.",
+      "explanation_en": "getsockname() returns a tuple (host, port). Index [1] gets the port.",
+      "source": "Python docs socket — https://docs.python.org/3/library/socket.html#socket.socket.getsockname",
+      "expected_time_ms": 45000,
+      "tags": [
+        "getsockname",
+        "puerto"
+      ]
+    },
+    {
+      "id": "q170303001",
+      "skill_id": "sk170303",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es el módulo ipaddress de Python?",
+      "question_en": "What is Python's ipaddress module?",
+      "options_es": [
+        "Controla DNS",
+        "Proporciona clases para trabajar con direcciones IP",
+        "Cifra direcciones",
+        "Un servidor de mail"
+      ],
+      "options_en": [
+        "Controls DNS",
+        "Provides classes to work with IP addresses",
+        "Encrypts addresses",
+        "A mail server"
+      ],
+      "correct_index": 1,
+      "explanation_es": "ipaddress proporciona IPv4Address, IPv6Address, IPv4Network, IPv6Network. Permite manipular IPs, subnetting, validación, etc.",
+      "explanation_en": "ipaddress provides IPv4Address, IPv6Address, IPv4Network, IPv6Network. It allows manipulating IPs, subnetting, validation, etc.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "ipaddress",
+        "módulo"
+      ]
+    },
+    {
+      "id": "q170303002",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "easy",
+      "question_es": "Crea una dirección IP y imprime su valor.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('192.168.1.1')\nprint(ip)\n```",
+      "question_en": "Create an IP address and print its value.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('192.168.1.1')\nprint(ip)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "192.168.1.1",
+      "correct_answer_en": "192.168.1.1",
+      "explanation_es": "ip_address() crea un objeto IPv4Address o IPv6Address según el formato.",
+      "explanation_en": "ip_address() creates an IPv4Address or IPv6Address object depending on the format.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.ip_address",
+      "expected_time_ms": 45000,
+      "tags": [
+        "ipaddress",
+        "creación"
+      ]
+    },
+    {
+      "id": "q170303003",
+      "skill_id": "sk170303",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "ipaddress valida direcciones IP.",
+      "question_en": "ipaddress validates IP addresses.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, ip_address() lanza ValueError si la cadena no es una IP válida. Permite validación robusta sin regex.",
+      "explanation_en": "Yes, ip_address() raises ValueError if the string is not a valid IP. Allows robust validation without regex.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "ipaddress",
+        "validación"
+      ]
+    },
+    {
+      "id": "q170303004",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Crea una red y obtén su dirección de broadcast.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(net.broadcast_address)\n```",
+      "question_en": "Create a network and get its broadcast address.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(net.broadcast_address)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "192.168.1.255",
+      "correct_answer_en": "192.168.1.255",
+      "explanation_es": "broadcast_address retorna la última dirección de la red (todos los hosts = 1).",
+      "explanation_en": "broadcast_address returns the last address of the network (all hosts = 1).",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.broadcast_address",
+      "expected_time_ms": 45000,
+      "tags": [
+        "broadcast",
+        "red"
+      ]
+    },
+    {
+      "id": "q170303005",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Obtén la dirección de red de una red.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(net.network_address)\n```",
+      "question_en": "Get the network address of a network.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(net.network_address)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "192.168.1.0",
+      "correct_answer_en": "192.168.1.0",
+      "explanation_es": "network_address retorna la primera dirección de la red.",
+      "explanation_en": "network_address returns the first address of the network.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.network_address",
+      "expected_time_ms": 45000,
+      "tags": [
+        "network",
+        "dirección"
+      ]
+    },
+    {
+      "id": "q170303006",
+      "skill_id": "sk170303",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "is_private indica si una IP es privada.",
+      "question_en": "is_private indicates if an IP is private.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, is_private retorna True para rangos privados (10/8, 172.16/12, 192.168/16). También hay is_loopback, is_reserved, is_multicast.",
+      "explanation_en": "Yes, is_private returns True for private ranges (10/8, 172.16/12, 192.168/16). There is also is_loopback, is_reserved, is_multicast.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_private",
+      "expected_time_ms": 20000,
+      "tags": [
+        "is_private",
+        "privada"
+      ]
+    },
+    {
+      "id": "q170303007",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Verifica si 127.0.0.1 es loopback.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('127.0.0.1')\nprint(ip.is_loopback)\n```",
+      "question_en": "Check if 127.0.0.1 is loopback.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('127.0.0.1')\nprint(ip.is_loopback)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "True",
+      "correct_answer_en": "True",
+      "explanation_es": "is_loopback retorna True para direcciones loopback (127.0.0.0/8 en IPv4).",
+      "explanation_en": "is_loopback returns True for loopback addresses (127.0.0.0/8 in IPv4).",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_loopback",
+      "expected_time_ms": 45000,
+      "tags": [
+        "loopback",
+        "is_loopback"
+      ]
+    },
+    {
+      "id": "q170303008",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Cuenta el número de hosts en una subred /24.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(net.num_addresses)\n```",
+      "question_en": "Count the number of addresses in a /24 subnet.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(net.num_addresses)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "256",
+      "correct_answer_en": "256",
+      "explanation_es": "num_addresses retorna el total de direcciones. Para hosts útiles, resta 2 (red y broadcast).",
+      "explanation_en": "num_addresses returns total addresses. For usable hosts, subtract 2 (network and broadcast).",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.num_addresses",
+      "expected_time_ms": 45000,
+      "tags": [
+        "num_addresses",
+        "subred"
+      ]
+    },
+    {
+      "id": "q170303009",
+      "skill_id": "sk170303",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué retorna subnets() en ipaddress?",
+      "question_en": "What does subnets() return in ipaddress?",
+      "options_es": [
+        "Un generador de subredes más pequeñas",
+        "Una lista de direcciones IP",
+        "La máscara de subred",
+        "El número de hosts"
+      ],
+      "options_en": [
+        "A generator of smaller subnets",
+        "A list of IP addresses",
+        "The subnet mask",
+        "Number of hosts"
+      ],
+      "correct_index": 0,
+      "explanation_es": "subnets(new_prefix) genera subredes más pequeñas. Ejemplo: red /24 dividida en /25 subredes (dos mitades).",
+      "explanation_en": "subnets(new_prefix) generates smaller subnets. Example: /24 network split into /25 subnets (two halves).",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.subnets",
+      "expected_time_ms": 20000,
+      "tags": [
+        "subnets",
+        "subredes"
+      ]
+    },
+    {
+      "id": "q170303010",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "hard",
+      "question_es": "Verifica si 192.168.1.50 está en la red 192.168.1.0/24.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('192.168.1.50')\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(ip in net)\n```",
+      "question_en": "Check if 192.168.1.50 is in the network 192.168.1.0/24.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('192.168.1.50')\nnet = ipaddress.ip_network('192.168.1.0/24')\nprint(ip in net)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "True",
+      "correct_answer_en": "True",
+      "explanation_es": "El operador 'in' comprueba si una IP pertenece a una red.",
+      "explanation_en": "The 'in' operator checks if an IP belongs to a network.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.__contains__",
+      "expected_time_ms": 45000,
+      "tags": [
+        "in",
+        "red"
+      ]
+    },
+    {
+      "id": "q170303011",
+      "skill_id": "sk170303",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "overlaps() comprueba si dos redes se superponen.",
+      "question_en": "overlaps() checks if two networks overlap.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, overlaps() retorna True si las dos redes comparten direcciones. Útil para validar configuraciones de red.",
+      "explanation_en": "Yes, overlaps() returns True if the two networks share addresses. Useful for validating network configurations.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.overlaps",
+      "expected_time_ms": 20000,
+      "tags": [
+        "overlaps",
+        "subredes"
+      ]
+    },
+    {
+      "id": "q170303012",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Obtén la máscara de subred (/prefix) de una red.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('10.0.0.0/8')\nprint(net.prefixlen)\n```",
+      "question_en": "Get the subnet mask (/prefix) of a network.\n\n```python\nimport ipaddress\nnet = ipaddress.ip_network('10.0.0.0/8')\nprint(net.prefixlen)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "8",
+      "correct_answer_en": "8",
+      "explanation_es": "prefixlen retorna el número de bits de red (/8 en este caso).",
+      "explanation_en": "prefixlen returns the number of network bits (/8 in this case).",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.prefixlen",
+      "expected_time_ms": 45000,
+      "tags": [
+        "prefixlen",
+        "cidr"
+      ]
+    },
+    {
+      "id": "q170303013",
+      "skill_id": "sk170303",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué diferencia hay entre IPv4Address e IPv4Interface?",
+      "question_en": "What is the difference between IPv4Address and IPv4Interface?",
+      "options_es": [
+        "Address es IP, Interface es IP+máscara",
+        "Ninguna",
+        "Interface es solo máscara",
+        "Ambas son iguales"
+      ],
+      "options_en": [
+        "Address is IP, Interface is IP+mask",
+        "None",
+        "Interface is only mask",
+        "Both are the same"
+      ],
+      "correct_index": 0,
+      "explanation_es": "IPv4Address es solo la dirección. IPv4Interface es dirección + máscara (CIDR). Útil para obtener dirección y red en una sola estructura.",
+      "explanation_en": "IPv4Address is just the address. IPv4Interface is address + mask (CIDR). Useful for getting address and network in one structure.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Interface",
+      "expected_time_ms": 20000,
+      "tags": [
+        "interface",
+        "address"
+      ]
+    },
+    {
+      "id": "q170303014",
+      "skill_id": "sk170303",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "hard",
+      "question_es": "Crea una dirección IPv6 y obtén su tipo.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('2001:db8::1')\nprint(type(ip).__name__)\n```",
+      "question_en": "Create an IPv6 address and get its type.\n\n```python\nimport ipaddress\nip = ipaddress.ip_address('2001:db8::1')\nprint(type(ip).__name__)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "IPv6Address",
+      "correct_answer_en": "IPv6Address",
+      "explanation_es": "ipaddress automáticamente detecta IPv4 o IPv6 y retorna el tipo apropiado.",
+      "explanation_en": "ipaddress automatically detects IPv4 or IPv6 and returns the appropriate type.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv6Address",
+      "expected_time_ms": 45000,
+      "tags": [
+        "ipv6",
+        "type"
+      ]
+    },
+    {
+      "id": "q170303015",
+      "skill_id": "sk170303",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué es subnet_of()?",
+      "question_en": "What is subnet_of()?",
+      "options_es": [
+        "Calcula subredes",
+        "Cuenta hosts",
+        "Obtiene la máscara",
+        "Comprueba si una red es subred de otra"
+      ],
+      "options_en": [
+        "Calculates subnets",
+        "Counts hosts",
+        "Gets the mask",
+        "Checks if a network is subnet of another"
+      ],
+      "correct_index": 3,
+      "explanation_es": "subnet_of(other) retorna True si la red es subred de 'other'. Ejemplo: 192.168.1.0/25 es subred de 192.168.1.0/24.",
+      "explanation_en": "subnet_of(other) returns True if the network is a subnet of 'other'. Example: 192.168.1.0/25 is subnet of 192.168.1.0/24.",
+      "source": "Python docs ipaddress — https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Network.subnet_of",
+      "expected_time_ms": 20000,
+      "tags": [
+        "subnet_of",
+        "subredes"
+      ]
+    },
+    {
+      "id": "q170304001",
+      "skill_id": "sk170304",
+      "type": "mcq",
+      "difficulty_tier": "easy",
+      "question_es": "¿Qué es urllib?",
+      "question_en": "What is urllib?",
+      "options_es": [
+        "Un módulo para trabajar con URLs y HTTP",
+        "Un servidor web",
+        "Un framework",
+        "Un navegador"
+      ],
+      "options_en": [
+        "A module for working with URLs and HTTP",
+        "A web server",
+        "A framework",
+        "A web browser"
+      ],
+      "correct_index": 0,
+      "explanation_es": "urllib proporciona urllib.request.urlopen(), urllib.parse.urlencode(), etc. Permite hacer solicitudes HTTP sin librerías externas.",
+      "explanation_en": "urllib provides urllib.request.urlopen(), urllib.parse.urlencode(), etc. It allows making HTTP requests without external libraries.",
+      "source": "Python docs urllib — https://docs.python.org/3/library/urllib.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "urllib",
+        "http"
+      ]
+    },
+    {
+      "id": "q170304002",
+      "skill_id": "sk170304",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Haz una solicitud GET a http://example.com e imprime el tipo de respuesta.\n\n```python\nimport http.client\nprint(http.client.HTTPResponse.__name__)\n```",
+      "question_en": "Make a GET request to http://example.com and print the response type.\n\n```python\nimport http.client\nprint(http.client.HTTPResponse.__name__)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "HTTPResponse",
+      "correct_answer_en": "HTTPResponse",
+      "explanation_es": "http.client.HTTPResponse.__name__ devuelve 'HTTPResponse' (el nombre corto de la clase, sin módulo). Cuando se usa type(obj).__name__, también se obtiene solo el nombre de la clase.",
+      "explanation_en": "http.client.HTTPResponse.__name__ returns 'HTTPResponse' (the short class name, without module). When using type(obj).__name__, only the class name is returned.",
+      "source": "Python docs urllib.request — https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen",
+      "expected_time_ms": 60000,
+      "tags": [
+        "urlopen",
+        "http"
+      ]
+    },
+    {
+      "id": "q170304003",
+      "skill_id": "sk170304",
+      "type": "true_false",
+      "difficulty_tier": "easy",
+      "question_es": "urllib es una librería estándar en Python.",
+      "question_en": "urllib is a standard library in Python.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, urllib viene incluido en la instalación de Python. No necesita pip install. Tiene submodulos: request, parse, error, response.",
+      "explanation_en": "Yes, urllib comes with Python. No pip install needed. It has submodules: request, parse, error, response.",
+      "source": "Python docs urllib — https://docs.python.org/3/library/urllib.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "urllib",
+        "stdlib"
+      ]
+    },
+    {
+      "id": "q170304004",
+      "skill_id": "sk170304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué retorna response.read()?",
+      "question_en": "What does response.read() return?",
+      "options_es": [
+        "Una cadena de texto",
+        "Un entero",
+        "Bytes",
+        "Nada"
+      ],
+      "options_en": [
+        "A text string",
+        "An integer",
+        "Bytes",
+        "Nothing"
+      ],
+      "correct_index": 2,
+      "explanation_es": "read() retorna bytes. Para obtener texto, hay que decodificar: response.read().decode('utf-8').",
+      "explanation_en": "read() returns bytes. To get text, you must decode: response.read().decode('utf-8').",
+      "source": "Python docs urllib.request — https://docs.python.org/3/library/urllib.request.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "read",
+        "bytes"
+      ]
+    },
+    {
+      "id": "q170304005",
+      "skill_id": "sk170304",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Codifica parámetros para una URL.\n\n```python\nimport urllib.parse\nparams = {'name': 'Alice', 'age': '30'}\nencoded = urllib.parse.urlencode(params)\nprint(encoded)\n```",
+      "question_en": "Encode parameters for a URL.\n\n```python\nimport urllib.parse\nparams = {'name': 'Alice', 'age': '30'}\nencoded = urllib.parse.urlencode(params)\nprint(encoded)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "name=Alice&age=30",
+      "correct_answer_en": "name=Alice&age=30",
+      "explanation_es": "urlencode() convierte un dict en query string (name1=value1&name2=value2).",
+      "explanation_en": "urlencode() converts a dict to query string (name1=value1&name2=value2).",
+      "source": "Python docs urllib.parse — https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlencode",
+      "expected_time_ms": 45000,
+      "tags": [
+        "urlencode",
+        "query"
+      ]
+    },
+    {
+      "id": "q170304006",
+      "skill_id": "sk170304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Qué es http.client.HTTPConnection?",
+      "question_en": "What is http.client.HTTPConnection?",
+      "options_es": [
+        "Una clase para conexiones HTTP de bajo nivel",
+        "Una función",
+        "Un tipo de error",
+        "Un servidor"
+      ],
+      "options_en": [
+        "A class for low-level HTTP connections",
+        "A function",
+        "A type of error",
+        "A server"
+      ],
+      "correct_index": 0,
+      "explanation_es": "HTTPConnection es más complejo que urlopen() pero ofrece más control. Permite request(), getresponse(), etc.",
+      "explanation_en": "HTTPConnection is more complex than urlopen() but offers more control. Allows request(), getresponse(), etc.",
+      "source": "Python docs http.client — https://docs.python.org/3/library/http.client.html",
+      "expected_time_ms": 20000,
+      "tags": [
+        "httpconnection",
+        "http"
+      ]
+    },
+    {
+      "id": "q170304007",
+      "skill_id": "sk170304",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "urllib.request.urlopen() es más simple que http.client.HTTPConnection.",
+      "question_en": "urllib.request.urlopen() is simpler than http.client.HTTPConnection.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, urlopen() es una interfaz de alto nivel. HTTPConnection es bajo nivel. Para casos simples, urlopen() es mejor.",
+      "explanation_en": "Yes, urlopen() is a high-level interface. HTTPConnection is low-level. For simple cases, urlopen() is better.",
+      "source": "Python docs urllib — https://docs.python.org/3/library/urllib.html",
+      "expected_time_ms": 15000,
+      "tags": [
+        "urlopen",
+        "httpconnection"
+      ]
+    },
+    {
+      "id": "q170304008",
+      "skill_id": "sk170304",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "medium",
+      "question_es": "Obtén el código de estado HTTP de una respuesta.\n\n```python\nimport urllib.request\ntry:\n    response = urllib.request.urlopen('http://httpbin.org/status/200')\n    print(response.status)\n    response.close()\nexcept Exception as e:\n    print('error')\n```",
+      "question_en": "Get the HTTP status code of a response.\n\n```python\nimport urllib.request\ntry:\n    response = urllib.request.urlopen('http://httpbin.org/status/200')\n    print(response.status)\n    response.close()\nexcept Exception as e:\n    print('error')\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "200",
+      "correct_answer_en": "200",
+      "explanation_es": "response.status retorna el código HTTP (200, 404, 500, etc.). response.reason da el texto ('OK', 'Not Found', etc.).",
+      "explanation_en": "response.status returns the HTTP code (200, 404, 500, etc.). response.reason gives the text ('OK', 'Not Found', etc.).",
+      "source": "Python docs http.client — https://docs.python.org/3/library/http.client.html#http.client.HTTPResponse.status",
+      "expected_time_ms": 60000,
+      "tags": [
+        "status",
+        "http"
+      ]
+    },
+    {
+      "id": "q170304009",
+      "skill_id": "sk170304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cómo se establece el User-Agent en urllib?",
+      "question_en": "How do you set the User-Agent in urllib?",
+      "options_es": [
+        "request.user_agent",
+        "Parámetro en urlopen()",
+        "Crear un Request con headers",
+        "No se puede"
+      ],
+      "options_en": [
+        "request.user_agent",
+        "Parameter in urlopen()",
+        "Create a Request with headers",
+        "Cannot be done"
+      ],
+      "correct_index": 2,
+      "explanation_es": "Crear un urllib.request.Request con un dict de headers. Luego pasar a urlopen(). Algunos servidores rechazan solicitudes sin User-Agent.",
+      "explanation_en": "Create a urllib.request.Request with a dict of headers. Then pass to urlopen(). Some servers reject requests without User-Agent.",
+      "source": "Python docs urllib.request — https://docs.python.org/3/library/urllib.request.html#urllib.request.Request",
+      "expected_time_ms": 20000,
+      "tags": [
+        "user-agent",
+        "headers"
+      ]
+    },
+    {
+      "id": "q170304010",
+      "skill_id": "sk170304",
+      "type": "true_false",
+      "difficulty_tier": "medium",
+      "question_es": "urllib puede hacer solicitudes POST.",
+      "question_en": "urllib can make POST requests.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, crear Request con data=parámetros_codificados. Los datos se envían en el cuerpo (no en URL).",
+      "explanation_en": "Yes, create Request with data=encoded_params. Data is sent in the body (not in URL).",
+      "source": "Python docs urllib.request — https://docs.python.org/3/library/urllib.request.html#urllib.request.Request",
+      "expected_time_ms": 20000,
+      "tags": [
+        "post",
+        "urllib"
+      ]
+    },
+    {
+      "id": "q170304011",
+      "skill_id": "sk170304",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "hard",
+      "question_es": "Decodifica una URL segura.\n\n```python\nimport urllib.parse\nurl_safe = 'hello%20world'\nprint(urllib.parse.unquote(url_safe))\n```",
+      "question_en": "Decode a URL-encoded string.\n\n```python\nimport urllib.parse\nurl_safe = 'hello%20world'\nprint(urllib.parse.unquote(url_safe))\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "hello world",
+      "correct_answer_en": "hello world",
+      "explanation_es": "unquote() convierte códigos de escape (%20 = espacio). quote() hace lo inverso.",
+      "explanation_en": "unquote() converts escape codes (%20 = space). quote() does the reverse.",
+      "source": "Python docs urllib.parse — https://docs.python.org/3/library/urllib.parse.html#urllib.parse.unquote",
+      "expected_time_ms": 45000,
+      "tags": [
+        "unquote",
+        "url"
+      ]
+    },
+    {
+      "id": "q170304012",
+      "skill_id": "sk170304",
+      "type": "mcq",
+      "difficulty_tier": "hard",
+      "question_es": "¿Qué es urlsplit()?",
+      "question_en": "What is urlsplit()?",
+      "options_es": [
+        "Divide una URL en componentes",
+        "Codifica una URL",
+        "Descarga un archivo",
+        "Valida una URL"
+      ],
+      "options_en": [
+        "Splits a URL into components",
+        "Encodes a URL",
+        "Downloads a file",
+        "Validates a URL"
+      ],
+      "correct_index": 0,
+      "explanation_es": "urlsplit() retorna (scheme, netloc, path, query, fragment). Muy útil para parsear URLs complejas.",
+      "explanation_en": "urlsplit() returns (scheme, netloc, path, query, fragment). Very useful for parsing complex URLs.",
+      "source": "Python docs urllib.parse — https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit",
+      "expected_time_ms": 20000,
+      "tags": [
+        "urlsplit",
+        "parse"
+      ]
+    },
+    {
+      "id": "q170304013",
+      "skill_id": "sk170304",
+      "type": "fill_blank_exec",
+      "difficulty_tier": "hard",
+      "question_es": "Divide una URL en componentes.\n\n```python\nimport urllib.parse\nurl = 'https://example.com/path?query=1#fragment'\nparts = urllib.parse.urlsplit(url)\nprint(parts.scheme)\n```",
+      "question_en": "Split a URL into components.\n\n```python\nimport urllib.parse\nurl = 'https://example.com/path?query=1#fragment'\nparts = urllib.parse.urlsplit(url)\nprint(parts.scheme)\n```",
+      "options_es": null,
+      "options_en": null,
+      "correct_index": null,
+      "correct_answer_es": "https",
+      "correct_answer_en": "https",
+      "explanation_es": "parts.scheme retorna 'https'. parts.netloc retorna 'example.com', etc.",
+      "explanation_en": "parts.scheme returns 'https'. parts.netloc returns 'example.com', etc.",
+      "source": "Python docs urllib.parse — https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit",
+      "expected_time_ms": 45000,
+      "tags": [
+        "urlsplit",
+        "scheme"
+      ]
+    },
+    {
+      "id": "q170304014",
+      "skill_id": "sk170304",
+      "type": "true_false",
+      "difficulty_tier": "hard",
+      "question_es": "urllib soporta solicitudes HTTPS con certificados SSL.",
+      "question_en": "urllib supports HTTPS requests with SSL certificates.",
+      "options_es": [
+        "Verdadero",
+        "Falso"
+      ],
+      "options_en": [
+        "True",
+        "False"
+      ],
+      "correct_index": 0,
+      "explanation_es": "Sí, urllib maneja HTTPS automáticamente con verificación de certificados. urllib3 añade características adicionales.",
+      "explanation_en": "Yes, urllib handles HTTPS automatically with certificate verification. urllib3 adds additional features.",
+      "source": "Python docs urllib.request — https://docs.python.org/3/library/urllib.request.html",
+      "expected_time_ms": 20000,
+      "tags": [
+        "https",
+        "ssl"
+      ]
+    },
+    {
+      "id": "q170304015",
+      "skill_id": "sk170304",
+      "type": "mcq",
+      "difficulty_tier": "medium",
+      "question_es": "¿Cuál es la diferencia entre requests y urllib?",
+      "question_en": "What is the difference between requests and urllib?",
+      "options_es": [
+        "Ninguna",
+        "requests es tercero, urllib es stdlib; requests es más simple",
+        "urllib es más nuevo",
+        "requests solo para GET"
+      ],
+      "options_en": [
+        "None",
+        "requests is third-party, urllib is stdlib; requests is simpler",
+        "urllib is newer",
+        "requests only for GET"
+      ],
+      "correct_index": 1,
+      "explanation_es": "requests (pip install requests) es más fácil que urllib pero externo. urllib viene con Python. Para proyectos simples, urllib basta.",
+      "explanation_en": "requests (pip install requests) is easier than urllib but external. urllib comes with Python. For simple projects, urllib is enough.",
+      "source": "Requests library — https://docs.python-requests.org/",
+      "expected_time_ms": 20000,
+      "tags": [
+        "requests",
+        "urllib"
+      ]
+    }
+  ]
+}

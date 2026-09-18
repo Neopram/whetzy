@@ -80,6 +80,7 @@ EXEC_EXEMPT_TRACKS = {
     "track08": "AWS Cloud Practitioner - console and service choices",
     "track10": "AWS Solutions Architect - design decisions",
     "track11": "AWS AI Practitioner - service choices",
+    "track15": "Linux - shell commands run in a terminal, not CPython sandbox",
 }
 # Module-level exemptions inside a track that otherwise does chase the bar.
 # Keyed by module id, which is "mod" plus the track and module digits of a skill
@@ -88,6 +89,8 @@ EXEC_EXEMPT_MODULES = {
     "mod0401": "Git - version control happens in a terminal, not a sandbox",
     "mod0406": "Docker - no container runtime in a browser",
     "mod0407": "CI/CD - pipelines are not runnable client-side",
+    "mod1701": "Network fundamentals (OSI/IP) - conceptual; exec lives in mod1703",
+    "mod1702": "Application protocols (HTTP/email/FTP) - conceptual; exec lives in mod1703",
 }
 
 # Per-track ratchet. Same idea as MIN_LESSONS: these are today's measured
@@ -124,6 +127,10 @@ EXEC_FLOOR = {
     "track40": 0.15,
     # 16.7 % on first commit (2 js_exec / 12 Q in mod1401 stub). Task 18.3.
     "track14": 0.15,
+    # track16: Algoritmos - ~30% exec (fill_blank_exec in mod1601-1603). Floor set at first commit.
+    "track16": 0.30,
+    # track17: Redes - mod1703 has exec questions (sockets, urllib). Floor at 15% matches existing ratio.
+    "track17": 0.15,
 }
 
 
