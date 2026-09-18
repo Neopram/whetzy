@@ -1,4 +1,4 @@
-# Whetzy — Architecture Decision Log
+﻿# Whetzy — Architecture Decision Log
 
 ## ADR-1 — Monolith, not microservices (2026-09-07)
 
@@ -241,13 +241,7 @@ roja 5: redirección pura).
 
 ---
 
-> **ADR-14 a ADR-20: estado `PROPUESTA` (sesión bf, 2026-09-18).** Redactados a
-> petición del dueño y **pendientes de su orden explícita**. Hasta entonces las
-> series 20-23 del ledger están `BLOCKED (orden del dueño)` y ninguna sesión las
-> ejecuta. Cuando el dueño confirme, la sesión que lo lea cambia `PROPUESTA` →
-> `ACEPTADA` con la fecha y desbloquea las filas.
-
-## ADR-14 — Modelos y tokens: sin Opus ni Fable en sesiones autónomas; Haiku por defecto (PROPUESTA 2026-09-18)
+## ADR-14 — Modelos y tokens: sin Opus ni Fable en sesiones autónomas; Haiku por defecto (ACEPTADA 2026-09-18)
 
 **Decisión:** El hilo principal autónomo corre en Sonnet 4.6 (`settings.json`, sin
 cambios). Los workers son **Haiku 4.5 por defecto**; Sonnet solo cuando la tarea
@@ -266,7 +260,7 @@ commitear y qué cerrar necesitan juicio; el precedente de sesiones que cerraron
 tareas sin evidencia es el argumento); mantener Opus ≤ 2/sesión (nadie lo ha
 necesitado en 19 series).
 
-## ADR-15 — Coste cero hasta 5.000 usuarios (PROPUESTA 2026-09-18)
+## ADR-15 — Coste cero hasta 5.000 usuarios (ACEPTADA 2026-09-18)
 
 **Decisión:** Ningún gasto nuevo —suscripción, add-on, cuenta de desarrollador,
 servicio— sin pasar por `HUMAN-BLOCKED` con el coste en € y la evidencia de que no
@@ -283,7 +277,7 @@ producto que necesita 5.000 usuarios para pagarse no puede costar antes de tener
 **Alternativas descartadas:** «Preparar para 1 M» comprando infraestructura ahora;
 posponer toda la preparación (las abstracciones cuestan casi nada y evitan reescribir).
 
-## ADR-16 — Rail de pagos y entidad: decidir con datos, no con prisa (PROPUESTA 2026-09-18)
+## ADR-16 — Rail de pagos y entidad: decidir con datos, no con prisa (ACEPTADA 2026-09-18)
 
 **Decisión:** Antes de activar cobros se ejecutan 21.1 (entidad/fiscalidad) y 21.2
 (rail de pagos). Opciones sobre la mesa: (a) Stripe como particular en Grecia (H.4),
@@ -303,7 +297,7 @@ ese riesgo a cambio de ~5 % y no requiere sociedad.
 **Alternativas descartadas:** Activar Stripe live sin investigación; constituir
 sociedad ahora (coste fijo sin ingresos).
 
-## ADR-17 — Español e inglés son dos segmentos, un producto (PROPUESTA 2026-09-18)
+## ADR-17 — Español e inglés son dos segmentos, un producto (ACEPTADA 2026-09-18)
 
 **Decisión:** Un usuario ve **un solo idioma** en toda su experiencia: UI, contenido,
 tutor, emails, push, PDF, páginas legales, tienda y landing. Nunca hay fallback
@@ -319,7 +313,7 @@ distintos; una pantalla mezclada destruye la confianza en ambos.
 **Alternativas descartadas:** Fallback al inglés cuando falte español (la deuda se
 esconde); dos productos separados (duplica todo).
 
-## ADR-18 — Despliegue autónomo: un solo push verificado por sesión (PROPUESTA 2026-09-18; resuelve H.16)
+## ADR-18 — Despliegue autónomo: un solo push verificado por sesión (ACEPTADA 2026-09-18; resuelve H.16)
 
 **Decisión:** Las sesiones autónomas commitean en `master` **en local** y hacen
 **un único `git push origin master` al final de la sesión**, solo con las cuatro
@@ -338,7 +332,7 @@ duermo».
 **Alternativas descartadas:** desconectar el auto-deploy (nadie despliega); rama +
 merge humano (rompe la autonomía); seguir pusheando por tarea.
 
-## ADR-19 — Preparado para un millón sin pagar por un millón (PROPUESTA 2026-09-18)
+## ADR-19 — Preparado para un millón sin pagar por un millón (ACEPTADA 2026-09-18)
 
 **Decisión:** Lo que se construye ahora para escala es **arquitectura, no
 infraestructura**: rate limiting y caché tras una interfaz con implementación en
@@ -353,7 +347,7 @@ Las abstracciones cuestan horas; la infraestructura cuesta euros al mes.
 
 **Alternativas descartadas:** Comprar Redis/réplicas ahora; ignorar la escala hasta que duela.
 
-## ADR-20 — Verificación adversaria obligatoria para cada DONE (PROPUESTA 2026-09-18)
+## ADR-20 — Verificación adversaria obligatoria para cada DONE (ACEPTADA 2026-09-18)
 
 **Decisión:** Ninguna fila del ledger pasa a `DONE` sin el veredicto `CONFIRMADA` de
 un verificador independiente (Haiku, prompt fijo de `PROTOCOLO_VERIFICACION.md` §7)
