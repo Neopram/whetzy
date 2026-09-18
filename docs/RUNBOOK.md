@@ -46,7 +46,7 @@ in the Railway dashboard.
    curl -s https://api-production-9751.up.railway.app/api/v1/openapi.json | head -c 200
    ```
    `/health` must return `{"status":"healthy"}` and the OpenAPI document must
-   list **65** paths.
+   list **70** paths.
 5. In the deploy logs, confirm `start.sh` got through all four stages:
    `alembic upgrade head` → `content loaded` → `gamification seeded` →
    `launching gunicorn`. Content load should report **0 skipped** questions;
@@ -54,7 +54,7 @@ in the Railway dashboard.
    unknown skill_id — check the deploy log for the traceback.
 
 **Note on question count:** the bank grows over time. Verify the loaded count
-matches `check_question_bank.py` output (currently 5715), not a hardcoded
+matches `check_question_bank.py` output (currently 6233), not a hardcoded
 number. Any non-zero `skipped` count means a question references a skill_id
 that does not exist in `curriculum/tracks.json`.
 
@@ -76,8 +76,8 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `s9t0u1v2w3x4` (19 migrations, single head — verified 2026-09-18)
-Chain: `<base> → a1b2 → … → o5p6q7r8s9t0 → p6q7r8s9t0u1 → q7r8s9t0u1v2 → r8s9t0u1v2w3 → s9t0u1v2w3x4`
+Current Alembic HEAD: `t0u1v2w3x4y5` (20 migrations, single head — verified 2026-09-18)
+Chain: `<base> → a1b2 → … → r8s9t0u1v2w3 → s9t0u1v2w3x4 → t0u1v2w3x4y5`
 
 Always recompute — never trust this line:
 

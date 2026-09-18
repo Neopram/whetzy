@@ -12,7 +12,7 @@
 > memoria del modelo, no una captura: la tarea **18.12** la sustituye por URL + fecha
 > o la borra. Un número sin comando ni URL es un bug de este doc.
 >
-> Última medición: 2026-09-18 (sesión **bc**). Estado del banco: ver `## 1`.
+> Última medición: 2026-09-18 (sesión **bg**, 20.2). Estado del banco: ver `## 1`.
 > Política de fuentes desde el 2026-09-18 (ADR-11): **solo gratuitas y legales** — ver §2.1.
 
 ---
@@ -37,13 +37,13 @@ profundidad de producto*, no adquisición.
 
 | Métrica | Valor 2026-09-18 | Comando |
 |---|---|---|
-| Tracks | **15** (11 + SQL + ciberseg + JS stub) | `python scripts/check_docs.py` |
-| Cursos (track × nivel) | **43** | ídem |
-| Skills | **342** | ídem |
-| Preguntas | **5.715** | `python scripts/check_question_bank.py` |
-| Lecciones | 342/342 (100 %) | `pytest tests/content/test_lessons.py` |
-| Glosario | **586** (444 + track12 36 + track13 + track14 6) | `check_docs.py` |
-| Ejecutables | 10 tracks no exentos ≥ 15 % (track12 20 %, track13/40 15 %, track14 JS sandbox) | `check_question_bank.py` |
+| Tracks | **18** (track01–17 + track40) | `python scripts/check_docs.py` |
+| Cursos (track × nivel) | **49** | ídem |
+| Skills | **378** | ídem |
+| Preguntas | **6.233** | `python scripts/check_question_bank.py` |
+| Lecciones | 378/378 (100 %) | `pytest tests/content/test_lessons.py` |
+| Glosario | **622** | `check_docs.py` |
+| Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9) | `check_question_bank.py` |
 | Certificaciones | **5** (CLF-C02, PCEP, SAA-C03, AIF-C01, **ISC2 CC = track40**) — blueprints corregidos en 18.1 (8 passed / 0 xfail) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |

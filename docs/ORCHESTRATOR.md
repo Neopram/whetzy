@@ -194,7 +194,7 @@ mcp__scheduled-tasks__list_scheduled_tasks
 → localiza el task cuyo taskId empieza por "whetzy-orch"
 ```
 - Si tiene `fireAt` (one-shot) o `enabled: false`:
-  `update_scheduled_task({ taskId, cronExpression: "23 */6 * * *", enabled: true })`
+  `update_scheduled_task({ taskId, cronExpression: "23 */4 * * *", enabled: true })`
 - Si no existe: `create_scheduled_task` con ese cron y el prompt de
   `C:\Users\feder\.claude\scheduled-tasks\whetzy-orch-20260911-0730\SKILL.md`
 - Anota el resultado en `## 6. Cadena de sesiones` del ledger

@@ -62,7 +62,7 @@
 
 ## ADR-7 — Recurring cron task for session continuity (2026-09-08)
 
-**Decision:** Autonomous loop runs as a cron task (`23 */6 * * *`) instead of a one-shot. Pre-flight checks ledger; exits quickly if backlog is exhausted.
+**Decision:** Autonomous loop runs as a cron task (originally `23 */6 * * *`; changed to `23 */4 * * *` by H.21 2026-09-18) instead of a one-shot. Pre-flight checks ledger; exits quickly if backlog is exhausted.
 
 **Reason:** A one-shot chain dies permanently if a context-limit cut arrives before the next session is scheduled. Cron retries automatically.
 

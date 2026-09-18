@@ -25,7 +25,7 @@ Backend (FastAPI)              api-production-9751.up.railway.app
 
 ```
 app/
-├── api/v1/endpoints/     # HTTP layer — thin, delegates to services. 67 routes (+4 root: health, ready, …).
+├── api/v1/endpoints/     # HTTP layer — thin, delegates to services. 70 routes (+8 root: health, ready, …).
 │   ├── auth.py           # register, login, refresh, me, password reset, email verify, delete
 │   ├── quiz.py           # start, answer, end, review-due
 │   ├── progress.py       # dashboard, skills, curriculum, DKT predictions, churn risk
