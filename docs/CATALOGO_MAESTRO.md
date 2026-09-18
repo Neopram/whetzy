@@ -50,9 +50,9 @@ profundidad de producto*, no adquisición.
 
 ---
 
-## 2. El mapa completo — 26 tracks de aprendizaje
+## 2. El mapa completo — 28 tracks de aprendizaje
 
-Convención de ids: **tracks de aprendizaje `track12`–`track31`**, **tracks de
+Convención de ids: **tracks de aprendizaje `track12`–`track32`**, **tracks de
 certificación `track40`+** (`is_certification: true`, misma forma que track08–11).
 Cada track de aprendizaje: **5 módulos × 4 skills = 20 skills · 300 Q · 3 niveles ·
 20 lecciones · ≥ 36 términos · ≥ 15 % ejecutable donde el navegador pueda ejecutar
@@ -80,9 +80,9 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 8 | Datos | SQL | track12 | ✅ (18.0 lo deja verde) | SQLite docs (dominio público), PostgreSQL docs | **SQL (sql.js)** | PostgreSQL Associate, DP-900 |
 | 9 | Seguridad | Ciberseguridad — fundamentos | track13 | stub ✅ (18.2) — 326 Q, 15 % exec, ≥15 Q/skill | NIST SP 800-53/61/63 (dominio público), MITRE ATT&CK (atribución), RFC; OWASP solo cita (BY-SA) | Python `fix_bug`/`fill_blank_exec` (hashlib, hmac, secrets, html, re, ipaddress) | ISC2 CC, Security+ |
 | 10 | Web | Frontend (JS/TS/React) | track14 | stub ✅ (18.3) — 12 Q, 2 js_exec, 1 lección, 6 términos | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS Worker sandbox real (18.3)** | JSE-1 |
-| 11 | Fundamentos | Linux / shell | track15 | ❌ | `exercism/bash` MIT, man-pages (cita), *The Linux Command Line* (cita) | exento (fill_blank de comandos) | LPIC-1, Linux+, LFCS |
-| 12 | Fundamentos | Algoritmos y estructuras | track16 | ❌ | `TheAlgorithms/Python` MIT, `tech-interview-handbook` MIT; `coding-interview-university` (BY-SA → H.LIC) | Python (≥ 30 %) | — |
-| 13 | Fundamentos | Redes | track17 | ❌ | RFCs (IETF), *Computer Networking* (cita), Cisco docs (cita) | Python (`socket`, `ipaddress`) | CCNA, Network+ |
+| 11 | Fundamentos | Linux / shell | track15 | ✅ (18.4, `bec734c`: 180 Q, 3 módulos, 12 lecciones, exento ADR-9) | `exercism/bash` MIT, man-pages (cita), *The Linux Command Line* (cita) | exento (fill_blank de comandos) | LPIC-1, Linux+, LFCS |
+| 12 | Fundamentos | Algoritmos y estructuras | track16 | ✅ (18.4: 158 Q, 44,9 % exec, 12 lecciones) | `TheAlgorithms/Python` MIT, `tech-interview-handbook` MIT; `coding-interview-university` (BY-SA → H.LIC) | Python (≥ 30 %) | — |
+| 13 | Fundamentos | Redes | track17 | ✅ (18.4: 180 Q, mod1703 36,7 % exec, 12 lecciones) | RFCs (IETF), *Computer Networking* (cita), Cisco docs (cita) | Python (`socket`, `ipaddress`) | CCNA, Network+ |
 | 14 | DevOps | Docker y Kubernetes | track18 | ❌ | Docs Kubernetes CC BY 4.0, Docker docs (cita) | exento (escenario + decisión) | KCNA, CKA, CKAD, CKS |
 | 15 | DevOps | IaC y CI/CD (Terraform, GitHub Actions) | track19 | ❌ | Terraform docs (cita), GitHub Actions docs (cita), `actions/*` MIT | exento | Terraform Associate, GitHub Actions |
 | 16 | Datos | Data Engineering | track20 | ❌ | `Data-Science-For-Beginners` MIT, PostgreSQL docs, DuckDB docs MIT | SQL (duckdb-wasm o sql.js) | DP-203, GCP PDE, Databricks DE |
@@ -97,8 +97,9 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 25 | Ingeniería | QA y testing | track29 | ❌ | pytest docs MIT, ISTQB syllabus (cita), Playwright docs Apache-2 | Python (`unittest`, `assert`) | ISTQB CTFL |
 | 26 | Ingeniería | Agile y producto | track30 | ❌ | Scrum Guide (CC BY-SA → cita), Agile Manifesto (cita) | exento | PSM I |
 | 27 | Móvil | Móvil (Android/Kotlin · iOS/Swift · Flutter/RN) | track31 | ❌ (último: sin runtime en navegador) | Android docs Apache-2, Flutter docs BSD, Apple docs (cita) | exento | — |
+| 28 | Web3 | Solana / Web3 developer (ADR-38) | track32 | ❌ (25.14) | `solana-labs/solana` y `solana-program-library` Apache-2, `solana-developers` cookbook/docs MIT, `@solana/web3.js` MIT, Anchor Apache-2 — confirmar `LICENSE` en 25.14 antes de reutilizar texto | **JS (`@solana/web3.js` en el Worker de 18.3)** + Python stdlib (hash, base58, serialización); Rust/Anchor = escenario + decisión (exento ADR-9) | — (sin cert oficial; evidencia = bounties Superteam Earn resueltos) |
 
-**Cobertura hoy: 10 de 27 filas (37 %).** 8 tracks completados + track13 ciberseg (326 Q, 15 % exec) + track14 Frontend JS (stub, 12 Q). Faltan **17**: Linux (15), Algoritmos (16), Redes (17), Docker/K8s (18), IaC+CI/CD (19), Data Eng (20), Data Science (21), Azure (22), GCP (23), Pentest (24), Seguridad cloud (25), Git (26), NoSQL (27), Backend (28), QA (29), Agile (30), Móvil (31).
+**Cobertura hoy: 13 de 28 filas (46 %).** 8 tracks completados + track13 ciberseg (326 Q, 15 % exec) + track14 Frontend JS (stub, 12 Q) + track15/16/17 (18.4, `bec734c`; esta tabla iba retrasada respecto al ledger y se corrigió el 2026-09-18, sesión bh). Faltan **15**: Docker/K8s (18), IaC+CI/CD (19), Data Eng (20), Data Science (21), Azure (22), GCP (23), Pentest (24), Seguridad cloud (25), Git (26), NoSQL (27), Backend (28), QA (29), Agile (30), Móvil (31), **Solana/Web3 (32, ADR-38)**.
 
 ### 2.1 Biblioteca de fuentes libres por área (ADR-11 — solo gratis y legal)
 
@@ -433,3 +434,120 @@ Cada bloque de contenido corre como **Workflow paralelo** (autoría Haiku por
 fichero → verificador propio → QA Sonnet → `pytest tests/content` →
 `check_question_bank.py` → `check_docs.py` → commit). Un bloque = un commit
 verde. Nunca un track a medias en `master` otra vez.
+
+---
+
+## 11. Validación de mercado externa (2026-09-18)
+
+> **Fuente:** Estudio independiente *"The Edtech / Learning Platform Market, 2025–2026: A Data-Driven Map With a Spanish-Language Whitespace"*, revisado por el dueño el 2026-09-18. No encargado por Whetzy — validación externa no sesgada.
+
+### 11.1 El gap confirmado
+
+La frase literal del estudio:
+
+> *"No dedicated Spanish-language, AI-native adaptive learning platform for Python/AI/cybersecurity was identified."*
+
+Whetzy es exactamente eso. El estudio confirma que el gap existe y que los incumbentes (Platzi, EDteam, Desafío Latam, KeepCoding) están agregando "chatbot/AI-tutor overlays on top of video/cohort content — not genuine adaptive engines."
+
+**Lo que esto significa para el catálogo:** El motor BKT+FSRS+Elo+DKT no es una ventaja técnica abstracta — es la diferenciación que el mercado de $350B no tiene en español. Cerrar el catálogo a 2,700 cursos convierte esa diferenciación en un producto inalcanzable para los incumbentes en el corto plazo.
+
+### 11.2 Benchmarks del mercado (verificados en el estudio)
+
+| Métrica | Valor | Fuente |
+|---|---|---|
+| Conversión freemium edtech | 2.6% | First Page Sage 2025 |
+| Conversión trial-to-paid edtech | ~24.8% | dataset B2C edtech |
+| Retención Day-30 education apps | ~2% | Business of Apps 2026 |
+| Precio medio suscripción education app | $8.13/mo o $56.09/yr | Business of Apps 2026 |
+| Boot.dev ARR | ~$10M | 25K paying × $348/yr |
+| Boot.dev equipo | ~13 personas | bootstrapped |
+| DataCamp ARR | ~$100M (proyectado) | cashflow positive |
+| Platzi estudiantes | 7M+ | YC profile |
+| Mercado LATAM e-learning 2024 | ~$30.5B | Arizton |
+| Crecimiento LATAM e-learning | ~9.3% CAGR | Arizton |
+| Gap AI engineers (demanda/oferta) | ~3.2:1 | 365 Data Science 2026 |
+| Python en job postings AI engineer | 71% | 365 Data Science 2026 |
+
+### 11.3 El comparable directo: Boot.dev
+
+Boot.dev es el modelo de negocio más cercano a Whetzy:
+- Bootstrapped / indie
+- Technical skills (backend: Python, Go, SQL)
+- Gamificado
+- Career-outcome focused
+- $10M ARR con 13 personas y 25,000 paying members
+
+**Diferencias a favor de Whetzy:**
+- Motor adaptativo real (Boot.dev es lineal)
+- 28 tracks vs 5 de Boot.dev (ADR-38)
+- Español nativo (Boot.dev es solo inglés)
+- 55+ certificaciones simuladas (Boot.dev no tiene)
+- Bootcamps async (Boot.dev no tiene)
+
+**Diferencias a favor de Boot.dev (para aprender):**
+- 3 años de ventaja en comunidad y marca
+- Canal YouTube con 100K+ suscriptores
+- Modelo LTV claro y documentado (~$348/yr × 25K)
+
+**Conclusión:** Si Boot.dev llegó a $10M ARR con un producto más simple y solo en inglés, Whetzy tiene el techo técnico para superar ese número en el nicho español donde no existe competencia adaptativa.
+
+### 11.4 Riesgo de ventana — qué monitorear
+
+El estudio advierte explícitamente:
+
+> *"If Platzi, DataCamp, or a well-funded entrant ships genuinely adaptive Spanish content at scale, the window narrows quickly — monitor Platzi's Leap integration and any DataCamp Spanish localization."*
+
+**Acción en el ledger:** Tarea de monitoreo trimestral (ver Serie 25 en AUTONOMOUS_STATE.md). Si Platzi anuncia motor adaptativo real o DataCamp anuncia localización al español con motor, escalar a HUMAN-BLOCKED para decisión del dueño sobre aceleración o pivot a nicho de ciberseguridad.
+
+---
+
+## 12. Proyección competitiva cuando Whetzy llegue a ADR-25 (2.700 cursos; 2.800 con track32, ADR-38)
+
+### 12.1 Score competitivo proyectado
+
+Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es la puntuación en cada dimensión:
+
+| Dimensión | Peso | Hoy (44/100) | Al 100% técnico (~66) | Con ADR-25 (2,700 cursos) | Con usuarios |
+|---|---|---|---|---|---|
+| Distribución | 0.34 | 0 | 0 | 0 | Variable |
+| Motor adaptativo | 0.14 | 12 | 14 | 14 | 14 |
+| Contenido/alcance | 0.14 | 6 | 8 | 14 | 14 |
+| Tutor AI | 0.09 | 8 | 9 | 9 | 9 |
+| Ejecución técnica | 0.07 | 7 | 7 | 7 | 7 |
+| Gamificación | 0.06 | 5 | 6 | 6 | 6 |
+| Bilingüe | 0.06 | 4 | 6 | 6 | 6 |
+| PWA/móvil | 0.05 | 4 | 5 | 5 | 5 |
+| Accesibilidad | 0.05 | 3 | 5 | 5 | 5 |
+| **Total sin distribución** | | **44** | **~60** | **~66** | **~66** |
+| **Con distribución (1K usuarios)** | | — | — | — | **~79** |
+| **Con distribución (10K usuarios)** | | — | — | — | **~85** |
+
+**La única variable que mueve el marcador más allá de 66 es la distribución.** ADR-25 cierra la dimensión de contenido al máximo posible, pero no toca distribución. El dueño la activa con la campaña (YouTube, B2B, comunidades Python en español).
+
+### 12.2 Comparativa final vs competencia directa
+
+| | Platzi | DataCamp | Boot.dev | Educative | **Whetzy (ADR-25 completo + usuarios)** |
+|---|---|---|---|---|---|
+| Motor adaptativo | ❌ video/cohort | ✅ Optima (EN/AR) | ❌ lineal | Parcial | **✅ BKT+FSRS+Elo+DKT** |
+| Español nativo | ✅ | ❌ | ❌ | ❌ | **✅ + EN separado** |
+| Cursos/contenido | 1,900 | 730 | ~50 | ~500 | **2,700 → 2,800 (track32)** |
+| Certificaciones | ❌ | ❌ | ❌ | ❌ | **✅ 55+** |
+| Ciberseguridad | ❌ | ❌ | ❌ | Parcial | **✅ 3 tracks** |
+| Cloud (AWS/Azure/GCP) | ❌ | ❌ | ❌ | ❌ | **✅ 6 tracks** |
+| Móvil (Android/iOS) | ❌ | ❌ | ❌ | ❌ | **✅** |
+| Tutor AI con memoria | ❌ | ❌ | ❌ | ❌ | **✅ 3 capas** |
+| Créditos cerrados + referidos por activación | sin datos | XP (sin referidos por activación) | gemas | ❌ | **✅ Serie 29 (ADR-34/35)** |
+| Pago en USDC liquidado en fiat (LATAM) | ❌ | ❌ | ❌ | ❌ | **✅ tras H.19 (ADR-36)** |
+| Credenciales verificables (Open Badges 3.0) | ❌ | ❌ | ❌ | ❌ | **✅ 29.10 (ADR-37)** |
+| Token / cripto propia | ❌ | ❌ | ❌ | ❌ | **❌ a propósito (ADR-33)** |
+| B2B ready | ✅ | ✅ | ❌ | ✅ | **✅ (Serie 22)** |
+| Precio base | ~$29/mo | ~$39/mo | $49/mo | ~$20/mo | **$14.99/mo** |
+| Empleabilidad real | Bajo (70% no termina) | Medio | Alto | Medio | **Alto (completion > 70%)** |
+
+**Whetzy con ADR-25 completo es técnicamente superior en todas las dimensiones relevantes para el nicho Python→AI Engineer en español.** La única ventaja que los incumbentes mantienen es brand recognition — y eso se construye con distribución, no con código.
+
+### 12.3 El argumento de venta cuando el producto esté completo
+
+> "La única plataforma que adapta el camino a cómo aprendes tú — no al promedio — para llegar de cero a AI Engineer en español, con certificaciones que los empleadores reconocen."
+
+Eso no lo puede decir ningún competidor hoy. Ninguno podrá decirlo en 12-18 meses si la ventana se aprovecha.

@@ -360,3 +360,299 @@ dueño exige cero errores; el mecanismo más barato es que nadie se verifique a 
 
 **Alternativas descartadas:** Confiar en el resumen del worker; verificación solo en
 el cierre (demasiado tarde: ya se construyó encima).
+
+---
+## ADR-21 — Precio Pro $14.99/mes (2026-09-18)
+
+**Decisión:** Pro = $14.99/mes (no $9.99). Premium = $19.99 sin cambio.
+
+**Razón:** El mercado aguanta $14.99 (Boot.dev cobra $49/mes, TryHackMe $10.50/mes annual, Codecademy $24.99/mes). A $9.99 el LTV anual es $120; a $14.99 es $180 — 50 % más sin perder conversión medible. El break-even baja de ~1,200 usuarios pagos a ~800.
+
+**Evidencia de mercado:** Education app average subscription $8.13/mo o $56.09/year (Business of Apps 2026). Boot.dev $348/yr con 25K paying members = $10M ARR con 13 personas.
+
+**Alternativas descartadas:** $9.99 (LTV insuficiente para sostenerse con pocos usuarios); $29.99 (frena conversión en LATAM con ingresos en moneda local depreciada).
+
+---
+
+## ADR-22 — B2B antes que escalar B2C (2026-09-18)
+
+**Decisión:** Prioridad de venta: contratos B2B piloto (upskilling Python/AI para empresas) antes de invertir en adquisición B2C masiva.
+
+**Razón:** Un contrato B2B de 50 empleados a $500/persona/año = $25,000 — equivale a 1,667 suscriptores Pro. DataCamp hace 66% de revenue en B2B. El admin sub-app (Serie 22) ya incluye gestión de empresas. Costo de adquisición B2B: una conversación de LinkedIn. Costo de adquisición B2C masivo: campaña o tiempo de YouTube.
+
+**Cómo ejecutar:** 3 contratos piloto gratuitos (a cambio de testimonios + datos de uso) a empresas LATAM/España con equipos de tecnología. Objetivo: antes del lanzamiento público.
+
+**Alternativas descartadas:** B2C first (más lento, más costoso, retención Day-30 ~2%); esperar al lanzamiento completo (los contratos piloto dan datos reales del motor antes del lanzamiento).
+
+---
+
+## ADR-23 — YouTube como canal de distribución primario (2026-09-18)
+
+**Decisión:** Canal de YouTube en español (Python para AI Engineering) como principal motor de adquisición orgánica. Costo: $0. Formato: 1 video/semana, CTA a Whetzy.
+
+**Razón:** Boot.dev tiene canal con 100K+ suscriptores que genera usuarios constantemente. El contenido educativo en YouTube tiene SEO compuesto — un video de 2026 trae usuarios en 2028. TryHackMe creció vía contenido gratuito (77% del contenido es free). El gap en YouTube de Python/AI en español nativo es real — ningún canal combina motor adaptativo + comunidad + certificaciones.
+
+**Alternativas descartadas:** Ads pagados (sin presupuesto, ADR-15); influencer marketing (sin presupuesto); ProductHunt solo (no alcanza comunidad hispanohablante).
+
+---
+
+## ADR-24 — Ventana de adquisición Coursera+Udemy (2026-09-18)
+
+**Decisión:** Preparar campaña de migración para H2 2026 cuando cierre el merger Coursera-Udemy.
+
+**Razón:** Coursera acordó adquirir Udemy (Dec 17, 2025, all-stock, ~$930M, esperado H2 2026). 197M usuarios registrados entre ambos van a sufrir: degradación de producto, confusión de marca, subidas de precio en integración. Los usuarios técnicos hispanohablantes son los más sub-servidos por ambas plataformas. Ventana de migración: 6-12 meses post-cierre.
+
+**Acción concreta:** Landing page en ES y EN con comparativa Whetzy vs Coursera/Udemy en el nicho Python/AI. Activar cuando se confirme el cierre del deal.
+
+---
+
+## ADR-25 — Meta de contenido: 100 cursos × 27 tracks (2026-09-18)
+
+**Decisión:** La meta de contenido a largo plazo es 100 cursos por track × 27 tracks = 2,700 cursos adaptativos, con glosario máximo por área.
+
+**Razón:** Con ese volumen Whetzy supera en cobertura a Platzi (1,900 cursos, no adaptativos), DataCamp (730 cursos en su nicho, sin español), y Codecademy (300 cursos). El motor BKT+FSRS+Elo+DKT con 2,700 nodos de conocimiento genera rutas de aprendizaje que ningún competidor puede replicar. El material fuente legal y gratuito existe (ver CATALOGO_MAESTRO.md §2.1 y §2.2 — libros completos CC BY 4.0 para cada área).
+
+**Estructura por track:**
+- Nivel 1 — Fundamentos (empleable como junior): sintaxis, estructuras básicas, Git, 2-3 proyectos
+- Nivel 2 — Intermedio (mid-level): algoritmos, APIs, testing, proyectos con datos reales
+- Nivel 3 — Avanzado (senior): system design, optimización, ML aplicado, open source
+- Nivel 4 — Especialista: papers implementados, arquitecturas productivas, portfolio público
+
+**Proyección competitiva al alcanzar ADR-25:**
+- vs DataCamp: Whetzy gana en cobertura (27 dominios vs nicho data), gana en español, gana en motor adaptativo
+- vs Platzi: Whetzy gana en motor (adaptativo vs video/cohort), comparable en volumen (2,700 vs 1,900), gana en certificaciones
+- vs Boot.dev: Whetzy gana en scope (27 tracks vs 5), gana en español, gana en sofisticación del motor
+- vs Codecademy: Whetzy gana en motor, gana en certificaciones, comparable en interactividad
+
+**Cuándo se ejecuta:** Las Series 20-23 terminan la base técnica. La Serie 25 (nueva, ver ledger) ejecuta la expansión de contenido track por track usando el motor de generación Haiku + §7 quality gate del CATALOGO_MAESTRO.md.
+
+**Alternativas descartadas:** Mantener 27 tracks con profundidad actual (suficiente para lanzar, insuficiente para competir en retención a largo plazo); expandir a más tracks antes de profundizar los existentes (dispersión, error de Platzi — muchos cursos sin completar).
+
+---
+
+## ADR-26 — Serie 24 scope completo: UI/UX + competencia + video (2026-09-18)
+
+**Decisión:** Serie 24 = 15 tareas que cubren investigación competitiva en vivo (24.0), identidad visual (24.1), landing que vende (24.2), onboarding rediseñado (24.3), dashboard con motor visible (24.4), sesión adaptativa con BKT visual (24.5), gamificación original (24.6), panel de certificación (24.7), perfil público (24.8), panel B2B (24.9), panel de instructor (24.10), marketplace UI (24.11), mobile polish (24.12), producción de 3 videos demo (24.13), A/B test framework (24.14).
+
+**Razón:** El motor técnico es extraordinario pero invisible. La Serie 24 lo hace visible y emocional. Requiere sesiones interactivas con el dueño — no puede ejecutarse en autónomo. El dueño aprueba cada pantalla antes de implementar.
+
+**Alternativas descartadas:** Rediseño parcial (solo landing) — insuficiente para cambiar la percepción; delegar todo el diseño a Claude sin input del dueño — el dueño es la voz de la marca.
+
+---
+
+## ADR-27 — Distribución dual ES + EN con canales separados (2026-09-18)
+
+**Decisión:** Dos canales YouTube (ES y EN), presencia separada en LinkedIn ES/EN, Reddit ES y EN simultáneamente. Todo el contenido es nativo — no se traduce de un idioma al otro (ADR-17). Ver `docs/DISTRIBUCION.md` para el plan completo.
+
+**Razón:** El gap existe en ambos idiomas pero con competencias diferentes. ES: ningún competidor adaptativo. EN: competencia fuerte pero el motor sigue siendo superior. Empezar los dos en paralelo desde el día 1 porque construir audiencia en YouTube es exponencial y el tiempo perdido no se recupera.
+
+**Herramientas:** 100% gratuitas — OBS, DaVinci Resolve free, Canva free, Buffer free tier. Sin publicidad pagada hasta ADR-15 se levante.
+
+---
+
+## ADR-28 — Segmentos de usuario: 5 personas con flujos diferenciados (2026-09-18)
+
+**Decisión:** La app diferencia 5 segmentos desde el onboarding: Estudiante/Principiante, Career-switcher, Developer Senior, Profesor/Instructor, Empresa/B2B. Cada segmento tiene plan de precios diferente, CTA diferente y flujo diferente. Ver `docs/SEGMENTOS.md`.
+
+**Razón:** "Sirvo a todos" = sirvo a nadie. Los benchmarks de conversión (2.6% freemium edtech) se mejoran cuando el producto habla directamente al dolor específico del usuario. Boot.dev tiene 1 segmento y convierte mejor que la media.
+
+---
+
+## ADR-29 — Marketplace de instructores: revenue share 70/30 (2026-09-18)
+
+**Decisión:** Marketplace abierto a instructores externos con revenue share 70% instructor / 30% Whetzy. Todo contenido pasa el quality gate §7 antes de publicarse. Sin exclusividad requerida. Ver `docs/MARKETPLACE.md` para spec completo. Serie 28 implementa.
+
+**Razón:** Multiplica la velocidad de generación de contenido sin multiplicar el costo. 20 instructores activos = 20x más contenido. 70% es más generoso que Udemy (25-37%) y Teachable (cobra plataforma). El motor adaptativo convierte el contenido del instructor en un producto mejor que el que ellos podrían ofrecer solos.
+
+**Alternativas descartadas:** Solo contenido propio (cuello de botella de velocidad); revenue share 50/50 (poco atractivo para instructores de calidad).
+
+---
+
+## ADR-30 — Stack de producción de video 100% gratuito y legal (2026-09-18)
+
+**Decisión:** Stack oficial para videos de marketing y tutoriales: OBS Studio (GPL-2) + DaVinci Resolve free + Canva free (thumbnails) + Audacity (GPL-3) + Inkscape (GPL-3) + CapCut free (móvil). Todos gratuitos, todos legales. Ver `docs/DISTRIBUCION.md` §2.3.
+
+**Razón:** La producción de video es el canal de distribución con mayor ROI compuesto. Un video de 2026 trae usuarios en 2028. El stack gratuito es comparable en calidad al de pagado para el formato tutorial/demo.
+
+---
+
+## ADR-31 — Competencia indirecta: coexistir y posicionarse como "el siguiente paso" (2026-09-18)
+
+**Decisión:** No competir contra freeCodeCamp, CS50, Khan Academy, YouTube ni GitHub repos — posicionarse como "el siguiente paso" después de ellos. Publicar en freeCodeCamp News, responder en Reddit con valor, aparecer en `awesome-python` y `free-programming-books`. Ver `docs/COMPETENCIA.md` §2.
+
+**Razón:** Estos canales tienen audiencias de millones. Competir contra ellos por atención es imposible con presupuesto cero. Convertirlos en fuentes de tráfico es la estrategia correcta.
+
+---
+
+## ADR-32 — Métricas de producto: benchmarks del mercado como norte (2026-09-18)
+
+**Decisión:** Las 10 métricas clave de producto (Day-1/7/30 retention, completion rate, freemium conversion, LTV, NPS, TTFQ, B2B NDRR, streak promedio) se miden desde el día 1 en el admin sub-app (Serie 22) y se comparan contra benchmarks del mercado del estudio 2025-2026. El objetivo es superar el benchmark en cada métrica dentro de 12 meses.
+
+**Objetivos concretos:**
+- Day-30 retention: > 10% (vs 2% industria)
+- Completion rate: > 50% (vs 10-15% industria, Platzi 70%)
+- Freemium→Pro conversion: > 4% (vs 2.6% benchmark)
+- NPS: > 50 (vs Duolingo ~45, Boot.dev ~70)
+- TTFQ: < 60s (ya medido en 11.6 ✅)
+
+---
+
+## ADR-33 — No hay token ni criptomoneda propia (RECHAZADO 2026-09-18)
+
+**Propuesta del dueño:** integrar una cripto propia en Solana como recompensa por
+aprender, como inversión (staking y otras modalidades) y como herramienta de
+retención y de valoración.
+
+**Decisión:** **No.** Whetzy no emite, custodia, cotiza ni reparte ningún token,
+ni ahora ni cuando haya ingresos. La palabra «token» solo puede aparecer en los
+documentos vivos para remitir a este ADR.
+
+**Razón (en orden de gravedad):**
+
+1. **Daño al único activo diferencial.** Si responder preguntas paga, aparecen bots y
+   farmers que responden las 6.233 preguntas con scripts. Esos datos entran en
+   BKT/FSRS/DKT y **envenenan el motor**. Ningún competidor sufriría este daño porque
+   ninguno tiene motor.
+2. **Regulación.** El dueño reside en Chipre (UE): MiCA está en vigor desde diciembre
+   de 2024 y un token con «staking» e «inversión» no es un token de utilidad — es un
+   instrumento financiero o exige licencia CASP. En EE. UU. es Howey de manual.
+3. **Tiendas.** App Store Review 3.1.5 prohíbe ofrecer criptomoneda por completar
+   tareas dentro de la app; Google Play va en la misma dirección. Contradice ADR-13.
+4. **Coste cero (ADR-15).** Crear un SPL token cuesta céntimos; un token sin liquidez
+   vale 0 $; la liquidez la pone el emisor con capital; a eso se suman opinión legal,
+   auditoría de programas propios y KYC/AML si alguien convierte a fiat.
+5. **Valoración.** Los adquirentes edtech (DataCamp, Coursera, Skillsoft, Pearson) no
+   compran empresas con token vivo: es pasivo legal, no activo.
+6. **Evidencia del mercado.** Learn-to-earn ya se probó y falló: Open Campus (EDU,
+   2023), BitDegree (BDG, 2017); move/play-to-earn (STEPN, Axie) colapsaron por
+   reflexividad. Coinbase y Binance *Learn & Earn* funcionan porque un exchange paga
+   con dinero real como marketing. Ver `COMPETENCIA.md` §2.6.
+7. **Motivación.** La recompensa extrínseca con precio de mercado desplaza la
+   intrínseca. Duolingo y Boot.dev tienen gemas **sin valor externo a propósito**.
+
+**Lo que sí se adopta de la idea:** ADR-34 (créditos cerrados), ADR-35 (referidos y
+códigos), ADR-36 (USDC como rail), ADR-37 (credenciales verificables), ADR-38
+(track32 Solana/Web3). Spec completo en `docs/ECONOMIA.md`.
+
+**Condición para reabrir:** opinión legal MiCA fechada + plan de liquidez con capital
+propio. Ambos son HUMAN-BLOCKED con € (ADR-15).
+
+---
+
+## ADR-34 — Créditos Whetzy: economía cerrada, sin valor externo (ACEPTADA 2026-09-18)
+
+**Decisión:** Whetzy tiene una moneda promocional cerrada («créditos») que se **gana
+aprendiendo** y se **gasta en consumibles** dentro de la app (simulacros, congelar
+racha, informes, bootcamps async, cursos del marketplace, seats extra para empresas).
+Tres reglas inviolables, en código y en ToS: (1) sin valor monetario ni canje por
+dinero; (2) no transferibles entre usuarios; (3) no se compran con dinero. Caducan a
+los 90 días (FIFO). Tope de ganancia por aprendizaje 1.500/mes. Nunca compran meses de
+suscripción por goteo. Saldo = suma de un **ledger append-only con idempotencia**;
+no existe columna `users.credits`. Canje de códigos y consulta de saldo **solo en web**
+(Apple 3.1.1); las apps nativas reflejan el estado. Spec: `ECONOMIA.md` §1–§2, §5.
+
+**Razón:** El instinto del dueño («una recompensa que retenga») es correcto; lo que
+lo vuelve tóxico es el valor externo. Sin él, es la misma figura que Duolingo, Boot.dev
+y DataCamp usan con éxito, no requiere licencia ni abogado previo, y cuesta 0 $.
+
+**Alternativas descartadas:** token (ADR-33); créditos comprables (obliga a IAP en iOS
+y a régimen de prepago en la UE); créditos que compran Pro (canibaliza la suscripción);
+saldo sin caducidad (pasivo contable, sin urgencia).
+
+---
+
+## ADR-35 — Referidos por activación y códigos autogenerados de cinco tipos (ACEPTADA 2026-09-18)
+
+**Decisión:** Programa de referidos de doble cara que **paga por activación, nunca
+por registro** (activación = email verificado + diagnóstico + primer módulo + racha
+de 3 días; abono 7 días después). Escalera acumulativa: 1 → 300 créditos; 3 → 1 mes
+Pro (entitlement en servidor); 10 → certificación oficial (HUMAN-BLOCKED por importe
+hasta que haya ingresos; mientras, 6 meses Premium); 25 → badge Embajador. Tope 10
+activaciones/mes. **Antifraude obligatorio antes de abrir:** email verificado, hash
+propio de dispositivo/IP sin terceros, 1 activación por dispositivo/IP cada 30 días,
+auto-referido bloqueado, cola de revisión, clawback, pausa automática si fraude > 5 %.
+
+Códigos autogenerados de **cinco tipos**: referido (1 por usuario), campaña (uno por
+pieza publicada = **atribución de canal a coste cero**), lote de un solo uso
+(universidades, pilotos B2B), instructor (descuento + atribución de ventas) y
+reactivación (72 h, a 14 días de inactividad). Alfabeto sin `0 O 1 I L`, canje
+idempotente `(code_id, user_id)`, un código lleva idioma (ADR-17). Spec: `ECONOMIA.md` §3–§4.
+
+**Razón:** Los referidos traen el 10–30 % de los registros en programas bien hechos y
+los usuarios referidos retienen mejor; pagar por registro los convierte en granja de
+bots en una semana. Los códigos de campaña son **la única analítica de atribución que
+Whetzy puede tener sin terceros en prod ni presupuesto**: cada vídeo, artículo y
+comunidad de las Series 26-27 lleva el suyo.
+
+**Cuándo:** Serie 29, **después** de la 24 y con retención base medida (ADR-32) — un
+programa de referidos amplifica lo que hay; con Day-30 al 2 % no hay nada que referir.
+
+**Alternativas descartadas:** recompensa por registro (fraude); referidos en dinero
+(regulación, Apple 3.1.5); analítica de terceros para atribución (línea roja 5, coste).
+
+---
+
+## ADR-36 — Stablecoin como rail de pago, nunca como activo (ACEPTADA 2026-09-18; subordinada a H.19)
+
+**Decisión:** Si H.19 (ADR-16) elige Stripe, se activa **Stripe *Pay with Crypto***:
+el cliente paga en USDC (Solana, Ethereum, Polygon, Base) y Stripe **liquida en fiat**
+a Whetzy (~1,5 %), sin integración adicional sobre 7.2. Para **payouts a instructores**
+en países sin Stripe Connect (la mitad de LATAM), el instructor puede elegir USDC en
+Solana (fee ≈ 0,001 $) o Wise; su fiscalidad es suya (21.1). **Whetzy nunca custodia
+cripto, nunca tiene wallet con saldo operativo, nunca cotiza en cripto** y no acepta
+nada que no sea USDC liquidado en fiat. Si H.19 elige un MoR, se documenta la
+alternativa del MoR o se descarta sin sustituto.
+
+**Razón:** Resuelve un dolor real y medible del segmento LATAM (tarjetas que no pasan
+en Argentina/Venezuela; instructores en Colombia que no pueden cobrar) a coste cero y
+sin tocar ADR-33. Es «Solana para pagos» — el instinto correcto del dueño.
+
+**Alternativas descartadas:** aceptar cripto directamente en wallet propia (custodia,
+KYC, contabilidad); aceptar cualquier token (volatilidad); cobrar en cripto sin fiat
+(exposición de balance).
+
+---
+
+## ADR-37 — Credenciales verificables: Open Badges 3.0 obligatorio, cNFT opcional (ACEPTADA 2026-09-18)
+
+**Decisión:** Todo certificado de track y de simulacro se emite como **Open Badges 3.0**
+(1EdTech; formato W3C Verifiable Credentials): JSON-LD firmado por Whetzy, endpoint
+público de verificación y revocación (`whetzy.com/verify/<código>`, extendiendo
+`GET /api/v1/exams/certificates/{code}`), QR en el PDF, compatible con LinkedIn y
+Credly. **Opcional y tras H.27:** copia pública como cNFT **no transferible** en Solana
+(~0,0001 $ por emisión; requiere wallet emisora con céntimos de SOL). Nunca token
+fungible, nunca NFT vendible.
+
+**Razón:** «Que exista on-chain» buscaba prueba pública verificable por empleadores.
+Eso lo dan las Verifiable Credentials, que es lo que los empleadores y LinkedIn ya
+reconocen; el cNFT añade visibilidad en el ecosistema Solana a coste casi nulo, pero
+por ADR-15 cualquier gasto con alternativa gratuita pasa por HUMAN-BLOCKED.
+
+**Alternativas descartadas:** solo PDF (no verificable); NFT transferible (mercado
+secundario de certificados); blockchain como única prueba (los empleadores no la leen).
+
+---
+
+## ADR-38 — track32 Solana/Web3 developer en español; segmento 6; Superteam como canal (ACEPTADA 2026-09-18)
+
+**Decisión:** El catálogo pasa de 27 a **28 tracks de aprendizaje** con **track32 —
+Solana / Web3 developer** (JS con `@solana/web3.js` en el Worker; Python stdlib para
+hashes, base58 y serialización; Rust/Anchor como escenario + decisión, exento ADR-9).
+Fuentes: `solana-labs/solana` y `solana-program-library` (Apache-2), docs y cookbook
+de `solana-developers`/`solana-foundation` (MIT/Apache-2), `@solana/web3.js` (MIT),
+Anchor (Apache-2) — licencias a confirmar en 25.14 antes de reutilizar texto. Sin
+certificación oficial: la evidencia de empleabilidad son **bounties de Superteam
+Earn** resueltos por alumnos. Nace el **segmento 6 — Developer Web3/Solana hispano**
+(`SEGMENTOS.md`). Superteam (capítulos México, Argentina, Brasil) y los programas de
+grants de la Solana Foundation entran en `DISTRIBUCION.md` como canal P2 (26.8, 27.9)
+y como **financiación no dilutiva** (H.28; montos vigentes a verificar por el dueño).
+La meta de ADR-25 pasa a **100 × 28 = 2.800 cursos y ≥ 2.800 términos**.
+
+**Razón:** «Solana está despertando» es cierto como **mercado de contenido**, no como
+token. No existe un track Solana de calidad en español; el ecosistema tiene una
+comunidad organizada que busca exactamente eso y paga por contenido educativo. Aquí
+Solana paga a Whetzy, no al revés. Es el único segmento nuevo con canal propio ya
+existente.
+
+**Alternativas descartadas:** token (ADR-33); track genérico «blockchain» (sin
+comunidad ni bounties); esperar a que Platzi lo haga.

@@ -104,7 +104,16 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 20 | Verificación masiva código↔docs↔prod | 8/10 | 80 % | 20.7 (CI local), 20.9 (coherencia) |
+| 29 | Economía cerrada y rails (créditos, referidos, códigos, USDC, credenciales) — ADR-33…37 | 0/13 | 0 % | BLOCKED hasta 24.6 + H.26 |
+| 28 | Marketplace de instructores | 0/8 | 0 % | BLOCKED hasta 22.1/22.3 + H.24 |
+| 27 | Distribución masiva EN | 0/10 | 0 % | BLOCKED hasta 26.0 |
+| 26 | Distribución masiva ES | 0/9 | 0 % | BLOCKED hasta 24.14 + H.23 |
+| 25 | Expansión de contenido a 2.800 cursos (28 tracks) | 0/15 | 0 % | BLOCKED hasta Serie 22 + H.22 |
+| 24 | Interfaz que venda al verse (UI/UX, competencia en vivo, vídeo) | 0/15 | 0 % | BLOCKED hasta 20.7/21.7/22.1/23.1; interactiva |
+| 23 | Dos segmentos, un producto — ES y EN | 0/4 | 0 % | 23.1–23.4 |
+| 22 | Blindaje, admin y preparación para un millón | 0/8 | 0 % | 22.1–22.7 |
+| 21 | Legal y fiscal a coste cero | 0/8 | 0 % | 21.1–21.8 |
+| 20 | Verificación masiva código↔docs↔prod | 9/10 | 90 % | 20.7 (evidencia completa; VEREDICTO §7 pendiente) |
 | 19 | Catálogo 27 tracks + cert marketplace | 1/10 | 10 % | 19.2–19.10 |
 | 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 2/5 | 40 % | 18.3, 18.5 |
 | 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
@@ -263,7 +272,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 20.4 | **1** | **`legal/` vs. realidad como errores de hecho**: «Learning Engine» → Whetzy; planes = `entitlements`/`billing` reales (eliminar «English Track $19.99-29.99»); procesadores = servicios del código; ES y EN nativos; cabecera `BORRADOR — pendiente de revisión profesional (H.20)` | **DONE 2026-09-18** | CI-LOCAL 2026-09-18 exit 0 · `grep -ri "learning engine\|english track" legal/` → 0 · terms-of-service.md: Free/Pro/Plus vía Stripe (no English Track, no App Store) · privacy-policy.md: procesadores Railway/Cloudflare/Stripe/Groq; motor AI en servidor no en dispositivo; Groq disclosure explícito · ambos docs ES+EN nativos con cabecera BORRADOR H.20 · verificador adversario: **VEREDICTO: CONFIRMADA** |
 | 20.5 | **1** | **Fuentes**: cada URL de `CATALOGO_MAESTRO.md` §2.1/§2.2 resuelve; para cada repo clonado, `LICENSE` leído == licencia de la tabla (`scripts/check_source_licenses.py`); marcas `verificar` resueltas o el repo se retira de la tabla | **DONE 2026-09-18** | CI-LOCAL 2026-09-18 exit 0 · `check_source_licenses.py` exit 0 (10 entries, 0 verificar) · `content/sources/index.json` creado (10 entradas con sha/fecha/licencia) · §2.2: 0 filas con `verificar` · Correcciones: heroku/12factor=MIT, anthropic-cookbook=MIT, anthropics/courses=CC BY-NC 4.0→(cita), TypeScript-Website=CC BY 4.0, flutter/website=CC BY 3.0 (era 4.0), javascript.info=CC BY-NC 4.0, MITRE=custom permisivo, HashiCorp=BSL-1.1→(cita) · verificador adversario: **VEREDICTO: CONFIRMADA** |
 | 20.6 | **1** | **Dieta del ledger**: evidencia histórica de filas `DONE` → `docs/archive/LEDGER_HISTORY.md` (ancla por ID); en la fila queda `DONE — <hash> — <comando → salida> (<fecha>)`; `## 0` y su fila `Contenido` intactos | **DONE 2026-09-18** | CI-LOCAL 2026-09-18 exit 0 · `python scripts/check_docs.py` → All checks PASSED · `AUTONOMOUS_STATE.md` 48.9 KB < 60 KB · `## 6` 10 filas conservadas · `docs/archive/LEDGER_HISTORY.md` 258 KB (secciones A-L) · `## 0` intacto (Alembic HEAD + Contenido row verificados) · commit 50d0c18 · verificador adversario: **VEREDICTO: REFUTADA** (fila ya actualizada) |
-| 20.7 | **1** | **CI ciego**: `scripts/verify_ci_local.ps1` que replica `.github/workflows/ci.yml` paso a paso (mismas versiones, mismo orden, log en scratchpad); e2e pasa a `workflow_dispatch` + nightly; caché de dependencias en backend/frontend | TODO | → LEDGER_HISTORY.md §E |
+| 20.7 | **1** | **CI ciego**: `scripts/verify_ci_local.ps1` que replica `.github/workflows/ci.yml` paso a paso (mismas versiones, mismo orden, log en scratchpad); e2e pasa a `workflow_dispatch` + nightly; caché de dependencias en backend/frontend | **DOING — evidencia completa (sesión bg, 2026-09-18); VEREDICTO pendiente** | Evidencia de bg: commits `5289c34` (loader autogenera `id` de glosario), `77e4281` (track14 con `track_id`/`id`), `ada18fb` (encoding de `verify_ci_local.ps1`), `5eb8c3e` (ruff+mypy), `d6c5df7` (`workflow_dispatch` + nightly + caché e2e) · `pytest tests/content` 19.410 passed exit 0 · `check_question_bank.py` PASS · `check_docs.py` 6/6 · `npm run build` OK · `git push origin master` (ada18fb; master == origin). **Falta para DONE (ADR-20):** verificador adversario con el prompt literal del protocolo §7 reejecutando `scripts/verify_ci_local.ps1` y anotando el run id del log en esta fila con `VEREDICTO: CONFIRMADA`. Es la primera acción de la siguiente sesión |
 | 20.8 | **1** | **Verificador adversario en el loop** (ADR-20): plantilla literal del protocolo §7 usada por el orquestador antes de cada `DONE`; registro `VEREDICTO` en la fila | **DONE 2026-09-18** | Template literal §7 embebido en ORCHESTRATOR.md §"4. Verificar" (36 líneas añadidas: prompt completo + 3 veredictos + consecuencias + instrucción VEREDICTO en ledger) · commit b82b377 · verificador adversario 20.8: VEREDICTO CONFIRMADA (grep ORCHESTRATOR.md → VEREDICTO+CONFIRMADA+REFUTADA+NO REPRODUCIBLE en líneas 302-341, instrucción registro ledger línea 340) |
 | 20.9 | **2** | **Coherencia final**: README/CLAUDE/ORCHESTRATOR/DECISIONS/CATALOGO/teardown sin contradicciones entre sí ni con el código; `check_docs.py` extendido con 20.3/20.5; entrada en `STATUS.md` con los conteos del protocolo §12 | **DONE 2026-09-18** | `python scripts/check_docs.py` → All 6 checks PASSED · check [6] check_source_licenses.py añadido · STATUS.md entrada «Serie 20 §12» (53 afirm, 20 corregidas, 0 regresiones, 5 H-BLOCKED cerrados) · AUTONOMOUS_STATE.md ## 1 tabla actualizada · DECISIONS.md ADR-14…20 todos ACEPTADA · verificador adversario 20.9: VEREDICTO CONFIRMADA |
 
@@ -271,7 +280,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 21.1 | **1** | **Entidad y fiscalidad** para un residente fiscal en Grecia que vende suscripciones digitales a UE/EE. UU./LatAm: autónomo griego · IKE · Estonia e-Residency OÜ · LLC EE. UU. · seguir como particular. Por opción: coste de constitución, coste anual, impuesto efectivo sobre €1 K/€5 K/€20 K MRR, CFC/establecimiento permanente, IVA OSS y umbral €10 K, obligaciones contables, **tiempo hasta poder cobrar**. Verificar la premisa «Ley 5246/2025 9 % flat» de la decisión previa | TODO | → LEDGER_HISTORY.md §E |
-| 21.2 | **1** | **Rail de pagos sin sociedad**: Stripe particular en Grecia (requisitos KYC, AFM, actividad registrada) · Paddle · Lemon Squeezy · solo IAP. Por opción: comisión total, quién liquida IVA/sales tax, quién factura, payouts a **Revolut personal** (términos de uso comercial) vs. Revolut Business €0, países de clientes soportados, reembolsos, tiempo de alta. Impacto en 7.2 (checkout/webhooks) por opción | TODO | → LEDGER_HISTORY.md §E |
+| 21.2 | **1** | **Rail de pagos sin sociedad**: Stripe particular en Grecia (requisitos KYC, AFM, actividad registrada) · Paddle · Lemon Squeezy · solo IAP. Por opción: comisión total, quién liquida IVA/sales tax, quién factura, payouts a **Revolut personal** (términos de uso comercial) vs. Revolut Business €0, países de clientes soportados, reembolsos, tiempo de alta. Impacto en 7.2 (checkout/webhooks) por opción. **Añadido 2026-09-18 (ADR-36):** para cada opción, si soporta cobro en USDC liquidado en fiat (Stripe *Pay with Crypto* ~1,5 %; qué ofrece el MoR) y payouts a instructores en países sin Stripe Connect (USDC/Wise) | TODO | → LEDGER_HISTORY.md §E |
 | 21.3 | **1** | **Privacidad multi-jurisdicción**: GDPR/ePrivacy (UE) · UK GDPR · CCPA/CPRA, COPPA, CAN-SPAM, leyes estatales (EE. UU.) · LGPD (BR) · LFPDPPP (MX) · Ley 1581/2012 (CO) · Ley 25.326 (AR) · Ley 21.719 (CL) · Ley 29733 (PE). Matriz obligación × aplica-hoy (0 usuarios, sin trackers de terceros) × qué cambia en la política; edad mínima por país; **inventario real de procesadores** desde el código (Railway, Cloudflare, Groq, email, Stripe test, Sentry) y sus DPA | TODO | → LEDGER_HISTORY.md §E |
 | 21.4 | **2** | **Consumo y suscripciones**: desistimiento UE 14 días para contenido digital (renuncia expresa en checkout), renovación automática (California ARL y otros estados), precios con IVA incluido en UE, cancelación en un clic, política de reembolsos; textos ES/EN para checkout y ajustes | TODO | → LEDGER_HISTORY.md §E |
 | 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor (transparencia: etiqueta «IA» y aviso de posible error), aplicabilidad del DSA a una plataforma sin contenido de usuarios públicos, exención de microempresa en la EAA; dónde lo cumple el código | TODO | → LEDGER_HISTORY.md §E |
@@ -282,7 +291,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 22. Blindaje, admin y preparación para un millón — todo a coste cero (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**; ADR-15 y ADR-19)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle público; reutiliza `X-Admin-Key` para scripts y añade claim JWT `role=owner`): **Métricas** (registros/día, DAU/WAU/MAU, retención D1/D7/D30, funnel visita→registro→placement→1ª pregunta→día 2, TTFQ, sesiones de quiz, precisión, llamadas al tutor, duelos, top skills, **por segmento ES/EN**) · **Seguridad** (logins fallidos, lockouts, rate-limit hits, IPs, eventos de auth, cambios de email/contraseña) · **Contenido** (skills < 6 Q, Q con alta tasa de fallo/baja discriminación, reportes de usuarios, paridad ES/EN) · **Ops** (health, error rate, tamaño DB, head de Alembic, último deploy) · **GDPR** (cola export/delete) · **Ingresos** (MRR, conversiones, churn — desde 7.2, test-mode hoy) | TODO | → LEDGER_HISTORY.md §E |
+| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle público; reutiliza `X-Admin-Key` para scripts y añade claim JWT `role=owner`): **Métricas** (registros/día, DAU/WAU/MAU, retención D1/D7/D30, funnel visita→registro→placement→1ª pregunta→día 2, TTFQ, sesiones de quiz, precisión, llamadas al tutor, duelos, top skills, **por segmento ES/EN**) · **Seguridad** (logins fallidos, lockouts, rate-limit hits, IPs, eventos de auth, cambios de email/contraseña) · **Contenido** (skills < 6 Q, Q con alta tasa de fallo/baja discriminación, reportes de usuarios, paridad ES/EN) · **Ops** (health, error rate, tamaño DB, head de Alembic, último deploy) · **GDPR** (cola export/delete) · **Ingresos** (MRR, conversiones, churn — desde 7.2, test-mode hoy) · **Economía** (créditos emitidos/gastados/caducados, referidos, K-factor, atribución por código — la implementa 29.6 sobre este panel) | TODO | → LEDGER_HISTORY.md §E |
 | 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de seguridad (CSP sin `unsafe-inline` salvo lo que Pyodide exija y esté justificado, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy), CORS revisado, cookies `Secure/HttpOnly/SameSite` | TODO | → LEDGER_HISTORY.md §E |
 | 22.3 | **2** | **Auth hardening**: lockout progresivo tras N fallos, refresh tokens con rotación y revocación, sesiones por dispositivo con cierre remoto, 2FA TOTP opcional, audit log de acciones admin | TODO | → LEDGER_HISTORY.md §E |
 | 22.4 | **2** | **Cadena de suministro a €0**: Dependabot (config), `gitleaks` en pre-commit y en `verify_ci_local.ps1`, `bandit` + `semgrep` OSS, SBOM (`cyclonedx`), política de versiones fijadas; recordatorio de H.12 (rotar `GROQ_API_KEY`) | TODO | → LEDGER_HISTORY.md §E |
@@ -298,9 +307,154 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas, plantillas de respuesta de soporte ES/EN | TODO | → LEDGER_HISTORY.md §E |
 | 23.4 | **3** | **Segmento en el admin**: todas las métricas de 22.1 filtrables por idioma; cohortes ES vs. EN | TODO | → LEDGER_HISTORY.md §E |
 
-### 24. Interfaz que venda al verse (sesión interactiva; **después** de 20-23; absorbe 17.6 y 19.8)
-### Dependencias
-### Grupos paralelos
+### 24. Interfaz que venda al verse — UI/UX + competencia en vivo + vídeo (sesión interactiva; **después** de 20-23; absorbe 17.6 y 19.8; ADR-26)
+
+> **Estado:** `BLOCKED (orden del dueño)` — se abre cuando 20.7, 21.7, 22.1 y 23.1 estén `DONE`.
+> **Modo:** **interactivo** — el dueño aprueba cada pantalla antes de implementarla; una sesión programada no ejecuta esta serie (ADR-26).
+> **Modelo:** Sonnet para código (`frontend/src` es fichero de riesgo); Haiku para inventarios y verificación.
+> **Evidencia común a toda fila:** captura fechada en `docs/screenshots/<fecha>/`, `npx tsc -b --force` + `npx vitest run` + `npm run build` en verde, e2e de la pantalla, ES y EN nativos sin fallback (23.1), Lighthouse ≥ 90 en las 4 categorías para pantallas públicas, sin terceros en el bundle (línea roja 5).
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 24.0 | **1** | **Investigación competitiva en vivo**: navegar el free tier de los 8 competidores directos de `COMPETENCIA.md` §1 con el checklist de §4 (onboarding 1-5, dashboard, gamificación, precios, landing desktop+mobile, segundos hasta primera lección, emoción, «qué haría Whetzy distinto») | BLOCKED | 8 × ≥ 5 capturas en `docs/competencia-screenshots/` (gitignoreada); `COMPETENCIA.md` §1 actualizado con hallazgos fechados; decisión del dueño por pantalla anotada en `docs/design/decisiones-24.0.md` |
+| 24.1 | **1** | **Identidad visual**: tokens de diseño (color con hue propio, tipografía con fallback, espaciado, radios, modo oscuro, movimiento con `prefers-reduced-motion`) en `frontend/src/theme/tokens.css`; guía en `docs/design/identidad.md`; **sin narrativa RPG** ni plantilla genérica | BLOCKED | Tokens usados por ≥ 90 % de componentes (grep sin colores literales); contraste AA en ambos temas; aprobación del dueño registrada |
+| 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el motor visible (demo de 3 preguntas sin registro), prueba social, precios ADR-21, CTA por segmento (`SEGMENTOS.md`), comparativa honesta (§«Tabla resumen» de `COMPETENCIA.md`), `hreflang`, OG por idioma | BLOCKED | Lighthouse ≥ 90 ×4 en ambos idiomas; copy nativo revisado por el dueño; TTFQ desde landing < 60 s; A/B listo (24.14) |
+| 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo la app diferencia segmentos») + diagnóstico; idioma fijado en registro; código de referido/campaña aceptado en el paso 1 (Serie 29) | BLOCKED | TTFQ < 60 s medido (11.6); abandono por paso en admin 22.1; e2e ES y EN |
+| 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como «territorio»), próximo repaso FSRS con fecha, nivel Elo, racha, próximo paso recomendado; por segmento | BLOCKED | Cada número enlaza a su fuente en la API; sin datos inventados; e2e; captura ES y EN |
+| 24.5 | **1** | **Sesión adaptativa con BKT visual**: barra de dominio en vivo, «por qué esta pregunta», feedback explicativo (no solo «incorrecto»), runtime Python/SQL/JS sin fricción, teclado y lector de pantalla | BLOCKED | axe 0 violaciones; e2e con pregunta ejecutable; medición de tiempo por pregunta en admin |
+| 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad Whetzy, logros, ligas y duelos existentes integrados; **wallet, escalera de referidos y canje (solo web)** de `ECONOMIA.md` §2–§4 (con 29.8) | BLOCKED (29.0-29.2 para datos reales; mock hasta entonces) | Sin RPG fantasía; wallet muestra saldo = suma del ledger; canje ausente en build nativo; e2e |
+| 24.7 | **2** | **Panel de certificación**: readiness por dominio (18.1), simulacros (comprables con créditos), certificado **verificable** (29.10) compartible a LinkedIn con QR | BLOCKED (17.2) | `whetzy.com/verify/<código>` renderiza el Open Badge; PDF con QR; e2e |
+| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado, certificados, proyectos, badge Embajador; OG image generada | BLOCKED | Privado por defecto; nada del perfil se indexa sin opt-in; e2e |
+| 24.9 | **2** | **Panel B2B** (`SEGMENTOS.md` segmento 5): progreso por empleado, tiempo, certificaciones, comparativa anónima, import CSV, **códigos de lote** (29.4), export CSV | BLOCKED (22.1) | Solo rol `company_admin`; tests de rol; e2e |
+| 24.10 | **3** | **Panel de instructor** (UI de `MARKETPLACE.md` §4) con datos de prueba hasta Serie 28 | BLOCKED | Solo rol `instructor`; mock claramente marcado; e2e |
+| 24.11 | **3** | **Marketplace UI**: catálogo con filtros, ratings, preview de primera lección; mock hasta 28.4 | BLOCKED | Accesible sin login; paginado; búsqueda; e2e |
+| 24.12 | **2** | **Mobile polish**: Capacitor Android, safe areas, gestos, estado offline básico, rendimiento en 4G (11.6) | BLOCKED | Lighthouse mobile ≥ 90; TalkBack recorrido (H.9 si hay dispositivo); captura en 3 tamaños |
+| 24.13 | **2** | **Tres vídeos demo, ES y EN nativos (6 piezas)**: producto 2 min, motor 5 min, short 60 s; stack ADR-30; guiones en `docs/distribucion-assets/guiones/`; cada pieza con su **código de campaña** (29.4) | BLOCKED (24.2-24.6) | 6 ficheros exportados 1080p; guiones aprobados; subida la hace el dueño (26.0 / 27.0) |
+| 24.14 | **3** | **Framework A/B**: tabla `experiments` + asignación estable por usuario + flag en frontend; métricas en 22.1; primer experimento: CTA de landing | BLOCKED (22.1) | Migración aditiva con downgrade; test de asignación determinista; resultado del primer test en admin |
+
+#### Dependencias
+
+- La serie entera espera a **20.7, 21.7, 22.1 y 23.1** (`DONE`): sin CI local no hay evidencia, sin legales no hay landing, sin admin no hay métricas, sin auditoría de idioma no hay pantalla que valga.
+- **24.1 antes que 24.2–24.12** (todos consumen los tokens).
+- 24.6 usa datos reales solo con **29.0–29.2**; 24.7 con **17.2** y **29.10**; 24.9 y 24.14 con **22.1**; 24.10 y 24.11 son mock hasta **Serie 28**.
+- 24.13 al final (graba las pantallas ya aprobadas). **26.0 y 27.0** esperan a 24.13.
+
+#### Grupos paralelos (ficheros disjuntos, ADR-6)
+
+| Grupo | Tareas | Ficheros |
+|---|---|---|
+| G-A | 24.2, 24.3 | `LandingScreen*`, `OnboardingScreen*`, `AuthScreen*` |
+| G-B | 24.4, 24.5, 24.6 | `HomeScreen*`, `QuizScreen*`, `components/gamification/*`, `components/wallet/*` |
+| G-C | 24.7, 24.8 | `CertificationScreen*`, `ProfileScreen*`, `VerifyScreen*` |
+| G-D | 24.9, 24.10, 24.11 | `admin-company/*`, `instructor/*`, `MarketplaceScreen*` |
+| Secuencial | 24.0 → 24.1 → grupos → 24.12 → 24.13 → 24.14 | — |
+
+### 25. Expansión de contenido a ADR-25 (100 cursos × 28 tracks; ADR-38)
+
+> **Estado:** `BLOCKED (orden del dueño)` — se abre cuando Serie 22 esté DONE (admin + seguridad operativa) y el dueño confirme H.22.
+> **Dependencias:** 20.9, 22.7, 23.4 DONE.
+> **PRI:** 3 (después de Series 20-24).
+> **Modelo:** Haiku para generación de contenido (cada bloque = 1 worker, 1 commit verde). Sonnet solo si toca ficheros de riesgo.
+> **Nota:** Esta serie no tiene fecha límite — es la expansión continua del catálogo. Se ejecuta en paralelo con la campaña de distribución del dueño.
+
+| ID | Tarea | Criterio DONE | Deps |
+|---|---|---|---|
+| 25.0 | Infraestructura de generación: script `scripts/generate_track_content.py` que toma track_id + nivel + fuentes y produce lecciones/preguntas en formato JSON validado por §7 quality gate | Script existe, pasa `check_docs.py`, genera ≥1 lección y ≥15 Q válidas en dry-run con track01/nivel2 | 20.9 |
+| 25.1 | Completar tracks 1-3 (Python básico/intermedio/avanzado) a 100 cursos por nivel usando PSF docs + exercism/python + OpenStax + TheAlgorithms | `check_question_bank.py`: tracks 01-03 ≥ 1,200 Q cada uno, ≥ 15 % exec, ≥ 144 términos glosario | 25.0 |
+| 25.2 | Completar tracks 6-7 (IA/ML/LLMs) a 100 cursos usando ML-For-Beginners + HF course + fastai + openai/anthropic cookbooks | tracks 06-07 ≥ 1,200 Q cada uno, 100 % sklearn/numpy/pandas [reusar] | 25.0 |
+| 25.3 | Completar tracks 4-5 (Ingeniería + Arquitectura) a 100 cursos usando system-design-primer + aosabook + faif/python-patterns | tracks 04-05 ≥ 1,200 Q cada uno | 25.0 |
+| 25.4 | Completar tracks 12, 20, 21, 27 (SQL + Data Eng + DS + NoSQL) usando PostgreSQL docs + DuckDB + Kaggle Learn + wesm/pydata-book código | tracks SQL ≥ 1,200 Q cada uno, ≥ 30 % sql_exec | 25.0 |
+| 25.5 | Completar tracks 13, 24, 25 (Ciberseguridad fundamentos + Pentest + Seguridad cloud) usando NIST + MITRE ATT&CK + juice-shop + OWASP [H.LIC pendiente H.22] | tracks seguridad ≥ 1,200 Q cada uno, ≥ 15 % exec | 25.0, H.22 si OWASP |
+| 25.6 | Completar tracks 8-11, 22-23 (AWS + Azure + GCP) usando AWS docs (cita) + Microsoft Learn CC BY + GCP docs CC BY | tracks cloud ≥ 900 Q cada uno (fuentes son cita — sin copy, solo preguntas originales sobre dominios) | 25.0 |
+| 25.7 | Completar tracks 14, 28 (Frontend JS + Backend FastAPI/Node) usando lydiahallie + Web-Dev-For-Beginners + freeCodeCamp ES + fastapi docs | tracks web ≥ 1,200 Q cada uno, JS Worker sandbox activo | 25.0 |
+| 25.8 | Completar tracks 15, 17, 26 (Linux + Redes + Git) usando exercism/bash + Peterson/Davie CC BY + github/docs | tracks linux/redes/git ≥ 1,200 Q cada uno | 25.0 |
+| 25.9 | Completar tracks 16, 29, 30 (Algoritmos + QA + Agile) usando Erickson CC BY + pytest docs + Scrum Guide cita | tracks ≥ 1,200 Q cada uno, algoritmos ≥ 30 % exec | 25.0 |
+| 25.10 | Completar tracks 18, 19 (Docker/K8s + IaC/CI/CD) usando Kubernetes docs CC BY + Docker docs + actions/* | tracks devops ≥ 900 Q cada uno | 25.0 |
+| 25.11 | Completar track 31 (Móvil) usando swift-book CC BY + android docs + flutter docs | track31 ≥ 900 Q, exento de runtime (sin navegador para Swift/Kotlin) | 25.0 |
+| 25.12 | Glosario máximo: ≥ 100 términos por track × 28 tracks = 2,800+ términos totales, ES y EN nativos | `check_docs.py`: glosario ≥ 2,800 entradas, 0 entradas sin traducción | 25.1-25.11, 25.14 |
+| 25.14 | **track32 — Solana / Web3 developer** (ADR-38): 5 módulos × 4 skills, JS con `@solana/web3.js` en el Worker (18.3) + Python stdlib (hash, base58, serialización); Rust/Anchor como escenario + decisión (exento ADR-9); **leer `LICENSE` de cada repo antes de reutilizar texto** y registrar en `content/sources/index.json`; proyectos = bounties reales de Superteam Earn reescritos como ejercicio | ≥ 300 Q, ≥ 15 % exec en módulos JS/Python, 20 lecciones, ≥ 36 términos ES/EN; `check_source_licenses.py` exit 0; §7 quality gate | 25.0, 18.3 |
+| 25.13 | Scorecard ADR-25: verificar que los 28 tracks pasan §7 quality gate (≥ 15 % exec donde aplica, ≥ 144 términos, BKT inicializado, simulacros activos para todas las certs asociadas) | `pytest tests/content` 100 % pass, `check_question_bank.py` total ≥ 36,000 Q | 25.12, 25.14 |
+
+**H.22 — Decisión del dueño:** ¿Aceptar [H.LIC] para OWASP CheatSheets/WSTG/ASVS (CC BY-SA 4.0) en tracks de seguridad? Si sí: contenido derivado hereda CC BY-SA. Si no: tracks de seguridad usan solo NIST + MITRE (dominio público) — cobertura algo menor pero 100 % sin restricciones.
+
+### 26. Distribución masiva ES (ADR-23, ADR-27; spec `DISTRIBUCION.md`)
+
+> **Estado:** `BLOCKED (orden del dueño)` — abre cuando 24.14 esté DONE y el dueño confirme H.23.
+> **Dependencias:** 24.14 DONE.
+> **PRI:** 4. **Modelo:** Haiku para contenido; Sonnet para copy de landing/emails.
+
+| ID | Tarea | Criterio DONE |
+|---|---|---|
+| 26.0 | Canal YouTube ES creado: banner, descripción, links, 3 videos demo subidos (grabados en 24.13); **cada vídeo con su código de campaña `YT-ES-nn` (29.4) en descripción y pantalla final** | Canal público, 3 videos publicados, descripción con CTA a whetzy.com y código; canjes visibles en admin 29.6 |
+| 26.1 | 5 artículos en Dev.to / Hashnode ES sobre el motor técnico (BKT, FSRS, gap de mercado) | 5 artículos publicados, cada uno con CTA y enlace a whetzy.com |
+| 26.2 | PR en `EbookFoundation/free-programming-books` agregando Whetzy en sección Python ES | PR abierto y mergeado o en revisión activa |
+| 26.3 | Template de email para universidades LATAM + lista de 50 contactos | Template en `docs/distribucion-assets/email-universidades-es.md`, lista CSV de 50 contactos |
+| 26.4 | Página de landing para segmento career-switcher ES (dentro de whetzy.com/es/carrera) | Lighthouse ≥ 90, copy nativo ES, CTA Premium |
+| 26.5 | Página de landing para segmento B2B ES (whetzy.com/es/empresas) | Demo request form funcional, Calendly integrado |
+| 26.6 | Show HN post en español (Hacker News): preparación + activos | Post publicado, respuestas monitorizadas 24h |
+| 26.7 | Perfiles en comunidades ES: Python Argentina Discord, Dev En Español, LatamDevs | 3 perfiles activos, 5+ contribuciones de valor antes de cualquier mención de Whetzy |
+| 26.8 | **Superteam LATAM (México, Argentina, Brasil) como canal** (ADR-38): presencia en sus Discord/eventos, 1 charla o taller «Solana en español con Whetzy», códigos de campaña `ST-MX`/`ST-AR`/`ST-BR`; dossier para grant/bounty de la Solana Foundation preparado (**H.28**, lo solicita el dueño) | 3 comunidades activas con contribuciones previas; 1 evento realizado; dossier en `docs/distribucion-assets/solana-grant.md` con montos vigentes verificados por URL fechada |
+
+### 27. Distribución masiva EN (ADR-27; spec `DISTRIBUCION.md`)
+
+> **Estado:** `BLOCKED (orden del dueño)` — abre en paralelo con 26.3 o cuando H.23 lo indique.
+> **Dependencias:** 26.0 DONE (el canal ES valida el formato antes de EN).
+> **PRI:** 4. **Modelo:** Haiku para contenido; Sonnet para copy.
+
+| ID | Tarea | Criterio DONE |
+|---|---|---|
+| 27.0 | Canal YouTube EN creado: banner, descripción, 3 videos EN (mismo contenido que 24.13 pero grabado en inglés nativo, no traducido); **códigos `YT-EN-nn`** | Canal público, 3 videos publicados; canjes en admin 29.6 |
+| 27.1 | Show HN EN: "I built an adaptive Python→AI learning engine in Spanish because no one else did" | Post publicado, > 20 upvotes en primeras 6h |
+| 27.2 | 5 artículos en Dev.to / freeCodeCamp News EN sobre motor técnico | 5 artículos publicados con CTA |
+| 27.3 | PR en `jwasham/coding-interview-university` y `donnemartin/system-design-primer` READMEs | PRs abiertos mencionando Whetzy como recurso |
+| 27.4 | Product Hunt preparación: assets, lista de 100 upvoters confirmados, tagline | Checklists de lanzamiento completado, fecha fijada |
+| 27.5 | Product Hunt lanzamiento | Top 5 del día en categoría Education |
+| 27.6 | Reddit strategy EN: 10 respuestas de valor en r/learnpython, r/cscareerquestions | 10 respuestas publicadas con ≥ 50 upvotes cada una |
+| 27.7 | Landing page segmento career-switcher EN (whetzy.com/en/career) | Lighthouse ≥ 90, copy nativo EN |
+| 27.8 | Landing page segmento B2B EN (whetzy.com/en/enterprise) | Demo request form funcional |
+| 27.9 | **Superteam global / Solana developer communities EN** (ADR-38): Solana Stack Exchange y Discord oficial con respuestas de valor, 1 artículo EN «Learning Solana in Spanish: why we built track32», códigos `ST-EN` | 10 respuestas de valor; artículo publicado; canjes en admin |
+
+### 28. Marketplace de instructores (ADR-29; spec `MARKETPLACE.md`)
+
+> **Estado:** `BLOCKED (orden del dueño)` — abre cuando 22.1 (admin sub-app) esté DONE y H.24 confirmado.
+> **Dependencias:** 22.1, 22.3 DONE. Ver spec completo en `docs/MARKETPLACE.md`.
+> **PRI:** 4. **Modelo:** Sonnet (toca DB schema y auth — ficheros de riesgo).
+
+| ID | Tarea | Criterio DONE |
+|---|---|---|
+| 28.0 | Schema DB: `instructor_profiles`, `marketplace_courses`, `course_purchases`, `instructor_payouts` — migración Alembic | Migración HEAD nueva, `alembic upgrade head` pasa, tests de schema |
+| 28.1 | API: CRUD cursos instructor, upload contenido JSON, preview; **código de instructor `PROF-…` (29.4) con descuento y atribución de ventas** | OpenAPI docs actualizado, tests de autorización (solo `instructor` role); test de canje con descuento |
+| 28.2 | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | Script existe, 5 tests de calidad pasan, falla con mensajes claros |
+| 28.3 | Panel instructor — React: dashboard revenue, cursos, métricas por curso | Solo visible con rol `instructor`, tests de rol-guard |
+| 28.4 | Marketplace público: catálogo con filtros, ratings, preview de primera lección | Accesible sin login, paginado, búsqueda funciona |
+| 28.5 | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | Webhook procesa pago, `instructor_payouts` se actualiza, tests con Stripe test mode |
+| 28.6 | Panel admin: aprobación de cursos, moderación, gestión de payouts | Solo rol `admin`, lista de pendientes, aprobar/rechazar con feedback |
+| 28.7 | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por el instructor: Stripe Connect donde exista, USDC en Solana o Wise donde no (ADR-36, con 29.9)** | Script `scripts/run_payouts.py` existe, test con Stripe test mode, cálculo de payout en USDC probado en test sin enviar nada; HUMAN-BLOCKED para activar en producción (H.25) |
+
+### 29. Economía cerrada y rails — créditos, referidos, códigos, USDC, credenciales verificables (ADR-33…37; spec `docs/ECONOMIA.md`)
+
+> **Estado:** `BLOCKED (orden del dueño)` — se abre cuando **24.6** esté `DONE` (retención base medida, ADR-32) y el dueño confirme **H.26** (tabla de precios y las tres cláusulas de `ECONOMIA.md` §1).
+> **Dependencias:** 22.1 (admin), 22.6 (cola de trabajos y `RateLimiter`), 21.7 (ToS para 29.11), 24.6 (UI).
+> **PRI:** 3. **Modelo:** Sonnet (migraciones, auth, billing = ficheros de riesgo); Haiku para tests, inventarios y verificación adversaria.
+> **Invariante de la serie:** las tres reglas de `ECONOMIA.md` §1 se prueban con tests, no se prometen. Canje solo en web. Ningún «token» (ADR-33).
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 29.0 | **1** | **Schema**: `credit_ledger`, `promo_codes`, `promo_redemptions`, `referral_codes`, `referrals` (`ECONOMIA.md` §2.5, §4.2) — migración **aditiva** con `downgrade` probado, nunca en el mismo push que contenido (ADR-18) | BLOCKED | `alembic upgrade head` + `downgrade -1` + `upgrade head` en local sin error; tests de constraints (`idempotency_key` único, `(code_id,user_id)` único, `referred_id` único); Alembic HEAD actualizado en `## 0` y `CLAUDE.md` |
+| 29.1 | **1** | **Servicio de créditos** `services/economy/credits.py`: abono con lote y `expires_at`, gasto FIFO, caducidad diaria (job en cola 22.6), topes (1.500/mes aprendizaje), `clawback`, saldo = `SUM` | BLOCKED | ≥ 20 tests unitarios (idempotencia, saldo nunca negativo, FIFO, tope, caducidad, clawback); cobertura del módulo ≥ 90 % con `concurrency=greenlet` |
+| 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json` (ES/EN en etiquetas) + `GET /economy/prices` público con `Cache-Control` | BLOCKED | `check_docs.py` nuevo check [7]: `ECONOMIA.md` §2.2–§2.3 ⇔ `credits.json`; `API.md` actualizado (20.3) |
+| 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija idioma (ADR-17), evento de activación (email + diagnóstico + módulo 1 + racha 3), retardo 7 días, escalera 1/3/10/25 con **entitlements en servidor** (mes Pro, Premium 6 m; certificación oficial = H-BLOCKED por importe) | BLOCKED | Tests del estado `pending→activated→credited`; test de que un registro sin activación no abona; e2e de registro con código ES y EN |
+| 29.4 | **2** | **Códigos de cinco tipos** (`ECONOMIA.md` §4): generación de lotes (CSV), alfabeto sin `0 O 1 I L`, idioma por código, `max_uses`, caducidad, **canje solo desde web** (la API rechaza clientes nativos por cabecera de plataforma), rate limit 5/10 min | BLOCKED | Tests por tipo; test de rechazo desde cliente nativo; test de canje idempotente; `API.md` |
+| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal rotativa (sin terceros), 1 activación por dispositivo/IP cada 30 días, auto-referido bloqueado (email normalizado, OAuth, dispositivo), lista pública de dominios desechables, velocidad (> 5/semana → revisión), **pausa automática si fraude > 5 % dos semanas** | BLOCKED | Tests de cada regla; simulación de granja (100 registros mismo dispositivo) → 0 abonos; texto para 21.3 (ePrivacy/GDPR interés legítimo) entregado |
+| 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos (K-factor, % registros vía referido, D7/D30 referidos vs orgánicos, cola de revisión, fraude), códigos (lotes, uso, **atribución canjes → activaciones → pagos por código/canal/campaña**), export CSV, **filtrable por idioma** (23.4) | BLOCKED (22.1) | Solo rol `owner`; cada cifra reproducible por SQL documentado; captura fechada |
+| 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN nativo** (nunca ambos); 1 cada 60 días por usuario; opt-out respetado | BLOCKED (22.6) | Test del job (idempotente por usuario/periodo); plantilla de email en ambos idiomas revisada (23.3); métrica de retorno en 29.6 |
+| 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo en build web** — sesión interactiva, dentro de 24.6 | BLOCKED (24.6) | Build nativo no contiene el campo de canje (grep en `dist` de Capacitor); e2e web; capturas ES y EN |
+| 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de instructores en USDC (Solana) o Wise como opción del instructor (con 28.7); si H.19 = MoR → documentar alternativa o cerrar como «no aplica» | HUMAN-BLOCKED (H.19) | Checkout de prueba en test mode con USDC; nunca claves live (línea roja); `RUNBOOK.md` sección de rails |
+| 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET /verify/{code}` público con estado y revocación, QR en el PDF, `assertion` enlazable desde LinkedIn; cNFT no transferible en Solana **solo tras H.27** | BLOCKED (17.2) | Validación con el validador público de 1EdTech (o test contra el JSON Schema oficial); test de revocación; e2e de verificación |
+| 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran en 21.7 (ToS/privacidad) con cabecera `BORRADOR — H.20` | BLOCKED (21.7) | Texto en `legal/` en ambos idiomas; `check_docs` sin contradicción con `ECONOMIA.md`; H.20 los incluye |
+| 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación adversaria** de 29.0–29.11 (protocolo §7) | BLOCKED | Fila del Scorecard con números medidos; `VEREDICTO: CONFIRMADA` en cada fila de la serie |
+
+
 ## 3. Cola HUMAN-BLOCKED
 
 > El orquestador **prepara todo** y deja el ítem aquí. No intenta ejecutar la acción final.
@@ -327,6 +481,13 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.18 | **La cadena solo corre con la app Claude abierta y el PC despierto** (H.6). Si el PC se suspende, no… | Ejecutar como administrador: `powercfg /change standby-timeout-ac 0` y `powercfg /change hibernate-timeout-ac 0`; dejar la app abierta. Alternativa definitiva y gratuita: **H.7** (conectar `Neopram/wh… |
 | H.19 | **Decidir rail de pagos y entidad** (ADR-16) cuando 21.1 y 21.2 estén `DONE` | Elegir: Stripe particular · Merchant of Record (Paddle/Lemon Squeezy) · solo IAP; y entidad: seguir como particular · autónomo · IKE · e-Residency. Sin esta decisión no se activa ningún cobro. Coste: … |
 | H.20 | **Revisión profesional de los textos legales** antes de publicarlos como definitivos (21.7) | Un abogado (UE/Grecia) revisa ToS, privacidad, reembolsos y aviso de IA. Puede posponerse hasta tener ingresos; mientras tanto la app publica los borradores **con la marca de borrador visible**. Coste… |
+| H.22 | **¿Aceptar [H.LIC] para OWASP** (CheatSheets/WSTG/ASVS, CC BY-SA 4.0) en los tracks de seguridad? Afecta a 25.5 | Sí = el contenido derivado hereda CC BY-SA. No = solo NIST + MITRE (dominio público), cobertura algo menor y sin restricciones. Coste: €0 |
+| H.23 | **Abrir la Serie 26** (distribución ES) cuando 24.14 esté DONE | Confirmar en el ledger; crear las cuentas de canal (YouTube, Dev.to) con la identidad de Whetzy — crear cuentas es del humano aunque sean €0 |
+| H.24 | **Abrir la Serie 28** (marketplace) cuando 22.1 y 22.3 estén DONE | Confirmar; decidir Stripe Connect vs. manual para el primer payout |
+| H.25 | **Activar payouts de instructores en producción** (28.7) | Stripe Connect live (H.4) o cuenta Wise; primer payout supervisado a mano |
+| H.26 | **Abrir la Serie 29** (economía cerrada) cuando 24.6 esté DONE: aprobar la tabla de grifos y sumideros de `ECONOMIA.md` §2.2–§2.3 y las **tres cláusulas** de §1 | Leer `ECONOMIA.md` §1–§3; ajustar cifras si quiere; confirmar. Coste: €0. Recompensa «certificación oficial a los 10 activados» queda HUMAN-BLOCKED por importe hasta que haya ingresos (mientras: 6 meses Premium) |
+| H.27 | **cNFT de certificados en Solana** (29.10, opcional; ADR-37): wallet emisora con céntimos de SOL | Decidir. Coste ≈ **€3–5 una vez** en SOL para rent/fees. **Alternativa gratuita: solo Open Badges 3.0** (ya obligatorio). Si no se decide, no se hace |
+| H.28 | **Grant / bounty de la Solana Foundation o Superteam** para track32 en español (26.8; ADR-38) — solo el dueño puede solicitarlo | Revisar el dossier de 26.8, verificar montos y condiciones vigentes en la URL fechada, y presentar la solicitud. Coste: €0. Es ingreso, no gasto |
 
 ---
 
@@ -339,6 +500,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | **bd** | 2026-09-18 | **8/8 passed** (test_oauth.py) · tsc exit 0 · mypy oauth exit 0 | — | — | check_docs PASS | tsc exit 0 | — | **19.1 DONE** (GitHub+Google OAuth web: migración 20, modelos OAuthState/OAuthAccount, endpoints /start + /callback, frontend IIFE + botones + CSS + i18n ES/EN, tests backend + e2e spec) | 19 |
 | **be** | 2026-09-18 | sin correr suite completa (sesión de commits + deploy) | — | — | check_question_bank PASS · check_docs PASS | tsc exit 0 | — | **18.4 DONE** (tracks 15/16/17 Linux/Algoritmos/Redes, commit bec734c) · **19.1 commiteado** (48bd81c) · **11.6 commiteado** (5e306fb) · fix TS lint (c7f0413) · `git push origin master` (4 commits) · frontend `npx wrangler pages deploy` → `a881c7d0.whetzy.pages.dev` / `whetzy.com` · docs.zip eliminado | 18, 19, 11 |
 | **bg** | 2026-09-18 | sin correr suite (sesión de verificación de docs + ledger) | — | — | check_docs PASS (pendiente commit) | — | — | **20.0 DONE** (c7e8fd9) · **20.1 DONE** (040fd3a) · **20.2 DONE** (docs P0/P1 corregidos: RUNBOOK/CATALOGO/ARCHITECTURE/DECISIONS/ORCHESTRATOR; 12.2 DONE, 18.4 DONE, H.SEED actualizado; verificador adversario CONFIRMADA) | 20 |
+| **bh** | 2026-09-18 | sin correr suite (sesión de estrategia y documentación; sin código) | — | — | `check_docs.py` All checks PASSED antes y después | — | — | Ninguna tarea de código. Docs: ADR-21…38; docs vivos 12-16 (`DISTRIBUCION`, `SEGMENTOS`, `COMPETENCIA`, `MARKETPLACE`, `ECONOMIA`); Serie 24 (15 filas, antes vacía), 25.14, 26.8, 27.9, Serie 29 (13 filas); H.22-H.28 en la cola; `CATALOGO_MAESTRO.md` §4/§5 duplicados renumerados a §11/§12, track15-17 marcados ✅ (iban retrasados), track32 añadido | — |
 
 ---
 
@@ -365,5 +527,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | whetzy-orch-20260911-0730 | (misma sesión **as**, nota de cierre) | sesión s | **AVISO PARA LA SIGUIENTE SESIÓN — el árbol quedó ROJO, y no por esta sesión.** A las ~17:4x local la sesión `at` commiteó `3cd3fb7 feat(content): add track12 SQL — 300 Q, 20 skills, 5 modules, 20% exec` y `dde4815 docs: 17.5 PARCIAL`. Medido justo después, sobre master: **`pytest tests/content` → 1 failed, 13.952 passed** (`test_every_sql_exec_question_has_a_reference_fill`: las preguntas `sql_ex… |
 | (sesión interactiva **bc**, 2026-09-18, no lanzada por el cron) | — | dueño | **Cerró H.11**: `npx wrangler pages deploy dist --project-name whetzy --branch main` desde `frontend/` (el primer intento sin `--branch` fue a *Preview*; con `--branch main` a *Production*, 0 ficheros re-subidos). `whetzy.com` sirve `8015fe4`. Scorecard **44/100** y **Educative ≈ 51** (teardown §11, análisis en vivo). El dueño decidió: fuentes solo gratuitas y legales (ADR-11), social login con Ap… |
 | (sesión interactiva **bg**, 2026-09-18, no lanzada por el cron; modelo Sonnet 4.6) | — | dueño | **Ejecutó H.21 y cerró 20.0.** Aplicó ADR-14…20 `PROPUESTA→ACEPTADA` (commit `bbb1b30`); abrió series 20-23 (29 filas TODO); cerró H.21. Creó `scripts/session_lock.py` (acquire/release/status, `WHETZY_LOCK_PATH` para aislamiento de tests), `backend/tests/unit/test_session_lock.py` (6/6 passed), `.gitignore` con `.session.lock`. Verificador adversario: criterios técnicos CONFIRMADOS. **Para la sigu… |
+| (sesión interactiva **bh**, 2026-09-18, no lanzada por el cron; Sonnet 4.6 y, para la parte de estrategia, Fable 5.1 elegido por el dueño **solo para esta sesión**) | — | dueño | **Solo documentación, sin commits.** Validación externa del gap (CATALOGO §11), ADR-21…32 (precio, B2B, YouTube, merger, 2.700 cursos, Serie 24, distribución, segmentos, marketplace, vídeo, indirectos, métricas) y **ADR-33…38** (no hay token; créditos cerrados; referidos + códigos; USDC como rail; Open Badges; track32 Solana). Docs vivos 12-16. Series 24 (completa), 25-29 en el ledger; H.22-H.28. **Para la siguiente sesión programada:** nada de esto abre trabajo nuevo — todo es `BLOCKED (orden del dueño)`; seguir con 20.7 (CI-LOCAL) y el backlog 21-23. Los 8 commits locales de bg siguen pendientes de push con las 4 guardias |
 | (sesión interactiva **bf**, 2026-09-18, no lanzada por el cron; modelo Fable 5.1 elegido por el dueño **solo para esta sesión**) | — | dueño | **Preparó, sin ejecutar, la verificación masiva.** Guardó 4 HTML de análisis en `docs/analisis-estrategico/` (con errata: se escribieron desde el estado del 08-sep). Escribió `docs/PROTOCOLO_VERIFICACION.md` (doc vivo nº 11), las series **20-23** (todas `BLOCKED (orden del dueño)`), H.17-H.21, ADR-14…20 (`PROPUESTA`), `CATALOGO_MAESTRO.md` §2.2 (repositorios a clonar con licencia), y cambió `ORCHE… |
 

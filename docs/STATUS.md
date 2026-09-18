@@ -853,3 +853,18 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 - `scripts/check_docs.py`: check [6] source licenses (`check_source_licenses.py`) añadido — 6/6 checks PASSED
 - Ruff + mypy limpios: 10 errores auto-fixed, 3 PLW1510 corregidos manualmente, mypy `str|None` en `auth.py`
 - Banco: **6.233 Q · 18 tracks · 378 skills · 378 lecciones · 622 términos**. Sin cambios de contenido en esta serie.
+
+---
+
+## 2026-09-18 — Sesión bh: estrategia de mercado, economía cerrada y sin token (ADR-21…38, docs vivos 12-16)
+
+**Sesión interactiva, solo documentación, sin código ni commits.** Modelo: Sonnet 4.6 y, para la parte de estrategia, Fable 5.1 elegido por el dueño solo para esta sesión.
+
+**Qué cambió:**
+- `docs/DECISIONS.md`: **ADR-21…32** (precio Pro $14.99, B2B primero, YouTube, ventana Coursera+Udemy, meta 2.700 cursos, Serie 24, distribución dual, 5 segmentos, marketplace 70/30, stack de vídeo, indirectos, métricas) y **ADR-33…38** (no hay token — rechazado con evidencia; créditos cerrados; referidos por activación + códigos de cinco tipos; USDC como rail; Open Badges 3.0; track32 Solana/Web3 + segmento 6).
+- Docs vivos nuevos: `DISTRIBUCION.md` (12), `SEGMENTOS.md` (13), `COMPETENCIA.md` (14), `MARKETPLACE.md` (15), **`ECONOMIA.md` (16)**. `README.md` → dieciséis documentos vivos.
+- `docs/AUTONOMOUS_STATE.md`: Serie 24 pasa de encabezado vacío a **15 filas** con criterios; Series 25-28 movidas dentro de `## 2` (estaban tras `## 6`); **25.14** (track32), **26.8** y **27.9** (Superteam), 28.1/28.7 ampliadas; **Serie 29** (13 filas: ledger de créditos, referidos, códigos, antifraude, admin, reactivación, USDC, credenciales); 21.2 y 22.1 ampliadas; **H.22-H.28** en la cola; `## 1` con las series 21-29; Scorecard y cadena con la fila bh. Todo lo nuevo es `BLOCKED (orden del dueño)`: no abre trabajo para la sesión programada.
+- `docs/CATALOGO_MAESTRO.md`: los `## 4` y `## 5` duplicados (añadidos en bh) renumerados a **§11** (validación de mercado) y **§12** (proyección competitiva); §2 corregido a **28 tracks** (track15/16/17 iban marcados ❌ pese a 18.4 DONE; track32 añadido; cobertura 13/28); §12.2 con filas de créditos, USDC, credenciales y «token: ❌ a propósito».
+- Banco sin cambios: **6.233 Q · 18 tracks · 378 skills · 378 lecciones · 622 términos**. `python scripts/check_docs.py` → All checks PASSED antes y después.
+
+**Pendiente heredado (sin cambios):** 20.7 CI-LOCAL exit 0; 8 commits locales de bg pendientes de push con las 4 guardias; H.12, H.17, H.18.

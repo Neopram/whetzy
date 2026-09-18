@@ -19,9 +19,14 @@ Frontend: React + Capacitor.
 | Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
 | Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
 | Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
+| Plan de distribución masiva ES + EN (canales, cadencia, herramientas $0, KPIs) | **`DISTRIBUCION.md`** |
+| Los 6 segmentos de usuario (Estudiante, Career-switcher, Developer Senior, Profesor, Empresa, Developer Web3/Solana) con personas, flujos y créditos por segmento | **`SEGMENTOS.md`** |
+| Análisis exhaustivo de competencia directa e indirecta con qué adaptar y qué evitar | **`COMPETENCIA.md`** |
+| Spec del marketplace de instructores: revenue share 70/30, quality gate, moderación | **`MARKETPLACE.md`** |
+| Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
 | Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
 
-Esos son los **once documentos vivos** (más `store/`). `analisis-estrategico/` y
+Esos son los **dieciséis documentos vivos** (más `store/`). `analisis-estrategico/` y
 `legal/` (raíz) no mandan sobre el código. Todo lo demás está en
 `archive/` — incluida la estrategia v3 del dueño, superada por el catálogo — y **no
 manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo.
