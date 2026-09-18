@@ -2,13 +2,19 @@ import { describe, expect, it } from 'vitest';
 import en from '../i18n/en/common.json';
 import es from '../i18n/es/common.json';
 
-type Tree = { [k: string]: string | Tree };
+// Arrays are part of the resource shape since the placement test moved its
+// questions here (18.15): each question carries an `options` array. They flatten
+// by index, so `options.0` .. `options.3` are ordinary keys for parity purposes
+// and a language that ships three options where the other ships four fails the
+// same way a missing key does.
+type Tree = { [k: string]: string | string[] | Tree };
 
 function flatten(tree: Tree, prefix = ''): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [key, value] of Object.entries(tree)) {
     const path = prefix ? `${prefix}.${key}` : key;
     if (typeof value === 'string') out[path] = value;
+    else if (Array.isArray(value)) value.forEach((v, i) => (out[`${path}.${i}`] = v));
     else Object.assign(out, flatten(value, path));
   }
   return out;

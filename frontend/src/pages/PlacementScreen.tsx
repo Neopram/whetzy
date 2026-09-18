@@ -5,25 +5,44 @@ import { ProgressBar } from '../components/common/ProgressBar';
 import styles from './PlacementScreen.module.css';
 
 interface PlacementQuestion {
-  text: string;
-  code?: string;
-  options: string[];
+  /** i18n key under `placement.questions`; the text and options live there. */
+  id: string;
   correctIndex: number;
   difficulty: number;
 }
 
-const PLACEMENT_POOL: PlacementQuestion[] = [
-  { text: 'Que funcion se usa para imprimir en consola?', options: ['print()', 'echo()', 'log()', 'write()'], correctIndex: 0, difficulty: 0.1 },
-  { text: 'Cual es el tipo de dato de True?', options: ['bool', 'int', 'str', 'bit'], correctIndex: 0, difficulty: 0.15 },
-  { text: 'Como se declara una lista vacia?', options: ['[]', '{}', '()', 'list{}'], correctIndex: 0, difficulty: 0.2 },
-  { text: 'Que retorna len("Python")?', options: ['6', '5', '7', 'Error'], correctIndex: 0, difficulty: 0.25 },
-  { text: 'Cual operador se usa para exponenciacion?', options: ['**', '^', 'pow', '//'], correctIndex: 0, difficulty: 0.3 },
-  { text: 'Que keyword inicia un loop definido?', options: ['for', 'loop', 'each', 'iterate'], correctIndex: 0, difficulty: 0.35 },
-  { text: 'Que es self en una clase?', options: ['Referencia a la instancia', 'Variable global', 'Keyword reservado', 'Tipo de dato'], correctIndex: 0, difficulty: 0.5 },
-  { text: 'Cual es la diferencia entre append() y extend()?', options: ['append agrega un elemento, extend agrega iterables', 'Son identicos', 'extend solo funciona con listas', 'append es mas rapido'], correctIndex: 0, difficulty: 0.55 },
-  { text: 'Que patron implementa un context manager?', options: ['__enter__ y __exit__', 'open y close', 'start y stop', '__init__ y __del__'], correctIndex: 0, difficulty: 0.7 },
-  { text: 'Que es un descriptor en Python?', options: ['Objeto con __get__, __set__, o __delete__', 'Una clase abstracta', 'Un tipo de variable', 'Un decorador especial'], correctIndex: 0, difficulty: 0.85 },
+// The pool holds only what is language-independent: which option is right and
+// how hard the question is. Stems and options come from `placement.questions.*`
+// so the test exists in both languages - it used to be hardcoded Spanish, which
+// meant an English learner sat a Spanish placement test (red line 3).
+//
+// `correctIndex` is spread across the four positions on purpose. All ten used to
+// be 0, so anyone who pressed the first button ten times scored 100 % and was
+// placed at the top level, skipping the whole curriculum. That is red line 1:
+// the placement estimate has to measure knowledge, not a guessing habit. The
+// option order in `es/common.json` and `en/common.json` is the same, so one
+// index is correct for both.
+export const PLACEMENT_POOL: PlacementQuestion[] = [
+  { id: 'print', correctIndex: 0, difficulty: 0.1 },
+  { id: 'boolType', correctIndex: 2, difficulty: 0.15 },
+  { id: 'emptyList', correctIndex: 1, difficulty: 0.2 },
+  { id: 'lenPython', correctIndex: 3, difficulty: 0.25 },
+  { id: 'power', correctIndex: 1, difficulty: 0.3 },
+  { id: 'loopKeyword', correctIndex: 2, difficulty: 0.35 },
+  { id: 'self', correctIndex: 3, difficulty: 0.5 },
+  { id: 'appendExtend', correctIndex: 0, difficulty: 0.55 },
+  { id: 'contextManager', correctIndex: 2, difficulty: 0.7 },
+  { id: 'descriptor', correctIndex: 1, difficulty: 0.85 },
 ];
+
+/** 0-100 accuracy -> the i18n key naming that level. */
+function levelKey(pct: number): string {
+  if (pct >= 85) return 'advanced';
+  if (pct >= 70) return 'upperIntermediate';
+  if (pct >= 50) return 'intermediate';
+  if (pct >= 30) return 'basic';
+  return 'beginner';
+}
 
 export function PlacementScreen() {
   const setScreen = useAppStore((s) => s.setScreen);
@@ -36,7 +55,14 @@ export function PlacementScreen() {
   const [total, setTotal] = useState(0);
   const [ability, setAbility] = useState(0.5);
 
-  const question = PLACEMENT_POOL[qIndex % PLACEMENT_POOL.length];
+  const entry = PLACEMENT_POOL[qIndex % PLACEMENT_POOL.length];
+  const question = {
+    ...entry,
+    text: t(`placement.questions.${entry.id}.text`),
+    options: t(`placement.questions.${entry.id}.options`, {
+      returnObjects: true,
+    }) as string[],
+  };
 
   const handleAnswer = useCallback(
     (index: number) => {
@@ -95,8 +121,7 @@ export function PlacementScreen() {
 
   if (phase === 'result') {
     const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
-    const level =
-      pct >= 85 ? 'Avanzado' : pct >= 70 ? 'Intermedio-Alto' : pct >= 50 ? 'Intermedio' : pct >= 30 ? 'Basico' : 'Principiante';
+    const level = t(`placement.levels.${levelKey(pct)}`);
 
     return (
       <div className={styles.result}>
@@ -140,7 +165,6 @@ export function PlacementScreen() {
 
       <div className={styles.questionCard}>
         <h2 className={styles.questionText}>{question.text}</h2>
-        {question.code && <pre className={styles.codeBlock}><code>{question.code}</code></pre>}
       </div>
 
       <div className={styles.options}>

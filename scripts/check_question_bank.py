@@ -219,6 +219,7 @@ def main() -> int:
     # rewriting. Mixing the two into one number hides both.
     by_track: dict[str, Counter] = defaultdict(Counter)
     tf_track: dict[str, Counter] = defaultdict(Counter)
+    by_skill: dict[str, Counter] = defaultdict(Counter)
     for path, q in items:
         ci = q.get("correct_index")
         opts = q.get("options_es")
@@ -228,6 +229,8 @@ def main() -> int:
             tf_track[track_key(path)][ci] += 1
         else:
             by_track[track_key(path)][ci] += 1
+            skill = q.get("skill_id", "unknown")
+            by_skill[skill][ci] += 1
 
     for track, dist in sorted(by_track.items()):
         total = sum(dist.values())
@@ -240,6 +243,21 @@ def main() -> int:
                 f"{track}: {share:.0%} of multi-option answers sit at position {worst} "
                 f"({count}/{total}) - guessable without knowing the material. "
                 "Run scripts/rebalance_answer_positions.py"
+            )
+
+    # --- per-skill template detection (≥75% at same position = template artifact) ---
+    SKILL_TEMPLATE_MAX = 0.75
+    SKILL_MIN_SAMPLE = 10
+    for skill, dist in sorted(by_skill.items()):
+        total = sum(dist.values())
+        if total < SKILL_MIN_SAMPLE:
+            continue
+        worst, count = dist.most_common(1)[0]
+        share = count / total
+        if share >= SKILL_TEMPLATE_MAX:
+            problems.append(
+                f"{skill}: {share:.0%} of answers at position {worst} ({count}/{total}) "
+                "- likely template artifact. Run fix_skew or rewrite."
             )
 
     # --- true/false balance, reported but not failed on ---
