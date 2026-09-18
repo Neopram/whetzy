@@ -36,7 +36,7 @@ function Log([string]$msg) {
 
 function Step([string]$name, [scriptblock]$cmd, [bool]$skip=$false, [string]$skipReason='') {
     if ($skip) {
-        Log "SKIP  $name — $skipReason"
+        Log "SKIP  $name - $skipReason"
         $Steps.Add(@{Name=$name; Status='SKIP'; Duration=0})
         return
     }
@@ -190,13 +190,13 @@ $PassCount = ($Steps | Where-Object { $_.Status -eq 'PASS' }).Count
 $FailCount = $Failures.Count
 
 if ($FailCount -eq 0) {
-    Log "RESULT: PASS — $PassCount/$RunCount steps OK (CI-LOCAL $(Get-Date -Format 'yyyy-MM-dd') exit 0)"
+    Log "RESULT: PASS - $PassCount/$RunCount steps OK (CI-LOCAL $(Get-Date -Format 'yyyy-MM-dd') exit 0)"
     Write-Host ""
     Write-Host "CI-LOCAL $(Get-Date -Format 'yyyy-MM-dd') exit 0" -ForegroundColor Green
     Set-Location $Root
     exit 0
 } else {
-    Log "RESULT: FAIL — $FailCount failures: $($Failures -join ', ')"
+    Log "RESULT: FAIL - $FailCount failures: $($Failures -join ', ')"
     Write-Host ""
     Write-Host "CI-LOCAL $(Get-Date -Format 'yyyy-MM-dd') exit 1 - failures: $($Failures -join ', ')" -ForegroundColor Red
     Set-Location $Root
