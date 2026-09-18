@@ -1,5 +1,18 @@
 # Whetzy — Operations Runbook
 
+## Deploy to Cloudflare Pages (frontend)
+
+**Deploy is MANUAL** — no Git connection in Cloudflare Pages. Run from `frontend/`:
+
+```bash
+npm run build
+npx wrangler pages deploy dist --project-name whetzy --branch main
+```
+
+First time per machine requires `npx wrangler login` (opens browser OAuth). The `--branch main` flag sends it to Production (whetzy.com). Verified 2026-09-18 (H.11 closed, sesión bc): 153 files, deploy `8c077b9a.whetzy.pages.dev`.
+
+---
+
 ## Deploy to Railway (backend)
 
 **Deploy is AUTOMATIC** — Railway deploys from `master` automatically (verified 2026-09-16, H.16). After `git push origin master`, Railway runs migrations and content_loader without manual intervention.
