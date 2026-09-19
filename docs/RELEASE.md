@@ -11,7 +11,12 @@
 
 ### Pre-requisitos
 - Node 20, `npm ci` limpio
-- Variables de entorno en Cloudflare: `VITE_API_URL=https://api-production-9751.up.railway.app`
+- **`VITE_API_URL` NO se pone en Cloudflare.** Aquí se construye en local y se sube el
+  `dist/` ya hecho con `wrangler pages deploy`, así que una variable del panel de
+  Cloudflare no llega nunca a Vite. Vive en `frontend/.env.production`, commiteada.
+  Cuando faltó, el bundle salió apuntando a `/api/v1` del propio dominio, Cloudflare
+  respondió a eso con el `index.html` y un **200**, y la aplicación se quedó entera sin
+  backend sin un solo error en consola. Hoy el build se planta si no está.
 
 ### Build y deploy
 ```bash

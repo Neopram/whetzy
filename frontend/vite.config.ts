@@ -2,7 +2,7 @@ import { createReadStream, existsSync, readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, extname, resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, loadEnv, type Plugin } from 'vite'
 
 /**
  * Makes `vite preview` resolve pretty URLs (`/landing` -> `dist/landing/index.html`)
@@ -252,6 +252,35 @@ function monacoDropUnusedLanguageServices(): Plugin {
   };
 }
 
+/** Un build de produccion sin `VITE_API_URL` es un build que no habla con su
+ *  backend, y no se nota: `services/api.ts` cae a la ruta relativa '/api/v1',
+ *  Cloudflare la resuelve con el index.html y un 200, y la aplicacion se queda
+ *  muda sin un error. Paso, y estuvo asi hasta que alguien probo a registrarse.
+ *  Mejor que el build muera aqui. */
+function requireApiUrl(): Plugin {
+  return {
+    name: 'require-api-url',
+    apply: 'build',
+    config(_config, env) {
+      if (env.mode !== 'production') return;
+      const url = loadEnv(env.mode, process.cwd(), '').VITE_API_URL;
+      if (!url) {
+        throw new Error(
+          'VITE_API_URL no esta definida. Sin ella el bundle apunta a /api/v1 del ' +
+            'propio dominio y la aplicacion se queda sin backend en silencio. ' +
+            'Esta en frontend/.env.production; si lo has borrado, vuelve a ponerlo.'
+        );
+      }
+      if (!/^https?:\/\//.test(url)) {
+        throw new Error(
+          `VITE_API_URL tiene que ser un origen absoluto, y es ${JSON.stringify(url)}. ` +
+            'Una ruta relativa es exactamente el fallo que este guardia existe para impedir.'
+        );
+      }
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -259,6 +288,7 @@ export default defineConfig({
     cloudflarePrettyUrlsPreviewPlugin(),
     pyodideSelfHostPlugin(),
     monacoDropUnusedLanguageServices(),
+    requireApiUrl(),
   ],
   build: {
     // Read by scripts/prerender-landing.mjs to find the exact hashed CSS

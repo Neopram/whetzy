@@ -1,1 +1,9 @@
+# `/api/*` va primero y a proposito: sin esta linea, el comodin de abajo
+# devuelve index.html con **200** para cualquier llamada a la API que se
+# escape al dominio equivocado. Un 200 con HTML no lo detecta nadie —ni el
+# cliente, que intenta parsearlo como JSON y falla en silencio—, mientras
+# que un 404 se ve al primer intento.
+/api/* /404.html 404
+
+# El SPA enruta por pathname, asi que cualquier otra ruta la sirve el index.
 /* /index.html 200
