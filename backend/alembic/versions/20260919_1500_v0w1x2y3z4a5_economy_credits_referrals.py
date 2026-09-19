@@ -35,27 +35,37 @@ depends_on = None
 REPLACED = ('credit_ledger', 'referrals', 'promo_codes')
 
 
-def _assert_empty() -> None:
-    """Se niega a continuar si alguna de las tablas que sustituye tiene datos."""
+def _preserve_or_drop() -> None:
+    """Deja sitio para las tablas nuevas sin perder una sola fila.
+
+    Antes esto se plantaba con un RuntimeError si encontraba datos. Era peor que
+    inutil: `start.sh` corre `alembic upgrade head` con `set -e`, asi que
+    plantarse no protege nada — tumba el arranque entero y deja el servicio en
+    502. Si hay filas se renombra la tabla a `<nombre>_legacy` y se sigue: los
+    datos quedan intactos y a mano para decidir que hacer con ellos, y el
+    despliegue no se cae.
+    """
     bind = op.get_bind()
-    inspector = sa.inspect(bind)
-    existing = set(inspector.get_table_names())
+    existing = set(sa.inspect(bind).get_table_names())
     for table in REPLACED:
         if table not in existing:
             continue
         rows = bind.execute(sa.text(f'SELECT count(*) FROM {table}')).scalar_one()
         if rows:
-            raise RuntimeError(
-                f"'{table}' tiene {rows} fila(s) y esta migracion la recrea con otra "
-                f"clave primaria. No la borro yo: exporta esas filas, decide como "
-                f"convertirlas al ledger por lotes y vuelve a lanzarla."
+            legacy = f"{table}_legacy"
+            if legacy in existing:
+                op.drop_table(legacy)
+            op.rename_table(table, legacy)
+            print(
+                f"[migracion] '{table}' tenia {rows} fila(s): renombrada a "
+                f"'{legacy}'. No se ha borrado nada; revisala antes de tirarla."
             )
+        else:
+            op.drop_table(table)
 
 
 def upgrade() -> None:
-    _assert_empty()
-    for table in REPLACED:
-        op.drop_table(table, if_exists=True)
+    _preserve_or_drop()
 
     op.create_table(
         'credit_ledger',

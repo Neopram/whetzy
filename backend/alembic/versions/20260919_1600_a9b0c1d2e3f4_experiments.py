@@ -18,7 +18,7 @@ depends_on = None
 def upgrade() -> None:
     op.create_table(
         "experiments",
-        sa.Column("id", sa.UUID, primary_key=True, server_default=sa.func.gen_random_uuid()),
+        sa.Column("id", sa.UUID, primary_key=True),
         sa.Column("name", sa.String(128), nullable=False, unique=True),
         sa.Column("description", sa.String(512)),
         sa.Column("status", sa.String(20), nullable=False, server_default="draft"),
@@ -32,7 +32,7 @@ def upgrade() -> None:
 
     op.create_table(
         "experiment_assignments",
-        sa.Column("id", sa.UUID, primary_key=True, server_default=sa.func.gen_random_uuid()),
+        sa.Column("id", sa.UUID, primary_key=True),
         sa.Column("experiment_id", sa.UUID, sa.ForeignKey("experiments.id"), nullable=False),
         sa.Column("user_id", sa.UUID, sa.ForeignKey("users.id"), nullable=False),
         sa.Column("variant", sa.String(10), nullable=False),
