@@ -5,9 +5,10 @@ Revises: w3x4y5z6a7b8
 Create Date: 2026-09-19 14:00:00.000000
 
 """
-from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
+
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "x5y6z7a8b9c0"
@@ -21,7 +22,7 @@ def upgrade() -> None:
     op.create_table(
         "jobs",
         sa.Column("id", sa.BigInteger(), nullable=False),
-        sa.Column("user_id", sa.BigInteger(), nullable=False),
+        sa.Column("user_id", sa.UUID(), nullable=False),
         sa.Column("job_type", sa.String(50), nullable=False),
         sa.Column(
             "status",
