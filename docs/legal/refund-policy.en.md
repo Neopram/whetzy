@@ -2,12 +2,14 @@
 title: "Refund Policy"
 last_updated: "2026-09-19"
 language: "en"
-status: "BORRADOR"
+status: "DRAFT — pending professional legal review (H.20)"
 ---
 
 # Refund Policy
 
 ## Disclaimer
+
+**DRAFT — pending professional legal review (H.20).**
 
 This is a DRAFT document for internal review only.
 
@@ -82,5 +84,5 @@ Timeline:
 
 ---
 
-Status: BORRADOR
+Status: DRAFT
 Generated: 2026-09-19

@@ -6,7 +6,10 @@
  * from coverage, see vitest.config.ts) and useSqlRuntime already has its
  * own dedicated worker-level tests. What useRuntime itself is responsible
  * for — routing status/runCode to the right underlying runtime, disabling
- * the inactive one, and the js stub — is what these tests exercise.
+ * the inactive one, and dispatching js to the Worker sandbox — is what these
+ * tests exercise. `Worker` y `URL.createObjectURL` los aporta el doble de
+ * src/test/setup.ts: jsdom no los trae. Ese doble ejecuta el codigo en el
+ * mismo hilo, asi que aqui se prueba el cableado, no el aislamiento real.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -75,13 +78,20 @@ describe('useRuntime', () => {
     expect(sqlRuntimeMock).toHaveBeenCalledWith(true);
   });
 
-  it('js runCode always resolves with the stub result, ignoring its input', async () => {
+  it('js runCode devuelve lo que el codigo imprime por console', async () => {
     const { result } = renderHook(() => useRuntime('js'));
     await expect(result.current.runCode('console.log(1)')).resolves.toEqual({
-      output: '',
-      error: 'JS runtime not yet available',
+      output: '1',
+      error: null,
       timedOut: false,
     });
+  });
+
+  it('js runCode devuelve el mensaje de error sin lanzar', async () => {
+    const { result } = renderHook(() => useRuntime('js'));
+    const res = await result.current.runCode('throw new Error("boom")');
+    expect(res.error).toBe('boom');
+    expect(res.timedOut).toBe(false);
   });
 });
 

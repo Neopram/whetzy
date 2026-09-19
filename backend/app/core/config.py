@@ -78,6 +78,25 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in v.split(",") if origin.strip()]
         return v
 
+    @property
+    def active_cors_origins(self) -> list[str]:
+        """Origins actually handed to CORSMiddleware (22.2).
+
+        The default list carries the localhost ports a developer needs. In
+        production those must not survive: with ``allow_credentials=True`` a
+        page served from ``http://localhost:5173`` on anyone's machine would
+        otherwise be an approved origin against the live API. Loopback origins
+        are dropped whenever ENVIRONMENT is production.
+        """
+        if self.ENVIRONMENT != "production":
+            return self.BACKEND_CORS_ORIGINS
+        return [
+            origin
+            for origin in self.BACKEND_CORS_ORIGINS
+            if not origin.startswith(("http://localhost", "http://127.0.0.1",
+                                      "https://localhost", "https://127.0.0.1"))
+        ]
+
     # --- AI Tutor (Groq) -----------------------------------------------------
     GROQ_API_KEY: str | None = None
     GROQ_MODEL: str = "qwen/qwen3.8-27b"
@@ -133,6 +152,16 @@ class Settings(BaseSettings):
     STRIPE_WEBHOOK_SECRET: str = ""     # whsec_...
     STRIPE_PRICE_PLUS: str = ""         # price_... for the Plus plan
     STRIPE_PRICE_PRO: str = ""          # price_... for the Pro plan
+    # Monthly list price per subscription tier, in USD (ADR-21).
+    # The admin revenue panel multiplies these by the number of *active*
+    # subscriptions found in the DB; they are settings, not magic numbers,
+    # so a price change never means editing an endpoint.
+    # NOTE: the code tiers are ``plus`` and ``pro``; the docs call the paid
+    # plans "Pro" ($14.99) and "Premium" ($19.99). The mapping below is the
+    # one 22.14 has to confirm with the owner before any live charge.
+    PLAN_PRICE_PLUS_USD: float = 14.99
+    PLAN_PRICE_PRO_USD: float = 19.99
+
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
 

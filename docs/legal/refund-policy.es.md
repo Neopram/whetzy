@@ -2,12 +2,14 @@
 title: "Política de Reembolsos"
 last_updated: "2026-09-19"
 language: "es"
-status: "BORRADOR"
+status: "BORRADOR — pendiente de revisión profesional (H.20)"
 ---
 
 # Política de Reembolsos
 
 ## Descargo de Responsabilidad
+
+**BORRADOR — pendiente de revisión profesional (H.20).**
 
 Este es un documento BORRADOR solo para revisión interna.
 

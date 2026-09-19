@@ -6,6 +6,7 @@ Also includes auth hardening: lockout, refresh rotation, sessions, 2FA, audit lo
 from __future__ import annotations
 
 import hashlib
+import logging
 import secrets
 import uuid
 from datetime import UTC, datetime, timedelta
@@ -22,6 +23,8 @@ from app.core.config import settings
 from app.core.db import get_db
 from app.models.user import User
 from app.schemas.user import TokenPayload
+
+logger = logging.getLogger("whetzy.security")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -167,6 +170,17 @@ async def get_current_active_premium_user(
 # --------------------------------------------------------------------------
 # Progressive Account Lockout
 # --------------------------------------------------------------------------
+def _as_utc(value: datetime) -> datetime:
+    """Devuelve el datetime en UTC aware.
+
+    Postgres guarda `TIMESTAMPTZ` y asyncpg lo devuelve aware, pero SQLite (la
+    suite de tests) y cualquier fila escrita sin zona lo devuelven naive:
+    compararlos con `datetime.now(UTC)` reventaba con
+    `TypeError: can't compare offset-naive and offset-aware datetimes`.
+    """
+    return value if value.tzinfo is not None else value.replace(tzinfo=UTC)
+
+
 async def check_lockout(email: str, ip: str, db: AsyncSession) -> bool:
     """Check if (email, ip) combo is locked out. Returns True if locked."""
     from app.models.auth import LoginAttempt
@@ -186,9 +200,9 @@ async def check_lockout(email: str, ip: str, db: AsyncSession) -> bool:
 
     # Calculate delay: 5 attempts -> 1s, 6 -> 2s, 7 -> 4s, etc.
     delay_seconds = 2 ** (len(attempts) - 5)
-    time_since_last = (datetime.now(UTC) - attempts[0].created_at).total_seconds()
+    time_since_last = (datetime.now(UTC) - _as_utc(attempts[0].created_at)).total_seconds()
 
-    return time_since_last < delay_seconds
+    return bool(time_since_last < delay_seconds)
 
 
 async def record_login_attempt(email: str, ip: str, success: bool, db: AsyncSession) -> None:
@@ -245,7 +259,7 @@ async def verify_opaque_refresh_token(token: str, db: AsyncSession) -> dict[str,
     )
     rt = result.scalar_one_or_none()
 
-    if not rt or rt.revoked or rt.expires_at < datetime.now(UTC):
+    if not rt or rt.revoked or _as_utc(rt.expires_at) < datetime.now(UTC):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid refresh token",
@@ -574,12 +588,13 @@ async def log_audit_event(
     user_agent: str | None = None,
     result: str = "success",
     error_message: str | None = None,
-    metadata: dict | None = None,
+    metadata: dict[str, Any] | None = None,
     db: AsyncSession | None = None,
 ) -> None:
     """Log security-relevant action; immutable append-only.
 
-    Silently fails to not interrupt main flow. Uses provided db session if available.
+    No interrumpe el flujo principal si falla, pero deja el error en el log
+    (`whetzy.security`). Usa la sesion recibida si la hay.
     """
     from app.models.auth import AuditLog
 
@@ -612,8 +627,9 @@ async def log_audit_event(
                 session.add(audit_entry)
                 await session.commit()
     except Exception:
-        # Silently fail audit logging to not interrupt main flow
-        pass
+        # El audit log no puede tumbar el flujo principal, pero tampoco puede
+        # desaparecer en silencio: es una pieza de cumplimiento (22.3).
+        logger.exception("audit log failed: action=%s result=%s", action, result)
 
 
 # --------------------------------------------------------------------------

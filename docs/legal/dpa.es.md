@@ -3,7 +3,7 @@ title: "RGPD Apéndice de Procesamiento de Datos (DPA)"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "es"
-status: "DRAFT - Requiere revisión legal"
+status: "BORRADOR — pendiente de revisión profesional (H.20)"
 version: "1.0.0"
 ---
 
@@ -11,13 +11,15 @@ version: "1.0.0"
 
 ## Aviso Legal
 
+**BORRADOR — pendiente de revisión profesional (H.20).**
+
 Este es un documento BORRADOR solo para revisión interna. NO aprobado por asesor legal.
 
 ---
 
 ## 1. Definiciones
 
-- **Responsable del Tratamiento**: Whetzy Inc. (determina propósitos/medios)
+- **Responsable del Tratamiento**: el titular del Servicio [ENTIDAD LEGAL PENDIENTE — H.29] (determina propósitos/medios)
 - **Interesado**: Usuario que proporciona datos personales
 - **Datos Personales**: Información de persona identificada/identificable
 - **Tratamiento**: Cualquier operación sobre datos personales
@@ -105,15 +107,12 @@ Otro: Email a legal@whetzy.com
 
 ### 4.1 Subprocesadores Aprobados
 
-- Stripe: Procesamiento de pagos, USA
-- Paddle: Facturación, USA
-- Lemon Squeezy: Procesamiento de pagos, USA
-- RevenueCat: Suscripciones móviles, USA
-- Groq AI: Análisis IA, USA
-- Railway: Hosting en nube, USA/EU
-- Google Analytics: Analítica, USA
-
-Todos con Acuerdos de Procesamiento de Datos.
+- Railway: hosting y base de datos PostgreSQL (UE)
+- Cloudflare: CDN y Pages
+- Groq: inferencia del tutor de IA (modelo qwen/qwen3.8-27b)
+- Stripe: pagos (hoy solo en modo test, sin cobros reales; la cuenta live está pendiente — H.4)
+- Proveedor de email: SMTP o Resend, según la variable EMAIL_PROVIDER
+- Sentry: error tracking (deshabilitado; SENTRY_DSN vacío por defecto)
 
 ### 4.2 Cambios de Subprocesadores
 
@@ -230,7 +229,7 @@ Presentar queja ante:
 
 - Reglamento RGPD 2016/679
 - Ley de Protección de Datos 2018 (UK)
-- Leyes de jurisdicción a especificar
+- [LEY APLICABLE PENDIENTE — H.29]
 
 ---
 

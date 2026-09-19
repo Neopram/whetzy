@@ -3,7 +3,7 @@ title: "Descargos de Responsabilidad de PI"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "es"
-status: "DRAFT - Requiere revisión legal"
+status: "BORRADOR — pendiente de revisión profesional (H.20)"
 version: "1.0.0"
 ---
 
@@ -11,17 +11,17 @@ version: "1.0.0"
 
 ## Aviso Legal
 
+**BORRADOR — pendiente de revisión profesional (H.20).**
+
 Este es un documento BORRADOR solo para revisión interna. NO aprobado por asesor legal.
 
 ---
 
-## 1. Derechos de Marca Registrada
+## 1. Derechos de Marca
 
-### 1.1 Marca Registrada Whetzy
+### 1.1 Marca Whetzy
 
-"Whetzy™" y logos asociados son marcas registradas de:
-- Whetzy Inc. (USA)
-- Whetzy S.L. (Spain/EU - si es aplicable)
+"Whetzy" es una marca **no registrada** (derechos de uso en el tráfico económico) del titular del Servicio [ENTIDAD LEGAL PENDIENTE — H.29]; la solicitud de registro (EUIPO/USPTO) está pendiente.
 
 El uso no autorizado está estrictamente prohibido.
 
@@ -40,6 +40,28 @@ No use marcas Whetzy en:
 - Asociaciones engañosas
 - Mercancía comercial
 
+### 1.4 Marcas de Terceros
+
+Whetzy prepara a estudiantes para exámenes de certificación de terceros. Los nombres y logotipos siguientes pertenecen a sus respectivos titulares:
+
+- **AWS / Amazon Web Services**: marca comercial de Amazon Web Services, Inc. o sus filiales.
+- **Microsoft / Azure**: marca comercial de Microsoft Corporation.
+- **Google / Google Cloud**: marca comercial de Google LLC.
+- **CompTIA / Security+**: marca comercial de The Computing Technology Industry Association (CompTIA).
+- **ISC2 / CC (Certified in Cybersecurity)**: marca comercial de International Information System Security Certification Consortium (ISC2).
+- **PCI**: marca comercial de PCI Security Standards Council, LLC.
+- **PCEP / PCAP**: marca comercial de OpenEDG Python Institute.
+- **Python**: marca comercial de Python Software Foundation.
+- **Linux**: marca comercial de Linus Torvalds.
+- **Docker**: marca comercial de Docker, Inc.
+- **Kubernetes**: marca comercial de The Linux Foundation.
+- **Terraform / HashiCorp**: marca comercial de HashiCorp, Inc.
+- **Cisco**: marca comercial de Cisco Systems, Inc.
+
+Whetzy **no está afiliada, asociada, autorizada ni avalada** por ninguno de estos titulares. El uso de estos nombres en nuestro material es **meramente descriptivo**: sirve para identificar el examen o la tecnología que el contenido prepara o enseña, bajo uso nominativo. **Ninguna certificación oficial de estas marcas la emite Whetzy**; la certificación oficial la emite únicamente el titular correspondiente a través de sus propios canales de examen.
+
+Cualquier otra marca, nombre comercial o logotipo citado en nuestro contenido pertenece a su respectivo titular y se menciona igualmente bajo uso meramente descriptivo, sin que ello implique afiliación ni patrocinio.
+
 ---
 
 ## 2. Propiedad de Contenido
@@ -48,7 +70,7 @@ No use marcas Whetzy en:
 
 Todo contenido educativo original creado por Whetzy:
 - **Licencia**: Creative Commons BY-NC-ND
-- **Protección**: Copyright de Whetzy Inc.
+- **Protección**: Copyright del titular del Servicio.
 - **Uso**: Solo propósitos educativos
 
 ### 2.2 Contenido Enviado por Usuario
@@ -82,7 +104,7 @@ Se proporciona **atribución apropiada**.
 
 ### 3.1 Aviso de Copyright
 
-Copyright (c) 2026 Whetzy Inc. Todos los derechos reservados.
+Copyright (c) 2026, el titular del Servicio. Todos los derechos reservados.
 
 ### 3.2 Cumplimiento de Copyright
 

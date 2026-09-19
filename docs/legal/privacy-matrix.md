@@ -9,9 +9,40 @@ version: "1.0.0"
 
 # Multi-Jurisdiction Privacy Compliance Matrix
 
+> ## ⚠ NO FIABLE — no se use para decidir nada (2026-09-19, tarea 21.0)
+>
+> **Este documento no cita ni una sola fuente.** Da plazos de notificación de
+> brecha, periodos de retención y fechas de entrada en vigor para doce
+> jurisdicciones sin un solo enlace, ley citada por artículo ni fecha de
+> consulta. Eso incumple la regla 1 de `docs/PROTOCOLO_VERIFICACION.md`: *una
+> afirmación = un comando*; un documento no puede afirmar lo que no puede
+> demostrar.
+>
+> **Error verificado, y no es menor:** la fila de Brasil dice que la LGPD da
+> **70 días** para notificar una brecha. El plazo real son **3 días hábiles**
+> (6 para agentes de tratamiento de pequeño porte), fijado por la Resolución
+> CD/ANPD nº 15 de 26 de abril de 2024, que sustituyó al «prazo razoável»
+> original. Un error de ese tamaño, y en esa dirección, convierte al documento
+> en un riesgo: quien lo siga incumple.
+>
+> **Pendientes de verificar antes de reutilizar cualquier fila** (no se
+> corrigen aquí porque corregir a ojo repetiría el error): la fecha de efecto
+> de CPRA; el año de la Ley 21.719 chilena; los periodos de retención
+> atribuidos a México (5 años), Argentina (1 año) y Chile (6 meses), que no
+> aparecen como tales en ninguna de esas leyes; la autoridad peruana, aquí
+> llamada «AEPD», que es la española; y la etiqueta «COPPA (13+)», cuando
+> COPPA protege a los menores **de** 13.
+>
+> **Además no cumple el criterio de 21.3**, que pedía tres cosas que no están:
+> ePrivacy, **edad mínima por país**, e **inventario real de procesadores
+> tomado del código con sus DPA**. La fila 21.3 sigue `TODO`.
+>
+> Se conserva como punto de partida de la investigación, no como referencia.
+
+
 ## Legal Disclaimer
 
-**This is a DRAFT document for internal review only. It has NOT been reviewed or approved by legal counsel and should NOT be used in production or shared with users until formally approved.** Whetzy Inc. reserves all rights and is not liable for any use of this document without proper legal authorization.
+**This is a DRAFT document for internal review only. It has NOT been reviewed or approved by legal counsel and should NOT be used in production or shared with users until formally approved.** The Service operator [LEGAL ENTITY PENDING — H.29] reserves all rights and is not liable for any use of this document without proper legal authorization.
 
 ---
 

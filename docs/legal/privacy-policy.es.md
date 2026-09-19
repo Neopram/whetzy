@@ -3,7 +3,7 @@ title: "Política de Privacidad"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "es"
-status: "DRAFT - Requires legal review"
+status: "BORRADOR — pendiente de revisión profesional (H.20)"
 version: "1.0.0"
 ---
 
@@ -11,13 +11,15 @@ version: "1.0.0"
 
 ## Aviso Legal
 
-**Este es un documento de BORRADOR solo para revisión interna. NO ha sido revisado ni aprobado por asesor legal y NO debe utilizarse en producción ni compartirse con usuarios hasta que sea formalmente aprobado.** Whetzy Inc. se reserva todos los derechos y no es responsable de ningún uso de este documento sin la debida autorización legal.
+**BORRADOR — pendiente de revisión profesional (H.20).**
+
+**Este es un documento de BORRADOR solo para revisión interna. NO ha sido revisado ni aprobado por asesor legal y NO debe utilizarse en producción ni compartirse con usuarios hasta que sea formalmente aprobado.** El titular del Servicio [ENTIDAD LEGAL PENDIENTE — H.29] se reserva todos los derechos y no es responsable de ningún uso de este documento sin la debida autorización legal.
 
 ---
 
 ## 1. Introducción
 
-Whetzy Inc. (la "**Empresa**," "**nosotros**," "**nos**," u "**nuestro/a**") opera la plataforma de aprendizaje Whetzy (el "**Servicio**"). Esta Política de Privacidad explica cómo recopilamos, utilizamos, divulgamos y protegemos su información cuando accede y utiliza nuestro Servicio.
+El titular del Servicio (la "**Empresa**," "**nosotros**," "**nos**," u "**nuestro/a**") opera la plataforma de aprendizaje Whetzy (el "**Servicio**"). Esta Política de Privacidad explica cómo recopilamos, utilizamos, divulgamos y protegemos su información cuando accede y utiliza nuestro Servicio.
 
 Por favor, lea esta Política de Privacidad cuidadosamente. Al utilizar Whetzy, usted reconoce que ha leído y comprendido esta Política de Privacidad. Si no está de acuerdo con nuestras políticas o prácticas, por favor no utilice nuestro Servicio.
 
@@ -45,11 +47,11 @@ Cuando utiliza Whetzy, recopilamos automáticamente:
 
 ### 2.3 Datos de Análisis
 
-Utilizamos servicios de análisis (incluyendo Google Analytics, si es aplicable) para comprender cómo interactúan los usuarios con nuestro Servicio.
+Actualmente no utilizamos servicios de análisis de terceros: no hay ninguna herramienta de analítica de terceros integrada en el código en producción.
 
 ### 2.4 Información de Pago
 
-NO almacenamos directamente información de tarjetas de pago. Procesadores de pago: Stripe, Paddle, Lemon Squeezy, RevenueCat.
+NO almacenamos directamente información de tarjetas de pago. Procesador de pago: Stripe (hoy solo en modo test, sin cobros reales).
 
 ---
 
@@ -98,7 +100,12 @@ Ningún tercero anunciante, corredor de datos o red social.
 
 ### 6.2 Procesadores
 
-Stripe, Paddle, Lemon Squeezy, RevenueCat, Groq AI, Railway, Google Analytics
+- Railway — hosting y base de datos PostgreSQL (UE)
+- Cloudflare — CDN y Pages
+- Groq — inferencia del tutor de IA (modelo qwen/qwen3.8-27b)
+- Stripe — pagos (hoy solo en modo test, sin cobros reales)
+- Proveedor de email — SMTP o Resend, según configuración
+- Sentry — error tracking (deshabilitado por defecto)
 
 ---
 
@@ -122,7 +129,7 @@ No está destinado a menores de 13 años. Consentimiento parental requerido. Pó
 
 ## 10. Cookies y Seguimiento
 
-Cookies esenciales (siempre): sesión, autenticación, CSRF, preferencias. Cookies de análisis (opcional): Google Analytics.
+Cookies esenciales (siempre): sesión, autenticación, CSRF, preferencias. Actualmente no se usan cookies de análisis de terceros.
 
 ---
 
@@ -157,6 +164,6 @@ Regida por las leyes de la jurisdicción aplicable.
 
 ---
 
-**Versión**: 1.0.0 (DRAFT - Para revisión interna únicamente)
+**Versión**: 1.0.0 (BORRADOR - Para revisión interna únicamente)
 
 ⚠️ **AVISO DE BORRADOR**: No aprobado por asesor legal. No usar en producción.

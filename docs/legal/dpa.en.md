@@ -3,7 +3,7 @@ title: "GDPR Data Processing Addendum (DPA)"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "en"
-status: "DRAFT - Requires legal review"
+status: "DRAFT — pending professional legal review (H.20)"
 version: "1.0.0"
 ---
 
@@ -11,13 +11,15 @@ version: "1.0.0"
 
 ## Legal Disclaimer
 
+**DRAFT — pending professional legal review (H.20).**
+
 This is a DRAFT document for internal review only. NOT reviewed/approved by legal counsel.
 
 ---
 
 ## 1. Definitions
 
-- **Data Controller**: Whetzy Inc. (determines purposes/means of processing)
+- **Data Controller**: the Service operator [LEGAL ENTITY PENDING — H.29] (determines purposes/means of processing)
 - **Data Subject**: End user providing personal data
 - **Personal Data**: Information relating to identified/identifiable person
 - **Processing**: Any operation on personal data
@@ -105,15 +107,12 @@ Other: Email legal@whetzy.com
 
 ### 4.1 Approved Sub-Processors
 
-- Stripe: Payment processing, USA
-- Paddle: Billing, USA
-- Lemon Squeezy: Payment processing, USA
-- RevenueCat: Mobile subscriptions, USA
-- Groq AI: AI analysis, USA
-- Railway: Cloud hosting, USA/EU
-- Google Analytics: Analytics, USA
-
-All have Data Processing Agreements in place.
+- Railway: hosting and PostgreSQL database (EU)
+- Cloudflare: CDN and Pages
+- Groq: AI tutor inference (qwen/qwen3.8-27b model)
+- Stripe: payments (currently test mode only, no live charges; the live account is pending — H.4)
+- Email provider: SMTP or Resend, depending on the EMAIL_PROVIDER variable
+- Sentry: error tracking (disabled; SENTRY_DSN empty by default)
 
 ### 4.2 Sub-Processor Changes
 
@@ -143,7 +142,7 @@ Changes notified 30 days in advance. Right to object within 30 days.
 ### 5.3 Breach Response
 
 - Immediate investigation
-- Notify ICO within 72 hours
+- Notify the relevant supervisory authority within 72 hours
 - Notify affected users if high risk
 - Document breach and response
 - Communicate with processors
@@ -230,7 +229,7 @@ Lodge complaint with:
 
 - GDPR Regulation 2016/679
 - Data Protection Act 2018 (UK)
-- Laws of jurisdiction to be updated
+- [GOVERNING LAW PENDING — H.29]
 
 ---
 

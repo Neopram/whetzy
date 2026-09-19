@@ -3,13 +3,15 @@ title: "IP Disclaimers"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "en"
-status: "DRAFT - Requires legal review"
+status: "DRAFT — pending professional legal review (H.20)"
 version: "1.0.0"
 ---
 
 # Intellectual Property Disclaimers
 
 ## Legal Disclaimer
+
+**DRAFT — pending professional legal review (H.20).**
 
 **This is a DRAFT document for internal review only. NOT reviewed/approved by legal counsel. DO NOT use in production.**
 
@@ -19,9 +21,7 @@ version: "1.0.0"
 
 ### 1.1 Whetzy Trademark
 
-"Whetzy™" and associated logos/branding are registered trademarks of:
-- **Whetzy Inc.** (USA)
-- **Whetzy S.L.** (Spain/EU - if applicable)
+"Whetzy" is an **unregistered** trademark (rights arising from use in commerce) of the Service operator [LEGAL ENTITY PENDING — H.29]; registration (EUIPO/USPTO) is pending.
 
 Unauthorized use is strictly prohibited.
 
@@ -40,6 +40,28 @@ Do not use Whetzy trademarks:
 - Misleading associations
 - Commercial merchandise
 
+### 1.4 Third-Party Trademarks
+
+Whetzy prepares learners for third-party certification exams. The following names and logos belong to their respective owners:
+
+- **AWS / Amazon Web Services**: a trademark of Amazon Web Services, Inc. or its affiliates.
+- **Microsoft / Azure**: a trademark of Microsoft Corporation.
+- **Google / Google Cloud**: a trademark of Google LLC.
+- **CompTIA / Security+**: a trademark of The Computing Technology Industry Association (CompTIA).
+- **ISC2 / CC (Certified in Cybersecurity)**: a trademark of the International Information System Security Certification Consortium (ISC2).
+- **PCI**: a trademark of the PCI Security Standards Council, LLC.
+- **PCEP / PCAP**: a trademark of OpenEDG Python Institute.
+- **Python**: a trademark of the Python Software Foundation.
+- **Linux**: a trademark of Linus Torvalds.
+- **Docker**: a trademark of Docker, Inc.
+- **Kubernetes**: a trademark of The Linux Foundation.
+- **Terraform / HashiCorp**: a trademark of HashiCorp, Inc.
+- **Cisco**: a trademark of Cisco Systems, Inc.
+
+Whetzy is **not affiliated with, associated with, authorized by, or endorsed by** any of these trademark owners. Use of these names in our materials is **purely descriptive**: it identifies the exam or technology that our content prepares learners for or teaches, under nominative use. **No official certification for these marks is issued by Whetzy**; the official certification is issued solely by the respective owner through its own exam channels.
+
+Any other trademark, trade name, or logo referenced in our content belongs to its respective owner and is likewise mentioned under purely descriptive use, without implying any affiliation or sponsorship.
+
 ---
 
 ## 2. Content Ownership
@@ -48,7 +70,7 @@ Do not use Whetzy trademarks:
 
 All original educational content created by Whetzy is:
 - **Licensed**: Creative Commons BY-NC-ND (Attribution-NonCommercial-NoDerivatives)
-- **Protected**: Copyright by Whetzy Inc.
+- **Protected**: Copyright by the Service operator.
 - **Usage**: Educational purposes only; no commercial use
 
 ### 2.2 User-Submitted Content
@@ -84,7 +106,7 @@ Some content may be sourced from:
 
 ### 3.1 Copyright Notice
 
-Copyright (c) 2026 Whetzy Inc. All rights reserved.
+Copyright (c) 2026, the Service operator. All rights reserved.
 
 ### 3.2 Copyright Compliance
 
@@ -120,7 +142,7 @@ If your content was removed and you believe it lawful:
 2. Include:
    - Identification of removed content
    - Statement under penalty of perjury
-   - Your consent to US court jurisdiction
+   - Your consent to [GOVERNING LAW PENDING — H.29] court jurisdiction
    - Your signature
 
 3. We will:

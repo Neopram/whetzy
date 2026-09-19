@@ -5,6 +5,8 @@ Series 22.6: LIMIT/OFFSET pagination on all list endpoints (default limit=50, ma
 
 from __future__ import annotations
 
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -27,7 +29,7 @@ class PaginationParams(BaseModel):
 class PaginatedResponse(BaseModel):
     """Response wrapper for paginated lists."""
 
-    items: list
+    items: list[Any]
     total: int
     limit: int
     offset: int

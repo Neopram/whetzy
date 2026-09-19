@@ -1,6 +1,6 @@
 """23.1 — Auth hardening security tables: login_attempts, refresh_tokens, user_sessions, user_2fa, audit_log
 
-Revision ID: v2w3x4y5z6a7
+Revision ID: w3x4y5z6a7b8
 Revises: u1v2w3x4y5z6
 Create Date: 2026-09-19 11:00:00.000000
 """
@@ -17,13 +17,8 @@ depends_on = None
 
 
 def upgrade() -> None:
-    # Drop existing auth tables if they exist (from previous migration)
-    # and recreate with correct schema from auth hardening spec
-
-    # Check if login_attempts exists and matches correct schema
-    # For now, we'll just ensure the tables exist with correct columns
-    
-    # Create or recreate login_attempts with correct schema
+    # Tablas de seguridad de 23.1. Son las unicas que crean login_attempts,
+    # user_sessions y audit_log: la migracion 22.1 (u1v2w3x4y5z6) ya no las toca.
     op.create_table(
         "login_attempts",
         sa.Column("id", sa.Integer(), nullable=False, autoincrement=True),
@@ -38,7 +33,6 @@ def upgrade() -> None:
             index=True,
         ),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("email", "ip", "created_at"),
     )
 
     # Create refresh_tokens table for opaque token rotation
@@ -61,7 +55,7 @@ def upgrade() -> None:
     )
     op.create_index("ix_refresh_user_family", "refresh_tokens", ["user_id", "family_id"])
 
-    # Update user_sessions with correct schema
+    # user_sessions con el esquema de app/models/auth.py
     op.create_table(
         "user_sessions",
         sa.Column("id", sa.UUID(), nullable=False, server_default=sa.text("gen_random_uuid()")),
@@ -95,7 +89,7 @@ def upgrade() -> None:
         sa.Column("id", sa.UUID(), nullable=False, server_default=sa.text("gen_random_uuid()")),
         sa.Column("user_id", sa.UUID(), nullable=False, unique=True, index=True),
         sa.Column("secret_key", sa.String(32), nullable=False),
-        sa.Column("backup_codes", sa.ARRAY(sa.String(64)), nullable=False, server_default="{}"),
+        sa.Column("backup_codes", sa.JSON(), nullable=False, server_default="[]"),
         sa.Column("enabled", sa.Boolean(), default=False, nullable=False, index=True),
         sa.Column(
             "created_at",
@@ -108,7 +102,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
 
-    # Update audit_log with correct schema
+    # audit_log con el esquema de app/models/auth.py
     op.create_table(
         "audit_log",
         sa.Column("id", sa.Integer(), nullable=False, autoincrement=True),
@@ -125,7 +119,7 @@ def upgrade() -> None:
         sa.Column("user_agent", sa.Text(), nullable=True),
         sa.Column("result", sa.String(16), default="success", nullable=False),
         sa.Column("error_message", sa.Text(), nullable=True),
-        sa.Column("metadata", sa.JSON(), nullable=True),
+        sa.Column("event_data", sa.JSON(), nullable=True),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="SET NULL"),
         sa.PrimaryKeyConstraint("id"),
     )

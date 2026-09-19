@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import (
     JSON,
@@ -113,5 +114,5 @@ class AuditLog(Base):
     user_agent: Mapped[str | None] = mapped_column(Text, nullable=True)
     result: Mapped[str] = mapped_column(String(16), default="success", nullable=False)  # success, failed, blocked
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
-    event_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    event_data: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
 

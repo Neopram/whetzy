@@ -143,3 +143,73 @@ never rewrites history.
 - JWT secret lives in `SECRET_KEY` env var. Access tokens expire in 30 min; refresh tokens in 30 days.
 - Raw password reset / email verification tokens never stored — only SHA-256 hash.
 - DKT (PyTorch) is optional — falls back to exponential moving average if torch is unavailable.
+
+## Threat model (STRIDE)
+
+| Categoría | Amenaza concreta en Whetzy | Activo | Mitigación hoy | Dónde está en el código | Estado |
+|---|---|---|---|---|---|
+| **Spoofing** | Suplantación mediante JWT fraudulento | Cuenta de usuario | JWT firmado con `SECRET_KEY` + verificación en `get_current_user`; timeout 30 min + refresh en 30 días | `backend/app/core/security.py:_create_token`, `backend/app/core/security.py:get_current_user` | MITIGADO |
+| **Spoofing** | Timing attack en validación de password | Contraseña | Dummy hash para comparación constante (ASVS V2.2) | `backend/app/core/security.py:31-32 (_DUMMY_HASH)` | MITIGADO |
+| **Spoofing** | Credential stuffing contra /auth/login | Contraseña | Rate limit 12 req/min en /auth endpoints | `backend/app/core/security_middleware.py:54-56` | PARCIAL |
+| **Spoofing** | Account takeover via password reset | Reset token | Tokens single-use con SHA-256 hash (nunca plain) | `backend/app/models/auth.py`, `backend/app/core/security.py` | MITIGADO |
+| **Tampering** | MITM en tránsito HTTP → HTTPS | Datos en tránsito | HSTS `max-age=63072000; includeSubDomains; preload` en producción | `backend/app/core/security_middleware.py:49` | MITIGADO |
+| **Tampering** | Clickjacking (X-Frame-Options) | UI del navegador | `X-Frame-Options: DENY` en todos los responses | `backend/app/core/security_middleware.py:25` | MITIGADO |
+| **Tampering** | Content-Type sniffing (MIME type bypass) | Ejecución de scripts | `X-Content-Type-Options: nosniff` | `backend/app/core/security_middleware.py:24` | MITIGADO |
+| **Tampering** | Inyección en código ejecutable (fill_blank_exec / fix_bug / sql_exec) | Verificación de ejercicios | Ejecución en CI sobre código de referencia; Pyodide/sql.js en sandbox WASM aislado del DOM | `backend/tests/content/test_exec_questions.py`, `frontend/src/hooks/useRuntime.ts` | MITIGADO |
+| **Tampering** | JWT token falsificado (sin verificar firma) | JWT forjado | JWT verificado con `jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])`; `jose` verifica la firma por defecto y un `JWTError` se traduce en 401 | `backend/app/core/security.py:get_token_payload` | MITIGADO |
+| **Repudiation** | Negación de transacciones / cambios | Auditoría de cambios | Event log en `analytics_events` para todas las sesiones; password reset tokens son single-use y registrados | `backend/app/models/analytics.py`, `backend/app/services/analytics.py` | MITIGADO |
+| **Repudiation** | Negación de consumo de Groq API | Facturas de IA | Logs de requests a Groq en `audit_log` (estructura preparada en `backend/app/models/auth.py:AuditLog`) | `backend/app/models/auth.py:AuditLog` (la tabla existe; **no hay ajuste que lo active ni escritor que registre las llamadas a Groq** — `grep -rn AUDIT_LOG_ENABLED backend/` sale vacio) | PARCIAL |
+| **Information Disclosure** | Información sensible en Referrer header | Tokens en URL | `Referrer-Policy: strict-origin-when-cross-origin` (JWT nunca en URL, siempre en Authorization) | `backend/app/core/security_middleware.py:27` | MITIGADO |
+| **Information Disclosure** | Exposición de OpenAPI en producción | Documentación de API | `/docs` y `/redoc` deshabilitados fuera de DEBUG mode | `backend/app/main.py:62-63` | MITIGADO |
+| **Information Disclosure** | Fuga de datos via X-Admin-Key en logs | Admin key expuesta | `X-Admin-Key` solo en header (no en URL), log access solo con AUTH_RATE_LIMIT | `backend/app/api/v1/endpoints/content.py:26-29` | MITIGADO |
+| **Information Disclosure** | CSP weakening (inline scripts / data URLs) | XSS | CSP `default-src 'none'; frame-ancestors 'none'; base-uri 'none'` en API responses | `backend/app/core/security_middleware.py:31` | MITIGADO |
+| **Information Disclosure** | CSP del frontend (JavaScript/assets) | Frontend XSS | `_headers` Cloudflare sin CSP nativa de nivel aplicación | `frontend/public/_headers` | SIN REVISAR |
+| **Denial of Service** | Brute-force en /auth/login | Credencial válida | Rate limit 12 req/min por IP | `backend/app/core/security_middleware.py:54-56, 83` | PARCIAL |
+| **Denial of Service** | Flood en /quiz/answer o /tutor | Groq API cost | Rate limit 120 req/min default; sin límite per-user en token spending | `backend/app/core/security_middleware.py:66, 83` | PARCIAL |
+| **Denial of Service** | Queries caras sin límite (ranking, búsqueda) | DB load | Sin límite de timeout ni per-user query budget; búsqueda por BM25 es O(n) | `backend/app/services/ai/rag.py` | SIN MITIGAR |
+| **Denial of Service** | Consumo de Groq sin cuota | LLM spend | Sin metering per-user de tokens consumidos en /tutor | `backend/app/services/ai/provider.py` | SIN MITIGAR |
+| **Elevation of Privilege** | Acceso a panel /admin sin role=owner | Admin data | `require_owner` decorator en cada ruta `/admin/*` | `backend/app/api/v1/endpoints/admin.py:37-44` | MITIGADO |
+| **Elevation of Privilege** | Escalada via X-Admin-Key débil | Content ingest | `CONTENT_ADMIN_KEY` es secreto env (32+ chars mínimo en secrets, no en código) | `backend/app/core/config.py`, `backend/app/api/v1/endpoints/content.py:27-29` | MITIGADO |
+| **Elevation of Privilege** | Role tampering en JWT payload | Privilejos | JWT decode verifica firma; role viene de DB en `get_current_user`, no de token | `backend/app/core/security.py:get_current_user` (refresh desde DB) | MITIGADO |
+| **Elevation of Privilege** | DKT (PyTorch) RCE si el modelo es malicioso | ML models | DKT es opcional (fallback a EMA); carga de checkpoints verificada contra `backend/app/ml/registry.py` hashes | `backend/app/ml/registry.py`, `backend/app/services/dkt.py` | MITIGADO |
+
+### Riesgos residuales conocidos
+
+- **Credential stuffing (PARCIAL)**: Rate limit 12/min/IP blunta ataques pero no los detiene por completo. Alternativa futura: CAPTCHA en X intentos o 2FA. Acepta hoy. [Cierra en Serie 24 si se implementa 2FA]
+- **DoS en queries caras (SIN MITIGAR)**: Ranking, búsqueda y BM25 sin timeout. Impacto: Groq API no es activo (no afecta plataforma central). Aceptado porque: (1) RAG es O(n) en ~1300 docs = <100ms típico, (2) sin datos de abuso en logs. Cierra: timeout en `/tutor` + per-user token quota en H.25
+- **Consumo de Groq sin cuota (SIN MITIGAR)**: `/tutor` no tiene metering. Impacto: runaway spend. Aceptado: Groq rate limit + costo bajo (qwen3.8). Cierra: contador de tokens en analytics_events + alertas (H.26)
+- **CSP del frontend (SIN REVISAR)**: Cloudflare `_headers` no declara CSP script nativa. Riesgo bajo (Capacitor + React no usan eval), pero necesita auditoría. Cierra: revisión en H.23
+
+### Cómo se comprueba
+
+```bash
+# Spoofing: JWT verificación
+grep -n "verify_signature.*True" backend/app/core/security.py
+
+# Spoofing: Dummy hash para timing attack
+grep -n "_DUMMY_HASH" backend/app/core/security.py
+
+# Tampering: HSTS header
+grep -n "max-age=63072000" backend/app/core/security_middleware.py
+
+# Tampering: X-Frame-Options
+grep -n "X-Frame-Options" backend/app/core/security_middleware.py
+
+# Information Disclosure: /docs oculto en producción
+grep -n "docs_url.*DEBUG" backend/app/main.py
+
+# Information Disclosure: X-Admin-Key
+grep -n "CONTENT_ADMIN_KEY" backend/app/api/v1/endpoints/content.py
+
+# Denial of Service: Rate limits
+grep -n "DEFAULT_RATE_LIMIT\|AUTH_RATE_LIMIT" backend/app/core/config.py
+
+# Elevation of Privilege: require_owner en admin
+grep -n "require_owner\|require_admin" backend/app/api/v1/endpoints/admin.py
+
+# CSP API
+grep -n "Content-Security-Policy" backend/app/core/security_middleware.py
+
+# No cookies (verificación de que no hay cookies)
+grep -rn "set_cookie" backend/app/ || echo "OK: No se encontraron cookies"
+```

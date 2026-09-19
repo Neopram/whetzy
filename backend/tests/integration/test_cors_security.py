@@ -89,3 +89,40 @@ async def test_cors_preflight_options_request(client):
     )
     # Preflight should either return 200 or 204
     assert response.status_code in (200, 204)
+
+
+# --- 22.2: los origenes de loopback no sobreviven a produccion -------------
+
+
+def _origins_for(environment: str) -> list[str]:
+    """Build a Settings with the given ENVIRONMENT and return the active origins."""
+    from app.core.config import Settings
+
+    return Settings(ENVIRONMENT=environment).active_cors_origins
+
+
+def test_production_drops_loopback_origins() -> None:
+    """En produccion, localhost y 127.0.0.1 no pueden ser origenes aprobados.
+
+    Con allow_credentials=True, dejarlos significa que una pagina servida desde
+    http://localhost:5173 en la maquina de cualquiera es origen aprobado contra
+    la API viva. El defecto se probo en los dos sentidos: en development siguen.
+    """
+    prod = _origins_for("production")
+    assert prod, "produccion se quedo sin ningun origen aprobado"
+    for origin in prod:
+        assert "localhost" not in origin, origin
+        assert "127.0.0.1" not in origin, origin
+    assert "https://whetzy.com" in prod
+
+
+def test_development_keeps_loopback_origins() -> None:
+    """En desarrollo siguen ahi, o nadie puede trabajar en local."""
+    dev = _origins_for("development")
+    assert "http://localhost:5173" in dev
+    assert "http://127.0.0.1:3000" in dev
+
+
+def test_staging_keeps_loopback_origins() -> None:
+    """Solo 'production' recorta; staging no se toca sin decirlo."""
+    assert "http://localhost:3000" in _origins_for("staging")

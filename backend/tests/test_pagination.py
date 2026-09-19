@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from app.core.pagination import PaginationParams, PaginatedResponse
+from app.core.pagination import PaginatedResponse, PaginationParams
 
 
 def test_pagination_params_defaults():

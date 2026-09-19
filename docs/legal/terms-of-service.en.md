@@ -3,13 +3,15 @@ title: "Terms of Service"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "en"
-status: "DRAFT - Requires legal review"
+status: "DRAFT — pending professional legal review (H.20)"
 version: "1.0.0"
 ---
 
 # Terms of Service
 
 ## Legal Disclaimer
+
+**DRAFT — pending professional legal review (H.20).**
 
 **This is a DRAFT document for internal review only. NOT reviewed/approved by legal counsel. DO NOT use in production without proper authorization.**
 
@@ -56,7 +58,7 @@ When you submit questions, answers, or other content:
 
 ### 3.3 Trademark
 
-"Whetzy™" is a trademark of Whetzy Inc. Unauthorized use is prohibited.
+"Whetzy" is an **unregistered** trademark (rights arising from use in commerce) of the Service operator [LEGAL ENTITY PENDING — H.29]; registration (EUIPO/USPTO) is pending. Unauthorized use is prohibited.
 
 ---
 
@@ -87,7 +89,7 @@ You are responsible for:
 
 - Subscription fees are non-refundable except as required by law
 - Prices are subject to change with 30 days' notice
-- Payment is processed via Stripe, Paddle, Lemon Squeezy, or RevenueCat
+- Payment is processed via Stripe (currently test mode only, no live charges)
 - Automatic renewal: You will be notified before charges
 
 ### 5.2 Refund Policy
@@ -179,11 +181,11 @@ Before legal action, try to resolve disputes through:
 
 ### 9.2 Governing Law
 
-These Terms are governed by the laws of **[Jurisdiction - To Be Updated]**, without regard to conflict of law principles.
+These Terms are governed by the laws of **[GOVERNING LAW PENDING — H.29]**, without regard to conflict of law principles.
 
 ### 9.3 Jurisdiction
 
-You consent to the exclusive jurisdiction of courts in [Jurisdiction] for all disputes.
+You consent to the exclusive jurisdiction of courts in [GOVERNING LAW PENDING — H.29] for all disputes.
 
 ---
 

@@ -3,13 +3,15 @@ title: "Cookie Policy"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "en"
-status: "DRAFT - Requires legal review"
+status: "DRAFT — pending professional legal review (H.20)"
 version: "1.0.0"
 ---
 
 # Cookie Policy
 
 ## Legal Disclaimer
+
+**DRAFT — pending professional legal review (H.20).**
 
 **This is a DRAFT document for internal review only. NOT reviewed/approved by legal counsel. DO NOT use in production.**
 
@@ -52,20 +54,14 @@ These cookies are necessary for basic functionality:
 
 Used to understand user behavior and improve service:
 
-- **Google Analytics**
-  - Cookies: `_ga`, `_gat`, `_gid`
-  - Duration: Up to 2 years
-  - Purpose: Track user behavior, conversion rates, traffic sources
-  - Opt-out: Available via cookie consent banner or browser extension
-  - Privacy: Data anonymized and aggregated
+We do not currently use any third-party analytics cookies: no analytics tool of any kind is integrated in the production codebase.
 
 ### 2.3 Third-Party Cookies
 
 We may also allow:
 
-- **Payment Processors** (Stripe, Paddle, etc.): Track transactions
-- **Analytics Providers**: Google Analytics
-- **CDN Providers**: CloudFlare (if used)
+- **Payment Processor** (Stripe): Track transactions (currently test mode only, no live charges)
+- **CDN Provider**: Cloudflare
 
 ---
 
@@ -116,7 +112,6 @@ In some jurisdictions, we provide explicit cookie consent via banner:
 
 - Click "Manage Preferences" in cookie banner
 - Disable "Analytics Cookies"
-- Use Google Analytics opt-out extension: https://tools.google.com/dlpage/gaoptout
 
 ---
 
@@ -133,10 +128,8 @@ We do not currently respond to browser DNT signals. However, you can:
 
 | Service | Purpose | Cookies | Opt-Out |
 |---------|---------|---------|---------|
-| Google Analytics | User behavior tracking | `_ga`, `_gat`, `_gid` | https://tools.google.com/dlpage/gaoptout |
-| Stripe | Payment processing | `__Secure-stripe_sid`, others | https://stripe.com/cookies-policy |
-| Paddle | Billing management | Paddle-specific | https://paddle.com/privacy |
-| CloudFlare | CDN/security (if used) | `__cfduid`, others | https://cloudflare.com/cookie-policy |
+| Stripe | Payment processing (currently test mode only, no live charges) | `__Secure-stripe_sid`, others | https://stripe.com/cookies-policy |
+| CloudFlare | CDN/security | `__cfduid`, others | https://cloudflare.com/cookie-policy |
 
 ---
 
