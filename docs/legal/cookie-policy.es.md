@@ -3,13 +3,15 @@ title: "Política de Cookies"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "es"
-status: "DRAFT - Requiere revisión legal"
+status: "BORRADOR — pendiente de revisión profesional (H.20)"
 version: "1.0.0"
 ---
 
 # Política de Cookies
 
 ## Aviso Legal
+
+**BORRADOR — pendiente de revisión profesional (H.20).**
 
 Este es un documento BORRADOR solo para revisión interna. NO aprobado por asesor legal.
 
@@ -36,18 +38,12 @@ Atributos: HttpOnly, Secure, SameSite=Strict
 
 ### 2.2 Cookies de Análisis (Opcional)
 
-Para entender comportamiento del usuario:
-
-- **Google Analytics**: `_ga`, `_gat`, `_gid` (hasta 2 años)
-  - Propósito: Rastrear comportamiento, conversiones, fuentes de tráfico
-  - Optar: Disponible en banner de consentimiento
-  - Privacidad: Datos anonimizados y agregados
+Actualmente no utilizamos cookies de análisis de terceros: no hay ninguna herramienta de analítica de terceros integrada en el código en producción.
 
 ### 2.3 Cookies de Terceros
 
-- Procesadores de Pago: Stripe, Paddle (transacciones)
-- Proveedores de Análisis: Google Analytics
-- Proveedores CDN: CloudFlare (si se usa)
+- Procesador de Pago: Stripe (transacciones; hoy solo en modo test, sin cobros reales)
+- Proveedor CDN: Cloudflare
 
 ---
 
@@ -92,7 +88,6 @@ En algunas jurisdicciones, se proporciona:
 
 - Haga clic en "Gestionar Preferencias" en banner
 - Desactive "Analytics Cookies"
-- Extensión Google: https://tools.google.com/dlpage/gaoptout
 
 ---
 
@@ -109,9 +104,7 @@ No respondemos actualmente a señales DNT. Puede:
 
 | Servicio | Propósito | Optar |
 |----------|-----------|-------|
-| Google Analytics | Rastreo de comportamiento | https://tools.google.com/dlpage/gaoptout |
-| Stripe | Procesamiento de pagos | https://stripe.com/cookies-policy |
-| Paddle | Gestión de facturación | https://paddle.com/privacy |
+| Stripe | Procesamiento de pagos (hoy solo en modo test, sin cobros reales) | https://stripe.com/cookies-policy |
 | CloudFlare | CDN/seguridad | https://cloudflare.com/cookie-policy |
 
 ---

@@ -3,7 +3,7 @@ title: "Descargos de Responsabilidad de PI"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "es"
-status: "DRAFT - Requiere revisión legal"
+status: "BORRADOR — pendiente de revisión profesional (H.20)"
 version: "1.0.0"
 ---
 
@@ -11,17 +11,17 @@ version: "1.0.0"
 
 ## Aviso Legal
 
+**BORRADOR — pendiente de revisión profesional (H.20).**
+
 Este es un documento BORRADOR solo para revisión interna. NO aprobado por asesor legal.
 
 ---
 
-## 1. Derechos de Marca Registrada
+## 1. Derechos de Marca
 
-### 1.1 Marca Registrada Whetzy
+### 1.1 Marca Whetzy
 
-"Whetzy™" y logos asociados son marcas registradas de:
-- Whetzy Inc. (USA)
-- Whetzy S.L. (Spain/EU - si es aplicable)
+"Whetzy" es una marca **no registrada** (derechos de uso en el tráfico económico) del titular del Servicio [ENTIDAD LEGAL PENDIENTE — H.29]; la solicitud de registro (EUIPO/USPTO) está pendiente.
 
 El uso no autorizado está estrictamente prohibido.
 
@@ -48,7 +48,7 @@ No use marcas Whetzy en:
 
 Todo contenido educativo original creado por Whetzy:
 - **Licencia**: Creative Commons BY-NC-ND
-- **Protección**: Copyright de Whetzy Inc.
+- **Protección**: Copyright del titular del Servicio.
 - **Uso**: Solo propósitos educativos
 
 ### 2.2 Contenido Enviado por Usuario
@@ -82,7 +82,7 @@ Se proporciona **atribución apropiada**.
 
 ### 3.1 Aviso de Copyright
 
-Copyright (c) 2026 Whetzy Inc. Todos los derechos reservados.
+Copyright (c) 2026, el titular del Servicio. Todos los derechos reservados.
 
 ### 3.2 Cumplimiento de Copyright
 

@@ -290,6 +290,23 @@ try:
 except Exception as e:
     check("Source licenses (index.json + §2.2 verificar)", False, str(e))
 
+print("\n[7] Legal facts (hechos legales docs/legal/ — 21.0)")
+try:
+    legal_check = subprocess.run(
+        [sys.executable, str(Path(__file__).parent / "check_legal_facts.py")],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    for line in legal_check.stdout.strip().splitlines():
+        print(f"  {line}")
+    if legal_check.returncode != 0:
+        check("Legal facts (afirmaciones + borrador + codificacion + frontmatter + paridad)", False, "see lines above")
+    else:
+        check("Legal facts (afirmaciones + borrador + codificacion + frontmatter + paridad)", True, "")
+except Exception as e:
+    check("Legal facts (afirmaciones + borrador + codificacion + frontmatter + paridad)", False, str(e))
 
 print()
 if errors:
@@ -301,3 +318,4 @@ if errors:
 else:
     msg = "All checks PASSED"
     print(f"\033[92m{msg}\033[0m" if _COLOR else msg)
+

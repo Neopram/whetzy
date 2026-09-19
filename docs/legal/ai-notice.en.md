@@ -2,12 +2,14 @@
 title: "AI Notice"
 last_updated: "2026-09-19"
 language: "en"
-status: "BORRADOR"
+status: "DRAFT — pending professional legal review (H.20)"
 ---
 
 # AI Notice
 
 ## Disclaimer
+
+**DRAFT — pending professional legal review (H.20).**
 
 This is a DRAFT document for internal review only.
 
@@ -86,5 +88,5 @@ Whetzy may update this AI Notice at any time. Users will be notified of material
 
 ---
 
-Status: BORRADOR
+Status: DRAFT
 Generated: 2026-09-19

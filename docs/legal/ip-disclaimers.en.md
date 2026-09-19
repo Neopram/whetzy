@@ -3,13 +3,15 @@ title: "IP Disclaimers"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "en"
-status: "DRAFT - Requires legal review"
+status: "DRAFT — pending professional legal review (H.20)"
 version: "1.0.0"
 ---
 
 # Intellectual Property Disclaimers
 
 ## Legal Disclaimer
+
+**DRAFT — pending professional legal review (H.20).**
 
 **This is a DRAFT document for internal review only. NOT reviewed/approved by legal counsel. DO NOT use in production.**
 
@@ -19,9 +21,7 @@ version: "1.0.0"
 
 ### 1.1 Whetzy Trademark
 
-"Whetzy™" and associated logos/branding are registered trademarks of:
-- **Whetzy Inc.** (USA)
-- **Whetzy S.L.** (Spain/EU - if applicable)
+"Whetzy" is an **unregistered** trademark (rights arising from use in commerce) of the Service operator [LEGAL ENTITY PENDING — H.29]; registration (EUIPO/USPTO) is pending.
 
 Unauthorized use is strictly prohibited.
 
@@ -48,7 +48,7 @@ Do not use Whetzy trademarks:
 
 All original educational content created by Whetzy is:
 - **Licensed**: Creative Commons BY-NC-ND (Attribution-NonCommercial-NoDerivatives)
-- **Protected**: Copyright by Whetzy Inc.
+- **Protected**: Copyright by the Service operator.
 - **Usage**: Educational purposes only; no commercial use
 
 ### 2.2 User-Submitted Content
@@ -84,7 +84,7 @@ Some content may be sourced from:
 
 ### 3.1 Copyright Notice
 
-Copyright (c) 2026 Whetzy Inc. All rights reserved.
+Copyright (c) 2026, the Service operator. All rights reserved.
 
 ### 3.2 Copyright Compliance
 
@@ -120,7 +120,7 @@ If your content was removed and you believe it lawful:
 2. Include:
    - Identification of removed content
    - Statement under penalty of perjury
-   - Your consent to US court jurisdiction
+   - Your consent to [GOVERNING LAW PENDING — H.29] court jurisdiction
    - Your signature
 
 3. We will:

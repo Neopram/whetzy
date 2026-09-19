@@ -3,13 +3,15 @@ title: "Términos de Servicio"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "es"
-status: "DRAFT - Requires legal review"
+status: "BORRADOR — pendiente de revisión profesional (H.20)"
 version: "1.0.0"
 ---
 
 # Términos de Servicio
 
 ## Aviso Legal
+
+**BORRADOR — pendiente de revisión profesional (H.20).**
 
 **Este es un documento de BORRADOR solo para revisión interna. NO ha sido revisado ni aprobado por asesor legal. NO use en producción sin la debida autorización.**
 
@@ -54,9 +56,9 @@ Cuando envía preguntas, respuestas u otro contenido:
 - Whetzy recibe una licencia perpetua, mundial, sin regalías para usar, modificar y mostrar el contenido
 - Sus envíos están disponibles para uso educativo bajo CC BY-NC-ND
 
-### 3.3 Marca Registrada
+### 3.3 Marca
 
-"Whetzy™" es una marca registrada de Whetzy Inc. El uso no autorizado está prohibido.
+"Whetzy" es una marca **no registrada** (derechos de uso en el tráfico económico) del titular del Servicio [ENTIDAD LEGAL PENDIENTE — H.29]; la solicitud de registro (EUIPO/USPTO) está pendiente. El uso no autorizado está prohibido.
 
 ---
 
@@ -87,7 +89,7 @@ Usted es responsable de:
 
 - Las tarifas de suscripción no son reembolsables excepto según lo requiera la ley
 - Los precios están sujetos a cambios con 30 días de notificación
-- El pago se procesa mediante Stripe, Paddle, Lemon Squeezy o RevenueCat
+- El pago se procesa mediante Stripe (hoy solo en modo test, sin cobros reales)
 - Renovación automática: Será notificado antes de los cargos
 
 ### 5.2 Política de Reembolso
@@ -179,11 +181,11 @@ Antes de una acción legal, intente resolver disputas mediante:
 
 ### 9.2 Ley Aplicable
 
-Estos Términos se rigen por las leyes de **[Jurisdicción - A Actualizar]**, sin consideración de principios de conflicto de leyes.
+Estos Términos se rigen por las leyes de **[LEY APLICABLE PENDIENTE — H.29]**, sin consideración de principios de conflicto de leyes.
 
 ### 9.3 Jurisdicción
 
-Usted consiente a la jurisdicción exclusiva de los tribunales en [Jurisdicción] para todas las disputas.
+Usted consiente a la jurisdicción exclusiva de los tribunales en [LEY APLICABLE PENDIENTE — H.29] para todas las disputas.
 
 ---
 
@@ -216,6 +218,6 @@ Si alguna disposición se considera inválida, esa disposición se elimina y el 
 
 ---
 
-**Versión**: 1.0.0 (DRAFT)
+**Versión**: 1.0.0 (BORRADOR)
 
 ⚠️ **AVISO DE BORRADOR**: No aprobado por asesor legal. No usar en producción.

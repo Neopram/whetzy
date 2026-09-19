@@ -69,15 +69,22 @@ Covers: Data controller role, subject rights, sub-processors, security, breach r
 - Support Tickets: 2 years
 
 ### Payment Processors
-- Stripe (USA)
-- Paddle (USA)
-- Lemon Squeezy (USA)
-- RevenueCat (USA)
+- Stripe (USA) — **test mode only today; no live charges.** The live account is H.4.
+
+> Paddle, Lemon Squeezy and RevenueCat were listed here by commit `5f7bd7b`.
+> None of them exists in the code (`backend/app/core/config.py` declares Stripe only),
+> and the payment rail is still an open owner decision (H.19, now gated by H.29).
 
 ### Data Processors
-- Groq AI (USA) - AI content analysis
-- Railway (USA/EU) - Hosting
-- Google Analytics (USA) - Optional analytics
+- Groq (USA) — tutor inference, model `qwen/qwen3.8-27b`
+- Railway (USA/EU) — hosting and PostgreSQL
+- Cloudflare (USA/EU) — CDN and Pages
+- Email provider — SMTP or Resend, per `EMAIL_PROVIDER`
+- Sentry — error tracking, **disabled by default** (`SENTRY_DSN` empty)
+
+> Google Analytics was listed here by commit `5f7bd7b`. It is **not used**: red line 5
+> forbids third-party trackers without explicit consent, and
+> `frontend/scripts/check-no-third-party.mjs` proves none ships in `dist/`.
 
 ### User Rights (GDPR)
 - Right to Access

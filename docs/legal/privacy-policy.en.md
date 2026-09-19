@@ -3,7 +3,7 @@ title: "Privacy Policy"
 last_updated: "2026-09-19"
 effective_date: "2026-10-01"
 language: "en"
-status: "DRAFT - Requires legal review"
+status: "DRAFT — pending professional legal review (H.20)"
 version: "1.0.0"
 ---
 
@@ -11,13 +11,15 @@ version: "1.0.0"
 
 ## Legal Disclaimer
 
-**This is a DRAFT document for internal review only. It has NOT been reviewed or approved by legal counsel and should NOT be used in production or shared with users until formally approved.** Whetzy Inc. reserves all rights and is not liable for any use of this document without proper legal authorization.
+**DRAFT — pending professional legal review (H.20).**
+
+**This is a DRAFT document for internal review only. It has NOT been reviewed or approved by legal counsel and should NOT be used in production or shared with users until formally approved.** The Service operator [LEGAL ENTITY PENDING — H.29] reserves all rights and is not liable for any use of this document without proper legal authorization.
 
 ---
 
 ## 1. Introduction
 
-Whetzy Inc. ("**Company**," "**we**," "**us**," or "**our**") operates the Whetzy learning platform (the "**Service**"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you access and use our Service.
+The Service operator ("**Company**," "**we**," "**us**," or "**our**") operates the Whetzy learning platform (the "**Service**"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you access and use our Service.
 
 Please read this Privacy Policy carefully. By using Whetzy, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with our policies or practices, please do not use our Service.
 
@@ -45,11 +47,11 @@ When you use Whetzy, we automatically collect:
 
 ### 2.3 Analytics Data
 
-We use analytics services (including Google Analytics, if applicable) to understand how users interact with our Service.
+We do not currently use any third-party analytics services: no analytics tool of any kind is integrated in the production codebase.
 
 ### 2.4 Payment Information
 
-We do NOT directly store payment card information. Payment processors: Stripe, Paddle, Lemon Squeezy, RevenueCat.
+We do NOT directly store payment card information. Payment processor: Stripe (currently test mode only, no live charges).
 
 ---
 
@@ -98,7 +100,12 @@ No third-party advertisers, data brokers, or social media.
 
 ### 6.2 Processors
 
-Stripe, Paddle, Lemon Squeezy, RevenueCat, Groq AI, Railway, Google Analytics
+- Railway — hosting and PostgreSQL database (EU)
+- Cloudflare — CDN and Pages
+- Groq — AI tutor inference (qwen/qwen3.8-27b model)
+- Stripe — payments (currently test mode only, no live charges)
+- Email provider — SMTP or Resend, depending on configuration
+- Sentry — error tracking (disabled by default)
 
 ---
 
@@ -122,7 +129,7 @@ Not intended for under 13. Parental consent required. Contact support@whetzy.com
 
 ## 10. Cookies and Tracking
 
-Essential cookies (always): session, auth, CSRF, preferences. Analytics cookies (optional): Google Analytics.
+Essential cookies (always): session, auth, CSRF, preferences. No third-party analytics cookies are currently used.
 
 ---
 

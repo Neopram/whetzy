@@ -656,3 +656,34 @@ existente.
 
 **Alternativas descartadas:** token (ADR-33); track genérico «blockchain» (sin
 comunidad ni bounties); esperar a que Platzi lo haga.
+
+---
+
+## ADR-39 — El panel `/admin` se autentica solo con JWT `role=owner`; `X-Admin-Key` no se extiende a él (ACEPTADA 2026-09-19)
+
+**Contexto:** el criterio de 22.1 pedía que el panel de administración «reutilice
+`X-Admin-Key` para scripts y añada el claim JWT `role=owner`». Se implementó solo la
+segunda mitad, y el verificador adversario refutó 22.8 en parte por eso. Había que
+decidir: añadir la clave estática o recortar el criterio por escrito.
+
+**Decisión:** el panel `/admin` se autentica **únicamente** con el JWT y el rol
+(`require_admin` / `require_owner` en `backend/app/api/v1/endpoints/admin.py`).
+`X-Admin-Key` (`CONTENT_ADMIN_KEY`) **se queda donde ya está y no se extiende**: las
+rutas de ingesta que sí las usa un script sin sesión — `content.py`, `push.py`,
+`analytics.py`. El criterio de 22.1 queda recortado en ese punto.
+
+**Razón:** `X-Admin-Key` es un secreto compartido de vida larga. En el panel no tiene
+ningún llamante: las métricas las mira una persona con sesión iniciada, no un cron. Un
+secreto sin llamante es superficie de ataque sin contrapartida, y este repo ya tiene el
+precedente de H.12 (la `GROQ_API_KEY` commiteada en claro en `docs/STATUS.md`). Añadir
+un segundo camino de autenticación a los datos más sensibles del producto —ingresos,
+eventos de auth, cola GDPR— para una comodidad que nadie ha pedido va en contra de la
+regla de dueño «lo simple que funciona hoy».
+
+**Consecuencia:** si algún día un script necesita leer métricas sin navegador, se le
+emite un JWT de servicio con `role=owner` y caducidad corta, no una clave estática.
+Ningún endpoint de `/admin/**` debe aceptar `X-Admin-Key`; si aparece uno, es un bug.
+
+**Alternativas descartadas:** añadir `X-Admin-Key` al panel (un secreto más, sin
+llamante); dejar el criterio sin cumplir y sin explicación (fue justo lo que provocó la
+refutación de 22.8).

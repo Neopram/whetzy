@@ -11,7 +11,7 @@ version: "1.0.0"
 
 ## Legal Disclaimer
 
-**This is a DRAFT document for internal review only. It has NOT been reviewed or approved by legal counsel and should NOT be used in production or shared with users until formally approved.** Whetzy Inc. reserves all rights and is not liable for any use of this document without proper legal authorization.
+**This is a DRAFT document for internal review only. It has NOT been reviewed or approved by legal counsel and should NOT be used in production or shared with users until formally approved.** The Service operator [LEGAL ENTITY PENDING — H.29] reserves all rights and is not liable for any use of this document without proper legal authorization.
 
 ---
 
