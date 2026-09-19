@@ -21,10 +21,16 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público; CC BY-SA espera H.LIC; CC BY-NC-* y docs propietarias se leen y se citan, nunca se copian; PDFs pirateados no entran ni como cita. Biblioteca por área: `CATALOGO_MAESTRO.md` §2.1 |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.** Verificado el 2026-09-16 por la sesión **ar**: los cinco endpoints de 17.2, commiteados hoy, están vivos en producción (`/api/v1/exams/certificates/{code}`, `/track/{id}/blueprint`, `/track/{id}/start`, `/module/{id}/test-out/start`, `/track/{attempt_id}/submit`), y `GET /api/v1/exams/certificates/0000…` responde **404 con el mensaje de negocio, no 500**, lo que prueba que la `SELECT` sobre la tabla `certificates` se ejecutó — es decir, **la migración `r8s9t0u1v2w3` corrió contra la DB de PRODUCCIÓN**. Consecuencia que cambia el modelo de riesgo de todo el orquestador: **`git push origin master` DESPLIEGA**, y el contrato de autonomía lo lista como acción «sin preguntar» justo porque se creía que no llegaba a producción. Ver **H.16** |
-| Alembic HEAD | `a9b0c1d2e3f4` (27 migraciones) |
+| Alembic HEAD | `b1c2d3e4f5a6` (28 migraciones) |
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **El alcance de una sesión de quiz vive en `study_sessions.track_id/skill_id` (desde `b1c2d3e4f5a6`).**
+  Antes solo la primera pregunta respetaba el track: `submit_answer` pedía la siguiente con
+  `_candidate_skill_ids(..., None, None)` y «Practicar» en Algoritmos servía Ciberseguridad a la
+  segunda. Visto en producción el 2026-09-19. Test: `test_next_question_stays_inside_the_session_track`
+- **Los botones OAuth se pintan según `GET /auth/oauth/providers`.** Un proveedor sin `*_CLIENT_ID` en
+  Railway no sale; antes salían los dos siempre y respondían 503 al pulsarlos
 - **`npx tsc --noEmit` en `frontend/` NO comprueba nada.** `tsconfig.json` es solution-style
   (`files: []` + `references`), asi que sin `-b` TypeScript compila CERO ficheros y sale 0
   siempre, pase lo que pase en `src/`. Varias sesiones pegaron «tsc exit 0» como evidencia

@@ -17,6 +17,22 @@ def _h() -> dict:
     return {"X-Forwarded-For": f"192.0.3.{n % 255 or 255}"}
 
 
+# ── providers ──────────────────────────────────────────────────────────────────
+
+
+async def test_providers_lists_only_the_configured_ones(client, monkeypatch):
+    from app.core.config import settings
+
+    # Entorno de test: ningún client_id → lista vacía, no 503 ni botones.
+    r = await client.get(f"{OAUTH}/providers", headers=_h())
+    assert r.status_code == 200
+    assert r.json() == {"providers": []}
+
+    monkeypatch.setattr(settings, "GOOGLE_CLIENT_ID", "google-client-id")
+    r = await client.get(f"{OAUTH}/providers", headers=_h())
+    assert r.json() == {"providers": ["google"]}
+
+
 # ── start ──────────────────────────────────────────────────────────────────────
 
 

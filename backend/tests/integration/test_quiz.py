@@ -732,3 +732,89 @@ async def test_skill_state_creation_recovers_from_a_lost_race(user, db_session):
 
     assert state.skill_id == skill_id
     assert state.user_id == user.id
+
+
+# ── el alcance de la sesión se mantiene tras la primera pregunta ──────────────
+
+
+async def _seed_two_tracks(db_session) -> None:
+    """Dos tracks con una skill y dos preguntas cada uno, todo desbloqueado."""
+    from app.models.content import Module, Question, Skill, Track
+
+    rows = []
+    for n in ("a", "b"):
+        rows.append(Track(id=f"track_scope_{n}", name_es="T", name_en="T", order=90, icon="x", color="#000", total_questions=2))
+        rows.append(Module(id=f"m_scope_{n}", track_id=f"track_scope_{n}", name_es="M", name_en="M", order=1, description_es="", description_en=""))
+        rows.append(Skill(id=f"sk_scope_{n}", module_id=f"m_scope_{n}", name_es="S", name_en="S", order=1))
+        for i in (1, 2):
+            rows.append(Question(
+                id=f"q_scope_{n}{i}",
+                skill_id=f"sk_scope_{n}",
+                type="mcq",
+                difficulty_tier="easy",
+                question_es=f"P{n}{i}", question_en=f"Q{n}{i}",
+                options_es=["a", "b"], options_en=["a", "b"],
+                correct_index=0,
+                explanation_es="e", explanation_en="e",
+                source="test",
+                elo_rating=1200.0,
+            ))
+    db_session.add_all(rows)
+    await db_session.commit()
+
+
+async def test_next_question_stays_inside_the_session_track(client, auth_headers, db_session):
+    """«Practicar» en un track no puede servir el siguiente ítem de otro.
+
+    Antes la primera pregunta respetaba `track_id` y la segunda salía de
+    cualquier track, porque el alcance no se guardaba en la sesión.
+    """
+    await _seed_two_tracks(db_session)
+
+    for _ in range(6):
+        r = await client.post(
+            f"{QUIZ}/start",
+            json={"track_id": "track_scope_a", "mode": "study"},
+            headers=_h(auth_headers),
+        )
+        assert r.status_code == 200, r.text
+        data = r.json()
+        assert data["question"]["skill_id"] == "sk_scope_a"
+
+        r = await client.post(
+            f"{QUIZ}/answer",
+            json={
+                "session_id": data["session_id"],
+                "question_id": data["question"]["id"],
+                "selected_index": 0,
+                "response_time_ms": 1000,
+            },
+            headers=_h(auth_headers),
+        )
+        assert r.status_code == 200, r.text
+        nxt = r.json()["next_question"]
+        assert nxt is not None
+        assert nxt["skill_id"] == "sk_scope_a", nxt
+
+
+async def test_next_question_stays_on_the_session_skill(client, auth_headers, db_session):
+    await _seed_two_tracks(db_session)
+
+    r = await client.post(
+        f"{QUIZ}/start",
+        json={"skill_id": "sk_scope_b", "mode": "study"},
+        headers=_h(auth_headers),
+    )
+    data = r.json()
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": data["session_id"],
+            "question_id": data["question"]["id"],
+            "selected_index": 0,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200, r.text
+    assert r.json()["next_question"]["skill_id"] == "sk_scope_b"

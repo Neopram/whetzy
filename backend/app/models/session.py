@@ -31,6 +31,12 @@ class StudySession(Base):
     max_combo: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     mode: Mapped[str] = mapped_column(String(20), default="study", nullable=False)
 
+    # Alcance con el que se abrió la sesión. La siguiente pregunta se elige
+    # dentro de él; sin guardarlo aquí, la primera respetaba el track y las
+    # demás salían de cualquier sitio.
+    track_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    skill_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+
     responses: Mapped[list[Response]] = relationship(
         back_populates="session", cascade="all, delete-orphan", order_by="Response.created_at"
     )

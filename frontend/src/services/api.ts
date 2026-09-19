@@ -150,6 +150,8 @@ export interface RegisterPayload {
   language: 'es' | 'en';
 }
 
+export type OAuthProvider = 'github' | 'google';
+
 export const auth = {
   async register(payload: RegisterPayload) {
     const data = await request<{ access_token: string; refresh_token: string }>('/auth/register', {
@@ -183,8 +185,13 @@ export const auth = {
     return request<UserRead>('/auth/me');
   },
 
+  /** Proveedores OAuth con credenciales en el servidor. Vacío si no hay ninguno. */
+  async oauthProviders() {
+    return request<{ providers: OAuthProvider[] }>('/auth/oauth/providers');
+  },
+
   /** Navigate the browser to the OAuth provider start URL (full page redirect, no SDK). */
-  startOAuth(provider: 'github' | 'google') {
+  startOAuth(provider: OAuthProvider) {
     window.location.href = `${BASE_URL}/auth/oauth/${provider}/start`;
   },
 };

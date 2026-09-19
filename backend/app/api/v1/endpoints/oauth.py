@@ -76,6 +76,16 @@ def _callback_uri(provider: str) -> str:
     return f"{base}{settings.API_V1_PREFIX}/auth/oauth/{provider}/callback"
 
 
+@router.get("/providers")
+async def oauth_providers() -> dict[str, list[str]]:
+    """Proveedores con credenciales configuradas en este servidor.
+
+    El frontend pinta solo los botones que salen aquí: un «Continuar con
+    Google» que responde 503 al pulsarlo es peor que ningún botón.
+    """
+    return {"providers": [name for name, cfg in _PROVIDERS.items() if cfg["client_id"]()]}
+
+
 # --------------------------------------------------------------------------
 # /start
 # --------------------------------------------------------------------------

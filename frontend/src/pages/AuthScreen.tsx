@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { auth, type RegisterPayload } from '../services/api';
+import { auth, type OAuthProvider, type RegisterPayload } from '../services/api';
 import styles from './AuthScreen.module.css';
 
 // Surface any oauth_error the backend placed in the URL (e.g. email_required).
@@ -37,6 +37,18 @@ export function AuthScreen({ onAuthed }: Props) {
   });
 
   const { t, i18n: i18nInst } = useTranslation();
+
+  // Solo se pintan los proveedores que el servidor tiene configurados. Antes
+  // salían los dos siempre y en producción respondían 503 al pulsarlos.
+  const [providers, setProviders] = useState<OAuthProvider[]>([]);
+  useEffect(() => {
+    let vivo = true;
+    auth
+      .oauthProviders()
+      .then((r) => { if (vivo) setProviders(r.providers); })
+      .catch(() => { /* sin respuesta, sin botones */ });
+    return () => { vivo = false; };
+  }, []);
 
   function handleLangChange(lang: 'es' | 'en') {
     setLanguage(lang);
@@ -190,6 +202,7 @@ export function AuthScreen({ onAuthed }: Props) {
         </button>
       </form>
 
+      {providers.length > 0 && (<>
       <div className={styles.orDivider}>
         <span className={styles.orLine} />
         <span className={styles.orText}>{t('auth.orSeparator')}</span>
@@ -197,6 +210,7 @@ export function AuthScreen({ onAuthed }: Props) {
       </div>
 
       <div className={styles.socialButtons}>
+        {providers.includes('github') && (
         <button
           type="button"
           className={styles.socialBtn}
@@ -209,7 +223,9 @@ export function AuthScreen({ onAuthed }: Props) {
           </svg>
           {t('auth.continueWithGitHub')}
         </button>
+        )}
 
+        {providers.includes('google') && (
         <button
           type="button"
           className={styles.socialBtn}
@@ -225,7 +241,9 @@ export function AuthScreen({ onAuthed }: Props) {
           </svg>
           {t('auth.continueWithGoogle')}
         </button>
+        )}
       </div>
+      </>)}
 
       <p className={styles.legal}>{t('auth.legal')}</p>
     </div>

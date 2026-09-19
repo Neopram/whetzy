@@ -314,7 +314,9 @@ async def count_due_reviews(db: AsyncSession, user: User) -> int:
 async def start_session(
     db: AsyncSession, user: User, req: QuizStartRequest
 ) -> QuizStartResponse:
-    session = StudySession(user_id=user.id, mode=req.mode)
+    session = StudySession(
+        user_id=user.id, mode=req.mode, track_id=req.track_id, skill_id=req.skill_id
+    )
     db.add(session)
     await db.flush()
 
@@ -546,7 +548,11 @@ async def submit_answer(
         league_entry.xp_earned += xp
 
     # Pick the next question, avoiding an immediate repeat of the same item.
-    candidate_skill_ids = await _candidate_skill_ids(db, user, session.mode, None, None)
+    # Same scope the session was opened with: passing None here is how
+    # «Practicar» on one module drifted to other tracks from question two.
+    candidate_skill_ids = await _candidate_skill_ids(
+        db, user, session.mode, session.track_id, session.skill_id
+    )
     next_skill_id = await _select_skill(db, user, candidate_skill_ids) or question.skill_id
     next_question = await _select_question(
         db, user, next_skill_id, exclude_question_ids={question.id}
