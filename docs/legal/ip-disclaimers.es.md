@@ -40,6 +40,28 @@ No use marcas Whetzy en:
 - Asociaciones engañosas
 - Mercancía comercial
 
+### 1.4 Marcas de Terceros
+
+Whetzy prepara a estudiantes para exámenes de certificación de terceros. Los nombres y logotipos siguientes pertenecen a sus respectivos titulares:
+
+- **AWS / Amazon Web Services**: marca comercial de Amazon Web Services, Inc. o sus filiales.
+- **Microsoft / Azure**: marca comercial de Microsoft Corporation.
+- **Google / Google Cloud**: marca comercial de Google LLC.
+- **CompTIA / Security+**: marca comercial de The Computing Technology Industry Association (CompTIA).
+- **ISC2 / CC (Certified in Cybersecurity)**: marca comercial de International Information System Security Certification Consortium (ISC2).
+- **PCI**: marca comercial de PCI Security Standards Council, LLC.
+- **PCEP / PCAP**: marca comercial de OpenEDG Python Institute.
+- **Python**: marca comercial de Python Software Foundation.
+- **Linux**: marca comercial de Linus Torvalds.
+- **Docker**: marca comercial de Docker, Inc.
+- **Kubernetes**: marca comercial de The Linux Foundation.
+- **Terraform / HashiCorp**: marca comercial de HashiCorp, Inc.
+- **Cisco**: marca comercial de Cisco Systems, Inc.
+
+Whetzy **no está afiliada, asociada, autorizada ni avalada** por ninguno de estos titulares. El uso de estos nombres en nuestro material es **meramente descriptivo**: sirve para identificar el examen o la tecnología que el contenido prepara o enseña, bajo uso nominativo. **Ninguna certificación oficial de estas marcas la emite Whetzy**; la certificación oficial la emite únicamente el titular correspondiente a través de sus propios canales de examen.
+
+Cualquier otra marca, nombre comercial o logotipo citado en nuestro contenido pertenece a su respectivo titular y se menciona igualmente bajo uso meramente descriptivo, sin que ello implique afiliación ni patrocinio.
+
 ---
 
 ## 2. Propiedad de Contenido
