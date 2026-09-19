@@ -190,3 +190,51 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   0%, 100% { box-shadow: 0 0 4px rgba(88, 204, 2, 0.3); }
   50% { box-shadow: 0 0 12px rgba(88, 204, 2, 0.6); }
 }
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .app-content {
+    padding-bottom: calc(var(--le-bottomnav-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  button {
+    min-height: 44px;
+  }
+
+  input, select, textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .app-content {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}

@@ -8,6 +8,8 @@ import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
 import { Toast } from './components/common/Toast';
 import './styles/global.css';
+import { OfflineIndicator } from './components/common/OfflineIndicator';
+import { useGestures } from './hooks/useGestures';
 
 // Every screen is loaded on demand. Statically importing them put the whole
 // app — quiz, Pyodide, Lottie, duels — into the landing page's first bundle,
@@ -226,6 +228,15 @@ function App() {
       <>
         <Screen><OnboardingScreen onDone={() => setShowOnboarding(false)} /></Screen>
         <Toast />
+  const setScreen = useAppStore((s) => s.setScreen);
+  useGestures({
+    onSwipeRight: () => {
+      if (currentScreen !== 'home') setScreen('home');
+    },
+    onSwipeLeft: () => {
+      if (currentScreen !== 'marketplace') setScreen('marketplace');
+    },
+  });
       </>
     );
   }
@@ -308,6 +319,7 @@ function App() {
       </main>
       {!IMMERSIVE_SCREENS.has(currentScreen) && <BottomNav />}
       <Toast />
+      <OfflineIndicator />
     </MotionConfig>
   );
 }
