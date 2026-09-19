@@ -40,11 +40,11 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/metrics/users?range_days=7`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setMetricsData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -55,11 +55,11 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/security/auth-events?limit=10`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setSecurityData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -70,11 +70,11 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/content/gaps?language=es`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setContentData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -85,11 +85,11 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/ops/health`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setOpsData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -100,11 +100,11 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/gdpr/exports?status=pending`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setGDPRData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -115,11 +115,11 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/revenue/mrr?month=2026-09`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setRevenueData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -130,11 +130,11 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/economy/credits?limit=10`);
-      if (!res.ok) throw new Error('Failed to fetch');
+      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setEconomyData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      setError(err instanceof Error ? err.message : t('admin.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -277,10 +277,11 @@ export function AdminScreen() {
 }
 
 function StatCard({ label, value }: { label: string; value?: string | number | null }) {
+  const { t } = useTranslation();
   return (
     <div className={styles.card}>
       <div className={styles.cardLabel}>{label}</div>
-      <div className={styles.cardValue}>{value ?? '-'}</div>
+      <div className={styles.cardValue}>{value ?? t('admin.noValue')}</div>
     </div>
   );
 }
