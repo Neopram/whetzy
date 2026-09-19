@@ -25,26 +25,26 @@ export default function GamificationPanel() {
   ])
 
   return (
-    <div className=\"gamification\">
-      <section className=\"streak-card\">
-        <div className=\"streak-flame\">🔥</div>
-        <div className=\"streak-number\">{streak}</div>
+    <div className="gamification">
+      <section className="streak-card">
+        <div className="streak-flame">🔥</div>
+        <div className="streak-number">{streak}</div>
         <p>{t('gamif.streak', 'Racha de Días')}</p>
       </section>
 
-      <section className=\"achievements\">
+      <section className="achievements">
         <h2>{t('gamif.achievements', 'Logros')}</h2>
-        <div className=\"badges\">
+        <div className="badges">
           {achievements.map((a) => (
-            <div key={a.id} className={\"badge \\"}>
-              <div className=\"icon\">{a.icon}</div>
-              <div className=\"name\">{a[\"name_\" + lang]}</div>
+            <div key={a.id} className={`badge ${a.earned_at ? 'earned' : 'locked'}`}>
+              <div className="icon">{a.icon}</div>
+              <div className="name">{a[`name_${lang}`]}</div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className=\"actions\">
+      <section className="actions">
         <button>⚔️ {t('gamif.duels', 'Duelos')}</button>
         <button>🎪 {t('gamif.challenges', 'Desafíos')}</button>
         <button>📜 {t('gamif.missions', 'Misiones')}</button>

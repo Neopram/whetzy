@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { useAppStore } from '../stores/useAppStore'
 import '../styles/onboarding.css'
 
 interface SegmentQuestion {
@@ -43,9 +43,10 @@ const SEGMENT_QUESTIONS: SegmentQuestion[] = [
   }
 ]
 
-export default function OnboardingScreen() {
+export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const { i18n, t } = useTranslation()
-  const [step, setStep] = useState(0) // 0-2: questions, 3: language choice
+  const setUserLanguage = useAppStore((s) => s.setUserLanguage)
+  const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [referralCode, setReferralCode] = useState('')
 
@@ -59,24 +60,22 @@ export default function OnboardingScreen() {
       if (step < SEGMENT_QUESTIONS.length - 1) {
         setStep(step + 1)
       } else {
-        setStep(SEGMENT_QUESTIONS.length) // Go to language choice
+        setStep(SEGMENT_QUESTIONS.length)
       }
     }, 600)
   }
 
   const handleLanguageSelect = (selectedLang: 'es' | 'en') => {
+    setUserLanguage(selectedLang)
     i18n.changeLanguage(selectedLang)
-    // Proceed to registration with referral code if provided
-    const params = new URLSearchParams()
-    if (referralCode) params.append('ref', referralCode)
-    window.location.href = \/auth?\\
+    onDone()
   }
 
   if (step < SEGMENT_QUESTIONS.length) {
     return (
       <div className="onboarding">
         <div className="progress">
-          <div className="bar" style={{ width: \\%\ }}></div>
+          <div className="bar" style={{ width: `${(step + 1) / SEGMENT_QUESTIONS.length * 100}%` }}></div>
         </div>
 
         <div className="question-card">
@@ -87,7 +86,7 @@ export default function OnboardingScreen() {
             {question.options.map((opt, i) => (
               <button
                 key={i}
-                className={\option \\}
+                className="option"
                 onClick={() => handleAnswer(i)}
                 disabled={isAnswered && answers[step] !== i}
               >
@@ -119,13 +118,11 @@ export default function OnboardingScreen() {
       </div>
 
       <div className="referral-section">
-        <label>{t('onboarding.referral', 'Código de referido (opcional)')}</label>
         <input
           type="text"
-          placeholder={t('onboarding.referralPlaceholder', 'Código...')}
+          placeholder={t('onboarding.referralCode', 'Código de referido (opcional)')}
           value={referralCode}
-          onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
-          maxLength="12"
+          onChange={(e) => setReferralCode(e.target.value)}
         />
       </div>
     </div>

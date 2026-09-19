@@ -6,7 +6,7 @@ interface SkillProgress {
   id: string
   name_es: string
   name_en: string
-  p_known: number // BKT mastery 0-1
+  p_known: number
   next_review: Date
   streak: number
 }
@@ -56,7 +56,6 @@ export default function HomeScreen() {
 
   return (
     <div className="dashboard">
-      {/* Header: Stats + Level */}
       <div className="header">
         <div className="level-badge">
           <div className="level-number">Elo 1,240</div>
@@ -65,37 +64,36 @@ export default function HomeScreen() {
 
         <div className="stats-row">
           <div className="stat">
-            <span className=\"stat-value\">{totalStreak}</span>
-            <span className=\"stat-label\">{t('home.streak', 'Racha')}</span>
+            <span className="stat-value">{totalStreak}</span>
+            <span className="stat-label">{t('home.streak', 'Racha')}</span>
           </div>
           <div className="stat">
-            <span className=\"stat-value\">{avgMastery}%</span>
-            <span className=\"stat-label\">{t('home.mastery', 'Dominio')}</span>
+            <span className="stat-value">{avgMastery}%</span>
+            <span className="stat-label">{t('home.mastery', 'Dominio')}</span>
           </div>
           <div className="stat">
-            <span className=\"stat-value\">{skills.length}</span>
-            <span className=\"stat-label\">{t('home.skills', 'Skills')}</span>
+            <span className="stat-value">{skills.length}</span>
+            <span className="stat-label">{t('home.skills', 'Skills')}</span>
           </div>
         </div>
       </div>
 
-      {/* BKT Territory Map */}
       <section className="territory">
         <h2>{t('home.territory', 'Tu Territorio')}</h2>
-        <div className=\"territory-grid\">
+        <div className="territory-grid">
           {skills.map((skill) => {
             const isDominated = skill.p_known >= 0.75
             const isPartial = skill.p_known >= 0.40
             const statusClass = isDominated ? 'dominated' : isPartial ? 'partial' : 'frontier'
             
             return (
-              <div key={skill.id} className={\"territory-node \\"}>
-                <div className=\"node-name\">{skill[\"name_\" + lang]}</div>
-                <div className=\"node-mastery\">
+              <div key={skill.id} className={`territory-node ${statusClass}`}>
+                <div className="node-name">{skill[`name_${lang}`]}</div>
+                <div className="node-mastery">
                   {Math.round(skill.p_known * 100)}%
                 </div>
-                <div className=\"node-indicator\" style={{
-                  width: \\%\
+                <div className="node-indicator" style={{
+                  width: `${skill.p_known * 100}%`
                 }}></div>
               </div>
             )
@@ -103,14 +101,13 @@ export default function HomeScreen() {
         </div>
       </section>
 
-      {/* FSRS Schedule */}
-      <section className=\"schedule\">
+      <section className="schedule">
         <h2>{t('home.next_review', 'Próximas Sesiones')}</h2>
-        <div className=\"review-list\">
+        <div className="review-list">
           {skills.sort((a, b) => a.next_review.getTime() - b.next_review.getTime()).map((skill) => (
-            <div key={skill.id} className=\"review-item\">
-              <div className=\"review-skill\">{skill[\"name_\" + lang]}</div>
-              <div className=\"review-date\">
+            <div key={skill.id} className="review-item">
+              <div className="review-skill">{skill[`name_${lang}`]}</div>
+              <div className="review-date">
                 {skill.next_review.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', {
                   month: 'short',
                   day: 'numeric'
@@ -121,9 +118,8 @@ export default function HomeScreen() {
         </div>
       </section>
 
-      {/* CTA: Next question */}
-      <div className=\"cta-section\">
-        <button className=\"btn-start-quiz\">
+      <div className="cta-section">
+        <button className="btn-start-quiz">
           {t('home.start_quiz', 'Próxima Pregunta')} →
         </button>
       </div>

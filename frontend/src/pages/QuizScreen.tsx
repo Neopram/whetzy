@@ -11,7 +11,7 @@ interface QuizQuestion {
   answer_index: number
   explanation_es: string
   explanation_en: string
-  p_known: number // BKT mastery
+  p_known: number
   source?: string
 }
 
@@ -91,67 +91,59 @@ export default function QuizScreen() {
   }
 
   return (
-    <div className=\"quiz\" onKeyDown={handleKeyDown} tabIndex={0}>
-      {/* Progress */}
-      <div className=\"quiz-header\">
-        <div className=\"progress-bar\">
-          <div className=\"progress-fill\" style={{ width: \\%\ }}></div>
+    <div className="quiz" onKeyDown={handleKeyDown} tabIndex={0}>
+      <div className="quiz-header">
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${(currentIdx + 1) / questions.length * 100}%` }}></div>
         </div>
-        <p className=\"progress-text\">{currentIdx + 1} / {questions.length}</p>
+        <p className="progress-text">{currentIdx + 1} / {questions.length}</p>
       </div>
 
-      {/* BKT Mastery Bar */}
-      <div className=\"bkt-section\">
+      <div className="bkt-section">
         <label>{t('quiz.mastery', 'Dominio Estimado')}</label>
-        <div className=\"bkt-bar\">
-          <div className=\"bkt-fill\" style={{ width: \\%\ }}></div>
+        <div className="bkt-bar">
+          <div className="bkt-fill" style={{ width: `${bktValue * 100}%` }}></div>
         </div>
-        <p className=\"bkt-value\">{Math.round(bktValue * 100)}%</p>
+        <p className="bkt-value">{Math.round(bktValue * 100)}%</p>
       </div>
 
-      {/* Question Card */}
-      <div className=\"question-card\">
-        <h2>{q[\"text_\" + lang]}</h2>
+      <div className="question-card">
+        <h2>{q[`text_${lang}`]}</h2>
 
-        {/* Options */}
-        <div className=\"options\">
+        <div className="options">
           {q.options?.map((opt, i) => (
             <button
               key={i}
-              className={\option \ \\}
+              className={`option ${selectedAnswer === i ? 'selected' : ''} ${answered && selectedAnswer === i ? (isCorrect ? 'correct' : 'wrong') : ''}`}
               onClick={() => handleAnswer(i)}
               disabled={answered && selectedAnswer !== i}
             >
-              {opt[\"text_\" + lang]}
+              {opt[`text_${lang}`]}
             </button>
           ))}
         </div>
 
-        {/* Feedback */}
         {answered && (
-          <div className={\eedback \\}>
+          <div className={`feedback ${isCorrect ? 'correct' : 'wrong'}`}>
             {isCorrect ? '✓ ' + t('quiz.correct', 'Correcto') : '✗ ' + t('quiz.wrong', 'Incorrecto')}
           </div>
         )}
 
-        {/* Explanation Toggle */}
         {answered && (
-          <button className=\"btn-explain\" onClick={() => setShowExplanation(!showExplanation)}>
+          <button className="btn-explain" onClick={() => setShowExplanation(!showExplanation)}>
             {t('quiz.why', '¿Por qué?')} {showExplanation ? '▾' : '▸'}
           </button>
         )}
 
-        {/* Explanation */}
         {showExplanation && (
-          <div className=\"explanation\">
-            <p>{q[\"explanation_\" + lang]}</p>
+          <div className="explanation">
+            <p>{q[`explanation_${lang}`]}</p>
             {q.source && <small>{t('quiz.source', 'Fuente')}: {q.source}</small>}
           </div>
         )}
 
-        {/* Next Button */}
         {answered && (
-          <button className=\"btn-next\" onClick={handleNext}>
+          <button className="btn-next" onClick={handleNext}>
             {currentIdx < questions.length - 1 ? t('quiz.next', 'Siguiente') : t('quiz.finish', 'Terminar')} →
           </button>
         )}
