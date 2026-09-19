@@ -66,13 +66,13 @@ LANGS = ["es", "en"]
 # de una razon social se escriben de diez formas y todas dicen lo mismo.
 PROHIBITED = {
     r"whetzy[\s,\.\-]*inc": "sociedad inexistente",
-    r"whetzy[\s,\.\-]*(llc|ltd|limited|gmbh|s\.?a\.?r\.?l|o[uü])\b": "sociedad inexistente",
-    r"marcas?\s+registradas?": "marcado falso de marca",
-    r"registered\s+trade\s*marks?": "marcado falso de marca",
-    r"google\s+analytics": "rastreador prohibido por linea roja 5",
-    r"lemon\s*squeezy": "procesador que no existe en el codigo",
-    r"\bpaddle\b": "procesador que no existe en el codigo",
-    r"revenue\s*cat": "procesador que no existe en el codigo",
+    r"whetzy[\s,\.\-]*(llc|ltd|limited|gmbh|corp|s\.?a\.?r\.?l|s\.?l\.?|o[uü])": "sociedad inexistente",
+    r"marcas?[\s\-]+registradas?": "marcado falso de marca",
+    r"registered[\s\-]+trade[\s\-]*marks?": "marcado falso de marca",
+    r"google[\s\-_]*analytics": "rastreador prohibido por linea roja 5",
+    r"lemon[\s\-_]*squeezy": "procesador que no existe en el codigo",
+    r"paddle": "procesador que no existe en el codigo",
+    r"revenue[\s\-_]*cat": "procesador que no existe en el codigo",
 }
 
 print()
