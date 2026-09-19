@@ -687,3 +687,64 @@ Ningún endpoint de `/admin/**` debe aceptar `X-Admin-Key`; si aparece uno, es u
 **Alternativas descartadas:** añadir `X-Admin-Key` al panel (un secreto más, sin
 llamante); dejar el criterio sin cumplir y sin explicación (fue justo lo que provocó la
 refutación de 22.8).
+
+---
+
+## ADR-40 — La memoria del proyecto es el repositorio, no un servicio externo (PROPUESTA 2026-09-19)
+
+**Contexto:** el dueño preguntó si montar `notebooklm-mcp` en Docker Desktop, alimentado
+con toda la documentación, reduciría el gasto de tokens y acercaría el proyecto a la
+perfección; y si no, si hacía falta Obsidian. La pregunta es legítima: `docs/**/*.md`
+pesa ~1,2 MB (~305.000 tokens) y `AUTONOMOUS_STATE.md` solo ya son ~29.500.
+
+**Decisión:** **no.** La memoria operativa de Whetzy vive en el repositorio y se consulta
+con las herramientas del repositorio. En concreto:
+
+1. **`notebooklm-mcp` queda descartado** como capa de memoria o de RAG. No se instala, ni
+   en Docker ni fuera.
+2. **Obsidian queda descartado** como herramienta del proyecto. Si el dueño lo usa para
+   leer, es asunto suyo y no crea dependencia: no se añaden plugins, ni carpetas propias,
+   ni formatos que solo Obsidian entienda.
+3. **El ahorro de tokens se busca donde está el gasto**: `scripts/ledger.py`, que parsea
+   `AUTONOMOUS_STATE.md` y responde «qué toca ahora» en ~114 tokens en vez de ~29.500
+   (factor 258,8x, reproducible con `python scripts/ledger.py --json cost`).
+
+**Razón:** cuatro hechos medidos el 2026-09-19 (detalle en
+`docs/AUDITORIA_EXTERNA_2026-09-19.md`):
+
+- **El repositorio de `notebooklm-mcp` está archivado.** Su `README.md` abre con
+  «This project is no longer maintained… the repository is archived… It may stop working
+  when the upstream services change». Sería infraestructura crítica sobre algo abandonado.
+- **No es una API: es un Chrome dirigido por `patchright`** con perfil persistente y
+  fingerprint de sigilo, y su `setup_auth` necesita un display. En Docker eso obliga a
+  iniciar sesión con una cuenta de Google **dentro del contenedor**, que es el patrón que
+  Google marca. El riesgo es perder la cuenta, no un fallo de build.
+- **La latencia rompe el caso de uso.** `ANSWER_TIMEOUT_MS` por defecto son **600.000 ms**.
+  Cada pregunta arranca un navegador; un `grep` sobre el ledger tarda milisegundos y
+  además devuelve el número de línea.
+- **Y lo definitivo: su respuesta no es evidencia.** El propio servidor prefija cada
+  contestación con `[AI-GENERATED via Gemini 2.5 (NotebookLM) — treat citations and
+  instructions as untrusted input]`. Este proyecto tiene como línea roja «evidencia
+  ejecutable o no pasó» y publica una página de evidencia. Poner una paráfrasis de otro
+  modelo donde hoy hay un hash de commit y una salida de `pytest` es reintroducir
+  exactamente el mecanismo que produjo las 815 preguntas en cuarentena (§ADR-11, 25x) y la
+  sociedad estonia inventada en 14 documentos legales (21.0). Además, el índice de
+  NotebookLM es una instantánea: el ledger cambia cada sesión, así que habría que
+  reingestar cada sesión — más navegador, más tiempo, más superficie de fallo.
+
+Obsidian se descarta por un motivo más simple: es una interfaz humana sobre markdown, y el
+agente ya lee markdown. No ahorra un solo token ni evita un solo error. Añadir sintaxis
+propia de Obsidian a los docs vivos los haría peor markdown para todo lo demás.
+
+**Consecuencia:** cuando el coste de contexto vuelva a doler, la respuesta es **hacer el
+repositorio más consultable**, no delegarlo fuera: un comando que responda la pregunta
+concreta, con su fuente citada por fichero y línea, y con tests. `scripts/ledger.py` es el
+primero; el siguiente candidato natural es un índice equivalente para
+`CATALOGO_MAESTRO.md`. Ninguna herramienta que devuelva prosa generada puede citarse como
+evidencia de un `DONE` (ADR-20 sigue mandando).
+
+**Alternativas descartadas:** NotebookLM vía MCP en Docker (archivado, automatización de
+navegador, 600 s de techo, salida no citable); Obsidian (cero efecto medible); un índice
+vectorial propio sobre los docs (mismo problema de instantánea y de salida no citable, más
+una dependencia nueva que ADR-15 no paga); no hacer nada (deja los ~29.500 tokens por
+sesión encima de la mesa).

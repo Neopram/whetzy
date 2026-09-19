@@ -4,12 +4,16 @@ Este proyecto se opera de forma autónoma. **Si arrancas sin instrucciones
 específicas del usuario, lee `docs/ORCHESTRATOR.md` y ejecútalo.** No preguntes
 qué hacer; el ledger lo sabe.
 
-- Fuente de verdad del progreso: `docs/AUTONOMOUS_STATE.md`
+- Fuente de verdad del progreso: `docs/AUTONOMOUS_STATE.md` — **no lo leas entero**
+  (~29.500 tokens). `python scripts/ledger.py next` responde «qué toca ahora» en ~114;
+  `show <ID>`, `series <N>`, `blocked`, `inv`, `stats`. Parsea el ledger, no lo duplica:
+  la fuente de verdad sigue siendo el markdown (ADR-40)
 - Alcance del producto (tracks, certificaciones, fuentes, volúmenes, puerta de calidad): `docs/CATALOGO_MAESTRO.md`
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §11)
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo)
+- Auditoría externa más reciente (producción medida en vivo, CI, coste de contexto): `docs/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
 - Protocolo de verificación (cada `DONE`, cada doc, modelos y tokens): `docs/PROTOCOLO_VERIFICACION.md`
 - Documentos vivos: los del índice `docs/README.md`; `docs/archive/` no manda
