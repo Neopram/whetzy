@@ -1705,23 +1705,6 @@
     "expected_time_ms": 20000
   },
   {
-    "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130101",
-    "id": "q130301066",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130101",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130101",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 20000
-  },
-  {
     "difficulty_tier": "medium",
     "question_es": "Pregunta de sk130102",
     "id": "q130302067",
@@ -1882,23 +1865,6 @@
     "correct_answer_es": null,
     "type": "mcq",
     "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
-  },
-  {
-    "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130204",
-    "id": "q130304073",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130204",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130204",
-    "source": "OWASP — https://owasp.org/",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 50000
   },
   {
     "difficulty_tier": "hard",
@@ -2063,20 +2029,37 @@
     "source": "OWASP — https://owasp.org/"
   },
   {
-    "difficulty_tier": "hard",
-    "question_es": "Pregunta de sk130403",
-    "id": "q130303080",
-    "correct_index": null,
+    "id": "q130301_fx007",
+    "skill_id": "sk130301",
     "type": "fix_bug",
-    "skill_id": "sk130403",
+    "difficulty_tier": "hard",
+    "question_es": "Este filtro acepta cualquier host que TERMINE en «ejemplo.com», así que `malicioso-ejemplo.com` pasa. Debe aceptar el dominio exacto o sus subdominios reales. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nhost = \"malicioso-ejemplo.com\"\nprint(\"PERMITIDO\" if host.endswith(\"ejemplo.com\") else \"BLOQUEADO\")\n```",
+    "question_en": "This filter accepts any host that ENDS with 'ejemplo.com', so `malicioso-ejemplo.com` gets through. It must accept the exact domain or its real subdomains. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nhost = \"malicioso-ejemplo.com\"\nprint(\"PERMITIDO\" if host.endswith(\"ejemplo.com\") else \"BLOQUEADO\")\n```",
     "options_es": null,
     "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130403",
-    "source": "MITRE — https://attack.mitre.org/",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 40000
+    "correct_index": null,
+    "correct_answer_es": "BLOQUEADO",
+    "correct_answer_en": "BLOQUEADO",
+    "explanation_es": "`endswith(\"ejemplo.com\")` no mira la frontera de etiqueta, así que cualquiera que registre `malicioso-ejemplo.com` entra en la lista blanca. Comparar contra el dominio exacto más el sufijo con punto delante cierra el hueco. Es el mismo fallo que se ve en validadores de CORS y de redirect_uri.",
+    "explanation_en": "`endswith('ejemplo.com')` ignores the label boundary, so anyone registering `malicioso-ejemplo.com` lands on the allowlist. Comparing against the exact domain plus the dot-prefixed suffix closes the gap. It is the same bug seen in CORS and redirect_uri validators.",
+    "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q130303_fx008",
+    "skill_id": "sk130303",
+    "type": "fix_bug",
+    "difficulty_tier": "medium",
+    "question_es": "Este código saca el host partiendo la URL por `/`, y se traga el usuario del userinfo: en `https://interno@evil.com/` cree que el host es `interno`. Debe usar el parser. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nurl = \"https://interno@evil.com/datos\"\nhost = url.split(\"/\")[2].split(\"@\")[0]\nprint(host)\n```",
+    "question_en": "This code extracts the host by splitting the URL on `/`, and falls for the userinfo part: in `https://interno@evil.com/` it thinks the host is `interno`. It must use the parser. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nurl = \"https://interno@evil.com/datos\"\nhost = url.split(\"/\")[2].split(\"@\")[0]\nprint(host)\n```",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "evil.com",
+    "correct_answer_en": "evil.com",
+    "explanation_es": "Todo lo que va antes de `@` en la autoridad de una URL es userinfo, no el host: el destino real de esa petición es `evil.com`. `urlparse(...).hostname` devuelve el host de verdad y además lo normaliza a minúsculas. Partir URLs a mano es como se cuelan la mitad de los SSRF.",
+    "explanation_en": "Everything before `@` in a URL's authority is userinfo, not the host: the real destination of that request is `evil.com`. `urlparse(...).hostname` returns the actual host and normalizes it to lowercase. Hand-splitting URLs is how half of all SSRF bugs get in.",
+    "source": "Python 3.12 Standard Library - https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlparse",
+    "expected_time_ms": 90000
   }
 ]

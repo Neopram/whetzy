@@ -1638,23 +1638,6 @@
     "expected_time_ms": 20000
   },
   {
-    "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130101",
-    "id": "q130401065",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130101",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130101",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 20000
-  },
-  {
     "difficulty_tier": "medium",
     "question_es": "Pregunta de sk130102",
     "id": "q130402066",
@@ -1815,23 +1798,6 @@
     "correct_answer_es": null,
     "type": "mcq",
     "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
-  },
-  {
-    "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130204",
-    "id": "q130404072",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130204",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130204",
-    "source": "OWASP — https://owasp.org/",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 50000
   },
   {
     "difficulty_tier": "hard",
@@ -1996,23 +1962,6 @@
     "source": "OWASP — https://owasp.org/"
   },
   {
-    "difficulty_tier": "hard",
-    "question_es": "Pregunta de sk130403",
-    "id": "q130403079",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130403",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130403",
-    "source": "MITRE — https://attack.mitre.org/",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 40000
-  },
-  {
     "difficulty_tier": "easy",
     "question_es": "Pregunta de sk130404",
     "id": "q130404080",
@@ -2038,5 +1987,56 @@
     "correct_answer_es": null,
     "type": "mcq",
     "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
+  },
+  {
+    "id": "q130401_fx009",
+    "skill_id": "sk130401",
+    "type": "fix_bug",
+    "difficulty_tier": "medium",
+    "question_es": "Esta consulta se arma concatenando la entrada del usuario, así que un valor con comillas cambia la condición y devuelve toda la tabla. Debe ir parametrizada. ¿Cuántas filas imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = '\" + entrada + \"'\"\nprint(len(con.execute(sql).fetchall()))\n```",
+    "question_en": "This query is built by concatenating user input, so a value containing quotes rewrites the condition and returns the whole table. It must be parameterized. How many rows does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = '\" + entrada + \"'\"\nprint(len(con.execute(sql).fetchall()))\n```",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "0",
+    "correct_answer_en": "0",
+    "explanation_es": "Con el parámetro, el motor trata la entrada como un valor y busca literalmente un usuario llamado `x' OR '1'='1`, que no existe: cero filas. Concatenando, ese texto pasa a formar parte de la condición, la hace siempre cierta y devuelve las dos. La diferencia no es escapar mejor: es que el dato nunca llega a analizarse como SQL.",
+    "explanation_en": "With the parameter, the engine treats the input as a value and literally looks for a user named `x' OR '1'='1`, which does not exist: zero rows. Concatenated, that text becomes part of the condition, makes it always true and returns both. The difference is not better escaping: the data never gets parsed as SQL at all.",
+    "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q130403_fx010",
+    "skill_id": "sk130403",
+    "type": "fix_bug",
+    "difficulty_tier": "easy",
+    "question_es": "Este código mete un comentario del usuario en el HTML sin escapar, así que una etiqueta `<script>` se ejecuta en el navegador de quien lo lea. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\ncomentario = \"<script>alert(1)</script>\"\nprint(f\"<p>{comentario}</p>\")\n```",
+    "question_en": "This code drops a user comment into the HTML unescaped, so a `<script>` tag runs in the browser of whoever reads it. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\ncomentario = \"<script>alert(1)</script>\"\nprint(f\"<p>{comentario}</p>\")\n```",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>",
+    "correct_answer_en": "<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>",
+    "explanation_es": "`html.escape` convierte `<`, `>` y `&` en entidades, de modo que el navegador pinta el texto en vez de interpretarlo como marcado. El script deja de ejecutarse y se ve tal cual lo escribió el usuario. Escapar es responsabilidad del punto de salida: el mismo dato es inofensivo en JSON y peligroso en HTML.",
+    "explanation_en": "`html.escape` turns `<`, `>` and `&` into entities, so the browser renders the text instead of interpreting it as markup. The script stops running and shows up exactly as the user typed it. Escaping belongs at the output point: the same data is harmless in JSON and dangerous in HTML.",
+    "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q130404_fx011",
+    "skill_id": "sk130404",
+    "type": "fix_bug",
+    "difficulty_tier": "hard",
+    "question_es": "Este servidor de ficheros pega el nombre pedido a un directorio base sin normalizar, así que `../../etc/passwd` se sale de él. Debe rechazar lo que quede fuera. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport posixpath\nBASE = \"/srv/publico\"\npedido = \"../../etc/passwd\"\nruta = posixpath.normpath(posixpath.join(BASE, pedido))\nprint(ruta)\n```",
+    "question_en": "This file server joins the requested name to a base directory without normalizing, so `../../etc/passwd` escapes it. It must reject anything landing outside. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport posixpath\nBASE = \"/srv/publico\"\npedido = \"../../etc/passwd\"\nruta = posixpath.normpath(posixpath.join(BASE, pedido))\nprint(ruta)\n```",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "BLOQUEADO",
+    "correct_answer_en": "BLOQUEADO",
+    "explanation_es": "`normpath` resuelve los `..`, pero no impide salir del directorio: la ruta resultante es `/etc/passwd`, perfectamente válida y fuera de BASE. La comprobación que falta es confirmar que la ruta YA normalizada sigue colgando de BASE. Hacerlo antes de normalizar no sirve, porque es justo la normalización la que revela adónde apunta.",
+    "explanation_en": "`normpath` resolves the `..` but does not prevent escaping the directory: the resulting path is `/etc/passwd`, perfectly valid and outside BASE. The missing check is confirming the ALREADY normalized path still sits under BASE. Doing it before normalizing is useless, because normalizing is precisely what reveals where it points.",
+    "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html",
+    "expected_time_ms": 90000
   }
 ]

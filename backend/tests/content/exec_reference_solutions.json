@@ -2860,5 +2860,53 @@
   },
   "q170304013": {
     "fill": ""
+  },
+  "q130101_fx001": {
+    "fixed": "import hmac\nguardado = \"a1b2c3d4\"\nrecibido = \"a1b2c3d5\"\nif hmac.compare_digest(guardado, recibido):\n    print(\"ACEPTADO\")\nelse:\n    print(\"RECHAZADO\")",
+    "kind": "fix_bug"
+  },
+  "q130102_fx002": {
+    "fixed": "import hashlib\nh1 = hashlib.sha256(b\"sal_usuario_1\" + b\"hunter2\").hexdigest()\nh2 = hashlib.sha256(b\"sal_usuario_2\" + b\"hunter2\").hexdigest()\nprint(\"IGUALES\" if h1 == h2 else \"DISTINTOS\")",
+    "kind": "fix_bug"
+  },
+  "q130104_fx003": {
+    "fixed": "modo = 0o600\nprint(f\"permisos={oct(modo)} otros_pueden_leer={bool(modo & 0o004)}\")",
+    "kind": "fix_bug"
+  },
+  "q130201_fx004": {
+    "fixed": "import hashlib\nfirma = hashlib.sha256(b\"pedido=42\").hexdigest()\nprint(len(firma))",
+    "kind": "fix_bug"
+  },
+  "q130203_fx005": {
+    "fixed": "import hmac, hashlib\nclave = b\"clave_de_verdad\"\ncuerpo = b\"importe=100\"\nfirma = hmac.new(clave, cuerpo, hashlib.sha256).hexdigest()\nesperada = hmac.new(clave, cuerpo, hashlib.sha256).hexdigest()\nprint(\"VALIDA\" if hmac.compare_digest(firma, esperada) else \"INVALIDA\")",
+    "kind": "fix_bug"
+  },
+  "q130204_fx006": {
+    "fixed": "import hashlib\nITER = 600000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")",
+    "kind": "fix_bug"
+  },
+  "q130301_fx007": {
+    "fixed": "host = \"malicioso-ejemplo.com\"\nprint(\"PERMITIDO\" if host == \"ejemplo.com\" or host.endswith(\".ejemplo.com\") else \"BLOQUEADO\")",
+    "kind": "fix_bug"
+  },
+  "q130303_fx008": {
+    "fixed": "from urllib.parse import urlparse\nurl = \"https://interno@evil.com/datos\"\nhost = urlparse(url).hostname\nprint(host)",
+    "kind": "fix_bug"
+  },
+  "q130401_fx009": {
+    "fixed": "import sqlite3\ncon = sqlite3.connect(\":memory:\")\ncon.execute(\"CREATE TABLE u (nombre TEXT)\")\ncon.executemany(\"INSERT INTO u VALUES (?)\", [(\"ana\",), (\"luis\",)])\nentrada = \"x' OR '1'='1\"\nsql = \"SELECT nombre FROM u WHERE nombre = ?\"\nprint(len(con.execute(sql, (entrada,)).fetchall()))",
+    "kind": "fix_bug"
+  },
+  "q130403_fx010": {
+    "fixed": "import html\ncomentario = \"<script>alert(1)</script>\"\nprint(f\"<p>{html.escape(comentario)}</p>\")",
+    "kind": "fix_bug"
+  },
+  "q130404_fx011": {
+    "fixed": "import posixpath\nBASE = \"/srv/publico\"\npedido = \"../../etc/passwd\"\nruta = posixpath.normpath(posixpath.join(BASE, pedido))\nprint(ruta if ruta.startswith(BASE + \"/\") else \"BLOQUEADO\")",
+    "kind": "fix_bug"
+  },
+  "q130502_fx012": {
+    "fixed": "token = \"sk_live_9f3a7b21c8d4\"\nprint(f\"auth token={'*' * (len(token) - 4)}{token[-4:]}\")",
+    "kind": "fix_bug"
   }
 }

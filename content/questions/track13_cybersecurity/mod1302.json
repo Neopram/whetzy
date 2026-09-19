@@ -1658,23 +1658,6 @@
     "expected_time_ms": 20000
   },
   {
-    "id": "q130203_fbe005",
-    "skill_id": "sk130203",
-    "type": "fix_bug",
-    "difficulty_tier": "medium",
-    "question_es": "¿Qué imprime la versión CORREGIDA de este código? Hay un error en la línea 4:",
-    "question_en": "What does the CORRECTED version of this code print? There is a bug on line 4:",
-    "options_es": null,
-    "options_en": null,
-    "correct_index": null,
-    "correct_answer_es": "64",
-    "correct_answer_en": "64",
-    "explanation_es": "El error es intentar llamar len() directamente sobre un objeto hash, que no tiene longitud. La versión corregida debe ser: print(len(h.hexdigest())) que devuelve 64, el número de caracteres hexadecimales que produce SHA256.",
-    "explanation_en": "The bug is calling len() directly on a hash object, which has no length attribute. The corrected version should be: print(len(h.hexdigest())) which returns 64, the number of hexadecimal characters SHA256 produces.",
-    "source": "https://docs.python.org/3/library/hashlib.html",
-    "expected_time_ms": 30000
-  },
-  {
     "id": "q130204_fbe001",
     "skill_id": "sk130204",
     "type": "fill_blank_exec",
@@ -1689,23 +1672,6 @@
     "explanation_es": "El formato struct '!BHH' representa un encabezado de registro TLS: B=1 byte (tipo), H=2 bytes (versión), H=2 bytes (longitud), todo en formato big-endian. struct.calcsize() calcula el total: 1 + 2 + 2 = 5 bytes.",
     "explanation_en": "The struct format '!BHH' represents a TLS record header: B=1 byte (type), H=2 bytes (version), H=2 bytes (length), all in big-endian format. struct.calcsize() calculates the total: 1 + 2 + 2 = 5 bytes.",
     "source": "https://docs.python.org/3/library/struct.html",
-    "expected_time_ms": 20000
-  },
-  {
-    "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130101",
-    "id": "q130201067",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130101",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130101",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
     "expected_time_ms": 20000
   },
   {
@@ -1871,23 +1837,6 @@
     "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
   },
   {
-    "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130204",
-    "id": "q130204074",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130204",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130204",
-    "source": "OWASP — https://owasp.org/",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 50000
-  },
-  {
     "difficulty_tier": "hard",
     "question_es": "Pregunta de sk130301",
     "id": "q130201075",
@@ -2048,5 +1997,56 @@
     "correct_answer_es": null,
     "type": "mcq",
     "source": "OWASP — https://owasp.org/"
+  },
+  {
+    "id": "q130201_fx004",
+    "skill_id": "sk130201",
+    "type": "fix_bug",
+    "difficulty_tier": "easy",
+    "question_es": "Este código firma un webhook con MD5, cuyas colisiones se generan hoy en segundos. Hay que pasarlo a SHA-256. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport hashlib\nfirma = hashlib.md5(b\"pedido=42\").hexdigest()\nprint(len(firma))\n```",
+    "question_en": "This code signs a webhook with MD5, whose collisions are generated in seconds today. It must move to SHA-256. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport hashlib\nfirma = hashlib.md5(b\"pedido=42\").hexdigest()\nprint(len(firma))\n```",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "64",
+    "correct_answer_en": "64",
+    "explanation_es": "MD5 da 128 bits, que en hexadecimal son 32 caracteres; SHA-256 da 256 bits, 64 caracteres. La longitud no es el motivo del cambio —es solo lo que se ve desde fuera—, el motivo es que MD5 tiene colisiones prácticas desde 2004 y firmar con él permite fabricar un segundo mensaje con la misma firma.",
+    "explanation_en": "MD5 produces 128 bits, 32 hex characters; SHA-256 produces 256 bits, 64 characters. The length is not the reason for the change - it is just what you can see from outside - the reason is that MD5 has had practical collisions since 2004, and signing with it lets someone craft a second message with the same signature.",
+    "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q130203_fx005",
+    "skill_id": "sk130203",
+    "type": "fix_bug",
+    "difficulty_tier": "medium",
+    "question_es": "Este código verifica un HMAC recalculándolo con una clave distinta de la que firmó. Debe usar la misma. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport hmac, hashlib\nclave = b\"clave_de_verdad\"\ncuerpo = b\"importe=100\"\nfirma = hmac.new(clave, cuerpo, hashlib.sha256).hexdigest()\nesperada = hmac.new(b\"otra_clave\", cuerpo, hashlib.sha256).hexdigest()\nprint(\"VALIDA\" if hmac.compare_digest(firma, esperada) else \"INVALIDA\")\n```",
+    "question_en": "This code verifies an HMAC by recomputing it with a key different from the one that signed. It must use the same key. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport hmac, hashlib\nclave = b\"clave_de_verdad\"\ncuerpo = b\"importe=100\"\nfirma = hmac.new(clave, cuerpo, hashlib.sha256).hexdigest()\nesperada = hmac.new(b\"otra_clave\", cuerpo, hashlib.sha256).hexdigest()\nprint(\"VALIDA\" if hmac.compare_digest(firma, esperada) else \"INVALIDA\")\n```",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "VALIDA",
+    "correct_answer_en": "VALIDA",
+    "explanation_es": "Un HMAC solo significa algo si las dos partes usan la misma clave secreta. Verificar con otra distinta rechaza todo, lo que parece «seguro» pero en realidad es un verificador roto: el error típico al desplegar es tener la clave vacía en un entorno y que la comparación pase siempre, no que falle siempre.",
+    "explanation_en": "An HMAC only means something if both sides use the same secret key. Verifying with a different one rejects everything, which looks 'safe' but is really a broken verifier: the classic deployment mistake is an empty key in one environment making the comparison always pass, not always fail.",
+    "source": "Python 3.12 Standard Library - https://docs.python.org/3/library/hmac.html",
+    "expected_time_ms": 90000
+  },
+  {
+    "id": "q130204_fx006",
+    "skill_id": "sk130204",
+    "type": "fix_bug",
+    "difficulty_tier": "hard",
+    "question_es": "Este derivador de clave usa 1.000 iteraciones de PBKDF2, muy por debajo de lo que recomienda OWASP para SHA-256 (600.000). ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\nimport hashlib\nITER = 1000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")\n```",
+    "question_en": "This key derivation uses 1,000 PBKDF2 iterations, far below what OWASP recommends for SHA-256 (600,000). What does the CORRECTED version print?\n\n**Buggy code:**\n```python\nimport hashlib\nITER = 1000\nk = hashlib.pbkdf2_hmac(\"sha256\", b\"hunter2\", b\"sal_fija_16bytes\", ITER)\nprint(f\"iteraciones={ITER} bytes={len(k)}\")\n```",
+    "options_es": null,
+    "options_en": null,
+    "correct_index": null,
+    "correct_answer_es": "iteraciones=600000 bytes=32",
+    "correct_answer_en": "iteraciones=600000 bytes=32",
+    "explanation_es": "El coste de PBKDF2 es lineal en las iteraciones: subir de 1.000 a 600.000 multiplica por 600 lo que le cuesta a un atacante probar cada candidata, y al usuario legítimo le cuesta una vez por inicio de sesión. La longitud de la clave derivada no cambia —son los 32 bytes del digest de SHA-256—; lo que cambia es el precio de adivinarla.",
+    "explanation_en": "PBKDF2's cost is linear in the iteration count: going from 1,000 to 600,000 multiplies by 600 what it costs an attacker to try each candidate, while the legitimate user pays it once per login. The derived key length does not change - it is SHA-256's 32-byte digest - what changes is the price of guessing it.",
+    "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+    "expected_time_ms": 90000
   }
 ]

@@ -1555,23 +1555,6 @@
     "expected_time_ms": 30000
   },
   {
-    "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130101",
-    "id": "q130501066",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130101",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130101",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 20000
-  },
-  {
     "difficulty_tier": "medium",
     "question_es": "Pregunta de sk130102",
     "id": "q130502067",
@@ -1732,23 +1715,6 @@
     "correct_answer_es": null,
     "type": "mcq",
     "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
-  },
-  {
-    "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130204",
-    "id": "q130504073",
-    "correct_index": null,
-    "type": "fix_bug",
-    "skill_id": "sk130204",
-    "options_es": null,
-    "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130204",
-    "source": "OWASP — https://owasp.org/",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 50000
   },
   {
     "difficulty_tier": "hard",
@@ -1913,20 +1879,20 @@
     "source": "OWASP — https://owasp.org/"
   },
   {
-    "difficulty_tier": "hard",
-    "question_es": "Pregunta de sk130403",
-    "id": "q130503080",
-    "correct_index": null,
+    "id": "q130502_fx012",
+    "skill_id": "sk130502",
     "type": "fix_bug",
-    "skill_id": "sk130403",
+    "difficulty_tier": "medium",
+    "question_es": "Esta línea de log escribe el token de autorización entero, que acaba en disco y en el agregador de logs. Debe quedar redactado menos los cuatro últimos caracteres. ¿Qué imprime la versión CORREGIDA?\n\n**Código con el bug:**\n```python\ntoken = \"sk_live_9f3a7b21c8d4\"\nprint(f\"auth token={token}\")\n```",
+    "question_en": "This log line writes the whole authorization token, which ends up on disk and in the log aggregator. It must be redacted except for the last four characters. What does the CORRECTED version print?\n\n**Buggy code:**\n```python\ntoken = \"sk_live_9f3a7b21c8d4\"\nprint(f\"auth token={token}\")\n```",
     "options_es": null,
     "options_en": null,
-    "correct_answer_en": "Secure solution",
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130403",
-    "source": "MITRE — https://attack.mitre.org/",
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": "Solucion segura",
-    "expected_time_ms": 40000
+    "correct_index": null,
+    "correct_answer_es": "auth token=****************c8d4",
+    "correct_answer_en": "auth token=****************c8d4",
+    "explanation_es": "Dejar los cuatro últimos caracteres basta para cruzar un log con un token concreto durante una investigación, y no basta para reutilizarlo. Un secreto que entra en los logs hay que darlo por comprometido y rotarlo: los logs se replican, se exportan y los lee más gente que la base de datos.",
+    "explanation_en": "Keeping the last four characters is enough to match a log line to a specific token during an investigation, and not enough to reuse it. A secret that reaches the logs must be treated as compromised and rotated: logs get replicated, exported, and read by more people than the database.",
+    "source": "OWASP Cheat Sheet Series - https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+    "expected_time_ms": 90000
   }
 ]
