@@ -67,7 +67,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.BACKEND_CORS_ORIGINS,
+    allow_origins=settings.active_cors_origins,  # 22.2: sin loopback en produccion
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

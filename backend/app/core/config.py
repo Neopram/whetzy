@@ -78,6 +78,25 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in v.split(",") if origin.strip()]
         return v
 
+    @property
+    def active_cors_origins(self) -> list[str]:
+        """Origins actually handed to CORSMiddleware (22.2).
+
+        The default list carries the localhost ports a developer needs. In
+        production those must not survive: with ``allow_credentials=True`` a
+        page served from ``http://localhost:5173`` on anyone's machine would
+        otherwise be an approved origin against the live API. Loopback origins
+        are dropped whenever ENVIRONMENT is production.
+        """
+        if self.ENVIRONMENT != "production":
+            return self.BACKEND_CORS_ORIGINS
+        return [
+            origin
+            for origin in self.BACKEND_CORS_ORIGINS
+            if not origin.startswith(("http://localhost", "http://127.0.0.1",
+                                      "https://localhost", "https://127.0.0.1"))
+        ]
+
     # --- AI Tutor (Groq) -----------------------------------------------------
     GROQ_API_KEY: str | None = None
     GROQ_MODEL: str = "qwen/qwen3.8-27b"
