@@ -1,7 +1,7 @@
 """Add experiments table for A/B testing.
 
 Revision ID: a9b0c1d2e3f4
-Revises: x5y6z7a8b9c0
+Revises: v0w1x2y3z4a5
 Create Date: 2026-09-19
 
 """
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 revision = "a9b0c1d2e3f4"
-down_revision = "x5y6z7a8b9c0"
+down_revision = "v0w1x2y3z4a5"
 branch_labels = None
 depends_on = None
 

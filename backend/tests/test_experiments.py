@@ -1,17 +1,24 @@
-"""Test A/B experiment framework."""
+"""Asignacion de variantes A/B (24.14).
+
+Estaban escritos contra el SQLAlchemy sincrono y sin `await`, asi que las
+aserciones comparaban dos objetos corrutina entre si —cosa que siempre falla—
+y ninguna llegaba a tocar el servicio.
+"""
+
+from datetime import datetime, timezone
+from uuid import uuid4
 
 import pytest
-from uuid import uuid4
-from sqlalchemy.orm import Session
+import pytest_asyncio
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.experiment import Experiment, ExperimentAssignment
-from app.services.experiments import get_user_variant, get_active_experiments
-from datetime import datetime
+from app.services.experiments import get_active_experiments, get_user_variant
 
 
-@pytest.fixture
-def experiment(db: Session):
-    """Create a test experiment."""
+@pytest_asyncio.fixture
+async def experiment(db_session: AsyncSession) -> Experiment:
     exp = Experiment(
         name="test_cta_landing",
         description="CTA button color test",
@@ -19,49 +26,102 @@ def experiment(db: Session):
         variant_b_label="Green",
         hypothesis="Green CTA increases signups by 5%",
         status="active",
-        started_at=datetime.now()
+        started_at=datetime.now(timezone.utc),
     )
-    db.add(exp)
-    db.commit()
+    db_session.add(exp)
+    await db_session.flush()
     return exp
 
 
-def test_deterministic_variant_assignment(db: Session, experiment: Experiment):
-    """Same user should always get same variant."""
+@pytest.mark.asyncio
+async def test_deterministic_variant_assignment(
+    db_session: AsyncSession, experiment: Experiment
+) -> None:
+    """El mismo usuario cae siempre en la misma variante."""
     user_id = uuid4()
-    
-    variant1 = get_user_variant(db, experiment.id, user_id)
-    variant2 = get_user_variant(db, experiment.id, user_id)
-    
-    assert variant1 == variant2
-    assert variant1 in ("A", "B")
+
+    first = await get_user_variant(db_session, experiment.id, user_id)
+    second = await get_user_variant(db_session, experiment.id, user_id)
+
+    assert first == second
+    assert first in ("A", "B")
 
 
-def test_variant_distribution(db: Session, experiment: Experiment):
-    """Test that variants distribute roughly 50/50 across many users."""
-    num_users = 100
-    users = [uuid4() for _ in range(num_users)]
-    
-    variants = [get_user_variant(db, experiment.id, uid) for uid in users]
-    
-    a_count = sum(1 for v in variants if v == "A")
-    b_count = sum(1 for v in variants if v == "B")
-    
-    assert a_count + b_count == num_users
-    assert 30 <= a_count <= 70  # Roughly 50/50
+@pytest.mark.asyncio
+async def test_variant_assignment_is_not_random(
+    db_session: AsyncSession, experiment: Experiment
+) -> None:
+    """Sin fila guardada, el reparto se recalcula igual.
+
+    Es lo que separa un hash de un sorteo: si se pierde la asignacion, el
+    usuario vuelve a la misma variante y la metrica sigue siendo comparable.
+    """
+    user_id = uuid4()
+    variant = await get_user_variant(db_session, experiment.id, user_id)
+
+    stored = await db_session.scalar(
+        select(ExperimentAssignment).where(
+            ExperimentAssignment.experiment_id == experiment.id,
+            ExperimentAssignment.user_id == user_id,
+        )
+    )
+    await db_session.delete(stored)
+    await db_session.flush()
+
+    assert await get_user_variant(db_session, experiment.id, user_id) == variant
+
+
+@pytest.mark.asyncio
+async def test_variant_distribution(
+    db_session: AsyncSession, experiment: Experiment
+) -> None:
+    """Con 100 usuarios el reparto se queda cerca del 50/50."""
+    variants = [
+        await get_user_variant(db_session, experiment.id, uuid4())
+        for _ in range(100)
+    ]
+
+    a_count = variants.count("A")
+    b_count = variants.count("B")
+
+    assert a_count + b_count == 100
+    assert 30 <= a_count <= 70
     assert 30 <= b_count <= 70
 
 
-def test_assignment_persisted(db: Session, experiment: Experiment):
-    """Assignment should be saved to database."""
+@pytest.mark.asyncio
+async def test_assignment_persisted(
+    db_session: AsyncSession, experiment: Experiment
+) -> None:
     user_id = uuid4()
-    
-    variant = get_user_variant(db, experiment.id, user_id)
-    
-    assignment = db.query(ExperimentAssignment).filter(
-        ExperimentAssignment.experiment_id == experiment.id,
-        ExperimentAssignment.user_id == user_id
-    ).first()
-    
+    variant = await get_user_variant(db_session, experiment.id, user_id)
+
+    assignment = await db_session.scalar(
+        select(ExperimentAssignment).where(
+            ExperimentAssignment.experiment_id == experiment.id,
+            ExperimentAssignment.user_id == user_id,
+        )
+    )
+
     assert assignment is not None
     assert assignment.variant == variant
+
+
+@pytest.mark.asyncio
+async def test_only_active_experiments_are_returned(
+    db_session: AsyncSession, experiment: Experiment
+) -> None:
+    """Un experimento en borrador no reparte variantes."""
+    draft = Experiment(
+        name="test_draft",
+        variant_a_label="A",
+        variant_b_label="B",
+        status="draft",
+        started_at=datetime.now(timezone.utc),
+    )
+    db_session.add(draft)
+    await db_session.flush()
+
+    names = {e.name for e in await get_active_experiments(db_session)}
+    assert experiment.name in names
+    assert "test_draft" not in names

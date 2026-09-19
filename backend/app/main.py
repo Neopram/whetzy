@@ -50,9 +50,56 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     asyncio.create_task(registry.load())
     logger.info("DKT registry: background model load scheduled")
 
+    # Schedule monthly payouts (15th of each month at 00:00 UTC)
+    _schedule_monthly_payouts(AsyncSessionLocal)
+    logger.info("Monthly payout scheduler: scheduled for 15th of each month")
+
     yield
     logger.info("Shutting down %s", settings.APP_NAME)
     await close_db()
+
+
+def _schedule_monthly_payouts(db_factory) -> None:
+    """Schedule monthly payout job using APScheduler.
+    
+    Triggers on the 15th of each month at 00:00 UTC.
+    """
+    try:
+        from apscheduler.schedulers.asyncio import AsyncIOScheduler
+        from apscheduler.triggers.cron import CronTrigger
+
+        async def _run_payout_job():
+            """Create and queue a run_payouts job."""
+            from app.models.job import Job
+            from uuid import uuid4
+
+            async with db_factory() as db:
+                # Create a system job (user_id is a sentinel for scheduled jobs)
+                job = Job(
+                    user_id=uuid4(),
+                    job_type="run_payouts",
+                    status="queued",
+                    payload={},
+                )
+                db.add(job)
+                await db.commit()
+                logger.info("Queued monthly payout job: %d", job.id)
+
+        scheduler = AsyncIOScheduler()
+        # Trigger at 00:00 UTC on the 15th of each month
+        scheduler.add_job(
+            _run_payout_job,
+            trigger=CronTrigger(day=15, hour=0, minute=0, timezone="UTC"),
+            id="monthly_payouts",
+            name="Monthly instructor payouts",
+            replace_existing=True,
+        )
+        scheduler.start()
+        logger.info("APScheduler started with monthly payout trigger")
+    except ImportError:
+        logger.warning("APScheduler not installed; monthly payouts will not be automatically scheduled")
+    except Exception:
+        logger.exception("Failed to configure monthly payout scheduler")
 
 
 app = FastAPI(

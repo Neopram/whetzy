@@ -14,7 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.db import get_db
 from app.core.security import get_current_user
-from app.models.admin import CreditLedger, GDPRRequest, Referral
+from app.models.admin import GDPRRequest
+from app.models.economy import CreditLedger, Referral
 from app.models.auth import AuditLog, LoginAttempt
 from app.models.content import Question, Skill
 from app.models.session import Response, StudySession
@@ -620,7 +621,9 @@ async def get_economy_credits(
                 "user_id": str(e.user_id),
                 "amount": e.amount,
                 "reason": e.reason,
-                "balance_after": e.balance_after,
+                "ref_type": e.ref_type,
+                "ref_id": e.ref_id,
+                "expires_at": e.expires_at.isoformat() if e.expires_at else None,
                 "created_at": e.created_at.isoformat(),
             }
             for e in ledger_entries
@@ -655,7 +658,7 @@ async def get_economy_referrals(
                 "referrer_id": str(r.referrer_id),
                 "referred_id": str(r.referred_id),
                 "status": r.status,
-                "reward_credits": r.reward_credits,
+                "activated_at": r.activated_at.isoformat() if r.activated_at else None,
                 "created_at": r.created_at.isoformat(),
             }
             for r in referrals

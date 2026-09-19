@@ -30,6 +30,16 @@ CONTENT = ROOT / "content" / "questions"
 
 # Below this many questions, position counts are noise rather than a pattern.
 SKEW_MIN_SAMPLE = 40
+# Por debajo de 40 preguntas un track recien empezado daria falsos positivos.
+STEM_MIN_SAMPLE = 40
+# Con opciones barajadas cada enunciado puede dar 3-4 preguntas defendibles; por
+# debajo del 60 % distinto ya no se esta preguntando, se esta rellenando.
+STEM_MIN_UNIQUE_SHARE = 0.60
+IDENTICAL_STEM_MIN_CHARS = 15
+# Opciones de una palabra: legitimas en shell o SQL (track15 llega al 56 %),
+# pero un track entero al 95 % son distractores de relleno, no alternativas.
+ONE_WORD_OPTION_MAX_SHARE = 0.80
+EXEC_NEEDS_CODE = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
 SKEW_MAX_SHARE = 0.45
 MIN_PER_SKILL = 6
 
@@ -219,6 +229,75 @@ def main() -> int:
         ci = q.get("correct_index")
         if ci is None or not (0 <= ci < len(opts_es)):
             fail(path, qid, f"correct_index {ci!r} out of range for {len(opts_es)} options")
+
+    # --- el enunciado dice algo? ---
+    #
+    # Lo de arriba comprueba la FORMA de la pregunta; esto comprueba que haya
+    # pregunta. Un generador al que se le pide volumen devuelve el mismo
+    # enunciado corto una y otra vez con las opciones barajadas, y eso pasaba
+    # todas las comprobaciones anteriores: ids unicos, ES y EN presentes,
+    # opciones bien formadas y hasta las posiciones repartidas. Asi entraron
+    # 400 preguntas por track salidas de 14 enunciados.
+    stems: dict[str, Counter] = defaultdict(Counter)
+    for path, q in items:
+        stem = (q.get("question_es") or "").strip()
+        if stem:
+            stems[track_key(path)][stem] += 1
+
+    one_word: dict[str, list[int]] = defaultdict(lambda: [0, 0])
+    for path, q in items:
+        for opt in (q.get("options_es") or []):
+            one_word[track_key(path)][1] += 1
+            if len(opt.split()) <= 1:
+                one_word[track_key(path)][0] += 1
+
+    for track, (short_opts, total_opts) in sorted(one_word.items()):
+        if total_opts < STEM_MIN_SAMPLE:
+            continue
+        share = short_opts / total_opts
+        if share > ONE_WORD_OPTION_MAX_SHARE:
+            problems.append(
+                f"{track}: {share:.0%} de las opciones son de una sola palabra "
+                f"({short_opts}/{total_opts}). Cuatro sustantivos sueltos no son "
+                f"cuatro alternativas defendibles"
+            )
+
+    for track, dist in sorted(stems.items()):
+        total = sum(dist.values())
+        if total < STEM_MIN_SAMPLE:
+            continue
+        unique = len(dist)
+        if unique / total < STEM_MIN_UNIQUE_SHARE:
+            worst, n = dist.most_common(1)[0]
+            problems.append(
+                f"{track}: solo {unique} enunciados distintos para {total} preguntas "
+                f"({unique / total:.0%}); el mas repetido sale {n} veces: {worst[:60]!r}. "
+                f"Barajar las opciones de la misma pregunta no son preguntas nuevas"
+            )
+
+    for path, q in items:
+        qid = q.get("id", "<no id>")
+        stem_es = (q.get("question_es") or "").strip()
+        stem_en = (q.get("question_en") or "").strip()
+
+        # Dos idiomas nativos es la linea roja 3. Si la cadena es identica no se
+        # tradujo (salvo que sea codigo o una sigla suelta, de ahi el minimo).
+        if stem_es and stem_es == stem_en and len(stem_es) > IDENTICAL_STEM_MIN_CHARS:
+            problems.append(
+                f"{path.name} {qid}: question_es y question_en son identicas - sin traducir"
+            )
+
+        # Un ejecutable sin codigo no se puede ejecutar: o lleva un bloque ``` en
+        # el enunciado (fill_blank_exec, fix_bug) o trae code_es/code_en
+        # (sql_exec). Sin una de las dos, el runtime no tiene que correr.
+        if q.get("type") in EXEC_NEEDS_CODE:
+            has_fence = "```" in (q.get("question_es") or "")
+            has_code = bool((q.get("code_es") or "").strip())
+            if not has_fence and not has_code:
+                problems.append(
+                    f"{path.name} {qid}: {q.get('type')} sin codigo que ejecutar "
+                    f"(ni bloque ``` en el enunciado ni code_es)"
+                )
 
     # --- answer position skew, per track ---
     #
