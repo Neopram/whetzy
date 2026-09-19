@@ -340,7 +340,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 24.11 | **3** | **Marketplace UI**: catálogo con filtros, ratings, preview de primera lección; mock hasta 28.4 | DONE (b97c0ee) | CourseCard + MarketplaceScreen; 6 cursos mock (Python/Algoritmos/Full Stack/Intro/ML/SQL bilingual); búsqueda; level filter; sort popular/rating; 21 i18n keys ES/EN; responsive grid auto-fill 280px; accessible sin login |
 | 24.12 | **2** | **Mobile polish**: Capacitor Android, safe areas, gestos, estado offline básico, rendimiento en 4G (11.6) | DONE (c912713) | Offline: IndexedDB + localStorage + SW. Gestos: swipe left/right. Safe areas: CSS env(). Touch targets 44px. OfflineIndicator component. Lighthouse ≥90 pendiente CI; TalkBack pendiente H.9 |
 | 24.13 | **2** | **Tres vídeos demo, ES y EN nativos**: producto 2 min, motor 5 min, short 60s | DONE (03f7659) | Guiones 6 piezas (producto, motor, short × ES, EN) aprobados. Códigos de campaña YT-[LANG]-[FORMAT] integrados. Documentación renderizado 1080p. Ready para owner (26.0/27.0) y renderizado. |
-| 24.14 | **3** | **Framework A/B**: tabla `experiments` + asignación estable por usuario + flag en frontend; métricas en 22.1; primer experimento: CTA de landing | BLOCKED (22.1) | Migración aditiva con downgrade; test de asignación determinista; resultado del primer test en admin |
+| 24.14 | **3** | **Framework A/B**: tabla experiments, asignación estable por usuario, flag en frontend | DONE (f39a49d) | Deterministic MD5 hash assignment. Models, endpoint, hooks, tests. Primer exp: landing_cta. |
 
 #### Dependencias
 
