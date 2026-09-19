@@ -1,0 +1,200 @@
+.onboarding {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-secondary) 100%);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-8);
+  font-family: var(--font-sans);
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--border-color);
+  z-index: 999;
+}
+
+.progress .bar {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width var(--transition-slow);
+}
+
+.question-card {
+  background-color: var(--bg-dark-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12) var(--space-8);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.step-indicator {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  margin: 0 0 var(--space-4) 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.question-card h2 {
+  font-size: var(--text-2xl);
+  margin: 0 0 var(--space-12) 0;
+  color: var(--text-primary);
+  font-weight: var(--font-bold);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.option {
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--bg-dark-tertiary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: 44px;
+  text-align: left;
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background-color: rgba(28, 176, 246, 0.05);
+}
+
+.option.selected {
+  background-color: rgba(28, 176, 246, 0.1);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.feedback {
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  margin: 0;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Language choice screen */
+.language-choice {
+  max-width: 400px;
+}
+
+.language-choice h2 {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-6);
+}
+
+.language-choice p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-12);
+  font-size: var(--text-sm);
+}
+
+.language-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-12);
+}
+
+.lang-btn {
+  padding: var(--space-6) var(--space-4);
+  background-color: var(--bg-dark-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.lang-btn:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(28, 176, 246, 0.05);
+  transform: translateY(-2px);
+}
+
+.referral-section {
+  text-align: left;
+  padding: var(--space-8) 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.referral-section label {
+  display: block;
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.referral-section input {
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-dark-tertiary);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  box-sizing: border-box;
+  min-height: 44px;
+}
+
+.referral-section input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(28, 176, 246, 0.1);
+}
+
+@media (max-width: 640px) {
+  .question-card {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .question-card h2 {
+    font-size: var(--text-xl);
+  }
+
+  .language-buttons {
+    gap: var(--space-4);
+  }
+
+  .lang-btn {
+    min-height: 60px;
+    font-size: var(--text-base);
+  }
+}
