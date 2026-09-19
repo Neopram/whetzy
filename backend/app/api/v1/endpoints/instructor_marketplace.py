@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import logging
 import uuid
-from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
@@ -23,8 +22,11 @@ from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.instructor import Instructor, InstructorCourse
 from app.models.user import User
-from app.services.instructor_service import InstructorService
-from app.services.payment_service import PaymentService
+from app.services.instructor_service import (
+    AlreadyEnrolled,
+    CourseNotPublished,
+    InstructorService,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -57,11 +59,6 @@ class CourseResponse(BaseModel):
     revenue_cents: int
     status: str
     created_at: str
-
-
-class EnrollmentRequest(BaseModel):
-    """Enroll student in course."""
-    gross_payment_cents: int = Field(..., ge=1)
 
 
 class EnrollmentResponse(BaseModel):
@@ -170,22 +167,33 @@ async def list_courses(
 )
 async def enroll_student(
     course_id: str,
-    body: EnrollmentRequest,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> EnrollmentResponse:
     """Inscribe al usuario y acumula el reparto en el pago del mes (28.4-28.6).
 
     El desglose que devuelve es el de `PaymentService`: comision de Paddle,
-    70/30 y retencion, con los parametros que fijo H.29.
+    70/30 y retencion, con los parametros que fijo H.29. El importe es el
+    precio del curso; no se acepta en la peticion.
+
+    Sin pasarela todavia (Paddle es HUMAN-BLOCKED), esto registra la
+    inscripcion y el reparto pero no cobra: no exponer en la UI como compra
+    hasta que el webhook de Paddle sea quien lo llame.
     """
+    # La columna es UUID; con el id como texto SQLAlchemy revienta antes de
+    # llegar a la consulta, y eso convertia cualquier inscripcion en un 500.
+    try:
+        course_uuid = uuid.UUID(course_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course not found") from exc
     try:
         result = await InstructorService.enroll_student_in_course(
-            db,
-            course_id=course_id,
-            user_id=str(user.id),
-            gross_payment_cents=body.gross_payment_cents,
+            db, course_id=course_uuid, user_id=user.id
         )
+    except AlreadyEnrolled as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+    except CourseNotPublished as exc:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
     return EnrollmentResponse(**result)

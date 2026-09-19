@@ -227,7 +227,7 @@ H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula
 ```
 POST /instructor/courses                     → {id, …} 🔒 — publicar curso
 GET  /instructor/courses                     → [{…}] 🔒
-POST /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒
+POST /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒 — sin body: el importe es `price_cents` del curso; 403 si no está `published`, 409 si ya inscrito. Sin pasarela no cobra (Paddle HUMAN-BLOCKED)
 GET  /instructor/analytics                   → {total_earnings_cents, …} 🔒
 GET  /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
 ```

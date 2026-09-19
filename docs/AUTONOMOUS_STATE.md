@@ -25,6 +25,14 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **`POST /instructor/courses/{id}/enroll` nunca había funcionado.** Aceptaba `gross_payment_cents` del
+  cliente (comprar un curso de 100 € enviando `1`) y, de haber pasado la validación, pasaba el id como
+  `str` a una columna UUID y reventaba en 500. Arreglado 2026-09-20: importe = `course.price_cents`,
+  403 si no publicado, 409 si duplicado. Los tests de 28.4-28.6 tenían las reglas bien y el contrato
+  inventado (`student_id`). **Sigue sin cobrar**: hasta que exista Paddle, no exponer como compra en la UI
+- **`admin_tables` (0900) ya no crea `promo_codes`/`credit_ledger`/`referrals`**: nacen solo en la 29
+  (`v0w1x2y3z4a5`). Producción aplicó ambas versiones (la 29 renombra/borra en runtime); el cambio solo
+  afecta a bases nuevas. Cadena completa verificada en una base vacía el 2026-09-20
 - **El alcance de una sesión de quiz vive en `study_sessions.track_id/skill_id` (desde `b1c2d3e4f5a6`).**
   Antes solo la primera pregunta respetaba el track: `submit_answer` pedía la siguiente con
   `_candidate_skill_ids(..., None, None)` y «Practicar» en Algoritmos servía Ciberseguridad a la

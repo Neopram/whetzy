@@ -4,11 +4,11 @@ Handles instructor profiles, course management, enrollments, and payouts.
 """
 
 import logging
-from datetime import datetime, timedelta, timezone
-from decimal import Decimal
+import uuid
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from sqlalchemy import select, func
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.instructor import (
@@ -20,6 +20,18 @@ from app.models.instructor import (
 from app.services.payment_service import PaymentService
 
 logger = logging.getLogger(__name__)
+
+
+class CourseNotFound(ValueError):
+    pass
+
+
+class CourseNotPublished(ValueError):
+    """El curso existe pero no está a la venta (draft, archived...)."""
+
+
+class AlreadyEnrolled(ValueError):
+    """El alumno ya está inscrito; sin esto la unique constraint daba un 500."""
 
 
 class InstructorService:
@@ -53,9 +65,8 @@ class InstructorService:
     @staticmethod
     async def enroll_student_in_course(
         db: AsyncSession,
-        course_id: str,
-        user_id: str,
-        gross_payment_cents: int,
+        course_id: uuid.UUID,
+        user_id: uuid.UUID,
     ) -> dict[str, Any]:
         """Enroll student in course and calculate instructor payout.
 
@@ -69,7 +80,9 @@ class InstructorService:
             db: Database session
             course_id: UUID of course
             user_id: UUID of student
-            gross_payment_cents: Amount student paid (before platform cuts)
+
+        El importe es `course.price_cents`. Antes venía en la petición y
+        cualquiera podía comprar un curso de 100 EUR enviando 1.
 
         Returns:
             {
@@ -87,7 +100,20 @@ class InstructorService:
         course = result.scalars().first()
 
         if not course:
-            raise ValueError(f"Course {course_id} not found")
+            raise CourseNotFound(f"Course {course_id} not found")
+        if course.status != "published":
+            raise CourseNotPublished(f"Course {course_id} is {course.status}, not published")
+
+        already = await db.scalar(
+            select(InstructorEnrollment.id).where(
+                InstructorEnrollment.course_id == course_id,
+                InstructorEnrollment.user_id == user_id,
+            )
+        )
+        if already is not None:
+            raise AlreadyEnrolled(f"User {user_id} is already enrolled in course {course_id}")
+
+        gross_payment_cents = int(course.price_cents)
 
         # Create enrollment
         enrollment = InstructorEnrollment(
@@ -104,7 +130,7 @@ class InstructorService:
         # por alumno, un curso con 50 ventas generaba 50 pagos sueltos y el
         # minimo de 50 EUR del job los descartaba casi todos uno a uno, aunque
         # la suma pasara de sobra.
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         period_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
         next_month = (period_start + timedelta(days=32)).replace(day=1)
         period_end = next_month - timedelta(microseconds=1)
