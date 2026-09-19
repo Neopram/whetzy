@@ -202,7 +202,7 @@ async def check_lockout(email: str, ip: str, db: AsyncSession) -> bool:
     delay_seconds = 2 ** (len(attempts) - 5)
     time_since_last = (datetime.now(UTC) - _as_utc(attempts[0].created_at)).total_seconds()
 
-    return time_since_last < delay_seconds
+    return bool(time_since_last < delay_seconds)
 
 
 async def record_login_attempt(email: str, ip: str, success: bool, db: AsyncSession) -> None:
@@ -588,7 +588,7 @@ async def log_audit_event(
     user_agent: str | None = None,
     result: str = "success",
     error_message: str | None = None,
-    metadata: dict | None = None,
+    metadata: dict[str, Any] | None = None,
     db: AsyncSession | None = None,
 ) -> None:
     """Log security-relevant action; immutable append-only.

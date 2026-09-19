@@ -22,9 +22,9 @@ logger = logging.getLogger("whetzy")
 _JOB_HANDLERS: dict[str, Callable[[Job, AsyncSession], Any]] = {}
 
 
-def register_job_handler(job_type: str) -> Callable:
+def register_job_handler(job_type: str) -> Callable[..., Any]:
     """Decorator to register a job handler."""
-    def decorator(func: Callable) -> Callable:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         _JOB_HANDLERS[job_type] = func
         logger.info("Registered job handler: %s", job_type)
         return func
@@ -85,7 +85,7 @@ async def process_pending_jobs(db: AsyncSession, max_jobs: int = 10) -> int:
     return count
 
 
-async def job_worker_loop(db_factory: Callable, poll_interval: int = 5) -> None:
+async def job_worker_loop(db_factory: Callable[..., Any], poll_interval: int = 5) -> None:
     """Background worker: poll for jobs and execute them.
     
     Run this in app lifespan:

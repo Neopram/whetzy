@@ -6,11 +6,13 @@ Private data (user progress, auth) has no-cache headers.
 
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi.responses import JSONResponse
 
 
 def public_cache_response(
-    data: dict,
+    data: dict[str, Any],
     max_age: int = 300,  # 5 minutes default
     status_code: int = 200,
 ) -> JSONResponse:
@@ -21,7 +23,7 @@ def public_cache_response(
 
 
 def private_cache_response(
-    data: dict,
+    data: dict[str, Any],
     max_age: int = 60,  # 1 minute default
     status_code: int = 200,
 ) -> JSONResponse:
@@ -32,7 +34,7 @@ def private_cache_response(
 
 
 def no_cache_response(
-    data: dict,
+    data: dict[str, Any],
     status_code: int = 200,
 ) -> JSONResponse:
     """Return a JSON response with no-cache headers (for auth, sensitive data)."""

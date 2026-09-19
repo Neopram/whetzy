@@ -51,7 +51,9 @@ class RedisRateLimiter(RateLimiter):
 
         # Cliente asincrono: el sincrono bloquea el event loop dentro de
         # `async def is_allowed`, que es justo lo contrario de lo que busca 22.6.
-        self._redis = aioredis.from_url(redis_url, decode_responses=True)
+        self._redis = aioredis.from_url(  # type: ignore[no-untyped-call]
+            redis_url, decode_responses=True
+        )
         logger.info("Rate limiter: Using Redis backend (%s)", redis_url)
 
     async def is_allowed(self, key: str, limit: int, window_seconds: int = 60) -> bool:
@@ -69,7 +71,7 @@ class RedisRateLimiter(RateLimiter):
             if count == 1:
                 await redis_client.expire(cache_key, window_seconds)
 
-            return count <= limit
+            return bool(count <= limit)
         except redis.RedisError as e:
             # If Redis is down, fall back to allowing the request (fail open)
             logger.warning("Redis rate limiter error: %s; allowing request", e)
