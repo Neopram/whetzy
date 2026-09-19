@@ -16,10 +16,12 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.core.security import get_current_user
+from app.models.instructor import Instructor, InstructorCourse
 from app.models.user import User
 from app.services.instructor_service import InstructorService
 from app.services.payment_service import PaymentService
@@ -94,14 +96,56 @@ class PayoutResponse(BaseModel):
     payout_date: str | None
 
 
+async def _current_instructor(db: AsyncSession, user: User) -> Instructor:
+    """Perfil de instructor del usuario autenticado, creandolo si hace falta.
+
+    El marketplace no tiene alta aparte: publicar un curso te convierte en
+    instructor. `display_name` sale del perfil del usuario para no pedir dos
+    veces lo mismo.
+    """
+    return await InstructorService.get_or_create_instructor(
+        db,
+        user_id=str(user.id),
+        display_name=user.display_name or user.username,
+    )
+
+
+def _course_payload(course: InstructorCourse) -> CourseResponse:
+    return CourseResponse(
+        id=str(course.id),
+        instructor_id=str(course.instructor_id),
+        title=course.title,
+        description=course.description,
+        price_cents=int(course.price_cents),
+        video_url=course.video_url,
+        materials_url=course.materials_url,
+        enrolled_count=int(course.enrolled_count or 0),
+        revenue_cents=int(course.revenue_cents or 0),
+        status=course.status,
+        created_at=course.created_at.isoformat(),
+    )
+
+
 @router.post("/courses", response_model=CourseResponse, status_code=status.HTTP_201_CREATED)
 async def create_course(
     body: CourseCreateRequest,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> CourseResponse:
-    """Create new instructor course."""
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Pending implementation")
+    """Publica un curso nuevo del instructor autenticado."""
+    instructor = await _current_instructor(db, user)
+    course = InstructorCourse(
+        instructor_id=instructor.id,
+        title=body.title,
+        description=body.description,
+        price_cents=body.price_cents,
+        video_url=body.video_url,
+        materials_url=body.materials_url,
+    )
+    db.add(course)
+    await db.commit()
+    await db.refresh(course)
+    return _course_payload(course)
 
 
 @router.get("/courses", response_model=list[CourseResponse])
@@ -109,19 +153,42 @@ async def list_courses(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> list[CourseResponse]:
-    """List instructor courses."""
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Pending implementation")
+    """Cursos del instructor autenticado, el mas reciente primero."""
+    instructor = await _current_instructor(db, user)
+    courses = await db.scalars(
+        select(InstructorCourse)
+        .where(InstructorCourse.instructor_id == instructor.id)
+        .order_by(InstructorCourse.created_at.desc())
+    )
+    return [_course_payload(c) for c in courses]
 
 
-@router.post("/courses/{course_id}/enroll", response_model=EnrollmentResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/courses/{course_id}/enroll",
+    response_model=EnrollmentResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 async def enroll_student(
     course_id: str,
     body: EnrollmentRequest,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> EnrollmentResponse:
-    """Enroll student in course and calculate instructor payout (Serie 28.4-28.6)."""
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Pending implementation")
+    """Inscribe al usuario y acumula el reparto en el pago del mes (28.4-28.6).
+
+    El desglose que devuelve es el de `PaymentService`: comision de Paddle,
+    70/30 y retencion, con los parametros que fijo H.29.
+    """
+    try:
+        result = await InstructorService.enroll_student_in_course(
+            db,
+            course_id=course_id,
+            user_id=str(user.id),
+            gross_payment_cents=body.gross_payment_cents,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    return EnrollmentResponse(**result)
 
 
 @router.get("/analytics", response_model=AnalyticsResponse)
@@ -129,8 +196,10 @@ async def get_analytics(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> AnalyticsResponse:
-    """Get instructor analytics dashboard."""
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Pending implementation")
+    """Ingresos, pagos pendientes y alumnos del instructor autenticado."""
+    instructor = await _current_instructor(db, user)
+    data = await InstructorService.get_instructor_analytics(db, str(instructor.id))
+    return AnalyticsResponse(**data)
 
 
 @router.get("/payouts", response_model=list[PayoutResponse])
@@ -138,5 +207,7 @@ async def get_payout_history(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> list[PayoutResponse]:
-    """Get instructor payout history."""
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Pending implementation")
+    """Historico de pagos del instructor, ultimos 12 periodos."""
+    instructor = await _current_instructor(db, user)
+    rows = await InstructorService.get_payout_history(db, str(instructor.id))
+    return [PayoutResponse(**r) for r in rows]

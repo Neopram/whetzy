@@ -4,7 +4,7 @@ Handles instructor profiles, course management, enrollments, and payouts.
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Any
 
@@ -100,16 +100,35 @@ class InstructorService:
         # Calculate payout
         payout_calc = PaymentService.calculate_instructor_payout(gross_payment_cents)
 
-        # Create payout record (status='pending' until cron job processes)
-        now = datetime.utcnow()
-        payout = InstructorPayout(
-            instructor_id=course.instructor_id,
-            period_start=now.replace(day=1),  # Start of current month
-            period_end=now.replace(day=28),   # Approx end (actual: 28-31)
-            earnings_cents=payout_calc["instructor_net_cents"],
-            status="pending",
+        # Un pago por instructor y mes, no uno por inscripcion. Con una fila
+        # por alumno, un curso con 50 ventas generaba 50 pagos sueltos y el
+        # minimo de 50 EUR del job los descartaba casi todos uno a uno, aunque
+        # la suma pasara de sobra.
+        now = datetime.now(timezone.utc)
+        period_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        next_month = (period_start + timedelta(days=32)).replace(day=1)
+        period_end = next_month - timedelta(microseconds=1)
+
+        payout = await db.scalar(
+            select(InstructorPayout).where(
+                InstructorPayout.instructor_id == course.instructor_id,
+                InstructorPayout.period_start == period_start,
+                InstructorPayout.status == "pending",
+            )
         )
-        db.add(payout)
+        if payout is None:
+            payout = InstructorPayout(
+                instructor_id=course.instructor_id,
+                period_start=period_start,
+                period_end=period_end,
+                earnings_cents=payout_calc["instructor_net_cents"],
+                status="pending",
+            )
+            db.add(payout)
+        else:
+            payout.earnings_cents = (
+                int(payout.earnings_cents) + payout_calc["instructor_net_cents"]
+            )
 
         # Update course stats
         course.enrolled_count = (course.enrolled_count or 0) + 1

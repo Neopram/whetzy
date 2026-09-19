@@ -8,6 +8,7 @@ from app.api.v1.endpoints import (
     admin,
     analytics,
     auth,
+    auth_hardening,
     billing,
     content,
     duels,
@@ -34,6 +35,7 @@ api_router = APIRouter()
 
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 api_router.include_router(oauth.router, prefix="/auth/oauth", tags=["auth"])
+api_router.include_router(auth_hardening.router, prefix="/auth", tags=["auth"])
 api_router.include_router(quiz.router, prefix="/quiz", tags=["quiz"])
 api_router.include_router(placement.router, prefix="/placement", tags=["placement"])
 api_router.include_router(progress.router, prefix="/progress", tags=["progress"])
