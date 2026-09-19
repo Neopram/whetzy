@@ -690,7 +690,11 @@ refutación de 22.8).
 
 ---
 
-## ADR-40 — La memoria del proyecto es el repositorio, no un servicio externo (PROPUESTA 2026-09-19)
+## ADR-40 — La memoria del proyecto es el repositorio, no un servicio externo (ACEPTADA 2026-09-19)
+
+
+**Aceptada por el dueño** el 2026-09-19, en la sesión interactiva, tras leer la
+propuesta y el informe que la sostiene. La propuso un agente; la decisión es suya.
 
 **Contexto:** el dueño preguntó si montar `notebooklm-mcp` en Docker Desktop, alimentado
 con toda la documentación, reduciría el gasto de tokens y acercaría el proyecto a la
