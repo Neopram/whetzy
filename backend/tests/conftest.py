@@ -28,12 +28,11 @@ import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from app.core.db import Base, get_db
-from app.core.security import create_access_token, get_password_hash
-
 # CRITICAL: Import all models BEFORE app.main so they're registered on Base
 # when the app creates its engine
 import app.models
+from app.core.db import Base, get_db
+from app.core.security import create_access_token, get_password_hash
 
 # Now safe to import the app
 from app.main import app

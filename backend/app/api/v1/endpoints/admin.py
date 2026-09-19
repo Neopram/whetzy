@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any
@@ -17,6 +18,8 @@ from app.models.auth import AuditLog, LoginAttempt
 from app.models.content import Question, Skill
 from app.models.session import Response, StudySession
 from app.models.user import User
+
+logger = logging.getLogger("whetzy.admin")
 
 router = APIRouter()
 
@@ -310,7 +313,8 @@ async def get_ops_health(
     try:
         await db.execute(select(func.now()))
         db_status = "ok"
-    except Exception:
+    except Exception:  # el health responde siempre, pero deja traza en el log
+        logger.exception("admin /ops/health: la consulta a la base de datos fallo")
         db_status = "error"
     
     return {

@@ -6,10 +6,10 @@ Series 22.6: Process queued jobs (email, exports, model training, etc.)
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
+from collections.abc import Callable
 from datetime import datetime
-from typing import Any, Callable
+from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -40,7 +40,7 @@ async def execute_job(job: Job, db: AsyncSession) -> dict[str, Any]:
     try:
         result = await handler(job, db)
         return result or {}
-    except Exception as e:
+    except Exception:
         logger.exception("Job %d (%s) failed", job.id, job.job_type)
         raise
 
@@ -73,11 +73,11 @@ async def process_pending_jobs(db: AsyncSession, max_jobs: int = 10) -> int:
             job.result = result
             job.completed_at = datetime.utcnow()
             logger.info("Job %d completed: %s", job.id, job.job_type)
-        except Exception as e:
+        except Exception as e:  # un job roto no puede tumbar el worker
             job.status = "failed"
             job.error = str(e)
             job.completed_at = datetime.utcnow()
-            logger.error("Job %d failed: %s", job.id, str(e))
+            logger.exception("Job %d failed", job.id)
 
         await db.commit()
         count += 1
@@ -101,8 +101,8 @@ async def job_worker_loop(db_factory: Callable, poll_interval: int = 5) -> None:
         except asyncio.CancelledError:
             logger.info("Job worker shutting down")
             break
-        except Exception as e:
-            logger.error("Job worker error: %s", str(e), exc_info=True)
+        except Exception:  # el bucle del worker sobrevive a cualquier error
+            logger.exception("Job worker error")
             await asyncio.sleep(poll_interval * 2)  # Back off on error
 
 
@@ -111,41 +111,25 @@ async def job_worker_loop(db_factory: Callable, poll_interval: int = 5) -> None:
 @register_job_handler("send_email")
 async def handle_send_email(job: Job, db: AsyncSession) -> dict[str, Any]:
     """Handler for email job type."""
-    payload = job.payload
-    email = payload.get("email")
-    subject = payload.get("subject")
-    body = payload.get("body")
-
-    # TODO: Implement actual email sending
-    # from app.services.email import send_email_async
-    # await send_email_async(email, subject, body)
-
-    logger.info("Email job: to=%s subject=%s", email, subject)
-    return {"email": email, "sent": True}
+    # Sin implementar: devolver {"sent": True} marcaria el job como hecho sin
+    # haber enviado nada, y eso es exactamente la clase de mentira que prohibe
+    # la linea roja 1. Falla, y `process_pending_jobs` lo deja en `failed`.
+    raise NotImplementedError(
+        "handler 'send_email' sin implementar (22.6): falta conectar app.services.email"
+    )
 
 
 @register_job_handler("export_csv")
 async def handle_export_csv(job: Job, db: AsyncSession) -> dict[str, Any]:
     """Handler for CSV export job type."""
-    payload = job.payload
-    track_id = payload.get("track_id")
-    
-    # TODO: Implement CSV export logic
-    # from app.services.export import export_track_csv
-    # file_url = await export_track_csv(track_id, db)
-    
-    logger.info("Export CSV job: track_id=%s", track_id)
-    return {"file_url": "s3://...", "format": "csv"}
+    raise NotImplementedError(
+        "handler 'export_csv' sin implementar (22.6): falta app.services.export"
+    )
 
 
 @register_job_handler("dkt_retrain")
 async def handle_dkt_retrain(job: Job, db: AsyncSession) -> dict[str, Any]:
     """Handler for DKT model retraining."""
-    payload = job.payload
-    
-    # TODO: Implement DKT model retraining
-    # from app.ml.train_dkt import retrain_model
-    # metrics = await retrain_model(db)
-    
-    logger.info("DKT retrain job started")
-    return {"metrics": {"auc": 0.85, "loss": 0.25}}
+    raise NotImplementedError(
+        "handler 'dkt_retrain' sin implementar (22.6): falta app.ml.train_dkt"
+    )

@@ -2,15 +2,11 @@
 
 from __future__ import annotations
 
-import asyncio
 import uuid
 
 import pytest
 import sqlalchemy
-from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from datetime import datetime, UTC
 
 from app.core.security import get_password_hash
 from app.models.auth import AuditLog, LoginAttempt

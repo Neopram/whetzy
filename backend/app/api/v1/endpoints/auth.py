@@ -104,14 +104,14 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> T
 
 @router.post("/login", response_model=Token)
 async def login(
-    request: Request = None,
+    request: Request,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db),
 ) -> Token:
     """Login with email and password. Includes auth hardening with progressive lockout and session tracking."""
     # Extract IP and user-agent from request
-    client_ip = request.client.host if request and request.client else "unknown"
-    user_agent = request.headers.get("user-agent", "") if request else ""
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent", "")
 
     # OAuth2PasswordRequestForm's `username` field carries the user's email.
     email = form_data.username
@@ -194,14 +194,14 @@ async def login(
 
 @router.post("/refresh", response_model=Token)
 async def refresh(
+    request: Request,
     payload: RefreshRequest,
     db: AsyncSession = Depends(get_db),
-    request: Request = None,
 ) -> Token:
     """Refresh access token using refresh token. Includes audit logging."""
     # Extract IP and user-agent from request
-    client_ip = request.client.host if request and request.client else "unknown"
-    user_agent = request.headers.get("user-agent", "") if request else ""
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent", "")
 
     token_data = verify_token(payload.refresh_token, expected_type="refresh")
 
@@ -253,14 +253,14 @@ async def refresh(
 
 @router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout(
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-    request: Request = None,
 ) -> dict[str, str]:
     """Logout: revoke current session and log the event."""
     # Extract IP and user-agent from request
-    client_ip = request.client.host if request and request.client else "unknown"
-    user_agent = request.headers.get("user-agent", "") if request else ""
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent", "")
 
     # Revoke current session if available
     # In a real implementation, we would need to extract the session_id from the token or context
