@@ -3,7 +3,7 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from './i18n';
 import { useAppStore } from './stores/useAppStore';
-import { isAuthenticated, logout } from './services/api';
+import { ApiError, isAuthenticated, logout } from './services/api';
 import { TopBar } from './components/layout/TopBar';
 import { BottomNav } from './components/layout/BottomNav';
 import { Toast } from './components/common/Toast';
@@ -69,7 +69,7 @@ const STANDALONE_DOC: Record<string, string> = {
   '/evidence': 'evidence',
 };
 
-type AuthState = 'checking' | 'unauthed' | 'authed';
+type AuthState = 'checking' | 'retrying' | 'unauthed' | 'authed';
 
 /**
  * These pages used to be returned straight out of `App`, above the effect that
@@ -183,6 +183,7 @@ function App() {
     isAuthenticated() ? 'checking' : 'unauthed'
   );
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const reintentos = useRef(0);
 
   useEffect(() => {
     if (authState !== 'checking') return;
@@ -192,8 +193,19 @@ function App() {
         setShowOnboarding(needsOnboarding(userId));
         setAuthState('authed');
       })
-      .catch(() => {
-        logout();
+      .catch((err: unknown) => {
+        // Un 401 significa que el token ya no vale: ahí sí hay que salir. Un
+        // fallo de red o un 5xx significa que el servidor no está, y tirar el
+        // refresh token por eso obliga a volver a entrar por algo que se
+        // arregla solo en treinta segundos.
+        const transitorio = err instanceof ApiError && err.esTransitorio;
+        if (transitorio && reintentos.current < 3) {
+          reintentos.current += 1;
+          setTimeout(() => setAuthState('checking'), 1500 * reintentos.current);
+          setAuthState('retrying');
+          return;
+        }
+        if (!transitorio) logout();
         setAuthState('unauthed');
       });
   }, [authState, hydrateFromApi]);
@@ -234,7 +246,7 @@ function App() {
     );
   }
 
-  if (authState === 'checking') {
+  if (authState === 'checking' || authState === 'retrying') {
     return <BootSplash />;
   }
 

@@ -1,5 +1,27 @@
 // Same-origin by default: in dev, Vite proxies /api → backend (see vite.config.ts);
 // in production set VITE_API_URL to the deployed backend origin + /api/v1.
+/** Error de API que conserva el código HTTP.
+ *
+ *  Sin esto, quien llama recibe un `Error` con un mensaje y no puede separar
+ *  «tus credenciales no valen» (401, hay que cerrar sesión) de «el servidor
+ *  está reiniciando» (502, hay que esperar). `status` es `null` cuando la
+ *  petición ni siquiera llegó a salir.
+ */
+export class ApiError extends Error {
+  readonly status: number | null;
+
+  constructor(message: string, status: number | null) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+
+  /** Fallo de red o servidor caído: reintentar tiene sentido. */
+  get esTransitorio(): boolean {
+    return this.status === null || this.status >= 500;
+  }
+}
+
 const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
 // Consume OAuth tokens from URL params immediately at module-import time.
@@ -91,13 +113,13 @@ async function request<T>(path: string, options: RequestInit = {}, retry = true)
       return request<T>(path, options, false);
     }
     persistTokens(null, null);
-    throw new Error('Unauthorized');
+    throw new ApiError('Unauthorized', 401);
   }
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     const detail = typeof body.detail === 'string' ? body.detail : `HTTP ${res.status}`;
-    throw new Error(detail);
+    throw new ApiError(detail, res.status);
   }
 
   return res.json();
