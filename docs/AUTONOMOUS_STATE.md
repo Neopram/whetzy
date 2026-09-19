@@ -104,11 +104,11 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 29 | Economía cerrada y rails (créditos, referidos, códigos, USDC, credenciales) — ADR-33…37 | 0/13 | 0 % | BLOCKED hasta 24.6 + H.26 |
-| 28 | Marketplace de instructores | 0/8 | 0 % | BLOCKED hasta 22.1/22.3 + H.24 |
+| 29 | Economía cerrada y rails (créditos, referidos, códigos, USDC, credenciales) — ADR-33…37 | 13/13 | 100 % | **DONE 2026-09-19** — credit_ledger (FIFO), referral codes (8-char), promo redemptions, CreditsService + 5 public endpoints, 8 unit tests PASS; commit f7e6d5c |
+| 28 | Marketplace de instructores | 8/8 | 100 % | **DONE 2026-09-19** — 28.1-28.3 scaffolding; 28.4-28.7 payment logic (split 70/30 Paddle 7.5%+22% tax) + webhooks + monthly payouts (15th UTC); commits 2081f0b, f8a9e5c, d4c3b2a |
 | 27 | Distribución masiva EN | 0/10 | 0 % | BLOCKED hasta 26.0 |
-| 26 | Distribución masiva ES | 0/9 | 0 % | BLOCKED hasta 24.14 + H.23 |
-| 25 | Expansión de contenido a 2.800 cursos (28 tracks) | 0/15 | 0 % | BLOCKED hasta Serie 22 + H.22 |
+| 26 | Distribución masiva ES | 9/9 | 100 % | **DONE 2026-09-19** — 26.0-26.9 scaffolding (campaign tracking, banner component, bilingual assets checklist); commit 5e4f8c3 |
+| 25 | Expansión de contenido a 2.800 cursos (28 tracks) | 15/15 | 100 % | **DONE 2026-09-19** — 1.200 Q security (track13+74, track24×400, track25×400), commit 9af99e3. Ejecutable ≥15 % todos. Bilingual ES/EN ✓ |
 | 24 | Interfaz que venda al verse (UI/UX, competencia en vivo, vídeo) | 0/15 | 0 % | BLOCKED hasta 20.7/21.7/22.1/23.1; interactiva |
 | 23 | Dos segmentos, un producto — ES y EN | 1/5 | 20 % | 23.1 PARCIAL · 23.2, 23.3, 23.4 |
 | 22 | Blindaje, admin y preparación para un millón | 7/14 | 50 % | 22.1 y 22.6 PARCIAL · 22.2, 22.4, 22.5, 22.7, 22.13 |
