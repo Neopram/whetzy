@@ -51,6 +51,7 @@ const EvidenceScreen = lazy(() =>
 const ReadinessScreen = lazy(() =>
   import('./pages/ReadinessScreen').then((m) => ({ default: m.ReadinessScreen }))
 );
+const AdminScreen = lazy(() => import('./pages/AdminScreen').then((m) => ({ default: m.AdminScreen })));
 
 // URL-based routing for standalone pages (no React Router needed)
 const STANDALONE_DOC: Record<string, string> = {
@@ -266,6 +267,7 @@ function App() {
         ) : (
           <TracksScreen />
         );
+      case 'admin': return <AdminScreen />;
       default: return <HomeScreen />;
     }
   };
@@ -308,7 +310,7 @@ const IMMERSIVE_SCREENS = new Set(['quiz', 'placement', 'mockexam', 'trackexam',
 
 const SCREEN_ORDER: Record<string, number> = {
   home: 0, tracks: 1, stats: 2, league: 3, profile: 4,
-  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10, readiness: 11,
+  quiz: 5, placement: 6, duels: 7, mockexam: 8, lesson: 9, trackexam: 10, readiness: 11, admin: 12,
 };
 function screenOrder(s: string) { return SCREEN_ORDER[s] ?? 0; }
 

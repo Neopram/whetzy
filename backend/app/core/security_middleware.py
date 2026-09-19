@@ -23,6 +23,7 @@ from app.core.config import settings
 _SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "geolocation=(), microphone=(), camera=(), payment=()",
     "Cross-Origin-Opener-Policy": "same-origin",

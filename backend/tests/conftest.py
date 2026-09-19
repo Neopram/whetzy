@@ -100,6 +100,7 @@ async def user(db_session: AsyncSession) -> User:
     db_session.add(u)
     await db_session.commit()
     await db_session.refresh(u)
+    u.token = create_access_token(u.id)
     return u
 
 
@@ -188,3 +189,19 @@ async def content_seed(db_session: AsyncSession) -> dict:
         "skill_id": skill.id,
         "question_id": question.id,
     }
+@pytest_asyncio.fixture
+async def owner(db_session: AsyncSession) -> User:
+    u = User(
+        id=uuid.uuid4(),
+        email=f"owner-{uuid.uuid4().hex[:8]}@whetzy.test",
+        username=f"owner{uuid.uuid4().hex[:6]}",
+        hashed_password=get_password_hash("Passw0rd!"),
+        display_name="Owner User",
+        language="es",
+        role="owner",
+    )
+    db_session.add(u)
+    await db_session.commit()
+    await db_session.refresh(u)
+    u.token = create_access_token(u.id)
+    return u

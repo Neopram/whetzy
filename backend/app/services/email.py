@@ -93,6 +93,48 @@ border-radius:6px;text-decoration:none;">Reset password</a></p>
 <p>If you didn't request this, ignore this email. Your password won't change.</p>""",
         },
     },
+    "support_ticket": {
+        "es": {
+            "subject": "Tu ticket de soporte #{ticket_id} en Whetzy",
+            "html": """\
+<h2>Hola, {name}!</h2>
+<p>Recibimos tu solicitud de soporte (#{ticket_id}).</p>
+<p><strong>Asunto:</strong> {subject}</p>
+<p>Nuestro equipo revisará tu consulta dentro de 24 horas y te responderemos pronto.</p>
+<p>Gracias por usar <strong>Whetzy</strong>.</p>""",
+        },
+        "en": {
+            "subject": "Your Whetzy support ticket #{ticket_id}",
+            "html": """\
+<h2>Hi, {name}!</h2>
+<p>We received your support request (#{ticket_id}).</p>
+<p><strong>Subject:</strong> {subject}</p>
+<p>Our team will review your inquiry within 24 hours and get back to you soon.</p>
+<p>Thank you for using <strong>Whetzy</strong>.</p>""",
+        },
+    },
+    "support_resolved": {
+        "es": {
+            "subject": "Tu ticket de soporte {ticket_id} ha sido resuelto",
+            "html": """\
+<h2>Hola, {name}!</h2>
+<p>Tu ticket de soporte (#{ticket_id}) ha sido marcado como resuelto.</p>
+<p><strong>Solución:</strong></p>
+<p>{resolution}</p>
+<p>Si tienes más preguntas, responde a este email o contáctanos en soporte@whetzy.com</p>
+<p>Gracias por tu paciencia.</p>""",
+        },
+        "en": {
+            "subject": "Your support ticket {ticket_id} has been resolved",
+            "html": """\
+<h2>Hi, {name}!</h2>
+<p>Your support ticket (#{ticket_id}) has been marked as resolved.</p>
+<p><strong>Resolution:</strong></p>
+<p>{resolution}</p>
+<p>If you have further questions, reply to this email or contact us at support@whetzy.com</p>
+<p>Thank you for your patience.</p>""",
+        },
+    },
 }
 
 
@@ -201,3 +243,18 @@ def send_password_reset(to: str, name: str, token: str, lang: str = "es") -> Non
     reset_url = f"{settings.FRONTEND_BASE_URL}/reset-password?token={token}"
     subject, html = _render("password_reset", lang, name=name, reset_url=reset_url)
     _dispatch(to, subject, html)
+
+
+
+
+def send_support_ticket(to: str, name: str, ticket_id: str, subject: str, lang: str = "es") -> None:
+    """Send support ticket acknowledgment email."""
+    subject_line, html = _render("support_ticket", lang, name=name, ticket_id=ticket_id, subject=subject)
+    _dispatch(to, subject_line, html)
+
+
+def send_support_resolved(to: str, name: str, ticket_id: str, resolution: str, lang: str = "es") -> None:
+    """Send support ticket resolution email."""
+    subject_line, html = _render("support_resolved", lang, name=name, ticket_id=ticket_id, resolution=resolution)
+    _dispatch(to, subject_line, html)
+

@@ -11,6 +11,7 @@ from app.models.duel import Duel
 from app.models.email_verification import EmailVerificationToken
 from app.models.exam import MockExamAttempt
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
+from app.models.job import Job
 from app.models.password_reset import PasswordResetToken
 from app.models.push_subscription import PushSubscription
 from app.models.question_report import QuestionReport
@@ -26,6 +27,7 @@ __all__ = [
     "Duel",
     "EmailVerificationToken",
     "GlossaryTerm",
+    "Job",
     "League",
     "LeagueEntry",
     "LoginAttempt",
