@@ -11,7 +11,7 @@ from collections.abc import Callable
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.job import Job
@@ -133,3 +133,87 @@ async def handle_dkt_retrain(job: Job, db: AsyncSession) -> dict[str, Any]:
     raise NotImplementedError(
         "handler 'dkt_retrain' sin implementar (22.6): falta app.ml.train_dkt"
     )
+
+
+@register_job_handler("run_payouts")
+async def handle_run_payouts(job: Job, db: AsyncSession) -> dict[str, Any]:
+    """Handler for monthly payout processing (28.7).
+    
+    Process pending instructor payouts that meet the €50 minimum threshold.
+    
+    Returns:
+        {
+            "processed_count": int,           # Number of instructors paid
+            "total_paid_cents": int,          # Total payout in cents
+            "instructor_count": int,          # Count of instructors with pending payouts
+            "filtered_out_count": int,        # Count under minimum threshold
+        }
+    """
+    from app.models.instructor import InstructorPayout
+
+    # Minimum payout threshold in cents: €50 = 5000 cents
+    MIN_PAYOUT_CENTS = 5000
+
+    logger.info("Executing monthly payout job")
+
+    # 1. SELECT pending instructor payouts
+    pending_payouts = (
+        await db.scalars(
+            select(InstructorPayout)
+            .where(
+                and_(
+                    InstructorPayout.status == "pending",
+                    InstructorPayout.earnings_cents > 0,
+                )
+            )
+            .order_by(InstructorPayout.instructor_id)
+        )
+    ).all()
+
+    if not pending_payouts:
+        logger.info("No pending payouts to process")
+        return {
+            "processed_count": 0,
+            "total_paid_cents": 0,
+            "instructor_count": 0,
+            "filtered_out_count": 0,
+        }
+
+    # 2. Filter: >= €50 minimum
+    valid_payouts = [p for p in pending_payouts if p.earnings_cents >= MIN_PAYOUT_CENTS]
+    filtered_out = len(pending_payouts) - len(valid_payouts)
+
+    logger.info(
+        "Processing payouts: %d valid (>= €50), %d filtered out",
+        len(valid_payouts),
+        filtered_out,
+    )
+
+    total_paid_cents = 0
+    instructor_count = len(valid_payouts)
+
+    # 3-4. Process each payout: update status to 'processing'
+    for payout in valid_payouts:
+        payout.status = "processing"
+        total_paid_cents += payout.earnings_cents
+        logger.debug(
+            "Payout for instructor %s: €%.2f",
+            payout.instructor_id,
+            payout.earnings_cents / 100,
+        )
+
+    # Commit all status updates to 'processing'
+    await db.commit()
+    logger.info(
+        "Processed %d payouts totaling €%.2f",
+        len(valid_payouts),
+        total_paid_cents / 100,
+    )
+
+    # 5. Return statistics
+    return {
+        "processed_count": len(valid_payouts),
+        "total_paid_cents": total_paid_cents,
+        "instructor_count": instructor_count,
+        "filtered_out_count": filtered_out,
+    }

@@ -165,6 +165,14 @@ class Settings(BaseSettings):
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
 
+    # --- Paddle (H.29 - Merchant of Record) ----------------------------------
+    PADDLE_API_KEY: str = ""                # pad_live_... or pad_sand_...
+    PADDLE_WEBHOOK_SECRET: str = ""         # Paddle webhook signing secret
+    PADDLE_VENDOR_ID: str = ""              # Vendor ID from Paddle dashboard
+    PADDLE_TAX_ID: str = ""                 # Tax ID for Grecia (DAC7)
+    # Instructor payout webhook for Paddle events
+    PADDLE_PAYOUT_WEBHOOK_URL: str = "https://api-production-9751.up.railway.app/api/v1/webhooks/paddle"
+
     # --- A/B experiments -----------------------------------------------------
     # Fraction of users assigned to the DKT skill-selection cohort (0.0–1.0).
     # Assignment is deterministic: hash(user_id) % 1000 < DKT_AB_RATIO * 1000.
@@ -181,3 +189,7 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+
+
+
+

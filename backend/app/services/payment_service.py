@@ -1,12 +1,17 @@
 """Payment service for Whetzy (H.29: Grecia + Paddle MoR)."""
 
 from decimal import Decimal
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+import logging
 
 from app.models.payment import (
-    PaymentRailConfig, PaddleSubscription, InstructorPayout, InstructorPayoutMethod
+    PaymentRailConfig, PaddleSubscription, InstructorPayoutMethod
 )
+from app.models.instructor import InstructorPayout
+
+logger = logging.getLogger(__name__)
 
 
 class PaymentService:
@@ -61,7 +66,7 @@ class PaymentService:
                 "gross_cents": 1000,
                 "paddle_commission_cents": 75,
                 "instructor_gross_cents": 925,
-                "tax_cents": 203,  # 22% of 925
+                "tax_withheld_cents": 203,  # 22% of 925
                 "instructor_net_cents": 722,
                 "platform_keep_cents": 203  # Platform share + tax withheld
             }
@@ -82,6 +87,13 @@ class PaymentService:
         # Note: Actual tax withholding depends on H.29 entidad + instructor tax ID
         tax_withheld = instructor_gross * PaymentService.GRECIA_TAX_RATE
         instructor_net = instructor_gross - tax_withheld
+        
+        logger.info(
+            f"PaymentService.calculate_instructor_payout | "
+            f"gross_cents={int(gross)} paddle_commission={int(paddle_commission)} "
+            f"instructor_gross={int(instructor_gross)} tax_withheld={int(tax_withheld)} "
+            f"instructor_net={int(instructor_net)}"
+        )
         
         return {
             "gross_cents": int(gross),
@@ -128,18 +140,16 @@ class PaymentService:
     async def schedule_instructor_payout(
         db: AsyncSession,
         instructor_id: str,
-        period_start: str,  # YYYY-MM-01
-        period_end: str,    # YYYY-MM-30
+        period_start: datetime,
+        period_end: datetime,
         gross_earnings_cents: int,
-        payout_method: InstructorPayoutMethod = InstructorPayoutMethod.PADDLE,
-        payout_address: str = None,
-    ):
+    ) -> InstructorPayout:
         """
-        Schedule monthly payout for instructor (28.7).
+        Schedule payout for instructor after course enrollment.
         
         Calculation: gross_earnings_cents → minus Paddle commission → minus tax
         
-        Returns: InstructorPayout record (status=pending until cron executes)
+        Returns: InstructorPayout record (status=pending until cron processes)
         """
         payout_calc = PaymentService.calculate_instructor_payout(gross_earnings_cents)
         
@@ -147,34 +157,17 @@ class PaymentService:
             instructor_id=instructor_id,
             period_start=period_start,
             period_end=period_end,
-            gross_earnings_cents=payout_calc["gross_cents"],
-            paddle_commission_cents=payout_calc["paddle_commission_cents"],
-            tax_amount_cents=payout_calc["tax_withheld_cents"],
-            net_payout_cents=payout_calc["instructor_net_cents"],
-            payout_method=payout_method,
-            payout_address=payout_address,
+            earnings_cents=payout_calc["instructor_net_cents"],
             status="pending"
         )
+        
+        logger.info(
+            f"PaymentService.schedule_instructor_payout | "
+            f"instructor_id={instructor_id} gross_cents={gross_earnings_cents} "
+            f"net_cents={payout_calc['instructor_net_cents']} payout_id={payout.id}"
+        )
+        
         db.add(payout)
         await db.commit()
         
         return payout
-
-
-# Endpoint example (backend/app/api/v1/endpoints/payments.py)
-"""
-@router.post("/payments/calculate-instructor-payout")
-async def calc_payout(gross_cents: int, db: AsyncSession = Depends(get_db)):
-    result = PaymentService.calculate_instructor_payout(gross_cents)
-    return result
-
-@router.get("/payments/config")
-async def get_config(db: AsyncSession = Depends(get_db)):
-    config = await PaymentService.get_config(db)
-    return {
-        "fiscal_residency": config.fiscal_residency,
-        "effective_rate_percent": config.effective_rate_percent,
-        "primary_rail": config.primary_rail,
-    }
-"""
-

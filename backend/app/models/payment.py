@@ -1,11 +1,15 @@
 """Payment models for Whetzy (H.29: Grecia fiscal residency + Paddle MoR)."""
 
-from sqlalchemy import Column, String, Integer, Float, DateTime, Enum, ForeignKey, Boolean, Text
-from sqlalchemy.orm import relationship
+from __future__ import annotations
+
+import uuid
 from datetime import datetime
 import enum
 
-from app.core.database import Base
+from sqlalchemy import Column, String, Integer, Float, DateTime, Enum as SQLEnum, ForeignKey, Boolean, Text
+from sqlalchemy.orm import relationship
+
+from app.core.db import Base
 
 
 class PaymentRail(str, enum.Enum):
@@ -26,12 +30,12 @@ class PaymentRailConfig(Base):
     """Global payment rail configuration (H.29 decision point)."""
     __tablename__ = "payment_rail_config"
     
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     fiscal_residency = Column(String(50), default="grecia")  # "italia" or "grecia"
     tax_rate_percent = Column(Float, default=22.0)  # 22% Grecia, 5% Italia forfettario
     
-    primary_rail = Column(Enum(PaymentRail), default=PaymentRail.PADDLE_MOR)
-    secondary_rail = Column(Enum(PaymentRail), default=PaymentRail.IAP)
+    primary_rail = Column(SQLEnum(PaymentRail), default=PaymentRail.PADDLE_MOR)
+    secondary_rail = Column(SQLEnum(PaymentRail), default=PaymentRail.IAP)
     
     # Paddle config
     paddle_vendor_id = Column(String(50), nullable=True)  # Set by admin
@@ -59,7 +63,7 @@ class StripeCustomer(Base):
     """Stripe customer mapping (if ever activated in future)."""
     __tablename__ = "stripe_customers"
     
-    id = Column(String(36), primary_key=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String(36), ForeignKey("users.id"), unique=True)
     stripe_customer_id = Column(String(100), unique=True)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -69,7 +73,7 @@ class PaddleSubscription(Base):
     """Paddle subscription tracking (primary via Paddle webhooks)."""
     __tablename__ = "paddle_subscriptions"
     
-    id = Column(String(36), primary_key=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String(36), ForeignKey("users.id"))
     paddle_subscription_id = Column(String(100), unique=True)  # From Paddle
     paddle_plan_id = Column(String(100))  # pro_monthly or plus_monthly
@@ -85,40 +89,11 @@ class PaddleSubscription(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
-class InstructorPayout(Base):
-    """Instructor payouts (28.7 - scheduled monthly)."""
-    __tablename__ = "instructor_payouts"
-    
-    id = Column(String(36), primary_key=True)
-    instructor_id = Column(String(36), ForeignKey("instructors.id"))
-    
-    period_start = Column(DateTime)  # Monthly: 1st
-    period_end = Column(DateTime)    # Monthly: 30/31
-    
-    gross_earnings_cents = Column(Integer)  # Before Paddle commission
-    paddle_commission_cents = Column(Integer)  # 7.5% of gross
-    tax_amount_cents = Column(Integer)  # 22% (Grecia) or withheld by Paddle
-    net_payout_cents = Column(Integer)  # After commission + tax
-    
-    payout_method = Column(Enum(InstructorPayoutMethod), default=InstructorPayoutMethod.PADDLE)
-    payout_address = Column(String(255))  # IBAN or Wise recipient ID
-    
-    status = Column(String(20), default="pending")  # pending, processing, completed, failed
-    payout_date = Column(DateTime, nullable=True)
-    
-    notes = Column(Text, nullable=True)  # DAC7, tax ID, etc.
-    
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    instructor = relationship("Instructor", back_populates="payouts")
-
-
 class PaymentWebhook(Base):
     """Webhook log for Paddle (audit trail)."""
     __tablename__ = "payment_webhooks"
     
-    id = Column(String(36), primary_key=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     event_type = Column(String(50))  # subscription.created, subscription.updated, etc.
     webhook_id = Column(String(100), unique=True)  # Paddle webhook ID
     payload = Column(Text)  # JSON (encrypted at rest in future)
@@ -127,11 +102,3 @@ class PaymentWebhook(Base):
     error_message = Column(Text, nullable=True)
     
     created_at = Column(DateTime, default=datetime.utcnow)
-
-
-# Relationships (add to existing models)
-# class Instructor(Base):
-#     payouts = relationship("InstructorPayout", back_populates="instructor")
-#     payout_method = Column(Enum(InstructorPayoutMethod))
-#     payout_address = Column(String(255))
-

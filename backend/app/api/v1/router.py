@@ -14,6 +14,7 @@ from app.api.v1.endpoints import (
     exams,
     export,
     glossary,
+    instructor_marketplace,
     lessons,
     ml,
     oauth,
@@ -24,6 +25,7 @@ from app.api.v1.endpoints import (
     reports,
     social,
     tutor,
+    webhooks,
 )
 
 api_router = APIRouter()
@@ -47,3 +49,5 @@ api_router.include_router(analytics.router, prefix="/analytics", tags=["analytic
 api_router.include_router(billing.router, prefix="/billing", tags=["billing"])
 api_router.include_router(push.router, prefix="/push", tags=["push"])
 api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
+api_router.include_router(instructor_marketplace.router, prefix="/instructor", tags=["instructor"])
+api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
