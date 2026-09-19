@@ -39,6 +39,9 @@ const TrackExamScreen = lazy(() =>
 const CertificateScreen = lazy(() =>
   import('./pages/CertificateScreen').then((m) => ({ default: m.CertificateScreen }))
 );
+const PublicProfileScreen = lazy(() =>
+  import('./pages/PublicProfileScreen').then((m) => ({ default: m.default }))
+);
 const MockExamScreen = lazy(() =>
   import('./pages/MockExamScreen').then((m) => ({ default: m.MockExamScreen }))
 );
@@ -130,6 +133,9 @@ function App() {
   // the screen for every signed-in user in 16.8.
   if (path.startsWith(CERTIFICATE_PATH)) {
     return <StandaloneCertificate code={path.slice(CERTIFICATE_PATH.length)} />;
+  }
+  if (path.startsWith('/u/')) {
+    return <Screen><PublicProfileScreen handle={path.slice(3)} /></Screen>;
   }
 
   const currentScreen = useAppStore((s) => s.currentScreen);
