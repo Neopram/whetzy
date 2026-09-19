@@ -1,0 +1,205 @@
+/* Landing Screen Styles - Using tokens from theme/tokens.css */
+
+.landing {
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  padding: var(--space-8);
+}
+
+.hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--space-16) var(--space-8);
+}
+
+.hero h1 {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-6) 0;
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+}
+
+.hero p {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-12) 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-8);
+  margin: var(--space-12) 0;
+  padding: var(--space-8) 0;
+}
+
+.stats div {
+  padding: var(--space-4);
+}
+
+.stats strong {
+  display: block;
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.ctas {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: var(--space-12) 0;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: var(--font-semibold);
+  transition: all var(--transition-base);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(28, 176, 246, 0.1);
+}
+
+.features {
+  max-width: 1200px;
+  margin: var(--space-20) auto;
+  padding: var(--space-12) var(--space-8);
+}
+
+.features h2 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-12) 0;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-8);
+}
+
+.feature {
+  padding: var(--space-8);
+  background-color: var(--bg-dark-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-base);
+}
+
+.feature:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(28, 176, 246, 0.1);
+}
+
+.feature h3 {
+  font-size: var(--text-lg);
+  margin: 0 0 var(--space-4) 0;
+  color: var(--text-primary);
+}
+
+.feature p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.pricing {
+  max-width: 1200px;
+  margin: var(--space-20) auto;
+  padding: var(--space-12) var(--space-8);
+}
+
+.pricing h2 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-12) 0;
+  text-align: center;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-8);
+}
+
+.card {
+  padding: var(--space-12);
+  background-color: var(--bg-dark-secondary);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-color);
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.card.featured {
+  border-color: var(--color-primary);
+  background-color: rgba(28, 176, 246, 0.05);
+  transform: scale(1.05);
+}
+
+.card:hover {
+  border-color: var(--color-primary);
+}
+
+footer {
+  max-width: 1200px;
+  margin: var(--space-20) auto 0;
+  padding: var(--space-8);
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .landing {
+    padding: var(--space-4);
+  }
+
+  .hero {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .hero h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .card.featured {
+    transform: scale(1);
+  }
+}
