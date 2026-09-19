@@ -648,3 +648,45 @@
   outline: 2px solid var(--le-brand);
   outline-offset: 2px;
 }
+
+/* Barra de dominio de la skill en curso. El ancho sale de `skill_mastery`, que
+   calcula el motor BKT al corregir cada respuesta: no se pinta hasta que hay
+   una medicion real. `transition` sobre width para que el salto tras acertar se
+   vea; global.css la apaga sola con prefers-reduced-motion. */
+.masteryBar {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-xs) 0;
+}
+
+.masteryLabel {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text-muted);
+  white-space: nowrap;
+}
+
+.masteryTrack {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--le-border);
+  overflow: hidden;
+}
+
+.masteryFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--le-brand), var(--le-blue));
+  transition: width 420ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.masteryValue {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  color: var(--le-brand);
+  min-width: 34px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

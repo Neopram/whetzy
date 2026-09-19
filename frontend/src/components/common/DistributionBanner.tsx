@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './Button';
 import styles from './DistributionBanner.module.css';
@@ -36,7 +35,9 @@ export function DistributionBanner({
   locale,
   position = 'top',
 }: DistributionBannerProps) {
-  const [searchParams] = useSearchParams();
+  const searchParams = new URLSearchParams(
+    typeof window === 'undefined' ? '' : window.location.search
+  );
   const [isDismissed, setIsDismissed] = useState(() => {
     if (!dismissible) return false;
     const stored = localStorage.getItem('banner_26_dismissed_at');
