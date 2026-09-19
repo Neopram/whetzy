@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './AdminScreen.module.css';
 
 interface Metrics {
@@ -19,10 +20,11 @@ interface Metrics {
 type Tab = 'metrics' | 'security' | 'content' | 'ops' | 'gdpr' | 'revenue' | 'economy';
 
 export function AdminScreen() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('metrics');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [metricsData, setMetricsData] = useState<Metrics>({});
   const [securityData, setSecurityData] = useState<any>({});
   const [contentData, setContentData] = useState<any>({});
@@ -165,20 +167,20 @@ export function AdminScreen() {
   }, [activeTab]);
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: 'metrics', label: 'Metrics' },
-    { id: 'security', label: 'Security' },
-    { id: 'content', label: 'Content' },
-    { id: 'ops', label: 'Ops' },
-    { id: 'gdpr', label: 'GDPR' },
-    { id: 'revenue', label: 'Revenue' },
-    { id: 'economy', label: 'Economy' },
+    { id: 'metrics', label: t('admin.tabs.metrics') },
+    { id: 'security', label: t('admin.tabs.security') },
+    { id: 'content', label: t('admin.tabs.content') },
+    { id: 'ops', label: t('admin.tabs.ops') },
+    { id: 'gdpr', label: t('admin.tabs.gdpr') },
+    { id: 'revenue', label: t('admin.tabs.revenue') },
+    { id: 'economy', label: t('admin.tabs.economy') },
   ];
 
   return (
     <div className={styles.admin}>
       <div className={styles.header}>
-        <h1>Admin Panel</h1>
-        <p className={styles.subtitle}>Platform analytics & operations</p>
+        <h1>{t('admin.title')}</h1>
+        <p className={styles.subtitle}>{t('admin.subtitle')}</p>
       </div>
 
       <div className={styles.tabs}>
@@ -194,78 +196,78 @@ export function AdminScreen() {
       </div>
 
       <div className={styles.content}>
-        {loading && <div className={styles.loading}>Loading...</div>}
+        {loading && <div className={styles.loading}>{t('admin.loading')}</div>}
         {error && <div className={styles.error}>{error}</div>}
 
         {!loading && !error && activeTab === 'metrics' && (
           <div className={styles.panel}>
-            <h2>Metrics</h2>
+            <h2>{t('admin.panel.metrics')}</h2>
             <div className={styles.grid}>
-              <StatCard label="DAU" value={metricsData.dau} />
-              <StatCard label="WAU" value={metricsData.wau} />
-              <StatCard label="MAU" value={metricsData.mau} />
-              <StatCard label="Total Users" value={metricsData.total_users} />
-              <StatCard label="Retention D1" value={`${metricsData.retention_d1}%`} />
-              <StatCard label="Retention D7" value={`${metricsData.retention_d7}%`} />
+              <StatCard label={t('admin.metrics.dau')} value={metricsData.dau} />
+              <StatCard label={t('admin.metrics.wau')} value={metricsData.wau} />
+              <StatCard label={t('admin.metrics.mau')} value={metricsData.mau} />
+              <StatCard label={t('admin.metrics.totalUsers')} value={metricsData.total_users} />
+              <StatCard label={t('admin.metrics.retentionD1')} value={`${metricsData.retention_d1}%`} />
+              <StatCard label={t('admin.metrics.retentionD7')} value={`${metricsData.retention_d7}%`} />
             </div>
           </div>
         )}
 
         {!loading && !error && activeTab === 'security' && (
           <div className={styles.panel}>
-            <h2>Security</h2>
-            <p>Auth events: {securityData.events?.length || 0}</p>
-            <p>Lockouts: {securityData.lockouts?.length || 0}</p>
+            <h2>{t('admin.panel.security')}</h2>
+            <p>{t('admin.security.authEvents')}: {securityData.events?.length || 0}</p>
+            <p>{t('admin.security.lockouts')}: {securityData.lockouts?.length || 0}</p>
           </div>
         )}
 
         {!loading && !error && activeTab === 'content' && (
           <div className={styles.panel}>
-            <h2>Content</h2>
+            <h2>{t('admin.panel.content')}</h2>
             <div className={styles.grid}>
-              <StatCard label="Total Skills" value={contentData.total_skills} />
-              <StatCard label="ES Count" value={contentData.es_count} />
-              <StatCard label="EN Count" value={contentData.en_count} />
-              <StatCard label="Parity %" value={contentData.parity_percent} />
+              <StatCard label={t('admin.metrics.totalSkills')} value={contentData.total_skills} />
+              <StatCard label={t('admin.metrics.esCount')} value={contentData.es_count} />
+              <StatCard label={t('admin.metrics.enCount')} value={contentData.en_count} />
+              <StatCard label={t('admin.metrics.parity')} value={contentData.parity_percent} />
             </div>
           </div>
         )}
 
         {!loading && !error && activeTab === 'ops' && (
           <div className={styles.panel}>
-            <h2>Operations</h2>
+            <h2>{t('admin.panel.ops')}</h2>
             <div className={styles.grid}>
-              <StatCard label="Status" value={opsData.status} />
-              <StatCard label="Database" value={opsData.database} />
+              <StatCard label={t('admin.metrics.status')} value={opsData.status} />
+              <StatCard label={t('admin.metrics.database')} value={opsData.database} />
             </div>
           </div>
         )}
 
         {!loading && !error && activeTab === 'gdpr' && (
           <div className={styles.panel}>
-            <h2>GDPR Requests</h2>
-            <p>Exports: {gdprData.exports?.length || 0}</p>
-            <p>Deletions: {gdprData.deletions?.length || 0}</p>
+            <h2>{t('admin.panel.gdpr')}</h2>
+            <p>{t('admin.gdpr.exports')}: {gdprData.exports?.length || 0}</p>
+            <p>{t('admin.gdpr.deletions')}: {gdprData.deletions?.length || 0}</p>
           </div>
         )}
 
         {!loading && !error && activeTab === 'revenue' && (
           <div className={styles.panel}>
-            <h2>Revenue</h2>
+            <h2>{t('admin.panel.revenue')}</h2>
             <div className={styles.grid}>
-              <StatCard label="MRR" value={`$${revenueData.mrr || 0}`} />
-              <StatCard label="Status" value={revenueData.status} />
+              <StatCard label={t('admin.metrics.mrr')} value={`$${revenueData.mrr || 0}`} />
+              <StatCard label={t('admin.metrics.status')} value={revenueData.status} />
             </div>
           </div>
         )}
 
         {!loading && !error && activeTab === 'economy' && (
           <div className={styles.panel}>
-            <h2>Economy</h2>
+            <h2>{t('admin.panel.economy')}</h2>
             <div className={styles.grid}>
-              <StatCard label="K-Factor" value={economyData.k_factor?.toFixed(4)} />
-              <StatCard label="Total Users" value={economyData.total_users} />
-              <StatCard label="Referrals" value={economyData.successful_referrals} />
+              <StatCard label={t('admin.metrics.kFactor')} value={economyData.k_factor?.toFixed(4)} />
+              <StatCard label={t('admin.metrics.totalUsers')} value={economyData.total_users} />
+              <StatCard label={t('admin.metrics.referrals')} value={economyData.successful_referrals} />
             </div>
           </div>
         )}
