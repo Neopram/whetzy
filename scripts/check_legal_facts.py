@@ -60,15 +60,19 @@ EXPECTED_DOCS = [
 
 LANGS = ["es", "en"]
 
-# Afirmaciones prohibidas (case-insensitive) con sus motivos
+# Afirmaciones prohibidas, como expresiones regulares sobre el texto en
+# minusculas. Son regex y no subcadenas porque un verificador adversario colo
+# "Whetzy, Inc." (con coma) por delante de la version literal: los separadores
+# de una razon social se escriben de diez formas y todas dicen lo mismo.
 PROHIBITED = {
-    "whetzy inc": "sociedad inexistente",
-    "marca registrada": "marcado falso de marca",
-    "registered trademark": "marcado falso de marca",
-    "google analytics": "rastreador prohibido por linea roja 5",
-    "lemon squeezy": "procesador que no existe en el codigo",
-    "paddle": "procesador que no existe en el codigo",
-    "revenuecat": "procesador que no existe en el codigo",
+    r"whetzy[\s,\.\-]*inc": "sociedad inexistente",
+    r"whetzy[\s,\.\-]*(llc|ltd|limited|gmbh|s\.?a\.?r\.?l|o[uü])\b": "sociedad inexistente",
+    r"marcas?\s+registradas?": "marcado falso de marca",
+    r"registered\s+trade\s*marks?": "marcado falso de marca",
+    r"google\s+analytics": "rastreador prohibido por linea roja 5",
+    r"lemon\s*squeezy": "procesador que no existe en el codigo",
+    r"\bpaddle\b": "procesador que no existe en el codigo",
+    r"revenue\s*cat": "procesador que no existe en el codigo",
 }
 
 print()
@@ -82,10 +86,11 @@ for doc_name in EXPECTED_DOCS:
         try:
             content = fpath.read_text(encoding="utf-8")
             content_lower = content.lower()
-            for phrase, reason in PROHIBITED.items():
-                if phrase in content_lower:
+            for pattern, reason in PROHIBITED.items():
+                hit = re.search(pattern, content_lower)
+                if hit:
                     check(
-                        f"{doc_name}.{lang}.md contiene {phrase!r}",
+                        f"{doc_name}.{lang}.md contiene {hit.group(0)!r}",
                         False,
                         reason,
                     )
