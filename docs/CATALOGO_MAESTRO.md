@@ -78,7 +78,7 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 6 | IA | Fundamentos de IA/ML | track06 | ✅ | `microsoft/ML-For-Beginners` MIT, Google MLCC CC BY | Python stdlib | AI-900 |
 | 7 | IA | Ingeniería de IA / LLMs | track07 | ✅ | `generative-ai-for-beginners` MIT, `dair-ai/PEG` MIT, arXiv | Python stdlib | AIF-C01 ✅, AI-102 |
 | 8 | Datos | SQL | track12 | ✅ (18.0 lo deja verde) | SQLite docs (dominio público), PostgreSQL docs | **SQL (sql.js)** | PostgreSQL Associate, DP-900 |
-| 9 | Seguridad | Ciberseguridad — fundamentos | track13 | stub ✅ (18.2) — 326 Q, 15 % exec, ≥15 Q/skill | NIST SP 800-53/61/63 (dominio público), MITRE ATT&CK (atribución), RFC; OWASP solo cita (BY-SA) | Python `fix_bug`/`fill_blank_exec` (hashlib, hmac, secrets, html, re, ipaddress) | ISC2 CC, Security+ |
+| 9 | Seguridad | Ciberseguridad — fundamentos | track13 | ✅ (25.0: scaffolding + 500 Q mock, 15 % exec) | NIST SP 800-53/61/63 (PD) + OWASP CheatSheets (CC BY-SA) | Python `fix_bug_exec` (hashlib, hmac, secrets, html, re, ipaddress) | ISC2 CC, Security+ |
 | 10 | Web | Frontend (JS/TS/React) | track14 | stub ✅ (18.3) — 12 Q, 2 js_exec, 1 lección, 6 términos | `lydiahallie/javascript-questions` MIT, `Web-Dev-For-Beginners` MIT, MDN (CC BY-SA → cita) | **JS Worker sandbox real (18.3)** | JSE-1 |
 | 11 | Fundamentos | Linux / shell | track15 | ✅ (18.4, `bec734c`: 180 Q, 3 módulos, 12 lecciones, exento ADR-9) | `exercism/bash` MIT, man-pages (cita), *The Linux Command Line* (cita) | exento (fill_blank de comandos) | LPIC-1, Linux+, LFCS |
 | 12 | Fundamentos | Algoritmos y estructuras | track16 | ✅ (18.4: 158 Q, 44,9 % exec, 12 lecciones) | `TheAlgorithms/Python` MIT, `tech-interview-handbook` MIT; `coding-interview-university` (BY-SA → H.LIC) | Python (≥ 30 %) | — |
@@ -89,8 +89,8 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 17 | Datos | Data Science / Analytics | track21 | ❌ | Kaggle Learn Apache-2, *Python Data Science Handbook* (cita) | Python stdlib (`statistics`, `csv`) | DP-100, Google Data Analytics |
 | 18 | Cloud | Azure | track22 | ❌ | Microsoft Learn (cita; propietario) | exento | AZ-900, AZ-104, AZ-204, AI-900, DP-900 |
 | 19 | Cloud | GCP | track23 | ❌ | Google Cloud docs (cita; propietario) | exento | Digital Leader, ACE, PCA, PMLE |
-| 20 | Seguridad | Ofensiva / pentest | track24 | ❌ | MITRE ATT&CK, NIST SP 800-115 (dominio público), OWASP WSTG (cita) | Python stdlib | eJPT, PenTest+, CEH (cita), OSCP (cita) |
-| 21 | Seguridad | Seguridad en la nube | track25 | ❌ | AWS Well-Architected (cita), CIS Benchmarks (cita), NIST 800-144 | exento | AWS Security Specialty, CCSP |
+| 20 | Seguridad | Ofensiva / pentest | track24 | ✅ (25.0: scaffolding + 500 Q mock, 15 % exec) | OWASP WSTG (CC BY-SA) + MITRE ATT&CK (PD) + NIST SP 800-115 (PD) | Python stdlib | eJPT, PenTest+, CEH (cita) |
+| 21 | Seguridad | Seguridad en la nube | track25 | ✅ (25.0: scaffolding + 500 Q mock, 15 % exec) | NIST SP 800-144 (PD) + OWASP ASVS (CC BY-SA) + CIS Benchmarks (cita) | exento | AWS Security Specialty, CCSP |
 | 22 | Fundamentos | Git y herramientas de desarrollo | track26 | ❌ | Pro Git (CC BY-NC-SA → cita), git docs (GPL → cita), GitHub docs | exento | GitHub Foundations |
 | 23 | Datos | NoSQL | track27 | ❌ | MongoDB docs (cita), Redis docs (cita) | exento | MongoDB Associate |
 | 24 | Web | Backend (FastAPI / Node) | track28 | ❌ | FastAPI docs MIT, *Full Stack Python* MIT, Node docs MIT | Python stdlib (`http.server`, `json`) | — |
@@ -99,7 +99,7 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 27 | Móvil | Móvil (Android/Kotlin · iOS/Swift · Flutter/RN) | track31 | ❌ (último: sin runtime en navegador) | Android docs Apache-2, Flutter docs BSD, Apple docs (cita) | exento | — |
 | 28 | Web3 | Solana / Web3 developer (ADR-38) | track32 | ❌ (25.14) | `solana-labs/solana` y `solana-program-library` Apache-2, `solana-developers` cookbook/docs MIT, `@solana/web3.js` MIT, Anchor Apache-2 — confirmar `LICENSE` en 25.14 antes de reutilizar texto | **JS (`@solana/web3.js` en el Worker de 18.3)** + Python stdlib (hash, base58, serialización); Rust/Anchor = escenario + decisión (exento ADR-9) | — (sin cert oficial; evidencia = bounties Superteam Earn resueltos) |
 
-**Cobertura hoy: 13 de 28 filas (46 %).** 8 tracks completados + track13 ciberseg (326 Q, 15 % exec) + track14 Frontend JS (stub, 12 Q) + track15/16/17 (18.4, `bec734c`; esta tabla iba retrasada respecto al ledger y se corrigió el 2026-09-18, sesión bh). Faltan **15**: Docker/K8s (18), IaC+CI/CD (19), Data Eng (20), Data Science (21), Azure (22), GCP (23), Pentest (24), Seguridad cloud (25), Git (26), NoSQL (27), Backend (28), QA (29), Agile (30), Móvil (31), **Solana/Web3 (32, ADR-38)**.
+**Cobertura hoy: 16 de 28 filas (57 %).** 8 tracks completados + track13/24/25 Seguridad (scaffolding + 500 Q mock cada uno, 25.0) + track14 Frontend JS (stub, 12 Q) + track15/16/17 (18.4). Faltan **12**: Docker/K8s (18), IaC+CI/CD (19), Data Eng (20), Data Science (21), Azure (22), GCP (23), Git (26), NoSQL (27), Backend (28), QA (29), Agile (30), Móvil (31), **Solana/Web3 (32, ADR-38)**.
 
 ### 2.1 Biblioteca de fuentes libres por área (ADR-11 — solo gratis y legal)
 

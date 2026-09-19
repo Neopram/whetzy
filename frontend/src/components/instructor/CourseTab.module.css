@@ -1,0 +1,219 @@
+.container {
+  padding: 2rem 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--color-text, #000);
+}
+
+.addButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary, #007bff);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.addButton:hover {
+  background-color: var(--color-primary-dark, #0056b3);
+}
+
+.form {
+  background-color: var(--color-bg-secondary, #f9f9f9);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-weight: 500;
+  color: var(--color-text, #000);
+  font-size: 0.95rem;
+}
+
+.formGroup input,
+.formGroup textarea {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border, #ddd);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: var(--color-bg-input, #fff);
+  color: var(--color-text, #000);
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #007bff);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-success, #28a745);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover {
+  background-color: var(--color-success-dark, #218838);
+}
+
+.coursesList {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.courseCard {
+  background-color: var(--color-bg-secondary, #f9f9f9);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  transition: box-shadow 0.2s ease;
+}
+
+.courseCard:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.courseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.courseHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--color-text, #000);
+}
+
+.status {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status.published {
+  background-color: var(--color-success-bg, #d4edda);
+  color: var(--color-success-text, #155724);
+}
+
+.status.draft {
+  background-color: var(--color-warning-bg, #fff3cd);
+  color: var(--color-warning-text, #856404);
+}
+
+.status.archived {
+  background-color: var(--color-secondary-bg, #e2e3e5);
+  color: var(--color-secondary-text, #383d41);
+}
+
+.description {
+  margin: 0 0 1.5rem 0;
+  color: var(--color-text-secondary, #666);
+  font-size: 0.95rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stats strong {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #666);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.stats span {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text, #000);
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem 0;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .addButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .form {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .submitButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
