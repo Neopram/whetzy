@@ -207,8 +207,8 @@ export function AdminScreen() {
               <StatCard label={t('admin.metrics.wau')} value={metricsData.wau} />
               <StatCard label={t('admin.metrics.mau')} value={metricsData.mau} />
               <StatCard label={t('admin.metrics.totalUsers')} value={metricsData.total_users} />
-              <StatCard label={t('admin.metrics.retentionD1')} value={`${metricsData.retention_d1}%`} />
-              <StatCard label={t('admin.metrics.retentionD7')} value={`${metricsData.retention_d7}%`} />
+              <StatCard label={t('admin.metrics.retentionD1')} value={t('admin.metrics.percent', { value: metricsData.retention_d1 })} />
+              <StatCard label={t('admin.metrics.retentionD7')} value={t('admin.metrics.percent', { value: metricsData.retention_d7 })} />
             </div>
           </div>
         )}
@@ -255,7 +255,7 @@ export function AdminScreen() {
           <div className={styles.panel}>
             <h2>{t('admin.panel.revenue')}</h2>
             <div className={styles.grid}>
-              <StatCard label={t('admin.metrics.mrr')} value={`$${revenueData.mrr || 0}`} />
+              <StatCard label={t('admin.metrics.mrr')} value={t('admin.metrics.money', { value: revenueData.mrr || 0 })} />
               <StatCard label={t('admin.metrics.status')} value={revenueData.status} />
             </div>
           </div>
