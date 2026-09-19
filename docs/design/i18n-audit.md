@@ -119,6 +119,8 @@ Summary: 2 PASS, 1 WARN, 0 FAIL
 ---
 
 **Generated**: 2026-09-19  
-**Audit Script**: `scripts/audit_i18n.py`  
-**CI Guard**: `scripts/check-i18n.mjs`  
+**Guardia (única)**: `scripts/check_i18n_parity.py` — `npm run check:i18n` la invoca.
+Sustituye a `scripts/audit_i18n.py` y `scripts/check-i18n.mjs`, borrados en 23.5:
+el primero buscaba en `legal/*.md`, ruta que no existe, y el segundo contaba como
+«documento legal sin traducir» cinco docs internos de investigación.  
 **Verified**: All UI and email translations complete
