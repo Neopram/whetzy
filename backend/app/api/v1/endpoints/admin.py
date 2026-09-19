@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.admin import CreditLedger, GDPRRequest, Referral
@@ -457,19 +458,66 @@ async def cancel_gdpr_deletion(
     return {"id": str(request.id), "status": "cancelled"}
 
 
+def _stripe_mode() -> str:
+    """Report which Stripe keys the server is running with.
+
+    Empty key = no billing configured at all; ``sk_live_`` = real charges.
+    The admin panel shows this next to every revenue number so nobody reads
+    a test-mode figure as income.
+    """
+    key = settings.STRIPE_SECRET_KEY
+    if not key:
+        return "unconfigured"
+    return "live" if key.startswith("sk_live_") else "test"
+
+
+def _price_for(tier: str | None) -> float:
+    return {
+        "plus": settings.PLAN_PRICE_PLUS_USD,
+        "pro": settings.PLAN_PRICE_PRO_USD,
+    }.get(tier or "", 0.0)
+
+
+def _segment_filter(query: Any, segment: str) -> Any:
+    if segment != "all":
+        query = query.where(User.language == segment)
+    return query
+
+
 @router.get("/revenue/mrr", dependencies=[Depends(require_owner)])
 async def get_revenue_mrr(
     month: str = Query(default=None),
     segment: str = Query(default="all", regex="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
-    """Monthly recurring revenue, optionally filtered by language segment."""
+    """Monthly recurring revenue, optionally filtered by language segment.
+
+    Counted from the DB: one row per user whose ``subscription_status`` is
+    ``active`` or ``trialing``, priced with the tier table in settings.
+    Returns real zeros while nobody has subscribed — never a constant.
+    """
+    query = select(User.subscription_tier, func.count()).where(
+        User.subscription_status.in_(("active", "trialing"))
+    )
+    query = _segment_filter(query, segment).group_by(User.subscription_tier)
+    rows = (await db.execute(query)).all()
+
+    by_tier = {tier or "unknown": count for tier, count in rows}
+    mrr = round(sum(_price_for(tier) * count for tier, count in rows), 2)
+
     return {
-        "month": month or "2026-09",
-        "mrr": 0,
-        "active_subscriptions": 0,
+        "month": month or datetime.now(UTC).strftime("%Y-%m"),
+        "mrr": mrr,
+        "active_subscriptions": sum(by_tier.values()),
+        "by_tier": by_tier,
+        "price_table_usd": {
+            "plus": settings.PLAN_PRICE_PLUS_USD,
+            "pro": settings.PLAN_PRICE_PRO_USD,
+        },
         "segment": segment,
-        "status": "test_mode",
+        "source": "db",
+        "stripe_mode": _stripe_mode(),
+        "status": "test_mode" if _stripe_mode() != "live" else "live",
     }
 
 
@@ -479,13 +527,32 @@ async def get_revenue_conversions(
     segment: str = Query(default="all", regex="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
-    """Conversion metrics by language segment."""
+    """Registered users vs. those who ended up paying, in the same window."""
+    cutoff = datetime.now(UTC) - timedelta(days=range_days)
+
+    registered_q = _segment_filter(
+        select(func.count()).select_from(User).where(User.created_at >= cutoff), segment
+    )
+    registered = (await db.execute(registered_q)).scalar() or 0
+
+    converted_q = _segment_filter(
+        select(func.count())
+        .select_from(User)
+        .where(User.created_at >= cutoff)
+        .where(User.subscription_status.in_(("active", "trialing"))),
+        segment,
+    )
+    converted = (await db.execute(converted_q)).scalar() or 0
+
     return {
         "range_days": range_days,
-        "conversions": 0,
-        "conversion_rate": 0.0,
+        "registered": registered,
+        "conversions": converted,
+        "conversion_rate": round(converted / registered, 4) if registered else 0.0,
         "segment": segment,
-        "status": "test_mode",
+        "source": "db",
+        "stripe_mode": _stripe_mode(),
+        "status": "test_mode" if _stripe_mode() != "live" else "live",
     }
 
 
@@ -495,13 +562,37 @@ async def get_revenue_churn(
     segment: str = Query(default="all", regex="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
-    """Churn rate by language segment."""
+    """Cancelled subscriptions in the window over the paying base at its start."""
+    days = int(window.removesuffix("d"))
+    cutoff = datetime.now(UTC) - timedelta(days=days)
+
+    cancelled_q = _segment_filter(
+        select(func.count())
+        .select_from(User)
+        .where(User.subscription_status == "canceled")
+        .where(User.subscription_expires_at >= cutoff),
+        segment,
+    )
+    cancelled = (await db.execute(cancelled_q)).scalar() or 0
+
+    active_q = _segment_filter(
+        select(func.count())
+        .select_from(User)
+        .where(User.subscription_status.in_(("active", "trialing"))),
+        segment,
+    )
+    active = (await db.execute(active_q)).scalar() or 0
+
+    base = active + cancelled
     return {
         "window": window,
-        "churn_rate": 0.0,
-        "cancelled_subscriptions": 0,
+        "churn_rate": round(cancelled / base, 4) if base else 0.0,
+        "cancelled_subscriptions": cancelled,
+        "active_subscriptions": active,
         "segment": segment,
-        "status": "test_mode",
+        "source": "db",
+        "stripe_mode": _stripe_mode(),
+        "status": "test_mode" if _stripe_mode() != "live" else "live",
     }
 
 

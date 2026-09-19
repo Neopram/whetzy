@@ -133,6 +133,16 @@ class Settings(BaseSettings):
     STRIPE_WEBHOOK_SECRET: str = ""     # whsec_...
     STRIPE_PRICE_PLUS: str = ""         # price_... for the Plus plan
     STRIPE_PRICE_PRO: str = ""          # price_... for the Pro plan
+    # Monthly list price per subscription tier, in USD (ADR-21).
+    # The admin revenue panel multiplies these by the number of *active*
+    # subscriptions found in the DB; they are settings, not magic numbers,
+    # so a price change never means editing an endpoint.
+    # NOTE: the code tiers are ``plus`` and ``pro``; the docs call the paid
+    # plans "Pro" ($14.99) and "Premium" ($19.99). The mapping below is the
+    # one 22.14 has to confirm with the owner before any live charge.
+    PLAN_PRICE_PLUS_USD: float = 14.99
+    PLAN_PRICE_PRO_USD: float = 19.99
+
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
 
