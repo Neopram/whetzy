@@ -4,7 +4,7 @@ from sqlalchemy import Column, DateTime, ForeignKey, String, Text, func, UniqueC
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID as PgUUID
 
-from app.database import Base
+from app.core.db import Base
 
 
 class Experiment(Base):
