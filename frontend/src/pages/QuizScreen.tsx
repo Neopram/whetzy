@@ -486,7 +486,6 @@ export function QuizScreen() {
       <div className={styles.screen}>
         {header}
         {statsBar}
-      {masteryBar}
         {masteryBar}
         {questionCard}
 
