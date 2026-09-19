@@ -45,7 +45,7 @@ const SEGMENT_QUESTIONS: SegmentQuestion[] = [
 
 export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const { i18n, t } = useTranslation()
-  const setUserLanguage = useAppStore((s) => s.setUserLanguage)
+  const setUserLanguage = useAppStore((s) => s.setLanguage)
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [referralCode, setReferralCode] = useState('')

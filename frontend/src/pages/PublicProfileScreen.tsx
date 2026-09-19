@@ -21,7 +21,7 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
   const { i18n, t } = useTranslation()
   const lang = i18n.language as 'es' | 'en'
 
-  const [profile, setProfile] = useState<PublicProfile>({
+  const [profile] = useState<PublicProfile>({
     handle,
     name: 'Carlos Pérez',
     bio_es: 'Ingeniero autónomo aprendiendo AWS y Python',

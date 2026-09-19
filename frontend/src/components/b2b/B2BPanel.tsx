@@ -22,8 +22,7 @@ interface BatchCode {
 }
 
 export default function B2BPanel() {
-  const { i18n, t } = useTranslation()
-  const lang = i18n.language as 'es' | 'en'
+  const { t } = useTranslation()
 
   const [employees] = useState<Employee[]>([
     {

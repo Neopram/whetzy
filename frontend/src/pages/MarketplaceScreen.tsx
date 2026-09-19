@@ -30,7 +30,7 @@ export function MarketplaceScreen() {
   const lang = i18n.language as 'es' | 'en';
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory] = useState('all');
   const [selectedLevel, setSelectedLevel] = useState('all');
   const [sortBy, setSortBy] = useState('popular');
 
@@ -79,17 +79,8 @@ export function MarketplaceScreen() {
     },
   ];
 
-  const categories = ['all', 'programming', 'fundamentals', 'web-dev', 'databases', 'ai-ml'];
   const levels = ['all', 'beginner', 'intermediate', 'advanced'];
 
-  const categoryLabels: Record<string, { es: string; en: string }> = {
-    all: { es: 'Todas', en: 'All' },
-    programming: { es: 'Programación', en: 'Programming' },
-    fundamentals: { es: 'Fundamentos', en: 'Fundamentals' },
-    'web-dev': { es: 'Desarrollo Web', en: 'Web Dev' },
-    databases: { es: 'Bases de Datos', en: 'Databases' },
-    'ai-ml': { es: 'IA/ML', en: 'AI/ML' },
-  };
 
   const filteredCourses = useMemo(() => {
     let filtered = mockCourses;

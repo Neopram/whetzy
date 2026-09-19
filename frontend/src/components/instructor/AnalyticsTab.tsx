@@ -13,7 +13,7 @@ interface AnalyticsData {
 
 export default function AnalyticsTab() {
   const { t } = useTranslation()
-  const [analytics, setAnalytics] = useState<AnalyticsData>({
+  const [analytics] = useState<AnalyticsData>({
     total_earnings_cents: 629930,
     total_revenue_cents: 899900,
     active_courses: 1,

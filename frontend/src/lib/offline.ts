@@ -1,5 +1,4 @@
 let offlineMode = false;
-let pendingRequests: Map<string, any> = new Map();
 
 export function isOffline(): boolean {
   return offlineMode || !navigator.onLine;

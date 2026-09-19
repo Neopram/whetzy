@@ -70,7 +70,7 @@ export function DistributionBanner({
     }
 
     // Redirect preserving referral code
-    const redirectUrl = campaignCode !== 'ORGANIC' ? /?ref= : '/';
+    const redirectUrl = campaignCode !== 'ORGANIC' ? `/?ref=${campaignCode}` : '/';
     window.location.href = redirectUrl;
   };
 
@@ -101,7 +101,7 @@ export function DistributionBanner({
   return (
     <AnimatePresence>
       <motion.div
-        className={\\ \\}
+        className={styles.banner}
         initial={{ opacity: 0, y: position === 'top' ? -20 : 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: position === 'top' ? -20 : 20 }}
@@ -137,7 +137,7 @@ export function DistributionBanner({
         </div>
 
         {/* Campaign code indicator (dev only) */}
-        {process.env.NODE_ENV === 'development' && (
+        {import.meta.env.DEV && (
           <div className={styles.debug}>{campaignCode}</div>
         )}
       </motion.div>

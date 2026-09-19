@@ -14,7 +14,7 @@ interface Course {
 
 export default function CourseTab() {
   const { t } = useTranslation()
-  const [courses, setCourses] = useState<Course[]>([
+  const [courses] = useState<Course[]>([
     {
       id: 'course-1',
       title: 'Python Basics',

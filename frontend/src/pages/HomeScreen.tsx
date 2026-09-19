@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import '../styles/dashboard.css'
 
@@ -13,7 +13,7 @@ interface SkillProgress {
 
 export default function HomeScreen() {
   const { i18n, t } = useTranslation()
-  const [skills, setSkills] = useState<SkillProgress[]>([
+  const [skills] = useState<SkillProgress[]>([
     {
       id: 'sk01',
       name_es: 'Variables y Tipos',

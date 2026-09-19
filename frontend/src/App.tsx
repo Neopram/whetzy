@@ -16,8 +16,8 @@ import { useGestures } from './hooks/useGestures';
 // which is the page most likely to be opened cold on a mid-range phone over
 // 4G. Each entry below is its own chunk; a visitor downloads the one screen
 // they are actually looking at.
-const HomeScreen = lazy(() => import('./pages/HomeScreen').then((m) => ({ default: m.HomeScreen })));
-const QuizScreen = lazy(() => import('./pages/QuizScreen').then((m) => ({ default: m.QuizScreen })));
+const HomeScreen = lazy(() => import('./pages/HomeScreen'));
+const QuizScreen = lazy(() => import('./pages/QuizScreen'));
 const StatsScreen = lazy(() => import('./pages/StatsScreen').then((m) => ({ default: m.StatsScreen })));
 const LeagueScreen = lazy(() => import('./pages/LeagueScreen').then((m) => ({ default: m.LeagueScreen })));
 const ProfileScreen = lazy(() => import('./pages/ProfileScreen').then((m) => ({ default: m.ProfileScreen })));
@@ -30,9 +30,9 @@ const DeleteAccountScreen = lazy(() =>
 );
 const LegalScreen = lazy(() => import('./pages/LegalScreen').then((m) => ({ default: m.LegalScreen })));
 const OnboardingScreen = lazy(() =>
-  import('./pages/OnboardingScreen').then((m) => ({ default: m.OnboardingScreen }))
+  import('./pages/OnboardingScreen')
 );
-const LandingScreen = lazy(() => import('./pages/LandingScreen').then((m) => ({ default: m.LandingScreen })));
+const LandingScreen = lazy(() => import('./pages/LandingScreen'));
 const TrackExamScreen = lazy(() =>
   import('./pages/TrackExamScreen').then((m) => ({ default: m.TrackExamScreen }))
 );
@@ -57,7 +57,7 @@ const ReadinessScreen = lazy(() =>
   import('./pages/ReadinessScreen').then((m) => ({ default: m.ReadinessScreen }))
 );
 const AdminScreen = lazy(() => import('./pages/AdminScreen').then((m) => ({ default: m.AdminScreen })));
-const InstructorScreen = lazy(() => import('./pages/InstructorScreen').then((m) => ({ default: m.InstructorScreen })));
+const InstructorScreen = lazy(() => import('./pages/InstructorScreen'));
 const MarketplaceScreen = lazy(() => import('./pages/MarketplaceScreen').then((m) => ({ default: m.MarketplaceScreen })));
 
 // URL-based routing for standalone pages (no React Router needed)
@@ -174,6 +174,11 @@ function App() {
   const prevScreenRef = useRef(currentScreen);
   useEffect(() => { prevScreenRef.current = currentScreen; }, [currentScreen]);
 
+  useGestures({
+    onSwipeRight: () => { if (currentScreen !== 'home') setScreen('home'); },
+    onSwipeLeft: () => { if (currentScreen !== 'marketplace') setScreen('marketplace'); },
+  });
+
   const [authState, setAuthState] = useState<AuthState>(() =>
     isAuthenticated() ? 'checking' : 'unauthed'
   );
@@ -228,15 +233,6 @@ function App() {
       <>
         <Screen><OnboardingScreen onDone={() => setShowOnboarding(false)} /></Screen>
         <Toast />
-  const setScreen = useAppStore((s) => s.setScreen);
-  useGestures({
-    onSwipeRight: () => {
-      if (currentScreen !== 'home') setScreen('home');
-    },
-    onSwipeLeft: () => {
-      if (currentScreen !== 'marketplace') setScreen('marketplace');
-    },
-  });
       </>
     );
   }

@@ -21,7 +21,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 // Its `lng: 'es'` default is what makes this a Spanish prerender.
 import '../i18n';
 
-import { LandingScreen } from '../pages/LandingScreen';
+import LandingScreen from '../pages/LandingScreen';
 
 export function renderLandingHtml(): string {
   return renderToStaticMarkup(<LandingScreen />);
