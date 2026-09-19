@@ -1,18 +1,24 @@
-# Análisis estratégico — sesión bf, 2026-09-18
+# Análisis estratégico
 
-Cuatro páginas HTML producidas en la sesión interactiva del dueño (18-sep-2026) con
-el modelo Fable 5.1. **No son documentos normativos**: son análisis de negocio
-(competencia, ingresos, coste de desbloqueo). Si algo aquí contradice a un documento
-vivo del índice `../README.md`, gana el documento vivo.
+`00-auditoria-e2e.html` es la única página de esta carpeta que se ha **medido**: sale de
+leer el árbol y de ejecutar los guardias y las suites el 2026-09-19, más peticiones reales
+contra producción. Empieza por ahí.
+
+Las otras cuatro son análisis de negocio escritos el 2026-09-18 con el modelo Fable 5.1 en
+una sesión interactiva del dueño. **No son documentos normativos** y su estado del producto
+venía de una memoria del 08-sep: cada una lleva arriba un aviso con lo que hoy sabemos que
+es falso. Si algo ahí contradice a la auditoría, al ledger o a un documento vivo del índice
+`../README.md`, gana el otro.
 
 | Fichero | Qué contiene |
 |---|---|
+| `00-auditoria-e2e.html` | **Estado medido**: contenido, backend, frontend, producción, guardias y lo que no está demostrado |
 | `01-como-funciona-y-competencia.html` | Arquitectura resumida, posición competitiva (44/100, techo ≈ 66), probabilidad por segmento |
 | `02-proyeccion-ingresos-1k-20k.html` | Neto mensual/anual a 1 K · 5 K · 10 K · 15 K · 20 K usuarios con suscripciones + certs + bootcamps async |
 | `03-hito-1M-usuarios.html` | Escenario hipotético a 1 M usuarios con live bootcamps e instructor marketplace |
 | `04-coste-desbloqueo-total.html` | Tres caminos (solo · híbrido · equipo), coste por pieza en tres tiers, techo de calidad |
 
-## Errata (detectada al guardar, por contraste con el ledger)
+## Errata del 18-sep (se mantiene por trazabilidad)
 
 Los HTML se escribieron desde una memoria del estado del proyecto **del 2026-09-08**.
 Entre esa fecha y el 18-sep el proyecto avanzó ~10 series. Afirmaciones que hoy son

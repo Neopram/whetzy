@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Whetzy — Auditoría E2E</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,700;12..96,800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #f3f5fb; --surface: #ffffff; --surface-2: #edf0f8; --border: #dde2ef;
+  --text: #080d1c; --muted: #59688a;
+  --accent: #1CB0F6; --accent-lo: rgba(28,176,246,0.10);
+  --success: #16a34a; --success-lo: rgba(22,163,74,0.10);
+  --warning: #b45309; --warning-lo: rgba(180,83,9,0.10);
+  --danger: #dc2626; --danger-lo: rgba(220,38,38,0.10);
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --body: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #060910; --surface: #0e1422; --surface-2: #141d30; --border: #1f2d48;
+    --text: #e5ecff; --muted: #7b8fb5;
+    --accent: #3dc3ff; --accent-lo: rgba(61,195,255,0.10);
+    --success: #4ade80; --success-lo: rgba(74,222,128,0.10);
+    --warning: #fbbf24; --warning-lo: rgba(251,191,36,0.10);
+    --danger: #f87171; --danger-lo: rgba(248,113,113,0.10);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #060910; --surface: #0e1422; --surface-2: #141d30; --border: #1f2d48;
+  --text: #e5ecff; --muted: #7b8fb5;
+  --accent: #3dc3ff; --accent-lo: rgba(61,195,255,0.10);
+  --success: #4ade80; --success-lo: rgba(74,222,128,0.10);
+  --warning: #fbbf24; --warning-lo: rgba(251,191,36,0.10);
+  --danger: #f87171; --danger-lo: rgba(248,113,113,0.10);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--body); font-size: 16px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 48px 16px 96px; }
+h1 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 8px; }
+h2 { font-family: var(--display); font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 700; letter-spacing: -0.01em; margin: 56px 0 4px; }
+h3 { font-family: var(--display); font-size: 1.1rem; font-weight: 700; margin: 32px 0 4px; }
+p { margin: 12px 0; }
+.lede { color: var(--muted); font-size: 1.05rem; max-width: 68ch; }
+.sub { color: var(--muted); font-size: 0.92rem; margin: 4px 0 24px; }
+code, .mono { font-family: var(--mono); font-size: 0.88em; }
+code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin: 20px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 20px 0; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .n { font-family: var(--display); font-size: 1.7rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+.stat .l { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.92rem; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; }
+td.num, th.num { text-align: right; font-family: var(--mono); white-space: nowrap; }
+.tag { display: inline-block; font-size: 0.76rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.ok { background: var(--success-lo); color: var(--success); }
+.warn { background: var(--warning-lo); color: var(--warning); }
+.bad { background: var(--danger-lo); color: var(--danger); }
+.note { border-left: 3px solid var(--accent); background: var(--accent-lo); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 20px 0; }
+.note.bad { border-left-color: var(--danger); background: var(--danger-lo); }
+.note.warn { border-left-color: var(--warning); background: var(--warning-lo); }
+.note p:first-child { margin-top: 0; } .note p:last-child { margin-bottom: 0; }
+ul { padding-left: 22px; } li { margin: 7px 0; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 48px 0; }
+a { color: var(--accent); }
+footer { color: var(--muted); font-size: 0.86rem; margin-top: 56px; }
+@media (max-width: 640px) { .wrap { padding: 32px 16px 72px; } table { font-size: 0.85rem; } th, td { padding: 7px 6px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Auditoría E2E</h1>
+<p class="sub mono">Medido el 2026-09-19 contra el árbol y contra producción · nada estimado</p>
+
+<p class="lede">
+Todo lo que hay en esta página sale de leer el repositorio o de ejecutar algo:
+<code>check_question_bank.py</code>, <code>check_docs.py</code>, <code>pytest</code>,
+<code>alembic heads</code>, <code>npm run build</code> y peticiones reales contra
+<code>api-production-9751.up.railway.app</code>. Donde no hay medida, lo dice.
+La intención no es que quede bien: es que un lector que no se fíe pueda repetir cada número.
+</p>
+
+<div class="note warn">
+<p><strong>Por qué existe esta página.</strong> La sesión empezó verificando cuatro series
+que el ledger daba por terminadas. Ninguna lo estaba, y cuatro de los hashes de commit que
+las respaldaban <strong>no existían</strong>. El resto del día fue comprobar el sistema
+entero con esa desconfianza de partida.</p>
+</div>
+
+<h2>Resumen</h2>
+
+<div class="grid">
+  <div class="stat"><div class="n">6.305</div><div class="l">preguntas publicables</div></div>
+  <div class="stat"><div class="n">18</div><div class="l">tracks · 49 cursos</div></div>
+  <div class="stat"><div class="n">378</div><div class="l">skills, 378 lecciones</div></div>
+  <div class="stat"><div class="n">108</div><div class="l">rutas vivas en producción</div></div>
+  <div class="stat"><div class="n">20.136</div><div class="l">tests en verde</div></div>
+  <div class="stat"><div class="n">0</div><div class="l">usuarios reales medidos</div></div>
+</div>
+
+<p>
+Ese último número es el que manda sobre todos los demás. El motor adaptativo, la
+gamificación y el contenido son <em>capacidades</em>; sin una cohorte que los use, no son
+ventajas demostradas. Es la barrera <strong>H.10</strong> y sigue cerrada.
+</p>
+
+<h2>Contenido</h2>
+
+<table>
+<tr><th>Medida</th><th class="num">Valor</th><th>Cómo se comprueba</th></tr>
+<tr><td>Preguntas</td><td class="num">6.305</td><td><code>check_question_bank.py</code></td></tr>
+<tr><td>Tracks / módulos / cursos</td><td class="num">18 / 92 / 49</td><td><code>tracks.json</code>; «curso» = track × nivel</td></tr>
+<tr><td>Skills</td><td class="num">378</td><td><code>tracks.json</code></td></tr>
+<tr><td>Lecciones</td><td class="num">378 (100 %)</td><td>una por skill, sin huecos</td></tr>
+<tr><td>Términos de glosario</td><td class="num">622</td><td><code>content_loader</code></td></tr>
+<tr><td>Preguntas ejecutables</td><td class="num">1.507</td><td>tipos <code>*_exec</code>, <code>fix_bug</code>, <code>code_output</code></td></tr>
+<tr><td>En cuarentena</td><td class="num">815</td><td><code>content/_quarantine/</code> — ni se cargan ni se cuentan</td></tr>
+</table>
+
+<h3>Las 815 en cuarentena</h3>
+
+<p>
+Tres agentes duplicados generaron <code>track24</code> y <code>track25</code> a la vez y se
+pisaron los ficheros. Lo que salió, medido:
+</p>
+
+<table>
+<tr><th>Criterio</th><th class="num">track24</th><th class="num">track25</th><th class="num">tracks legítimos</th></tr>
+<tr><td>Enunciados distintos</td><td class="num">14/400 (4 %)</td><td class="num">14/400 (4 %)</td><td class="num">86–100 %</td></tr>
+<tr><td>Opciones de una sola palabra</td><td class="num">95 %</td><td class="num">95 %</td><td class="num">0–56 %</td></tr>
+<tr><td>Ejecutables sin código</td><td class="num">80/80</td><td class="num">80/80</td><td class="num">0</td></tr>
+</table>
+
+<p>
+«¿Qué es HTTPS?» aparece 41 veces en un track de pentest; uno de los enunciados es
+literalmente <code>SELECT</code>. No se han borrado: están en el repositorio, fuera de
+<code>content/questions/</code>, con un README que explica qué hay que hacer para
+recuperarlas — reescribirlas, no moverlas de sitio.
+</p>
+
+<div class="note bad">
+<p><strong>Lo incómodo es que el guardia las aprobó.</strong>
+<code>check_question_bank.py</code> comprobaba ids únicos, paridad ES/EN, forma de las
+opciones y sesgo de posición. Todo eso estaba bien. Lo que no miraba era si la pregunta
+decía algo, así que dio <code>PASS</code> a 800 preguntas hechas con 14 enunciados
+repetidos. Hoy mira también enunciados distintos por track, opciones de una palabra,
+ejecutables sin código y ES idéntico a EN. Calibrado contra el árbol anterior:
+<strong>1 hallazgo en ~6.200 preguntas preexistentes</strong>, y era un defecto real.</p>
+</div>
+
+<h3>Un suelo que se cumplía con preguntas vacías</h3>
+
+<p>
+Al sacar 15 <code>fix_bug</code> de <code>track13</code> que no tenían código que ejecutar
+—imposibles de responder—, el ratio de ejecutables del track cayó al 12,4 %. El suelo
+declarado era el 15 %. Es decir: <strong>track13 nunca llegó al 15 % real</strong>; lo
+cumplía contando preguntas que no funcionaban.
+</p>
+
+<p>
+En vez de bajar el suelo, se escribieron 12 <code>fix_bug</code> nuevos a mano
+(comparación en tiempo constante, sal en contraseñas, iteraciones de PBKDF2, userinfo en
+URLs, SQL parametrizado, escape de HTML, path traversal, redacción de secretos en logs).
+La respuesta de cada uno <strong>es la salida que imprimió CPython</strong> al ejecutar la
+versión corregida, y el sidecar de soluciones hace que el test la vuelva a ejecutar en cada
+corrida. track13 queda en <strong>15,1 %</strong>, esta vez de verdad.
+</p>
+
+<h2>Backend</h2>
+
+<table>
+<tr><th>Medida</th><th class="num">Valor</th><th>Estado</th></tr>
+<tr><td>Rutas en producción</td><td class="num">108</td><td><span class="tag ok">verificado en vivo</span></td></tr>
+<tr><td>Ficheros de endpoint</td><td class="num">24</td><td><span class="tag ok">0 sin registrar</span></td></tr>
+<tr><td>Endpoints devolviendo 501</td><td class="num">0</td><td><span class="tag ok">eran 5 esta mañana</span></td></tr>
+<tr><td>Migraciones Alembic</td><td class="num">27</td><td><span class="tag ok">una sola cabeza</span></td></tr>
+<tr><td>Modelos ORM</td><td class="num">20</td><td><span class="tag ok">0 colisiones de tabla</span></td></tr>
+<tr><td>Tests (servicios + unidad)</td><td class="num">571</td><td><span class="tag ok">passed</span></td></tr>
+<tr><td>Tests de contenido</td><td class="num">19.565</td><td><span class="tag ok">passed</span></td></tr>
+</table>
+
+<div class="note bad">
+<p><strong>El webhook de Paddle aceptaba firmas falsas.</strong>
+<code>verify_paddle_signature</code> empezaba por «si no hay <code>PADDLE_API_KEY</code>,
+devuelve <code>True</code>», con el comentario <em>Skip in development</em>. Pero el
+endpoint entró en producción el 19-sep y la clave no está puesta, porque Paddle no está de
+alta. Ese webhook <strong>concede créditos</strong>. Corregido: ahora falla cerrado, y se
+ha comprobado contra producción que una firma inválida devuelve <strong>401</strong>.
+Queda pendiente revisar si hay filas en <code>credit_ledger</code> que no vengan de una
+compra real.</p>
+</div>
+
+<h3>Seis bugs de contabilidad que los tests no veían</h3>
+
+<p>
+La suite entera del backend no llegaba a recolectar: <code>models/economy.py</code>
+redefinía tres tablas que ya existían en <code>models/admin.py</code>. Con eso arreglado,
+los tests empezaron a correr y destaparon:
+</p>
+
+<ul>
+<li>El FIFO consumía mirando el importe de apertura del lote, que nunca baja: <strong>el mismo lote se gastaba dos veces</strong>.</li>
+<li>El gasto nacía sin caducidad, así que al caducar el lote salía el positivo y se quedaba el negativo: <strong>se cobraba dos veces</strong>.</li>
+<li>Su clave de idempotencia llevaba un <em>timestamp</em>, que chocaba entre lotes de la misma llamada y además dejaba pasar el reintento que debía frenar.</li>
+<li><code>.scalar()</code> llamado dos veces sobre el mismo <code>Result</code>, que se consume: devolvía <code>None</code> justo cuando el crédito ya existía.</li>
+<li>Ocho <code>datetime.utcnow()</code> ingenuos contra columnas con zona horaria.</li>
+<li>Un pago por matrícula en vez de uno por mes: un curso con 50 ventas generaba 50 pagos sueltos que el mínimo de 50 € descartaba uno a uno.</li>
+</ul>
+
+<h3>Código terminado que nadie podía alcanzar</h3>
+
+<p>Tres casos del mismo patrón — el fichero existe, a veces con tests en verde, y ningún router llega a él:</p>
+
+<table>
+<tr><th>Qué</th><th>Estado al empezar</th><th>Ahora</th></tr>
+<tr><td>Sesiones y 2FA (5 rutas, 18 tests)</td><td><span class="tag bad">sin registrar</span></td><td><span class="tag ok">vivas en <code>/auth</code></span></td></tr>
+<tr><td>Marketplace de instructores (5 rutas)</td><td><span class="tag bad">501 en producción</span></td><td><span class="tag ok">implementadas</span></td></tr>
+<tr><td>Flags de experimentos A/B</td><td><span class="tag bad">importaba un módulo inexistente</span></td><td><span class="tag ok">viva</span></td></tr>
+<tr><td>Economía (créditos, referidos, promos)</td><td><span class="tag bad">rompía la suite entera</span></td><td><span class="tag ok">5 rutas vivas</span></td></tr>
+</table>
+
+<h2>Frontend</h2>
+
+<table>
+<tr><th>Medida</th><th class="num">Valor</th><th>Estado</th></tr>
+<tr><td>Pantallas</td><td class="num">23</td><td>—</td></tr>
+<tr><td>Obtienen datos de fuera</td><td class="num">19</td><td><span class="tag ok">API, store o <code>fetch</code></span></td></tr>
+<tr><td>Con los datos escritos dentro</td><td class="num">4</td><td><span class="tag warn">maquetas</span></td></tr>
+<tr><td>Claves i18n</td><td class="num">508 = 508</td><td><span class="tag ok">paridad ES/EN</span></td></tr>
+<tr><td><code>tsc -b</code> · <code>vitest</code> · <code>build</code></td><td class="num">0 · 171 · ✓</td><td><span class="tag ok">verde de punta a punta</span></td></tr>
+</table>
+
+<p>
+Las cuatro maquetas son <code>HomeScreen</code>, <code>MarketplaceScreen</code>,
+<code>InstructorScreen</code> y las pestañas de esta última: enseñan listas escritas
+dentro del propio fichero. Las tres primeras las entregó la serie 24 como «hechas».
+<code>LandingScreen</code> y <code>LegalScreen</code> también son estáticas, pero eso es
+lo que les toca ser.
+</p>
+
+<div class="note bad">
+<p><strong>La serie 24 borró el motor de quiz.</strong> El commit que la cerró sustituyó un
+<code>QuizScreen.tsx</code> de 737 líneas por uno de 161. Se fueron con él el editor
+Monaco, los cinco tipos ejecutables y toda la ruta de pregunta ejecutable; el que quedó
+traía dos preguntas escritas a mano dentro del propio componente y no llamaba a la API.
+<strong>1.507 preguntas ejecutables se quedaron sin interfaz</strong> — la ventaja
+competitiva entera. Nadie lo vio porque el build llevaba varias sesiones en rojo.</p>
+<p>Recuperado, con la única idea que aportaba la maqueta injertada encima: la barra de
+dominio, que ahora lee <code>skill_mastery</code> del motor BKT en vez del valor inventado
+que pintaba antes.</p>
+</div>
+
+<p>
+La misma serie hizo lo mismo con la landing (194 → 61 líneas), que además usaba
+<code>react-router</code> sin que la aplicación monte ningún router — <code>&lt;Link&gt;</code>
+reventaba la página entera — y volvía a traer las cifras del catálogo escritas a mano,
+que es el incidente 17.12 repetido. Hoy salen de un único módulo que vigila
+<code>check_docs.py</code>.
+</p>
+
+<div class="note warn">
+<p><strong>Nada de esto está publicado.</strong> El frontend se despliega a mano y el
+último despliegue es del <strong>2026-09-18</strong>. <code>whetzy.com</code> sirve un
+bundle anterior a todo lo de hoy. La parte buena es que la regresión del quiz tampoco
+llegó a producción; la mala es que las correcciones tampoco.</p>
+</div>
+
+<h2>Producción</h2>
+
+<table>
+<tr><th>Comprobación</th><th>Resultado</th></tr>
+<tr><td><code>GET /health</code></td><td><span class="tag ok">healthy</span></td></tr>
+<tr><td>Rutas en <code>openapi.json</code></td><td class="mono">108</td></tr>
+<tr><td><code>POST /webhooks/paddle</code> con firma inválida</td><td><span class="tag ok">401</span> — antes la daba por buena</td></tr>
+<tr><td><code>GET /instructor/*</code> sin credenciales</td><td><span class="tag ok">401</span> — antes 501</td></tr>
+<tr><td><code>GET /economy/prices</code></td><td><span class="tag ok">200</span></td></tr>
+<tr><td>Frontend <code>whetzy.com</code></td><td><span class="tag warn">bundle del 18-sep</span></td></tr>
+</table>
+
+<div class="note bad">
+<p><strong>El despliegue de hoy tumbó producción durante unos minutos.</strong>
+<code>start.sh</code> corre con <code>set -euo pipefail</code>: si
+<code>alembic upgrade head</code> falla, el contenedor no llega nunca a arrancar. Dos
+migraciones fallaban — una usaba <code>gen_random_uuid()</code>, que necesita pgcrypto o
+PostgreSQL 13+, y la otra se plantaba a propósito al encontrar datos, sin caer en que
+plantarse ahí no protege nada: mata el arranque entero. Corregido y verificado ejecutando
+la secuencia completa de <code>start.sh</code> contra un PostgreSQL real antes de volver a
+empujar. Es la segunda caída por migraciones que registra el ledger; la anterior duró
+2 h 30 min.</p>
+</div>
+
+<h2>Guardias de calidad</h2>
+
+<table>
+<tr><th>Guardia</th><th>Al empezar</th><th>Ahora</th></tr>
+<tr><td><code>check_docs.py</code></td><td><span class="tag bad">12 fallos</span></td><td><span class="tag ok">All checks PASSED</span></td></tr>
+<tr><td><code>check_question_bank.py</code></td><td><span class="tag bad">FAIL (36)</span></td><td><span class="tag ok">PASS</span></td></tr>
+<tr><td><code>tsc -b</code></td><td><span class="tag bad">21 errores</span></td><td><span class="tag ok">exit 0</span></td></tr>
+<tr><td><code>npm run build</code></td><td><span class="tag bad">rojo varias sesiones</span></td><td><span class="tag ok">verde con prerender</span></td></tr>
+<tr><td><code>alembic heads</code></td><td><span class="tag bad">dos cabezas</span></td><td><span class="tag ok">una</span></td></tr>
+<tr><td><code>pytest</code> backend</td><td><span class="tag bad">no recolectaba</span></td><td><span class="tag ok">571 passed</span></td></tr>
+<tr><td><code>npm run lint</code></td><td colspan="2"><span class="tag warn">falla por un binding nativo de oxlint ausente — de instalación, no de código</span></td></tr>
+</table>
+
+<h2>Lo que no está demostrado</h2>
+
+<p>Esta es la parte que conviene leer dos veces.</p>
+
+<ul>
+<li><strong>Cero usuarios reales medidos.</strong> No hay D1, ni D7, ni ganancia de dominio
+pre/post. Mientras H.10 siga cerrado, «motor adaptativo» y «gamificación» son capacidades
+construidas, no ventajas comprobadas.</li>
+<li><strong>Cuatro pantallas no muestran datos reales.</strong> Se abren y se ven bien;
+enseñan lo que llevan escrito dentro.</li>
+<li><strong>El marketplace de instructores no ha movido un euro.</strong> El reparto 70/30
+está implementado y probado con 11 tests, pero nunca ha corrido sobre una venta.</li>
+<li><strong>Paddle no está de alta</strong> y el AFM de H.29 sigue sin registrar, así que
+toda la economía es, por ahora, código correcto sin tráfico.</li>
+<li><strong>815 preguntas no son publicables</strong> y recuperarlas es reescribirlas.</li>
+<li><strong>La posición competitiva sigue en 44/100</strong> según el último recálculo con
+pesos fijos, con techo ≈ 66 sin usuarios. Nada de lo hecho hoy mueve ese marcador: hoy se
+arreglaron cosas rotas, que no es lo mismo que añadir valor nuevo.</li>
+</ul>
+
+<h2>Cómo repetir estas medidas</h2>
+
+<div class="card mono" style="font-size:0.85rem; line-height:1.9">
+python scripts/check_question_bank.py<br>
+python scripts/check_docs.py<br>
+cd backend &amp;&amp; python -m alembic heads<br>
+cd backend &amp;&amp; python -m pytest tests/services tests/unit tests/content -q<br>
+cd frontend &amp;&amp; npx tsc -b --force &amp;&amp; npm run build &amp;&amp; npx vitest run<br>
+curl -s https://api-production-9751.up.railway.app/api/v1/openapi.json
+</div>
+
+<hr>
+
+<footer>
+<p>
+Las otras cuatro páginas de esta carpeta son análisis de negocio escritos el 2026-09-18 y
+mantienen las erratas que documenta su <code>README.md</code>: donde discrepen de esta
+página o del ledger, gana el ledger. La fuente de verdad del progreso es
+<code>docs/AUTONOMOUS_STATE.md</code>.
+</p>
+<p class="mono">Whetzy · auditoría del 2026-09-19</p>
+</footer>
+
+</div>
+</body>
+</html>
