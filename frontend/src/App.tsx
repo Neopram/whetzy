@@ -16,7 +16,7 @@ import { useGestures } from './hooks/useGestures';
 // which is the page most likely to be opened cold on a mid-range phone over
 // 4G. Each entry below is its own chunk; a visitor downloads the one screen
 // they are actually looking at.
-const HomeScreen = lazy(() => import('./pages/HomeScreen'));
+const HomeScreen = lazy(() => import('./pages/HomeScreen').then((m) => ({ default: m.HomeScreen })));
 const QuizScreen = lazy(() => import('./pages/QuizScreen').then((m) => ({ default: m.QuizScreen })));
 const StatsScreen = lazy(() => import('./pages/StatsScreen').then((m) => ({ default: m.StatsScreen })));
 const LeagueScreen = lazy(() => import('./pages/LeagueScreen').then((m) => ({ default: m.LeagueScreen })));

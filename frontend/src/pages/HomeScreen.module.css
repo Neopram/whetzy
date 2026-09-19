@@ -309,3 +309,72 @@
   font-weight: var(--le-fw-bold);
   color: var(--le-text-muted);
 }
+
+
+/* Mapa de territorio — la idea visual que aporto 24.4, con el dominio que
+   calcula BKT en vez del numero fijo que pintaba entonces. Los tres estados
+   salen de `p_known`: frontera (<40 %), en curso (<75 %) y dominada. */
+.territory {
+  margin-top: var(--le-space-lg);
+}
+
+.sectionTitle {
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-bold);
+  margin: 0 0 var(--le-space-sm);
+}
+
+.territoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--le-space-sm);
+}
+
+.territoryNode {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--le-border);
+  border-radius: 12px;
+  background: var(--le-surface);
+}
+
+.nodeName {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nodeMastery {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* La barra va abajo del todo y no desplaza nada: es un indicador, no una fila
+   mas, y asi el nodo mide igual con 3 % que con 90 %. */
+.nodeBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  border-radius: 0 3px 3px 0;
+  transition: width 420ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.frontier .nodeMastery { color: var(--le-text-muted); }
+.frontier .nodeBar { background: var(--le-text-muted); }
+
+.partial .nodeMastery { color: var(--le-blue); }
+.partial .nodeBar { background: var(--le-blue); }
+
+.dominated { border-color: var(--le-brand); }
+.dominated .nodeMastery { color: var(--le-brand); }
+.dominated .nodeBar { background: var(--le-brand); }
