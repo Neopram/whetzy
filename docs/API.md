@@ -195,6 +195,60 @@ GET  /billing/subscription → {plan, status, renews_at} 🔒
 POST /billing/webhook      → Stripe webhook (unsigned traffic rejected by HMAC)
 ```
 
+## Session & 2FA endpoints
+
+```
+GET  /auth/sessions                      → [{id, device, ip, last_seen}] 🔒
+POST /auth/sessions/{session_id}/revoke  → {revoked} 🔒 — cierra esa sesión
+POST /auth/2fa/setup                     → {secret, qr_uri} 🔒 — TOTP, aún sin activar
+POST /auth/2fa/enable                    → {enabled} 🔒 — confirma con un código válido
+POST /auth/2fa/verify                    → {verified} 🔒
+```
+
+## Economy endpoints
+
+Créditos por lotes FIFO con caducidad; el saldo se deriva sumando el ledger, no
+se guarda en ninguna columna.
+
+```
+GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} — público
+GET  /economy/balance           → {balance, currency, expires_in_days} 🔒
+GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea si no existe
+POST /economy/promo/redeem      → {credits, balance, message} 🔒
+POST /economy/referral/activate → {activated, referrer_id} 🔒
+```
+
+## Instructor marketplace endpoints
+
+Reparto 70/30 tras la comisión de Paddle (7,5 %) y la retención del 22 % que fija
+H.29. El pago se acumula en una fila por instructor y mes, no una por matrícula.
+
+```
+POST /instructor/courses                     → {id, …} 🔒 — publicar curso
+GET  /instructor/courses                     → [{…}] 🔒
+POST /instructor/courses/{course_id}/enroll  → {enrollment_id, payout_id, desglose} 🔒
+GET  /instructor/analytics                   → {total_earnings_cents, …} 🔒
+GET  /instructor/payouts                     → [{period_start, earnings_cents, …}] 🔒
+```
+
+## Experiment endpoints
+
+```
+GET /experiments/flags → {"nombre_del_experimento": "A" | "B"} 🔒
+```
+
+La variante sale de un hash de (experimento, usuario), no de un sorteo: el mismo
+usuario cae siempre del mismo lado aunque se pierda la fila.
+
+## Webhook endpoints
+
+```
+POST /webhooks/paddle → {received} — público, firma HMAC-SHA256 en X-Signature
+```
+
+Sin `PADDLE_API_KEY` configurada **rechaza** con 401. Falla cerrado a propósito:
+lo que no se puede verificar no se acepta.
+
 ## Content endpoints (admin)
 
 All content routes require `X-Admin-Key` header.
@@ -287,8 +341,8 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-71 paths (67 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **73 method+path endpoints** total.
+108 paths (104 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **111 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
 
 

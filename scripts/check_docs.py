@@ -39,7 +39,9 @@ BACKEND = ROOT / "backend"
 CONTENT = ROOT / "content"
 DOCS_STATE = ROOT / "docs" / "AUTONOMOUS_STATE.md"
 CLAUDE_MD = ROOT / "CLAUDE.md"
-EVIDENCE_TSX = ROOT / "frontend" / "src" / "pages" / "EvidenceScreen.tsx"
+# Las cifras del catalogo se movieron a un modulo propio para que la landing
+# y /evidence no puedan discrepar: una sola copia, este guardia la vigila.
+EVIDENCE_TSX = ROOT / "frontend" / "src" / "lib" / "catalog.ts"
 
 # La consola de Windows no es UTF-8. Reconfigurar es lo que evita que el
 # checker muera al imprimir su propio fallo; el fallback ASCII cubre el caso
@@ -231,17 +233,17 @@ check(
 # justo en el sitio donde mas se nota.
 # ---------------------------------------------------------------------------
 print()
-print("[4] Pagina publica de evidencia (EvidenceScreen.tsx)")
+print("[4] Cifras del catalogo en la web (lib/catalog.ts)")
 if not EVIDENCE_TSX.exists():
-    check("EvidenceScreen.tsx existe", False, f"no esta en {EVIDENCE_TSX}")
+    check("lib/catalog.ts existe", False, f"no esta en {EVIDENCE_TSX}")
 else:
     evidence_text = EVIDENCE_TSX.read_text(encoding="utf-8")
     for const_name, label, real_value in (
-        ("CATALOG_TRACKS", "Tracks en /evidence", real_tracks),
-        ("CATALOG_COURSES", "Cursos en /evidence", real_courses),
-        ("CATALOG_QUESTIONS", "Preguntas en /evidence", real_questions),
+        ("CATALOG_TRACKS", "Tracks en la web", real_tracks),
+        ("CATALOG_COURSES", "Cursos en la web", real_courses),
+        ("CATALOG_QUESTIONS", "Preguntas en la web", real_questions),
     ):
-        m = re.search(r"^const " + const_name + r"\s*=\s*(\d+);", evidence_text, re.MULTILINE)
+        m = re.search(r"^export const " + const_name + r"\s*=\s*(\d+);", evidence_text, re.MULTILINE)
         if not m:
             check(label, False, "no se encuentra `const " + const_name + " = ...`")
             continue

@@ -8,4 +8,4 @@
  */
 export const CATALOG_TRACKS = 18;
 export const CATALOG_COURSES = 49;
-export const CATALOG_QUESTIONS = 6233;
+export const CATALOG_QUESTIONS = 6305;
