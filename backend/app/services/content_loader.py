@@ -242,7 +242,8 @@ async def _upsert_lesson(db: AsyncSession, data: dict[str, Any]) -> bool:
 
 async def load_content(db: AsyncSession) -> dict[str, Any]:
     root = _content_root()
-    stats = {"tracks": 0, "questions": 0, "skipped": 0, "files": 0, "glossary": 0, "lessons": 0}
+    stats = {"tracks": 0, "questions": 0, "skipped": 0, "files": 0, "glossary": 0,
+             "lessons": 0, "pruned_tracks": 0}
 
     # 1) Curriculum
     tracks_file = root / "curriculum" / "tracks.json"
@@ -308,6 +309,25 @@ async def load_content(db: AsyncSession) -> dict[str, Any]:
                 else:
                     stats["skipped"] += 1
         await db.flush()
+
+    # 4b) Retirar lo que ya no esta declarado.
+    #
+    # Hasta aqui todo era upsert, asi que anadir y cambiar contenido funcionaba
+    # y **quitarlo no**: un track sacado de `tracks.json` seguia vivo en la
+    # base de datos con las preguntas que se hubieran cargado antes, y el
+    # catalogo lo seguia ensenando. Paso con track24 y track25 al ponerlos en
+    # cuarentena.
+    #
+    # El borrado va en cascada desde Track, asi que se lleva modulos, skills y
+    # preguntas. Se registra en `stats` para que quede en el log del arranque:
+    # una purga silenciosa en produccion es peor que no purgar.
+    declared = {t_["id"] for t_ in curriculum.get("tracks", [])}
+    existing = (await db.execute(select(Track))).scalars().all()
+    for track in existing:
+        if track.id not in declared:
+            await db.delete(track)
+            stats["pruned_tracks"] = stats.get("pruned_tracks", 0) + 1
+    await db.flush()
 
     # 5) Denormalized question count per track (explicit join — async has no lazy load)
     await db.flush()

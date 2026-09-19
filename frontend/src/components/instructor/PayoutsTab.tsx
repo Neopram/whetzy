@@ -1,60 +1,47 @@
 import { useTranslation } from 'react-i18next'
+import { useApi } from '../../hooks/useApi'
+import { instructor } from '../../services/api'
 import styles from './PayoutsTab.module.css'
 
 export default function PayoutsTab() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { data, loading, error } = useApi(() => instructor.payouts(), [])
+
+  const fecha = (iso: string) =>
+    new Date(iso).toLocaleDateString(i18n.language === 'es' ? 'es-ES' : 'en-US', {
+      month: 'short',
+      year: 'numeric',
+    })
+
+  if (loading) return <div className={styles.container}>{t('instructor.common.loading')}</div>
+  if (error) return <div className={styles.container}>{t('instructor.common.error')}</div>
 
   return (
     <div className={styles.container}>
       <h2>{t('instructor.payouts.title')}</h2>
 
-      <div className={styles.placeholderBox}>
-        <div className={styles.placeholderIcon}>💳</div>
-        <h3>{t('instructor.payouts.comingSoon')}</h3>
-        <p>{t('instructor.payouts.dependsOnPaymentRail')}</p>
-        <p className={styles.techNote}>
-          {t('instructor.payouts.technicalNote')}
-        </p>
-      </div>
-
-      <div className={styles.section}>
-        <h3>{t('instructor.payouts.setupGuide')}</h3>
-        <div className={styles.steps}>
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>1</div>
-            <div className={styles.stepContent}>
-              <strong>{t('instructor.payouts.step1Title')}</strong>
-              <p>{t('instructor.payouts.step1Desc')}</p>
-            </div>
-          </div>
-
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>2</div>
-            <div className={styles.stepContent}>
-              <strong>{t('instructor.payouts.step2Title')}</strong>
-              <p>{t('instructor.payouts.step2Desc')}</p>
-            </div>
-          </div>
-
-          <div className={styles.step}>
-            <div className={styles.stepNumber}>3</div>
-            <div className={styles.stepContent}>
-              <strong>{t('instructor.payouts.step3Title')}</strong>
-              <p>{t('instructor.payouts.step3Desc')}</p>
-            </div>
-          </div>
+      {/* Sin pagos todavía no se enseña una tabla vacía con ceros: se dice qué
+          falta para que haya alguno. Hoy falta el alta en la pasarela. */}
+      {(data?.length ?? 0) === 0 ? (
+        <div className={styles.placeholderBox}>
+          <div className={styles.placeholderIcon}>💸</div>
+          <p>{t('instructor.payouts.comingSoon')}</p>
+          <p className={styles.techNote}>{t('instructor.payouts.dependsOnPaymentRail')}</p>
         </div>
-      </div>
-
-      <div className={styles.section}>
-        <h3>{t('instructor.payouts.requirements')}</h3>
-        <ul className={styles.requirementsList}>
-          <li>{t('instructor.payouts.req1')}</li>
-          <li>{t('instructor.payouts.req2')}</li>
-          <li>{t('instructor.payouts.req3')}</li>
-          <li>{t('instructor.payouts.req4')}</li>
-        </ul>
-      </div>
+      ) : (
+        <div className={styles.steps}>
+          {data!.map((p) => (
+            <div key={p.id} className={styles.step}>
+              <div className={styles.stepNumber}>{fecha(p.period_start)}</div>
+              <div className={styles.stepContent}>
+                <strong>€{(p.earnings_cents / 100).toFixed(2)}</strong>
+                <span> · {t(`instructor.payouts.status.${p.status}`, p.status)}</span>
+                {p.payout_date && <span> · {fecha(p.payout_date)}</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

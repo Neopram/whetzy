@@ -1,359 +1,176 @@
-.marketplace {
-  padding: var(--space-4);
-  max-width: 1200px;
+/* Catálogo real: tracks que existen, con el progreso del usuario cuando lo hay.
+   Sin valoraciones ni precios, porque no hay ni una cosa ni la otra. */
+
+.mkt {
+  padding: var(--le-space-md) var(--le-space-md) 96px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-.marketplace-header {
-  text-align: center;
-  margin-bottom: var(--space-6);
+.mkt-head { margin-bottom: var(--le-space-md); }
+
+.mkt-title {
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-black);
+  margin: 0;
 }
 
-.marketplace-header h1 {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--le-text);
-  margin-bottom: var(--space-2);
-}
-
-.marketplace-header p {
-  font-size: 16px;
+.mkt-sub {
   color: var(--le-text-muted);
+  font-size: var(--le-fs-sm);
+  margin: 4px 0 0;
 }
 
-.marketplace-controls {
+.mkt-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--le-space-sm);
+  align-items: center;
+  margin-bottom: var(--le-space-md);
+}
+
+.mkt-search {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--le-border);
+  border-radius: 10px;
+  background: var(--le-surface);
+  color: var(--le-text);
+  font: inherit;
+  font-size: var(--le-fs-sm);
+}
+
+.mkt-tabs { display: flex; gap: 4px; }
+
+.mkt-tab {
+  padding: 8px 14px;
+  border: 1px solid var(--le-border);
+  border-radius: 999px;
+  background: var(--le-surface);
+  color: var(--le-text-muted);
+  font: inherit;
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  cursor: pointer;
+}
+
+.mkt-tab.is-active {
+  background: var(--le-brand);
+  border-color: var(--le-brand);
+  color: var(--le-brand-on-tint, #fff);
+}
+
+.mkt-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--le-space-sm);
+}
+
+.mkt-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--le-border);
+  /* El color del track entra por variable desde el componente: es un dato del
+     catálogo, no una decisión de esta hoja. */
+  border-top: 3px solid var(--mkt-accent, var(--le-brand));
+  border-radius: 12px;
+  background: var(--le-surface);
 }
 
-.search-box {
-  position: relative;
+.mkt-card-top {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.search-input {
-  width: 100%;
-  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-4);
-  font-size: 16px;
-  border: 1px solid var(--le-border);
-  border-radius: var(--radius-md);
-  background: var(--le-bg);
-  color: var(--le-text);
-  transition: border-color 0.2s;
-}
+.mkt-icon { font-size: 1.5rem; line-height: 1; }
 
-.search-input:focus {
-  outline: none;
-  border-color: var(--le-brand-2);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-}
-
-.search-icon {
-  position: absolute;
-  right: var(--space-3);
-  pointer-events: none;
+.mkt-badge {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-bold);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--le-surface-2, var(--le-border));
   color: var(--le-text-muted);
 }
 
-.filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-3);
+.mkt-card-title {
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-bold);
+  margin: 0;
 }
 
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+.mkt-card-meta {
+  color: var(--le-text-muted);
+  font-size: var(--le-fs-xs);
+  margin: 0;
 }
 
-.filter-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--le-text);
-}
+.mkt-progress { display: flex; align-items: center; gap: 8px; }
 
-.filter-group select {
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--le-border);
-  border-radius: var(--radius-md);
-  background: var(--le-bg);
-  color: var(--le-text);
-  font-size: 14px;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.filter-group select:focus {
-  outline: none;
-  border-color: var(--le-brand-2);
-}
-
-.courses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-4);
-}
-
-.course-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--le-border);
-  border-radius: var(--radius-lg);
-  background: var(--le-bg-secondary);
+.mkt-progress-track {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--le-border);
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.course-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.mkt-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--mkt-accent, var(--le-brand));
+  transition: width 420ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.course-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-3);
-  background: var(--le-bg-tertiary);
-  gap: var(--space-2);
-}
-
-.course-level {
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 600;
-  color: white;
-}
-
-.course-rating {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: 13px;
-}
-
-.course-rating .stars {
-  color: #fbbf24;
-}
-
-.course-rating .rating-value {
-  font-weight: 600;
-  color: var(--le-text);
-}
-
-.course-rating .reviews-count {
+.mkt-progress-label {
+  font-size: var(--le-fs-xs);
   color: var(--le-text-muted);
+  white-space: nowrap;
 }
 
-.course-content {
+.mkt-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.mkt-btn {
   flex: 1;
-  padding: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.course-name {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--le-text);
-  margin: 0;
-  line-height: 1.4;
-}
-
-.course-category {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--le-brand-2);
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.course-description {
-  font-size: 14px;
-  color: var(--le-text-muted);
-  margin: 0;
-  line-height: 1.5;
-}
-
-.course-instructor {
-  font-size: 13px;
-  color: var(--le-text-muted);
-}
-
-.course-instructor .instructor-label {
-  color: var(--le-text-muted);
-}
-
-.course-instructor .instructor-name {
-  font-weight: 600;
-  color: var(--le-text);
-}
-
-.course-stats {
-  display: flex;
-  gap: var(--space-3);
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--le-border);
-}
-
-.course-stats .stat {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: 13px;
-  color: var(--le-text-muted);
-}
-
-.course-stats .stat-icon {
-  font-size: 16px;
-}
-
-.course-stats .stat-value {
-  font-weight: 600;
-  color: var(--le-text);
-}
-
-.course-first-lesson {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  background: rgba(59, 130, 246, 0.08);
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  color: var(--le-text);
-}
-
-.course-first-lesson .lesson-icon {
-  font-size: 14px;
-}
-
-.course-first-lesson .lesson-title {
-  font-weight: 500;
-}
-
-.course-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-4);
-  border-top: 1px solid var(--le-border);
-  gap: var(--space-2);
-}
-
-.course-price {
-  display: flex;
-  align-items: baseline;
-  gap: 2px;
-}
-
-.course-price .price-currency {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--le-brand-2);
-}
-
-.course-price .price-amount {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--le-brand-2);
-}
-
-.course-price .price-free {
-  font-size: 14px;
-  font-weight: 600;
-  color: #10b981;
-}
-
-.course-actions {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.course-actions button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-preview {
-  background: transparent;
+  padding: 9px 12px;
   border: 1px solid var(--le-border);
+  border-radius: 10px;
+  background: transparent;
   color: var(--le-text);
+  font: inherit;
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  cursor: pointer;
 }
 
-.btn-preview:hover {
-  border-color: var(--le-brand-2);
-  color: var(--le-brand-2);
+.mkt-btn--primary {
+  background: var(--le-brand);
+  border-color: var(--le-brand);
+  color: var(--le-brand-on-tint, #fff);
 }
 
-.btn-enroll {
-  background: var(--le-brand-2);
-  color: white;
-  flex: 1;
-}
-
-.btn-enroll:hover:not(:disabled) {
-  background: #2563eb;
-  transform: scale(1.02);
-}
-
-.btn-enroll:disabled,
-.btn-enroll.enrolled {
-  background: var(--le-text-muted);
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.no-courses {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: var(--space-8);
+.mkt-state {
+  padding: var(--le-space-lg) var(--le-space-md);
   color: var(--le-text-muted);
+  text-align: center;
 }
 
-.no-courses p {
-  margin: 0;
-  font-size: 16px;
-}
+.mkt-state--error { color: var(--le-danger, #dc2626); }
 
-@media (max-width: 768px) {
-  .marketplace {
-    padding: var(--space-3);
-  }
-
-  .marketplace-header h1 {
-    font-size: 24px;
-  }
-
-  .filters {
-    grid-template-columns: 1fr;
-  }
-
-  .courses-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .course-footer {
-    flex-wrap: wrap;
-  }
-
-  .course-actions {
-    width: 100%;
-  }
-
-  .btn-enroll {
-    flex: auto;
-  }
+@media (max-width: 640px) {
+  .mkt { padding: var(--le-space-sm) var(--le-space-sm) 96px; }
+  .mkt-grid { grid-template-columns: 1fr; }
 }

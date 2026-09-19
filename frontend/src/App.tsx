@@ -211,6 +211,16 @@ function App() {
     }
   }, [userId, authState]);
 
+  function finishOnboarding() {
+    try {
+      localStorage.setItem(`whetzy_onboarded_${userId}`, '1');
+    } catch {
+      // Modo privado o almacenamiento bloqueado: se sigue adelante. Volver a
+      // ver el onboarding molesta; quedarse encallado en el, no se puede.
+    }
+    setShowOnboarding(false);
+  }
+
   function handleAuthed() {
     setAuthState('checking');
   }
@@ -231,7 +241,7 @@ function App() {
   if (showOnboarding) {
     return (
       <>
-        <Screen><OnboardingScreen onDone={() => setShowOnboarding(false)} /></Screen>
+        <Screen><OnboardingScreen onDone={finishOnboarding} /></Screen>
         <Toast />
       </>
     );

@@ -803,3 +803,68 @@ export const certificates = {
     return request<CertificatePublic>(`/exams/certificates/${code}`);
   },
 };
+
+
+export interface InstructorCourse {
+  id: string;
+  instructor_id: string;
+  title: string;
+  description: string | null;
+  price_cents: number;
+  video_url: string | null;
+  materials_url: string | null;
+  enrolled_count: number;
+  revenue_cents: number;
+  status: string;
+  created_at: string;
+}
+
+export interface InstructorAnalytics {
+  total_earnings_cents: number;
+  pending_payout_cents: number;
+  active_courses: number;
+  total_students: number;
+  avg_completion_percent: number;
+}
+
+export interface InstructorPayout {
+  id: string;
+  period_start: string;
+  period_end: string;
+  earnings_cents: number;
+  status: string;
+  payout_date: string | null;
+}
+
+/** Marketplace de instructores (serie 28).
+ *
+ *  El reparto es 70/30 tras la comisión de Paddle y la retención que fija
+ *  H.29; ese cálculo vive en el backend a propósito, para que el cliente no
+ *  pueda enseñar una cifra que no sea la que se va a pagar.
+ */
+export const instructor = {
+  async courses() {
+    return request<InstructorCourse[]>('/instructor/courses');
+  },
+
+  async createCourse(payload: {
+    title: string;
+    description?: string | null;
+    price_cents: number;
+    video_url?: string | null;
+    materials_url?: string | null;
+  }) {
+    return request<InstructorCourse>('/instructor/courses', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async analytics() {
+    return request<InstructorAnalytics>('/instructor/analytics');
+  },
+
+  async payouts() {
+    return request<InstructorPayout[]>('/instructor/payouts');
+  },
+};

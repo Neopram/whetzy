@@ -12,6 +12,7 @@ import styles from './ProfileScreen.module.css';
 export function ProfileScreen() {
   const user = useAppStore((s) => s.user);
   const language = useAppStore((s) => s.user.language);
+  const setScreen = useAppStore((s) => s.setScreen);
   const setLanguage = useAppStore((s) => s.setLanguage);
   const updateUser = useAppStore((s) => s.updateUser);
   const signOut = useAppStore((s) => s.signOut);
@@ -94,6 +95,28 @@ export function ProfileScreen() {
               <span className={styles.achName}>{language === 'es' ? b.badge.name_es : b.badge.name_en}</span>
             </div>
           ))}
+        </div>
+      </Card>
+
+      <Card>
+        <h2 className={styles.cardTitle}>{t('profile.explore')}</h2>
+        <div className={styles.settings}>
+          <button
+            type="button"
+            className={styles.setting}
+            onClick={() => setScreen('marketplace')}
+          >
+            <span className={styles.settingLabel}>{t('profile.goCatalog')}</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <button
+            type="button"
+            className={styles.setting}
+            onClick={() => setScreen('instructor')}
+          >
+            <span className={styles.settingLabel}>{t('profile.goInstructor')}</span>
+            <span aria-hidden="true">→</span>
+          </button>
         </div>
       </Card>
 
