@@ -111,9 +111,9 @@
 | 25 | Expansión de contenido a 2.800 cursos (28 tracks) | 0/15 | 0 % | BLOCKED hasta Serie 22 + H.22 |
 | 24 | Interfaz que venda al verse (UI/UX, competencia en vivo, vídeo) | 0/15 | 0 % | BLOCKED hasta 20.7/21.7/22.1/23.1; interactiva |
 | 23 | Dos segmentos, un producto — ES y EN | 1/5 | 20 % | 23.1 PARCIAL · 23.2, 23.3, 23.4 |
-| 22 | Blindaje, admin y preparación para un millón | 6/14 | 43 % | 22.1 y 22.6 PARCIAL · 22.2, 22.4, 22.5, 22.7, 22.8, 22.13 |
-| 21 | Legal y fiscal a coste cero | 0/5 | 0 % | 21.3–21.6, 21.8 · **21.1, 21.2 y 21.7 HUMAN-BLOCKED (H.29)** |
-| 20 | Verificación masiva código↔docs↔prod | 9/10 | 90 % | 20.7 (evidencia completa; VEREDICTO §7 pendiente) |
+| 22 | Blindaje, admin y preparación para un millón | 7/14 | 50 % | 22.1 y 22.6 PARCIAL · 22.2, 22.4, 22.5, 22.7, 22.13 |
+| 21 | Legal y fiscal a coste cero | 1/6 | 17 % | 21.0 DONE · 21.5 y 21.6 PARCIAL (1/4) · 21.3, 21.4, 21.8 · **21.1, 21.2 y 21.7 HUMAN-BLOCKED (H.29)** |
+| 20 | Verificación masiva código↔docs↔prod | 9/10 | 90 % | 20.7 (**REFUTADA 2026-09-19**: `verify_ci_local.ps1` moría en `pip install`; causa localizada y corregida — re-ejecución en curso) |
 | 19 | Catálogo 27 tracks + cert marketplace | 1/10 | 10 % | 19.2–19.10 |
 | 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 2/5 | 40 % | 18.3, 18.5 |
 | 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
