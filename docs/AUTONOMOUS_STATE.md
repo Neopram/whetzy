@@ -25,6 +25,41 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **No habia UN SOLO hook de git** hasta el 2026-09-20, y `git push origin master`
+  despliega a produccion. El `.github/workflows/ci.yml` esta bien escrito (pip-audit, ruff,
+  mypy --strict, pytest con cobertura >=80%, frontend, e2e con Postgres, nightly) y **no se
+  ha ejecutado nunca**: facturacion de GitHub bloqueada. Ese dia CI habria salido en rojo por
+  tres sitios a la vez: **51 de ruff, 23 de mypy --strict**, y un test de contenido
+  intermitente. Red provisional en el PC: `.githooks/pre-push` (bloquea, ~20-30s) mas
+  `scripts/ci_local.sh` (al fondo, sin bloquear; su veredicto sale en el push siguiente)
+- **OneDrive bloquea las caches de las herramientas, no solo las escrituras.** El repo esta
+  bajo Controlled Folder Access: `.mypy_cache` y `.pytest_cache` no llegan a escribirse
+  NUNCA, en silencio. Efecto medido: mypy tardaba 1m58 *siempre* porque jamas existia una
+  cache caliente; con `MYPY_CACHE_DIR` fuera, 1m09 y 328 MB de cache real. El
+  `PytestCacheWarning` que sale en cada ejecucion es el mismo problema. Caches a
+  `%LOCALAPPDATA%/whetzy-cache`
+- **`Mapped[BigInteger]` es el tipo de SQLAlchemy usado como tipo de Python.** En
+  `instructor.py` (`revenue_cents`, `earnings_cents`). En runtime funciona —el tipo real va
+  en el segundo argumento de `mapped_column`— asi que no revienta nada, pero envenena los
+  tipos de todo lo que lee la columna: `int <= BigInteger`, `BigInteger / int`... **10 de los
+  23 errores de mypy salian de esas dos lineas**. Va `Mapped[int]`
+- **`test_fifo_spending` no probaba FIFO.** Su unica asercion era `balance == 40`, que sale
+  igual se consuma el lote que se consuma; `lot1`/`lot2` se creaban y nadie los miraba. Lo
+  delato **ruff con F841** (variable asignada y no usada), que parecia una mania del linter y
+  era un agujero: el test pasaba con el orden invertido. Ahora mira a que lote apunta cada
+  cargo negativo del ledger, y verificado mutando `.asc()` a `.desc()` en `spend_fifo`
+- **`GET /experiments/flags` se tragaba toda excepcion y devolvia 200 con `{}`.** Degradar a
+  "sin experimentos" es correcto para unas feature flags, pero **sin log** una caida de BD
+  era indistinguible de "este usuario no esta en ningun experimento". Con `logger.exception`
+  ruff deja de marcar BLE001 solo: el aviso pedia rastro, no un `except` mas estrecho
+- **Un fallo de `tests/content` aparecio una vez el 2026-09-20 y su mensaje SE PERDIO.** No
+  se reprodujo: 2/2 verde con orden fijo, y con la maquina al doble de su capacidad (24
+  procesos, 12 CPUs) el peor de los 1398 pares medidos fue 2,75s contra un
+  `PER_QUESTION_TIMEOUT_S` de 8 (mediana 0,05s). Ademas **cambia que pregunta es la lenta**
+  entre ejecuciones, asi que el coste es lanzar procesos en Windows (Defender/OneDrive), no
+  los programas. Sin el mensaje no se puede saber si fue timeout o contenido mal: por eso
+  `ci_local.sh` guarda las 10 ultimas ejecuciones en `.ci-local/`. La puerta corre con
+  `-p no:randomly` a proposito — un guardian que falla al azar se acaba ignorando
 - **Siete modulos de modelos no estaban en `Base.metadata`** hasta el 2026-09-20: `admin`,
   `campaign`, `economy`, `experiment`, `instructor`, `oauth` y `payment`. Importar el modulo es
   lo UNICO que registra una clase mapeada, y `app/models/__init__.py` no los importaba. Con el

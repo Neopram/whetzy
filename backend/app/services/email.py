@@ -34,7 +34,7 @@ logger = logging.getLogger("whetzy.email")
 
 # Los envios en segundo plano se guardan aqui mientras corren: una tarea de
 # asyncio sin referencia viva puede recogerla el GC a media ejecucion.
-_en_vuelo: set[asyncio.Task] = set()
+_en_vuelo: set[asyncio.Task[None]] = set()
 
 # ── Templates ─────────────────────────────────────────────────────────────────
 
@@ -230,7 +230,7 @@ def resolve_provider() -> str:
     """
     from app.core.config import settings
 
-    forzado = (settings.EMAIL_PROVIDER or "").strip().lower()
+    forzado: str | None = (settings.EMAIL_PROVIDER or "").strip().lower()
     if forzado == "log":
         return "log"
     if forzado in ("", "auto"):

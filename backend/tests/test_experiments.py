@@ -5,7 +5,7 @@ aserciones comparaban dos objetos corrutina entre si â€”cosa que siempre fallaâ€
 y ninguna llegaba a tocar el servicio.
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 import pytest
@@ -26,7 +26,7 @@ async def experiment(db_session: AsyncSession) -> Experiment:
         variant_b_label="Green",
         hypothesis="Green CTA increases signups by 5%",
         status="active",
-        started_at=datetime.now(timezone.utc),
+        started_at=datetime.now(UTC),
     )
     db_session.add(exp)
     await db_session.flush()
@@ -117,7 +117,7 @@ async def test_only_active_experiments_are_returned(
         variant_a_label="A",
         variant_b_label="B",
         status="draft",
-        started_at=datetime.now(timezone.utc),
+        started_at=datetime.now(UTC),
     )
     db_session.add(draft)
     await db_session.flush()

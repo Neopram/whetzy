@@ -20,6 +20,24 @@ qué hacer; el ledger lo sabe.
 
 ## Invariantes
 
+- **Puerta local antes de cada push** (2026-09-20). `git push origin master` despliega a
+  producción y hasta esa fecha no había **nada** en medio: cero hooks de git, y el
+  `.github/workflows/ci.yml` —que está bien escrito— **no se ha ejecutado nunca** por
+  facturación de GitHub. Dos niveles:
+  `.githooks/pre-push` **bloquea** (~20-30 s: ruff, guardas de esquema y contrato, y
+  banco de preguntas / `check_docs.py` solo si cambió contenido o docs);
+  `scripts/ci_local.sh` corre **al fondo sin bloquear** (suite entera, `tests/content`,
+  `mypy --strict`, frontend) y su veredicto lo imprime el push siguiente. Se activa con
+  `git config core.hooksPath .githooks` — **es config local, no viaja con el repo**: en
+  un clon nuevo hay que repetirlo. Nada de `--no-verify`; si molesta, el nivel 1 se ha
+  vuelto lento y se recorta, no se salta
+- **Las cachés de herramientas van FUERA del proyecto.** El repo vive bajo OneDrive con
+  Controlled Folder Access, que bloquea en silencio `.mypy_cache` y `.pytest_cache`:
+  mypy tardaba ~2 min *siempre* porque nunca llegaba a existir una caché caliente
+  (1m58 dentro contra 1m09 fuera). `MYPY_CACHE_DIR` y `-o cache_dir=` apuntan a
+  `%LOCALAPPDATA%/whetzy-cache`, que es lo que hacen el hook y `ci_local.sh`. Por lo
+  mismo, **escribir ficheros del proyecto desde Python falla con «Bad file
+  descriptor»**: escribe al scratchpad y luego `cp`
 - Backend prod: `https://api-production-9751.up.railway.app` — **deploy AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16): `git push origin master` despliega backend, migraciones y `content_loader`. Antes de cada push: `pytest tests/content` y `check_question_bank.py` verdes
 - Frontend prod: `https://whetzy.com` — **deploy MANUAL** con `npx wrangler pages deploy dist --project-name whetzy --branch main` desde `frontend/` (sin `--branch main` va a Preview). `whetzy.com/health` devuelve el SPA; el health real es el del backend
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA espera H.LIC; CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
@@ -43,7 +61,7 @@ verificador adversario (protocolo §7) antes de escribirse.
 
 ## Estilo
 
-Tests con el código, no después. Escribe como el código que te rodea. Evidencia
+Tests con el código, no después. **Una guarda que no has roto a propósito no sabes si vigila algo**: mútala, compruébala en rojo, restaura. Y **un test que falla al azar no puede ser una puerta** — o lo arreglas o lo sacas de la puerta, porque un guardián intermitente se acaba ignorando y entonces no protege nada. **Correr subconjuntos de tests no es correr la suite**: la suite entera sacó 3 fallos que ningún subconjunto dirigido tocaba. Escribe como el código que te rodea. Evidencia
 ejecutable o no pasó. Documentación en español; contenido y UI en ES y EN nativos.
 El schema de `tracks.json` es `name_es/name_en/order/color/icon` (nunca `title_*`):
 el loader hace `data["name_es"]` y revienta con otra forma.

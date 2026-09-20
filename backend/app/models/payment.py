@@ -2,12 +2,22 @@
 
 from __future__ import annotations
 
+import enum
 import uuid
 from datetime import datetime
-import enum
 
-from sqlalchemy import Column, String, Integer, Float, DateTime, Enum as SQLEnum, ForeignKey, Boolean, Text, Uuid
-from sqlalchemy.orm import relationship
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    Uuid,
+)
+from sqlalchemy import Enum as SQLEnum
 
 from app.core.db import Base
 
@@ -34,8 +44,12 @@ class PaymentRailConfig(Base):
     fiscal_residency = Column(String(50), default="grecia")  # "italia" or "grecia"
     tax_rate_percent = Column(Float, default=22.0)  # 22% Grecia, 5% Italia forfettario
     
-    primary_rail = Column(SQLEnum(PaymentRail), default=PaymentRail.PADDLE_MOR)
-    secondary_rail = Column(SQLEnum(PaymentRail), default=PaymentRail.IAP)
+    primary_rail: Column[PaymentRail] = Column(
+        SQLEnum(PaymentRail), default=PaymentRail.PADDLE_MOR
+    )
+    secondary_rail: Column[PaymentRail] = Column(
+        SQLEnum(PaymentRail), default=PaymentRail.IAP
+    )
     
     # Paddle config
     paddle_vendor_id = Column(String(50), nullable=True)  # Set by admin
@@ -55,7 +69,7 @@ class PaymentRailConfig(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<PaymentRailConfig fiscal={self.fiscal_residency} rail={self.primary_rail} tax={self.tax_rate_percent}%>"
 
 

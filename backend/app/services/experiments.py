@@ -7,7 +7,7 @@ tampoco importaba y el router no estaba registrado.
 """
 
 import hashlib
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID
 
 from sqlalchemy import or_, select
@@ -55,7 +55,7 @@ async def get_user_variant(
 
 async def get_active_experiments(db: AsyncSession) -> list[Experiment]:
     """Experimentos en marcha ahora mismo."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     result = await db.scalars(
         select(Experiment).where(
             Experiment.status == "active",

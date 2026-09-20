@@ -1,17 +1,19 @@
 """Economy services: credits, referrals, promo codes."""
 
-from datetime import datetime, timedelta, timezone
-from typing import Optional
 import uuid
+from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import select, func, and_
+from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.economy import (
-    CreditLedger, ReferralCode, Referral, PromoCode,
-    PromoCodeRedemption, CreditExpenseCap, CreditReasonEnum
+    CreditLedger,
+    CreditReasonEnum,
+    PromoCode,
+    PromoCodeRedemption,
+    Referral,
+    ReferralCode,
 )
-from app.models.user import User
 
 
 class CreditsService:
@@ -23,12 +25,12 @@ class CreditsService:
         user_id: uuid.UUID,
         amount: int,
         reason: str,
-        ref_type: Optional[str] = None,
-        ref_id: Optional[str] = None,
+        ref_type: str | None = None,
+        ref_id: str | None = None,
         expires_in_days: int = 90,
     ) -> CreditLedger:
         """Grant credits to a user (FIFO lot)."""
-        idempotency_key = f"{reason}:{user_id}:{ref_id or 'default'}:{datetime.now(timezone.utc).date()}"
+        idempotency_key = f"{reason}:{user_id}:{ref_id or 'default'}:{datetime.now(UTC).date()}"
         
         # Check if already granted today (idempotency)
         existing = await db.execute(
@@ -47,7 +49,7 @@ class CreditsService:
             ref_type=ref_type,
             ref_id=ref_id,
             idempotency_key=idempotency_key,
-            expires_at=datetime.now(timezone.utc) + timedelta(days=expires_in_days),
+            expires_at=datetime.now(UTC) + timedelta(days=expires_in_days),
         )
         db.add(lot)
         await db.flush()
@@ -61,7 +63,7 @@ class CreditsService:
                 and_(
                     CreditLedger.user_id == user_id,
                     (CreditLedger.expires_at.is_(None)) | 
-                    (CreditLedger.expires_at > datetime.now(timezone.utc))
+                    (CreditLedger.expires_at > datetime.now(UTC))
                 )
             )
         )
@@ -75,7 +77,7 @@ class CreditsService:
         amount: int,
         reason: str,
         ref_type: str = "purchase",
-        ref_id: Optional[str] = None,
+        ref_id: str | None = None,
     ) -> bool:
         """Gasta creditos consumiendo primero los lotes que caducan antes.
 
@@ -98,7 +100,7 @@ class CreditsService:
         if balance < amount:
             return False
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         spent_per_lot = (
             select(
                 CreditLedger.lot_id.label("lot_id"),
@@ -170,7 +172,7 @@ class CreditsService:
             select(CreditLedger).where(
                 and_(
                     CreditLedger.amount > 0,
-                    CreditLedger.expires_at < datetime.now(timezone.utc),
+                    CreditLedger.expires_at < datetime.now(UTC),
                 )
             )
         )
@@ -206,7 +208,6 @@ class ReferralService:
         if not ref_code:
             # Generate unique code (base32, exclude confusing chars)
             import random
-            import string
             alphabet = 'ACDEFGHJKMNPQRTWXYZ234567'  # Exclude 0,O,1,I,L,B,S
             code = ''.join(random.choice(alphabet) for _ in range(8))
             
@@ -221,7 +222,7 @@ class ReferralService:
         db: AsyncSession, 
         referrer_code: str, 
         referred_user_id: uuid.UUID
-    ) -> Optional[uuid.UUID]:
+    ) -> uuid.UUID | None:
         """Register a referral. Returns referrer_id if found."""
         result = await db.execute(
             select(ReferralCode).where(ReferralCode.code == referrer_code)
@@ -262,7 +263,7 @@ class ReferralService:
             return False
         
         referral.status = "activated"
-        referral.activated_at = datetime.now(timezone.utc)
+        referral.activated_at = datetime.now(UTC)
         await db.flush()
         return True
 
@@ -275,7 +276,7 @@ class PromoCodeService:
         db: AsyncSession,
         user_id: uuid.UUID,
         code: str,
-    ) -> Optional[int]:
+    ) -> int | None:
         """Redeem a promo code. Returns credits awarded or None."""
         result = await db.execute(
             select(PromoCode).where(PromoCode.code == code)
@@ -285,7 +286,7 @@ class PromoCodeService:
             return None
         
         # Check expiration
-        if promo.expires_at and promo.expires_at < datetime.now(timezone.utc):
+        if promo.expires_at and promo.expires_at < datetime.now(UTC):
             return None
         
         # Check max uses

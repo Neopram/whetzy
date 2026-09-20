@@ -7,8 +7,8 @@ Verifies:
 - Edge cases and decimal precision
 """
 
+
 import pytest
-from decimal import Decimal
 
 from app.services.payment_service import PaymentService
 

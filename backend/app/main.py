@@ -11,7 +11,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.api.v1.router import api_router
 from app.core.config import settings
@@ -74,7 +74,9 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     await close_db()
 
 
-def _schedule_monthly_payouts(db_factory) -> None:
+def _schedule_monthly_payouts(
+    db_factory: async_sessionmaker[AsyncSession],
+) -> None:
     """Schedule monthly payout job using APScheduler.
     
     Triggers on the 15th of each month at 00:00 UTC.
@@ -83,7 +85,7 @@ def _schedule_monthly_payouts(db_factory) -> None:
         from apscheduler.schedulers.asyncio import AsyncIOScheduler
         from apscheduler.triggers.cron import CronTrigger
 
-        async def _run_payout_job():
+        async def _run_payout_job() -> None:
             """Create and queue a run_payouts job."""
             from uuid import uuid4
 

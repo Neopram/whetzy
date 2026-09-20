@@ -13,7 +13,6 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import get_password_hash
-from app.models.economy import CreditLedger
 from app.models.instructor import Instructor, InstructorPayout
 from app.models.job import Job
 from app.models.user import User

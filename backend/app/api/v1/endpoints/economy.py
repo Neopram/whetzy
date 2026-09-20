@@ -1,8 +1,5 @@
 """Economy endpoints: credits, referrals, promo codes."""
 
-from datetime import datetime
-from typing import Optional
-from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
@@ -11,8 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.user import User
-from app.services.economy import CreditsService, ReferralService, PromoCodeService
-
+from app.services.economy import CreditsService, PromoCodeService, ReferralService
 
 router = APIRouter(tags=["economy"])
 
@@ -40,7 +36,7 @@ class PromoCodeRedeemResponse(BaseModel):
 
 
 class ReferralActivateRequest(BaseModel):
-    referral_code: Optional[str] = None
+    referral_code: str | None = None
 
 
 # Endpoints
@@ -96,7 +92,7 @@ async def activate_referral(
     request: ReferralActivateRequest,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-) -> dict:
+) -> dict[str, object]:
     """Register referral during onboarding."""
     if not request.referral_code:
         return {"activated": False, "message": "No referral code provided"}
@@ -113,7 +109,7 @@ async def activate_referral(
 
 
 @router.get("/prices")
-async def get_credit_prices() -> dict:
+async def get_credit_prices() -> dict[str, object]:
     """Public endpoint: credit value mapping."""
     return {
         "credit_value_usd": 0.01,

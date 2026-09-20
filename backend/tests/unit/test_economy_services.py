@@ -1,15 +1,13 @@
 """Tests for economy services."""
 
-import pytest
-from datetime import datetime, timedelta
 from uuid import uuid4
 
-from sqlalchemy.ext.asyncio import AsyncSession
+import pytest
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.economy import CreditLedger, Referral, ReferralCode
-from app.models.user import User
-from app.services.economy import CreditsService, ReferralService, PromoCodeService
+from app.models.economy import CreditLedger, Referral
+from app.services.economy import CreditsService, ReferralService
 
 
 @pytest.mark.asyncio
@@ -49,23 +47,56 @@ async def test_credit_balance_never_negative(db_session: AsyncSession):
 
 @pytest.mark.asyncio
 async def test_fifo_spending(db_session: AsyncSession):
-    """Test FIFO (First In First Out) spending behavior."""
+    """Gastar consume primero el lote que caduca antes, no el que se creo antes.
+
+    El saldo final (40) sale igual se consuma el lote que se consuma, asi que
+    comprobarlo NO prueba FIFO: este test pasaba con el orden invertido, y las
+    dos variables `lot1`/`lot2` se creaban sin que nadie las mirara (lo delato
+    ruff con F841 el 2026-09-20). Lo que si lo prueba es a que lote apunta cada
+    cargo: el ledger es inmutable y gastar nace como una fila negativa con
+    `lot_id` apuntando al lote consumido.
+    """
     user_id = uuid4()
-    
-    # Grant lot 1: expires in 100 days
-    lot1 = await CreditsService.grant_credits(db_session, user_id, 50, "grant1", expires_in_days=100)
+
+    # Lote 1: creado ANTES, pero caduca DESPUES (100 dias).
+    lot1 = await CreditsService.grant_credits(
+        db_session, user_id, 50, "grant1", expires_in_days=100
+    )
     await db_session.flush()
-    
-    # Grant lot 2: expires in 50 days (sooner)
-    lot2 = await CreditsService.grant_credits(db_session, user_id, 50, "grant2", expires_in_days=50)
+
+    # Lote 2: creado DESPUES, pero caduca ANTES (50 dias) -> se gasta primero.
+    lot2 = await CreditsService.grant_credits(
+        db_session, user_id, 50, "grant2", expires_in_days=50
+    )
     await db_session.flush()
-    
-    # Spend 60 credits (should consume lot2 first since it expires sooner)
+
     success = await CreditsService.spend_fifo(db_session, user_id, 60, "spend_test")
     assert success is True
-    
+
     balance = await CreditsService.get_balance(db_session, user_id)
-    assert balance == 40  # 100 total - 60 spent
+    assert balance == 40  # 100 concedidos - 60 gastados
+
+    cargos = (
+        await db_session.execute(
+            select(CreditLedger.lot_id, CreditLedger.amount).where(
+                CreditLedger.user_id == user_id, CreditLedger.amount < 0
+            )
+        )
+    ).all()
+    assert cargos, "gastar no dejo ninguna fila negativa en el ledger"
+
+    gastado: dict[int | None, int] = {}
+    for lot_id, amount in cargos:
+        gastado[lot_id] = gastado.get(lot_id, 0) + amount
+
+    assert gastado.get(lot2.id) == -50, (
+        f"el lote que caduca antes (lot2) tenia que agotarse entero: "
+        f"esperaba -50, salio {gastado.get(lot2.id)!r}. Reparto completo: {gastado!r}"
+    )
+    assert gastado.get(lot1.id) == -10, (
+        f"del lote que caduca despues (lot1) solo tenian que salir 10: "
+        f"esperaba -10, salio {gastado.get(lot1.id)!r}. Reparto completo: {gastado!r}"
+    )
 
 
 @pytest.mark.asyncio

@@ -12,7 +12,9 @@ from app.api.v1.endpoints import (
     billing,
     content,
     duels,
+    economy,
     exams,
+    experiments,
     export,
     glossary,
     instructor_marketplace,
@@ -26,8 +28,6 @@ from app.api.v1.endpoints import (
     reports,
     social,
     tutor,
-    economy,
-    experiments,
     webhooks,
 )
 

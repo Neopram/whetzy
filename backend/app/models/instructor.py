@@ -7,7 +7,6 @@ from datetime import datetime
 
 from sqlalchemy import (
     BigInteger,
-    Boolean,
     DateTime,
     ForeignKey,
     Integer,
@@ -88,7 +87,7 @@ class InstructorCourse(Base):
 
     # Aggregated stats
     enrolled_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    revenue_cents: Mapped[BigInteger] = mapped_column(BigInteger, default=0, nullable=False)
+    revenue_cents: Mapped[int] = mapped_column(BigInteger, default=0, nullable=False)
 
     # Status: "draft" | "published" | "archived"
     status: Mapped[str] = mapped_column(String(32), default="draft", nullable=False)
@@ -160,7 +159,7 @@ class InstructorPayout(Base):
     period_end: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     # Total earnings in cents for this period (after platform split)
-    earnings_cents: Mapped[BigInteger] = mapped_column(BigInteger, default=0, nullable=False)
+    earnings_cents: Mapped[int] = mapped_column(BigInteger, default=0, nullable=False)
 
     # Status: "pending" | "processing" | "completed" | "failed"
     status: Mapped[str] = mapped_column(String(32), default="pending", nullable=False)

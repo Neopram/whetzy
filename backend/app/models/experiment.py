@@ -7,7 +7,7 @@ UUID en Python, que funciona en los dos sitios.
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import DateTime, ForeignKey, String, Text, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -36,12 +36,12 @@ class Experiment(Base):
     )
 
     def is_active(self) -> bool:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return self.status == "active" and (self.started_at or now) <= now
 
     def is_ended(self) -> bool:
         return self.status == "ended" or (
-            self.ended_at is not None and datetime.now(timezone.utc) > self.ended_at
+            self.ended_at is not None and datetime.now(UTC) > self.ended_at
         )
 
 

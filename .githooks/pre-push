@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+# Puerta local antes de cada `git push`. Existe porque `git push origin master`
+# despliega backend, migraciones y contenido a produccion directamente, y hasta
+# el 2026-09-20 no habia NADA entre ese comando y los usuarios: cero hooks, y el
+# `.github/workflows/ci.yml` sin ejecutar ni una vez por facturacion.
+#
+# Dos niveles, a proposito:
+#
+#   NIVEL 1 (este fichero, bloquea): solo lo que es rapido Y determinista.
+#     Si tarda, la gente lo salta con --no-verify y entonces no sirve de nada.
+#     Objetivo: por debajo de 30s.
+#
+#   NIVEL 2 (scripts/ci_local.sh, NO bloquea): la suite entera, mypy, el
+#     contenido y el frontend. Arranca al fondo cuando el nivel 1 pasa, y su
+#     veredicto lo imprime el SIGUIENTE push. Asi un fallo lento se ve en
+#     minutos en vez de en semanas, sin que tengas que esperarlo.
+#
+# Saltarselo: `git push --no-verify`. Si lo haces mas de una vez al mes, el
+# nivel 1 se ha vuelto demasiado lento; recortalo en vez de convivir con eso.
+set -uo pipefail
+
+RAIZ="$(git rev-parse --show-toplevel)"
+cd "$RAIZ" || exit 1
+
+# --- Cache FUERA del proyecto -------------------------------------------------
+# El repo vive bajo OneDrive con Controlled Folder Access, que bloquea en
+# silencio la escritura de .mypy_cache y .pytest_cache. Sintoma: mypy tardaba
+# ~2min SIEMPRE porque nunca llegaba a haber cache caliente (medido 2026-09-20:
+# 1m58 dentro, 1m09 fuera) y pytest escupia un PytestCacheWarning por ejecucion.
+if [ -n "${LOCALAPPDATA:-}" ] && command -v cygpath >/dev/null 2>&1; then
+  CACHE="$(cygpath -u "$LOCALAPPDATA")/whetzy-cache"
+else
+  CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/whetzy"
+fi
+mkdir -p "$CACHE/mypy" "$CACHE/pytest"
+export MYPY_CACHE_DIR="$CACHE/mypy"
+PYTEST_CACHE_OPT=(-o "cache_dir=$CACHE/pytest")
+
+BITACORA="$RAIZ/.ci-local"
+mkdir -p "$BITACORA"
+
+rojo()  { printf '\033[31m%s\033[0m\n' "$*"; }
+verde() { printf '\033[32m%s\033[0m\n' "$*"; }
+gris()  { printf '\033[90m%s\033[0m\n' "$*"; }
+
+# --- Veredicto del nivel 2 del push anterior ---------------------------------
+if [ -f "$BITACORA/estado" ]; then
+  ESTADO="$(head -1 "$BITACORA/estado")"
+  case "$ESTADO" in
+    ROJO*) rojo   "  El nivel 2 del push anterior acabo en ROJO:";
+           sed -n '2,8p' "$BITACORA/estado" | sed 's/^/     /';
+           gris  "     detalle: .ci-local/ultima.log" ;;
+    VERDE*) verde "  Nivel 2 del push anterior: VERDE  ($(sed -n '2p' "$BITACORA/estado"))" ;;
+    CORRIENDO*) gris "  El nivel 2 del push anterior seguia corriendo; se reemplaza." ;;
+  esac
+  echo
+fi
+
+# --- Que ha cambiado ----------------------------------------------------------
+# pre-push recibe por stdin: <ref local> <sha local> <ref remota> <sha remoto>.
+# Si no puedo averiguarlo, asumo que ha cambiado todo: equivocarse hacia el lado
+# de comprobar de mas cuesta segundos; hacia el lado de menos cuesta produccion.
+CAMBIOS=""
+TODO=1
+while read -r _lref lsha _rref rsha; do
+  [ -z "${lsha:-}" ] && continue
+  case "$lsha" in *[!0]*) ;; *) continue ;; esac   # borrado de rama
+  case "$rsha" in
+    *[!0]*) CAMBIOS="$CAMBIOS$(git diff --name-only "$rsha" "$lsha" 2>/dev/null)
+"; TODO=0 ;;
+    *)      CAMBIOS="$CAMBIOS$(git diff --name-only origin/master.."$lsha" 2>/dev/null)
+"; TODO=0 ;;
+  esac
+done
+[ -z "$(printf '%s' "$CAMBIOS" | tr -d '[:space:]')" ] && TODO=1
+
+toca() { [ "$TODO" = "1" ] && return 0; printf '%s' "$CAMBIOS" | grep -qE "$1"; }
+
+FALLOS=()
+paso() {  # paso <nombre> <comando...>
+  local nombre="$1"; shift
+  local salida
+  if salida="$("$@" 2>&1)"; then
+    verde "  ok   $nombre"
+  else
+    rojo  "  FALLA $nombre"
+    printf '%s\n' "$salida" | tail -25 | sed 's/^/       /'
+    FALLOS+=("$nombre")
+  fi
+}
+
+echo "Puerta local (nivel 1) —"
+
+paso "ruff"            bash -c "cd backend && ruff check app tests"
+paso "guardas de esquema y contrato" \
+     bash -c "cd backend && python -m pytest \
+        tests/test_modelos_registrados.py \
+        tests/test_indices_modelos.py \
+        tests/test_contrato_frontend.py \
+        tests/unit/test_placement_params.py \
+        -q ${PYTEST_CACHE_OPT[*]} --no-header"
+
+if toca '^content/|^backend/app/models/content|questions'; then
+  paso "banco de preguntas" python scripts/check_question_bank.py
+else
+  gris  "  --   banco de preguntas (no ha cambiado el contenido)"
+fi
+
+if toca '^docs/|^content/|\.md$'; then
+  paso "docs vs codigo" python scripts/check_docs.py
+else
+  gris  "  --   docs vs codigo (no han cambiado docs ni contenido)"
+fi
+
+if [ ${#FALLOS[@]} -gt 0 ]; then
+  echo
+  rojo "Push cancelado. En rojo: ${FALLOS[*]}"
+  rojo "Recuerda que un push a master despliega a produccion."
+  exit 1
+fi
+
+# --- Nivel 2 al fondo ---------------------------------------------------------
+echo
+if [ -x "$RAIZ/scripts/ci_local.sh" ] || [ -f "$RAIZ/scripts/ci_local.sh" ]; then
+  printf 'CORRIENDO desde %s\n' "$(date '+%H:%M')" > "$BITACORA/estado"
+  nohup bash "$RAIZ/scripts/ci_local.sh" > "$BITACORA/ultima.log" 2>&1 < /dev/null &
+  disown 2>/dev/null || true
+  gris "  nivel 2 (suite entera, mypy, contenido, frontend) corriendo al fondo."
+  gris "  su veredicto sale en el proximo push, o con: bash scripts/ci_local.sh --estado"
+fi
+verde "Nivel 1 verde — empujando."
+exit 0

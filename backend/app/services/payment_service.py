@@ -1,15 +1,16 @@
 """Payment service for Whetzy (H.29: Grecia + Paddle MoR)."""
 
-from decimal import Decimal
-from datetime import datetime
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 import logging
+from datetime import datetime
+from decimal import Decimal
 
-from app.models.payment import (
-    PaymentRailConfig, PaddleSubscription, InstructorPayoutMethod
-)
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.models.instructor import InstructorPayout
+from app.models.payment import (
+    PaymentRailConfig,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +51,7 @@ class PaymentService:
         return config
     
     @staticmethod
-    def calculate_instructor_payout(gross_course_revenue_cents: int) -> dict:
+    def calculate_instructor_payout(gross_course_revenue_cents: int) -> dict[str, int]:
         """
         Calculate instructor payout after commission and tax.
         
@@ -105,7 +106,7 @@ class PaymentService:
         }
     
     @staticmethod
-    def calculate_subscription_revenue(plan_price_cents: int, months: int = 1) -> dict:
+    def calculate_subscription_revenue(plan_price_cents: int, months: int = 1) -> dict[str, int]:
         """
         Calculate platform revenue from subscription.
         

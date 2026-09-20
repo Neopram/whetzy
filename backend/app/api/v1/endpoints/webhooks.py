@@ -5,8 +5,8 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
-import uuid
 import logging
+import uuid
 from datetime import UTC, datetime
 from typing import Any
 
@@ -16,9 +16,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.db import get_db
-from app.services.economy import CreditsService
 from app.models.instructor import InstructorPayout
 from app.models.user import User
+from app.services.economy import CreditsService
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
