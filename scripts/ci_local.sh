@@ -37,7 +37,19 @@ INICIO="$(date '+%Y-%m-%d %H:%M')"
 printf 'CORRIENDO desde %s (%s)\n' "$INICIO" "$SHA" > "$BITACORA/estado"
 
 FALLOS=()
-titulo() { printf '\n========== %s ==========\n' "$1"; }
+# Todo paso que se ANUNCIA tiene que dar un VEREDICTO. El 2026-09-20 el paso
+# «backend: contenido» se anuncio, reviento (el script estaba en CRLF y la
+# continuacion de linea se rompio), no imprimio ni [ok] ni [FALLA]... y el run
+# salio VERDE. Una puerta que puede saltarse un paso en silencio es peor que no
+# tenerla, porque ademas da confianza. Se comparan las dos listas al final.
+ANUNCIADOS=()
+RESUELTOS=()
+titulo() {
+  ANUNCIADOS+=("$1")
+  printf '
+========== %s ==========
+' "$1"
+}
 
 # LIMITE_S por paso. No es paranoia: el 2026-09-20 la suite imprimio
 # «1021 passed» y el proceso NO SALIO — CPU congelada, 30 hilos vivos, 2,8 GB,
@@ -50,14 +62,17 @@ correr() {  # correr <nombre> <dir> <comando...>
   titulo "$nombre"
   if ( cd "$dir" && timeout --kill-after=60 "$LIMITE_S" "$@" ); then
     echo "[ok] $nombre"
+    RESUELTOS+=("$nombre")
   else
     local rc=$?
     if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
       echo "[CUELGUE] $nombre no termino en ${LIMITE_S}s"
       FALLOS+=("$nombre (cuelgue)")
+      RESUELTOS+=("$nombre")
     else
       echo "[FALLA] $nombre (codigo $rc)"
       FALLOS+=("$nombre")
+      RESUELTOS+=("$nombre")
     fi
   fi
 }
@@ -96,6 +111,21 @@ if [ -d "$RAIZ/frontend/node_modules" ]; then
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
+
+# Lo anunciado que no dio veredicto cuenta como rojo, no como silencio.
+for _anunciado in "${ANUNCIADOS[@]}"; do
+  case "$_anunciado" in
+    resumen|frontend|"frontend: oxlint") continue ;;
+  esac
+  _visto=0
+  for _resuelto in ${RESUELTOS[@]+"${RESUELTOS[@]}"}; do
+    if [ "$_resuelto" = "$_anunciado" ]; then _visto=1; break; fi
+  done
+  if [ "$_visto" = "0" ]; then
+    echo "[SIN VEREDICTO] $_anunciado - se anuncio y no reporto nada"
+    FALLOS+=("$_anunciado (sin veredicto)")
+  fi
+done
 
 FIN="$(date '+%Y-%m-%d %H:%M')"
 {
