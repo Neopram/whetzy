@@ -25,12 +25,14 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
-- **Nivelacion verificada DESDE LA INTERFAZ en produccion (2026-09-20, ventana al frente):** boton
-  en Rutas -> pantalla de intro -> COMENZAR -> preguntas reales del banco -> dificultad que sube
-  al acertar (`nonlocal` tras una facil) -> bloque de codigo bien formateado -> pantalla de error
-  con salida cuando la API falla. **Lo unico NO visto con los ojos es la pantalla de resultado**
-  (haria falta responder 20-50 seguidas); su contenido si esta verificado por API —sesion completa
-  de 50 con `module_recommendations`— y por los tests de componente con datos moqueados
+- **Nivelacion verificada ENTERA desde la interfaz en produccion (2026-09-20):** boton en Rutas ->
+  intro -> COMENZAR -> 50 preguntas reales del banco -> dificultad que sube al acertar (`nonlocal`
+  tras una facil) -> bloque de codigo bien formateado -> **pantalla de resultado** -> vuelta a
+  Rutas. Respondiendo al azar: «Tu nivel estimado: 18 %», «30 % de precision (15/50)» y «Empieza
+  por el principio: aun no dominas ningun modulo entero». Es la prueba de que el motor manda: la
+  version falsa daba «Avanzado» a quien pulsara siempre el primer boton. El aviso de fiabilidad no
+  salio, que es correcto con 50 respuestas (reliability 0.82 medida por API). Tambien verificada
+  la pantalla de error con salida cuando caduca el token
 - **El enunciado y el bloque de codigo se separan con `src/lib/question.ts`.** La funcion vivia
   dentro de `QuizScreen` y no se podia reutilizar, asi que la nivelacion enseñaba
   ```python edad = 20 ...``` en crudo y en una sola linea. Cualquier pantalla nueva que pinte un
