@@ -25,6 +25,33 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **Siete modulos de modelos no estaban en `Base.metadata`** hasta el 2026-09-20: `admin`,
+  `campaign`, `economy`, `experiment`, `instructor`, `oauth` y `payment`. Importar el modulo es
+  lo UNICO que registra una clase mapeada, y `app/models/__init__.py` no los importaba. Con el
+  metadata incompleto, **`alembic revision --autogenerate` proponia BORRAR** `instructor_courses`,
+  `experiments`, `credit_ledger`, `oauth_accounts`... Quien generara una migracion y la aplicara
+  se llevaba tablas con datos por delante. `tests/test_modelos_registrados.py` lo vigila
+- **`CampaignClick` declaraba dos veces el mismo indice** (`Index(...)` en `__table_args__` mas
+  `index=True` en la columna, que SQLAlchemy nombra igual). En cuanto el modulo entro en el
+  paquete, `create_all` reviento con «index ... already exists»: **450 errores**. Es el mismo
+  patron que ya tumbo produccion una vez con `ix_login_attempts_email`. Un modelo que nadie
+  registra nunca se crea, y sus defectos esperan. `tests/test_indices_modelos.py` lo vigila
+- **`alembic check` ya sirve como puerta, pero todavia no esta limpio.** `env.py` deja fuera
+  indices y constraints de unicidad (`include_object`): las migraciones crean 90 indices y los
+  modelos declaran 12, asi que esa diferencia era permanente y solo tapaba lo que importa — una
+  columna en el modelo que ninguna migracion crea, que es un 500. **Lo que queda son cuatro
+  tablas de `app/models/payment.py`** (`payment_rail_config`, `payment_webhooks`,
+  `paddle_subscriptions`, `stripe_customers`) sin migracion. NO es un fallo vivo: lo unico que se
+  llama de `PaymentService` es `calculate_instructor_payout`, que es una funcion pura;
+  `get_config` y `schedule_instructor_payout`, que si tocan esas tablas, no los llama nadie. No
+  se crean las tablas a proposito: **el rail de pagos es H.19 y sigue sin decidir**
+- **Un test que escribe su propio `CREATE TABLE` se queda viejo sin avisar.**
+  `test_tutor_personalization` mantenia a mano el esquema de `users`/`study_sessions`/`responses`
+  y empezo a fallar al anadir `track_id` a `StudySession`. Solo se vio corriendo la suite
+  COMPLETA: ningun subconjunto lo tocaba. Ahora usa `Base.metadata`
+- **Correr subconjuntos de tests no es correr la suite.** El 2026-09-20 se fueron arreglando
+  cosas con subconjuntos dirigidos durante horas; la suite entera (991 tests, ~25 min) saco 3
+  fallos que ninguno de esos subconjuntos tocaba. `tests/content` va aparte y tarda otros 2 min
 - **La recomendacion de saltar modulos se ha visto funcionar en produccion (2026-09-20).**
   Se provoco con `track14` (**1 modulo, 10 preguntas respondibles**: el unico track donde el pool
   cabe entero en un modulo) respondiendo con la clave del banco: «Tu nivel estimado: 100 %»,

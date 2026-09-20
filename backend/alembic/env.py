@@ -35,6 +35,25 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 
+# ── que se compara y que no ────────────────────────────────────────────────────
+def _comparar(objeto, nombre, tipo, reflejado, comparar_con):
+    """Filtra lo que `alembic check` y `--autogenerate` miran.
+
+    Se comparan tablas y columnas: una columna que el modelo espera y ninguna
+    migracion crea es un 500 en produccion en cuanto alguien toque esa ruta.
+
+    NO se comparan indices ni constraints de unicidad. Las migraciones crean 90
+    indices y los modelos declaran 12, asi que la diferencia es permanente y no
+    es un defecto — solo ruido que hacia inutilizable el comando. La unicidad
+    real esta en la base (p. ej. `certificates_code_key`); lo que cambia es
+    donde se declara, no si se cumple.
+
+    Consecuencia que conviene tener presente: **este check no detecta un indice
+    que falte.** Para eso hay que mirar el plan de la consulta, no el esquema.
+    """
+    return tipo not in ("index", "unique_constraint")
+
+
 # ── offline migrations ─────────────────────────────────────────────────────────
 def run_migrations_offline() -> None:
     """Emit SQL to stdout without a live DB connection.
@@ -46,6 +65,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        include_object=_comparar,
     )
     with context.begin_transaction():
         context.run_migrations()
@@ -53,7 +73,11 @@ def run_migrations_offline() -> None:
 
 # ── online migrations (async) ──────────────────────────────────────────────────
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        include_object=_comparar,
+    )
     with context.begin_transaction():
         context.run_migrations()
 

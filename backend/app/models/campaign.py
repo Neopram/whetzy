@@ -15,11 +15,13 @@ from enum import Enum
 
 from sqlalchemy import (
     DateTime,
-    Enum as SQLEnum,
     ForeignKey,
     Index,
     String,
     UniqueConstraint,
+)
+from sqlalchemy import (
+    Enum as SQLEnum,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
@@ -118,14 +120,19 @@ class CampaignClick(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
 
     # Foreign key to campaign
+    # Sin `index=True`: el indice ya esta declarado arriba en `__table_args__`
+    # con ese mismo nombre, y SQLAlchemy genera `ix_campaign_clicks_campaign_id`
+    # para los dos. Declararlo dos veces hace que `create_all` reviente con
+    # «index ... already exists». No se vio hasta hoy porque este modulo no
+    # estaba importado en `app/models/__init__.py`, asi que nunca se creaba.
     campaign_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("campaigns.id", ondelete="CASCADE"), nullable=False, index=True
+        ForeignKey("campaigns.id", ondelete="CASCADE"), nullable=False
     )
     campaign: Mapped[Campaign] = relationship(back_populates="clicks")
 
     # User who clicked (nullable for anonymous clicks)
     user_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
 
     # Click source (banner, external link, direct paste, etc.)
