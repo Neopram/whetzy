@@ -1,0 +1,9 @@
+# Los scripts de shell SIEMPRE en LF, aunque el repo se clone en Windows.
+#
+# `.githooks/pre-push` se commiteo en LF y git lo devolvio en CRLF al hacer
+# checkout (core.autocrlf). Bash lo tolero por suerte, pero un `\r` al final de
+# una linea entra en el comando: `cd "$RAIZ"\r` no encuentra el directorio, y el
+# error no se parece en nada a la causa. Sin esto, la puerta de pre-push depende
+# de la configuracion local de cada clon.
+*.sh text eol=lf
+.githooks/* text eol=lf

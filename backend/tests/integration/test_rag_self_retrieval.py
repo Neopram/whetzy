@@ -24,7 +24,12 @@ import tracemalloc
 
 import pytest
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from app.core.db import Base
 from app.models.content import Question, Skill
@@ -69,8 +74,28 @@ def _coverage_is_active() -> bool:
 _MAX_BYTES_PER_DOC = 24 * 1024  # ~2x headroom over the ~12 KB/doc measured
 
 
+# Cada `create_async_engine("sqlite+aiosqlite://...")` levanta un
+# `_connection_worker_thread` de aiosqlite, y ese hilo **no es demonio**: solo
+# muere cuando alguien cierra el engine. Este fichero creaba tres (una por test)
+# y no cerraba ninguno, asi que al acabar la suite quedaba un hilo esperando en
+# `tx.get()` para siempre y **el proceso de pytest no salia**: imprimia
+# «1021 passed» y se quedaba colgado indefinidamente, sin devolver codigo de
+# salida. Medido el 2026-09-20 volcando los hilos vivos al terminar: exactamente
+# uno no-demonio, `Thread-343 (_connection_worker_thread)`.
+_motores: list[AsyncEngine] = []
+
+
+@pytest.fixture(autouse=True)
+async def _cerrar_los_motores():
+    """Cierra todo engine que haya abierto este fichero, pase lo que pase."""
+    yield
+    while _motores:
+        await _motores.pop().dispose()
+
+
 async def _load_real_corpus() -> async_sessionmaker[AsyncSession]:
     engine = create_async_engine("sqlite+aiosqlite:///:memory:", echo=False)
+    _motores.append(engine)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     factory = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False)

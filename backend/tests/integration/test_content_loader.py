@@ -687,14 +687,25 @@ class TestRealCorpus:
 
 
 class TestMain:
-    @pytest.mark.asyncio
-    async def test_main_initialises_db_and_reports_stats(
-        self, db_session, tree: Path, monkeypatch: pytest.MonkeyPatch, capsys
-    ) -> None:
-        called: dict[str, bool] = {"init": False}
+    """`main()` es lo que corre `scripts/start.sh` en produccion.
 
+    Hasta el 2026-09-20 llamaba a `init_db()` —o sea `Base.metadata.create_all`—
+    sin mirar el entorno, y eso tumbo produccion: `create_all` intenta crear
+    **toda** tabla registrada en `Base.metadata`, incluidas las cuatro de
+    `models/payment.py` que ninguna migracion crea a proposito. La FK de
+    `stripe_customers.user_id` no se pudo crear, `set -e` mato el contenedor, y
+    la API devolvio 502 durante horas.
+
+    El test que habia solo comprobaba la rama de development (`init` llamado), y
+    cuando se anadio la guarda se quedo en rojo sin que nadie lo viera. Aqui se
+    comprueban **las dos ramas**, porque la que importa es la otra: que fuera de
+    development el esquema NO se toque.
+    """
+
+    @staticmethod
+    def _parchear_sesion(monkeypatch, db_session, llamadas: dict) -> None:
         async def fake_init_db() -> None:
-            called["init"] = True
+            llamadas["init"] = True
 
         class _SessionCtx:
             async def __aenter__(self):
@@ -706,7 +717,44 @@ class TestMain:
         monkeypatch.setattr(content_loader, "init_db", fake_init_db)
         monkeypatch.setattr(content_loader, "AsyncSessionLocal", lambda: _SessionCtx())
 
+    @pytest.mark.asyncio
+    async def test_main_initialises_db_in_development(
+        self, db_session, tree: Path, monkeypatch: pytest.MonkeyPatch, capsys
+    ) -> None:
+        """En local no hay Alembic corriendo antes, asi que aqui si crea."""
+        llamadas: dict[str, bool] = {"init": False}
+        self._parchear_sesion(monkeypatch, db_session, llamadas)
+        monkeypatch.setattr(content_loader.settings, "ENVIRONMENT", "development")
+
         await content_loader.main()
 
-        assert called["init"] is True
+        assert llamadas["init"] is True
         assert "Content loaded:" in capsys.readouterr().out
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("entorno", ["production", "staging", "test"])
+    async def test_main_no_toca_el_esquema_fuera_de_development(
+        self, db_session, tree: Path, monkeypatch: pytest.MonkeyPatch, capsys, entorno
+    ) -> None:
+        """La guarda del 502: el esquema es de Alembic, no de `create_all`.
+
+        Si esto se pone en verde volviendo a llamar a `init_db()`, produccion se
+        cae en el siguiente reinicio del contenedor, no en el deploy — que es
+        justo por lo que costo horas encontrarlo.
+        """
+        llamadas: dict[str, bool] = {"init": False}
+        self._parchear_sesion(monkeypatch, db_session, llamadas)
+        monkeypatch.setattr(content_loader.settings, "ENVIRONMENT", entorno)
+
+        await content_loader.main()
+
+        assert llamadas["init"] is False, (
+            f"`main()` llamo a init_db() con ENVIRONMENT={entorno!r}. Eso es "
+            f"`create_all` sobre un esquema de Alembic: intenta crear las tablas "
+            f"de payment.py que ninguna migracion crea, la FK de "
+            f"stripe_customers revienta y el contenedor muere en bucle"
+        )
+        assert "Content loaded:" in capsys.readouterr().out, (
+            "el contenido tiene que cargarse igual; lo unico que cambia es que no "
+            "se toca el esquema"
+        )

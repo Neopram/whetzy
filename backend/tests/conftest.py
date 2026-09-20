@@ -204,3 +204,59 @@ async def owner(db_session: AsyncSession) -> User:
     await db_session.refresh(u)
     u.token = create_access_token(u.id)
     return u
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """Cierra el engine GLOBAL de la app al acabar la sesion de tests.
+
+    `app/core/db.py` crea `engine = create_async_engine(...)` al importarse, y en
+    tests nadie lo cierra: `close_db()` solo lo llama el `lifespan` de FastAPI, y
+    el cliente de tests usa `ASGITransport` sin lifespan. En cuanto algun test
+    toca ese engine, aiosqlite levanta un `_connection_worker_thread` que **no es
+    demonio** y que solo muere con `dispose()`.
+
+    Sin esto, la suite termina en verde, imprime «N passed»... y **el proceso no
+    sale nunca**: se queda con ese hilo esperando en `tx.get()`, sin devolver
+    codigo de salida. Medido el 2026-09-20 volcando los hilos con faulthandler:
+    exactamente uno, `Thread-346 (_connection_worker_thread)`.
+
+    Va en `pytest_sessionfinish` y no en una fixture de sesion a proposito: aqui
+    no hay bucle de eventos de pytest-asyncio de por medio.
+    """
+    import asyncio
+    import logging
+
+    from app.core import db as _db
+
+    try:
+        asyncio.run(_db.engine.dispose())
+    except Exception:  # pragma: no cover - cerrar es best-effort
+        # Si falla, el proceso se colgara al salir. Sin este log eso pasa
+        # en silencio y parece otra vez «la suite no termina».
+        logging.getLogger("whetzy.tests").exception(
+            "no pude cerrar el engine global; el proceso puede no salir"
+        )
+
+    # ── La guarda de verdad ───────────────────────────────────────────────────
+    # La comprobacion estructural (`tests/test_motores_cerrados.py`) mira los
+    # ficheros de test, y el engine que colgo la suite el 2026-09-20 estaba en
+    # `app/core/db.py`: no lo habria cazado. Esto mira el SINTOMA, que es lo que
+    # importa — si sobrevive un hilo no-demonio, el proceso no sale y la puerta
+    # se queda esperando un codigo que nunca llega.
+    import threading
+
+    colgados = [
+        h
+        for h in threading.enumerate()
+        if h is not threading.current_thread() and not h.daemon and h.is_alive()
+    ]
+    if colgados:
+        nombres = ", ".join(h.name for h in colgados)
+        print(
+            f"\n[hilos] {len(colgados)} hilo(s) NO demonio siguen vivos: {nombres}."
+            "\n[hilos] El proceso no saldra: los tests pasan, se imprime el "
+            "resumen, y pytest se queda colgado sin devolver codigo de salida."
+            "\n[hilos] Casi siempre es un engine de SQLAlchemy sin `dispose()` "
+            "- aiosqlite abre un hilo por conexion. Cierra el que hayas abierto."
+        )
+        session.exitstatus = 1

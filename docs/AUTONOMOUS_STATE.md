@@ -25,15 +25,33 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
-- **ABIERTO — pytest imprime «1021 passed» y el proceso NO SALE.** Medido el 2026-09-20:
-  tras el resumen, CPU congelada en 1638,65s sin moverse en 30s, **30 hilos vivos**, 2,8 GB
-  retenidos, indefinidamente. No es OTel (ya esta desactivado en tests y el ruido de
-  «closed file» desaparecio): quedan candidatos el `AsyncIOScheduler` de
-  `_schedule_monthly_payouts` en `main.py` y las tareas de `_en_vuelo` en
-  `services/email.py`. Consecuencia practica: **la suite no devuelve codigo de salida**, asi
-  que cualquier puerta se queda esperando. Mitigado, NO resuelto: `ci_local.sh` pone
-  `timeout` por paso y distingue «cuelgue» de «falla». Siguiente paso: `faulthandler.dump
-  _traceback_later` o `-p no:cacheprovider` para ver que hilo no muere
+- **RESUELTO: la suite imprimia «1021 passed» y el proceso NO SALIA.** Causa: engines de
+  aiosqlite sin cerrar. `create_async_engine("sqlite+aiosqlite://...")` levanta un
+  `_connection_worker_thread` que **no es demonio** y solo muere con `dispose()`. Eran DOS
+  fugas, no una: (1) `tests/integration/test_rag_self_retrieval.py` abria tres en
+  `_load_real_corpus` sin cerrar ninguno; (2) —la que costo mas— el engine **global** de
+  `app/core/db.py`, creado al importar el modulo, que en tests no cierra nadie porque
+  `close_db()` solo lo llama el `lifespan` y el `conftest` usa `ASGITransport` sin lifespan.
+  Arreglar solo (1) no basto: el sintoma era identico.
+  **No se parece a un fallo: la suite esta en verde.** Se localizo volcando los hilos tras
+  `pytest.main()`. Dos trampas del propio diagnostico: `threading.enumerate()` no ve hilos
+  nativos (usar `faulthandler.dump_traceback(all_threads=True)`), y un wrapper que termina
+  en `os._exit()` **siempre sale limpio**, asi que no prueba nada — hay que verificar por
+  CLI. Descartados y falsos: el `AsyncIOScheduler` de `main.py`, torch/OpenMP, OTel.
+  Dos guardas: `tests/test_motores_cerrados.py` (estructural, en el nivel 1 de la puerta) y
+  —la que de verdad vale— `pytest_sessionfinish` en el `conftest`, que mira el SINTOMA y
+  pone `exitstatus = 1` si sobrevive cualquier hilo no-demonio. La estructural sola NO
+  habria cazado la fuga (2), porque el engine no estaba en un fichero de test
+- **Un test que afirma lo que hacia el codigo se queda en rojo cuando el codigo cambia, y
+  nadie lo ve si no se corre la suite entera.** `f1be2b0` puso la guarda de entorno en
+  `content_loader.main()` y no actualizo `test_main_initialises_db_and_reports_stats`, que
+  afirmaba lo contrario. Master estuvo en rojo. Ahora `TestMain` cubre **las dos ramas**, y
+  la que importa es la de produccion: que fuera de development NO se toque el esquema
+- **`.githooks/pre-push` volvia en CRLF tras el checkout** (core.autocrlf), aunque se
+  commiteo en LF. Bash lo tolero, pero un `
+` al final de linea entra en el comando y el
+  error no se parece a la causa. `.gitattributes` fuerza LF en `*.sh` y `.githooks/*` —
+  incluye `scripts/start.sh`, que es el que arranca produccion
 - **La suite salia en VERDE y pytest devolvia codigo 1.** Con
   `OTEL_EXPORTER_OTLP_ENDPOINT` vacio, `configure_telemetry` instala un
   `ConsoleSpanExporter`, y el hilo de su `BatchSpanProcessor` sigue escribiendo a stdout
