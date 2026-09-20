@@ -25,6 +25,17 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **La recomendacion de saltar modulos se ha visto funcionar en produccion (2026-09-20).**
+  Se provoco con `track14` (**1 modulo, 10 preguntas respondibles**: el unico track donde el pool
+  cabe entero en un modulo) respondiendo con la clave del banco: «Tu nivel estimado: 100 %»,
+  «100 % de precision (10/10)», **«Puedes saltarte 1 modulo» con «JavaScript fundamental 100 %»**,
+  y el aviso «Fiabilidad de la estimacion: 0 %. Se acabaron las preguntas antes de afinarla».
+  Ese aviso es correcto: el pool se agota a las 10 y el motor no llega a estabilizar. **track14 es
+  el banco de pruebas natural de la nivelacion**, por pequeño
+- **Para verificar respuestas correctas desde fuera, la clave esta en `content/questions`**
+  (`correct_index` sobre `options_es`). La API **no** la expone —`QuestionPublic` la omite a
+  proposito— asi que un test de interfaz que necesite acertar tiene que leerla del repo y casar
+  por el texto del enunciado
 - **Nivelacion verificada ENTERA desde la interfaz en produccion (2026-09-20):** boton en Rutas ->
   intro -> COMENZAR -> 50 preguntas reales del banco -> dificultad que sube al acertar (`nonlocal`
   tras una facil) -> bloque de codigo bien formateado -> **pantalla de resultado** -> vuelta a
