@@ -25,6 +25,13 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **`_redirects` NO se aplica en el proyecto de Cloudflare Pages `whetzy`** (comprobado 2026-09-20:
+  una regla explicita `/api/* /404.html 404` devolvia 200). El fallback de SPA que hace que
+  `/privacy` o `/reset-password` funcionen es el **automatico** de Pages, y ese solo actua si
+  **no hay `404.html` en la raiz** del build. Tener uno lo desactivaba y **todas las rutas
+  profundas devolvian 404**, incluido el enlace que manda el correo de reset. El 404 de `/api/*`
+  se consigue ahora con una Pages Function (`frontend/functions/api/[[path]].js`), que si corre.
+  No volver a meter un `404.html` en `public/`
 - **`AUTH_RATE_LIMIT = 12` por minuto** (`app/core/config.py`). Con 30 personas entrando a la vez
   —una clase, un hilo que funciona— la mitad se come un 429 en el registro. Medido leyendo el
   valor, no en carga: **nunca se ha probado con dos usuarios simultaneos**
