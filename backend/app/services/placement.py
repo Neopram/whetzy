@@ -57,6 +57,13 @@ async def _track_item_pool(db: AsyncSession, track_id: str) -> list[IRTItem]:
         .join(Module, Module.id == Skill.module_id)
         .where(Module.track_id == track_id)
         .where(Question.type.in_(_TIPOS_RESPONDIBLES))
+        # El tipo no basta: 83 preguntas `true_false` llegaron al banco sin
+        # opciones y sin `correct_index`, con la respuesta como texto. El quiz
+        # y los duelos ya exigian el indice por esto mismo; filtrar solo por
+        # tipo las dejaba entrar aqui, y sin indice no hay nada que pulsar ni
+        # con que corregir. El contenido esta arreglado, pero la guarda se
+        # queda: es una linea contra una clase entera de fallo.
+        .where(Question.correct_index.is_not(None))
     )
     questions = result.scalars().all()
     return [

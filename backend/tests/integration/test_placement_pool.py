@@ -114,3 +114,27 @@ async def test_un_track_sin_preguntas_respondibles_lo_dice(client, auth_headers,
 
     assert r.status_code == 422
     assert "answered by choosing" in r.json()["detail"]
+
+
+async def test_una_true_false_sin_opciones_no_entra_en_el_pool(db_session, track_mixto) -> None:
+    """El tipo no basta: hace falta con que corregir.
+
+    83 preguntas `true_false` llegaron al banco con `options_*` y
+    `correct_index` en null y la respuesta como texto en `correct_answer_es`.
+    El quiz y los duelos ya las excluian exigiendo el indice; el pool de
+    nivelacion filtraba solo por tipo y las dejaba pasar, asi que el alumno
+    recibia una pregunta sin nada que pulsar. El contenido esta arreglado,
+    pero la guarda se queda.
+    """
+    rota = _pregunta("q_pool_tf_rota", "sk_pool", "true_false")
+    rota.options_es = None
+    rota.options_en = None
+    rota.correct_index = None
+    rota.correct_answer_es = "Verdadero"
+    rota.correct_answer_en = "True"
+    db_session.add(rota)
+    await db_session.commit()
+
+    items = await _track_item_pool(db_session, track_mixto)
+
+    assert "q_pool_tf_rota" not in {i.item_id for i in items}

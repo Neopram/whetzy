@@ -40,6 +40,28 @@ IDENTICAL_STEM_MIN_CHARS = 15
 # pero un track entero al 95 % son distractores de relleno, no alternativas.
 ONE_WORD_OPTION_MAX_SHARE = 0.80
 EXEC_NEEDS_CODE = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
+
+# --- El tipo de pregunta es un conjunto cerrado -------------------------
+#
+# Dos familias, y la diferencia manda en como se responde:
+#
+#   OPTION_TYPES  se contestan eligiendo una opcion -> options_* + correct_index
+#   FREE_TYPES    se contestan escribiendo o ejecutando -> correct_answer_*
+#
+# `mcq` y `multiple_choice` son EL MISMO formato con dos nombres (2.560 y
+# 1.015 preguntas). No es un descuido: `DECISIONS.md` usa el segundo para
+# nombrar el formato «escenario + decision» de los tracks exentos del ratio
+# ejecutable. Pero cualquier filtro escrito como lista de inclusion que
+# olvide uno deja fuera preguntas reales — le paso al pool de la prueba de
+# nivel, que se quedaba VACIO en los tracks de certificacion enteros.
+#
+# Por eso el conjunto esta cerrado: un tipo nuevo, o un typo, falla aqui en
+# vez de desaparecer en silencio de algun filtro. Anadir uno obliga a mirar
+# quien filtra por tipo (backend: placement, quiz, duels; frontend:
+# QuizScreen y el union de QuestionPublic).
+OPTION_TYPES = {"mcq", "multiple_choice", "true_false", "code_output"}
+FREE_TYPES = {"fill_blank", "fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
+KNOWN_TYPES = OPTION_TYPES | FREE_TYPES
 SKEW_MAX_SHARE = 0.45
 MIN_PER_SKILL = 6
 
@@ -298,6 +320,39 @@ def main() -> int:
                     f"{path.name} {qid}: {q.get('type')} sin codigo que ejecutar "
                     f"(ni bloque ``` en el enunciado ni code_es)"
                 )
+
+        # El tipo manda en como se responde, asi que tiene que ser conocido
+        # y traer los campos de su familia. Un tipo inventado no rompe nada
+        # visible: simplemente desaparece de los filtros que enumeran tipos.
+        qtype = q.get("type")
+        if qtype not in KNOWN_TYPES:
+            problems.append(
+                f"{path.name} {qid}: tipo {qtype!r} desconocido. Los validos son "
+                f"{sorted(KNOWN_TYPES)}. Anadir uno obliga a revisar quien filtra "
+                f"por tipo (placement, quiz, duels, QuizScreen, QuestionPublic)"
+            )
+        elif qtype in OPTION_TYPES:
+            opts_es, opts_en = q.get("options_es"), q.get("options_en")
+            ci = q.get("correct_index")
+            if not opts_es or not opts_en:
+                problems.append(
+                    f"{path.name} {qid}: {qtype} sin opciones - no hay nada que elegir"
+                )
+            elif len(opts_es) != len(opts_en):
+                problems.append(
+                    f"{path.name} {qid}: {len(opts_es)} opciones en es y "
+                    f"{len(opts_en)} en en - correct_index apunta a dos sitios"
+                )
+            elif not isinstance(ci, int) or not 0 <= ci < len(opts_es):
+                problems.append(
+                    f"{path.name} {qid}: correct_index {ci!r} fuera de las "
+                    f"{len(opts_es)} opciones"
+                )
+        elif not (q.get("correct_answer_es") or "").strip():
+            problems.append(
+                f"{path.name} {qid}: {qtype} sin correct_answer_es - no hay contra "
+                f"que corregir lo que escriba el alumno"
+            )
 
     # --- answer position skew, per track ---
     #
