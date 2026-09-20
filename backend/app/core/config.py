@@ -31,7 +31,15 @@ class Settings(BaseSettings):
     API_V1_PREFIX: str = "/api/v1"
     # When True, trust the leftmost IP in X-Forwarded-For for rate limiting.
     # Only enable behind a known reverse proxy (ASVS V11.2).
-    TRUST_PROXY_HEADERS: bool = False
+    # Detras de un proxy (Railway, Cloudflare) esto tiene que estar en true o
+    # `request.client.host` es la IP del proxy — la misma para todo el mundo — y
+    # el limite por IP pasa a ser un limite global compartido por todos los
+    # usuarios. Medido en produccion el 2026-09-20: 14 de 20 intentos de login
+    # desde un solo cliente devolvian 429. La cabecera se lee por la derecha
+    # (ver `_client_key`), que es la parte que anade el proxy y no el cliente.
+    TRUST_PROXY_HEADERS: bool = True
+    # Saltos de proxy de confianza entre el cliente y la app. Railway pone uno.
+    TRUSTED_PROXY_HOPS: int = 1
 
     # --- Database (PostgreSQL, async via asyncpg) -------------------------
     DATABASE_URL: str = (
@@ -55,7 +63,14 @@ class Settings(BaseSettings):
     # RateLimitMiddleware). 12/min is right for production traffic but too
     # tight for an E2E suite that registers a fresh user per test — override
     # via env var for local/CI E2E runs, never in production.
-    AUTH_RATE_LIMIT: int = 12
+    # Presupuesto por minuto y por IP para las rutas donde se adivinan
+    # credenciales (login, registro, reset). No es la defensa principal contra
+    # el relleno de credenciales —eso es el bloqueo progresivo por cuenta de
+    # `auth_hardening`—, asi que puede ser holgado sin perder seguridad. Valia
+    # 12 y lo compartian **todas** las rutas de auth, incluida `/auth/me`, que
+    # la app llama en cada arranque: treinta personas registrandose a la vez
+    # (un aula, un hilo que funciona) se comian 429 casi todas.
+    AUTH_RATE_LIMIT: int = 60
     DEFAULT_RATE_LIMIT: int = 120
 
     # --- CORS ---------------------------------------------------------------

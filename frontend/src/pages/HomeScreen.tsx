@@ -134,7 +134,7 @@ export function HomeScreen() {
           <div className={styles.cardHeader}>
             <h2 className={styles.cardTitle}>{t('home.missions')}</h2>
             {missions.data && (
-              <span className={styles.badge} style={{ background: 'var(--le-orange-light)', color: 'var(--le-text)' }}>
+              <span className={`${styles.badge} ${styles.badgeWarning}`}>
                 {missions.data.filter((m) => m.completed).length}/{missions.data.length}
               </span>
             )}
@@ -182,7 +182,7 @@ export function HomeScreen() {
               {t('home.yourStreak')}: {streak} {t('home.days')}{' '}
               <motion.span variants={flickerVariants} animate="animate" style={{ display: 'inline-block' }}>🔥</motion.span>
             </h2>
-            <span className={styles.badge} style={{ background: 'var(--le-green-light)', color: 'var(--le-text)' }}>
+            <span className={`${styles.badge} ${styles.badgeSuccess}`}>
               {t('home.best')}: {dash.data?.max_streak ?? user.maxStreak}
             </span>
           </div>

@@ -52,8 +52,39 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
-    """Fixed-window per-client rate limit. Auth endpoints get a stricter budget
-    to blunt credential-stuffing (ASVS V11.2 / V2.2.1)."""
+    """Ventana fija por cliente. Las rutas donde se adivinan credenciales
+    tienen su propio presupuesto (ASVS V11.2 / V2.2.1).
+
+    Tres cosas que no hacia y costaban caro:
+
+    - **Metia `/auth/me` y `/auth/refresh` en el cubo estricto.** La app llama a
+      `/auth/me` en cada arranque y `/auth/refresh` cada vez que caduca el token,
+      asi que el uso normal se comia el presupuesto pensado para frenar ataques.
+      Ahora solo cuentan ahi las rutas de `_SENSIBLES`.
+    - **El cubo era global.** Con `TRUST_PROXY_HEADERS` en false y un proxy
+      delante, `request.client.host` es la IP del proxy para todos.
+    - **`_hits` no se vaciaba nunca.** Se limpiaban las marcas de tiempo dentro
+      de cada lista pero la clave se quedaba, asi que el diccionario crecia con
+      cada IP vista y no bajaba jamas.
+
+    Sigue siendo **por proceso**: con varias replicas el limite efectivo se
+    multiplica y a un mismo cliente le puede tocar un proceso u otro. Medido en
+    produccion el 2026-09-20 (429 intermitentes en peticiones consecutivas). Para
+    un limite real y compartido hace falta el `RedisRateLimiter` de
+    `core/rate_limiter.py`, que existe y no esta conectado.
+    """
+
+    #: Rutas de `/api/v1/auth` donde un atacante prueba credenciales o quema
+    #: correos. El resto (`/me`, `/refresh`, `/logout`) es trafico de sesion.
+    _SENSIBLES = (
+        "/api/v1/auth/login",
+        "/api/v1/auth/register",
+        "/api/v1/auth/forgot-password",
+        "/api/v1/auth/reset-password",
+        "/api/v1/auth/resend-verification",
+        "/api/v1/auth/verify-email",
+        "/api/v1/auth/oauth",
+    )
 
     def __init__(
         self,
@@ -69,24 +100,36 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self._hits: dict[str, list[float]] = defaultdict(list)
 
     def _client_key(self, request: Request) -> str:
-        # Only trust X-Forwarded-For when TRUST_PROXY_HEADERS=true (ASVS V11.2).
-        # Default: use socket peer to prevent IP spoofing via forged headers.
+        """IP del cliente, sin dejar que el cliente la elija.
+
+        `X-Forwarded-For` se lee **por la derecha**, saltando tantas entradas
+        como proxies de confianza haya. La primera entrada por la izquierda la
+        escribe quien llama, asi que tomarla —como se hacia— deja que cualquiera
+        se invente una IP por peticion y esquive el limite entero mandando una
+        cabecera distinta cada vez.
+        """
         if settings.TRUST_PROXY_HEADERS:
             fwd = request.headers.get("x-forwarded-for")
             if fwd:
-                return fwd.split(",")[0].strip()
+                partes = [p.strip() for p in fwd.split(",") if p.strip()]
+                saltos = max(1, settings.TRUSTED_PROXY_HOPS)
+                if len(partes) >= saltos:
+                    return partes[-saltos]
+                return partes[0]
         return request.client.host if request.client else "unknown"
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         path = request.url.path
-        # Health/docs are exempt.
-        if path in ("/health", "/") or path.startswith(("/docs", "/redoc")):
+        # Sondas de salud y documentacion, exentas. `/health` era coincidencia
+        # exacta, asi que `/health/ready` y `/health/live` —las que consulta el
+        # monitor cada pocos segundos— si contaban.
+        if path == "/" or path.startswith(("/health", "/docs", "/redoc")):
             return await call_next(request)
 
-        is_auth = path.startswith("/api/v1/auth")
+        is_sensible = path.startswith(self._SENSIBLES)
         is_tutor = path.startswith("/api/v1/tutor")
-        limit = self._auth_limit if (is_auth or is_tutor) else self._default_limit
-        key_suffix = "auth" if is_auth else "tutor" if is_tutor else "api"
+        limit = self._auth_limit if (is_sensible or is_tutor) else self._default_limit
+        key_suffix = "auth" if is_sensible else "tutor" if is_tutor else "api"
         key = f"{self._client_key(request)}:{key_suffix}"
 
         now = time.monotonic()
@@ -94,6 +137,12 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         bucket = self._hits[key]
         # Drop timestamps outside the window.
         bucket[:] = [t for t in bucket if t >= window_start]
+        if not bucket:
+            # Sin esto la clave sobrevive a su ultima peticion y `_hits` solo
+            # crece: un diccionario con una entrada por IP vista desde que
+            # arranco el proceso.
+            del self._hits[key]
+            bucket = self._hits[key]
 
         if len(bucket) >= limit:
             retry_after = int(self._window - (now - bucket[0])) + 1

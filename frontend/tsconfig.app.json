@@ -5,7 +5,11 @@
     "target": "es2023",
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "esnext",
-    "types": ["vite/client"],
+    /* "node" es para los tests de `src/test`, que leen ficheros del repo con
+       `node:fs`. Vitest deja vacios los imports de CSS —incluso con `?raw`—,
+       asi que la unica forma de que un test mire una hoja de estilo de verdad
+       es leerla del disco. */
+    "types": ["vite/client", "node"],
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 

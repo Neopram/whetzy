@@ -140,6 +140,19 @@
   color: var(--le-text);
 }
 
+/* Sobre una tinta clara fija el texto NO sigue al tema: --le-text es oscuro
+   en claro y casi blanco en oscuro, y en oscuro quedaba 1.1:1 sobre la
+   pildora. Los tonos *-on-tint estan calibrados justo para esto. */
+.badgeWarning {
+  background: var(--le-orange-light);
+  color: var(--le-warning-text);   /* 5.12:1 */
+}
+
+.badgeSuccess {
+  background: var(--le-green-light);
+  color: var(--le-success-on-tint);   /* 5.86:1 */
+}
+
 .badge {
   font-size: var(--le-fs-xs);
   font-weight: var(--le-fw-black);
@@ -226,8 +239,9 @@
 }
 
 .streakDay.today {
-  background: var(--le-green);
-  color: var(--le-text);
+  /* --le-green como fondo de texto da 1.7:1; este tono lo aguanta a 6.51:1. */
+  background: var(--le-success-on-tint);
+  color: #FFFFFF;
   box-shadow: 0 0 0 2px var(--le-green), 0 0 0 4px var(--le-green-light);
 }
 
