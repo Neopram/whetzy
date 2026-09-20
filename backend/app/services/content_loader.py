@@ -16,6 +16,7 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.db import AsyncSessionLocal, init_db
 from app.models.content import (
     Domain,
@@ -348,7 +349,17 @@ async def load_content(db: AsyncSession) -> dict[str, Any]:
 
 
 async def main() -> None:
-    await init_db()
+    # El esquema es de Alembic, no de `create_all`. En produccion `start.sh`
+    # corre `alembic upgrade head` en la linea anterior a esta, asi que aqui
+    # `create_all` no tenia nada que crear y si mucho que romper: intenta crear
+    # **toda** tabla registrada en `Base.metadata`, incluidas las que ningun
+    # migration crea a proposito (las cuatro de `models/payment.py`, que esperan
+    # a H.19). El 2026-09-20 eso tumbo produccion — `stripe_customers.user_id`
+    # es VARCHAR(36) contra `users.id` UUID, la FK no se puede crear, asyncpg
+    # lanza DatatypeMismatchError, `set -e` mata el contenedor y el backend
+    # devolvio 502 durante horas. `app/main.py` ya tenia esta misma guarda.
+    if settings.ENVIRONMENT == "development":
+        await init_db()
     async with AsyncSessionLocal() as db:
         stats = await load_content(db)
     print(f"Content loaded: {stats}")

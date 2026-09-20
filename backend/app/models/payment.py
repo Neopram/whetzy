@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 import enum
 
-from sqlalchemy import Column, String, Integer, Float, DateTime, Enum as SQLEnum, ForeignKey, Boolean, Text
+from sqlalchemy import Column, String, Integer, Float, DateTime, Enum as SQLEnum, ForeignKey, Boolean, Text, Uuid
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
@@ -64,7 +64,7 @@ class StripeCustomer(Base):
     __tablename__ = "stripe_customers"
     
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = Column(String(36), ForeignKey("users.id"), unique=True)
+    user_id = Column(Uuid, ForeignKey("users.id"), unique=True)
     stripe_customer_id = Column(String(100), unique=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -74,7 +74,7 @@ class PaddleSubscription(Base):
     __tablename__ = "paddle_subscriptions"
     
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = Column(String(36), ForeignKey("users.id"))
+    user_id = Column(Uuid, ForeignKey("users.id"))
     paddle_subscription_id = Column(String(100), unique=True)  # From Paddle
     paddle_plan_id = Column(String(100))  # pro_monthly or plus_monthly
     status = Column(String(20), default="active")  # active, past_due, canceled
