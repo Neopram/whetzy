@@ -25,6 +25,24 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **La prueba de nivel ya usa el motor CAT/IRT del servidor** (2026-09-20, `83e79e2`). Estaba
+  implementada en `app/services/engine/placement.py` y no la llamaba nadie: la pantalla llevaba
+  diez preguntas en los ficheros de idioma y calculaba el nivel con
+  `ability + (acierto ? 0.05 : -0.03)`. Entrada desde Rutas, por track, junto al simulacro.
+  **Verificado contra produccion respondiendo 50 preguntas**: pulsando siempre la opcion A da
+  30 % de aciertos, theta -1.94 (se 0.43), fiabilidad 0.82 y **cero modulos saltables** — la
+  version falsa daba «Avanzado» y saltaba el curriculo entero
+- **El banco usa DOS nombres para el mismo formato: `mcq` (2.560) y `multiple_choice` (1.015).**
+  Cualquier filtro por tipo que olvide el segundo vacia los tracks de certificacion (09, 10, 11)
+  enteros. Paso con el pool de nivelacion. `code_output` tambien lleva opciones; `fill_blank`,
+  `sql_exec`, `fill_blank_exec`, `fix_bug` y `js_exec` no, y no se pueden responder con
+  `selected_index`. El union de `QuestionPublic.type` en TypeScript tampoco tenia
+  `multiple_choice`: 1.015 preguntas con un tipo que el sistema de tipos no conocia
+- **La prueba de nivel gasta hasta 50 preguntas** (`max_questions` del motor; `min_questions` 20).
+  En la sesion de verificacion llego al tope sin converger antes. Es diseno psicometrico, no un
+  fallo, pero es mucho para un alumno nuevo: **decision de producto pendiente** si se quiere bajar
+- **`track14` tiene 12 preguntas en total.** Arranca la nivelacion pero se queda sin items enseguida;
+  el motor termina y lo refleja en `reliability`, que la pantalla ahora enseña cuando baja de 0.7
 - **Los tests del frontend que moquean `fetch` no pueden detectar una URL equivocada.** Hay 19 asi.
   Por eso `placement.result()` llevaba pidiendo `GET /placement/{id}/result` —404 en produccion—
   mientras el backend expone `GET /placement/result?session_id=`, con un test en verde encima. La
