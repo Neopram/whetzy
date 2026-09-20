@@ -25,6 +25,14 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **`oxlint` no puede correr en este PC: node v20.18.0 y pide `^20.19.0 || >=22.12.0`.**
+  npm se salta el binario nativo *opcional* (`@oxlint/binding-win32-x64-msvc`) cuando el
+  engine no encaja, y `npx oxlint` muere al cargar el modulo con un «Cannot find module»
+  que parece un node_modules corrupto y no lo es: reinstalarlo no arregla nada, hay que
+  **actualizar node**. En CI no pasa porque `node-version: "20"` resuelve a la ultima 20.x.
+  `ci_local.sh` lo comprueba con `npx oxlint --version` antes de usarlo y lo salta con
+  `[--]` en vez de darlo por rojo: **un paso permanentemente rojo enseña a ignorar la
+  puerta entera**, que es peor que no tenerla
 - **RESUELTO: la suite imprimia «1021 passed» y el proceso NO SALIA.** Causa: engines de
   aiosqlite sin cerrar. `create_async_engine("sqlite+aiosqlite://...")` levanta un
   `_connection_worker_thread` que **no es demonio** y solo muere con `dispose()`. Eran DOS

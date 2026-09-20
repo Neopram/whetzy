@@ -78,7 +78,20 @@ correr "backend: mypy --strict" "$RAIZ/backend" \
 
 if [ -d "$RAIZ/frontend/node_modules" ]; then
   correr "frontend: tipos"  "$RAIZ/frontend" npx tsc -b
-  correr "frontend: oxlint" "$RAIZ/frontend" npx oxlint src --deny-warnings
+  # oxlint se comprueba ANTES de usarlo. Si no arranca, el paso se salta con
+  # [--] en vez de contar como rojo: un paso permanentemente rojo por una
+  # herramienta rota localmente enseña a ignorar la puerta entera, que es peor
+  # que no tenerla. El 2026-09-20 pasaba esto: oxlint@1.82 pide node
+  # ^20.19.0 || >=22.12.0 y la maquina tiene v20.18.0, asi que npm se salta su
+  # binario nativo opcional y `npx oxlint` muere al cargar el modulo. En CI no
+  # ocurre: `node-version: "20"` resuelve a la ultima 20.x.
+  if ( cd "$RAIZ/frontend" && npx oxlint --version >/dev/null 2>&1 ); then
+    correr "frontend: oxlint" "$RAIZ/frontend" npx oxlint src --deny-warnings
+  else
+    titulo "frontend: oxlint"
+    echo "[--] oxlint no arranca aqui (mira si node cumple el engine que pide)."
+    echo "[--] No cuenta como rojo. En CI si corre."
+  fi
   correr "frontend: vitest" "$RAIZ/frontend" npm run -s test
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
