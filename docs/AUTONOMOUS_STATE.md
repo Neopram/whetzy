@@ -51,10 +51,14 @@
 - **Las respuestas de la prueba de nivel alimentan el dominio por skill.** Van a la misma tabla
   `responses`, asi que despues de una nivelacion el «Tu territorio» de la home cambia. Es
   coherente, pero conviene saberlo antes de interpretar una cifra de dominio
-- **Para probar navegacion en el panel hay que tener la ventana al frente y usar clics reales**
-  (`computer.left_click` sobre un `ref`), no `element.click()` desde JS: con la ventana detras,
-  `AnimatePresence mode="wait"` se queda esperando una animacion de salida que nunca termina y la
-  pantalla anterior se queda pegada. No es un fallo de la app
+- **El «bloqueo al cambiar de seccion» NO existe: era la medida.** Cuantificado el 2026-09-20:
+  con clics reales (`computer.left_click`), **6 de 6** navegaciones seguidas cambian de pantalla
+  en menos de 3 s (Rutas, Inicio, Stats, Liga, Duelos, Perfil). Con `element.click()` desde JS y
+  una espera de 2,5 s, **6 de 6 parecian fallar**. La causa se midio directa: en el panel
+  automatizado `requestAnimationFrame` corre a **2 fotogramas por segundo** en vez de ~60, asi
+  que la animacion de salida de 0,2 s de `AnimatePresence mode="wait"` tarda segundos y la
+  pantalla nueva no monta hasta que acaba. Esperando mas, el mismo clic de JS llega. **No tocar
+  la animacion por esto**: el codigo esta bien y el navegador de un usuario va a 60 fps
 - **La prueba de nivel ya usa el motor CAT/IRT del servidor** (2026-09-20, `83e79e2`). Estaba
   implementada en `app/services/engine/placement.py` y no la llamaba nadie: la pantalla llevaba
   diez preguntas en los ficheros de idioma y calculaba el nivel con
@@ -111,11 +115,11 @@
   leido justo despues de cambiar `data-theme` devuelve el valor **a mitad de la transicion** CSS.
   Forzar `data-theme` por JS ademas deja estilos obsoletos en modulos CSS: el tema hay que
   cambiarlo recargando, no mutando el atributo
-- **El panel del navegador oculto congela `requestAnimationFrame`**, y con `AnimatePresence
-  mode="wait"` la pantalla nueva no se monta hasta que acaba la animacion de salida: la app
-  parece colgada en la pantalla anterior con la barra inferior ya oculta. Es artefacto del
-  entorno de prueba (`document.visibilityState === 'hidden'`), **no un fallo de la app**. Para
-  probar navegacion hay que traer el panel al frente
+- **El panel del navegador estrangula `requestAnimationFrame`** (medido: 2 fps, y a 0 si la
+  ventana esta detras). Con `AnimatePresence mode="wait"` la pantalla nueva no se monta hasta
+  que termina la animacion de salida, asi que la app parece colgada en la anterior con la barra
+  inferior ya oculta. **Es el entorno de prueba, no la app** — ver la entrada de arriba con los
+  numeros. Para probar navegacion: ventana al frente, clics reales y esperar 3 s o mas
 - **El limite por IP ya no es global.** `TRUST_PROXY_HEADERS` estaba en false detras del proxy de
   Railway, asi que todos los usuarios compartian un cubo de 12/min. Medido antes: 14 de 20 logins
   daban 429. Ahora `/auth/me` y `/auth/refresh` van al presupuesto normal y solo login, registro,
