@@ -26,3 +26,35 @@ export function parseQuestion(text: string): EnunciadoPartido {
   }
   return { prose: text, code: null };
 }
+
+export interface Trozo {
+  text: string;
+  /** true cuando el trozo venia entre comillas simples y es codigo. */
+  code: boolean;
+}
+
+/**
+ * Parte la prosa en trozos de texto y trozos de codigo en linea.
+ *
+ * Los enunciados usan comillas simples para nombrar codigo dentro de la frase
+ * —«¿Que ventaja tiene `with open("f") as fh:` sobre `fh = open("f")`?»— y sin
+ * tratarlas el alumno lee las comillas como si fueran parte de la respuesta.
+ *
+ * Las comillas sueltas se quedan como texto: es mas seguro enseñar una comilla
+ * de mas que comerse media frase por un backtick olvidado al autorar.
+ */
+export function splitInlineCode(text: string): Trozo[] {
+  const trozos: Trozo[] = [];
+  const patron = /`([^`\n]+)`/g;
+  let ultimo = 0;
+
+  for (const m of text.matchAll(patron)) {
+    const at = m.index ?? 0;
+    if (at > ultimo) trozos.push({ text: text.slice(ultimo, at), code: false });
+    trozos.push({ text: m[1], code: true });
+    ultimo = at + m[0].length;
+  }
+
+  if (ultimo < text.length) trozos.push({ text: text.slice(ultimo), code: false });
+  return trozos.length > 0 ? trozos : [{ text, code: false }];
+}

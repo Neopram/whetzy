@@ -13,10 +13,11 @@ from datetime import UTC, datetime
 
 import pytest
 import pytest_asyncio
-from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
+from app.core.db import Base
 from app.models.session import Response, StudySession
+from app.models.user import User
 from app.services.ai.tutor import _times_missed
 
 DB_URL = "sqlite+aiosqlite:///:memory:"
@@ -32,53 +33,18 @@ def event_loop():
 @pytest_asyncio.fixture(scope="module")
 async def db_session():
     engine = create_async_engine(DB_URL, echo=False)
+    # Las tablas salen del modelo. Antes se escribia aqui el CREATE TABLE de
+    # las tres, y esa copia divergio en cuanto `StudySession` gano columnas:
+    # los tests fallaban con «no column named track_id» y solo se veia
+    # corriendo la suite completa.
+    #
+    # Solo estas tres: el test llama a `_times_missed` directamente, sin app,
+    # para no arrastrar el orden de creacion del engine de FastAPI. SQLite no
+    # exige las claves foraneas por defecto, asi que el subconjunto basta.
     async with engine.begin() as conn:
-        # Only create the tables we need for this test
         await conn.run_sync(
-            lambda c: (
-                c.execute(text("""
-                    CREATE TABLE IF NOT EXISTS users (
-                        id TEXT PRIMARY KEY,
-                        username TEXT,
-                        email TEXT,
-                        hashed_password TEXT,
-                        language TEXT DEFAULT 'es',
-                        level INTEGER DEFAULT 1,
-                        xp INTEGER DEFAULT 0,
-                        streak_days INTEGER DEFAULT 0,
-                        last_active_date TEXT,
-                        created_at TEXT,
-                        league_id TEXT,
-                        refresh_token TEXT
-                    )
-                """)),
-                c.execute(text("""
-                    CREATE TABLE IF NOT EXISTS study_sessions (
-                        id TEXT PRIMARY KEY,
-                        user_id TEXT,
-                        mode TEXT DEFAULT 'study',
-                        started_at TEXT,
-                        ended_at TEXT,
-                        questions_answered INTEGER DEFAULT 0,
-                        correct_count INTEGER DEFAULT 0,
-                        xp_earned INTEGER DEFAULT 0,
-                        max_combo INTEGER DEFAULT 0
-                    )
-                """)),
-                c.execute(text("""
-                    CREATE TABLE IF NOT EXISTS responses (
-                        id TEXT PRIMARY KEY,
-                        session_id TEXT,
-                        question_id TEXT,
-                        correct INTEGER,
-                        grade INTEGER DEFAULT 0,
-                        response_time_ms INTEGER DEFAULT 0,
-                        created_at TEXT,
-                        question_version INTEGER DEFAULT 1,
-                        declared_unknown INTEGER DEFAULT 0
-                    )
-                """)),
-            )
+            Base.metadata.create_all,
+            tables=[User.__table__, StudySession.__table__, Response.__table__],
         )
     factory = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
     async with factory() as session:

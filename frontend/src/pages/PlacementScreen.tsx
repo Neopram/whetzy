@@ -7,7 +7,7 @@ import {
   type PlacementResult,
   type QuestionPublic,
 } from '../services/api';
-import { parseQuestion } from '../lib/question';
+import { parseQuestion, splitInlineCode } from '../lib/question';
 import styles from './PlacementScreen.module.css';
 
 /**
@@ -244,7 +244,17 @@ export function PlacementScreen({ trackId }: Props) {
       </div>
 
       <div className={styles.questionCard}>
-        <h2 className={styles.questionText}>{enunciado}</h2>
+        <h2 className={styles.questionText}>
+          {/* Las comillas simples nombran codigo dentro de la frase; sin esto
+              el alumno las lee como parte de la respuesta. */}
+          {splitInlineCode(enunciado).map((t, i) =>
+            t.code ? (
+              <code key={i} className={styles.inlineCode}>{t.text}</code>
+            ) : (
+              <span key={i}>{t.text}</span>
+            )
+          )}
+        </h2>
         {codigo && <pre className={styles.codeBlock}><code>{codigo}</code></pre>}
       </div>
 
