@@ -32,6 +32,24 @@ mkdir -p "$CACHE/mypy" "$CACHE/pytest"
 export MYPY_CACHE_DIR="$CACHE/mypy"
 CACHE_PYTEST="-o cache_dir=$CACHE/pytest"
 
+# Un solo nivel 2 a la vez. El hook decia «se reemplaza» cuando el anterior
+# seguia corriendo y NO lo mataba: el 2026-09-21 hubo tres pytest a la vez y
+# 1,8 GB libres de 14. Dos suites de 25 min compitiendo en esta maquina es
+# exactamente lo que ya mato un run sin dejar traza (ver los gotchas de
+# memoria). El nuevo manda: lleva el commit mas reciente.
+CERROJO="$BITACORA/corriendo.pid"
+if [ -f "$CERROJO" ]; then
+  _viejo="$(cat "$CERROJO" 2>/dev/null)"
+  if [ -n "$_viejo" ] && kill -0 "$_viejo" 2>/dev/null; then
+    echo "[cerrojo] ya corria el nivel 2 (pid $_viejo); lo paro, este es mas nuevo"
+    pkill -P "$_viejo" 2>/dev/null
+    kill -9 "$_viejo" 2>/dev/null
+    sleep 2
+  fi
+fi
+echo $$ > "$CERROJO"
+trap 'rm -f "$CERROJO"' EXIT
+
 SHA="$(git rev-parse --short HEAD 2>/dev/null || echo '?')"
 INICIO="$(date '+%Y-%m-%d %H:%M')"
 printf 'CORRIENDO desde %s (%s)\n' "$INICIO" "$SHA" > "$BITACORA/estado"
