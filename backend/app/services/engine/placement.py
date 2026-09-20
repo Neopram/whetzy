@@ -44,7 +44,15 @@ class PlacementEngine:
         max_questions: int = 50,
         se_threshold: float = 0.30,
         skip_threshold: float = 0.70,
-        skip_min_questions: int = 30,
+        # Preguntas de un MISMO modulo antes de poder recomendar saltarlo.
+        # Valia 30, y con `max_questions=50` repartidas entre los 12 modulos
+        # de un track ningun modulo llega: medido en produccion (maximo 7) y
+        # simulado con el banco real en cinco niveles de habilidad (media 7,6
+        # a 9,4; pico 11). Es decir, «saltate lo que ya dominas» —la razon de
+        # que exista la prueba— no podia dispararse nunca. Ocho si se alcanza
+        # y mantiene la exigencia: con `skip_threshold=0.70` hacen falta 6
+        # aciertos de 8 en ese modulo.
+        skip_min_questions: int = 8,
     ):
         self.items = {item.item_id: item for item in items}
         self.item_list = items
