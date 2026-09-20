@@ -43,7 +43,22 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     from app.core.db import AsyncSessionLocal
     from app.ml.registry import registry
+    from app.services import email as email_svc
     from app.services.ai import rag
+
+    # Si el correo no sale, que se sepa al arrancar y no cuando alguien pierda
+    # su cuenta. En produccion es un error, no un aviso (ledger H.30).
+    _correo = email_svc.describe_config()
+    if _correo["configured"]:
+        logger.info("Email: proveedor %s, remitente %s", _correo["provider"], _correo["from"])
+    elif settings.ENVIRONMENT == "production":
+        logger.error(
+            "email_not_configured — verificacion de cuenta y reset de contrasena NO "
+            "se envian; se escriben en el log y se pierden. Define RESEND_API_KEY "
+            "(o SMTP_USER y SMTP_PASSWORD). Ledger H.30"
+        )
+    else:
+        logger.info("Email: sin proveedor, los mensajes van al log (entorno %s)", settings.ENVIRONMENT)
 
     asyncio.create_task(rag.build_bg(AsyncSessionLocal))
     logger.info("RAG: background index build scheduled")
@@ -70,8 +85,9 @@ def _schedule_monthly_payouts(db_factory) -> None:
 
         async def _run_payout_job():
             """Create and queue a run_payouts job."""
-            from app.models.job import Job
             from uuid import uuid4
+
+            from app.models.job import Job
 
             async with db_factory() as db:
                 # Create a system job (user_id is a sentinel for scheduled jobs)

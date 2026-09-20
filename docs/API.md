@@ -274,6 +274,12 @@ GET  /admin/content/gaps                 → gaps in question coverage
 GET  /admin/content/parity               → parity check across languages
 ```
 
+### Correo (H.30)
+```
+GET  /admin/email/status                 → {provider, configured, from, …} 🔒 owner — si el correo sale y por dónde; nunca devuelve la clave
+POST /admin/email/test                   → {sent, provider, to} 🔒 owner — envía de verdad (query `to`, por defecto el propio owner); 503 con el motivo del proveedor si falla
+```
+
 ### Economy & credits
 ```
 GET  /admin/economy/credits              → credit allocation summary

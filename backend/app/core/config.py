@@ -103,7 +103,11 @@ class Settings(BaseSettings):
     GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
 
     # --- Email (transaccional) -----------------------------------------------
-    EMAIL_PROVIDER: str = "smtp"  # smtp | resend | log (fallback/dev)
+    # auto = se usa lo que haya (RESEND_API_KEY, si no SMTP_USER+SMTP_PASSWORD,
+    # si no log). Valia "smtp" por defecto, y como el valor por defecto era
+    # indistinguible de una eleccion del operador, poner solo RESEND_API_KEY no
+    # activaba nada: los correos se escribian en el log y se perdian (H.30).
+    EMAIL_PROVIDER: str = "auto"  # auto | smtp | resend | log
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
     SMTP_USER: str = ""

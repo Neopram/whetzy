@@ -15,9 +15,9 @@ from app.core.config import settings
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.admin import GDPRRequest
-from app.models.economy import CreditLedger, Referral
 from app.models.auth import AuditLog, LoginAttempt
 from app.models.content import Question, Skill
+from app.models.economy import CreditLedger, Referral
 from app.models.session import Response, StudySession
 from app.models.user import User
 
@@ -696,3 +696,52 @@ async def get_economy_k_factor(
         "successful_referrals": completed,
         "segment": segment,
     }
+
+# ── Correo (H.30) ─────────────────────────────────────────────────────────
+
+@router.get("/email/status")
+async def get_email_status(_: User = Depends(require_owner)) -> dict[str, Any]:
+    """Si el correo sale de la maquina, y por donde.
+
+    Existe porque durante un dia entero nadie pudo responder a esto sin leer el
+    codigo: `POST /auth/forgot-password` devolvia 200 tanto si el correo salia
+    como si se escribia en un log y se tiraba. No devuelve ninguna credencial,
+    solo si la hay.
+    """
+    from app.services import email as email_svc
+
+    return email_svc.describe_config()
+
+
+@router.post("/email/test")
+async def post_email_test(
+    to: str | None = Query(default=None, description="Destino; por defecto, el propio owner"),
+    user: User = Depends(require_owner),
+) -> dict[str, Any]:
+    """Envia un correo de verdad y devuelve el fallo si lo hay.
+
+    A diferencia del envio normal —que nunca puede tumbar un registro ni delatar
+    si un correo existe—, aqui el error se propaga con el motivo que da el
+    proveedor: clave invalida, remitente sin verificar, SMTP que rechaza. Es la
+    comprobacion de treinta segundos despues de poner la clave en Railway.
+    """
+    import asyncio
+
+    from app.services import email as email_svc
+
+    destino = to or user.email
+    asunto = "Whetzy: prueba de configuracion de correo"
+    cuerpo = (
+        "<h2>Funciona.</h2>"
+        "<p>Si estas leyendo esto, el backend de Whetzy puede enviar correo y "
+        "recuperar la contrasena ya no deja a nadie fuera de su cuenta.</p>"
+    )
+    try:
+        provider = await asyncio.to_thread(email_svc._send_now, destino, asunto, cuerpo)
+    except Exception as exc:
+        logger.exception("email_test_failed to=%s", destino)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"No se pudo enviar: {exc}",
+        ) from exc
+    return {"sent": True, "provider": provider, "to": destino}

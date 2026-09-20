@@ -1,17 +1,29 @@
 """Transactional email service for Whetzy.
 
-Provider hierarchy:
-  1. SMTP (gmail, SES, etc.) — configured via SMTP_* env vars
-  2. Resend HTTP API — configured via RESEND_API_KEY
-  3. Log fallback — always available; used in dev and when provider fails
+El proveedor se **deduce de las credenciales que haya**, no de una variable
+aparte: `RESEND_API_KEY` -> Resend, si no `SMTP_USER`+`SMTP_PASSWORD` -> SMTP,
+y si no hay nada, `log`. `EMAIL_PROVIDER` solo sirve para forzar uno.
 
-Select provider with EMAIL_PROVIDER=smtp|resend|log.
-If the selected provider raises, the exception is caught and the email is
-logged (best-effort transactional). The caller always succeeds.
+Antes hacian falta dos variables correctas a la vez (`EMAIL_PROVIDER=resend`
+**y** la clave) y acertar una sola no bastaba: el envio caia al log sin decir
+nada. Con `EMAIL_PROVIDER` valiendo `smtp` por defecto y `SMTP_USER` vacio, eso
+es lo que pasaba en produccion — `POST /auth/forgot-password` devolvia 200, la
+pantalla decia «te hemos enviado un enlace» y no salia nada de la maquina. Quien
+olvidaba su contrasena perdia la cuenta (ledger H.30).
+
+Un envio sigue sin poder tumbar la peticion que lo dispara —no se le puede decir
+a quien pide un reset si su correo existe, ni hacerle esperar a un SMTP lento—,
+pero ahora **un fallo se ve**: marcador `email_not_configured` en cada envio
+perdido, y `POST /admin/email/test` para comprobarlo de verdad sin adivinar.
+
+El envio es bloqueante (smtplib, HTTP) y estas funciones se llaman desde
+endpoints async, asi que se despacha en un hilo: antes, un SMTP con 10 s de
+timeout congelaba el bucle de eventos entero.
 """
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import smtplib
 import ssl
@@ -19,6 +31,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 logger = logging.getLogger("whetzy.email")
+
+# Los envios en segundo plano se guardan aqui mientras corren: una tarea de
+# asyncio sin referencia viva puede recogerla el GC a media ejecucion.
+_en_vuelo: set[asyncio.Task] = set()
 
 # ── Templates ─────────────────────────────────────────────────────────────────
 
@@ -169,29 +185,29 @@ def _send_smtp(to: str, subject: str, html: str) -> None:
 
 
 def _send_resend(to: str, subject: str, html: str) -> None:
-    import json as _json
-    import urllib.request
+    """Envia por la API de Resend.
+
+    Con `urllib` el `if resp.status >= 400` era codigo muerto —`urlopen` ya lanza
+    en 4xx— y el motivo real (clave invalida, remitente sin verificar) se perdia.
+    `httpx` deja leer el cuerpo, que es donde Resend explica que pasa.
+    """
+    import httpx
 
     from app.core.config import settings
 
-    payload = _json.dumps({
-        "from": f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM_ADDRESS}>",
-        "to": [to],
-        "subject": subject,
-        "html": html,
-    }).encode()
-    req = urllib.request.Request(
+    resp = httpx.post(
         "https://api.resend.com/emails",
-        data=payload,
-        headers={
-            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
-            "Content-Type": "application/json",
+        json={
+            "from": f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM_ADDRESS}>",
+            "to": [to],
+            "subject": subject,
+            "html": html,
         },
-        method="POST",
+        headers={"Authorization": f"Bearer {settings.RESEND_API_KEY}"},
+        timeout=10.0,
     )
-    with urllib.request.urlopen(req, timeout=10) as resp:
-        if resp.status >= 400:
-            raise RuntimeError(f"Resend API error {resp.status}")
+    if resp.status_code >= 400:
+        raise RuntimeError(f"Resend {resp.status_code}: {resp.text[:400]}")
 
 
 def _send_log(to: str, subject: str, html: str) -> None:
@@ -204,22 +220,116 @@ def _send_log(to: str, subject: str, html: str) -> None:
 # ── Public API ─────────────────────────────────────────────────────────────────
 
 
-def _dispatch(to: str, subject: str, html: str) -> None:
+def resolve_provider() -> str:
+    """Proveedor que se usaria ahora mismo: 'resend', 'smtp' o 'log'.
+
+    Se deduce de las credenciales presentes. `EMAIL_PROVIDER` solo fuerza uno, y
+    si el forzado no tiene credenciales se dice en voz alta en vez de degradar a
+    `log` en silencio — degradar en silencio es justamente lo que dejo a los
+    usuarios sin poder recuperar su contrasena.
+    """
     from app.core.config import settings
 
-    provider = settings.EMAIL_PROVIDER
+    forzado = (settings.EMAIL_PROVIDER or "").strip().lower()
+    if forzado == "log":
+        return "log"
+    if forzado in ("", "auto"):
+        forzado = None
+
+    tiene = {
+        "resend": bool(settings.RESEND_API_KEY),
+        "smtp": bool(settings.SMTP_USER and settings.SMTP_PASSWORD),
+    }
+    if forzado is not None and forzado in tiene:
+        if tiene[forzado]:
+            return forzado
+        logger.warning(
+            "EMAIL_PROVIDER=%s pero le faltan credenciales; se buscan otras", forzado
+        )
+    if tiene["resend"]:
+        return "resend"
+    if tiene["smtp"]:
+        return "smtp"
+    return "log"
+
+
+def is_configured() -> bool:
+    """True si un correo saldria de verdad de la maquina."""
+    return resolve_provider() != "log"
+
+
+def describe_config() -> dict[str, object]:
+    """Lo que hace falta para responder «llega el correo?» sin adivinar."""
+    from app.core.config import settings
+
+    provider = resolve_provider()
+    return {
+        "provider": provider,
+        "configured": provider != "log",
+        "forced_by_env": (settings.EMAIL_PROVIDER or "").strip().lower() or None,
+        "from": f"{settings.EMAIL_FROM_NAME} <{settings.EMAIL_FROM_ADDRESS}>",
+        "frontend_base_url": settings.FRONTEND_BASE_URL,
+        "has_resend_key": bool(settings.RESEND_API_KEY),
+        "has_smtp_credentials": bool(settings.SMTP_USER and settings.SMTP_PASSWORD),
+    }
+
+
+def _send_now(to: str, subject: str, html: str) -> str:
+    """Envia en este hilo y **propaga el fallo**. Devuelve el proveedor usado.
+
+    Es la ruta que usa `POST /admin/email/test`: ahi si se quiere la excepcion
+    con el motivo, no un log que hay que ir a buscar.
+    """
+    provider = resolve_provider()
+    if provider == "resend":
+        _send_resend(to, subject, html)
+    elif provider == "smtp":
+        _send_smtp(to, subject, html)
+    else:
+        raise RuntimeError(
+            "Sin proveedor de correo: define RESEND_API_KEY, o SMTP_USER y "
+            "SMTP_PASSWORD, en el entorno del backend"
+        )
+    return provider
+
+
+def _entregar(to: str, subject: str, html: str) -> None:
+    """Un envio, con el fallo registrado de forma que se pueda encontrar."""
+    provider = resolve_provider()
+    if provider == "log":
+        # Ni excepcion (rompería el registro y el reset) ni silencio: un marcador
+        # que se puede grepear en los logs de Railway y que dice que falta.
+        logger.error(
+            "email_not_configured to=%s subject=%r — no sale de la maquina. "
+            "Define RESEND_API_KEY (o SMTP_USER y SMTP_PASSWORD). Ledger H.30",
+            to, subject,
+        )
+        _send_log(to, subject, html)
+        return
     try:
-        if provider == "smtp" and settings.SMTP_USER:
-            _send_smtp(to, subject, html)
-        elif provider == "resend" and settings.RESEND_API_KEY:
-            _send_resend(to, subject, html)
-        else:
-            _send_log(to, subject, html)
+        _send_now(to, subject, html)
         logger.info("email_sent provider=%s to=%s subject=%r", provider, to, subject)
     except Exception:
-        # Best-effort: log and continue so callers always succeed.
         logger.exception("email_failed provider=%s to=%s subject=%r", provider, to, subject)
         _send_log(to, subject, html)
+
+
+def _dispatch(to: str, subject: str, html: str) -> None:
+    """Despacha sin bloquear al que llama.
+
+    `smtplib` y el POST a Resend son bloqueantes, y todos los que llaman aqui son
+    endpoints async: hacerlo en el hilo del bucle congela el servidor entero
+    mientras dure el envio (hasta 10 s de timeout). Si hay bucle, va a un hilo.
+    """
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        _entregar(to, subject, html)
+        return
+
+    tarea = loop.create_task(asyncio.to_thread(_entregar, to, subject, html))
+    _en_vuelo.add(tarea)
+    tarea.add_done_callback(_en_vuelo.discard)
 
 
 def send_welcome(to: str, name: str, lang: str = "es") -> None:

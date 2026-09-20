@@ -108,6 +108,7 @@ class TestDispatch:
 
         monkeypatch.setattr(settings, "EMAIL_PROVIDER", "smtp", raising=False)
         monkeypatch.setattr(settings, "SMTP_USER", "", raising=False)
+        monkeypatch.setattr(settings, "RESEND_API_KEY", "", raising=False)
         _dispatch("a@b.test", "Subject", "<p>hi</p>")
         assert len(sent) == 1
 
@@ -117,6 +118,7 @@ class TestDispatch:
         calls: list[tuple[str, str, str]] = []
         monkeypatch.setattr(settings, "EMAIL_PROVIDER", "smtp", raising=False)
         monkeypatch.setattr(settings, "SMTP_USER", "user", raising=False)
+        monkeypatch.setattr(settings, "SMTP_PASSWORD", "pass", raising=False)
         monkeypatch.setattr(
             email_service, "_send_smtp", lambda to, s, h: calls.append((to, s, h))
         )
@@ -337,60 +339,72 @@ class _FakeResponse:
 
 
 class TestSendResend:
-    def test_posts_expected_payload(self, monkeypatch: pytest.MonkeyPatch) -> None:
-        import json as _json
-        import urllib.request
+    """El proveedor HTTP.
 
+    Estos tests mockeaban `urllib.request.urlopen`. Al pasar el proveedor a
+    `httpx` dejaron de interceptar nada y **empezaron a llamar a la API real de
+    Resend** en cada ejecucion de la suite, fallando con un 401 autentico. Un
+    test que sale a internet no prueba el codigo: prueba la conectividad.
+    """
+
+    @staticmethod
+    def _captura(monkeypatch: pytest.MonkeyPatch, status: int = 200, body: str = "{}"):
+        import httpx
+
+        visto: dict[str, Any] = {}
+
+        def fake_post(url: str, **kwargs: Any) -> httpx.Response:
+            visto["url"] = url
+            visto.update(kwargs)
+            return httpx.Response(status_code=status, text=body)
+
+        monkeypatch.setattr(httpx, "post", fake_post)
+        return visto
+
+    def test_posts_expected_payload(self, monkeypatch: pytest.MonkeyPatch) -> None:
         from app.core.config import settings
 
         monkeypatch.setattr(settings, "RESEND_API_KEY", "re_secret", raising=False)
-        captured: dict[str, object] = {}
+        visto = self._captura(monkeypatch)
 
-        def fake_urlopen(req: object, timeout: int = 10) -> _FakeResponse:
-            captured["url"] = req.full_url  # type: ignore[attr-defined]
-            captured["method"] = req.method  # type: ignore[attr-defined]
-            captured["headers"] = req.headers  # type: ignore[attr-defined]
-            captured["body"] = _json.loads(req.data)  # type: ignore[attr-defined]
-            return _FakeResponse(200)
-
-        monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
         email_service._send_resend("dest@b.test", "Asunto", "<p>hola</p>")
 
-        assert captured["url"] == "https://api.resend.com/emails"
-        assert captured["method"] == "POST"
-        body = captured["body"]
-        assert body["to"] == ["dest@b.test"]  # type: ignore[index]
-        assert body["subject"] == "Asunto"  # type: ignore[index]
-        assert body["html"] == "<p>hola</p>"  # type: ignore[index]
-        headers = captured["headers"]
-        assert headers["Authorization"] == "Bearer re_secret"  # type: ignore[index]
+        assert visto["url"] == "https://api.resend.com/emails"
+        assert visto["json"]["to"] == ["dest@b.test"]
+        assert visto["json"]["subject"] == "Asunto"
+        assert visto["json"]["html"] == "<p>hola</p>"
+        assert visto["headers"]["Authorization"] == "Bearer re_secret"
 
-    def test_error_status_raises(self, monkeypatch: pytest.MonkeyPatch) -> None:
-        import urllib.request
+    def test_error_status_raises_with_the_reason(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """El motivo tiene que llegar: 'error 500' a secas no sirve para nada.
 
+        Los fallos reales de Resend son 'clave invalida' o 'remitente sin
+        verificar', y los dos se arreglan en un minuto **si se leen**.
+        """
         from app.core.config import settings
 
         monkeypatch.setattr(settings, "RESEND_API_KEY", "re_x", raising=False)
-        monkeypatch.setattr(
-            urllib.request, "urlopen", lambda req, timeout=10: _FakeResponse(500)
+        self._captura(
+            monkeypatch,
+            status=403,
+            body='{"message":"The whetzy.com domain is not verified"}',
         )
-        with pytest.raises(RuntimeError, match="Resend API error 500"):
+
+        with pytest.raises(RuntimeError, match="domain is not verified"):
             email_service._send_resend("dest@b.test", "S", "<p>h</p>")
 
     def test_api_key_is_not_in_the_payload(self, monkeypatch: pytest.MonkeyPatch) -> None:
         """The key belongs in the header, never in the JSON body."""
         import json as _json
-        import urllib.request
 
         from app.core.config import settings
 
         monkeypatch.setattr(settings, "RESEND_API_KEY", "re_secret", raising=False)
-        seen: dict[str, object] = {}
+        visto = self._captura(monkeypatch)
 
-        def fake_urlopen(req: object, timeout: int = 10) -> _FakeResponse:
-            seen["body"] = _json.loads(req.data)  # type: ignore[attr-defined]
-            return _FakeResponse(200)
-
-        monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
         email_service._send_resend("dest@b.test", "S", "<p>h</p>")
-        assert "re_secret" not in _json.dumps(seen["body"])
+        assert "re_secret" not in _json.dumps(visto["json"])
+
+

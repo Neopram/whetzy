@@ -130,13 +130,44 @@ DATABASE_URL=postgresql+asyncpg://<user>:<pass>@<host>/<db>
 GROQ_API_KEY=<groq key>
 ENVIRONMENT=production
 DEBUG=false
-EMAIL_PROVIDER=resend        # or smtp
-RESEND_API_KEY=<key>         # if EMAIL_PROVIDER=resend
-SMTP_USER=...                # if EMAIL_PROVIDER=smtp
-SMTP_PASSWORD=...
+RESEND_API_KEY=<key>         # basta esta para que el correo salga
 EMAIL_FROM_ADDRESS=noreply@whetzy.com
 FRONTEND_BASE_URL=https://whetzy.com
+# EMAIL_PROVIDER=auto        # por defecto; solo para forzar smtp|resend|log
+# SMTP_USER=... SMTP_PASSWORD=...   # alternativa a Resend (hacen falta las dos)
 ```
+
+### Correo: la variable que no se puede olvidar (H.30)
+
+Sin proveedor, la verificación de cuenta y el reset de contraseña **se escriben
+en el log del contenedor y se pierden**, mientras la pantalla dice que el enlace
+se ha enviado. Quien olvide su contraseña pierde la cuenta. Estuvo así en
+producción hasta el 2026-09-20.
+
+El proveedor se deduce de las credenciales: **basta `RESEND_API_KEY`**. No hace
+falta tocar `EMAIL_PROVIDER` (antes sí, y acertar solo una de las dos no servía
+de nada, en silencio).
+
+1. Crear cuenta en [resend.com](https://resend.com) — capa gratis: 3.000
+   correos/mes, 100/día. Suficiente para la beta.
+2. Verificar el dominio `whetzy.com` (añadir los registros DNS que indica, en
+   Cloudflare). **Mientras no esté verificado**, Resend solo deja enviar desde
+   `onboarding@resend.dev`: poner `EMAIL_FROM_ADDRESS=onboarding@resend.dev`
+   temporalmente.
+3. En Railway → Variables: `RESEND_API_KEY=re_...`. El contenedor se reinicia.
+4. **Comprobarlo, no suponerlo:**
+
+```bash
+TOKEN=<token de una cuenta con role=owner>
+API=https://api-production-9751.up.railway.app/api/v1
+curl -s -H "Authorization: Bearer $TOKEN" $API/admin/email/status
+curl -s -X POST -H "Authorization: Bearer $TOKEN" $API/admin/email/test
+```
+
+`status` debe decir `"configured": true`; `test` envía un correo real a la
+dirección del owner y devuelve 503 **con el motivo** si el proveedor lo rechaza
+(clave inválida, dominio sin verificar). En los logs de arranque:
+`Email: proveedor resend, remitente ...`, o `email_not_configured` si falta.
 
 ## Troubleshoot
 
