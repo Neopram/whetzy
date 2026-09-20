@@ -40,12 +40,23 @@ def _elo_to_irt_difficulty(elo_rating: float) -> float:
     return (elo_rating - 1500.0) / ELO_TO_LOGIT_SCALE
 
 
+#: Tipos que se responden eligiendo una opcion, que es el unico canal que
+#: tiene `PlacementAnswerRequest` (`selected_index`). El pool los incluia
+#: todos, asi que una sesion podia servir un `sql_exec` sin opciones: el
+#: alumno se quedaba sin forma de contestar y la prueba no avanzaba.
+#: `multiple_choice` esta aqui porque el banco usa ese nombre en 1.015
+#: preguntas ademas de `mcq`; dejarlo fuera vaciaba el pool de los tracks de
+#: certificacion enteros.
+_TIPOS_RESPONDIBLES = ("mcq", "multiple_choice", "true_false", "code_output")
+
+
 async def _track_item_pool(db: AsyncSession, track_id: str) -> list[IRTItem]:
     result = await db.execute(
         select(Question)
         .join(Skill, Skill.id == Question.skill_id)
         .join(Module, Module.id == Skill.module_id)
         .where(Module.track_id == track_id)
+        .where(Question.type.in_(_TIPOS_RESPONDIBLES))
     )
     questions = result.scalars().all()
     return [
@@ -133,8 +144,14 @@ async def start_placement(db: AsyncSession, user: User, track_id: str) -> Placem
     items = await _track_item_pool(db, track_id)
     if not items:
         raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_ENTITY, "Track has no placement items configured"
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            f"Track {track_id} has no questions that can be answered by choosing "
+            f"an option, so no placement test can be built from it",
         )
+    # Un pool mas corto que `min_questions` NO es un error: el motor se queda
+    # sin items, da la prueba por terminada y lo refleja en `reliability`. La
+    # interfaz enseña esa fiabilidad; inventarse aqui un minimo rechazaba
+    # sesiones que funcionan.
 
     engine = PlacementEngine(items=items)
     state = PlacementState()

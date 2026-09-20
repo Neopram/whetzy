@@ -199,7 +199,18 @@ export const auth = {
 export interface QuestionPublic {
   id: string;
   skill_id: string;
-  type: 'mcq' | 'true_false' | 'code_output' | 'fill_blank' | 'fill_blank_exec' | 'fix_bug' | 'sql_exec' | 'js_exec';
+  /** `multiple_choice` es el mismo formato que `mcq`; el banco usa los dos
+   *  nombres (1.015 preguntas con el segundo), y faltaba en este union. */
+  type:
+    | 'mcq'
+    | 'multiple_choice'
+    | 'true_false'
+    | 'code_output'
+    | 'fill_blank'
+    | 'fill_blank_exec'
+    | 'fix_bug'
+    | 'sql_exec'
+    | 'js_exec';
   difficulty_tier: 'easy' | 'medium' | 'hard' | 'expert';
   question_es: string;
   question_en: string;
@@ -428,34 +439,77 @@ export const lessonsApi = {
   },
 };
 
+export interface PlacementStartResponse {
+  session_id: string;
+  track_id: string;
+  question: QuestionPublic | null;
+  questions_answered: number;
+}
+
+export interface PlacementAnswerResponse {
+  correct: boolean;
+  ability_estimate: number;
+  ability_se: number;
+  questions_answered: number;
+  finished: boolean;
+  next_question: QuestionPublic | null;
+}
+
+export interface ModuleSkipRecommendation {
+  module_id: string;
+  module_name_es: string;
+  module_name_en: string;
+  accuracy: number;
+  questions_seen: number;
+  can_skip: boolean;
+}
+
+export interface PlacementResult {
+  session_id: string;
+  track_id: string;
+  ability_estimate: number;
+  ability_se: number;
+  total_questions: number;
+  correct: number;
+  accuracy: number;
+  /** 0-1. Baja cuando el motor se quedo sin preguntas antes de estabilizar. */
+  reliability: number;
+  skill_mastery: Record<string, number>;
+  module_recommendations: ModuleSkipRecommendation[];
+}
+
+/** Prueba de nivel adaptativa (CAT con IRT) — el motor vive en el servidor.
+ *
+ *  Las tres funciones tenian una forma que el backend nunca expuso: `start` no
+ *  mandaba `track_id`, `answer` mandaba `answer_index` en vez de
+ *  `selected_index` y sin el tiempo de respuesta, y `result` pedia
+ *  `/placement/{id}/result`, que devolvia 404. Los tests no lo vieron porque
+ *  moquean `fetch`; ahora lo cubre `backend/tests/test_contrato_frontend.py`.
+ */
 export const placement = {
-  async start() {
-    return request<{ session_id: string; question: unknown; total_questions: number }>('/placement/start', {
+  async start(trackId: string) {
+    return request<PlacementStartResponse>('/placement/start', {
       method: 'POST',
+      body: JSON.stringify({ track_id: trackId }),
     });
   },
 
-  async answer(sessionId: string, questionId: string, answerIndex: number) {
-    return request<{ correct: boolean; next_question: unknown | null; progress: number }>(
-      '/placement/answer',
-      {
-        method: 'POST',
-        body: JSON.stringify({ session_id: sessionId, question_id: questionId, answer_index: answerIndex }),
-      }
-    );
+  async answer(sessionId: string, questionId: string, selectedIndex: number, responseTimeMs: number) {
+    return request<PlacementAnswerResponse>('/placement/answer', {
+      method: 'POST',
+      body: JSON.stringify({
+        session_id: sessionId,
+        question_id: questionId,
+        selected_index: selectedIndex,
+        // El motor lo guarda con la respuesta; mandar algo negativo es un 422.
+        response_time_ms: Math.max(0, Math.round(responseTimeMs)),
+      }),
+    });
   },
 
   async result(sessionId: string) {
-    // El backend expone `GET /placement/result?session_id=...`, no
-    // `/placement/{id}/result`. Esta ruta devolvia 404 en produccion y ningun
-    // test lo vio: los de `services.api.*` moquean `fetch`, asi que pasan con
-    // cualquier URL. La guarda que si lo detecta vive en el backend
-    // (`tests/test_contrato_frontend.py`), que compara estas rutas con las del
-    // router de verdad.
     const qs = new URLSearchParams({ session_id: sessionId });
-    return request<{ ability: number; level: string; skip_modules: string[] }>(
-      `/placement/result?${qs}`
-    );
+    return request<PlacementResult>(`/placement/result?${qs}`);
   },
 };
 

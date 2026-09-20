@@ -214,3 +214,35 @@
   width: 100%;
   max-width: 300px;
 }
+
+/* Modulos que el motor dice que el alumno puede saltarse. Es el resultado que
+   justifica la prueba entera, asi que se lee como una lista, no como prosa. */
+.skipList {
+  list-style: none;
+  margin: var(--le-space-md) 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--le-space-xs);
+}
+
+.skipItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-sm) var(--le-space-md);
+  background: var(--le-green-light);
+  /* Tinta clara fija: el texto no puede seguir al tema (ver
+     tokens.contraste.test.ts). */
+  color: var(--le-success-on-tint);
+  border-radius: var(--le-radius-md);
+  font-weight: var(--le-fw-bold);
+  text-align: left;
+}
+
+.skipPct {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--le-fw-black);
+}

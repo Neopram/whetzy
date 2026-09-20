@@ -143,6 +143,7 @@ function App() {
   }
 
   const currentScreen = useAppStore((s) => s.currentScreen);
+  const placementTrackId = useAppStore((s) => s.placementTrackId);
   const setScreen = useAppStore((s) => s.setScreen);
   const mockExamTrackId = useAppStore((s) => s.mockExamTrackId);
   const mockExamQuestionCount = useAppStore((s) => s.mockExamQuestionCount);
@@ -267,7 +268,10 @@ function App() {
       case 'stats': return <StatsScreen />;
       case 'league': return <LeagueScreen />;
       case 'profile': return <ProfileScreen />;
-      case 'placement': return <PlacementScreen />;
+      case 'placement':
+        // El motor CAT es por ruta: sin `track_id` no hay pool que elegir.
+        if (!placementTrackId) return <HomeScreen />;
+        return <PlacementScreen trackId={placementTrackId} />;
       case 'duels': return <DuelScreen />;
       case 'mockexam':
         if (!mockExamTrackId) return null;

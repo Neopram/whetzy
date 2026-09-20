@@ -97,7 +97,8 @@ describe('api — placement', () => {
   it('placement.start returns placement data', async () => {
     vi.stubGlobal('fetch', makeOk({ session_id: 'psid', question: { id: 'pq1' } }));
     const { placement: placementApi } = await import('../services/api');
-    const res = await placementApi.start();
+    // `start` necesita el track: el motor CAT elige el pool por ruta.
+    const res = await placementApi.start('track01');
     expect((res as { session_id: string }).session_id).toBe('psid');
   });
 });

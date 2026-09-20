@@ -40,6 +40,7 @@ export function TracksScreen() {
   const startMockExam = useAppStore((s) => s.startMockExam);
   const startTrackExam = useAppStore((s) => s.startTrackExam);
   const startReadiness = useAppStore((s) => s.startReadiness);
+  const startPlacement = useAppStore((s) => s.startPlacement);
   const [track, setTrack] = useState('track01');
   const [view, setView] = useState<View>('curriculum');
   const { t } = useTranslation();
@@ -99,6 +100,21 @@ export function TracksScreen() {
           </button>
         ))}
       </div>
+
+      {/* La prueba de nivel es por ruta, asi que vive junto al selector de
+          rutas. Antes la pantalla existia y no la abria nadie. */}
+      {selected && (
+        <motion.button
+          className={styles.placementCta}
+          onClick={() => startPlacement(selected.id)}
+          whileTap={{ scale: 0.97 }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <span className={styles.mockExamTitle}>{t('tracks.placementCta')}</span>
+          <span className={styles.mockExamMeta}>{t('tracks.placementSub')}</span>
+        </motion.button>
+      )}
 
       {selected?.is_certification && selected.exam_question_count && selected.exam_duration_minutes && (
         <>

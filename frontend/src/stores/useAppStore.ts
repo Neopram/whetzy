@@ -95,6 +95,9 @@ interface AppState {
   // Certification readiness (18.1)
   readinessTrackId: string | null;
   startReadiness: (trackId: string) => void;
+  /** Track sobre el que corre la prueba de nivel; el motor CAT es por track. */
+  placementTrackId: string | null;
+  startPlacement: (trackId: string) => void;
 
   // Missions
   missions: Mission[];
@@ -275,6 +278,10 @@ export const useAppStore = create<AppState>()(
       readinessTrackId: null,
       startReadiness: (trackId) =>
         set((s) => ({ readinessTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'readiness' })),
+
+      placementTrackId: null,
+      startPlacement: (trackId) =>
+        set((s) => ({ placementTrackId: trackId, previousScreen: s.currentScreen, currentScreen: 'placement' })),
 
       missions: defaultMissions,
       updateMission: (id, progress) =>
