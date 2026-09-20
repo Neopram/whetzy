@@ -7,6 +7,7 @@ import {
   type PlacementResult,
   type QuestionPublic,
 } from '../services/api';
+import { parseQuestion } from '../lib/question';
 import styles from './PlacementScreen.module.css';
 
 /**
@@ -53,9 +54,12 @@ export function PlacementScreen({ trackId }: Props) {
   const mostradaEn = useRef<number>(Date.now());
   useEffect(() => { mostradaEn.current = Date.now(); }, [pregunta?.id]);
 
-  const enunciado = pregunta
-    ? (lang === 'en' ? pregunta.question_en : pregunta.question_es)
-    : '';
+  // Muchas preguntas del banco traen el codigo dentro del texto, cercado
+  // con ```. Sin separarlo se ven las comillas y el nombre del lenguaje, y
+  // el codigo queda en una sola linea sin monoespaciada.
+  const { prose: enunciado, code: codigo } = parseQuestion(
+    pregunta ? (lang === 'en' ? pregunta.question_en : pregunta.question_es) : ''
+  );
   const opciones = pregunta
     ? ((lang === 'en' ? pregunta.options_en : pregunta.options_es) ?? [])
     : [];
@@ -241,6 +245,7 @@ export function PlacementScreen({ trackId }: Props) {
 
       <div className={styles.questionCard}>
         <h2 className={styles.questionText}>{enunciado}</h2>
+        {codigo && <pre className={styles.codeBlock}><code>{codigo}</code></pre>}
       </div>
 
       <div className={styles.options}>

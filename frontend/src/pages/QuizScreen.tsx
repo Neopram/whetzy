@@ -13,6 +13,7 @@ import { TermCard } from '../components/quiz/TermCard';
 import { SourceLine } from '../components/quiz/SourceLine';
 import { useRuntime, runtimeForQuestion } from '../hooks/useRuntime';
 import { useGlossary } from '../hooks/useGlossary';
+import { parseQuestion } from '../lib/question';
 import styles from './QuizScreen.module.css';
 
 // Monaco is ~2 MB — lazy-load so the initial bundle stays small.
@@ -23,16 +24,6 @@ const MonacoCodeEditor = lazy(() =>
 const EXEC_TYPES = new Set<QuestionPublic['type']>(['fill_blank_exec', 'fix_bug', 'fill_blank', 'sql_exec', 'js_exec']);
 const TARGET_QUESTIONS = 10;
 
-/** Splits an optional fenced ``` code block out of the question text. */
-function parseQuestion(text: string): { prose: string; code: string | null } {
-  const m = text.match(/```[a-zA-Z]*\n?([\s\S]*?)```/);
-  if (m) {
-    const code = m[1].replace(/\n$/, '');
-    const prose = text.replace(m[0], '').trim();
-    return { prose, code };
-  }
-  return { prose: text, code: null };
-}
 
 /**
  * `code_es`/`code_en` carry the runnable template for question types like
