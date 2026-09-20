@@ -21,16 +21,16 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const SRC = join(RAIZ, 'src')
 
 /**
- * Componentes que existen y **no los importa nadie**: sus cadenas no llegan a
- * ningun usuario, asi que no se les exige traduccion. La lista es corta a
- * proposito — si crece, el problema no es la traduccion sino el codigo muerto.
- * Si alguno se conecta a la aplicacion, quitarlo de aqui y traducir sus claves.
+ * Ya no hay excepciones: los tres paneles que existian sin que nadie los
+ * importara (`B2BPanel`, `CertificationPanel`, `GamificationPanel`) se
+ * borraron el 2026-09-20. Eran maquetas estaticas con datos inventados
+ * dentro, y la de certificacion duplicaba el simulacro que ya funciona de
+ * verdad desde Rutas.
+ *
+ * Si alguna vez vuelve a hacer falta una excepcion, la lista es el sitio —
+ * pero que crezca significa que hay codigo muerto, no que falte traducir.
  */
-const NO_ALCANZABLES = [
-  'components/b2b/B2BPanel.tsx',
-  'components/certification/CertificationPanel.tsx',
-  'components/gamification/GamificationPanel.tsx',
-]
+const NO_ALCANZABLES: string[] = []
 
 function ficheros(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((e: Dirent) => {
