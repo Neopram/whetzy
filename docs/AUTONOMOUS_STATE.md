@@ -25,6 +25,31 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **Los tests del frontend que moquean `fetch` no pueden detectar una URL equivocada.** Hay 19 asi.
+  Por eso `placement.result()` llevaba pidiendo `GET /placement/{id}/result` —404 en produccion—
+  mientras el backend expone `GET /placement/result?session_id=`, con un test en verde encima. La
+  guarda que si lo ve es `backend/tests/test_contrato_frontend.py`: compara las rutas de
+  `services/api.ts` con las del router real de FastAPI, sin snapshots que envejezcan
+- **Un texto por defecto en `t('clave', 'texto')` no es una traduccion.** Habia 31 cadenas escritas
+  en espanol dentro del codigo cuya clave no existia en ningun idioma: un usuario en ingles veia
+  espanol en la portada, las lecciones, el perfil publico y el onboarding —incluida la pantalla de
+  «elige tu idioma»—. Invisible probando en espanol. Guarda:
+  `frontend/src/test/i18n.cobertura.test.ts`, que ademas exige paridad ES/EN y caza acentos en EN
+- **Tres componentes existen y no los importa nadie**: `B2BPanel`, `CertificationPanel` y
+  `GamificationPanel` (34 claves i18n sin traducir, que no se ven porque nadie llega). Igual
+  `PlacementScreen`, que ademas **se inventa el resultado en el cliente**
+  (`ability + (isCorrect ? 0.05 : -0.03)`) en vez de usar el motor IRT del backend, que si existe
+  y esta implementado. Decidir: conectar o borrar; dejarlo asi es peor que cualquiera de las dos
+- **La deriva que reporta `alembic check` es cosmetica, no un defecto.** Comprobado el 2026-09-20
+  contra una base nueva: **cero** diferencias de tabla o columna. Los 14 «removed index» son
+  indices que crean las migraciones y los modelos no declaran; la unicidad de
+  `certificates.code` **si** esta en la base (`certificates_code_key`), solo que expresada como
+  constraint y no como indice unico; y el indice «ausente» de `analytics_events` esta cubierto por
+  el compuesto `ix_analytics_user_type`. No usar `alembic check` como puerta de CI sin limpiarlo
+- **IDOR comprobado con dos cuentas reales en produccion (2026-09-20) y aguanta**: enviar el examen
+  de otro devuelve 404, revocar su sesion 404, y un PATCH de contenido 403. La cuenta propia si
+  funciona (control). Los endpoints de `/analytics` y `/push` que OpenAPI declara sin `security`
+  estan protegidos por clave de admin: 403 sin ella, no es una fuga
 - **El movil ya se ha probado (2026-09-20, 375x812 con emulacion tactil).** Registro, login,
   onboarding, home, rutas y el catalogo funcionan; cero desbordamiento horizontal y ninguna zona
   tactil por debajo de 44 px. Lo que si aparecio fue **contraste en modo oscuro**: seis

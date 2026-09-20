@@ -446,7 +446,16 @@ export const placement = {
   },
 
   async result(sessionId: string) {
-    return request<{ ability: number; level: string; skip_modules: string[] }>(`/placement/${sessionId}/result`);
+    // El backend expone `GET /placement/result?session_id=...`, no
+    // `/placement/{id}/result`. Esta ruta devolvia 404 en produccion y ningun
+    // test lo vio: los de `services.api.*` moquean `fetch`, asi que pasan con
+    // cualquier URL. La guarda que si lo detecta vive en el backend
+    // (`tests/test_contrato_frontend.py`), que compara estas rutas con las del
+    // router de verdad.
+    const qs = new URLSearchParams({ session_id: sessionId });
+    return request<{ ability: number; level: string; skip_modules: string[] }>(
+      `/placement/result?${qs}`
+    );
   },
 };
 
