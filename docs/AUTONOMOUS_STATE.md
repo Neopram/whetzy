@@ -25,6 +25,33 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **El movil ya se ha probado (2026-09-20, 375x812 con emulacion tactil).** Registro, login,
+  onboarding, home, rutas y el catalogo funcionan; cero desbordamiento horizontal y ninguna zona
+  tactil por debajo de 44 px. Lo que si aparecio fue **contraste en modo oscuro**: seis
+  combinaciones por debajo de AA, arregladas en `937a354` y fijadas por
+  `frontend/src/test/tokens.contraste.test.ts`
+- **El tema por defecto sale de `prefers-color-scheme`** (`src/theme.ts`), no es siempre claro.
+  Cualquier auditoria visual que solo mire el tema claro se deja fuera a la mitad de los usuarios
+- **Dos trampas al medir contraste con JS en el navegador, ambas producen hallazgos falsos:**
+  (1) subir buscando el fondo opaco atraviesa los degradados y compara contra el color de la
+  pagina, no contra la tarjeta — hay que abortar al encontrar `background-image`; (2) `.color`
+  leido justo despues de cambiar `data-theme` devuelve el valor **a mitad de la transicion** CSS.
+  Forzar `data-theme` por JS ademas deja estilos obsoletos en modulos CSS: el tema hay que
+  cambiarlo recargando, no mutando el atributo
+- **El panel del navegador oculto congela `requestAnimationFrame`**, y con `AnimatePresence
+  mode="wait"` la pantalla nueva no se monta hasta que acaba la animacion de salida: la app
+  parece colgada en la pantalla anterior con la barra inferior ya oculta. Es artefacto del
+  entorno de prueba (`document.visibilityState === 'hidden'`), **no un fallo de la app**. Para
+  probar navegacion hay que traer el panel al frente
+- **El limite por IP ya no es global.** `TRUST_PROXY_HEADERS` estaba en false detras del proxy de
+  Railway, asi que todos los usuarios compartian un cubo de 12/min. Medido antes: 14 de 20 logins
+  daban 429. Ahora `/auth/me` y `/auth/refresh` van al presupuesto normal y solo login, registro,
+  reset y verificacion gastan el estricto (60/min). **Sigue siendo por proceso**: con varias
+  replicas el limite se multiplica. El `RedisRateLimiter` de `core/rate_limiter.py` existe y no
+  esta conectado
+- **Los 429 de `POST /auth/login` pueden venir del bloqueo progresivo por cuenta**
+  (`auth.py:133`), no del limite por IP. Es la defensa correcta contra el relleno de credenciales;
+  no subirla confundiendola con el contador
 - **`_redirects` NO se aplica en el proyecto de Cloudflare Pages `whetzy`** (comprobado 2026-09-20:
   una regla explicita `/api/* /404.html 404` devolvia 200). El fallback de SPA que hace que
   `/privacy` o `/reset-password` funcionen es el **automatico** de Pages, y ese solo actua si
