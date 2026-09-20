@@ -25,6 +25,33 @@
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 = PCEP/SAA-C03/AIF-C01 (225+375+225 Q). **track12 = SQL** (300 Q, 20 skills, 5 módulos, 60 `sql_exec` = 20 %, 20 lecciones, 36 términos; verificado en sesión **au**). **track15 = Linux** (180 Q, 12 skills, 3 módulos, shell-exempt; verificado sesión **bc**). **track16 = Algoritmos** (158 Q, 12 skills, 3 módulos, 44.9 % exec; sesión **bc**). **track17 = Redes** (180 Q, 12 skills, 3 módulos, 36.7 % exec en mod1703; sesión **bc**). fill_blank activado. Mock exam params dinámicos. Los tracks no exentos están por encima del 15 % ejecutable. Alcance completo del catálogo: `docs/CATALOGO_MAESTRO.md`. |
 
 ### Gotchas verificados (no redescubrir)
+- **ABIERTO — pytest imprime «1021 passed» y el proceso NO SALE.** Medido el 2026-09-20:
+  tras el resumen, CPU congelada en 1638,65s sin moverse en 30s, **30 hilos vivos**, 2,8 GB
+  retenidos, indefinidamente. No es OTel (ya esta desactivado en tests y el ruido de
+  «closed file» desaparecio): quedan candidatos el `AsyncIOScheduler` de
+  `_schedule_monthly_payouts` en `main.py` y las tareas de `_en_vuelo` en
+  `services/email.py`. Consecuencia practica: **la suite no devuelve codigo de salida**, asi
+  que cualquier puerta se queda esperando. Mitigado, NO resuelto: `ci_local.sh` pone
+  `timeout` por paso y distingue «cuelgue» de «falla». Siguiente paso: `faulthandler.dump
+  _traceback_later` o `-p no:cacheprovider` para ver que hilo no muere
+- **La suite salia en VERDE y pytest devolvia codigo 1.** Con
+  `OTEL_EXPORTER_OTLP_ENDPOINT` vacio, `configure_telemetry` instala un
+  `ConsoleSpanExporter`, y el hilo de su `BatchSpanProcessor` sigue escribiendo a stdout
+  cuando el interprete ya lo cerro: «ValueError: I/O operation on closed file». Medido el
+  2026-09-20: **990 passed ... EXIT=1**. Una puerta que da rojo con todo en verde no sirve
+  para nada, y encima tapaba el unico codigo de salida que la puerta mira. Ahora
+  `configure_telemetry` no instala nada si `ENVIRONMENT=test`. Produccion no cambia: alli
+  hay endpoint de verdad
+- **La suite de backend no cabe en esta maquina si hay algo mas corriendo.** 14,1 GB de RAM
+  total; `tests/integration/test_content_loader.py` sube el proceso a ~1,8 GB el solo (31
+  tests, 10m37s, carga el corpus entero) y la suite completa llega a ~3,9 GB. Con otra
+  sesion corriendo tests quedaban 1,0 GB libres y el proceso **moria sin traza ni resumen**
+  —firma de muerte por memoria, no de test que falla—. Al liberar RAM, el mismo run paso del
+  50% al 94% de golpe. Si aparece un EXIT sin resumen, mirar memoria antes que tests
+- **Parar el turno de la sesion autonoma NO mata sus pytest.** Quedan colgando de su
+  `timeout` y siguen comiendo 1-2 GB cada uno con la sesion ya idle, sin que nadie lea su
+  salida. Hay que matarlos a mano. Y la cadena la relanza sola (H.6/H.18), asi que volvio a
+  arrancar despues de pararla
 - **No habia UN SOLO hook de git** hasta el 2026-09-20, y `git push origin master`
   despliega a produccion. El `.github/workflows/ci.yml` esta bien escrito (pip-audit, ruff,
   mypy --strict, pytest con cobertura >=80%, frontend, e2e con Postgres, nightly) y **no se

@@ -22,6 +22,19 @@ logger = logging.getLogger("whetzy.telemetry")
 
 def configure_telemetry(service_name: str, otlp_endpoint: str) -> None:
     """Configure OTel tracing.  Never raises — failures are logged as warnings."""
+    # En tests no se instala NADA de OTel, y no es por ruido: sin endpoint se
+    # usa ConsoleSpanExporter, cuyo hilo del BatchSpanProcessor sigue escribiendo
+    # a stdout cuando el interprete ya lo ha cerrado. Resultado medido el
+    # 2026-09-20: **990 tests en verde y pytest saliendo con codigo 1**
+    # ("ValueError: I/O operation on closed file"). Una puerta que da rojo con
+    # todo en verde no sirve para nada, y ademas tapaba el unico codigo de
+    # salida que la puerta mira. Produccion no se toca: alli hay endpoint.
+    import os
+
+    if os.environ.get("ENVIRONMENT", "").lower() == "test":
+        logger.debug("OTel: desactivado en tests (ver el comentario de arriba)")
+        return
+
     try:
         from opentelemetry import trace
         from opentelemetry.sdk.resources import SERVICE_NAME, Resource

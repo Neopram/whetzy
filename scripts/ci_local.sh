@@ -39,14 +39,26 @@ printf 'CORRIENDO desde %s (%s)\n' "$INICIO" "$SHA" > "$BITACORA/estado"
 FALLOS=()
 titulo() { printf '\n========== %s ==========\n' "$1"; }
 
+# LIMITE_S por paso. No es paranoia: el 2026-09-20 la suite imprimio
+# «1021 passed» y el proceso NO SALIO — CPU congelada, 30 hilos vivos, 2,8 GB,
+# indefinidamente. Sin limite, el nivel 2 se queda «CORRIENDO» para siempre y
+# deja de avisar de nada. Con limite, un cuelgue se reporta como cuelgue.
+LIMITE_S="${WHETZY_CI_LIMITE_S:-2700}"
+
 correr() {  # correr <nombre> <dir> <comando...>
   local nombre="$1" dir="$2"; shift 2
   titulo "$nombre"
-  if ( cd "$dir" && "$@" ); then
+  if ( cd "$dir" && timeout --kill-after=60 "$LIMITE_S" "$@" ); then
     echo "[ok] $nombre"
   else
-    echo "[FALLA] $nombre"
-    FALLOS+=("$nombre")
+    local rc=$?
+    if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
+      echo "[CUELGUE] $nombre no termino en ${LIMITE_S}s"
+      FALLOS+=("$nombre (cuelgue)")
+    else
+      echo "[FALLA] $nombre (codigo $rc)"
+      FALLOS+=("$nombre")
+    fi
   fi
 }
 
