@@ -196,15 +196,18 @@ class Ledger:
 def _columns(header: str) -> dict[str, int]:
     """Indices de columna de una cabecera de tabla del ledger.
 
-    Hay **dos** formas en el mismo fichero y descubrirlo costo una sesion:
+    Hubo **dos** formas en el mismo fichero y descubrirlo costo una sesion:
 
-        | ID | PRI | Tarea | Estado | Criterio de aceptación |   series 11-24
-        | ID | Tarea | Criterio DONE |                           series 25-29
+        | ID | PRI | Tarea | Estado | Criterio de aceptación |   todas las series
+        | ID | Tarea | Criterio DONE |                           series 25-28 hasta 2026-09-21
 
-    La segunda deja el estado y la prioridad en una cita encima de la tabla,
-    para la serie entera. Un parser que exija cinco celdas se come las cinco
-    series mas recientes **sin decir nada** — que es el fallo que este
-    repositorio persigue en todas partes menos en sus propias herramientas.
+    La segunda dejaba el estado y la prioridad en una cita encima de la tabla,
+    para la serie entera. Un parser que exija cinco celdas se come esas series
+    **sin decir nada** — que es el fallo que este repositorio persigue en todas
+    partes menos en sus propias herramientas. Las series 25-28 se normalizaron
+    el 2026-09-21 (42 filas, volcados del parser identicos antes y despues); la
+    tolerancia se queda por si la forma vuelve, y `check` exige ademas que cada
+    serie rinda filas.
     """
     cols: dict[str, int] = {}
     for i, cell in enumerate(_split_row(header)):
