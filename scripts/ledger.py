@@ -174,6 +174,8 @@ class Ledger:
     tasks: list[Task] = field(default_factory=list)
     blocked: list[Task] = field(default_factory=list)
     invariants: dict[str, str] = field(default_factory=dict)
+    # (numero, titulo, linea) de cada `### N` visto, rindiera filas o no.
+    series_heads: list[tuple[str, str, int]] = field(default_factory=list)
     source_bytes: int = 0
 
     def by_id(self, task_id: str) -> Task | None:
@@ -255,6 +257,7 @@ def parse(path: Path = LEDGER) -> Ledger:
         if m_series:
             series = m_series.group(1)
             series_title = _clean(m_series.group(2))
+            ledger.series_heads.append((series, series_title, lineno))
             series_state = ""
             series_pri = None
             cols = {}
@@ -427,6 +430,16 @@ def cmd_check(ledger: Ledger, args) -> int:
         problems.append(f"solo {len(ledger.tasks)} filas parseadas: la tabla cambio de forma")
     if not ledger.invariants:
         problems.append("la tabla de invariantes de `## 0` no se ha podido leer")
+    # El suelo global de arriba no vigila lo que paso: el parser se comio 48
+    # filas de 147 (series 25-29 enteras, otra forma de tabla) y con 99 habria
+    # dicho OK. Probado el 2026-09-21 vaciando la serie 22: «OK - 133 filas».
+    # Lo que se pierde es una SERIE entera, asi que se mira serie a serie.
+    for number, title, line in ledger.series_heads:
+        if not ledger.series(number):
+            problems.append(
+                f"serie {number} ({title}, linea {line}): tiene cabecera y ninguna "
+                f"fila parseada - la tabla cambio de forma o se quedo vacia"
+            )
     for task in ledger.tasks:
         if task.state == "UNKNOWN":
             problems.append(f"{task.id} (linea {task.line}): estado no reconocido {task.state_raw!r}")

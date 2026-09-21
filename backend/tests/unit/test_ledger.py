@@ -221,3 +221,35 @@ def test_el_ledger_real_parsea(mod):
 def test_check_pasa_contra_el_ledger_real():
     result = _run(["check"])
     assert result.returncode == 0, result.stdout
+
+
+def test_check_falla_si_una_serie_tiene_cabecera_y_ninguna_fila(tmp_path, mod, capsys):
+    """El suelo global de filas no vigilaba nada.
+
+    El incidente que motivo `check` se comio 48 filas de 147 (las series 25-29
+    enteras, otra forma de tabla) y con 99 filas habria dicho OK. El 2026-09-21
+    se probo vaciando la serie 22 del ledger real: «OK - 133 filas». Lo que se
+    pierde es una serie entera, asi que se comprueba serie a serie.
+    """
+    import argparse
+    import json
+
+    vacia = """### 22. Serie vacia
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+
+## 3. Cola HUMAN-BLOCKED"""
+    assert FIVE_COLUMN.count("## 3. Cola HUMAN-BLOCKED") == 1
+    texto = FIVE_COLUMN.replace("## 3. Cola HUMAN-BLOCKED", vacia)
+    ledger = _ledger_from(tmp_path, texto, mod)
+    mod.cmd_check(ledger, argparse.Namespace(json=True))
+    problems = json.loads(capsys.readouterr().out)["problems"]
+    assert any(p.startswith("serie 22 ") for p in problems), problems
+    # Y no dispara en falso: la serie 11 del mismo fixture si tiene filas.
+    assert not any(p.startswith("serie 11 ") for p in problems), problems
+
+    sana = _ledger_from(tmp_path, FIVE_COLUMN, mod)
+    mod.cmd_check(sana, argparse.Namespace(json=True))
+    problems = json.loads(capsys.readouterr().out)["problems"]
+    assert not any(p.startswith("serie ") for p in problems), problems
