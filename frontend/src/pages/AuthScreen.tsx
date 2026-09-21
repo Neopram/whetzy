@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { auth, type OAuthProvider, type RegisterPayload } from '../services/api';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
@@ -48,8 +48,7 @@ export function AuthScreen({ onAuthed }: Props) {
       .oauthProviders()
       .then((r) => { if (vivo) setProviders(r.providers); })
       .catch(() => { /* sin respuesta, sin botones */ });
-    if (mode === 'forgot') return <ForgotPasswordPage onBack={() => setMode('login')} />;
-  return () => { vivo = false; };
+    return () => { vivo = false; };
   }, []);
 
   function handleLangChange(lang: 'es' | 'en') {
