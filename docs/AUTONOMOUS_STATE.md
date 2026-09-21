@@ -4,7 +4,10 @@
 > arrancar y lo escribe al cerrar. No lo edites a mano salvo para cambiar prioridades
 > o desbloquear un ítem de `HUMAN-BLOCKED`.
 >
-> Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED`
+> Formato de estado: `TODO` · `DOING` · `DONE` · `BLOCKED` · `HUMAN-BLOCKED` · `PARCIAL` · `REFUTADA`
+> · `REGRESIÓN` (una fila cerrada que volvió a romperse; `24.5` la usa) · `RESUELTA` / `CORREGIDA` (filas de
+> incidente `22x`, `24.5x`, `28x`…). Los cinco últimos los usaban las filas y la cabecera no los declaraba:
+> `scripts/ledger.py` los tuvo que descubrir (2026-09-19) y la única PRI 0 abierta no salía en `next`.
 >
 > _Narrativas de sesión anteriores archivadas en `docs/archive/LEDGER_HISTORY.md`._
 
