@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { auth, type OAuthProvider, type RegisterPayload } from '../services/api';
+import { ForgotPasswordPage } from './ForgotPasswordPage';
 import styles from './AuthScreen.module.css';
 
 // Surface any oauth_error the backend placed in the URL (e.g. email_required).
@@ -15,7 +16,7 @@ function getOAuthError(): string | null {
   }
 }
 
-type Mode = 'login' | 'register';
+type Mode = 'login' | 'register' | 'forgot';
 
 interface Props {
   onAuthed: () => void;
@@ -47,7 +48,8 @@ export function AuthScreen({ onAuthed }: Props) {
       .oauthProviders()
       .then((r) => { if (vivo) setProviders(r.providers); })
       .catch(() => { /* sin respuesta, sin botones */ });
-    return () => { vivo = false; };
+    if (mode === 'forgot') return <ForgotPasswordPage onBack={() => setMode('login')} />;
+  return () => { vivo = false; };
   }, []);
 
   function handleLangChange(lang: 'es' | 'en') {
@@ -89,6 +91,7 @@ export function AuthScreen({ onAuthed }: Props) {
     }
   }
 
+  if (mode === 'forgot') return <ForgotPasswordPage onBack={() => setMode('login')} />;
   return (
     <div className={styles.screen}>
       <div className={styles.brand}>
