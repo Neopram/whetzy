@@ -1,4 +1,4 @@
-// Same-origin by default: in dev, Vite proxies /api → backend (see vite.config.ts);
+﻿// Same-origin by default: in dev, Vite proxies /api → backend (see vite.config.ts);
 // in production set VITE_API_URL to the deployed backend origin + /api/v1.
 /** Error de API que conserva el código HTTP.
  *
@@ -193,6 +193,20 @@ export const auth = {
   /** Navigate the browser to the OAuth provider start URL (full page redirect, no SDK). */
   startOAuth(provider: OAuthProvider) {
     window.location.href = `${BASE_URL}/auth/oauth/${provider}/start`;
+  },
+
+  async requestPasswordReset(email: string) {
+    return request<{ message: string }>(`/auth/password-reset/request`, {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  },
+
+  async resetPassword(token: string, new_password: string) {
+    return request<{ message: string }>(`/auth/password-reset/reset`, {
+      method: 'POST',
+      body: JSON.stringify({ token, new_password }),
+    });
   },
 };
 
