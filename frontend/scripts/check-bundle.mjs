@@ -20,7 +20,7 @@
  */
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, resolve, basename } from 'path';
+import { join, resolve } from 'path';
 import { gzipSync } from 'zlib';
 
 const DIST       = resolve(process.cwd(), 'dist');

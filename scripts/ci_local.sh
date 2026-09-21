@@ -119,7 +119,7 @@ if [ -d "$RAIZ/frontend/node_modules" ]; then
   # binario nativo opcional y `npx oxlint` muere al cargar el modulo. En CI no
   # ocurre: `node-version: "20"` resuelve a la ultima 20.x.
   if ( cd "$RAIZ/frontend" && npx oxlint --version >/dev/null 2>&1 ); then
-    correr "frontend: oxlint" "$RAIZ/frontend" npx oxlint src --deny-warnings
+    correr "frontend: oxlint" "$RAIZ/frontend" npx oxlint --deny-warnings
   else
     titulo "frontend: oxlint"
     echo "[--] oxlint no arranca aqui (mira si node cumple el engine que pide)."
