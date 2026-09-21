@@ -198,3 +198,4 @@ async def health_ready(db: AsyncSession = Depends(get_db)) -> dict[str, str]:
 app.add_route("/metrics", metrics_endpoint, include_in_schema=False)
 
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
+# Force redeploy
