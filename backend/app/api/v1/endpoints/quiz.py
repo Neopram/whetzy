@@ -29,7 +29,7 @@ async def start_quiz(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> QuizStartResponse:
-    if payload.mode in ("exam", "review") and not user_meets_tier(current_user, "plus"):
+    if payload.mode in ("exam", "review") and not user_meets_tier(current_user, "plus") and not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"{payload.mode.capitalize()} mode requires a Plus subscription.",
