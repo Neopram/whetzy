@@ -114,10 +114,12 @@ if [ -d "$RAIZ/frontend/node_modules" ]; then
   # oxlint se comprueba ANTES de usarlo. Si no arranca, el paso se salta con
   # [--] en vez de contar como rojo: un paso permanentemente rojo por una
   # herramienta rota localmente enseña a ignorar la puerta entera, que es peor
-  # que no tenerla. El 2026-09-20 pasaba esto: oxlint@1.82 pide node
-  # ^20.19.0 || >=22.12.0 y la maquina tiene v20.18.0, asi que npm se salta su
-  # binario nativo opcional y `npx oxlint` muere al cargar el modulo. En CI no
-  # ocurre: `node-version: "20"` resuelve a la ultima 20.x.
+  # que no tenerla. Paso el 2026-09-20: oxlint@1.82 pide node
+  # ^20.19.0 || >=22.12.0, la maquina tenia v20.18.0, npm se saltaba su
+  # binario nativo opcional y `npx oxlint` moria al cargar el modulo. Se
+  # arreglo subiendo node con nvm, NO reinstalando: probado que con node
+  # 20.19 y el mismo lockfile arranca. En CI no ocurre: `node-version: "20"`
+  # resuelve a la ultima 20.x.
   if ( cd "$RAIZ/frontend" && npx oxlint --version >/dev/null 2>&1 ); then
     correr "frontend: oxlint" "$RAIZ/frontend" npx oxlint --deny-warnings
   else
