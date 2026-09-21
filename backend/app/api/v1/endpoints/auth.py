@@ -481,3 +481,20 @@ async def reset_password(
 
 
 
+
+@router.post("/password-reset/request", status_code=status.HTTP_200_OK)
+async def request_password_reset(
+    payload: ForgotPasswordRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Alias for /forgot-password for API consistency."""
+    return await forgot_password(payload, db)
+
+
+@router.post("/password-reset/reset", status_code=status.HTTP_200_OK)
+async def password_reset(
+    payload: ResetPasswordRequest,
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, str]:
+    """Alias for /reset-password for API consistency."""
+    return await reset_password(payload, db)
