@@ -1,7 +1,7 @@
 """Create admin@whetzy.com user if not exists.
 
 Revision ID: c0d1e2f3g4h5
-Revises: b1c2d3e4f5a6
+Revises: d1e2f3g4h5i6
 Create Date: 2026-09-22 00:00:00.000000
 
 """
@@ -14,7 +14,7 @@ from alembic import op
 import sqlalchemy as sa
 
 revision = "c0d1e2f3g4h5"
-down_revision = "b1c2d3e4f5a6"
+down_revision = "d1e2f3g4h5i6"
 branch_labels = None
 depends_on = None
 

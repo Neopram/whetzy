@@ -45,6 +45,7 @@ class User(Base):
 
     is_premium: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    is_admin: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     email_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     language: Mapped[str] = mapped_column(String(2), default="es", nullable=False)
     # Incremented on password change/reset to invalidate existing tokens (ASVS V3.3).
