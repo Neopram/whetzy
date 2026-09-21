@@ -13,6 +13,14 @@
 #      bash scripts/ci_local.sh --estado   (que paso la ultima vez)
 set -uo pipefail
 
+# Todo el cuerpo va dentro de una funcion A PROPOSITO. bash lee un script a
+# trozos mientras lo ejecuta: si alguien sobrescribe este fichero con un run
+# en marcha (un `git pull`, un parche a mano), el bash vivo sigue leyendo por
+# el offset viejo en un fichero nuevo y ejecuta fragmentos al azar. Paso el
+# 2026-09-21: «ignorando.: command not found» y la suite entera otra vez desde
+# cero. Una funcion se parsea COMPLETA antes de ejecutar su primera linea.
+main() {
+
 RAIZ="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$RAIZ" || exit 1
 BITACORA="$RAIZ/.ci-local"
@@ -42,13 +50,27 @@ if [ -f "$CERROJO" ]; then
   _viejo="$(cat "$CERROJO" 2>/dev/null)"
   if [ -n "$_viejo" ] && kill -0 "$_viejo" 2>/dev/null; then
     echo "[cerrojo] ya corria el nivel 2 (pid $_viejo); lo paro, este es mas nuevo"
-    pkill -P "$_viejo" 2>/dev/null
-    kill -9 "$_viejo" 2>/dev/null
+    # `kill` solo alcanza al bash: `pkill` ni existe en Git Bash, y python.exe
+    # es un nieto nativo que sobrevive huerfano quemando un nucleo entero (el
+    # 2026-09-21 paso dos veces, con el cerrojo puesto). Y `taskkill /T` desde
+    # el bash TAMPOCO llega: el subshell de `correr` hace exec en `timeout`, en
+    # msys eso mata el proceso Windows original y el arbol queda roto justo
+    # debajo del bash (python <- timeout <- timeout <- MUERTO). Por eso cada
+    # paso apunta el WINPID de su `timeout` en paso.winpid: desde ahi el arbol
+    # si esta entero. Primero el bash, para que no lance el paso siguiente.
+    if command -v taskkill >/dev/null 2>&1; then
+      _win="$(ps -p "$_viejo" 2>/dev/null | awk 'NR>1 {print $4}')"
+      [ -n "$_win" ] && taskkill //PID "$_win" //T //F >/dev/null 2>&1
+      _win_paso="$(cat "$BITACORA/paso.winpid" 2>/dev/null)"
+      [ -n "$_win_paso" ] && taskkill //PID "$_win_paso" //T //F >/dev/null 2>&1
+    else
+      kill -9 "$_viejo" 2>/dev/null
+    fi
     sleep 2
   fi
 fi
 echo $$ > "$CERROJO"
-trap 'rm -f "$CERROJO"' EXIT
+trap 'rm -f "$CERROJO" "$BITACORA/paso.winpid"' EXIT
 
 SHA="$(git rev-parse --short HEAD 2>/dev/null || echo '?')"
 INICIO="$(date '+%Y-%m-%d %H:%M')"
@@ -78,11 +100,18 @@ LIMITE_S="${WHETZY_CI_LIMITE_S:-2700}"
 correr() {  # correr <nombre> <dir> <comando...>
   local nombre="$1" dir="$2"; shift 2
   titulo "$nombre"
-  if ( cd "$dir" && timeout --kill-after=60 "$LIMITE_S" "$@" ); then
+  ( cd "$dir" && timeout --kill-after=60 "$LIMITE_S" "$@" ) &
+  local hijo=$!
+  # Un segundo despues del fork el subshell ya ha hecho exec y `ps` da el
+  # WINPID de `timeout`, que es el que el cerrojo necesita (ver arriba).
+  sleep 1
+  ps -p "$hijo" 2>/dev/null | awk 'NR>1 {print $4}' > "$BITACORA/paso.winpid"
+  wait "$hijo"
+  local rc=$?
+  if [ "$rc" = "0" ]; then
     echo "[ok] $nombre"
     RESUELTOS+=("$nombre")
   else
-    local rc=$?
     if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
       echo "[CUELGUE] $nombre no termino en ${LIMITE_S}s"
       FALLOS+=("$nombre (cuelgue)")
@@ -166,3 +195,6 @@ ls -1t "$BITACORA"/*.log 2>/dev/null | tail -n +11 | xargs -r rm -f
 titulo "resumen"
 cat "$BITACORA/estado"
 [ ${#FALLOS[@]} -eq 0 ]
+}
+
+main "$@"
