@@ -57,10 +57,12 @@ ledger en vez de duplicarlo (una segunda copia de la verdad es el incidente 17.1
 vez). 13 tests en `backend/tests/unit/test_ledger.py`.
 
 ```
-Leer AUTONOMOUS_STATE.md entero    118.035 B   ~29.508 tokens
-`ledger.py next` (5 filas)             459 B   ~   114 tokens
-Factor: 258,8x
+Leer AUTONOMOUS_STATE.md entero    118.035 B   ~29.500 tokens
+`ledger.py next` (5 filas)             459 B   ~   110 tokens
+Factor: ~260x
 ```
+(Tokens estimados como bytes/4; el factor se redondea porque la estimación no da
+para un decimal. Cifras del 2026-09-19: el ledger sigue creciendo.)
 
 ### Lo que el índice encontró en el propio ledger
 
