@@ -175,6 +175,11 @@ export function AuthScreen({ onAuthed }: Props) {
             autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
           />
         </label>
+        {mode === 'login' && (
+          <button type="button" className={styles.forgotLink} onClick={() => setMode('forgot')}>
+            {t('auth.forgotPassword')}
+          </button>
+        )}
 
         {mode === 'register' && (
           <div className={styles.field}>
