@@ -25,8 +25,18 @@ def upgrade() -> None:
     conn = op.get_bind()
     
     stmt = sa.text("""
-        INSERT INTO users (id, email, username, hashed_password, display_name, language, email_verified, is_active, is_admin, created_at)
-        VALUES (:id, :email, :username, :hashed_password, :display_name, :language, :email_verified, :is_active, :is_admin, :created_at)
+        INSERT INTO users (
+            id, email, username, hashed_password, display_name, avatar_emoji,
+            level, total_xp, current_streak, max_streak, streak_freeze_available,
+            language, email_verified, is_active, is_admin, jwt_version,
+            push_streak_enabled, created_at
+        )
+        VALUES (
+            :id, :email, :username, :hashed_password, :display_name, :avatar_emoji,
+            :level, :total_xp, :current_streak, :max_streak, :streak_freeze_available,
+            :language, :email_verified, :is_active, :is_admin, :jwt_version,
+            :push_streak_enabled, :created_at
+        )
         ON CONFLICT (email) DO NOTHING
     """)
     
@@ -38,10 +48,18 @@ def upgrade() -> None:
             "username": "admin",
             "hashed_password": ADMIN_PASSWORD_HASH,
             "display_name": "Admin",
+            "avatar_emoji": "🦉",
+            "level": 1,
+            "total_xp": 0,
+            "current_streak": 0,
+            "max_streak": 0,
+            "streak_freeze_available": 1,
             "language": "es",
             "email_verified": True,
             "is_active": True,
             "is_admin": True,
+            "jwt_version": 1,
+            "push_streak_enabled": True,
             "created_at": datetime.now(UTC),
         },
     )
