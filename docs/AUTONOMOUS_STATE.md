@@ -675,23 +675,23 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 > **Modelo:** Haiku para generación de contenido (cada bloque = 1 worker, 1 commit verde). Sonnet solo si toca ficheros de riesgo.
 > **Nota:** Esta serie no tiene fecha límite — es la expansión continua del catálogo. Se ejecuta en paralelo con la campaña de distribución del dueño.
 
-| ID | Tarea | Criterio DONE | Deps |
-|---|---|---|---|
-| 25.0 | Infraestructura de generación: script `scripts/generate_track_content.py` que toma track_id + nivel + fuentes y produce lecciones/preguntas en formato JSON validado por §7 quality gate | Script existe, pasa `check_docs.py`, genera ≥1 lección y ≥15 Q válidas en dry-run con track01/nivel2 | 20.9 |
-| 25.1 | Completar tracks 1-3 (Python básico/intermedio/avanzado) a 100 cursos por nivel usando PSF docs + exercism/python + OpenStax + TheAlgorithms | `check_question_bank.py`: tracks 01-03 ≥ 1,200 Q cada uno, ≥ 15 % exec, ≥ 144 términos glosario | 25.0 |
-| 25.2 | Completar tracks 6-7 (IA/ML/LLMs) a 100 cursos usando ML-For-Beginners + HF course + fastai + openai/anthropic cookbooks | tracks 06-07 ≥ 1,200 Q cada uno, 100 % sklearn/numpy/pandas [reusar] | 25.0 |
-| 25.3 | Completar tracks 4-5 (Ingeniería + Arquitectura) a 100 cursos usando system-design-primer + aosabook + faif/python-patterns | tracks 04-05 ≥ 1,200 Q cada uno | 25.0 |
-| 25.4 | Completar tracks 12, 20, 21, 27 (SQL + Data Eng + DS + NoSQL) usando PostgreSQL docs + DuckDB + Kaggle Learn + wesm/pydata-book código | tracks SQL ≥ 1,200 Q cada uno, ≥ 30 % sql_exec | 25.0 |
-| 25.5 | Completar tracks 13, 24, 25 (Ciberseguridad fundamentos + Pentest + Seguridad cloud) usando NIST + MITRE ATT&CK + juice-shop + OWASP [H.LIC pendiente H.22] | tracks seguridad ≥ 1,200 Q cada uno, ≥ 15 % exec | 25.0, H.22 si OWASP |
-| 25.6 | Completar tracks 8-11, 22-23 (AWS + Azure + GCP) usando AWS docs (cita) + Microsoft Learn CC BY + GCP docs CC BY | tracks cloud ≥ 900 Q cada uno (fuentes son cita — sin copy, solo preguntas originales sobre dominios) | 25.0 |
-| 25.7 | Completar tracks 14, 28 (Frontend JS + Backend FastAPI/Node) usando lydiahallie + Web-Dev-For-Beginners + freeCodeCamp ES + fastapi docs | tracks web ≥ 1,200 Q cada uno, JS Worker sandbox activo | 25.0 |
-| 25.8 | Completar tracks 15, 17, 26 (Linux + Redes + Git) usando exercism/bash + Peterson/Davie CC BY + github/docs | tracks linux/redes/git ≥ 1,200 Q cada uno | 25.0 |
-| 25.9 | Completar tracks 16, 29, 30 (Algoritmos + QA + Agile) usando Erickson CC BY + pytest docs + Scrum Guide cita | tracks ≥ 1,200 Q cada uno, algoritmos ≥ 30 % exec | 25.0 |
-| 25.10 | Completar tracks 18, 19 (Docker/K8s + IaC/CI/CD) usando Kubernetes docs CC BY + Docker docs + actions/* | tracks devops ≥ 900 Q cada uno | 25.0 |
-| 25.11 | Completar track 31 (Móvil) usando swift-book CC BY + android docs + flutter docs | track31 ≥ 900 Q, exento de runtime (sin navegador para Swift/Kotlin) | 25.0 |
-| 25.12 | Glosario máximo: ≥ 100 términos por track × 28 tracks = 2,800+ términos totales, ES y EN nativos | `check_docs.py`: glosario ≥ 2,800 entradas, 0 entradas sin traducción | 25.1-25.11, 25.14 |
-| 25.14 | **track32 — Solana / Web3 developer** (ADR-38): 5 módulos × 4 skills, JS con `@solana/web3.js` en el Worker (18.3) + Python stdlib (hash, base58, serialización); Rust/Anchor como escenario + decisión (exento ADR-9); **leer `LICENSE` de cada repo antes de reutilizar texto** y registrar en `content/sources/index.json`; proyectos = bounties reales de Superteam Earn reescritos como ejercicio | ≥ 300 Q, ≥ 15 % exec en módulos JS/Python, 20 lecciones, ≥ 36 términos ES/EN; `check_source_licenses.py` exit 0; §7 quality gate | 25.0, 18.3 |
-| 25.13 | Scorecard ADR-25: verificar que los 28 tracks pasan §7 quality gate (≥ 15 % exec donde aplica, ≥ 144 términos, BKT inicializado, simulacros activos para todas las certs asociadas) | `pytest tests/content` 100 % pass, `check_question_bank.py` total ≥ 36,000 Q | 25.12, 25.14 |
+| ID | PRI | Tarea | Estado | Criterio de aceptación | Deps |
+|---|---|---|---|---|---|
+| 25.0 | **3** | Infraestructura de generación: script `scripts/generate_track_content.py` que toma track_id + nivel + fuentes y produce lecciones/preguntas en formato JSON validado por §7 quality gate | BLOCKED | Script existe, pasa `check_docs.py`, genera ≥1 lección y ≥15 Q válidas en dry-run con track01/nivel2 | 20.9 |
+| 25.1 | **3** | Completar tracks 1-3 (Python básico/intermedio/avanzado) a 100 cursos por nivel usando PSF docs + exercism/python + OpenStax + TheAlgorithms | BLOCKED | `check_question_bank.py`: tracks 01-03 ≥ 1,200 Q cada uno, ≥ 15 % exec, ≥ 144 términos glosario | 25.0 |
+| 25.2 | **3** | Completar tracks 6-7 (IA/ML/LLMs) a 100 cursos usando ML-For-Beginners + HF course + fastai + openai/anthropic cookbooks | BLOCKED | tracks 06-07 ≥ 1,200 Q cada uno, 100 % sklearn/numpy/pandas [reusar] | 25.0 |
+| 25.3 | **3** | Completar tracks 4-5 (Ingeniería + Arquitectura) a 100 cursos usando system-design-primer + aosabook + faif/python-patterns | BLOCKED | tracks 04-05 ≥ 1,200 Q cada uno | 25.0 |
+| 25.4 | **3** | Completar tracks 12, 20, 21, 27 (SQL + Data Eng + DS + NoSQL) usando PostgreSQL docs + DuckDB + Kaggle Learn + wesm/pydata-book código | BLOCKED | tracks SQL ≥ 1,200 Q cada uno, ≥ 30 % sql_exec | 25.0 |
+| 25.5 | **3** | Completar tracks 13, 24, 25 (Ciberseguridad fundamentos + Pentest + Seguridad cloud) usando NIST + MITRE ATT&CK + juice-shop + OWASP [H.LIC pendiente H.22] | BLOCKED | tracks seguridad ≥ 1,200 Q cada uno, ≥ 15 % exec | 25.0, H.22 si OWASP |
+| 25.6 | **3** | Completar tracks 8-11, 22-23 (AWS + Azure + GCP) usando AWS docs (cita) + Microsoft Learn CC BY + GCP docs CC BY | BLOCKED | tracks cloud ≥ 900 Q cada uno (fuentes son cita — sin copy, solo preguntas originales sobre dominios) | 25.0 |
+| 25.7 | **3** | Completar tracks 14, 28 (Frontend JS + Backend FastAPI/Node) usando lydiahallie + Web-Dev-For-Beginners + freeCodeCamp ES + fastapi docs | BLOCKED | tracks web ≥ 1,200 Q cada uno, JS Worker sandbox activo | 25.0 |
+| 25.8 | **3** | Completar tracks 15, 17, 26 (Linux + Redes + Git) usando exercism/bash + Peterson/Davie CC BY + github/docs | BLOCKED | tracks linux/redes/git ≥ 1,200 Q cada uno | 25.0 |
+| 25.9 | **3** | Completar tracks 16, 29, 30 (Algoritmos + QA + Agile) usando Erickson CC BY + pytest docs + Scrum Guide cita | BLOCKED | tracks ≥ 1,200 Q cada uno, algoritmos ≥ 30 % exec | 25.0 |
+| 25.10 | **3** | Completar tracks 18, 19 (Docker/K8s + IaC/CI/CD) usando Kubernetes docs CC BY + Docker docs + actions/* | BLOCKED | tracks devops ≥ 900 Q cada uno | 25.0 |
+| 25.11 | **3** | Completar track 31 (Móvil) usando swift-book CC BY + android docs + flutter docs | BLOCKED | track31 ≥ 900 Q, exento de runtime (sin navegador para Swift/Kotlin) | 25.0 |
+| 25.12 | **3** | Glosario máximo: ≥ 100 términos por track × 28 tracks = 2,800+ términos totales, ES y EN nativos | BLOCKED | `check_docs.py`: glosario ≥ 2,800 entradas, 0 entradas sin traducción | 25.1-25.11, 25.14 |
+| 25.14 | **3** | **track32 — Solana / Web3 developer** (ADR-38): 5 módulos × 4 skills, JS con `@solana/web3.js` en el Worker (18.3) + Python stdlib (hash, base58, serialización); Rust/Anchor como escenario + decisión (exento ADR-9); **leer `LICENSE` de cada repo antes de reutilizar texto** y registrar en `content/sources/index.json`; proyectos = bounties reales de Superteam Earn reescritos como ejercicio | BLOCKED | ≥ 300 Q, ≥ 15 % exec en módulos JS/Python, 20 lecciones, ≥ 36 términos ES/EN; `check_source_licenses.py` exit 0; §7 quality gate | 25.0, 18.3 |
+| 25.13 | **3** | Scorecard ADR-25: verificar que los 28 tracks pasan §7 quality gate (≥ 15 % exec donde aplica, ≥ 144 términos, BKT inicializado, simulacros activos para todas las certs asociadas) | BLOCKED | `pytest tests/content` 100 % pass, `check_question_bank.py` total ≥ 36,000 Q | 25.12, 25.14 |
 
 **H.22 — Decisión del dueño:** ¿Aceptar [H.LIC] para OWASP CheatSheets/WSTG/ASVS (CC BY-SA 4.0) en tracks de seguridad? Si sí: contenido derivado hereda CC BY-SA. Si no: tracks de seguridad usan solo NIST + MITRE (dominio público) — cobertura algo menor pero 100 % sin restricciones.
 
@@ -701,17 +701,17 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 > **Dependencias:** 24.14 DONE.
 > **PRI:** 4. **Modelo:** Haiku para contenido; Sonnet para copy de landing/emails.
 
-| ID | Tarea | Criterio DONE |
-|---|---|---|
-| 26.0 | Canal YouTube ES creado: banner, descripción, links, 3 videos demo subidos (grabados en 24.13); **cada vídeo con su código de campaña `YT-ES-nn` (29.4) en descripción y pantalla final** | Canal público, 3 videos publicados, descripción con CTA a whetzy.com y código; canjes visibles en admin 29.6 |
-| 26.1 | 5 artículos en Dev.to / Hashnode ES sobre el motor técnico (BKT, FSRS, gap de mercado) | 5 artículos publicados, cada uno con CTA y enlace a whetzy.com |
-| 26.2 | PR en `EbookFoundation/free-programming-books` agregando Whetzy en sección Python ES | PR abierto y mergeado o en revisión activa |
-| 26.3 | Template de email para universidades LATAM + lista de 50 contactos | Template en `docs/distribucion-assets/email-universidades-es.md`, lista CSV de 50 contactos |
-| 26.4 | Página de landing para segmento career-switcher ES (dentro de whetzy.com/es/carrera) | Lighthouse ≥ 90, copy nativo ES, CTA Premium |
-| 26.5 | Página de landing para segmento B2B ES (whetzy.com/es/empresas) | Demo request form funcional, Calendly integrado |
-| 26.6 | Show HN post en español (Hacker News): preparación + activos | Post publicado, respuestas monitorizadas 24h |
-| 26.7 | Perfiles en comunidades ES: Python Argentina Discord, Dev En Español, LatamDevs | 3 perfiles activos, 5+ contribuciones de valor antes de cualquier mención de Whetzy |
-| 26.8 | **Superteam LATAM (México, Argentina, Brasil) como canal** (ADR-38): presencia en sus Discord/eventos, 1 charla o taller «Solana en español con Whetzy», códigos de campaña `ST-MX`/`ST-AR`/`ST-BR`; dossier para grant/bounty de la Solana Foundation preparado (**H.28**, lo solicita el dueño) | 3 comunidades activas con contribuciones previas; 1 evento realizado; dossier en `docs/distribucion-assets/solana-grant.md` con montos vigentes verificados por URL fechada |
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 26.0 | **4** | Canal YouTube ES creado: banner, descripción, links, 3 videos demo subidos (grabados en 24.13); **cada vídeo con su código de campaña `YT-ES-nn` (29.4) en descripción y pantalla final** | BLOCKED | Canal público, 3 videos publicados, descripción con CTA a whetzy.com y código; canjes visibles en admin 29.6 |
+| 26.1 | **4** | 5 artículos en Dev.to / Hashnode ES sobre el motor técnico (BKT, FSRS, gap de mercado) | BLOCKED | 5 artículos publicados, cada uno con CTA y enlace a whetzy.com |
+| 26.2 | **4** | PR en `EbookFoundation/free-programming-books` agregando Whetzy en sección Python ES | BLOCKED | PR abierto y mergeado o en revisión activa |
+| 26.3 | **4** | Template de email para universidades LATAM + lista de 50 contactos | BLOCKED | Template en `docs/distribucion-assets/email-universidades-es.md`, lista CSV de 50 contactos |
+| 26.4 | **4** | Página de landing para segmento career-switcher ES (dentro de whetzy.com/es/carrera) | BLOCKED | Lighthouse ≥ 90, copy nativo ES, CTA Premium |
+| 26.5 | **4** | Página de landing para segmento B2B ES (whetzy.com/es/empresas) | BLOCKED | Demo request form funcional, Calendly integrado |
+| 26.6 | **4** | Show HN post en español (Hacker News): preparación + activos | BLOCKED | Post publicado, respuestas monitorizadas 24h |
+| 26.7 | **4** | Perfiles en comunidades ES: Python Argentina Discord, Dev En Español, LatamDevs | BLOCKED | 3 perfiles activos, 5+ contribuciones de valor antes de cualquier mención de Whetzy |
+| 26.8 | **4** | **Superteam LATAM (México, Argentina, Brasil) como canal** (ADR-38): presencia en sus Discord/eventos, 1 charla o taller «Solana en español con Whetzy», códigos de campaña `ST-MX`/`ST-AR`/`ST-BR`; dossier para grant/bounty de la Solana Foundation preparado (**H.28**, lo solicita el dueño) | BLOCKED | 3 comunidades activas con contribuciones previas; 1 evento realizado; dossier en `docs/distribucion-assets/solana-grant.md` con montos vigentes verificados por URL fechada |
 
 ### 27. Distribución masiva EN (ADR-27; spec `DISTRIBUCION.md`)
 
@@ -719,18 +719,18 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 > **Dependencias:** 26.0 DONE (el canal ES valida el formato antes de EN).
 > **PRI:** 4. **Modelo:** Haiku para contenido; Sonnet para copy.
 
-| ID | Tarea | Criterio DONE |
-|---|---|---|
-| 27.0 | Canal YouTube EN creado: banner, descripción, 3 videos EN (mismo contenido que 24.13 pero grabado en inglés nativo, no traducido); **códigos `YT-EN-nn`** | Canal público, 3 videos publicados; canjes en admin 29.6 |
-| 27.1 | Show HN EN: "I built an adaptive Python→AI learning engine in Spanish because no one else did" | Post publicado, > 20 upvotes en primeras 6h |
-| 27.2 | 5 artículos en Dev.to / freeCodeCamp News EN sobre motor técnico | 5 artículos publicados con CTA |
-| 27.3 | PR en `jwasham/coding-interview-university` y `donnemartin/system-design-primer` READMEs | PRs abiertos mencionando Whetzy como recurso |
-| 27.4 | Product Hunt preparación: assets, lista de 100 upvoters confirmados, tagline | Checklists de lanzamiento completado, fecha fijada |
-| 27.5 | Product Hunt lanzamiento | Top 5 del día en categoría Education |
-| 27.6 | Reddit strategy EN: 10 respuestas de valor en r/learnpython, r/cscareerquestions | 10 respuestas publicadas con ≥ 50 upvotes cada una |
-| 27.7 | Landing page segmento career-switcher EN (whetzy.com/en/career) | Lighthouse ≥ 90, copy nativo EN |
-| 27.8 | Landing page segmento B2B EN (whetzy.com/en/enterprise) | Demo request form funcional |
-| 27.9 | **Superteam global / Solana developer communities EN** (ADR-38): Solana Stack Exchange y Discord oficial con respuestas de valor, 1 artículo EN «Learning Solana in Spanish: why we built track32», códigos `ST-EN` | 10 respuestas de valor; artículo publicado; canjes en admin |
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 27.0 | **4** | Canal YouTube EN creado: banner, descripción, 3 videos EN (mismo contenido que 24.13 pero grabado en inglés nativo, no traducido); **códigos `YT-EN-nn`** | BLOCKED | Canal público, 3 videos publicados; canjes en admin 29.6 |
+| 27.1 | **4** | Show HN EN: "I built an adaptive Python→AI learning engine in Spanish because no one else did" | BLOCKED | Post publicado, > 20 upvotes en primeras 6h |
+| 27.2 | **4** | 5 artículos en Dev.to / freeCodeCamp News EN sobre motor técnico | BLOCKED | 5 artículos publicados con CTA |
+| 27.3 | **4** | PR en `jwasham/coding-interview-university` y `donnemartin/system-design-primer` READMEs | BLOCKED | PRs abiertos mencionando Whetzy como recurso |
+| 27.4 | **4** | Product Hunt preparación: assets, lista de 100 upvoters confirmados, tagline | BLOCKED | Checklists de lanzamiento completado, fecha fijada |
+| 27.5 | **4** | Product Hunt lanzamiento | BLOCKED | Top 5 del día en categoría Education |
+| 27.6 | **4** | Reddit strategy EN: 10 respuestas de valor en r/learnpython, r/cscareerquestions | BLOCKED | 10 respuestas publicadas con ≥ 50 upvotes cada una |
+| 27.7 | **4** | Landing page segmento career-switcher EN (whetzy.com/en/career) | BLOCKED | Lighthouse ≥ 90, copy nativo EN |
+| 27.8 | **4** | Landing page segmento B2B EN (whetzy.com/en/enterprise) | BLOCKED | Demo request form funcional |
+| 27.9 | **4** | **Superteam global / Solana developer communities EN** (ADR-38): Solana Stack Exchange y Discord oficial con respuestas de valor, 1 artículo EN «Learning Solana in Spanish: why we built track32», códigos `ST-EN` | BLOCKED | 10 respuestas de valor; artículo publicado; canjes en admin |
 
 ### 28. Marketplace de instructores (ADR-29; spec `MARKETPLACE.md`)
 
@@ -738,16 +738,16 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 > **Dependencias:** 22.1, 22.3 DONE. Ver spec completo en `docs/MARKETPLACE.md`.
 > **PRI:** 4. **Modelo:** Sonnet (toca DB schema y auth — ficheros de riesgo).
 
-| ID | Tarea | Criterio DONE |
-|---|---|---|
-| 28.0 | Schema DB: `instructor_profiles`, `marketplace_courses`, `course_purchases`, `instructor_payouts` — migración Alembic | Migración HEAD nueva, `alembic upgrade head` pasa, tests de schema |
-| 28.1 | API: CRUD cursos instructor, upload contenido JSON, preview; **código de instructor `PROF-…` (29.4) con descuento y atribución de ventas** | OpenAPI docs actualizado, tests de autorización (solo `instructor` role); test de canje con descuento |
-| 28.2 | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | Script existe, 5 tests de calidad pasan, falla con mensajes claros |
-| 28.3 | Panel instructor — React: dashboard revenue, cursos, métricas por curso | Solo visible con rol `instructor`, tests de rol-guard |
-| 28.4 | Marketplace público: catálogo con filtros, ratings, preview de primera lección | Accesible sin login, paginado, búsqueda funciona |
-| 28.5 | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | Webhook procesa pago, `instructor_payouts` se actualiza, tests con Stripe test mode |
-| 28.6 | Panel admin: aprobación de cursos, moderación, gestión de payouts | Solo rol `admin`, lista de pendientes, aprobar/rechazar con feedback |
-| 28.7 | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por el instructor: Stripe Connect donde exista, USDC en Solana o Wise donde no (ADR-36, con 29.9)** | Script `scripts/run_payouts.py` existe, test con Stripe test mode, cálculo de payout en USDC probado en test sin enviar nada; HUMAN-BLOCKED para activar en producción (H.25) |
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 28.0 | **4** | Schema DB: `instructor_profiles`, `marketplace_courses`, `course_purchases`, `instructor_payouts` — migración Alembic | BLOCKED | Migración HEAD nueva, `alembic upgrade head` pasa, tests de schema |
+| 28.1 | **4** | API: CRUD cursos instructor, upload contenido JSON, preview; **código de instructor `PROF-…` (29.4) con descuento y atribución de ventas** | BLOCKED | OpenAPI docs actualizado, tests de autorización (solo `instructor` role); test de canje con descuento |
+| 28.2 | **4** | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | BLOCKED | Script existe, 5 tests de calidad pasan, falla con mensajes claros |
+| 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | BLOCKED | Solo visible con rol `instructor`, tests de rol-guard |
+| 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | BLOCKED | Accesible sin login, paginado, búsqueda funciona |
+| 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | BLOCKED | Webhook procesa pago, `instructor_payouts` se actualiza, tests con Stripe test mode |
+| 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | BLOCKED | Solo rol `admin`, lista de pendientes, aprobar/rechazar con feedback |
+| 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por el instructor: Stripe Connect donde exista, USDC en Solana o Wise donde no (ADR-36, con 29.9)** | BLOCKED | Script `scripts/run_payouts.py` existe, test con Stripe test mode, cálculo de payout en USDC probado en test sin enviar nada; HUMAN-BLOCKED para activar en producción (H.25) |
 
 ### 29. Economía cerrada y rails — créditos, referidos, códigos, USDC, credenciales verificables (ADR-33…37; spec `docs/ECONOMIA.md`)
 
