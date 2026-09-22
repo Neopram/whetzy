@@ -19,13 +19,13 @@ def upgrade() -> None:
     if result.fetchone():
         return  # Already exists, skip
     
-    # Insert admin user with explicit UUID
+    # Insert admin user with explicit UUID and ALL required fields
     admin_id = str(uuid4())
     try:
         connection.execute(
             text(
-                f"INSERT INTO users (id, email, username, hashed_password, display_name, avatar_emoji, is_premium, is_active, email_verified, role, created_at) "
-                f"VALUES ('{admin_id}', 'admin@whetzy.com', 'admin', '$2b$12$a7zErNi.HHmnhMMgKVUniOlaT4Fq/xCcK9Cqr4BQyVtNeMLYDM3ya', 'Admin', '👑', true, true, true, 'superuser', now())"
+                f"INSERT INTO users (id, email, username, hashed_password, display_name, avatar_emoji, is_premium, is_active, email_verified, level, role, created_at) "
+                f"VALUES ('{admin_id}', 'admin@whetzy.com', 'admin', '$2b$12$a7zErNi.HHmnhMMgKVUniOlaT4Fq/xCcK9Cqr4BQyVtNeMLYDM3ya', 'Admin', '👑', true, true, true, 1, 'superuser', now())"
             )
         )
         connection.commit()
