@@ -4,7 +4,7 @@ from alembic import op
 from sqlalchemy import text
 
 revision = '20260922_admin'
-down_revision = 'b1c2d3e4f5a6'
+down_revision = '20260922_add_is_admin'
 branch_labels = None
 depends_on = None
 
