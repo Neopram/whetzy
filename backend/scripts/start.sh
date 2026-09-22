@@ -56,8 +56,8 @@ alembic upgrade head
 #  exit 1
 #fi
 
-echo "[start] seeding gamification..."
-python -m app.services.seed || echo "[start] seed skipped"
+#echo "[start] seeding gamification..."
+#python -m app.services.seed || echo "[start] seed skipped"
 
 echo "[start] launching gunicorn..."
 exec gunicorn app.main:app \
