@@ -132,7 +132,9 @@ function needsOnboarding(userId: string): boolean {
 
 function App() {
   // Standalone pages routed by URL path
-  const path = window.location.pathname;
+  let path = window.location.pathname;
+  // Remove trailing slash for consistent routing
+  if (path.endsWith("/") && path !== "/") path = path.slice(0, -1);
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
   // arrangement React allows: an early return *between* hooks is what blanked
@@ -389,4 +391,5 @@ function BootSplash() {
 }
 
 export default App;
+
 
