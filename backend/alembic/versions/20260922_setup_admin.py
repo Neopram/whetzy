@@ -27,15 +27,19 @@ def upgrade() -> None:
     if not result.fetchone():
         admin_id = str(uuid4())
         try:
-            # Use parameterized queries to avoid SQL injection and encoding issues
+            # Use parameterized query with ALL required NOT NULL fields
             connection.execute(
                 text(
                     "INSERT INTO users ("
                     "id, email, username, hashed_password, display_name, avatar_emoji, "
-                    "is_premium, is_active, email_verified, is_admin, role, created_at"
+                    "level, total_xp, current_streak, max_streak, streak_freeze_available, "
+                    "is_premium, is_active, email_verified, is_admin, language, jwt_version, "
+                    "push_streak_enabled, role, created_at"
                     ") VALUES ("
                     ":id, :email, :username, :hashed_password, :display_name, :avatar_emoji, "
-                    ":is_premium, :is_active, :email_verified, :is_admin, :role, now()"
+                    ":level, :total_xp, :current_streak, :max_streak, :streak_freeze_available, "
+                    ":is_premium, :is_active, :email_verified, :is_admin, :language, :jwt_version, "
+                    ":push_streak_enabled, :role, now()"
                     ")"
                 ),
                 {
@@ -45,10 +49,18 @@ def upgrade() -> None:
                     'hashed_password': '$2b$12$a7zErNi.HHmnhMMgKVUniOlaT4Fq/xCcK9Cqr4BQyVtNeMLYDM3ya',
                     'display_name': 'Admin',
                     'avatar_emoji': '👑',
+                    'level': 1,
+                    'total_xp': 0,
+                    'current_streak': 0,
+                    'max_streak': 0,
+                    'streak_freeze_available': 1,
                     'is_premium': True,
                     'is_active': True,
                     'email_verified': True,
                     'is_admin': True,
+                    'language': 'es',
+                    'jwt_version': 1,
+                    'push_streak_enabled': True,
                     'role': 'superuser',
                 }
             )
