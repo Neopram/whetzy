@@ -10,8 +10,8 @@ depends_on = None
 def upgrade() -> None:
     conn = op.get_bind()
     conn.execute(text("""
-        INSERT INTO users (email, username, hashed_password, display_name, avatar_emoji, is_premium, is_active, email_verified, role, created_at)
-        VALUES ('admin@whetzy.com', 'admin', '$2b$12$a7zErNi.HHmnhMMgKVUniOlaT4Fq/xCcK9Cqr4BQyVtNeMLYDM3ya', 'Admin', '👑', true, true, true, 'superuser', now())
+        INSERT INTO users (id, email, username, hashed_password, display_name, avatar_emoji, is_premium, is_active, email_verified, role, created_at)
+        VALUES (gen_random_uuid(), 'admin@whetzy.com', 'admin', '$2b$12$a7zErNi.HHmnhMMgKVUniOlaT4Fq/xCcK9Cqr4BQyVtNeMLYDM3ya', 'Admin', '👑', true, true, true, 'superuser', now())
         ON CONFLICT DO NOTHING
     """))
     conn.commit()
