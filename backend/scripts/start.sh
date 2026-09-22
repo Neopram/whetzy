@@ -47,8 +47,8 @@ async def maybe_stamp():
 asyncio.run(maybe_stamp())
 "
 
-echo "[start] running alembic upgrade head..."
-alembic upgrade head
+#echo "[start] running alembic upgrade head..."
+#alembic upgrade head
 
 #echo "[start] loading content..."
 #if ! python -m app.services.content_loader; then
