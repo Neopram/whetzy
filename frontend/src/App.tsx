@@ -97,6 +97,8 @@ function StandalonePage({ path }: { path: string }) {
   if (path === '/privacy') return <Screen><LegalScreen doc="privacy" /></Screen>;
   if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
   if (path === '/evidence') return <Screen><EvidenceScreen /></Screen>;
+  // Landing is public, no auth required
+  if (path === '/landing') return <LandingScreen />;
   return <Screen><LandingScreen /></Screen>;
 }
 
@@ -387,3 +389,4 @@ function BootSplash() {
 }
 
 export default App;
+
