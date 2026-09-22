@@ -135,6 +135,8 @@ function App() {
   let path = window.location.pathname;
   // Remove trailing slash for consistent routing
   if (path.endsWith("/") && path !== "/") path = path.slice(0, -1);
+  // Landing is completely public — render before any hooks
+  if (path === "/landing") return <LandingScreen />;
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
   // arrangement React allows: an early return *between* hooks is what blanked
@@ -391,5 +393,7 @@ function BootSplash() {
 }
 
 export default App;
+
+
 
 
