@@ -32,12 +32,11 @@ asyncio.run(seed())
 " 2>/dev/null || true
 
 # Railway (and most PaaS) proxy to $PORT. Listening on 8000 while the
-# platform probes another port is the 502 "Application failed to respond".
+# platform probes another port is the 502 'Application failed to respond'.
 PORT="${PORT:-8000}"
 echo "[start] Starting Gunicorn on 0.0.0.0:${PORT}..."
 exec gunicorn app.main:app \
   --workers 2 \
   --worker-class uvicorn.workers.UvicornWorker \
   --bind "0.0.0.0:${PORT}" \
-  --timeout 60  
-
+  --timeout 60
