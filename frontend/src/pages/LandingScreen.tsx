@@ -6,7 +6,10 @@ export default function LandingScreen() {
           <span className="text-lg font-black text-white flex items-center gap-2">
             <span className="size-8 rounded-xl bg-white/15 grid place-items-center">W</span>Whetzy
           </span>
-          <a href="/auth" className="rounded-full bg-white px-5 py-2 text-sm font-bold text-indigo-600">Start free</a>
+          <div className="flex items-center gap-3">
+            <a href="/auth" className="text-sm font-semibold text-white/90 hover:text-white">Sign in</a>
+            <a href="/auth" className="rounded-full bg-white px-5 py-2 text-sm font-bold text-indigo-600">Start free</a>
+          </div>
         </nav>
       </header>
 

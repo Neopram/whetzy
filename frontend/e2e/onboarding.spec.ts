@@ -6,7 +6,7 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
 
   // Register a new user
   const username = uniqueUsername('e2e_ob_');
-  await page.goto('/');
+  await page.goto('/auth');
   await expect(page.getByRole('button', { name: 'Crear cuenta' })).toBeVisible();
 
   await page.getByLabel('Nombre').fill('Onboarding Test');
@@ -42,7 +42,7 @@ test('onboarding is skipped for returning users', async ({ page }) => {
 
   // Register by hand rather than via registerUser — that helper suppresses
   // onboarding itself, which is the very thing under test here.
-  await page.goto('/');
+  await page.goto('/auth');
   await page.getByLabel('Nombre').fill('Returning Test');
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);

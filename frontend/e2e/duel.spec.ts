@@ -101,7 +101,7 @@ test.describe('duel', () => {
     const oppContext = await browser.newContext();
     const oppPage = await oppContext.newPage();
 
-    await oppPage.goto('/');
+    await oppPage.goto('/auth');
     // Switch to login tab
     await oppPage.getByRole('button', { name: 'Iniciar sesión' }).click();
     await oppPage.getByLabel('Correo electrónico').fill(oppEmail);

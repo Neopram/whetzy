@@ -8,7 +8,7 @@ const FORCED_MCQ_ID = 'q010101001';
 
 test.describe('WCAG 2.2 AA — axe-core', () => {
   test('auth screen has zero violations', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/auth');
     await expect(page.getByRole('heading', { name: /Whetzy/i }).or(page.locator('h1,h2').first())).toBeVisible({ timeout: 10_000 }).catch(() => undefined);
 
     const results = await new AxeBuilder({ page })

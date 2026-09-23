@@ -31,7 +31,7 @@ export async function registerUser(page: Page, opts: { username: string; display
   // them for exactly this purpose.
   const email = `${username}@example.com`;
 
-  await page.goto('/');
+  await page.goto('/auth');
   await expect(page.getByRole('button', { name: 'Crear cuenta' })).toBeVisible();
 
   await page.getByLabel('Nombre').fill(displayName);

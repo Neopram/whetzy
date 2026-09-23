@@ -17,7 +17,7 @@ const API_URL = process.env.API_BASE_URL ?? 'http://localhost:8000';
 test.describe('19.1 — OAuth test provider flow', () => {
   test('test provider start → callback → tokens stored → home screen', async ({ page }) => {
     // Navigate to auth screen
-    await page.goto('/');
+    await page.goto('/auth');
     await expect(page.getByRole('button', { name: 'Crear cuenta' })).toBeVisible({ timeout: 10_000 });
 
     // Social buttons should be visible
@@ -98,7 +98,7 @@ test.describe('19.1 — OAuth test provider flow', () => {
 
 test.describe('19.1 — OAuth buttons UI', () => {
   test('GitHub and Google buttons are visible on auth screen', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/auth');
     await page.waitForLoadState('networkidle');
 
     await expect(page.locator('button', { hasText: /GitHub/i })).toBeVisible();
@@ -107,7 +107,7 @@ test.describe('19.1 — OAuth buttons UI', () => {
 
   test('GitHub button redirects to OAuth start endpoint', async ({ page }) => {
     // We intercept the navigation instead of following it (would go to GitHub)
-    await page.goto('/');
+    await page.goto('/auth');
     await page.waitForLoadState('networkidle');
 
     let navigatedUrl = '';

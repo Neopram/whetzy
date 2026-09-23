@@ -97,8 +97,7 @@ function StandalonePage({ path }: { path: string }) {
   if (path === '/privacy') return <Screen><LegalScreen doc="privacy" /></Screen>;
   if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
   if (path === '/evidence') return <Screen><EvidenceScreen /></Screen>;
-  // Landing is public, no auth required
-  if (path === '/landing') return <LandingScreen />;
+  if (path === '/landing') return <Screen><LandingScreen /></Screen>;
   return <Screen><LandingScreen /></Screen>;
 }
 
@@ -130,13 +129,30 @@ function needsOnboarding(userId: string): boolean {
   }
 }
 
+function normalizePath(pathname: string): string {
+  if (pathname.endsWith('/') && pathname !== '/') return pathname.slice(0, -1);
+  return pathname;
+}
+
+function AuthRoute() {
+  return (
+    <>
+      <Screen>
+        <AuthScreen onAuthed={() => { window.location.assign('/'); }} />
+      </Screen>
+      <Toast />
+    </>
+  );
+}
+
 function App() {
   // Standalone pages routed by URL path
-  let path = window.location.pathname;
-  // Remove trailing slash for consistent routing
-  if (path.endsWith("/") && path !== "/") path = path.slice(0, -1);
-  // Landing is completely public — render before any hooks
-  if (path === "/landing") return <LandingScreen />;
+  const path = normalizePath(window.location.pathname);
+  // Public marketing + auth sit above every hook: a visitor on /landing must
+  // never enter the session machine, and Cloudflare's 308 to /landing/ used
+  // to miss the exact-match and hydrate the register form instead.
+  if (path === '/landing') return <Screen><LandingScreen /></Screen>;
+  if (path === '/auth' || path === '/login' || path === '/register') return <AuthRoute />;
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
   // arrangement React allows: an early return *between* hooks is what blanked
@@ -245,6 +261,13 @@ function App() {
   }
 
   if (authState === 'unauthed') {
+    const oauthError = new URLSearchParams(window.location.search).get('oauth_error');
+    // `/` is the public home. Login/register live at `/auth` so the marketing
+    // page is what an anonymous visitor actually sees. OAuth error returns
+    // still land on `/` with a query flag and must show the form.
+    if (path === '/' && !oauthError) {
+      return <Screen><LandingScreen /></Screen>;
+    }
     return (
       <>
         <Screen><AuthScreen onAuthed={handleAuthed} /></Screen>

@@ -72,12 +72,6 @@ function persistTokens(access: string | null, refresh: string | null) {
 }
 
 export function isAuthenticated(): boolean {
-  // AUTO-LOGIN BYPASS: Auto-login for testing without credentials (temporary)
-  if (!accessToken) {
-    const testToken = 'test-user-token-' + Date.now();
-    persistTokens(testToken, testToken);
-    return true;
-  }
   return accessToken !== null;
 }
 

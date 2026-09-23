@@ -16,7 +16,7 @@ test.describe('auth', () => {
     // Log out by clearing session storage and reloading (no logout button in TopBar
     // for this flow — simulate a fresh session the way the app itself detects it).
     await page.evaluate(() => localStorage.removeItem('whetzy_access_token'));
-    await page.reload();
+    await page.goto('/auth');
     await expect(page.getByRole('button', { name: 'Iniciar sesión' })).toBeVisible();
 
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
@@ -28,7 +28,7 @@ test.describe('auth', () => {
   });
 
   test('invalid login shows an error and does not navigate away', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/auth');
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
     await page.getByLabel('Correo electrónico').fill('nobody@example.com');
     await page.getByLabel('Contraseña').fill('wrong-password');
@@ -55,7 +55,7 @@ test.describe('auth', () => {
     await page.getByRole('button', { name: 'Perfil' }).click();
     await page.getByRole('button', { name: 'Cerrar sesión' }).click();
 
-    // Back on the auth screen — "Crear cuenta" is its entry-point tab.
-    await expect(page.getByRole('button', { name: 'Crear cuenta' })).toBeVisible({ timeout: 10_000 });
+    // Sign-out leaves `/` as the public landing, not the register form.
+    await expect(page.getByRole('link', { name: /Start free/i }).first()).toBeVisible({ timeout: 10_000 });
   });
 });
