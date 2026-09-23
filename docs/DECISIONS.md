@@ -1,4 +1,4 @@
-﻿# Whetzy — Architecture Decision Log
+# Whetzy — Architecture Decision Log
 
 ## ADR-1 — Monolith, not microservices (2026-09-07)
 
