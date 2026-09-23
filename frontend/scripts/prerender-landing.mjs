@@ -90,10 +90,17 @@ async function readLandingCssHrefs() {
   }
   const manifest = JSON.parse(await readFile(manifestPath, 'utf-8'));
   const entry = manifest[LANDING_SRC_KEY];
-  if (!entry) {
-    throw new Error(`[prerender-landing] manifest has no entry for ${JSON.stringify(LANDING_SRC_KEY)}`);
+  
+  let cssFiles = entry?.css ?? [];
+  if (cssFiles.length === 0) {
+    for (const key of Object.keys(manifest)) {
+      if (key.includes('LandingScreen') && manifest[key].file?.endsWith('.css')) {
+        cssFiles.push(manifest[key].file);
+      }
+    }
   }
-  return (entry.css ?? []).map((href) => `/${href}`);
+
+  return cssFiles.map((href) => `/${href}`);
 }
 
 async function main() {
