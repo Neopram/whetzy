@@ -140,6 +140,7 @@ export interface UserRead {
   last_active: string | null;
   created_at: string;
   is_premium: boolean;
+  is_admin?: boolean;
 }
 
 export interface RegisterPayload {
