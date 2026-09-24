@@ -1,35 +1,32 @@
 #!/usr/bin/env bash
-set -e
+# Arranque de produccion: esquema -> contenido -> cuenta de dueno -> seed -> servidor.
+#
+# Los tres primeros pasos son FATALES a proposito. Entre el 2026-09-22
+# (`12ff838`, «Temporarily disable content_loader») y el 2026-09-24 este script
+# siguio adelante pese a todo: `alembic` fallaba con «continuing anyway» y
+# `content_loader` ni se ejecutaba, asi que produccion arranco con las tablas
+# vacias — los 18 tracks respondian «Track not found» y nadie lo vio, porque
+# `/health` decia 200. Un contenedor que muere aqui no pasa el healthcheck de
+# Railway y ese deploy no sustituye al anterior; uno que arranca vacio si.
+set -euo pipefail
 
 echo "[start] Whetzy backend starting..."
-echo "[start] DATABASE_URL = ${DATABASE_URL:-(NOT SET)}"
-
-# Run migrations only if database is reachable
-if [ -n "$DATABASE_URL" ]; then
-    echo "[start] Attempting to run migrations..."
-    alembic upgrade head || {
-        echo "[warning] Alembic failed, but continuing anyway..."
-    }
-else
-    echo "[warning] DATABASE_URL not set - skipping migrations"
+if [ -z "${DATABASE_URL:-}" ]; then
+    echo "[start] DATABASE_URL no esta definida; abortando" >&2
+    exit 1
 fi
 
-echo "[start] Seeding database with gamification data..."
-python -c "
-import asyncio
-from app.services.seed import seed_gamification
-from app.core.db import AsyncSessionLocal
+echo "[start] alembic upgrade head..."
+alembic upgrade head
 
-async def seed():
-    try:
-        async with AsyncSessionLocal() as session:
-            await seed_gamification(session)
-        print('[seed] ✓ Gamification data loaded')
-    except Exception as e:
-        print(f'[seed] Warning: {e}')
+echo "[start] cargando contenido (content_loader)..."
+python -m app.services.content_loader
 
-asyncio.run(seed())
-" 2>/dev/null || true
+echo "[start] cuenta de dueno (OWNER_EMAIL / OWNER_PASSWORD)..."
+python -m app.services.bootstrap_owner
+
+echo "[start] seed de gamificacion..."
+python -m app.services.seed || echo "[start] seed fallido; se continua (no bloquea el arranque)" >&2
 
 # Railway (and most PaaS) proxy to $PORT. Listening on 8000 while the
 # platform probes another port is the 502 'Application failed to respond'.

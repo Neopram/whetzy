@@ -31,12 +31,12 @@ const LANDING = resolve(process.cwd(), 'dist', 'landing', 'index.html');
 /** Each check names what breaks in the product if it fails, not just what is missing. */
 const REQUIRED = [
   {
-    needle: 'lnd-hero__h1',
+    needle: 'data-lcp="hero"',
     why: 'the prerendered hero <h1> — without it the LCP element waits for the JS bundle, which is the whole point of 11.11',
   },
   {
-    needle: 'Domina lo que importa',
-    why: 'the real Spanish hero copy — a rendered-but-empty shell would pass a class-name check while painting nothing',
+    needle: 'Lessons that rewrite themselves around you',
+    why: 'the real hero copy — a rendered-but-empty shell would pass a class-name check while painting nothing',
   },
   {
     needle: 'LandingScreen',

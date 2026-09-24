@@ -215,7 +215,7 @@ export function DuelScreen() {
     <div style={styles.container}>
       <div style={styles.header}>
         <h1 style={styles.title}>{t('duel.title')}</h1>
-        <button style={styles.btnPrimary} onClick={() => setView('challenge-modal')}>
+        <button style={{ ...styles.btnPrimary, flex: '0 0 auto' }} onClick={() => setView('challenge-modal')}>
           ⚔️ {t('duel.challenge')}
         </button>
       </div>
@@ -308,6 +308,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 12,
   },
   title: {
     fontSize: 22,
@@ -426,7 +427,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: 12,
     border: 'none',
     background: 'var(--le-brand)',
-    color: '#fff',
+    color: 'var(--le-text-inverse)',
     fontSize: 15,
     fontWeight: 700,
     cursor: 'pointer',

@@ -10,7 +10,9 @@ Verifies that:
 
 from __future__ import annotations
 
+import sys
 import time
+import types
 from typing import Any
 from unittest.mock import patch
 
@@ -158,11 +160,12 @@ def test_predict_uses_checkpoint_skill_ids_when_registry_loaded() -> None:
     mock_reg.get_model.return_value = None  # torch path, but no trained model
 
     captured: list[dict] = []
-    original = dkt_module._predict_uncached
 
     def capturing_predict(history: Any, si: Any) -> dict:
+        # Solo interesa el indice que recibe; llamar al original con
+        # _TORCH_AVAILABLE forzado construiria una red real y exigiria torch.
         captured.append(dict(si))
-        return original(history, si)
+        return {}
 
     # history has skills in NON-sorted order
     history = [
@@ -170,8 +173,16 @@ def test_predict_uses_checkpoint_skill_ids_when_registry_loaded() -> None:
         {"skill_id": "sk_a", "correct": False},
     ]
 
+    # `predict` hace `from app.ml.registry import registry` dentro de la funcion.
+    # Parchear "app.ml.registry.registry" importaba el modulo real, que subclasea
+    # torch.nn.Module: sin torch (CI y Railway lo omiten a proposito) el test
+    # moria con ModuleNotFoundError. Un modulo falso en sys.modules prueba lo
+    # mismo —el orden del checkpoint— con o sin torch instalado.
+    fake_registry_module = types.ModuleType("app.ml.registry")
+    fake_registry_module.registry = mock_reg  # type: ignore[attr-defined]
+
     with patch.object(dkt_module, "_TORCH_AVAILABLE", True), \
-         patch("app.ml.registry.registry", mock_reg), \
+         patch.dict(sys.modules, {"app.ml.registry": fake_registry_module}), \
          patch.object(dkt_module, "_predict_uncached", side_effect=capturing_predict):
         predict(history)  # skill_index=None → should use checkpoint order
 

@@ -73,7 +73,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
 
   if (step < SEGMENT_QUESTIONS.length) {
     return (
-      <div className="onboarding">
+      <div className="onboarding" data-testid="onboarding">
         <div className="progress">
           <div className="bar" style={{ width: `${(step + 1) / SEGMENT_QUESTIONS.length * 100}%` }}></div>
         </div>
@@ -104,7 +104,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   }
 
   return (
-    <div className="onboarding language-choice">
+    <div className="onboarding language-choice" data-testid="onboarding">
       <h2>{t('onboarding.language', 'Elige tu idioma')}</h2>
       <p>{t('onboarding.langDesc', 'Puedes cambiar esto después en Ajustes')}</p>
 

@@ -134,7 +134,7 @@ export function DeleteAccountScreen() {
 
         {phase === 'done' && (
           <div style={styles.form}>
-            <p style={{ color: '#2ecc71', fontWeight: 700, fontSize: 16 }}>
+            <p style={{ color: 'var(--le-success-text)', fontWeight: 700, fontSize: 16 }}>
               {t('deleteAccount.doneTitle')}
             </p>
             <p style={styles.desc}>
@@ -162,11 +162,11 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: '#0f0f1a',
+    background: 'var(--le-bg)',
     padding: 16,
   },
   card: {
-    background: '#1a1a2e',
+    background: 'var(--le-surface)', border: '1px solid var(--le-border)',
     borderRadius: 16,
     padding: 32,
     maxWidth: 440,
@@ -174,14 +174,14 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
   },
   title: {
-    color: '#fff',
+    color: 'var(--le-text)',
     fontSize: 22,
     fontWeight: 800,
     marginBottom: 16,
     margin: '0 0 16px',
   },
   desc: {
-    color: '#9ca3af',
+    color: 'var(--le-text-secondary)',
     fontSize: 14,
     lineHeight: 1.6,
     marginBottom: 16,
@@ -192,16 +192,16 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 12,
   },
   label: {
-    color: '#9ca3af',
+    color: 'var(--le-text-secondary)',
     fontSize: 13,
     fontWeight: 600,
   },
   input: {
     padding: '12px 14px',
     borderRadius: 8,
-    border: '1px solid #374151',
-    background: '#111827',
-    color: '#fff',
+    border: '1px solid var(--le-border)',
+    background: 'var(--le-bg)',
+    color: 'var(--le-text)',
     fontSize: 15,
     outline: 'none',
   },
@@ -210,12 +210,12 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid rgba(239,68,68,0.3)',
     borderRadius: 8,
     padding: 16,
-    color: '#fca5a5',
+    color: 'var(--le-danger-text)',
     fontSize: 14,
     lineHeight: 1.6,
   },
   error: {
-    color: '#ef4444',
+    color: 'var(--le-danger-text)',
     fontSize: 13,
     fontWeight: 600,
     margin: 0,
@@ -224,8 +224,8 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '14px 20px',
     borderRadius: 10,
     border: 'none',
-    background: '#3b82f6',
-    color: '#fff',
+    background: 'var(--le-brand)',
+    color: 'var(--le-text-inverse)',
     fontWeight: 700,
     fontSize: 15,
     cursor: 'pointer',
@@ -234,8 +234,8 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '14px 20px',
     borderRadius: 10,
     border: 'none',
-    background: '#ef4444',
-    color: '#fff',
+    background: 'var(--le-danger)',
+    color: 'var(--le-text-inverse)',
     fontWeight: 700,
     fontSize: 15,
     cursor: 'pointer',
@@ -243,9 +243,9 @@ const styles: Record<string, React.CSSProperties> = {
   btnSecondary: {
     padding: '12px 20px',
     borderRadius: 10,
-    border: '1px solid #374151',
+    border: '1px solid var(--le-border)',
     background: 'transparent',
-    color: '#9ca3af',
+    color: 'var(--le-text-secondary)',
     fontWeight: 600,
     fontSize: 14,
     cursor: 'pointer',

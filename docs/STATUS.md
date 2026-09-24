@@ -868,3 +868,24 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 - Banco sin cambios: **6.233 Q · 18 tracks · 378 skills · 378 lecciones · 622 términos**. `python scripts/check_docs.py` → All checks PASSED antes y después.
 
 **Pendiente heredado (sin cambios):** 20.7 CI-LOCAL exit 0; 8 commits locales de bg pendientes de push con las 4 guardias; H.12, H.17, H.18.
+
+## 2026-09-24 — Incidente de login en producción + series 30-33 (sesión interactiva, rama `claude/trusting-franklin-2wwmmr`, PR https://github.com/Neopram/whetzy/pull/6)
+
+**Síntoma (captura del dueño):** `whetzy.com/auth` → `POST login` **405**, pantalla «Incorrect email or password».
+
+**Causa medida:**
+- El bundle servido (`index-ocm9s-Mo.js`) tiene `const Pr="https://whetzy.com"` como API: el login iba a Cloudflare Pages, no al backend.
+- `frontend/.env.production` apuntaba a `whetzy-production.up.railway.app` → `Application not found` (404). El backend vivo es `api-production-9751` (`/health` 200; CORS permite `https://whetzy.com`).
+- `frontend/functions/api/[[path]].js` (el 404 de `/api/*`, ver §0) había sido sustituido por un stub que responde **200 «Autenticado correctamente» a cualquier POST**; `functions/[[path]].js` en la raíz, igual (nunca se desplegaba: el deploy es desde `frontend/`).
+
+**Commits:** `b590b81` (URL de API, stub revertido, guarda `requireApiUrl` que rechaza el dominio del frontend y URLs sin `/api/v1`; mutada → rojo) · `394c660` (`npm run build` estaba en rojo: prerender con `data-lcp="hero"`, `package-lock.json` restaurado, `lesson.noContentTitle`) · `cd9674a` (`check-deployed.mjs` con dos comprobaciones nuevas; hoy FAIL contra prod, PASS la de API contra el `dist` nuevo).
+
+**Hallazgo añadido:** la landing de producción publica testimonios con nombre, «1.2M learners» y precios sin aprobar → **30.1 / H.31, PRI 0**.
+
+**Plan:** series **30** (integridad del despliegue, PRI 0), **31** (fuente única de cifras, staging, migraciones con datos), **32** (calibración y evidencia del motor), **33** (SLO, restauración, offline idempotente). El resto del plan del 2026-09-24 ya estaba cubierto por las series 17-29 y no se duplica.
+
+**Cifras:** `content/questions` = **6.305** preguntas (recuento directo); `CATALOGO_MAESTRO.md` y `ARCHITECTURE.md` decían 6.233 y se corrigen. `python scripts/check_docs.py` → All checks PASSED.
+
+**Pendiente:** deploy manual del frontend (el agente no tiene credenciales de Cloudflare) y `check-deployed.mjs` PASS después; H.31.
+
+**Guardas no ejecutadas en el push:** `.githooks/pre-push` no tiene bit de ejecución en git y se ignoró. Ejecutado a mano: rojo solo por `ruff` (31 errores preexistentes, ninguno en ficheros tocados aquí) → fila **30.6**.

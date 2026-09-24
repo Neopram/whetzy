@@ -40,7 +40,7 @@ profundidad de producto*, no adquisición.
 | Tracks | **18** (track01–17 + track40) | `python scripts/check_docs.py` |
 | Cursos (track × nivel) | **49** | ídem |
 | Skills | **378** | ídem |
-| Preguntas | **6.233** | `python scripts/check_question_bank.py` |
+| Preguntas | **6.305** | `python scripts/check_question_bank.py` |
 | Lecciones | 378/378 (100 %) | `pytest tests/content/test_lessons.py` |
 | Glosario | **622** | `check_docs.py` |
 | Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9) | `check_question_bank.py` |

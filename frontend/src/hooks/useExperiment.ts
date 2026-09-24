@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { API_BASE_URL, getAccessToken } from '../services/api'
 
 interface ExperimentFlags {
   [experimentName: string]: 'A' | 'B'
@@ -11,9 +12,9 @@ export function useExperimentFlags() {
   useEffect(() => {
     const fetchFlags = async () => {
       try {
-        const response = await fetch('/api/v1/experiments/flags', {
+        const response = await fetch(`${API_BASE_URL}/experiments/flags`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            'Authorization': `Bearer ${getAccessToken() ?? ''}`
           }
         })
         if (response.ok) {

@@ -1,61 +1,164 @@
-/* Obsidian Radiant League & Leaderboard styling */
-.leagueContainer {
+/* Serie 34.1 (2026-09-24): base restaurada de a45bd40^, anterior al commit
+   «Obsidian Radiant» que renombró las clases sin tocar el .tsx. Los colores
+   salen de los tokens --le-*, que ya son la paleta Obsidian (design-tokens.css). */
+
+.screen {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6, 24px);
-  padding: var(--space-6, 24px) var(--space-4, 16px);
-  max-width: 900px;
-  margin: 0 auto;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  padding-bottom: calc(var(--le-nav-height) + var(--le-space-xl));
 }
 
-.leagueHeader {
-  background: radial-gradient(circle at top right, rgba(6, 182, 212, 0.15), transparent 70%),
-              rgba(13, 20, 32, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-3xl, 28px);
-  padding: var(--space-8, 32px);
+.loading {
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  color: var(--le-text-muted);
+  font-weight: var(--le-fw-bold);
+  padding: var(--le-space-xl);
 }
 
-.leagueTitle {
-  font-size: var(--text-3xl, 30px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--color-cyan, #06B6D4) 0%, var(--color-emerald, #10B981) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* ===== Header ===== */
+.leagueHeader {
+  text-align: center;
+  padding: var(--le-space-lg) 0;
 }
 
-.leaderboardTable {
+.leagueIcon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: var(--le-space-sm);
+}
+
+.leagueName {
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+}
+
+.leagueInfo {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-secondary);
+  margin-top: 4px;
+}
+
+.timerBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--le-space-sm);
+  background: var(--le-orange-light);
+  color: var(--le-orange);
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  padding: 4px 14px;
+  border-radius: 100px;
+}
+
+/* ===== Podium ===== */
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--le-space-sm);
+  padding: 0 var(--le-space-md);
+}
+
+.podiumSlot {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2, 10px);
+  align-items: center;
+  gap: 4px;
+  max-width: 100px;
 }
 
-.leaderboardRow {
+.podiumAvatar {
+  font-size: 1.8rem;
+}
+
+.podiumName {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+}
+
+.podiumXp {
+  font-size: 10px;
+  color: var(--le-text-secondary);
+  font-weight: var(--le-fw-bold);
+}
+
+.podiumBar {
+  width: 100%;
+  background: linear-gradient(180deg, var(--le-gold) 0%, var(--le-orange) 100%);
+  border-radius: var(--le-radius-md) var(--le-radius-md) 0 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: var(--le-space-sm);
+}
+
+.podiumMedal {
+  font-size: 1.5rem;
+}
+
+/* ===== Leaderboard Rows ===== */
+.row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4, 16px) var(--space-6, 24px);
-  background: rgba(13, 20, 32, 0.55);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-2xl, 18px);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  color: #F8FAFC;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-sm) 0;
 }
 
-.leaderboardRow:hover {
-  transform: translateX(4px);
-  border-color: rgba(6, 182, 212, 0.3);
-  background: rgba(13, 20, 32, 0.8);
+.row + .row {
+  border-top: 1px solid var(--le-border);
 }
 
-.currentUserRow {
-  border-color: var(--color-cyan, #06B6D4);
-  background: rgba(6, 182, 212, 0.1);
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+.rowUser {
+  background: var(--le-green-light);
+  margin: 0 calc(var(--le-space-lg) * -1);
+  padding: var(--le-space-sm) var(--le-space-lg);
+  border-radius: var(--le-radius-md);
+}
+
+.rowRank {
+  width: 28px;
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text-muted);
+  text-align: center;
+}
+
+.rowAvatar {
+  font-size: 1.5rem;
+}
+
+.rowInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rowName {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+.rowXp {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-secondary);
+}
+
+.rowPromo {
+  color: var(--le-success-text);
+  font-weight: var(--le-fw-black);
+  font-size: var(--le-fs-sm);
+}
+
+.rowDemote {
+  color: var(--le-red);
+  font-weight: var(--le-fw-black);
+  font-size: var(--le-fs-sm);
 }

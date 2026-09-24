@@ -55,14 +55,14 @@ export async function registerUser(page: Page, opts: { username: string; display
  * point into the app from a clean context needs this — registration AND login
  * (see the opponent's second context in duel.spec.ts).
  *
- * It waits for the onboarding screen's own headline rather than its CTA's
- * accessible name, which is identical to the registration button's
- * ("EMPEZAR A APRENDER") and so cannot tell the two screens apart. The wait is
+ * It waits for the onboarding screen's own `data-testid="onboarding"` (the
+ * redesigned onboarding of 24.3 has no CSS-module headline to key on; the old
+ * `[class*="headline_"]` wait is what turned 27 e2e tests red). The wait is
  * deliberately strict: if onboarding ever stops appearing for a new context,
  * this should fail loudly instead of skipping silently.
  */
 export async function suppressOnboarding(page: Page): Promise<void> {
-  await expect(page.locator('[class*="headline_"]')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByTestId('onboarding')).toBeVisible({ timeout: 15_000 });
 
   await page.evaluate(() => {
     try {

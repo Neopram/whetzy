@@ -2,12 +2,20 @@
 
 ## Deploy to Cloudflare Pages (frontend)
 
-**Deploy is MANUAL** — no Git connection in Cloudflare Pages. Run from `frontend/`:
+**Correction 2026-09-24: Cloudflare Pages IS connected to Git.** Every push to a branch gets a preview build (the `cloudflare-workers-and-pages` bot comments the URL on the PR, e.g. `https://claude-trusting-franklin-2ww.whetzy.pages.dev` for PR #6) and a `Cloudflare Pages` check. Not verified yet: whether `master` publishes to `whetzy.com` automatically, and which build command the dashboard runs — the Git build does **not** produce `dist/landing/index.html`, so it is not running `npm run build` (ledger 30.4). Manual deploy still works, from `frontend/`:
 
 ```bash
 npm run build
 npx wrangler pages deploy dist --project-name whetzy --branch main
 ```
+
+Then, **always**:
+
+```bash
+node scripts/check-deployed.mjs   # must print PASS for https://whetzy.com
+```
+
+A deploy is not done until that passes. On 2026-09-24 the page loaded fine while login was dead: the bundle had `https://whetzy.com` as its API (405 on login) and a Pages Function answered 200 "Autenticado correctamente" to any POST on `/api/*`. Two checks now catch exactly that (ledger 30.0). The API origin lives in `frontend/.env.production` and `vite.config.ts` refuses to build if it is the frontend's own domain or does not end in `/api/v1`.
 
 First time per machine requires `npx wrangler login` (opens browser OAuth). The `--branch main` flag sends it to Production (whetzy.com). Verified 2026-09-18 (H.11 closed, sesión bc): 153 files, deploy `8c077b9a.whetzy.pages.dev`.
 
@@ -133,9 +141,34 @@ DEBUG=false
 RESEND_API_KEY=<key>         # basta esta para que el correo salga
 EMAIL_FROM_ADDRESS=noreply@whetzy.com
 FRONTEND_BASE_URL=https://whetzy.com
+OWNER_EMAIL=<tu email>        # cuenta de dueño (rol owner); ver «Cuenta de dueño»
+OWNER_PASSWORD=<≥ 12 caracteres, solo aquí>
 # EMAIL_PROVIDER=auto        # por defecto; solo para forzar smtp|resend|log
 # SMTP_USER=... SMTP_PASSWORD=...   # alternativa a Resend (hacen falta las dos)
 ```
+
+### Cuenta de dueño (acceso a `/admin`)
+
+`scripts/start.sh` corre `python -m app.services.bootstrap_owner` en cada arranque.
+Con `OWNER_EMAIL` y `OWNER_PASSWORD` en las variables de Railway crea esa cuenta, o
+la actualiza: rol `owner`, email verificado y **esa** contraseña. Cambiar la variable
+y redesplegar cambia la contraseña. Con las dos vacías no hace nada; con una sola, el
+arranque falla a propósito. El log dice `[owner] created|updated|unchanged: <email>`,
+nunca la contraseña.
+
+Historia (2026-09-24): hasta entonces la cuenta `admin@whetzy.com` la insertaba la
+migración `20260922_setup_admin` con un hash **versionado en el repo** y rol
+`superuser`, que `/admin` rechaza con 403. `20260924_owner_role` pasa ese rol a
+`owner` y anula el hash filtrado (queda sin contraseña hasta que `OWNER_*` la fije).
+
+### Qué hace el arranque, y por qué falla en vez de seguir
+
+`alembic upgrade head` → `content_loader` → `bootstrap_owner` son **fatales**; el seed
+de gamificación no. Entre el 2026-09-22 y el 2026-09-24 el script seguía adelante
+aunque todo fallara y `content_loader` ni se ejecutaba: producción arrancó con los 18
+tracks vacíos («Track not found») y `/health` decía 200. Probado en local contra
+Postgres 16: base vacía → 18 tracks, 6.305 preguntas y 622 términos en ~10 s;
+`CONTENT_DIR` roto → `exit 1` y gunicorn no arranca.
 
 ### Correo: la variable que no se puede olvidar (H.30)
 

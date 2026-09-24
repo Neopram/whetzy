@@ -5,7 +5,7 @@ import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
 import { usePushNotifications } from '../hooks/usePushNotifications';
-import { gamification } from '../services/api';
+import { API_BASE_URL, gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import styles from './ProfileScreen.module.css';
 
@@ -31,7 +31,7 @@ export function ProfileScreen() {
       await push.subscribe();
     }
     try {
-      await fetch('/api/v1/push/preferences', {
+      await fetch(`${API_BASE_URL}/push/preferences`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('whetzy_access_token') ?? ''}` },
         body: JSON.stringify({ streak_enabled: next }),
