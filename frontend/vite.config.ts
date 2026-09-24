@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process'
 import { createReadStream, existsSync, readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, extname, resolve } from 'node:path'
@@ -257,12 +258,34 @@ function monacoDropUnusedLanguageServices(): Plugin {
  *  Cloudflare la resuelve con el index.html y un 200, y la aplicacion se queda
  *  muda sin un error. Paso, y estuvo asi hasta que alguien probo a registrarse.
  *  Mejor que el build muera aqui. */
+function readApiUrlFromEnvFile(): string | undefined {
+  const file = resolve(process.cwd(), '.env.production');
+  if (!existsSync(file)) return undefined;
+  const m = readFileSync(file, 'utf-8').match(/^\s*VITE_API_URL\s*=\s*(.+?)\s*$/m);
+  return m?.[1];
+}
+
 function requireApiUrl(): Plugin {
   return {
     name: 'require-api-url',
     apply: 'build',
     config(_config, env) {
       if (env.mode !== 'production') return;
+      // La fuente de verdad es frontend/.env.production (commiteado). El
+      // 2026-09-24 el panel de Cloudflare Pages tenia VITE_API_URL=https://whetzy.com
+      // en Produccion: pisaba al fichero y ese era el origen del login en 405.
+      // Una variable de entorno distinta se ignora con un aviso en el log del
+      // build. Vite carga el entorno despues de los hooks `config`, asi que
+      // fijar process.env aqui es lo que acaba en import.meta.env.
+      const fromFile = readApiUrlFromEnvFile();
+      const fromEnv = process.env.VITE_API_URL;
+      if (fromFile && fromEnv && fromEnv !== fromFile) {
+        console.warn(
+          `[require-api-url] Ignorando VITE_API_URL=${JSON.stringify(fromEnv)} del entorno ` +
+            `(p. ej. el panel de Cloudflare); se usa la de frontend/.env.production: ${fromFile}`,
+        );
+      }
+      if (fromFile) process.env.VITE_API_URL = fromFile;
       const url = loadEnv(env.mode, process.cwd(), '').VITE_API_URL;
       if (!url) {
         throw new Error(
@@ -292,6 +315,31 @@ function requireApiUrl(): Plugin {
   };
 }
 
+/** Pre-renderiza la landing al final de CUALQUIER `vite build`, no solo de
+ *  `npm run build`. El 2026-09-24 el panel de Cloudflare Pages ejecutaba
+ *  `npx tsc -b && npx vite build` y la landing de produccion salia sin el hero
+ *  pre-renderizado (H.32). El script hace su propio build SSR con esta misma
+ *  config: la variable WHETZY_PRERENDER_CHILD y `build.ssr` evitan la recursion. */
+function prerenderLandingPlugin(): Plugin {
+  let isSsr = false;
+  return {
+    name: 'prerender-landing',
+    apply: 'build',
+    configResolved(config) {
+      isSsr = Boolean(config.build.ssr);
+    },
+    closeBundle() {
+      if (isSsr || process.env.WHETZY_PRERENDER_CHILD) return;
+      const r = spawnSync(process.execPath, ['scripts/prerender-landing.mjs'], {
+        cwd: process.cwd(),
+        stdio: 'inherit',
+        env: { ...process.env, WHETZY_PRERENDER_CHILD: '1' },
+      });
+      if (r.status !== 0) throw new Error('[prerender-landing] fallo; el build no es publicable');
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -300,6 +348,7 @@ export default defineConfig({
     pyodideSelfHostPlugin(),
     monacoDropUnusedLanguageServices(),
     requireApiUrl(),
+    prerenderLandingPlugin(),
   ],
   build: {
     // Read by scripts/prerender-landing.mjs to find the exact hashed CSS

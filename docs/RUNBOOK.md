@@ -2,7 +2,7 @@
 
 ## Deploy to Cloudflare Pages (frontend)
 
-**Correction 2026-09-24: Cloudflare Pages IS connected to Git.** Every push to a branch gets a preview build (the `cloudflare-workers-and-pages` bot comments the URL on the PR, e.g. `https://claude-trusting-franklin-2ww.whetzy.pages.dev` for PR #6) and a `Cloudflare Pages` check. Not verified yet: whether `master` publishes to `whetzy.com` automatically, and which build command the dashboard runs — the Git build does **not** produce `dist/landing/index.html`, so it is not running `npm run build` (ledger 30.4). Manual deploy still works, from `frontend/`:
+**Correction 2026-09-24: Cloudflare Pages IS connected to Git.** Every push to a branch gets a preview build (the `cloudflare-workers-and-pages` bot comments the URL on the PR, e.g. `https://claude-trusting-franklin-2ww.whetzy.pages.dev` for PR #6) and a `Cloudflare Pages` check. Verified 2026-09-24 from the owner's build log: a push to `master` triggers the Production build, which runs `npx tsc -b && npx vite build` with a dashboard variable `VITE_API_URL=https://whetzy.com` — the origin of the login 405. Since then the build no longer depends on either: `vite.config.ts` takes `VITE_API_URL` **only** from `frontend/.env.production` (a different env value is ignored with a `[require-api-url] Ignorando…` warning in the log) and pre-renders the landing inside any `vite build`. Deleting that dashboard variable is still recommended so nobody is misled by it. Manual deploy still works, from `frontend/`:
 
 ```bash
 npm run build
