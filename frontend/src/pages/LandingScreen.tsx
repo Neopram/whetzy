@@ -1,22 +1,40 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './LandingScreen.module.css';
-import heroPoster from '../assets/hero-video-poster.jpg';
+import heroShotEs from '../assets/hero-quiz-es.jpg';
+import heroShotEn from '../assets/hero-quiz-en.jpg';
+import { CATALOG_QUESTIONS, CATALOG_TRACKS } from '../lib/catalog';
+import {
+  COMPARISON_CHECKED_ON,
+  COMPARISON_COMPETITORS,
+  COMPARISON_ROWS,
+  type ComparisonCell,
+} from '../lib/comparison';
 
-type Cell = boolean | string;
+/* La landing (30.1, 2026-09-24) solo afirma lo que el producto hace hoy:
+   cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), capturas
+   reales de la app y una comparativa con fuente y fecha. La versión anterior
+   traía testimonios con nombre, «1.2M learners», «240+ tracks», precios sin
+   aprobar y copia de otro producto (idiomas). Toda la copia vive en i18n. */
 
-const features = [
-  {
-    icon: (
+type Lang = 'es' | 'en';
+
+/** ?lang=en|es manda; si no, el idioma del navegador. En el pre-render (sin
+ *  window) sale español, que es lo que se sirve como HTML estático. */
+function resolveLandingLang(): Lang {
+  if (typeof window === 'undefined') return 'es';
+  const q = new URLSearchParams(window.location.search).get('lang');
+  if (q === 'es' || q === 'en') return q;
+  return (navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+}
+
+const featureIcons = [
+  (
       <svg className={styles.featureSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
       </svg>
-    ),
-    title: 'Adaptive learning',
-    body: 'Our engine re-scores every answer in real time and rebuilds your next lesson around the exact gaps it finds.',
-    tag: 'Engine v4',
-  },
-  {
-    icon: (
+  ),
+  (
       <svg className={styles.featureSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="m5 8 6 6" />
         <path d="m4 14 6-6 2-3" />
@@ -25,13 +43,8 @@ const features = [
         <path d="m22 22-5-10-5 10" />
         <path d="M14 18h6" />
       </svg>
-    ),
-    title: 'Truly bilingual',
-    body: 'Learn any skill in two languages at the same time. Switch mid-lesson and keep your streak and your context.',
-    tag: '28 pairs',
-  },
-  {
-    icon: (
+  ),
+  (
       <svg className={styles.featureSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 8V4H8" />
         <rect width="16" height="12" x="4" y="8" rx="2" />
@@ -40,35 +53,22 @@ const features = [
         <path d="M15 13v2" />
         <path d="M9 13v2" />
       </svg>
-    ),
-    title: 'AI tutor, 24/7',
-    body: 'Stuck at 2am? Ask for a hint, a rewrite or a full explanation and get an answer that knows your history.',
-    tag: 'Unlimited on Pro',
-  },
+  ),
 ];
 
-const steps = [
-  {
-    icon: (
+const stepIcons = [
+  (
       <svg className={styles.stepSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
         <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
       </svg>
-    ),
-    title: 'Choose a skill',
-    body: 'Pick from 240+ tracks, from Spanish conversation to Python data work. A 3-minute placement check sets your level.',
-  },
-  {
-    icon: (
+  ),
+  (
       <svg className={styles.stepSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
       </svg>
-    ),
-    title: 'Learn adaptive',
-    body: 'Short daily sessions that shift difficulty as you go. Nothing too easy, nothing that makes you quit.',
-  },
-  {
-    icon: (
+  ),
+  (
       <svg className={styles.stepSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
         <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
@@ -77,86 +77,14 @@ const steps = [
         <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
         <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
       </svg>
-    ),
-    title: 'Get certified',
-    body: 'Finish a track and earn a verified certificate with your skill breakdown, ready to share.',
-  },
+  ),
 ];
 
-const comparison: { label: string; whetzy: Cell; duolingo: Cell; datacamp: Cell; brilliant: Cell }[] = [
-  { label: 'Real-time adaptive engine', whetzy: true, duolingo: 'Partial', datacamp: false, brilliant: 'Partial' },
-  { label: 'Bilingual lessons', whetzy: true, duolingo: false, datacamp: false, brilliant: false },
-  { label: 'AI tutor with full history', whetzy: true, duolingo: 'Limited', datacamp: 'Limited', brilliant: false },
-  { label: 'Interactive code exercises', whetzy: true, duolingo: false, datacamp: true, brilliant: true },
-  { label: 'Verified certificates', whetzy: true, duolingo: false, datacamp: true, brilliant: false },
-  { label: 'Offline practice mode', whetzy: true, duolingo: true, datacamp: false, brilliant: false },
-  { label: 'Free tier without ads', whetzy: true, duolingo: false, datacamp: 'Limited', brilliant: false },
-];
-
-const plans = [
-  {
-    name: 'Free',
-    price: '$0',
-    note: 'forever',
-    blurb: 'Everything you need to build the habit.',
-    perks: ['1 active track', 'Daily adaptive session', 'Streaks & badges', 'Community answers'],
-    cta: 'Start free',
-    featured: false,
-  },
-  {
-    name: 'Plus',
-    price: '$9.99',
-    note: '/month',
-    blurb: 'For learners who want to move fast.',
-    perks: [
-      'Unlimited tracks',
-      'Bilingual mode',
-      'AI tutor (200 msgs/mo)',
-      'Progress analytics',
-      'Offline practice',
-    ],
-    cta: 'Get Plus',
-    featured: true,
-  },
-  {
-    name: 'Pro',
-    price: '$19.99',
-    note: '/month',
-    blurb: 'Certification and coaching included.',
-    perks: [
-      'Everything in Plus',
-      'Unlimited AI tutor',
-      'Verified certificates',
-      'Mock interviews & reviews',
-      'Priority support',
-    ],
-    cta: 'Get Pro',
-    featured: false,
-  },
-];
-
-const testimonials = [
-  {
-    quote:
-      'Three weeks in, the lessons already knew which tenses I kept dropping. It felt less like an app and more like a tutor who takes notes.',
-    name: 'Marina Petrescu',
-    role: 'Product designer, learning Spanish + SQL',
-    initials: 'MP',
-  },
-  {
-    quote:
-      'I switched from two separate apps. Doing the technical track in English and Portuguese at once is the thing nobody else does.',
-    name: 'Diego Alvarenga',
-    role: 'Data analyst, Pro member',
-    initials: 'DA',
-  },
-];
-
-function CellMark({ value }: { value: Cell }) {
+function CellMark({ value, lang, notChecked }: { value: ComparisonCell; lang: Lang; notChecked: string }) {
   if (value === true) {
     return (
-      <span className={styles.cellCheck}>
-        <svg className={styles.cellIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <span className={styles.cellCheck} aria-label="✓">
+        <svg className={styles.cellIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <polyline points="20 6 9 17 4 12" />
         </svg>
       </span>
@@ -164,151 +92,149 @@ function CellMark({ value }: { value: Cell }) {
   }
   if (value === false) {
     return (
-      <span className={styles.cellMinus}>
-        <svg className={styles.cellIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <span className={styles.cellMinus} aria-label="—">
+        <svg className={styles.cellIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
       </span>
     );
   }
-  return <span className={styles.cellText}>{value}</span>;
+  if (value === null) return <span className={styles.cellText}>{notChecked}</span>;
+  return <span className={styles.cellText}>{value[lang]}</span>;
 }
 
 export default function LandingScreen() {
+  const { t, i18n } = useTranslation();
+  const [lang, setLang] = useState<Lang>('es');
   const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
+    const l = resolveLandingLang();
+    setLang(l);
+    if (i18n.language !== l) void i18n.changeLanguage(l);
+    document.documentElement.lang = l;
     try {
-      const token = localStorage.getItem('access_token') || localStorage.getItem('whetzy_token');
-      setHasSession(Boolean(token));
+      // Misma clave que services/api.ts: la que escribe el login.
+      setHasSession(Boolean(localStorage.getItem('whetzy_access_token')));
     } catch {
       setHasSession(false);
     }
-  }, []);
+  }, [i18n]);
+
+  useEffect(() => {
+    document.title = t('landing.metaTitle');
+  }, [t, lang]);
 
   // Las CTA son enlaces, no botones con onClick: navegan aunque el JS aún no
   // haya cargado (la landing se sirve pre-renderizada) y son lo que un lector
   // de pantalla espera de algo que lleva a otra página.
   const ctaHref = hasSession ? '/' : '/auth';
-
-  const handleAction = () => {
-    // Same navigation style as AuthScreen: full page load, no router needed.
-    if (hasSession) {
-      window.location.assign('/');
-    } else {
-      window.location.assign('/auth');
-    }
-  };
+  const nf = new Intl.NumberFormat(lang === 'es' ? 'es-ES' : 'en-US');
+  const counts = { tracks: CATALOG_TRACKS, questions: nf.format(CATALOG_QUESTIONS) };
+  const features = (['f1', 'f2', 'f3'] as const).map((k, i) => ({
+    icon: featureIcons[i],
+    title: t(`landing.${k}.title`),
+    body: t(`landing.${k}.body`),
+    tag: t(`landing.${k}.tag`),
+  }));
+  const steps = (['s1', 's2', 's3'] as const).map((k, i) => ({
+    icon: stepIcons[i],
+    title: t(`landing.${k}.title`),
+    body: t(`landing.${k}.body`),
+  }));
+  const plans = (['planFree', 'planPlus'] as const).map((k) => ({
+    key: k,
+    name: t(`landing.${k}.name`),
+    price: t(`landing.${k}.price`),
+    note: t(`landing.${k}.note`),
+    blurb: t(`landing.${k}.blurb`),
+    perks: t(`landing.${k}.perks`, { returnObjects: true, ...counts }) as string[],
+    cta: t(`landing.${k}.cta`),
+    featured: k === 'planFree',
+  }));
+  const showCompare = COMPARISON_ROWS.length > 0;
+  const checkedOn = COMPARISON_CHECKED_ON
+    ? new Date(`${COMPARISON_CHECKED_ON}T00:00:00Z`).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+    : '';
+  const notChecked = lang === 'es' ? 'No comprobado' : 'Not checked';
 
   return (
     <div className={styles.page}>
-      {/* HEADER / NAV */}
       <header className={styles.header}>
         <nav className={styles.navContainer}>
           <div className={styles.brandGroup}>
             <span className={styles.logoBadge}>W</span>
             <span className={styles.brandTitle}>Whetzy</span>
           </div>
-
           <div className={styles.navMenu}>
-            <a href="#features" className={styles.navLink}>Features</a>
-            <a href="#how" className={styles.navLink}>How it works</a>
-            <a href="#compare" className={styles.navLink}>Compare</a>
-            <a href="#pricing" className={styles.navLink}>Pricing</a>
+            <a href="#features" className={styles.navLink}>{t('landing.nav.features')}</a>
+            <a href="#how" className={styles.navLink}>{t('landing.nav.how')}</a>
+            {showCompare && <a href="#compare" className={styles.navLink}>{t('landing.nav.compare')}</a>}
+            <a href="#pricing" className={styles.navLink}>{t('landing.nav.pricing')}</a>
           </div>
-
           <a className={styles.headerCta} href={ctaHref}>
-            {hasSession ? 'Go to Dashboard' : 'Start free'}
+            {hasSession ? t('landing.nav.dashboard') : t('landing.nav.start')}
           </a>
         </nav>
       </header>
 
-      {/* HERO SECTION */}
       <section className={styles.heroSection}>
         <div className={styles.heroContainer}>
           <div className={styles.heroContent}>
             <span className={styles.streakBadge}>
-              <svg className={styles.badgeSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className={styles.badgeSvg} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
               </svg>
-              14-day streak club · 1.2M learners
+              {t('landing.badge', counts)}
             </span>
 
             {/* data-lcp: marcador estable para el prerender y sus guardas; la clase
                 de CSS module lleva hash y no sirve de aguja. */}
             <h1 className={styles.heroHeading} data-lcp="hero">
-              Lessons that rewrite themselves around you.
+              {t('landing.heroTitle')}
             </h1>
 
-            <p className={styles.heroDescription}>
-              Whetzy blends an adaptive engine, bilingual lessons and an AI tutor so every session lands exactly at the edge of what you know.
-            </p>
+            <p className={styles.heroDescription}>{t('landing.heroBody')}</p>
 
             <div className={styles.heroActions}>
-              <a className={styles.primaryBtn} href={ctaHref}>
-                Start free
-              </a>
-              <a href="#how" className={styles.secondaryBtn}>
-                <svg className={styles.playIcon} viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
-                See how it works
-              </a>
+              <a className={styles.primaryBtn} href={ctaHref}>{t('landing.heroCta')}</a>
+              <a href="#how" className={styles.secondaryBtn}>{t('landing.heroSecondary')}</a>
             </div>
 
-            {/* Code Snippet Box */}
-            <div className={styles.codeSnippet}>
+            <div className={styles.codeSnippet} aria-hidden="true">
               <div className={styles.codeSnippetHeader}>
                 <span className={styles.dotPink} />
                 <span className={styles.dotWhite} />
                 <span className={styles.dotMuted} />
-                <span className={styles.codeFilename}>adaptive_session.ts</span>
+                <span className={styles.codeFilename}>scheduler.py</span>
               </div>
               <pre className={styles.codeContent}>
-                <span className={styles.codeComment}>// tu respuesta anterior: 82% correcto</span>
-                {'\n'}next.difficulty <span className={styles.codeAccent}>+=</span> 0.4
-                {'\n'}next.focus <span className={styles.codeAccent}>=</span> <span className={styles.codeString}>"pretérito imperfecto"</span>
-                {'\n'}next.language <span className={styles.codeAccent}>=</span> <span className={styles.codeString}>"es"</span> | <span className={styles.codeString}>"en"</span>
+                <span className={styles.codeComment}>{t('landing.codeComment')}</span>
+                {'\n'}p_known[<span className={styles.codeString}>"for_loops"</span>] <span className={styles.codeAccent}>=</span> 0.62 → 0.71
+                {'\n'}next_q <span className={styles.codeAccent}>=</span> pick(target_p_correct<span className={styles.codeAccent}>=</span>0.75)
+                {'\n'}review <span className={styles.codeAccent}>=</span> fsrs.due(<span className={styles.codeString}>"strings"</span>)
               </pre>
             </div>
           </div>
 
-          {/* Video / Tour Card */}
           <div className={styles.heroVisual}>
-            <div className={styles.videoCard}>
-              <div className={styles.posterWrapper}>
-                <img
-                  src={heroPoster}
-                  alt="Whetzy adaptive lesson interface"
-                  className={styles.posterImage}
-                  width={1280}
-                  height={720}
-                />
-                <button
-                  type="button"
-                  className={styles.playOverlay}
-                  onClick={handleAction}
-                  aria-label="Play product tour"
-                >
-                  <span className={styles.playCircle}>
-                    <svg className={styles.playCircleSvg} viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="6 4 20 12 6 20 6 4" />
-                    </svg>
-                  </span>
-                </button>
-              </div>
-              <p className={styles.videoCaption}>Product tour · 1:48</p>
-            </div>
+            <figure className={styles.shotCard}>
+              <img
+                src={lang === 'en' ? heroShotEn : heroShotEs}
+                alt={t('landing.heroShotAlt')}
+                className={styles.shotImage}
+                width={780}
+                height={1688}
+              />
+              <figcaption className={styles.videoCaption}>{t('landing.heroShotCaption')}</figcaption>
+            </figure>
           </div>
         </div>
       </section>
 
-      {/* FEATURE CARDS */}
       <section id="features" className={styles.featuresSection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionHeading}>
-            Three things that make Whetzy <span className={styles.gradientText}>stick</span>.
-          </h2>
+          <h2 className={styles.sectionHeading}>{t('landing.featuresTitle')}</h2>
         </div>
         <div className={styles.featuresGrid}>
           {features.map((f) => (
@@ -324,13 +250,10 @@ export default function LandingScreen() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
       <section id="how" className={styles.howSection}>
         <div className={styles.howContainer}>
-          <p className={styles.eyebrow}>How it works</p>
-          <h2 className={styles.sectionHeading}>
-            From zero to certified in three moves.
-          </h2>
+          <p className={styles.eyebrow}>{t('landing.howEyebrow')}</p>
+          <h2 className={styles.sectionHeading}>{t('landing.howTitle')}</h2>
           <ol className={styles.stepsGrid}>
             {steps.map((s, i) => (
               <li key={s.title} className={styles.stepCard}>
@@ -346,137 +269,101 @@ export default function LandingScreen() {
         </div>
       </section>
 
-      {/* COMPARISON TABLE */}
-      <section id="compare" className={styles.compareSection}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionHeading}>
-            How the adaptive engine compares.
-          </h2>
-          <p className={styles.sectionSubheading}>
-            Based on publicly available features of each platform, October 2026.
-          </p>
-        </div>
-        <div className={styles.tableWrapper}>
-          <table className={styles.compareTable}>
-            <thead>
-              <tr>
-                <th className={styles.thCapability}>Capability</th>
-                <th className={styles.thWhetzy}>Whetzy</th>
-                <th className={styles.thOther}>Duolingo</th>
-                <th className={styles.thOther}>DataCamp</th>
-                <th className={styles.thOther}>Brilliant</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparison.map((row) => (
-                <tr key={row.label} className={styles.tableRow}>
-                  <td className={styles.tdLabel}>{row.label}</td>
-                  <td className={styles.tdWhetzy}>
-                    <CellMark value={row.whetzy} />
-                  </td>
-                  <td className={styles.tdOther}>
-                    <CellMark value={row.duolingo} />
-                  </td>
-                  <td className={styles.tdOther}>
-                    <CellMark value={row.datacamp} />
-                  </td>
-                  <td className={styles.tdOther}>
-                    <CellMark value={row.brilliant} />
-                  </td>
+      {showCompare && (
+        <section id="compare" className={styles.compareSection}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionHeading}>{t('landing.compareTitle')}</h2>
+            <p className={styles.sectionSubheading}>{t('landing.compareNote', { date: checkedOn })}</p>
+          </div>
+          <div className={styles.tableWrapper}>
+            <table className={styles.compareTable}>
+              <thead>
+                <tr>
+                  <th className={styles.thCapability} />
+                  <th className={styles.thWhetzy}>Whetzy</th>
+                  {COMPARISON_COMPETITORS.map((c) => (
+                    <th key={c} className={styles.thOther}>{c}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {COMPARISON_ROWS.map((row) => (
+                  <tr key={row.label.en} className={styles.tableRow}>
+                    <td className={styles.tdLabel}>{row.label[lang]}</td>
+                    <td className={styles.tdWhetzy}><CellMark value={row.whetzy} lang={lang} notChecked={notChecked} /></td>
+                    {row.others.map((cell, i) => (
+                      <td key={COMPARISON_COMPETITORS[i]} className={styles.tdOther}>
+                        <CellMark value={cell} lang={lang} notChecked={notChecked} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
-      {/* PRICING */}
       <section id="pricing" className={styles.pricingSection}>
         <div className={styles.pricingContainer}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionHeading}>Simple pricing.</h2>
-            <p className={styles.sectionSubheading}>
-              Cancel anytime. Yearly plans save two months.
-            </p>
+            <h2 className={styles.sectionHeading}>{t('landing.pricingTitle')}</h2>
+            <p className={styles.sectionSubheading}>{t('landing.pricingNote')}</p>
           </div>
-          <div className={styles.plansGrid}>
+          <div className={`${styles.plansGrid} ${styles.plansGridTwo}`}>
             {plans.map((p) => (
-              <article
-                key={p.name}
-                className={p.featured ? styles.planCardFeatured : styles.planCard}
-              >
-                {p.featured && <span className={styles.popularBadge}>Most popular</span>}
+              <article key={p.key} className={p.featured ? styles.planCardFeatured : styles.planCard}>
                 <h3 className={styles.planName}>{p.name}</h3>
                 <p className={styles.priceRow}>
                   <span className={styles.priceAmount}>{p.price}</span>
-                  <span className={styles.priceNote}>{p.note}</span>
+                  {p.note && <span className={styles.priceNote}>{p.note}</span>}
                 </p>
                 <p className={styles.planBlurb}>{p.blurb}</p>
                 <ul className={styles.perksList}>
                   {p.perks.map((perk) => (
                     <li key={perk} className={styles.perkItem}>
-                      <svg className={styles.perkCheck} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <svg className={styles.perkCheck} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                       <span>{perk}</span>
                     </li>
                   ))}
                 </ul>
-                <a
-                  className={p.featured ? styles.planCtaFeatured : styles.planCta}
-                  href={ctaHref}
-                >
-                  {p.cta}
-                </a>
+                <a className={p.featured ? styles.planCtaFeatured : styles.planCta} href={ctaHref}>{p.cta}</a>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
       <section className={styles.testimonialsSection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionHeading}>Learners on Whetzy.</h2>
+          <h2 className={styles.sectionHeading}>{t('landing.proofTitle')}</h2>
         </div>
         <div className={styles.testimonialsGrid}>
-          {testimonials.map((t) => (
-            <figure key={t.name} className={styles.testimonialCard}>
-              <blockquote className={styles.testimonialQuote}>
-                “{t.quote}”
-              </blockquote>
-              <figcaption className={styles.authorGroup}>
-                <span className={styles.avatarCircle}>{t.initials}</span>
-                <div>
-                  <span className={styles.authorName}>{t.name}</span>
-                  <span className={styles.authorRole}>{t.role}</span>
-                </div>
-              </figcaption>
-            </figure>
+          {(['proof1', 'proof2'] as const).map((k) => (
+            <article key={k} className={styles.testimonialCard}>
+              <h3 className={styles.cardTitle}>{t(`landing.${k}.title`)}</h3>
+              <p className={styles.cardBody}>{t(`landing.${k}.body`)}</p>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* FINAL CTA */}
       <section className={styles.finalCtaSection}>
         <div className={styles.finalCtaBox}>
-          <h2 className={styles.finalCtaHeading}>
-            Your first adaptive lesson takes five minutes.
-          </h2>
-          <p className={styles.finalCtaSubheading}>
-            No card required. Keep the free plan as long as you like.
-          </p>
-          <a className={styles.finalCtaBtn} href={ctaHref}>
-            Start free
-          </a>
+          <h2 className={styles.finalCtaHeading}>{t('landing.finalTitle')}</h2>
+          <p className={styles.finalCtaSubheading}>{t('landing.finalBody')}</p>
+          <a className={styles.finalCtaBtn} href={ctaHref}>{t('landing.finalCta')}</a>
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className={styles.footer}>
         <div className={styles.footerContainer}>
           <span className={styles.footerBrand}>Whetzy</span>
-          <span className={styles.footerCopyright}>© 2026 Whetzy. Learn in two languages.</span>
+          <span className={styles.footerCopyright}>
+            {t('landing.footer')} · <a href="/privacy" className={styles.navLink}>{t('landing.privacy')}</a> · <a href="/terms" className={styles.navLink}>{t('landing.terms')}</a>
+          </span>
         </div>
       </footer>
     </div>

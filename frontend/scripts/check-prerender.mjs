@@ -35,7 +35,7 @@ const REQUIRED = [
     why: 'the prerendered hero <h1> — without it the LCP element waits for the JS bundle, which is the whole point of 11.11',
   },
   {
-    needle: 'Lessons that rewrite themselves around you',
+    needle: 'Aprende Python, IA y ciberseguridad',
     why: 'the real hero copy — a rendered-but-empty shell would pass a class-name check while painting nothing',
   },
   {

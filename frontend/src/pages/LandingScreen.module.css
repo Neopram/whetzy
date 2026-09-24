@@ -284,7 +284,7 @@
 .pricingSection { background: rgba(13, 20, 31, 0.6); padding: 5rem 1.25rem; }
 @media (min-width: 640px) { .pricingSection { padding: 6rem 1.25rem; } }
 .pricingContainer { max-width: 72rem; margin: 0 auto; }
-.plansGrid { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+.plansGrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; margin-top: 2.5rem; }
 @media (min-width: 1024px) { .plansGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .planCard, .planCardFeatured {
   position: relative;
@@ -391,3 +391,26 @@
   text-align: center;
   box-sizing: border-box;
 }
+
+/* Hero: captura real de la app (30.1). Retrato de móvil, no vídeo. */
+.shotCard {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.shotImage {
+  display: block;
+  width: min(100%, 320px);
+  height: auto;
+  border-radius: 1.75rem;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  box-shadow: 0 25px 60px -20px rgba(6, 182, 212, 0.35);
+}
+/* Dos planes, no tres. */
+@media (min-width: 1024px) {
+  .plansGridTwo { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 52rem; margin-inline: auto; }
+}
+/* «Próximamente» + nota no caben en una línea a 390 px. */
+.priceRow { flex-wrap: wrap; row-gap: 0.25rem; }
