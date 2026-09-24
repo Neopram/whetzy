@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './LandingScreen.module.css';
 import heroPoster from '../assets/hero-video-poster.jpg';
 
@@ -176,7 +175,6 @@ function CellMark({ value }: { value: Cell }) {
 }
 
 export default function LandingScreen() {
-  const navigate = useNavigate();
   const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
@@ -189,10 +187,11 @@ export default function LandingScreen() {
   }, []);
 
   const handleAction = () => {
+    // Same navigation style as AuthScreen: full page load, no router needed.
     if (hasSession) {
-      navigate('/app');
+      window.location.assign('/');
     } else {
-      navigate('/auth');
+      window.location.assign('/auth');
     }
   };
 
