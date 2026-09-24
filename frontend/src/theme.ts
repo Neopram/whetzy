@@ -9,16 +9,15 @@ export function getStoredTheme(): Theme {
   } catch {
     /* storage unavailable */
   }
-  if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
-  }
-  return 'light';
+  // Oscuro por defecto, como la landing (serie 34): el claro solo si el
+  // usuario lo elige en Perfil, no por la preferencia del sistema.
+  return 'dark';
 }
 
 export function applyTheme(theme: Theme) {
   document.documentElement.setAttribute('data-theme', theme);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1A1A2E' : '#1CB0F6');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#06090E' : '#1CB0F6');
   try {
     localStorage.setItem(THEME_KEY, theme);
   } catch {

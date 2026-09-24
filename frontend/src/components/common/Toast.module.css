@@ -2,7 +2,11 @@
   position: fixed;
   top: calc(var(--le-topbar-height) + env(safe-area-inset-top, 0px) + var(--le-space-sm));
   left: 50%;
+  /* Oculto de verdad: con solo translateY(-100px) asomaba un trozo bajo la
+     TopBar en todas las pantallas (la píldora verde de las capturas, 34.1). */
   transform: translateX(-50%) translateY(-100px);
+  opacity: 0;
+  visibility: hidden;
   background: var(--le-text);
   color: var(--le-text-inverse);
   padding: var(--le-space-sm) var(--le-space-xl);
@@ -10,13 +14,16 @@
   font-size: var(--le-fs-sm);
   font-weight: var(--le-fw-bold);
   z-index: var(--le-z-toast);
-  transition: transform var(--le-transition-spring);
+  transition: transform var(--le-transition-spring), opacity var(--le-transition-fast), visibility 0s linear var(--le-transition-fast);
   white-space: nowrap;
   box-shadow: var(--le-shadow-lg);
 }
 
 .show {
   transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+  transition: transform var(--le-transition-spring), opacity var(--le-transition-fast);
 }
 
 .success { background: var(--le-success-on-tint); } /* white on --le-green-dark is 3.23:1 */

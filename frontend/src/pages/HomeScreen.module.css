@@ -1,148 +1,398 @@
-/* Obsidian Radiant Home Styling */
-.homeContainer {
+/* Serie 34.1 (2026-09-24): base restaurada de 8e42faf^, anterior al commit
+   «Obsidian Radiant» que renombró las clases sin tocar el .tsx. Los colores
+   salen de los tokens --le-*, que ya son la paleta Obsidian (design-tokens.css). */
+
+.screen {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8, 32px);
-  padding: var(--space-6, 24px) var(--space-4, 16px);
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  gap: var(--le-space-md);
+  padding: var(--le-space-md);
+  padding-bottom: calc(var(--le-nav-height) + var(--le-space-xl));
 }
 
-.welcomeHero {
-  background: radial-gradient(circle at top right, rgba(6, 182, 212, 0.12) 0%, transparent 60%),
-              radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
-              rgba(13, 20, 32, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-3xl, 28px);
-  padding: var(--space-8, 32px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ===== Hero ===== */
+.hero {
   position: relative;
+  background: linear-gradient(135deg, var(--le-brand) 0%, var(--le-brand-2) 100%);
+  border-radius: var(--le-radius-xl);
+  padding: var(--le-space-xl);
+  color: var(--le-text-inverse);
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-}
-
-.welcomeHero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.4), rgba(16, 185, 129, 0.4), transparent);
-}
-
-.heroContent {
-  max-width: 600px;
 }
 
 .heroGreeting {
-  font-size: var(--text-3xl, 32px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #F8FAFC;
-  margin-bottom: var(--space-2, 8px);
+  font-size: var(--le-fs-sm);
+  opacity: 0.85;
+  margin-bottom: var(--le-space-xs);
 }
 
-.heroGreeting span {
-  background: linear-gradient(135deg, var(--color-cyan, #06B6D4) 0%, var(--color-emerald, #10B981) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.heroTitle {
+  font-size: var(--le-fs-2xl);
+  font-weight: var(--le-fw-black);
+  margin-bottom: var(--le-space-lg);
 }
 
-.heroSubtitle {
-  font-size: var(--text-base, 15px);
-  color: var(--color-text-secondary, #94A3B8);
-  line-height: 1.6;
+.heroStats {
+  display: flex;
+  gap: var(--le-space-lg);
+  margin-bottom: var(--le-space-lg);
 }
 
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-4, 16px);
+.heroStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.statCard {
-  background: rgba(13, 20, 32, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-2xl, 20px);
-  padding: var(--space-5, 20px);
+.heroStatVal {
+  font-size: var(--le-fs-xl);
+  font-weight: var(--le-fw-black);
+}
+
+.heroStatLabel {
+  font-size: 10px;
+  font-weight: var(--le-fw-bold);
+  letter-spacing: 1px;
+  opacity: 0.75;
+}
+
+.btnStudy {
+  width: 100%;
+  padding: var(--le-space-md) var(--le-space-xl);
+  background: #fff;
+  color: var(--le-brand-deep);
+  border: none;
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-black);
+  letter-spacing: 1px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: transform var(--le-transition-base), box-shadow var(--le-transition-base);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.btnStudy:active {
+  transform: scale(0.97);
+}
+
+.heroCircle1,
+.heroCircle2 {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+
+.heroCircle1 {
+  width: 160px;
+  height: 160px;
+  top: -40px;
+  right: -30px;
+}
+
+.heroCircle2 {
+  width: 100px;
+  height: 100px;
+  bottom: -20px;
+  left: -20px;
+}
+
+/* ===== Prediction ===== */
+.prediction {
   display: flex;
   align-items: center;
-  gap: var(--space-4, 16px);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  gap: var(--le-space-md);
 }
 
-.statCard:hover {
-  transform: translateY(-2px);
-  border-color: rgba(6, 182, 212, 0.3);
-  box-shadow: 0 12px 30px rgba(6, 182, 212, 0.08);
+.predictionIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
 }
 
-.statIconWrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-xl, 14px);
-  background: rgba(6, 182, 212, 0.1);
-  border: 1px solid rgba(6, 182, 212, 0.2);
-  color: var(--color-cyan, #06B6D4);
+.predictionTitle {
+  font-size: var(--le-fs-xs);
+  color: var(--le-text-secondary);
+  font-weight: var(--le-fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.predictionText {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text);
+  margin-top: 2px;
+}
+
+/* ===== Card Header ===== */
+.muted {
+  font-size: var(--le-fs-sm);
+  color: var(--le-text-muted);
+  padding: var(--le-space-sm) 0;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--le-space-md);
+}
+
+.cardTitle {
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-black);
+  color: var(--le-text);
+}
+
+/* Sobre una tinta clara fija el texto NO sigue al tema: --le-text es oscuro
+   en claro y casi blanco en oscuro, y en oscuro quedaba 1.1:1 sobre la
+   pildora. Los tonos *-on-tint estan calibrados justo para esto. */
+.badgeWarning {
+  background: var(--le-orange-light);
+  color: var(--le-warning-text);   /* 5.12:1 */
+}
+
+.badgeSuccess {
+  background: var(--le-green-light);
+  color: var(--le-success-on-tint);   /* 5.86:1 */
+}
+
+.badge {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  padding: 2px 10px;
+  border-radius: 100px;
+}
+
+/* ===== Missions ===== */
+.mission {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-sm);
+  padding: var(--le-space-sm) 0;
+}
+
+.mission + .mission {
+  border-top: 1px solid var(--le-border);
+}
+
+.missionIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--le-radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
-.statInfo {
+.missionInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.missionTitle {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
+}
+
+.missionXp {
+  font-size: var(--le-fs-xs);
+  font-weight: var(--le-fw-black);
+  white-space: nowrap;
+}
+
+/* ===== Streak Calendar ===== */
+.streakGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.streakLabel {
+  text-align: center;
+  font-size: 11px;
+  font-weight: var(--le-fw-black);
+  color: var(--le-text-muted);
+  padding-bottom: 4px;
+}
+
+.streakDay {
+  aspect-ratio: 1;
+  border-radius: var(--le-radius-sm);
+  background: var(--le-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: var(--le-fw-black);
+  color: transparent;
+}
+
+.streakDay.active {
+  background: var(--le-green);
+}
+
+.streakDay.freeze {
+  background: var(--le-blue-light);
+}
+
+.streakDay.today {
+  /* --le-green como fondo de texto da 1.7:1; este tono lo aguanta a 6.51:1. */
+  background: var(--le-success-on-tint);
+  color: var(--le-text-inverse);
+  box-shadow: 0 0 0 2px var(--le-green), 0 0 0 4px var(--le-green-light);
+}
+
+/* ===== Review Card ===== */
+.reviewCard {
+  display: flex;
+  align-items: center;
+  gap: var(--le-space-md);
+}
+
+.btnReview {
+  padding: var(--le-space-sm) var(--le-space-lg);
+  background: var(--le-blue);
+  color: var(--le-text-inverse);
+  border: none;
+  border-radius: var(--le-radius-md);
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform var(--le-transition-base);
+}
+
+.btnReview:active {
+  transform: scale(0.95);
+}
+
+/* "What you'll forget this week". Reads as a list of things, not a list of
+   failures: no red, no warning icon, no count badge. The urgency is carried
+   by the date alone. */
+.decayList {
+  list-style: none;
+  margin-top: var(--le-space-sm);
   display: flex;
   flex-direction: column;
 }
 
-.statValue {
-  font-size: var(--text-2xl, 24px);
-  font-weight: 700;
-  color: #F8FAFC;
-}
-
-.statLabel {
-  font-size: var(--text-xs, 12px);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-muted, #64748B);
-  font-weight: 600;
-}
-
-.sectionTitle {
-  font-size: var(--text-xl, 20px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #F8FAFC;
-  margin-bottom: var(--space-4, 16px);
+.decayItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--le-space-sm);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--le-border);
 }
 
-.actionButton {
-  padding: 12px 24px;
-  border-radius: var(--radius-full, 9999px);
-  background: linear-gradient(135deg, var(--color-cyan, #06B6D4) 0%, var(--color-emerald, #10B981) 100%);
-  color: #06090E;
-  font-weight: 700;
-  font-size: 14px;
+.decayItem:last-child {
+  border-bottom: none;
+}
+
+.decayName {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
   border: none;
+  padding: 0;
+  font-size: 0.9375rem;
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text);
   cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 }
 
-.actionButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.35);
+.decayName:hover,
+.decayName:focus-visible {
+  color: var(--le-brand);
 }
+
+.decayName:focus-visible {
+  outline: 2px solid var(--le-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Muted on purpose: the date informs, it does not scold. */
+.decayWhen {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: var(--le-fw-bold);
+  color: var(--le-text-muted);
+}
+
+
+/* Mapa de territorio — la idea visual que aporto 24.4, con el dominio que
+   calcula BKT en vez del numero fijo que pintaba entonces. Los tres estados
+   salen de `p_known`: frontera (<40 %), en curso (<75 %) y dominada. */
+.territory {
+  margin-top: var(--le-space-lg);
+}
+
+.sectionTitle {
+  font-size: var(--le-fs-md);
+  font-weight: var(--le-fw-bold);
+  margin: 0 0 var(--le-space-sm);
+}
+
+.territoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--le-space-sm);
+}
+
+.territoryNode {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--le-border);
+  border-radius: 12px;
+  background: var(--le-surface);
+}
+
+.nodeName {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-bold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nodeMastery {
+  font-size: var(--le-fs-sm);
+  font-weight: var(--le-fw-black);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* La barra va abajo del todo y no desplaza nada: es un indicador, no una fila
+   mas, y asi el nodo mide igual con 3 % que con 90 %. */
+.nodeBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  border-radius: 0 3px 3px 0;
+  transition: width 420ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.frontier .nodeMastery { color: var(--le-text-muted); }
+.frontier .nodeBar { background: var(--le-text-muted); }
+
+.partial .nodeMastery { color: var(--le-blue); }
+.partial .nodeBar { background: var(--le-blue); }
+
+.dominated { border-color: var(--le-brand); }
+.dominated .nodeMastery { color: var(--le-brand); }
+.dominated .nodeBar { background: var(--le-brand); }

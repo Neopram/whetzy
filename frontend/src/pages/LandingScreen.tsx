@@ -186,6 +186,11 @@ export default function LandingScreen() {
     }
   }, []);
 
+  // Las CTA son enlaces, no botones con onClick: navegan aunque el JS aún no
+  // haya cargado (la landing se sirve pre-renderizada) y son lo que un lector
+  // de pantalla espera de algo que lleva a otra página.
+  const ctaHref = hasSession ? '/' : '/auth';
+
   const handleAction = () => {
     // Same navigation style as AuthScreen: full page load, no router needed.
     if (hasSession) {
@@ -212,9 +217,9 @@ export default function LandingScreen() {
             <a href="#pricing" className={styles.navLink}>Pricing</a>
           </div>
 
-          <button className={styles.headerCta} onClick={handleAction}>
+          <a className={styles.headerCta} href={ctaHref}>
             {hasSession ? 'Go to Dashboard' : 'Start free'}
-          </button>
+          </a>
         </nav>
       </header>
 
@@ -240,9 +245,9 @@ export default function LandingScreen() {
             </p>
 
             <div className={styles.heroActions}>
-              <button className={styles.primaryBtn} onClick={handleAction}>
+              <a className={styles.primaryBtn} href={ctaHref}>
                 Start free
-              </button>
+              </a>
               <a href="#how" className={styles.secondaryBtn}>
                 <svg className={styles.playIcon} viewBox="0 0 24 24" fill="currentColor">
                   <polygon points="5 3 19 12 5 21 5 3" />
@@ -417,12 +422,12 @@ export default function LandingScreen() {
                     </li>
                   ))}
                 </ul>
-                <button
+                <a
                   className={p.featured ? styles.planCtaFeatured : styles.planCta}
-                  onClick={handleAction}
+                  href={ctaHref}
                 >
                   {p.cta}
-                </button>
+                </a>
               </article>
             ))}
           </div>
@@ -461,9 +466,9 @@ export default function LandingScreen() {
           <p className={styles.finalCtaSubheading}>
             No card required. Keep the free plan as long as you like.
           </p>
-          <button className={styles.finalCtaBtn} onClick={handleAction}>
+          <a className={styles.finalCtaBtn} href={ctaHref}>
             Start free
-          </button>
+          </a>
         </div>
       </section>
 

@@ -21,11 +21,13 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 
 function tokens(): Record<string, string> {
   const css = readFileSync(join(RAIZ, 'src/styles/design-tokens.css'), 'utf8')
+  // Solo el primer bloque `:root { … }`: desde la serie 34 es el tema oscuro
+  // Obsidian, el que ve un usuario por defecto. El claro vive aparte, en
+  // `:root[data-theme="light"]`, y solo si el usuario lo elige.
+  const inicio = css.indexOf(':root {')
+  const bloque = css.slice(inicio, css.indexOf('\n}\n', inicio))
   const mapa: Record<string, string> = {}
-  // El bloque `:root[data-theme="dark"]` va al final, asi que sus valores pisan
-  // a los claros: leidos en orden, `mapa` acaba con el tema oscuro, que es el
-  // que ve un usuario por defecto.
-  for (const m of css.matchAll(/(--le-[\w-]+):\s*(#[0-9A-Fa-f]{3,8})\s*;/g)) {
+  for (const m of bloque.matchAll(/(--le-[\w-]+):\s*(#[0-9A-Fa-f]{3,8})\s*;/g)) {
     mapa[m[1]] = m[2]
   }
   return mapa
@@ -74,9 +76,15 @@ describe('texto sobre tintas que no cambian con el tema', () => {
     expect(ratio(t[texto], t[fondo])).toBeGreaterThanOrEqual(4.5)
   })
 
-  it('--le-text NO sirve sobre esas tintas: por eso existen los *-on-tint', () => {
-    const fallan = SOBRE_TINTA_FIJA.filter(([, , fondo]) => ratio(t['--le-text'], t[fondo]) < 4.5)
-    expect(fallan.length).toBe(SOBRE_TINTA_FIJA.length)
+})
+
+describe('texto de la app sobre fondo y superficie (tema oscuro por defecto)', () => {
+  const t = tokens()
+  const TEXTOS = ['--le-text', '--le-text-secondary', '--le-text-muted', '--le-danger-text', '--le-success-text', '--le-warning-text', '--le-brand-text']
+  const FONDOS = ['--le-bg', '--le-surface', '--le-bg-elevated']
+
+  it.each(TEXTOS.flatMap((x) => FONDOS.map((f) => [x, f])))('%s sobre %s cumple AA', (texto, fondo) => {
+    expect(ratio(t[texto], t[fondo])).toBeGreaterThanOrEqual(4.5)
   })
 })
 
@@ -108,11 +116,17 @@ describe('color de marca como glifo en el tema oscuro', () => {
   })
 })
 
-describe('rellenos que llevan texto blanco encima', () => {
+describe('rellenos que llevan texto encima', () => {
   const t = tokens()
+  // Como en la landing: sobre cian, verde, rojo o morado el texto es oscuro
+  // (--le-text-inverse). El blanco sobre el cian se queda en 2,4:1.
+  const RELLENOS = ['--le-brand', '--le-green', '--le-green-dark', '--le-danger', '--le-red', '--le-orange', '--le-purple', '--le-gold']
 
-  it('--le-success-on-tint aguanta blanco; --le-green no', () => {
-    expect(ratio('#FFFFFF', t['--le-success-on-tint'])).toBeGreaterThanOrEqual(4.5)
-    expect(ratio('#FFFFFF', t['--le-green'])).toBeLessThan(4.5)
+  it.each(RELLENOS)('--le-text-inverse sobre %s cumple AA', (fondo) => {
+    expect(ratio(t['--le-text-inverse'], t[fondo])).toBeGreaterThanOrEqual(4.5)
+  })
+
+  it('el blanco NO sirve sobre el cian de marca: por eso ningún botón lo usa', () => {
+    expect(ratio('#FFFFFF', t['--le-brand'])).toBeLessThan(4.5)
   })
 })

@@ -10,8 +10,8 @@
  *
  * Trinquete: BASELINE es la deuda medida ese dia. Ningun fichero puede
  * empeorar ni aparecer uno nuevo con clases rotas; al arreglar uno, baja su
- * numero aqui (el test avisa si ya esta por debajo). Objetivo: BASELINE = {}.
- * Ledger 34.0.
+ * numero aqui (el test avisa si ya esta por debajo). Ledger 34.0; la base
+ * quedo vacia en 34.1, asi que hoy cualquier clase sin definir es un rojo.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -19,21 +19,8 @@ import { describe, expect, it } from 'vitest';
 
 const SRC = join(__dirname, '..');
 
-const BASELINE: Record<string, number> = {
-  'pages/QuizScreen.tsx': 59,
-  'pages/TracksScreen.tsx': 56,
-  'pages/HomeScreen.tsx': 42,
-  'pages/ProfileScreen.tsx': 39,
-  'pages/LeagueScreen.tsx': 21,
-  'pages/LessonScreen.tsx': 19,
-  'pages/AuthScreen.tsx': 16,
-  'pages/StatsScreen.tsx': 14,
-  'pages/CertificateScreen.tsx': 4,
-  'pages/ForgotPasswordPage.tsx': 2,
-  'pages/ResetPasswordPage.tsx': 2,
-  'components/common/ErrorState.tsx': 1,
-  'components/common/TabsNav.tsx': 1,
-};
+// Pagada entera en 34.1 (2026-09-24): 276 → 0. Desde aquí, estricta.
+const BASELINE: Record<string, number> = {};
 
 function tsxFiles(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {

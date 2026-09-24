@@ -1,31 +1,37 @@
 :root {
-  /* Brand Colors — Whetzy sky-blue identity. Green kept ONLY for success/correct. */
-  --le-green: #58CC02;
-  --le-green-dark: #46A302;
-  --le-green-light: #D7FFB8;
-  --le-green-bg: #F0FFF0;
+  /* Paleta Obsidian (la de la landing, `theme/tokens.css`) como tema por
+     defecto desde la serie 34 (2026-09-24). Antes la app era clara con azul
+     cielo y la landing oscura con cian: dos productos distintos a la vista.
+     Verde sigue significando solo acierto/éxito. El tema claro anterior vive
+     entero en `:root[data-theme="light"]`, al final. Las parejas de
+     contraste las vigila test/tokens.contraste.test.ts. */
+  --le-green: #10B981;
+  --le-green-dark: #059669;
+  --le-green-light: #0A2A20;
+  --le-green-bg: #0A2A20;
 
-  --le-blue: #1CB0F6;
-  --le-blue-dark: #1899D6;
-  --le-blue-light: #DDF4FF;
+  --le-blue: #06B6D4;
+  --le-blue-dark: #0891B2;
+  --le-blue-light: #0B2A33;
 
-  /* Brand = sky blue. Use --le-brand* for primary CTAs, hero, logo, accents. */
-  --le-brand: #1CB0F6;
-  --le-brand-dark: #0E8BD4;
-  --le-brand-light: #DDF4FF;
-  --le-brand-2: #5CD1FF;
-  --le-brand-deep: #0B72B0;
+  /* Marca = cian. --le-brand* para CTAs, hero, logo y acentos; el texto sobre
+     un relleno de marca va en --le-text-inverse (oscuro), como en la landing. */
+  --le-brand: #06B6D4;
+  --le-brand-dark: #0891B2;
+  --le-brand-light: #0B2A33;
+  --le-brand-2: #22D3EE;
+  --le-brand-deep: #0E7490;
   /* Brand colour for TEXT, not for fills. --le-brand-dark (#0E8BD4) only
      reaches 3.7:1 on white, so small brand-coloured labels using it failed
      WCAG 2.2 AA 1.4.3 (red line 6). This token is the accessible counterpart:
      5.19:1 on white here, 8.16:1 on the dark surface below. Use --le-brand-dark
      for gradients and fills, --le-brand-text whenever it is a glyph. */
-  --le-brand-text: #0B72B0;
+  --le-brand-text: #22D3EE;
   /* Same idea for the success colour: --le-green (#58CC02) is 2.09:1 on white,
      so it is a fill, never a glyph. This is 6.51:1 on white, 6.83:1 on the dark
      surface (where plain --le-green is already fine). Red line: green still
      means success and nothing else. */
-  --le-success-text: #2F6B00;
+  --le-success-text: #34D399;
 
   /* ── Colour on a FIXED light tint ──────────────────────────────────────
      --le-green-light / --le-brand-light are the same colour in both themes
@@ -35,48 +41,48 @@
      6.51:1 / 5.86:1 on white and green tint, 5.19:1 / 4.56:1 on white and
      brand tint. --le-success-on-tint doubles as the fill under white text
      (6.51:1), which plain --le-green could not carry either (2.09:1). */
-  --le-success-on-tint: #2F6B00;
-  --le-brand-on-tint: #0B72B0;
+  --le-success-on-tint: #6EE7B7;
+  --le-brand-on-tint: #67E8F9;
   /* --le-purple on --le-purple-light is 2.15:1 (the XP badge). 5.12:1 here,
      6.04:1 on white. */
-  --le-purple-on-tint: #8B2FD6;
+  --le-purple-on-tint: #C4B5FD;
   /* The difficulty badge paints --le-red / --le-orange / --le-green straight
      onto --le-bg at 3.08:1, 2.04:1 and 1.94:1. These are the readable
      counterparts: 5.36:1 and 5.25:1 on --le-bg (green reuses
      --le-success-on-tint at 6.08:1). --le-danger-text doubles as a fill —
      white on it is 5.74:1, where --le-red-dark managed only 4.30:1. */
-  --le-danger-text: #C81E1E;
-  --le-warning-text: #9A5700;
+  --le-danger-text: #F87171;
+  --le-warning-text: #FBBF24;
 
-  --le-orange: #FF9600;
-  --le-orange-dark: #E08600;
-  --le-orange-light: #FFF3E0;
+  --le-orange: #F59E0B;
+  --le-orange-dark: #D97706;
+  --le-orange-light: #2E2008;
 
-  --le-red: #FF4B4B;
-  --le-red-dark: #EA2B2B;
-  --le-red-light: #FFE0E0;
-  --le-danger: #E53935;
+  --le-red: #EF4444;
+  --le-red-dark: #DC2626;
+  --le-red-light: #2E0F12;
+  --le-danger: #F87171;
 
-  --le-purple: #CE82FF;
-  --le-purple-dark: #A855F7;
-  --le-purple-light: #F3E8FF;
+  --le-purple: #A78BFA;
+  --le-purple-dark: #8B5CF6;
+  --le-purple-light: #1F1633;
 
-  --le-gold: #FFC800;
-  --le-gold-dark: #E0B000;
-  --le-gold-light: #FFF8E1;
+  --le-gold: #FBBF24;
+  --le-gold-dark: #D97706;
+  --le-gold-light: #2E2408;
 
-  --le-teal: #0DC5C1;
-  --le-pink: #FF86D0;
+  --le-teal: #2DD4BF;
+  --le-pink: #F472B6;
 
   /* Neutral Palette */
-  --le-bg: #F7F7F7;
-  --le-bg-elevated: #FFFFFF;
-  --le-surface: #FFFFFF;
-  --le-border: #E5E5E5;
-  --le-border-light: #F0F0F0;
+  --le-bg: #06090E;
+  --le-bg-elevated: #0D141F;
+  --le-surface: #0D141F;
+  --le-border: #1E2A3A;
+  --le-border-light: #162030;
 
-  --le-text: #3C3C3C;
-  --le-text-secondary: #595959;   /* 5.8:1 on white, 4.8:1 on #F7F7F7 — WCAG AA ✓ */
+  --le-text: #F8FAFC;
+  --le-text-secondary: #94A3B8;   /* 5.8:1 on white, 4.8:1 on #F7F7F7 — WCAG AA ✓ */
   /* Was #AFAFAF with a comment saying "decorative/placeholder only". It was not
      used that way: 39 rules paint real sentences with it — loading and empty
      states, league ranks, module subtitles — at 2.19:1 on white and 2.05:1 on
@@ -84,8 +90,8 @@
      the token now meets AA itself (5.10:1 on white, 4.76:1 on --le-bg) and
      stays visibly lighter than --le-text-secondary. A muted token that cannot
      legally hold text is a trap, not a token. */
-  --le-text-muted: #6E6E6E;
-  --le-text-inverse: #FFFFFF;
+  --le-text-muted: #8391A7;
+  --le-text-inverse: #06090E;
 
   /* Typography */
   --le-font: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -124,9 +130,9 @@
   --le-radius-full: 9999px;
 
   /* Shadows */
-  --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-  --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
-  --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.45);
+  --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 25px -5px rgba(6, 182, 212, 0.12);
   --le-shadow-btn: 0 4px 0 rgba(0, 0, 0, 0.15);
   --le-shadow-btn-active: 0 2px 0 rgba(0, 0, 0, 0.15);
 
@@ -152,40 +158,54 @@
   --le-z-confetti: 300;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --le-bg: #1A1A2E;
-    --le-bg-elevated: #16213E;
-    --le-surface: #1E2A45;
-    --le-border: #2A3A5C;
-    --le-border-light: #233050;
-    --le-text: #E8E8E8;
-    --le-text-secondary: #A0A0B0;
-    --le-text-muted: #9A9AB0;   /* 6.19:1 on --le-bg, 5.18:1 on --le-surface; #6B6B80 was 3.28:1 */
-    --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.4);
-    --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-    --le-danger: #FF6659;
-    /* A deep brand blue is unreadable on a dark surface — flip to the light
-       tint, which is 8.16:1 on --le-surface. */
-    --le-brand-text: #5CD1FF;
-    --le-success-text: #58CC02;
-  }
-}
-
-:root[data-theme="dark"] {
-  --le-bg: #1A1A2E;
-  --le-bg-elevated: #16213E;
-  --le-surface: #1E2A45;
-  --le-border: #2A3A5C;
-  --le-border-light: #233050;
-  --le-text: #E8E8E8;
-  --le-text-secondary: #A0A0B0;
-  --le-text-muted: #9A9AB0;
-  --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.4);
-  --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --le-danger: #FF6659;
-  --le-brand-text: #5CD1FF;
-  --le-success-text: #58CC02;
+:root[data-theme="light"] {
+  /* Tema claro anterior (azul cielo), solo si el usuario lo elige en Perfil. */
+  --le-green: #58CC02;
+  --le-green-dark: #46A302;
+  --le-green-light: #D7FFB8;
+  --le-green-bg: #F0FFF0;
+  --le-blue: #1CB0F6;
+  --le-blue-dark: #1899D6;
+  --le-blue-light: #DDF4FF;
+  --le-brand: #1CB0F6;
+  --le-brand-dark: #0E8BD4;
+  --le-brand-light: #DDF4FF;
+  --le-brand-2: #5CD1FF;
+  --le-brand-deep: #0B72B0;
+  --le-brand-text: #0B72B0;
+  --le-success-text: #2F6B00;
+  --le-success-on-tint: #2F6B00;
+  --le-brand-on-tint: #0B72B0;
+  --le-purple-on-tint: #8B2FD6;
+  --le-danger-text: #C81E1E;
+  --le-warning-text: #9A5700;
+  --le-orange: #FF9600;
+  --le-orange-dark: #E08600;
+  --le-orange-light: #FFF3E0;
+  --le-red: #FF4B4B;
+  --le-red-dark: #EA2B2B;
+  --le-red-light: #FFE0E0;
+  --le-danger: #E53935;
+  --le-purple: #CE82FF;
+  --le-purple-dark: #A855F7;
+  --le-purple-light: #F3E8FF;
+  --le-gold: #FFC800;
+  --le-gold-dark: #E0B000;
+  --le-gold-light: #FFF8E1;
+  --le-teal: #0DC5C1;
+  --le-pink: #FF86D0;
+  --le-bg: #F7F7F7;
+  --le-bg-elevated: #FFFFFF;
+  --le-surface: #FFFFFF;
+  --le-border: #E5E5E5;
+  --le-border-light: #F0F0F0;
+  --le-text: #3C3C3C;
+  --le-text-secondary: #595959;   /* 5.8:1 on white, 4.8:1 on #F7F7F7 — WCAG AA ✓ */
+  --le-text-muted: #6E6E6E;
+  --le-text-inverse: #FFFFFF;
+  --le-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --le-shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --le-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --le-shadow-btn: 0 4px 0 rgba(0, 0, 0, 0.15);
+  --le-shadow-btn-active: 0 2px 0 rgba(0, 0, 0, 0.15);
 }

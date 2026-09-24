@@ -252,13 +252,16 @@ export function HomeScreen() {
 }
 
 function StreakCalendar({ streak }: { streak: number }) {
-  const { t } = useTranslation();
-  const days = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  const { t, i18n } = useTranslation();
+  // Inicial de cada día de lunes a domingo en el idioma activo (L M X J V S D
+  // en ES, M T W T F S S en EN). El 1 de enero de 2024 fue lunes.
+  const fmt = new Intl.DateTimeFormat(i18n.language, { weekday: 'narrow' });
+  const days = Array.from({ length: 7 }, (_, i) => fmt.format(new Date(2024, 0, 1 + i)));
   const TOTAL = 28;
   const todayIdx = 27;
   return (
     <div className={styles.streakGrid}>
-      {days.map((d) => (<div key={d} className={styles.streakLabel}>{d}</div>))}
+      {days.map((d, i) => (<div key={i} className={styles.streakLabel}>{d}</div>))}
       {Array.from({ length: TOTAL }).map((_, i) => {
         const isToday = i === todayIdx;
         const active = i > todayIdx - Math.min(streak, TOTAL) && i <= todayIdx;

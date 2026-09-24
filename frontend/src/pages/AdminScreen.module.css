@@ -5,7 +5,10 @@
   flex-direction: column;
   gap: var(--space-6, 24px);
   padding: var(--space-6, 24px) var(--space-4, 16px);
+  width: 100%;
   max-width: 1200px;
+  min-width: 0;
+  box-sizing: border-box;
   margin: 0 auto;
   min-height: 100dvh;
   color: var(--text-primary, #F8FAFC);
@@ -34,6 +37,9 @@
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  /* Sin min-width: 0 el carrusel empujaba la página a 606 px en un móvil de 390. */
+  min-width: 0;
+  max-width: 100%;
   padding: 8px 0;
   border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
 }

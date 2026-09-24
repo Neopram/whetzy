@@ -37,11 +37,11 @@ export function StatsScreen() {
           <span className={styles.overviewVal}>{(dash.data?.total_xp ?? user.totalXp).toLocaleString()}</span>
           <span className={styles.overviewLabel}>{t('stats.totalXp')}</span>
         </div>
-        <div className={styles.overviewCard} style={{ background: 'linear-gradient(135deg, #7EE0FF, #1CB0F6)' }}>
+        <div className={styles.overviewCard} style={{ background: 'linear-gradient(135deg, var(--le-brand-2), var(--le-brand))' }}>
           <span className={styles.overviewVal}>{totalQuestions}</span>
           <span className={styles.overviewLabel}>{t('stats.questions')}</span>
         </div>
-        <div className={styles.overviewCard} style={{ background: 'linear-gradient(135deg, var(--le-green-light), var(--le-green))' }}>
+        <div className={styles.overviewCard} style={{ background: 'linear-gradient(135deg, var(--le-success-text), var(--le-green))' }}>
           <span className={styles.overviewVal}>{avgMastery}%</span>
           <span className={styles.overviewLabel}>{t('stats.mastery')}</span>
         </div>
