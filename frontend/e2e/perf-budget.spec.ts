@@ -52,7 +52,9 @@ test.describe('perf-budget', () => {
   });
 
   test('auth page domInteractive within budget', async ({ page }) => {
-    await page.goto('/');
+    // /auth, no '/': sin sesión '/' es la landing, cuyas CTA son enlaces y no
+    // tiene button ni input que esperar.
+    await page.goto('/auth');
     // Wait for React to mount (at least one interactive element visible)
     await expect(page.locator('button, input').first()).toBeVisible({ timeout: DOM_INTERACTIVE_BUDGET_MS });
 

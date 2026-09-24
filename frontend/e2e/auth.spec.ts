@@ -56,6 +56,6 @@ test.describe('auth', () => {
     await page.getByRole('button', { name: 'Cerrar sesión' }).click();
 
     // Sign-out leaves `/` as the public landing, not the register form.
-    await expect(page.getByRole('link', { name: /Start free/i }).first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole('link', { name: /Empieza gratis|Start free/i }).first()).toBeVisible({ timeout: 10_000 });
   });
 });

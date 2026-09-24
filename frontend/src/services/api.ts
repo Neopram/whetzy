@@ -161,6 +161,16 @@ export interface RegisterPayload {
   language: 'es' | 'en';
 }
 
+export interface UpdateMePayload {
+  display_name?: string;
+  avatar_emoji?: string;
+  language?: 'es' | 'en';
+  /** Índice de la opción elegida en el onboarding (0-2). */
+  onboarding_experience?: number;
+  onboarding_goal?: number;
+  onboarding_weekly_time?: number;
+}
+
 export type OAuthProvider = 'github' | 'google';
 
 export const auth = {
@@ -194,6 +204,12 @@ export const auth = {
 
   async me() {
     return request<UserRead>('/auth/me');
+  },
+
+  /** Guarda en el servidor lo editable del perfil. Sin esto el idioma elegido
+   *  solo vivía en el estado local y al recargar volvía el del registro. */
+  async updateMe(patch: UpdateMePayload) {
+    return request<UserRead>('/auth/me', { method: 'PATCH', body: JSON.stringify(patch) });
   },
 
   /** Proveedores OAuth con credenciales en el servidor. Vacío si no hay ninguno. */

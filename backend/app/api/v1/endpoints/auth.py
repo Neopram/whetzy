@@ -48,6 +48,10 @@ class UpdateProfileRequest(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     avatar_emoji: str | None = Field(default=None, max_length=16)
     language: str | None = Field(default=None, pattern="^(es|en)$")
+    # Respuestas del onboarding (índice de opción, 0-2). 34.11.
+    onboarding_experience: int | None = Field(default=None, ge=0, le=2)
+    onboarding_goal: int | None = Field(default=None, ge=0, le=2)
+    onboarding_weekly_time: int | None = Field(default=None, ge=0, le=2)
 
 
 class ChangePasswordRequest(BaseModel):
@@ -310,6 +314,10 @@ async def update_profile(
         current_user.avatar_emoji = payload.avatar_emoji
     if payload.language is not None:
         current_user.language = payload.language
+    for field in ("onboarding_experience", "onboarding_goal", "onboarding_weekly_time"):
+        value = getattr(payload, field)
+        if value is not None:
+            setattr(current_user, field, value)
     await db.commit()
     await db.refresh(current_user)
     return current_user
