@@ -158,11 +158,16 @@ class TestReferenceDataContract:
 
 
 class TestMain:
+    # `main()` solo hace create_all en desarrollo (como content_loader.main):
+    # en produccion el esquema es de Alembic y create_all tumbo el arranque el
+    # 2026-09-20. Se prueba en los dos sentidos.
     @pytest.mark.asyncio
+    @pytest.mark.parametrize("environment,expect_init", [("development", True), ("production", False)])
     async def test_main_seeds_and_reports(
-        self, db_session, monkeypatch: pytest.MonkeyPatch, capsys
+        self, db_session, monkeypatch: pytest.MonkeyPatch, capsys, environment: str, expect_init: bool
     ) -> None:
         called: dict[str, bool] = {"init": False}
+        monkeypatch.setattr(seed_service.settings, "ENVIRONMENT", environment)
 
         async def fake_init_db() -> None:
             called["init"] = True
@@ -179,5 +184,5 @@ class TestMain:
 
         await seed_service.main()
 
-        assert called["init"] is True
+        assert called["init"] is expect_init
         assert "Gamification seeded:" in capsys.readouterr().out
