@@ -887,3 +887,5 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 **Cifras:** `content/questions` = **6.305** preguntas (recuento directo); `CATALOGO_MAESTRO.md` y `ARCHITECTURE.md` decían 6.233 y se corrigen. `python scripts/check_docs.py` → All checks PASSED.
 
 **Pendiente:** deploy manual del frontend (el agente no tiene credenciales de Cloudflare) y `check-deployed.mjs` PASS después; H.31.
+
+**Guardas no ejecutadas en el push:** `.githooks/pre-push` no tiene bit de ejecución en git y se ignoró. Ejecutado a mano: rojo solo por `ruff` (31 errores preexistentes, ninguno en ficheros tocados aquí) → fila **30.6**.
