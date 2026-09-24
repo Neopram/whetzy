@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import styles from './LandingScreen.module.css';
 import heroShotEs from '../assets/hero-quiz-es.jpg';
 import heroShotEn from '../assets/hero-quiz-en.jpg';
+import readinessShotEs from '../assets/readiness-es.jpg';
+import readinessShotEn from '../assets/readiness-en.jpg';
 import { CATALOG_QUESTIONS, CATALOG_TRACKS } from '../lib/catalog';
 import {
   COMPARISON_CHECKED_ON,
@@ -266,6 +268,41 @@ export default function LandingScreen() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* 35.5: la preparación por dominio, con una captura real (cuenta nueva,
+          CLF-C02). Es lo que ningún preparador observado da en español
+          (COMPETENCIA.md §A.2). */}
+      <section id="readiness" className={styles.readinessSection}>
+        <div className={styles.readinessGrid}>
+          <div>
+            <p className={styles.eyebrow}>{t('landing.readiness.eyebrow')}</p>
+            <h2 className={styles.sectionHeading}>{t('landing.readiness.title')}</h2>
+            <p className={styles.sectionSubheading}>{t('landing.readiness.body')}</p>
+            <ul className={styles.perksList}>
+              {[t('landing.readiness.p1'), t('landing.readiness.p2'), t('landing.readiness.p3'), t('landing.readiness.p4')].map((pt) => (
+                <li key={pt} className={styles.perkItem}>
+                  <svg className={styles.perkCheck} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <figure className={styles.shotCard}>
+            <img
+              src={lang === 'en' ? readinessShotEn : readinessShotEs}
+              alt={t('landing.readiness.alt')}
+              className={styles.shotImage}
+              width={780}
+              height={1688}
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption className={styles.videoCaption}>{t('landing.readiness.caption')}</figcaption>
+          </figure>
         </div>
       </section>
 
