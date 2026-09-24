@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '../components/common/Card';
 import { useApi } from '../hooks/useApi';
-import { league as leagueApi } from '../services/api';
+import { league as leagueApi, type LeagueStandingsResponse } from '../services/api';
 import styles from './LeagueScreen.module.css';
 
 const TIER_META: Record<string, { icon: string }> = {
@@ -11,7 +12,25 @@ const TIER_META: Record<string, { icon: string }> = {
 
 export function LeagueScreen() {
   const { t, i18n } = useTranslation();
-  const { data, loading, error } = useApi(() => leagueApi.current(), []);
+  const fetched = useApi(() => leagueApi.current(), []);
+  // Tras cambiar la participación manda la respuesta del PUT, sin recargar.
+  const [override, setOverride] = useState<LeagueStandingsResponse | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const data = override ?? fetched.data;
+  const { loading, error } = fetched;
+
+  async function toggleParticipation(next: boolean) {
+    setSaving(true);
+    setSaveError(false);
+    try {
+      setOverride(await leagueApi.setParticipation(next));
+    } catch {
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
+  }
 
   if (loading) return <div className={styles.screen}><p className={styles.loading}>{t('league.loading')}</p></div>;
   if (error || !data) return <div className={styles.screen}><p className={styles.loading}>{t('league.empty')}</p></div>;
@@ -32,10 +51,28 @@ export function LeagueScreen() {
       <div className={styles.leagueHeader}>
         <span className={styles.leagueIcon}>{tier.icon}</span>
         <h1 className={styles.leagueName}>{t('league.league')} {leagueName}</h1>
-        <p className={styles.leagueInfo}>{t('league.rules')}</p>
+        {data.participating && <p className={styles.leagueInfo}>{t('league.rules')}</p>}
+        <label className={styles.optToggle}>
+          <input
+            type="checkbox"
+            role="switch"
+            checked={data.participating}
+            disabled={saving}
+            onChange={(e) => toggleParticipation(e.target.checked)}
+          />
+          <span>{t('league.participate')}</span>
+        </label>
+        <p className={styles.optNote}>{t('league.optionalNote')}</p>
+        {saveError && <p className={styles.optNote} role="alert">{t('league.participationError')}</p>}
       </div>
 
-      {top3.length >= 1 && (
+      {!data.participating && (
+        <Card>
+          <p className={styles.loading}>{t('league.optedOut')}</p>
+        </Card>
+      )}
+
+      {data.participating && top3.length >= 1 && (
         <div className={styles.podium}>
           {[top3[1], top3[0], top3[2]].map((p, i) => {
             if (!p) return <div key={i} className={styles.podiumSlot} />;
@@ -53,7 +90,7 @@ export function LeagueScreen() {
         </div>
       )}
 
-      <Card>
+      {data.participating && <Card>
         {rest.length === 0 && top3.length <= 1 && <p className={styles.loading}>{t('league.soloWeek')}</p>}
         {rest.map((p) => (
           <div key={p.user_id} className={`${styles.row} ${p.is_current_user ? styles.rowUser : ''}`}>
@@ -67,7 +104,7 @@ export function LeagueScreen() {
             {data.demotion_zone > 0 && p.rank > data.standings.length - data.demotion_zone && <span className={styles.rowDemote}>▼</span>}
           </div>
         ))}
-      </Card>
+      </Card>}
     </div>
   );
 }

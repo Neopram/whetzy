@@ -570,6 +570,8 @@ export interface LeagueStandingsResponse {
   standings: LeagueStandingEntry[];
   promotion_zone: number;
   demotion_zone: number;
+  /** false = salió de las ligas (35.4): `standings` viene vacío. */
+  participating: boolean;
 }
 
 export interface UserMissionRead {
@@ -634,6 +636,13 @@ export const economy = {
 export const league = {
   async current() {
     return request<LeagueStandingsResponse>('/league/current');
+  },
+  /** Entrar o salir de las ligas. Salir no toca XP, nivel ni racha. */
+  async setParticipation(participate: boolean) {
+    return request<LeagueStandingsResponse>('/league/participation', {
+      method: 'PUT',
+      body: JSON.stringify({ participate }),
+    });
   },
 };
 

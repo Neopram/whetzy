@@ -274,6 +274,7 @@ export function PlacementScreen({ trackId }: Props) {
           return (
             <button
               key={i}
+              data-testid="placement-option"
               className={cls}
               onClick={() => responder(i)}
               disabled={seleccion !== null}

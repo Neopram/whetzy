@@ -16,7 +16,7 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.sql import func
+from sqlalchemy.sql import false, func
 
 from app.core.db import Base
 
@@ -70,6 +70,11 @@ class User(Base):
     onboarding_experience: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_goal: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_weekly_time: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    # Ligas opcionales (35.4): fuera de la clasificación, sin sumar XP de liga
+    # y sin aparecer en la de nadie. El XP y el nivel propios siguen igual.
+    leagues_opt_out: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=false(), nullable=False
+    )
 
     skill_states: Mapped[list[UserSkillState]] = relationship(
         back_populates="user", cascade="all, delete-orphan"

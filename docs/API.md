@@ -148,6 +148,7 @@ GET  /missions             → active missions + progress 🔒
 ```
 GET  /league/current       → current week's league standings 🔒
 GET  /league/history       → past league results for current user 🔒
+PUT  /league/participation {participate: bool} → current standings + {participating} 🔒 — ligas opcionales (35.4): fuera, `standings` vacío y nadie te ve; XP, nivel y racha siguen
 ```
 
 ## Reports endpoints

@@ -552,7 +552,8 @@ async def submit_answer(
     user.level = _level_from_xp(user.total_xp)
     _update_streak(user, now)
 
-    league_entry = await get_or_create_current_entry(db, user)
+    # Fuera de las ligas (35.4) no se crea ni se suma entrada de liga.
+    league_entry = None if user.leagues_opt_out else await get_or_create_current_entry(db, user)
     if league_entry is not None:
         league_entry.xp_earned += xp
 

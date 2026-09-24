@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
@@ -25,6 +26,25 @@ async def current_league(
     db: AsyncSession = Depends(get_db),
 ) -> LeagueStandingsResponse:
     standings = await gamification_service.get_current_standings(db, current_user)
+    if standings is None:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, "No leagues configured yet — seed at least one League"
+        )
+    return standings
+
+
+class LeagueParticipationRequest(BaseModel):
+    participate: bool
+
+
+@router.put("/league/participation", response_model=LeagueStandingsResponse)
+async def league_participation(
+    body: LeagueParticipationRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> LeagueStandingsResponse:
+    """Entrar o salir de las ligas (35.4). Salir no toca XP, nivel ni racha."""
+    standings = await gamification_service.set_league_participation(db, current_user, body.participate)
     if standings is None:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, "No leagues configured yet — seed at least one League"
