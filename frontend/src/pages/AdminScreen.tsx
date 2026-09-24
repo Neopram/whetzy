@@ -34,12 +34,24 @@ export function AdminScreen() {
   const [economyData, setEconomyData] = useState<any>({});
 
   const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:8000/api/v1';
+  const getAuthHeaders = (): HeadersInit => {
+    try {
+      const token = localStorage.getItem('access_token') || localStorage.getItem('whetzy_token');
+      return {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      };
+    } catch {
+      return { 'Content-Type': 'application/json' };
+    }
+  };
+
 
   const fetchMetrics = async () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/metrics/users?range_days=7`);
+      const res = await fetch(`${apiBase}/admin/metrics/users?range_days=7`, { headers: getAuthHeaders() });
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setMetricsData(data);
@@ -54,7 +66,7 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/security/auth-events?limit=10`);
+      const res = await fetch(`${apiBase}/admin/security/auth-events?limit=10`, { headers: getAuthHeaders() });
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setSecurityData(data);
@@ -69,7 +81,7 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/content/gaps?language=es`);
+      const res = await fetch(`${apiBase}/admin/content/gaps?language=es`, { headers: getAuthHeaders() });
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setContentData(data);
@@ -84,7 +96,7 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/ops/health`);
+      const res = await fetch(`${apiBase}/admin/ops/health`, { headers: getAuthHeaders() });
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setOpsData(data);
@@ -99,7 +111,7 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/gdpr/exports?status=pending`);
+      const res = await fetch(`${apiBase}/admin/gdpr/exports?status=pending`, { headers: getAuthHeaders() });
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setGDPRData(data);
@@ -114,7 +126,7 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/revenue/mrr?month=2026-09`);
+      const res = await fetch(`${apiBase}/admin/revenue/mrr?month=2026-09`, { headers: getAuthHeaders() });
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setRevenueData(data);
@@ -129,7 +141,7 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/economy/credits?limit=10`);
+      const res = await fetch(`${apiBase}/admin/economy/credits?limit=10`, { headers: getAuthHeaders() });
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setEconomyData(data);
