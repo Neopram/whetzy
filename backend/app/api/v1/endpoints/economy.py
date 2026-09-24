@@ -1,6 +1,10 @@
 """Economy endpoints: credits, referrals, promo codes."""
 
 
+import uuid
+from dataclasses import asdict
+from typing import Literal
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_db
 from app.core.security import get_current_user
 from app.models.user import User
+from app.services import streak_shop
 from app.services.economy import CreditsService, PromoCodeService, ReferralService
 
 router = APIRouter(tags=["economy"])
@@ -37,6 +42,27 @@ class PromoCodeRedeemResponse(BaseModel):
 
 class ReferralActivateRequest(BaseModel):
     referral_code: str | None = None
+
+
+class StreakFreezeQuoteResponse(BaseModel):
+    price: int
+    balance: int
+    held: int
+    max_held: int
+    purchases_this_week: int
+    max_per_week: int
+    can_buy: bool
+    blocked_by: Literal["insufficient_credits", "max_held", "weekly_limit"] | None
+
+
+class StreakFreezeBuyRequest(BaseModel):
+    # UUID generado por el cliente en cada intento: reintentar con el mismo no
+    # cobra dos veces (streak_shop.buy).
+    request_id: uuid.UUID
+
+
+class StreakFreezeBuyResponse(StreakFreezeQuoteResponse):
+    replayed: bool
 
 
 # Endpoints
@@ -123,8 +149,35 @@ async def get_credit_prices() -> dict[str, object]:
         ],
         "sumideros": [
             {"item": "mock_exam", "cost": 500},
-            {"item": "freeze_streak_1day", "cost": 150},
+            {"item": "freeze_streak_1day", "cost": streak_shop.FREEZE_PRICE_CREDITS},
             {"item": "domain_report_pdf", "cost": 300},
             {"item": "marketplace_course", "cost": 1000},
         ]
     }
+
+
+@router.get("/streak-freeze", response_model=StreakFreezeQuoteResponse)
+async def get_streak_freeze_quote(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> StreakFreezeQuoteResponse:
+    """Precio, saldo, comodines guardados y si se puede comprar uno ahora."""
+    q = await streak_shop.quote(db, current_user)
+    return StreakFreezeQuoteResponse(**asdict(q))
+
+
+@router.post("/streak-freeze", response_model=StreakFreezeBuyResponse)
+async def buy_streak_freeze(
+    body: StreakFreezeBuyRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> StreakFreezeBuyResponse:
+    """Compra un comodín de racha con créditos (35.3). 409 con el motivo si un
+    tope o el saldo lo impiden; el mismo `request_id` nunca cobra dos veces."""
+    try:
+        q, replayed = await streak_shop.buy(db, current_user, body.request_id)
+    except streak_shop.FreezePurchaseError as exc:
+        await db.rollback()
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=exc.reason) from exc
+    await db.commit()
+    return StreakFreezeBuyResponse(**asdict(q), replayed=replayed)

@@ -603,6 +603,34 @@ export const tutor = {
   },
 };
 
+/** Comodín de racha (35.3). `blocked_by` es un código estable que la UI traduce. */
+export type StreakFreezeBlock = 'insufficient_credits' | 'max_held' | 'weekly_limit';
+
+export interface StreakFreezeQuote {
+  price: number;
+  balance: number;
+  held: number;
+  max_held: number;
+  purchases_this_week: number;
+  max_per_week: number;
+  can_buy: boolean;
+  blocked_by: StreakFreezeBlock | null;
+}
+
+export const economy = {
+  async streakFreeze() {
+    return request<StreakFreezeQuote>('/economy/streak-freeze');
+  },
+  /** `requestId` se genera una vez por intento y se reutiliza en los
+   *  reintentos: el backend no cobra dos veces el mismo id. */
+  async buyStreakFreeze(requestId: string) {
+    return request<StreakFreezeQuote & { replayed: boolean }>('/economy/streak-freeze', {
+      method: 'POST',
+      body: JSON.stringify({ request_id: requestId }),
+    });
+  },
+};
+
 export const league = {
   async current() {
     return request<LeagueStandingsResponse>('/league/current');

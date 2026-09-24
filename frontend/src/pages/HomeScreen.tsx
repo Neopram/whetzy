@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { Card } from '../components/common/Card';
+import { StreakFreezeShop } from '../components/home/StreakFreezeShop';
 import { useApi } from '../hooks/useApi';
 import { progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
 import { listVariants, listItemVariants, flickerVariants } from '../lib/motion';
@@ -191,6 +192,7 @@ export function HomeScreen() {
             <span aria-hidden="true">🧊 </span>
             {t('home.freeze', { count: user.streakFreezeAvailable })} {t('home.streakKind')}
           </p>
+          <StreakFreezeShop />
         </Card>
       </motion.div>
 
