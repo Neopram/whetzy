@@ -142,7 +142,7 @@ export default function LandingScreen() {
     title: t(`landing.${k}.title`),
     body: t(`landing.${k}.body`),
   }));
-  const plans = (['planFree', 'planPlus'] as const).map((k) => ({
+  const plans = (['planFree', 'planPro', 'planProMax', 'planCreator'] as const).map((k) => ({
     key: k,
     name: t(`landing.${k}.name`),
     price: t(`landing.${k}.price`),
@@ -310,7 +310,7 @@ export default function LandingScreen() {
             <h2 className={styles.sectionHeading}>{t('landing.pricingTitle')}</h2>
             <p className={styles.sectionSubheading}>{t('landing.pricingNote')}</p>
           </div>
-          <div className={`${styles.plansGrid} ${styles.plansGridTwo}`}>
+          <div className={`${styles.plansGrid} ${styles.plansGridFour}`}>
             {plans.map((p) => (
               <article key={p.key} className={p.featured ? styles.planCardFeatured : styles.planCard}>
                 <h3 className={styles.planName}>{p.name}</h3>

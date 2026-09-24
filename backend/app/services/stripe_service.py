@@ -34,6 +34,8 @@ def _price_map() -> dict[str, str]:
         m[settings.STRIPE_PRICE_PLUS] = "plus"
     if settings.STRIPE_PRICE_PRO:
         m[settings.STRIPE_PRICE_PRO] = "pro"
+    if settings.STRIPE_PRICE_CREATOR:
+        m[settings.STRIPE_PRICE_CREATOR] = "creator"
     return m
 
 

@@ -33,8 +33,9 @@ Cada minuto que inviertes va a la pregunta que más te hace avanzar. Nunca te
 mentimos sobre lo que dominas. Cuando no sabes, te explicamos con fuente.
 
 ### Modelo de negocio
-Freemium: **$0 / $14.99 / $19.99** al mes (ADR-21; anual, tarifa regional y corte
-gratis/Pro pendientes del dueño, H.35 — hasta entonces la landing no publica precio).
+Freemium: **Gratis / Pro $14.99 / Pro Max $19.99** al mes, y **Creador $99.99** para
+publicar bootcamps con reparto 80/20 (ADR-41, dueño 2026-09-24). Anual, tarifa regional
+y qué añade Pro Max: H.35.
 Web con Stripe; nativo con RevenueCat. Mercado verificado: `COMPETENCIA.md` §A.
 Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos toques.
 

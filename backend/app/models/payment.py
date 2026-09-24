@@ -64,7 +64,7 @@ class PaymentRailConfig(Base):
     effective_rate_percent = Column(Float, default=29.5)  # 22% + 7.5%
     
     # Instructor split (after all commissions)
-    instructor_share_percent = Column(Float, default=70.0)  # 70% instructor, 30% platform
+    instructor_share_percent = Column(Float, default=80.0)  # 80% instructor, 20% platform (ADR-41)
     
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

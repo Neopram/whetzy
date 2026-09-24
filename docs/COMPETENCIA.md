@@ -130,7 +130,13 @@ a lo que cobran al mes pagando el año. Falta, y es decisión del dueño (H.35):
 - si hay tarifa regional;
 - qué entra en el plan gratuito.
 
-La landing no muestra precio hasta entonces.
+**Actualización 2026-09-24 (ADR-41):** el dueño fijó los mensuales:
+- Pro, 14,99 $;
+- Pro Max, 19,99 $;
+- Creador, 99,99 $ (80/20 por venta).
+
+Son los que muestran la landing y la comparativa. Siguen pendientes (H.35) el anual, la
+tarifa regional y qué añade Pro Max.
 
 ### A.4 Lo que se adopta, y lo que no
 

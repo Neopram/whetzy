@@ -999,7 +999,7 @@ export interface InstructorPayout {
 
 /** Marketplace de instructores (serie 28).
  *
- *  El reparto es 70/30 tras la comisión de Paddle y la retención que fija
+ *  El reparto es 80/20 (ADR-41) tras la comisión de Paddle y la retención que fija
  *  H.29; ese cálculo vive en el backend a propósito, para que el cliente no
  *  pueda enseñar una cifra que no sea la que se va a pagar.
  */

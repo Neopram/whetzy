@@ -58,8 +58,8 @@ async def test_enroll_in_published_course_creates_payout(client, db_session, aut
     data = response.json()
     assert data["instructor_id"] == str(course.instructor_id)
     assert data["gross_cents"] == 10000
-    # 10000 - 7.5 % Paddle = 9250; 70 % = 6475; - 22 % retencion = 5050 (H.29)
-    assert data["instructor_net_cents"] == 5050
+    # 10000 - 7.5 % Paddle = 9250; 80 % = 7400; - 22 % retencion = 5772 (H.29, ADR-41)
+    assert data["instructor_net_cents"] == 5772
     assert data["status"] == "pending"
 
     enrollment = await db_session.scalar(
@@ -77,7 +77,7 @@ async def test_enroll_in_published_course_creates_payout(client, db_session, aut
     assert payout is not None
     assert payout.instructor_id == course.instructor_id
     assert payout.status == "pending"
-    assert payout.earnings_cents == 5050
+    assert payout.earnings_cents == 5772
 
 
 @pytest.mark.asyncio

@@ -18,7 +18,8 @@ export interface ComparisonRow {
   others: ComparisonCell[];
 }
 
-const NO_PRICE = { es: 'Aún sin precio', en: 'No price yet' };
+// Whetzy: precios del dueño (ADR-41). El anual aún no está fijado.
+const NO_YEARLY = { es: 'Sin anual aún', en: 'No yearly plan yet' };
 
 export const COMPARISON_CHECKED_ON = '2026-09-24';
 export const COMPARISON_COMPETITORS: string[] = ['Codecademy', 'Platzi', 'EDteam'];
@@ -40,7 +41,7 @@ export const COMPARISON_ROWS: ComparisonRow[] = [
   },
   {
     label: { es: 'Pago mensual (USD)', en: 'Monthly plan (USD)' },
-    whetzy: NO_PRICE,
+    whetzy: { es: '14,99 (Pro)', en: '14.99 (Pro)' },
     others: [
       { es: '29,99', en: '29.99' },
       { es: '49', en: '49' },
@@ -49,7 +50,7 @@ export const COMPARISON_ROWS: ComparisonRow[] = [
   },
   {
     label: { es: 'Pago anual, al mes (USD)', en: 'Yearly plan, per month (USD)' },
-    whetzy: NO_PRICE,
+    whetzy: NO_YEARLY,
     others: [
       { es: '14,99', en: '14.99' },
       { es: '≈21 (249/año)', en: '≈21 (249/yr)' },

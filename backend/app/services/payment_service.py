@@ -25,8 +25,11 @@ class PaymentService:
     
     GRECIA_TAX_RATE = Decimal("0.22")  # 22%
     PADDLE_COMMISSION = Decimal("0.075")  # 7.5%
-    INSTRUCTOR_SHARE = Decimal("0.70")  # 70% to instructor, 30% to platform
-    PLATFORM_SHARE = Decimal("0.30")
+    # ADR-41 (dueño, 2026-09-24): de cada venta de un bootcamp/curso, el
+    # creador se queda el 80 % y Whetzy el 20 %. Se aplica sobre lo que queda
+    # tras la comisión de Paddle, como antes el 70/30.
+    INSTRUCTOR_SHARE = Decimal("0.80")
+    PLATFORM_SHARE = Decimal("0.20")
     
     @staticmethod
     async def get_config(db: AsyncSession) -> PaymentRailConfig:
@@ -59,17 +62,17 @@ class PaymentService:
         - Paddle receives: €10 (Paddle is merchant)
         - Platform commission: €0.75 (7.5%)
         - Net to Whetzy: €9.25
-        - Instructor share (70%): €6.475 (after commission)
+        - Instructor share (80%): €7.40 (after commission)
         - Tax withheld (22%, Grecia): calculated on instructor net
         
         Returns:
             {
                 "gross_cents": 1000,
                 "paddle_commission_cents": 75,
-                "instructor_gross_cents": 925,
-                "tax_withheld_cents": 203,  # 22% of 925
-                "instructor_net_cents": 722,
-                "platform_keep_cents": 203  # Platform share + tax withheld
+                "instructor_gross_cents": 740,   # 80% of 925
+                "tax_withheld_cents": 162,       # 22% of 740
+                "instructor_net_cents": 577,
+                "platform_keep_cents": 347       # 20% of 925 + tax withheld
             }
         """
         gross = Decimal(gross_course_revenue_cents)
@@ -80,7 +83,7 @@ class PaymentService:
         # Net after Paddle commission goes to split
         after_paddle = gross - paddle_commission
         
-        # Instructor gets 70%, platform gets 30%
+        # Instructor gets 80%, platform gets 20% (ADR-41)
         instructor_gross = after_paddle * PaymentService.INSTRUCTOR_SHARE
         platform_share = after_paddle * PaymentService.PLATFORM_SHARE
         

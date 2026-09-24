@@ -40,11 +40,17 @@ class InstructorService:
     @staticmethod
     async def get_or_create_instructor(
         db: AsyncSession,
-        user_id: str,
+        user_id: uuid.UUID | str,
         display_name: str,
         bio: str | None = None,
     ) -> Instructor:
-        """Get or create instructor profile for a user."""
+        """Get or create instructor profile for a user.
+
+        El id se normaliza a `UUID`: con texto, Postgres lo aceptaba pero SQLite
+        (la base de los tests) fallaba con «'str' object has no attribute
+        'hex'», así que `POST /instructor/courses` no tenía ningún test.
+        """
+        user_id = user_id if isinstance(user_id, uuid.UUID) else uuid.UUID(user_id)
         stmt = select(Instructor).where(Instructor.user_id == user_id)
         result = await db.execute(stmt)
         instructor = result.scalars().first()

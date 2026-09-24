@@ -2,7 +2,7 @@
 
 Verifies:
 - Paddle commission: 7.5%
-- Split 70/30 (instructor/platform)
+- Split 80/20 (instructor/platform, ADR-41)
 - Tax withholding: 22% (Grecia)
 - Edge cases and decimal precision
 """
@@ -22,12 +22,12 @@ class TestPaymentSplit:
 
         assert result["gross_cents"] == 1000
         assert result["paddle_commission_cents"] == 75  # 7.5%
-        # After Paddle: 925, Instructor 70%: 647.5 -> 647
-        assert result["instructor_gross_cents"] == 647
-        assert result["tax_withheld_cents"] == 142  # 647*0.22
-        assert result["instructor_net_cents"] == 505  # 647-142
-        # Platform: 277.5 + 142.34 -> 419
-        assert result["platform_keep_cents"] == 419
+        # After Paddle: 925, Instructor 80%: 740
+        assert result["instructor_gross_cents"] == 740
+        assert result["tax_withheld_cents"] == 162  # 740*0.22 = 162.8
+        assert result["instructor_net_cents"] == 577  # 740-162.8
+        # Platform: 185 (20%) + 162.8 -> 347
+        assert result["platform_keep_cents"] == 347
 
     def test_split_fifty_euros(self):
         """Test split for EUR 50 (5000 cents)."""
@@ -35,12 +35,12 @@ class TestPaymentSplit:
 
         assert result["gross_cents"] == 5000
         assert result["paddle_commission_cents"] == 375  # 5000*0.075
-        # After Paddle: 4625, Instructor 70%: 3237.5 -> 3237
-        assert result["instructor_gross_cents"] == 3237
-        assert result["tax_withheld_cents"] == 712  # 3237*0.22
-        assert result["instructor_net_cents"] == 2525  # 3237-712
-        # Platform: 1387.5 + 712.14 -> 2099
-        assert result["platform_keep_cents"] == 2099
+        # After Paddle: 4625, Instructor 80%: 3700
+        assert result["instructor_gross_cents"] == 3700
+        assert result["tax_withheld_cents"] == 814  # 3700*0.22
+        assert result["instructor_net_cents"] == 2886  # 3700-814
+        # Platform: 925 (20%) + 814 -> 1739
+        assert result["platform_keep_cents"] == 1739
 
     def test_split_hundred_euros(self):
         """Test split for EUR 100 (10000 cents)."""
@@ -48,12 +48,12 @@ class TestPaymentSplit:
 
         assert result["gross_cents"] == 10000
         assert result["paddle_commission_cents"] == 750  # 7.5%
-        # After Paddle: 9250, Instructor 70%: 6475
-        assert result["instructor_gross_cents"] == 6475
-        assert result["tax_withheld_cents"] == 1424  # 6475*0.22
-        assert result["instructor_net_cents"] == 5050  # 6475-1424 (note: 5051 - 1 due to rounding)
-        # Platform: 2775 + 1424.5 -> 4199
-        assert result["platform_keep_cents"] == 4199
+        # After Paddle: 9250, Instructor 80%: 7400
+        assert result["instructor_gross_cents"] == 7400
+        assert result["tax_withheld_cents"] == 1628  # 7400*0.22
+        assert result["instructor_net_cents"] == 5772  # 7400-1628
+        # Platform: 1850 (20%) + 1628 -> 3478
+        assert result["platform_keep_cents"] == 3478
 
     def test_split_thousand_euros(self):
         """Test split for EUR 1000 (100000 cents)."""
@@ -61,11 +61,11 @@ class TestPaymentSplit:
 
         assert result["gross_cents"] == 100000
         assert result["paddle_commission_cents"] == 7500  # 7.5%
-        # After Paddle: 92500, Instructor 70%: 64750
-        assert result["instructor_gross_cents"] == 64750
-        assert result["tax_withheld_cents"] == 14245  # 64750*0.22
-        assert result["instructor_net_cents"] == 50505  # 64750-14245
-        assert result["platform_keep_cents"] == 41995  # 27750 (30%) + 14245 (tax)
+        # After Paddle: 92500, Instructor 80%: 74000
+        assert result["instructor_gross_cents"] == 74000
+        assert result["tax_withheld_cents"] == 16280  # 74000*0.22
+        assert result["instructor_net_cents"] == 57720  # 74000-16280
+        assert result["platform_keep_cents"] == 34780  # 18500 (20%) + 16280 (tax)
 
     def test_small_amount(self):
         """Test split for EUR 1 (100 cents) - minimum viable."""
@@ -89,15 +89,15 @@ class TestPaymentSplit:
             )
             assert abs(total - amount) <= 2, f"Split doesn't sum correctly for EUR {amount/100}: {total} vs {amount}"
 
-    def test_instructor_gets_seventy_percent(self):
-        """Verify instructor gets 70% of net after Paddle commission."""
+    def test_instructor_gets_eighty_percent(self):
+        """Verify instructor gets 80% of net after Paddle commission (ADR-41)."""
         result = PaymentService.calculate_instructor_payout(10000)
 
         # Net after Paddle commission
         net_after_paddle = 10000 - result["paddle_commission_cents"]
-        instructor_portion = int(net_after_paddle * 0.70)
+        instructor_portion = int(net_after_paddle * 0.80)
 
-        # Instructor gross should be 70% of net
+        # Instructor gross should be 80% of net
         assert result["instructor_gross_cents"] == instructor_portion
 
     def test_tax_is_twenty_two_percent(self):

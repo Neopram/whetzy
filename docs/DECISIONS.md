@@ -760,3 +760,50 @@ navegador, 600 s de techo, salida no citable); Obsidian (cero efecto medible); u
 vectorial propio sobre los docs (mismo problema de instantánea y de salida no citable, más
 una dependencia nueva que ADR-15 no paga); no hacer nada (deja los ~29.500 tokens por
 sesión encima de la mesa).
+
+---
+
+## ADR-41 — Precios y reparto del marketplace: Pro 14,99 $, Pro Max 19,99 $, Creador 99,99 $, 80/20 por venta (DUEÑO, 2026-09-24)
+
+**Origen.** Decisión del dueño en la sesión interactiva del 2026-09-24. Son sus
+palabras, transcritas por voz y citadas tal cual: «Los precios serán de 14.99 dólares el
+Pro y el Pro Max será de 19.99. En cuanto a la creación para el segmento de educadores y
+profesionales que quieran crear sus bootcamps será 99.99 mensual.» Y del reparto: «de la
+cantidad de dinero por el que venda el bootcamp el creador le quedará el 20% a la tienda
+Wetsy». Se lee como: **el creador se queda el 80 % y Whetzy el 20 %** de cada venta.
+
+**Decisión.**
+
+| Plan (nombre de cara al usuario) | Tier en código | Precio | Qué da hoy, en código |
+|---|---|---|---|
+| Gratis | `free` / `NULL` | 0 $ | Todo el contenido, el motor adaptativo **y el repaso espaciado** |
+| **Pro** | `plus` | **14,99 $/mes** | Tutor con IA (`require_tier("plus")`) y el modo examen del quiz |
+| **Pro Max** | `pro` | **19,99 $/mes** | Todo Pro. **Lo que añade sobre Pro no está definido**: queda para H.35 |
+| **Creador** | `creator` | **99,99 $/mes** | Todo Pro Max + publicar bootcamps en el marketplace |
+
+- **Reparto del marketplace: 80 % creador / 20 % Whetzy** (antes 70/30).
+  - Se aplica, como el 70/30 anterior, **sobre lo que queda tras la comisión de Paddle
+    (7,5 %)**.
+  - Después, `PaymentService` retiene un 22 % al creador (supuesto de H.29).
+  - Resultado para una venta de 100 $: el creador recibe **57,72 $ netos** y Whetzy retiene
+    34,78 $. Esa cifra incluye la retención, que no es ingreso de Whetzy.
+  - Si la intención es «80 % del precio de venta», hay que cambiar el orden del cálculo;
+    lo decide el dueño (H.35).
+- **Los ids de tier no cambian** (`plus`, `pro`): están en la base de datos y en Stripe.
+  Solo cambian los nombres que ve el usuario.
+- **Publicar exige el plan Creador**, detrás de `CREATOR_PLAN_REQUIRED`.
+  - Está **apagado** hasta que abra el cobro (H.19/H.29). Exigir un plan que nadie puede
+    comprar cerraría el marketplace.
+  - El dueño y los admins quedan fuera de la regla.
+- **El repaso sale del muro de pago.** `POST /quiz/start` con `mode=review` devolvía 403 a
+  todo usuario sin plan, es decir, a todos. Sin embargo, la landing prometía «repasos
+  programados» gratis y Home ofrece «Repasar». Es el motor (FSRS), no un extra.
+
+**Pendiente del dueño (H.35):**
+- precio anual;
+- tarifa regional;
+- qué añade Pro Max sobre Pro;
+- si el 80 % es sobre el precio de venta o tras la comisión.
+
+**Supera a ADR-21** en los nombres (Pro/Premium → Pro/Pro Max). Los importes mensuales son
+los mismos.

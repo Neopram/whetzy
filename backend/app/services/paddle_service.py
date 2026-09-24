@@ -74,19 +74,19 @@ class PaddleService:
     def calculate_payout_amount(
         gross_cents: int,
         paddle_commission_percent: float = 7.5,
-        instructor_share_percent: float = 70.0,
+        instructor_share_percent: float = 80.0,
         tax_rate_percent: float = 22.0,
     ) -> dict[str, int]:
         """Calculate instructor payout from gross amount.
 
         H.29 decision: Paddle is merchant, takes 7.5% commission.
-        Remaining split 70/30 between instructor and platform.
+        Remaining split 80/20 between instructor and platform (ADR-41).
         Instructor is taxed at 22% (Grecia).
 
         Args:
             gross_cents: Amount student paid in cents
             paddle_commission_percent: Paddle's cut (7.5%)
-            instructor_share_percent: Instructor's cut of net (70%)
+            instructor_share_percent: Instructor's cut of net (80%, ADR-41)
             tax_rate_percent: Tax on instructor earnings (22%)
 
         Returns:
