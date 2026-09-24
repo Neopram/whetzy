@@ -912,3 +912,31 @@ Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `
 - Saludo de Home: decía «Buenos noches»; ahora son claves completas.
 
 **Serie 35 abierta** y **H.35** (precio anual, tarifa regional, corte gratis/Pro) para el dueño.
+
+## 2026-09-24 (noche): precios del dueño, series 35.2–35.5 y CI de master en verde
+
+**CI de master:**
+- Estaba rojo desde `3cf4c10`: el cambio de `bfc165e` a `q060304ex011` dependía de la versión de Python.
+- Con `77b9127` pasa a verde: los runs 492 y 493 dan éxito en backend, frontend, android y e2e.
+
+**Decisión del dueño (ADR-41):**
+- Pro 14,99 $, Pro Max 19,99 $, Creador 99,99 $.
+- Reparto del marketplace 80/20.
+- Aplicado en landing (4 planes), perfil, comparativa, `PaymentService`, tier `creator` y puerta de publicación `CREATOR_PLAN_REQUIRED` (apagada hasta que abra el cobro).
+- Pendiente (H.35):
+  - anual;
+  - tarifa regional;
+  - qué añade Pro Max;
+  - si el 80 % es sobre venta o tras Paddle. Hoy, una venta de 100 $ deja 57,72 $ netos al creador.
+
+**Hallazgos corregidos:**
+- `mode=review` daba 403 a todo usuario sin plan. Ahora es gratis.
+- `POST /instructor/courses` fallaba en SQLite y por eso no tenía test.
+
+**Serie 35:**
+- **35.3:** compra de comodines con créditos (idempotente, bloqueo de fila, topes). Carrera en Postgres: sin bloqueo, 8 compras cobran −1.200 con saldo 150; con bloqueo, 1.
+- **35.4:** ligas opcionales (migración `20260925_leagues_opt_out`).
+- **35.2:** e2e del resultado de la prueba de nivel.
+- **35.5:** preparación por dominio en la landing con captura real.
+
+**Incidente:** el verificador adversario (Haiku) borró ediciones sin commitear mientras informaba «no files modified». Los verificadores no deben compartir árbol de trabajo con una edición en curso: próxima vez, `isolation: "worktree"`.
