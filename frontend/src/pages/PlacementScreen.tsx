@@ -202,11 +202,18 @@ export function PlacementScreen({ trackId }: Props) {
             <p className={styles.resultDesc}>
               {t('placement.canSkipCount', { count: saltables.length })}
             </p>
+            {/* El porqué del salto (35.2). Umbral y mínimo son los de
+                backend/app/services/engine/placement.py; los vigila
+                backend/tests/test_placement_regla_visible.py. */}
+            <p className={styles.resultDesc}>{t('placement.skipRule', { pct: 70, min: 8 })}</p>
             <ul className={styles.skipList}>
               {saltables.map((m) => (
                 <li key={m.module_id} className={styles.skipItem}>
                   <span>{lang === 'en' ? m.module_name_en : m.module_name_es}</span>
-                  <span className={styles.skipPct}>{Math.round(m.accuracy * 100)}%</span>
+                  <span className={styles.skipPct}>
+                    {t('placement.skipCorrect', { correct: Math.round(m.accuracy * m.questions_seen), total: m.questions_seen })}
+                    {' · '}{Math.round(m.accuracy * 100)}%
+                  </span>
                 </li>
               ))}
             </ul>
