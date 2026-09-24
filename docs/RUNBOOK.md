@@ -141,9 +141,34 @@ DEBUG=false
 RESEND_API_KEY=<key>         # basta esta para que el correo salga
 EMAIL_FROM_ADDRESS=noreply@whetzy.com
 FRONTEND_BASE_URL=https://whetzy.com
+OWNER_EMAIL=<tu email>        # cuenta de dueño (rol owner); ver «Cuenta de dueño»
+OWNER_PASSWORD=<≥ 12 caracteres, solo aquí>
 # EMAIL_PROVIDER=auto        # por defecto; solo para forzar smtp|resend|log
 # SMTP_USER=... SMTP_PASSWORD=...   # alternativa a Resend (hacen falta las dos)
 ```
+
+### Cuenta de dueño (acceso a `/admin`)
+
+`scripts/start.sh` corre `python -m app.services.bootstrap_owner` en cada arranque.
+Con `OWNER_EMAIL` y `OWNER_PASSWORD` en las variables de Railway crea esa cuenta, o
+la actualiza: rol `owner`, email verificado y **esa** contraseña. Cambiar la variable
+y redesplegar cambia la contraseña. Con las dos vacías no hace nada; con una sola, el
+arranque falla a propósito. El log dice `[owner] created|updated|unchanged: <email>`,
+nunca la contraseña.
+
+Historia (2026-09-24): hasta entonces la cuenta `admin@whetzy.com` la insertaba la
+migración `20260922_setup_admin` con un hash **versionado en el repo** y rol
+`superuser`, que `/admin` rechaza con 403. `20260924_owner_role` pasa ese rol a
+`owner` y anula el hash filtrado (queda sin contraseña hasta que `OWNER_*` la fije).
+
+### Qué hace el arranque, y por qué falla en vez de seguir
+
+`alembic upgrade head` → `content_loader` → `bootstrap_owner` son **fatales**; el seed
+de gamificación no. Entre el 2026-09-22 y el 2026-09-24 el script seguía adelante
+aunque todo fallara y `content_loader` ni se ejecutaba: producción arrancó con los 18
+tracks vacíos («Track not found») y `/health` decía 200. Probado en local contra
+Postgres 16: base vacía → 18 tracks, 6.305 preguntas y 622 términos en ~10 s;
+`CONTENT_DIR` roto → `exit 1` y gunicorn no arranca.
 
 ### Correo: la variable que no se puede olvidar (H.30)
 

@@ -12,6 +12,7 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.db import AsyncSessionLocal, init_db
 from app.models.gamification import Badge, League, Mission
 
@@ -96,7 +97,10 @@ async def seed_gamification(db: AsyncSession) -> dict[str, Any]:
 
 
 async def main() -> None:
-    await init_db()
+    # Igual que content_loader.main: `create_all` solo en desarrollo. En produccion
+    # el esquema es de Alembic, y `create_all` ya tumbo el arranque el 2026-09-20.
+    if settings.ENVIRONMENT == "development":
+        await init_db()
     async with AsyncSessionLocal() as db:
         stats = await seed_gamification(db)
     print(f"Gamification seeded: {stats}")

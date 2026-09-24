@@ -147,6 +147,14 @@ class Settings(BaseSettings):
     # Requests must supply X-Admin-Key: <this value>. Empty = endpoint disabled.
     CONTENT_ADMIN_KEY: str = ""
 
+    # --- Cuenta de dueno (rol `owner`) ----------------------------------------
+    # `scripts/start.sh` corre `app.services.bootstrap_owner` en cada arranque:
+    # con los dos valores puestos, crea o actualiza esa cuenta (rol owner,
+    # email verificado, esa contrasena). Vacios = no hace nada. La contrasena
+    # vive solo en las variables de Railway, nunca en el repo.
+    OWNER_EMAIL: str = ""
+    OWNER_PASSWORD: str = ""
+
     # --- Web Push / VAPID (3.3) ----------------------------------------------
     # Generate with: python -m py_vapid --gen
     # Set VAPID_EMAIL to your contact address (required by browser push services).
