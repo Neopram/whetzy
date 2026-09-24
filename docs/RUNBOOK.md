@@ -9,6 +9,14 @@ npm run build
 npx wrangler pages deploy dist --project-name whetzy --branch main
 ```
 
+Then, **always**:
+
+```bash
+node scripts/check-deployed.mjs   # must print PASS for https://whetzy.com
+```
+
+A deploy is not done until that passes. On 2026-09-24 the page loaded fine while login was dead: the bundle had `https://whetzy.com` as its API (405 on login) and a Pages Function answered 200 "Autenticado correctamente" to any POST on `/api/*`. Two checks now catch exactly that (ledger 30.0). The API origin lives in `frontend/.env.production` and `vite.config.ts` refuses to build if it is the frontend's own domain or does not end in `/api/v1`.
+
 First time per machine requires `npx wrangler login` (opens browser OAuth). The `--branch main` flag sends it to Production (whetzy.com). Verified 2026-09-18 (H.11 closed, sesión bc): 153 files, deploy `8c077b9a.whetzy.pages.dev`.
 
 ---
