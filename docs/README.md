@@ -13,15 +13,15 @@ Frontend: React + Capacitor.
 | Saber qué está hecho, qué está en curso y qué bloquea el humano | **`AUTONOMOUS_STATE.md`** (ledger; fuente de verdad) |
 | Operar una sesión autónoma | `ORCHESTRATOR.md` + `../CLAUDE.md` |
 | Saber qué fuentes se pueden usar (solo gratuitas y legales) y cómo | **`CATALOGO_MAESTRO.md` §2.1** + `DECISIONS.md` ADR-11 |
-| Desplegar (Cloudflare con wrangler, Railway automático), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
+| Desplegar (Cloudflare y Railway, ambos automáticos desde `master`), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
 | Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
-| Ver la posición frente a la competencia, con pesos fijos (última: §11, Educative y los 3 canales) | `competitive-teardown.md` |
+| Ver la posición frente a la competencia, con pesos fijos (última: §12, captura en vivo 2026-09-24, sin re-puntuar) | `competitive-teardown.md` |
 | Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
 | Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
 | Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
 | Plan de distribución masiva ES + EN (canales, cadencia, herramientas $0, KPIs) | **`DISTRIBUCION.md`** |
 | Los 6 segmentos de usuario (Estudiante, Career-switcher, Developer Senior, Profesor, Empresa, Developer Web3/Solana) con personas, flujos y créditos por segmento | **`SEGMENTOS.md`** |
-| Análisis exhaustivo de competencia directa e indirecta con qué adaptar y qué evitar | **`COMPETENCIA.md`** |
+| Competencia directa e indirecta: precios verificados con URL y fecha, lógica de negocio del mercado y qué se adopta (§A, 2026-09-24) | **`COMPETENCIA.md`** |
 | Spec del marketplace de instructores: revenue share 70/30, quality gate, moderación | **`MARKETPLACE.md`** |
 | Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
 | Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
@@ -67,7 +67,7 @@ banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
 | Frontend | https://whetzy.com |
 | OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
 
-`git push origin master` **despliega** el backend (Railway, auto-deploy verificado
-2026-09-16). El frontend en Cloudflare Pages se despliega a mano con
-`npx wrangler pages deploy dist --project-name whetzy --branch main` desde
-`frontend/` (RUNBOOK §1; H.11 cerrado el 2026-09-18).
+`git push origin master` **despliega los dos**: el backend en Railway (verificado
+2026-09-16) y el frontend en Cloudflare Pages, que está conectado a Git (verificado
+2026-09-24: tras `5be177f`, `whetzy.com/landing/` sirve el hero nuevo). Wrangler a mano
+sigue valiendo (RUNBOOK §1). Después, `node frontend/scripts/check-deployed.mjs` en PASS.

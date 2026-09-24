@@ -541,7 +541,7 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 | Credenciales verificables (Open Badges 3.0) | ❌ | ❌ | ❌ | ❌ | **✅ 29.10 (ADR-37)** |
 | Token / cripto propia | ❌ | ❌ | ❌ | ❌ | **❌ a propósito (ADR-33)** |
 | B2B ready | ✅ | ✅ | ❌ | ✅ | **✅ (Serie 22)** |
-| Precio base | ~$29/mo | ~$39/mo | $49/mo | ~$20/mo | **$14.99/mo** |
+| Precio base (verificado 2026-09-24 salvo DataCamp/Educative; COMPETENCIA §A) | $49/mo · $249/año | ~$39/mo (sin verificar) | $59/mo · $399/año | ~$20/mo (sin verificar) | **$14.99/mo (ADR-21, sin publicar)** |
 | Empleabilidad real | Bajo (70% no termina) | Medio | Alto | Medio | **Alto (completion > 70%)** |
 
 **Whetzy con ADR-25 completo es técnicamente superior en todas las dimensiones relevantes para el nicho Python→AI Engineer en español.** La única ventaja que los incumbentes mantienen es brand recognition — y eso se construye con distribución, no con código.

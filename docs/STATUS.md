@@ -889,3 +889,26 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 **Pendiente:** deploy manual del frontend (el agente no tiene credenciales de Cloudflare) y `check-deployed.mjs` PASS después; H.31.
 
 **Guardas no ejecutadas en el push:** `.githooks/pre-push` no tiene bit de ejecución en git y se ignoró. Ejecutado a mano: rojo solo por `ruff` (31 errores preexistentes, ninguno en ficheros tocados aquí) → fila **30.6**.
+
+## 2026-09-24 (tarde) — Competencia en vivo → serie 35, landing, onboarding, racha amable (misma sesión interactiva, push directo a `master` autorizado por el dueño)
+
+**Hecho y desplegado antes de esta entrada:**
+- `5be177f`: landing honesta y bilingüe (30.1).
+- `3cf4c10`: el onboarding y el idioma se guardan (34.11).
+
+Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `whetzy.com/landing/` sirve el hero nuevo pre-renderizado y `check-deployed.mjs` da PASS. Los docs que decían «deploy manual» se corrigen: CLAUDE.md, README, ARCHITECTURE, RELEASE y la fila del ledger.
+
+**Competencia:**
+- Cuatro agentes recorrieron 33 sitios públicos sin registrarse. Donde había antibot se paró: Udemy, DataCamp `/pricing`, TryHackMe `/pricing`, Exercism y LeetCode.
+- Precios re-descargados a mano: Codecademy, Boot.dev, Platzi y EDteam, en `COMPETENCIA.md` §A.1. El resto queda como «reportado, no reproducido» (§A.2).
+- Síntesis de la lógica de negocio: cinco modelos y los factores ligados a Whetzy (§A.3).
+- Errata de premisas en ADR-21: Boot.dev $59, no $49; Codecademy $29.99/$14.99, no $24.99.
+- ORCHESTRATOR pasa de $9.99 a $14.99.
+- Teardown §12, sin re-puntuar.
+
+**Código:**
+- `lib/comparison.ts`: 4 filas × Codecademy/Platzi/EDteam. Guarda `comparison.contract.test.ts`, mutada → rojo.
+- Racha amable: `_update_streak` repone un comodín por semana ISO; 4 tests, mutado → rojo. La tarjeta de racha de Home lo explica en ES y EN.
+- Saludo de Home: decía «Buenos noches»; ahora son claves completas.
+
+**Serie 35 abierta** y **H.35** (precio anual, tarifa regional, corte gratis/Pro) para el dueño.

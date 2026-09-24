@@ -430,3 +430,27 @@ es un Platzi (≈ 1.500 cursos, creadores externos, años) ni un Udemy; ese jueg
 se gana con agentes. Las cifras de la competencia de esta sección y de
 `CATALOGO_MAESTRO.md` §8 son **estimaciones de memoria** hasta que 18.12 las
 sustituya por URL + fecha; por eso no se usan para mover ningún número.
+
+## 12. Captura en vivo — 2026-09-24 (sin re-puntuar)
+
+**Qué cambia.** Por primera vez hay precios de la competencia con URL y fecha,
+re-descargados a mano: `COMPETENCIA.md` §A.1. Cubre Codecademy, Boot.dev, Platzi y
+EDteam, y sustituye en parte las «estimaciones de memoria» de §9 (18.12). Dos
+premisas de ADR-21 salen mal (Boot.dev no es $49 sino $59/mes o $399/año;
+Codecademy no es $24.99 sino $29.99 mensual o $14.99 anual) y llevan errata en
+`DECISIONS.md`.
+
+**Qué no cambia: la puntuación.** No se re-puntúa. Las dimensiones de §11 miden
+producto, y lo que se midió hoy son páginas de marketing. Mover un peso con eso
+sería el error que §9 advierte. Hay tres hallazgos que sí afectan a la lectura,
+pendientes de una re-puntuación con producto medido (34.9):
+
+1. **Lo que diferencia a Whetzy ya está construido, pero no se ve.** Prueba de
+   nivel, *readiness* por dominio ponderado y comodín de racha existen en el
+   código. Los competidores que los anuncian (Educative, AWS, Duolingo) los
+   venden en su portada. Serie 35.
+2. **En precio, Whetzy aún no compite: no tiene precio.** La comparativa pública
+   lo dice («Aún sin precio») hasta H.35.
+3. **Hueco en español.** Ninguno de los preparadores de certificación observados
+   muestra práctica ni *readiness* en español (informe de agente, §A.2, no
+   reproducido).

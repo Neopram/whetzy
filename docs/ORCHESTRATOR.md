@@ -33,7 +33,9 @@ Cada minuto que inviertes va a la pregunta que más te hace avanzar. Nunca te
 mentimos sobre lo que dominas. Cuando no sabes, te explicamos con fuente.
 
 ### Modelo de negocio
-Freemium: **$0 / $9.99 / $19.99** al mes. Web con Stripe; nativo con RevenueCat.
+Freemium: **$0 / $14.99 / $19.99** al mes (ADR-21; anual, tarifa regional y corte
+gratis/Pro pendientes del dueño, H.35 — hasta entonces la landing no publica precio).
+Web con Stripe; nativo con RevenueCat. Mercado verificado: `COMPETENCIA.md` §A.
 Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos toques.
 
 ### Decisiones cerradas — no se reabren

@@ -372,6 +372,14 @@ el cierre (demasiado tarde: ya se construyó encima).
 
 **Alternativas descartadas:** $9.99 (LTV insuficiente para sostenerse con pocos usuarios); $29.99 (frena conversión en LATAM con ingresos en moneda local depreciada).
 
+**Errata 2026-09-24 (premisas, no decisión).** Re-descargadas las páginas de precios
+(COMPETENCIA.md §A.1): Boot.dev cobra **$59/mes o $399/año**, no $49; Codecademy Plus
+**$29.99 mensual / $14.99 al mes pagando el año**, no $24.99. «$348/yr», «25K paying
+members» y «$10M ARR» no se han podido comprobar en fuente primaria y no deben
+citarse. La conclusión aguanta mejor que antes: $14.99 mensual está por debajo de
+todos los de catálogo verificados. Quedan abiertos el precio anual, la tarifa
+regional y el corte gratis/Pro (H.35). ORCHESTRATOR.md decía $9.99; corregido el mismo día.
+
 ---
 
 ## ADR-22 — B2B antes que escalar B2C (2026-09-18)

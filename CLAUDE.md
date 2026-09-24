@@ -11,7 +11,7 @@ qué hacer; el ledger lo sabe.
 - Alcance del producto (tracks, certificaciones, fuentes, volúmenes, puerta de calidad): `docs/CATALOGO_MAESTRO.md`
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
-- Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §11)
+- Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §12, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
 - Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo)
 - Auditoría externa más reciente (producción medida en vivo, CI, coste de contexto): `docs/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
@@ -39,7 +39,7 @@ qué hacer; el ledger lo sabe.
   mismo, **escribir ficheros del proyecto desde Python falla con «Bad file
   descriptor»**: escribe al scratchpad y luego `cp`
 - Backend prod: `https://api-production-9751.up.railway.app` — **deploy AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16): `git push origin master` despliega backend, migraciones y `content_loader`. Antes de cada push: `pytest tests/content` y `check_question_bank.py` verdes
-- Frontend prod: `https://whetzy.com` — **Cloudflare Pages está conectado a Git** (2026-09-24: cada push a una rama genera un preview y un check `Cloudflare Pages` en el PR; sin verificar si `master` publica solo a producción ni qué comando de build usa el panel, que no genera el prerender). Deploy manual también posible con `npx wrangler pages deploy dist --project-name whetzy --branch main` desde `frontend/` (sin `--branch main` va a Preview). `whetzy.com/health` devuelve el SPA; el health real es el del backend. **Tras cada deploy, `node scripts/check-deployed.mjs` en PASS** o no está hecho (incidente de login 2026-09-24, serie 30). La API sale de `frontend/.env.production` (`https://api-production-9751.up.railway.app/api/v1`)
+- Frontend prod: `https://whetzy.com` — **Cloudflare Pages está conectado a Git** y **`master` publica solo a producción** (verificado 2026-09-24: tras el push de `5be177f`, `whetzy.com/landing/` sirve el hero nuevo pre-renderizado; cada otra rama genera un preview y un check `Cloudflare Pages` en el PR). El panel corre `npx tsc -b && npx vite build`; el prerender va dentro de `vite build` y la API sale del fichero, no del panel. Deploy manual también posible con `npx wrangler pages deploy dist --project-name whetzy --branch main` desde `frontend/` (sin `--branch main` va a Preview). `whetzy.com/health` devuelve el SPA; el health real es el del backend. **Tras cada deploy, `node scripts/check-deployed.mjs` en PASS** o no está hecho (incidente de login 2026-09-24, serie 30). La API sale de `frontend/.env.production` (`https://api-production-9751.up.railway.app/api/v1`)
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA espera H.LIC; CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`

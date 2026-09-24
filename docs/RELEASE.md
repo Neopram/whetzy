@@ -11,9 +11,9 @@
 
 ### Pre-requisitos
 - Node 20, `npm ci` limpio
-- **`VITE_API_URL` NO se pone en Cloudflare.** Aquí se construye en local y se sube el
-  `dist/` ya hecho con `wrangler pages deploy`, así que una variable del panel de
-  Cloudflare no llega nunca a Vite. Vive en `frontend/.env.production`, commiteada.
+- **`VITE_API_URL` vive en `frontend/.env.production`, commiteada.** Desde 2026-09-24
+  `vite.config.ts` ignora cualquier otro valor (el panel de Cloudflare tenía
+  `https://whetzy.com`, origen del 405 del login) y lo avisa en el log del build.
   Cuando faltó, el bundle salió apuntando a `/api/v1` del propio dominio, Cloudflare
   respondió a eso con el `index.html` y un **200**, y la aplicación se quedó entera sin
   backend sin un solo error en consola. Hoy el build se planta si no está.
@@ -24,8 +24,10 @@ cd frontend
 npm run build          # NO usar `vite build` directamente — scripts pre/post-build corren con npm
 ```
 
-El proyecto de Cloudflare Pages (`whetzy`) **no está conectado a Git**: el deploy es
-**MANUAL por subida directa** con wrangler (primera vez por máquina: `npx wrangler login`).
+**Corrección 2026-09-24:** el proyecto de Cloudflare Pages (`whetzy`) **sí está conectado
+a Git**. Un push a `master` construye y publica en producción; las demás ramas generan
+un preview. La subida directa con wrangler sigue funcionando (primera vez por máquina:
+`npx wrangler login`):
 
 ```bash
 cd frontend
