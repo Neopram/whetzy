@@ -198,10 +198,35 @@ class TestUpdateStreak:
         assert u.max_streak == 5
 
     def test_two_day_gap_without_freeze_resets(self) -> None:
-        u = make_user(last_active=NOW - timedelta(days=2), current_streak=9, max_streak=9)
-        _update_streak(u, NOW)
+        # Jueves con último día el martes: misma semana ISO, no hay comodín nuevo.
+        thursday = NOW + timedelta(days=2)
+        u = make_user(last_active=NOW, current_streak=9, max_streak=9)
+        _update_streak(u, thursday)
         assert u.current_streak == 1
         assert u.max_streak == 9  # the record is kept, not erased
+
+    def test_new_week_gives_back_one_free_freeze(self) -> None:
+        # NOW es martes; el domingo anterior es otra semana ISO: el lunes llegó
+        # un comodín gratis y cubre el lunes perdido.
+        u = make_user(last_active=NOW - timedelta(days=2), current_streak=9, max_streak=9)
+        _update_streak(u, NOW)
+        assert u.current_streak == 10
+        assert u.streak_freeze_available == 0
+
+    def test_weekly_freeze_does_not_stack(self) -> None:
+        u = make_user(last_active=NOW - timedelta(days=1), current_streak=3, streak_freeze_available=1)
+        _update_streak(u, NOW)  # lunes → martes, cruza semana, ya tenía uno
+        assert u.streak_freeze_available == 1
+
+    def test_weekly_refill_keeps_bought_freezes(self) -> None:
+        u = make_user(last_active=NOW - timedelta(days=1), current_streak=3, streak_freeze_available=3)
+        _update_streak(u, NOW)
+        assert u.streak_freeze_available == 3
+
+    def test_no_refill_inside_the_same_week(self) -> None:
+        u = make_user(last_active=NOW, current_streak=3, streak_freeze_available=0)
+        _update_streak(u, NOW + timedelta(days=1))
+        assert u.streak_freeze_available == 0
 
     def test_two_day_gap_spends_a_freeze_and_keeps_the_streak(self) -> None:
         u = make_user(
