@@ -11,6 +11,7 @@ from sqlalchemy import (
     Float,
     ForeignKey,
     Integer,
+    SmallInteger,
     String,
     UniqueConstraint,
 )
@@ -62,6 +63,13 @@ class User(Base):
     subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro
     subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
+
+    # Onboarding (24.3 / 34.11): índice de la opción elegida en cada pregunta
+    # de segmento (0-2). NULL = no respondido. Se usa para decidir el primer
+    # paso (prueba de nivel si ya programa) y para segmentar cohortes.
+    onboarding_experience: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    onboarding_goal: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    onboarding_weekly_time: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
 
     skill_states: Mapped[list[UserSkillState]] = relationship(
         back_populates="user", cascade="all, delete-orphan"

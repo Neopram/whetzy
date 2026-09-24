@@ -12,8 +12,8 @@ interface ProfileFormData {
 export default function ProfileTab() {
   const { t } = useTranslation()
   const [formData, setFormData] = useState<ProfileFormData>({
-    display_name: 'Your Name',
-    bio: 'Tell students about yourself',
+    display_name: '',
+    bio: '',
     avatar_url: '',
     website: '',
   })

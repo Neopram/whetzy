@@ -15,7 +15,10 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // es-ES: los tests están escritos contra la UI en español, y desde 34.11
+    // /auth y la landing eligen idioma por el del navegador (en-US por defecto
+    // en Chromium headless). Los tests bilingües fijan el inglés ellos mismos.
+    { name: 'chromium', use: { ...devices['Desktop Chrome'], locale: 'es-ES' } },
   ],
   // Skipped when E2E_BASE_URL is set (local runs against servers already
   // started by hand); CI always starts fresh so both come up from a clean,

@@ -42,6 +42,9 @@ class UserRead(UserBase):
     created_at: datetime
     is_premium: bool
     email_verified: bool = False
+    onboarding_experience: int | None = None
+    onboarding_goal: int | None = None
+    onboarding_weekly_time: int | None = None
 
 
 class Token(BaseModel):

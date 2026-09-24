@@ -5,7 +5,7 @@ import { Card } from '../components/common/Card';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { useApi } from '../hooks/useApi';
 import { usePushNotifications } from '../hooks/usePushNotifications';
-import { API_BASE_URL, gamification } from '../services/api';
+import { API_BASE_URL, auth, gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
 import styles from './ProfileScreen.module.css';
 
@@ -42,6 +42,7 @@ export function ProfileScreen() {
   function handleLangChange(lang: 'es' | 'en') {
     setLanguage(lang);
     updateUser({ language: lang });
+    void auth.updateMe({ language: lang }).catch(() => { /* sin red: se reintenta al volver a cambiarlo */ });
     void i18nInst.changeLanguage(lang);
   }
 
@@ -77,7 +78,7 @@ export function ProfileScreen() {
               <p className={styles.proDesc}>{t('profile.proDesc')}</p>
             </div>
           </div>
-          <button className={styles.proBtn}>$9.99/{t('profile.month')}</button>
+          <button className={styles.proBtn} disabled>{t('profile.proSoon')}</button>
         </Card>
       )}
 

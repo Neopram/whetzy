@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '../stores/useAppStore'
+import { auth } from '../services/api'
 import '../styles/onboarding.css'
 
 interface SegmentQuestion {
@@ -46,9 +47,10 @@ const SEGMENT_QUESTIONS: SegmentQuestion[] = [
 export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const { i18n, t } = useTranslation()
   const setUserLanguage = useAppStore((s) => s.setLanguage)
+  const updateUser = useAppStore((s) => s.updateUser)
+  const startPlacement = useAppStore((s) => s.startPlacement)
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Record<string, number>>({})
-  const [referralCode, setReferralCode] = useState('')
 
   const lang = i18n.language as 'es' | 'en'
   const question = SEGMENT_QUESTIONS[step]
@@ -65,11 +67,25 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
     }, 600)
   }
 
+  // Antes el idioma solo cambiaba la UI local y las respuestas no iban a
+  // ninguna parte (34.11). Ahora se guardan en el perfil y deciden el primer
+  // paso: quien ya programa va a la prueba de nivel para saltarse lo que sabe.
   const handleLanguageSelect = (selectedLang: 'es' | 'en') => {
     setUserLanguage(selectedLang)
-    i18n.changeLanguage(selectedLang)
+    updateUser({ language: selectedLang })
+    void i18n.changeLanguage(selectedLang)
+    void auth
+      .updateMe({
+        language: selectedLang,
+        onboarding_experience: answers[0],
+        onboarding_goal: answers[1],
+        onboarding_weekly_time: answers[2],
+      })
+      .catch(() => { /* sin red: el onboarding no debe bloquear la entrada */ })
     onDone()
+    if ((answers[0] ?? 0) >= 1) startPlacement('track01')
   }
+
 
   if (step < SEGMENT_QUESTIONS.length) {
     return (
@@ -117,14 +133,6 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
         </button>
       </div>
 
-      <div className="referral-section">
-        <input
-          type="text"
-          placeholder={t('onboarding.referralCode', 'Código de referido (opcional)')}
-          value={referralCode}
-          onChange={(e) => setReferralCode(e.target.value)}
-        />
-      </div>
     </div>
   )
 }

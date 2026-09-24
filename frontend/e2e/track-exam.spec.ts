@@ -51,7 +51,9 @@ test.describe('track final exam', () => {
     await expect(page.getByRole('timer')).toBeVisible();
 
     // The counter proves the whole paper was drawn, not one question at a time.
-    await expect(page.getByText(/1 .* 20|1 .* 2[0-9]|1 .* [345][0-9]/)).toBeVisible();
+    // Anchored on the counter's own wording: the bare digits regex also
+    // matched any answer option that happened to contain numbers.
+    await expect(page.getByText(/(Pregunta|Question) 1 (de|of) ([2-5][0-9])\b/)).toBeVisible();
   });
 
   test('a mock exam is offered for certification tracks and a final exam is not', async ({ page }) => {

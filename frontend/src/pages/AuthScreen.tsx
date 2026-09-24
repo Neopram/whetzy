@@ -56,6 +56,15 @@ export function AuthScreen({ onAuthed }: Props) {
     void i18nInst.changeLanguage(lang);
   }
 
+  // Idioma inicial: ?lang=es|en, o el del navegador. Antes /auth salía siempre
+  // en español porque i18n arranca con lng: 'es' (34.11).
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('lang');
+    const initial = q === 'es' || q === 'en' ? q : (navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+    if (initial !== 'es') handleLangChange(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
