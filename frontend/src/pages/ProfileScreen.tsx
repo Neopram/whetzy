@@ -7,6 +7,8 @@ import { useApi } from '../hooks/useApi';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 import { gamification } from '../services/api';
 import { getStoredTheme, toggleTheme, type Theme } from '../theme';
+import { LoadingState } from '../components/common/LoadingState';
+import { EmptyState } from '../components/common/EmptyState';
 import styles from './ProfileScreen.module.css';
 
 export function ProfileScreen() {

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../stores/useAppStore';
 import { lessonsApi, type LessonRead } from '../services/api';
+import { LoadingState } from '../components/common/LoadingState';
+import { EmptyState } from '../components/common/EmptyState';
+import { ErrorState } from '../components/common/ErrorState';
 import styles from './LessonScreen.module.css';
 
 interface Props {
@@ -33,18 +36,33 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
   if (loading) {
     return (
       <div className={styles.screen}>
-        <p className={styles.loadingMsg}>⏳ {t('lesson.loading', 'Cargando lección…')}</p>
+        <LoadingState message={t('lesson.loading', 'Cargando lección…')} fullScreen />
       </div>
     );
   }
 
-  if (error || lessons.length === 0) {
+  if (error) {
     return (
       <div className={styles.screen}>
-        <p className={styles.errorMsg}>{error ?? t('lesson.noContent', 'No hay lecciones para esta habilidad todavía.')}</p>
-        <button className={styles.btnBack} onClick={onExit}>
-          {t('lesson.back', '← Volver')}
-        </button>
+        <ErrorState
+          message={error}
+          retryLabel={t('lesson.back', '← Volver')}
+          onRetry={onExit}
+        />
+      </div>
+    );
+  }
+
+  if (lessons.length === 0) {
+    return (
+      <div className={styles.screen}>
+        <EmptyState
+          icon="📚"
+          title={t('lesson.noContentTitle', 'Sin contenido disponible')}
+          description={t('lesson.noContent', 'No hay lecciones para esta habilidad todavía.')}
+          actionLabel={t('lesson.back', '← Volver')}
+          onAction={onExit}
+        />
       </div>
     );
   }
