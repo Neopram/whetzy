@@ -34,8 +34,8 @@
  * package.json.
  *
  * Critical CSS: LandingScreen.tsx is a lazily-routed page, so its styles
- * (`LandingScreen.css`, which sets the hero <h1>'s actual font-size via
- * `.lnd-hero__h1`) live in their own route-level, code-split CSS chunk. That
+ * (`LandingScreen.module.css`, which sets the hero <h1>'s actual font-size via
+ * `.heroHeading`) live in their own route-level, code-split CSS chunk. That
  * chunk is normally only linked into the page at runtime, when the JS router
  * dynamically imports the route. If we prerendered the hero markup but left
  * that stylesheet out of the static HTML, the browser would first paint the
@@ -119,7 +119,7 @@ async function main() {
   const { renderLandingHtml } = await import(pathToFileURL(entryPath).href);
   const heroHtml = renderLandingHtml();
 
-  if (!heroHtml.includes('lnd-hero__h1')) {
+  if (!heroHtml.includes('data-lcp="hero"')) {
     throw new Error('[prerender-landing] rendered markup is missing the hero — aborting, not writing a broken file');
   }
 

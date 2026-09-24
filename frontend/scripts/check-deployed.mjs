@@ -47,8 +47,8 @@ const CHECKS = [
     impact: 'the landing paints only after the JS bundle boots — the LCP budget (red line 8) is measured on a page real visitors never get this fast',
     async run() {
       const { body } = await get('/landing');
-      const ok = body.includes('lnd-hero__h1');
-      return { ok, detail: ok ? 'lnd-hero__h1 in the HTML response' : 'served the SPA shell, not dist/landing/index.html (11.11 / 12.10)' };
+      const ok = body.includes('data-lcp="hero"');
+      return { ok, detail: ok ? 'data-lcp="hero" in the HTML response' : 'served the SPA shell, not dist/landing/index.html (11.11 / 12.10)' };
     },
   },
   {

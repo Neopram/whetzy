@@ -229,7 +229,9 @@ export default function LandingScreen() {
               14-day streak club · 1.2M learners
             </span>
 
-            <h1 className={styles.heroHeading}>
+            {/* data-lcp: marcador estable para el prerender y sus guardas; la clase
+                de CSS module lleva hash y no sirve de aguja. */}
+            <h1 className={styles.heroHeading} data-lcp="hero">
               Lessons that rewrite themselves around you.
             </h1>
 

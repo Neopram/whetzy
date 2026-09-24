@@ -45,7 +45,7 @@ import { join } from 'node:path';
 
 const LIGHTHOUSE_VERSION = '13.4.1';
 const DEFAULT_URL = 'https://whetzy.com/landing'; // the canonical URL, i.e. what index.html declares
-const HERO_MARKER = 'lnd-hero__h1'; // must be in the HTML *response*, not painted later by JS
+const HERO_MARKER = 'data-lcp="hero"'; // must be in the HTML *response*, not painted later by JS
 const LCP_BUDGET_MS = 2500;
 
 const url = process.argv[2] ?? DEFAULT_URL;
