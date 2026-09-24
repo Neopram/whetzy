@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LoadingState } from '../components/common/LoadingState';
-import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
-import { TabsNav, type TabItem } from '../components/common/TabsNav';
-import { ResponsiveTable } from '../components/common/ResponsiveTable';
 import styles from './AdminScreen.module.css';
 
 interface Metrics {
@@ -213,8 +210,8 @@ export function AdminScreen() {
       </div>
 
       <div className={styles.content}>
-        {loading && <div className={styles.loading}>{t('admin.loading')}</div>}
-        {error && <div className={styles.error}>{error}</div>}
+        {loading && <LoadingState message={t('admin.loading', 'Cargando datos del panel...')} />}
+        {error && <ErrorState message={error} onRetry={() => {}} />}
 
         {!loading && !error && activeTab === 'metrics' && (
           <div className={styles.panel}>
