@@ -117,6 +117,17 @@ export function ProfileScreen() {
             <span className={styles.settingLabel}>{t('profile.goInstructor')}</span>
             <span aria-hidden="true">→</span>
           </button>
+          {useAppStore.getState().user?.is_admin && (
+            <button
+              type="button"
+              className={styles.setting}
+              onClick={() => setScreen('admin')}
+              style={{ borderColor: 'var(--color-cyan, #06B6D4)', background: 'rgba(6,182,212,0.1)' }}
+            >
+              <span className={styles.settingLabel}>🛡️ Admin Control Panel</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          )}
         </div>
       </Card>
 
