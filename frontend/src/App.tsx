@@ -98,6 +98,17 @@ function StandalonePage({ path }: { path: string }) {
   if (path === '/terms') return <Screen><LegalScreen doc="terms" /></Screen>;
   if (path === '/evidence') return <Screen><EvidenceScreen /></Screen>;
   if (path === '/landing') return <Screen><LandingScreen /></Screen>;
+
+  if (path === '/admin') {
+    return (
+      <Screen>
+        <Suspense fallback={<BootSplash />}>
+          <AdminScreen />
+        </Suspense>
+      </Screen>
+    );
+  }
+
   return <Screen><LandingScreen /></Screen>;
 }
 
@@ -152,6 +163,17 @@ function App() {
   // never enter the session machine, and Cloudflare's 308 to /landing/ used
   // to miss the exact-match and hydrate the register form instead.
   if (path === '/landing') return <Screen><LandingScreen /></Screen>;
+
+  if (path === '/admin') {
+    return (
+      <Screen>
+        <Suspense fallback={<BootSplash />}>
+          <AdminScreen />
+        </Suspense>
+      </Screen>
+    );
+  }
+
   if (path === '/auth' || path === '/login' || path === '/register') return <AuthRoute />;
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
