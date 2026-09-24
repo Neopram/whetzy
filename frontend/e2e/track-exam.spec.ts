@@ -39,7 +39,9 @@ test.describe('track final exam', () => {
 
     // The intro states the pass mark, which is the part a learner most needs
     // before deciding.
-    await expect(page.getByText(/70/)).toBeVisible({ timeout: 10_000 });
+    // Anchored on the pass-mark line itself: a bare /70/ also matches every
+    // «… · 70%» unlock note on the Tracks screen that is still animating out.
+    await expect(page.getByText(/(se aprueba con|pass mark) 70/i)).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole('button', { name: /EMPEZAR EXAMEN|START EXAM/ }).click();
 

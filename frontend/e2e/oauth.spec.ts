@@ -14,6 +14,16 @@ import { test, expect } from '@playwright/test';
 export const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:5173';
 const API_URL = process.env.API_BASE_URL ?? 'http://localhost:8000';
 
+// El backend solo anuncia los proveedores con credenciales configuradas
+// (`GET /auth/oauth/providers`, para no pintar un botón que responde 503), y en
+// CI no hay credenciales de GitHub ni de Google. Estos tests prueban la
+// interfaz y el flujo del proveedor `test`, así que fijan la lista.
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/v1/auth/oauth/providers', (route) =>
+    route.fulfill({ json: { providers: ['github', 'google'] } }),
+  );
+});
+
 test.describe('19.1 — OAuth test provider flow', () => {
   test('test provider start → callback → tokens stored → home screen', async ({ page }) => {
     // Navigate to auth screen

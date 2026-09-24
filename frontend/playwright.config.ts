@@ -31,6 +31,11 @@ export default defineConfig({
         // AUTH_RATE_LIMIT raised well above the 12/min production default —
         // the suite registers several fresh users per run (see e2e/helpers.ts).
         AUTH_RATE_LIMIT: '200',
+        // Same reason for the general per-IP budget (120/min by default): every
+        // worker shares 127.0.0.1, and a 429 on /auth/me drops a freshly
+        // registered user back on the landing — the intermittent reds of
+        // 2026-09-24 (a different 1-3 tests failing on every full run).
+        DEFAULT_RATE_LIMIT: '5000',
       },
     },
     {

@@ -15,12 +15,18 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
-  // Onboarding screen must appear (not the home screen directly)
-  const ctaBtn = page.getByRole('button', { name: 'EMPEZAR A APRENDER' });
-  await expect(ctaBtn).toBeVisible({ timeout: 15_000 });
+  // Onboarding (24.3): three segment questions that auto-advance, then the
+  // language choice, then home. It must appear — not the home screen directly.
+  const onboarding = page.getByTestId('onboarding');
+  await expect(onboarding).toBeVisible({ timeout: 15_000 });
+  for (let i = 0; i < 3; i++) {
+    await onboarding.locator('button.option').first().click();
+    await page.waitForTimeout(700); // the screen advances itself after 600 ms
+  }
+  await onboarding.getByRole('button', { name: /Español/ }).click();
 
-  // Tap the CTA — should jump directly into QuizScreen
-  await ctaBtn.click();
+  // Home → the primary CTA starts a study session.
+  await page.getByRole('button', { name: 'ESTUDIAR AHORA' }).click();
 
   // First question must appear
   await expect(page.locator('[class*="questionCard_"]')).toBeVisible({ timeout: 15_000 });
@@ -66,8 +72,8 @@ test('onboarding is skipped for returning users', async ({ page }) => {
   // A returning user lands on the home screen…
   await expect(page.getByRole('button', { name: 'Inicio' })).toBeVisible({ timeout: 15_000 });
   // …and onboarding is nowhere on it. Asserted on OnboardingScreen's own
-  // headline, not on its CTA: the CTA shares an accessible name with the
-  // registration button. (The previous version asserted this with a
+  // test id, not on any button: the old CTA shared an accessible name with
+  // the registration button. (An earlier version asserted this with a
   // `.catch(() => {})` tacked on, which made it incapable of ever failing.)
-  await expect(page.locator('[class*="headline_"]')).toHaveCount(0);
+  await expect(page.getByTestId('onboarding')).toHaveCount(0);
 });
