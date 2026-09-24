@@ -175,10 +175,10 @@ never rewrites history.
 
 ### Riesgos residuales conocidos
 
-- **Credential stuffing (PARCIAL)**: Rate limit 12/min/IP blunta ataques pero no los detiene por completo. Alternativa futura: CAPTCHA en X intentos o 2FA. Acepta hoy. [Cierra en Serie 24 si se implementa 2FA]
-- **DoS en queries caras (SIN MITIGAR)**: Ranking, búsqueda y BM25 sin timeout. Impacto: Groq API no es activo (no afecta plataforma central). Aceptado porque: (1) RAG es O(n) en ~1300 docs = <100ms típico, (2) sin datos de abuso en logs. Cierra: timeout en `/tutor` + per-user token quota en H.25
-- **Consumo de Groq sin cuota (SIN MITIGAR)**: `/tutor` no tiene metering. Impacto: runaway spend. Aceptado: Groq rate limit + costo bajo (qwen3.8). Cierra: contador de tokens en analytics_events + alertas (H.26)
-- **CSP del frontend (SIN REVISAR)**: Cloudflare `_headers` no declara CSP script nativa. Riesgo bajo (Capacitor + React no usan eval), pero necesita auditoría. Cierra: revisión en H.23
+- **Credential stuffing (PARCIAL)**: Rate limit 12/min/IP blunta ataques pero no los detiene por completo. Alternativa futura: CAPTCHA en X intentos o 2FA. [Cerrado: 2FA TOTP y sesiones por dispositivo en `endpoints/auth_hardening.py`, fila 22x del ledger]
+- **DoS en queries caras (SIN MITIGAR)**: Ranking, búsqueda y BM25 sin timeout. Impacto: Groq API no es activo (no afecta plataforma central). Aceptado porque: (1) RAG es O(n) en ~1300 docs = <100ms típico, (2) sin datos de abuso en logs. Cierra: timeout en `/tutor` + cuota de tokens por usuario en la fila **22.16**
+- **Consumo de Groq sin cuota (SIN MITIGAR)**: `/tutor` no tiene metering. Impacto: runaway spend. Aceptado: Groq rate limit + costo bajo (qwen3.8). Cierra: contador de tokens en analytics_events + alertas (fila **22.16**)
+- **CSP del frontend (SIN REVISAR)**: Cloudflare `_headers` no declara CSP script nativa. Riesgo bajo (Capacitor + React no usan eval), pero necesita auditoría. Cierra: fila **22.2** (cabeceras de seguridad y CSP)
 
 ### Cómo se comprueba
 

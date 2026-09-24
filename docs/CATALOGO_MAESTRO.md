@@ -13,6 +13,9 @@
 > o la borra. Un número sin comando ni URL es un bug de este doc.
 >
 > Última medición: 2026-09-18 (sesión **bg**, 20.2). Estado del banco: ver `## 1`.
+> **Objetivo desde el 2026-09-24 (ADR-42):** cubrir **todos los tracks de la industria** con **≥ 50 cursos por track**
+> (curso = módulo: 4 skills · 60 Q · 4 lecciones · ≥ 8 términos), sobre un corpus abierto descargado, verificado y limpiado
+> fuera del repo (`corpus/`). Sustituye la meta de ADR-25. Ejecución: Serie 35 del ledger; la puerta 35.0 va antes que cualquier pregunta nueva.
 > Política de fuentes desde el 2026-09-18 (ADR-11): **solo gratuitas y legales** — ver §2.1.
 
 ---
@@ -50,7 +53,7 @@ profundidad de producto*, no adquisición.
 
 ---
 
-## 2. El mapa completo — 28 tracks de aprendizaje
+## 2. El mapa completo — 28 tracks de aprendizaje (+ 14 de §2.0)
 
 Convención de ids: **tracks de aprendizaje `track12`–`track32`**, **tracks de
 certificación `track40`+** (`is_certification: true`, misma forma que track08–11).
@@ -67,6 +70,8 @@ de 17.13). **Desde el 2026-09-18 (ADR-11): solo fuentes gratuitas y legales — 
 compran libros para parafrasearlos y los PDFs pirateados no entran ni como cita.** El
 camino con cualquier fuente es el mismo: leer → escribir lección/pregunta original en
 ES y EN → citar. Los hechos son libres; la redacción no.
+
+**Meta por track (ADR-42): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 6.305; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
 
 | # | Área | Track | Id | Estado | Fuentes con licencia | Runtime | Certs asociadas (→ §3) |
 |---|---|---|---|---|---|---|---|
@@ -100,6 +105,34 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 | 28 | Web3 | Solana / Web3 developer (ADR-38) | track32 | ❌ (25.14) | `solana-labs/solana` y `solana-program-library` Apache-2, `solana-developers` cookbook/docs MIT, `@solana/web3.js` MIT, Anchor Apache-2 — confirmar `LICENSE` en 25.14 antes de reutilizar texto | **JS (`@solana/web3.js` en el Worker de 18.3)** + Python stdlib (hash, base58, serialización); Rust/Anchor = escenario + decisión (exento ADR-9) | — (sin cert oficial; evidencia = bounties Superteam Earn resueltos) |
 
 **Cobertura hoy: 16 de 28 filas (57 %).** 8 tracks completados + track13/24/25 Seguridad (scaffolding + 500 Q mock cada uno, 25.0) + track14 Frontend JS (stub, 12 Q) + track15/16/17 (18.4). Faltan **12**: Docker/K8s (18), IaC+CI/CD (19), Data Eng (20), Data Science (21), Azure (22), GCP (23), Git (26), NoSQL (27), Backend (28), QA (29), Agile (30), Móvil (31), **Solana/Web3 (32, ADR-38)**.
+
+### 2.0 Ampliación a toda la industria (ADR-42) — 14 tracks más, ids `track33`+
+
+Áreas con demanda medible en la industria (encuesta anual de Stack Overflow, roadmap.sh,
+catálogos de certificación) que el mapa de 28 no cubría. **Cada fila entra al mapa
+solo cuando 35.1 la confirme con URL y fecha**; hasta entonces es propuesta. Licencias
+de las fuentes: se comprueban en 35.3 leyendo `LICENSE` (nada aquí se da por libre sin
+leerlo). Runtime: solo Python, SQL y JS ejecutan en el navegador; el resto va exento con
+razón (ADR-9), como Linux.
+
+| # | Área | Track | Id | Fuentes candidatas (licencia a comprobar en 35.3) | Runtime | Certs asociadas |
+|---|---|---|---|---|---|---|
+| 29 | Lenguajes | Java / JVM (Kotlin backend) | track33 | OpenJDK docs (GPL+CE → cita), `TheAlgorithms/Java` MIT, Spring guides Apache-2 | exento | OCA/OCP (cita) |
+| 30 | Lenguajes | C# / .NET | track34 | `dotnet/docs` CC BY 4.0, `TheAlgorithms/C-Sharp` MIT | exento | AZ-204 (con track22) |
+| 31 | Lenguajes | Go | track35 | `golang/go` BSD, Go by Example CC BY, `TheAlgorithms/Go` MIT | exento | — |
+| 32 | Lenguajes | Rust | track36 | The Rust Book MIT/Apache-2, Rustlings MIT, `TheAlgorithms/Rust` MIT | exento | — |
+| 33 | Sistemas | C / C++ y sistemas | track37 | `TheAlgorithms/C` y `C-Plus-Plus` MIT, cppreference (CC BY-SA → cita), OSTEP (CC BY-NC → cita) | exento | — |
+| 34 | Web | TypeScript avanzado | track38 | `microsoft/TypeScript` docs Apache-2, `type-challenges` MIT | **JS Worker** (18.3) | — |
+| 35 | DevOps | SRE y observabilidad | track39 | Google SRE books (CC BY-NC → cita), Prometheus/Grafana docs Apache-2, OpenTelemetry docs Apache-2 | exento | — |
+| 36 | IA | MLOps y despliegue de modelos | track41 | `mlflow` Apache-2, Kubeflow docs Apache-2, `madewithml` MIT | Python stdlib | — |
+| 37 | Web3 | Solidity / EVM | track42 | Solidity docs GPL (→ cita), `OpenZeppelin` MIT, `ethereum.org` docs MIT | JS Worker (`ethers` MIT) | — |
+| 38 | Juegos | Desarrollo de videojuegos (Godot, Unity) | track43 | Godot docs CC BY 3.0, `godotengine/godot-demo-projects` MIT | exento | — |
+| 39 | Sistemas | Embebidos e IoT | track44 | MicroPython MIT, Zephyr docs Apache-2, Arduino docs CC BY-SA (→ cita) | Python stdlib (MicroPython-compatible) | — |
+| 40 | Fundamentos | Matemáticas para CS | track45 | OpenStax (CC BY 4.0), `3b1b/manim` MIT (explicadores) | Python stdlib | — |
+| 41 | Soporte | Soporte IT y hardware | track46 | CompTIA A+ / ITF+ objetivos (cita), Wikipedia (CC BY-SA → cita), docs de Microsoft (cita) | exento | A+, ITF+ |
+| 42 | Sistemas | Administración Windows / PowerShell | track47 | `PowerShell/PowerShell-Docs` CC BY 4.0, `MicrosoftDocs` (CC BY 4.0 en repos públicos) | exento | — |
+
+`track40` ya existe (ISC2 CC, certificación); por eso la numeración salta.
 
 ### 2.1 Biblioteca de fuentes libres por área (ADR-11 — solo gratis y legal)
 
@@ -497,11 +530,11 @@ El estudio advierte explícitamente:
 
 > *"If Platzi, DataCamp, or a well-funded entrant ships genuinely adaptive Spanish content at scale, the window narrows quickly — monitor Platzi's Leap integration and any DataCamp Spanish localization."*
 
-**Acción en el ledger:** Tarea de monitoreo trimestral (ver Serie 25 en AUTONOMOUS_STATE.md). Si Platzi anuncia motor adaptativo real o DataCamp anuncia localización al español con motor, escalar a HUMAN-BLOCKED para decisión del dueño sobre aceleración o pivot a nicho de ciberseguridad.
+**Acción en el ledger:** fila **35.12** (monitoreo trimestral; hasta el 2026-09-24 este párrafo apuntaba a una fila que no existía). Si Platzi anuncia motor adaptativo real o DataCamp anuncia localización al español con motor, escalar a HUMAN-BLOCKED para decisión del dueño sobre aceleración o pivot a nicho de ciberseguridad.
 
 ---
 
-## 12. Proyección competitiva cuando Whetzy llegue a ADR-25 (2.700 cursos; 2.800 con track32, ADR-38)
+## 12. Proyección competitiva cuando Whetzy llegue a ADR-42 (≥ 50 cursos × ≥ 42 tracks; antes ADR-25)
 
 ### 12.1 Score competitivo proyectado
 
@@ -519,8 +552,8 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 | PWA/móvil | 0.05 | 4 | 5 | 5 | 5 |
 | Accesibilidad | 0.05 | 3 | 5 | 5 | 5 |
 | **Total sin distribución** | | **44** | **~60** | **~66** | **~66** |
-| **Con distribución (1K usuarios)** | | — | — | — | **~79** |
-| **Con distribución (10K usuarios)** | | — | — | — | **~85** |
+
+> **Corregido el 2026-09-24:** la tabla anterior sumaba 49 en la columna «Hoy» donde decía 44, y proyectaba «~79 con 1K usuarios» y «~85 con 10K» sin ninguna aritmética detrás (para 85 haría falta Distribución = 100). Se retiran. Con los pesos de `competitive-teardown.md` §7.1 y las notas de §11: hoy **44**; con el backlog técnico cerrado y sin usuarios **≈ 61**; con tiendas, social login y cohorte beta **≈ 66**; y el catálogo completo de ADR-42 (Contenido 55 → 85) añade **+4,2** → **≈ 70**. Por encima de eso solo mueve Distribución, que pesa 0,34 y no se construye.
 
 **La única variable que mueve el marcador más allá de 66 es la distribución.** ADR-25 cierra la dimensión de contenido al máximo posible, pero no toca distribución. El dueño la activa con la campaña (YouTube, B2B, comunidades Python en español).
 
@@ -530,7 +563,7 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 |---|---|---|---|---|---|
 | Motor adaptativo | ❌ video/cohort | ✅ Optima (EN/AR) | ❌ lineal | Parcial | **✅ BKT+FSRS+Elo+DKT** |
 | Español nativo | ✅ | ❌ | ❌ | ❌ | **✅ + EN separado** |
-| Cursos/contenido | 1,900 | 730 | ~50 | ~500 | **2,700 → 2,800 (track32)** |
+| Cursos/contenido | 1,900 | 730 | ~50 | ~500 | **≥ 50 por track × ≥ 42 tracks (ADR-42)** |
 | Certificaciones | ❌ | ❌ | ❌ | ❌ | **✅ 55+** |
 | Ciberseguridad | ❌ | ❌ | ❌ | Parcial | **✅ 3 tracks** |
 | Cloud (AWS/Azure/GCP) | ❌ | ❌ | ❌ | ❌ | **✅ 6 tracks** |
@@ -541,8 +574,8 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 | Credenciales verificables (Open Badges 3.0) | ❌ | ❌ | ❌ | ❌ | **✅ 29.10 (ADR-37)** |
 | Token / cripto propia | ❌ | ❌ | ❌ | ❌ | **❌ a propósito (ADR-33)** |
 | B2B ready | ✅ | ✅ | ❌ | ✅ | **✅ (Serie 22)** |
-| Precio base | ~$29/mo | ~$39/mo | $49/mo | ~$20/mo | **$14.99/mo** |
-| Empleabilidad real | Bajo (70% no termina) | Medio | Alto | Medio | **Alto (completion > 70%)** |
+| Precio base | ~$29/mo | ~$39/mo | $49/mo | ~$20/mo | **sin publicar hasta H.19 (hipótesis interna ADR-43: Pro $9,99 / Plus $19,99)** |
+| Empleabilidad real | Bajo (70% no termina) | Medio | Alto | Medio | **sin dato hasta H.10 (objetivo ADR-32: completion > 50 %)** |
 
 **Whetzy con ADR-25 completo es técnicamente superior en todas las dimensiones relevantes para el nicho Python→AI Engineer en español.** La única ventaja que los incumbentes mantienen es brand recognition — y eso se construye con distribución, no con código.
 

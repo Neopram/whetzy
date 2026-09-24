@@ -889,3 +889,19 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 **Pendiente:** deploy manual del frontend (el agente no tiene credenciales de Cloudflare) y `check-deployed.mjs` PASS después; H.31.
 
 **Guardas no ejecutadas en el push:** `.githooks/pre-push` no tiene bit de ejecución en git y se ignoró. Ejecutado a mano: rojo solo por `ruff` (31 errores preexistentes, ninguno en ficheros tocados aquí) → fila **30.6**.
+
+## 2026-09-24 — El dueño pide decidir por él y control total (sesión interactiva, rama `claude/clever-edison-4bzr2v`; Opus 5.5 y luego Fable 5.1 elegido por el dueño)
+
+**Pregunta del dueño:** cuántas oleadas quedan, cómo queda categorizada la app al terminar, qué está bloqueado y qué planes de la documentación no estaban en el ledger. Después: «decide todo eso como si fuera el emprendedor», «cubrir todos los tracks de la industria con al menos 50 cursos por track», «descarga toda la data legal y open source, verifícala y límpiala», «lo fusiono manualmente».
+
+**Lo que se encontró (tres agentes de barrido + verificación propia de cada cita usada):**
+- El ledger se contradecía a sí mismo: §1 decía 24 «17 commits», 28 «7/8», 29 «4/13», 26 «2/9» mientras las filas de §2 decían BLOCKED. 16.17, 17.1x y 25x llevaban resueltas sin marcar (`vite.config.ts:374,391` → `127.0.0.1:8000`; `check_docs.py` [2]-[4] en verde). 7.6 (IAP) no tenía fila y `store/app-store-review-checklist.md:95` la exigía.
+- 21 planes en la documentación sin fila (KPIs de `DISTRIBUCION.md` §10, pilotos B2B, Coursera/Udemy, monitoreo trimestral apuntando a una fila inexistente, reclutamiento de instructores, arranque en frío de Railway, fase 3 del modelo de amenazas, DMCA/DPIA, edad mínima, blog, newsletter, afiliados…). 4 precios distintos en 4 documentos. `EXECUTION_PLAN_25-29.md` decía «ALL GATES OPEN» con H.29 abierta. `CATALOGO_MAESTRO.md` §12.1 sumaba 49 donde decía 44 y proyectaba «~79/~85» sin aritmética. Ficha de la App Store con «11 tracks, 281 habilidades» y «calibrados sobre datos reales» sin usuarios.
+
+**Decisiones (ADR-41…44, todas aceptadas por el dueño en la conversación):** rama + PR, `master` solo lo fusiona el dueño (ADR-41); catálogo total ≥ 50 cursos/track sobre corpus abierto descargado, verificado y limpiado fuera del repo, con la guarda de diversidad 35.0 antes que cualquier pregunta (ADR-42); valores por defecto de la cola humana y una sola hipótesis de precios sin publicar (ADR-43); planes paralelos al archivo (ADR-44).
+
+**Cambios:** ledger 179 → 210 filas, ejecutables 75 → 133, BLOCKED 67 → 33; series 35 (14 filas) y 36 (6) nuevas; 17.14, 19.11, 21.9, 22.14-22.16, 26.9-26.10, 27.10, 28.8-28.9 nuevas; H.35-H.37; `CATALOGO_MAESTRO.md` §2.0 (14 tracks) y §12 corregido; `ORCHESTRATOR.md` contrato y visión; `ARCHITECTURE.md` riesgos con IDs reales; ficha iOS con cifras de `check_docs.py`; 10 documentos a `archive/`; 4 HTML duplicados (U+F00D en el nombre) borrados; `corpus/` en `.gitignore`; `docs/PROMPT_CONTROL_TOTAL.md`.
+
+**Verificación:** `python scripts/ledger.py check` OK (210 filas, 36 bloqueos humanos, 10 invariantes). `check_docs.py`: [2]-[4], [6], [7] en verde; [1] y [5] fallan **por entorno** (sin `alembic` ni backend importable en el contenedor), igual que antes de tocar nada.
+
+**No hecho:** ningún código; ninguna pregunta nueva; ningún push a `master` (ADR-41). La serie 24 sigue sin recuento fila por fila (queda como PARCIAL «maqueta sin API»).

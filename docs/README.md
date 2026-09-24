@@ -15,7 +15,8 @@ Frontend: React + Capacitor.
 | Saber qué fuentes se pueden usar (solo gratuitas y legales) y cómo | **`CATALOGO_MAESTRO.md` §2.1** + `DECISIONS.md` ADR-11 |
 | Desplegar (Cloudflare con wrangler, Railway automático), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
 | Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
-| Ver la posición frente a la competencia, con pesos fijos (última: §11, Educative y los 3 canales) | `competitive-teardown.md` |
+| Ver la posición frente a la competencia, con pesos fijos (última: §12, ADR-42 y la corrección de la proyección) | `competitive-teardown.md` |
+| Arrancar una sesión con control total (rama + PR, sin `master`; ADR-41) | **`PROMPT_CONTROL_TOTAL.md`** |
 | Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
 | Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
 | Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
@@ -28,10 +29,13 @@ Frontend: React + Capacitor.
 | Qué se construyó de verdad en los 12 primeros días, qué estaba marcado `DONE` sin estarlo, qué bloquea (nada de ello código) y qué objetivo es alcanzable | **`BALANCE-12-DIAS.md`** |
 | Qué ve alguien que audita el sistema desde fuera sin fiarse de ningún doc: producción medida en vivo, CI, coste de contexto, y por qué no se usa NotebookLM ni Obsidian (ADR-40) | **`AUDITORIA_EXTERNA_2026-09-19.md`** |
 
-Esos son los **dieciocho documentos vivos** (más `store/`). `analisis-estrategico/` y
+Esos son los **diecinueve documentos vivos** (más `store/`). `analisis-estrategico/` y
 `legal/` (raíz) no mandan sobre el código. Todo lo demás está en
-`archive/` — incluida la estrategia v3 del dueño, superada por el catálogo — y **no
-manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo.
+`archive/` — incluida la estrategia v3 del dueño, superada por el catálogo, y desde el
+2026-09-24 los planes paralelos `EXECUTION_PLAN_25-29`, `ROADMAP_25-29`, `*-PLANNING`,
+`SERIE*_STATUS/SUMMARY` y `VERIFICATION_CHECKLIST_FINAL` (ADR-44) — y **no
+manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo. Un plan que
+no sea una fila de `AUTONOMOUS_STATE.md` no es un plan.
 
 ## Arranque local
 
@@ -68,6 +72,8 @@ banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
 | OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
 
 `git push origin master` **despliega** el backend (Railway, auto-deploy verificado
-2026-09-16). El frontend en Cloudflare Pages se despliega a mano con
+2026-09-16) y el frontend (Cloudflare Pages conectado a Git desde el 2026-09-24; cada
+rama tiene preview). **Por eso `master` solo lo fusiona el dueño a mano (ADR-41)**; la
+sesión trabaja en rama + PR. Deploy manual del frontend todavía posible con
 `npx wrangler pages deploy dist --project-name whetzy --branch main` desde
-`frontend/` (RUNBOOK §1; H.11 cerrado el 2026-09-18).
+`frontend/` (RUNBOOK §1).

@@ -11,8 +11,9 @@ qué hacer; el ledger lo sabe.
 - Alcance del producto (tracks, certificaciones, fuentes, volúmenes, puerta de calidad): `docs/CATALOGO_MAESTRO.md`
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
-- Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §11)
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo)
+- Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §12)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, **ADR-41 rama + PR y `master` solo por el dueño, ADR-42 catálogo total ≥ 50 cursos/track sobre corpus abierto, ADR-43 valores por defecto de la cola humana y precios, ADR-44 un plan = una fila**)
+- Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Auditoría externa más reciente (producción medida en vivo, CI, coste de contexto): `docs/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
 - Protocolo de verificación (cada `DONE`, cada doc, modelos y tokens): `docs/PROTOCOLO_VERIFICACION.md`
@@ -20,6 +21,12 @@ qué hacer; el ledger lo sabe.
 
 ## Invariantes
 
+- **`master` lo fusiona el dueño a mano (ADR-41, 2026-09-24).** La sesión trabaja en su rama,
+  abre un PR por oleada con evidencia y capturas, y **nunca** hace `git push origin master` ni
+  fusiona. Cloudflare Pages publica un preview por rama (`<rama>.whetzy.pages.dev`).
+- **Corpus abierto fuera del repo (ADR-42):** `corpus/` está en `.gitignore`; al repo solo entra
+  `content/sources/index.json` y contenido original ES/EN con fuente. Ninguna pregunta nueva
+  hasta que la guarda 35.0 esté en verde.
 - **Puerta local antes de cada push** (2026-09-20). `git push origin master` despliega a
   producción y hasta esa fecha no había **nada** en medio: cero hooks de git, y el
   `.github/workflows/ci.yml` —que está bien escrito— **no se ha ejecutado nunca** por

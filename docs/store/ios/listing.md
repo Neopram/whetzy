@@ -1,6 +1,6 @@
 # Whetzy — iOS App Store Listing
 
-> Guía de publicación · actualizado 2026-09-15 · requiere H.2 (Apple Developer) + H.14 (macOS)
+> Guía de publicación · actualizado 2026-09-24 (cifras de `check_docs.py`; sin afirmaciones sobre datos reales mientras no haya usuarios, H.10) · requiere H.2 (Apple Developer) + H.14 (macOS) + 17.14 (IAP) · **precios: ninguno publicado hasta H.19 (ADR-43)**
 
 ---
 
@@ -34,10 +34,10 @@ Whetzy es la academia de programación bilingüe que se adapta a lo que ya sabes
 Cubre el camino completo: desde las primeras líneas de Python hasta arquitecturas de microservicios, bases de datos, cloud AWS y modelos de IA. Cada concepto tiene una lección escrita por expertos, un ejemplo que puedes ejecutar dentro de la app, y preguntas adaptativas que ajustan la dificultad según tu progreso real.
 
 **¿Por qué Whetzy?**
-- **Motor adaptativo verificado.** BKT + FSRS calibrados sobre datos reales. No adivinamos cuándo repasas: lo calculamos.
-- **100 % ejecutable.** Los ejemplos de Python y SQL corren de verdad en la app, sin servidor externo, sin copiar y pegar.
+- **Motor adaptativo.** BKT + FSRS deciden qué practicas y cuándo repasas. No adivinamos: lo calculamos.
+- **Código que se ejecuta.** Los ejemplos de Python, SQL y JavaScript corren de verdad en la app, sin servidor externo, sin copiar y pegar.
 - **Bilingüe nativo.** Todo el contenido está escrito en español e inglés por separado — no es una traducción automática.
-- **11 tracks. 281 habilidades.** Python avanzado, arquitectura de software, IA/ML, AWS CLF-C02, SAA-C03, AIF-C01, PCEP y más.
+- **18 tracks. 378 habilidades.** Python, arquitectura de software, IA/ML, SQL, Linux, algoritmos, redes, ciberseguridad, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC y más.
 - **Sin anuncios. Sin rastreo.**
 
 **Cómo funciona**
@@ -57,10 +57,10 @@ Whetzy is the bilingual coding academy that adapts to what you already know — 
 It covers the full path: from your first lines of Python to microservice architectures, databases, AWS cloud, and AI models. Every concept has an expert-written lesson, a runnable example inside the app, and adaptive questions that adjust difficulty based on your real progress.
 
 **Why Whetzy?**
-- **Verified adaptive engine.** BKT + FSRS calibrated on real data. We don't guess when you need review: we calculate it.
-- **100% runnable.** Python and SQL examples actually execute inside the app — no external server, no copy-paste.
+- **Adaptive engine.** BKT + FSRS decide what you practice and when you review. We don't guess: we calculate it.
+- **Code that runs.** Python, SQL and JavaScript examples actually execute inside the app — no external server, no copy-paste.
 - **Natively bilingual.** All content is written in Spanish and English separately — not machine-translated.
-- **11 tracks. 281 skills.** Advanced Python, software architecture, AI/ML, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, and more.
+- **18 tracks. 378 skills.** Python, software architecture, AI/ML, SQL, Linux, algorithms, networking, cybersecurity, AWS CLF-C02, SAA-C03, AIF-C01, PCEP, ISC2 CC, and more.
 - **No ads. No tracking.**
 
 **How it works**
