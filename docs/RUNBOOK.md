@@ -2,7 +2,7 @@
 
 ## Deploy to Cloudflare Pages (frontend)
 
-**Deploy is MANUAL** — no Git connection in Cloudflare Pages. Run from `frontend/`:
+**Correction 2026-09-24: Cloudflare Pages IS connected to Git.** Every push to a branch gets a preview build (the `cloudflare-workers-and-pages` bot comments the URL on the PR, e.g. `https://claude-trusting-franklin-2ww.whetzy.pages.dev` for PR #6) and a `Cloudflare Pages` check. Not verified yet: whether `master` publishes to `whetzy.com` automatically, and which build command the dashboard runs — the Git build does **not** produce `dist/landing/index.html`, so it is not running `npm run build` (ledger 30.4). Manual deploy still works, from `frontend/`:
 
 ```bash
 npm run build
