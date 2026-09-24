@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
 import styles from './AdminScreen.module.css';
+import { API_BASE_URL, getAccessToken } from '../services/api';
 
 interface Metrics {
   dau?: number;
@@ -35,10 +36,10 @@ export function AdminScreen() {
   const [revenueData, setRevenueData] = useState<any>({});
   const [economyData, setEconomyData] = useState<any>({});
 
-  const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:8000/api/v1';
+  const apiBase = API_BASE_URL;
   const getAuthHeaders = (): HeadersInit => {
     try {
-      const token = localStorage.getItem('access_token') || localStorage.getItem('whetzy_token');
+      const token = getAccessToken();
       return {
         'Content-Type': 'application/json',
         ...(token ? { 'Authorization': `Bearer ${token}` } : {})

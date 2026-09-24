@@ -24,6 +24,11 @@ export class ApiError extends Error {
 
 const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
+/** Origen de la API para cualquier `fetch` fuera de este modulo. Una ruta
+ *  relativa ('/api/v1/...') en produccion va a Cloudflare, no al backend
+ *  (incidente de login 2026-09-24); `test/api.baseUrl.test.ts` lo vigila. */
+export const API_BASE_URL = BASE_URL;
+
 // Consume OAuth tokens from URL params immediately at module-import time.
 // The backend redirects here after OAuth callback with ?oauth_token=...&oauth_refresh=...
 // Writing directly to localStorage (not via persistTokens) avoids the TDZ problem:
@@ -69,6 +74,11 @@ function persistTokens(access: string | null, refresh: string | null) {
   } catch {
     /* storage unavailable — tokens still held in memory */
   }
+}
+
+/** El token de acceso vigente, el mismo que usa este modulo (clave `whetzy_access_token`). */
+export function getAccessToken(): string | null {
+  return accessToken;
 }
 
 export function isAuthenticated(): boolean {

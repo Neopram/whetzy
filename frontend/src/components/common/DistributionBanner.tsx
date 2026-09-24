@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './Button';
 import styles from './DistributionBanner.module.css';
+import { API_BASE_URL } from '../../services/api';
 
 /**
  * Distribution Banner Component (Serie 26)
@@ -56,7 +57,7 @@ export function DistributionBanner({
   const handleCTAClick = async () => {
     try {
       // Send analytics event
-      await fetch('/api/v1/analytics/campaign_click', {
+      await fetch(`${API_BASE_URL}/analytics/campaign_click`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

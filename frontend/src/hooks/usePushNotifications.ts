@@ -12,8 +12,9 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
+import { API_BASE_URL } from '../services/api';
 
-const API_BASE = '/api/v1/push';
+const API_BASE = `${API_BASE_URL}/push`;
 const ACCESS_KEY = 'whetzy_access_token';
 
 function getToken(): string | null {
