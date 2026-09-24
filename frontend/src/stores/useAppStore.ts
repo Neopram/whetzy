@@ -20,6 +20,7 @@ interface UserProfile {
   streakFreezeAvailable: number;
   lastActive: string;
   isPremium: boolean;
+  is_admin: boolean;
   language: Language;
   league: LeagueTier;
 }
@@ -131,6 +132,7 @@ function mapApiUser(u: UserRead): UserProfile {
     streakFreezeAvailable: u.streak_freeze_available,
     lastActive: u.last_active ?? new Date().toISOString(),
     isPremium: u.is_premium,
+    is_admin: u.is_admin ?? false,
     language: u.language,
     league: 'bronze',
   };
@@ -150,6 +152,7 @@ const defaultUser: UserProfile = {
   streakFreezeAvailable: 1,
   lastActive: new Date().toISOString(),
   isPremium: false,
+  is_admin: false,
   language: 'es',
   league: 'gold',
 };
