@@ -807,3 +807,133 @@ Wetsy». Se lee como: **el creador se queda el 80 % y Whetzy el 20 %** de cada v
 
 **Supera a ADR-21** en los nombres (Pro/Premium → Pro/Pro Max). Los importes mensuales son
 los mismos.
+
+---
+
+## ADR-45 — Control total de la sesión: rama + PR; `master` lo fusiona el dueño a mano (ACEPTADA 2026-09-24; era «ADR-41» en el PR #7 hasta que `master` ocupó ese número con los precios del dueño)
+
+**Aceptada por el dueño** el 2026-09-24 («lo hago manualmente»), en la sesión interactiva
+que preparó el prompt de control total (`docs/PROMPT_CONTROL_TOTAL.md`).
+
+**Contexto:** `git push origin master` despliega backend, migraciones y `content_loader`
+(H.16) y, desde el 2026-09-24, también el frontend (Cloudflare Pages conectado a Git).
+No hay nada en medio: el CI de GitHub no corre (H.13/H.17) y el login de producción se
+rompió así (serie 30). El contrato de autonomía de `ORCHESTRATOR.md` todavía decía
+«`git push` a `master` sin preguntar».
+
+**Decisión:**
+1. Una sesión autónoma tiene **control total dentro de su rama**: escribe código,
+   contenido, docs, migraciones aditivas, tests, scripts; corre lo que haga falta;
+   reorganiza; abre y actualiza **un PR por oleada** con capturas y evidencia.
+2. **Ninguna sesión hace `push` a `master` ni fusiona un PR.** `master` recibe solo lo
+   que el dueño fusiona a mano tras ver el preview de Cloudflare Pages
+   (`<rama>.whetzy.pages.dev`) y el veredicto de las guardas locales
+   (`.githooks/pre-push`, `scripts/ci_local.sh`). Tras cada fusión: `node
+   scripts/check-deployed.mjs` en PASS o no está hecho.
+3. Lo que sigue **fuera** de la autonomía (se prepara, se documenta en `HUMAN-BLOCKED`,
+   se sigue con otra cosa): gasto de dinero, claves live, DNS, datos de usuarios reales,
+   operaciones destructivas sobre la DB de producción, submisión a tiendas, rotar
+   secretos, crear cuentas en servicios (aunque sean gratis), reabrir una decisión
+   cerrada.
+4. Presupuesto: la sesión trabaja **hasta que el límite la detenga**. No raciona ni
+   se cierra sola mientras quede una fila ejecutable (`python scripts/ledger.py next`).
+
+**Consecuencias:** H.16 pasa a tener respuesta (opción 2: `master` solo por PR); solo
+queda que el dueño active la protección de rama en GitHub. `ORCHESTRATOR.md`
+(contrato) y `CLAUDE.md` (invariantes) se actualizan en esta misma sesión.
+
+---
+
+## ADR-46 — Catálogo total: todos los tracks de la industria, ≥ 50 cursos por track, sobre un corpus abierto descargado y verificado (ACEPTADA 2026-09-24)
+
+**Aceptada por el dueño** el 2026-09-24. Sustituye la meta de ADR-25 (100 cursos × 27/28
+tracks), que nunca definió qué era un «curso» y cuyo primer intento (serie 25, 2026-09-19)
+no pasó la puerta de calidad: 800 preguntas con 14 enunciados distintos por track.
+
+**Decisión:**
+1. **Alcance:** cubrir **todos los tracks que existen en la industria** del software y la
+   informática, no solo los 28 del mapa de 2026-09-16. La lista vive en
+   `CATALOGO_MAESTRO.md` §2 (28 actuales) y **§2.0** (ampliación, 14 tracks más; se amplía
+   cuando el inventario 37.1 encuentre un área sin track).
+2. **Curso = módulo del molde** (catálogo §2): **4 skills · 60 preguntas · 4 lecciones ·
+   ≥ 8 términos · ≥ 15 % ejecutable donde el navegador ejecute** (Python, SQL, JS) o
+   exento con razón (ADR-9). Es la unidad que ya existe en `tracks.json`; no se inventa
+   otra. `check_docs.py` sigue contando «cursos = track × nivel» hasta que 37.2 cambie el
+   recuento a módulos en el mismo commit que la web.
+3. **Meta:** **≥ 50 cursos por track** = 200 skills · 3.000 Q · 200 lecciones · ≥ 400
+   términos por track. Con 42 tracks: ≈ 126.000 preguntas. Hoy: 6.305. A la velocidad
+   medida de la sesión 18.4 (`bec734c`: 518 Q verificadas en tres tracks en una sesión),
+   son ≈ 240 sesiones de contenido. Es una meta de años; se persigue sin fecha y sin
+   racionar, un bloque = un PR verde.
+4. **Corpus abierto, descargado y verificado (petición del dueño):** la sesión descarga
+   **toda la fuente legal y abierta** que sirva a un track —repositorios (`git clone`),
+   dumps y volcados masivos (Wikipedia, Gutenberg, arXiv bulk, docs oficiales con
+   licencia libre), **torrents solo cuando sean el canal de distribución oficial de un
+   corpus legal** (Gutenberg, Wikimedia, Internet Archive con licencia declarada)—, la
+   **verifica** (fichero `LICENSE` leído; entrada en `content/sources/index.json` con
+   URL, fecha, licencia y hash) y la **limpia** (deduplicación, extracción de texto,
+   separación por track y skill). Nada pirata, nada CC BY-NC, nada propietario entra al
+   corpus como material reutilizable (ADR-11); lo propietario se cita.
+5. **El corpus vive fuera del repo**: `corpus/` (gitignored) o un volumen local; el repo
+   solo recibe `content/sources/index.json` y el contenido **original** derivado, ES y EN
+   nativos, con la fuente citada por pregunta y lección.
+6. **Puerta de calidad antes que volumen:** nada de la serie 37 escribe preguntas hasta
+   que exista la **guarda de diversidad semántica** (37.0): enunciados distintos ≥ 90 %
+   por track, opciones de una palabra ≤ 40 %, cero ejecutables sin código, distractores
+   defendibles. Se muta a propósito y se ve en rojo antes de fiarse (CLAUDE.md, estilo).
+
+**Consecuencias:** serie 25 se subordina a 37.0 y se reabre; nace la serie 37 (catálogo
+total + corpus) con su propio orden; `CATALOGO_MAESTRO.md` cambia de objetivo y corrige la
+proyección competitiva de §12 (su tabla sumaba 49 donde decía 44).
+
+---
+
+## ADR-47 — Valores por defecto de la cola humana, para que la sesión no se detenga (ACEPTADA 2026-09-24; numerada 47 el 2026-09-25 porque `master` ya tenía ADR-41…44 ocupadas por decisiones paralelas del dueño)
+
+**Aceptada por el dueño** el 2026-09-24 («eso lo dejo para el final»): las decisiones que
+solo él puede tomar quedan en `HUMAN-BLOCKED`, pero cada una lleva un **valor por
+defecto** que la sesión asume mientras él no lo vete. Nada de esto gasta dinero ni
+publica nada.
+
+| Bloqueo | Valor por defecto | Por qué |
+|---|---|---|
+| H.LIC / H.22 (CC BY-SA) | **No.** Se cita y enlaza, no se reutiliza. | El banco de preguntas es el activo; heredar copyleft lo regala. NIST, MITRE, RFC y docs Apache/MIT bastan. |
+| H.19 / H.29 (rail y entidad) | **Merchant of Record** (Paddle o Lemon Squeezy) en web + IAP (RevenueCat) en tiendas, tras una abstracción `PaymentProvider`; **entidad y jurisdicción sin decidir**: la premisa griega de ADR-16 queda **suspendida**, no se escribe «autónomo griego» en ningún doc vivo. | MoR cobra IVA por nosotros y no exige sociedad; el dueño elige después sin rehacer código. |
+| Precios | **Los fijó el dueño en ADR-41 (2026-09-24): Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $, reparto 80/20; se publican (35.7).** Esta ADR no añade hipótesis propia. Quedan en H.35: anual, tarifa regional, qué añade Pro Max y si el 80 % es sobre venta o tras comisión. **B2B: $99 por asiento y año, mínimo 10** (hipótesis; ADR-22 decía $500/persona). | Tres documentos daban cuatro precios; la decisión del dueño los sustituye a todos. |
+| H.23 (abrir distribución) | **Sí.** Se redacta todo (artículos, guiones, landings, PRs a listas). Solo **publicar bajo una cuenta nueva** sigue siendo del dueño. | Lo redactado no caduca; crear cuentas sí es acto del dueño (ADR-45 §3). |
+| H.24 / marketplace | **Se construye entero (serie 28); no se abre al público antes de ≥ 100 usuarios activos** (catálogo §9). | Sala vacía. |
+| H.26 (economía) | **Se acepta la tabla de `ECONOMIA.md` §2.2–§2.3 como hipótesis**; la serie 29 sigue en código; ninguna recompensa con importe hasta que haya ingresos. | Igual que los precios. |
+| H.27 (cNFT) | **No.** Solo Open Badges 3.0. | €0 y sin wallet. |
+| Marca | **Paleta Obsidian de la serie 34**: oscuro por defecto, cian `#06B6D4`, verde solo para éxito; claro solo en `[data-theme="light"]`. | El «azul cielo, modo claro por defecto» de `ORCHESTRATOR.md` ya no describe la app. |
+| Modelo de sesión | ADR-14 sigue para las sesiones programadas. **Una sesión interactiva usa el modelo que el dueño fije al arrancarla.** | El dueño eligió Fable 5.1 el 2026-09-24. |
+
+**Planes de la documentación que se adoptan** (con fila en el ledger desde hoy): cuota
+de tokens por usuario en `/tutor`, arranque en frío de Railway, fase 3 del modelo de
+amenazas (HMAC, RS256, cookies HttpOnly), confirmación de edad mínima en el registro,
+proceso DMCA y DPIA, monitoreo trimestral de competencia, KPIs de `DISTRIBUCION.md` §10
+en el admin, oferta de 3 pilotos B2B gratuitos, kit de reclutamiento de instructores,
+dossier de afiliación (Python Institute, CompTIA), blog `/blog` y newsletter,
+comparativa honesta frente a Coursera/Udemy, IAP (la vieja 7.6, sin fila desde hace
+meses).
+
+**Planes que se descartan por escrito:** clases en vivo (LiveKit/Daily), boss battles y
+clanes, mock interviews con IA, mentoring, patrocinadores de tracks, TikTok/Reels y
+Telegram, white-label/LMS-SCORM para universidades (hasta que un piloto B2B lo pida),
+DPO (no exigible a este tamaño), Creator Pro como plan aparte (se funde en la 28).
+Cualquier «Fase 1/3/5/6 del plan del 2026-09-24» no existe en el repo: **las series 30-35
+son la única fuente**.
+
+---
+
+## ADR-48 — Documentos de planificación paralelos se archivan; el ledger es el único plan (ACEPTADA 2026-09-24)
+
+**Decisión:** `EXECUTION_PLAN_25-29.md`, `ROADMAP_25-29.md`, `26/28/29-PLANNING.md`,
+`28-INTEGRATION.md`, `SERIE29_STATUS.md`, `SERIES_22_4_7_SUMMARY.md`,
+`SERIE_24_SUMMARY.txt` y `VERIFICATION_CHECKLIST_FINAL.md` pasan a `docs/archive/`.
+Reutilizaban IDs del ledger para tareas distintas (25.1, 25.14, 28.4, 29.2, 29.6),
+declaraban «ALL GATES OPEN» con H.29 abierta y daban tres mínimos de payout distintos
+($10, $50, €50). `25.0-planning.md` se queda porque un test lo exige
+(`tests/integration/test_security_tracks.py:82`), con cabecera de superado.
+**Regla:** un plan que no sea una fila del ledger no es un plan; si merece existir, se
+convierte en fila. Los cuatro HTML duplicados de `analisis-estrategico/` con un carácter
+invisible (U+F00D) en el nombre se borran: eran copias anteriores de los mismos ficheros.

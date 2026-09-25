@@ -940,3 +940,32 @@ Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `
 - **35.5:** preparación por dominio en la landing con captura real.
 
 **Incidente:** el verificador adversario (Haiku) borró ediciones sin commitear mientras informaba «no files modified». Los verificadores no deben compartir árbol de trabajo con una edición en curso: próxima vez, `isolation: "worktree"`.
+
+## 2026-09-24 — El dueño pide decidir por él y control total (sesión interactiva, rama `claude/clever-edison-4bzr2v`; Opus 5.5 y luego Fable 5.1 elegido por el dueño)
+
+**Pregunta del dueño:** cuántas oleadas quedan, cómo queda categorizada la app al terminar, qué está bloqueado y qué planes de la documentación no estaban en el ledger. Después: «decide todo eso como si fuera el emprendedor», «cubrir todos los tracks de la industria con al menos 50 cursos por track», «descarga toda la data legal y open source, verifícala y límpiala», «lo fusiono manualmente».
+
+**Lo que se encontró (tres agentes de barrido + verificación propia de cada cita usada):**
+- El ledger se contradecía a sí mismo: §1 decía 24 «17 commits», 28 «7/8», 29 «4/13», 26 «2/9» mientras las filas de §2 decían BLOCKED. 16.17, 17.1x y 25x llevaban resueltas sin marcar (`vite.config.ts:374,391` → `127.0.0.1:8000`; `check_docs.py` [2]-[4] en verde). 7.6 (IAP) no tenía fila y `store/app-store-review-checklist.md:95` la exigía.
+- 21 planes en la documentación sin fila (KPIs de `DISTRIBUCION.md` §10, pilotos B2B, Coursera/Udemy, monitoreo trimestral apuntando a una fila inexistente, reclutamiento de instructores, arranque en frío de Railway, fase 3 del modelo de amenazas, DMCA/DPIA, edad mínima, blog, newsletter, afiliados…). 4 precios distintos en 4 documentos. `EXECUTION_PLAN_25-29.md` decía «ALL GATES OPEN» con H.29 abierta. `CATALOGO_MAESTRO.md` §12.1 sumaba 49 donde decía 44 y proyectaba «~79/~85» sin aritmética. Ficha de la App Store con «11 tracks, 281 habilidades» y «calibrados sobre datos reales» sin usuarios.
+
+**Decisiones (ADR-45…48, todas aceptadas por el dueño en la conversación):** rama + PR, `master` solo lo fusiona el dueño (ADR-45); catálogo total ≥ 50 cursos/track sobre corpus abierto descargado, verificado y limpiado fuera del repo, con la guarda de diversidad 37.0 antes que cualquier pregunta (ADR-46); valores por defecto de la cola humana y una sola hipótesis de precios sin publicar (ADR-47); planes paralelos al archivo (ADR-48).
+
+**Cambios:** ledger 179 → 210 filas, ejecutables 75 → 133, BLOCKED 67 → 33; series 37 (14 filas) y 38 (6) nuevas; 17.14, 19.11, 21.9, 22.14-22.16, 26.9-26.10, 27.10, 28.8-28.9 nuevas; H.38-H.40; `CATALOGO_MAESTRO.md` §2.0 (14 tracks) y §12 corregido; `ORCHESTRATOR.md` contrato y visión; `ARCHITECTURE.md` riesgos con IDs reales; ficha iOS con cifras de `check_docs.py`; 10 documentos a `archive/`; 4 HTML duplicados (U+F00D en el nombre) borrados; `corpus/` en `.gitignore`; `docs/PROMPT_CONTROL_TOTAL.md`.
+
+**Verificación:** `python scripts/ledger.py check` OK (210 filas, 36 bloqueos humanos, 10 invariantes). `check_docs.py`: [2]-[4], [6], [7] en verde; [1] y [5] fallan **por entorno** (sin `alembic` ni backend importable en el contenedor), igual que antes de tocar nada.
+
+**No hecho:** ningún código; ninguna pregunta nueva; ningún push a `master` (ADR-45). La serie 24 sigue sin recuento fila por fila (queda como PARCIAL «maqueta sin API»).
+
+## 2026-09-25 — CI corrió por primera vez en un PR (#7) y sacó un fallo de contenido
+
+**Novedad para H.13/H.17:** el job `backend` de GitHub Actions **se ejecutó** en https://github.com/Neopram/whetzy/pull/7 (`1 failed, 20526 passed, 2 skipped, 15 xfailed in 1312 s`, cobertura 80,81 %). No está verificado si la facturación se corrigió o fue un run suelto; el próximo push lo dirá.
+
+**Fallo:** `test_every_reference_solution_matches_correct_answer` — `q060304ex011` imprime `0.802` en el CI (Python 3.12) y la respuesta decía `0.803`. **Causa medida:** `sum()` en 3.12 usa suma compensada (Neumaier) y da exactamente `0.8025` → `round(…, 3)` = `0.802`; en 3.11 la suma ingenua da `0.8025000000000001` → `0.803`. El fix anterior (`bfc165e`) eligió el valor de 3.11; Pyodide 0.26.2 (`frontend/package.json:40`) es 3.12, así que **el alumno real también obtenía 0.802 y se le marcaba mal**. **Corrección:** datos sin empate, `[0.80, 0.83, 0.78, 0.81]` → `0.805` en las dos versiones (test local 3.11 `1 passed`; Neumaier reproducido a mano: `0.805`). `check_question_bank` PASS.
+
+**Lección para 37.0:** la guarda de diversidad debe ejecutar los `*_exec` con el mismo intérprete que el alumno (Pyodide = 3.12) o, como mínimo, rechazar redondeos que dependan del último dígito binario.
+
+
+## 2026-09-25 — Colisión con `master` resuelta en el PR #7
+
+Mientras este PR estaba abierto, `master` recibió 12 commits de otra sesión con **su propia serie 35** (competencia verificada → producto), **su ADR-41** (precios del dueño: Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $, 80/20), **su H.35** y otra corrección de `q060304ex011` (`0.81`). Resolución: `master` manda. Lo de este PR se renumeró — ADR-41…44 → **ADR-45…48**, series 35/36 → **37/38**, H.35–37 → **H.38–40**, teardown §12 → **§13** — y la fila de precios de ADR-47 ya no propone ninguna hipótesis: remite a ADR-41. Las dos entradas anteriores de esta sesión se conservan con los números nuevos. Lección para ADR-48: dos sesiones sobre el mismo ledger sin cerrojo (`PROTOCOLO_VERIFICACION.md` §3) producen exactamente esto.

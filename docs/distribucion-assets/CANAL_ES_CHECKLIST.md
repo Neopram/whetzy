@@ -35,7 +35,7 @@
 
 - [ ] **LUN** Upload YT-ES-PROD (programa para MAR 10:00 CET)
   - URL final: youtube.com/channel/[CHANNEL_ID]/videos?sort=dd
-  - Descripción: Template en 26-PLANNING.md
+  - Descripción: Template en `docs/archive/26-PLANNING.md` (archivado, ADR-48)
   - Playlist: "Python para AI Engineers"
   - Notify: LinkedIn/Email cuando go-live
 - [ ] **MAR** Upload YT-ES-MOTOR (YouTube Premiere, MAR 21:00 CET)

@@ -403,6 +403,28 @@ Propuesta: cursos de **texto interactivo, sin vídeo**, para desarrolladores con
 
 ---
 
+## 13. Recálculo — 2026-09-24: ADR-46 y la corrección de la proyección del catálogo
+
+Mismos pesos de §7.1. **Sin evidencia nueva de mercado: el marcador sigue en ≈ 44.**
+Lo que cambia es la meta y una corrección.
+
+- **Meta (ADR-46):** todos los tracks de la industria (28 del mapa + 14 de
+  `CATALOGO_MAESTRO.md` §2.0) con ≥ 50 cursos por track, sobre un corpus abierto
+  descargado y verificado. Contenido pasaría de 55 a ≈ 85 cuando esté hecho y
+  verificado: **+4,2 puntos** (0,14 × 30). Ni un punto más: el catálogo no toca
+  Distribución.
+- **Corrección:** `CATALOGO_MAESTRO.md` §12.1 proyectaba «~79 con 1K usuarios» y «~85
+  con 10K» y su columna «Hoy» sumaba 49 donde decía 44. Se retira; queda la escalera de
+  §11.6 más el catálogo: **44 hoy → ≈ 61 (backlog técnico) → ≈ 66 (tiendas + social login
+  + cohorte) → ≈ 70 (catálogo ADR-46 completo)**.
+- **Lo que sí puede mover más de 4 puntos** sigue siendo lo de §11.6: usuarios (H.10),
+  tiendas (H.2/H.3/H.14/17.14) y distribución (series 26/27, abiertas por ADR-47 para
+  redactar; publicar sigue siendo del dueño).
+- **Riesgo de ventana:** la fila 37.12 hace el monitoreo trimestral que §11.4 del catálogo
+  prometía y nadie tenía asignado.
+
+---
+
 ## 9. Catálogo frente al mercado — 2026-09-16 (sesión au)
 
 El dueño preguntó si Whetzy puede «abarcar todo el mundo informático». La respuesta
