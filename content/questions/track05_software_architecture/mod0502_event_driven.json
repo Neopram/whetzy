@@ -9,15 +9,15 @@
       "question_en": "What characterizes an event-driven architecture?",
       "options_es": [
         "Los componentes producen y reaccionan a 'eventos' (hechos que ya ocurrieron), comunicándose de forma asíncrona y desacoplada a través de un canal",
-        "Todos los componentes se llaman entre sí de forma síncrona y esperan respuesta",
-        "No existe comunicación entre componentes",
-        "Solo se puede usar con un único servidor"
+        "Cada componente expone una API REST que los demas invocan de manera directa, síncrona y bloqueante en todo momento",
+        "Los componentes comparten un único hilo de ejecución global para procesar de forma secuencial todas las peticiones entrantes",
+        "El sistema requiere que un único servidor central concentre y procese el total de la lógica de negocio existente en la aplicación, de modo que ese servidor se convierte en el único punto de fallo de todo el sistema"
       ],
       "options_en": [
         "Components produce and react to 'events' (facts that already happened), communicating asynchronously and decoupled through a channel",
-        "All components call each other synchronously and wait for a response",
-        "There is no communication between components",
-        "It can only be used with a single server"
+        "Each component exposes a REST API that the others call directly, synchronously and in a blocking way at all times",
+        "The components share a single global execution thread that processes every incoming request in the system sequentially",
+        "The system requires a single central server to concentrate and process the entirety of the business logic in the application, so that server becomes the single point of failure for the entire system"
       ],
       "correct_index": 0,
       "explanation_es": "En event-driven, los productores emiten eventos (hechos pasados, como 'PedidoCreado') sin saber quién los consumirá, y los consumidores reaccionan de forma asíncrona. Esto desacopla emisor y receptor en el tiempo y en el conocimiento mutuo, favoreciendo la extensibilidad: añadir un nuevo consumidor no requiere tocar al productor.",
@@ -37,16 +37,16 @@
       "question_es": "¿Cuál es la diferencia conceptual entre un 'comando' (command) y un 'evento' (event)?",
       "question_en": "What is the conceptual difference between a 'command' and an 'event'?",
       "options_es": [
-        "Son sinónimos exactos",
+        "Un evento es una petición imperativa que puede rechazarse por el destinatario; un comando es un hecho pasado e inmutable ya ocurrido en el sistema, así que confundirlos no acarrea ninguna consecuencia práctica para el diseño",
         "Un comando es una petición para que algo ocurra (imperativo, puede rechazarse); un evento es la notificación de que algo YA ocurrió (hecho pasado, inmutable)",
-        "Un comando siempre es asíncrono y un evento siempre síncrono",
-        "Los eventos solo existen en bases de datos"
+        "Ambos representan exactamente lo mismo en la práctica; solo cambia el formato de serialización binaria que usan al enviarse",
+        "Un comando solo puede emitirlo la base de datos del sistema y un evento solo un servicio externo de terceros"
       ],
       "options_en": [
-        "They are exact synonyms",
+        "An event is an imperative request that the recipient can reject; a command is a past, immutable fact that has already happened in the system, so confusing the two carries no practical consequence for the design at all",
         "A command is a request for something to happen (imperative, can be rejected); an event is a notification that something HAS already happened (past fact, immutable)",
-        "A command is always asynchronous and an event always synchronous",
-        "Events only exist in databases"
+        "Both represent exactly the same thing in practice; only the binary serialization format they use when sent ever differs",
+        "A command can only be issued by the system's own database and an event only by an external third-party service"
       ],
       "correct_index": 1,
       "explanation_es": "Un comando expresa intención ('CrearPedido') y va dirigido a un destinatario que puede aceptarlo o rechazarlo. Un evento describe un hecho consumado ('PedidoCreado'), en pasado e inmutable, que se emite para quien quiera reaccionar. Confundirlos lleva a diseños acoplados donde los 'eventos' en realidad ordenan a otro servicio qué hacer.",
@@ -91,16 +91,16 @@
       "question_es": "¿Cuál es una desventaja real de las arquitecturas orientadas a eventos?",
       "question_en": "What is a real drawback of event-driven architectures?",
       "options_es": [
-        "Que son imposibles de escalar",
-        "Que no permiten comunicación entre servicios",
+        "Que resulta prácticamente imposible escalar de forma horizontal a los consumidores de eventos del sistema completo",
+        "Que ningun servicio puede llegar a comunicarse con otro sin pasar antes por una base de datos relacional compartida entre todos, lo cual impide por diseño cualquier forma de comunicación asíncrona entre ellos",
         "El flujo de negocio queda implícito y distribuido entre muchos manejadores, dificultando razonar sobre el sistema, depurar y garantizar consistencia (eventual)",
-        "Que obligan a usar un único lenguaje"
+        "Que obligan de forma estricta a que todos los servicios compartan exactamente el mismo esquema de base de datos"
       ],
       "options_en": [
-        "That they are impossible to scale",
-        "That they don't allow inter-service communication",
+        "That it becomes practically impossible to scale event consumers horizontally across the whole system, a limit that no amount of extra hardware manages to overcome",
+        "That no service can ever communicate with another without first going through a shared relational database used by everyone, which by design rules out any form of asynchronous communication between them",
         "The business flow becomes implicit and spread across many handlers, making it hard to reason about the system, debug, and guarantee (eventual) consistency",
-        "That they force using a single language"
+        "That they strictly force every service to share exactly the same underlying database schema at all times"
       ],
       "correct_index": 2,
       "explanation_es": "El desacoplamiento tiene un precio: no hay un lugar central que describa el flujo completo de un proceso de negocio; este emerge de la cadena de reacciones a eventos, lo que complica entender, depurar y trazar qué pasó. Además la consistencia es eventual y hay que manejar orden, duplicados y fallos parciales. La observabilidad (tracing distribuido) se vuelve esencial.",
@@ -168,16 +168,16 @@
       "question_es": "¿Cuál es la función principal de una cola de mensajes (message queue)?",
       "question_en": "What is the main function of a message queue?",
       "options_es": [
-        "Almacenar imágenes",
+        "Cifrar el contenido de cada mensaje para que solo el consumidor final autorizado pueda llegar a leerlo en claro",
         "Recibir mensajes de productores y entregarlos a consumidores, desacoplándolos y permitiendo procesamiento asíncrono con amortiguación (buffering) de picos de carga",
-        "Compilar código",
-        "Servir páginas web estáticas"
+        "Compilar el código fuente de los productores y de los consumidores justo antes de que se llegue a desplegar a producción, un paso que en los sistemas interpretados ni siquiera llega a ser necesario",
+        "Servir de forma directa páginas HTML estaticas a los clientes que las solicitan a través de la red, un paso previo que ninguno de los dos roles llega nunca a necesitar"
       ],
       "options_en": [
-        "Storing images",
+        "Encrypting the content of each message so only the authorized final consumer can ever read it in plain form",
         "Receiving messages from producers and delivering them to consumers, decoupling them and enabling asynchronous processing with buffering of load spikes",
-        "Compiling code",
-        "Serving static web pages"
+        "Compiling the source code of producers and consumers right before it is ever deployed out to production, a step that in interpreted systems does not even end up being necessary",
+        "Serving static HTML pages directly to the clients that request them over the network, a preliminary step that neither role ever truly needs to perform"
       ],
       "correct_index": 1,
       "explanation_es": "Una cola de mensajes actúa como intermediario que recibe mensajes y los mantiene hasta que un consumidor los procesa. Desacopla productor y consumidor (pueden trabajar a ritmos distintos), absorbe picos de carga (buffering) y añade resiliencia: si el consumidor está caído, los mensajes esperan en la cola en lugar de perderse.",
@@ -222,16 +222,16 @@
       "question_es": "¿Qué es una 'dead letter queue' (DLQ)?",
       "question_en": "What is a 'dead letter queue' (DLQ)?",
       "options_es": [
-        "Una cola de máxima prioridad",
+        "Una cola de máxima prioridad cuyos mensajes se procesan siempre antes que los de cualquier otra cola configurada en el mismo sistema, saltandose por completo el orden de llegada de los mensajes normales",
         "Una cola secundaria donde se envían los mensajes que no pudieron procesarse correctamente tras varios intentos, para inspeccionarlos o reprocesarlos sin bloquear la cola principal",
-        "La cola por defecto de todo sistema",
-        "Una cola que borra los mensajes al instante"
+        "La cola por defecto que trae todo broker de mensajería, usada para el tráfico normal y habitual del sistema, igual que cualquier otra cola creada sin configuración adicional",
+        "Una cola que elimina los mensajes en el mismo instante en que llegan, sin llegar nunca a entregarlos a nadie, perdiendo así cualquier posibilidad de diagnosticar el fallo original"
       ],
       "options_en": [
-        "A maximum-priority queue",
+        "A maximum-priority queue whose messages are always processed before those of any other queue configured in the same system, completely skipping past the arrival order of the normal messages",
         "A secondary queue where messages that couldn't be processed successfully after several attempts are sent, to inspect or reprocess them without blocking the main queue",
-        "The default queue of every system",
-        "A queue that deletes messages instantly"
+        "The default queue that every message broker ships with, used for the system's normal, everyday traffic, just like any other queue created without extra configuration",
+        "A queue that deletes messages the very instant they arrive, without ever delivering them to anyone at all, thereby losing any chance of diagnosing the original failure"
       ],
       "correct_index": 1,
       "explanation_es": "Una DLQ recoge los mensajes 'venenosos' (poison messages) que fallan repetidamente al procesarse. En lugar de reintentar indefinidamente y bloquear la cola, tras N intentos el mensaje se desvía a la DLQ, donde se puede analizar la causa, corregir y reprocesar. Es esencial para que un solo mensaje defectuoso no atasque todo el flujo.",
@@ -251,16 +251,16 @@
       "question_es": "¿Qué diferencia fundamental hay entre un log de eventos tipo Apache Kafka y una cola tradicional como RabbitMQ respecto al consumo de mensajes?",
       "question_en": "What fundamental difference is there between an event log like Apache Kafka and a traditional queue like RabbitMQ regarding message consumption?",
       "options_es": [
-        "Kafka borra el mensaje en cuanto un consumidor lo lee, igual que una cola",
+        "Kafka mantiene los mensajes únicamente en memoria RAM del broker y los pierde por completo si el proceso llega a reiniciarse por cualquier motivo, sin excepción alguna, por lo que nunca podría usarse como fuente fiable para reproducir eventos pasados",
         "Kafka es un log persistente y ordenado donde los mensajes se retienen (por tiempo/tamaño) y cada consumidor lleva su propio offset, pudiendo re-leer; una cola tradicional suele eliminar el mensaje tras su consumo y confirmación",
-        "RabbitMQ no puede tener múltiples consumidores",
-        "No hay ninguna diferencia"
+        "RabbitMQ no permite bajo ninguna circunstancia que más de un consumidor distinto se conecte de forma simultánea a la misma cola nombrada del broker, una restricción que se mantiene igual sin importar la versión del broker instalada",
+        "Ambos sistemas eliminan el mensaje en cuanto el primer consumidor que lo lee confirma su entrega correctamente al broker que lo almaceno, una limitación que en la práctica nunca se ha llegado a levantar"
       ],
       "options_en": [
-        "Kafka deletes the message as soon as a consumer reads it, just like a queue",
+        "Kafka keeps messages only in the broker's RAM and loses them completely if the process ever happens to restart for any reason at all, with no exception, so it could never be used as a reliable source to replay past events",
         "Kafka is a persistent, ordered log where messages are retained (by time/size) and each consumer tracks its own offset, able to re-read; a traditional queue usually removes the message after consumption and acknowledgment",
-        "RabbitMQ can't have multiple consumers",
-        "There is no difference"
+        "RabbitMQ never allows more than one distinct consumer to connect simultaneously to the same named queue on the broker under any circumstance, a restriction that stays the same no matter which broker version is installed",
+        "Both systems remove the message as soon as the first consumer that reads it confirms successful delivery to the broker that stored it, a limitation that in practice has never once been lifted"
       ],
       "correct_index": 1,
       "explanation_es": "Kafka es un log de commit distribuido: los mensajes se persisten y se retienen según política (tiempo/tamaño), y cada grupo de consumidores avanza su propio 'offset', pudiendo volver a leer desde el pasado (reproducir). Una cola tradicional (broker de mensajes) típicamente entrega y elimina el mensaje tras su ack. Por eso Kafka encaja con event sourcing y múltiples consumidores independientes.",
@@ -329,16 +329,16 @@
       "question_es": "En el patrón publicador/suscriptor (pub/sub), ¿cómo llega un mensaje a los consumidores?",
       "question_en": "In the publisher/subscriber (pub/sub) pattern, how does a message reach consumers?",
       "options_es": [
-        "Un único consumidor recibe cada mensaje y lo elimina",
-        "El mensaje se envía directamente a una IP fija",
+        "Un único consumidor asignado de antemano recibe cada mensaje entero y lo elimina de la cola justo después de leerlo",
+        "El mensaje se entrega siempre a través de una conexión TCP directa y persistente hacia el consumidor final único",
         "El publicador envía el mensaje a un 'topic', y TODOS los suscriptores interesados en ese topic reciben una copia",
-        "Los consumidores deben preguntar uno por uno al publicador"
+        "Cada consumidor debe hacer polling periódico al publicador original para pedirle los mensajes que tenga pendientes"
       ],
       "options_en": [
-        "A single consumer receives each message and deletes it",
-        "The message is sent directly to a fixed IP",
+        "A single consumer assigned in advance receives each whole message and deletes it from the queue right after reading it",
+        "The message is always delivered over a direct, persistent TCP connection straight to the one final consumer",
         "The publisher sends the message to a 'topic', and ALL subscribers interested in that topic receive a copy",
-        "Consumers must poll the publisher one by one"
+        "Each consumer must periodically poll the original publisher to ask it for whatever messages are pending"
       ],
       "correct_index": 2,
       "explanation_es": "En pub/sub, el publicador emite a un topic sin conocer a los suscriptores, y cada suscriptor interesado recibe su propia copia del mensaje (difusión uno-a-muchos). Esto contrasta con el modelo de cola punto-a-punto, donde cada mensaje lo consume una sola instancia. Pub/sub desacopla y permite múltiples reacciones independientes al mismo evento.",
@@ -358,16 +358,16 @@
       "question_es": "¿Cuál es la diferencia principal entre el modelo pub/sub (topic) y el modelo de cola punto a punto?",
       "question_en": "What is the main difference between the pub/sub (topic) model and the point-to-point queue model?",
       "options_es": [
-        "El pub/sub no usa red",
+        "El pub/sub solo puede usarse dentro de la misma maquina física en la que corre el productor original del mensaje",
         "En cola punto a punto cada mensaje lo procesa UN solo consumidor (competencia por el mensaje); en pub/sub cada mensaje se entrega a TODOS los suscriptores del topic",
-        "El pub/sub solo admite un mensaje total",
-        "No hay diferencia de reparto de mensajes"
+        "En pub/sub cada mensaje lo procesa un único suscriptor elegido totalmente al azar por el propio broker central en cada entrega, de forma que los demas suscriptores nunca llegan a recibir copia alguna de ese mensaje",
+        "La cola punto a punto entrega copias identicas de cada mensaje a todos los consumidores conectados a ella al mismo tiempo"
       ],
       "options_en": [
-        "Pub/sub doesn't use the network",
+        "Pub/sub can only be used inside the very same physical machine the original message producer runs on",
         "In point-to-point each message is processed by ONE consumer (competing consumers); in pub/sub each message is delivered to ALL topic subscribers",
-        "Pub/sub only allows one message total",
-        "There's no difference in message distribution"
+        "In pub/sub each message is processed by a single subscriber chosen completely at random by the central broker on every delivery, so that the other subscribers never end up receiving any copy of that message at all",
+        "The point-to-point queue delivers identical copies of each message to every consumer connected to it at the same time"
       ],
       "correct_index": 1,
       "explanation_es": "En el modelo de cola (competing consumers), varias instancias compiten y cada mensaje lo procesa solo una, lo que reparte la carga. En pub/sub, cada suscriptor recibe su propia copia de cada mensaje, lo que sirve para difundir un evento a varios subsistemas distintos. Muchos brokers combinan ambos (topics con grupos de consumidores).",
@@ -491,16 +491,16 @@
       "question_es": "¿En qué consiste el 'event sourcing'?",
       "question_en": "What does 'event sourcing' consist of?",
       "options_es": [
-        "Guardar solo el estado final actual de cada entidad",
+        "Guardar únicamente el estado final y actual de cada entidad, sobrescribiendo por completo el estado anterior",
         "Persistir el estado como una secuencia inmutable de eventos que representan todos los cambios; el estado actual se deriva reproduciendo (replay) esos eventos",
-        "Borrar los eventos antiguos cada noche",
-        "Usar eventos solo para logging de depuración"
+        "Registrar los eventos solo con fines de auditoría interna del sistema, sin llegar a usarlos nunca para reconstruir ningun estado, un registro que nadie vuelve a consultar salvo en caso de auditoría legal externa",
+        "Borrar de forma automática los eventos que superan un mes de antigüedad para ahorrar espacio en el almacen"
       ],
       "options_en": [
-        "Storing only the current final state of each entity",
+        "Storing only the final, current state of each entity, fully overwriting whatever the previous state was",
         "Persisting state as an immutable sequence of events representing all changes; the current state is derived by replaying those events",
-        "Deleting old events every night",
-        "Using events only for debug logging"
+        "Logging events purely for the system's internal audit purposes, without ever using them to rebuild any state, a log that nobody ever consults again except in the case of an external legal audit",
+        "Automatically deleting events older than one month to save storage space in the underlying event store"
       ],
       "correct_index": 1,
       "explanation_es": "En event sourcing no se guarda solo el estado actual, sino el registro completo de eventos que llevaron a él (p. ej. 'CuentaCreada', 'DineroDepositado', 'DineroRetirado'). El estado presente se reconstruye reproduciendo los eventos en orden. Esto da una auditoría total, la capacidad de reconstruir el estado en cualquier punto del tiempo y de crear nuevas proyecciones a posteriori.",
@@ -520,16 +520,16 @@
       "question_es": "¿Qué separa el patrón CQRS (Command Query Responsibility Segregation)?",
       "question_en": "What does the CQRS (Command Query Responsibility Segregation) pattern separate?",
       "options_es": [
-        "El frontend del backend",
+        "El código fuente de producción del código de las pruebas automatizadas escritas para verificar el mismo sistema",
         "El modelo/camino de escritura (comandos que cambian estado) del modelo/camino de lectura (consultas), permitiendo optimizar cada uno por separado",
-        "Los usuarios de los administradores",
-        "El código de los tests"
+        "El frontend visible de la aplicación del backend interno que expone los servicios de negocio al exterior",
+        "A los administradores del sistema, en su rol técnico interno, de los usuarios finales que simplemente lo consumen desde fuera, una distinción que en la práctica no afecta en nada al diseño del sistema"
       ],
       "options_en": [
-        "The frontend from the backend",
+        "The production source code from the automated test code written to verify that same system",
         "The write model/path (commands that change state) from the read model/path (queries), allowing each to be optimized separately",
-        "Users from administrators",
-        "Code from tests"
+        "The application's visible frontend from the internal backend that exposes the business services outward",
+        "System administrators, in their internal technical role, from the end users who simply consume the system, a distinction that in practice has no effect at all on the system's design"
       ],
       "correct_index": 1,
       "explanation_es": "CQRS separa las responsabilidades de escritura (comandos) y lectura (consultas) en modelos distintos. El modelo de escritura se optimiza para validar y aplicar cambios; el de lectura, para consultas rápidas (a menudo vistas materializadas desnormalizadas). Encaja bien con event sourcing (los eventos alimentan las proyecciones de lectura), pero añade complejidad y consistencia eventual entre ambos lados.",
@@ -575,15 +575,15 @@
       "question_en": "In event sourcing, rebuilding an entity's state from years of history can be slow. Which technique optimizes this?",
       "options_es": [
         "Snapshots: guardar periódicamente una instantánea del estado, de modo que al reconstruir se parte del último snapshot y solo se reproducen los eventos posteriores a él",
-        "Borrar los eventos viejos",
-        "Ignorar los eventos anteriores a hoy",
-        "Convertir todo a un único evento"
+        "Borrar de forma definitiva los eventos antiguos en cuanto superan el año completo de antigüedad registrada en el almacen, perdiendo así para siempre la capacidad de auditar el historial completo del sistema",
+        "Ignorar de forma sistemática todos los eventos ocurridos antes del día de hoy al momento de reconstruir el estado actual",
+        "Convertir toda la historia completa de eventos almacenados en una única fila resumen final del sistema entero"
       ],
       "options_en": [
         "Snapshots: periodically saving a snapshot of the state, so that on rebuild you start from the latest snapshot and only replay the events after it",
-        "Deleting the old events",
-        "Ignoring events before today",
-        "Collapsing everything into a single event"
+        "Permanently deleting the old events as soon as they pass a full year of recorded age in the event store, thereby losing forever the ability to audit the system's complete history",
+        "Systematically ignoring every event that happened before today whenever the current state gets rebuilt",
+        "Collapsing the entire stored event history into a single final summary row for the whole system"
       ],
       "correct_index": 0,
       "explanation_es": "Los snapshots evitan reproducir toda la historia desde cero: se guarda una foto del estado cada cierto número de eventos, y para reconstruir se carga el snapshot más reciente y se aplican solo los eventos posteriores. Los eventos NO se borran (se conserva la auditoría); el snapshot es una optimización de rendimiento derivada, no la fuente de verdad.",

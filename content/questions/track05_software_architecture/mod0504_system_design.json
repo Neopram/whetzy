@@ -9,15 +9,15 @@
       "question_en": "What is the difference between vertical scaling and horizontal scaling?",
       "options_es": [
         "El vertical (scale up) da más recursos a una sola máquina (más CPU/RAM); el horizontal (scale out) añade más máquinas que reparten la carga",
-        "El vertical añade más máquinas y el horizontal las quita",
-        "Son términos equivalentes",
-        "El horizontal solo aplica a bases de datos"
+        "El vertical reparte la carga original entre varias máquinas nuevas añadidas al grupo, mientras que el horizontal las va retirando poco a poco",
+        "Son sinónimos exactos que los proveedores cloud usan indistintamente en su documentación",
+        "El horizontal solo puede aplicarse a bases de datos relacionales, nunca a servidores de aplicación"
       ],
       "options_en": [
         "Vertical (scale up) gives more resources to a single machine (more CPU/RAM); horizontal (scale out) adds more machines that share the load",
-        "Vertical adds more machines and horizontal removes them",
-        "They are equivalent terms",
-        "Horizontal only applies to databases"
+        "Vertical spreads the original load across several new machines added to the pool, while horizontal removes them little by little",
+        "They are exact synonyms that cloud providers use interchangeably in their documentation",
+        "Horizontal only applies to relational databases, never to application servers"
       ],
       "correct_index": 0,
       "explanation_es": "Escalar verticalmente es hacer más potente una máquina (más CPU, RAM); es simple pero tiene un techo físico y un único punto de fallo. Escalar horizontalmente es añadir más máquinas que trabajan en paralelo; es más complejo (requiere balanceo, coordinación, estado distribuido) pero permite crecer casi sin límite y mejora la tolerancia a fallos.",
@@ -62,16 +62,16 @@
       "question_es": "¿Qué describe la 'escalabilidad' de un sistema?",
       "question_en": "What does a system's 'scalability' describe?",
       "options_es": [
-        "Lo bonito que es su código",
-        "El número de lenguajes que usa",
+        "El grado en que su documentación describe con exactitud cada endpoint de la API",
+        "El conjunto completo de lenguajes de programación, frameworks y herramientas de build combinados dentro de un mismo repositorio de código fuente de la organización",
         "Su capacidad de manejar un aumento de carga (más usuarios, datos o tráfico) añadiendo recursos de forma razonable, manteniendo un rendimiento aceptable",
-        "Cuántos bugs tiene"
+        "La frecuencia con la que el equipo publica nuevas versiones del sistema en producción"
       ],
       "options_en": [
-        "How pretty its code is",
-        "The number of languages it uses",
+        "The degree to which its documentation accurately describes every API endpoint",
+        "The complete set of programming languages, frameworks, and build tools combined within the same source code repository of the organization",
         "Its ability to handle increased load (more users, data, or traffic) by adding resources reasonably, while maintaining acceptable performance",
-        "How many bugs it has"
+        "How often the team ships new versions of the system to production"
       ],
       "correct_index": 2,
       "explanation_es": "La escalabilidad no es una etiqueta binaria ('es escalable'), sino la capacidad de afrontar el crecimiento de carga con un coste de recursos razonable, manteniendo métricas de rendimiento (latencia, throughput) dentro de lo aceptable. Kleppmann insiste en definir la carga con parámetros concretos y medir percentiles (p95, p99), no solo promedios.",
@@ -167,16 +167,16 @@
       "question_es": "¿Cuál es la función de un balanceador de carga (load balancer)?",
       "question_en": "What is the function of a load balancer?",
       "options_es": [
-        "Almacenar la base de datos principal",
-        "Compilar el código de la aplicación",
+        "Guardar de forma persistente y replicada la base de datos principal de toda la aplicación directamente en el disco duro de cada servidor del centro de datos",
+        "Compilar y empaquetar el código fuente de la aplicación antes de cada despliegue",
         "Distribuir las peticiones entrantes entre varias instancias de servidor, mejorando el rendimiento, la disponibilidad y evitando sobrecargar a una sola",
-        "Cifrar los discos duros"
+        "Cifrar el contenido de los discos duros de cada instancia de servidor del clúster"
       ],
       "options_en": [
-        "Storing the main database",
-        "Compiling the application code",
+        "Persistently and redundantly storing the application's entire main database directly on the hard drive of every server in the data center",
+        "Compiling and packaging the application's source code before each deployment",
         "Distributing incoming requests across several server instances, improving performance and availability and avoiding overloading a single one",
-        "Encrypting hard drives"
+        "Encrypting the contents of the hard drives on every server instance in the cluster"
       ],
       "correct_index": 2,
       "explanation_es": "Un balanceador reparte el tráfico entrante entre un grupo de instancias sanas según un algoritmo, evitando que una se sature mientras otras están ociosas. Mejora el rendimiento (paralelismo), la disponibilidad (si una instancia cae, redirige a las demás) y permite escalar horizontalmente de forma transparente para el cliente.",
@@ -197,15 +197,15 @@
       "question_en": "How does the 'round-robin' balancing algorithm work?",
       "options_es": [
         "Reparte las peticiones de forma cíclica y equitativa entre las instancias, una tras otra en orden",
-        "Envía todas las peticiones a la instancia más rápida",
-        "Elige una instancia al azar cada 24 horas",
-        "Envía todo a la primera instancia hasta que se caiga"
+        "Envía todas las peticiones entrantes a la instancia que responde con menor latencia en ese instante",
+        "Elige una instancia distinta al azar cada vez que transcurren veinticuatro horas desde el despliegue",
+        "Envía todo el tráfico a la primera instancia disponible hasta que esta deja de responder"
       ],
       "options_en": [
         "Distributes requests cyclically and evenly across instances, one after another in order",
-        "Sends all requests to the fastest instance",
-        "Picks a random instance every 24 hours",
-        "Sends everything to the first instance until it crashes"
+        "Sends every incoming request to whichever instance is currently responding with the lowest latency",
+        "Picks a different random instance every time twenty-four hours pass since the deployment",
+        "Sends all traffic to the first available instance until it stops responding"
       ],
       "correct_index": 0,
       "explanation_es": "Round-robin rota las peticiones entre las instancias por turnos (1, 2, 3, 1, 2, 3...), repartiendo de forma uniforme sin considerar la carga real de cada una. Es simple y funciona bien si las instancias son homogéneas y las peticiones similares; si no, algoritmos como 'least connections' (menos conexiones activas) o ponderados reparten mejor.",
@@ -251,15 +251,15 @@
       "question_en": "What is the difference between a Layer 4 (L4) and a Layer 7 (L7) load balancer?",
       "options_es": [
         "L4 balancea según información de transporte (IP y puerto TCP/UDP), sin mirar el contenido; L7 entiende el protocolo de aplicación (HTTP) y puede enrutar según URL, cabeceras o cookies",
-        "L4 es más nuevo que L7",
-        "L7 no puede usar HTTPS",
-        "No hay diferencia funcional"
+        "L4 es simplemente una revisión mucho más moderna y reciente de L7, pensada específicamente para manejar tráfico cifrado con TLS de forma más eficiente en centros de datos de muy gran escala",
+        "L7 no puede enrutar tráfico cifrado con HTTPS porque no tiene acceso al contenido del paquete",
+        "No existe ninguna diferencia funcional entre ambos; solo cambia el nombre que les da cada fabricante"
       ],
       "options_en": [
         "L4 balances based on transport info (IP and TCP/UDP port), without inspecting content; L7 understands the application protocol (HTTP) and can route by URL, headers, or cookies",
-        "L4 is newer than L7",
-        "L7 can't use HTTPS",
-        "There is no functional difference"
+        "L4 is simply a much more modern, more recent revision of L7, built specifically to handle TLS-encrypted traffic more efficiently in very large-scale data centers",
+        "L7 cannot route HTTPS-encrypted traffic because it has no access to the packet's content",
+        "There is no functional difference between the two; only the name each vendor gives them changes"
       ],
       "correct_index": 0,
       "explanation_es": "Un balanceador L4 opera en la capa de transporte: reparte conexiones por IP/puerto sin inspeccionar el contenido, siendo muy rápido y ligero. Un balanceador L7 opera en la capa de aplicación: 'entiende' HTTP y puede tomar decisiones ricas (enrutar `/api` a un grupo y `/static` a otro, por cabecera, cookie o path), a costa de más overhead. La elección depende de si se necesita enrutado por contenido.",
@@ -326,16 +326,16 @@
       "question_es": "El teorema CAP se aplica a sistemas distribuidos. ¿Qué representan las letras C, A y P?",
       "question_en": "The CAP theorem applies to distributed systems. What do the letters C, A, and P represent?",
       "options_es": [
-        "Código, Aplicación, Programa",
+        "Código, Arquitectura y Producción, las tres fases del ciclo de vida de un sistema distribuido",
         "Consistencia, Disponibilidad (Availability) y Tolerancia a Particiones (Partition tolerance)",
-        "Cache, API, Proxy",
-        "CPU, Almacenamiento, Proceso"
+        "Cache, API y Proxy, los tres componentes que suelen aparecer entre el cliente y el origen",
+        "CPU, Almacenamiento y Proceso, los tres recursos que un nodo distribuido debe repartir"
       ],
       "options_en": [
-        "Code, Application, Program",
+        "Code, Architecture, and Production, the three phases of a distributed system's lifecycle",
         "Consistency, Availability, and Partition tolerance",
-        "Cache, API, Proxy",
-        "CPU, Storage, Process"
+        "Cache, API, and Proxy, the three components that usually sit between the client and the origin",
+        "CPU, Storage, and Process, the three resources a distributed node must allocate"
       ],
       "correct_index": 1,
       "explanation_es": "CAP: Consistencia (todos los nodos ven el mismo dato a la vez), Availability/Disponibilidad (toda petición recibe respuesta), y Partition tolerance/Tolerancia a particiones (el sistema sigue operando pese a que la red se parta entre nodos). El teorema (Brewer) establece que ante una partición hay que sacrificar C o A.",
@@ -540,15 +540,15 @@
       "question_es": "¿Qué es el 'sharding' (particionado horizontal) de una base de datos?",
       "question_en": "What is database 'sharding' (horizontal partitioning)?",
       "options_es": [
-        "Hacer una copia de seguridad",
-        "Eliminar columnas innecesarias",
-        "Cifrar la base de datos",
+        "Generar una copia de seguridad completa y fuertemente comprimida de toda la base de datos hacia un almacenamiento externo situado fuera del clúster principal de producción",
+        "Eliminar las columnas que ya no se usan para reducir el tamaño de cada fila",
+        "Cifrar el contenido completo de la base de datos con una clave gestionada por el proveedor cloud",
         "Dividir los datos en particiones (shards) repartidas en varios nodos, cada uno con un subconjunto de los datos, para escalar más allá de la capacidad de una sola máquina"
       ],
       "options_en": [
-        "Making a backup",
-        "Removing unnecessary columns",
-        "Encrypting the database",
+        "Generating a full, heavily compressed backup of the entire database onto external storage located outside the main production cluster",
+        "Removing columns that are no longer used to shrink the size of each row",
+        "Encrypting the database's entire content with a key managed by the cloud provider",
         "Splitting data into partitions (shards) spread across multiple nodes, each holding a subset of the data, to scale beyond a single machine's capacity"
       ],
       "correct_index": 3,
@@ -570,15 +570,15 @@
       "question_en": "When choosing a bad partition (sharding) key, what typical problem can arise?",
       "options_es": [
         "'Hot spots': una partición recibe una proporción desmesurada de la carga (p. ej. particionar por país y que un país domine), anulando el beneficio del reparto",
-        "El código no compila",
-        "Se duplica automáticamente toda la base de datos",
-        "Desaparecen los índices"
+        "El código deja de compilar por completo porque el compilador no reconoce ni acepta la clave de particionado concreta que el equipo eligió para esa tabla en concreto",
+        "Toda la base de datos se duplica automáticamente en un nodo de respaldo sin que nadie lo pida",
+        "Los índices existentes desaparecen en cuanto se activa el particionado horizontal"
       ],
       "options_en": [
         "'Hot spots': one partition receives a disproportionate share of the load (e.g. partitioning by country and one country dominates), negating the benefit of distribution",
-        "The code won't compile",
-        "The whole database is automatically duplicated",
-        "Indexes disappear"
+        "The code stops compiling entirely because the compiler does not recognize or accept the specific partition key the team chose for that particular table",
+        "The whole database is automatically duplicated onto a backup node without anyone requesting it",
+        "The existing indexes disappear as soon as horizontal partitioning is enabled"
       ],
       "correct_index": 0,
       "explanation_es": "Una mala clave produce un reparto desigual: un 'hot spot' donde una partición concentra la mayoría de los accesos o datos, saturándose mientras las demás están ociosas, lo que reintroduce el cuello de botella que el sharding pretendía eliminar. Por eso se busca una clave de alta cardinalidad y distribución uniforme (a veces con hashing), evitando claves sesgadas como una marca de tiempo secuencial.",

@@ -8,15 +8,15 @@
       "question_es": "¿Cuál es la diferencia entre replicación y particionado (sharding) de datos?",
       "question_en": "What is the difference between data replication and partitioning (sharding)?",
       "options_es": [
-        "Son lo mismo",
-        "El sharding solo sirve para copias de seguridad",
-        "La replicación borra datos y el sharding los cifra",
+        "Son lo mismo: ambos términos describen exactamente la misma técnica de copiar datos idénticos entre nodos distintos del mismo clúster así que en la práctica ambas palabras se usan indistintamente en cualquier documentación técnica seria sobre bases de datos",
+        "El sharding solo sirve para hacer copias de seguridad periódicas que se guardan fuera del clúster que está actualmente en producción",
+        "La replicación reparte subconjuntos distintos de los datos entre nodos y el sharding copia el mismo conjunto completo en todos ellos",
         "La replicación mantiene copias de los MISMOS datos en varios nodos (redundancia); el sharding reparte DISTINTOS subconjuntos de los datos entre nodos (para escalar volumen)"
       ],
       "options_en": [
-        "They are the same",
-        "Sharding is only for backups",
-        "Replication deletes data and sharding encrypts it",
+        "They are the same: both terms describe exactly the same technique of copying identical data across different nodes of the same cluster, so in practice both words get used interchangeably in any serious technical documentation about databases",
+        "Sharding is only used to make periodic backup copies that get stored outside the cluster that is currently running in production",
+        "Replication spreads distinct subsets of the data across nodes and sharding copies the exact same complete set onto every one of them",
         "Replication keeps copies of the SAME data on several nodes (redundancy); sharding spreads DIFFERENT subsets of the data across nodes (to scale volume)"
       ],
       "correct_index": 3,
@@ -38,15 +38,15 @@
       "question_en": "In leader-follower (primary-replica) replication, what is 'replication lag'?",
       "options_es": [
         "El retardo entre que el primario aplica una escritura y las réplicas la reflejan; durante ese lapso una réplica puede devolver datos desactualizados",
-        "El tiempo que tarda en arrancar el servidor",
-        "La latencia de red del usuario",
-        "El tiempo que tarda en compilar el código"
+        "El tiempo que tarda el optimizador de consultas en elegir un plan de ejecución cada vez que la consulta llega a una réplica",
+        "La diferencia de versión del motor de base de datos que puede llegar a existir entre el nodo primario y sus réplicas de lectura",
+        "El número máximo de conexiones simultáneas que una réplica puede aceptar antes de empezar a rechazar nuevas peticiones entrantes, un límite que en la práctica se configura igual tanto en el primario como en cualquiera de sus réplicas de lectura"
       ],
       "options_en": [
         "The delay between the primary applying a write and replicas reflecting it; during that window a replica can return stale data",
-        "The time it takes the server to boot",
-        "The user's network latency",
-        "The time it takes to compile the code"
+        "The time the query optimiser takes to pick an execution plan every single time a query happens to land on a replica node",
+        "The version gap in the database engine that can end up existing between the primary node and its read-only replicas over time",
+        "The maximum number of simultaneous connections a replica can accept before it starts rejecting new incoming requests altogether, a limit that in practice gets configured the same way on the primary as on any of its read replicas"
       ],
       "correct_index": 0,
       "explanation_es": "En replicación asíncrona, las réplicas van ligeramente por detrás del primario mientras propagan los cambios: ese desfase es el replication lag. Provoca consistencia eventual, y puede dar lugar a anomalías como 'leo mi propia escritura y no aparece' si la lectura va a una réplica atrasada. Se mitiga con lecturas del primario para datos críticos o técnicas de 'read-your-writes'.",
@@ -170,16 +170,16 @@
       "question_es": "¿Qué significa que un sistema tenga 'tolerancia a fallos' (fault tolerance)?",
       "question_en": "What does it mean for a system to have 'fault tolerance'?",
       "options_es": [
-        "Que nunca tiene errores en el código",
-        "Que ignora todos los errores silenciosamente",
+        "Que ha pasado una auditoría de seguridad reciente sin hallazgos que reportar",
+        "Que registra cada excepción que ocurre en producción en un log, sin actuar sobre ella, una práctica que satisface los requisitos de auditoría que exige el equipo de cumplimiento normativo de la empresa",
         "Que puede seguir funcionando (quizá degradado) a pesar de que algunos de sus componentes fallen",
-        "Que solo funciona si todo está perfecto"
+        "Que rechaza toda petición que no cumpla su contrato de entrada al pie de la letra"
       ],
       "options_en": [
-        "That it never has bugs in the code",
-        "That it silently ignores all errors",
+        "That it has recently passed a security audit with no findings to report",
+        "That it logs every exception that occurs in production, without ever acting on it, a practice that satisfies the audit requirements demanded by the company's regulatory compliance team",
         "That it can keep functioning (perhaps degraded) despite some of its components failing",
-        "That it only works if everything is perfect"
+        "That it rejects any request failing its input contract to the letter"
       ],
       "correct_index": 2,
       "explanation_es": "Tolerancia a fallos es la capacidad del sistema de seguir prestando servicio (posiblemente con funcionalidad degradada) cuando fallan componentes individuales. Kleppmann distingue 'fault' (un componente se desvía de su especificación) de 'failure' (el sistema completo deja de dar servicio): el objetivo es evitar que los faults se conviertan en failures.",
@@ -255,15 +255,15 @@
       "question_es": "¿En qué consiste la 'degradación elegante' (graceful degradation) ante un fallo parcial?",
       "question_en": "What does 'graceful degradation' in the face of a partial failure consist of?",
       "options_es": [
-        "Apagar todo el sistema ante cualquier error",
-        "Ocultar el error y devolver datos falsos",
-        "Borrar los datos para liberar recursos",
+        "Reiniciar automáticamente el servicio completo en cuanto se detecta cualquier error interno, por pequeño e insignificante que sea, una reacción que en la práctica interrumpe también a los usuarios cuyo flujo no tenía nada que ver con el fallo original",
+        "Devolver siempre el último dato válido guardado en caché, aunque el usuario nunca llegue a saber que ese dato ya está obsoleto",
+        "Encolar la petición fallida de forma indefinida hasta que la parte caída del sistema vuelva a responder de nuevo con normalidad",
         "Seguir ofreciendo la funcionalidad esencial aunque una parte no esencial falle (p. ej. mostrar el catálogo sin recomendaciones si el servicio de recomendaciones cae)"
       ],
       "options_en": [
-        "Shutting down the entire system on any error",
-        "Hiding the error and returning fake data",
-        "Deleting data to free resources",
+        "Automatically restarting the whole service as soon as any internal error is detected, however small and insignificant it may be, a reaction that in practice also interrupts users whose flow had nothing to do with the original failure",
+        "Always returning the last valid cached data, even though the user never gets to find out that data is already stale by now",
+        "Queueing the failed request indefinitely until the down part of the system starts responding again as if nothing had happened",
         "Keeping essential functionality available even if a non-essential part fails (e.g. showing the catalog without recommendations if the recommendation service is down)"
       ],
       "correct_index": 3,
@@ -332,15 +332,15 @@
       "question_en": "What does the 'circuit breaker' pattern do?",
       "options_es": [
         "Detecta cuando un servicio dependiente falla repetidamente y 'abre el circuito', cortando temporalmente las llamadas para no seguir insistiendo sobre algo caído y dar tiempo a recuperarse",
-        "Apaga físicamente el servidor",
-        "Cifra las llamadas de red",
-        "Acelera las peticiones exitosas"
+        "Reinicia automáticamente el proceso del servicio afectado cada vez que detecta un fallo repetido hacia una dependencia concreta",
+        "Registra en un log centralizado cada llamada de red saliente que realiza la aplicación completa durante todo el ciclo de vida",
+        "Prioriza el tráfico crítico frente al de baja prioridad en cuanto la red del clúster empieza a saturarse por completo de peticiones, reordenando además las colas de mensajes salientes según el nivel de prioridad que cada equipo configura de antemano"
       ],
       "options_en": [
         "Detects when a dependent service fails repeatedly and 'opens the circuit', temporarily cutting off calls to stop hammering something that's down and give it time to recover",
-        "Physically shuts down the server",
-        "Encrypts network calls",
-        "Speeds up successful requests"
+        "Automatically restarts the affected service's own process every time it detects a repeated failure towards one specific dependency",
+        "Logs every outbound network call the whole application makes to a centralised logging system across its entire lifecycle",
+        "Prioritises critical traffic over low-priority traffic as soon as the cluster's network starts to fully saturate with requests, also reordering the outbound message queues according to the priority level each team configures beforehand"
       ],
       "correct_index": 0,
       "explanation_es": "El circuit breaker monitorea los fallos hacia una dependencia; si superan un umbral, 'abre' el circuito y rechaza las llamadas de inmediato (fallando rápido con un fallback) en lugar de seguir esperando timeouts. Tras un tiempo pasa a 'semiabierto' para probar si el servicio se recuperó. Evita agotar recursos esperando a un servicio caído y previene fallos en cascada.",
@@ -360,16 +360,16 @@
       "question_es": "¿Cuáles son los tres estados de un circuit breaker?",
       "question_en": "What are the three states of a circuit breaker?",
       "options_es": [
-        "Encendido, apagado, en pausa",
+        "Activo, inactivo y pausado a la espera de una intervención manual por parte del operador del sistema",
         "Cerrado (closed, pasan las llamadas), abierto (open, se rechazan) y semiabierto (half-open, se prueba con llamadas limitadas)",
-        "Rojo, amarillo, verde",
-        "Inicio, medio, fin"
+        "Sincrónico, asincrónico y en espera de que el hilo principal de la propia aplicación quede totalmente libre, tres nombres que además coinciden con los que usa el planificador de hilos del sistema operativo subyacente",
+        "Local, distribuido y replicado, según el número de nodos que estén disponibles en el clúster activo ahora"
       ],
       "options_en": [
-        "On, off, paused",
+        "Active, inactive, and paused awaiting a manual intervention from the system operator",
         "Closed (calls pass), open (calls rejected), and half-open (tested with limited calls)",
-        "Red, yellow, green",
-        "Start, middle, end"
+        "Synchronous, asynchronous, and waiting for the application main thread to become free, three names that also match the ones the underlying operating system's thread scheduler itself uses",
+        "Local, distributed, and replicated, depending on the number of nodes active in the cluster"
       ],
       "correct_index": 1,
       "explanation_es": "Cerrado: las llamadas fluyen normalmente y se cuentan los fallos. Abierto: tras superar el umbral, se rechazan las llamadas de inmediato durante un tiempo. Semiabierto: pasado ese tiempo, se dejan pasar unas pocas llamadas de prueba; si tienen éxito, vuelve a cerrado; si fallan, vuelve a abierto. Este ciclo permite recuperarse sin martillear al servicio dependiente.",
@@ -416,15 +416,15 @@
       "question_es": "¿Qué es un 'fallo en cascada' (cascading failure) y cómo ayudan a prevenirlo los patrones de resiliencia?",
       "question_en": "What is a 'cascading failure' and how do resilience patterns help prevent it?",
       "options_es": [
-        "Un fallo que solo afecta a un archivo",
-        "Un fallo que se arregla solo siempre",
-        "Un error de sintaxis en cascada CSS",
+        "Un fallo que solo puede llegar a producirse en entornos de desarrollo local, y jamás una vez que el sistema está desplegado en producción, ya que los entornos de desarrollo carecen del volumen de tráfico concurrente necesario para desencadenar ese fallo",
+        "Un fallo que el balanceador de carga siempre resuelve completamente por sí solo, redirigiendo el tráfico sin ninguna intervención humana",
+        "Un error de orden de precedencia en las hojas de estilo CSS que se propaga silenciosamente de un componente visual a otro cercano",
         "Cuando el fallo o la lentitud de un componente propaga la sobrecarga a otros (por reintentos y esperas), tumbándolos en secuencia; circuit breakers, bulkheads y timeouts contienen la propagación"
       ],
       "options_en": [
-        "A failure affecting only one file",
-        "A failure that always fixes itself",
-        "A CSS cascade syntax error",
+        "A failure that can only ever occur in local development environments, and never once the system is deployed and running in production, since development environments lack the concurrent traffic volume needed to trigger that kind of failure",
+        "A failure the load balancer always fully resolves on its own, rerouting all the traffic without any human intervention whatsoever",
+        "A precedence-ordering error in CSS stylesheets that silently propagates from one visual component to another nearby one on the page",
         "When one component's failure or slowness propagates overload to others (via retries and waits), knocking them down in sequence; circuit breakers, bulkheads, and timeouts contain the propagation"
       ],
       "correct_index": 3,
@@ -491,16 +491,16 @@
       "question_es": "En observabilidad, se habla de 'tres pilares'. ¿Cuáles son?",
       "question_en": "In observability, people speak of 'three pillars'. What are they?",
       "options_es": [
-        "CPU, RAM y disco",
+        "CPU, memoria RAM y ancho de banda de red disponible",
         "Logs (registros), métricas (metrics) y trazas (traces)",
-        "Frontend, backend y base de datos",
-        "Git, Docker y CI"
+        "Copias de seguridad, réplicas y snapshots del disco, tres elementos que cualquier equipo de plataforma debe vigilar de cerca junto al resto de métricas de infraestructura",
+        "Integración, pruebas y despliegue continuo del código"
       ],
       "options_en": [
-        "CPU, RAM, and disk",
+        "CPU, memory, and bandwidth",
         "Logs, metrics, and traces",
-        "Frontend, backend, and database",
-        "Git, Docker, and CI"
+        "Backups, replicas, snapshots, three elements any platform team must watch closely alongside the rest of the infrastructure metrics",
+        "Build, test, and deployment"
       ],
       "correct_index": 1,
       "explanation_es": "Los tres pilares clásicos de la observabilidad son: logs (eventos discretos con detalle), métricas (valores numéricos agregados en el tiempo, como latencia o tasa de errores) y trazas (el recorrido de una petición a través de varios servicios). Combinados, permiten entender qué hace el sistema por dentro a partir de sus salidas externas, especialmente en arquitecturas distribuidas.",
@@ -520,16 +520,16 @@
       "question_es": "¿Cuál es la diferencia entre 'monitoreo' (monitoring) y 'observabilidad' (observability)?",
       "question_en": "What is the difference between 'monitoring' and 'observability'?",
       "options_es": [
-        "Son exactamente lo mismo",
-        "La observabilidad solo mide la CPU",
+        "Son exactamente lo mismo: ambos términos designan idéntica práctica bajo dos nombres distintos usados indistintamente en el sector",
+        "La observabilidad solo cubre el uso de CPU y memoria de los contenedores que se encuentran en ejecución en ese preciso instante",
         "El monitoreo vigila métricas y condiciones conocidas de antemano (alertas para fallos previstos); la observabilidad busca poder explorar y entender estados inesperados que no se anticiparon",
-        "El monitoreo no usa métricas"
+        "El monitoreo no puede usar métricas en absoluto: se limita por completo a inspeccionar logs de texto plano generados en tiempo real, apoyándose en cambio en revisiones manuales periódicas del texto acumulado por cada servicio durante el día"
       ],
       "options_en": [
-        "They are exactly the same",
-        "Observability only measures CPU",
+        "They are exactly the same: both terms name the identical practice under two different labels used interchangeably across the industry",
+        "Observability only covers the CPU and memory usage of the containers that happen to be running at that precise moment in time",
         "Monitoring watches metrics and conditions known in advance (alerts for anticipated failures); observability aims to explore and understand unexpected states that weren't anticipated",
-        "Monitoring doesn't use metrics"
+        "Monitoring cannot use metrics at all: it is limited entirely to inspecting plain-text logs generated and streamed in real time, relying instead on periodic manual reviews of the text each service has accumulated over the day"
       ],
       "correct_index": 2,
       "explanation_es": "El monitoreo responde a preguntas que sabías que ibas a hacer (dashboards y alertas sobre 'known unknowns'). La observabilidad busca dotar al sistema de suficiente instrumentación para investigar problemas nuevos e imprevistos ('unknown unknowns'), haciendo preguntas ad-hoc a los datos sin haber tenido que preverlas. Se solapan, pero la observabilidad enfatiza la capacidad de exploración.",

@@ -8,15 +8,15 @@
       "question_es": "En Domain-Driven Design, ¿qué es un 'bounded context' (contexto delimitado)?",
       "question_en": "In Domain-Driven Design, what is a 'bounded context'?",
       "options_es": [
-        "Un tipo de base de datos",
-        "El nombre de un servidor",
-        "Una función que valida entradas",
+        "Un tipo particular de base de datos orientada a documentos que se usa exclusivamente dentro de arquitecturas de microservicios",
+        "El nombre técnico que recibe el servidor donde se despliega el servicio de dominio",
+        "Una función auxiliar que valida las entradas antes de que lleguen a la capa de dominio",
         "Una frontera explícita dentro de la cual un modelo de dominio y su lenguaje tienen un significado específico y consistente"
       ],
       "options_en": [
-        "A kind of database",
-        "The name of a server",
-        "A function that validates inputs",
+        "A particular kind of document-oriented database that is used exclusively within microservices architectures",
+        "The technical name given to the server where the domain service gets deployed",
+        "A helper function that validates inputs before they reach the domain layer",
         "An explicit boundary within which a domain model and its language have a specific, consistent meaning"
       ],
       "correct_index": 3,
@@ -63,15 +63,15 @@
       "question_en": "What is a 'context map' in DDD?",
       "options_es": [
         "Una representación de los distintos bounded contexts y las relaciones/integraciones entre ellos (p. ej. cliente-proveedor, anti-corruption layer)",
-        "Un diagrama de la base de datos",
-        "Un mapa geográfico de los servidores",
-        "La lista de variables globales"
+        "Un diagrama técnico que representa de forma exhaustiva el esquema físico completo de tablas y claves foráneas de la base de datos relacional del sistema entero",
+        "Un mapa geográfico que señala la ubicación física de los centros de datos donde corren los servidores",
+        "El listado completo de las variables globales compartidas entre todos los módulos del sistema"
       ],
       "options_en": [
         "A representation of the different bounded contexts and the relationships/integrations between them (e.g. customer-supplier, anti-corruption layer)",
-        "A database diagram",
-        "A geographic map of the servers",
-        "The list of global variables"
+        "A technical diagram exhaustively representing the complete physical schema of tables and foreign keys in the whole system's relational database",
+        "A geographic map marking the physical location of the data centers where the servers run",
+        "The complete list of global variables shared across every module of the system"
       ],
       "correct_index": 0,
       "explanation_es": "El context map documenta cómo se relacionan los bounded contexts y sus equipos: quién depende de quién, patrones de integración (shared kernel, customer-supplier, conformist, anti-corruption layer). Hace visibles las fronteras y las traducciones necesarias entre modelos, ayudando a gestionar la complejidad estratégica de un sistema grande.",
@@ -167,16 +167,16 @@
       "question_es": "En DDD, ¿qué distingue a una 'entidad' (entity) de un 'value object' (objeto de valor)?",
       "question_en": "In DDD, what distinguishes an 'entity' from a 'value object'?",
       "options_es": [
-        "La entidad es más grande en memoria",
-        "El value object siempre se guarda en la nube",
+        "La entidad ocupa más memoria en tiempo de ejecución porque el runtime le añade siempre una marca de creación y otra de última modificación, mientras que el value object solo guarda sus atributos y ese coste de memoria adicional se mide siempre en cada petición procesada por el sistema entero",
+        "El value object siempre se guarda en un servicio de almacenamiento en la nube aparte, mientras que la entidad se guarda en el disco local del propio servidor que procesa la petición actual",
         "La entidad tiene identidad propia y continuidad en el tiempo (importa CUÁL es, aunque cambien sus atributos); el value object se define solo por sus atributos y es intercambiable si estos coinciden",
-        "No hay diferencia conceptual"
+        "No hay ninguna diferencia conceptual entre ambos: es simplemente una convención de nombres que cada equipo aplica a su manera dentro del mismo código fuente compartido"
       ],
       "options_en": [
-        "The entity is larger in memory",
-        "A value object is always stored in the cloud",
+        "An entity always takes up more runtime memory because the runtime attaches a creation timestamp and a last-modified timestamp to it, while a value object stores only its raw attributes, and that extra memory cost is measured on every single request the whole system processes",
+        "A value object is always stored in a separate cloud storage service, while the entity is kept on the local disk of the actual server currently processing the request",
         "An entity has its own identity and continuity over time (which one it is matters, even if its attributes change); a value object is defined only by its attributes and is interchangeable if they match",
-        "There is no conceptual difference"
+        "There is no conceptual difference between the two at all: it is simply a naming convention that each team applies its own way inside the same shared source code"
       ],
       "correct_index": 2,
       "explanation_es": "Una entidad tiene identidad única y persistente: una 'Persona' sigue siendo la misma aunque cambie de nombre o dirección; se distingue por un id. Un value object se define íntegramente por sus valores (p. ej. un 'Dinero' de 10 EUR, o un 'Color'): dos con los mismos atributos son equivalentes e intercambiables, y suelen ser inmutables.",
@@ -223,16 +223,16 @@
       "question_es": "¿Por qué modelar un concepto como 'Dirección' o 'RangoDeFechas' como value object en lugar de campos sueltos?",
       "question_en": "Why model a concept like 'Address' or 'DateRange' as a value object instead of loose fields?",
       "options_es": [
-        "Para ocupar más memoria",
+        "Para que el compilador reserve memoria contigua para esos campos y así acelere levemente su acceso durante la ejecución de cada petición del sistema, frente a manejarlos como campos sueltos repartidos por distintas clases del mismo módulo de dominio",
         "Para agrupar los datos que forman un concepto con significado, encapsular su validación e invariantes, y dar comportamiento (p. ej. que un rango no tenga fin anterior al inicio)",
-        "Porque los value objects son obligatorios en Python",
-        "Para evitar usar la base de datos"
+        "Porque los frameworks web modernos exigen por norma que todo campo mostrado en un formulario se declare como value object propio del formulario",
+        "Para poder serializar el objeto directamente como una fila de la base de datos sin tener que escribir ningún código adicional de mapeo entre capas"
       ],
       "options_en": [
-        "To use more memory",
+        "So the compiler reserves contiguous memory for those fields and thereby speeds up accessing them slightly while each request of the system runs, compared to handling them as loose fields scattered across different classes of the same domain module",
         "To group the data that forms a meaningful concept, encapsulate its validation and invariants, and give it behavior (e.g. a range can't have an end before its start)",
-        "Because value objects are mandatory in Python",
-        "To avoid using the database"
+        "Because modern web frameworks require by rule that every field shown on a form be declared as its own dedicated value object of that form",
+        "To be able to serialise the object directly as a database row without having to write any extra mapping code between layers at all"
       ],
       "correct_index": 1,
       "explanation_es": "Modelar 'RangoDeFechas' como value object reúne inicio y fin en un concepto con nombre, encapsula su validación (fin >= inicio) e invariantes, y le da comportamiento (solapa, duración). Frente a dos campos sueltos, evita repetir esa lógica dispersa y hace el modelo más expresivo, alineado con el lenguaje del dominio. Reduce el 'primitive obsession'.",
@@ -253,16 +253,16 @@
       "question_es": "En Python, ¿qué característica de `dataclasses` ayuda a implementar value objects inmutables con igualdad por valor?",
       "question_en": "In Python, which `dataclasses` feature helps implement immutable value objects with value equality?",
       "options_es": [
-        "No es posible en Python",
+        "La anotación `typing.Final` aplicada a la clase impide reasignar cualquier variable declarada en el módulo entero, no solo en la propia instancia",
         "`@dataclass(frozen=True)` genera `__eq__`/`__hash__` basados en los campos (igualdad por valor) y hace la instancia inmutable (no se pueden reasignar atributos)",
-        "El decorador `@staticmethod`",
-        "La función `print()`"
+        "El decorador `@property` genera automáticamente igualdad por valor entre dos instancias distintas que comparten la misma clase base, sin más configuración, lo que permite compararlas directamente con `==` sin tener que implementar nada más dentro de la clase",
+        "El módulo `copy`, mediante su función `deepcopy()`, vuelve inmutable de forma permanente cualquier objeto que se le pase como argumento en la llamada"
       ],
       "options_en": [
-        "It's not possible in Python",
+        "The `typing.Final` annotation applied to the class prevents reassigning any variable declared anywhere in the whole module, not just on the instance",
         "`@dataclass(frozen=True)` generates `__eq__`/`__hash__` based on the fields (value equality) and makes the instance immutable (attributes can't be reassigned)",
-        "The `@staticmethod` decorator",
-        "The `print()` function"
+        "The `@property` decorator automatically generates value equality between two distinct instances that share the same base class, with no further setup, which lets you compare them directly with `==` without having to implement anything else inside the class",
+        "The `copy` module, through its `deepcopy()` function, permanently makes any object passed to it as an argument in the call immutable from then on"
       ],
       "correct_index": 1,
       "explanation_es": "`@dataclass(frozen=True)` genera automáticamente `__eq__` (dos instancias con los mismos campos son iguales) y `__hash__` (usables en sets/dicts), y bloquea la reasignación de atributos (lanza `FrozenInstanceError`), logrando inmutabilidad. Esto expresa de forma idiomática un value object en Python: igualdad por valor + inmutabilidad, sin escribir boilerplate.",
@@ -331,16 +331,16 @@
       "question_es": "En DDD, ¿qué es un 'aggregate' (agregado)?",
       "question_en": "In DDD, what is an 'aggregate'?",
       "options_es": [
-        "Una función que suma números",
-        "Un tipo de índice de base de datos",
+        "Una función pura del lenguaje de dominio que combina varios valores numéricos de una petición en un único resultado agregado final del sistema de forma parecida a como una hoja de cálculo reduce varias celdas de entrada a un único total mostrado al usuario final",
+        "Un tipo de vista materializada del motor de base de datos que precalcula de antemano los resultados de las consultas más repetidas del negocio",
         "Un grupo de objetos de dominio (entidades y value objects) tratado como una unidad de consistencia, con una entidad raíz (aggregate root) como único punto de acceso",
-        "Una consulta SQL con GROUP BY"
+        "Una cláusula del lenguaje SQL que agrupa filas por una columna determinada y aplica funciones como COUNT o AVG sobre cada grupo resultante"
       ],
       "options_en": [
-        "A function that sums numbers",
-        "A kind of database index",
+        "A pure domain-language function that combines several numeric values from one request into a single final aggregated result of the system, in a way similar to how a spreadsheet reduces several input cells into one single total shown to the end user",
+        "A kind of database-engine materialised view that precomputes ahead of time the results of the business's most frequently repeated queries",
         "A cluster of domain objects (entities and value objects) treated as a single consistency unit, with a root entity (aggregate root) as the only access point",
-        "A SQL query with GROUP BY"
+        "A clause in the SQL language that groups rows by a given column and applies functions like COUNT or AVG over each of the resulting groups"
       ],
       "correct_index": 2,
       "explanation_es": "Un agregado agrupa objetos relacionados que deben mantenerse consistentes juntos, con una 'aggregate root' que es la única puerta de entrada: el código externo referencia y modifica el agregado solo a través de su raíz, que garantiza las invariantes internas. Por ejemplo, un 'Pedido' (raíz) con sus 'LíneasDePedido'.",
@@ -385,16 +385,16 @@
       "question_es": "¿Cuál es la responsabilidad de un 'repository' (repositorio) en DDD?",
       "question_en": "What is a 'repository's' responsibility in DDD?",
       "options_es": [
-        "Almacenar el código fuente en Git",
-        "Ejecutar los tests",
+        "Versionar y etiquetar cada release del código fuente que implementa las reglas del modelo de dominio dentro del repositorio compartido, de modo que cada versión quede trazable y el equipo pueda volver atrás si una release introduce un defecto grave",
+        "Orquestar la ejecución en paralelo de las pruebas automatizadas que cubren las reglas de negocio del dominio completo en cada pipeline",
         "Abstraer la persistencia de los agregados, ofreciendo una interfaz tipo colección para recuperar y guardar agregados sin exponer los detalles de la base de datos",
-        "Renderizar la interfaz de usuario"
+        "Componer y renderizar en el servidor las plantillas HTML que muestran el estado actual de los agregados directamente al usuario final"
       ],
       "options_en": [
-        "Storing source code in Git",
-        "Running the tests",
+        "Versioning and tagging each release of the source code that implements the domain model's rules inside the team's shared repository, so that every version stays traceable and the team can roll back if a release introduces a serious defect",
+        "Orchestrating the parallel execution of the automated tests that cover the whole domain's business rules on every single pipeline run",
         "Abstracting aggregate persistence, offering a collection-like interface to retrieve and save aggregates without exposing database details",
-        "Rendering the user interface"
+        "Composing and server-rendering the HTML templates that display the aggregates' current state directly to the end user of the system"
       ],
       "correct_index": 2,
       "explanation_es": "Un repositorio media entre el modelo de dominio y la persistencia, presentando los agregados como si fueran una colección en memoria (`add`, `get(id)`, `remove`). Oculta el almacén concreto (SQL, NoSQL) tras una interfaz del dominio, lo que mantiene el modelo puro y desacoplado de la infraestructura y facilita el testeo con dobles. Normalmente hay un repositorio por tipo de aggregate root.",
@@ -414,16 +414,16 @@
       "question_es": "¿Por qué se recomienda mantener los agregados pequeños y que las referencias entre agregados sean por identidad (id), no por objeto directo?",
       "question_en": "Why is it recommended to keep aggregates small and to reference other aggregates by identity (id), not by direct object?",
       "options_es": [
-        "Por moda, sin razón técnica",
-        "Porque los ids son más bonitos",
+        "Por una convención de estilo heredada del equipo, ya que ambos enfoques rinden exactamente igual en producción a cualquier escala del sistema completo, y por eso ningún equipo se plantea seriamente medir el impacto real de esa elección sobre la carga del sistema",
+        "Porque un identificador ocupa menos bytes en memoria que un puntero a objeto, lo que ahorra un espacio apreciable en cada agregado cargado en memoria",
         "Para acotar los límites de consistencia y transacción: un agregado grande o con referencias directas a otros carga y bloquea demasiado, dificultando la escalabilidad y aumentando la contención",
-        "Para que la base de datos sea más lenta"
+        "Para que el recolector de basura del lenguaje pueda liberar antes los objetos que forman parte del agregado una vez procesada la petición entrante"
       ],
       "options_en": [
-        "For fashion, with no technical reason",
-        "Because ids are prettier",
+        "By a style convention inherited from the team, since both approaches perform exactly the same in production at any scale of the whole system, and that is why no team seriously bothers measuring that choice's real impact on the system's load",
+        "Because an identifier takes up fewer bytes in memory than an object pointer, saving an appreciable amount of space in every aggregate loaded",
         "To bound consistency and transaction limits: a large aggregate or one with direct references to others loads and locks too much, hurting scalability and increasing contention",
-        "To make the database slower"
+        "So that the language's garbage collector can free the objects that make up the aggregate sooner, once the incoming request has been processed"
       ],
       "correct_index": 2,
       "explanation_es": "El agregado define el límite de una transacción de consistencia: modificar un agregado debe ser una operación atómica. Agregados enormes o que referencian directamente a otros obligan a cargar y bloquear grandes grafos de objetos, aumentando la contención y dificultando el sharding. Referenciar otros agregados por id (no por objeto) mantiene los límites nítidos y permite modificar cada uno en su propia transacción, aceptando consistencia eventual entre ellos.",
@@ -491,16 +491,16 @@
       "question_es": "¿Qué es el 'lenguaje ubicuo' (ubiquitous language) en DDD?",
       "question_en": "What is the 'ubiquitous language' in DDD?",
       "options_es": [
-        "Un lenguaje de programación universal",
+        "Un lenguaje de modelado formal como UML, que se vuelve obligatorio para documentar cada bounded context definido a lo largo del proyecto",
         "Un vocabulario común y riguroso, compartido por desarrolladores y expertos del dominio, que se usa consistentemente en las conversaciones, el modelo y el código",
-        "El idioma inglés obligatorio en el código",
-        "Un formato de documentación"
+        "El conjunto de comentarios que los desarrolladores dejan en el código fuente para explicárselo después a los expertos del negocio implicado de manera que cualquier persona nueva en el equipo pueda entender el dominio simplemente leyendo esos comentarios con calma",
+        "Un estándar de nomenclatura de variables y funciones impuesto desde arriba por el equipo central de arquitectura de toda la compañía"
       ],
       "options_en": [
-        "A universal programming language",
+        "A formal modelling language like UML, made mandatory for documenting every bounded context defined throughout the whole project's lifetime",
         "A common, rigorous vocabulary, shared by developers and domain experts, used consistently in conversations, the model, and the code",
-        "Mandatory English in the code",
-        "A documentation format"
+        "The set of comments developers leave in the source code to explain it later on to the business domain experts who are involved, so that anyone new joining the team can understand the domain simply by calmly reading through those comments",
+        "A naming standard for variables and functions imposed from above by the central architecture team across the whole company"
       ],
       "correct_index": 1,
       "explanation_es": "El lenguaje ubicuo es un vocabulario preciso y compartido entre el equipo técnico y los expertos del negocio, usado por igual al hablar, al modelar y al programar (nombres de clases, métodos). Al eliminar la 'traducción' entre el lenguaje del negocio y el del código, reduce malentendidos y hace que el código exprese fielmente el dominio.",
@@ -576,15 +576,15 @@
       "question_es": "Si al modelar aparece un desajuste entre cómo hablan los expertos del dominio y los términos del modelo/código, ¿qué recomienda DDD?",
       "question_en": "If, while modeling, a mismatch appears between how domain experts speak and the terms in the model/code, what does DDD recommend?",
       "options_es": [
-        "Ignorar a los expertos y quedarse con los términos técnicos",
-        "Dejar de hablar con los expertos",
-        "Inventar términos nuevos que nadie use",
+        "Priorizar la velocidad de entrega del sprint actual y posponer la conversación sobre los términos discordantes a una iteración futura del proyecto confiando en que la discrepancia de vocabulario se resuelva sola una vez el producto ya esté en manos de los usuarios",
+        "Dejar que cada desarrollador elija el término que le resulte más cómodo de escribir dentro de su propio módulo de código sin consultar al resto",
+        "Añadir un comentario en el código explicando la diferencia entre ambos y mantener los dos términos por separado de forma indefinida en el tiempo",
         "Refinar el modelo y el lenguaje de forma colaborativa hasta alinearlos; el desajuste suele señalar un modelo incompleto o un concepto del dominio no capturado"
       ],
       "options_en": [
-        "Ignore the experts and keep the technical terms",
-        "Stop talking to the experts",
-        "Invent new terms nobody uses",
+        "Prioritise the current sprint's delivery speed and postpone the conversation about the mismatched terms to some future iteration of the project, trusting that the vocabulary mismatch will sort itself out once the product is already in front of users",
+        "Let each developer pick whichever term is most comfortable for them to write inside their own module of code without consulting anyone else",
+        "Add a code comment explaining the difference between both and keep the two terms separate indefinitely as time goes on afterward",
         "Refine the model and language collaboratively until aligned; the mismatch usually signals an incomplete model or an uncaptured domain concept"
       ],
       "correct_index": 3,

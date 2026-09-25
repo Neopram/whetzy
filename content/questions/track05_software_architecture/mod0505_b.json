@@ -8,16 +8,16 @@
       "question_es": "Dos equipos, Reservas y Facturación, comparten un subconjunto pequeño del modelo (el concepto de Tarifa) y acuerdan versionarlo en una librería común, con la regla de que ningún equipo lo modifica sin avisar al otro y sin pasar los tests conjuntos. ¿Qué relación del mapa de contextos están aplicando?",
       "question_en": "Two teams, Booking and Billing, share a small subset of the model (the Fare concept) and agree to version it in a shared library, with the rule that neither team changes it without notifying the other and running the joint test suite. Which context-map relationship are they applying?",
       "options_es": [
-        "Anticorruption Layer",
+        "Partnership (asociación puntual)",
         "Shared Kernel (núcleo compartido)",
-        "Separate Ways",
-        "Conformist"
+        "Separate Ways (caminos separados)",
+        "Big Ball of Mud (maraña sin estructura)"
       ],
       "options_en": [
-        "Anticorruption Layer",
+        "Partnership",
         "Shared Kernel",
         "Separate Ways",
-        "Conformist"
+        "Big Ball of Mud"
       ],
       "correct_index": 1,
       "explanation_es": "El Shared Kernel es exactamente eso: una porción explícita y deliberadamente pequeña del modelo que dos contextos comparten, con integración continua y acuerdo de cambio entre ambos equipos. Anticorruption Layer es tentador porque también trata de integración, pero describe una capa de traducción que aísla un modelo de otro, no código compartido. Separate Ways es lo contrario: duplicar a propósito y no integrar. Conformist significa aceptar el modelo ajeno sin traducirlo ni tener voz sobre él, mientras que aquí ambos equipos negocian los cambios. El riesgo real del Shared Kernel es que crezca: cuanto más grande, más se acopla la agenda de los dos equipos.",
@@ -70,16 +70,16 @@
       "question_es": "Los contextos de Catálogo e Inventario se desplegaron como dos servicios distintos, pero ambos leen y escriben la misma tabla `products` de la misma base de datos. Cada vez que Catálogo añade una columna, Inventario se rompe en producción. ¿Cuál es el diagnóstico correcto?",
       "question_en": "The Catalog and Inventory contexts were deployed as two separate services, but both read from and write to the same `products` table in the same database. Every time Catalog adds a column, Inventory breaks in production. What is the correct diagnosis?",
       "options_es": [
-        "Falta un índice compartido: el problema es de rendimiento del esquema, no de diseño",
+        "Falta un índice compuesto sobre 'products' que cubra ambos servicios: el problema es de rendimiento de consultas, no de diseño de contextos delimitados",
         "Los contextos no están realmente delimitados: la base de datos compartida es una integración oculta que anula la autonomía de ambos",
-        "Faltan transacciones distribuidas de dos fases entre los dos servicios",
-        "El error está en desplegar dos servicios; debieron quedarse como un único monolito"
+        "Faltan sagas orquestadas entre Catálogo e Inventario que sincronicen cada cambio de esquema antes de aplicarlo en producción",
+        "El error fue desplegar dos servicios en vez de uno; ambos contextos debieron permanecer fusionados dentro de un único monolito bien probado"
       ],
       "options_en": [
-        "A shared index is missing: the problem is schema performance, not design",
+        "A composite index covering both services on 'products' is missing: it is a query performance problem, not a bounded-context design issue",
         "The contexts are not really bounded: the shared database is a hidden integration that destroys both services' autonomy",
-        "Two-phase distributed transactions between the two services are missing",
-        "The mistake was deploying two services; they should have stayed a single monolith"
+        "Orchestrated sagas between Catalog and Inventory are missing to synchronise every schema change before it lands in production",
+        "The mistake was deploying two services instead of one; both contexts should have stayed merged inside a single, well-tested monolith"
       ],
       "correct_index": 1,
       "explanation_es": "Un bounded context sólo existe si su modelo es suyo, y eso incluye los datos. Compartir tablas convierte el esquema en un contrato implícito y no versionado entre equipos: cualquier cambio estructural es un cambio de API sin que nadie lo revise. La respuesta del índice confunde un síntoma de acoplamiento con un problema de rendimiento. Las transacciones de dos fases son tentadoras porque parece un problema de consistencia, pero no arreglan el acoplamiento de esquema, y además reintroducen el punto de fallo que se quería evitar. Volver al monolito es una sobrerreacción: un monolito con módulos bien delimitados sería válido, pero el fallo aquí no es el número de despliegues, sino que la frontera del modelo nunca se trazó.",
@@ -209,16 +209,16 @@
       "question_es": "En un sistema de facturación multi-divisa, el equipo guarda los importes como `float amount` y una columna aparte `currency`, y suma importes con `+`. ¿Cuál es el argumento más fuerte para modelar `Money(amount, currency)` como un único value object?",
       "question_en": "In a multi-currency billing system, the team stores amounts as `float amount` plus a separate `currency` column, and adds amounts with `+`. What is the strongest argument for modelling `Money(amount, currency)` as a single value object?",
       "options_es": [
-        "Reduce el número de columnas de la tabla y por tanto el tamaño en disco",
-        "Permite que el ORM cachee el objeto entre peticiones",
+        "Reduce el número de columnas físicas de la tabla, porque el ORM fusiona internamente importe y divisa en un único campo binario comprimido",
+        "Permite que el planificador de consultas paralelice automáticamente las sumas de importes entre divisas distintas dentro del mismo lote de facturas, algo que el motor de base de datos no puede hacer hoy por las dependencias entre filas de la misma factura",
         "El importe y la divisa son un solo concepto: juntos permiten rechazar en tiempo de ejecución una suma de divisas distintas y encapsular el redondeo en un único sitio",
-        "Hace que los importes sean mutables, lo que simplifica los descuentos"
+        "Hace que los importes se redondeen siempre al alza por convención interna del equipo, lo que simplifica la conciliación contable de fin de mes"
       ],
       "options_en": [
-        "It reduces the number of table columns and therefore disk size",
-        "It lets the ORM cache the object between requests",
+        "It reduces the table's physical column count, because the ORM internally merges amount and currency into a single compressed binary field",
+        "It lets the query planner automatically parallelise the summing of amounts across different currencies within the same batch of invoices, something the database engine cannot do today because of the dependencies between rows of the same invoice",
         "Amount and currency are one concept: together they can reject adding different currencies at runtime and keep rounding rules in a single place",
-        "It makes amounts mutable, which simplifies discounts"
+        "It makes amounts always round up by the team's internal convention, which simplifies the accounting reconciliation done at the end of every month"
       ],
       "correct_index": 2,
       "explanation_es": "Un value object agrupa atributos que sólo tienen sentido juntos y aloja las reglas que los gobiernan. `Money` puede lanzar un error al sumar EUR con USD, obligar a aritmética en enteros de céntimos y centralizar el redondeo; con dos campos sueltos esa regla se reescribe (mal) en cada servicio. El argumento del disco confunde modelado con almacenamiento: un VO suele mapearse a las mismas columnas. La caché del ORM no es una razón de dominio. La mutabilidad es directamente el antipatrón: un `Money` mutable compartido entre dos líneas de factura provoca que un descuento en una altere la otra, que es el fallo clásico que la inmutabilidad de los VO elimina.",
@@ -271,16 +271,16 @@
       "question_es": "La misma persona física aparece como `Paciente` en el contexto Clínico y como `Cliente` en el contexto Facturación, cada uno con su propia clave primaria. Un arquitecto propone unificar ambos en una única entidad global con un id compartido. ¿Cuál es la crítica correcta?",
       "question_en": "The same physical person appears as `Patient` in the Clinical context and as `Customer` in the Billing context, each with its own primary key. An architect proposes merging both into one global entity with a shared id. What is the correct critique?",
       "options_es": [
-        "Es correcto: dos entidades que representan a la misma persona real violan la unicidad de identidad en DDD",
-        "Es correcto sólo si ambos contextos comparten la misma base de datos",
+        "Es correcto: dos registros distintos que representan a la misma persona física rompen la normalización del modelo relacional que ambos comparten, así que conviene fusionar los registros cuanto antes para no arrastrar el problema a los informes contables",
+        "Es correcto sólo si ambos contextos comparten el mismo motor de base de datos y exactamente el mismo esquema físico de tablas subyacente",
         "Es un error: cada contexto define su propia identidad y ciclo de vida; lo adecuado es mantener entidades separadas y correlacionarlas por un identificador de referencia en la frontera",
-        "Es un error, pero la solución es convertir `Paciente` en value object dentro de Facturación"
+        "Es un error, pero la solución adecuada es convertir `Cliente` en un value object embebido dentro del propio agregado de Clínico"
       ],
       "options_en": [
-        "It is correct: two entities representing the same real person violate identity uniqueness in DDD",
-        "It is correct only if both contexts share the same database",
+        "It is correct: two separate records representing the same physical person break the normalisation of the relational model that both share, so the records should be merged as soon as possible to avoid dragging the problem into the accounting reports",
+        "It is correct only if both contexts run on the same database engine and share exactly the same underlying physical table schema",
         "It is a mistake: each context defines its own identity and lifecycle; the right move is to keep separate entities and correlate them through a reference identifier at the boundary",
-        "It is a mistake, but the fix is to make `Patient` a value object inside Billing"
+        "It is a mistake, but the right fix is to make `Customer` an embedded value object inside the Clinical aggregate itself, not a separate entity"
       ],
       "correct_index": 2,
       "explanation_es": "La identidad de una entidad es local a su bounded context: en Clínico el ciclo de vida empieza con el ingreso y lo relevante es la historia, en Facturación empieza con el contrato y lo relevante es la solvencia. Mantener dos entidades y correlacionarlas (por ejemplo, guardando el `patient_id` externo como referencia) permite que cada contexto evolucione sin pedir permiso. La primera opción es la intuición ingenua de «una persona, un registro», que en cuanto se aplica obliga a un esquema común y arrastra a los dos equipos. La segunda confunde frontera de modelo con frontera de almacenamiento. La cuarta falla porque el cliente en Facturación sí tiene identidad y ciclo de vida: cambia de dirección, acumula deuda y sigue siendo el mismo.",
@@ -302,15 +302,15 @@
       "question_es": "Al persistir con un ORM relacional un value object `Address` que pertenece a la entidad `Customer`, un desarrollador crea una tabla `addresses` con su propia clave primaria autoincremental y una relación uno-a-uno. ¿Qué problema introduce respecto al modelo de dominio?",
       "question_en": "When persisting a value object `Address` belonging to the `Customer` entity with a relational ORM, a developer creates an `addresses` table with its own auto-increment primary key and a one-to-one relation. What problem does this introduce with respect to the domain model?",
       "options_es": [
-        "Obliga a que `Customer` deje de ser entidad y pase a ser agregado raíz",
-        "Ninguno: en el modelo relacional toda tabla necesita clave primaria, así que es la única opción posible",
-        "Impide usar índices sobre los campos de la dirección, degradando las consultas por código postal",
+        "Obliga a que `Customer` deje de ser una entidad propia y pase a modelarse él mismo como un value object embebido dentro del agregado padre que lo contiene por completo, perdiendo su tabla independiente y su ciclo de vida propio, lo que además obliga a reescribir todas las consultas que hoy asumen que `Customer` tiene su propia tabla y su propio ciclo de vida",
+        "Ninguno: en el modelo relacional toda tabla necesita obligatoriamente su propia clave primaria autoincremental, sin ninguna excepción posible en ningún motor de base de datos relacional que exista hoy",
+        "Impide crear índices sobre los campos de la dirección, degradando de forma notable las consultas que filtran por código postal una vez que el sistema entra en producción real con tráfico",
         "Le da al value object una identidad técnica propia: dos direcciones idénticas dejan de ser intercambiables, aparece la tentación de referenciarla y de «editarla» en lugar de reemplazarla, y se filtra el ciclo de vida de la persistencia al dominio"
       ],
       "options_en": [
-        "It forces `Customer` to stop being an entity and become an aggregate root",
-        "None: in the relational model every table needs a primary key, so this is the only possible option",
-        "It prevents indexing the address fields, degrading postcode queries",
+        "It forces `Customer` to stop being its own entity and be modelled itself as a value object embedded inside the parent aggregate that fully contains it, losing its own independent table and lifecycle, which also forces rewriting every query that currently assumes `Customer` has its own table and its own independent lifecycle",
+        "None: in the relational model every table must have its own auto-increment primary key by rule, with no possible exception at all in any relational database engine that exists today",
+        "It prevents indexing the address fields at all, which noticeably degrades every single query that filters by postcode once the whole system finally reaches real production traffic",
         "It gives the value object a technical identity of its own: two identical addresses stop being interchangeable, it invites referencing and \"editing\" it instead of replacing it, and persistence lifecycle leaks into the domain"
       ],
       "correct_index": 3,
@@ -437,15 +437,15 @@
       "question_es": "Una regla de negocio dice: «el total de las líneas de un pedido nunca puede superar el límite de crédito aprobado para ese pedido». ¿Qué te dice esa regla sobre el diseño del agregado?",
       "question_en": "A business rule says: \"the sum of an order's lines can never exceed the credit limit approved for that order\". What does this rule tell you about aggregate design?",
       "options_es": [
-        "Que cada línea de pedido debe ser su propio agregado, para poder validarla de forma independiente",
-        "Que el límite de crédito debe replicarse en cada línea para evitar consultas",
-        "Que hace falta una transacción distribuida entre el servicio de Pedidos y el de Crédito",
+        "Que cada línea de pedido debe persistirse en su propia tabla independiente, para poder auditarla al margen del resto de las líneas de ese mismo pedido en el futuro",
+        "Que el límite de crédito debe cachearse localmente en el cliente, para acelerar el proceso de checkout ahorrando una consulta extra al servidor en cada línea añadida, de modo que el propio front-end confía ciegamente en ese valor cacheado sin volver a consultarlo con el backend",
+        "Que hace falta un event bus entre el servicio de Pedidos y el de Crédito para poder validar el total del pedido cada vez que se añade una nueva línea al mismo pedido",
         "Que `Pedido` y sus líneas forman un mismo agregado: la regla es un invariante que debe cumplirse de forma inmediata y transaccional, y sólo puede garantizarlo el objeto que ve todas las líneas a la vez"
       ],
       "options_en": [
-        "That each order line must be its own aggregate, so it can be validated independently",
-        "That the credit limit must be replicated into every line to avoid lookups",
-        "That a distributed transaction between the Orders service and the Credit service is needed",
+        "That each order line must be persisted in its own independent table, so it can be audited separately from the rest of that same order lines later on today",
+        "That the credit limit must be cached locally on the client, to speed up checkout by avoiding one extra round trip to the server on every single line added, so the front-end itself blindly trusts that cached value without ever checking it again with the backend",
+        "That an event bus between the Orders service and the Credit service is needed to validate the order total every time a brand new line gets added to that same order",
         "That `Order` and its lines form one aggregate: the rule is an invariant that must hold immediately and transactionally, and only the object that sees all lines at once can guarantee it"
       ],
       "correct_index": 3,
@@ -468,16 +468,16 @@
       "question_es": "El agregado `Equipo` contiene la lista completa de sus 40.000 miembros. En producción, cambiar el nombre de un equipo falla con conflictos de versión optimista cada vez que alguien se une, y cada carga del agregado trae 40.000 filas. ¿Cuál es el rediseño correcto?",
       "question_en": "The `Team` aggregate holds the full list of its 40,000 members. In production, renaming a team fails with optimistic-concurrency conflicts every time someone joins, and every load of the aggregate pulls 40,000 rows. What is the correct redesign?",
       "options_es": [
-        "Quitar el bloqueo optimista del agregado `Equipo` para que dejen de aparecer conflictos",
+        "Sustituir el bloqueo optimista por bloqueo pesimista sobre el agregado `Equipo` completo, para que las escrituras concurrentes se pongan en cola en vez de competir por la misma versión, lo que a cambio introduce colas de espera más largas en los momentos de mayor concurrencia sobre el mismo equipo",
         "Partir el agregado: `Equipo` guarda sus datos propios y `Membresía` pasa a ser un agregado aparte que referencia al equipo por id, dejando la regla de pertenencia en consistencia eventual si no es un invariante inmediato",
-        "Cargar los miembros con lazy loading manteniendo el agregado tal cual",
-        "Subir el nivel de aislamiento de la transacción a SERIALIZABLE"
+        "Añadir una réplica adicional de solo lectura del agregado `Equipo`, para que las 40.000 membresías puedan leerse sin afectar jamás al nodo primario donde vive el agregado original",
+        "Comprimir la lista completa de los 40.000 miembros en un único campo binario bastante grande dentro de la misma fila del agregado, para que ocupe mucho menos espacio total en disco"
       ],
       "options_en": [
-        "Remove optimistic locking from the `Team` aggregate so conflicts stop appearing",
+        "Replace optimistic locking with pessimistic locking on the whole `Team` aggregate, so concurrent writes queue up and wait instead of competing for the same version number, which in exchange introduces longer waiting queues at moments of heavier concurrency on that same team",
         "Split the aggregate: `Team` keeps its own data and `Membership` becomes a separate aggregate referencing the team by id, letting the membership rule be eventually consistent if it is not an immediate invariant",
-        "Load members lazily while keeping the aggregate as it is",
-        "Raise the transaction isolation level to SERIALIZABLE"
+        "Add an extra read-only replica of the `Team` aggregate, so the 40,000 memberships can finally be read without ever affecting the shared primary node where the aggregate lives",
+        "Compress the entire list of 40,000 members into one single, fairly large binary field inside the aggregate's own row, so it ends up taking up considerably less disk space"
       ],
       "correct_index": 1,
       "explanation_es": "Los conflictos son el síntoma de un agregado demasiado grande: si la frontera de consistencia abarca datos que cambian por motivos distintos y a ritmos distintos, toda escritura compite con las demás por la misma versión. La solución de diseño es reducir la frontera al invariante que realmente exige atomicidad y referenciar el resto por identidad. Quitar el bloqueo optimista elimina el error, no la carrera: pasa de conflictos visibles a actualizaciones perdidas silenciosas, que es mucho peor. El lazy loading es la respuesta más tentadora porque arregla el coste de lectura, pero deja intacta la contención en escritura y además rompe la garantía de que la raíz ve el estado completo al validar. SERIALIZABLE aumenta los abortos en lugar de reducirlos.",
@@ -639,16 +639,16 @@
       "question_es": "En el dominio de seguros, los expertos hablan de «renovar», «anular» y «endosar» una póliza. El código expone `updatePolicy(policy, fields)` y los tres casos se distinguen por qué campos vienen en el diccionario. ¿Cuál es el principal daño desde el punto de vista del lenguaje ubicuo?",
       "question_en": "In the insurance domain, experts talk about \"renewing\", \"cancelling\" and \"endorsing\" a policy. The code exposes `updatePolicy(policy, fields)` and the three cases are told apart by which fields arrive in the dictionary. What is the main harm from a ubiquitous-language standpoint?",
       "options_es": [
-        "Que `updatePolicy` no sigue las convenciones REST para actualizaciones parciales",
-        "Que el diccionario de campos no está tipado y puede provocar errores en tiempo de ejecución",
+        "Que `updatePolicy` obliga a enviar el objeto completo en cada llamada en lugar de aceptar un parche parcial de los campos que cambian",
+        "Que el diccionario de campos sin tipar añade una serialización JSON adicional en cada petición enviada al servidor, encareciendo la llamada, un coste real pero que ningún experto de negocio nota ni le importa cuando revisa lo que hizo el sistema",
         "Que la intención del negocio desaparece: tres operaciones con reglas, autorizaciones y efectos distintos quedan fundidas en una genérica, y ni el código ni los logs permiten ya hablar con el experto sobre lo que ocurrió",
-        "Que sería más eficiente un único UPDATE que tres sentencias distintas"
+        "Que sería más eficiente sustituir el diccionario de campos por tres columnas booleanas dedicadas directamente en la propia tabla de pólizas"
       ],
       "options_en": [
-        "That `updatePolicy` does not follow REST conventions for partial updates",
-        "That the field dictionary is untyped and can cause runtime errors",
+        "That `updatePolicy` forces sending the whole object on every call instead of accepting a partial patch of only the fields that change",
+        "That the untyped field dictionary adds one extra JSON serialisation step to every request sent to the server, making each call more costly, a real cost, but one no business expert notices or cares about when reviewing what the system did",
         "That business intent disappears: three operations with different rules, authorisations and effects collapse into one generic call, and neither the code nor the logs let you discuss with the expert what actually happened",
-        "That a single UPDATE would be more efficient than three separate statements"
+        "That it would be more efficient to replace the field dictionary with three dedicated boolean columns directly on the policies table itself"
       ],
       "correct_index": 2,
       "explanation_es": "El lenguaje ubicuo no es sólo nombrar bien los sustantivos: los verbos del negocio son los que llevan las reglas. `renovar`, `anular` y `endosar` tienen precondiciones, permisos y consecuencias contables distintas; fundirlos en `updatePolicy` obliga a que esas diferencias vivan en condicionales dispersos y hace imposible auditar qué se hizo. Las opciones de REST y de tipado son problemas reales, pero técnicos y secundarios: un `updatePolicy` perfectamente tipado y RESTful sigue sin decir qué pasó en el negocio. La eficiencia es irrelevante y además falsa como criterio de modelado. El remedio es exponer métodos con el nombre del negocio, aunque por debajo compartan persistencia.",
@@ -670,15 +670,15 @@
       "question_es": "Un jefe de proyecto propone: «los analistas hablarán el lenguaje del negocio, los desarrolladores usarán su propio vocabulario técnico, y los analistas traducirán entre ambos en las especificaciones». ¿Qué respondería DDD?",
       "question_en": "A project manager proposes: \"analysts will speak the business language, developers will use their own technical vocabulary, and analysts will translate between them in the specifications\". What would DDD answer?",
       "options_es": [
-        "Que es correcto en equipos grandes, donde el lenguaje único sólo es viable con menos de diez personas",
-        "Que es correcto siempre que los analistas mantengan un glosario actualizado de la correspondencia entre ambos vocabularios",
-        "Que es correcto porque el lenguaje ubicuo sólo aplica a la documentación funcional, no al código",
+        "Que es correcto en equipos grandes, donde compartir un único lenguaje entre todos los miembros deja de ser viable a partir de cierta escala porque a partir de cierto tamaño resulta simplemente imposible coordinar a todo el mundo alrededor del mismo vocabulario compartido",
+        "Que es correcto siempre que los analistas revisen y actualicen el glosario de correspondencias una vez por trimestre sin excepción alguna",
+        "Que es correcto porque el lenguaje ubicuo se aplica únicamente a las historias de usuario, y nunca llega a tocar el código fuente en sí",
         "Que la traducción permanente es el problema, no la solución: cada salto pierde matices sin dejar rastro, los malentendidos se descubren en producción y el modelo del código deja de ser comprobable contra el conocimiento del experto"
       ],
       "options_en": [
-        "That it is fine on large teams, where a single language is only viable with fewer than ten people",
-        "That it is fine as long as analysts keep an up-to-date glossary mapping both vocabularies",
-        "That it is fine because the ubiquitous language applies only to functional documentation, not to code",
+        "That it is fine on large teams, where sharing one single language across every member stops being viable past a certain size, because past a certain size it simply becomes impossible to coordinate everyone around the very same shared vocabulary",
+        "That it is fine as long as analysts review and update the mapping glossary once every quarter without any exception whatsoever",
+        "That it is fine because the ubiquitous language applies only to user stories, and never once reaches into the source code itself",
         "That permanent translation is the problem, not the solution: every hop loses nuance without leaving a trace, misunderstandings surface in production, and the code's model stops being testable against the expert's knowledge"
       ],
       "correct_index": 3,
@@ -702,15 +702,15 @@
       "question_en": "What is the most reliable sign that a team's ubiquitous language is alive rather than a decorative glossary on the wiki?",
       "options_es": [
         "Que los nombres de clases, métodos, eventos y pruebas cambian cuando el negocio cambia de término, y el experto puede leer una prueba y decir si el comportamiento descrito es correcto",
-        "Que existe un documento aprobado por el comité de arquitectura con los términos oficiales",
-        "Que el glosario tiene una entrada por cada tabla de la base de datos",
-        "Que todos los términos están traducidos al inglés de forma consistente en todo el código"
+        "Que existe un documento aprobado formalmente por el comité de arquitectura con la lista cerrada de los términos considerados oficiales",
+        "Que el glosario del equipo recibe una revisión anual firmada de forma explícita por el responsable de producto de toda la organización de modo que cualquier auditoría posterior del proyecto pueda verificar de un vistazo que nada se ha renombrado nunca",
+        "Que cada término registrado en el glosario tiene asignado un identificador numérico único que nunca llega a cambiar con el paso del tiempo"
       ],
       "options_en": [
         "That class, method, event and test names change when the business changes a term, and an expert can read a test and say whether the described behaviour is right",
-        "That there is a document approved by the architecture committee listing the official terms",
-        "That the glossary has one entry per database table",
-        "That every term is consistently translated into English across the codebase"
+        "That there is a document formally approved by the architecture committee listing the closed set of terms considered official",
+        "That the team's glossary gets an annual review explicitly signed off by the product owner of the whole organisation every year, so that any later audit of the project can verify at a glance that nothing has ever been renamed since",
+        "That every term recorded in the glossary has a unique numeric identifier assigned to it that stays fixed as time passes"
       ],
       "correct_index": 0,
       "explanation_es": "El lenguaje ubicuo se verifica por su efecto: si cambia el negocio, cambia el código; y si el experto no entiende los nombres, el modelo no refleja su conocimiento. Que las pruebas se lean como afirmaciones de negocio es la prueba práctica más barata. El glosario alineado con las tablas mide el esquema, no el dominio, y de hecho suele delatar un modelo anémico dictado por la persistencia. La aprobación por un comité es tentadora porque parece gobernanza seria, pero el lenguaje se construye y se corrige en las conversaciones diarias entre desarrolladores y expertos, no por decreto. La consistencia idiomática en inglés es una buena práctica de código, pero no dice nada sobre si los términos son los del negocio.",
@@ -732,16 +732,16 @@
       "question_es": "En una sesión de modelado, el equipo comercial insiste en que «una reserva se confirma cuando el cliente acepta el presupuesto» y el equipo de operaciones en que «se confirma cuando hay habitación asignada». Llevan tres reuniones sin acuerdo. ¿Qué interpretación propone DDD?",
       "question_en": "In a modelling session, the sales team insists that \"a booking is confirmed when the customer accepts the quote\" and operations insists that \"it is confirmed when a room has been allocated\". Three meetings, no agreement. What interpretation does DDD propose?",
       "options_es": [
-        "Que hay que escalar la decisión a un arquitecto o a dirección para imponer la definición oficial",
-        "Que debe crearse una entidad `Reserva` con dos banderas booleanas, `confirmada_ventas` y `confirmada_operaciones`",
+        "Que hay que escalar la decisión a un arquitecto o a la dirección de la empresa para que imponga de una vez la definición oficial",
+        "Que debe crearse una única entidad `Reserva` con dos banderas booleanas, `confirmada_ventas` y `confirmada_operaciones`, para conciliar ambas visiones de modo que un único informe semanal pueda mostrar el estado combinado de la reserva a ambos departamentos implicados",
         "Que el desacuerdo es una señal de dos bounded contexts distintos: «confirmada» significa cosas diferentes en Ventas y en Operaciones, y cada contexto debe modelar su propio concepto, integrándose con eventos explícitos",
-        "Que uno de los dos equipos no entiende el negocio y necesita formación en el dominio"
+        "Que uno de los dos equipos simplemente no entiende bien el negocio y necesita formación adicional específica en el dominio de reservas"
       ],
       "options_en": [
-        "That the decision must be escalated to an architect or management to impose the official definition",
-        "That a `Booking` entity should be created with two boolean flags, `confirmed_sales` and `confirmed_ops`",
+        "That the decision must be escalated to an architect or to company management so they finally impose the one official definition",
+        "That a single `Booking` entity should be created with two boolean flags, `confirmed_sales` and `confirmed_ops`, to reconcile both views, so that a single weekly report can show the booking's combined status to both departments involved at once",
         "That the disagreement signals two distinct bounded contexts: \"confirmed\" means different things in Sales and Operations, and each context should model its own concept, integrating through explicit events",
-        "That one of the two teams does not understand the business and needs domain training"
+        "That one of the two teams simply does not understand the business well and needs extra specific training in the booking domain"
       ],
       "correct_index": 2,
       "explanation_es": "Un desacuerdo persistente y de buena fe sobre el significado de un término casi siempre indica que hay dos modelos legítimos, no que alguien se equivoque. La respuesta de DDD es delimitar: `PresupuestoAceptado` en Ventas y `ReservaAsignada` en Operaciones, con integración explícita. Escalar la decisión impone un único significado y condena al equipo perdedor a traducir mentalmente para siempre. Las dos banderas booleanas son la solución más habitual en la práctica y la más dañina: parece un compromiso razonable, pero mete los dos modelos en una misma clase y a partir de ahí toda regla necesita preguntar «¿confirmada para quién?». Culpar a un equipo desperdicia justamente la información que el desacuerdo aporta sobre la frontera.",
@@ -763,16 +763,16 @@
       "question_es": "Tras un cambio regulatorio, lo que el negocio llamaba «cliente moroso» pasa a llamarse «cliente en situación de impago» y su definición cambia (antes 30 días, ahora 90). El código usa `DelinquentCustomer` en 40 sitios. ¿Qué hace un equipo que practica DDD?",
       "question_en": "After a regulatory change, what the business called a \"delinquent customer\" becomes a \"customer in default\" and its definition changes (was 30 days, now 90). The code uses `DelinquentCustomer` in 40 places. What does a team practising DDD do?",
       "options_es": [
-        "Mantener `DelinquentCustomer` y documentar la equivalencia en el glosario, para no arriesgar una refactorización amplia",
+        "Mantener `DelinquentCustomer` y documentar la equivalencia en el glosario del equipo, para no arriesgar una refactorización amplia del código existente confiando en que, con el tiempo, todo el equipo termine memorizando por su cuenta la equivalencia entre ambos nombres",
         "Renombrar en el código, los eventos y las pruebas junto con el cambio de regla, tratando el renombrado como parte del cambio de dominio y no como una tarea opcional de limpieza",
-        "Cambiar sólo la constante de 30 a 90 días, ya que el nombre es un detalle cosmético",
-        "Añadir `CustomerInDefault` como alias que herede de `DelinquentCustomer`, conservando ambos nombres"
+        "Cambiar únicamente la constante de 30 a 90 días, ya que el nombre de la clase es en el fondo un detalle puramente cosmético del código",
+        "Añadir `CustomerInDefault` como un alias nuevo que hereda de `DelinquentCustomer`, conservando así ambos nombres dentro del mismo sistema"
       ],
       "options_en": [
-        "Keep `DelinquentCustomer` and document the equivalence in the glossary, to avoid risking a broad refactor",
+        "Keep `DelinquentCustomer` and document the equivalence in the team's glossary, to avoid risking a broad refactor across the existing codebase, trusting that, over time, the whole team will eventually just memorise the equivalence between both names",
         "Rename in code, events and tests along with the rule change, treating the rename as part of the domain change rather than an optional cleanup task",
-        "Change only the constant from 30 to 90 days, since the name is a cosmetic detail",
-        "Add `CustomerInDefault` as an alias inheriting from `DelinquentCustomer`, keeping both names"
+        "Change only the constant from 30 to 90 days, since the class name is, at bottom, a purely cosmetic detail of the underlying code",
+        "Add `CustomerInDefault` as a new alias that inherits from `DelinquentCustomer`, keeping both names around inside the very same system"
       ],
       "correct_index": 1,
       "explanation_es": "El lenguaje ubicuo obliga a que el código siga hablando el idioma actual del negocio: si el término y su definición cambian, el renombrado forma parte del cambio, igual que la constante. Dejar el nombre viejo con una nota en el glosario es la opción que más equipos eligen y la que crea deuda de comprensión: seis meses después nadie recuerda el mapeo, y un desarrollador nuevo aplica la intuición del nombre antiguo al leer la regla nueva. El alias por herencia es peor aún, porque perpetua los dos vocabularios dentro del mismo contexto y añade una jerarquía que no modela nada del dominio. Cambiar sólo la constante es el error más sutil: el código quedaría técnicamente correcto y semánticamente mentiroso, que es la forma más cara de equivocarse.",

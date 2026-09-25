@@ -8,16 +8,16 @@
       "question_es": "Uno de los principios centrales de una arquitectura de microservicios es que cada servicio debe:",
       "question_en": "One of the core principles of a microservices architecture is that each service should:",
       "options_es": [
-        "ejecutarse siempre en el mismo proceso que los demás servicios",
-        "compartir una única base de datos con todos los demás servicios para mantener consistencia",
+        "compartir su base de datos relacional con los demas servicios del sistema para simplificar las consultas conjuntas",
+        "esperar a que todos los demas servicios respondan correctamente antes de aceptar y procesar cualquier petición",
         "poseer su propio modelo de datos y ser desplegable de forma independiente de los demás servicios",
-        "depender de que todos los demás servicios estén disponibles para arrancar"
+        "delegar toda su lógica de negocio en un único servicio central que la ejecute en su nombre cuando haga falta"
       ],
       "options_en": [
-        "always run in the same process as the other services",
-        "share a single database with all other services to maintain consistency",
+        "share its relational database with the other services in the system to simplify joint queries across them",
+        "wait for every other service to respond successfully before it accepts and processes any incoming request",
         "own its own data model and be independently deployable from the other services",
-        "depend on every other service being available in order to start"
+        "delegate all its business logic to a single central service that runs it on its behalf whenever needed"
       ],
       "correct_index": 2,
       "explanation_es": "Los microservicios se organizan en torno a capacidades de negocio, con su propio almacenamiento de datos y ciclo de despliegue independiente, permitiendo escalar y evolucionar cada servicio por separado.",
@@ -62,15 +62,15 @@
       "question_es": "¿Cuál es la principal desventaja de la comunicación síncrona (p.ej. REST/gRPC petición-respuesta) entre microservicios frente a la comunicación asíncrona vía mensajería?",
       "question_en": "What is the main drawback of synchronous communication (e.g. REST/gRPC request-response) between microservices compared to asynchronous messaging?",
       "options_es": [
-        "Requiere obligatoriamente un balanceador de carga",
-        "Es imposible de implementar con HTTP/2",
-        "No permite pasar datos estructurados como JSON",
+        "Obliga a cifrar cada petición con TLS mutuo entre los servicios implicados, lo que ralentiza notablemente cada llamada realizada",
+        "Impide que el servicio llamado escale de forma independiente del llamador, ya que ambos deben desplegarse siempre juntos en pareja, lo que en la práctica anula cualquier beneficio de escalado independiente que se buscaba",
+        "Multiplica el número de bases de datos distintas que cada servicio debe mantener y sincronizar entre si",
         "Acopla temporalmente a los servicios: si el servicio llamado está caído o lento, el llamador también se bloquea o falla, propagando el problema en cascada"
       ],
       "options_en": [
-        "It mandatorily requires a load balancer",
-        "It's impossible to implement over HTTP/2",
-        "It cannot pass structured data like JSON",
+        "It forces mutual TLS encryption on every request between the services involved, noticeably slowing every single call down",
+        "It prevents the called service from scaling independently of the caller, since both must always be deployed together as a pair, which in practice cancels out any independent-scaling benefit that was being sought",
+        "It multiplies the number of distinct databases each service must maintain and keep synchronized with the others",
         "It temporally couples the services: if the called service is down or slow, the caller also blocks or fails, propagating the problem in cascade"
       ],
       "correct_index": 3,
@@ -92,15 +92,15 @@
       "question_en": "What is the main role of an API Gateway in a microservices architecture?",
       "options_es": [
         "Actuar como punto de entrada único que enruta peticiones a los microservicios internos, y centralizar preocupaciones transversales como autenticación, rate limiting y logging",
-        "Almacenar los datos de todos los microservicios en una sola base de datos",
-        "Compilar el código de todos los servicios en un único binario",
-        "Reemplazar la necesidad de tener un balanceador de carga interno"
+        "Ejecutar la lógica de negocio de todos los microservicios internos dentro de un único proceso compartido y síncrono central",
+        "Sustituir por completo el mecanismo de service discovery, ya que el gateway conoce de antemano todas las direcciones fijas del sistema entero, lo que evita tener que registrar o eliminar ninguna instancia nueva jamas",
+        "Persistir en su propia base de datos una copia actualizada de los datos de cada uno de los microservicios internos, duplicando así el trabajo de mantener consistente cada copia guardada"
       ],
       "options_en": [
         "Act as the single entry point that routes requests to the internal microservices, and centralize cross-cutting concerns like authentication, rate limiting and logging",
-        "Store the data of all microservices in a single database",
-        "Compile the code of all services into a single binary",
-        "Replace the need for an internal load balancer"
+        "Running the business logic of every internal microservice inside a single shared, synchronous central process",
+        "Fully replacing the whole service discovery mechanism, since the gateway already knows every fixed address in the entire system in advance, which avoids ever having to register or remove any new instance at all",
+        "Persisting an up-to-date copy of every internal microservice's data inside the gateway's own database, thereby duplicating the work of keeping each stored copy consistent"
       ],
       "correct_index": 0,
       "explanation_es": "El API Gateway centraliza el enrutamiento hacia los servicios internos y las preocupaciones transversales (auth, rate limiting, agregación de respuestas, logging), simplificando el contrato expuesto a los clientes externos.",
@@ -145,16 +145,16 @@
       "question_es": "En \"client-side service discovery\", ¿quién es responsable de consultar el registro de servicios y elegir una instancia concreta a la que llamar?",
       "question_en": "In \"client-side service discovery\", who is responsible for querying the service registry and choosing a specific instance to call?",
       "options_es": [
-        "Un proxy de red externo, sin que el cliente lo sepa",
+        "El gateway de la API, que intercepta cada llamada saliente antes de que abandone el proceso del propio cliente",
         "El propio cliente (o su librería de comunicación), que consulta el registro y aplica balanceo de carga",
-        "El sistema operativo del host",
-        "La base de datos del servicio destino"
+        "El registro de servicios, que empuja de forma activa la instancia ya elegida directamente hacia el cliente final",
+        "El balanceador de carga del lado del servidor, situado siempre delante del propio servicio destino que se llama"
       ],
       "options_en": [
-        "An external network proxy, without the client's knowledge",
+        "The API gateway, which intercepts every outgoing call before it ever leaves the client's own process",
         "The client itself (or its communication library), which queries the registry and applies load balancing",
-        "The host's operating system",
-        "The target service's database"
+        "The service registry, which actively pushes the already-chosen instance straight out to the final client",
+        "The server-side load balancer, always positioned in front of the destination service being called"
       ],
       "correct_index": 1,
       "explanation_es": "En client-side discovery, el cliente consulta directamente el registro de servicios (p.ej. Eureka, Consul) y decide con qué instancia comunicarse, a menudo aplicando balanceo de carga en el propio cliente.",

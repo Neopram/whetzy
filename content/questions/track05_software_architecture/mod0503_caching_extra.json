@@ -9,15 +9,15 @@
       "question_en": "In the \"cache-aside\" (lazy loading) strategy, what happens on a \"cache miss\"?",
       "options_es": [
         "La aplicación lee el dato desde la base de datos, lo devuelve al cliente y además lo escribe en la caché para futuras peticiones",
-        "La petición falla inmediatamente sin consultar la base de datos",
-        "La caché se autorrellena de forma proactiva antes de que se solicite el dato",
-        "El sistema bloquea todas las escrituras hasta refrescar la caché completa"
+        "La petición falla de forma inmediata sin llegar nunca a consultar la base de datos que la originó, un comportamiento útil para proteger la base de datos ante sobrecargas",
+        "La cache se rellena de forma proactiva y automática antes de que nadie llegue a solicitar el dato correspondiente",
+        "El sistema bloquea todas las escrituras nuevas hasta que se refresca la cache entera por completo"
       ],
       "options_en": [
         "The application reads the data from the database, returns it to the client, and also writes it to the cache for future requests",
-        "The request fails immediately without querying the database",
-        "The cache proactively fills itself before the data is requested",
-        "The system blocks all writes until the whole cache is refreshed"
+        "The request fails immediately without ever once querying the database it originally came from, a behavior useful to protect the database against sudden overload spikes",
+        "The cache proactively and automatically fills itself before anyone ever gets to request the corresponding data",
+        "The system blocks every new write until the entire cache has been refreshed completely first"
       ],
       "correct_index": 0,
       "explanation_es": "En cache-aside, la aplicación consulta primero la caché; si no está el dato (miss), lo obtiene de la fuente de verdad (BD) y lo almacena en caché antes de responder, para que la siguiente lectura sea un \"hit\".",
@@ -62,15 +62,15 @@
       "question_es": "¿Qué estructura de datos de Redis es más adecuada para implementar un ranking (leaderboard) ordenado por puntuación?",
       "question_en": "Which Redis data structure is best suited for implementing a leaderboard ordered by score?",
       "options_es": [
-        "List",
-        "String",
-        "Hash",
+        "Pub/Sub con canales dedicados",
+        "Contador incremental simple",
+        "Bitfield de banderas",
         "Sorted Set (ZSET)"
       ],
       "options_en": [
-        "List",
-        "String",
-        "Hash",
+        "Pub/Sub with dedicated channels",
+        "A simple incremental counter",
+        "Bitfield of flags",
         "Sorted Set (ZSET)"
       ],
       "correct_index": 3,
@@ -121,15 +121,15 @@
       "question_en": "What is the main benefit of serving static content through a CDN (Content Delivery Network)?",
       "options_es": [
         "Reduce la latencia sirviendo el contenido desde un servidor (edge) geográficamente cercano al usuario, y descarga tráfico del servidor de origen",
-        "Elimina por completo la necesidad de un servidor de origen",
-        "Garantiza consistencia fuerte en todas las regiones",
-        "Cifra automáticamente todo el contenido servido"
+        "Sustituye por completo la necesidad de mantener cualquier servidor de origen, para todo tipo de contenido, sea estático o generado de forma dinámica en cada petición",
+        "Garantiza consistencia fuerte de los datos entre todas las regiones geográficas del planeta en cada lectura",
+        "Cifra de forma automática y transparente absolutamente todo el contenido que atraviesa cualquiera de sus nodos"
       ],
       "options_en": [
         "It reduces latency by serving content from a geographically nearby (edge) server, and offloads traffic from the origin server",
-        "It completely eliminates the need for an origin server",
-        "It guarantees strong consistency across all regions",
-        "It automatically encrypts all served content"
+        "It completely removes the need to keep any origin server at all, for every kind of content, whether static or dynamically generated on each request",
+        "It guarantees strong data consistency across every geographic region on the planet on every read",
+        "It automatically and transparently encrypts absolutely all content passing through any of its nodes"
       ],
       "correct_index": 0,
       "explanation_es": "Una CDN replica el contenido en servidores \"edge\" distribuidos geográficamente, de modo que la petición del usuario se sirve desde el nodo más cercano, reduciendo latencia de red y aliviando la carga del servidor de origen.",

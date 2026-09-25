@@ -7,15 +7,15 @@
     "question_es": "¿Qué es la inyección SQL?",
     "question_en": "What is SQL injection?",
     "options_es": [
-      "Un protocolo de comunicación segura",
-      "Un método para optimizar consultas SQL",
-      "Una técnica para encriptar bases de datos",
+      "Un ataque donde el servidor web es forzado a ejecutar comandos del sistema operativo subyacente",
+      "Un ataque donde se roban las credenciales de la base de datos mediante fuerza bruta contra el puerto SQL",
+      "Un ataque donde el atacante intercepta las consultas SQL en tránsito entre la aplicación y el motor de almacenamiento",
       "Un ataque donde un atacante inserta código SQL malicioso en campos de entrada"
     ],
     "options_en": [
-      "A secure communication protocol",
-      "A method for optimizing SQL queries",
-      "A technique for encrypting databases",
+      "An attack where the underlying operating system is forced to execute arbitrary commands via the web server",
+      "An attack where database credentials are stolen through brute force against the SQL port",
+      "An attack where the attacker intercepts SQL queries in transit between the application and the storage engine",
       "An attack where an attacker inserts malicious SQL code into input fields"
     ],
     "correct_index": 3,
@@ -34,15 +34,15 @@
     "question_es": "¿Cuál es la diferencia entre XSS reflejado y XSS almacenado?",
     "question_en": "What is the difference between reflected XSS and stored XSS?",
     "options_es": [
-      "No hay diferencia, ambos son idénticos",
-      "El XSS reflejado es más peligroso que el almacenado",
-      "El XSS almacenado es más fácil de detectar",
+      "El XSS reflejado se ejecuta solo en el servidor; el almacenado se ejecuta únicamente en el navegador propio del atacante",
+      "El XSS reflejado requiere HTTPS para funcionar; el almacenado solo funciona sobre conexiones HTTP sin cifrar",
+      "El XSS reflejado modifica la base de datos permanentemente; el almacenado no deja ningún rastro persistente",
       "El XSS reflejado afecta solo al usuario actual; el almacenado afecta a todos los usuarios que ven el contenido"
     ],
     "options_en": [
-      "There is no difference, both are identical",
-      "Reflected XSS is more dangerous than stored XSS",
-      "Stored XSS is easier to detect",
+      "Reflected XSS executes on the server; stored XSS executes only in the attacker's own browser",
+      "Reflected XSS requires HTTPS to work; stored XSS only works over unencrypted HTTP connections",
+      "Reflected XSS permanently modifies the database; stored XSS leaves no persistent trace at all",
       "Reflected XSS affects only the current user; stored XSS affects all users who view the content"
     ],
     "correct_index": 3,
@@ -61,16 +61,16 @@
     "question_es": "¿Cuál es el propósito principal del token CSRF en una aplicación web?",
     "question_en": "What is the main purpose of a CSRF token in a web application?",
     "options_es": [
-      "Autenticar usuarios en la aplicación",
-      "Encriptar datos en tránsito",
+      "Cifrar el cuerpo de cada solicitud HTTP para que no pueda ser leído por un proxy intermedio",
+      "Impedir que el navegador almacene cookies de sesión más allá de la duración de la pestaña activa",
       "Proteger contra ataques de falsificación de solicitud entre sitios",
-      "Acelerar la carga de la página"
+      "Acelerar la carga de formularios evitando reenviar los mismos campos en cada petición"
     ],
     "options_en": [
-      "Authenticate users in the application",
-      "Encrypt data in transit",
+      "Encrypt the body of every HTTP request so it cannot be read by an intermediate proxy",
+      "Prevent the browser from storing session cookies beyond the lifetime of the active tab",
       "Protect against cross-site request forgery attacks",
-      "Speed up page loading"
+      "Speed up form loading by avoiding resending the same fields on every request"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -169,16 +169,16 @@
     "question_es": "¿Cuál es el riesgo principal del XSS almacenado comparado con otras formas de XSS?",
     "question_en": "What is the main risk of stored XSS compared to other forms of XSS?",
     "options_es": [
-      "Solo afecta al servidor",
+      "Solo puede explotarse si la víctima hace clic en un enlace manipulado enviado por el atacante",
       "Afecta a múltiples usuarios y es difícil de detectar y remediar",
-      "Es imposible de detectar",
-      "No es más peligroso que otras formas de XSS"
+      "Requiere que el atacante tenga acceso previo a la base de datos del servidor vulnerable",
+      "Se ejecuta exclusivamente en navegadores antiguos que no soportan Content Security Policy"
     ],
     "options_en": [
-      "It only affects the server",
+      "It can only be exploited if the victim clicks a crafted link sent by the attacker",
       "It affects multiple users and is difficult to detect and remediate",
-      "It is impossible to detect",
-      "It is not more dangerous than other forms of XSS"
+      "It requires the attacker to already have access to the vulnerable server's database",
+      "It only executes in outdated browsers that do not support Content Security Policy"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -197,15 +197,15 @@
     "question_en": "What is SSRF (Server-Side Request Forgery)?",
     "options_es": [
       "Un ataque donde el servidor es forzado a hacer solicitudes HTTP a sistemas internos o externos",
-      "Un ataque dirigido únicamente a clientes",
-      "Un método de encriptación de datos",
-      "Una técnica de compresión de archivos"
+      "Un ataque donde se falsifica la cabecera Referer para engañar a los sistemas de análisis de tráfico",
+      "Un ataque donde el cliente envía solicitudes HTTP duplicadas para saturar el servidor de destino",
+      "Un ataque donde se modifica la respuesta HTTP en tránsito entre el servidor y el navegador"
     ],
     "options_en": [
       "An attack where the server is forced to make HTTP requests to internal or external systems",
-      "An attack directed only at clients",
-      "A method of data encryption",
-      "A file compression technique"
+      "An attack where the Referer header is spoofed to deceive traffic analysis systems",
+      "An attack where the client sends duplicate HTTP requests to flood the destination server",
+      "An attack where the HTTP response is modified in transit between the server and the browser"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -250,15 +250,15 @@
     "question_es": "¿Qué es la inseguridad en la deserialización?",
     "question_en": "What is insecure deserialization?",
     "options_es": [
-      "Un método para cifrar datos",
-      "Un protocolo de red seguro",
-      "Una técnica para comprimir archivos",
+      "Una vulnerabilidad donde las contraseñas del usuario se almacenan sin cifrar dentro del propio objeto de sesión serializado en disco",
+      "Una vulnerabilidad donde el formato JSON permite ejecutar consultas SQL directamente sobre la base de datos",
+      "Una vulnerabilidad que ocurre solo cuando se serializan archivos binarios de más de un gigabyte de tamaño",
       "Una vulnerabilidad donde objetos no confiables se convierten de un formato serializado a objetos de código sin validación"
     ],
     "options_en": [
-      "A method for encrypting data",
-      "A secure network protocol",
-      "A technique for compressing files",
+      "A vulnerability where passwords are stored unencrypted inside the user's serialized session object",
+      "A vulnerability where the JSON format allows SQL queries to be executed directly against the database",
+      "A vulnerability that only occurs when binary files larger than one gigabyte are serialized",
       "A vulnerability where untrusted objects are converted from a serialized format to code objects without validation"
     ],
     "correct_index": 3,
@@ -277,16 +277,16 @@
     "question_es": "¿Qué es un ataque de inyección SQL de unión (UNION-based)?",
     "question_en": "What is a union-based SQL injection attack?",
     "options_es": [
-      "Un ataque que usa solo una consulta SELECT",
-      "Un método para encriptar consultas SQL",
+      "Un ataque que modifica permanentemente el esquema de la tabla añadiendo columnas nuevas mediante ALTER TABLE",
+      "Un ataque que elimina todas las filas de una tabla usando repetidamente la cláusula DELETE sin condición",
       "Un ataque que combina resultados de múltiples consultas SELECT usando la cláusula UNION",
-      "Un protocolo de seguridad de base de datos"
+      "Un ataque que bloquea la base de datos entera solicitando de forma simultánea miles de transacciones abiertas"
     ],
     "options_en": [
-      "An attack that uses only one SELECT query",
-      "A method for encrypting SQL queries",
+      "An attack that permanently alters the table schema by adding new columns via ALTER TABLE",
+      "An attack that deletes every row of a table by repeatedly issuing an unconditioned DELETE clause",
       "An attack that combines results of multiple SELECT queries using the UNION clause",
-      "A database security protocol"
+      "An attack that locks the entire database by simultaneously requesting thousands of open transactions"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -331,16 +331,16 @@
     "question_es": "¿Cuál es la diferencia entre un ataque de inyección SQL ciego (blind) y un ataque de inyección SQL basado en error (error-based)?",
     "question_en": "What is the difference between blind SQL injection and error-based SQL injection?",
     "options_es": [
-      "No hay diferencia",
+      "Blind requiere acceso físico previo al servidor de base de datos; error-based se ejecuta completamente a distancia sin ese requisito",
       "Blind utiliza retrasos de tiempo o respuestas booleanas; error-based extrae datos de mensajes de error del servidor",
-      "Error-based es más común",
-      "Blind es más peligroso que error-based"
+      "Blind solo funciona contra bases de datos NoSQL; error-based solo funciona contra bases de datos relacionales",
+      "Blind modifica los datos almacenados; error-based únicamente permite leer datos sin alterarlos nunca"
     ],
     "options_en": [
-      "There is no difference",
+      "Blind requires physical access to the database server; error-based runs entirely remotely instead",
       "Blind uses time delays or boolean responses; error-based extracts data from server error messages",
-      "Error-based is more common",
-      "Blind is more dangerous than error-based"
+      "Blind only works against NoSQL databases; error-based only works against relational databases",
+      "Blind modifies the stored data; error-based only ever allows reading data without altering it"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -359,15 +359,15 @@
     "question_en": "How does Content Security Policy (CSP) protect against XSS?",
     "options_es": [
       "CSP especifica qué fuentes de contenido pueden ser cargadas y ejecutadas, previniendo la ejecución de scripts inline no autorizados",
-      "CSP cifra todos los datos en tránsito",
-      "CSP valida todos los datos en el servidor",
-      "CSP no ofrece protección contra XSS"
+      "CSP cifra automáticamente todo el contenido de la página en el servidor antes de enviarlo al navegador del cliente final, sin depender de HTTPS",
+      "CSP bloquea las cookies de terceros a nivel de red, sin intervenir en la ejecución de scripts de la página",
+      "CSP reemplaza la validación de entrada del servidor, delegando todo el filtrado de datos al navegador"
     ],
     "options_en": [
       "CSP specifies which content sources can be loaded and executed, preventing unauthorized inline script execution",
-      "CSP encrypts all data in transit",
-      "CSP validates all data on the server",
-      "CSP does not provide protection against XSS"
+      "CSP automatically encrypts all page content on the server before it is sent to the client's final browser, without relying on HTTPS",
+      "CSP blocks third-party cookies at the network level, without intervening in the page's script execution",
+      "CSP replaces server-side input validation, delegating all data filtering to the browser instead"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -385,16 +385,16 @@
     "question_es": "¿Cuál es el principal problema de seguridad con las misconfiguración de seguridad (security misconfiguration)?",
     "question_en": "What is the main security problem with security misconfiguration?",
     "options_es": [
-      "Solo afecta a servidores antiguos",
-      "Es un problema menor",
+      "Usar un algoritmo de cifrado obsoleto como MD5 para proteger las contraseñas almacenadas en la base de datos del sistema en producción",
+      "Permitir que los usuarios elijan contraseñas demasiado cortas durante el proceso de registro inicial de la cuenta, sin exigir ningún mínimo de complejidad obligatorio",
       "Dejar valores por defecto inseguros, credenciales por defecto, servicios innecesarios habilitados o características de depuración activas en producción",
-      "No es considerado una amenaza seria"
+      "No renovar los certificados TLS del servidor antes de que expiren, interrumpiendo el servicio web para todos los usuarios conectados en ese momento"
     ],
     "options_en": [
-      "It only affects legacy servers",
-      "It is a minor problem",
+      "Using an obsolete algorithm such as MD5 to protect passwords stored in the system's production database",
+      "Allowing users to choose passwords that are too short during initial account registration, without requiring a minimum complexity",
       "Leaving insecure default values, default credentials, unnecessary services enabled, or debug features active in production",
-      "It is not considered a serious threat"
+      "Failing to renew the server's TLS certificates before they expire, interrupting the web service for every user connected at that moment"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -412,16 +412,16 @@
     "question_es": "¿Qué es el session hijacking o secuestro de sesión?",
     "question_en": "What is session hijacking?",
     "options_es": [
-      "Una técnica de encriptación",
-      "Un método para acelerar sesiones",
+      "Un ataque donde el atacante crea una cuenta nueva usando las credenciales filtradas de otro usuario",
+      "Un ataque donde el atacante intercepta el tráfico HTTPS descifrando la clave privada del servidor",
       "Un ataque donde el atacante roba o adivina la ID de sesión de un usuario autenticado",
-      "Un protocolo de comunicación"
+      "Un ataque donde el atacante fuerza el cierre de sesión de todos los usuarios conectados simultáneamente"
     ],
     "options_en": [
-      "An encryption technique",
-      "A method to speed up sessions",
+      "An attack where the attacker creates a new account using another user's leaked credentials",
+      "An attack where the attacker intercepts HTTPS traffic by decrypting the server's private key",
       "An attack where the attacker steals or guesses an authenticated user's session ID",
-      "A communication protocol"
+      "An attack where the attacker forces every currently connected user to log out simultaneously"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -466,16 +466,16 @@
     "question_es": "¿Cuál es el propósito de la bandera Secure en una cookie?",
     "question_en": "What is the purpose of the Secure flag on a cookie?",
     "options_es": [
-      "Limitar el acceso a la cookie a ciertos dominios",
+      "Impedir que la cookie sea leída por JavaScript en el navegador del cliente",
       "Asegurar que la cookie solo se envíe sobre conexiones HTTPS cifradas",
-      "Asegurar que la cookie nunca expire",
-      "Proteger la cookie contra XSS"
+      "Garantizar que la cookie expire automáticamente tras cerrar la pestaña del navegador",
+      "Restringir la cookie para que solo se envíe en solicitudes originadas por el mismo sitio"
     ],
     "options_en": [
-      "Limit cookie access to certain domains",
+      "Prevent the cookie from being read by JavaScript in the client's browser",
       "Ensure that the cookie is only sent over encrypted HTTPS connections",
-      "Ensure that the cookie never expires",
-      "Protect the cookie against XSS"
+      "Guarantee that the cookie automatically expires when the browser tab is closed",
+      "Restrict the cookie so it is only sent on requests originating from the same site"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -493,16 +493,16 @@
     "question_es": "¿Qué es la autenticación multifactor (MFA)?",
     "question_en": "What is multi-factor authentication (MFA)?",
     "options_es": [
-      "Un protocolo de red",
-      "Un método que usa solo contraseña",
+      "Un método de autenticación que requiere que el usuario introduzca la misma contraseña dos veces seguidas",
+      "Un método de autenticación que permite iniciar sesión simultáneamente desde varios dispositivos distintos",
       "Un método de autenticación que requiere dos o más factores diferentes para verificar la identidad del usuario",
-      "Un tipo de cifrado"
+      "Un método de autenticación que sustituye la contraseña por una pregunta de seguridad memorizada previamente por el usuario"
     ],
     "options_en": [
-      "A network protocol",
-      "A method that uses only password",
+      "An authentication method that requires the user to enter the same password twice in a row",
+      "An authentication method that allows logging in simultaneously from several different devices",
       "An authentication method that requires two or more different factors to verify the user's identity",
-      "A type of encryption"
+      "An authentication method that replaces the password with a memorized security question"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -520,15 +520,15 @@
     "question_es": "¿Cuál es la diferencia entre autenticación y autorización?",
     "question_en": "What is the difference between authentication and authorization?",
     "options_es": [
-      "La autenticación es un tipo de autorización",
-      "Ambos términos significan lo mismo",
-      "Autorización es más importante que autenticación",
+      "Autenticación cifra los datos en tránsito; autorización cifra los datos en reposo dentro de la base de datos",
+      "Autenticación se aplica solo a usuarios humanos; autorización se aplica solo a servicios automatizados",
+      "Autenticación depende del navegador utilizado; autorización depende del sistema operativo del cliente",
       "Autenticación verifica quién eres; autorización determina qué puedes hacer"
     ],
     "options_en": [
-      "Authentication is a type of authorization",
-      "Both terms mean the same thing",
-      "Authorization is more important than authentication",
+      "Authentication encrypts data in transit; authorization encrypts data at rest inside the database",
+      "Authentication applies only to human users; authorization applies only to automated services",
+      "Authentication depends on the browser being used; authorization depends on the client's operating system",
       "Authentication verifies who you are; authorization determines what you can do"
     ],
     "correct_index": 3,
@@ -547,16 +547,16 @@
     "question_es": "¿Qué es un JWT (JSON Web Token) y cuál es su vulnerabilidad común?",
     "question_en": "What is a JWT (JSON Web Token) and what is its common vulnerability?",
     "options_es": [
-      "Un método de encriptación de contraseñas",
-      "Un protocolo de comunicación",
+      "Un token que se almacena en el servidor central y expira automáticamente tras cada solicitud individual del cliente",
+      "Un token cifrado que solo puede ser leído por el servidor que lo emitió originalmente",
       "Un token sin estado para autenticación; la vulnerabilidad común es no verificar la firma del token en el servidor",
-      "Un tipo de base de datos"
+      "Un token de un solo uso que se invalida automáticamente después de la primera solicitud exitosa"
     ],
     "options_en": [
-      "A method of password encryption",
-      "A communication protocol",
+      "A token stored on the server that automatically expires after each individual request",
+      "An encrypted token that can only be read by the server that originally issued it",
       "A stateless token for authentication; the common vulnerability is failing to verify the token signature on the server",
-      "A type of database"
+      "A single-use token that automatically becomes invalid after the first successful request"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -601,15 +601,15 @@
     "question_es": "¿Qué es OAuth 2.0 y cuál es su principal caso de uso?",
     "question_en": "What is OAuth 2.0 and what is its primary use case?",
     "options_es": [
-      "Un estándar de base de datos",
-      "Un protocolo de encriptación",
-      "Un método para hacer copias de seguridad",
+      "Un protocolo de cifrado que protege exclusivamente las contraseñas almacenadas en la base de datos del proveedor de identidad",
+      "Un estándar de hashing que reemplaza a bcrypt para el almacenamiento seguro de credenciales",
+      "Un protocolo de transporte que sustituye a HTTPS para las comunicaciones entre cliente y servidor",
       "Un protocolo de autorización que permite a los usuarios otorgar acceso a sus recursos sin compartir contraseñas"
     ],
     "options_en": [
-      "A database standard",
-      "An encryption protocol",
-      "A backup method",
+      "An encryption protocol that protects passwords stored in the provider's database",
+      "A hashing standard that replaces bcrypt for securely storing credentials",
+      "A transport protocol that replaces HTTPS for communications between client and server",
       "An authorization protocol that allows users to grant access to their resources without sharing passwords"
     ],
     "correct_index": 3,
@@ -683,15 +683,15 @@
     "question_en": "How does a brute force attack work against a web application and what is the recommended defense?",
     "options_es": [
       "El atacante intenta múltiples combinaciones de usuario/contraseña; la defensa es limitar intentos fallidos, implementar exponential backoff o CAPTCHA",
-      "El atacante roba cookies de sesión",
-      "El atacante usa inyección SQL",
-      "No hay defensa efectiva contra ataques de fuerza bruta"
+      "El atacante explota una vulnerabilidad de inyección SQL en el propio formulario de login; la defensa es parametrizar todas las consultas a la base de datos",
+      "El atacante intercepta el tráfico de login sin cifrar; la defensa es forzar HTTPS en todo el sitio web",
+      "El atacante reutiliza cookies de sesión robadas de otro usuario; la defensa es regenerar la ID de sesión tras el login"
     ],
     "options_en": [
       "The attacker tries multiple username/password combinations; the defense is to limit failed attempts, implement exponential backoff, or CAPTCHA",
-      "The attacker steals session cookies",
-      "The attacker uses SQL injection",
-      "There is no effective defense against brute force attacks"
+      "The attacker exploits a SQL injection flaw in the login form itself; the defense is to parameterize every query sent to the database",
+      "The attacker intercepts unencrypted login traffic; the defense is to force HTTPS across the entire website",
+      "The attacker reuses session cookies stolen from another user; the defense is to regenerate the session ID after login"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -709,16 +709,16 @@
     "question_es": "¿Cuál es el riesgo de seguridad de usar tokens JWT sin expiración?",
     "question_en": "What is the security risk of using JWT tokens without expiration?",
     "options_es": [
-      "Es más seguro que tokens con expiración",
+      "El servidor no puede firmar el token correctamente, provocando que toda autenticación falle de inmediato",
       "Si el token es robado, el atacante puede usarlo indefinidamente sin límite de tiempo",
-      "Los JWT siempre tienen expiración automática",
-      "No hay riesgo"
+      "El token ocupa más espacio en la cabecera HTTP, ralentizando cada solicitud del cliente",
+      "El usuario debe volver a introducir su contraseña en cada solicitud porque el token nunca se valida"
     ],
     "options_en": [
-      "It is more secure than tokens with expiration",
+      "The server cannot sign the token correctly, causing every authentication attempt to fail immediately",
       "If the token is stolen, the attacker can use it indefinitely without time limits",
-      "JWTs always have automatic expiration",
-      "There is no risk"
+      "The token takes up more space in the HTTP header, slowing down every client request",
+      "The user must re-enter their password on every request because the token is never validated"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -736,15 +736,15 @@
     "question_es": "¿Qué es OpenID Connect (OIDC) y cómo se diferencia de OAuth 2.0?",
     "question_en": "What is OpenID Connect (OIDC) and how does it differ from OAuth 2.0?",
     "options_es": [
-      "OIDC no usa OAuth 2.0",
-      "OIDC y OAuth 2.0 son lo mismo",
-      "OIDC es más antiguo que OAuth 2.0",
+      "OIDC es un protocolo de cifrado totalmente independiente que reemplaza por completo a OAuth 2.0 en las aplicaciones móviles modernas",
+      "OIDC es una extensión de OAuth 2.0 que elimina la necesidad de tokens de acceso para las llamadas a la API",
+      "OIDC es una versión anterior de OAuth 2.0 mantenida solo por compatibilidad con sistemas heredados",
       "OIDC es una capa de autenticación construida sobre OAuth 2.0 que proporciona información sobre la identidad del usuario"
     ],
     "options_en": [
-      "OIDC does not use OAuth 2.0",
-      "OIDC and OAuth 2.0 are the same",
-      "OIDC is older than OAuth 2.0",
+      "OIDC is a standalone encryption protocol that fully replaces OAuth 2.0 in mobile applications",
+      "OIDC is an OAuth 2.0 extension that removes the need for access tokens on API calls",
+      "OIDC is an earlier version of OAuth 2.0 kept only for compatibility with legacy systems",
       "OIDC is an authentication layer built on top of OAuth 2.0 that provides information about the user's identity"
     ],
     "correct_index": 3,
@@ -764,15 +764,15 @@
     "question_en": "What is session fixation attack and how can it be prevented?",
     "options_es": [
       "Un ataque donde el atacante fuerza a un usuario a usar una ID de sesión conocida; se previene regenerando la ID de sesión tras autenticación",
-      "Un ataque de inyección SQL",
-      "Un ataque de fuerza bruta",
-      "No se puede prevenir este ataque"
+      "Un ataque donde el atacante adivina la ID de sesión probando valores secuenciales predecibles; se previene usando HTTPS en todo el sitio web corporativo",
+      "Un ataque donde el atacante roba la cookie de sesión mediante un script inyectado; se previene marcando la cookie como Secure",
+      "Un ataque donde el atacante mantiene abierta la sesión tras el logout del usuario; se previene cerrando la pestaña del navegador"
     ],
     "options_en": [
       "An attack where the attacker forces a user to use a known session ID; it is prevented by regenerating the session ID after authentication",
-      "A SQL injection attack",
-      "A brute force attack",
-      "This attack cannot be prevented"
+      "An attack where the attacker guesses the session ID by trying predictable sequential values; it is prevented by using HTTPS site-wide",
+      "An attack where the attacker steals the session cookie via an injected script; it is prevented by marking the cookie Secure",
+      "An attack where the attacker keeps the session open after the user logs out; it is prevented by closing the browser tab"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -790,16 +790,16 @@
     "question_es": "¿Cuál es el riesgo de utilizar el mismo secreto para múltiples instancias o usuarios en JWT?",
     "question_en": "What is the risk of using the same secret for multiple instances or users in JWT?",
     "options_es": [
-      "Es más eficiente usar el mismo secreto",
+      "El secreto compartido reduce el rendimiento del servidor al validar cada token de forma individual",
       "Si el secreto se compromete, todos los tokens para todos los usuarios y sistemas se vuelven inválidos y no verificables",
-      "No hay riesgo",
-      "Los JWT usan diferentes secretos automáticamente"
+      "El secreto compartido obliga a cada usuario a autenticarse de nuevo cada vez que otro usuario distinto inicia sesión en el sistema",
+      "El secreto compartido impide usar HTTPS, ya que ambos mecanismos de cifrado entran en conflicto directo"
     ],
     "options_en": [
-      "It is more efficient to use the same secret",
+      "The shared secret reduces server performance because each token must be validated individually",
       "If the secret is compromised, all tokens for all users and systems become invalid and unverifiable",
-      "There is no risk",
-      "JWTs automatically use different secrets"
+      "The shared secret forces every user to reauthenticate whenever another user logs in",
+      "The shared secret prevents using HTTPS, since the two encryption mechanisms directly conflict"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -817,15 +817,15 @@
     "question_es": "¿Cuál es la diferencia entre validación de entrada y sanitización de entrada?",
     "question_en": "What is the difference between input validation and input sanitization?",
     "options_es": [
-      "No hay diferencia importante",
-      "Son lo mismo",
-      "Validación limpia datos; sanitización verifica entrada",
+      "Validación cifra la entrada antes de guardarla; sanitización la descifra al momento de mostrarla",
+      "Validación solo se aplica en el cliente; sanitización solo puede aplicarse en el servidor",
+      "Validación elimina caracteres peligrosos; sanitización rechaza la entrada completa si detecta un error",
       "Validación verifica que la entrada sea correcta; sanitización limpia datos peligrosos"
     ],
     "options_en": [
-      "There is no important difference",
-      "They are the same",
-      "Validation cleans data; sanitization verifies input",
+      "Validation encrypts the input before storing it; sanitization decrypts it when it is displayed",
+      "Validation only applies on the client; sanitization can only be applied on the server",
+      "Validation removes dangerous characters; sanitization rejects the entire input if it detects an error",
       "Validation verifies that input is correct; sanitization removes dangerous data"
     ],
     "correct_index": 3,
@@ -844,16 +844,16 @@
     "question_es": "¿Qué es la validación de entrada con lista blanca (whitelist)?",
     "question_en": "What is whitelist input validation?",
     "options_es": [
-      "Permitir todos los caracteres excepto algunos específicos",
-      "Una lista de usuarios confiables",
+      "Especificar una lista de caracteres y patrones prohibidos, permitiendo todo lo que no aparezca en ella",
+      "Comparar la entrada contra una base de datos de firmas de ataques conocidos antes de procesarla",
       "Especificar exactamente qué caracteres o patrones son permitidos, rechazando todo lo demás",
-      "Un método de encriptación"
+      "Convertir automáticamente cualquier carácter especial recibido en su equivalente codificado en UTF-8"
     ],
     "options_en": [
-      "Allow all characters except specific ones",
-      "A list of trusted users",
+      "Specify a list of forbidden characters and patterns, allowing everything not on that list",
+      "Compare the input against a database of known attack signatures before processing it",
       "Specify exactly what characters or patterns are allowed, rejecting everything else",
-      "An encryption method"
+      "Automatically convert any special character received into its UTF-8 encoded equivalent"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -871,16 +871,16 @@
     "question_es": "¿Cuál es el propósito de html.escape() en Python?",
     "question_en": "What is the purpose of html.escape() in Python?",
     "options_es": [
-      "Comprimir HTML",
+      "Eliminar por completo cualquier etiqueta HTML detectada dentro de la cadena de entrada recibida",
       "Convertir caracteres HTML especiales a entidades HTML para prevenir XSS",
-      "Encriptar HTML",
-      "Validar sintaxis HTML"
+      "Validar que la cadena de entrada corresponda a una URL bien formada antes de procesarla",
+      "Comprimir la cadena de texto reduciendo los espacios en blanco repetidos a un único carácter"
     ],
     "options_en": [
-      "Compress HTML",
+      "Completely remove any HTML tag detected inside the received input string",
       "Convert special HTML characters to HTML entities to prevent XSS",
-      "Encrypt HTML",
-      "Validate HTML syntax"
+      "Validate that the input string corresponds to a well-formed URL before processing it",
+      "Compress the text string by reducing repeated whitespace down to a single character"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -925,16 +925,16 @@
     "question_es": "¿Cuál es la diferencia entre re.match() y re.search() en Python?",
     "question_en": "What is the difference between re.match() and re.search() in Python?",
     "options_es": [
-      "Son lo mismo",
+      "match() busca en toda la cadena; search() busca únicamente al final de la cadena",
       "match() busca solo al inicio; search() busca en cualquier parte",
-      "search() es más lento",
-      "match() busca en todo el texto"
+      "match() devuelve todas las coincidencias encontradas; search() devuelve solo la primera coincidencia",
+      "match() distingue mayúsculas y minúsculas; search() ignora siempre las mayúsculas y minúsculas"
     ],
     "options_en": [
-      "They are the same",
+      "match() searches the whole string; search() searches only at the end of the string",
       "match() searches only at the beginning; search() searches anywhere",
-      "search() is slower",
-      "match() searches the entire text"
+      "match() returns every match found; search() returns only the first match found",
+      "match() is case sensitive; search() always ignores uppercase and lowercase differences"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1092,15 +1092,15 @@
     "question_en": "What is the best practice for validating a list of allowed values?",
     "options_es": [
       "Verificar que la entrada está en una lista predefinida de valores permitidos",
-      "Validar solo con regex",
-      "Confiar en la validación del cliente",
-      "No validar listas de valores"
+      "Comprobar que la entrada no supere una longitud máxima fijada arbitrariamente en el formulario",
+      "Escapar cada carácter especial de la entrada antes de compararla contra la lista permitida",
+      "Registrar en un log cada valor recibido para revisarlo manualmente al final del día"
     ],
     "options_en": [
       "Check that the input is in a predefined list of allowed values",
-      "Validate only with regex",
-      "Rely on client-side validation",
-      "Do not validate lists of values"
+      "Check that the input does not exceed a maximum length set arbitrarily in the form",
+      "Escape every special character in the input before comparing it against the allowed list",
+      "Log every received value so it can be reviewed manually at the end of the day"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1119,15 +1119,15 @@
     "question_en": "What is the problem with using only client-side validation for input?",
     "options_es": [
       "El atacante puede saltarse la validación del cliente enviando solicitudes directas al servidor",
-      "La validación del cliente es siempre suficiente",
-      "No hay riesgo",
-      "JavaScript previene todos los ataques"
+      "La validación del lado del cliente ralentiza demasiado la carga inicial de la página para el usuario",
+      "La validación del lado del cliente no puede aplicarse a formularios que contienen archivos adjuntos",
+      "El navegador del usuario bloquea automáticamente cualquier formulario que use validación del lado del cliente"
     ],
     "options_en": [
       "The attacker can bypass client-side validation by sending direct requests to the server",
-      "Client-side validation is always sufficient",
-      "There is no risk",
-      "JavaScript prevents all attacks"
+      "Client-side validation slows down the page's initial load time too much for the user",
+      "Client-side validation cannot be applied to forms that contain file attachments",
+      "The user's browser automatically blocks any form that uses client-side validation"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1172,16 +1172,16 @@
     "question_es": "¿Cuál es el propósito del encabezado Content-Security-Policy?",
     "question_en": "What is the purpose of the Content-Security-Policy header?",
     "options_es": [
-      "Encriptar datos en tránsito",
+      "Autenticar a los usuarios antes de dejarlos entrar en la sección privada",
       "Especificar qué fuentes de contenido están permitidas para cargar en la página",
-      "Autenticar usuarios",
-      "Comprimir respuestas HTTP"
+      "Restringir qué usuarios pueden iniciar sesión y qué permisos administrativos posee cada uno",
+      "Comprimir las respuestas del servidor para acelerar la carga de la página"
     ],
     "options_en": [
-      "Encrypt data in transit",
+      "Authenticate users before letting them into the private section",
       "Specify which content sources are allowed to load on the page",
-      "Authenticate users",
-      "Compress HTTP responses"
+      "Restrict which users can log in and what administrative permissions each one holds",
+      "Compress the server's responses to speed up how the page loads"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1199,16 +1199,16 @@
     "question_es": "¿Cuál es el propósito del encabezado X-Frame-Options?",
     "question_en": "What is the purpose of the X-Frame-Options header?",
     "options_es": [
-      "Especificar el tamaño del frame",
-      "Cifrar contenido",
+      "Especificar el ancho y el alto máximo permitidos para cualquier iframe embebido",
+      "Comprobar la identidad de quien solicita cargar la página dentro de un iframe",
       "Prevenir que la página sea incrustada en un iframe de un sitio externo",
-      "Validar usuarios"
+      "Cifrar todo el contenido HTML que se transmite dentro de cualquier iframe abierto"
     ],
     "options_en": [
-      "Specify the frame size",
-      "Encrypt content",
+      "Specify the maximum width and height allowed for any embedded iframe",
+      "Verify the identity of whoever requests to load the page inside an iframe",
       "Prevent the page from being embedded in an iframe from an external site",
-      "Validate users"
+      "Encrypt all of the HTML content transmitted inside any open iframe"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1226,16 +1226,16 @@
     "question_es": "¿Cuál es el propósito del encabezado Strict-Transport-Security?",
     "question_en": "What is the purpose of the Strict-Transport-Security header?",
     "options_es": [
-      "Validar certificados SSL",
-      "Encriptar datos en tránsito",
+      "Comprobar que el certificado del servidor siga vigente y no expire",
+      "Cifrar el cuerpo de cada petición y respuesta HTTP intercambiada",
       "Asegurar que todos los navegadores conecten solo con HTTPS",
-      "Comprimir respuestas"
+      "Reducir el tamaño de las respuestas del servidor antes de enviarlas"
     ],
     "options_en": [
-      "Validate SSL certificates",
-      "Encrypt data in transit",
+      "Check that the server's certificate is still valid and not expired",
+      "Encrypt the body of every HTTP request and response exchanged",
       "Ensure that all browsers connect only with HTTPS",
-      "Compress responses"
+      "Reduce the size of the server's responses before they are sent"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1253,16 +1253,16 @@
     "question_es": "¿Cuál es el propósito de X-Content-Type-Options: nosniff?",
     "question_en": "What is the purpose of X-Content-Type-Options: nosniff?",
     "options_es": [
-      "Validar usuarios",
-      "Encriptar el contenido",
+      "Comprobar la identidad de quien envía la solicitud original al servidor",
+      "Cifrar todo el contenido que se transmite dentro de la respuesta HTTP",
       "Prevenir que el navegador interprete el MIME type incorrectamente",
-      "Comprimir el contenido"
+      "Reducir el tamaño del contenido de la respuesta antes de entregarlo"
     ],
     "options_en": [
-      "Validate users",
-      "Encrypt the content",
+      "Verify the identity of whoever sent the original request to the server",
+      "Encrypt all of the content transmitted inside the HTTP response",
       "Prevent the browser from misinterpreting the MIME type",
-      "Compress the content"
+      "Reduce the size of the response content before it is delivered"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1281,15 +1281,15 @@
     "question_en": "What is CORS (Cross-Origin Resource Sharing)?",
     "options_es": [
       "Un mecanismo que permite a sitios web solicitar recursos de otros orígenes de forma controlada",
-      "Un protocolo de encriptación",
-      "Un método de compresión",
-      "Un tipo de base de datos"
+      "Un protocolo que cifra por completo el tráfico intercambiado entre navegador y servidor de origen",
+      "Un método que comprime las respuestas HTTP del servidor antes de entregarlas al navegador cliente",
+      "Un tipo de base de datos distribuida usada específicamente para almacenar sesiones activas de usuario"
     ],
     "options_en": [
       "A mechanism that allows websites to request resources from other origins in a controlled manner",
-      "An encryption protocol",
-      "A compression method",
-      "A type of database"
+      "A protocol that fully encrypts traffic exchanged between the browser and the origin server",
+      "A method that compresses the server's HTTP responses before delivering them to the client browser",
+      "A type of distributed database used specifically to store active user session data"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1307,15 +1307,15 @@
     "question_es": "¿Cuál es el riesgo de configurar Access-Control-Allow-Origin: *?",
     "question_en": "What is the risk of setting Access-Control-Allow-Origin: *?",
     "options_es": [
-      "No hay riesgo",
-      "Solo afecta a usuarios locales",
-      "Es más seguro que otros valores",
+      "No hay riesgo porque los navegadores ignoran ese encabezado por defecto",
+      "Solo afecta a peticiones que se originan desde la misma máquina donde vive el servidor",
+      "Es más seguro que restringir el origen porque simplifica la auditoría",
       "Permite que cualquier sitio web acceda a los recursos, incluyendo sitios maliciosos"
     ],
     "options_en": [
-      "There is no risk",
-      "It only affects local users",
-      "It is more secure than other values",
+      "There is no risk because browsers ignore that header by default",
+      "It only affects requests that originate from the same machine the server runs on",
+      "It is more secure than restricting the origin because it simplifies auditing",
       "Allows any website to access the resources, including malicious sites"
     ],
     "correct_index": 3,
@@ -1334,16 +1334,16 @@
     "question_es": "¿Qué es una solicitud CORS preflight?",
     "question_en": "What is a CORS preflight request?",
     "options_es": [
-      "Un tipo de ataque",
+      "Un intento del navegador de descargar por adelantado el certificado TLS completo del servidor remoto antes de negociar nada",
       "Una solicitud OPTIONS que el navegador envía antes de la solicitud actual para verificar permisos CORS",
-      "Una solicitud HTTP normal",
-      "Una solicitud de base de datos"
+      "Una solicitud HTTP normal que el servidor procesa exactamente igual que cualquier otra petición",
+      "Una consulta que el servidor lanza contra la base de datos justo antes de construir la respuesta"
     ],
     "options_en": [
-      "A type of attack",
+      "An attempt by the browser to pre-download the remote server's entire TLS certificate before negotiating anything at all",
       "An OPTIONS request that the browser sends before the actual request to verify CORS permissions",
-      "A normal HTTP request",
-      "A database request"
+      "A normal HTTP request that the server processes exactly like it would any other request",
+      "A query the server issues against the database right before it builds the response"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1361,16 +1361,16 @@
     "question_es": "¿Cuál es la diferencia entre la política de Same-Origin (SOP) y CORS?",
     "question_en": "What is the difference between Same-Origin Policy (SOP) and CORS?",
     "options_es": [
-      "CORS es una versión antigua de SOP",
+      "SOP solo aplica a peticiones cifradas con HTTPS; CORS solo aplica a peticiones sin cifrar en absoluto",
       "SOP bloquea solicitudes entre orígenes por defecto; CORS permite excepciones controladas",
-      "SOP es más seguro que CORS",
-      "Son lo mismo"
+      "CORS reemplaza por completo a SOP en todos los navegadores modernos disponibles hoy",
+      "CORS es un estándar anterior a SOP y ya no se recomienda usarlo en proyectos actuales"
     ],
     "options_en": [
-      "CORS is an older version of SOP",
+      "SOP only applies to requests encrypted with HTTPS; CORS only applies to fully unencrypted ones",
       "SOP blocks cross-origin requests by default; CORS allows controlled exceptions",
-      "SOP is more secure than CORS",
-      "They are the same"
+      "CORS completely replaces SOP in every modern browser available today",
+      "CORS is a standard that predates SOP and is no longer recommended for current projects"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1388,15 +1388,15 @@
     "question_es": "¿Qué es la Referrer-Policy y cuál es su propósito?",
     "question_en": "What is Referrer-Policy and what is its purpose?",
     "options_es": [
-      "Comprime contenido",
-      "Encripta datos",
-      "Valida certificados",
+      "Comprime todo el contenido de la página antes de enviarlo de vuelta al navegador",
+      "Cifra por completo los datos del formulario justo antes de que viajen hacia el servidor remoto de destino",
+      "Valida que el certificado digital del sitio remitente siga vigente y sea confiable",
       "Controla qué información del referrer se envía cuando el usuario navega a otros sitios"
     ],
     "options_en": [
-      "Compresses content",
-      "Encrypts data",
-      "Validates certificates",
+      "Compresses all of the page content before sending it back to the browser",
+      "Fully encrypts the form's data right before it travels toward the remote destination server",
+      "Validates that the referring site's digital certificate is current and trustworthy",
       "Controls what referrer information is sent when the user navigates to other sites"
     ],
     "correct_index": 3,
@@ -1415,15 +1415,15 @@
     "question_es": "¿Cuál es la mejor práctica para la directiva script-src en CSP?",
     "question_en": "What is the best practice for the script-src directive in CSP?",
     "options_es": [
-      "Permitir 'unsafe-inline' para simplicidad",
-      "Permitir scripts desde cualquier origen",
-      "No usar CSP",
+      "Permitir 'unsafe-inline' junto con un nonce único para simplificar el mantenimiento futuro del código",
+      "Permitir scripts provenientes de cualquier origen y filtrar el contenido solo del lado del servidor",
+      "No declarar la directiva script-src y confiar en que default-src cubra todos los casos posibles",
       "Usar 'self' y una lista específica de orígenes confiables, evitar 'unsafe-inline' y 'unsafe-eval'"
     ],
     "options_en": [
-      "Allow 'unsafe-inline' for simplicity",
-      "Allow scripts from any origin",
-      "Do not use CSP",
+      "Allow 'unsafe-inline' together with a unique nonce to simplify future code maintenance",
+      "Allow scripts from any origin whatsoever and filter the content only on the server side",
+      "Skip declaring the script-src directive and trust default-src to cover every possible case",
       "Use 'self' and a specific list of trusted origins, avoid 'unsafe-inline' and 'unsafe-eval'"
     ],
     "correct_index": 3,
@@ -1442,16 +1442,16 @@
     "question_es": "¿Cuál es el problema de usar Access-Control-Allow-Credentials: true con Access-Control-Allow-Origin: *?",
     "question_en": "What is the problem with using Access-Control-Allow-Credentials: true with Access-Control-Allow-Origin: *?",
     "options_es": [
-      "Es la forma más segura",
+      "Es la forma más segura porque el navegador exige TLS de todas formas",
       "No es permitido por los navegadores; debe especificarse un origen específico",
-      "No hay problema",
-      "Los navegadores lo permiten automáticamente"
+      "No hay problema porque las cookies con credenciales viajan cifradas dentro del cuerpo",
+      "Los navegadores lo permiten automáticamente si el sitio usa HTTPS"
     ],
     "options_en": [
-      "It is the safest way",
+      "It is the safest option because the browser requires TLS anyway",
       "It is not allowed by browsers; a specific origin must be specified",
-      "There is no problem",
-      "Browsers allow it automatically"
+      "There is no problem because credentialed cookies travel encrypted inside the body",
+      "Browsers allow it automatically as long as the site uses HTTPS"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1469,15 +1469,15 @@
     "question_es": "¿Cómo se puede ejecutar un ataque de clickjacking y cómo protege X-Frame-Options?",
     "question_en": "How can clickjacking attack be executed and how does X-Frame-Options protect against it?",
     "options_es": [
-      "Clickjacking es solo un mito",
-      "No se puede prevenir clickjacking",
-      "X-Frame-Options no funciona",
+      "Clickjacking solo afecta a formularios de pago, no a otros elementos",
+      "No se puede prevenir clickjacking; ningún encabezado HTTP logra detenerlo por completo",
+      "X-Frame-Options cifra el contenido para que el iframe no pueda leerlo",
       "El atacante incrustra la página en un iframe invisible; X-Frame-Options previene esto"
     ],
     "options_en": [
-      "Clickjacking is just a myth",
-      "Clickjacking cannot be prevented",
-      "X-Frame-Options does not work",
+      "Clickjacking only affects payment forms, not other page elements",
+      "Clickjacking cannot be prevented; no HTTP header manages to stop it completely",
+      "X-Frame-Options encrypts the content so the iframe cannot read it",
       "The attacker embeds the page in an invisible iframe; X-Frame-Options prevents this"
     ],
     "correct_index": 3,
@@ -1497,15 +1497,15 @@
     "question_en": "What is the difference between CSP and X-Frame-Options in terms of their purpose?",
     "options_es": [
       "CSP protege contra XSS; X-Frame-Options protege contra clickjacking",
-      "Son exactamente lo mismo",
-      "X-Frame-Options protege contra XSS",
-      "CSP protege contra clickjacking"
+      "Ambos encabezados cumplen exactamente la misma función frente al navegador",
+      "X-Frame-Options protege contra la inyección de scripts maliciosos en la página",
+      "CSP protege únicamente contra el incrustado de la página dentro de iframes"
     ],
     "options_en": [
       "CSP protects against XSS; X-Frame-Options protects against clickjacking",
-      "They are exactly the same",
-      "X-Frame-Options protects against XSS",
-      "CSP protects against clickjacking"
+      "Both headers fulfill exactly the same function against the browser",
+      "X-Frame-Options protects against the injection of malicious scripts on the page",
+      "CSP only protects against the page being embedded inside iframes"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1523,16 +1523,16 @@
     "question_es": "¿Cuál es el riesgo de no implementar las directivas 'default-src' en CSP?",
     "question_en": "What is the risk of not implementing 'default-src' directive in CSP?",
     "options_es": [
-      "No hay riesgo",
-      "default-src es innecesario",
+      "No hay riesgo porque el navegador aplica same-origin por defecto igual",
+      "default-src es una directiva heredada que los navegadores ya ignoran",
       "Sin default-src, los navegadores permitirán contenido de cualquier origen por defecto",
-      "default-src solo es para CSS"
+      "default-src solo restringe hojas de estilo CSS, nunca scripts ni imágenes de la página"
     ],
     "options_en": [
-      "There is no risk",
-      "default-src is unnecessary",
+      "There is no risk because the browser applies same-origin by default anyway",
+      "default-src is a legacy directive that browsers already ignore",
       "Without default-src, browsers will allow content from any origin by default",
-      "default-src is only for CSS"
+      "default-src only restricts CSS stylesheets, never scripts or images on the page"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1551,15 +1551,15 @@
     "question_en": "What is the purpose of nonces in CSP?",
     "options_es": [
       "Permitir que scripts inline específicos ejecuten mediante un token único, sin usar 'unsafe-inline'",
-      "Encriptar scripts",
-      "Comprimir scripts",
-      "Validar usuarios"
+      "Cifrar por completo el contenido de todos los scripts inline antes de que el navegador llegue a ejecutarlos",
+      "Comprimir los scripts inline de la página entera para reducir su tamaño total de carga",
+      "Validar la identidad completa del usuario antes de permitir que cargue cualquier script"
     ],
     "options_en": [
       "Allow specific inline scripts to execute using a unique token, without using 'unsafe-inline'",
-      "Encrypt scripts",
-      "Compress scripts",
-      "Validate users"
+      "Fully encrypt the content of every inline script before the browser ever gets around to executing them",
+      "Compress the page's entire inline scripts in order to reduce their total loading size",
+      "Fully validate the user's identity before allowing any script whatsoever to load"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1645,16 +1645,16 @@
     "question_es": "Según NIST SP 800-63B, ¿cuándo debe obligarse a un usuario a cambiar su contraseña?",
     "question_en": "According to NIST SP 800-63B, when should a user be forced to change their password?",
     "options_es": [
-      "Cada 90 días, que es el equilibrio entre seguridad y comodidad",
+      "Cada 90 días, siguiendo el calendario fijo recomendado por la mayoría de políticas corporativas",
       "Cuando hay indicios de que está comprometida, no por calendario",
-      "Cada 30 días, para acortar la ventana de uso de una robada",
-      "Cada vez que el usuario inicia sesión desde otro dispositivo"
+      "Cada vez que el usuario cambia de dispositivo, sin importar si hubo o no un incidente de seguridad",
+      "Nunca, ya que NIST 800-63B recomienda contraseñas permanentes que no deben modificarse jamás"
     ],
     "options_en": [
-      "Every 90 days, as the balance between security and convenience",
+      "Every 90 days, following the fixed schedule recommended by most corporate policies",
       "When there is evidence it has been compromised, not on a schedule",
-      "Every 30 days, to shorten how long a stolen one can be used",
-      "Every time the user signs in from a different device"
+      "Every time the user changes device, regardless of whether a security incident occurred",
+      "Never, since NIST 800-63B recommends permanent passwords that should never be changed"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1672,16 +1672,16 @@
     "question_es": "Un rootkit en el kernel de Linux permite al atacante ocultar procesos maliciosos en /proc. Un antivirus basado en firmas lo detectaría si reconoce el patrón conocido, pero un IDS de red podría no detectarlo si el tráfico está cifrado. ¿Cuál es la limitación más importante de ambas defensas?",
     "question_en": "A Linux kernel rootkit allows an attacker to hide malicious processes in /proc. Signature-based antivirus would detect it if it recognizes the known pattern, but network IDS might miss it if traffic is end-to-end encrypted. What is the most important limitation of both defenses?",
     "options_es": [
-      "El antivirus no funciona porque el patrón está oculto por el rootkit",
+      "Ambas defensas consumen demasiada CPU para ejecutarse de forma simultánea en el mismo servidor",
       "Ambas defensas son reactivas: buscan patrones de malware conocido; un rootkit completamente nuevo y desconocido burla ambos sistemas",
-      "El IDS no funciona porque todo el tráfico moderno está cifrado de punta a punta",
-      "Los rootkits solo existen en Windows; en Linux no pueden ocultar procesos"
+      "Ambas defensas solo funcionan si el atacante tiene acceso físico previo a la máquina comprometida",
+      "Ambas defensas quedan completamente deshabilitadas de forma automática en cuanto el sistema detecta cifrado en el tráfico de red analizado"
     ],
     "options_en": [
-      "Antivirus doesn't work because the pattern is hidden by the rootkit",
+      "Both defenses consume too much CPU to run simultaneously on the same server",
       "Both defenses are reactive: they detect known malware patterns; a completely novel rootkit evades both systems",
-      "IDS doesn't work because all modern traffic is end-to-end encrypted",
-      "Rootkits only exist on Windows; they cannot hide processes on Linux"
+      "Both defenses only work if the attacker already has physical access to the compromised machine",
+      "Both defenses get automatically disabled as soon as encryption is detected in the network traffic"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1699,16 +1699,16 @@
     "question_es": "¿Cuál es el significado del 'Principio de Menor Privilegio' (Least Privilege) en seguridad?",
     "question_en": "What does the 'Least Privilege' principle mean in security?",
     "options_es": [
-      "Los administradores de sistemas no pueden acceder a ningún recurso",
-      "Solo el CEO tiene acceso total a todos los sistemas y datos",
+      "Los administradores de sistemas nunca pueden acceder a ningún recurso protegido de la red corporativa entera",
+      "Solo el equipo de seguridad conserva acceso total a los sistemas más críticos de la empresa",
       "Cada usuario y proceso obtiene solo los permisos mínimos necesarios para realizar su función específica",
-      "Los privilegios se revocan automáticamente cada día sin excepciones"
+      "Los privilegios se otorgan de forma permanente según la antigüedad de cada empleado en la firma"
     ],
     "options_en": [
-      "System administrators cannot access any resource",
-      "Only the CEO has full access to all systems and data",
+      "System administrators can never access any protected resource on the entire corporate network at all",
+      "Only the security team retains full access to the company's most critical systems",
       "Each user and process receives only the minimum permissions needed for their specific function",
-      "Privileges are automatically revoked every day without exception"
+      "Privileges are granted permanently based on how long each employee has been at the firm"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1726,16 +1726,16 @@
     "question_es": "Un archivo cifrado hoy debe seguir siendo confidencial dentro de 30 años. ¿Qué longitud de clave AES es la más prudente?",
     "question_en": "A file encrypted today must stay confidential 30 years from now. Which AES key length is the most prudent?",
     "options_es": [
-      "AES-128, porque la longitud de clave solo importa en archivos grandes",
-      "AES-192, porque es la única aprobada para datos a largo plazo",
+      "AES-128, porque su tamaño de bloque de 128 bits ya excede cualquier capacidad de cómputo futura previsible",
+      "AES-192, por ser el punto intermedio recomendado entre rendimiento y seguridad a muy largo plazo",
       "AES-256, por el margen que deja frente a futuros ataques, incluido Grover en un ordenador cuántico",
-      "Cualquiera, porque la clave se puede alargar después sin recifrar"
+      "3DES, porque su triple aplicación de DES lo hace equivalente en seguridad a AES-256 frente a ataques cuánticos"
     ],
     "options_en": [
-      "AES-128, because key length only matters for large files",
-      "AES-192, because it is the only one approved for long-term data",
+      "AES-128, because its 128-bit block size already exceeds any foreseeable future computing capability",
+      "AES-192, as the recommended middle ground between performance and very long-term security",
       "AES-256, for the margin it leaves against future attacks, including Grover's on a quantum computer",
-      "Any of them, since the key can be lengthened later without re-encrypting"
+      "3DES, because applying DES three times makes it equivalent in security to AES-256 against quantum attacks"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1753,15 +1753,15 @@
     "question_es": "Un certificado X.509 autofirmado (self-signed) es creado por una empresa para HTTPS en su servidor. ¿Cuál es la principal diferencia de seguridad entre este y un certificado emitido por una CA de confianza reconocida?",
     "question_en": "An X.509 self-signed certificate is created by a company for HTTPS on their server. What is the main security difference between this and a certificate issued by a recognized trusted CA?",
     "options_es": [
-      "El certificado autofirmado es ilegalmente rechazado por navegadores",
-      "No hay diferencia de seguridad; son idénticos en confiabilidad",
-      "El certificado autofirmado no puede encriptar; solo certificados de CA pueden hacerlo",
+      "El autofirmado cifra con una clave más corta; la CA siempre exige claves de al menos 4096 bits",
+      "El autofirmado no puede usarse con TLS 1.3 por incompatibilidad de protocolo; la CA emite certificados compatibles con cualquier versión de TLS existente",
+      "El autofirmado caduca a los treinta días; los certificados de CA reconocida tienen validez indefinida",
       "El autofirmado no proporciona verificación de identidad (no hay tercero confiable); la CA proporciona cadena de confianza hasta una raíz confiada"
     ],
     "options_en": [
-      "Self-signed certificates are legally rejected by browsers",
-      "No security difference; they are identical in trustworthiness",
-      "Self-signed certificates cannot encrypt; only CA certificates can",
+      "Self-signed encrypts with a shorter key; a CA always requires keys of at least 4096 bits",
+      "Self-signed cannot be used with TLS 1.3 due to protocol incompatibility; a CA issues certificates compatible with any existing TLS version",
+      "Self-signed expires after thirty days; certificates from a recognized CA remain valid indefinitely",
       "Self-signed doesn't verify identity (no trusted third party); CA provides chain of trust to a trusted root"
     ],
     "correct_index": 3,
@@ -1807,15 +1807,15 @@
     "question_es": "En arquitectura de firewall de alta disponibilidad con failover, ¿cuál es el riesgo crítico de no sincronizar el estado de conexiones entre el firewall primario y el secundario?",
     "question_en": "In high-availability firewall architecture with failover, what is the critical risk of not synchronizing connection state between primary and secondary firewalls?",
     "options_es": [
-      "El firewall secundario consumirá más energía que el primario",
-      "Se perderá la capacidad de realizar auditoría de logs históricos",
-      "La DMZ recibirá duplicados de todos los paquetes procesados",
+      "El firewall secundario queda permanentemente en modo de solo lectura, sin poder aplicar reglas nuevas",
+      "Las reglas de firewall del primario se sobrescriben con las reglas por defecto del fabricante tras el failover",
+      "El tráfico se duplica indefinidamente entre ambos firewalls, saturando el enlace de red interno",
       "Las conexiones TCP/UDP establecidas se resetearán, interrumpiendo sesiones activas tras el failover"
     ],
     "options_en": [
-      "The secondary firewall will consume more power than the primary",
-      "The ability to audit historical logs will be lost",
-      "The DMZ will receive duplicates of all processed packets",
+      "The secondary firewall becomes permanently read-only, unable to apply any new rules",
+      "The primary's firewall rules get overwritten with the vendor's factory defaults after failover",
+      "Traffic gets duplicated indefinitely between both firewalls, saturating the internal network link",
       "Established TCP/UDP connections will reset, interrupting active sessions after failover"
     ],
     "correct_index": 3,
@@ -1834,15 +1834,15 @@
     "question_es": "En un sistema de alertas de seguridad en tiempo real, ¿cuál es la característica que define que una alerta sea 'de tiempo real' frente a una retroactiva?",
     "question_en": "In a real-time security alert system, what characteristic defines an alert as 'real-time' versus retrospective?",
     "options_es": [
-      "Requiere confirmación manual del operador antes de mostrarse",
-      "Se genera solo después de que se complete la auditoría de logs",
-      "Se almacena en una base de datos central durante 24 horas",
+      "Se almacena en un registro cifrado que solo puede consultarse manualmente al final del día",
+      "Se genera únicamente después de un análisis forense completo del incidente ya finalizado",
+      "Se envía como resumen semanal agregado, agrupando todas las alertas detectadas durante ese periodo",
       "Se genera y notifica mientras el ataque está ocurriendo o inmediatamente después"
     ],
     "options_en": [
-      "It requires manual operator confirmation before being displayed",
-      "It is generated only after the audit log review is complete",
-      "It is stored in a central database for 24 hours",
+      "It is stored in an encrypted log that can only be reviewed manually at the end of the day",
+      "It is generated only after a full forensic analysis of the already finished incident",
+      "It is sent as an aggregated weekly summary, grouping every alert detected during that period",
       "It is generated and notified while the attack is occurring or immediately after"
     ],
     "correct_index": 3,
@@ -1861,15 +1861,15 @@
     "question_es": "¿Qué implicación de seguridad tiene que IKE (Internet Key Exchange) use Diffie-Hellman para negociar claves en IPSec, comparado con compartir una clave precompartida estática?",
     "question_en": "What security implication does IKE's (Internet Key Exchange) use of Diffie-Hellman for key negotiation in IPSec have, compared to sharing a static pre-shared key?",
     "options_es": [
-      "Diffie-Hellman es más lento; por tanto, menos seguro porque todo es invertible",
-      "Compartir clave estática es mejor porque es más simple de auditar",
-      "IKE no usa Diffie-Hellman; eso es solo TLS en HTTPS",
+      "IKE emplea Diffie-Hellman únicamente para autenticar certificados X.509, nunca para acordar material de claves de sesión",
+      "Una clave precompartida estática ofrece la misma protección porque IPSec la rota automáticamente cada hora sin intervención",
+      "Diffie-Hellman solo protege el túnel de datos ESP; deja la fase de negociación IKE completamente sin cifrar",
       "Diffie-Hellman genera nuevas claves por sesión, mitigando exposición de una clave comprometida a todas las sesiones"
     ],
     "options_en": [
-      "Diffie-Hellman is slower; therefore less secure because everything is invertible",
-      "Sharing a static key is better because it is simpler to audit",
-      "IKE does not use Diffie-Hellman; that is only TLS in HTTPS",
+      "IKE uses Diffie-Hellman only to authenticate X.509 certificates, never to agree on session key material",
+      "A static pre-shared key offers the same protection because IPSec rotates it automatically every hour without intervention",
+      "Diffie-Hellman only protects the ESP data tunnel; it leaves the IKE negotiation phase completely unencrypted",
       "Diffie-Hellman generates new keys per session, mitigating exposure of one compromised key to all sessions"
     ],
     "correct_index": 3,
@@ -1888,16 +1888,16 @@
     "question_es": "WPA3 permite GCMP-256 además de CCMP-128. ¿Qué tienen en común y qué los distingue?",
     "question_en": "WPA3 allows GCMP-256 in addition to CCMP-128. What do they share and what sets them apart?",
     "options_es": [
-      "GCMP es un cifrado de flujo derivado de RC4 y CCMP uno de bloque",
-      "CCMP solo cifra y deja la integridad a TKIP; GCMP cifra y autentica",
+      "GCMP es un cifrado de flujo derivado de RC4, mientras que CCMP usa cifrado asimétrico basado en RSA",
+      "CCMP solo cifra los datos y deja la integridad completamente a cargo de TKIP; GCMP únicamente autentica sin cifrar nada en absoluto",
       "Ambos son cifrado autenticado con AES; GCMP usa el modo GCM, paralelizable, y en WPA3 aparece con claves de 256 bits",
-      "CCMP funciona sin clave y GCMP necesita una clave precompartida"
+      "CCMP funciona sin ninguna clave asignada y GCMP exige siempre un certificado digital por cada dispositivo"
     ],
     "options_en": [
-      "GCMP is an RC4-derived stream cipher and CCMP a block cipher",
-      "CCMP only encrypts and leaves integrity to TKIP; GCMP encrypts and authenticates",
+      "GCMP is a stream cipher derived from RC4, while CCMP uses asymmetric encryption based on RSA",
+      "CCMP only encrypts the data and leaves integrity entirely up to TKIP; GCMP only authenticates without encrypting anything at all",
       "Both are AES authenticated encryption; GCMP uses GCM mode, which parallelises, and in WPA3 comes with 256-bit keys",
-      "CCMP works without a key and GCMP needs a pre-shared key"
+      "CCMP works without any assigned key and GCMP always requires a digital certificate for every device"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1916,15 +1916,15 @@
     "question_en": "Why is it critical to understand the difference between URL encoding, HTML encoding, and JavaScript encoding when preventing injections?",
     "options_es": [
       "Cada contexto requiere encoding diferente; encoding incorrecto puede ser evadido",
-      "Solo el contexto de base de datos necesita encoding",
-      "Todo encoding es idéntico y puede usarse indistintamente",
-      "El encoding es irrelevante si se usa HTTPS"
+      "Los tres tipos de encoding son intercambiables porque todos convierten caracteres a su representación hexadecimal",
+      "Aplicar encoding HTML siempre neutraliza también las inyecciones que ocurren en contexto JavaScript",
+      "El encoding solo es relevante para caracteres no latinos, no para prevenir inyecciones de scripts comunes"
     ],
     "options_en": [
       "Each context requires different encoding; incorrect encoding can be bypassed",
-      "Only database context needs encoding",
-      "All encoding is identical and can be used interchangeably",
-      "Encoding is irrelevant if HTTPS is used"
+      "All three encoding types are interchangeable because they all convert characters to hexadecimal representation",
+      "Applying HTML encoding always neutralizes injections that occur in a JavaScript context as well",
+      "Encoding is only relevant for non-Latin characters, not for preventing common script injections"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1943,15 +1943,15 @@
     "question_en": "When a user logs out in a Single Page Application (SPA), what is the risk if the token is only deleted client-side without invalidating it on the server?",
     "options_es": [
       "El token viejo sigue siendo válido; si fue robado, el atacante puede seguir usando la cuenta",
-      "El token se auto-destruye después de logout",
-      "El logout es instantáneo sin riesgos",
-      "El servidor automáticamente invalida todos los tokens"
+      "El navegador queda bloqueado permanentemente, impidiendo que el usuario vuelva a iniciar sesión",
+      "El servidor pierde el historial de todas las sesiones anteriores del usuario, incluidas las legítimas",
+      "La aplicación deja de funcionar para todos los usuarios hasta que se reinicia el servidor de autenticación"
     ],
     "options_en": [
       "The old token remains valid; if it was stolen, an attacker can continue using the account",
-      "The token self-destructs after logout",
-      "Logout is instantaneous without risks",
-      "The server automatically invalidates all tokens"
+      "The browser becomes permanently locked, preventing the user from logging in again",
+      "The server loses the history of every previous session of the user, including legitimate ones",
+      "The application stops working for every user until the authentication server is restarted"
     ],
     "correct_index": 0,
     "correct_answer_es": null,

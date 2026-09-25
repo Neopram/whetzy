@@ -68,16 +68,16 @@
       "question_es": "Cinco servicios comparten una librería interna `common-domain` que contiene sus entidades de negocio y sus DTOs. ¿Cuál es el riesgo arquitectónico principal?",
       "question_en": "Five services share an internal `common-domain` library holding their business entities and DTOs. What is the main architectural risk?",
       "options_es": [
-        "Las librerias compartidas estan prohibidas en microservicios sin excepcion",
+        "Las librerias compartidas están prohibidas por completo en cualquier arquitectura de microservicios, sin ninguna excepción posible bajo ninguna circunstancia",
         "Un cambio en la libreria obliga a recompilar y redesplegar los cinco servicios a la vez, reintroduciendo acoplamiento en el despliegue",
-        "La libreria aumenta el tamaño de la imagen del contenedor",
-        "Los servicios dejaran de poder comunicarse por HTTP"
+        "La librería aumenta de forma notable el tamaño de la imagen del contenedor de cada uno de los cinco servicios",
+        "Los cinco servicios dejaran de poder registrarse correctamente en el mecanismo de service discovery del sistema"
       ],
       "options_en": [
-        "Shared libraries are forbidden in microservices, with no exceptions",
+        "Shared libraries are entirely forbidden in any microservices architecture, with absolutely no exception allowed under any circumstances at all",
         "A change to the library forces recompiling and redeploying all five services together, reintroducing deployment coupling",
-        "The library increases the container image size",
-        "The services will no longer be able to talk over HTTP"
+        "The library noticeably increases the container image size for each of the five services that depend on it",
+        "The five services will no longer be able to register themselves correctly in the system's service discovery"
       ],
       "correct_index": 1,
       "explanation_es": "Compartir el modelo de dominio acopla los servicios por dentro: renombrar un campo en `common-domain` es un cambio que atraviesa cinco equipos y cinco despliegues, que es exactamente lo que se queria evitar. La opción 1 es la sobrecorrección típica: compartir código transversal y técnico (trazas, cliente HTTP, logging) es habitual y sano; lo que no se comparte es el dominio. La opción 2 es cierta pero irrelevante: unos megabytes no son un riesgo arquitectónico. La opción 3 es un no-sequitur; la librería no toca el transporte. Si el modelo debe viajar entre servicios, viaja como contrato versionado, no como clase compilada compartida.",
@@ -202,16 +202,16 @@
       "question_es": "El servicio de pedidos debe guardar el pedido en su base de datos y publicar `PedidoCreado` en el broker. Si escribe primero y publica después, puede caerse en medio y perder el evento; si publica primero, puede anunciar un pedido que nunca llegó a guardarse. ¿Qué patrón resuelve esta escritura dual?",
       "question_en": "The orders service must save the order in its database and publish `OrderCreated` to the broker. Writing first and publishing second risks crashing in between and losing the event; publishing first risks announcing an order that was never saved. Which pattern solves this dual write?",
       "options_es": [
-        "Two-phase commit (2PC) entre la base de datos y el broker, que es hoy la solucion estandar",
-        "Reintentar la publicacion dentro de un bloque `finally`",
-        "Transactional outbox: el evento se escribe en una tabla de la misma base y en la misma transaccion, y un proceso aparte la lee y lo publica",
-        "Publicar el evento en el mismo hilo que la escritura, para que la operacion sea atomica"
+        "Saga coreografiada: cada servicio suscriptor sondea periódicamente la base del pedido hasta ver el registro y entonces pública el evento el mismo",
+        "Idempotencia en el consumidor: se genera una clave única por pedido y el propio broker descarta las publicaciones repetidas de forma automática",
+        "Transactional outbox: el evento se escribe en una tabla de la misma base y en la misma transacción, y un proceso aparte la lee y lo publica",
+        "Bus de eventos síncrono: el broker abre una transacción distribuida con la base de datos y confirma ambas escrituras a la vez de forma atómica"
       ],
       "options_en": [
-        "Two-phase commit (2PC) between the database and the broker, which is the standard solution today",
-        "Retrying the publish inside a `finally` block",
+        "Choreographed saga: each subscribing service periodically polls the order database until it sees the row and then publishes the event itself",
+        "Consumer idempotency: a unique key is generated per order and the broker itself automatically discards any repeated publications",
         "Transactional outbox: the event is written to a table in the same database and the same transaction, and a separate process reads it and publishes it",
-        "Publishing the event on the same thread as the write, so the operation is atomic"
+        "Synchronous event bus: the broker opens a distributed transaction with the database and commits both writes together atomically"
       ],
       "correct_index": 2,
       "explanation_es": "El outbox convierte dos escrituras en dos sistemas en una sola transacción local: o se guardan el pedido y su evento, o no se guarda ninguno. Un relay lee luego la tabla y publica, lo que da entrega 'al menos una vez' y obliga a que el consumidor sea idempotente. El 2PC tienta porque es la respuesta de manual para atomicidad entre recursos, pero pocos brokers lo soportan bien y el protocolo bloquea si cae el coordinador: se cambia perdida de datos por perdida de disponibilidad. El `finally` no se ejecuta si el proceso muere, que es justo el caso que preocupa. Y el mismo hilo no da atomicidad entre dos sistemas distintos: la atomicidad la da la transacción, no la concurrencia.",
@@ -262,15 +262,15 @@
       "question_es": "En una saga, ¿cuál es la diferencia entre coreografía y orquestación?",
       "question_en": "In a saga, what is the difference between choreography and orchestration?",
       "options_es": [
-        "La coreografia usa HTTP y la orquestacion usa un broker de mensajes",
-        "La orquestacion garantiza atomicidad ACID entre servicios; la coreografia solo consistencia eventual",
-        "Son sinonimos: la diferencia es solo terminologica segun el proveedor de la herramienta",
+        "La coreografía se implementa siempre con llamadas REST síncronas entre servicios y la orquestación siempre con colas de mensajes asíncronas dedicadas, y ninguna de las dos admite mensajería asíncrona bajo ningun concepto",
+        "La orquestación aporta atomicidad ACID real entre los servicios implicados; la coreografía solo ofrece consistencia eventual entre ellos",
+        "Ambas son exactamente la misma técnica: los nombres solo cambian según el proveedor de la herramienta de mensajería elegida",
         "En coreografia cada servicio reacciona a los eventos de los demas sin coordinador central; en orquestacion un coordinador explicito indica a cada servicio que paso ejecutar"
       ],
       "options_en": [
-        "Choreography uses HTTP and orchestration uses a message broker",
-        "Orchestration guarantees ACID atomicity across services; choreography gives only eventual consistency",
-        "They are synonyms: the difference is just terminology that varies by tool vendor",
+        "Choreography is always built on synchronous REST calls between services and orchestration always on dedicated asynchronous message queues, and neither of the two ever allows asynchronous messaging under any circumstance",
+        "Orchestration provides real ACID atomicity across the services involved; choreography only offers eventual consistency between them",
+        "Both are exactly the same technique: the names only change depending on the messaging tool vendor that was chosen",
         "In choreography each service reacts to the others' events with no central coordinator; in orchestration an explicit coordinator tells each service which step to run"
       ],
       "correct_index": 3,
@@ -456,16 +456,16 @@
       "question_es": "El gateway valida en cada petición la firma de un JWT con caducidad de 24 horas. Un usuario cierra sesión y, además, su token se filtra. ¿Qué ocurre y como se aborda normalmente?",
       "question_en": "The gateway validates the signature of a JWT with a 24-hour expiry on every request. A user logs out and, on top of that, their token leaks. What happens, and how is it normally handled?",
       "options_es": [
-        "Nada preocupante: al cerrar sesion el JWT queda invalidado automaticamente",
-        "El gateway puede invalidar ese token concreto rotando la clave de firma, sin efectos secundarios",
-        "El token sigue siendo valido hasta que caduque, porque la validacion es sin estado; por eso se usan caducidades cortas con refresh tokens y, si hace falta revocar antes, una lista de revocacion consultada en el gateway",
-        "Basta con borrar la cookie en el navegador para que el gateway lo rechace"
+        "El servidor revoca de forma automática la firma criptográfica exacta de ese JWT en el instante del cierre de sesión, de modo que el gateway deja de validarlo desde ese momento en adelante",
+        "El gateway mantiene en memoria, sincronizada entre todas sus replicas, la lista completa de sesiones activas y rechaza el token justo en el instante del logout sin ningun retraso apreciable, una técnica que no escala bien cuando el número de usuarios activos crece mucho",
+        "El token sigue siendo valido hasta que caduque, porque la validación es sin estado; por eso se usan caducidades cortas con refresh tokens y, si hace falta revocar antes, una lista de revocación consultada en el gateway",
+        "El propio JWT incluye un campo interno cifrado que se actualiza automáticamente en tiempo real cada vez que el usuario cierra su sesión desde cualquier dispositivo conectado"
       ],
       "options_en": [
-        "Nothing to worry about: logging out invalidates the JWT automatically",
-        "The gateway can invalidate that specific token by rotating the signing key, with no side effects",
+        "The server automatically revokes that exact JWT's cryptographic signature the instant the session is closed, so the gateway stops validating it from that moment onward",
+        "The gateway keeps a full list of active sessions in memory, synchronized across all its replicas, and rejects the token right at the instant of logout with no noticeable delay, a technique that does not scale well once the number of active users grows very large",
         "The token stays valid until it expires, because validation is stateless; hence short expiries with refresh tokens and, when earlier revocation is needed, a revocation list checked at the gateway",
-        "Deleting the cookie in the browser is enough for the gateway to reject it"
+        "The JWT itself carries an internal encrypted field that automatically updates in real time every time the user closes their session from any connected device"
       ],
       "correct_index": 2,
       "explanation_es": "La gran ventaja del JWT es también su gran limitación: el gateway puede validarlo sin preguntar a nadie, y por eso nadie puede retirarlo. La opción 0 confunde cerrar sesión con revocar: cerrar sesión es un gesto del cliente, y el servidor sin estado no se entera. La opción 3 es la misma confusión: borrar la cookie hace que ese navegador olvide el token, pero la copia filtrada sigue sirviendo 24 horas. La opción 1 es la más instructiva: rotar la clave si invalida tokens, pero invalida TODOS a la vez, es decir, desconecta a todos los usuarios; llamarlo 'sin efectos secundarios' es justo lo que la hace falsa. De ahí el compromiso habitual: access tokens de minutos y refresh tokens revocables con estado.",
@@ -654,16 +654,16 @@
       "question_es": "En Kubernetes, ¿qué sonda decide si un pod recibe tráfico de su Service?",
       "question_en": "In Kubernetes, which probe decides whether a pod receives traffic from its Service?",
       "options_es": [
-        "La liveness probe: si falla, el pod deja de recibir trafico",
+        "La liveness probe: si falla, el pod deja de recibir tráfico nuevo pero permanece en ejecución sin reiniciarse nunca",
         "La readiness probe: mientras falla, el pod se retira de los Endpoints del Service, pero no se reinicia",
-        "La startup probe, que sustituye a las demas durante toda la vida del pod",
-        "Ninguna: el Service enruta a todos los pods que lleven la etiqueta correcta"
+        "La startup probe, que sustituye por completo a las demas sondas durante toda la vida útil restante del pod",
+        "Ninguna de las tres: el Service reparte tráfico por igual entre todos los pods que llevan la etiqueta correcta"
       ],
       "options_en": [
-        "The liveness probe: if it fails, the pod stops receiving traffic",
+        "The liveness probe: if it fails, the pod stops getting new traffic but keeps running without ever restarting",
         "The readiness probe: while it fails, the pod is removed from the Service's Endpoints but is not restarted",
-        "The startup probe, which replaces the others for the pod's whole life",
-        "None: the Service routes to every pod carrying the right label"
+        "The startup probe, which fully replaces the other probes for the whole remaining lifetime of the pod",
+        "None of the three: the Service routes traffic equally to every pod that carries the matching label"
       ],
       "correct_index": 1,
       "explanation_es": "Readiness controla la pertenencia a los Endpoints; liveness controla si el contenedor se reinicia. Confundirlas es el error más caro de este tema: una liveness que comprueba una dependencia externa convierte un bache de esa dependencia en una tormenta de reinicios simultáneos en toda la flota, justo cuando menos capacidad te sobra. La opción 1 describe el modelo mental ingenuo de 'etiqueta igual a tráfico': la selección por etiquetas decide que pods son candidatos, la readiness decide cuáles están listos ahora mismo. La startup probe solo cubre el arranque lento y deja de aplicarse una vez pasa. La readiness es también lo que permite que un pod se retire limpiamente mientras calienta caches o drena conexiones.",
@@ -684,16 +684,16 @@
       "question_es": "Un servicio resuelve a sus dependencias por DNS. Tras un despliegue, algunos clientes siguen llamando durante varios minutos a IPs de instancias que ya no existen. ¿Cuál es la causa más probable?",
       "question_en": "A service resolves its dependencies through DNS. After a deployment, some clients keep calling IPs of instances that no longer exist for several minutes. What is the most likely cause?",
       "options_es": [
-        "El cliente, o el runtime sobre el que corre, esta cacheando la resolucion DNS mas alla del TTL publicado",
-        "El registro no llego a dar de baja las instancias: DNS nunca cachea nada",
-        "Kubernetes no admite descubrimiento por DNS",
-        "El balanceador dejo de funcionar y las peticiones van directas a los pods"
+        "El cliente, o el runtime sobre el que corre, está cacheando la resolución DNS más allá del TTL publicado",
+        "El registro nunca llego a dar de baja las instancias antiguas porque los desregistros se procesan solo una vez al día",
+        "Kubernetes no propaga los cambios de IP hacia los objetos Service hasta que se produce el siguiente reinicio del cluster",
+        "El balanceador de carga está mal configurado y sigue reenviando peticiones hacia nodos que ya están apagados"
       ],
       "options_en": [
         "The client, or the runtime it runs on, is caching the DNS resolution beyond the published TTL",
-        "The registry never deregistered the instances: DNS does not cache anything",
-        "Kubernetes does not support DNS-based discovery",
-        "The load balancer stopped working and requests go straight to the pods"
+        "The registry never deregistered the old instances because deregistrations only run once a day",
+        "Kubernetes does not propagate IP changes to Service objects until the cluster's next scheduled restart happens",
+        "The load balancer is misconfigured and keeps forwarding requests toward nodes that are already powered off"
       ],
       "correct_index": 0,
       "explanation_es": "El dato obsoleto no está en el registro, está en el cliente. Entre el registro y la llamada hay varias capas que cachean: el resolver del sistema operativo, una cache local o sidecar y, el caso famoso, la JVM, que históricamente cachea indefinidamente las resoluciones con éxito salvo que se ajuste `networkaddress.cache.ttl`. Bajar el TTL solo sirve si toda la cadena lo respeta, y muchas no lo hacen. La opción 1 es tentadora precisamente porque el registro SÍ está correcto, lo que despista al diagnosticar; su segunda mitad, 'DNS nunca cachea', es la falsedad que la delata: cachear es el propósito del TTL. Las opciones 2 y 3 son falsas de base. Por eso el DNS es un mecanismo cómodo pero grueso para instancias efímeras, y se complementa con timeouts, reintentos hacia otra instancia y comprobaciones de salud.",
