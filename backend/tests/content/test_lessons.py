@@ -342,6 +342,31 @@ def test_unverified_example_count_is_reported(capsys: pytest.CaptureFixture[str]
     assert len(executed) + len(shown) == len(LESSONS)
 
 
+def _pyodide_python() -> tuple[int, int]:
+    """Versión de Python que ejecuta el alumno, leída del lock de Pyodide."""
+    lock = Path(__file__).resolve().parents[3] / "frontend" / "node_modules" / "pyodide" / "pyodide-lock.json"
+    try:
+        major, minor = json.loads(lock.read_text(encoding="utf-8"))["info"]["python"].split(".")[:2]
+        return int(major), int(minor)
+    except (OSError, KeyError, ValueError):
+        return (3, 12)  # pyodide 0.26.2 (package.json) trae 3.12.1
+
+
+PYODIDE_PYTHON = _pyodide_python()
+
+
+def _only_error_messages_differ(expected: str, actual: str) -> bool:
+    """True si las dos salidas solo difieren en líneas de mensaje de error.
+
+    Es lo único que cambia entre versiones de CPython en estos ejemplos; un
+    resultado distinto en cualquier otra línea sigue siendo un fallo.
+    """
+    a, b = expected.splitlines(), actual.splitlines()
+    if len(a) != len(b):
+        return False
+    return all(x == y or ("Error" in x and "Error" in y) for x, y in zip(a, b, strict=True))
+
+
 @pytest.mark.parametrize("case", LESSONS, ids=_lesson_id)
 def test_example_code_produces_example_output(case: tuple[Path, dict[str, Any]]) -> None:
     _path, lesson = case
@@ -371,6 +396,20 @@ def test_example_code_produces_example_output(case: tuple[Path, dict[str, Any]])
         f"{lesson.get('id')}: example_code raised\n{proc.stderr}"
     )
     actual = (proc.stdout or "").rstrip("\n")
+    if (
+        actual != expected
+        and sys.version_info[:2] < PYODIDE_PYTHON
+        and _only_error_messages_differ(expected, actual)
+    ):
+        # Los ejemplos se escriben para el Python que ejecuta el alumno (Pyodide).
+        # Un intérprete más viejo puede diferir en mensajes de error (l020105:
+        # el texto de «Can't instantiate abstract class» cambió en 3.12). Eso
+        # no es un fallo del contenido; en CI (3.12) la comprobación es estricta.
+        pytest.skip(
+            f"{lesson.get('id')}: salida distinta en Python "
+            f"{sys.version_info[0]}.{sys.version_info[1]}; Pyodide ejecuta "
+            f"{PYODIDE_PYTHON[0]}.{PYODIDE_PYTHON[1]}"
+        )
     assert actual == expected, (
         f"{lesson.get('id')}: example output mismatch\n"
         f"--- expected ---\n{expected}\n--- actual ---\n{actual}"
