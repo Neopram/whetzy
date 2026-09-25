@@ -269,11 +269,19 @@ export interface QuestionPublic {
   expected_time_ms: number;
 }
 
+export interface SelectionReason {
+  pool: string;
+  skill_strategy: string | null;
+  difficulty_target: number | null;
+  expected_p: number | null;
+}
+
 export interface QuizStartResponse {
   session_id: string;
   mode: string;
   question: QuestionPublic | null;
   reviews_due: number;
+  selection_reason: SelectionReason | null;
 }
 
 export interface QuizAnswerResponse {
@@ -290,6 +298,7 @@ export interface QuizAnswerResponse {
   skill_mastery: Record<string, number>;
   session_accuracy: number;
   next_question: QuestionPublic | null;
+  next_selection_reason: SelectionReason | null;
 }
 
 export interface QuizEndResponse {
