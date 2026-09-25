@@ -31,6 +31,7 @@ export function CertificateCard({ certificate, showShare = true }: Props) {
 
   const trackName = isSpanish ? certificate.track_name_es : certificate.track_name_en;
   const url = certificateUrl(certificate.code);
+  const title = certificate.is_certification ? t('certificate.titlePreparation') : t('certificate.title');
 
   const copy = useCallback(async () => {
     try {
@@ -47,16 +48,17 @@ export function CertificateCard({ certificate, showShare = true }: Props) {
   if (certificate.revoked) {
     return (
       <div className={styles.revoked} role="status">
-        <h2 className={styles.title}>{t('certificate.title')}</h2>
+        <h2 className={styles.title}>{title}</h2>
         <p>{t('certificate.revoked')}</p>
       </div>
     );
   }
 
   return (
-    <section className={styles.card} aria-label={t('certificate.title')}>
-      <p className={styles.kicker}>{t('certificate.title')}</p>
+    <section className={styles.card} aria-label={title}>
+      <p className={styles.kicker}>{title}</p>
       <h2 className={styles.track}>{trackName}</h2>
+      {certificate.is_certification && <p className={styles.hint}>{t('certificate.preparationNote')}</p>}
 
       <p className={styles.holderLabel}>{t('certificate.holder')}</p>
       <p className={styles.holder}>{certificate.username}</p>

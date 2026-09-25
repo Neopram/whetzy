@@ -37,6 +37,40 @@ from app.models.user import User
 # than about the learner, so the report says so instead of implying precision.
 MIN_QUESTIONS_FOR_DOMAIN_VERDICT = 10
 
+# Per-provider scoring notes. Only include text that is verifiable from the
+# official exam guide; never invent a scale. Unknown providers fall back to
+# the "_generic" entry. Keys are lowercase cert_provider values.
+_SCORING_NOTES: dict[str, tuple[str, str]] = {
+    "aws": (
+        (
+            "El examen real se puntua en una escala de 100 a 1.000 y se aprueba con 700, "
+            "calculada por AWS sobre 50 preguntas puntuadas mezcladas con 15 sin puntuar que "
+            "no se identifican. Este simulacro te da el porcentaje bruto de aciertos: no lo "
+            "convertimos a esa escala porque no tenemos con que hacerlo, y un numero inventado "
+            "que parece oficial es peor que ninguno."
+        ),
+        (
+            "The real exam is reported as a scaled score from 100 to 1,000, passing at 700, "
+            "computed by AWS over 50 scored questions mixed with 15 unscored ones that are not "
+            "identified. This mock gives you the raw percentage correct: we do not convert it to "
+            "that scale because we have no basis to, and an invented number that looks official "
+            "is worse than none."
+        ),
+    ),
+    "_generic": (
+        (
+            "El examen real tiene su propio modelo de puntuacion con un umbral de aprobado "
+            "publicado por el proveedor. Este simulacro te da el porcentaje bruto de aciertos: "
+            "no lo convertimos en la escala del proveedor porque no tenemos con que hacerlo."
+        ),
+        (
+            "The real exam has its own scoring model with a passing threshold published by the "
+            "provider. This mock gives you the raw percentage correct: we do not convert it to "
+            "the provider's scale because we have no basis to do so."
+        ),
+    ),
+}
+
 
 class MockExamError(Exception):
     """Raised for conditions the caller should turn into a 4xx response."""
@@ -108,8 +142,14 @@ async def start_attempt(
     track_id: str,
     *,
     rng: random.Random | None = None,
+    kind: str = "certification",
+    pass_pct: float | None = None,
 ) -> MockExamAttempt:
-    """Draws a weighted question set and starts the clock."""
+    """Draws a weighted question set and starts the clock.
+
+    `kind`/`pass_pct` let the paid certifying exam (38.7) reuse the same
+    blueprint draw; the mock itself keeps no pass mark.
+    """
     track = await db.get(Track, track_id)
     if track is None or not track.is_certification:
         raise MockExamError(f"{track_id} is not a certification track")
@@ -146,6 +186,8 @@ async def start_attempt(
         id=uuid.uuid4(),
         user_id=user.id,
         track_id=track_id,
+        kind=kind,
+        pass_pct=pass_pct,
         question_ids=selected,
         duration_minutes=track.exam_duration_minutes,
         started_at=now,
@@ -205,6 +247,10 @@ async def score_attempt(
             tally[domain_id][0] += int(is_correct)
             tally[domain_id][1] += 1
 
+    track = await db.get(Track, attempt.track_id)
+    provider_key = (track.cert_provider or "").lower() if track else ""
+    note_es, note_en = _SCORING_NOTES.get(provider_key, _SCORING_NOTES["_generic"])
+
     total = len(attempt.question_ids)
     per_domain = []
     for domain in domains:
@@ -235,20 +281,8 @@ async def score_attempt(
         "elapsed_seconds": int((moment - _as_utc(attempt.started_at)).total_seconds()),
         "duration_minutes": attempt.duration_minutes,
         # Deliberately NOT a predicted scaled score - see the module docstring.
-        "scoring_note_es": (
-            "El examen real se puntua en una escala de 100 a 1.000 y se aprueba con 700, "
-            "calculada por AWS sobre 50 preguntas puntuadas mezcladas con 15 sin puntuar que "
-            "no se identifican. Este simulacro te da el porcentaje bruto de aciertos: no lo "
-            "convertimos a esa escala porque no tenemos con que hacerlo, y un numero inventado "
-            "que parece oficial es peor que ninguno."
-        ),
-        "scoring_note_en": (
-            "The real exam is reported as a scaled score from 100 to 1,000, passing at 700, "
-            "computed by AWS over 50 scored questions mixed with 15 unscored ones that are not "
-            "identified. This mock gives you the raw percentage correct: we do not convert it to "
-            "that scale because we have no basis to, and an invented number that looks official "
-            "is worse than none."
-        ),
+        "scoring_note_es": note_es,
+        "scoring_note_en": note_en,
         "per_domain_caveat_es": (
             "La guia oficial pide cautela al interpretar el detalle por dominio: los dominios "
             "pequenos traen pocas preguntas, y ahi una respuesta cambia el porcentaje varios "

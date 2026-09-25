@@ -12,6 +12,7 @@ import {
   COMPARISON_ROWS,
   type ComparisonCell,
 } from '../lib/comparison';
+import { TUTOR_DAILY_LIMIT_PRO } from '../lib/plans';
 
 /* La landing (30.1, 2026-09-24) solo afirma lo que el producto hace hoy:
    cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), capturas
@@ -150,7 +151,7 @@ export default function LandingScreen() {
     price: t(`landing.${k}.price`),
     note: t(`landing.${k}.note`),
     blurb: t(`landing.${k}.blurb`),
-    perks: t(`landing.${k}.perks`, { returnObjects: true, ...counts }) as string[],
+    perks: t(`landing.${k}.perks`, { returnObjects: true, ...counts, tutorLimit: TUTOR_DAILY_LIMIT_PRO }) as string[],
     cta: t(`landing.${k}.cta`),
     featured: k === 'planFree',
   }));

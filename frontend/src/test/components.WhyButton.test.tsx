@@ -13,7 +13,7 @@ import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/re
 import '../i18n';
 import i18n from '../i18n';
 import { WhyButton } from '../components/quiz/WhyButton';
-import { tutor as tutorApi } from '../services/api';
+import { ApiError, tutor as tutorApi } from '../services/api';
 
 vi.mock('../services/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/api')>();
@@ -129,5 +129,25 @@ describe('WhyButton', () => {
     await i18n.changeLanguage('en');
     render(<WhyButton questionId="q1" isPremium={false} onUpgrade={vi.fn()} />);
     expect(screen.getByRole('button', { name: /^Why\?$/i })).toBeInTheDocument();
+  });
+  it('Pro al llegar al cupo diario: explica el límite y ofrece Pro Max, sin «Reintentar» (38.6)', async () => {
+    explainMock.mockRejectedValueOnce(new ApiError('tutor_daily_limit', 429));
+    const onUpgrade = vi.fn();
+    render(<WhyButton questionId="q1" isPremium onUpgrade={onUpgrade} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /¿Por qué\?/i }));
+
+    expect(await screen.findByText(/Has usado tus explicaciones de hoy/i)).toBeInTheDocument();
+    expect(screen.getByText(/Pro incluye 20 explicaciones/i)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Reintentar/i })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Ver Pro Max/i }));
+    expect(onUpgrade).toHaveBeenCalledTimes(1);
+  });
+
+  it('otro 429 (freno por minuto) sigue siendo un error con «Reintentar»', async () => {
+    explainMock.mockRejectedValueOnce(new ApiError('Too many requests', 429));
+    render(<WhyButton questionId="q1" isPremium onUpgrade={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: /¿Por qué\?/i }));
+    expect(await screen.findByRole('button', { name: /Reintentar/i })).toBeInTheDocument();
   });
 });

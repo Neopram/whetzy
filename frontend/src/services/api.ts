@@ -801,6 +801,11 @@ export interface MockExamReport {
   scoring_note_en: string;
   per_domain_caveat_es: string;
   per_domain_caveat_en: string;
+  /** Only the certifying exam declares a pass; the mock leaves these null. */
+  pass_pct?: number | null;
+  passed?: boolean | null;
+  pass_note_es?: string | null;
+  pass_note_en?: string | null;
 }
 
 export interface MockExamSubmitResponse {
@@ -808,6 +813,8 @@ export interface MockExamSubmitResponse {
   status: string;
   expired: boolean;
   report: MockExamReport;
+  /** Set only when a certifying exam was passed on time. */
+  certificate?: CertificatePublic | null;
 }
 
 // ── Track final exam and module test-out (17.2) ─────────────────────────────
@@ -894,6 +901,19 @@ export const exams = {
     return request<MockExamSubmitResponse>(`/exams/mock/${attemptId}`);
   },
 
+  // ── Certifying exam, one-time payment (38.7, ADR-49) ─────────────────────
+
+  async certificationAccess(trackId: string) {
+    return request<CertificationAccess>(`/exams/certification/${trackId}/access`);
+  },
+
+  /** Same draw and clock as the mock; submit it with `submitMock`. 402 = not bought. */
+  async startCertifying(trackId: string) {
+    return request<MockExamStartResponse>(`/exams/certification/${trackId}/start`, {
+      method: 'POST',
+    });
+  },
+
   // ── Track final exam and module test-out (17.2) ───────────────────────────
 
   /** What the sitting will look like, so the learner can decide before starting. */
@@ -960,6 +980,16 @@ export interface CertificatePublic {
   questions: number;
   issued_at: string;
   revoked: boolean;
+  /** A certification track's certificate is a "Whetzy preparation certificate". */
+  is_certification?: boolean;
+}
+
+export interface CertificationAccess {
+  track_id: string;
+  price_usd: number;
+  paywall_enabled: boolean;
+  purchased: boolean;
+  can_start: boolean;
 }
 
 export const certificates = {

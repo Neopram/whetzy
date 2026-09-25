@@ -609,6 +609,7 @@ async def test_public_certificate_leaks_nothing_beyond_the_claim(
         "questions",
         "issued_at",
         "revoked",
+        "is_certification",
     }
     serialised = res.text
     assert "@" not in serialised, "no email may reach an unauthenticated page"

@@ -12,7 +12,7 @@ qué hacer; el ledger lo sabe.
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
 - Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §13 ADR-46; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 catálogo total ≥ 50 cursos/track sobre corpus abierto, ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila**)
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 catálogo total ≥ 50 cursos/track sobre corpus abierto, ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila, ADR-49 Pro Max = tutor ilimitado y certificación 39,99 $ pago único**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Auditoría externa más reciente (producción medida en vivo, CI, coste de contexto): `docs/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
@@ -50,7 +50,7 @@ qué hacer; el ledger lo sabe.
 - Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA **no** se reutiliza (ADR-47, valor por defecto de H.LIC); CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
-- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260925_leagues_opt_out` (32 migraciones)
+- Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260925_tutor_cert` (33 migraciones)
 - LLM: `qwen/qwen3.8-27b` en Groq
 - OpenAPI en `/api/v1/openapi.json`; `POST /quiz/start` devuelve el id en `.question.id`
 

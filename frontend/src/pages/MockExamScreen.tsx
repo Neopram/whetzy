@@ -1,9 +1,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { exams, type MockExamReport, type MockExamStartResponse, type QuestionPublic } from '../services/api';
+import {
+  ApiError,
+  exams,
+  type CertificatePublic,
+  type CertificationAccess,
+  type MockExamReport,
+  type MockExamStartResponse,
+  type QuestionPublic,
+} from '../services/api';
+import { CertificateCard } from '../components/certificate/CertificateCard';
+import { CERTIFICATION_PRICE_USD } from '../lib/plans';
 import styles from './MockExamScreen.module.css';
 
 type Phase = 'intro' | 'running' | 'grading' | 'result';
+/** `mock` rehearses the real exam; `certifying` is the paid sitting that can earn a certificate (38.7). */
+type Mode = 'mock' | 'certifying';
 
 interface Props {
   trackId: string;
@@ -33,6 +45,21 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
   const [expired, setExpired] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
+  const [mode, setMode] = useState<Mode>('mock');
+  const [access, setAccess] = useState<CertificationAccess | null>(null);
+  const [certificate, setCertificate] = useState<CertificatePublic | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    exams
+      .certificationAccess(trackId)
+      .then((res) => alive && setAccess(res))
+      // No access info means no certifying option shown — the mock still works.
+      .catch(() => alive && setAccess(null));
+    return () => {
+      alive = false;
+    };
+  }, [trackId]);
 
   // Guards the auto-submit so a re-render at the deadline cannot fire it twice.
   const submittingRef = useRef(false);
@@ -49,6 +76,7 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
       const res = await exams.submitMock(exam.attempt_id, answers);
       setReport(res.report);
       setExpired(res.expired);
+      setCertificate(res.certificate ?? null);
       setPhase('result');
     } catch {
       // Put them back in the exam rather than losing the answers.
@@ -74,21 +102,31 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
     return () => window.clearInterval(id);
   }, [phase, exam, submit]);
 
-  const start = useCallback(async () => {
-    setError(null);
-    setPhase('grading');
-    try {
-      const res = await exams.startMock(trackId);
-      setExam(res);
-      setAnswers({});
-      setIndex(0);
-      submittingRef.current = false;
-      setPhase('running');
-    } catch {
-      setPhase('intro');
-      setError(t('mockExam.errorGeneric'));
-    }
-  }, [trackId, t]);
+  const start = useCallback(
+    async (next: Mode = mode) => {
+      setError(null);
+      setMode(next);
+      setCertificate(null);
+      setExam(null);
+      setPhase('grading');
+      try {
+        const res = next === 'certifying' ? await exams.startCertifying(trackId) : await exams.startMock(trackId);
+        setExam(res);
+        setAnswers({});
+        setIndex(0);
+        submittingRef.current = false;
+        setPhase('running');
+      } catch (err) {
+        setPhase('intro');
+        setError(
+          err instanceof ApiError && err.status === 402
+            ? t('mockExam.certPurchaseRequired')
+            : t('mockExam.errorGeneric'),
+        );
+      }
+    },
+    [mode, trackId, t],
+  );
 
   const choose = useCallback(
     (questionId: string, option: number) => {
@@ -111,9 +149,27 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
           {t('mockExam.format', { count: questionCount, minutes: durationMinutes })}
         </p>
         {error && <p className={styles.error} role="alert">{error}</p>}
-        <button className={styles.primary} onClick={start} disabled={phase === 'grading'}>
+        <button className={styles.primary} onClick={() => void start('mock')} disabled={phase === 'grading'}>
           {phase === 'grading' ? t('mockExam.starting') : t('mockExam.start')}
         </button>
+
+        {access && (
+          <section className={styles.certifying} aria-labelledby="certifying-title" data-testid="certifying">
+            <h2 id="certifying-title" className={styles.subtitle}>{t('mockExam.certTitle')}</h2>
+            <p className={styles.intro}>{t('mockExam.certIntro')}</p>
+            <p className={styles.format}>
+              {t('mockExam.certPrice', { price: isSpanish ? String(CERTIFICATION_PRICE_USD).replace('.', ',') : CERTIFICATION_PRICE_USD })}
+            </p>
+            {!access.can_start && <p className={styles.note}>{t('mockExam.certPaywallClosed')}</p>}
+            <button
+              className={styles.secondary}
+              onClick={() => void start('certifying')}
+              disabled={phase === 'grading' || !access.can_start}
+            >
+              {t('mockExam.certStart')}
+            </button>
+          </section>
+        )}
       </div>
     );
   }
@@ -122,12 +178,20 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
     const elapsedMinutes = Math.round(report.elapsed_seconds / 60);
     return (
       <div className={styles.screen}>
-        <h1 className={styles.title}>{t('mockExam.results')}</h1>
+        <h1 className={styles.title}>{mode === 'certifying' ? t('mockExam.certResults') : t('mockExam.results')}</h1>
 
         <p className={styles.score}>
           {t('mockExam.rawScore', { correct: report.correct, total: report.questions })}
           <span className={styles.pct}>{report.raw_pct}%</span>
         </p>
+
+        {report.passed != null && (
+          <p className={styles.note} role="status">
+            <strong>{report.passed ? t('mockExam.certPassed') : t('mockExam.certFailed')}</strong>{' '}
+            {isSpanish ? report.pass_note_es : report.pass_note_en}
+          </p>
+        )}
+        {certificate && <CertificateCard certificate={certificate} />}
 
         {expired && (
           <p className={styles.expired} role="status">
@@ -178,8 +242,8 @@ export function MockExamScreen({ trackId, questionCount, durationMinutes, onExit
         </ul>
 
         <p className={styles.elapsed}>{t('mockExam.elapsed', { minutes: elapsedMinutes })}</p>
-        <button className={styles.primary} onClick={start}>
-          {t('mockExam.retry')}
+        <button className={styles.primary} onClick={() => void start()}>
+          {mode === 'certifying' ? t('mockExam.certRetry') : t('mockExam.retry')}
         </button>
         {onExit && (
           <button className={styles.secondary} onClick={onExit}>

@@ -182,6 +182,43 @@ MISSING_ACCENT = {
     "verificacion": "verificación",
     "visualizacion": "visualización",
     "volumenes": "volúmenes",
+    # Added in 37.16 (2026-09-25), when the scan reached the answer options: the
+    # distractor rewrite of track05 shipped `ningun`, `demas`, `jamas`, and 280
+    # options across the bank had lost accents the guard never looked at. Plurals
+    # in -ciones are correct without an accent and stay out on purpose.
+    "demas": "demás",
+    "logico": "lógico",
+    "actualizacion": "actualización",
+    "administracion": "administración",
+    "atomica": "atómica",
+    "atomico": "atómico",
+    "atomicos": "atómicos",
+    "automaticamente": "automáticamente",
+    "compresion": "compresión",
+    "comunicacion": "comunicación",
+    "condicion": "condición",
+    "conexion": "conexión",
+    "configuracion": "configuración",
+    "creacion": "creación",
+    "eliminacion": "eliminación",
+    "excepcion": "excepción",
+    "facilmente": "fácilmente",
+    "imagenes": "imágenes",
+    "implementacion": "implementación",
+    "jamas": "jamás",
+    "ningun": "ningún",
+    "organizacion": "organización",
+    "particion": "partición",
+    "peticion": "petición",
+    "prevencion": "prevención",
+    "proposito": "propósito",
+    "propositos": "propósitos",
+    "proteccion": "protección",
+    "rapidamente": "rápidamente",
+    "revocacion": "revocación",
+    "sesion": "sesión",
+    "transaccion": "transacción",
+    "unicamente": "únicamente",
 }
 # NOTE: entries whose unaccented spelling is itself a real Spanish word are
 # dropped here rather than never written, so the reason they are excluded stays
@@ -249,6 +286,11 @@ def _spanish_strings() -> list[tuple[str, str, str]]:
                 value = q.get(field)
                 if isinstance(value, str) and value.strip():
                     out.append((q.get("id", qfile.name), field, value))
+            # The options are what the learner reads to answer, and until 37.16
+            # nobody checked them: 280 had lost their accents.
+            for i, option in enumerate(q.get("options_es") or []):
+                if isinstance(option, str) and option.strip():
+                    out.append((q.get("id", qfile.name), f"options_es[{i}]", option))
 
     for lfile in sorted((root / "lessons").rglob("*.json")):
         lesson = json.loads(lfile.read_text(encoding="utf-8"))
@@ -296,6 +338,7 @@ def test_the_guard_recognises_unaccented_spanish() -> None:
     """
     assert _offences("la operacion mide cuanto apuntan") == ["operacion"]
     assert _offences("un numero y un codigo") == ["codigo", "numero"]
+    assert _offences("sin ningun limite y los demas") == ["demas", "ningun"]
     # Correct Spanish is left alone.
     assert _offences("la operación mide cuánto apuntan dos vectores") == []
     # Code is not prose: a variable named `codigo` must not trip it.

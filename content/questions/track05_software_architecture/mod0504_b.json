@@ -38,7 +38,7 @@
       "question_es": "El servicio de pedidos está saturado. El 80% de su carga son ESCRITURAS sobre PostgreSQL. El equipo propone añadir tres réplicas de lectura más. ¿Cuál es la evaluación correcta?",
       "question_en": "The orders service is saturated. 80% of its load is WRITES against PostgreSQL. The team proposes adding three more read replicas. What is the correct assessment?",
       "options_es": [
-        "No ayudara: cada replica tiene que aplicar exactamente el mismo flujo de escrituras que el primario, asi que el cuello de botella de escritura no se mueve y la replicacion añade carga extra al primario",
+        "No ayudara: cada replica tiene que aplicar exactamente el mismo flujo de escrituras que el primario, así que el cuello de botella de escritura no se mueve y la replicación añade carga extra al primario",
         "Ayudará bastante: cada réplica de lectura adicional que se añade absorbe automáticamente una parte proporcional de las escrituras entrantes, aliviando la presión total sobre el servicio de pedidos en su conjunto",
         "Ayudará, porque liberar el 20% de lecturas del primario le deja CPU de sobra para absorber el resto de las escrituras",
         "Ayudará solo si se activa el modo multi-máster, que en PostgreSQL viene habilitado por defecto en toda instalación"
@@ -201,7 +201,7 @@
       "options_es": [
         "Porque cada máquina nueva que se va añadiendo al grupo resulta siempre bastante más potente que la instancia original que ya venía sirviendo todo el tráfico del servicio",
         "Porque elimina por completo la necesidad de colocar un balanceador de carga delante del grupo",
-        "Porque la carga se reparte entre varias instancias independientes: si una cae, las demas siguen sirviendo y esa capa deja de tener un unico punto de fallo",
+        "Porque la carga se reparte entre varias instancias independientes: si una cae, las demás siguen sirviendo y esa capa deja de tener un único punto de fallo",
         "Porque garantiza consistencia fuerte entre todas las réplicas de datos que sirven ese mismo tráfico"
       ],
       "options_en": [
@@ -231,7 +231,7 @@
       "options_es": [
         "gRPC viaja siempre sobre UDP en lugar de sobre TCP, y el balanceador L4 que el equipo configuró originalmente solo sabe entender conexiones TCP tradicionales, por lo que descarta silenciosamente todo el tráfico gRPC nuevo sin avisar a nadie",
         "gRPC no admite ningún tipo de balanceo de carga, así que la única salida es volver a usar REST",
-        "gRPC usa HTTP/2 con conexiones persistentes y multiplexadas: el balanceador L4 reparte CONEXIONES, no peticiones, asi que todas las RPC de una conexion caen en la misma instancia. Hace falta balanceo L7 (o del lado del cliente)",
+        "gRPC usa HTTP/2 con conexiones persistentes y multiplexadas: el balanceador L4 reparte CONEXIONES, no peticiones, así que todas las RPC de una conexión caen en la misma instancia. Hace falta balanceo L7 (o del lado del cliente)",
         "Es un fallo de los health checks: la instancia sobrecargada está marcando a las demás como no sanas"
       ],
       "options_en": [
@@ -260,7 +260,7 @@
       "question_en": "Envoy's LEAST_REQUEST policy, when there are more than two hosts, does not walk the whole list looking for the minimum. What does it do instead, and why?",
       "options_es": [
         "Consulta por RPC el número exacto de peticiones activas en todos y cada uno de los hosts disponibles antes de decidir a cuál de ellos enviar la siguiente petición entrante, de modo que la decisión nunca se equivoca",
-        "Elige dos hosts al azar y manda la peticion al que menos peticiones activas tiene ('power of two choices'): cuesta O(1) y evita que todos los balanceadores manden a la vez al mismo host 'menos cargado'",
+        "Elige dos hosts al azar y manda la petición al que menos peticiones activas tiene ('power of two choices'): cuesta O(1) y evita que todos los balanceadores manden a la vez al mismo host 'menos cargado'",
         "Ordena todos los hosts por su latencia p99 medida y envía siempre la petición al primero de esa lista",
         "Cae a un round-robin puro, porque calcular el mínimo exacto es imposible sin un estado compartido entre balanceadores"
       ],
@@ -320,7 +320,7 @@
       "question_es": "Un backend empieza a responder lento. El cliente reintenta hasta 3 veces y, sin que nadie lo coordine, el balanceador también tiene configurados 2 reintentos. ¿Qué ocurre?",
       "question_en": "A backend starts responding slowly. The client retries up to 3 times and, with nobody coordinating it, the load balancer also has 2 retries configured. What happens?",
       "options_es": [
-        "Los reintentos se multiplican capa a capa (3 x 2 = hasta 6 intentos por peticion de usuario): justo cuando el backend esta peor recibe varias veces mas carga. Hay que reintentar en UNA sola capa y acotarla con un presupuesto de reintentos",
+        "Los reintentos se multiplican capa a capa (3 x 2 = hasta 6 intentos por petición de usuario): justo cuando el backend esta peor recibe varias veces mas carga. Hay que reintentar en UNA sola capa y acotarla con un presupuesto de reintentos",
         "El balanceador detecta de forma automática los reintentos que ya está haciendo el cliente y desactiva los suyos propios sin que nadie tenga que tocar ninguna configuración, evitando así cualquier duplicidad de intentos hacia el backend saturado",
         "No ocurre nada relevante, porque los reintentos solo se consumen cuando la petición falla por completo",
         "Los reintentos de ambas capas se cancelan entre sí y la carga efectiva sobre el backend termina bajando"
@@ -425,7 +425,7 @@
       "question_es": "En un almacén con replicación sin lider y N = 5 réplicas, el equipo configura W = 2 y R = 2 'para que todo vaya rápido'. ¿Qué garantía acaban de perder?",
       "question_en": "In a leaderless replicated store with N = 5 replicas, the team sets W = 2 and R = 2 'so everything is fast'. Which guarantee have they just given up?",
       "options_es": [
-        "Pierden el solapamiento de quorum: con W + R = 4, que no supera N = 5, puede haber lecturas que no toquen ninguna replica con la ultima escritura, asi que se puede leer un valor obsoleto",
+        "Pierden el solapamiento de quorum: con W + R = 4, que no supera N = 5, puede haber lecturas que no toquen ninguna replica con la ultima escritura, así que se puede leer un valor obsoleto",
         "Pierden durabilidad frente a fallos de disco simultáneos en varias réplicas a la vez, pero la consistencia percibida por cada lectura individual permanece completamente intacta ante cualquier fallo",
         "Ninguna: mientras W y R sean mayores que uno, toda lectura ve garantizada la última escritura confirmada",
         "Pierden la tolerancia a particiones, porque un quorum exige por definición mayoría estricta sobre N"
@@ -457,7 +457,7 @@
       "options_es": [
         "Falta linealizabilidad; la única forma de recuperarla por completo es envolver cada escritura en un commit en dos fases (2PC) que bloquea hasta que todas las réplicas confirman la operación",
         "Falta consistencia eventual; conviene mostrar un aviso de sincronización al usuario mientras las réplicas terminan de converger",
-        "Falta la consistencia 'lee tus propias escrituras': basta con que ESE usuario lea del primario (o de una replica suficientemente al dia) durante un rato despues de haber escrito",
+        "Falta la consistencia 'lee tus propias escrituras': basta con que ESE usuario lea del primario (o de una replica suficientemente al dia) durante un rato después de haber escrito",
         "Falta tolerancia a particiones; conviene desplegar réplicas en más regiones para que la red nunca quede aislada"
       ],
       "options_en": [
@@ -487,7 +487,7 @@
       "options_es": [
         "Porque 2PC no llega a garantizar atomicidad entre los participantes y obliga a reintentar la transacción completa desde cero cada vez que cualquiera de los participantes falla en cualquier fase del proceso completo",
         "Porque 2PC exige que los relojes de todos los participantes estén sincronizados con precisión de microsegundos antes de empezar",
-        "Porque la transaccion solo puede terminar si TODOS los participantes estan disponibles, y si el coordinador cae despues del 'prepare' los participantes quedan en duda manteniendo sus cerrojos hasta que vuelva",
+        "Porque la transacción solo puede terminar si TODOS los participantes estan disponibles, y si el coordinador cae después del 'prepare' los participantes quedan en duda manteniendo sus cerrojos hasta que vuelva",
         "Porque 2PC replica físicamente los datos en cada participante, lo que multiplica el espacio de almacenamiento necesario"
       ],
       "options_en": [
@@ -516,8 +516,8 @@
       "question_en": "A colleague argues: 'our database is ACID, so in CAP we are clearly C'. What mistake are they making?",
       "options_es": [
         "El error es que ACID solo existe en bases relacionales y CAP solo se aplica a las NoSQL",
-        "Ninguno: ACID implica CP por definicion del teorema",
-        "La C de CAP es linealizabilidad (todos los clientes ven una sola copia logica de los datos), mientras que la C de ACID es la preservacion de invariantes dentro de una transaccion: son propiedades distintas y una no implica la otra",
+        "Ninguno: ACID implica CP por definición del teorema",
+        "La C de CAP es linealizabilidad (todos los clientes ven una sola copia lógica de los datos), mientras que la C de ACID es la preservacion de invariantes dentro de una transacción: son propiedades distintas y una no implica la otra",
         "El error es que la C de ACID se refiere en realidad a la disponibilidad, no a la consistencia"
       ],
       "options_en": [
@@ -651,7 +651,7 @@
       "question_en": "A payment gateway retries the request when its timeout expires, but the first attempt did arrive and was processed; only the response was lost. Which mechanism prevents the duplicate charge?",
       "options_es": [
         "Reducir de forma bastante agresiva el tiempo de espera configurado, para que el primer intento nunca llegue a alcanzar por completo al receptor situado al otro lado de la conexión de red del gateway",
-        "Una clave de idempotencia por operacion: el receptor guarda la clave junto al resultado y, si vuelve a verla, devuelve el resultado original en lugar de ejecutar el cobro otra vez (receptor idempotente)",
+        "Una clave de idempotencia por operación: el receptor guarda la clave junto al resultado y, si vuelve a verla, devuelve el resultado original en lugar de ejecutar el cobro otra vez (receptor idempotente)",
         "Lanzar el reintento desde un nodo distinto al que hizo la primera petición para repartir la carga",
         "Envolver toda la operación en una transacción ACID dentro del propio servicio de pagos"
       ],
@@ -682,7 +682,7 @@
       "options_es": [
         "Ninguno en particular: basta con confiar por completo en el autoescalado del clúster para absorber cualquier pico repentino de un solo cliente",
         "Ventana fija por minuto: es exacta y, por construcción, no permite ninguna ráfaga en ningún punto de la ventana",
-        "Token bucket: acumula fichas hasta un tope, asi una rafaga consume el saldo ahorrado mientras la recarga constante fija la media a largo plazo",
+        "Token bucket: acumula fichas hasta un tope, así una rafaga consume el saldo ahorrado mientras la recarga constante fija la media a largo plazo",
         "Leaky bucket con salida a ritmo constante, que es el único algoritmo capaz de permitir ráfagas cortas"
       ],
       "options_en": [
@@ -710,10 +710,10 @@
       "question_es": "Un producto global quiere aceptar escrituras en dos regiones a la vez (activo-activo) en lugar de tener una región pasiva a la espera. ¿Cuál es el coste real que hay que aceptar con esa decisión?",
       "question_en": "A global product wants to accept writes in two regions at once (active-active) instead of keeping one region passive on standby. What is the real cost of that decision?",
       "options_es": [
-        "Ninguno relevante: la replicacion multi-lider es transparente para la aplicacion",
+        "Ninguno relevante: la replicación multi-lider es transparente para la aplicación",
         "Hay que resolver conflictos de escritura cuando dos regiones tocan la misma fila a la vez, y aceptar que entre regiones no hay consistencia lineal; la alternativa es pagar un viaje de ida y vuelta entre regiones en cada confirmacion",
-        "El unico coste adicional es la factura de transferencia de datos entre regiones",
-        "Hay que replicar de forma sincrona, lo que elimina los conflictos sin ningun coste de latencia"
+        "El único coste adicional es la factura de transferencia de datos entre regiones",
+        "Hay que replicar de forma sincrona, lo que elimina los conflictos sin ningún coste de latencia"
       ],
       "options_en": [
         "No relevant cost: multi-leader replication is transparent to the application",

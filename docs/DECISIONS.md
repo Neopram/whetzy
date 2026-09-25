@@ -786,7 +786,7 @@ Wetsy». Se lee como: **el creador se queda el 80 % y Whetzy el 20 %** de cada v
 |---|---|---|---|
 | Gratis | `free` / `NULL` | 0 $ | Todo el contenido, el motor adaptativo **y el repaso espaciado** |
 | **Pro** | `plus` | **14,99 $/mes** | Tutor con IA (`require_tier("plus")`) y el modo examen del quiz |
-| **Pro Max** | `pro` | **19,99 $/mes** | Todo Pro. **Lo que añade sobre Pro no está definido**: queda para H.35 |
+| **Pro Max** | `pro` | **19,99 $/mes** | Todo Pro. ~~Lo que añade sobre Pro no está definido~~ → **tutor IA ilimitado (ADR-49, 2026-09-25)**; en código, todavía nada (38.6) |
 | **Creador** | `creator` | **99,99 $/mes** | Todo Pro Max + publicar bootcamps en el marketplace |
 
 - **Reparto del marketplace: 80 % creador / 20 % Whetzy** (antes 70/30).
@@ -945,3 +945,50 @@ declaraban «ALL GATES OPEN» con H.29 abierta y daban tres mínimos de payout d
 **Regla:** un plan que no sea una fila del ledger no es un plan; si merece existir, se
 convierte en fila. Los cuatro HTML duplicados de `analisis-estrategico/` con un carácter
 invisible (U+F00D) en el nombre se borran: eran copias anteriores de los mismos ficheros.
+
+---
+
+## ADR-49 — Pro Max = tutor IA ilimitado; certificación a 39,99 $ de pago único (DUEÑO, 2026-09-25)
+
+**Origen.** Respuesta del dueño a H.35 (3) y a la pregunta sobre certificaciones, en la
+sesión interactiva del 2026-09-25, citada tal cual: «Pro Max añade tutor IA ilimitado;
+39,99 pago único por certificación».
+
+**Decisión 1 — Pro Max.** Lo que Pro Max (`pro`) añade sobre Pro (`plus`) es el **tutor IA
+ilimitado**. Consecuencia necesaria: **Pro pasa a tener un cupo** de tutor. Hoy el cupo no
+existe: `POST /tutor/explain` solo exige `require_tier("plus")` y el único freno es el
+límite por minuto e IP del middleware.
+- **Cupo diario de Pro: sin fijar por el dueño (H.35-5).** Valor por defecto (ADR-47) para
+  poder construir: `TUTOR_DAILY_LIMIT_PLUS = 20` explicaciones al día. No se publica
+  hasta que el dueño lo confirme.
+- «Ilimitado» no quita el freno por minuto contra abuso: es un límite técnico, no de plan.
+- El coste del LLM (Groq) crece con el uso ilimitado y **no está medido**. 38.6 lo registra
+  por usuario para que el dueño vea el coste real de Pro Max.
+
+**Decisión 2 — Certificación.** Cada certificación se desbloquea con un **pago único de
+39,99 $**, aparte de la suscripción.
+
+**Hallazgo que condiciona la decisión 2.** Hoy un track de certificación no emite
+certificado:
+- `start_track_final` rechaza los tracks con `is_certification`
+  (`backend/app/services/track_exam.py:214`).
+- Esos tracks solo tienen simulacro (`/exams/mock/start`) y readiness.
+- Los certificados que existen son los del examen final de los tracks de aprendizaje, y
+  son gratis para cualquier usuario con sesión (`exams.py:271`, sin comprobación de plan).
+
+**Valores por defecto (ADR-47; el dueño los revoca con una línea):**
+
+| Punto | Por defecto |
+|---|---|
+| Qué se compra | Por cada track de certificación (`is_certification`: hoy track08, 09, 10, 11 y 40): un **examen certificador** en el formato del blueprint oficial. Si se aprueba, se emite un certificado Whetzy verificable por URL. |
+| Reintentos | Incluidos: pago único significa que no se vuelve a pagar por suspender. |
+| Quién puede comprar | Cualquier plan, gratis incluido. Ninguna suscripción lo incluye. |
+| Qué sigue sin pagar aparte | La preparación: lecciones, quiz, simulacros y readiness, según el plan de cada uno. |
+| Certificados de tracks de aprendizaje | Siguen gratis. |
+| Nombre | «Certificado Whetzy de preparación para <certificación>». **Nunca** «certificación oficial»: AWS, ISC2 y Python Institute emiten las suyas. |
+| Cobro | Detrás de `CERTIFICATION_PAYWALL`, **apagado** hasta que abra el cobro (H.19/H.29). Es el mismo motivo que `CREATOR_PLAN_REQUIRED` en ADR-41: exigir un pago que nadie puede hacer cerraría el producto. |
+
+**Supera a** ADR-41 en la fila «Pro Max: lo que añade sobre Pro no está definido».
+**Choca con** la ficha de App Store (`docs/store/ios/listing.md:152`,
+`app.whetzy.plus.yearly $39.99/año`): ese importe anual no sale de ninguna decisión del
+dueño y ahora, además, coincide con el precio de la certificación. Se limpia en 38.1.

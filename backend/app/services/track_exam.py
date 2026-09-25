@@ -81,6 +81,10 @@ DEFAULT_PASS_PCT = 70.0
 
 KIND_TRACK_FINAL = "track_final"
 KIND_TEST_OUT = "test_out"
+KIND_CERTIFYING = "certifying"
+# Sittings that earn a certificate when passed on time: a track final, and the
+# paid certifying exam of a certification track (38.7, `services/certification`).
+CERTIFYING_KINDS = frozenset({KIND_TRACK_FINAL, KIND_CERTIFYING})
 
 
 class TrackExamError(Exception):
@@ -435,7 +439,7 @@ async def issue_certificate(
     *,
     expired: bool,
 ) -> Certificate | None:
-    """Issues a certificate for a passed, on-time track final, or returns None.
+    """Issues a certificate for a passed, on-time track final or certifying exam.
 
     Test-out passes do not earn a certificate: skipping a module is not
     finishing a track, and a certificate that means either is a certificate that
@@ -450,7 +454,7 @@ async def issue_certificate(
     function checked only `report["passed"]`, and the test for a late submission
     is what caught it.
     """
-    if expired or attempt.kind != KIND_TRACK_FINAL or not report["passed"]:
+    if expired or attempt.kind not in CERTIFYING_KINDS or not report["passed"]:
         return None
 
     existing = (

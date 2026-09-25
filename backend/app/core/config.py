@@ -194,6 +194,15 @@ class Settings(BaseSettings):
     # abierto (H.19/H.29): exigir un plan que nadie puede comprar cerraría el
     # marketplace. Se enciende en Railway con CREATOR_PLAN_REQUIRED=true.
     CREATOR_PLAN_REQUIRED: bool = False
+    # Pro Max (`pro`) trae el tutor ilimitado; Pro (`plus`) tiene este cupo de
+    # explicaciones por día UTC (ADR-49; el dueño confirmó 20 el 2026-09-25).
+    # El frontend lo muestra desde `src/lib/plans.ts`, y un test exige que coincidan.
+    TUTOR_DAILY_LIMIT_PLUS: int = 20
+    # Examen certificador: pago único por track de certificación (ADR-49).
+    # El flag se queda apagado hasta que abra el cobro (H.19/H.29), por la misma
+    # razón que CREATOR_PLAN_REQUIRED: exigir un pago imposible cierra el producto.
+    CERTIFICATION_PAYWALL: bool = False
+    CERTIFICATION_PRICE_USD: float = 39.99
 
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"

@@ -1,9 +1,10 @@
 import { useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { tutor as tutorApi, type ExplainResponse } from '../../services/api';
+import { ApiError, tutor as tutorApi, type ExplainResponse } from '../../services/api';
+import { TUTOR_DAILY_LIMIT_PRO } from '../../lib/plans';
 import styles from './WhyButton.module.css';
 
-type Status = 'idle' | 'upsell' | 'loading' | 'result' | 'error';
+type Status = 'idle' | 'upsell' | 'loading' | 'result' | 'error' | 'limit';
 
 interface WhyButtonProps {
   /** The current question's id — the panel resets whenever this changes. */
@@ -42,9 +43,10 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
       const res = await tutorApi.explain(questionId);
       setResult(res);
       setStatus('result');
-    } catch {
+    } catch (err) {
       setResult(null);
-      setStatus('error');
+      // Pro's daily cap (38.6): not an outage, so no "try again" — it resets tomorrow.
+      setStatus(err instanceof ApiError && err.status === 429 && err.message === 'tutor_daily_limit' ? 'limit' : 'error');
     }
   }
 
@@ -98,6 +100,16 @@ export function WhyButton({ questionId, isPremium, onUpgrade }: WhyButtonProps) 
               <p className={styles.upsellBody}>{t('quiz.why.upsellBody')}</p>
               <button type="button" className={styles.upsellCta} onClick={onUpgrade}>
                 {t('quiz.why.upsellCta')}
+              </button>
+            </div>
+          )}
+
+          {status === 'limit' && (
+            <div className={styles.upsell} role="status">
+              <p className={styles.upsellTitle}>{t('quiz.why.limitTitle')}</p>
+              <p className={styles.upsellBody}>{t('quiz.why.limitBody', { limit: TUTOR_DAILY_LIMIT_PRO })}</p>
+              <button type="button" className={styles.upsellCta} onClick={onUpgrade}>
+                {t('quiz.why.limitCta')}
               </button>
             </div>
           )}

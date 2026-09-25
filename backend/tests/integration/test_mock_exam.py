@@ -267,9 +267,108 @@ async def test_report_refuses_to_invent_a_scaled_score(
     report = res.json()["report"]
     for forbidden in ("scaled_score", "predicted_score", "pass_probability", "will_pass"):
         assert forbidden not in report, f"{forbidden} would be fabricated"
-    # It explains the real scoring model instead, in both languages (red line 3).
+    # The note is present in both languages regardless of provider (red line 3).
+    assert report["scoring_note_es"]
+    assert report["scoring_note_en"]
+
+
+@pytest_asyncio.fixture
+async def aws_cert_seed(db_session: AsyncSession) -> dict:
+    """Certification track with cert_provider='AWS' for provider-note tests."""
+    track = Track(
+        id="trk_aws",
+        name_es="Certificacion AWS de prueba",
+        name_en="AWS test certification",
+        order=98,
+        is_certification=True,
+        cert_provider="AWS",
+        exam_question_count=_EXAM_QUESTIONS,
+        exam_duration_minutes=90,
+    )
+    db_session.add(track)
+    for index, (suffix, weight) in enumerate(_WEIGHTS, start=1):
+        domain = Domain(
+            id=f"aws_dom_{suffix}",
+            track_id=track.id,
+            name_es=f"Dominio {index}",
+            name_en=f"Domain {index}",
+            weight_pct=weight,
+            order=index,
+        )
+        module = Module(
+            id=f"aws_mod_{suffix}",
+            track_id=track.id,
+            name_es=f"M{index}",
+            name_en=f"M{index}",
+            order=index,
+        )
+        skill = Skill(
+            id=f"aws_sk_{suffix}",
+            module_id=module.id,
+            name_es=f"S{index}",
+            name_en=f"S{index}",
+            order=1,
+            domain_id=domain.id,
+        )
+        db_session.add_all([domain, module, skill])
+        for n in range(12):
+            qid = f"aws_q_{suffix}_{n:02d}"
+            db_session.add(
+                Question(
+                    id=qid,
+                    skill_id=skill.id,
+                    type="mcq",
+                    difficulty_tier="medium",
+                    question_es=f"Pregunta {qid}",
+                    question_en=f"Question {qid}",
+                    options_es=["a", "b", "c", "d"],
+                    options_en=["a", "b", "c", "d"],
+                    correct_index=n % 4,
+                    explanation_es="porque si",
+                    explanation_en="because",
+                    source="test fixture",
+                )
+            )
+    await db_session.commit()
+    return {"track_id": track.id}
+
+
+@pytest.mark.asyncio
+async def test_aws_provider_note_mentions_700_scale(
+    client: AsyncClient, auth_headers: dict[str, str], aws_cert_seed: dict
+) -> None:
+    """AWS has a documented 700/1000 scale; the note must explain it."""
+    start = await client.post(
+        f"{BASE}/mock/start", json={"track_id": aws_cert_seed["track_id"]}, headers=auth_headers
+    )
+    res = await client.post(
+        f"{BASE}/mock/{start.json()['attempt_id']}/submit",
+        json={"answers": []},
+        headers=auth_headers,
+    )
+    report = res.json()["report"]
     assert "700" in report["scoring_note_es"]
     assert "700" in report["scoring_note_en"]
+
+
+@pytest.mark.asyncio
+async def test_non_aws_provider_note_does_not_mention_aws(
+    client: AsyncClient, auth_headers: dict[str, str], cert_seed: dict
+) -> None:
+    """cert_seed uses cert_provider='TestCorp'; the generic note must not invent AWS text."""
+    start = await client.post(
+        f"{BASE}/mock/start", json={"track_id": cert_seed["track_id"]}, headers=auth_headers
+    )
+    res = await client.post(
+        f"{BASE}/mock/{start.json()['attempt_id']}/submit",
+        json={"answers": []},
+        headers=auth_headers,
+    )
+    report = res.json()["report"]
+    assert "AWS" not in report["scoring_note_es"]
+    assert "AWS" not in report["scoring_note_en"]
+    assert "700" not in report["scoring_note_es"]
+    assert "700" not in report["scoring_note_en"]
 
 
 @pytest.mark.asyncio

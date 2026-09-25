@@ -9,8 +9,8 @@
       "question_en": "The class `PayrollManager` exposes a single public method, `process()`. Inside it, the method computes withholdings using the tax authority's rules, lays out the payslip as a PDF, and files it in company storage. From the point of view of the SRP, this class:",
       "options_es": [
         "Cumple el SRP mientras se mantenga por debajo de unas 200 lineas; el principio es una regla de tamano",
-        "Cumple el SRP: tener un unico metodo publico es precisamente lo que el principio exige",
-        "Viola el SRP: hay tres actores distintos (Hacienda, diseno y operaciones) que pueden pedir cambios, o sea tres razones para cambiar",
+        "Cumple el SRP: tener un único método publico es precisamente lo que el principio exige",
+        "Viola el SRP: hay tres actores distintos (Hacienda, diseño y operaciones) que pueden pedir cambios, o sea tres razones para cambiar",
         "Viola el SRP solo por escribir en disco; calcular y maquetar son la misma responsabilidad porque ambas producen el recibo"
       ],
       "options_en": [
@@ -38,10 +38,10 @@
       "question_es": "Cada vez que el negocio añade un medio de pago hay que abrir `procesar_pago()` y sumar una rama al `if/elif`. ?Qué cambio satisface el Principio Abierto/Cerrado?",
       "question_en": "Every time the business adds a payment method, someone has to open `process_payment()` and add another branch to the `if/elif`. Which change satisfies the Open/Closed Principle?",
       "options_es": [
-        "Sustituir el if/elif por un diccionario de cadena a funcion definido dentro de la misma funcion",
+        "Sustituir el if/elif por un diccionario de cadena a función definido dentro de la misma función",
         "Congelar `procesar_pago()` marcandola como privada para que nadie del equipo pueda modificarla",
-        "Copiar `procesar_pago()` en una funcion nueva por cada medio de pago, dejando intacta la original",
-        "Declarar una abstraccion `MedioDePago` y hacer que cada medio nuevo sea una implementacion que el modulo recibe o descubre, sin tocar el codigo existente"
+        "Copiar `procesar_pago()` en una función nueva por cada medio de pago, dejando intacta la original",
+        "Declarar una abstraccion `MedioDePago` y hacer que cada medio nuevo sea una implementación que el módulo recibe o descubre, sin tocar el código existente"
       ],
       "options_en": [
         "Replace the if/elif with a string-to-function dictionary defined inside the same function",
@@ -124,8 +124,8 @@
       "question_es": "Una interfaz `Trabajador` declara `trabajar()`, `comer()` y `dormir()`. Al implementarla para un robot de la cadena de montaje, `comer()` y `dormir()` quedan vacíos. ?Qué principio se está violando y cuál es el arreglo?",
       "question_en": "A `Worker` interface declares `work()`, `eat()`, and `sleep()`. When implementing it for an assembly-line robot, `eat()` and `sleep()` are left empty. Which principle is being violated, and what is the fix?",
       "options_es": [
-        "El OCP; la solucion es marcar la interfaz como abierta a extension anadiendo metodos por defecto",
-        "El SRP; la solucion es convertir `comer()` y `dormir()` en metodos privados de la implementacion",
+        "El OCP; la solucion es marcar la interfaz como abierta a extension anadiendo métodos por defecto",
+        "El SRP; la solucion es convertir `comer()` y `dormir()` en métodos privados de la implementación",
         "El ISP; la solucion es partir la interfaz en contratos mas pequenos para que cada clase implemente solo lo que usa",
         "El LSP; la solucion es que `comer()` y `dormir()` lancen `NotImplementedError` en lugar de quedar vacios"
       ],
@@ -199,10 +199,10 @@
       "question_es": "En el patrón Factory Method tal y como lo define GoF, ?quién decide finalmente que clase concreta se instancia?",
       "question_en": "In the Factory Method pattern as GoF defines it, who ultimately decides which concrete class gets instantiated?",
       "options_es": [
-        "Un contenedor de inyeccion de dependencias configurado en el arranque de la aplicacion",
-        "Las subclases, que sobrescriben el metodo fabrica; la clase base define la operacion de creacion pero delega la eleccion",
+        "Un contenedor de inyección de dependencias configurado en el arranque de la aplicación",
+        "Las subclases, que sobrescriben el método fabrica; la clase base define la operación de creación pero delega la eleccion",
         "El cliente, que llama directamente al constructor de la clase concreta que necesita",
-        "Una unica clase fabrica estatica que centraliza todas las creaciones del sistema en un metodo con un `switch`"
+        "Una unica clase fabrica estática que centraliza todas las creaciones del sistema en un método con un `switch`"
       ],
       "options_en": [
         "A dependency injection container configured at application startup",
@@ -337,7 +337,7 @@
         "Garantizan que exista una sola instancia de cada clase del sistema",
         "Encapsulan el conocimiento sobre que clases concretas usa el sistema y ocultan como se crean y se componen sus instancias",
         "Convierten la interfaz de una clase en otra distinta que el cliente espera",
-        "Describen como se comunican y reparten responsabilidades los objetos en tiempo de ejecucion"
+        "Describen como se comunican y reparten responsabilidades los objetos en tiempo de ejecución"
       ],
       "options_en": [
         "They guarantee that only one instance of each class exists in the system",
@@ -422,7 +422,7 @@
       "options_es": [
         "Menos clases en total, porque Strategy elimina la necesidad de definir una interfaz comun",
         "Garantiza que el coste se calcule igual para todos los envios, eliminando las variantes",
-        "Mejor rendimiento, porque evita la busqueda de metodos a lo largo de la jerarquia de herencia",
+        "Mejor rendimiento, porque evita la busqueda de métodos a lo largo de la jerarquia de herencia",
         "Permite intercambiar el algoritmo de calculo en el mismo objeto durante su vida, porque la variacion vive en un colaborador y no en el tipo"
       ],
       "options_en": [
@@ -481,9 +481,9 @@
       "question_en": "Proxy and Decorator both implement the same interface as the object they wrap and delegate to it. What is the difference in intent according to GoF?",
       "options_es": [
         "Decorator anade responsabilidades al objeto; Proxy controla el acceso a el (carga diferida, permisos, acceso remoto) sin ofrecer funcionalidad nueva al cliente",
-        "Decorator se resuelve en tiempo de compilacion y Proxy en tiempo de ejecucion",
+        "Decorator se resuelve en tiempo de compilacion y Proxy en tiempo de ejecución",
         "Proxy puede apilarse varias veces sobre el mismo objeto y Decorator solo puede aplicarse una vez",
-        "Decorator es un patron de comportamiento y Proxy es un patron estructural"
+        "Decorator es un patrón de comportamiento y Proxy es un patrón estructural"
       ],
       "options_en": [
         "Decorator adds responsibilities to the object; Proxy controls access to it (lazy loading, permissions, remote access) without offering new functionality to the client",
@@ -616,9 +616,9 @@
       "question_es": "Por todo el código circulan `str` para el correo y `float` para el importe, y cada función que los recibe repite la misma validación. ?Qué huele mal y que refactorización propone Fowler?",
       "question_en": "Throughout the codebase, emails travel as `str` and amounts as `float`, and every function receiving them repeats the same validation. What is the smell, and which refactoring does Fowler propose?",
       "options_es": [
-        "Envidia de funcionalidad; mover las funciones de validacion a la clase que mas datos consulta",
-        "Codigo duplicado; aplicar DRY extrayendo una funcion de validacion compartida y seguir pasando primitivos",
-        "Lista larga de parametros; introducir un objeto parametro que agrupe los argumentos de cada llamada",
+        "Envidia de funcionalidad; mover las funciones de validación a la clase que mas datos consulta",
+        "Código duplicado; aplicar DRY extrayendo una función de validación compartida y seguir pasando primitivos",
+        "Lista larga de parámetros; introducir un objeto parámetro que agrupe los argumentos de cada llamada",
         "Obsesion por primitivos (Primitive Obsession); Reemplazar Primitivo por Objeto, para que el tipo lleve consigo sus propias reglas"
       ],
       "options_en": [
@@ -647,9 +647,9 @@
       "question_en": "You find the comment `# increment i by one` right above the line `i += 1`. According to Clean Code, what should you do?",
       "options_es": [
         "Dejarlo tal cual: todo comentario anade contexto y por tanto mejora la legibilidad",
-        "Convertirlo en docstring para que aparezca en la documentacion generada automaticamente",
-        "Ampliarlo para que explique tambien el tipo y el rango esperado de `i`",
-        "Borrarlo: repite lo que el codigo ya dice, envejece sin que nadie lo actualice y los comentarios que merecen la pena explican el porque, no el que"
+        "Convertirlo en docstring para que aparezca en la documentación generada automáticamente",
+        "Ampliarlo para que explique también el tipo y el rango esperado de `i`",
+        "Borrarlo: repite lo que el código ya dice, envejece sin que nadie lo actualice y los comentarios que merecen la pena explican el porque, no el que"
       ],
       "options_en": [
         "Leave it as is: any comment adds context and therefore improves readability",
@@ -677,9 +677,9 @@
       "question_en": "The method `Order.calculate_discount()` barely uses `Order`'s own data: almost everything it reads is `customer.tier`, `customer.tenure`, and `customer.balance`. What does this indicate, and what is the natural refactoring?",
       "options_es": [
         "Clase grande; extraer una clase nueva a partir de `Pedido` para repartir su tamano",
-        "Codigo muerto; eliminar el metodo porque `Pedido` no necesita calcular descuentos",
-        "Cadena de mensajes; introducir metodos delegados en `Pedido` que oculten los accesos a `Cliente`",
-        "Envidia de funcionalidad (Feature Envy); Mover Funcion para llevar el calculo a `Cliente`, donde viven los datos que usa"
+        "Código muerto; eliminar el método porque `Pedido` no necesita calcular descuentos",
+        "Cadena de mensajes; introducir métodos delegados en `Pedido` que oculten los accesos a `Cliente`",
+        "Envidia de funcionalidad (Feature Envy); Mover Función para llevar el calculo a `Cliente`, donde viven los datos que usa"
       ],
       "options_en": [
         "Large Class; extract a new class out of `Order` to distribute its size",
