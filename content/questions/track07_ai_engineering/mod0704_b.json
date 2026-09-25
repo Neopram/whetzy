@@ -8,15 +8,15 @@
       "question_es": "Un equipo registra cada entrenamiento con mlflow.log_param, mlflow.log_metric y mlflow.log_artifact. Afirman que ya tienen un Model Registry. ¿Por qué no es así?",
       "question_en": "A team logs every training run with mlflow.log_param, mlflow.log_metric and mlflow.log_artifact. They claim they already have a Model Registry. Why don't they?",
       "options_es": [
-        "Porque el registry sustituye al tracking: al activarlo, las ejecuciones antiguas dejan de consultarse",
-        "Porque mlflow.log_artifact no puede guardar los pesos de un modelo, solo gráficos y ficheros de texto",
-        "Porque el tracking solo funciona con almacenamiento local y el registry exige una base de datos en la nube",
+        "Porque el registry sustituye al tracking en cuanto se activa: las ejecuciones antiguas registradas antes de esa fecha dejan de poder consultarse desde la interfaz, aunque sus artefactos originales sigan existiendo intactos en disco y nadie lo advierte hasta la siguiente auditoría trimestral.",
+        "Porque mlflow.log_metric solo admite valores escalares numéricos y no puede registrar las curvas de aprendizaje completas que el registry necesita para calcular automáticamente la etapa de vida de cada modelo",
+        "Porque el tracking guarda cada ejecución en una carpeta del sistema de ficheros local, y el registry exige que esas carpetas se muevan primero a un bucket de objetos en la nube antes de poder registrar nada en él",
         "Porque el tracking guarda el histórico de ejecuciones (parámetros, métricas, artefactos) pero no da al modelo un nombre estable, un número de versión ni una etapa del ciclo de vida; el registry añade esa capa de promoción y gobierno sobre los artefactos ya registrados"
       ],
       "options_en": [
-        "Because the registry replaces tracking: once enabled, old runs are no longer queryable",
-        "Because mlflow.log_artifact cannot store model weights, only plots and text files",
-        "Because tracking only works with local storage and the registry requires a cloud database",
+        "Because the registry replaces tracking as soon as it's enabled: runs logged before that date stop being queryable from the interface, even though their original artifacts still exist untouched on disk and nobody on the team notices until the next quarterly audit.",
+        "Because mlflow.log_metric only accepts numeric scalar values and cannot record the full learning curves the registry needs to automatically compute each model's lifecycle stage",
+        "Because tracking stores each run in a local filesystem folder, and the registry requires those folders to first be moved into a cloud object bucket before anything can be registered from them",
         "Because tracking stores the history of runs (params, metrics, artifacts) but gives the model no stable name, version number or lifecycle stage; the registry adds that promotion and governance layer on top of the artifacts already logged"
       ],
       "correct_index": 3,
@@ -85,16 +85,16 @@
       "question_es": "Un pipeline de entrenamiento lee su dataset de un data lake que recibe escrituras continuas. ¿Cuál es la forma correcta de versionar ese dataset?",
       "question_en": "A training pipeline reads its dataset from a data lake that receives continuous writes. What is the correct way to version that dataset?",
       "options_es": [
-        "Guardar en la configuración del pipeline la ruta del prefijo: el data lake ya conserva todo el histórico",
+        "Registrar el número de filas leídas en cada ejecución del pipeline, porque un recuento estable entre dos entrenamientos demuestra que el contenido subyacente de la tabla no ha cambiado",
         "Registrar una referencia inmutable al contenido exacto usado (hash del contenido, id de snapshot o commit de la tabla), de modo que esa referencia devuelva siempre los mismos bytes",
-        "Guardar la fecha del entrenamiento y reconstruir el dataset con una consulta filtrada por ese rango de fechas cuando haga falta",
-        "Copiar el dataset al repositorio Git antes de cada entrenamiento para que quede junto al código"
+        "Congelar el esquema de la tabla (nombres y tipos de columna) en un fichero de configuración versionado, ya que un esquema fijo garantiza que los valores concretos de cada fila tampoco cambien",
+        "Replicar el data lake completo a un segundo almacenamiento de solo lectura justo antes de cada entrenamiento, para que las escrituras que lleguen después no afecten a la copia que se usó"
       ],
       "options_en": [
-        "Store the prefix path in the pipeline config: the data lake already keeps the full history",
+        "Logging the number of rows read on every pipeline run, since a stable count across two trainings shows the table's underlying content has not changed",
         "Record an immutable reference to the exact content used (content hash, snapshot id, or table commit), so that reference always returns the same bytes",
-        "Store the training date and rebuild the dataset with a query filtered on that date range when needed",
-        "Copy the dataset into the Git repository before each training run so it sits next to the code"
+        "Freezing the table's schema (column names and types) in a versioned config file, since a fixed schema guarantees the actual row values don't change either",
+        "Replicating the whole data lake into a second read-only store right before each training run, so writes arriving afterward don't affect the copy that was used"
       ],
       "correct_index": 1,
       "explanation_es": "Reconstruir por rango de fechas es la trampa más cara, porque parece rigurosa: falla en cuanto hay eventos que llegan tarde, correcciones retroactivas o un backfill, y entonces la misma consulta con las mismas fechas devuelve un dataset distinto meses después. Guardar solo la ruta no versiona nada. Copiar el dataset a Git rompe el repositorio: Git guarda cada versión completa de los binarios y clonarlo se vuelve inviable. Solo una referencia por contenido garantiza los mismos bytes.",
@@ -148,15 +148,15 @@
       "question_en": "A model in production gives biased predictions for one specific region. To answer the question 'which exact rows trained this model version', what do you need to have recorded?",
       "options_es": [
         "El linaje: la versión del modelo enlazada con la versión exacta del dataset y con las transformaciones y filtros que lo produjeron",
-        "El digest de la imagen de contenedor con la que se sirvió esa versión del modelo",
+        "El digest de la imagen de contenedor con la que se sirvió esa versión concreta del modelo en producción",
         "El model registry, que guarda la versión del modelo y su etapa de ciclo de vida",
-        "El git log del repositorio de entrenamiento filtrado por la fecha del despliegue"
+        "El manifiesto de infraestructura que describe cuántas réplicas del servicio estaban activas ese día concreto y bajo qué región de despliegue corrían."
       ],
       "options_en": [
         "Lineage: the model version linked to the exact dataset version and to the transformations and filters that produced it",
-        "The digest of the container image that served that model version",
+        "The digest of the container image that served that specific model version in production",
         "The model registry, which stores the model version and its lifecycle stage",
-        "The git log of the training repo filtered by the deployment date"
+        "The infrastructure manifest describing how many service replicas were active on that particular day and under which deployment region they ran."
       ],
       "correct_index": 0,
       "explanation_es": "El registry tienta porque es donde vive la versión, pero responde 'qué modelo' y no 'de dónde salió'; sin linaje, la versión 7 es un binario sin procedencia. El digest del contenedor fija el entorno de servicio, no los datos. El git log da el código, y el sesgo regional casi nunca está en el código: está en el filtro que descartó filas con un campo nulo, o en la ventana temporal que excluyó esa región. El linaje es lo único que conecta modelo, dataset y transformaciones, y es lo que una auditoría exige.",
@@ -178,15 +178,15 @@
       "question_es": "Ejecutas `dvc add datos.csv` y DVC crea un fichero `datos.csv.dvc` que sí se commitea a Git. ¿Qué contiene ese fichero?",
       "question_en": "You run `dvc add data.csv` and DVC creates a `data.csv.dvc` file that does get committed to Git. What does that file contain?",
       "options_es": [
-        "Una copia comprimida del dataset, pequeña porque DVC deduplica",
-        "El dataset troceado en fragmentos binarios que Git recompone al hacer checkout",
-        "Un diff línea a línea frente a la versión anterior del dataset",
+        "Una copia comprimida y cifrada del dataset completo, pequeña porque DVC deduplica bloques repetidos entre las versiones sucesivas y por eso el equipo lo prefiere.",
+        "El dataset troceado en fragmentos binarios que Git recompone automáticamente al hacer checkout de la rama correspondiente",
+        "Un manifiesto YAML con la lista completa de columnas del dataset y su tipo de dato inferido automáticamente por pandas",
         "Unas pocas líneas de texto con el hash del contenido, el tamaño y la ruta; los datos reales viven fuera de Git, en la caché de DVC y en el remoto"
       ],
       "options_en": [
-        "A compressed copy of the dataset, small because DVC deduplicates",
-        "The dataset split into binary chunks that Git reassembles on checkout",
-        "A line-by-line diff against the previous version of the dataset",
+        "A compressed, encrypted copy of the entire dataset, small because DVC deduplicates repeated blocks across successive versions which is why the team prefers it.",
+        "The dataset split into binary chunks that Git automatically reassembles when you check out the matching branch",
+        "A YAML manifest listing the dataset's full set of columns and the data type pandas automatically inferred for each",
         "A few lines of text with the content hash, the size and the path; the real data lives outside Git, in the DVC cache and remote"
       ],
       "correct_index": 3,
@@ -209,15 +209,15 @@
       "question_es": "Un pipeline de entrenamiento tarda 6 horas y el 80% del tiempo es preprocesado. El equipo quiere probar 10 configuraciones de hiperparámetros esta semana. ¿Qué propiedad del pipeline hace que eso sea barato?",
       "question_en": "A training pipeline takes 6 hours and 80% of the time is preprocessing. The team wants to try 10 hyperparameter configurations this week. Which property of the pipeline makes that cheap?",
       "options_es": [
-        "Que todo el pipeline se lance como un único job, para que el orquestador no lo divida y no pierda tiempo programando tareas",
-        "Que el pipeline se ejecute en una máquina con más GPUs, para que las 6 horas bajen proporcionalmente",
-        "Que el preprocesado se haga dentro del mismo script de entrenamiento, evitando la sobrecarga de escribir y leer resultados intermedios",
+        "Que todo el pipeline se lance como un único job de GPU, para que el planificador reserve el hardware una sola vez y no pague el arranque diez veces",
+        "Que el pipeline corra en una máquina con más núcleos de CPU, para que el preprocesado baje su tiempo de forma proporcional al número de núcleos",
+        "Que el equipo fije la misma semilla aleatoria en las diez configuraciones, para que los resultados sean comparables sin recalcular nada del preprocesado, igual que en las diez configuraciones anteriores.",
         "Que cada paso esté cacheado por sus entradas (datos y parámetros), de modo que el preprocesado se reutiliza intacto y solo se reejecuta el paso de entrenamiento"
       ],
       "options_en": [
-        "That the whole pipeline runs as a single job, so the orchestrator doesn't split it and waste time scheduling tasks",
-        "That the pipeline runs on a machine with more GPUs, so the 6 hours shrink proportionally",
-        "That preprocessing happens inside the training script itself, avoiding the overhead of writing and reading intermediate results",
+        "That the whole pipeline runs as a single GPU job, so the scheduler reserves the hardware once and doesn't pay the startup cost ten times",
+        "That the pipeline runs on a machine with more CPU cores, so preprocessing time drops proportionally to the core count",
+        "That the team fixes the same random seed across the ten configurations, so results are comparable without recomputing any of the preprocessing, just as in the previous ten configurations.",
         "That each step is cached by its inputs (data and params), so preprocessing is reused untouched and only the training step re-runs"
       ],
       "correct_index": 3,
@@ -240,15 +240,15 @@
       "question_es": "En un pipeline, el paso de normalización se ajusta sobre el dataset completo y después se divide en entrenamiento y test. ¿Por qué esto infla las métricas offline?",
       "question_en": "In a pipeline, the normalization step is fitted on the full dataset and only afterwards is the data split into train and test. Why does this inflate the offline metrics?",
       "options_es": [
-        "Porque el escalador altera el número de filas que quedan en el conjunto de test",
-        "Porque el test queda en una escala distinta de la de producción y el modelo aprende a compensar esa diferencia",
-        "Porque scikit-learn no permite transformar datos que no vio durante fit y rellena los valores con la media global",
+        "Porque el escalador aprende una distribución bimodal cuando ve datos de dos particiones distintas y produce valores negativos que confunden al optimizador durante el entrenamiento, un efecto que crece con la separación entre ambas particiones.",
+        "Porque el test queda en una escala distinta de la de producción y el modelo aprende durante el entrenamiento a compensar esa diferencia",
+        "Porque scikit-learn recalcula internamente el escalador en cada llamada a predict, así que el test siempre se transforma con estadísticos distintos a los de entrenamiento",
         "Porque la media y la desviación aprendidas incluyen información del test, así que el modelo se evalúa sobre datos que ya influyeron en su propio preprocesado: hay fuga de información"
       ],
       "options_en": [
-        "Because the scaler changes how many rows end up in the test set",
-        "Because the test set ends up on a different scale from production and the model learns to compensate for that difference",
-        "Because scikit-learn refuses to transform data it did not see during fit and fills the values with the global mean",
+        "Because the scaler learns a bimodal distribution when it sees data from two different partitions and produces negative values that confuse the optimizer during training, an effect that grows with the separation between the two partitions.",
+        "Because the test set ends up on a different scale from production and the model learns during training to compensate for that difference",
+        "Because scikit-learn internally recomputes the scaler on every call to predict, so the test set is always transformed with different statistics than training",
         "Because the learned mean and standard deviation include information from the test set, so the model is evaluated on data that already influenced its own preprocessing: that is leakage"
       ],
       "correct_index": 3,
@@ -271,16 +271,16 @@
       "question_es": "¿Qué imprime este fragmento?\n\n```python\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\ntrain = np.array([[0.0], [10.0]])\ntest = np.array([[20.0]])\n\nsc = StandardScaler().fit(np.vstack([train, test]))\nprint(sc.mean_[0])\n```",
       "question_en": "What does this snippet print?\n\n```python\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\n\ntrain = np.array([[0.0], [10.0]])\ntest = np.array([[20.0]])\n\nsc = StandardScaler().fit(np.vstack([train, test]))\nprint(sc.mean_[0])\n```",
       "options_es": [
-        "5.0, la media del conjunto de entrenamiento",
-        "0.0, porque StandardScaler centra siempre la referencia en cero",
+        "5.0, la media aritmética de los dos valores del conjunto de entrenamiento, el valor que un fit correcto sobre solo train habría producido.",
+        "0.0, porque StandardScaler centra siempre su referencia interna en cero",
         "10.0, la media de train y test juntos: el escalador ya vio el conjunto de test",
-        "20.0, porque fit toma el último bloque de datos recibido"
+        "15.0, la media ponderada asignando doble peso a la fila de test"
       ],
       "options_en": [
-        "5.0, the mean of the training set",
-        "0.0, because StandardScaler always centers the reference at zero",
+        "5.0, the arithmetic mean of the two values in the training set, the value a correct fit on train alone would have produced.",
+        "0.0, because StandardScaler always centers its internal reference at zero",
         "10.0, the mean of train and test together: the scaler has already seen the test set",
-        "20.0, because fit takes the last block of data it received"
+        "15.0, the weighted mean assigning double weight to the test row"
       ],
       "correct_index": 2,
       "explanation_es": "(0 + 10 + 20) / 3 = 10.0, y ahí está el fallo: el escalador se ajustó con el test dentro. La respuesta 5.0 es la que daría un pipeline correcto (fit solo sobre train), y por eso es el distractor que más se elige: es lo que el autor del código *creía* estar haciendo. La opción del cero confunde el resultado de transform (los datos transformados tienen media cero) con el atributo mean_, que guarda la media de los datos originales usados en fit.",
@@ -349,16 +349,16 @@
       "question_es": "El orquestador reintenta automáticamente un paso del pipeline que falló a mitad de escritura. ¿Qué propiedad debe cumplir ese paso para que el reintento no deje datos corruptos?",
       "question_en": "The orchestrator automatically retries a pipeline step that failed halfway through writing. Which property must that step have so the retry doesn't leave corrupt data?",
       "options_es": [
-        "Que escriba siempre en modo append, para no perder lo que ya había escrito antes del fallo",
+        "Que escriba siempre en modo append sobre el mismo fichero de salida, para no perder las filas que ya se habían escrito antes de que el paso fallara a mitad de camino y ese duplicado silencioso tarda semanas en detectarse.",
         "Que sea idempotente: reejecutarlo con las mismas entradas deja el mismo estado final, típicamente escribiendo a una partición determinista que se sobrescribe por completo o publicando de forma atómica",
-        "Que se ejecute siempre en la misma máquina, para que el reintento encuentre los ficheros temporales",
-        "Que tenga un timeout más largo que la duración media del paso, para que el reintento tenga margen"
+        "Que se ejecute siempre en la misma máquina física, para que el reintento reutilice la caché de disco local que ya tenía calentada del intento anterior",
+        "Que registre cada fila escrita en un fichero de log aparte, para poder localizar y borrar a mano las filas duplicadas después del reintento del paso"
       ],
       "options_en": [
-        "That it always writes in append mode, so nothing written before the failure is lost",
+        "That it always writes in append mode to the same output file, so rows already written before the step failed halfway through are not lost and that silent duplication takes weeks to get noticed.",
         "That it is idempotent: re-running it with the same inputs leaves the same final state, typically by writing to a deterministic partition that is fully overwritten, or by publishing atomically",
-        "That it always runs on the same machine, so the retry finds the temporary files",
-        "That it has a timeout longer than the step's average duration, so the retry has room"
+        "That it always runs on the same physical machine, so the retry reuses the local disk cache it had already warmed from the earlier attempt",
+        "That it logs every written row to a separate file, so the duplicate rows can be located and deleted by hand after the step's retry"
       ],
       "correct_index": 1,
       "explanation_es": "El append es exactamente el antipatrón: el reintento vuelve a escribir las filas que ya se habían escrito y el dataset queda con duplicados silenciosos que después se convierten en un modelo mal entrenado. Fijar la máquina no resuelve nada y rompe la elasticidad del orquestador. El timeout cambia cuándo falla, no en qué estado queda. La idempotencia es lo que permite que el reintento automático sea seguro, y por eso es la condición que dan por sentada los reintentos y los backfills de un orquestador.",
@@ -380,16 +380,16 @@
       "question_es": "¿Cuál es el disparador más defendible para el reentrenamiento continuo de un modelo en producción?",
       "question_en": "What is the most defensible trigger for continuous retraining of a model in production?",
       "options_es": [
-        "Un cron fijo semanal y nada más, porque hace el sistema predecible y auditable",
+        "Un cron fijo semanal y nada más, porque hace el sistema predecible y fácil de auditar frente a un regulador externo",
         "Una condición medida —caída de la métrica de negocio o de su proxy, o drift sostenido por encima de un umbral— con un cron periódico como red de seguridad",
-        "Cada vez que el equipo publica una versión nueva del código de entrenamiento",
-        "Cada vez que llegan datos nuevos al lago, para que el modelo use siempre lo más reciente"
+        "Cada vez que el equipo publica una versión nueva del código de entrenamiento, para que el modelo corra siempre sobre la última implementación aunque el código apenas cambiara.",
+        "Cada vez que un usuario reporta una predicción incorrecta, incorporando ese caso concreto al siguiente ciclo de entrenamiento"
       ],
       "options_en": [
-        "A fixed weekly cron and nothing else, because it makes the system predictable and auditable",
+        "A fixed weekly cron and nothing else, because it makes the system predictable and easy to audit for an external regulator",
         "A measured condition - a drop in the business metric or its proxy, or sustained drift above a threshold - with a periodic cron as a safety net",
-        "Every time the team ships a new version of the training code",
-        "Every time new data lands in the lake, so the model always uses the freshest data"
+        "Every time the team ships a new version of the training code, so the model always runs on the latest implementation even if the code barely changed.",
+        "Every time a user reports an incorrect prediction, folding that specific case into the next training cycle"
       ],
       "correct_index": 1,
       "explanation_es": "El cron a secas es la opción más popular y la más ciega: reentrena cuando no hace falta y no reentrena cuando el mundo cambia un martes. Reentrenar con cada llegada de datos suena a 'siempre fresco', pero multiplica el coste, añade una versión nueva sin evidencia de mejora y convierte cada rotura del pipeline de datos en un modelo roto. Disparar por commit mezcla CI de código con reentrenamiento: el código nuevo hay que probarlo, pero no es señal de que el modelo esté degradado. La respuesta correcta combina la señal (medida) con el cron como red de seguridad, porque las señales también fallan.",
@@ -412,15 +412,15 @@
       "question_en": "The same pipeline, with the same commit and the same versioned dataset, produces models with different metrics in two runs a month apart. What do you investigate first?",
       "options_es": [
         "El entorno no está fijado: imagen del contenedor por etiqueta móvil o dependencias sin pin, y/o la semilla aleatoria no se fija, así que cambian versiones de librería e inicialización",
-        "El dataset se leyó desde la caché del pipeline, que devuelve una copia obsoleta",
-        "MLflow sobrescribió las métricas de la ejecución anterior al reutilizar el nombre del experimento",
-        "El orquestador ejecutó los pasos en otro orden, porque un DAG no garantiza el orden de ejecución"
+        "El dataset se leyó desde la caché del pipeline, que devuelve una copia obsoleta guardada el mes anterior sin avisar a nadie",
+        "MLflow sobrescribió las métricas de la ejecución anterior al reutilizar el mismo nombre de experimento entre las dos corridas",
+        "El orquestador ejecutó los pasos en otro orden en la segunda corrida, porque un DAG solo fija dependencias parciales, no un orden total de ejecución y por eso cada corrida difiere sin cambiar datos ni código."
       ],
       "options_en": [
         "The environment is not pinned: container image on a moving tag or unpinned dependencies, and/or the random seed is not fixed, so library versions and initialization change",
-        "The dataset was read from the pipeline cache, which returns a stale copy",
-        "MLflow overwrote the previous run's metrics by reusing the experiment name",
-        "The orchestrator ran the steps in a different order, because a DAG does not guarantee execution order"
+        "The dataset was read from the pipeline cache, which silently returns a stale copy saved the previous month without telling anyone",
+        "MLflow overwrote the previous run's metrics by reusing the same experiment name across the two runs",
+        "The orchestrator ran the steps in a different order on the second run, because a DAG only fixes partial dependencies, not a total execution order which is why each run differs without the data or code changing."
       ],
       "correct_index": 0,
       "explanation_es": "Código y datos son solo dos de las cuatro patas de la reproducibilidad; faltan el entorno y la aleatoriedad. Una etiqueta como :latest o un requirements sin pin hacen que un mes después se entrene con otra versión de la librería, con otro valor por defecto o otro algoritmo interno. El orden del DAG no es el problema: precisamente el DAG sí garantiza el orden de las dependencias. La caché devuelve resultados por hash de entradas, no copias obsoletas arbitrarias. Y MLflow crea una ejecución nueva por cada run; reutilizar el nombre del experimento no sobrescribe nada.",
@@ -443,15 +443,15 @@
       "question_en": "A new model version starts failing 20 minutes after taking 100% of the traffic. What makes recovery a matter of seconds instead of hours?",
       "options_es": [
         "Que la versión anterior siga desplegada y calentada, de modo que revertir sea un cambio de enrutado y no una reconstrucción",
-        "Tener el checkpoint anterior guardado en el almacenamiento de objetos para volver a desplegarlo cuando haga falta",
-        "Haber guardado los logs de las predicciones fallidas para poder reproducir el fallo",
-        "Haber ejecutado un test A/B con significación estadística antes del despliegue"
+        "Que la versión anterior siga corriendo en modo sombra, comparando a mano sus predicciones cada vez que hay un incidente grave",
+        "Haber guardado los logs de las predicciones fallidas para poder reproducir el fallo en pruebas más tarde",
+        "Haber ejecutado un test A/B con significación estadística antes de desplegar la versión nueva del modelo"
       ],
       "options_en": [
         "That the previous version is still deployed and warm, so rolling back is a routing change rather than a rebuild",
-        "Having the previous checkpoint stored in object storage so it can be redeployed when needed",
-        "Having logged the failing predictions so the failure can be reproduced",
-        "Having run a statistically significant A/B test before the rollout"
+        "That the previous version keeps running in shadow mode, comparing its predictions by hand whenever a serious incident occurs",
+        "Having logged the failing predictions so the failure can be reproduced in testing later on",
+        "Having run a statistically significant A/B test before rolling out the new model version"
       ],
       "correct_index": 0,
       "explanation_es": "Guardar el checkpoint es el distractor fuerte porque suena a plan de rollback y mucha gente lo llama así: pero volver a desplegarlo implica arrancar réplicas, descargar la imagen y los pesos y calentar la caché, y eso son minutos u horas de incidente. Los logs sirven para el postmortem, no para recuperar el servicio. El test A/B previo reduce la probabilidad del fallo pero no acorta la recuperación cuando ocurre. La diferencia real es tener capacidad servible de la versión anterior y que revertir sea mover el tráfico.",
@@ -474,15 +474,15 @@
       "question_en": "On a GPU inference server, dynamic batching is enabled with a 50 ms wait window. What effect does it have?",
       "options_es": [
         "Aumenta el throughput (peticiones por segundo por GPU) a costa de añadir hasta 50 ms a la latencia de cada petición, lo que puede romper el SLA de p99",
-        "Reduce a la vez la latencia y el coste por petición, porque la GPU hace menos trabajo total",
-        "No cambia el throughput: solo agrupa las peticiones en los logs para facilitar el análisis",
-        "Mejora la calidad de las respuestas, porque el modelo dispone de más contexto al procesar varias peticiones juntas"
+        "Reduce a la vez la latencia y el coste por petición, porque el planificador descarta las peticiones redundantes del lote sin que el usuario final lo note en ningún momento.",
+        "No cambia el throughput: solo agrupa las peticiones en los logs para facilitar el análisis posterior de errores",
+        "Mejora la calidad de las respuestas, porque el modelo comparte activaciones intermedias entre peticiones del mismo lote"
       ],
       "options_en": [
         "It raises throughput (requests per second per GPU) at the cost of adding up to 50 ms to each request's latency, which can break the p99 SLA",
-        "It reduces latency and cost per request at the same time, because the GPU does less total work",
-        "It does not change throughput: it only groups requests in the logs to make analysis easier",
-        "It improves answer quality, because the model has more context when processing several requests together"
+        "It reduces latency and cost per request at once, because the scheduler discards redundant requests within the batch without the end user ever noticing it.",
+        "It does not change throughput: it only groups requests in the logs to make later error analysis easier",
+        "It improves answer quality, because the model shares intermediate activations across requests in the same batch"
       ],
       "correct_index": 0,
       "explanation_es": "El batching explota el paralelismo de la GPU: agrupar peticiones sube mucho la utilización y baja el coste por petición, pero cada petición espera a que se llene el lote o expire la ventana. Por eso throughput y latencia se negocian y no se optimizan a la vez. La primera opción es el error clásico de leer 'más eficiente' como 'más rápido para el usuario'. La última confunde batching con contexto: las peticiones de un lote se procesan de forma independiente, no se ven entre sí.",
@@ -552,15 +552,15 @@
       "question_en": "An inference service uses this pattern to load its weights. What does the snippet print?\n\n```python\nimport functools\n\n@functools.lru_cache(maxsize=1)\ndef load_model():\n    print(\"loading weights\")\n    return \"model\"\n\nfor _ in range(3):\n    load_model()\n```",
       "options_es": [
         "\"cargando pesos\" una sola vez: las llamadas siguientes devuelven el resultado cacheado sin ejecutar el cuerpo",
-        "Nada, porque lru_cache captura la salida estándar de la función",
-        "\"cargando pesos\" dos veces: con maxsize=1 solo cabe una entrada y la primera se descarta",
-        "\"cargando pesos\" tres veces, una por cada llamada"
+        "Nada, porque lru_cache captura la salida estándar de la función y la descarta tras cada llamada individual, igual que si fuera una función normal sin decorar.",
+        "\"cargando pesos\" dos veces: con maxsize=1 solo cabe la penúltima llamada y se descarta la última recibida",
+        "\"cargando pesos\" tres veces, una por cada llamada realizada dentro del bucle del ejemplo"
       ],
       "options_en": [
         "\"loading weights\" once: the following calls return the cached result without running the body",
-        "Nothing, because lru_cache captures the function's standard output",
-        "\"loading weights\" twice: with maxsize=1 only one entry fits and the first one is evicted",
-        "\"loading weights\" three times, once per call"
+        "Nothing, because lru_cache captures the function's standard output and discards it after each individual call, just as it would for a plain undecorated function.",
+        "\"loading weights\" twice: with maxsize=1 only the second-to-last call fits and the most recent one is dropped",
+        "\"loading weights\" three times, once for each call made inside the loop in the example"
       ],
       "correct_index": 0,
       "explanation_es": "La caché se indexa por argumentos y aquí no hay argumentos: existe una única clave, así que el cuerpo se ejecuta una vez y las otras dos llamadas devuelven el objeto guardado. Es el patrón que evita el error de despliegue más caro en servicios de inferencia: cargar los pesos dentro del handler de cada petición, que añade segundos de latencia y multiplica la memoria por worker. El distractor de maxsize=1 es una lectura razonable pero equivocada: el desalojo solo ocurre cuando entran claves distintas, y aquí la clave siempre es la misma.",
@@ -582,16 +582,16 @@
       "question_es": "Un endpoint de inferencia con GPU se configura con escalado a cero para ahorrar coste en horas valle. ¿Cuál es el precio que se paga?",
       "question_en": "A GPU inference endpoint is configured with scale-to-zero to save cost during quiet hours. What is the price you pay?",
       "options_es": [
-        "El modelo pierde precisión cada vez que el proceso se reinicia y hay que recargar los pesos",
+        "El modelo pierde precisión numérica cada vez que el proceso se reinicia y hay que recargar los pesos desde el almacenamiento de objetos",
         "La primera petición tras el escalado a cero paga el arranque en frío: provisionar la GPU, descargar la imagen y los pesos y cargarlos en memoria, lo que puede ser de decenas de segundos a minutos",
-        "Las métricas de monitorización se reinician en cada escalado y el histórico se pierde",
-        "El coste se duplica, porque el autoscaler mantiene siempre una réplica de reserva encendida"
+        "Las métricas de monitorización se reinician en cada evento de escalado y todo el histórico previo deja de estar disponible para el equipo y el equipo solo lo nota al revisar el panel semanas más tarde.",
+        "El coste se duplica, porque el autoscaler mantiene siempre una réplica de reserva encendida por si llega tráfico inesperado"
       ],
       "options_en": [
-        "The model loses accuracy each time the process restarts and the weights are reloaded",
+        "The model loses numerical precision every time the process restarts and the weights must be reloaded from object storage",
         "The first request after scaling to zero pays the cold start: provisioning the GPU, pulling the image and the weights and loading them into memory, which can take tens of seconds to minutes",
-        "Monitoring metrics reset on every scaling event and the history is lost",
-        "Cost doubles, because the autoscaler always keeps one standby replica running"
+        "Monitoring metrics reset on every scaling event and the entire history from before it stops being available to the team and the team only notices it when reviewing the dashboard weeks later.",
+        "Cost doubles, because the autoscaler always keeps one standby replica running in case unexpected traffic arrives"
       ],
       "correct_index": 1,
       "explanation_es": "El escalado a cero no es gratis: lo que se ahorra en GPU se paga en la latencia de la primera petición, y para modelos grandes el cuello no es arrancar el contenedor sino descargar y cargar decenas de gigabytes de pesos. Por eso conviene en cargas por lotes o internas y es peligroso en un endpoint de usuario con SLA. La opción de la precisión es un error conceptual común pero grave: recargar los mismos pesos es determinista. Y la opción del coste describe justamente lo contrario del escalado a cero, que por definición no deja réplicas encendidas.",
@@ -613,16 +613,16 @@
       "question_es": "Un canary sirve el 5% del tráfico con el modelo nuevo. ¿Con qué criterio se decide promocionarlo al 100%?",
       "question_en": "A canary serves 5% of traffic with the new model. On what basis do you decide to promote it to 100%?",
       "options_es": [
-        "Con la métrica offline en el conjunto de test, que es la única comparable entre versiones",
+        "Con la métrica offline en el conjunto de test, que es la única comparable de forma justa entre versiones distintas del mismo modelo publicado, así que basta con mirar ese número antes de mover más tráfico al candidato sin esperar señales adicionales del entorno real.",
         "Con un conjunto de señales medidas en el propio canary —métricas de sistema (p99, tasa de error), distribución de las predicciones y la métrica de negocio— observadas durante una ventana con tráfico suficiente para tener potencia estadística",
-        "Cuando hayan pasado 24 horas sin ninguna alerta de infraestructura",
-        "Cuando el modelo nuevo gane en accuracy al antiguo sobre las peticiones del canary"
+        "Cuando hayan pasado veinticuatro horas sin ninguna alerta de infraestructura relacionada con el nuevo despliegue del modelo candidato",
+        "Cuando el modelo nuevo gane en accuracy al antiguo sobre las peticiones concretas que sirvió el canary durante esa ventana de observación"
       ],
       "options_en": [
-        "On the offline metric over the test set, the only thing comparable across versions",
+        "On the offline metric over the test set, the only one comparable fairly across different versions of the same published model, so it is enough to check that number before moving more traffic to the candidate without waiting for further real-world signals.",
         "On a set of signals measured in the canary itself - system metrics (p99, error rate), prediction distribution and the business metric - observed over a window with enough traffic for statistical power",
-        "When 24 hours have passed without a single infrastructure alert",
-        "When the new model beats the old one on accuracy over the canary's requests"
+        "When twenty-four hours have passed without a single infrastructure alert tied to the candidate model's new rollout",
+        "When the new model beats the old one on accuracy over the specific requests the canary served during that observation window"
       ],
       "correct_index": 1,
       "explanation_es": "La métrica offline ya se usó para decidir el despliegue; el canary existe precisamente porque no predice el comportamiento real. Las 24 horas sin alertas confunden ausencia de caídas con evidencia: un modelo puede estar sano de infraestructura y empeorar la conversión. La opción de accuracy es la más tentadora y la que más gente elige: falla porque las etiquetas reales suelen llegar con retraso y porque el canary y el control no atienden las mismas peticiones, así que la comparación no es pareada. Promocionar exige varias capas de señal y una ventana con volumen suficiente.",
@@ -644,16 +644,16 @@
       "question_es": "Hay que servir un clasificador de gradient boosting de 5 MB que recibe 200 peticiones por segundo con features tabulares. ¿Qué hardware de servicio es razonable?",
       "question_en": "You need to serve a 5 MB gradient boosting classifier receiving 200 requests per second over tabular features. What serving hardware is reasonable?",
       "options_es": [
-        "GPU siempre: cualquier modelo de machine learning se sirve más rápido en GPU",
-        "GPU con batching dinámico, porque 200 peticiones por segundo es carga alta",
+        "GPU siempre: cualquier modelo de machine learning, sin excepción alguna, se sirve más rápido en GPU que en CPU",
+        "GPU con batching dinámico, porque 200 peticiones por segundo satura la capacidad de cualquier CPU moderna disponible y conviene activarlo desde el primer día.",
         "CPU: el modelo es pequeño y no hace álgebra matricial masiva, así que la GPU añadiría coste y transferencias entre host y dispositivo sin ganancia",
-        "TPU, porque están diseñadas específicamente para inferencia de baja latencia"
+        "TPU, porque están diseñadas específicamente para acelerar árboles de decisión y sus ensembles"
       ],
       "options_en": [
-        "GPU always: any machine learning model is served faster on a GPU",
-        "GPU with dynamic batching, because 200 requests per second is heavy load",
+        "GPU always: without any exception, any machine learning model is served faster on a GPU than on a CPU",
+        "GPU with dynamic batching, because 200 requests per second saturates the capacity of any available modern CPU and it should be turned on from day one.",
         "CPU: the model is small and does no massive matrix algebra, so a GPU would add cost and host-to-device transfers with no gain",
-        "TPU, because they are designed specifically for low-latency inference"
+        "TPU, because they are designed specifically to accelerate decision trees and their ensembles"
       ],
       "correct_index": 2,
       "explanation_es": "La GPU gana cuando el cuello de botella es álgebra densa y paralelizable, como en redes profundas; un ensemble de árboles recorre estructuras condicionales y va bien en CPU. Con lotes pequeños, el tiempo de copiar datos a la GPU puede superar al del cálculo. La opción de 'GPU siempre' es el reflejo que más dinero quema en infraestructura de ML. Y las TPU son aceleradores para cargas tensoriales, principalmente redes neuronales: no aportan nada a un modelo de árboles.",
@@ -676,15 +676,15 @@
       "question_en": "You want to alert when the distribution of a numeric feature in production drifts away from what the model saw during training. Which approach is appropriate?",
       "options_es": [
         "Comparar las distribuciones completas con un estadístico de dos muestras (KS, PSI, distancia de Wasserstein) sobre ventanas temporales y alertar por encima de un umbral calibrado con el histórico",
-        "Comparar la media de la feature en producción con la media de entrenamiento y alertar si difieren",
-        "Alertar cada vez que una petición individual trae un valor fuera del rango observado en entrenamiento",
-        "Reentrenar el modelo todas las noches: así el drift nunca llega a acumularse y no hace falta detectarlo"
+        "Comparar la media de la feature en producción con la media de entrenamiento y alertar en cuanto difieran más de un punto porcentual, una comprobación que el equipo consideraba suficiente antes de adoptar herramientas más sofisticadas.",
+        "Alertar cada vez que una petición individual trae un valor fuera del rango observado durante todo el entrenamiento",
+        "Reentrenar el modelo todas las noches con los datos más recientes, así el drift nunca llega a acumularse en el tiempo"
       ],
       "options_en": [
         "Compare full distributions with a two-sample statistic (KS, PSI, Wasserstein distance) over time windows and alert above a threshold calibrated on history",
-        "Compare the feature's mean in production with its mean in training and alert if they differ",
-        "Alert whenever a single request carries a value outside the range seen in training",
-        "Retrain the model every night: that way drift never accumulates and there is no need to detect it"
+        "Comparing the feature's mean in production with its training mean and alerting as soon as they differ by more than one percentage point, a check the team considered sufficient before adopting more sophisticated tools.",
+        "Alerting whenever a single request carries a value outside the range observed during all of training",
+        "Retraining the model every night on the most recent data, so drift never has time to accumulate"
       ],
       "correct_index": 0,
       "explanation_es": "Vigilar solo la media es el atajo más extendido y deja pasar los casos que importan: una distribución que se parte en dos modos, o que duplica su varianza, puede mantener exactamente la misma media. Alertar por petición convierte los outliers normales en ruido constante y provoca fatiga de alertas hasta que alguien silencia el canal. Reentrenar cada noche no es detección: sin medir nunca sabes si el reentrenamiento ayudó, y si lo que cambió es un campo roto del pipeline, el reentreno propaga el error al modelo.",
@@ -706,16 +706,16 @@
       "question_es": "¿Qué distingue a un outlier de un fenómeno de drift, y por qué importa esa distinción a nivel operativo?",
       "question_en": "What distinguishes an outlier from drift, and why does that distinction matter operationally?",
       "options_es": [
-        "Son lo mismo con nombres distintos: ambos se resuelven reentrenando el modelo",
-        "El outlier es un error en la etiqueta y el drift es un error del modelo",
+        "Son lo mismo con nombres distintos: ambos se resuelven aplicando exactamente el mismo umbral estadístico sobre la ventana móvil de datos observados",
+        "El outlier es un error de etiquetado en el conjunto de entrenamiento y el drift es un cambio en la arquitectura del modelo ya desplegado en producción, una distinción que muchos manuales de MLOps pasan por alto al hablar solo de calidad de datos en general.",
         "El outlier es una petición individual atípica y se gestiona petición a petición (fallback, revisión humana, rechazo); el drift es un cambio sostenido de la distribución sobre muchas peticiones y se detecta y se responde a nivel de ventana temporal",
-        "El outlier afecta a la latencia del servicio y el drift afecta a la precisión del modelo"
+        "El outlier afecta a la latencia del servicio de inferencia y el drift afecta únicamente al coste de cómputo por cada petición procesada"
       ],
       "options_en": [
-        "They are the same thing with different names: both are fixed by retraining",
-        "An outlier is a labeling error and drift is a model error",
+        "They are the same thing with different names: both are fixed by applying exactly the same statistical threshold over the sliding window of observed data",
+        "An outlier is a labeling error in the training set and drift is a change in the architecture of the already-deployed model in production, a distinction many MLOps manuals overlook when they only talk about data quality in general.",
         "An outlier is a single atypical request, handled per request (fallback, human review, rejection); drift is a sustained change of the distribution across many requests, detected and handled at the level of a time window",
-        "An outlier affects service latency and drift affects model accuracy"
+        "An outlier affects the inference service's latency and drift only affects the compute cost per request processed"
       ],
       "correct_index": 2,
       "explanation_es": "Confundirlos lleva a dos fallos simétricos y caros: tratar outliers como drift dispara alertas constantes y, en el peor caso, reentrenamientos innecesarios; tratar el drift como una sucesión de outliers hace que se ignore un cambio real porque 'cada caso, por separado, era raro pero explicable'. La opción de la etiqueta mezcla calidad de datos con distribución. Y la de la latencia es un falso amigo: un outlier puede ser lento de procesar, pero lo que lo define es la posición en la distribución de entrada, no el tiempo.",
@@ -812,15 +812,15 @@
       "question_en": "The monitor computes the mean error rate over a sliding window. What does it print?\n\n```python\nfrom collections import deque\n\nwindow = deque(maxlen=3)\nfor rate in [0.01, 0.02, 0.03, 0.40, 0.45]:\n    window.append(rate)\n\nprint(round(sum(window) / len(window), 3))\n```",
       "options_es": [
         "0.293, la media de las tres últimas: maxlen descarta automáticamente las más antiguas",
-        "0.182, la media de las cinco observaciones",
-        "0.88, la suma de las tres últimas sin dividir",
-        "0.45, porque deque conserva solo el último valor añadido"
+        "0.182, la media acumulada de las cinco observaciones desde que arrancó el servicio",
+        "0.88, la suma de las tres últimas observaciones sin dividir entre el tamaño de la ventana",
+        "0.30, la media de las dos primeras observaciones, descartando el resto de la lista"
       ],
       "options_en": [
         "0.293, the mean of the last three: maxlen automatically discards the oldest ones",
-        "0.182, the mean of all five observations",
-        "0.88, the sum of the last three without dividing",
-        "0.45, because a deque keeps only the last value appended"
+        "0.182, the cumulative mean of all five observations since the service started",
+        "0.88, the sum of the last three observations without dividing by the window size",
+        "0.30, the mean of the first two observations, discarding the rest of the list"
       ],
       "correct_index": 0,
       "explanation_es": "Con maxlen=3 la cola conserva [0.03, 0.40, 0.45] y su media es 0.293. El distractor de 0.182 es la media acumulada desde el inicio del servicio, y comparar las dos respuestas es justo el punto de la pregunta: la media acumulada diluye un incidente reciente entre todo el histórico y hace que la alerta llegue tarde o no llegue; la ventana móvil reacciona, al precio de ser más ruidosa. Elegir el tamaño de ventana es negociar sensibilidad contra falsas alarmas, y es una decisión de monitorización, no un detalle de implementación.",
@@ -842,16 +842,16 @@
       "question_es": "Salta una alerta de drift en una feature de entrada. ¿Cuál debe ser la respuesta por defecto del equipo?",
       "question_en": "A drift alert fires on an input feature. What should the team's default response be?",
       "options_es": [
-        "Reentrenar automáticamente con los datos más recientes: el drift siempre se corrige reentrenando",
+        "Reentrenar automáticamente con los datos más recientes disponibles: el drift siempre se corrige reentrenando sobre lo que va llegando, una respuesta que muchos equipos adoptan sin revisar antes el pipeline de datos.",
         "Investigar primero la causa: si es una rotura del pipeline de datos (campo renombrado, unidades cambiadas, aumento de nulos), se arregla en el pipeline y no reentrenando sobre datos corruptos",
-        "Revertir a la versión anterior del modelo, que fue entrenada con una distribución distinta",
-        "Silenciar la alerta mientras la métrica de negocio no haya caído, para evitar fatiga de alertas"
+        "Revertir a la versión anterior del modelo, que fue entrenada con una distribución de entrada bastante distinta a la actual",
+        "Silenciar la alerta mientras la métrica de negocio no haya caído, para evitar la fatiga de alertas del equipo entero"
       ],
       "options_en": [
-        "Retrain automatically on the most recent data: drift is always fixed by retraining",
+        "Retraining automatically on whatever recent data is available: drift is always fixed by retraining on what keeps coming in, a response many teams adopt without first checking whether the data pipeline is still healthy.",
         "Investigate the cause first: if it is a data pipeline breakage (renamed field, changed units, more nulls), you fix it in the pipeline, not by retraining on corrupted data",
-        "Roll back to the previous model version, which was trained on a different distribution",
-        "Mute the alert until the business metric drops, to avoid alert fatigue"
+        "Rolling back to the previous model version, which was trained on an input distribution quite different from the current one",
+        "Muting the alert as long as the business metric hasn't dropped, to avoid alert fatigue across the whole team"
       ],
       "correct_index": 1,
       "explanation_es": "El reentrenamiento automático es la respuesta más popular y la más peligrosa: la causa más frecuente de un salto brusco en una feature no es que el mundo haya cambiado, sino que alguien cambió la unidad de un campo, renombró una columna o rompió una ETL. Reentrenar sobre esos datos incorpora el error al modelo y borra la evidencia. Revertir no ayuda si el problema está en la entrada: el modelo antiguo recibe los mismos datos rotos. Y silenciar hasta que caiga el negocio garantiza enterarse por los usuarios. Investigar la causa antes de actuar es lo que separa el drift real de la rotura de datos.",
@@ -873,15 +873,15 @@
       "question_es": "Un recomendador se reentrena con los clics que él mismo genera. Con los meses, el catálogo que recomienda se estrecha y la diversidad cae. ¿Qué fenómeno describe esto?",
       "question_en": "A recommender is retrained on the clicks it generates itself. Over the months, the catalog it recommends narrows and diversity falls. Which phenomenon describes this?",
       "options_es": [
-        "Data drift: la distribución de los usuarios que llegan al producto ha cambiado",
-        "Concept drift: la relación entre las entradas y el objetivo ha cambiado por causas externas al sistema",
-        "Overfitting: el modelo ha memorizado el conjunto de entrenamiento y no generaliza a usuarios nuevos",
+        "Data drift: la distribución de los usuarios que llegan al producto ha cambiado tras una campaña de marketing reciente en varios países",
+        "Concept drift: la relación entre las entradas y el objetivo ha cambiado por causas totalmente ajenas al propio sistema de recomendación, como una recesión económica que cambia de golpe los hábitos de consumo de todos los usuarios.",
+        "Overfitting: el modelo ha memorizado el conjunto de entrenamiento y no generaliza a los ítems menos populares del catálogo completo",
         "Un bucle de retroalimentación degenerado: el modelo solo observa resultados de los ítems que él mismo mostró, de modo que sus propias preferencias se convierten en sus datos de entrenamiento y se amplifican"
       ],
       "options_en": [
-        "Data drift: the distribution of users arriving at the product has changed",
-        "Concept drift: the relationship between inputs and target has changed for reasons external to the system",
-        "Overfitting: the model has memorized the training set and does not generalize to new users",
+        "Data drift: the distribution of users arriving at the product has changed after a recent marketing campaign across several countries",
+        "Concept drift: the relationship between inputs and target has changed for reasons entirely external to the recommender system itself, such as an economic downturn that suddenly shifts every user's consumption habits.",
+        "Overfitting: the model has memorized the training set and does not generalize to the less popular items across the full catalog",
         "A degenerate feedback loop: the model only observes outcomes for the items it itself showed, so its own preferences become its training data and get amplified"
       ],
       "correct_index": 3,

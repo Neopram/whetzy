@@ -8,15 +8,15 @@
       "question_es": "Según la guía de Anthropic 'Building effective agents', ¿cuál es la diferencia principal entre un 'workflow' y un 'agente'?",
       "question_en": "According to Anthropic's 'Building effective agents' guide, what is the main difference between a 'workflow' and an 'agent'?",
       "options_es": [
-        "No hay diferencia real entre ambos términos",
-        "Un workflow siempre usa más tokens que un agente",
-        "Un agente nunca puede usar herramientas externas",
+        "No existe ninguna diferencia real entre ambos términos más allá de cómo cada equipo de marketing decide usarlos",
+        "Un workflow consume siempre más tokens en total que un agente que resuelve exactamente la misma tarea encomendada",
+        "Un agente, por definición propia, nunca puede llegar a invocar ninguna herramienta externa durante toda su ejecución, ya que toda su capacidad se limita a generar texto de conversación dentro de una única ventana de contexto",
         "Un workflow sigue rutas de código predefinidas, mientras que un agente decide dinámicamente sus propios pasos y uso de herramientas mediante razonamiento del LLM"
       ],
       "options_en": [
-        "There is no real difference between the two terms",
-        "A workflow always uses more tokens than an agent",
-        "An agent can never use external tools",
+        "There is no real difference between the two terms beyond how each marketing team decides to use them",
+        "A workflow always consumes more total tokens than an agent solving exactly the same assigned task",
+        "An agent, by its own definition, can never invoke any external tool at all throughout its execution, since its whole capability is limited to generating conversational text within a single context window",
         "A workflow follows predefined code paths, while an agent dynamically decides its own steps and tool use through the LLM's reasoning"
       ],
       "correct_index": 3,
@@ -62,16 +62,16 @@
       "question_es": "¿Qué debe incluir típicamente la definición de una herramienta (tool) que se expone a un LLM para function calling?",
       "question_en": "What must the definition of a tool exposed to an LLM for function calling typically include?",
       "options_es": [
-        "El código fuente completo de la función en el prompt",
-        "Únicamente el nombre de la función, sin más detalles",
+        "El código fuente completo de la función, insertado literalmente dentro del propio prompt del sistema",
+        "Únicamente el nombre corto de la función, sin ningún esquema de parámetros ni descripción adicional",
         "Un nombre, una descripción clara de su propósito, y un esquema (JSON schema) de los parámetros esperados",
-        "Una lista de todos los posibles valores de retorno"
+        "Una lista exhaustiva de todos los valores de retorno posibles que la función podría llegar a entregar alguna vez"
       ],
       "options_en": [
-        "The function's full source code inside the prompt",
-        "Only the function's name, with no further detail",
+        "The function's full source code, inserted literally inside the system prompt itself",
+        "Only the function's short name, with no parameter schema or additional description at all",
         "A name, a clear description of its purpose, and a schema (JSON schema) of the expected parameters",
-        "A list of every possible return value"
+        "An exhaustive list of every possible return value the function could ever produce"
       ],
       "correct_index": 2,
       "explanation_es": "El modelo no ejecuta código directamente: decide si y cómo llamar a una herramienta basándose en su definición declarativa. Por eso la definición debe incluir un nombre, una descripción en lenguaje natural de qué hace y cuándo usarla, y un esquema de los parámetros (tipos, cuáles son obligatorios) que el modelo debe producir.",
@@ -91,15 +91,15 @@
       "question_es": "Un LLM que soporta tool use responde con `{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Lima\"}}`. ¿Qué debe hacer la aplicación cliente al recibir esta respuesta?",
       "question_en": "An LLM that supports tool use responds with `{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Lima\"}}`. What should the client application do upon receiving this response?",
       "options_es": [
-        "Terminar la conversación inmediatamente",
-        "Ignorar la respuesta, ya que el modelo no puede solicitar herramientas",
-        "Reenviar el mismo JSON directamente al usuario final sin procesarlo",
+        "Terminar la conversación de inmediato sin llegar a ejecutar ninguna acción adicional dentro del sistema",
+        "Ignorar la respuesta recibida, dado que el modelo carece por completo de la capacidad de solicitar herramientas, tratándola como texto libre destinado únicamente al usuario final de la conversación",
+        "Reenviar ese mismo JSON directamente al usuario final sin ejecutarlo ni procesarlo de ninguna forma previa",
         "Ejecutar la función/API real `get_weather` con esos argumentos, y devolver el resultado al modelo en un turno posterior"
       ],
       "options_en": [
-        "End the conversation immediately",
-        "Ignore the response, since the model cannot request tools",
-        "Forward the same JSON directly to the end user without processing it",
+        "End the conversation immediately without ever running any further action inside the system",
+        "Ignore the received response, since the model entirely lacks the ability to request tools, treating it as free text meant only for the conversation's end user",
+        "Forward that same JSON straight to the end user without executing or processing it in any prior way",
         "Execute the actual `get_weather` function/API with those arguments, and return the result to the model in a subsequent turn"
       ],
       "correct_index": 3,
@@ -120,16 +120,16 @@
       "question_es": "¿Qué pasos intercala el patrón ReAct en cada iteración del razonamiento de un agente?",
       "question_en": "What steps does the ReAct pattern interleave at each iteration of an agent's reasoning?",
       "options_es": [
-        "Únicamente llamadas consecutivas a herramientas sin ningún razonamiento intermedio",
+        "Únicamente llamadas sucesivas a distintas herramientas, sin que medie ningún tipo de razonamiento entre ellas, encadenadas directamente unas con otras hasta obtener una respuesta final",
         "Un 'Thought' (razonamiento), seguido de una 'Action' (uso de herramienta) y una 'Observation' del resultado antes del siguiente paso",
-        "Una votación entre varios modelos distintos en paralelo",
-        "Un resumen final generado antes de empezar a razonar"
+        "Una votación celebrada entre varios modelos de lenguaje distintos que se ejecutan todos ellos en paralelo",
+        "Un resumen final que se genera incluso antes de que el agente empiece siquiera a razonar sobre la tarea"
       ],
       "options_en": [
-        "Only consecutive tool calls with no reasoning in between",
+        "Only consecutive calls to different tools, with no reasoning at all mediating between them, chained directly one after another until a final answer is reached",
         "A 'Thought' (reasoning), followed by an 'Action' (tool use), and an 'Observation' of the result before the next step",
-        "A vote among several different models in parallel",
-        "A final summary generated before starting to reason"
+        "A vote held among several different language models, all of them run in parallel",
+        "A final summary generated even before the agent has started reasoning about the task at all"
       ],
       "correct_index": 1,
       "explanation_es": "ReAct ('Reasoning + Acting') alterna explícitamente pasos de razonamiento en lenguaje natural ('Thought') con acciones concretas ('Action', como una llamada a herramienta o búsqueda), observando el resultado ('Observation') antes de decidir el siguiente pensamiento, lo que mejora tanto la interpretabilidad como el desempeño frente a solo razonar o solo actuar.",
@@ -150,16 +150,16 @@
       "question_es": "En el patrón 'orchestrator-workers' para sistemas multi-agente, ¿qué rol cumple el agente orquestador?",
       "question_en": "In the 'orchestrator-workers' pattern for multi-agent systems, what role does the orchestrator agent play?",
       "options_es": [
-        "Ejecuta directamente todas las subtareas sin delegar nada",
+        "Ejecuta él mismo, de principio a fin, absolutamente todas las subtareas, sin delegar nada en ningún trabajador",
         "Descompone la tarea principal, delega subtareas a agentes trabajadores especializados y combina sus resultados",
-        "Solo se encarga de medir la latencia de los agentes trabajadores",
-        "Reemplaza completamente a los agentes trabajadores tras la primera iteración"
+        "Se limita únicamente a medir de forma constante la latencia de red de cada uno de los agentes trabajadores",
+        "Reemplaza por completo a los agentes trabajadores tan pronto como termina la primerísima iteración del ciclo"
       ],
       "options_en": [
-        "It executes all subtasks directly without delegating anything",
+        "It executes every single subtask itself, start to finish, delegating nothing at all to any worker",
         "It decomposes the main task, delegates subtasks to specialized worker agents, and combines their results",
-        "It only measures the latency of the worker agents",
-        "It completely replaces the worker agents after the first iteration"
+        "It merely keeps measuring the network latency of each one of the worker agents",
+        "It completely replaces the worker agents as soon as the very first iteration of the cycle finishes"
       ],
       "correct_index": 1,
       "explanation_es": "El orquestador actúa como coordinador central: analiza la tarea, la divide en subtareas más pequeñas, las asigna a agentes trabajadores especializados (que pueden ejecutarse en paralelo), y luego integra sus salidas en un resultado final coherente.",

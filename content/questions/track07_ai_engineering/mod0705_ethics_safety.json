@@ -8,16 +8,16 @@
       "question_es": "¿Cuál es una fuente principal de sesgo (bias) en los modelos de machine learning?",
       "question_en": "What is a primary source of bias in machine learning models?",
       "options_es": [
-        "Usar demasiada memoria RAM",
+        "Un exceso de regularización L2 que fuerza los pesos del modelo hacia valores muy pequeños, reduciendo su capacidad de ajuste y provocando subajuste en el conjunto de entrenamiento",
         "Datos de entrenamiento sesgados que reflejan desigualdades históricas o sociales, que el modelo aprende y reproduce (o amplifica)",
-        "Escribir el código en Python en lugar de Java",
-        "Entrenar el modelo durante demasiadas épocas"
+        "Una tasa de aprendizaje demasiado alta que provoca oscilaciones durante el descenso de gradiente y evita que el optimizador converja a un mínimo estable de la función de pérdida",
+        "Una arquitectura con muy pocas capas ocultas, que le impide capturar patrones complejos en los datos y produce un modelo demasiado simple para la tarea (subajuste severo)"
       ],
       "options_en": [
-        "Using too much RAM",
+        "Excessive L2 regularization that forces the model's weights toward very small values, reducing its fitting capacity and causing underfitting on the training set",
         "Biased training data that reflects historical or societal inequities, which the model learns and reproduces (or amplifies)",
-        "Writing the code in Python instead of Java",
-        "Training the model for too many epochs"
+        "A learning rate that is too high, causing oscillations during gradient descent and preventing the optimizer from converging to a stable minimum of the loss function",
+        "An architecture with too few hidden layers, which prevents it from capturing complex patterns in the data and yields a model too simple for the task (severe underfitting)"
       ],
       "correct_index": 1,
       "explanation_es": "Los modelos aprenden patrones de sus datos. Si esos datos reflejan sesgos del mundo real (por ejemplo, decisiones históricas de contratación discriminatorias), el modelo los internaliza y los reproduce en sus predicciones, incluso pudiendo amplificarlos. El sesgo puede entrar también por muestreo no representativo, etiquetado subjetivo o elección de features.",
@@ -38,16 +38,16 @@
       "question_es": "En el contexto de equidad (fairness), ¿qué es un 'atributo protegido' (protected attribute)?",
       "question_en": "In the context of fairness, what is a 'protected attribute'?",
       "options_es": [
-        "Una variable cifrada en la base de datos",
-        "El identificador único de cada fila",
+        "Un campo derivado que el pipeline de ETL genera automáticamente combinando otras columnas del dataset antes de que el modelo lo reciba como entrada",
+        "Una variable con alta varianza que el algoritmo de selección de features descarta durante el preprocesamiento por considerarla poco informativa",
         "Una característica como raza, género, edad, religión o discapacidad, respecto a la cual la ley o la ética prohíben discriminar",
-        "Cualquier variable numérica del dataset"
+        "Cualquier columna categórica que requiere codificación one-hot antes de poder usarse como entrada numérica del modelo"
       ],
       "options_en": [
-        "An encrypted column in the database",
-        "The unique identifier of each row",
+        "A derived field that the ETL pipeline automatically generates by combining other columns in the dataset before the model receives it as input",
+        "A high-variance variable that the feature-selection algorithm discards during preprocessing for being deemed uninformative",
         "A characteristic such as race, gender, age, religion, or disability, with respect to which the law or ethics prohibit discrimination",
-        "Any numeric variable in the dataset"
+        "Any categorical column that requires one-hot encoding before it can be used as a numeric input to the model"
       ],
       "correct_index": 2,
       "explanation_es": "Los atributos protegidos son características sensibles sobre las que existe una protección legal o ética contra la discriminación. En sistemas de ML (crédito, contratación, justicia), evaluar la equidad implica comprobar que las decisiones del modelo no perjudiquen sistemáticamente a grupos definidos por esos atributos, aunque no se usen explícitamente como feature.",
@@ -116,16 +116,16 @@
       "question_es": "¿Qué es un 'bucle de realimentación' (feedback loop) problemático en un sistema de ML desplegado?",
       "question_en": "What is a problematic 'feedback loop' in a deployed ML system?",
       "options_es": [
-        "Un error de audio en una llamada",
-        "Cuando el modelo se entrena una sola vez",
+        "Un error intermitente de audio durante una llamada que interrumpe la transcripción y obliga al sistema a reintentar la petición al modelo",
+        "Un ciclo de reentrenamiento periódico en el que el modelo se evalúa contra un conjunto de validación separado antes de cada despliegue",
         "Cuando las predicciones del modelo influyen en los datos futuros que recibirá, reforzando y amplificando su propio sesgo (por ejemplo, policía predictiva que envía más patrullas a una zona, generando más arrestos registrados allí, que 'confirman' la predicción)",
-        "Un bucle for mal escrito en el código de entrenamiento"
+        "Un ciclo de caché en el que las predicciones recientes se almacenan temporalmente en memoria para acelerar peticiones repetidas idénticas, invalidando cada entrada tras un tiempo de expiración que el equipo de infraestructura ajusta periódicamente según la carga observada del servicio"
       ],
       "options_en": [
-        "An audio glitch on a call",
-        "When the model is trained only once",
+        "An intermittent audio glitch during a call that interrupts the transcription and forces the system to retry the request to the model",
+        "A periodic retraining cycle in which the model is evaluated against a separate validation set before each deployment",
         "When the model's predictions influence the future data it will receive, reinforcing and amplifying its own bias (e.g. predictive policing sending more patrols to an area, generating more recorded arrests there, which 'confirm' the prediction)",
-        "A poorly written for loop in the training code"
+        "A caching cycle in which recent predictions are temporarily stored in memory to speed up repeated identical requests, invalidating each entry after an expiration time the infrastructure team periodically tunes based on observed service load"
       ],
       "correct_index": 2,
       "explanation_es": "En un feedback loop, las decisiones del modelo moldean el mundo del que salen sus próximos datos de entrenamiento. Si el modelo predice más crimen en una zona, se despliegan más recursos allí, se registran más incidentes, y esos datos refuerzan la predicción original, con independencia de la tasa real de crimen. Estos bucles pueden amplificar sesgos iniciales pequeños hasta niveles graves.",
@@ -146,16 +146,16 @@
       "question_es": "Existen resultados de 'imposibilidad' en fairness que muestran que ciertas definiciones de equidad no pueden satisfacerse simultáneamente. ¿Qué establecen esencialmente?",
       "question_en": "There are 'impossibility' results in fairness showing that certain fairness definitions cannot be satisfied simultaneously. What do they essentially establish?",
       "options_es": [
-        "Que la equidad es siempre imposible en cualquier modelo",
+        "Que basta con igualar las tasas base de resultados positivos entre grupos para satisfacer automáticamente todas las demás métricas de equidad al mismo tiempo, sin necesidad de tocar el umbral de decisión, recalibrar el clasificador por subgrupo ni recolectar datos adicionales",
         "Que, salvo casos triviales (por ejemplo, tasas base iguales entre grupos o un clasificador perfecto), no se pueden cumplir a la vez métricas como la calibración y la igualdad de tasas de falsos positivos/negativos entre grupos; hay que elegir cuál priorizar",
-        "Que todos los modelos discriminan a propósito",
-        "Que basta un solo criterio de equidad para cualquier contexto"
+        "Que la calibración y la paridad demográfica son matemáticamente equivalentes en cualquier clasificador entrenado con datos balanceados",
+        "Que añadir suficientes datos de entrenamiento adicionales elimina automáticamente cualquier conflicto entre las métricas de equidad utilizadas"
       ],
       "options_en": [
-        "That fairness is always impossible in any model",
+        "That simply equalizing the base rates of positive outcomes across groups is enough to automatically satisfy every other fairness metric at the same time, with no need to touch the decision threshold, recalibrate the classifier per subgroup, or collect additional data",
         "That, except in trivial cases (e.g. equal base rates across groups or a perfect classifier), metrics like calibration and equal false-positive/negative rates across groups cannot all hold at once; you must choose which to prioritize",
-        "That all models discriminate on purpose",
-        "That a single fairness criterion suffices for every context"
+        "That calibration and demographic parity are mathematically equivalent in any classifier trained on balanced data",
+        "That adding enough additional training data automatically eliminates any conflict between the fairness metrics being used"
       ],
       "correct_index": 1,
       "explanation_es": "Trabajos de Kleinberg et al. y Chouldechova (2016-2017) demostraron que cuando las tasas base difieren entre grupos, un clasificador no puede ser simultáneamente calibrado y tener iguales tasas de error (falsos positivos y negativos) entre esos grupos. Es una tensión matemática, no un fallo de implementación: obliga a decidir explícitamente qué noción de equidad es la adecuada para el contexto y sus consecuencias.",
@@ -177,16 +177,16 @@
       "question_es": "¿Qué significa 'PII' en el contexto de privacidad de datos?",
       "question_en": "What does 'PII' mean in the context of data privacy?",
       "options_es": [
-        "Python Integration Interface",
+        "Probabilistic Inference Index: una métrica interna que cuantifica la incertidumbre de las predicciones en modelos bayesianos, reportada junto con cada respuesta de la API",
         "Personally Identifiable Information (información de identificación personal): datos que permiten identificar a una persona concreta, como nombre, DNI, correo o teléfono",
-        "Public Internet Index",
-        "Predictive Inference Index"
+        "Parallel Inference Interface: un protocolo de comunicación para repartir el cómputo de inferencia entre varias GPU",
+        "Pretrained Instance Index: un catálogo interno que enumera los checkpoints de modelos preentrenados disponibles"
       ],
       "options_en": [
-        "Python Integration Interface",
+        "Probabilistic Inference Index: an internal metric that quantifies prediction uncertainty in Bayesian models, reported alongside every API response",
         "Personally Identifiable Information: data that can identify a specific person, such as name, ID number, email, or phone",
-        "Public Internet Index",
-        "Predictive Inference Index"
+        "Parallel Inference Interface: a communication protocol for splitting inference compute across multiple GPUs",
+        "Pretrained Instance Index: an internal catalog listing the available pretrained model checkpoints"
       ],
       "correct_index": 1,
       "explanation_es": "La PII es cualquier dato que, solo o combinado con otros, permite identificar a un individuo. Su manejo está regulado (por ejemplo, GDPR en Europa) y en sistemas de IA plantea riesgos: hay que minimizar su recolección, protegerla, y evitar que los modelos la memoricen o la expongan en sus salidas.",
@@ -207,16 +207,16 @@
       "question_es": "¿Qué es la 'privacidad diferencial' (differential privacy)?",
       "question_en": "What is 'differential privacy'?",
       "options_es": [
-        "Cifrar la base de datos con una contraseña",
+        "Cifrar la base de datos completa con una contraseña robusta y una clave simétrica de al menos 256 bits antes de almacenarla en disco, rotando la clave cada cierto número de días y guardando las copias de seguridad cifradas en un servidor aparte",
         "Una garantía matemática que añade ruido calibrado a los resultados de forma que la presencia o ausencia de cualquier individuo en el conjunto de datos casi no cambie la salida, limitando lo que se puede inferir sobre esa persona",
-        "Guardar los datos en servidores distintos",
-        "Borrar los datos después de usarlos"
+        "Replicar el conjunto de datos en varios centros de datos geográficamente distintos para tolerar fallos de hardware",
+        "Anonimizar los registros sustituyendo cada nombre propio por un identificador secuencial generado por el sistema"
       ],
       "options_en": [
-        "Encrypting the database with a password",
+        "Encrypting the entire database with a strong password and a symmetric key of at least 256 bits before storing it on disk, rotating the key every few days and keeping encrypted backups on a separate server",
         "A mathematical guarantee that adds calibrated noise to results so that the presence or absence of any single individual in the dataset barely changes the output, limiting what can be inferred about that person",
-        "Storing data on different servers",
-        "Deleting the data after use"
+        "Replicating the dataset across several geographically distinct data centers to tolerate hardware failures",
+        "Anonymizing records by replacing each proper name with a sequential identifier generated by the system"
       ],
       "correct_index": 1,
       "explanation_es": "La privacidad diferencial ofrece una garantía formal: un análisis (o modelo) es diferencialmente privado si sus resultados son estadísticamente casi indistinguibles tanto si los datos de una persona concreta están incluidos como si no. Esto se logra añadiendo ruido cuidadosamente calibrado, protegiendo a cada individuo aunque se publiquen estadísticas agregadas.",
@@ -263,16 +263,16 @@
       "question_es": "¿Cuál es un riesgo de privacidad específico de los modelos de lenguaje grandes entrenados con grandes corpus?",
       "question_en": "What is a privacy risk specific to large language models trained on large corpora?",
       "options_es": [
-        "Que no pueden generar texto",
-        "Que ocupan poco espacio en disco",
+        "Que necesitan reentrenarse desde cero cada vez que se añade un solo documento nuevo al corpus de entrenamiento",
+        "Que su tiempo de inferencia en producción crece de forma cuadrática con el número total de tokens del corpus original usado para entrenarlos, sin importar la longitud de la entrada actual",
         "Que pueden memorizar y llegar a regurgitar literalmente fragmentos de sus datos de entrenamiento, incluyendo información personal (PII), si esta aparecía en el corpus",
-        "Que solo funcionan con datos públicos"
+        "Que dejan de generar texto coherente en cuanto el corpus de entrenamiento supera cierto número fijo de tokens"
       ],
       "options_en": [
-        "That they cannot generate text",
-        "That they take little disk space",
+        "That they must be retrained from scratch every time a single new document is added to the training corpus",
+        "That their production inference time grows quadratically with the total number of tokens in the original corpus used to train them, regardless of the current input's length",
         "That they can memorize and even verbatim regurgitate fragments of their training data, including personal information (PII), if it appeared in the corpus",
-        "That they only work with public data"
+        "That they stop generating coherent text as soon as the training corpus exceeds a certain fixed number of tokens"
       ],
       "correct_index": 2,
       "explanation_es": "Se ha demostrado que los LLMs memorizan parte de sus datos de entrenamiento, especialmente ejemplos raros o repetidos. Con los prompts adecuados, un atacante puede extraer literalmente secuencias memorizadas, incluyendo direcciones, correos o claves que estuvieran en el corpus. Esto motiva técnicas de deduplicación, filtrado de PII y entrenamiento con privacidad diferencial.",
@@ -294,16 +294,16 @@
       "question_es": "¿Qué es el 'federated learning' (aprendizaje federado) y qué problema de privacidad ayuda a mitigar?",
       "question_en": "What is 'federated learning' and what privacy problem does it help mitigate?",
       "options_es": [
-        "Entrenar un modelo en un único servidor central con todos los datos",
+        "Comprimir los pesos de un modelo ya entrenado mediante poda y cuantización para reducir su huella en disco antes de desplegarlo",
         "Entrenar un modelo de forma distribuida en muchos dispositivos/servidores locales, enviando solo actualizaciones del modelo (no los datos crudos) a un servidor central, de modo que los datos sensibles nunca abandonan su origen",
-        "Un método para acelerar la inferencia",
-        "Una técnica de compresión de modelos"
+        "Ejecutar varias réplicas idénticas del mismo modelo en paralelo detrás de un balanceador de carga, repartiendo de forma dinámica el tráfico de peticiones entrantes entre distintos servidores físicos según su carga actual de trabajo",
+        "Cifrar el tráfico de red entre el cliente y el servidor de inferencia mediante un certificado TLS renovado periódicamente"
       ],
       "options_en": [
-        "Training a model on a single central server with all the data",
+        "Compressing the weights of an already trained model through pruning and quantization to reduce its disk footprint before deployment",
         "Training a model in a distributed way across many local devices/servers, sending only model updates (not raw data) to a central server, so sensitive data never leaves its origin",
-        "A method to speed up inference",
-        "A model-compression technique"
+        "Running several identical replicas of the same model in parallel behind a load balancer, dynamically spreading incoming request traffic across different physical servers according to their current workload",
+        "Encrypting network traffic between the client and the inference server with a periodically renewed TLS certificate"
       ],
       "correct_index": 1,
       "explanation_es": "En el aprendizaje federado, en lugar de centralizar los datos (arriesgado y a veces ilegal), cada dispositivo entrena localmente con sus propios datos y solo comparte los gradientes o pesos actualizados, que se agregan en un servidor. Así los datos crudos (por ejemplo, mensajes en un móvil) nunca salen del dispositivo. Suele combinarse con privacidad diferencial, ya que las propias actualizaciones pueden filtrar información.",
@@ -324,16 +324,16 @@
       "question_es": "En privacidad diferencial, el parámetro épsilon (ε) es el 'presupuesto de privacidad'. ¿Qué implica un ε más pequeño?",
       "question_en": "In differential privacy, the epsilon (ε) parameter is the 'privacy budget'. What does a smaller ε imply?",
       "options_es": [
-        "Que no se añade ningún ruido",
-        "Menos privacidad y más precisión a la vez",
+        "Que el ruido calibrado se calcula una única vez al inicio y se reutiliza sin cambios en todas las consultas posteriores",
+        "Menos privacidad y, al mismo tiempo, mayor precisión de los resultados, sin ningún compromiso entre ambas",
         "Más privacidad pero también más ruido, lo que reduce la utilidad/precisión de los resultados",
-        "Que el modelo se entrena más rápido"
+        "Que el modelo necesita muchas menos épocas de entrenamiento para alcanzar la convergencia deseada"
       ],
       "options_en": [
-        "That no noise is added",
-        "Less privacy and more accuracy at the same time",
+        "That the calibrated noise is computed once at the start and reused unchanged across all subsequent queries",
+        "Less privacy and, at the same time, higher accuracy of the results, with no trade-off between the two",
         "More privacy but also more noise, which reduces the utility/accuracy of the results",
-        "That the model trains faster"
+        "That the model needs far fewer training epochs to reach the desired convergence"
       ],
       "correct_index": 2,
       "explanation_es": "Épsilon cuantifica cuánto puede cambiar la salida al añadir o quitar el dato de un individuo: un ε pequeño exige que la salida apenas dependa de ningún individuo, lo que requiere más ruido y por tanto sacrifica precisión. Un ε grande permite resultados más precisos pero ofrece garantías de privacidad más débiles. Elegir ε es un compromiso explícito entre privacidad y utilidad.",
@@ -355,15 +355,15 @@
       "question_es": "¿Qué es la 'alineación' (alignment) de la IA?",
       "question_en": "What is AI 'alignment'?",
       "options_es": [
-        "Alinear visualmente los elementos de la interfaz",
-        "Sincronizar los relojes de los servidores",
-        "Ordenar alfabéticamente las respuestas del modelo",
+        "Ajustar de forma consistente los márgenes, el espaciado y los colores de los botones en la interfaz visual del chatbot para mejorar su apariencia y la experiencia de uso",
+        "Coordinar mediante NTP los relojes de todas las réplicas de un clúster distribuido de entrenamiento",
+        "Ordenar alfabéticamente las respuestas generadas por el modelo antes de presentarlas al usuario final",
         "El problema de lograr que los objetivos y el comportamiento de un sistema de IA se correspondan con las intenciones y valores humanos que se pretenden"
       ],
       "options_en": [
-        "Visually aligning UI elements",
-        "Synchronizing server clocks",
-        "Alphabetically sorting the model's answers",
+        "Consistently adjusting the margins, spacing, and colors of buttons in the chatbot's visual interface to improve its appearance and the user experience",
+        "Coordinating the clocks of every replica in a distributed training cluster via NTP",
+        "Alphabetically sorting the model's generated responses before presenting them to the end user",
         "The problem of getting an AI system's goals and behavior to correspond with the human intentions and values that are intended"
       ],
       "correct_index": 3,
@@ -385,16 +385,16 @@
       "question_es": "¿Qué es RLHF (Reinforcement Learning from Human Feedback)?",
       "question_en": "What is RLHF (Reinforcement Learning from Human Feedback)?",
       "options_es": [
-        "Un algoritmo para comprimir modelos",
+        "Un algoritmo de cuantización post-entrenamiento que reduce la precisión numérica de los pesos a 8 bits para acelerar la inferencia y disminuir el consumo de memoria en GPU, sin modificar el comportamiento observable del modelo ni requerir ningún reentrenamiento posterior",
         "Una técnica de alineación en la que se usa retroalimentación humana (comparaciones de preferencia entre respuestas) para entrenar un modelo de recompensa, con el que luego se ajusta el LLM para producir respuestas más alineadas con lo que prefieren las personas",
-        "Un método de tokenización",
-        "Una base de datos vectorial"
+        "Un esquema de tokenización basado en subpalabras, usado durante el preentrenamiento para dividir el texto en unidades manejables",
+        "Un índice especializado que almacena embeddings para permitir la recuperación semántica rápida de documentos similares"
       ],
       "options_en": [
-        "An algorithm to compress models",
+        "A post-training quantization algorithm that reduces the numeric precision of the weights to 8 bits to speed up inference and lower GPU memory usage, without changing the model's observable behavior or requiring any further retraining at all",
         "An alignment technique where human feedback (preference comparisons between responses) is used to train a reward model, which is then used to fine-tune the LLM to produce responses more aligned with what people prefer",
-        "A tokenization method",
-        "A vector database"
+        "A subword-based tokenization scheme, used during pretraining to split text into manageable units",
+        "A specialized index that stores embeddings to enable fast semantic retrieval of similar documents"
       ],
       "correct_index": 1,
       "explanation_es": "En RLHF, personas comparan pares de respuestas del modelo indicando cuál prefieren. Con esas preferencias se entrena un 'modelo de recompensa' que puntúa respuestas, y luego se afina el LLM mediante aprendizaje por refuerzo para maximizar esa recompensa. Fue clave para convertir modelos base en asistentes útiles, honestos e inofensivos (por ejemplo, InstructGPT/ChatGPT).",
@@ -441,16 +441,16 @@
       "question_es": "¿Qué es un 'model card' (tarjeta de modelo) y para qué sirve en el marco de la IA responsable?",
       "question_en": "What is a 'model card' and what is it for within responsible AI?",
       "options_es": [
-        "Una tarjeta gráfica para entrenar modelos",
-        "La factura de la nube donde corre el modelo",
+        "Una tarjeta gráfica especializada, optimizada mediante núcleos tensoriales y una gran memoria dedicada, para acelerar el entrenamiento de modelos de gran tamaño y reducir el tiempo necesario para completar cada época",
+        "El registro contable mensual del gasto en cómputo de la nube donde se entrena y sirve el modelo",
         "Un documento estandarizado que describe el uso previsto de un modelo, su rendimiento desglosado por grupos/condiciones, sus limitaciones y consideraciones éticas, para promover transparencia y uso responsable",
-        "Un identificador aleatorio del modelo"
+        "Un hash generado automáticamente por el sistema para versionar cada checkpoint producido durante el entrenamiento"
       ],
       "options_en": [
-        "A graphics card for training models",
-        "The cloud invoice where the model runs",
+        "A specialized graphics card, optimized with tensor cores and a large dedicated memory, to accelerate the training of large-scale models and reduce the time needed to complete each epoch",
+        "The monthly accounting record of cloud compute spend where the model is trained and served",
         "A standardized document describing a model's intended use, its performance broken down by groups/conditions, its limitations, and ethical considerations, to promote transparency and responsible use",
-        "A random identifier for the model"
+        "A hash automatically generated by the system to version each checkpoint produced during training"
       ],
       "correct_index": 2,
       "explanation_es": "Las model cards, propuestas por Mitchell et al. (2019), documentan de forma transparente un modelo: para qué fue diseñado (y para qué no), cómo rinde no solo en promedio sino desglosado por subgrupos (por ejemplo, por edad o tono de piel), sus limitaciones conocidas y riesgos. Ayudan a usuarios y auditores a decidir si es apropiado para un contexto y a detectar disparidades de rendimiento.",
@@ -472,15 +472,15 @@
       "question_en": "What does Anthropic's 'Constitutional AI' approach consist of?",
       "options_es": [
         "Alinear el modelo usando un conjunto explícito de principios (una 'constitución') y retroalimentación generada por la propia IA para criticar y revisar sus respuestas, reduciendo la dependencia de etiquetas humanas para el contenido dañino",
-        "Programar el modelo con leyes de un país concreto en su código fuente",
-        "Un modelo que solo responde preguntas de derecho constitucional",
-        "Prohibir por completo que el modelo genere texto"
+        "Ajustar fino el modelo exclusivamente con transcripciones de debates parlamentarios de distintos países, sin ninguna intervención humana adicional durante el proceso, para que imite un estilo formal de argumentación política, diplomática y jurídica",
+        "Un filtro de salida que bloquea de forma rígida cualquier mención a temas legales o políticos antes de mostrar la respuesta",
+        "Reemplazar por completo el mecanismo de atención del transformer por un conjunto de reglas gramaticales escritas a mano"
       ],
       "options_en": [
         "Aligning the model using an explicit set of principles (a 'constitution') and AI-generated feedback to critique and revise its own responses, reducing reliance on human labels for harmful content",
-        "Programming the model with a specific country's laws in its source code",
-        "A model that only answers constitutional-law questions",
-        "Completely forbidding the model from generating text"
+        "Fine-tuning the model exclusively on transcripts of parliamentary debates from different countries, with no additional human involvement during the process, so it imitates a formal style of political, diplomatic, and legal argumentation",
+        "An output filter that rigidly blocks any mention of legal or political topics before displaying the response",
+        "Completely replacing the transformer's attention mechanism with a set of hand-written grammatical rules"
       ],
       "correct_index": 0,
       "explanation_es": "Constitutional AI usa un conjunto de principios escritos (la 'constitución') para guiar el comportamiento del modelo. En lugar de depender solo de humanos etiquetando respuestas dañinas, el modelo critica y revisa sus propias salidas según esos principios (RLAIF, aprendizaje por refuerzo a partir de retroalimentación de IA), lo que escala mejor y hace más explícitos y auditables los valores que guían la alineación.",
@@ -502,15 +502,15 @@
       "question_en": "What distinguishes the 'outer alignment' problem from the 'inner alignment' problem?",
       "options_es": [
         "El outer alignment es especificar un objetivo/recompensa que capture fielmente lo que queremos; el inner alignment es lograr que el objetivo que el modelo realmente persigue tras el entrenamiento coincida con ese objetivo especificado, no uno emergente distinto",
-        "Son dos nombres para lo mismo",
-        "El outer alignment solo aplica a robots físicos",
-        "El inner alignment consiste en alinear los colores de la interfaz"
+        "Son dos nombres distintos que los investigadores del campo usan indistintamente para describir exactamente el mismo fenómeno observado durante el entrenamiento por refuerzo de cualquier arquitectura de red neuronal, sin ninguna diferencia técnica real entre ambos términos",
+        "El outer alignment se refiere únicamente a alinear los ejes de las gráficas que resumen las métricas de entrenamiento",
+        "El inner alignment consiste en ajustar los hiperparámetros de la capa de salida para reducir la varianza de las predicciones"
       ],
       "options_en": [
         "Outer alignment is specifying an objective/reward that faithfully captures what we want; inner alignment is getting the objective the model actually pursues after training to match that specified objective, rather than a different emergent one",
-        "They are two names for the same thing",
-        "Outer alignment only applies to physical robots",
-        "Inner alignment is about aligning UI colors"
+        "They are two different names researchers in the field use interchangeably to describe exactly the same phenomenon observed during the reinforcement-learning training of any neural network architecture, with no real technical difference between the two terms",
+        "Outer alignment refers only to aligning the axes of the charts that summarize training metrics",
+        "Inner alignment consists of tuning the output layer's hyperparameters to reduce the variance of the predictions"
       ],
       "correct_index": 0,
       "explanation_es": "El outer alignment trata la brecha entre nuestras intenciones y el objetivo formal que definimos (¿especificamos la recompensa correcta?). El inner alignment trata una brecha más sutil: aunque la recompensa fuera perfecta, el proceso de entrenamiento podría producir un modelo cuyo objetivo interno aprendido difiera del especificado (un 'mesa-optimizador' desalineado). Ambos deben resolverse para una alineación robusta.",
@@ -532,15 +532,15 @@
       "question_es": "¿Qué es un 'ejemplo adversarial' (adversarial example) en machine learning?",
       "question_en": "What is an 'adversarial example' in machine learning?",
       "options_es": [
-        "Un ejemplo de entrenamiento etiquetado por un humano hostil",
-        "Un ejemplo duplicado en el dataset",
-        "Un caso de prueba muy difícil pero legítimo",
+        "Un ejemplo del conjunto de prueba que el modelo nunca vio durante el entrenamiento y que sirve para medir su generalización",
+        "Una muestra sintética generada mediante técnicas de data augmentation para ampliar artificialmente el tamaño del dataset",
+        "Una entrada atípica (outlier) que el modelo clasifica mal simplemente por estar poco representada en el conjunto de entrenamiento original, sin que exista ninguna perturbación deliberada",
         "Una entrada modificada con una perturbación pequeña y a menudo imperceptible, diseñada deliberadamente para que el modelo la clasifique de forma incorrecta"
       ],
       "options_en": [
-        "A training example labeled by a hostile human",
-        "A duplicated example in the dataset",
-        "A very hard but legitimate test case",
+        "A test-set example the model never saw during training, used to measure its generalization",
+        "A synthetic sample generated through data augmentation techniques to artificially enlarge the dataset",
+        "An outlier input that the model misclassifies simply because it is underrepresented in the original training set, with no deliberate perturbation involved",
         "An input modified with a small, often imperceptible perturbation, deliberately designed to make the model classify it incorrectly"
       ],
       "correct_index": 3,
@@ -588,15 +588,15 @@
       "question_en": "What is a 'data poisoning' attack?",
       "options_es": [
         "Un ataque en el que el adversario introduce o manipula ejemplos en los datos de entrenamiento para degradar el modelo o implantar un comportamiento malicioso (por ejemplo, una 'puerta trasera' o backdoor)",
-        "Borrar toda la base de datos de entrenamiento",
-        "Cifrar los datos para que nadie los use",
-        "Un ataque que solo afecta a la inferencia, nunca al entrenamiento"
+        "Un ataque de denegación de servicio que satura el servidor de inferencia con peticiones simultáneas hasta hacerlo caer",
+        "Comprimir el conjunto de entrenamiento con un códec sin pérdida para reducir el tiempo de carga en memoria",
+        "Extraer los parámetros internos del modelo consultándolo de forma repetida y sistemática con entradas diseñadas específicamente para reconstruir su comportamiento y copiar su funcionalidad, sin necesitar acceso directo a sus pesos ni al código fuente original"
       ],
       "options_en": [
         "An attack where the adversary injects or manipulates examples in the training data to degrade the model or implant malicious behavior (e.g. a backdoor)",
-        "Deleting the entire training database",
-        "Encrypting the data so nobody can use it",
-        "An attack that only affects inference, never training"
+        "A denial-of-service attack that floods the inference server with simultaneous requests until it crashes",
+        "Compressing the training set with a lossless codec to reduce load time into memory",
+        "Extracting the model's internal parameters through repeated, systematic queries with inputs specifically crafted to reconstruct its behavior and copy its functionality, without needing direct access to its weights or the original source code"
       ],
       "correct_index": 0,
       "explanation_es": "En el data poisoning, el atacante corrompe el conjunto de entrenamiento. Puede buscar degradar el rendimiento general, o algo más sutil: implantar una puerta trasera de modo que el modelo funcione bien salvo cuando aparece un 'disparador' específico (por ejemplo, un sticker concreto), ante el cual produce la salida elegida por el atacante. Es un riesgo especialmente relevante cuando se usan datos de fuentes no confiables o scraping masivo.",
@@ -617,16 +617,16 @@
       "question_es": "El método FGSM (Fast Gradient Sign Method) genera ejemplos adversariales. ¿Cómo funciona a grandes rasgos?",
       "question_en": "The FGSM (Fast Gradient Sign Method) generates adversarial examples. How does it work at a high level?",
       "options_es": [
-        "Prueba millones de perturbaciones al azar hasta que una funciona",
-        "Reentrena el modelo desde cero con datos falsos",
+        "Genera un enjambre de partículas candidatas que exploran aleatoriamente el espacio de entradas mediante un algoritmo de optimización evolutiva inspirado en la selección natural, sin usar el gradiente del modelo",
+        "Sustituye la función de pérdida original por una distancia euclídea entre los logits de la entrada original y la modificada",
         "Perturba la entrada un pequeño paso en la dirección del signo del gradiente de la función de pérdida respecto a la entrada, es decir, en la dirección que más aumenta el error del modelo",
-        "Elimina las capas ocultas de la red"
+        "Congela los pesos de las primeras capas y reentrena únicamente la capa de salida usando ejemplos con ruido añadido"
       ],
       "options_en": [
-        "It tries millions of random perturbations until one works",
-        "It retrains the model from scratch with fake data",
+        "It generates a swarm of candidate particles that randomly explore the input space via an evolutionary optimization algorithm inspired by natural selection, without using the model's gradient",
+        "It replaces the original loss function with a Euclidean distance between the logits of the original and modified input",
         "It perturbs the input a small step in the direction of the sign of the gradient of the loss with respect to the input, i.e. the direction that most increases the model's error",
-        "It removes the network's hidden layers"
+        "It freezes the weights of the early layers and retrains only the output layer using examples with added noise"
       ],
       "correct_index": 2,
       "explanation_es": "FGSM aprovecha la información del gradiente: en vez de optimizar los pesos (entrenamiento), calcula el gradiente de la pérdida respecto a los píxeles de entrada y da un paso pequeño (ε) en la dirección del signo de ese gradiente. Esto maximiza eficientemente el error con una perturbación mínima y acotada, generando el ejemplo adversarial en una sola pasada, de ahí lo de 'fast'.",
@@ -647,15 +647,15 @@
       "question_es": "En seguridad de aplicaciones con LLMs (según OWASP), ¿qué es un 'jailbreak'?",
       "question_en": "In LLM application security (per OWASP), what is a 'jailbreak'?",
       "options_es": [
-        "Liberar espacio en disco del servidor",
-        "El proceso de desplegar el modelo en producción",
-        "Un método para acelerar la respuesta del modelo",
+        "Purgar de forma programada los registros de auditoría antiguos almacenados en el servidor de inferencia",
+        "El proceso completo de empaquetar el modelo en un contenedor Docker y desplegarlo en el entorno de producción usando un orquestador como Kubernetes, con autoescalado y monitorización de recursos incluidos",
+        "Una técnica de cuantización de pesos que reduce la latencia de las respuestas generadas en cada consulta",
         "Un prompt diseñado para eludir las salvaguardas de seguridad del modelo y hacer que produzca contenido que sus políticas prohíben (por ejemplo, instrucciones dañinas)"
       ],
       "options_en": [
-        "Freeing up disk space on the server",
-        "The process of deploying the model to production",
-        "A method to speed up the model's response",
+        "Scheduling the purge of old audit logs stored on the inference server",
+        "The full process of packaging the model into a Docker container and deploying it to production using an orchestrator such as Kubernetes, including autoscaling and resource monitoring",
+        "A weight-quantization technique that reduces the latency of the model's generated responses",
         "A prompt crafted to bypass the model's safety guardrails and make it produce content its policies forbid (e.g. harmful instructions)"
       ],
       "correct_index": 3,
@@ -677,16 +677,16 @@
       "question_es": "¿Qué distingue a un ataque de 'inferencia de pertenencia' (membership inference) de uno de 'extracción de modelo' (model extraction)?",
       "question_en": "What distinguishes a 'membership inference' attack from a 'model extraction' attack?",
       "options_es": [
-        "Son el mismo ataque con distinto nombre",
-        "La inferencia de pertenencia solo afecta a imágenes y la extracción solo a texto",
+        "Ambos ataques exigen modificar directamente los pesos ya entrenados del modelo, sin ninguna posibilidad de ejecutarse únicamente mediante consultas repetidas a su API pública, ya que los dos necesitan acceso físico privilegiado al servidor donde se entrenó originalmente",
+        "La inferencia de pertenencia solo puede ejecutarse durante la fase de entrenamiento y nunca contra un modelo ya desplegado",
         "La inferencia de pertenencia busca determinar si un dato concreto formó parte del conjunto de entrenamiento (riesgo de privacidad); la extracción de modelo busca reconstruir/robar el modelo o sus parámetros consultándolo repetidamente (riesgo de propiedad intelectual)",
-        "Ambos requieren acceso físico al servidor"
+        "Ambos se detectan de forma automática mediante un firewall de red convencional configurado en el perímetro del servidor"
       ],
       "options_en": [
-        "They are the same attack under a different name",
-        "Membership inference only affects images and extraction only text",
+        "Both attacks require directly modifying the model's already trained weights, with no way to execute them through repeated queries to its public API alone, since both need privileged physical access to the server where it was originally trained",
+        "Membership inference can only run during the training phase and never against an already deployed model",
         "Membership inference aims to determine whether a specific data point was part of the training set (a privacy risk); model extraction aims to reconstruct/steal the model or its parameters by querying it repeatedly (an intellectual-property risk)",
-        "Both require physical access to the server"
+        "Both are automatically detected by a conventional network firewall configured at the server's perimeter"
       ],
       "correct_index": 2,
       "explanation_es": "Son ataques con objetivos distintos. En la inferencia de pertenencia, el atacante, observando las respuestas del modelo (por ejemplo, la confianza), intenta averiguar si un individuo/registro estuvo en los datos de entrenamiento, lo que puede violar su privacidad. En la extracción de modelo, el atacante consulta masivamente la API para entrenar una copia que imite el modelo original, robando efectivamente la propiedad intelectual y el esfuerzo de entrenamiento.",
