@@ -134,6 +134,60 @@ razón (ADR-9), como Linux.
 
 `track40` ya existe (ISC2 CC, certificación); por eso la numeración salta.
 
+### 2.0.1 Inventario de la industria frente al catálogo (35.1, 2026-09-25)
+
+Fuentes descargadas por la sesión, sin registrarse. La hora es la de la descarga (UTC).
+Los recuentos se reproducen con el comando indicado; no se copian a mano en otros docs.
+
+| Fuente | URL | Descarga | Estado | Qué se leyó |
+|---|---|---|---|---|
+| roadmap.sh | https://roadmap.sh | 2026-09-25T00:39:21Z | 200 | slugs de roadmap (`grep -oE 'href="/[a-z0-9-]+"'`, sin navegación) |
+| Stack Overflow Survey 2025 | https://survey.stackoverflow.co/2025/technology | 2026-09-25T00:39:56Z | 200 | lenguajes y frameworks por nombre |
+| ISC2 | https://www.isc2.org/certifications | 2026-09-25T00:39:21Z | 200 | CISSP, CCSP, CSSLP, CGRC… |
+| Linux Foundation | https://training.linuxfoundation.org/certification-catalog/ | 2026-09-25T00:39:21Z | 200 | KCNA, CKA, CKAD, CKS, CGOA… |
+| CompTIA | https://www.comptia.org/certifications | 2026-09-25T00:39:21Z | 200 | catálogo de certificaciones |
+
+Microsoft Learn y Google Cloud no se pudieron leer enteros (páginas que cargan por JS):
+sus certificaciones siguen en §3, con la fuente de su fila.
+
+**Área → track** (roadmap.sh como índice, contrastado con la encuesta y los catálogos):
+
+| Área de la industria (slug de roadmap.sh) | Track de Whetzy |
+|---|---|
+| python, python-data-analysis | track01–03, track21 |
+| ai-engineer, ai-agents, prompt-engineering, machine-learning, ai-data-scientist, ai-product-builder, claude-code, vibe-coding | track06, track07 |
+| mlops | track41 |
+| frontend, html, css, javascript, react, vue, angular, nextjs, design-system, frontend-performance-best-practices | track14 |
+| typescript | track38 |
+| backend, nodejs, django, api-design, graphql, backend-performance-best-practices, full-stack | track28 (+ track14) |
+| java, spring-boot, kotlin, scala | track33 (JVM; Scala se absorbe aquí) |
+| aspnet-core | track34 |
+| golang · rust · c, cpp | track35 · track36 · track37 |
+| android, ios, swift-ui, flutter, react-native | track31 |
+| devops, docker, kubernetes, terraform, cloudflare | track18, track19 (CGOA/GitOps de Linux Foundation → track19) |
+| linux, shell-bash | track15 |
+| aws, aws-best-practices | track08, track10, track11 |
+| cyber-security, api-security-best-practices, devsecops, ai-red-teaming | track13, track24, track25 (CSSLP de ISC2 → track13 + track29) |
+| data-analyst, bi-analyst, power-bi · data-engineer | track21 · track20 |
+| sql, postgresql-dba · mongodb, redis, elasticsearch | track12 · track27 |
+| datastructures-and-algorithms, leetcode, computer-science | track16, track45 |
+| system-design, software-architect, software-design-architecture | track05 |
+| qa, code-review, code-review-best-practices | track29, track04 |
+| git-github | track26 |
+| network-engineer | track17 |
+| blockchain | track32, track42 |
+| game-developer, server-side-game-developer | track43 |
+| product-manager | track30 (parcial: Agile y producto) |
+| **php, laravel, wordpress** | **SIN TRACK** → propuesto `track48` PHP (Laravel, WordPress) |
+| **ruby, ruby-on-rails** | **SIN TRACK** → propuesto `track49` Ruby (Rails) |
+| **r-programming** | **SIN TRACK** → propuesto `track50` R para datos |
+| ux-design, product-design · technical-writer, devrel · engineering-manager · seo | sin track, **una sola fuente** (roadmap.sh): no se proponen todavía |
+
+**Propuestos** (≥ 2 fuentes: roadmap.sh + Stack Overflow Survey 2025, donde PHP, Ruby, R,
+Laravel, Ruby on Rails y WordPress aparecen por nombre): `track48` PHP, `track49` Ruby,
+`track50` R. Se añaden a la meta de ADR-42 cuando el dueño no los vete. Las fuentes libres
+de cada uno se buscan con el pipeline de 35.3 antes de escribir una sola pregunta (35.0).
+
 ### 2.1 Biblioteca de fuentes libres por área (ADR-11 — solo gratis y legal)
 
 Tres marcas, y solo la primera permite reutilizar texto:
