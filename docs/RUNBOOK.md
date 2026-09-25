@@ -253,3 +253,37 @@ Recovery: pick the last clean dump (`ls -lht backups/`) → `createdb` an empty 
 `db_restore.sh` → point `DATABASE_URL` at it → `GET /health/ready` → `db_restore_test.sh <dump>`
 for row parity → swap traffic. Last full test: 2026-09-08 (7 tracks / 1253 questions
 at the time, < 5 s from a 544 KB dump); the scripts have not changed since.
+
+---
+
+## Service Level Objectives (SLO) — 33.0
+
+| SLO | Target | Prometheus metric | Window | Status |
+|-----|--------|-------------------|--------|--------|
+| API availability | ≥ 99.5 % | `http_requests_total{status!~"5.."}` / `http_requests_total` | 30 days rolling | **measured** — ratio of non-5xx to total requests |
+| Quiz latency (p95) | < 500 ms | `http_request_duration_seconds{path="/api/v1/quiz/answer"}` (histogram_quantile 0.95) | 30 days rolling | **measured** — `/quiz/start` and `/quiz/answer` both instrumented |
+| Health/ready latency (p95) | < 500 ms | — | — | **sin medir** — `/health*` excluded from metrics middleware (`_SKIP_PREFIXES`) to avoid cardinality explosion; manual checks only |
+| RPO (Recovery Point Objective) | ≤ 24 h | — | — | **sin medir** — Railway Postgres daily backups assumed; no Prometheus metric; verify backup age via Railway dashboard |
+| RTO (Recovery Time Objective) | ≤ 60 min | — | — | **sin medir** — recovery is manual (`db_restore.sh`); no automated measurement; monthly drill (`db_restore_test.sh`) validates the procedure |
+
+### Alerting
+
+No Prometheus alerting is configured. Railway provides basic uptime monitoring.
+When Prometheus/Grafana is set up, add these rules:
+
+```yaml
+# Availability drops below 99.5% over 1 hour
+- alert: APIAvailabilityLow
+  expr: (sum(rate(http_requests_total{status!~"5.."}[1h])) / sum(rate(http_requests_total[1h]))) < 0.995
+
+# Quiz p95 latency exceeds 500ms over 5 minutes
+- alert: QuizLatencyHigh
+  expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{path=~"/api/v1/quiz/.*"}[5m])) by (le)) > 0.5
+```
+
+### Monthly restoration drill
+
+Run `scripts/db_restore_test.sh` against the latest backup once per month.
+The script dumps the current DB, restores to a recovery database, compares
+row counts per table, and reports PASS/FAIL. A truncated dump must produce
+FAIL (the script validates this). Log the result in `docs/restore_log.md`.

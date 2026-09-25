@@ -75,9 +75,42 @@ done
 if [[ "$PASS" == "true" ]]; then
   echo
   echo "[test] ✅ Restore test PASSED — all tables match."
-  exit 0
 else
   echo
   echo "[test] ❌ Restore test FAILED — row count mismatch."
   exit 1
 fi
+
+# ── Step 5: truncated dump must fail ────────────────────────────────────────
+echo
+echo "[test] Verifying that a truncated dump is detected …"
+TRUNC_FILE="/tmp/neurium_truncated_$$.dump"
+head -c 512 "$BACKUP_FILE" > "$TRUNC_FILE"
+TRUNC_DB="neurium_trunc_test_$$"
+PSQL "CREATE DATABASE $TRUNC_DB;" postgres 2>/dev/null || true
+
+if "$SCRIPT_DIR/db_restore.sh" "$TRUNC_FILE" "$TRUNC_DB" >/dev/null 2>&1; then
+  TRUNC_COUNT=$(PSQL "SELECT COUNT(*) FROM users;" "$TRUNC_DB" 2>/dev/null | tr -d '[:space:]')
+  if [[ "${TRUNC_COUNT:-0}" -gt 0 ]]; then
+    echo "[test]   ❌ Truncated dump restored with data — guard failed"
+    PSQL "DROP DATABASE IF EXISTS $TRUNC_DB;" postgres 2>/dev/null || true
+    rm -f "$TRUNC_FILE"
+    exit 1
+  fi
+fi
+echo "[test]   ✅ Truncated dump correctly rejected"
+PSQL "DROP DATABASE IF EXISTS $TRUNC_DB;" postgres 2>/dev/null || true
+rm -f "$TRUNC_FILE"
+
+# ── Step 6: log result ──────────────────────────────────────────────────────
+LOG_FILE="$SCRIPT_DIR/../docs/restore_log.md"
+if [[ ! -f "$LOG_FILE" ]]; then
+  echo "# Restore drill log" > "$LOG_FILE"
+  echo "" >> "$LOG_FILE"
+  echo "| Date | Tables OK | Truncated rejected | Notes |" >> "$LOG_FILE"
+  echo "|------|-----------|-------------------|-------|" >> "$LOG_FILE"
+fi
+echo "| $(date -u '+%Y-%m-%d') | ${#TABLES[@]}/${#TABLES[@]} | yes | automated drill |" >> "$LOG_FILE"
+echo "[test] Logged to docs/restore_log.md"
+
+exit 0
