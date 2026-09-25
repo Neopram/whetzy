@@ -59,11 +59,11 @@ export default function AnalyticsTab() {
         <div className={styles.splitInfo}>
           <div className={styles.splitRow}>
             <span>{t('instructor.analytics.yourShare')}</span>
-            <span className={styles.highlight}>70%</span>
+            <span className={styles.highlight}>80%</span>
           </div>
           <div className={styles.splitRow}>
             <span>{t('instructor.analytics.platformShare')}</span>
-            <span>30%</span>
+            <span>20%</span>
           </div>
         </div>
       </section>

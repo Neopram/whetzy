@@ -3,15 +3,16 @@ import { motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { Card } from '../components/common/Card';
+import { StreakFreezeShop } from '../components/home/StreakFreezeShop';
 import { useApi } from '../hooks/useApi';
 import { progress as progressApi, gamification, type SkillMasteryDetail } from '../services/api';
 import { listVariants, listItemVariants, flickerVariants } from '../lib/motion';
 import styles from './HomeScreen.module.css';
 
-function getTimeOfDay(lang: 'es' | 'en'): string {
+// Saludo entero por clave: «Buenos» + «noches» salía «Buenos noches».
+function greetingKey(): 'home.greetingMorning' | 'home.greetingAfternoon' | 'home.greetingEvening' {
   const h = new Date().getHours();
-  if (lang === 'en') return h < 12 ? 'morning' : h < 19 ? 'afternoon' : 'evening';
-  return h < 12 ? 'días' : h < 19 ? 'tardes' : 'noches';
+  return h < 12 ? 'home.greetingMorning' : h < 19 ? 'home.greetingAfternoon' : 'home.greetingEvening';
 }
 
 export function HomeScreen() {
@@ -44,7 +45,7 @@ export function HomeScreen() {
     >
       {/* Hero */}
       <motion.div className={styles.hero} variants={listItemVariants}>
-        <p className={styles.heroGreeting}>{t('home.greeting')} {getTimeOfDay(lang)}, {user.displayName.split(' ')[0]}</p>
+        <p className={styles.heroGreeting}>{t(greetingKey())}, {user.displayName.split(' ')[0]}</p>
         <h1 className={styles.heroTitle}>{t('home.ready')}</h1>
         <div className={styles.heroStats}>
           {[
@@ -187,6 +188,11 @@ export function HomeScreen() {
             </span>
           </div>
           <StreakCalendar streak={streak} />
+          <p className={styles.streakNote}>
+            <span aria-hidden="true">🧊 </span>
+            {t('home.freeze', { count: user.streakFreezeAvailable })} {t('home.streakKind')}
+          </p>
+          <StreakFreezeShop />
         </Card>
       </motion.div>
 

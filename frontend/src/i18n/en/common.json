@@ -59,7 +59,9 @@
     "referralCode": "Referral code (optional)"
   },
   "home": {
-    "greeting": "Good",
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
     "ready": "Ready to learn?",
     "level": "LEVEL",
     "mastery": "MASTERY",
@@ -83,7 +85,25 @@
     "reviewsPending": "reviews pending",
     "review": "Review",
     "today": "Today",
-    "territory": "Your territory"
+    "freeze_one": "{{count}} streak freeze: miss a day and it keeps your streak.",
+    "freeze_other": "{{count}} streak freezes: miss a day and they keep your streak.",
+    "streakKind": "You get one back every Monday if you have none. And losing a streak never erases what you already know.",
+    "territory": "Your territory",
+    "freezeShop": {
+      "status": "Streak freezes: {{held}} of {{max}} · balance: {{balance}} credits",
+      "buy": "Buy a freeze · {{price}} credits",
+      "confirmTitle": "Spend {{price}} credits on a streak freeze?",
+      "confirm": "Yes, buy it",
+      "cancel": "Cancel",
+      "bought_one": "Done: you now have {{count}} freeze.",
+      "bought_other": "Done: you now have {{count}} freezes.",
+      "retry": "That didn't go through. Try again: you won't be charged twice.",
+      "blocked": {
+        "insufficient_credits": "It costs {{price}} credits and you have {{balance}}. You earn credits by studying (modules and streaks).",
+        "max_held": "You already hold the maximum ({{max}}). A freeze covers a single day, not weeks.",
+        "weekly_limit": "You already bought {{perWeek}} this week. A streak measures consistency: come back on Monday."
+      }
+    }
   },
   "league": {
     "loading": "Loading league…",
@@ -98,7 +118,11 @@
       "gold": "Gold",
       "platinum": "Platinum",
       "diamond": "Diamond"
-    }
+    },
+    "participate": "Compete in leagues",
+    "optionalNote": "Entirely optional. Outside leagues you still earn XP, levels and streaks; you just stop appearing on the leaderboard, and nobody sees you on theirs.",
+    "optedOut": "You're out of the leagues. Flip the switch whenever you want back in.",
+    "participationError": "Couldn't save. Please try again."
   },
   "tracks": {
     "title": "Learning paths",
@@ -170,7 +194,7 @@
     "no_certs": "No certifications yet",
     "projects": "Completed projects",
     "no_projects": "No projects yet",
-    "proSoon": "Coming soon"
+    "proSoon": "Pro · $14.99/mo · coming soon"
   },
   "quiz": {
     "close": "Close",
@@ -400,7 +424,9 @@
     "errorAnswer": "Your answer could not be sent.",
     "errorResult": "The result could not be calculated.",
     "canSkipCount_one": "You can skip 1 module",
-    "canSkipCount_other": "You can skip {{count}} modules"
+    "canSkipCount_other": "You can skip {{count}} modules",
+    "skipRule": "A module counts as known when you get at least {{pct}}% of {{min}} or more of its questions right. Your mastery of those skills already counts in the engine, and spaced review will keep checking it.",
+    "skipCorrect": "{{correct}} of {{total}}"
   },
   "mockExam": {
     "title": "Mock exam",
@@ -790,7 +816,7 @@
     "compareTitle": "How it compares.",
     "compareNote": "Based on each platform's public pages, checked on {{date}}. Without signing up: anything not visible in the open is marked as not checked.",
     "pricingTitle": "Plans.",
-    "pricingNote": "Everything below is free today. Paid plans are not on sale yet: we will not ask for a card.",
+    "pricingNote": "Prices are set; checkout opens soon. Everything in the free plan works today, no card needed.",
     "planFree": {
       "name": "Free",
       "price": "$0",
@@ -805,16 +831,39 @@
       ],
       "cta": "Start free"
     },
-    "planPlus": {
-      "name": "Plus",
-      "price": "Coming soon",
-      "note": "date to be announced",
-      "blurb": "For those who want to go faster.",
+    "planPro": {
+      "name": "Pro",
+      "price": "$14.99",
+      "note": "per month",
+      "blurb": "With a tutor that explains from the sources.",
       "perks": [
         "AI tutor grounded in the course sources",
-        "Everything in Free"
+        "Everything in the free plan"
       ],
-      "cta": "Start free in the meantime"
+      "cta": "Start free meanwhile"
+    },
+    "planProMax": {
+      "name": "Pro Max",
+      "price": "$19.99",
+      "note": "per month",
+      "blurb": "All of Pro, plus what Pro Max adds.",
+      "perks": [
+        "Everything in Pro",
+        "What Pro Max includes is announced before checkout opens"
+      ],
+      "cta": "Start free meanwhile"
+    },
+    "planCreator": {
+      "name": "Creator",
+      "price": "$99.99",
+      "note": "per month",
+      "blurb": "For educators and professionals who sell their bootcamp.",
+      "perks": [
+        "Publish your bootcamps on the marketplace",
+        "You keep 80% of every sale; Whetzy keeps 20% (after the payment processor's fee)",
+        "Everything in Pro Max"
+      ],
+      "cta": "Start free meanwhile"
     },
     "proofTitle": "What you can check.",
     "proof1": {
@@ -830,7 +879,18 @@
     "finalCta": "Start free",
     "footer": "© 2026 Whetzy. Learn in two languages.",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "readiness": {
+      "eyebrow": "Certifications",
+      "title": "You'll know when you're ready for the exam.",
+      "body": "On certification tracks such as AWS Cloud Practitioner (CLF-C02), Whetzy measures your mastery in each official exam area, weighted as the exam guide weights it, and tells you what's missing.",
+      "alt": "Certification readiness screen for AWS CLF-C02: 10% overall and four exam areas with their percentage",
+      "caption": "Real capture of a brand-new account, before any practice.",
+      "p1": "A percentage per area, computed by the mastery model (BKT) from what you practice",
+      "p2": "“Ready” once average mastery passes 75%",
+      "p3": "A mock exam in the real format, from the same screen",
+      "p4": "In Spanish and in English"
+    }
   },
   "lesson": {
     "errorLoading": "That lesson could not be loaded.",

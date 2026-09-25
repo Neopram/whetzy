@@ -476,6 +476,7 @@ def _price_for(tier: str | None) -> float:
     return {
         "plus": settings.PLAN_PRICE_PLUS_USD,
         "pro": settings.PLAN_PRICE_PRO_USD,
+        "creator": settings.PLAN_PRICE_CREATOR_USD,
     }.get(tier or "", 0.0)
 
 
@@ -514,6 +515,7 @@ async def get_revenue_mrr(
         "price_table_usd": {
             "plus": settings.PLAN_PRICE_PLUS_USD,
             "pro": settings.PLAN_PRICE_PRO_USD,
+            "creator": settings.PLAN_PRICE_CREATOR_USD,
         },
         "segment": segment,
         "source": "db",

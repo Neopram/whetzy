@@ -570,6 +570,8 @@ export interface LeagueStandingsResponse {
   standings: LeagueStandingEntry[];
   promotion_zone: number;
   demotion_zone: number;
+  /** false = salió de las ligas (35.4): `standings` viene vacío. */
+  participating: boolean;
 }
 
 export interface UserMissionRead {
@@ -603,9 +605,44 @@ export const tutor = {
   },
 };
 
+/** Comodín de racha (35.3). `blocked_by` es un código estable que la UI traduce. */
+export type StreakFreezeBlock = 'insufficient_credits' | 'max_held' | 'weekly_limit';
+
+export interface StreakFreezeQuote {
+  price: number;
+  balance: number;
+  held: number;
+  max_held: number;
+  purchases_this_week: number;
+  max_per_week: number;
+  can_buy: boolean;
+  blocked_by: StreakFreezeBlock | null;
+}
+
+export const economy = {
+  async streakFreeze() {
+    return request<StreakFreezeQuote>('/economy/streak-freeze');
+  },
+  /** `requestId` se genera una vez por intento y se reutiliza en los
+   *  reintentos: el backend no cobra dos veces el mismo id. */
+  async buyStreakFreeze(requestId: string) {
+    return request<StreakFreezeQuote & { replayed: boolean }>('/economy/streak-freeze', {
+      method: 'POST',
+      body: JSON.stringify({ request_id: requestId }),
+    });
+  },
+};
+
 export const league = {
   async current() {
     return request<LeagueStandingsResponse>('/league/current');
+  },
+  /** Entrar o salir de las ligas. Salir no toca XP, nivel ni racha. */
+  async setParticipation(participate: boolean) {
+    return request<LeagueStandingsResponse>('/league/participation', {
+      method: 'PUT',
+      body: JSON.stringify({ participate }),
+    });
   },
 };
 
@@ -971,7 +1008,7 @@ export interface InstructorPayout {
 
 /** Marketplace de instructores (serie 28).
  *
- *  El reparto es 70/30 tras la comisión de Paddle y la retención que fija
+ *  El reparto es 80/20 (ADR-41) tras la comisión de Paddle y la retención que fija
  *  H.29; ese cálculo vive en el backend a propósito, para que el cliente no
  *  pueda enseñar una cifra que no sea la que se va a pagar.
  */

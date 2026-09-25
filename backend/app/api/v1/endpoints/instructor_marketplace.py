@@ -18,7 +18,9 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.db import get_db
+from app.core.entitlements import user_meets_tier
 from app.core.security import get_current_user
 from app.models.instructor import Instructor, InstructorCourse
 from app.models.user import User
@@ -102,7 +104,7 @@ async def _current_instructor(db: AsyncSession, user: User) -> Instructor:
     """
     return await InstructorService.get_or_create_instructor(
         db,
-        user_id=str(user.id),
+        user_id=user.id,
         display_name=user.display_name or user.username,
     )
 
@@ -129,7 +131,17 @@ async def create_course(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> CourseResponse:
-    """Publica un curso nuevo del instructor autenticado."""
+    """Publica un curso nuevo del instructor autenticado.
+
+    Con ``CREATOR_PLAN_REQUIRED`` exige el plan Creador (ADR-41); el dueño y
+    los admins quedan fuera de la regla para poder montar el catálogo propio.
+    """
+    if (
+        settings.CREATOR_PLAN_REQUIRED
+        and not user_meets_tier(user, "creator")
+        and not (user.is_admin or user.role == "owner")
+    ):
+        raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED, detail="creator_plan_required")
     instructor = await _current_instructor(db, user)
     course = InstructorCourse(
         instructor_id=instructor.id,
@@ -173,7 +185,7 @@ async def enroll_student(
     """Inscribe al usuario y acumula el reparto en el pago del mes (28.4-28.6).
 
     El desglose que devuelve es el de `PaymentService`: comision de Paddle,
-    70/30 y retencion, con los parametros que fijo H.29. El importe es el
+    80/20 (ADR-41) y retencion, con los parametros que fijo H.29. El importe es el
     precio del curso; no se acepta en la peticion.
 
     Sin pasarela todavia (Paddle es HUMAN-BLOCKED), esto registra la

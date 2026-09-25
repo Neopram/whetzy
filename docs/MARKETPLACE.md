@@ -45,7 +45,7 @@ Udemy tiene marketplace pero sin motor adaptativo y con revenue share de 25-37%.
 - Udemy: 25-37% para instructor (revenue share cae si Udemy pone el curso en promoción)
 - Teachable: 0% comisión pero cobra $99+/mes por plataforma
 - Gumroad: 10% flat
-- **Whetzy: 70% fijo, sin cargos de plataforma para el instructor**
+- **Whetzy (ADR-41): 80 % para el creador sobre lo que queda tras la comisión del procesador de pagos, con el plan Creador a 99,99 $/mes.** Honestamente, eso se parece a Teachable: plan mensual + reparto, no «sin cargos»
 
 **Pago:** Mensual, el día 15, mínimo $50 acumulado. **Rail elegido por el instructor**
 (ADR-36): Stripe Connect donde exista; **USDC en Solana** (fee ≈ $0,001, liquidado
@@ -92,7 +92,7 @@ Todo contenido de instructor pasa el mismo §7 del CATALOGO_MAESTRO.md:
   panel. Canje solo en web. No da créditos al instructor: su incentivo es visibilidad
   (ranking por completion rate) y revenue.
 - Los alumnos pueden pagar cursos del marketplace también con créditos (`ECONOMIA.md`
-  §2.3): el 70 % del instructor se liquida al valor nominal desde la bolsa de
+  §2.3): el 80 % del instructor (ADR-41) se liquida al valor nominal desde la bolsa de
   marketing de Whetzy, nunca del alumno.
 
 ### Creación de contenido

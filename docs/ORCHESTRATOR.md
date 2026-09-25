@@ -33,22 +33,22 @@ Cada minuto que inviertes va a la pregunta que más te hace avanzar. Nunca te
 mentimos sobre lo que dominas. Cuando no sabes, te explicamos con fuente.
 
 ### Modelo de negocio
-Freemium: **Free · Pro $9,99 · Plus $19,99** al mes como **hipótesis de trabajo interna** (ADR-43);
-**ningún precio se publica** en landing, Perfil ni tienda hasta H.19. Web con Merchant of
-Record (Paddle / Lemon Squeezy, hipótesis ADR-43) o Stripe, tras `PaymentProvider`; nativo
-con RevenueCat (17.14). Entidad y jurisdicción: **sin decidir** (H.29; la premisa griega de
-ADR-16 queda suspendida). Cancelar en dos toques.
+Freemium: **Gratis / Pro $14.99 / Pro Max $19.99** al mes, y **Creador $99.99** para
+publicar bootcamps con reparto 80/20 (ADR-41, dueño 2026-09-24). Anual, tarifa regional
+y qué añade Pro Max: H.35.
+Web con Stripe; nativo con RevenueCat. Mercado verificado: `COMPETENCIA.md` §A.
+Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos toques.
 
 ### Decisiones cerradas — no se reabren
 - **NO** voz. **NO** OCR. Cuando aparezca la tentación, no.
 - Groq + `qwen/qwen3.8-27b` tras la abstracción `LLMProvider`. Cambiar de
   proveedor es config, no refactor.
 - Catálogo: **`docs/CATALOGO_MAESTRO.md`** — **todos los tracks de la industria**
-  (28 del mapa + 14 de §2.0, y los que 35.1 confirme) con **≥ 50 cursos por track** y
-  ~55 certificaciones (ADR-42), sobre un corpus abierto descargado y verificado en
+  (28 del mapa + 14 de §2.0, y los que 37.1 confirme) con **≥ 50 cursos por track** y
+  ~55 certificaciones (ADR-46), sobre un corpus abierto descargado y verificado en
   `corpus/` (fuera del repo). Hoy 18 tracks / 49 cursos / 5 certificaciones
   (`check_docs.py`). Es la única lista; cuando otro doc la contradiga, manda el
-  catálogo. **La puerta 35.0 va antes que cualquier pregunta nueva.** No hay atajos.
+  catálogo. **La puerta 37.0 va antes que cualquier pregunta nueva.** No hay atajos.
 - Contenido redactado nativo en ES y EN — no traducido. Toda pregunta cita fuente.
 - **Fuentes solo gratuitas y legales** (ADR-11, catálogo §2.1): reutilizar solo
   MIT / Apache / BSD / CC BY / CC0 / PSF / dominio público; CC BY-SA espera H.LIC;
@@ -61,7 +61,7 @@ ADR-16 queda suspendida). Cancelar en dos toques.
 - Molde por track (catálogo §2): **20 skills · 300 Q · 3 niveles · 20 lecciones ·
   ≥ 36 términos · ≥ 15 % ejecutable** donde el navegador ejecute (Python, SQL, JS)
   o exento con razón (ADR-9). Un track por debajo del molde no existe.
-- Marca: paleta **Obsidian** (serie 34, ADR-43): oscuro por defecto, cian `#06B6D4`
+- Marca: paleta **Obsidian** (serie 34, ADR-47): oscuro por defecto, cian `#06B6D4`
   primario, el verde **solo** para éxito, claro solo en `[data-theme="light"]`;
   logo de triángulo neural.
 - Monolito FastAPI mientras un solo equipo lo mantenga.
@@ -69,7 +69,7 @@ ADR-16 queda suspendida). Cancelar en dos toques.
   dominio** (catálogo §3). Carril 1 sigue mandando mientras no haya usuarios:
   **PCEP** (track01, $59, la cuña) — blueprint corregido en 18.1.
   **Marketplace de creadores: se construye entero (serie 28) pero no se abre al
-  público antes de ≥ 100 usuarios activos verificados** (catálogo §9, ADR-43).
+  público antes de ≥ 100 usuarios activos verificados** (catálogo §9, ADR-47).
 - Presupuesto no es estrategia. Si el cupo semanal obliga a racionar, se anota
   como límite de la sesión — nunca se presenta «una tarea por sesión» como plan.
 
@@ -168,8 +168,8 @@ literal, y devuelve ≤ 300 palabras más la salida de sus comandos.
 ### Sin preguntar
 Escribir, refactorizar, borrar código propio · crear y correr tests · migraciones
 Alembic **en local** · `git commit` / `git push` a **la rama de la sesión** y abrir o
-actualizar **su PR** (ADR-41) · descargar, verificar y limpiar corpus abierto en
-`corpus/` (ADR-42) · instalar dependencias
+actualizar **su PR** (ADR-45) · descargar, verificar y limpiar corpus abierto en
+`corpus/` (ADR-46) · instalar dependencias
 del proyecto · levantar dev servers y ejercitar la app en el Browser pane ·
 reorganizar docs · borrar código muerto **tras** grep que pruebe cero referencias ·
 linters, type checkers, formatters y sus fixes · gestionar el scheduled task
@@ -177,15 +177,15 @@ linters, type checkers, formatters y sus fixes · gestionar el scheduled task
 
 **`git push origin master` DESPLIEGA** backend, migraciones, `content_loader` y, desde
 el 2026-09-24, el frontend. **Por eso ninguna sesión hace push a `master` ni fusiona:
-`master` lo fusiona el dueño a mano tras ver el preview (ADR-41).** Antes de cada push
+`master` lo fusiona el dueño a mano tras ver el preview (ADR-45).** Antes de cada push
 a la rama: `pytest tests/content`, `check_question_bank.py` y `check_docs.py` verdes;
 migraciones solo aditivas con `downgrade` probado; **nunca un track a medias** (el
 schema equivocado de track12 llegó a producción y `start.sh` se tragó el error del
-loader). La sesión no raciona: trabaja hasta que el límite la detenga (ADR-41 §4).
+loader). La sesión no raciona: trabaja hasta que el límite la detenga (ADR-45 §4).
 
 ### Detente y escribe en `HUMAN-BLOCKED`
 Operaciones destructivas sobre la **DB de producción** · `git push origin master` o
-fusionar un PR (ADR-41) · desconectar o cambiar el auto-deploy de Railway · claves
+fusionar un PR (ADR-45) · desconectar o cambiar el auto-deploy de Railway · claves
 live de Stripe o cualquier gasto · crear cuentas en servicios, aunque sean gratis · submisión a
 stores · DNS o dominio · datos de usuarios reales · rotar o exponer secretos ·
 tocar `~/.claude/settings.json` · reabrir una decisión cerrada.
@@ -463,7 +463,7 @@ cadena corre en la nube, con la app cerrada.
 Continuidad → pre-flight → mirada de dueño → `python scripts/ledger.py next` →
 loop sin cierre voluntario en la rama de la sesión, PR abierto desde el primer commit →
 cuando no quede nada ejecutable, informar como dueño: ¿se puede lanzar?
-Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md` (ADR-41).
+Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md` (ADR-45).
 Escéptico con el ledger, honesto con la evidencia, tacaño con Opus, fiel a las
 líneas rojas.
 ```

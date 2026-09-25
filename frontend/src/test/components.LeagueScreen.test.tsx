@@ -7,7 +7,7 @@
  * string. These tests fail if that regresses.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import { render, screen, waitFor, cleanup, fireEvent } from '@testing-library/react';
 import '../i18n';
 import i18n from '../i18n';
 import { LeagueScreen } from '../pages/LeagueScreen';
@@ -17,11 +17,12 @@ vi.mock('../services/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/api')>();
   return {
     ...actual,
-    league: { current: vi.fn() },
+    league: { current: vi.fn(), setParticipation: vi.fn() },
   };
 });
 
 const currentMock = leagueApi.current as unknown as ReturnType<typeof vi.fn>;
+const participationMock = leagueApi.setParticipation as unknown as ReturnType<typeof vi.fn>;
 
 /** Every Spanish league label the seeder writes to League.name. */
 const SPANISH_LABELS = ['Bronce', 'Plata', 'Oro', 'Platino', 'Diamante'];
@@ -43,6 +44,7 @@ function standings(tier: string, name: string) {
     ],
     promotion_zone: 5,
     demotion_zone: 5,
+    participating: true,
   };
 }
 
@@ -138,5 +140,23 @@ describe('LeagueScreen — league name localization', () => {
     await waitFor(() => {
       expect(screen.getByText(i18n.t('league.empty'))).toBeTruthy();
     });
+  });
+
+  it('the league switch opts out in place and says what stays (35.4)', async () => {
+    await i18n.changeLanguage('es');
+    currentMock.mockResolvedValue(standings('gold', 'Oro'));
+    participationMock.mockResolvedValue({ ...standings('gold', 'Oro'), standings: [], participating: false });
+
+    render(<LeagueScreen />);
+    const toggle = await screen.findByRole('switch', { name: 'Competir en las ligas' });
+    expect(toggle).toBeChecked();
+    expect(screen.getByText(/Totalmente opcional/)).toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    await screen.findByText(/Estás fuera de las ligas/);
+    expect(participationMock).toHaveBeenCalledWith(false);
+    expect(screen.getByRole('switch')).not.toBeChecked();
+    expect(screen.queryByText('Ana')).not.toBeInTheDocument();
   });
 });

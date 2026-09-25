@@ -73,7 +73,42 @@ async def get_or_create_current_entry(db: AsyncSession, user: User) -> LeagueEnt
     return entry
 
 
+async def _opted_out_view(db: AsyncSession, user: User) -> LeagueStandingsResponse | None:
+    """Lo que ve quien salió de las ligas: su última liga (o la primera), sin
+    clasificación. Volver a entrar la retoma desde ahí."""
+    prev = await db.execute(
+        select(League)
+        .join(LeagueEntry, LeagueEntry.league_id == League.id)
+        .where(LeagueEntry.user_id == user.id)
+        .order_by(LeagueEntry.week_start.desc())
+        .limit(1)
+    )
+    league = prev.scalar_one_or_none() or await _lowest_tier_league(db)
+    if league is None:
+        return None
+    return LeagueStandingsResponse(
+        league=LeagueRead.model_validate(league),
+        week_start=week_start_of(date.today()),
+        standings=[],
+        promotion_zone=0,
+        demotion_zone=0,
+        participating=False,
+    )
+
+
+async def set_league_participation(
+    db: AsyncSession, user: User, participate: bool
+) -> LeagueStandingsResponse | None:
+    user.leagues_opt_out = not participate
+    await db.flush()
+    return await get_current_standings(db, user)
+
+
 async def get_current_standings(db: AsyncSession, user: User) -> LeagueStandingsResponse | None:
+    if user.leagues_opt_out:
+        view = await _opted_out_view(db, user)
+        await db.commit()
+        return view
     entry = await get_or_create_current_entry(db, user)
     if entry is None:
         return None
@@ -84,7 +119,12 @@ async def get_current_standings(db: AsyncSession, user: User) -> LeagueStandings
     entries_result = await db.execute(
         select(LeagueEntry, User)
         .join(User, User.id == LeagueEntry.user_id)
-        .where(LeagueEntry.league_id == entry.league_id, LeagueEntry.week_start == entry.week_start)
+        .where(
+            LeagueEntry.league_id == entry.league_id,
+            LeagueEntry.week_start == entry.week_start,
+            # Quien salió a mitad de semana deja de aparecer en la de los demás.
+            User.leagues_opt_out.is_(False),
+        )
         .order_by(LeagueEntry.xp_earned.desc())
     )
     rows = entries_result.all()

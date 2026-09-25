@@ -1,6 +1,12 @@
 """Server-side feature entitlements / tier gating (7.3).
 
-Tier hierarchy: free < plus < pro
+Tier hierarchy: free < plus < pro < creator
+
+Nombres de cara al usuario (ADR-41, dueño 2026-09-24): ``plus`` = **Pro**
+($14.99/mes), ``pro`` = **Pro Max** ($19.99/mes), ``creator`` = **Creador**
+($99.99/mes: todo lo de Pro Max + publicar bootcamps en el marketplace, con
+80/20 de cada venta). Los ids internos no cambian: están en la base de datos
+y en Stripe.
 
 Callers use ``require_tier`` as a FastAPI Depends factory:
 
@@ -28,11 +34,12 @@ _TIER_RANK: dict[str | None, int] = {
     "free": 0,
     "plus": 1,
     "pro": 2,
+    "creator": 3,
 }
 
 # Tiers that count as "premium" even when subscription_tier is NULL
 # (e.g. grandfathered is_premium accounts)
-_PREMIUM_BYPASS_TIERS = {"plus", "pro"}
+_PREMIUM_BYPASS_TIERS = {"plus", "pro", "creator"}
 
 
 def user_meets_tier(user: User, minimum: str) -> bool:

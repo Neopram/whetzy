@@ -59,7 +59,9 @@
     "referralCode": "Código de referido (opcional)"
   },
   "home": {
-    "greeting": "Buenos",
+    "greetingMorning": "Buenos días",
+    "greetingAfternoon": "Buenas tardes",
+    "greetingEvening": "Buenas noches",
     "ready": "¿Listo para aprender?",
     "level": "NIVEL",
     "mastery": "DOMINIO",
@@ -83,7 +85,25 @@
     "reviewsPending": "repasos pendientes",
     "review": "Repasar",
     "today": "Hoy",
-    "territory": "Tu territorio"
+    "freeze_one": "{{count}} comodín: si un día no estudias, guarda tu racha.",
+    "freeze_other": "{{count}} comodines: si un día no estudias, guardan tu racha.",
+    "streakKind": "Cada lunes recuperas uno si no te queda. Y perder la racha no borra lo que ya dominas.",
+    "territory": "Tu territorio",
+    "freezeShop": {
+      "status": "Comodines: {{held}} de {{max}} · saldo: {{balance}} créditos",
+      "buy": "Comprar un comodín · {{price}} créditos",
+      "confirmTitle": "¿Gastar {{price}} créditos en un comodín de racha?",
+      "confirm": "Sí, comprar",
+      "cancel": "Cancelar",
+      "bought_one": "Hecho: ya tienes {{count}} comodín.",
+      "bought_other": "Hecho: ya tienes {{count}} comodines.",
+      "retry": "No se pudo completar. Vuelve a intentarlo: no se cobra dos veces.",
+      "blocked": {
+        "insufficient_credits": "Cuesta {{price}} créditos y tienes {{balance}}. Los créditos se ganan estudiando (módulos y rachas).",
+        "max_held": "Ya tienes el máximo ({{max}}). Un comodín cubre un día suelto, no semanas.",
+        "weekly_limit": "Esta semana ya compraste {{perWeek}}. La racha mide constancia: vuelve el lunes."
+      }
+    }
   },
   "league": {
     "loading": "Cargando liga…",
@@ -98,7 +118,11 @@
       "gold": "Oro",
       "platinum": "Platino",
       "diamond": "Diamante"
-    }
+    },
+    "participate": "Competir en las ligas",
+    "optionalNote": "Totalmente opcional. Fuera de las ligas sigues ganando XP, nivel y racha; solo dejas de aparecer en la clasificación, y nadie te ve en la suya.",
+    "optedOut": "Estás fuera de las ligas. Activa el interruptor cuando quieras volver.",
+    "participationError": "No se pudo guardar. Inténtalo de nuevo."
   },
   "tracks": {
     "title": "Rutas de aprendizaje",
@@ -170,7 +194,7 @@
     "no_certs": "Todavía sin certificaciones",
     "projects": "Proyectos completados",
     "no_projects": "Todavía sin proyectos",
-    "proSoon": "Próximamente"
+    "proSoon": "Pro · 14,99 $/mes · próximamente"
   },
   "quiz": {
     "close": "Cerrar",
@@ -400,7 +424,9 @@
     "errorAnswer": "No se pudo enviar la respuesta.",
     "errorResult": "No se pudo calcular el resultado.",
     "canSkipCount_one": "Puedes saltarte 1 módulo",
-    "canSkipCount_other": "Puedes saltarte {{count}} módulos"
+    "canSkipCount_other": "Puedes saltarte {{count}} módulos",
+    "skipRule": "Un módulo se da por sabido cuando aciertas al menos el {{pct}} % de {{min}} o más preguntas suyas. Tu dominio de esas habilidades ya cuenta en el motor; el repaso espaciado lo irá comprobando.",
+    "skipCorrect": "{{correct}} de {{total}}"
   },
   "mockExam": {
     "title": "Simulacro de examen",
@@ -790,10 +816,10 @@
     "compareTitle": "Cómo se compara.",
     "compareNote": "Según las páginas públicas de cada plataforma, consultadas el {{date}}. Sin registrarnos: si algo no se ve en abierto, lo marcamos como no comprobado.",
     "pricingTitle": "Planes.",
-    "pricingNote": "Hoy todo lo de abajo es gratis. Los planes de pago aún no están a la venta: no te pediremos tarjeta.",
+    "pricingNote": "Los precios ya están fijados; el cobro abre pronto. Hoy todo lo del plan gratis funciona sin tarjeta.",
     "planFree": {
       "name": "Gratis",
-      "price": "0 €",
+      "price": "0 $",
       "note": "sin tarjeta",
       "blurb": "Todo el motor, todas las rutas.",
       "perks": [
@@ -805,14 +831,37 @@
       ],
       "cta": "Empieza gratis"
     },
-    "planPlus": {
-      "name": "Plus",
-      "price": "Próximamente",
-      "note": "fecha por anunciar",
-      "blurb": "Para quien quiere ir más rápido.",
+    "planPro": {
+      "name": "Pro",
+      "price": "14,99 $",
+      "note": "al mes",
+      "blurb": "Con tutor que explica desde las fuentes.",
       "perks": [
         "Tutor con IA apoyado en las fuentes del curso",
         "Todo lo del plan gratis"
+      ],
+      "cta": "Empieza gratis mientras tanto"
+    },
+    "planProMax": {
+      "name": "Pro Max",
+      "price": "19,99 $",
+      "note": "al mes",
+      "blurb": "Todo Pro, y lo que añada Pro Max.",
+      "perks": [
+        "Todo lo de Pro",
+        "Lo que incluye Pro Max se anuncia antes de abrir el cobro"
+      ],
+      "cta": "Empieza gratis mientras tanto"
+    },
+    "planCreator": {
+      "name": "Creador",
+      "price": "99,99 $",
+      "note": "al mes",
+      "blurb": "Para educadores y profesionales que venden su bootcamp.",
+      "perks": [
+        "Publica tus bootcamps en el marketplace",
+        "Te quedas el 80 % de cada venta; Whetzy, el 20 % (tras la comisión del procesador de pagos)",
+        "Todo lo de Pro Max"
       ],
       "cta": "Empieza gratis mientras tanto"
     },
@@ -830,7 +879,18 @@
     "finalCta": "Empieza gratis",
     "footer": "© 2026 Whetzy. Aprende en dos idiomas.",
     "privacy": "Privacidad",
-    "terms": "Términos"
+    "terms": "Términos",
+    "readiness": {
+      "eyebrow": "Certificaciones",
+      "title": "Sabrás cuándo estás listo para el examen.",
+      "body": "En las rutas de certificación, como AWS Cloud Practitioner (CLF-C02), Whetzy mide tu dominio en cada área oficial del examen, ponderada con el peso que le da la guía del examen, y te dice qué falta.",
+      "alt": "Pantalla de preparación para la certificación AWS CLF-C02: 10 % global y cuatro áreas del examen con su porcentaje",
+      "caption": "Captura real de una cuenta recién creada, antes de practicar.",
+      "p1": "Un porcentaje por área, calculado con el modelo de dominio (BKT) de lo que practicas",
+      "p2": "«Listo» cuando el dominio medio supera el 75 %",
+      "p3": "Simulacro con el formato del examen desde la misma pantalla",
+      "p4": "En español y en inglés"
+    }
   },
   "lesson": {
     "errorLoading": "No se pudo cargar la lección.",

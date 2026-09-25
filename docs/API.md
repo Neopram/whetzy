@@ -148,6 +148,7 @@ GET  /missions             → active missions + progress 🔒
 ```
 GET  /league/current       → current week's league standings 🔒
 GET  /league/history       → past league results for current user 🔒
+PUT  /league/participation {participate: bool} → current standings + {participating} 🔒 — ligas opcionales (35.4): fuera, `standings` vacío y nadie te ve; XP, nivel y racha siguen
 ```
 
 ## Reports endpoints
@@ -217,6 +218,8 @@ GET  /economy/balance           → {balance, currency, expires_in_days} 🔒
 GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea si no existe
 POST /economy/promo/redeem      → {credits, balance, message} 🔒
 POST /economy/referral/activate → {activated, referrer_id} 🔒
+GET  /economy/streak-freeze     → {price, balance, held, max_held, purchases_this_week, max_per_week, can_buy, blocked_by} 🔒 — comodín de racha (35.3)
+POST /economy/streak-freeze     {request_id: uuid} → mismo cuerpo + {replayed} 🔒 — compra con créditos; 409 `insufficient_credits` · `max_held` · `weekly_limit`; el mismo `request_id` nunca cobra dos veces
 ```
 
 ## Instructor marketplace endpoints

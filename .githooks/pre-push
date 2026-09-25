@@ -91,12 +91,23 @@ paso() {  # paso <nombre> <comando...>
 
 echo "Puerta local (nivel 1) —"
 
-paso "ruff"            bash -c "cd backend && ruff check app tests"
+# La versión de ruff la fija CI (ci.yml, `ruff==X`). Una ruff distinta da otro
+# veredicto: el 2026-09-24 una 0.15.8 vieja del PATH inventó «31 errores» que CI
+# no ve (30.6). Aquí se exige la misma.
+ruff_ci=$(grep -oE 'ruff==[0-9.]+' .github/workflows/ci.yml | head -1 | cut -d= -f3)
+ruff_local=$(ruff --version 2>/dev/null | awk '{print $2}')
+paso "ruff ${ruff_ci:-?} (la de CI)" bash -c "
+  if [ -z '$ruff_ci' ]; then echo 'ci.yml no fija ruff==X'; exit 1; fi
+  if [ '$ruff_local' != '$ruff_ci' ]; then
+    echo \"ruff local '$ruff_local' ≠ CI '$ruff_ci': pip install ruff==$ruff_ci\"; exit 1
+  fi
+  cd backend && ruff check app tests"
 paso "guardas de esquema y contrato" \
      bash -c "cd backend && python -m pytest \
         tests/test_modelos_registrados.py \
         tests/test_indices_modelos.py \
         tests/test_contrato_frontend.py \
+        tests/test_despliegue_pages.py \
         tests/test_motores_cerrados.py \
         tests/unit/test_placement_params.py \
         -q ${PYTEST_CACHE_OPT[*]} --no-header"

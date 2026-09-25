@@ -3,7 +3,7 @@
 Verifies:
 - Tutor /explain returns 403 for free users, 200 (mocked) for Plus users
 - Quiz /start with mode="exam" returns 403 for free users
-- Quiz /start with mode="review" returns 403 for free users
+- Quiz /start with mode="review" is free: spaced review is the engine (ADR-41)
 - Quiz /start with mode="study" is always allowed (free tier)
 - Plus users can start exam + review sessions
 """
@@ -103,13 +103,13 @@ async def test_quiz_exam_mode_forbidden_for_free_user(client, user, content_seed
     assert "Plus" in r.json()["detail"]
 
 
-async def test_quiz_review_mode_forbidden_for_free_user(client, user, content_seed):
+async def test_quiz_review_mode_allowed_for_free_user(client, user, content_seed):
     r = await client.post(
         f"{QUIZ}/start",
         json={"skill_id": content_seed["skill_id"], "mode": "review"},
         headers=_h(_auth(user)),
     )
-    assert r.status_code == 403, r.text
+    assert r.status_code == 200, r.text
 
 
 async def test_quiz_study_mode_allowed_for_free_user(client, user, content_seed):

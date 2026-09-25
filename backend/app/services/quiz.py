@@ -384,12 +384,21 @@ def _level_from_xp(total_xp: int) -> int:
     return max(1, total_xp // 500 + 1)
 
 
+# Racha amable (COMPETENCIA.md §A.4, ledger 35.3): cada semana ISO nueva devuelve
+# un comodín gratis si no queda ninguno. No se acumulan (los comprados sí se
+# conservan): el comodín cubre un despiste, no compra semanas enteras. Perder la
+# racha nunca toca el dominio (BKT), que vive aparte.
+WEEKLY_FREE_FREEZES = 1
+
+
 def _update_streak(user: User, now: datetime) -> None:
     today = now.date()
     if user.last_active is None:
         user.current_streak = 1
     else:
         last_day = user.last_active.date()
+        if last_day.isocalendar()[:2] != today.isocalendar()[:2]:
+            user.streak_freeze_available = max(user.streak_freeze_available, WEEKLY_FREE_FREEZES)
         if last_day == today:
             pass  # already counted today
         elif last_day == today - timedelta(days=1):
@@ -543,7 +552,8 @@ async def submit_answer(
     user.level = _level_from_xp(user.total_xp)
     _update_streak(user, now)
 
-    league_entry = await get_or_create_current_entry(db, user)
+    # Fuera de las ligas (35.4) no se crea ni se suma entrada de liga.
+    league_entry = None if user.leagues_opt_out else await get_or_create_current_entry(db, user)
     if league_entry is not None:
         league_entry.xp_earned += xp
 

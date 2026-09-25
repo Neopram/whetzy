@@ -1,6 +1,6 @@
 # Whetzy — iOS App Store Listing
 
-> Guía de publicación · actualizado 2026-09-24 (cifras de `check_docs.py`; sin afirmaciones sobre datos reales mientras no haya usuarios, H.10) · requiere H.2 (Apple Developer) + H.14 (macOS) + 17.14 (IAP) · **precios: ninguno publicado hasta H.19 (ADR-43)**
+> Guía de publicación · actualizado 2026-09-24 (cifras de `check_docs.py`; sin afirmaciones sobre datos reales mientras no haya usuarios, H.10) · requiere H.2 (Apple Developer) + H.14 (macOS) + 17.14 (IAP) · **precios: solo los de ADR-41 (Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $); la ficha no publica ninguno hasta que exista IAP (17.14)**
 
 ---
 

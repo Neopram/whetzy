@@ -99,10 +99,10 @@ mes son tres simulacros: suficiente para retener, insuficiente para vivir de ell
 | Congelar racha (1 día) | 150 | Duolingo lo vende; aquí se gana |
 | Informe de dominio en PDF | 300 | Compartible con empleadores |
 | Bootcamp async (1 secuencia) | 3.000 | Solo Career-switcher/Senior lo alcanzan |
-| Curso del marketplace (instructor) | según instructor, mínimo 1.000 | El 70 % del instructor se liquida al valor nominal (§2.1) desde la bolsa de marketing de Whetzy, nunca del alumno |
+| Curso del marketplace (instructor) | según instructor, mínimo 1.000 | El 80 % del instructor (ADR-41) se liquida al valor nominal (§2.1) desde la bolsa de marketing de Whetzy, nunca del alumno |
 | Seat extra 1 mes (solo empresa, desde la bolsa de empresa) | 2.000 | Retención B2B |
 
-**Lo que los créditos NO compran:** meses de Pro/Premium (eso es premio de escalera,
+**Lo que los créditos NO compran:** meses de Pro/Pro Max (eso es premio de escalera,
 §3.3, no de goteo), certificaciones oficiales de terceros (dinero real del proveedor),
 nada fuera de la app.
 
@@ -171,7 +171,7 @@ está retenido: la recompensa premia lo que de verdad importa.
 |---|---|---|
 | 1 | 300 créditos | ledger |
 | 3 | **1 mes de Pro** | entitlement en servidor; visible en todas las plataformas |
-| 10 | **Una certificación oficial** (PCEP, CLF-C02 o ISC2 CC; voucher a cargo de Whetzy) | HUMAN-BLOCKED por importe (ADR-15) hasta que exista ingreso; mientras tanto: 6 meses de Premium |
+| 10 | **Una certificación oficial** (PCEP, CLF-C02 o ISC2 CC; voucher a cargo de Whetzy) | HUMAN-BLOCKED por importe (ADR-15) hasta que exista ingreso; mientras tanto: 6 meses de Pro Max |
 | 25 | Badge «Embajador» + fila en el perfil público + acceso anticipado | perfil (24.8) |
 
 Tope: **10 activaciones acreditables por mes**. La escalera es acumulativa y no caduca.

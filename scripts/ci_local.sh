@@ -135,8 +135,12 @@ correr "backend: suite entera" "$RAIZ/backend" \
   python -m pytest tests/ --ignore=tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
 correr "backend: contenido"    "$RAIZ/backend" \
   python -m pytest tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
+# `python -m mypy` y no `mypy`: el binario del PATH puede ser otro entorno sin
+# las dependencias del proyecto (2026-09-24: un mypy de uv sin pydantic dio
+# cientos de «Class cannot subclass BaseModel» falsos; con el intérprete del
+# proyecto, 0 errores en 117 ficheros).
 correr "backend: mypy --strict" "$RAIZ/backend" \
-  mypy app --strict --ignore-missing-imports
+  python -m mypy app --strict --ignore-missing-imports
 
 if [ -d "$RAIZ/frontend/node_modules" ]; then
   correr "frontend: tipos"  "$RAIZ/frontend" npx tsc -b
