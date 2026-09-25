@@ -174,7 +174,17 @@ def test_la_mas_larga_empatada_no_cuenta() -> None:
 
 
 def test_track_nuevo_sesgado_en_rojo(live, urls) -> None:
-    sesgadas = [q for q in live["track11"] if len(q.get("options_es") or []) >= 3]
+    # Sintético a propósito: el ejemplo real (track11, 98 %) se arregló en 35.16.
+    sesgadas = []
+    for i, q in enumerate(_track12(live)):
+        q = dict(q, question_es=f"Enunciado sintético {i}", correct_index=0)
+        q["options_es"] = [
+            "La correcta, claramente más larga que el resto",
+            "Corta",
+            "Breve",
+            "Otra",
+        ]
+        sesgadas.append(q)
     assert any(
         "opción más larga" in p for p in qd.check({"track99": sesgadas}, {}, urls)
     )
