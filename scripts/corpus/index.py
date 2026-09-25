@@ -19,7 +19,7 @@ from typing import Any
 from scripts.corpus.common import CORPUS, INDEX, read_meta, source_dir
 
 
-def entry_for(meta: dict[str, Any]) -> dict[str, Any]:
+def entry_for(meta: dict[str, Any], aliases: list[str] | None = None) -> dict[str, Any]:
     if not meta.get("accepted"):
         raise PermissionError(f"{meta.get('name')}: licencia no aceptada ({meta.get('license_reason', 'sin verificar')})")
     return {
@@ -31,6 +31,9 @@ def entry_for(meta: dict[str, Any]) -> dict[str, Any]:
         "verified_date": str(meta["license_checked_at"])[:10],
         "sha": meta.get("sha"),
         "notes": f"Licencia leída en {meta.get('license_file')} por scripts/corpus (35.3): «{meta.get('license_evidence')}»",
+        # URL donde se publica ESTE mismo contenido (p. ej. docs.python.org/3 para
+        # el `Doc/` de cpython). Las preguntas citan la URL publicada, no el repo.
+        **({"aliases": sorted({a.rstrip("/") for a in aliases})} if aliases else {}),
     }
 
 
@@ -49,10 +52,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--corpus", type=Path, default=CORPUS)
     ap.add_argument("--index", type=Path, default=INDEX)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--alias", action="append", default=[],
+                    help="URL donde se publica este mismo contenido (repetible)")
     a = ap.parse_args(argv)
     meta = read_meta(source_dir(a.name, a.corpus))
     try:
-        entry = entry_for(meta)
+        entry = entry_for(meta, a.alias)
     except PermissionError as e:
         print(f"[index] {e}")
         return 3

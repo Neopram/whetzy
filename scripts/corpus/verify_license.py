@@ -38,8 +38,11 @@ REJECT = [
     (re.compile(r"non-?commercial|\bCC[- ]BY[- ]NC\b", re.IGNORECASE), "NonCommercial (CC BY-NC): se cita, no se reutiliza (ADR-11)"),
     (re.compile(r"share-?alike|\bCC[- ]BY[- ]SA\b", re.IGNORECASE), "ShareAlike (CC BY-SA): no se reutiliza (ADR-43, H.LIC = no)"),
     (re.compile(r"GNU (AFFERO |LESSER )?GENERAL PUBLIC LICENSE|\bA?L?GPL-?\d", re.IGNORECASE), "copyleft GPL/LGPL/AGPL: se cita, no se copia (ADR-11)"),
-    (re.compile(r"all rights reserved", re.IGNORECASE), "propietario («All rights reserved»)"),
 ]
+# «All rights reserved» aparece también en cabeceras de licencias libres
+# («Copyright (c) X. All rights reserved.» encima de un MIT). Solo rechaza cuando
+# no hay ninguna licencia libre reconocida (hallazgo del verificador, 2026-09-25).
+PROPRIETARY = (re.compile(r"all rights reserved", re.IGNORECASE), "propietario («All rights reserved» sin licencia libre)")
 ACCEPT = [
     (re.compile(r"Apache License,?\s+Version 2\.0", re.IGNORECASE), "Apache-2.0"),
     (re.compile(r"Permission is hereby granted, free of charge", re.IGNORECASE), "MIT"),
@@ -92,6 +95,9 @@ def classify(text: str | None, where: str | None = None) -> Verdict:
         m = rx.search(text)
         if m:
             return Verdict(True, spdx, "licencia reutilizable (ADR-11)", m.group(0)[:120])
+    m = PROPRIETARY[0].search(text)
+    if m:
+        return Verdict(False, None, PROPRIETARY[1], m.group(0))
     if where and where.endswith("(cabecera y pie)"):
         return Verdict(False, None, "sin fichero LICENSE ni marca de licencia en cabecera o pie: rechazada (ADR-42)", None)
     return Verdict(False, None, "licencia no reconocida: rechazada hasta leerla a mano", None)

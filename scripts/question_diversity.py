@@ -70,7 +70,8 @@ def _has_code(q: dict[str, Any]) -> bool:
 
 def indexed_urls(index_path: Path = INDEX) -> list[str]:
     data = json.loads(index_path.read_text(encoding="utf-8"))
-    return [str(s["url"]).rstrip("/") for s in data]
+    # `aliases`: la URL donde se publica la misma fuente verificada (35.4).
+    return [str(u).rstrip("/") for s in data for u in [s["url"], *s.get("aliases", [])]]
 
 
 def _source_indexed(q: dict[str, Any], urls: list[str]) -> bool:

@@ -46,6 +46,8 @@ def _source(tmp_path: Path, name: str, files: dict[str, str]) -> Path:
         ({"LICENSE": "Creative Commons Attribution-ShareAlike 4.0"}, False, "ShareAlike"),
         ({"COPYING": "GNU GENERAL PUBLIC LICENSE Version 3"}, False, "copyleft"),
         ({"LICENSE": "Copyright ACME. All rights reserved."}, False, "propietario"),
+        ({"LICENSE": "Copyright (c) 2020 X. All rights reserved.\n\n" + MIT}, True, "MIT"),
+        ({"LICENSE": "Copyright X. All rights reserved.\nAttribution-NonCommercial 4.0"}, False, "NonCommercial"),
         ({"LICENSE": "Do whatever, I guess"}, False, "no reconocida"),
     ],
 )
@@ -91,3 +93,12 @@ def test_index_solo_acepta_licencias_verificadas_y_no_duplica(tmp_path) -> None:
     verify_license.verify(bad)
     with pytest.raises(PermissionError):
         index.entry_for(json.loads((bad / ".meta.json").read_text(encoding="utf-8")))
+
+
+def test_index_guarda_alias_de_publicacion(tmp_path) -> None:
+    src = _source(tmp_path, "cp", {"LICENSE": PSF})
+    verify_license.verify(src)
+    meta = json.loads((src / ".meta.json").read_text(encoding="utf-8"))
+    entry = index.entry_for(meta, ["https://docs.python.org/3/", "https://docs.python.org/3"])
+    assert entry["aliases"] == ["https://docs.python.org/3"]
+

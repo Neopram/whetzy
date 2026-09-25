@@ -111,3 +111,16 @@ def test_un_track_nuevo_cumple_adr42_sin_trinquete(live, urls) -> None:
     # puede arrastrar.
     problems = qd.check({"track99": live["track12"]}, {}, urls)
     assert any("sin fuente en content/sources/index.json" in p for p in problems)
+
+
+def test_los_alias_del_indice_cuentan_como_fuente(tmp_path, live) -> None:
+    idx = tmp_path / "index.json"
+    idx.write_text(
+        '[{"url": "https://github.com/python/cpython", "aliases": ["https://docs.python.org/3"]}]',
+        encoding="utf-8",
+    )
+    urls = qd.indexed_urls(idx)
+    q = {"source": "PSF: https://docs.python.org/3/tutorial/controlflow.html"}
+    assert qd._source_indexed(q, urls)
+    assert not qd._source_indexed({"source": "https://docs.python.org/es/3/"}, urls)
+
