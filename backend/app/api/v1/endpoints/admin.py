@@ -1068,3 +1068,49 @@ async def get_deploy_info() -> dict[str, Any]:
         "app_start_time": start_time,
         "python_version": os.sys.version,
     }
+
+
+# ── Promo code batch generation (29.4) ──────────────────────────────────────
+
+@router.post("/promo/batch", dependencies=[Depends(require_admin)])
+async def generate_promo_batch(
+    code_type: str = Query(pattern="^(onboarding|campaign|reactivation|referral_bonus|instructor)$"),
+    credits: int = Query(ge=1, le=10_000),
+    count: int = Query(ge=1, le=1000),
+    max_uses: int | None = Query(default=1, ge=1),
+    language: str | None = Query(default=None, pattern="^(es|en)$"),
+    campaign_id: str | None = Query(default=None),
+    expires_days: int | None = Query(default=None, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_admin),
+) -> dict[str, Any]:
+    from app.services.economy import PromoCodeService
+
+    expires_at = (
+        datetime.now(UTC) + timedelta(days=expires_days)
+        if expires_days
+        else None
+    )
+    codes = await PromoCodeService.generate_batch(
+        db,
+        code_type=code_type,
+        credits=credits,
+        count=count,
+        max_uses=max_uses,
+        expires_at=expires_at,
+        language=language,
+        campaign_id=campaign_id,
+        created_by=user.email,
+    )
+    await db.commit()
+    csv_lines = ["code,type,credits,max_uses,language,expires_at"]
+    for c in codes:
+        csv_lines.append(
+            f"{c.code},{c.code_type},{c.credits},{c.max_uses or ''},"
+            f"{c.language or ''},{c.expires_at.isoformat() if c.expires_at else ''}"
+        )
+    return {
+        "count": len(codes),
+        "csv": "\n".join(csv_lines),
+        "codes": [c.code for c in codes],
+    }

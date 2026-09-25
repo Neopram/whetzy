@@ -15,7 +15,12 @@ from app.models.economy import (
     PromoCodeRedemption,
     Referral,
 )
-from app.services.economy import CreditsService, PromoCodeService, ReferralService
+from app.services.economy import (
+    CreditsService,
+    PromoCodeService,
+    ReferralService,
+    _SAFE_ALPHABET,
+)
 
 
 @pytest.mark.asyncio
@@ -480,3 +485,51 @@ async def test_nonzero_check_constraint(db_session: AsyncSession):
     with pytest.raises(IntegrityError):
         await db_session.flush()
     await db_session.rollback()
+
+
+# ── 29.4: Batch generation and safe alphabet ────────────────────────────────
+
+def test_safe_alphabet_excludes_ambiguous_chars():
+    for ch in "0OIL1":
+        assert ch not in _SAFE_ALPHABET
+
+
+def test_generated_code_uses_safe_alphabet():
+    for _ in range(100):
+        code = PromoCodeService._generate_code()
+        assert len(code) == 8
+        for ch in code:
+            assert ch in _SAFE_ALPHABET
+
+
+@pytest.mark.asyncio
+async def test_generate_batch_creates_codes(db_session: AsyncSession):
+    codes = await PromoCodeService.generate_batch(
+        db_session,
+        code_type="campaign",
+        credits=50,
+        count=5,
+        max_uses=10,
+        language="es",
+        campaign_id="test-batch",
+        created_by="test@whetzy.test",
+    )
+    assert len(codes) == 5
+    seen = set()
+    for c in codes:
+        assert c.code_type == "campaign"
+        assert c.credits == 50
+        assert c.max_uses == 10
+        assert c.language == "es"
+        assert c.campaign_id == "test-batch"
+        assert c.code not in seen
+        seen.add(c.code)
+
+
+@pytest.mark.asyncio
+async def test_generate_batch_per_type(db_session: AsyncSession):
+    for code_type in ("onboarding", "campaign", "reactivation", "referral_bonus", "instructor"):
+        codes = await PromoCodeService.generate_batch(
+            db_session, code_type=code_type, credits=10, count=1, created_by="test",
+        )
+        assert codes[0].code_type == code_type

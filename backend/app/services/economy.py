@@ -1,10 +1,14 @@
 """Economy services: credits, referrals, promo codes."""
 
+import secrets
 import uuid
 from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+# Alphabet without ambiguous chars: 0, O, 1, I, L removed.
+_SAFE_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"
 
 from app.models.economy import (
     CreditLedger,
@@ -270,6 +274,41 @@ class ReferralService:
 
 class PromoCodeService:
     """Service for promo code management."""
+
+    @staticmethod
+    def _generate_code(length: int = 8) -> str:
+        return "".join(secrets.choice(_SAFE_ALPHABET) for _ in range(length))
+
+    @staticmethod
+    async def generate_batch(
+        db: AsyncSession,
+        *,
+        code_type: str,
+        credits: int,
+        count: int,
+        max_uses: int | None = None,
+        expires_at: datetime | None = None,
+        language: str | None = None,
+        campaign_id: str | None = None,
+        created_by: str = "admin",
+    ) -> list[PromoCode]:
+        codes: list[PromoCode] = []
+        for _ in range(count):
+            code = PromoCodeService._generate_code()
+            promo = PromoCode(
+                code=code,
+                code_type=code_type,
+                credits=credits,
+                max_uses=max_uses,
+                language=language,
+                expires_at=expires_at,
+                campaign_id=campaign_id,
+                created_by=created_by,
+            )
+            db.add(promo)
+            codes.append(promo)
+        await db.flush()
+        return codes
 
     @staticmethod
     async def redeem_code(

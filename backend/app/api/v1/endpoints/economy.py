@@ -5,15 +5,20 @@ import uuid
 from dataclasses import asdict
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
+from app.core.rate_limiter import InMemoryRateLimiter
 from app.core.security import get_current_user
 from app.models.user import User
 from app.services import streak_shop
 from app.services.economy import CreditsService, PromoCodeService, ReferralService
+
+_promo_limiter = InMemoryRateLimiter()
+
+_NATIVE_PLATFORMS = {"ios", "android"}
 
 router = APIRouter(tags=["economy"])
 
@@ -92,13 +97,26 @@ async def get_referral_code(
 @router.post("/promo/redeem", response_model=PromoCodeRedeemResponse)
 async def redeem_promo_code(
     request: PromoCodeRedeemRequest,
+    http_request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> PromoCodeRedeemResponse:
-    """Redeem a promo code."""
-    # Only web clients can redeem codes
-    # Check platform header (for 29.4 anti-fraud)
-    
+    """Redeem a promo code (web only — native clients rejected)."""
+    platform = (http_request.headers.get("X-Platform") or "").lower()
+    if platform in _NATIVE_PLATFORMS:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Promo codes can only be redeemed from the web app",
+        )
+
+    if not await _promo_limiter.is_allowed(
+        f"promo:{current_user.id}", limit=5, window_seconds=600
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many redemption attempts. Try again in a few minutes.",
+        )
+
     credits = await PromoCodeService.redeem_code(db, current_user.id, request.code)
     if credits is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired code")

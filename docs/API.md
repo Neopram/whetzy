@@ -219,7 +219,7 @@ se guarda en ninguna columna.
 GET  /economy/prices            → {credit_value_usd, grifos[], sumideros[]} — público
 GET  /economy/balance           → {balance, currency, expires_in_days} 🔒
 GET  /economy/referral/code     → {code, share_url} 🔒 — lo crea si no existe
-POST /economy/promo/redeem      → {credits, balance, message} 🔒
+POST /economy/promo/redeem      → {credits, balance, message} 🔒 — solo web (X-Platform ios/android → 403); rate limit 5/10 min por usuario
 POST /economy/referral/activate → {activated, referrer_id} 🔒
 GET  /economy/streak-freeze     → {price, balance, held, max_held, purchases_this_week, max_per_week, can_buy, blocked_by} 🔒 — comodín de racha (35.3)
 POST /economy/streak-freeze     {request_id: uuid} → mismo cuerpo + {replayed} 🔒 — compra con créditos; 409 `insufficient_credits` · `max_held` · `weekly_limit`; el mismo `request_id` nunca cobra dos veces
@@ -291,6 +291,7 @@ POST /admin/email/test                   → {sent, provider, to} 🔒 owner —
 GET  /admin/economy/credits              → credit allocation summary
 GET  /admin/economy/k-factor             → K-factor statistics
 GET  /admin/economy/referrals            → referral program analytics
+POST /admin/promo/batch ?code_type&credits&count&max_uses&language&campaign_id&expires_days → {count, codes[], csv} — genera lote de códigos promocionales; tipos: onboarding|campaign|reactivation|referral_bonus|instructor; alfabeto seguro sin 0OIL1
 ```
 
 ### GDPR & user management
