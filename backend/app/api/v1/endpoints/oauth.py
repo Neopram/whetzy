@@ -19,7 +19,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -77,12 +77,13 @@ def _callback_uri(provider: str) -> str:
 
 
 @router.get("/providers")
-async def oauth_providers() -> dict[str, list[str]]:
+async def oauth_providers(response: Response) -> dict[str, list[str]]:
     """Proveedores con credenciales configuradas en este servidor.
 
     El frontend pinta solo los botones que salen aquí: un «Continuar con
     Google» que responde 503 al pulsarlo es peor que ningún botón.
     """
+    response.headers["Cache-Control"] = "public, max-age=3600"
     return {"providers": [name for name, cfg in _PROVIDERS.items() if cfg["client_id"]()]}
 
 

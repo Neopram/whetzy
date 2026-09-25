@@ -45,6 +45,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     from app.ml.registry import registry
     from app.services import email as email_svc
     from app.services.ai import rag
+    from app.services.job_worker import job_worker_loop
 
     # Si el correo no sale, que se sepa al arrancar y no cuando alguien pierda
     # su cuenta. En produccion es un error, no un aviso (ledger H.30).
@@ -64,6 +65,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("RAG: background index build scheduled")
     asyncio.create_task(registry.load())
     logger.info("DKT registry: background model load scheduled")
+    asyncio.create_task(job_worker_loop(AsyncSessionLocal))
+    logger.info("Job worker: background poll loop started")
 
     # Schedule monthly payouts (15th of each month at 00:00 UTC)
     _schedule_monthly_payouts(AsyncSessionLocal)

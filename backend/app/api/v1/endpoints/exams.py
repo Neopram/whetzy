@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from datetime import UTC, datetime
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -404,6 +404,7 @@ async def _certificate_public(db: AsyncSession, certificate: Certificate) -> Cer
 @router.get("/certificates/{code}", response_model=CertificatePublic)
 async def verify_certificate(
     code: str,
+    response: Response,
     db: AsyncSession = Depends(get_db),
 ) -> CertificatePublic:
     """Public verification. **No authentication on purpose.**
@@ -423,6 +424,7 @@ async def verify_certificate(
     certificate = (await db.scalars(select(Certificate).where(Certificate.code == code))).first()
     if certificate is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "certificate not found")
+    response.headers["Cache-Control"] = "public, max-age=3600"
     return await _certificate_public(db, certificate)
 
 
