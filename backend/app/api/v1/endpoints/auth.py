@@ -61,6 +61,12 @@ class ChangePasswordRequest(BaseModel):
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> Token:
+    if not payload.age_confirmed:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Age confirmation is required (must be 13 or older)",
+        )
+
     existing = await db.execute(
         select(User).where(or_(User.email == payload.email, User.username == payload.username))
     )
@@ -77,6 +83,7 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> T
         display_name=payload.display_name,
         language=payload.language,
         email_verified=False,
+        age_confirmed=True,
     )
     db.add(user)
     await db.commit()

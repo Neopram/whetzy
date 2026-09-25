@@ -27,6 +27,30 @@ def test_precio_de_la_certificacion_coincide() -> None:
     assert float(_const("CERTIFICATION_PRICE_USD")) == settings.CERTIFICATION_PRICE_USD
 
 
+def test_precios_adr41_unica_fuente() -> None:
+    """Every $X.XX in the frontend must match ADR-41 prices (38.1)."""
+    from app.core.prices import CERT_EXAM_USD, CREATOR_MONTHLY_USD, PRO_MAX_MONTHLY_USD, PRO_MONTHLY_USD
+
+    allowed = {str(p) for p in [PRO_MONTHLY_USD, PRO_MAX_MONTHLY_USD, CREATOR_MONTHLY_USD, CERT_EXAM_USD]}
+    allowed |= {"0.00", "0.99"}  # edge values that are not plan prices
+
+    src = Path(__file__).resolve().parents[2] / "frontend" / "src"
+    price_re = re.compile(r"\$(\d+\.\d{2})")
+
+    violations = []
+    for f in src.rglob("*"):
+        if f.suffix not in {".ts", ".tsx", ".json"} or ".test." in f.name or "node_modules" in str(f):
+            continue
+        for n, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
+            if line.lstrip().startswith("//") or line.lstrip().startswith("*"):
+                continue
+            for m in price_re.finditer(line):
+                val = m.group(1)
+                if val not in allowed:
+                    violations.append(f"{f.relative_to(src)}:{n} → ${val}")
+    assert violations == [], f"Prices not from ADR-41: {violations}"
+
+
 FORBIDDEN = re.compile(r"certificaci[oó]n oficial|official certification", re.IGNORECASE)
 ROOT = Path(__file__).resolve().parents[2]
 

@@ -159,6 +159,7 @@ export interface RegisterPayload {
   display_name: string;
   password: string;
   language: 'es' | 'en';
+  age_confirmed: boolean;
 }
 
 export interface UpdateMePayload {
