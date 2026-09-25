@@ -29,7 +29,12 @@ def test_precio_de_la_certificacion_coincide() -> None:
 
 def test_precios_adr41_unica_fuente() -> None:
     """Every $X.XX in the frontend must match ADR-41 prices (38.1)."""
-    from app.core.prices import CERT_EXAM_USD, CREATOR_MONTHLY_USD, PRO_MAX_MONTHLY_USD, PRO_MONTHLY_USD
+    from app.core.prices import (
+        CERT_EXAM_USD,
+        CREATOR_MONTHLY_USD,
+        PRO_MAX_MONTHLY_USD,
+        PRO_MONTHLY_USD,
+    )
 
     allowed = {str(p) for p in [PRO_MONTHLY_USD, PRO_MAX_MONTHLY_USD, CREATOR_MONTHLY_USD, CERT_EXAM_USD]}
     allowed |= {"0.00", "0.99"}  # edge values that are not plan prices
