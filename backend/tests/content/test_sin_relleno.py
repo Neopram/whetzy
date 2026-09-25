@@ -32,9 +32,12 @@ def _es_relleno(q: dict) -> bool:
     return bool(
         cqb.PLACEHOLDER_STEM.match(q.get("question_es") or "")
         or cqb.PLACEHOLDER_STEM.match(q.get("question_en") or "")
-        or [str(o).strip() for o in (q.get("options_es") or [])] in cqb.PLACEHOLDER_OPTIONS
-        or (q.get("explanation_es") or "").strip().lower() in cqb.PLACEHOLDER_EXPLANATIONS
-        or (q.get("explanation_en") or "").strip().lower() in cqb.PLACEHOLDER_EXPLANATIONS
+        or [str(o).strip() for o in (q.get("options_es") or [])]
+        in cqb.PLACEHOLDER_OPTIONS
+        or (q.get("explanation_es") or "").strip().lower()
+        in cqb.PLACEHOLDER_EXPLANATIONS
+        or (q.get("explanation_en") or "").strip().lower()
+        in cqb.PLACEHOLDER_EXPLANATIONS
     )
 
 
@@ -49,9 +52,18 @@ def _es_relleno(q: dict) -> bool:
     ],
 )
 def test_cada_senal_de_relleno_se_detecta_sola(campo: str, valor: object) -> None:
-    q = {"question_es": "¿Qué garantiza la integridad?", "question_en": "What does integrity ensure?",
-         "options_es": ["Que nadie altere los datos", "Otra cosa", "Nada", "Todo lo anterior"],
-         "explanation_es": "Porque sí.", "explanation_en": "Because."}
+    q = {
+        "question_es": "¿Qué garantiza la integridad?",
+        "question_en": "What does integrity ensure?",
+        "options_es": [
+            "Que nadie altere los datos",
+            "Otra cosa",
+            "Nada",
+            "Todo lo anterior",
+        ],
+        "explanation_es": "Porque sí.",
+        "explanation_en": "Because.",
+    }
     assert not _es_relleno(q)
     q[campo] = valor
     assert _es_relleno(q)
@@ -59,14 +71,24 @@ def test_cada_senal_de_relleno_se_detecta_sola(campo: str, valor: object) -> Non
 
 def test_opciones_numericas_no_son_relleno() -> None:
     # track01 pregunta «¿Qué imprime?» con opciones 1-4: legítimo.
-    assert not _es_relleno({"question_es": "¿Qué imprime el siguiente código?", "options_es": ["2", "3", "1", "4"]})
+    assert not _es_relleno(
+        {
+            "question_es": "¿Qué imprime el siguiente código?",
+            "options_es": ["2", "3", "1", "4"],
+        }
+    )
+
+
+def _preguntas(p: Path) -> list[dict]:
+    data = json.loads(p.read_text(encoding="utf-8"))
+    return data if isinstance(data, list) else data.get("questions", [])
 
 
 def test_el_banco_no_tiene_relleno() -> None:
     relleno = [
         f"{p.relative_to(ROOT).as_posix()} {q.get('id')}"
         for p in sorted((ROOT / "content" / "questions").rglob("*.json"))
-        for q in (lambda d: d if isinstance(d, list) else d.get("questions", []))(json.loads(p.read_text(encoding="utf-8")))
+        for q in _preguntas(p)
         if _es_relleno(q)
     ]
     assert relleno == [], f"{len(relleno)} preguntas de relleno: {relleno[:5]}"
