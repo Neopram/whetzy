@@ -27,7 +27,15 @@ First time per machine requires `npx wrangler login` (opens browser OAuth). The 
 
 To monitor deployment:
 1. Check Railway dashboard for build status
-2. Verify: `curl https://api-production-9751.up.railway.app/health`
+2. Run the post-deploy smoke tests:
+   ```bash
+   ./scripts/smoke_post_deploy.sh
+   # With QA login (optional):
+   QA_EMAIL=qa@example.com QA_PASSWORD=secret ./scripts/smoke_post_deploy.sh
+   ```
+   The script checks `/health/ready`, OpenAPI, auth, tracks, latency, and
+   optionally logs in with a QA account to verify `/quiz/start` end-to-end.
+   A deploy is not done until it prints `RESULT: PASS`.
 
 ### Recovering from "Application not found" (incident H.1)
 
