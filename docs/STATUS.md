@@ -1047,3 +1047,10 @@ después), no por primera vez en el PR #7.
 **Otra sesión en paralelo:** `clever-edison` (Fable 5.1) subió `115a695` a las 00:15 UTC con otro arreglo de `q060304ex011`. Se integró en `4d36b9a` conservando la versión de `master`. Estaba parada esperando un permiso del dueño. El cerrojo `.session.lock` es local a cada contenedor y **no** evita dos sesiones en contenedores distintos.
 
 **Sigue:** 35.4 (descarga por área), 35.5 (generador), verificador de 35.2/35.3, y la cola del dueño: login de dueño, H.38 y fusionar el PR #8.
+
+**Añadido al cerrar la tanda (misma madrugada):**
+- **35.2 y 35.3 DONE** tras verificador. En 35.3 encontró un MIT con «All rights reserved» que salía rechazado; corregido.
+- **35.4, área Python:** cpython `Doc/` (PSF-2.0, alias `docs.python.org/3`), exercism/python y TheAlgorithms/Python indexados.
+- `python-docs-es` rechazada: no tiene LICENSE, y su README cede a la PSF, no a terceros. Queda para revisión manual.
+- Preguntas sin fuente indexada: **6.305 → 5.616**. track09 y track16 quedan a 0, fijados por el trinquete.
+- `check_content_sources.py` reventaba con ficheros-lista (bug preexistente); arreglado.
