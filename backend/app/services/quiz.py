@@ -502,10 +502,13 @@ async def submit_answer(
 
     state = await _get_or_create_skill_state(db, user.id, question.skill_id)
 
+    p_known_before = state.p_known
+    elo_before = state.elo_rating
+
     # --- Elo: two-sided update between user's per-skill ability and item difficulty ---
     user_entity = EloEntity(rating=state.elo_rating, interactions=state.attempts)
     item_entity = EloEntity(rating=question.elo_rating, interactions=30)
-    user_entity, item_entity, _expected = elo.update(user_entity, item_entity, correct)
+    user_entity, item_entity, expected_p = elo.update(user_entity, item_entity, correct)
     state.elo_rating = user_entity.rating
     if not declared_unknown:
         question.elo_rating = item_entity.rating
@@ -554,6 +557,11 @@ async def submit_answer(
         question_version=question.content_version,
         declared_unknown=declared_unknown,
         event_id=req.event_id,
+        p_known_before=p_known_before,
+        p_known_after=state.p_known,
+        elo_before=elo_before,
+        elo_after=state.elo_rating,
+        expected_p=expected_p,
     )
     db.add(response)
     await db.flush()
