@@ -41,6 +41,8 @@ export function useOfflineSync(): OfflineSyncState {
           item.questionId,
           item.selectedIndex,
           item.responseTimeMs,
+          false,
+          item.id,
         );
       } catch {
         // Best-effort: if the session expired, we can't recover. Skip it.

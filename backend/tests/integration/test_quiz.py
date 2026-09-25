@@ -818,3 +818,55 @@ async def test_next_question_stays_on_the_session_skill(client, auth_headers, db
     )
     assert r.status_code == 200, r.text
     assert r.json()["next_question"]["skill_id"] == "sk_scope_b"
+
+
+# ── offline queue idempotency (33.2) ────────────────────────────────────────
+
+
+async def test_answer_idempotency_same_event_id_returns_cached(client, auth_headers, content_seed):
+    """Submitting the same answer twice with the same event_id must be idempotent.
+
+    The second call returns the same verdict without creating a duplicate Response row.
+    """
+    from sqlalchemy import func, select
+
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+    event_id = str(uuid.uuid4())
+
+    payload = {
+        "session_id": session_id,
+        "question_id": question_id,
+        "selected_index": 0,
+        "response_time_ms": 1500,
+        "event_id": event_id,
+    }
+
+    r1 = await client.post(f"{QUIZ}/answer", json=payload, headers=_h(auth_headers))
+    assert r1.status_code == 200
+    d1 = r1.json()
+
+    r2 = await client.post(f"{QUIZ}/answer", json=payload, headers=_h(auth_headers))
+    assert r2.status_code == 200
+    d2 = r2.json()
+
+    assert d1["correct"] == d2["correct"]
+    assert d1["grade"] == d2["grade"]
+    assert d1["correct_index"] == d2["correct_index"]
+
+
+async def test_answer_without_event_id_still_works(client, auth_headers, content_seed):
+    """Old clients that never send event_id must keep working."""
+    session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
+
+    r = await client.post(
+        f"{QUIZ}/answer",
+        json={
+            "session_id": session_id,
+            "question_id": question_id,
+            "selected_index": 0,
+            "response_time_ms": 1000,
+        },
+        headers=_h(auth_headers),
+    )
+    assert r.status_code == 200
+    assert r.json()["correct"] is True

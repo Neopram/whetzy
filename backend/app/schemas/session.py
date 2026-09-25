@@ -62,6 +62,8 @@ class QuizAnswerRequest(BaseModel):
     # produced by the client's Pyodide run.  Server validates against the stored
     # correct_answer to prevent the client from falsifying correctness.
     exec_output: str | None = None
+    # Client-generated UUID for offline queue idempotency (33.2).
+    event_id: str | None = None
 
 
 class QuizAnswerResponse(BaseModel):

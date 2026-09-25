@@ -430,6 +430,31 @@ async def _current_combo(db: AsyncSession, session_id: uuid.UUID) -> int:
 async def submit_answer(
     db: AsyncSession, user: User, req: QuizAnswerRequest
 ) -> QuizAnswerResponse:
+    # Idempotency: if the client resends an answer with the same event_id,
+    # return the cached result instead of double-counting (33.2).
+    if req.event_id:
+        dup = (
+            await db.execute(
+                select(Response).where(Response.event_id == req.event_id)
+            )
+        ).scalar_one_or_none()
+        if dup is not None:
+            q = (await db.execute(select(Question).where(Question.id == dup.question_id))).scalar_one()
+            state = await _get_or_create_skill_state(db, user.id, q.skill_id)
+            return QuizAnswerResponse(
+                correct=dup.correct,
+                correct_index=q.correct_index,
+                explanation_es=q.explanation_es or "",
+                explanation_en=q.explanation_en or "",
+                source=q.source,
+                grade=dup.grade,
+                xp_earned=0,
+                combo=0,
+                user_elo=state.elo_rating,
+                skill_mastery={q.skill_id: state.p_known},
+                session_accuracy=0.0,
+            )
+
     session_result = await db.execute(
         select(StudySession).where(StudySession.id == req.session_id, StudySession.user_id == user.id)
     )
@@ -528,6 +553,7 @@ async def submit_answer(
         response_time_ms=req.response_time_ms,
         question_version=question.content_version,
         declared_unknown=declared_unknown,
+        event_id=req.event_id,
     )
     db.add(response)
     await db.flush()

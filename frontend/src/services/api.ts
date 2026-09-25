@@ -314,6 +314,7 @@ export const quiz = {
     selectedIndex: number | null,
     responseTimeMs: number,
     declaredUnknown = false,
+    eventId?: string,
   ) {
     return request<QuizAnswerResponse>('/quiz/answer', {
       method: 'POST',
@@ -323,6 +324,7 @@ export const quiz = {
         selected_index: selectedIndex,
         response_time_ms: responseTimeMs,
         declared_unknown: declaredUnknown,
+        ...(eventId ? { event_id: eventId } : {}),
       }),
     });
   },

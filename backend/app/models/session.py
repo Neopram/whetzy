@@ -74,4 +74,8 @@ class Response(Base):
         Boolean, default=False, nullable=False, server_default="false"
     )
 
+    event_id: Mapped[str | None] = mapped_column(
+        String(64), nullable=True, unique=True, index=True
+    )
+
     session: Mapped[StudySession] = relationship(back_populates="responses")
