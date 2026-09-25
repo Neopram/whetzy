@@ -260,7 +260,7 @@ except Exception as e:
 
 print("\n[8] Ledger size guard (20.10)")
 _ledger_size = DOCS_STATE.stat().st_size
-_MAX_LEDGER = 262144  # 256 KB — diet pending (20.10)
+_MAX_LEDGER = 262144  # 256 KB — diet pending (20.10); target 61440
 check(
     f"AUTONOMOUS_STATE.md size: {_ledger_size:,} bytes <= {_MAX_LEDGER:,}",
     _ledger_size <= _MAX_LEDGER,

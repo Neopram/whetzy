@@ -827,8 +827,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 32.0 | **2** | Inventario: qué guarda hoy cada respuesta (p_known antes/después, Elo, S/D de FSRS, `expected_p`, tiempo) y qué falta, sin añadir PII | TODO | Tabla campo → modelo/columna con `grep` citado; lo que falta, como migración aditiva propuesta |
-| 32.1 | **2** | Curva de fiabilidad de `p_known`: 5 tramos, predicho contra acierto real posterior; script reproducible | TODO | Corre sobre datos sintéticos hoy; con datos reales (H.10) informa el error por tramo (objetivo < 0,10) |
+| 32.0 | **2** | Inventario: qué guarda hoy cada respuesta (p_known antes/después, Elo, S/D de FSRS, `expected_p`, tiempo) y qué falta, sin añadir PII | DONE | `docs/32_0_response_inventory.md`: 15 columnas en `responses` (grep-citadas por línea), 8 en `user_skill_states`; snapshots escritos en `quiz.py:518-577`; faltan `fsrs_stability_before`, `fsrs_difficulty_before`, `skill_id` — migración aditiva propuesta |
+| 32.1 | **2** | Curva de fiabilidad de `p_known`: 5 tramos, predicho contra acierto real posterior; script reproducible | DONE | `scripts/calibration_curve.py`: 5 buckets, todos < 0,10 en datos sintéticos BKT-aligned; `--db` listo para H.10 |
 | 32.2 | **3** | A/B BKT contra DKT con el framework 24.14 (asignación estable por usuario) | BLOCKED (H.10) | DKT se adopta solo si AUC ≥ 0,70, supera a BKT y no empeora D7 ni la latencia p95 |
 | 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso vencido, dificultad objetivo 0,75) y el quiz las muestra | TODO | Campo en la respuesta de `/quiz/*` + test de contrato + UI ES/EN |
 
