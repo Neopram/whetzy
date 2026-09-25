@@ -312,6 +312,7 @@ GET  /admin/metrics/users                → user engagement metrics
 GET  /admin/ops/database                 → database health & stats
 GET  /admin/ops/errors                   → recent error logs
 GET  /admin/ops/health                   → system health status
+GET  /admin/ops/tutor-usage              → per-user and per-day tutor explanation counts 🔒 admin
 ```
 
 ### Revenue

@@ -828,8 +828,6 @@ async def test_answer_idempotency_same_event_id_returns_cached(client, auth_head
 
     The second call returns the same verdict without creating a duplicate Response row.
     """
-    from sqlalchemy import func, select
-
     session_id, question_id = await _start_quiz(client, auth_headers, content_seed["skill_id"])
     event_id = str(uuid.uuid4())
 
