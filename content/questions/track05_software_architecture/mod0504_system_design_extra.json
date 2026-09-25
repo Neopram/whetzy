@@ -8,16 +8,16 @@
       "question_es": "¿Cuál es la principal limitación del escalado vertical (scale up) frente al horizontal (scale out)?",
       "question_en": "What is the main limitation of vertical scaling (scale up) compared to horizontal scaling (scale out)?",
       "options_es": [
-        "El escalado vertical requiere obligatoriamente contenedores",
-        "El escalado vertical siempre es más barato a cualquier escala",
+        "El escalado vertical exige obligatoriamente migrar antes toda la aplicación a contenedores para poder aplicarse en cualquier entorno de producción",
+        "El escalado vertical resulta siempre más económico que el horizontal, sin importar la escala alcanzada",
         "Existe un límite físico/económico en el hardware de una sola máquina, y además crea un único punto de fallo",
-        "No se puede combinar con balanceo de carga"
+        "El escalado vertical no puede combinarse nunca con un balanceador de carga delante de la máquina"
       ],
       "options_en": [
-        "Vertical scaling mandatorily requires containers",
-        "Vertical scaling is always cheaper at any scale",
+        "Vertical scaling mandatorily requires migrating the whole application to containers first, before it can be applied in any production environment",
+        "Vertical scaling always ends up cheaper than horizontal scaling, regardless of the scale reached",
         "There is a physical/economic limit on a single machine's hardware, and it also creates a single point of failure",
-        "It cannot be combined with load balancing"
+        "Vertical scaling can never be combined with a load balancer sitting in front of the machine"
       ],
       "correct_index": 2,
       "explanation_es": "Escalar verticalmente (más CPU/RAM en una sola máquina) tiene un techo físico y de coste creciente, y esa máquina sigue siendo un único punto de fallo. Escalar horizontalmente distribuye tanto la carga como el riesgo, aunque añade complejidad de coordinación.",
@@ -37,16 +37,16 @@
       "question_es": "El algoritmo de balanceo de carga \"round robin\" distribuye las peticiones:",
       "question_en": "The \"round robin\" load balancing algorithm distributes requests:",
       "options_es": [
-        "siempre al servidor con menor latencia medida en tiempo real",
+        "siempre al servidor cuya latencia medida en tiempo real resulta ser la más baja de todo el grupo de servidores disponible",
         "secuencialmente entre los servidores disponibles, uno tras otro, en un ciclo, sin considerar su carga actual",
-        "únicamente al servidor primario, usando los demás solo como respaldo pasivo",
-        "según un hash del contenido del cuerpo de la petición"
+        "únicamente al servidor primario, dejando a los demás como respaldo pasivo sin recibir tráfico nunca",
+        "según un hash calculado sobre el contenido completo del cuerpo de cada petición entrante"
       ],
       "options_en": [
-        "always to the server with the lowest real-time measured latency",
+        "always to whichever server currently has the lowest real-time measured latency across the whole group of available servers",
         "sequentially among the available servers, one after another in a cycle, without considering their current load",
-        "only to the primary server, using the others solely as passive backup",
-        "based on a hash of the request body's content"
+        "only to the primary server, leaving the others as passive backup that never receives traffic",
+        "based on a hash computed over the full body content of each incoming request"
       ],
       "correct_index": 1,
       "explanation_es": "Round robin asigna cada nueva petición al siguiente servidor de una lista de forma cíclica, de manera simple pero sin tener en cuenta la carga real de cada servidor (a diferencia de algoritmos como \"least connections\").",
@@ -92,15 +92,15 @@
       "question_en": "According to the CAP theorem, when a network partition (P) occurs between nodes, a distributed system must choose between:",
       "options_es": [
         "Consistencia (C) o Disponibilidad (A); no puede garantizar ambas simultáneamente durante la partición",
-        "Rendimiento (Performance) o Seguridad (Security)",
-        "Latencia (Latency) o Throughput",
-        "Almacenamiento (Storage) o Cómputo (Compute)"
+        "Rendimiento (Performance) o Seguridad (Security); no puede optimizar ambos durante la partición",
+        "Latencia (Latency) o Throughput; el sistema debe sacrificar uno de los dos mientras dure la partición",
+        "Almacenamiento (Storage) o Cómputo (Compute); un nodo aislado debe renunciar a uno de los dos"
       ],
       "options_en": [
         "Consistency (C) or Availability (A); it cannot guarantee both simultaneously during the partition",
-        "Performance or Security",
-        "Latency or Throughput",
-        "Storage or Compute"
+        "Performance or Security; it cannot optimize for both during the partition",
+        "Latency or Throughput; the system must sacrifice one of the two for as long as the partition lasts",
+        "Storage or Compute; an isolated node must give up one of the two"
       ],
       "correct_index": 0,
       "explanation_es": "El teorema CAP (Brewer) establece que ante una partición de red, un sistema distribuido debe sacrificar consistencia (todas las réplicas ven los mismos datos) o disponibilidad (todo nodo responde), ya que garantizar ambas simultáneamente es imposible mientras persista la partición.",
@@ -146,15 +146,15 @@
       "question_en": "When designing a large-scale URL shortener (like bit.ly), which non-functional requirement critically dominates the design?",
       "options_es": [
         "Las lecturas (redirecciones) superan ampliamente a las escrituras (creación de enlaces), por lo que el sistema debe optimizarse fuertemente para lecturas de baja latencia (caching agresivo)",
-        "El sistema debe garantizar transacciones ACID multi-tabla en cada redirección",
-        "La consistencia fuerte importa más que la disponibilidad",
-        "Es un problema principalmente de cómputo intensivo (CPU-bound)"
+        "El sistema debe garantizar de forma estricta transacciones ACID multi-tabla en cada una de las redirecciones que procesa cada enlace acortado, incluso bajo la carga más alta de producción",
+        "La consistencia fuerte entre todas las réplicas importa más que la disponibilidad del servicio",
+        "Es sobre todo un problema de cómputo intensivo que satura la CPU en cada redirección"
       ],
       "options_en": [
         "Reads (redirects) vastly outnumber writes (link creation), so the system must be heavily optimized for low-latency reads (aggressive caching)",
-        "The system must guarantee multi-table ACID transactions on every redirect",
-        "Strong consistency matters more than availability",
-        "It's mainly a CPU-bound, compute-intensive problem"
+        "The system must strictly guarantee multi-table ACID transactions on every single redirect that each shortened link processes, even under the heaviest production load",
+        "Strong consistency across every replica matters more than the service's availability",
+        "It is mainly a compute-intensive problem that saturates the CPU on every redirect"
       ],
       "correct_index": 0,
       "explanation_es": "Un acortador de URLs es extremadamente read-heavy (muchas más redirecciones que creaciones); el diseño típico prioriza baja latencia de lectura mediante caching agresivo (CDN, Redis) y una capa de escritura simple que genera claves cortas únicas.",

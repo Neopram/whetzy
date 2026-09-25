@@ -913,6 +913,22 @@ Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `
 
 **Serie 35 abierta** y **H.35** (precio anual, tarifa regional, corte gratis/Pro) para el dueño.
 
+## 2026-09-24 — El dueño pide decidir por él y control total (sesión interactiva, rama `claude/clever-edison-4bzr2v`; Opus 5.5 y luego Fable 5.1 elegido por el dueño)
+
+**Pregunta del dueño:** cuántas oleadas quedan, cómo queda categorizada la app al terminar, qué está bloqueado y qué planes de la documentación no estaban en el ledger. Después: «decide todo eso como si fuera el emprendedor», «cubrir todos los tracks de la industria con al menos 50 cursos por track», «descarga toda la data legal y open source, verifícala y límpiala», «lo fusiono manualmente».
+
+**Lo que se encontró (tres agentes de barrido + verificación propia de cada cita usada):**
+- El ledger se contradecía a sí mismo: §1 decía 24 «17 commits», 28 «7/8», 29 «4/13», 26 «2/9» mientras las filas de §2 decían BLOCKED. 16.17, 17.1x y 25x llevaban resueltas sin marcar (`vite.config.ts:374,391` → `127.0.0.1:8000`; `check_docs.py` [2]-[4] en verde). 7.6 (IAP) no tenía fila y `store/app-store-review-checklist.md:95` la exigía.
+- 21 planes en la documentación sin fila (KPIs de `DISTRIBUCION.md` §10, pilotos B2B, Coursera/Udemy, monitoreo trimestral apuntando a una fila inexistente, reclutamiento de instructores, arranque en frío de Railway, fase 3 del modelo de amenazas, DMCA/DPIA, edad mínima, blog, newsletter, afiliados…). 4 precios distintos en 4 documentos. `EXECUTION_PLAN_25-29.md` decía «ALL GATES OPEN» con H.29 abierta. `CATALOGO_MAESTRO.md` §12.1 sumaba 49 donde decía 44 y proyectaba «~79/~85» sin aritmética. Ficha de la App Store con «11 tracks, 281 habilidades» y «calibrados sobre datos reales» sin usuarios.
+
+**Decisiones (ADR-41…44, todas aceptadas por el dueño en la conversación):** rama + PR, `master` solo lo fusiona el dueño (ADR-41); catálogo total ≥ 50 cursos/track sobre corpus abierto descargado, verificado y limpiado fuera del repo, con la guarda de diversidad 35.0 antes que cualquier pregunta (ADR-42); valores por defecto de la cola humana y una sola hipótesis de precios sin publicar (ADR-43); planes paralelos al archivo (ADR-44).
+
+**Cambios:** ledger 179 → 210 filas, ejecutables 75 → 133, BLOCKED 67 → 33; series 35 (14 filas) y 36 (6) nuevas; 17.14, 19.11, 21.9, 22.14-22.16, 26.9-26.10, 27.10, 28.8-28.9 nuevas; H.35-H.37; `CATALOGO_MAESTRO.md` §2.0 (14 tracks) y §12 corregido; `ORCHESTRATOR.md` contrato y visión; `ARCHITECTURE.md` riesgos con IDs reales; ficha iOS con cifras de `check_docs.py`; 10 documentos a `archive/`; 4 HTML duplicados (U+F00D en el nombre) borrados; `corpus/` en `.gitignore`; `docs/PROMPT_CONTROL_TOTAL.md`.
+
+**Verificación:** `python scripts/ledger.py check` OK (210 filas, 36 bloqueos humanos, 10 invariantes). `check_docs.py`: [2]-[4], [6], [7] en verde; [1] y [5] fallan **por entorno** (sin `alembic` ni backend importable en el contenedor), igual que antes de tocar nada.
+
+**No hecho:** ningún código; ninguna pregunta nueva; ningún push a `master` (ADR-41). La serie 24 sigue sin recuento fila por fila (queda como PARCIAL «maqueta sin API»).
+
 ## 2026-09-24 (noche): precios del dueño, series 35.2–35.5 y CI de master en verde
 
 **CI de master:**
@@ -969,3 +985,129 @@ Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `
 ## 2026-09-25 — Colisión con `master` resuelta en el PR #7
 
 Mientras este PR estaba abierto, `master` recibió 12 commits de otra sesión con **su propia serie 35** (competencia verificada → producto), **su ADR-41** (precios del dueño: Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $, 80/20), **su H.35** y otra corrección de `q060304ex011` (`0.81`). Resolución: `master` manda. Lo de este PR se renumeró — ADR-41…44 → **ADR-45…48**, series 35/36 → **37/38**, H.35–37 → **H.38–40**, teardown §12 → **§13** — y la fila de precios de ADR-47 ya no propone ninguna hipótesis: remite a ADR-41. Las dos entradas anteriores de esta sesión se conservan con los números nuevos. Lección para ADR-48: dos sesiones sobre el mismo ledger sin cerrojo (`PROTOCOLO_VERIFICACION.md` §3) producen exactamente esto.
+
+
+## 2026-09-25 — Integración de las dos sesiones del 2026-09-24 y FASE 1 (concordancia) del prompt de control total (rama `claude/trusting-franklin-2wwmmr`)
+
+**Punto de partida medido:**
+- `claude/clever-edison-4bzr2v` (ADR-41…44, commit `bed6bdd` a las 22:20 UTC) estaba **sin fusionar** (`git branch -r --contains bed6bdd` sin `origin/master`).
+- `master` traía 12 commits de la otra sesión del mismo día, con precios del dueño escritos como «ADR-41» a las 23:19 UTC.
+- Choques: ADR-41, serie 35, H.35 y teardown §12, cada uno con dos significados.
+
+**Integración (merge `9854f2e`, sin reescribir ninguna de las dos ramas):**
+- Precios del dueño → **ADR-45**. Es posterior a ADR-43 y enmienda su fila «Precios»: ADR-43 vale «mientras él no lo vete».
+- Serie «competencia → producto» → **37**. Bloqueo de precio anual/regional → **H.38**. Teardown → **§13**.
+- Comentarios de código renumerados: 33 ficheros, solo comentarios.
+- Desde esta entrada, **ninguna sesión hace push a `master`** (ADR-41). Los pushes directos del 2026-09-24 los había autorizado el dueño en la conversación; se acaban aquí.
+
+**FASE 1, concordancia (commit `docs(concordancia)`):**
+- **a)** `14.99` ya no es residuo (ADR-45). Dos análisis viejos con «$14.99 < todos» (falso) pasan a `archive/`, y MARKETPLACE deja de decir 70/30.
+- **b)** premisa griega marcada como suspendida en 21.1, 21.2, H.19 y el catálogo.
+- **c)** «fase 10» → serie 28.
+- **d)** 7.6 → 17.14 en 7 ficheros. El «sin fila viva» de h21 se corrige.
+- **e/f)** 27 tracks y 2.700 cursos: ADR-42, o «histórico» en los recálculos.
+- **g)** paleta Obsidian.
+- **h)** frontend conectado a Git.
+- **i)** se crea `.github/dependabot.yml`, y supply-chain deja de afirmar que el CI bloquea despliegues.
+- **j/k)** capacity, postmortem, ab-framework e i18n-audit marcados como ejemplo o histórico.
+- **l)** «Fases 1–16 todas DONE 100 %» era falso: 10 filas vivas no DONE (`ledger.parse`).
+- **m)** cada «push a master» dice que fusiona el dueño; la auditoría externa lleva nota al pie.
+- **n)** nada que cambiar.
+- **o)** serie 24 fila a fila:
+  - `B2BPanel` no existe, así que 24.9 pasa a TODO;
+  - 17 de 47 `.module.css` tienen colores literales y `identidad.md` no existe (24.1);
+  - Home tiene 6 llamadas reales a la API (24.4);
+  - perfil público con «Simulated fetch» (24.8).
+- **p)** 28.x y 29.x contra su criterio:
+  - migraciones 28 y 29 bajadas y subidas en Postgres local sin error;
+  - `instructor_quality_gate.py` y `run_payouts.py` no existen;
+  - no hay aprobación de cursos;
+  - economía con 17 tests y 72 % de cobertura (el criterio pide ≥ 20 y ≥ 90 %).
+
+**Lo que no se verificó:**
+- el CI de GitHub del merge;
+- si Dependabot llega a ejecutarse (facturación de Actions, H.13/H.17);
+- el verificador adversario de las filas 24/28/29 recalificadas: no se marcó ninguna DONE, solo se describió su estado.
+
+**Añadido al integrar `115a695` (la otra sesión, 00:15 UTC):** arregló la misma pregunta
+`q060304ex011` con otros datos (0,805). Se conserva la versión de `master` (`77b9127`,
+0,81, datos `[0.80, 0.82, 0.78, 0.84]`): ya estaba en producción y el CI de `master` salió
+verde con ella (runs 492 y 493). Matiz a su entrada: el CI de GitHub **ya había corrido** en
+los pushes a `master` del 2026-09-24 (runs 488–493, en rojo hasta `77b9127` y en verde
+después), no por primera vez en el PR #7.
+
+
+## 2026-09-25 (madrugada) — FASE 2 del prompt de control total: serie 30, 34 PRI 0 y 35.0–35.3 (rama `claude/trusting-franklin-2wwmmr`, PR https://github.com/Neopram/whetzy/pull/8)
+
+**DONE, con verificador adversario en worktree aislado:**
+- **30.1:** guarda [7] de `check_legal_facts.py` contra testimonios y cifras inventados en landing e i18n. El verificador encontró que «1.2 M learners» con espacio la evadía; ahora se compara sin espacios ni puntuación.
+- **34.0:** `BASELINE = {}`, mutado → rojo.
+- **34.10:** e2e `success` en CI de GitHub en los runs 36065947667, 36068853358 y 36069832138, leídos por la API.
+- **35.0:** guarda de diversidad **con trinquete**.
+  - Medido antes de fijar umbrales:
+    - 6 tracks vivos pasan del 40 % de opciones de una palabra;
+    - track13 tiene 87,9 % de enunciados distintos;
+    - el 62 % del banco no lleva URL de fuente.
+  - Resultado: track24/25 → rojo, track12 → verde.
+  - Hallazgos a filas nuevas: 35.14 y 35.15.
+
+**PARCIAL con evidencia:**
+- **30.0 y 30.8:** producción medida solo en lectura.
+  - Login con credenciales falsas → 401 del backend con CORS; antes daba 405.
+  - `/glossary/track12` → 36 términos.
+  - El 200 del login real lo confirma el dueño: no se crea cuenta de QA en producción.
+- **35.2:** curso = módulo; `CATALOG_COURSES = 92`, mutado → rojo.
+- **35.3:** pipeline `scripts/corpus/`, dry-run con TheAlgorithms/Python (MIT), `cpython` `Doc/tutorial` (PSF-2.0) y Gutenberg #1661 (PD-US).
+  - `robots.txt` sin licencia → rechazada con motivo.
+  - Corregidos dos falsos negativos al verlos: la PSF menciona «GPL-compatible» y Gutenberg declara la licencia en el pie.
+- **35.1:** inventario en `CATALOGO_MAESTRO` §2.0.1, con 5 fuentes descargadas por la sesión (URL y hora). Propuestos PHP, Ruby y R (`track48`–`track50`).
+
+**Errores de esta tanda, contados:**
+- `a021e92` subió el test del pipeline **sin el pipeline**: la regla `corpus/` de `.gitignore` ignoraba también `scripts/corpus/`, y el hook pasó porque prueba el árbol de trabajo (anotado en 37.9). Arreglado en `cbd3675` y comprobado en un worktree limpio.
+- El primer inventario de 35.1 (subagente) traía resúmenes, no páginas: no se usó sin re-descargar.
+
+**Otra sesión en paralelo:** `clever-edison` (Fable 5.1) subió `115a695` a las 00:15 UTC con otro arreglo de `q060304ex011`. Se integró en `4d36b9a` conservando la versión de `master`. Estaba parada esperando un permiso del dueño. El cerrojo `.session.lock` es local a cada contenedor y **no** evita dos sesiones en contenedores distintos.
+
+**Sigue:** 35.4 (descarga por área), 35.5 (generador), verificador de 35.2/35.3, y la cola del dueño: login de dueño, H.38 y fusionar el PR #8.
+
+**Añadido al cerrar la tanda (misma madrugada):**
+- **35.2 y 35.3 DONE** tras verificador. En 35.3 encontró un MIT con «All rights reserved» que salía rechazado; corregido.
+- **35.4, área Python:** cpython `Doc/` (PSF-2.0, alias `docs.python.org/3`), exercism/python y TheAlgorithms/Python indexados.
+- `python-docs-es` rechazada: no tiene LICENSE, y su README cede a la PSF, no a terceros. Queda para revisión manual.
+- Preguntas sin fuente indexada: **6.305 → 5.616**. track09 y track16 quedan a 0, fijados por el trinquete.
+- `check_content_sources.py` reventaba con ficheros-lista (bug preexistente); arreglado.
+
+## 2026-09-25 (noche y mañana) — PR #8 al día con `master` tras la fusión del PR #7; noche de contenido (rama `claude/trusting-franklin-2wwmmr`)
+
+**Numeración.** El dueño fusionó el PR #7 (`a2323a5`), que había renumerado **al revés** que
+este PR. Manda `master`. Las entradas anteriores de esta rama se escribieron con la
+numeración vieja y **no se reescriben**; para leerlas:
+
+| En entradas anteriores de esta rama | En `master` (vigente) |
+|---|---|
+| ADR-41 · 42 · 43 · 44 (rama + PR, catálogo, valores por defecto, planes paralelos) | ADR-45 · 46 · 47 · 48 |
+| ADR-45 (precios del dueño) | ADR-41 |
+| Serie 35 (catálogo total) · 36 (negocio) | 37 · 38 |
+| Serie 37 (competencia → producto) | 35 |
+| H.35–H.37 · H.38 | H.38–H.40 · H.35 |
+
+Cómo se integró (`git merge`, sin reescribir historia): base de `master` en los ocho
+conflictos; el ledger fila a fila a tres bandas; las líneas que solo aporta esta rama,
+renumeradas **una vez** con un script (comentarios de código y docs; 0 cambios de lógica).
+`/corpus/` sigue anclado: sin la barra, `.gitignore` volvía a ignorar `scripts/corpus/`.
+
+**Lo que hizo esta rama desde la última entrada (numeración de `master`):**
+- **37.14 DONE:** 61 preguntas de relleno en producción en track13 («Pregunta de sk130102»,
+  opciones A/B/C/D) reescritas con los mismos ids; guarda nueva en `check_question_bank.py`.
+- **37.16 (nueva):** en el 66,9 % de las preguntas de opciones la correcta era la opción más
+  larga. Guarda con trinquete (`longest_correct_ratio`). Reescritos los distractores de
+  track11 (98 % → 5,8 %), track40 (97 % → 7 %) y track07 (96,6 % → 4,1 %); verificadores
+  adversarios: 0/225 y 9/550 señaladas (desajuste «principalmente»/«exclusively», corregido).
+- **37.15:** SQLite, *The Linux Command Line* y el alias de ATT&CK indexados con licencia
+  leída en vivo; sin fuente indexada 5.611 → 5.301. 26 URL citadas dan 404/403.
+- **30.7:** `DeleteAccountScreen` resolvía la API por su cuenta; corregido y la guarda lo ve.
+- **35.9:** las dos puertas locales prueban el commit empujado (worktree), no el disco;
+  primer nivel 2 completo sobre worktree en verde.
+- **Lección de autoría:** los tres lotes Haiku de distractores se rechazaron (relleno,
+  correctas duplicadas, frases cortadas) y sus informes decían lo contrario. Con Sonnet y un
+  validador en el scratchpad, sí. El autoinforme de un subagente no es evidencia.

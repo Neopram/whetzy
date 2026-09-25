@@ -8,16 +8,16 @@
       "question_es": "¿Por qué dos Bounded Contexts distintos pueden usar el mismo término (p.ej. \"Cliente\") con significados diferentes?",
       "question_en": "Why can two different Bounded Contexts use the same term (e.g. \"Customer\") with different meanings?",
       "options_es": [
-        "Porque es un error de diseño que siempre debe evitarse",
-        "Porque DDD prohíbe reutilizar nombres entre módulos",
+        "Porque se trata siempre, sin ninguna excepción, de un error de diseño grave que el equipo entero debería corregir en cuanto lo detecta durante cualquier revisión de código",
+        "Porque DDD prohíbe explícitamente reutilizar el mismo nombre de término entre distintos módulos",
         "Porque cada Bounded Context define su propio modelo, consistente internamente, adaptado a las necesidades de ese subdominio concreto, aunque comparta nombres con otros contextos",
-        "Porque las bases de datos no permiten nombres de tabla duplicados"
+        "Porque los motores de bases de datos no permiten crear dos tablas con el mismo nombre"
       ],
       "options_en": [
-        "Because it's a design mistake that must always be avoided",
-        "Because DDD forbids reusing names across modules",
+        "Because it is always, without a single exception, a serious design mistake that the whole team should fix as soon as it is spotted during any code review",
+        "Because DDD explicitly forbids reusing the same term name across different modules",
         "Because each Bounded Context defines its own internally consistent model, tailored to that specific subdomain's needs, even if it shares names with other contexts",
-        "Because databases don't allow duplicate table names"
+        "Because database engines do not allow creating two tables with the same name"
       ],
       "correct_index": 2,
       "explanation_es": "Un Bounded Context delimita el alcance donde un modelo (y su lenguaje ubicuo) es válido y consistente; el mismo término puede significar algo distinto en otro contexto sin que eso sea un problema, siempre que el límite esté explícito.",
@@ -62,16 +62,16 @@
       "question_es": "¿Qué distingue fundamentalmente a una Entidad de un Value Object en DDD?",
       "question_en": "What fundamentally distinguishes an Entity from a Value Object in DDD?",
       "options_es": [
-        "Las Entidades nunca pueden persistirse en base de datos",
+        "Las Entidades solo pueden existir en la memoria del proceso mientras dura la petición HTTP, y desaparecen por completo al reiniciarse el servidor",
         "La Entidad se define por una identidad continua a lo largo del tiempo, aunque sus atributos cambien; el Value Object se define únicamente por sus atributos y es intercambiable si son iguales",
-        "Los Value Objects siempre son mutables",
-        "Solo las Entidades pueden tener métodos"
+        "Los Value Objects siempre exponen setters públicos sobre cada campo, para que sus atributos puedan actualizarse directamente sin recrear el objeto entero",
+        "Solo las Entidades pueden participar en relaciones de composición con otros objetos del mismo agregado; los Value Objects quedan siempre completamente aislados, mientras que las Entidades, al tener identidad propia, sí pueden vincularse libremente con cualquier otro objeto del sistema"
       ],
       "options_en": [
-        "Entities can never be persisted to a database",
+        "Entities can only exist in the process's memory for the duration of the HTTP request, and disappear completely once the server restarts afterward",
         "An Entity is defined by a continuous identity over time, even as its attributes change; a Value Object is defined solely by its attributes and is interchangeable if equal",
-        "Value Objects are always mutable",
-        "Only Entities can have methods"
+        "Value Objects always expose public setters on every field, so their attributes can be updated directly without ever recreating the whole object",
+        "Only Entities can take part in composition relationships with other objects of the same aggregate; Value Objects always stay completely isolated on their own, while Entities, having their own identity, can freely link to any other object of the system without restriction"
       ],
       "correct_index": 1,
       "explanation_es": "Una Entidad (p.ej. un Pedido con un ID) mantiene su identidad aunque sus atributos cambien con el tiempo. Un Value Object (p.ej. una Dirección o un Dinero) no tiene identidad propia: dos instancias con los mismos atributos son intercambiables, y suelen modelarse como inmutables.",
@@ -91,16 +91,16 @@
       "question_es": "¿Cuál es el rol de la \"raíz del agregado\" (Aggregate Root) en DDD?",
       "question_en": "What is the role of the \"Aggregate Root\" in DDD?",
       "options_es": [
-        "Es una tabla física obligatoria en la base de datos",
-        "Es simplemente la primera entidad creada cronológicamente",
+        "Es una vista materializada obligatoria que el motor de base de datos genera de forma automática por cada agregado definido en el esquema",
+        "Es simplemente la entidad cuyo nombre resulta alfabéticamente el más corto dentro de todo el agregado al que pertenece, sin más criterio",
         "Es la única entidad del agregado accesible desde fuera; toda referencia y modificación al agregado debe pasar por ella, garantizando sus invariantes",
-        "Es un patrón exclusivo de bases de datos NoSQL"
+        "Es un patrón exclusivo de los sistemas de mensajería basados en eventos, y no tiene ningún sentido aplicarlo fuera de ese contexto concreto, y por eso ningún desarrollador externo debería nunca modificar directamente una entidad interna del agregado"
       ],
       "options_en": [
-        "It's a mandatory physical table in the database",
-        "It's simply the first entity created chronologically",
+        "It's a mandatory materialised view that the database engine automatically generates for each aggregate defined in the domain schema",
+        "It's simply the entity whose name happens to be the alphabetically shortest one within the whole aggregate it belongs to, nothing more",
         "It's the only entity of the aggregate accessible from outside; every reference and modification to the aggregate must go through it, guaranteeing its invariants",
-        "It's a pattern exclusive to NoSQL databases"
+        "It's a pattern exclusive to event-based messaging systems, and it makes no sense whatsoever to apply it outside that specific context, and that is why no outside developer should ever directly modify an internal entity of the aggregate"
       ],
       "correct_index": 2,
       "explanation_es": "La Aggregate Root actúa como punto de entrada único al agregado: el código externo solo referencia y modifica el agregado a través de ella, lo que le permite mantener consistentes sus invariantes internos.",
@@ -146,15 +146,15 @@
       "question_en": "What is the main purpose of the Ubiquitous Language in DDD?",
       "options_es": [
         "Establecer un vocabulario compartido, riguroso y consistente entre expertos del dominio y desarrolladores, usado tanto en las conversaciones como en el propio código",
-        "Forzar que todo el código se escriba en inglés",
-        "Sustituir la necesidad de tener expertos de dominio en el equipo",
-        "Definir el lenguaje de programación que debe usarse en el proyecto"
+        "Reducir la cantidad de reuniones de alineación necesarias entre el negocio y el equipo de desarrollo a lo largo de todo el proyecto",
+        "Estandarizar el formato de los mensajes de commit y de los nombres de rama dentro del repositorio del proyecto entero de la compañía",
+        "Certificar que todo el equipo de desarrollo domina el vocabulario técnico específico del framework elegido para construir el producto de modo que dos módulos distintos jamás puedan compartir ni una sola línea de lógica de negocio entre programadores"
       ],
       "options_en": [
         "To establish a shared, rigorous, consistent vocabulary between domain experts and developers, used both in conversations and in the code itself",
-        "To force all code to be written in English",
-        "To replace the need for domain experts on the team",
-        "To define which programming language must be used in the project"
+        "To reduce the number of alignment meetings needed between the business side and the development team throughout the whole project",
+        "To standardise the format of commit messages and branch names within the entire project's repository across the whole company",
+        "To certify that the whole development team masters the specific technical vocabulary of the framework chosen to build the product, so that two different modules could never share even a single line of business logic between programmers"
       ],
       "correct_index": 0,
       "explanation_es": "El Lenguaje Ubicuo busca eliminar la brecha de traducción entre negocio y técnica: los mismos términos usados por los expertos del dominio deben aparecer literalmente en el modelo y el código, evitando ambigüedades.",

@@ -8,15 +8,15 @@
       "question_es": "Fowler distingue varios estilos que la gente agrupa bajo la etiqueta 'event-driven'. ¿Qué describe el estilo 'event-carried state transfer' (transferencia de estado mediante eventos)?",
       "question_en": "Fowler distinguishes several styles that people lump together under the 'event-driven' label. What describes 'event-carried state transfer'?",
       "options_es": [
-        "El evento es una orden dirigida a un servicio concreto que debe ejecutarla",
-        "El evento solo contiene un identificador, y el consumidor llama de vuelta al productor para pedir los datos",
-        "El estado se guarda exclusivamente como la secuencia completa de eventos, sin tabla de estado actual",
+        "El evento es una orden dirigida a un servicio concreto, que está obligado a ejecutarla sin demora ni excepción",
+        "El evento solo contiene un identificador breve, y el consumidor debe llamar de vuelta al productor para obtener los datos completos que necesita",
+        "El estado se guarda únicamente como la secuencia completa de eventos, sin mantener ninguna tabla de estado actual",
         "El evento lleva dentro los datos que el consumidor necesita, de modo que este puede mantener su propia copia local y no consultar al productor"
       ],
       "options_en": [
-        "The event is an order directed at a specific service that must execute it",
-        "The event carries only an identifier, and the consumer calls back to the producer to fetch the data",
-        "State is stored exclusively as the full sequence of events, with no current-state table",
+        "The event is an order directed at a specific service, which must execute it without delay or exception",
+        "The event carries only a short identifier, and the consumer must call back to the producer to fetch the full data it needs",
+        "State is stored only as the full sequence of events, with no current-state table kept anywhere at all",
         "The event carries the data the consumer needs inside it, so the consumer can keep its own local copy and never query the producer"
       ],
       "correct_index": 3,
@@ -69,15 +69,15 @@
       "question_en": "A team replaces REST calls between services with events that carry the customer's full state. What is the real cost of that decision?",
       "options_es": [
         "Se duplican los datos en cada consumidor, que trabajará con copias potencialmente desactualizadas y habrá que decidir cuánta obsolescencia es tolerable",
-        "Deja de ser posible escalar horizontalmente los consumidores",
-        "Se pierde la trazabilidad porque los eventos no pueden llevar metadatos",
-        "Los servicios quedan acoplados en tiempo: si el productor cae, los consumidores dejan de funcionar"
+        "Deja de ser posible escalar de forma horizontal a los consumidores que están suscritos a ese mismo topic",
+        "Se pierde por completo la trazabilidad porque los eventos ya no pueden llevar ningun tipo de metadato adicional",
+        "Los servicios quedan acoplados en el tiempo entre si: si el productor se cae, todos los consumidores dejan de funcionar también de inmediato, un efecto dominó que anula el desacoplamiento"
       ],
       "options_en": [
         "Data is duplicated in every consumer, which works with potentially stale copies, and you must decide how much staleness is tolerable",
-        "It is no longer possible to scale consumers horizontally",
-        "Traceability is lost because events cannot carry metadata",
-        "The services become coupled in time: if the producer goes down, consumers stop working"
+        "It is no longer possible to scale horizontally the consumers that are subscribed to that same topic",
+        "Traceability is entirely lost because events can no longer carry any kind of additional metadata at all",
+        "The services become coupled to each other in time: if the producer goes down, every consumer immediately stops working as well, a domino effect that cancels out the decoupling"
       ],
       "correct_index": 0,
       "explanation_es": "La transferencia de estado mediante eventos compra disponibilidad (el consumidor responde aunque el productor esté caído) pagando con replicación y consistencia eventual. El acoplamiento temporal es justo lo contrario: es lo que sufren las llamadas REST síncronas que se acaban de eliminar. El escalado horizontal no se pierde, de hecho mejora al no depender de una llamada remota. Y los eventos sí pueden llevar metadatos como identificadores de correlación; de hecho son necesarios precisamente porque la traza distribuida se vuelve más difícil.",
@@ -229,16 +229,16 @@
       "question_es": "Se conectan cinco instancias del mismo servicio a una única cola para repartir la carga. ¿Cómo se llama ese patrón y qué propiedad conserva?",
       "question_en": "Five instances of the same service are attached to a single queue to share the load. What is that pattern called and what property does it preserve?",
       "options_es": [
-        "Publish-subscribe: las cinco instancias reciben cada mensaje y luego descartan los que no les tocan",
-        "Message broker: el broker replica cada mensaje a las cinco y espera cinco acks",
+        "Publish-subscribe: las cinco instancias reciben cada mensaje entero y después descartan los que no les corresponden a cada una, repitiendo el mismo trabajo cinco veces",
+        "Fan-out: el broker replica cada mensaje hacia las cinco instancias a la vez y espera las cinco confirmaciones de entrega",
         "Competing consumers: cada mensaje lo entrega el broker a una sola de las instancias, así que el trabajo se reparte sin duplicarse",
-        "Content-based router: el broker inspecciona el cuerpo del mensaje y solo una instancia lo acepta"
+        "Content-based router: el broker inspecciona el cuerpo de cada mensaje para decidir que instancia lo procesara"
       ],
       "options_en": [
-        "Publish-subscribe: all five instances receive every message and then discard the ones not meant for them",
-        "Message broker: the broker replicates each message to all five and waits for five acks",
+        "Publish-subscribe: all five instances receive every whole message and then discard the ones not meant for each of them, repeating the same work five times over",
+        "Fan-out: the broker replicates each message out to all five instances at once and waits for all five delivery acks",
         "Competing consumers: the broker delivers each message to exactly one of the instances, so work is shared without duplication",
-        "Content-based router: the broker inspects the message body and only one instance accepts it"
+        "Content-based router: the broker inspects each message body to decide which instance will process it"
       ],
       "correct_index": 2,
       "explanation_es": "Competing Consumers es el patrón que convierte una cola en un repartidor de trabajo: N consumidores compiten por los mensajes y el broker entrega cada uno a uno solo, de modo que el throughput escala con el número de consumidores. La primera y la tercera opción describen pub/sub, donde cada suscriptor recibe una copia; usar esa semántica para repartir carga significaría procesar cinco veces el mismo pedido. El router basado en contenido enruta por criterios de negocio, no para balancear. El precio de competing consumers es que se pierde el orden global entre mensajes procesados en paralelo.",
@@ -260,15 +260,15 @@
       "question_en": "In Amazon SQS, a consumer receives a message and takes longer than expected to process it. What does the visibility timeout do, and what happens if it expires before the ack?",
       "options_es": [
         "Oculta el mensaje al resto de consumidores durante un tiempo; si expira sin borrado, el mensaje vuelve a ser visible y otro consumidor lo procesará, con riesgo de procesamiento duplicado",
-        "Borra el mensaje automáticamente para evitar que se procese dos veces",
-        "Bloquea la cola entera hasta que el consumidor lento termine",
-        "Mide el tiempo máximo que un mensaje puede permanecer en la cola antes de expirar definitivamente"
+        "Borra el mensaje de la cola de forma inmediata y definitiva en cuanto lo entrega, para evitar que llegue a procesarse más de una vez seguida, perdiendo así cualquier posibilidad de reintentar el procesamiento si este falla",
+        "Bloquea la cola entera para el resto de los mensajes pendientes hasta que el consumidor lento termine de procesar por completo el suyo, dejando en espera a cualquier otro mensaje ajeno a ese consumidor",
+        "Mide el tiempo máximo total que un mensaje cualquiera puede permanecer sin leerse en la cola antes de expirar de forma definitiva, un valor que se configura por separado del periodo de retención de la cola"
       ],
       "options_en": [
         "It hides the message from other consumers for a period; if it expires without a delete, the message becomes visible again and another consumer will process it, risking duplicate processing",
-        "It deletes the message automatically to prevent it being processed twice",
-        "It locks the entire queue until the slow consumer finishes",
-        "It measures the maximum time a message may stay in the queue before expiring for good"
+        "It deletes the message from the queue immediately and for good as soon as it is delivered, to stop it from ever being processed more than once, thereby losing any possibility of retrying the processing if it fails",
+        "It locks the entire queue for every other pending message until the slow consumer fully finishes processing its own, leaving every other message from a different consumer waiting behind it",
+        "It measures the total maximum time any given message may sit unread in the queue before it expires permanently, a value configured separately from the queue retention period"
       ],
       "correct_index": 0,
       "explanation_es": "El visibility timeout es un arrendamiento, no un borrado: SQS oculta el mensaje mientras se procesa y solo lo elimina cuando el consumidor llama a DeleteMessage. Si el procesamiento excede el plazo, el mensaje reaparece y se procesa dos veces, que es el origen habitual de los duplicados en producción cuando el manejador no es idempotente. La última opción describe el retention period o el TTL del mensaje, que es un parámetro distinto; el bloqueo de la cola entera no ocurre, solo se oculta ese mensaje.",
@@ -289,16 +289,16 @@
       "question_es": "La profundidad de una cola crece de forma sostenida durante horas, sin bajar en los valles de tráfico. ¿Qué indica esa señal?",
       "question_en": "A queue's depth grows steadily for hours and never drains during traffic troughs. What does that signal mean?",
       "options_es": [
-        "El broker tiene un fallo de configuración de memoria",
-        "La cola está funcionando como debe: amortiguar picos es exactamente su propósito",
+        "El broker sufre una fuga de memoria interna que le impide llegar a entregar los mensajes ya acumulados en la cola a los consumidores, un fallo que normalmente se detecta enseguida por las alertas del propio broker",
+        "La cola está funcionando exactamente como se espera de ella: absorber picos de tráfico es su único proposito real, y por eso no requiere ninguna acción adicional por parte del equipo",
         "La capacidad de consumo es inferior a la tasa de producción, así que la latencia de extremo a extremo crecerá sin límite hasta que se añadan consumidores o se reduzca la entrada",
-        "Los mensajes se están duplicando por culpa de la semántica at-least-once"
+        "Los mensajes se están duplicando por culpa de la semántica de entrega at-least-once que usa el sistema de mensajería"
       ],
       "options_en": [
-        "The broker has a memory misconfiguration",
-        "The queue is working as intended: absorbing spikes is exactly its purpose",
+        "The broker suffers an internal memory leak that stops it from ever delivering the messages already piled up in the queue to consumers, a fault that is normally detected right away by the broker's own alerts",
+        "The queue is working exactly as it should: absorbing traffic spikes is its one and only real purpose here, and therefore requires no additional action from the team at all",
         "Consumption capacity is below the production rate, so end-to-end latency will grow without bound until consumers are added or input is reduced",
-        "Messages are being duplicated because of at-least-once semantics"
+        "Messages are being duplicated because of the at-least-once delivery semantics that the messaging system uses"
       ],
       "correct_index": 2,
       "explanation_es": "Una cola absorbe picos, no déficits sostenidos de capacidad. El queue-based load leveling funciona cuando la cola se vacía en los valles; si no baja nunca, el sistema es inestable y el retraso crece de forma acumulativa, aunque ningún mensaje se pierda. La segunda opción es la confusión clásica: se mira la cola llena y se concluye que está cumpliendo su función, cuando lo que hace es convertir un problema de capacidad en un problema de latencia invisible hasta que los datos ya están obsoletos. La duplicación y la memoria del broker son síntomas de otras causas, no de esta tendencia.",
@@ -455,15 +455,15 @@
       "question_es": "Un topic emite un millón de eventos al día y un servicio solo necesita el 2 % de ellos. ¿Qué ventaja tiene filtrar en el broker (filtro de suscripción) frente a filtrar dentro del consumidor?",
       "question_en": "A topic emits a million events a day and one service only needs 2 % of them. What is the advantage of filtering at the broker (subscription filter) over filtering inside the consumer?",
       "options_es": [
-        "Ninguna: el trabajo total es el mismo, solo cambia dónde se ejecuta el if",
-        "Filtrar en el consumidor garantiza el orden y filtrar en el broker lo rompe",
-        "Filtrar en el broker convierte los eventos en comandos dirigidos",
+        "Filtrar en el broker convierte de forma automática ese topic entero en una cola punto a punto tradicional",
+        "Filtrar en el consumidor garantiza el orden estricto de entrega de los mensajes, mientras que filtrar en el broker lo rompe, una garantía que ningun broker de mensajería real ofrece hoy en día",
+        "El ahorro es solo de espacio en disco del broker; el consumidor sigue recibiendo igualmente el millón de eventos completo",
         "El broker no entrega ni cobra por lo que no coincide, así que se ahorra ancho de banda, invocaciones y el coste de despertar al consumidor un millón de veces"
       ],
       "options_en": [
-        "None: the total work is the same, only the location of the if changes",
-        "Filtering in the consumer guarantees ordering while filtering at the broker breaks it",
-        "Filtering at the broker turns events into directed commands",
+        "Filtering at the broker automatically turns that entire topic into a traditional point-to-point queue instead",
+        "Filtering in the consumer guarantees strict message delivery order, while filtering at the broker breaks that order, a guarantee that no real messaging broker offers today at all",
+        "The saving is only broker disk space; the consumer still ends up receiving the whole million events anyway",
         "The broker neither delivers nor bills what does not match, saving bandwidth, invocations and the cost of waking the consumer a million times"
       ],
       "correct_index": 3,
@@ -485,16 +485,16 @@
       "question_es": "Cuatro servicios se suscriben al mismo topic y uno de ellos procesa mucho más lento que los demás. ¿Por qué ese consumidor lento no frena a los otros tres en un pub/sub bien diseñado?",
       "question_en": "Four services subscribe to the same topic and one of them processes far more slowly than the rest. Why does that slow consumer not hold back the other three in a well-designed pub/sub system?",
       "options_es": [
-        "Porque el broker descarta los mensajes que el suscriptor lento no alcanza a procesar",
+        "Porque el broker descarta de forma automática los mensajes que el suscriptor lento no llega a procesar a tiempo",
         "Porque cada suscripción mantiene su propia cola y su propia posición de lectura, de modo que el retraso de un suscriptor solo hace crecer su backlog",
-        "Porque el broker espera a que los cuatro confirmen antes de aceptar el siguiente mensaje del productor",
-        "Porque el productor detecta al suscriptor lento y deja de enviarle eventos"
+        "Porque el broker espera a que los cuatro suscriptores confirmen la entrega antes de aceptar el siguiente mensaje que envie el productor, al estilo de un commit distribuido clásico",
+        "Porque el propio productor detecta al suscriptor lento y deja de enviarle eventos nuevos a partir de ese momento"
       ],
       "options_en": [
-        "Because the broker drops the messages the slow subscriber cannot keep up with",
+        "Because the broker automatically drops the messages the slow subscriber fails to process in time",
         "Because each subscription keeps its own queue and its own read position, so one subscriber's lag only grows its own backlog",
-        "Because the broker waits for all four to acknowledge before accepting the producer's next message",
-        "Because the producer detects the slow subscriber and stops sending it events"
+        "Because the broker waits for all four subscribers to acknowledge delivery before accepting the next message the producer sends, in the style of a classic distributed commit",
+        "Because the producer itself detects the slow subscriber and stops sending it new events from that point on"
       ],
       "correct_index": 1,
       "explanation_es": "El aislamiento se consigue dando a cada suscripción su propio estado de entrega: una cola dedicada en RabbitMQ o Pub/Sub, un offset propio por consumer group en Kafka. La tercera opción describiría un sistema acoplado al peor consumidor, que es precisamente lo que pub/sub evita. La segunda solo ocurre si se configura un TTL o se agota la retención, y es una pérdida de datos, no un mecanismo de aislamiento. La cuarta contradice la premisa del patrón: el productor no conoce a sus suscriptores.",
@@ -669,16 +669,16 @@
       "question_es": "Tras dos años en producción, el equipo necesita añadir un campo obligatorio a un tipo de evento del que ya hay millones de instancias almacenadas. ¿Cuál es el enfoque correcto?",
       "question_en": "After two years in production, the team needs to add a required field to an event type of which millions of instances are already stored. What is the correct approach?",
       "options_es": [
-        "Reescribir los eventos antiguos en el store para que todos tengan el campo nuevo",
+        "Reescribir de forma retroactiva los eventos antiguos en el almacen para que todos lleven el campo nuevo desde ya",
         "Versionar el evento y adaptar en lectura las versiones antiguas (upcasting), o publicar un tipo de evento nuevo que conviva con el antiguo",
-        "Borrar los eventos antiguos y empezar el log desde cero con el esquema nuevo",
-        "Guardar el campo solo en la proyección de lectura y no tocar el evento"
+        "Borrar por completo los eventos antiguos y empezar el registro desde cero con el esquema recién definido y aprobado, perdiendo así cualquier posibilidad de auditar lo que ocurrió antes del cambio",
+        "Guardar el campo nuevo solo dentro de la proyección de lectura, sin llegar a tocar el evento original"
       ],
       "options_en": [
-        "Rewrite the old events in the store so they all carry the new field",
+        "Retroactively rewriting the old events in the store so every single one carries the new field right away",
         "Version the event and adapt old versions on read (upcasting), or publish a new event type that coexists with the old one",
-        "Delete the old events and start the log from scratch with the new schema",
-        "Store the field only in the read projection and never touch the event"
+        "Fully deleting the old events and starting the log again from scratch with the newly defined, approved schema, thereby losing any ability to audit what happened before the change",
+        "Storing the new field only inside the read projection, without ever touching the original event"
       ],
       "correct_index": 1,
       "explanation_es": "El log de eventos es inmutable y de solo anexado, así que la evolución del esquema se resuelve en lectura: cada evento lleva su versión y un upcaster lo transforma al modelo actual al cargarlo, o bien se introduce un tipo nuevo y los manejadores soportan ambos. Reescribir el histórico destruye justamente la propiedad por la que se eligió event sourcing (la auditoría deja de ser fiable) y además rompería cualquier firma o hash sobre el log. Borrar el log elimina la posibilidad de reconstruir proyecciones. Guardar el dato solo en la proyección hace que se pierda al reconstruirla desde los eventos, que es la operación que más se necesita en producción.",
@@ -699,16 +699,16 @@
       "question_es": "Al reconstruir una proyección reproduciendo todo el log, algunos manejadores envían correos y cobran tarjetas. ¿Qué precaución exige esto?",
       "question_en": "When rebuilding a projection by replaying the whole log, some handlers send emails and charge cards. What precaution does this require?",
       "options_es": [
-        "Eliminar del log los eventos que tuvieron efectos externos antes de reproducirlo",
-        "Reproducir el log a menor velocidad para que los sistemas externos no se saturen",
+        "Eliminar del registro los eventos que tuvieron efectos externos antes de volver a reproducir el log entero",
+        "Reproducir el registro completo a una velocidad bastante menor para no llegar a saturar los sistemas externos implicados, una solución que solo funciona si los sistemas externos aceptan reintentos sin limite",
         "Separar los efectos externos de la actualización del estado, de modo que la reproducción solo recalcule proyecciones y nunca dispare acciones hacia el exterior",
-        "Reproducir solo desde el último snapshot, lo que garantiza que ningún efecto se repita"
+        "Reproducir únicamente desde el último snapshot guardado, lo que evita por completo que ningun efecto se repita jamas"
       ],
       "options_en": [
-        "Remove the events that had external effects from the log before replaying",
-        "Replay the log more slowly so external systems are not overwhelmed",
+        "Removing from the log the events that had external effects before replaying the whole log again",
+        "Replaying the entire log at a noticeably slower pace so the external systems involved are never overwhelmed, a fix that only works if the external systems accept unlimited retries",
         "Separate external effects from state updates, so a replay only recomputes projections and never triggers outward actions",
-        "Replay only from the latest snapshot, which guarantees no effect is repeated"
+        "Replaying only from the last saved snapshot, which fully prevents any effect from ever repeating at all"
       ],
       "correct_index": 2,
       "explanation_es": "Es el problema de las 'interacciones externas' que Fowler señala como el principal escollo práctico de event sourcing: reproducir el histórico debe ser una operación pura sobre el estado derivado. Por eso los efectos se aíslan tras una puerta de salida que se desactiva en modo replay, o se modelan como eventos propios emitidos una sola vez. Bajar la velocidad no evita el segundo cobro, solo lo reparte. Borrar eventos rompe la inmutabilidad y falsea la auditoría. Y reproducir desde un snapshot reduce el volumen pero sigue reejecutando los manejadores posteriores a él.",

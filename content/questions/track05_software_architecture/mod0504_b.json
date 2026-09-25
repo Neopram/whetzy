@@ -39,15 +39,15 @@
       "question_en": "The orders service is saturated. 80% of its load is WRITES against PostgreSQL. The team proposes adding three more read replicas. What is the correct assessment?",
       "options_es": [
         "No ayudara: cada replica tiene que aplicar exactamente el mismo flujo de escrituras que el primario, asi que el cuello de botella de escritura no se mueve y la replicacion añade carga extra al primario",
-        "Ayudara mucho, porque las replicas se reparten las escrituras entre ellas",
-        "Ayudara: quitarle el 20% de lecturas al primario le libera CPU suficiente como para absorber las escrituras",
-        "Ayudara solo si se activa el modo multi-maestro, que en PostgreSQL viene habilitado por defecto"
+        "Ayudará bastante: cada réplica de lectura adicional que se añade absorbe automáticamente una parte proporcional de las escrituras entrantes, aliviando la presión total sobre el servicio de pedidos en su conjunto",
+        "Ayudará, porque liberar el 20% de lecturas del primario le deja CPU de sobra para absorber el resto de las escrituras",
+        "Ayudará solo si se activa el modo multi-máster, que en PostgreSQL viene habilitado por defecto en toda instalación"
       ],
       "options_en": [
         "It will not help: every replica must apply exactly the same write stream as the primary, so the write bottleneck does not move and replication adds extra load on the primary",
-        "It will help a lot, because the replicas split the writes among themselves",
-        "It will help: taking the 20% of reads off the primary frees enough CPU for it to absorb the writes",
-        "It will help only if multi-master mode is enabled, which PostgreSQL has on by default"
+        "It will help quite a lot: each additional read replica added automatically absorbs a proportional share of the incoming writes, easing the total pressure on the orders service as a whole",
+        "It will help, because freeing the primary from 20% of reads leaves it enough spare CPU to absorb the rest of the writes",
+        "It will help only if multi-master mode is enabled, which PostgreSQL ships enabled by default on every install"
       ],
       "correct_index": 0,
       "explanation_es": "La réplica de un solo lider es asimetrica: reparte lecturas, nunca escrituras. Cada réplica reproduce el 100% del WAL, así que cinco réplicas hacen cinco veces el mismo trabajo de escritura. La segunda opción es el error mental clásico de tratar 'réplica' como 'nodo que ayuda con todo'. La tercera es tentadora porque es parcialmente cierta (algo de CPU se libera), pero aquí las lecturas son solo el 20%: aunque valieran cero, el primario sigue con el mismo volumen de escritura. La cuarta mezcla replicación con multi-lider, que PostgreSQL no trae de serie y que además traeria conflictos de escritura. La salida real es particionar (sharding) por una clave, agrupar escrituras o quitar trabajo de la ruta síncrona.",
@@ -68,15 +68,15 @@
       "question_es": "Un consumidor de Kafka procesa eventos haciendo muchas llamadas de red a terceros. Su HPA escala cuando la CPU supera el 70%, pero nunca escala mientras el lag del consumidor crece durante horas. ¿Cuál es la causa y la corrección?",
       "question_en": "A Kafka consumer processes events by making many network calls to third parties. Its HPA scales when CPU goes above 70%, but it never scales while consumer lag grows for hours. What is the cause and the fix?",
       "options_es": [
-        "El HPA no actua por debajo de 10 replicas; hay que subir minReplicas a 10",
-        "El HPA solo sabe leer memoria en la practica; hay que cambiar el target a la metrica memory",
-        "Kafka limita el paralelismo al numero de particiones del topic, asi que ninguna metrica cambiaria nada",
+        "El HPA nunca actúa mientras el número de réplicas activas esté por debajo de diez; basta con subir el valor de `minReplicas` a diez para que el controlador del clúster empiece de inmediato a reaccionar ante cualquier cambio de carga",
+        "En la práctica el HPA solo puede leer la métrica de memoria; hay que cambiar el objetivo a memory para que reaccione",
+        "Kafka limita el paralelismo al número de particiones del topic, así que ninguna métrica de escalado cambiaría nada",
         "El trabajo esta limitado por E/S, no por CPU: las replicas pasan el tiempo esperando respuestas y la CPU nunca llega al umbral. Hay que escalar por una metrica externa/personalizada como el lag del grupo de consumidores"
       ],
       "options_en": [
-        "The HPA does not act below 10 replicas; minReplicas must be raised to 10",
-        "In practice the HPA can only read memory; the target must be switched to the memory metric",
-        "Kafka caps parallelism at the topic's partition count, so no metric would change anything",
+        "The HPA never acts while the number of active replicas is below ten; raising `minReplicas` to ten is enough to make the cluster controller start reacting immediately to any change in load",
+        "In practice the HPA can only read the memory metric; the target must be switched to memory for it to react",
+        "Kafka caps parallelism at the topic's partition count, so no scaling metric would change anything",
         "The work is I/O-bound, not CPU-bound: replicas spend their time waiting on responses and CPU never reaches the threshold. Scaling must be driven by an external/custom metric such as consumer group lag"
       ],
       "correct_index": 3,
@@ -170,15 +170,15 @@
       "question_en": "A HorizontalPodAutoscaler is configured like this:\n\n```yaml\napiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\nspec:\n  minReplicas: 2\n  maxReplicas: 10\n  metrics:\n  - type: Resource\n    resource:\n      name: cpu\n      target:\n        type: Utilization\n        averageUtilization: 50\n```\n\nRight now there are 4 replicas and average CPU utilization is 100%. How many replicas does the HPA compute as desired?",
       "options_es": [
         "8, por la formula ceil(replicas_actuales x metrica_actual / metrica_objetivo) = ceil(4 x 100/50)",
-        "10, porque cualquier valor por encima del objetivo lleva directamente al maximo",
-        "5, porque el HPA añade como mucho una replica por ciclo de control",
-        "4, porque el HPA solo actua cuando la utilizacion pasa del 100%"
+        "10, porque cualquier utilización por encima del objetivo salta directamente al máximo configurado",
+        "5, porque el HPA añade como máximo una réplica por cada ciclo de control, sin importar la fórmula",
+        "4, porque el HPA solo actúa una vez que la utilización supera efectivamente el cien por cien"
       ],
       "options_en": [
         "8, from the formula ceil(currentReplicas x currentMetric / targetMetric) = ceil(4 x 100/50)",
-        "10, because any value above the target goes straight to the maximum",
-        "5, because the HPA adds at most one replica per control cycle",
-        "4, because the HPA only acts once utilization exceeds 100%"
+        "10, because any utilization above the target jumps straight to the configured maximum",
+        "5, because the HPA adds at most one replica per control cycle, regardless of the formula",
+        "4, because the HPA only acts once utilization climbs past one hundred percent"
       ],
       "correct_index": 0,
       "explanation_es": "El HPA es proporcional, no incremental: desiredReplicas = ceil(currentReplicas x currentMetric / desiredMetric). Con 4 réplicas al 100% frente a un objetivo del 50%, pide 8, por debajo del máximo de 10. La opción de 'una réplica por ciclo' es la que más gente elige porque describe como se comportan otros autoescaladores y porque la gente confunde el cálculo con las políticas de behavior/scaleUp, que sí pueden limitar el ritmo pero son opcionales y no cambian el número deseado. Llegar al máximo solo ocurre si la fórmula lo supera. Y el HPA actúa en cuanto la métrica se separa del objetivo más allá de una pequeña tolerancia (10% por defecto), no al 100%.",
@@ -199,16 +199,16 @@
       "question_es": "¿Por que el escalado horizontal mejora la disponibilidad además del rendimiento?",
       "question_en": "Why does horizontal scaling improve availability as well as performance?",
       "options_es": [
-        "Porque cada maquina que se añade es mas potente que la anterior",
-        "Porque elimina la necesidad de un balanceador de carga",
+        "Porque cada máquina nueva que se va añadiendo al grupo resulta siempre bastante más potente que la instancia original que ya venía sirviendo todo el tráfico del servicio",
+        "Porque elimina por completo la necesidad de colocar un balanceador de carga delante del grupo",
         "Porque la carga se reparte entre varias instancias independientes: si una cae, las demas siguen sirviendo y esa capa deja de tener un unico punto de fallo",
-        "Porque garantiza consistencia fuerte entre todas las replicas de datos"
+        "Porque garantiza consistencia fuerte entre todas las réplicas de datos que sirven ese mismo tráfico"
       ],
       "options_en": [
-        "Because each machine you add is more powerful than the previous one",
-        "Because it removes the need for a load balancer",
+        "Because each new machine added to the pool always ends up considerably more powerful than the original instance that was already serving all the service's traffic",
+        "Because it completely removes the need to put a load balancer in front of the pool",
         "Because load is spread across several independent instances: if one dies the others keep serving, and that layer stops having a single point of failure",
-        "Because it guarantees strong consistency across all data replicas"
+        "Because it guarantees strong consistency across every data replica serving that same traffic"
       ],
       "correct_index": 2,
       "explanation_es": "Varias instancias intercambiables dan redundancia: la pérdida de una degrada la capacidad, no el servicio. La primera opción describe el escalado vertical (máquinas más grandes), que es justo lo contrario. La segunda invierte la realidad: el escalado horizontal exige un balanceador, no lo elimina. La cuarta es la confusión más seria y la más frecuente: añadir nodos no regala consistencia, más bien la complica, porque ahora hay varias copias del estado que hay que coordinar. Disponibilidad y consistencia son ejes distintos, y a menudo enfrentados.",
@@ -229,14 +229,14 @@
       "question_es": "Un equipo migra de REST a gRPC manteniendo el mismo balanceador de nivel 4 (TCP). Tras el cambio, una sola instancia recibe casi todo el tráfico mientras las demás están ociosas. ¿Por qué?",
       "question_en": "A team migrates from REST to gRPC keeping the same Layer 4 (TCP) load balancer. After the change, a single instance receives nearly all the traffic while the others sit idle. Why?",
       "options_es": [
-        "gRPC viaja sobre UDP y el balanceador L4 solo entiende TCP",
-        "gRPC no admite balanceo de carga; la unica salida es volver a REST",
+        "gRPC viaja siempre sobre UDP en lugar de sobre TCP, y el balanceador L4 que el equipo configuró originalmente solo sabe entender conexiones TCP tradicionales, por lo que descarta silenciosamente todo el tráfico gRPC nuevo sin avisar a nadie",
+        "gRPC no admite ningún tipo de balanceo de carga, así que la única salida es volver a usar REST",
         "gRPC usa HTTP/2 con conexiones persistentes y multiplexadas: el balanceador L4 reparte CONEXIONES, no peticiones, asi que todas las RPC de una conexion caen en la misma instancia. Hace falta balanceo L7 (o del lado del cliente)",
-        "Es un fallo de los health checks: la instancia sobrecargada esta marcando a las demas como no sanas"
+        "Es un fallo de los health checks: la instancia sobrecargada está marcando a las demás como no sanas"
       ],
       "options_en": [
-        "gRPC runs over UDP and the L4 balancer only understands TCP",
-        "gRPC does not support load balancing; the only way out is going back to REST",
+        "gRPC always travels over UDP instead of TCP, and the L4 balancer the team originally configured only understands traditional TCP connections, so it silently drops all the new gRPC traffic without telling anyone",
+        "gRPC does not support any form of load balancing, so the only way out is going back to REST",
         "gRPC uses HTTP/2 with long-lived multiplexed connections: an L4 balancer distributes CONNECTIONS, not requests, so every RPC on one connection lands on the same instance. L7 (or client-side) load balancing is needed",
         "It is a health check failure: the overloaded instance is marking the others as unhealthy"
       ],
@@ -259,16 +259,16 @@
       "question_es": "La política LEAST_REQUEST de Envoy, cuando hay más de dos hosts, no recorre toda la lista buscando el mínimo. ¿Qué hace en su lugar y por qué?",
       "question_en": "Envoy's LEAST_REQUEST policy, when there are more than two hosts, does not walk the whole list looking for the minimum. What does it do instead, and why?",
       "options_es": [
-        "Consulta por RPC a todos los hosts antes de decidir, para trabajar con el dato exacto",
+        "Consulta por RPC el número exacto de peticiones activas en todos y cada uno de los hosts disponibles antes de decidir a cuál de ellos enviar la siguiente petición entrante, de modo que la decisión nunca se equivoca",
         "Elige dos hosts al azar y manda la peticion al que menos peticiones activas tiene ('power of two choices'): cuesta O(1) y evita que todos los balanceadores manden a la vez al mismo host 'menos cargado'",
-        "Ordena los hosts por latencia p99 y usa siempre el primero de la lista",
-        "Cae a round-robin puro, porque calcular el minimo es imposible sin estado compartido"
+        "Ordena todos los hosts por su latencia p99 medida y envía siempre la petición al primero de esa lista",
+        "Cae a un round-robin puro, porque calcular el mínimo exacto es imposible sin un estado compartido entre balanceadores"
       ],
       "options_en": [
-        "It queries every host by RPC before deciding, so it works with the exact figure",
+        "It queries the exact active request count on every single available host over RPC before deciding which one gets the next incoming request, so that decision never turns out to be wrong",
         "It picks two hosts at random and sends the request to whichever has fewer active requests ('power of two choices'): it costs O(1) and avoids every balancer sending to the same 'least loaded' host at once",
-        "It sorts hosts by p99 latency and always uses the first in the list",
-        "It falls back to plain round-robin, because computing the minimum is impossible without shared state"
+        "It sorts every host by its measured p99 latency and always sends the request to the first one in that list",
+        "It falls back to plain round-robin, because computing the exact minimum is impossible without state shared between balancers"
       ],
       "correct_index": 1,
       "explanation_2_es": "",
@@ -290,15 +290,15 @@
       "question_es": "En cada despliegue aparecen errores 502 puntuales, aunque las réplicas nuevas arrancan sin problemas y pasan sus pruebas. ¿Cuál es la causa más probable?",
       "question_en": "Every deployment produces sporadic 502 errors, even though the new replicas start cleanly and pass their tests. What is the most likely cause?",
       "options_es": [
-        "El balanceador de carga no admite despliegues sin interrupcion",
-        "Faltan replicas: hay que subir maxReplicas para cubrir el despliegue",
-        "El liveness probe esta reiniciando las replicas nuevas antes de que terminen de arrancar",
+        "El balanceador de carga concreto que usa este equipo no admite en absoluto los despliegues sin interrupción de servicio, así que cualquier actualización de las réplicas provoca inevitablemente una ventana de caídas visibles para todos los usuarios finales",
+        "Faltan réplicas disponibles: hay que subir `maxReplicas` para que cubran todo el despliegue",
+        "El liveness probe está reiniciando las réplicas nuevas antes de que terminen de arrancar por completo",
         "El pod recibe SIGTERM y cierra antes de que el balanceador se entere de que ya no esta: hay que fallar primero el readiness probe, dejar que se propague la retirada y drenar las peticiones en vuelo (hook preStop y un terminationGracePeriod suficiente)"
       ],
       "options_en": [
-        "The load balancer does not support zero-downtime deployments",
-        "There are not enough replicas: maxReplicas must be raised to cover the rollout",
-        "The liveness probe is restarting the new replicas before they finish starting up",
+        "The specific load balancer this team uses does not support zero-downtime deployments at all, so every replica update inevitably causes a window of outages visible to every end user",
+        "There are not enough available replicas: `maxReplicas` must be raised to cover the whole rollout",
+        "The liveness probe is restarting the new replicas before they finish starting up completely",
         "The pod receives SIGTERM and closes before the balancer learns it is gone: the readiness probe must fail first, the removal must propagate, and in-flight requests must drain (preStop hook plus a sufficient terminationGracePeriod)"
       ],
       "correct_index": 3,
@@ -321,15 +321,15 @@
       "question_en": "A backend starts responding slowly. The client retries up to 3 times and, with nobody coordinating it, the load balancer also has 2 retries configured. What happens?",
       "options_es": [
         "Los reintentos se multiplican capa a capa (3 x 2 = hasta 6 intentos por peticion de usuario): justo cuando el backend esta peor recibe varias veces mas carga. Hay que reintentar en UNA sola capa y acotarla con un presupuesto de reintentos",
-        "El balanceador detecta los reintentos del cliente y desactiva los suyos automaticamente",
-        "No pasa nada relevante: los reintentos solo se consumen cuando la peticion falla del todo",
-        "Los reintentos de las dos capas se anulan entre si y la carga efectiva baja"
+        "El balanceador detecta de forma automática los reintentos que ya está haciendo el cliente y desactiva los suyos propios sin que nadie tenga que tocar ninguna configuración, evitando así cualquier duplicidad de intentos hacia el backend saturado",
+        "No ocurre nada relevante, porque los reintentos solo se consumen cuando la petición falla por completo",
+        "Los reintentos de ambas capas se cancelan entre sí y la carga efectiva sobre el backend termina bajando"
       ],
       "options_en": [
         "Retries multiply layer by layer (3 x 2 = up to 6 attempts per user request): exactly when the backend is worst it receives several times more load. Retry in ONE layer only and bound it with a retry budget",
-        "The balancer detects the client's retries and disables its own automatically",
-        "Nothing relevant happens: retries are only consumed when the request fails outright",
-        "The retries from the two layers cancel each other out and effective load drops"
+        "The balancer automatically detects the retries the client is already making and disables its own without anyone needing to touch any configuration, avoiding any duplication of attempts toward the saturated backend",
+        "Nothing relevant happens, because retries are only consumed when the request fails outright",
+        "The retries from both layers cancel each other out and the effective load on the backend ends up dropping"
       ],
       "correct_index": 0,
       "explanation_es": "La amplificación de reintentos es multiplicativa, no aditiva, y por eso convierte una degradación en una caída total. Con tres capas de tres reintentos cada una son hasta 27 intentos por petición de usuario. La tercera opción es la más tentadora porque en regimen normal es cierta: mientras todo va bien casi ningún reintento se gasta, así que el problema es invisible en pruebas y aparece solo el día del incidente. Las defensas son: reintentar en una única capa (normalmente la más cercana al usuario), presupuesto de reintentos (por ejemplo, como máximo un 10% de reintentos sobre el tráfico base), retroceso exponencial con jitter, y no reintentar nunca los errores que no van a cambiar de respuesta.",
@@ -350,16 +350,16 @@
       "question_es": "El endpoint /health de un servicio devuelve 200 siempre que el proceso este vivo, sin comprobar nada más. La base de datos lleva diez minutos caída y todas las peticiones reales fallan. ¿Qué hace el balanceador de carga?",
       "question_en": "A service's /health endpoint returns 200 as long as the process is alive, checking nothing else. The database has been down for ten minutes and every real request fails. What does the load balancer do?",
       "options_es": [
-        "Retira todas las instancias y el servicio se queda sin backends sanos",
+        "Retira de golpe todas las instancias del grupo entero y el servicio se queda sin ningún backend sano al que poder enrutar el tráfico entrante",
         "Sigue mandando trafico a todas las instancias: el check solo demuestra que el proceso vive, no que sea capaz de servir peticiones",
-        "Detecta los codigos 500 de las respuestas reales y retira las instancias automaticamente",
-        "Pone el servicio en modo de solo lectura hasta que la base de datos vuelva"
+        "Detecta los códigos 500 devueltos en las peticiones reales y retira automáticamente esas instancias",
+        "Pone el servicio entero en modo de solo lectura hasta que la base de datos vuelva a estar disponible"
       ],
       "options_en": [
-        "It removes every instance and the service is left with no healthy backends",
+        "It removes every single instance in the whole group at once, leaving the service with no healthy backend left for the incoming traffic",
         "It keeps sending traffic to every instance: the check only proves the process is alive, not that it can serve requests",
-        "It detects the 500s in the real responses and removes the instances automatically",
-        "It puts the service into read-only mode until the database comes back"
+        "It detects the 500 codes returned by the real requests and automatically removes those instances",
+        "It puts the entire service into read-only mode until the database becomes available again"
       ],
       "correct_index": 1,
       "explanation_es": "Un health check superficial responde a la pregunta equivocada. La segunda opción es lo que pasaría con un check profundo que consulta la base de datos, y de ahí viene la lección importante: un check que depende de una dependencia compartida saca TODAS las instancias a la vez y convierte una degradación en una caída total. Por eso se separan liveness (¿sigo vivo? superficial, provoca reinicio) y readiness (¿puedo servir? más profundo, provoca retirada), y se prefiere degradar sirviendo respuestas parciales o cacheadas antes que retirarse en bloque. La tercera describe la detección pasiva de errores (outlier detection), que existe pero hay que activarla y no es lo que hacen los health checks activos. La cuarta atribuye al balanceador una decisión que solo puede tomar la aplicación.",
@@ -426,15 +426,15 @@
       "question_en": "In a leaderless replicated store with N = 5 replicas, the team sets W = 2 and R = 2 'so everything is fast'. Which guarantee have they just given up?",
       "options_es": [
         "Pierden el solapamiento de quorum: con W + R = 4, que no supera N = 5, puede haber lecturas que no toquen ninguna replica con la ultima escritura, asi que se puede leer un valor obsoleto",
-        "Pierden durabilidad, pero la consistencia de las lecturas se mantiene intacta",
-        "Ninguna: mientras W y R sean mayores que 1, toda lectura ve la ultima escritura confirmada",
-        "Pierden la tolerancia a particiones, porque un quorum exige por definicion mayoria estricta"
+        "Pierden durabilidad frente a fallos de disco simultáneos en varias réplicas a la vez, pero la consistencia percibida por cada lectura individual permanece completamente intacta ante cualquier fallo",
+        "Ninguna: mientras W y R sean mayores que uno, toda lectura ve garantizada la última escritura confirmada",
+        "Pierden la tolerancia a particiones, porque un quorum exige por definición mayoría estricta sobre N"
       ],
       "options_en": [
         "They lose quorum overlap: with W + R = 4, which does not exceed N = 5, a read may touch no replica holding the latest write, so a stale value can be returned",
-        "They lose durability, but read consistency stays intact",
-        "None: as long as W and R are greater than 1, every read sees the last committed write",
-        "They lose partition tolerance, because a quorum by definition requires a strict majority"
+        "They lose durability against simultaneous disk failures across several replicas at once, but the consistency perceived by each individual read stays completely intact no matter what fails",
+        "None: as long as W and R are greater than one, every read is guaranteed to see the last committed write",
+        "They lose partition tolerance, because a quorum by definition requires a strict majority over N"
       ],
       "correct_index": 0,
       "explanation_es": "La condición que hace útil un quorum es W + R > N, porque entonces el conjunto de réplicas que confirmo la escritura y el conjunto que responde la lectura comparten al menos una réplica, y esa trae el valor nuevo. Con W + R <= N no hay solape garantizado y se lee pasado. La primera opción es el atajo mental más común ('con que haya varias, ya'). La segunda separa mal los conceptos: aquí sí hay dos copias, o sea alguna durabilidad; lo que falla es la lectura. La cuarta confunde quorum con mayoria: un quorum no tiene por qué ser mayoritario, aunque los quorum mayoritarios (W = R = 3 con N = 5) son los que además evitan el cerebro dividido durante una partición. Y ojo: incluso con W + R > N, los quorum laxos (sloppy quorums) rompen la garantía, porque las escrituras pueden aterrizar en nodos que no pertenecen a las N réplicas de esa clave.",
@@ -455,16 +455,16 @@
       "question_es": "Un usuario edita su perfil, recarga la página y ve los datos antiguos. La escritura fue al primario y la lectura cayó en una réplica con retardo. ¿Qué garantía falta y cuál es el arreglo más simple?",
       "question_en": "A user edits their profile, reloads the page and sees the old data. The write went to the primary and the read landed on a lagging replica. Which guarantee is missing and what is the simplest fix?",
       "options_es": [
-        "Falta linealizabilidad, y la unica forma de recuperarla es envolver cada escritura en una transaccion distribuida con 2PC",
-        "Falta consistencia eventual: hay que esperar a que las replicas converjan y avisar al usuario mientras tanto",
+        "Falta linealizabilidad; la única forma de recuperarla por completo es envolver cada escritura en un commit en dos fases (2PC) que bloquea hasta que todas las réplicas confirman la operación",
+        "Falta consistencia eventual; conviene mostrar un aviso de sincronización al usuario mientras las réplicas terminan de converger",
         "Falta la consistencia 'lee tus propias escrituras': basta con que ESE usuario lea del primario (o de una replica suficientemente al dia) durante un rato despues de haber escrito",
-        "Falta tolerancia a particiones: hay que añadir mas replicas para que alguna este al dia"
+        "Falta tolerancia a particiones; conviene desplegar réplicas en más regiones para que la red nunca quede aislada"
       ],
       "options_en": [
-        "Linearizability is missing, and the only way to get it back is wrapping every write in a distributed transaction with 2PC",
-        "Eventual consistency is missing: you must wait for the replicas to converge and warn the user meanwhile",
+        "Linearizability is missing; the only way to fully get it back is wrapping each write in a two-phase commit (2PC) that blocks until every replica confirms the operation",
+        "Eventual consistency is missing; it helps to show the user a syncing notice while the replicas finish converging",
         "Read-your-own-writes consistency is missing: it is enough for THAT user to read from the primary (or a sufficiently up-to-date replica) for a while after writing",
-        "Partition tolerance is missing: add more replicas so at least one is current"
+        "Partition tolerance is missing; more replicas should be deployed across regions so the network is never isolated"
       ],
       "correct_index": 2,
       "explanation_es": "Leer tus propias escrituras es una garantía por usuario, mucho más barata que la consistencia global: nadie exige que el resto del mundo vea el cambio al instante, solo que quien lo hizo no vea desaparecer su propio trabajo. Se implementa leyendo del primario lo que ese usuario ha modificado recientemente, o comparando la marca lógica de la escritura con la posición de la réplica. La primera opción es típica de quien ha aprendido los nombres más fuertes: pide linealizabilidad global y 2PC para un problema local, con un coste enorme. La tercera invierte los términos, porque consistencia eventual es justo lo que YA tienen, y es la causa del síntoma. La cuarta confunde CAP con retardo de replicación: aquí no hay ninguna partición, solo latencia, y añadir réplicas no la reduce.",
@@ -485,16 +485,16 @@
       "question_es": "¿Por que una transacción distribuida con commit en dos fases (2PC) reduce la disponibilidad respecto a hacer las mismas operaciones de forma local e independiente en cada servicio?",
       "question_en": "Why does a distributed transaction with two-phase commit (2PC) reduce availability compared with performing the same operations locally and independently in each service?",
       "options_es": [
-        "Porque 2PC no garantiza atomicidad y obliga a reintentar la transaccion completa cada vez",
-        "Porque 2PC necesita relojes sincronizados con precision de microsegundos entre todos los participantes",
+        "Porque 2PC no llega a garantizar atomicidad entre los participantes y obliga a reintentar la transacción completa desde cero cada vez que cualquiera de los participantes falla en cualquier fase del proceso completo",
+        "Porque 2PC exige que los relojes de todos los participantes estén sincronizados con precisión de microsegundos antes de empezar",
         "Porque la transaccion solo puede terminar si TODOS los participantes estan disponibles, y si el coordinador cae despues del 'prepare' los participantes quedan en duda manteniendo sus cerrojos hasta que vuelva",
-        "Porque 2PC replica los datos en todos los participantes y multiplica el almacenamiento"
+        "Porque 2PC replica físicamente los datos en cada participante, lo que multiplica el espacio de almacenamiento necesario"
       ],
       "options_en": [
-        "Because 2PC does not guarantee atomicity and forces the whole transaction to be retried every time",
-        "Because 2PC needs clocks synchronized to microsecond precision across all participants",
+        "Because 2PC does not truly guarantee atomicity across participants and forces the entire transaction to be retried from scratch whenever any participant fails at any stage of the whole process",
+        "Because 2PC requires every participant's clock to be synchronized to microsecond precision before it can begin",
         "Because the transaction can only finish if EVERY participant is available, and if the coordinator dies after 'prepare' the participants are left in doubt holding their locks until it returns",
-        "Because 2PC replicates the data to every participant and multiplies storage"
+        "Because 2PC physically replicates the data onto every participant, multiplying the storage space required"
       ],
       "correct_index": 2,
       "explanation_es": "La disponibilidad de 2PC es el producto de las disponibilidades de los participantes: cinco servicios al 99,9% dan 99,5%, y basta que uno falte para que nada se confirme. Peor aún es la fase de duda: tras responder 'preparado', un participante ha renunciado a decidir por su cuenta y debe mantener los cerrojos hasta que el coordinador diga algo; si el coordinador muere, esos cerrojos bloquean a todos los demás y hace falta intervención manual. La primera opción es falsa en su premisa: 2PC sí es atómico, ese es precisamente su propósito. La segunda describe a Spanner y TrueTime, que resuelve otro problema (ordenación externa). La tercera confunde transacción con replicación. Por esto los sistemas grandes prefieren sagas con compensaciones y consistencia eventual.",
@@ -571,16 +571,16 @@
       "question_es": "Dos réplicas aceptan escrituras concurrentes sobre la misma clave y el almacén resuelve conflictos con last-write-wins usando la marca de tiempo del cliente:\n\n```\nReplica A:  SET carrito = [\"libro\"]     ts = 1000\nReplica B:  SET carrito = [\"lampara\"]   ts = 1002\n```\n\nCuando las réplicas se reconcilian, ¿qué devuelve GET carrito?",
       "question_en": "Two replicas accept concurrent writes to the same key and the store resolves conflicts with last-write-wins using the client timestamp:\n\n```\nReplica A:  SET cart = [\"book\"]     ts = 1000\nReplica B:  SET cart = [\"lamp\"]     ts = 1002\n```\n\nWhen the replicas reconcile, what does GET cart return?",
       "options_es": [
-        "[\"libro\", \"lampara\"] - el almacen une ambas escrituras porque el valor es una lista",
+        "[\"libro\", \"lampara\"] - el almacén fusiona automáticamente ambos valores porque detecta que se trata de listas compatibles entre sí",
         "[\"lampara\"] - gana la marca de tiempo mayor y la escritura de A se descarta en silencio, aunque fue confirmada al cliente",
-        "[\"libro\"] - gana la primera escritura, porque el valor ya estaba establecido cuando llego la segunda",
-        "Un error de conflicto que el cliente debe resolver antes de poder volver a leer"
+        "[\"libro\"] - gana la primera escritura confirmada, y la de B se descarta por haber llegado después",
+        "Un error de conflicto que obliga al cliente a resolverlo manualmente antes de poder leer la clave otra vez"
       ],
       "options_en": [
-        "[\"book\", \"lamp\"] - the store merges both writes because the value is a list",
+        "[\"book\", \"lamp\"] - the store automatically merges both values because it detects they are compatible lists with each other",
         "[\"lamp\"] - the higher timestamp wins and A's write is silently discarded, even though it was acknowledged to the client",
-        "[\"book\"] - the first write wins, because the value was already set when the second arrived",
-        "A conflict error that the client must resolve before it can read again"
+        "[\"book\"] - the first confirmed write wins, and B's write is discarded for arriving later",
+        "A conflict error that forces the client to resolve it manually before the key can be read again"
       ],
       "correct_index": 1,
       "explanation_es": "Last-write-wins consigue convergencia a costa de durabilidad: de dos escrituras concurrentes, una desaparece sin dejar rastro pese a haber recibido un ACK. La primera opción es la más tentadora porque es lo que uno querría que pasara con un carrito de la compra, y es exactamente lo que hace un CRDT de conjunto o el modelo de hermanos de Dynamo, pero LWW no mira el contenido del valor: compara marcas y tira el resto. La tercera invierte la regla. La cuarta describe el comportamiento de un almacén que devuelve versiones en conflicto (como Riak con allow_mult), que es una opción de diseño distinta y más segura, pero no es LWW. El agravante práctico es que estas marcas vienen de relojes de pared de máquinas distintas: con una deriva de unos milisegundos, la escritura que 'gana' puede ser realmente la anterior.",
@@ -621,15 +621,15 @@
       "question_en": "In a Twitter-style timeline, 'fan-out on write' (writing each post into every follower's precomputed inbox) works very well until an account with 30 million followers shows up. What is the solution used in practice?",
       "options_es": [
         "Un enfoque hibrido: fan-out en escritura para la inmensa mayoria de cuentas, y para las pocas con muchisimos seguidores dejar sus publicaciones fuera de las bandejas y mezclarlas en el momento de leer el timeline",
-        "Limitar por politica el numero maximo de seguidores que puede tener una cuenta",
-        "Volver por completo al fan-out en lectura para todos los usuarios, que es el unico enfoque que escala",
-        "Guardar todos los timelines en una unica tabla sin particionar, indexada por fecha de publicacion"
+        "Limitar por política interna y fija el número máximo de seguidores que una sola cuenta puede llegar a acumular, para no tener nunca que lidiar con ese caso extremo en ningún momento de la operación diaria del producto",
+        "Volver por completo al fan-out en lectura para todas las cuentas, que es el único enfoque que escala de verdad",
+        "Guardar todos los timelines en una única tabla sin particionar, indexada solo por fecha de publicación"
       ],
       "options_en": [
         "A hybrid: fan-out on write for the vast majority of accounts, and for the few with enormous follower counts keep their posts out of the inboxes and merge them in at timeline read time",
-        "Cap by policy the maximum number of followers an account may have",
-        "Go fully back to fan-out on read for every user, which is the only approach that scales",
-        "Store every timeline in a single unpartitioned table indexed by publication date"
+        "Capping by a fixed internal policy the maximum number of followers a single account can ever accumulate, so day-to-day product operation never has to deal with that extreme case at all",
+        "Going fully back to fan-out on read for every account, which is the only approach that truly scales",
+        "Storing every timeline in a single unpartitioned table, indexed only by publication date"
       ],
       "correct_index": 0,
       "explanation_es": "El fan-out en escritura convierte una publicación en millones de escrituras, lo que es perfecto cuando las lecturas dominan (la gente abre el timeline mucho más de lo que publica) y catastrófico para una celebridad. El fan-out en lectura tiene el problema inverso: cada apertura del timeline consulta a cientos de cuentas seguidas, y eso encarece la operación más frecuente del producto. La primera opción es tentadora porque resuelve el caso extremo, pero paga el coste en el 99,99% del tráfico que no lo necesita. La segunda 'resuelve' el problema técnico eliminando el caso de uso que da valor al producto. La cuarta ignora que el volumen es precisamente lo que obliga a particionar. Lo hibrido gana porque las dos poblaciones tienen perfiles de carga distintos y merecen mecanismos distintos.",
@@ -650,16 +650,16 @@
       "question_es": "Una pasarela de pagos reintenta la petición cuando expira su tiempo de espera, pero el primer intento sí había llegado y se había procesado; solo se perdió la respuesta. ¿Qué mecanismo evita el cobro duplicado?",
       "question_en": "A payment gateway retries the request when its timeout expires, but the first attempt did arrive and was processed; only the response was lost. Which mechanism prevents the duplicate charge?",
       "options_es": [
-        "Bajar el tiempo de espera para que no de tiempo a que el primer intento llegue al receptor",
+        "Reducir de forma bastante agresiva el tiempo de espera configurado, para que el primer intento nunca llegue a alcanzar por completo al receptor situado al otro lado de la conexión de red del gateway",
         "Una clave de idempotencia por operacion: el receptor guarda la clave junto al resultado y, si vuelve a verla, devuelve el resultado original en lugar de ejecutar el cobro otra vez (receptor idempotente)",
-        "Lanzar el reintento desde un nodo distinto del que hizo el primer intento",
-        "Envolver la operacion en una transaccion ACID dentro del servicio de pagos"
+        "Lanzar el reintento desde un nodo distinto al que hizo la primera petición para repartir la carga",
+        "Envolver toda la operación en una transacción ACID dentro del propio servicio de pagos"
       ],
       "options_en": [
-        "Lower the timeout so the first attempt never has time to reach the receiver",
+        "Fairly aggressively lowering the configured timeout, so the first attempt never manages to fully reach the receiver on the other side of the gateway's network connection",
         "An idempotency key per operation: the receiver stores the key alongside the result and, if it sees it again, returns the original result instead of charging again (idempotent receiver)",
-        "Issue the retry from a different node than the one that made the first attempt",
-        "Wrap the operation in an ACID transaction inside the payment service"
+        "Issuing the retry from a different node than the one that made the first request, to spread the load",
+        "Wrapping the whole operation in an ACID transaction inside the payment service itself"
       ],
       "correct_index": 1,
       "explanation_es": "En una red asíncrona, un tiempo de espera agotado no distingue 'no llego' de 'llego y se perdió la respuesta', así que cualquier entrega fiable acaba siendo al-menos-una-vez y la deduplicación tiene que hacerla el receptor. La clave de idempotencia (generada por el cliente, única por intención de negocio, no por intento) es el mecanismo estándar. La opción de ACID es la más tentadora y la más peligrosa: cada intento es una transacción perfectamente atómica y correcta por separado, y dos transacciones correctas cobran dos veces; ACID protege la consistencia interna de UNA operación, no la unicidad entre peticiones. Bajar el timeout solo cambia la probabilidad, nunca el caso. Y reintentar desde otro nodo empeora el problema al añadir una carrera entre nodos.",
@@ -680,16 +680,16 @@
       "question_es": "Una API pública necesita absorber ráfagas cortas de peticiones pero mantener la media de cada cliente en 100 req/s. ¿Qué algoritmo de limitación encaja mejor y por que?",
       "question_en": "A public API needs to absorb short bursts of requests while holding each client's average at 100 req/s. Which rate-limiting algorithm fits best, and why?",
       "options_es": [
-        "Ninguno: basta con confiar en el autoescalado para absorber cualquier pico de un cliente",
-        "Ventana fija por minuto: es exacta y, por construccion, no permite rafagas en ningun punto de la ventana",
+        "Ninguno en particular: basta con confiar por completo en el autoescalado del clúster para absorber cualquier pico repentino de un solo cliente",
+        "Ventana fija por minuto: es exacta y, por construcción, no permite ninguna ráfaga en ningún punto de la ventana",
         "Token bucket: acumula fichas hasta un tope, asi una rafaga consume el saldo ahorrado mientras la recarga constante fija la media a largo plazo",
-        "Leaky bucket con salida a ritmo constante, que es la unica forma de permitir rafagas"
+        "Leaky bucket con salida a ritmo constante, que es el único algoritmo capaz de permitir ráfagas cortas"
       ],
       "options_en": [
-        "None: just trust autoscaling to absorb any single client's spike",
-        "Fixed window per minute: it is exact and, by construction, permits no bursts anywhere in the window",
+        "None in particular: it is enough to fully trust the cluster's autoscaling to absorb any single client's sudden spike",
+        "Fixed window per minute: it is exact and, by construction, permits no burst anywhere in the window",
         "Token bucket: it accumulates tokens up to a cap, so a burst spends the saved balance while the constant refill pins the long-run average",
-        "Leaky bucket with a constant drain rate, which is the only way to allow bursts"
+        "Leaky bucket with a constant drain rate, the only algorithm capable of allowing short bursts"
       ],
       "correct_index": 2,
       "explanation_es": "El token bucket separa los dos parámetros que interesan: la tasa de recarga fija la media y el tamaño del cubo fija cuánta ráfaga se tolera. La segunda opción contiene la falsedad más instructiva: la ventana fija es justo la que SÍ permite ráfagas, y además en el peor sitio, porque un cliente puede gastar su cuota entera al final de un minuto y otra entera al principio del siguiente, logrando el doble del límite en un instante; ese es el fallo de borde que motivó la ventana deslizante. La cuarta invierte las semánticas: el leaky bucket alisa la salida a ritmo constante y por eso NO deja pasar ráfagas, es el complemento del token bucket, no su versión burstable. Y delegar en el autoescalado deja la puerta abierta a que un solo cliente convierta su error en tu factura y en la caída de todos los demás.",

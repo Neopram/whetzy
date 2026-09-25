@@ -8,15 +8,15 @@
       "question_es": "¿Cuál es la característica que mejor define una arquitectura de microservicios?",
       "question_en": "Which characteristic best defines a microservices architecture?",
       "options_es": [
-        "Una única aplicación grande desplegada como un solo proceso",
-        "Cualquier aplicación escrita en varios lenguajes",
-        "Un programa que usa muchos hilos (threads)",
+        "Una arquitectura en capas donde presentación, lógica de negocio y acceso a datos viven en el mismo proceso desplegado como unidad",
+        "Cualquier sistema distribuido que use contenedores Docker y un orquestador como Kubernetes para su despliegue en producción",
+        "Un monolito modular donde los módulos internos se comunican por llamadas de función dentro del mismo binario compilado, desplegado siempre como una sola unidad",
         "La aplicación se estructura como un conjunto de servicios pequeños, desplegables de forma independiente y organizados en torno a capacidades de negocio"
       ],
       "options_en": [
-        "A single large application deployed as one process",
-        "Any application written in several languages",
-        "A program that uses many threads",
+        "A layered architecture where presentation, business logic and data access all live inside the same deployed process",
+        "Any distributed system that uses Docker containers and an orchestrator like Kubernetes to deploy into production",
+        "A modular monolith whose internal modules communicate through in-process function calls inside one compiled binary, always deployed as a single unit",
         "The application is structured as a set of small, independently deployable services organized around business capabilities"
       ],
       "correct_index": 3,
@@ -63,15 +63,15 @@
       "question_en": "Which non-trivial drawback do microservices introduce compared to a monolith?",
       "options_es": [
         "Complejidad operativa y distribuida: fallos parciales de red, latencia, consistencia de datos, despliegue y observabilidad de muchos servicios",
-        "Es imposible escribir tests",
-        "No se pueden usar bases de datos",
-        "Solo funcionan con un lenguaje de programación"
+        "La imposibilidad práctica de escribir pruebas automatizadas de extremo a extremo para el conjunto del sistema distribuido y sus muchos servicios",
+        "La incapacidad de usar bases de datos relacionales en ninguno de los servicios que componen el sistema completo",
+        "La obligación de escribir absolutamente todos los servicios en el mismo lenguaje y con el mismo framework web"
       ],
       "options_en": [
         "Operational and distributed complexity: partial network failures, latency, data consistency, deployment and observability across many services",
-        "It's impossible to write tests",
-        "You can't use databases",
-        "They only work with one programming language"
+        "The practical impossibility of writing automated end-to-end tests for the whole distributed system and its many services",
+        "The inability to use relational databases in any of the services that make up the whole system",
+        "The requirement to write absolutely every service in the same language and with the same web framework"
       ],
       "correct_index": 0,
       "explanation_es": "Los microservicios trasladan complejidad del código a la operación y la red: ahora hay fallos parciales, latencia entre servicios, consistencia distribuida, y mucho que desplegar y monitorear. Por eso muchos recomiendan empezar con un monolito (bien modularizado) y extraer servicios solo cuando el dolor lo justifique ('monolith first').",
@@ -116,16 +116,16 @@
       "question_es": "¿Qué significa que los microservicios deben tener 'alta cohesión y bajo acoplamiento'?",
       "question_en": "What does it mean that microservices should have 'high cohesion and low coupling'?",
       "options_es": [
-        "Que deben compartir todo su código",
-        "Que todos los servicios deben estar en el mismo repositorio",
+        "Que todo el equipo comparta un único repositorio monolítico y un único pipeline de integración continua para todos los servicios y que además cada equipo despliegue su servicio siguiendo el mismo calendario fijo que los demas equipos",
+        "Que cada servicio exponga el mayor número posible de endpoints internos hacia el resto de servicios del sistema, maximizando en su lugar la cantidad de llamadas cruzadas entre ellos",
         "Que el comportamiento relacionado vive junto dentro de un servicio (cohesión), y los servicios dependen lo mínimo entre sí (acoplamiento), de modo que un cambio afecte idealmente a un solo servicio",
-        "Que deben desplegarse siempre juntos"
+        "Que los servicios se desplieguen siempre en el mismo host físico para minimizar la latencia de red entre ellos, reduciendo así la necesidad de coordinar despliegues entre equipos distintos"
       ],
       "options_en": [
-        "That they must share all their code",
-        "That all services must be in the same repository",
+        "That the whole team shares one monolithic repository and one continuous-integration pipeline for every service and that every team deploys its service following the exact same fixed calendar as every other team",
+        "That each service exposes as many internal endpoints as possible toward the rest of the services in the system, maximizing instead the number of cross-calls made between them",
         "That related behavior lives together inside a service (cohesion), and services depend on each other as little as possible (coupling), so a change ideally affects only one service",
-        "That they must always be deployed together"
+        "That services are always deployed on the same physical host to minimize network latency between them, thereby reducing the need to coordinate deployments across different teams"
       ],
       "correct_index": 2,
       "explanation_es": "Alta cohesión significa agrupar lo que cambia junto dentro del mismo servicio; bajo acoplamiento significa minimizar las dependencias entre servicios. El objetivo práctico es que una funcionalidad nueva o un cambio se implemente modificando y desplegando un único servicio. Si un cambio típico obliga a tocar varios servicios a la vez, los límites están mal trazados.",
@@ -168,16 +168,16 @@
       "question_es": "¿Cuál es la diferencia fundamental entre comunicación síncrona y asíncrona entre servicios?",
       "question_en": "What is the fundamental difference between synchronous and asynchronous communication between services?",
       "options_es": [
-        "La síncrona solo usa JSON y la asíncrona solo XML",
-        "La asíncrona es siempre más lenta",
+        "La síncrona siempre usa gRPC sobre HTTP/2 y la asíncrona siempre usa REST sobre JSON plano, sin que exista ningun broker intermedio de por medio, de modo que ambos estilos terminan siendo indistinguibles a nivel de protocolo de transporte usado",
+        "En la asíncrona el emisor bloquea su propio hilo de ejecución hasta que recibe una confirmación explicita del receptor esperado",
         "En la síncrona el emisor espera la respuesta antes de continuar (p. ej. HTTP request/response); en la asíncrona envía el mensaje y continúa sin esperar (p. ej. a través de una cola)",
-        "No hay diferencia real"
+        "La diferencia es solo de formato: la síncrona usa siempre datos binarios comprimidos y la asíncrona usa siempre texto plano legible por humanos"
       ],
       "options_en": [
-        "Synchronous only uses JSON and asynchronous only XML",
-        "Asynchronous is always slower",
+        "Synchronous always uses gRPC over HTTP/2 and asynchronous always uses plain-JSON REST, with no broker sitting in between them at all, so that both styles end up being indistinguishable at the level of transport protocol used",
+        "In asynchronous the sender blocks its own execution thread until it receives an explicit confirmation from the expected receiver",
         "In synchronous the sender waits for the response before continuing (e.g. HTTP request/response); in asynchronous it sends the message and continues without waiting (e.g. via a queue)",
-        "There is no real difference"
+        "The difference is only about format: synchronous always uses compressed binary data and asynchronous always uses human-readable plain text"
       ],
       "correct_index": 2,
       "explanation_es": "En la comunicación síncrona (como una llamada HTTP), el servicio que llama se bloquea esperando la respuesta, lo que crea acoplamiento temporal: si el destino está caído, la llamada falla. En la asíncrona (mensajes/eventos vía broker), el emisor no espera, ganando desacoplamiento y resiliencia a costa de mayor complejidad y consistencia eventual.",
@@ -223,16 +223,16 @@
       "question_es": "¿Qué es gRPC y por qué se usa a menudo para comunicación interna entre microservicios?",
       "question_en": "What is gRPC and why is it often used for internal communication between microservices?",
       "options_es": [
-        "Una base de datos NoSQL",
+        "Un motor de base de datos orientado a documentos, pensado para almacenar el estado compartido entre microservicios distintos del sistema",
         "Un framework RPC de alto rendimiento sobre HTTP/2 que usa Protocol Buffers (contratos binarios y tipados), eficiente para comunicación de baja latencia entre servicios",
-        "Un formato de imagen",
-        "Un sustituto de Git"
+        "Un protocolo de enrutamiento de paquetes a nivel de red, usado internamente por los routers entre subredes distintas de la misma organización, encargado de decidir por que interfaz de red física sale cada paquete IP generado",
+        "Un formato de compresión de imagenes sin perdidas, pensado para reducir el ancho de banda consumido por la UI"
       ],
       "options_en": [
-        "A NoSQL database",
+        "A document-oriented database engine, meant to store the shared state between distinct microservices in a system",
         "A high-performance RPC framework over HTTP/2 using Protocol Buffers (binary, typed contracts), efficient for low-latency service-to-service communication",
-        "An image format",
-        "A replacement for Git"
+        "A network-layer packet routing protocol, used internally by routers to forward traffic between different subnets of the same organization, responsible for deciding which physical network interface each generated IP packet leaves through",
+        "A lossless image compression format, meant to reduce the bandwidth consumed by the user interface layer"
       ],
       "correct_index": 1,
       "explanation_es": "gRPC usa HTTP/2 y Protocol Buffers para serializar mensajes de forma binaria y compacta a partir de un contrato tipado (.proto), ofreciendo alto rendimiento, streaming y generación de clientes. Es popular para tráfico interno servicio-a-servicio, donde importa la eficiencia; REST/JSON suele preferirse en APIs públicas por su ubicuidad y legibilidad.",
@@ -386,16 +386,16 @@
       "question_es": "¿Qué propone el patrón 'Backend for Frontend' (BFF)?",
       "question_en": "What does the 'Backend for Frontend' (BFF) pattern propose?",
       "options_es": [
-        "Un solo backend gigante para todo",
+        "Fusionar todos los microservicios existentes en un único monolito accesible desde un solo endpoint compartido por todos los clientes distintos, eliminando así cualquier necesidad de mantener contratos de API separados",
         "Crear un gateway/backend a medida para cada tipo de cliente (por ejemplo, uno para la app móvil y otro para la web), adaptando datos y llamadas a las necesidades de cada UI",
-        "Eliminar el frontend por completo",
-        "Que el frontend acceda directamente a la base de datos"
+        "Duplicar la base de datos completa de cada servicio para que el cliente móvil consulte siempre una copia local propia",
+        "Obligar a cada cliente distinto a implementar su propia lógica de autenticación sin pasar nunca por el backend común"
       ],
       "options_en": [
-        "A single giant backend for everything",
+        "Merging every existing microservice into a single monolith reachable through one endpoint shared by every distinct client, thereby removing any need to maintain separate API contracts for each one",
         "Creating a tailored gateway/backend for each client type (e.g. one for the mobile app and another for the web), adapting data and calls to each UI's needs",
-        "Removing the frontend entirely",
-        "Having the frontend access the database directly"
+        "Duplicating each service's entire database so the mobile client always queries its own local copy of the data",
+        "Forcing every distinct client to implement its own authentication logic without ever going through the shared backend"
       ],
       "correct_index": 1,
       "explanation_es": "BFF crea un backend específico por experiencia de cliente: una app móvil necesita respuestas ligeras y pocas llamadas, mientras la web puede querer datos más ricos. En lugar de un gateway genérico que intente servir a todos, cada BFF adapta la agregación y el formato a su cliente, evitando compromisos que perjudican a todos.",
@@ -495,15 +495,15 @@
       "question_en": "What problem does 'service discovery' solve?",
       "options_es": [
         "Localizar dinámicamente la dirección de red (host/puerto) de las instancias de un servicio, que cambian al escalar, reiniciar o moverse entre nodos",
-        "Encontrar bugs en el código",
-        "Descubrir nuevos usuarios",
-        "Comprimir los datos de red"
+        "Comprimir el tráfico de red que circula entre los servicios para reducir la latencia percibida de cada respuesta",
+        "Generar de forma automática la documentación pública de la API que expone cada uno de los microservicios del sistema completo, incluyendo ejemplos de petición y respuesta generados a partir del código fuente",
+        "Repartir de forma equitativa la carga de CPU entre los distintos nodos físicos que forman el cluster de despliegue"
       ],
       "options_en": [
         "Dynamically locating the network address (host/port) of a service's instances, which change as they scale, restart, or move between nodes",
-        "Finding bugs in the code",
-        "Discovering new users",
-        "Compressing network data"
+        "Compressing the network traffic that flows between services to reduce the perceived latency of each response",
+        "Automatically generating the public API documentation that each microservice in the whole system exposes to clients, including request and response examples generated straight from the source code",
+        "Evenly distributing CPU load across the different physical nodes that make up the deployment cluster"
       ],
       "correct_index": 0,
       "explanation_es": "En entornos dinámicos (contenedores, autoescalado), las instancias de un servicio aparecen y desaparecen con IPs cambiantes, así que hardcodear direcciones no funciona. El service discovery mantiene un registro actualizado de dónde está cada instancia sana, permitiendo que los clientes encuentren un destino válido en tiempo de ejecución.",
@@ -523,15 +523,15 @@
       "question_es": "¿Cuál es la diferencia entre 'client-side discovery' y 'server-side discovery'?",
       "question_en": "What is the difference between 'client-side discovery' and 'server-side discovery'?",
       "options_es": [
-        "No existe tal distinción",
-        "Server-side no usa registro de servicios",
-        "Client-side solo funciona en el navegador",
+        "Client-side usa siempre resolución DNS pura sin ningun registro adicional, y server-side usa siempre un registro mantenido únicamente en memoria volátil, sin que ninguno de los dos necesite nunca consultar ningun registro central",
+        "Server-side discovery solo puede usarse dentro de un único centro de datos físico, nunca entre regiones geográficas distintas del mismo proveedor",
+        "Client-side delega toda la lógica de balanceo de carga en el propio registro central de servicios, que decide la instancia por el cliente",
         "En client-side, el cliente consulta el registro y elige la instancia (balanceo en el cliente); en server-side, el cliente llama a un balanceador/router que consulta el registro y reenvía la petición"
       ],
       "options_en": [
-        "No such distinction exists",
-        "Server-side doesn't use a service registry",
-        "Client-side only works in the browser",
+        "Client-side always uses plain DNS resolution with no extra registry, and server-side always uses a registry kept purely in volatile memory, with neither of the two ever needing to query any central registry at all",
+        "Server-side discovery can only be used inside a single physical data center, never across different geographic regions of the same provider",
+        "Client-side delegates all the load-balancing logic to the central service registry itself, which decides the instance for the client",
         "In client-side, the client queries the registry and picks the instance (client-side balancing); in server-side, the client calls a load balancer/router that queries the registry and forwards the request"
       ],
       "correct_index": 3,
@@ -579,16 +579,16 @@
       "question_es": "En Kubernetes, ¿cómo encuentra típicamente un pod a otro servicio sin conocer sus IPs cambiantes?",
       "question_en": "In Kubernetes, how does a pod typically find another service without knowing its changing IPs?",
       "options_es": [
-        "Escribiendo las IPs a mano en cada pod",
-        "Preguntando al usuario final",
+        "Cada pod envía un broadcast UDP a toda la red del cluster preguntando quien ofrece de momento ese servicio concreto",
+        "El scheduler de Kubernetes asigna manualmente una IP fija y permanente a cada pod antes de que este llegue a arrancar por primera vez, y ese mismo scheduler debe reasignarla a mano cada vez que el pod se reinicia",
         "A través de un objeto Service con una IP virtual estable (ClusterIP) y un nombre DNS interno; kube-proxy/DNS enrutan a los pods sanos detrás de ese Service",
-        "Kubernetes no soporta descubrimiento de servicios"
+        "Un agente instalado en cada nodo reescribe el archivo hosts de los demas pods con las IPs actuales del servicio cada pocos segundos"
       ],
       "options_en": [
-        "By writing the IPs by hand in each pod",
-        "By asking the end user",
+        "Each pod sends a UDP broadcast across the whole cluster network asking who currently offers that specific service",
+        "The Kubernetes scheduler manually assigns a fixed, permanent IP to each pod before it ever gets to start up for the first time, and that same scheduler must reassign it by hand every time the pod restarts",
         "Through a Service object with a stable virtual IP (ClusterIP) and an internal DNS name; kube-proxy/DNS route to the healthy pods behind that Service",
-        "Kubernetes doesn't support service discovery"
+        "An agent installed on each node rewrites the other pods' hosts file with the service's current IP addresses every few seconds"
       ],
       "correct_index": 2,
       "explanation_es": "Kubernetes provee descubrimiento integrado: un objeto Service da una IP virtual estable (ClusterIP) y un nombre DNS (`mi-servicio.namespace`). Los pods se conectan por ese nombre, y kube-proxy junto con el DNS del clúster enrutan a las instancias (pods) sanas registradas como endpoints del Service, abstrayendo las IPs efímeras de los pods.",

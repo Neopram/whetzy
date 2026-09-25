@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
+import { API_BASE_URL as BASE_URL } from '../services/api';
 
 type Phase = 'login' | 'confirm' | 'done' | 'error';
 

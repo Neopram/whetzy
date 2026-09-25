@@ -52,7 +52,8 @@ Experiment: landing_cta
 
 2. **Start experiment:**
    - Status: `active`
-   - Started: 2026-09-19
+   - Started: *(example — the ledger says this experiment (24.14) was never imported, so it
+     never ran; corrected 2026-09-25)*
 
 3. **Implement on LandingScreen:**
    ```typescript

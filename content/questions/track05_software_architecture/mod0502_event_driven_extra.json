@@ -8,16 +8,16 @@
       "question_es": "En una arquitectura orientada a eventos, un \"evento\" representa típicamente:",
       "question_en": "In an event-driven architecture, an \"event\" typically represents:",
       "options_es": [
-        "una tabla de la base de datos compartida",
-        "un comando que otro servicio debe ejecutar obligatoriamente",
+        "una tabla de la base de datos compartida por igual entre todos los microservicios que componen el sistema entero",
+        "un comando que otro servicio está obligado a ejecutar de forma síncrona en cuanto lo recibe por el canal correspondiente y que rechaza cualquier dato inconsistente",
         "un hecho inmutable que ya ocurrió en el pasado (p.ej. \"OrderPlaced\"), al que otros componentes pueden reaccionar de forma desacoplada",
-        "una llamada RPC síncrona"
+        "una llamada RPC síncrona que bloquea por completo al emisor hasta que llega la respuesta del otro extremo"
       ],
       "options_en": [
-        "a shared database table",
-        "a command that another service must mandatorily execute",
+        "a database table shared equally across every microservice that makes up the entire system",
+        "a command that another service is obliged to execute synchronously as soon as it arrives on the matching channel and rejects any inconsistent data received",
         "an immutable fact that already happened in the past (e.g. \"OrderPlaced\"), which other components can react to in a decoupled way",
-        "a synchronous RPC call"
+        "a synchronous RPC call that fully blocks the sender until the response arrives from the other end"
       ],
       "correct_index": 2,
       "explanation_es": "Un evento describe algo que ya sucedió (hecho consumado, generalmente nombrado en pasado); los consumidores deciden de forma autónoma y desacoplada cómo reaccionar, a diferencia de un comando, que es una orden dirigida a un receptor específico.",
@@ -120,16 +120,16 @@
       "question_es": "En Event Sourcing, el estado actual de un agregado se obtiene:",
       "question_en": "In Event Sourcing, the current state of an aggregate is obtained by:",
       "options_es": [
-        "consultando una caché en memoria que nunca se persiste",
-        "leyendo directamente una fila de una tabla que representa su estado actual, sin histórico",
+        "consultando una cache en memoria RAM que nunca llega a persistirse en ningun disco del sistema completo",
+        "leyendo directamente una única fila de una tabla que guarda de forma permanente su estado actual sin historico, una fila que se actualiza cada vez que ocurre un cambio nuevo sobre la entidad",
         "reproduciendo (replay) la secuencia completa de eventos almacenados que le han ocurrido, desde el principio (o desde el último snapshot)",
-        "promediando los valores de todos los eventos"
+        "promediando de forma aritmética los valores numéricos de todos los eventos registrados hasta ahora"
       ],
       "options_en": [
-        "querying an in-memory cache that is never persisted",
-        "reading directly a row from a table representing its current state, with no history",
+        "querying an in-memory RAM cache that is never once persisted to any disk in the whole system",
+        "reading directly a single row from a table that permanently stores its current state with no history, a row that gets updated every time a new change happens to the entity",
         "replaying the full sequence of stored events that happened to it, from the beginning (or from the last snapshot)",
-        "averaging the values of all the events"
+        "arithmetically averaging the numeric values of every event that has been recorded so far"
       ],
       "correct_index": 2,
       "explanation_es": "Event Sourcing persiste la secuencia inmutable de eventos como fuente de verdad; el estado actual se reconstruye reproduciendo esos eventos (opcionalmente acelerado con snapshots periódicos), en lugar de guardar directamente el estado mutable.",

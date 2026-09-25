@@ -256,6 +256,49 @@ if self_auth_ok:
     check("Ninguna decision del dueno firmada por un agente", True)
 
 print()
+print("[7] Landing sin testimonios ni cifras inventados (30.1)")
+# El 2026-09-24 la landing de produccion publicaba testimonios con nombre de
+# otro producto, «1.2M learners» y ventajas que no existen. Se reescribio; esto
+# impide que vuelvan por el codigo o por las traducciones.
+_FRONT = ROOT / "frontend"
+LANDING_FILES = [
+    _FRONT / "index.html",
+    _FRONT / "src" / "pages" / "LandingScreen.tsx",
+    _FRONT / "src" / "i18n" / "es" / "common.json",
+    _FRONT / "src" / "i18n" / "en" / "common.json",
+]
+INVENTED = {
+    "marina petrescu": "testimonio inventado",
+    "diego alvarenga": "testimonio inventado",
+    "1.2m learners": "cifra de usuarios inventada (hay cero usuarios reales)",
+    "14-day streak club": "afirmacion sin datos",
+    "240+ tracks": "cifra de catalogo inventada (sale de lib/catalog.ts)",
+    "mock interviews": "funcion que no existe (descartada en ADR-47)",
+}
+landing_ok = True
+for path in LANDING_FILES:
+    if not path.exists():
+        check(f"{path.name} existe", False, "falta un fichero de la landing")
+        landing_ok = False
+        continue
+    text = path.read_text(encoding="utf-8")
+    if path.suffix == ".tsx":
+        # Los comentarios cuentan la historia (qué se quitó y por qué); el
+        # usuario no los ve. Se mira solo el código.
+        text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+        text = "\n".join(ln for ln in text.splitlines() if not ln.lstrip().startswith("//"))
+    # Se compara sin espacios ni puntuación: «1.2 M learners», «1,2M-learners»
+    # o «Marina  Petrescu» no pueden colarse por el formato (hallazgo del
+    # verificador adversario, 2026-09-25).
+    squashed = re.sub(r"[\W_]+", "", text.lower())
+    for needle, reason in INVENTED.items():
+        if re.sub(r"[\W_]+", "", needle) in squashed:
+            check(f"{path.name} contiene '{needle}'", False, reason)
+            landing_ok = False
+if landing_ok:
+    check("Landing sin testimonios ni cifras inventados", True)
+
+print()
 if errors:
     head = f"{len(errors)} check(s) FAILED:"
     print(f"\033[91m{head}\033[0m" if _COLOR else head)

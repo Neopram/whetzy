@@ -8,15 +8,15 @@
       "question_es": "¿Por qué evaluar la calidad de la salida de un LLM es intrínsecamente más difícil que evaluar un clasificador tradicional?",
       "question_en": "Why is evaluating the quality of an LLM's output intrinsically harder than evaluating a traditional classifier?",
       "options_es": [
-        "Porque los LLMs no producen ninguna salida medible",
-        "Porque no se pueden ejecutar en un servidor",
-        "Porque los LLMs solo funcionan en inglés",
+        "Porque los LLMs generan siempre una única salida completamente determinista para cada posible entrada que reciben",
+        "Porque requieren un tipo de hardware especializado que los clasificadores tradicionales nunca llegan a necesitar",
+        "Porque los clasificadores tradicionales, a diferencia de los LLMs, no producen absolutamente ninguna salida que pueda verificarse o compararse de forma independiente contra un valor esperado",
         "Porque la generación es abierta: para una misma entrada suele haber muchas respuestas válidas distintas, así que no existe una única 'respuesta correcta' contra la que comparar exactamente"
       ],
       "options_en": [
-        "Because LLMs produce no measurable output",
-        "Because they can't be run on a server",
-        "Because LLMs only work in English",
+        "Because LLMs always generate a single, fully deterministic output for every possible input they receive",
+        "Because they require a type of specialized hardware that traditional classifiers never need",
+        "Because traditional classifiers, unlike LLMs, produce absolutely no output that can be independently verified or compared against an expected value",
         "Because generation is open-ended: for the same input there are usually many different valid responses, so there is no single 'correct answer' to compare against exactly"
       ],
       "correct_index": 3,
@@ -37,16 +37,16 @@
       "question_es": "¿Qué miden métricas clásicas como BLEU (traducción) o ROUGE (resumen)?",
       "question_en": "What do classic metrics like BLEU (translation) or ROUGE (summarization) measure?",
       "options_es": [
-        "El significado semántico profundo del texto generado",
-        "La velocidad de generación del modelo",
+        "La coherencia lógica y temática que debe existir entre los distintos párrafos y oraciones que componen el texto largo que el modelo terminó produciendo tras varias iteraciones de generación",
+        "El tiempo total que tarda en completarse el entrenamiento del modelo cuyo texto se está evaluando",
         "El grado de solapamiento de n-gramas (secuencias de palabras) entre el texto generado y uno o varios textos de referencia; es una medida superficial basada en coincidencia de palabras",
-        "El consumo de memoria del modelo"
+        "El número de capas de atención empleadas por la arquitectura del modelo que generó el texto"
       ],
       "options_en": [
-        "The deep semantic meaning of the generated text",
-        "The model's generation speed",
+        "The logical and thematic coherence that should exist between the different paragraphs and sentences making up the long text the model ended up producing after several generation iterations",
+        "The total time it takes to complete training of the model whose text is being evaluated",
         "The degree of n-gram (word-sequence) overlap between the generated text and one or more reference texts; a surface-level measure based on word matching",
-        "The model's memory usage"
+        "The number of attention layers used by the architecture of the model that generated the text"
       ],
       "correct_index": 2,
       "explanation_es": "BLEU y ROUGE comparan las secuencias de palabras generadas con referencias humanas contando cuántos n-gramas coinciden (BLEU enfatiza precisión; ROUGE, recall). Son útiles, rápidas y reproducibles, pero superficiales: solo ven coincidencia léxica, no significado, por lo que pueden puntuar mal una respuesta correcta que use sinónimos.",
@@ -94,15 +94,15 @@
       "question_en": "How does BERTScore differ from BLEU when evaluating generated text?",
       "options_es": [
         "BERTScore compara los embeddings contextuales de los tokens (similitud semántica), por lo que reconoce sinónimos y paráfrasis, mientras que BLEU solo mide coincidencia léxica exacta",
-        "BERTScore también cuenta n-gramas exactos, igual que BLEU",
-        "BERTScore mide la velocidad del modelo",
-        "BERTScore solo funciona sin texto de referencia"
+        "BERTScore ignora por completo el orden en que aparecen las palabras del texto generado y solo tiene en cuenta la frecuencia relativa con que cada palabra se repite a lo largo del documento",
+        "BERTScore mide el número total de parámetros entrenables del modelo cuyo texto se está evaluando",
+        "BERTScore exige ejecutar el modelo generador dos veces sobre cada muestra para poder calcular la puntuación"
       ],
       "options_en": [
         "BERTScore compares the contextual embeddings of tokens (semantic similarity), so it recognizes synonyms and paraphrases, whereas BLEU only measures exact lexical overlap",
-        "BERTScore also counts exact n-grams, just like BLEU",
-        "BERTScore measures the model's speed",
-        "BERTScore only works without a reference text"
+        "BERTScore completely ignores the order in which the generated text's words appear and only takes into account the relative frequency with which each word repeats throughout the document",
+        "BERTScore measures the total number of trainable parameters of the model whose text is being evaluated",
+        "BERTScore requires running the generating model twice on each sample in order to compute the score"
       ],
       "correct_index": 0,
       "explanation_es": "BERTScore usa un modelo tipo BERT para obtener embeddings contextuales de cada token del candidato y de la referencia, y empareja tokens por similitud del coseno. Al operar en el espacio semántico, reconoce que 'veloz' y 'rápido' son casi equivalentes, capturando parecido de significado que las métricas de n-gramas pierden. Su contrapartida es mayor costo computacional y dependencia del modelo de embeddings usado.",
@@ -123,16 +123,16 @@
       "question_es": "¿Qué evalúa un benchmark como MMLU (Massive Multitask Language Understanding)?",
       "question_en": "What does a benchmark like MMLU (Massive Multitask Language Understanding) evaluate?",
       "options_es": [
-        "La latencia de la API del modelo",
+        "El tiempo de respuesta promedio del modelo cuando recibe múltiples peticiones simultáneas de distintos usuarios finales conectados desde regiones geográficas diferentes",
         "El conocimiento y la capacidad de razonamiento de un modelo a través de preguntas de opción múltiple en muchas materias (historia, medicina, derecho, matemáticas, etc.)",
-        "El consumo eléctrico del entrenamiento",
-        "El número de parámetros del modelo"
+        "La huella de carbono total generada durante la fase de preentrenamiento del modelo evaluado",
+        "El tamaño en gigabytes de los pesos entrenados del modelo que se está evaluando en el benchmark"
       ],
       "options_en": [
-        "The model's API latency",
+        "The model's average response time when it receives multiple simultaneous requests from different end users connecting from different geographic regions",
         "A model's knowledge and reasoning ability across multiple-choice questions in many subjects (history, medicine, law, mathematics, etc.)",
-        "The electricity consumption of training",
-        "The model's parameter count"
+        "The total carbon footprint generated during the pretraining phase of the evaluated model",
+        "The size in gigabytes of the trained weights of the model being evaluated on the benchmark"
       ],
       "correct_index": 1,
       "explanation_es": "MMLU es un benchmark académico con miles de preguntas de opción múltiple que abarcan 57 áreas de conocimiento, desde nivel elemental hasta experto. Mide amplitud de conocimiento y razonamiento, y se usa para comparar modelos. Al ser de opción múltiple, es fácil de puntuar automáticamente, aunque no captura habilidades generativas abiertas ni el riesgo de contaminación de datos.",
@@ -153,16 +153,16 @@
       "question_es": "¿Qué es la 'contaminación de benchmark' (benchmark/data contamination) y por qué invalida una evaluación?",
       "question_en": "What is 'benchmark/data contamination' and why does it invalidate an evaluation?",
       "options_es": [
-        "Cuando el benchmark tiene errores tipográficos",
-        "Cuando el benchmark es demasiado pequeño",
+        "Cuando las preguntas del benchmark contienen ambigüedades gramaticales menores que confunden sistemáticamente a los anotadores humanos encargados de revisar y validar las respuestas correctas antes de que se publique la versión final del conjunto",
+        "Cuando el benchmark solo cubre un número reducido de categorías temáticas dentro de un mismo dominio de conocimiento",
         "Cuando las preguntas (y respuestas) del benchmark aparecieron en los datos de entrenamiento del modelo, de modo que este puede haberlas memorizado; su alta puntuación reflejaría memorización, no capacidad real de generalización",
-        "Cuando se usa el benchmark en un idioma distinto"
+        "Cuando el benchmark fue traducido automáticamente desde otro idioma sin revisión humana posterior"
       ],
       "options_en": [
-        "When the benchmark has typos",
-        "When the benchmark is too small",
+        "When the benchmark's questions contain minor grammatical ambiguities that systematically confuse the human annotators in charge of reviewing and validating the correct answers before the final version of the set is published",
+        "When the benchmark only covers a small number of topic categories within a single knowledge domain",
         "When the benchmark's questions (and answers) appeared in the model's training data, so it may have memorized them; its high score would reflect memorization, not real generalization ability",
-        "When the benchmark is used in a different language"
+        "When the benchmark was automatically translated from another language with no subsequent human review"
       ],
       "correct_index": 2,
       "explanation_es": "Como los LLMs se entrenan con enormes volúmenes de texto de internet, es fácil que pruebas públicas acaben (total o parcialmente) en el corpus de entrenamiento. Si el modelo ya 'vio' las respuestas, su alto rendimiento no demuestra que sepa razonar, solo que recuerda. Detectar y evitar la contaminación (por ejemplo, con benchmarks privados o recién creados) es clave para evaluaciones honestas.",
@@ -183,15 +183,15 @@
       "question_es": "En el contexto de los LLMs, ¿qué es una 'alucinación' (hallucination)?",
       "question_en": "In the context of LLMs, what is a 'hallucination'?",
       "options_es": [
-        "Un error de conexión con el servidor",
-        "Un tipo de imagen generada por IA",
-        "Cuando el modelo se niega a responder",
+        "Un fallo intermitente de red que interrumpe la conexión entre el cliente y la API del modelo justo durante la generación de la respuesta, obligando a reenviar la petición completa",
+        "Un artefacto visual característico producido por los modelos de generación de imágenes a partir de texto",
+        "Cuando el modelo se niega explícitamente a responder invocando sus políticas internas de seguridad",
         "Cuando el modelo genera contenido fluido y plausible pero factualmente incorrecto o no respaldado por ninguna fuente (información inventada presentada con seguridad)"
       ],
       "options_en": [
-        "A server connection error",
-        "A type of AI-generated image",
-        "When the model refuses to answer",
+        "An intermittent network failure that interrupts the connection between the client and the model's API right during response generation, forcing the entire request to be resent",
+        "A visual artifact characteristic of text-to-image generation models",
+        "When the model explicitly refuses to answer by invoking its internal safety policies",
         "When the model generates fluent, plausible content that is factually incorrect or unsupported by any source (fabricated information presented confidently)"
       ],
       "correct_index": 3,
@@ -212,16 +212,16 @@
       "question_es": "¿Cuál es la diferencia entre una alucinación 'intrínseca' y una 'extrínseca'?",
       "question_en": "What is the difference between an 'intrinsic' and an 'extrinsic' hallucination?",
       "options_es": [
-        "No hay diferencia; son sinónimos",
-        "La intrínseca solo ocurre en inglés",
+        "La intrínseca solo puede ocurrir en tareas de traducción automática entre dos idiomas distintos, mientras que la extrínseca aparece exclusivamente en tareas de resumen de documentos largos y técnicos escritos en un único idioma de origen",
+        "La extrínseca solo ocurre cuando el modelo genera texto en un idioma distinto al de la fuente original proporcionada",
         "La intrínseca contradice directamente la fuente proporcionada (por ejemplo, el documento de contexto); la extrínseca añade información que no está en la fuente y no puede verificarse con ella (puede ser cierta o no, pero no está respaldada)",
-        "La extrínseca es siempre correcta"
+        "La intrínseca es siempre inofensiva, ya que por definición nunca llega a contradecir la fuente proporcionada al modelo"
       ],
       "options_en": [
-        "There is no difference; they are synonyms",
-        "Intrinsic only happens in English",
+        "Intrinsic can only occur in machine-translation tasks between two distinct languages, while extrinsic appears exclusively in the summarization of long, technical documents written in a single source language",
+        "Extrinsic only occurs when the model generates text in a language different from that of the original provided source",
         "Intrinsic directly contradicts the provided source (e.g. the context document); extrinsic adds information not in the source and not verifiable against it (it may or may not be true, but is unsupported)",
-        "Extrinsic is always correct"
+        "Intrinsic is always harmless, since by definition it never contradicts the source provided to the model"
       ],
       "correct_index": 2,
       "explanation_es": "En tareas con una fuente (resumen, RAG), la alucinación intrínseca es cuando la salida contradice el material de origen (el documento dice 2019 y el resumen dice 2021). La extrínseca es cuando la salida introduce afirmaciones que no aparecen en la fuente y no pueden comprobarse con ella. Distinguirlas ayuda a diagnosticar y medir la 'fidelidad' (faithfulness) de la respuesta.",
@@ -268,15 +268,15 @@
       "question_es": "Una técnica basada en muestreo para detectar posibles alucinaciones consiste en generar varias respuestas a la misma pregunta y comparar su consistencia. ¿Por qué funciona como señal?",
       "question_en": "A sampling-based technique to detect possible hallucinations is to generate several responses to the same question and compare their consistency. Why does it work as a signal?",
       "options_es": [
-        "Porque el modelo siempre da respuestas idénticas",
-        "Porque las respuestas largas nunca son alucinaciones",
-        "Porque generar más respuestas reduce el costo",
+        "Porque muestrear varias respuestas distintas para la misma pregunta reduce notablemente el costo total de cada llamada individual realizada a la API del proveedor comercial del modelo que se está utilizando en ese momento",
+        "Porque las respuestas más cortas siempre resultan más consistentes entre sí que las respuestas largas y detalladas",
+        "Porque el modelo reutiliza exactamente la misma semilla aleatoria en cada una de las muestras que genera",
         "Porque cuando el modelo 'sabe' la respuesta, sus múltiples muestras tienden a coincidir; cuando alucina, suele producir respuestas divergentes o contradictorias entre sí, lo que delata la falta de conocimiento fiable"
       ],
       "options_en": [
-        "Because the model always gives identical answers",
-        "Because long responses are never hallucinations",
-        "Because generating more responses lowers the cost",
+        "Because sampling several different responses to the same question notably reduces the total cost of each individual call made to the commercial API of the model provider currently being used",
+        "Because shorter responses are always more mutually consistent than long, detailed ones",
+        "Because the model reuses exactly the same random seed for every sample it generates",
         "Because when the model 'knows' the answer, its multiple samples tend to agree; when it hallucinates, it often produces divergent or mutually contradictory answers, which betrays the lack of reliable knowledge"
       ],
       "correct_index": 3,
@@ -298,16 +298,16 @@
       "question_es": "En un sistema RAG, ¿cómo ayuda tener los documentos recuperados a detectar y reducir alucinaciones?",
       "question_en": "In a RAG system, how does having the retrieved documents help detect and reduce hallucinations?",
       "options_es": [
-        "No ayuda en absoluto",
+        "Porque los documentos recuperados sustituyen por completo la necesidad de que el modelo genere texto alguno",
         "Porque se puede comprobar la 'fidelidad' (faithfulness) de la respuesta verificando que cada afirmación esté respaldada por los pasajes recuperados; lo que no se sustente en la fuente es un candidato a alucinación",
-        "Porque los documentos hacen la respuesta más larga",
-        "Porque elimina la necesidad del LLM"
+        "Porque la sola presencia de los documentos recuperados dentro del contexto aumenta directamente la velocidad de inferencia del modelo generador que produce la respuesta final, entregada finalmente al usuario que hizo la consulta original",
+        "Porque reducen el número total de tokens que el modelo necesita procesar durante toda la generación"
       ],
       "options_en": [
-        "It doesn't help at all",
+        "Because the retrieved documents completely remove the need for the model to generate any text at all",
         "Because you can check the answer's 'faithfulness' by verifying that each claim is supported by the retrieved passages; anything not grounded in the source is a candidate hallucination",
-        "Because the documents make the answer longer",
-        "Because it removes the need for the LLM"
+        "Because the mere presence of the retrieved documents within the context directly increases the inference speed of the generating model producing the final answer, eventually delivered to the user who made the original query",
+        "Because they reduce the total number of tokens the model needs to process throughout generation"
       ],
       "correct_index": 1,
       "explanation_es": "En RAG existe una fuente explícita (los pasajes recuperados) contra la que contrastar. Se puede evaluar automáticamente si cada afirmación de la respuesta está respaldada por el contexto (métrica de faithfulness): las afirmaciones sin soporte en la fuente se marcan como posibles alucinaciones. Esto permite tanto medir la fidelidad como diseñar el sistema para que responda solo con base en lo recuperado.",
@@ -330,15 +330,15 @@
       "question_en": "In RAG evaluation (e.g. with RAGAS), what is the difference between 'faithfulness' and 'answer relevance'?",
       "options_es": [
         "Faithfulness mide si la respuesta está fundamentada en el contexto recuperado (no contradice ni inventa respecto a él); answer relevance mide si la respuesta realmente aborda la pregunta del usuario. Una respuesta puede ser fiel a la fuente pero no responder lo preguntado, y viceversa",
-        "Son la misma métrica",
-        "Faithfulness mide la velocidad y relevance el costo",
-        "Answer relevance solo se aplica a imágenes"
+        "Faithfulness mide la latencia total acumulada del sistema de recuperación de documentos a lo largo de toda la consulta, mientras que answer relevance mide únicamente el consumo de memoria del servidor durante la etapa final de generación de la respuesta al usuario",
+        "Ambas métricas se calculan exclusivamente comparando el texto generado con una traducción de referencia en otro idioma",
+        "Faithfulness solo puede aplicarse a preguntas de opción múltiple con una única respuesta correcta predefinida"
       ],
       "options_en": [
         "Faithfulness measures whether the answer is grounded in the retrieved context (doesn't contradict or fabricate relative to it); answer relevance measures whether the answer actually addresses the user's question. An answer can be faithful to the source yet not answer what was asked, and vice versa",
-        "They are the same metric",
-        "Faithfulness measures speed and relevance measures cost",
-        "Answer relevance only applies to images"
+        "Faithfulness measures the document retrieval system's total accumulated latency across the entire query, while answer relevance measures only the server's memory consumption during the final stage of generating the answer for the user",
+        "Both metrics are computed exclusively by comparing the generated text against a reference translation in another language",
+        "Faithfulness can only be applied to multiple-choice questions with a single predefined correct answer"
       ],
       "correct_index": 0,
       "explanation_es": "Son ejes ortogonales de calidad en RAG. Faithfulness penaliza que la respuesta incluya afirmaciones no respaldadas por el contexto (alucinación). Answer relevance penaliza que la respuesta se desvíe de lo que el usuario preguntó, aunque sea fiel a los documentos. Un sistema RAG bueno necesita ambas: recuperar y usar fielmente el contexto correcto, y a la vez responder de forma pertinente a la consulta.",
@@ -360,15 +360,15 @@
       "question_es": "¿Qué es el enfoque 'LLM-as-judge' (LLM como juez)?",
       "question_en": "What is the 'LLM-as-judge' approach?",
       "options_es": [
-        "Un LLM que dicta sentencias en tribunales reales",
-        "Un método para entrenar el modelo más rápido",
-        "Un LLM que solo responde preguntas legales",
+        "Un panel de jueces humanos asistido por resúmenes automáticos que un modelo de IA genera para agilizar considerablemente su trabajo diario de revisión y calificación de respuestas",
+        "Un clasificador binario entrenado específicamente para detectar contenido spam dentro de las respuestas del modelo",
+        "Una base de datos de sentencias judiciales reales usada como corpus adicional para ajustar fino el modelo",
         "Usar un LLM capaz (a menudo uno potente) para evaluar y puntuar automáticamente las respuestas generadas por otro modelo, según criterios de calidad dados"
       ],
       "options_en": [
-        "An LLM that issues verdicts in real courts",
-        "A method to train the model faster",
-        "An LLM that only answers legal questions",
+        "A panel of human judges assisted by automatic summaries an AI model generates to considerably speed up their daily work of reviewing and grading responses",
+        "A binary classifier specifically trained to detect spam content within the model's responses",
+        "A database of real court rulings used as an additional corpus to fine-tune the model",
         "Using a capable LLM (often a strong one) to automatically evaluate and score the responses generated by another model, according to given quality criteria"
       ],
       "correct_index": 3,
@@ -389,16 +389,16 @@
       "question_es": "¿Cuál es la principal motivación para usar LLM-as-judge en lugar de evaluación humana?",
       "question_en": "What is the main motivation for using LLM-as-judge instead of human evaluation?",
       "options_es": [
-        "Que el LLM nunca se equivoca al juzgar",
+        "Que sustituye por completo la necesidad de definir cualquier criterio de calidad antes de comenzar cada evaluación individual, dejando la decisión final enteramente al azar sin ninguna guía",
         "Escalabilidad y costo: evaluar miles de respuestas con humanos es lento y caro; un LLM juez lo hace en minutos y por céntimos, permitiendo iterar rápido durante el desarrollo",
-        "Que elimina la necesidad de cualquier criterio de calidad",
-        "Que los humanos no pueden evaluar texto"
+        "Que garantiza puntuaciones idénticas a las que produciría un panel de evaluadores humanos expertos en la tarea",
+        "Que reduce a cero la posibilidad de que la evaluación introduzca cualquier tipo de sesgo sistemático"
       ],
       "options_en": [
-        "That the LLM never errs when judging",
+        "That it completely removes the need to define any quality criteria before each individual evaluation begins, leaving the final decision entirely to chance with no guidance at all",
         "Scalability and cost: evaluating thousands of responses with humans is slow and expensive; an LLM judge does it in minutes and for pennies, enabling fast iteration during development",
-        "That it removes the need for any quality criteria",
-        "That humans cannot evaluate text"
+        "That it guarantees scores identical to those a panel of expert human evaluators would produce for the task",
+        "That it reduces to zero the possibility of the evaluation introducing any kind of systematic bias"
       ],
       "correct_index": 1,
       "explanation_es": "La evaluación humana es el patrón de referencia pero no escala: es cara, lenta y difícil de repetir. LLM-as-judge permite evaluar grandes volúmenes de forma rápida y barata, ideal para comparar versiones de un prompt o modelo durante el desarrollo. La contrapartida es que el juez LLM tiene sus propios sesgos y no reemplaza del todo el juicio humano en decisiones críticas.",
@@ -445,15 +445,15 @@
       "question_es": "¿Por qué la comparación 'por pares' (pairwise: ¿A o B es mejor?) suele ser más fiable que pedir al juez LLM una puntuación numérica absoluta (por ejemplo, del 1 al 10)?",
       "question_en": "Why is 'pairwise' comparison (which of A or B is better?) often more reliable than asking the LLM judge for an absolute numeric score (e.g. 1 to 10)?",
       "options_es": [
-        "Porque los LLMs no saben leer números",
-        "Porque el juez solo puede procesar una respuesta a la vez",
-        "Porque la comparación por pares no requiere ningún criterio",
+        "Porque el juez LLM, debido a restricciones fijas e inmutables de su arquitectura interna, solo puede generar números pares al asignar cualquier tipo de puntuación numérica a una respuesta que está evaluando en ese momento",
+        "Porque la comparación por pares no requiere que se le proporcione al juez ningún prompt con instrucciones previas",
+        "Porque asignar una puntuación numérica absoluta siempre exige reentrenar por completo el modelo que actúa como juez",
         "Porque juzgar cuál de dos respuestas es mejor es una tarea relativa más fácil y consistente que asignar una nota absoluta calibrada, que tiende a ser ruidosa y a variar entre ejecuciones y entre ítems"
       ],
       "options_en": [
-        "Because LLMs can't read numbers",
-        "Because the judge can only process one response at a time",
-        "Because pairwise comparison requires no criteria",
+        "Because the judge LLM, due to fixed, immutable internal architectural restrictions, can only generate even numbers when assigning any kind of numeric score to a response it is currently evaluating",
+        "Because pairwise comparison requires giving the judge no prior instruction prompt whatsoever",
+        "Because assigning an absolute numeric score always requires completely retraining the model acting as judge",
         "Because judging which of two responses is better is an easier, more consistent relative task than assigning a calibrated absolute grade, which tends to be noisy and vary across runs and items"
       ],
       "correct_index": 3,
@@ -475,16 +475,16 @@
       "question_es": "¿Cómo se puede mitigar el 'sesgo de posición' de un juez LLM en una comparación por pares?",
       "question_en": "How can the 'position bias' of an LLM judge be mitigated in a pairwise comparison?",
       "options_es": [
-        "Presentando siempre la respuesta buena primero",
-        "Usando una temperatura de 2.0",
+        "Aumentando la temperatura del juez hasta su valor máximo posible antes de realizar cada evaluación por pares",
+        "Sustituyendo por completo al juez LLM por una métrica clásica de solapamiento de n-gramas calculada directamente entre las dos respuestas que se están comparando dentro de ese par específico, sin ningún tipo de contexto adicional",
         "Evaluando cada par dos veces con el orden de las respuestas intercambiado y promediando/combinando ambos veredictos; si el juicio cambia al invertir el orden, se detecta y neutraliza la influencia de la posición",
-        "Eliminando por completo una de las dos respuestas"
+        "Pidiendo al juez que ignore el contenido semántico y puntúe únicamente la longitud en caracteres de cada respuesta"
       ],
       "options_en": [
-        "Always presenting the good response first",
-        "Using a temperature of 2.0",
+        "Increasing the judge's temperature to its maximum possible value before performing each pairwise evaluation",
+        "Completely replacing the LLM judge with a classic n-gram overlap metric computed directly between the two responses being compared within that specific pair, with no additional context of any kind",
         "Evaluating each pair twice with the response order swapped and averaging/combining both verdicts; if the judgment changes when the order is reversed, the influence of position is detected and neutralized",
-        "Completely removing one of the two responses"
+        "Asking the judge to ignore semantic content and score only the character length of each response"
       ],
       "correct_index": 2,
       "explanation_es": "La técnica estándar es la evaluación en ambos órdenes: se juzga (A, B) y también (B, A). Si el juez prefiere consistentemente la misma respuesta en ambos casos, el veredicto es robusto; si cambia según la posición, se trata como empate o se promedia. Esto neutraliza la tendencia del modelo a favorecer una posición fija y hace la evaluación más justa.",
@@ -532,15 +532,15 @@
       "question_es": "En aplicaciones basadas en LLMs, ¿qué significa 'observabilidad'?",
       "question_en": "In LLM-based applications, what does 'observability' mean?",
       "options_es": [
-        "Que el modelo puede ver imágenes",
-        "Un tipo de gráfico de barras",
-        "Que los usuarios pueden ver el código fuente",
+        "Que el modelo es capaz de procesar entradas multimodales como imágenes, audio y video, además del texto habitual que recibe en cada una de las distintas peticiones que envía el usuario final a través de la interfaz",
+        "Un tipo específico de gráfico de barras usado para comparar el rendimiento agregado de varios modelos",
+        "Que el código fuente completo del sistema está publicado bajo una licencia abierta accesible al público",
         "La capacidad de inspeccionar qué ocurre dentro del sistema: las entradas y salidas de cada paso, latencias, costos de tokens, errores y decisiones, para poder entender, depurar y mejorar su comportamiento"
       ],
       "options_en": [
-        "That the model can see images",
-        "A type of bar chart",
-        "That users can see the source code",
+        "That the model is capable of processing multimodal inputs such as images, audio, and video, in addition to the usual text it receives in each of the different requests the end user sends through the interface",
+        "A specific type of bar chart used to compare the aggregate performance of several models",
+        "That the system's entire source code is published under an open license accessible to the public",
         "The ability to inspect what happens inside the system: the inputs and outputs of each step, latencies, token costs, errors, and decisions, so its behavior can be understood, debugged, and improved"
       ],
       "correct_index": 3,
@@ -561,16 +561,16 @@
       "question_es": "¿Qué es una 'traza' (trace) en observabilidad?",
       "question_en": "What is a 'trace' in observability?",
       "options_es": [
-        "Una copia de seguridad de la base de datos",
-        "Un mensaje de error aislado",
+        "Un registro histórico que conserva todas las versiones del modelo que se han desplegado en producción",
+        "Una alerta automática que se dispara únicamente cuando la latencia de una petición individual supera un umbral fijado de antemano por el equipo de operaciones, sin considerar en ningún momento el volumen total de tráfico que recibe el sistema",
         "El registro del recorrido completo de una petición a través del sistema, compuesto por 'spans' (unidades de trabajo cronometradas) que representan cada paso (por ejemplo, recuperar documentos, llamar al LLM, invocar una herramienta)",
-        "El número total de usuarios"
+        "El conjunto de métricas agregadas que resume, al final de cada día, el uso total del sistema"
       ],
       "options_en": [
-        "A database backup",
-        "An isolated error message",
+        "A historical record that preserves every version of the model that has been deployed to production",
+        "An automatic alert that fires only when a single request's latency exceeds a threshold set in advance by the operations team, without ever considering the total volume of traffic the system receives",
         "The record of a request's full journey through the system, composed of 'spans' (timed units of work) that represent each step (e.g. retrieve documents, call the LLM, invoke a tool)",
-        "The total number of users"
+        "The set of aggregated metrics that summarizes the system's total usage at the end of each day"
       ],
       "correct_index": 2,
       "explanation_es": "Una traza sigue una petición de principio a fin, descomponiéndola en spans anidados: cada span mide un paso (su duración, entradas/salidas y metadatos). En una app RAG o de agentes, la traza muestra el árbol completo (embebido de la consulta → recuperación → construcción del prompt → llamada al LLM → posibles herramientas), permitiendo ver exactamente qué pasó y dónde se fue el tiempo o dónde falló.",
@@ -639,15 +639,15 @@
       "question_en": "Why is tracing especially valuable when debugging multi-step RAG systems or agents?",
       "options_es": [
         "Porque estos sistemas encadenan muchos pasos (recuperación, varias llamadas al LLM, herramientas); la traza permite ver qué recuperó, qué decidió el modelo en cada paso y cuál falló, en lugar de tener solo la respuesta final sin saber cómo se produjo",
-        "Porque hace el sistema más rápido automáticamente",
-        "Porque elimina la necesidad de un LLM",
-        "Porque reduce el número de pasos a uno solo"
+        "Porque reduce automáticamente el número de llamadas al LLM que se necesitan para resolver cada consulta del usuario",
+        "Porque sustituye por completo la etapa de recuperación semántica de documentos por una búsqueda simple basada en coincidencia exacta de palabras clave dentro de todo el corpus completo de textos previamente indexados, sin ningún tipo de reordenamiento posterior",
+        "Porque fusiona todos los pasos independientes del pipeline en una única llamada consolidada a la API"
       ],
       "options_en": [
         "Because these systems chain many steps (retrieval, several LLM calls, tools); the trace lets you see what was retrieved, what the model decided at each step, and which one failed, instead of having only the final answer with no idea how it was produced",
-        "Because it automatically makes the system faster",
-        "Because it removes the need for an LLM",
-        "Because it reduces the number of steps to just one"
+        "Because it automatically reduces the number of LLM calls needed to resolve each user query",
+        "Because it completely replaces the semantic document-retrieval stage with a simple search based on exact keyword matching within the entire corpus of previously indexed texts, with no reranking of any kind afterward",
+        "Because it merges every independent step of the pipeline into a single consolidated API call"
       ],
       "correct_index": 0,
       "explanation_es": "En una pipeline de varios pasos, una respuesta final mala puede deberse a muchos puntos: el retriever trajo documentos irrelevantes, el prompt se construyó mal, el modelo malinterpretó, una herramienta devolvió un error. Sin trazado solo ves el resultado final. Con trazado ves cada span (qué chunks se recuperaron, qué prompt exacto se envió, qué respondió cada llamada), lo que hace posible localizar y corregir la causa raíz.",
@@ -669,16 +669,16 @@
       "question_es": "En OpenTelemetry, ¿cuál es la relación entre un 'span' y una 'trace', y qué representa el 'parent span'?",
       "question_en": "In OpenTelemetry, what is the relationship between a 'span' and a 'trace', and what does the 'parent span' represent?",
       "options_es": [
-        "Una trace es un único span, no hay jerarquía",
-        "El span es más grande que la trace y la contiene",
+        "Una trace contiene siempre exactamente dos spans fijos y de igual duración, sin ninguna jerarquía entre ellos: uno que registra la entrada de la petición al sistema completo y otro que registra únicamente su salida final procesada, sin importar cuántos pasos intermedios existan",
+        "El parent span mide únicamente el tiempo de red transcurrido entre el cliente y el servidor durante la petición",
         "Una trace es un árbol de spans; cada span representa una operación cronometrada con atributos, y el 'parent span' es la operación que originó (englobó) a otros spans hijos, reflejando la anidación de llamadas (por ejemplo, el span raíz de la petición contiene el span de recuperación y el de la llamada al LLM)",
-        "El parent span es siempre el último paso ejecutado"
+        "El parent span es siempre el span cuya latencia registrada resulta ser la más baja de toda la traza"
       ],
       "options_en": [
-        "A trace is a single span; there is no hierarchy",
-        "A span is larger than a trace and contains it",
+        "A trace always contains exactly two fixed spans of equal duration, with no hierarchy between them at all: one recording the request's input into the whole system and another recording only its final processed output, no matter how many intermediate steps exist",
+        "The parent span measures only the network time elapsed between the client and the server during the request",
         "A trace is a tree of spans; each span represents a timed operation with attributes, and the 'parent span' is the operation that spawned (enclosed) other child spans, reflecting the nesting of calls (e.g. the request's root span contains the retrieval span and the LLM-call span)",
-        "The parent span is always the last step executed"
+        "The parent span is always the span whose recorded latency turns out to be the lowest in the entire trace"
       ],
       "correct_index": 2,
       "explanation_es": "En OpenTelemetry, una trace agrupa todos los spans de una misma petición y los organiza como un árbol mediante relaciones padre-hijo. El span raíz representa la operación de más alto nivel (la petición completa) y sus hijos representan sub-operaciones anidadas; cada span lleva un identificador de traza compartido, su propio id, el id de su padre, tiempos de inicio/fin y atributos. Esta estructura jerárquica es lo que permite reconstruir y visualizar el flujo completo de una petición.",

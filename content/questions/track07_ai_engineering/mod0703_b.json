@@ -8,15 +8,15 @@
       "question_es": "¿En qué consiste el patrón de flujo de trabajo 'evaluador-optimizador' (evaluator-optimizer)?",
       "question_en": "What does the 'evaluator-optimizer' workflow pattern consist of?",
       "options_es": [
-        "Un modelo pequeño decide si vale la pena llamar al modelo grande, para ahorrar coste",
-        "Se entrenan dos modelos en paralelo y se despliega el que obtiene mejor métrica offline",
-        "Se ejecutan varias herramientas a la vez y se queda con la primera respuesta que llegue",
+        "Un modelo pequeño decide de antemano si conviene o no invocar al modelo grande, únicamente para ahorrar costo de inferencia total, basándose únicamente en la longitud de la consulta del usuario, sin considerar ningún otro factor del contexto de la tarea",
+        "Se entrenan dos modelos completamente distintos en paralelo y se despliega el que obtenga mejor métrica en la evaluación offline",
+        "Se lanzan varias herramientas a la vez y el sistema conserva únicamente la primera respuesta que llegue de cualquiera de ellas",
         "Un LLM genera una respuesta y otro LLM (o el mismo con otro prompt) la critica contra criterios explícitos; la crítica se realimenta para producir una nueva versión, repitiendo hasta que el evaluador la acepta"
       ],
       "options_en": [
-        "A small model decides whether calling the large model is worth it, to save cost",
-        "Two models are trained in parallel and the one with the better offline metric is deployed",
-        "Several tools run at once and the first response to arrive is kept",
+        "A small model decides in advance whether calling the large model is worth it, purely to save on total inference cost, based solely on the length of the user's query, without considering any other factor of the task's context",
+        "Two completely different models are trained in parallel and the one with the better offline evaluation metric gets deployed",
+        "Several tools are fired off at once and the system keeps only the first response to arrive from any of them",
         "One LLM produces a response and another LLM (or the same one with a different prompt) critiques it against explicit criteria; the critique is fed back to produce a new version, looping until the evaluator accepts it"
       ],
       "correct_index": 3,
@@ -39,15 +39,15 @@
       "question_en": "An agent that solves a task in 8 iterations consumes far more tokens than a single model call. What is the main structural reason?",
       "options_es": [
         "En cada iteración se reenvía todo el historial acumulado (prompt de sistema, definiciones de herramientas, razonamientos previos y resultados de herramientas), de modo que el contexto crece con cada paso y se paga de nuevo en cada llamada",
-        "Los agentes obligan a usar el modelo más caro del proveedor",
-        "Cada iteración vuelve a cargar los pesos del modelo en memoria y eso se factura aparte",
-        "El bucle del agente duplica los tokens de salida porque genera la respuesta dos veces por seguridad"
+        "Los agentes obligan siempre a usar el modelo de mayor precio ofrecido por el proveedor, sin importar cuál sea la tarea concreta",
+        "Cada iteración del bucle vuelve a cargar los pesos completos del modelo en la memoria de la GPU, y eso se factura por separado",
+        "El bucle del agente duplica siempre los tokens de salida, porque genera cada respuesta final dos veces por motivos de seguridad interna, una medida de seguridad documentada que se activa automáticamente en cualquier despliegue que supere las cinco iteraciones consecutivas"
       ],
       "options_en": [
         "Every iteration resends the whole accumulated history (system prompt, tool definitions, prior reasoning and tool results), so the context grows with each step and is paid for again on every call",
-        "Agents force you to use the provider's most expensive model",
-        "Each iteration reloads the model weights into memory and that is billed separately",
-        "The agent loop doubles output tokens because it generates the answer twice for safety"
+        "Agents always force the use of the provider's most expensive model, regardless of the specific task at hand",
+        "Each iteration of the loop reloads the model's full weights into GPU memory, and that gets billed as a separate charge",
+        "The agent loop always doubles output tokens, because it generates every final answer twice for internal safety reasons, a documented safety measure that automatically kicks in for any deployment exceeding five consecutive iterations"
       ],
       "correct_index": 0,
       "explanation_es": "Las APIs de LLM son sin estado: cada llamada lleva el contexto completo. Un bucle de 8 pasos paga los tokens del paso 1 ocho veces, y los resultados voluminosos de herramientas engordan ese contexto. Por eso el caching de prompts, el truncado de observaciones y los resúmenes intermedios son palancas de coste reales. Las otras opciones apuntan a facturación por pesos o por modelo, que no es como funciona el precio por token.",
@@ -113,15 +113,15 @@
       "question_es": "Al diseñar la 'interfaz agente-computadora' (ACI), ¿qué inversión suele rendir más para que un agente funcione de forma fiable?",
       "question_en": "When designing the 'agent-computer interface' (ACI), which investment usually pays off most in making an agent work reliably?",
       "options_es": [
-        "Aumentar la temperatura del modelo para que explore más acciones posibles",
-        "Sustituir las descripciones en lenguaje natural por identificadores numéricos cortos para ahorrar tokens",
-        "Exponer todas las herramientas disponibles de golpe para que el agente nunca se quede sin opciones",
+        "Subir la temperatura de muestreo del modelo para que explore un número mayor de acciones posibles en cada uno de sus pasos",
+        "Sustituir las descripciones en lenguaje natural de cada herramienta por identificadores numéricos cortos, únicamente para ahorrar tokens, ya que el modelo interpreta los números con la misma fiabilidad con la que interpreta frases completas en lenguaje natural",
+        "Exponer de una sola vez absolutamente todas las herramientas disponibles, para que el agente nunca se quede sin opciones que elegir",
         "Dedicar al diseño de las herramientas (nombres, formatos, ejemplos, mensajes de error y formas difíciles de equivocarse) tanto cuidado como se dedicaría al diseño de una interfaz para personas"
       ],
       "options_en": [
-        "Raising the model's temperature so it explores more possible actions",
-        "Replacing natural-language descriptions with short numeric identifiers to save tokens",
-        "Exposing every available tool at once so the agent never runs out of options",
+        "Raising the model's sampling temperature so it explores a larger number of possible actions at each of its steps",
+        "Replacing each tool's natural-language description with a short numeric identifier, purely to save on tokens, since the model interprets numbers with the same reliability it interprets full natural-language sentences",
+        "Exposing absolutely every available tool at once, so the agent never runs out of options to choose from",
         "Giving tool design (names, formats, examples, error messages and making mistakes hard to make) the same care you would give to designing a human-facing interface"
       ],
       "correct_index": 3,
@@ -143,16 +143,16 @@
       "question_es": "Un agente ejecuta 10 pasos secuenciales y cada paso es correcto de forma independiente el 95 % de las veces. ¿Qué imprime este código y qué implica para el diseño del agente?\\n\\n```python\\nprint(round(0.95 ** 10, 3))\\n```",
       "question_en": "An agent runs 10 sequential steps and each step is independently correct 95 % of the time. What does this code print and what does it imply for agent design?",
       "options_es": [
-        "0.95 — la fiabilidad del agente es la del paso individual",
-        "0.5 — la fiabilidad siempre cae a la mitad con la longitud",
+        "0.95, porque la fiabilidad de todo el agente resulta idéntica a la de un único paso individual dentro de la cadena completa",
+        "0.5, porque la fiabilidad de cualquier cadena de pasos cae siempre exactamente a la mitad conforme crece su longitud total",
         "0.599 — la fiabilidad extremo a extremo se compone multiplicativamente, así que cadenas largas exigen verificación por paso, reintentos o menos pasos",
-        "9.5 — se suman las probabilidades de los diez pasos"
+        "9.5, porque el código suma las probabilidades individuales de los diez pasos en lugar de multiplicarlas entre sí correctamente, un error de cálculo habitual que confunde la simple suma con la regla de multiplicación de probabilidades independientes"
       ],
       "options_en": [
-        "0.95 — the agent's reliability equals that of a single step",
-        "0.5 — reliability always halves with length",
+        "0.95, because the whole agent's reliability turns out identical to that of a single individual step in the full chain",
+        "0.5, because any chain of steps' reliability always drops to exactly half as its total length grows",
         "0.599 — end-to-end reliability compounds multiplicatively, so long chains demand per-step verification, retries or fewer steps",
-        "9.5 — the probabilities of the ten steps are added"
+        "9.5, because the code adds the ten steps' individual probabilities instead of correctly multiplying them together, a common calculation mistake that confuses plain addition with the rule for multiplying independent probabilities"
       ],
       "correct_index": 2,
       "explanation_es": "0.95^10 ≈ 0.599: un agente que parece casi perfecto por paso acierta la tarea completa solo en 6 de cada 10 intentos. Es el error más caro de subestimar al pasar de demo a producción, porque la demo se prueba con trayectorias cortas. De ahí que se acorten las cadenas, se validen las salidas intermedias y se añadan reintentos o revisión humana en los pasos irreversibles. Responder 0.95 confunde fiabilidad por paso con fiabilidad de la tarea; sumar probabilidades no tiene sentido dimensional.",
@@ -200,15 +200,15 @@
       "question_en": "In a tool-use turn, the model returns two tool-call blocks at once (for example, the weather in Madrid and in Lisbon). What should the application do?",
       "options_es": [
         "Ejecutar ambas (pueden lanzarse en paralelo) y devolver los dos resultados, cada uno asociado al identificador de su llamada, antes de volver a invocar al modelo",
-        "Ejecutar solo la primera llamada e ignorar la segunda, ya que es una alucinación",
-        "Descartar el turno entero porque un modelo solo puede pedir una herramienta por turno",
-        "Pedir al usuario que reformule la pregunta para que pida una ciudad cada vez"
+        "Ejecutar únicamente la primera llamada e ignorar por completo la segunda, asumiendo que se trata de una alucinación del modelo, ya que el formato de la API solo admite un único bloque de tool_use válido dentro de cada respuesta del modelo",
+        "Descartar el turno completo, porque un modelo solo puede solicitar una única herramienta dentro de cualquier turno dado",
+        "Pedirle al usuario que reformule su pregunta original, de modo que solicite una sola ciudad en cada mensaje que envíe"
       ],
       "options_en": [
         "Execute both (they can be run in parallel) and return both results, each tied to its call identifier, before invoking the model again",
-        "Execute only the first call and ignore the second, since it is a hallucination",
-        "Discard the whole turn, because a model can only request one tool per turn",
-        "Ask the user to rephrase so they request one city at a time"
+        "Execute only the first call and completely ignore the second, assuming it is a hallucination on the model's part, since the API format only allows a single valid tool_use block within each model response",
+        "Discard the whole turn, because a model can only request a single tool within any given turn",
+        "Ask the user to rephrase their original question so they request only one city per message they send"
       ],
       "correct_index": 0,
       "explanation_es": "Las APIs de tool use de Anthropic y OpenAI permiten varias llamadas en un mismo turno del asistente, y ejecutarlas en paralelo reduce la latencia notablemente. El error clásico es tratar el bucle como estrictamente una-herramienta-por-turno: si se devuelve un solo resultado, el modelo se queda con una llamada sin responder y muchos endpoints rechazan el turno o el modelo repite la petición. Cada resultado debe referenciar el identificador de la llamada correspondiente para que el emparejamiento sea inequívoco.",
@@ -229,16 +229,16 @@
       "question_es": "Una herramienta `search_logs` devuelve 40.000 tokens de registros y el agente empieza a fallar tras dos o tres llamadas. ¿Cuál es la corrección adecuada?",
       "question_en": "A `search_logs` tool returns 40,000 tokens of log lines and the agent starts failing after two or three calls. What is the appropriate fix?",
       "options_es": [
-        "Subir el límite de max_tokens de la respuesta del modelo",
-        "Quitar la herramienta del agente, porque las herramientas no deben devolver texto largo",
+        "Subir el límite de max_tokens permitido en la respuesta que genera el modelo, para que quepa todo el registro completo",
+        "Retirar por completo la herramienta del agente, ya que ninguna herramienta debería devolver nunca un texto tan largo",
         "Hacer que la herramienta devuelva resultados paginados, resumidos o filtrados (top-N, con campos recortados y un cursor para pedir más), de modo que el resultado quepa sin desbordar el contexto acumulado del bucle",
-        "Bajar la temperatura a 0 para que el modelo se concentre"
+        "Bajar la temperatura del modelo hasta cero, para que se concentre mejor a la hora de interpretar los registros devueltos, ya que una temperatura de cero obliga al modelo a resumir automáticamente cualquier bloque de texto extenso antes de procesarlo"
       ],
       "options_en": [
-        "Raise the model response's max_tokens limit",
-        "Remove the tool from the agent, since tools should not return long text",
+        "Raise the max_tokens limit allowed on the model's generated response, so the whole log entry fits",
+        "Remove the tool from the agent entirely, since no tool should ever return text that long in the first place",
         "Make the tool return paginated, summarised or filtered results (top-N, trimmed fields, plus a cursor to ask for more) so the result fits without blowing up the loop's accumulated context",
-        "Lower the temperature to 0 so the model concentrates"
+        "Lower the model's temperature all the way to zero, so it concentrates better when interpreting the returned logs, since a temperature of zero forces the model to automatically summarize any long text block before processing it"
       ],
       "correct_index": 2,
       "explanation_es": "El resultado de la herramienta entra en el contexto y se reenvía en cada iteración posterior, así que tres llamadas voluminosas agotan la ventana y expulsan el objetivo original y las instrucciones. La solución está en el diseño de la herramienta, no en los parámetros de muestreo: `max_tokens` limita la salida del modelo, no la entrada, y la temperatura no tiene relación alguna con la ocupación del contexto. Eliminar la herramienta sacrifica la capacidad en vez de arreglar su interfaz.",
@@ -259,16 +259,16 @@
       "question_es": "Con la API de Mensajes de Anthropic, el modelo decide invocar una herramienta declarada. ¿Qué valor trae `stop_reason` en esa respuesta?\\n\\n```python\\nresp = client.messages.create(model=..., tools=[...], messages=[...])\\nprint(resp.stop_reason)\\n```",
       "question_en": "With Anthropic's Messages API, the model decides to invoke a declared tool. What value does `stop_reason` carry in that response?",
       "options_es": [
-        "\"end_turn\", porque el modelo ha terminado de hablar",
-        "\"max_tokens\", porque la llamada a la herramienta interrumpe la generación",
+        "\"end_turn\", porque el modelo considera que ya ha terminado por completo de responder a la consulta del usuario, sin que quede pendiente ninguna acción por ejecutar dentro del turno actual de la conversación",
+        "\"max_tokens\", porque la propia llamada a la herramienta interrumpe la generación de texto que estaba en curso",
         "\"tool_use\", que indica al bucle que debe ejecutar la herramienta y devolver el resultado en el siguiente mensaje de rol user",
-        "\"function_call\", el mismo valor que usa la API de OpenAI"
+        "\"function_call\", el mismo nombre de campo que emplea la API de OpenAI exactamente en este mismo caso concreto"
       ],
       "options_en": [
-        "\"end_turn\", because the model has finished speaking",
-        "\"max_tokens\", because the tool call interrupts generation",
+        "\"end_turn\", because the model considers it has already fully finished answering the user's query, with no action left pending to run within the conversation's current turn",
+        "\"max_tokens\", because the tool call itself interrupts the text generation that was already in progress",
         "\"tool_use\", which tells the loop to run the tool and return the result in the next user-role message",
-        "\"function_call\", the same value OpenAI's API uses"
+        "\"function_call\", the exact same field name that OpenAI's API uses in this very same case"
       ],
       "correct_index": 2,
       "explanation_es": "`stop_reason == \"tool_use\"` es la señal de control del bucle: el turno del asistente contiene uno o más bloques `tool_use` y el programa debe ejecutarlos y responder con bloques `tool_result`. Confundirlo con `end_turn` es el fallo habitual al escribir el bucle a mano: se muestra al usuario un turno vacío de texto y el agente se queda colgado. `max_tokens` señalaría truncamiento real, y `function_call` pertenece al vocabulario de otro proveedor: los nombres no son intercambiables entre APIs.",
@@ -334,15 +334,15 @@
       "question_es": "En producción, un agente invoca de vez en cuando una herramienta que no existe o inventa un parámetro que no está en el esquema. ¿Cuál es la respuesta de ingeniería correcta?",
       "question_en": "In production, an agent occasionally invokes a tool that does not exist or invents a parameter absent from the schema. What is the correct engineering response?",
       "options_es": [
-        "Usar `eval()` sobre la llamada generada para que el intérprete resuelva el nombre de la función dinámicamente",
-        "Ejecutar la llamada igualmente confiando en que el lenguaje de la función ignore los argumentos sobrantes",
-        "Añadir al prompt del sistema la frase 'no inventes herramientas' y dar el problema por resuelto",
+        "Usar `eval()` directamente sobre la llamada generada, para que el intérprete resuelva de forma dinámica el nombre real de la función invocada",
+        "Ejecutar la llamada de todos modos, confiando en que el lenguaje de implementación de la función descarte por sí solo los argumentos sobrantes, ya que los lenguajes de programación modernos descartan silenciosamente cualquier parámetro que no coincida con la firma declarada de la función",
+        "Añadir al prompt del sistema la frase 'no inventes herramientas que no existan' y dar el problema por resuelto de manera definitiva",
         "Validar cada llamada contra un registro de herramientas y su esquema antes de ejecutarla, y devolver al modelo un error estructurado y explicativo para que se corrija en la siguiente iteración, contabilizando el suceso como métrica"
       ],
       "options_en": [
-        "Use `eval()` on the generated call so the interpreter resolves the function name dynamically",
-        "Execute the call anyway, trusting the function's language to ignore surplus arguments",
-        "Add 'do not invent tools' to the system prompt and consider the problem solved",
+        "Use `eval()` directly on the generated call, so the interpreter dynamically resolves the real name of the invoked function",
+        "Execute the call anyway, trusting the function's implementation language to discard the surplus arguments on its own, since modern programming languages silently discard any parameter that does not match the function's declared signature",
+        "Add the phrase 'do not invent tools that don't exist' to the system prompt and consider the problem permanently solved",
         "Validate every call against a tool registry and its schema before executing it, and return a structured, explanatory error to the model so it can self-correct on the next iteration, while counting the event as a metric"
       ],
       "correct_index": 3,
@@ -364,15 +364,15 @@
       "question_es": "Un agente de soporte tiene una herramienta `run_sql` conectada con credenciales de administrador para 'poder resolver cualquier consulta'. Según el riesgo de 'agencia excesiva' (Excessive Agency) del OWASP Top 10 para aplicaciones LLM, ¿cuál es la mitigación principal?",
       "question_en": "A support agent has a `run_sql` tool wired with admin credentials so it can 'handle any request'. Under the OWASP Top 10 for LLM Applications risk of Excessive Agency, what is the primary mitigation?",
       "options_es": [
-        "Cifrar el prompt del sistema para que un atacante no descubra que existe la herramienta",
-        "Registrar todas las consultas ejecutadas y revisarlas semanalmente",
-        "Pedir al modelo en el prompt que nunca ejecute sentencias destructivas",
+        "Cifrar por completo el prompt del sistema, de modo que un atacante no pueda descubrir en ningún caso que la herramienta existe, combinando además esa medida con una rotación periódica de las credenciales de administrador para dificultar aún más su descubrimiento por parte de terceros",
+        "Registrar todas las consultas que ejecuta la herramienta y revisar manualmente esos registros una vez por semana laboral",
+        "Pedirle al modelo, dentro del propio texto del prompt, que nunca llegue a ejecutar sentencias SQL de carácter destructivo",
         "Reducir la funcionalidad, los permisos y la autonomía de la herramienta al mínimo necesario: exponer operaciones acotadas de solo lectura sobre vistas concretas, con credenciales de mínimo privilegio y aprobación humana para lo destructivo"
       ],
       "options_en": [
-        "Encrypt the system prompt so an attacker cannot discover the tool exists",
-        "Log every executed query and review the logs weekly",
-        "Instruct the model in the prompt never to run destructive statements",
+        "Fully encrypt the system prompt, so an attacker can never discover under any circumstance that the tool exists, combining that measure with periodic rotation of the admin credentials to make its discovery by third parties even harder",
+        "Log every query the tool executes and manually review those logs once every working week",
+        "Instruct the model, inside the prompt's own text, to never run destructive SQL statements",
         "Reduce the tool's functionality, permissions and autonomy to the minimum needed: expose narrow read-only operations over specific views, with least-privilege credentials and human approval for anything destructive"
       ],
       "correct_index": 3,
@@ -395,16 +395,16 @@
       "question_es": "¿En qué consiste el prompting de 'cadena de pensamiento' (chain-of-thought) descrito por Wei et al. (2022)?",
       "question_en": "What is 'chain-of-thought' prompting as described by Wei et al. (2022)?",
       "options_es": [
-        "Encadenar varias llamadas a distintos modelos, pasando la salida de una como entrada de la siguiente",
-        "Entrenar al modelo con un conjunto de datos de razonamientos humanos anotados",
+        "Encadenar varias llamadas sucesivas a modelos distintos, pasando la salida de uno de ellos como entrada directa del siguiente modelo, de manera que cada modelo intermedio corrige los errores de razonamiento cometidos por el modelo anterior en la cadena",
+        "Entrenar al modelo desde cero con un conjunto de datos formado enteramente por razonamientos humanos anotados manualmente",
         "Inducir al modelo a generar los pasos intermedios de razonamiento antes de la respuesta final, típicamente mediante ejemplos en el prompt que muestran ese razonamiento explícito",
-        "Guardar el razonamiento de conversaciones anteriores en una base vectorial para reutilizarlo"
+        "Guardar el razonamiento producido en conversaciones pasadas dentro de una base de datos vectorial, para reutilizarlo más adelante"
       ],
       "options_en": [
-        "Chaining several calls to different models, feeding one's output into the next",
-        "Training the model on a dataset of annotated human reasoning",
+        "Chaining several successive calls to different models, feeding one model's output as the next model's direct input, so that each intermediate model corrects the reasoning errors made by the previous model in the chain",
+        "Training the model from scratch on a dataset made entirely of manually annotated human reasoning",
         "Eliciting the model to generate intermediate reasoning steps before the final answer, typically via prompt exemplars that display that explicit reasoning",
-        "Storing reasoning from previous conversations in a vector database for reuse"
+        "Storing the reasoning produced in past conversations inside a vector database, to reuse it later on"
       ],
       "correct_index": 2,
       "explanation_es": "La cadena de pensamiento es una técnica de prompting, no de entrenamiento ni de arquitectura: basta con mostrar en los ejemplos cómo se llega al resultado para que el modelo despliegue pasos intermedios en problemas de aritmética, sentido común y razonamiento simbólico. Los distractores describen cosas reales y distintas —encadenamiento de prompts, ajuste fino supervisado y memoria a largo plazo— que suelen confundirse con CoT porque también 'mejoran el razonamiento', pero ninguna es lo que propone el artículo.",
@@ -424,15 +424,15 @@
       "question_es": "Según Yao et al. (2022), ¿por qué ReAct reduce la alucinación y la propagación de errores respecto a una cadena de pensamiento pura en tareas de pregunta-respuesta con conocimiento externo?",
       "question_en": "According to Yao et al. (2022), why does ReAct reduce hallucination and error propagation compared with pure chain-of-thought on knowledge-intensive question answering?",
       "options_es": [
-        "Porque ReAct usa un modelo con más parámetros que el empleado en chain-of-thought",
-        "Porque ReAct elimina por completo los pasos de razonamiento y solo ejecuta acciones verificables",
-        "Porque ReAct fuerza al modelo a responder en menos pasos, y menos pasos implican menos oportunidades de error",
+        "Porque ReAct emplea un modelo con muchos más parámetros que el modelo que se usa habitualmente en chain-of-thought puro",
+        "Porque ReAct elimina por completo los pasos intermedios de razonamiento y solo llega a ejecutar acciones que son verificables",
+        "Porque ReAct obliga al modelo a llegar a la respuesta final en menos pasos, y menos pasos implican siempre menos errores cometidos, un efecto que se mide comparando únicamente la longitud de la respuesta final, sin evaluar en ningún momento su exactitud factual",
         "Porque cada paso de razonamiento puede anclarse en información recuperada del entorno, de modo que el modelo corrige su trayectoria con hechos externos en lugar de razonar encerrado en su conocimiento paramétrico"
       ],
       "options_en": [
-        "Because ReAct uses a model with more parameters than the one used for chain-of-thought",
-        "Because ReAct removes reasoning steps entirely and only executes verifiable actions",
-        "Because ReAct forces the model to answer in fewer steps, and fewer steps means fewer chances to err",
+        "Because ReAct uses a model with far more parameters than the model typically used for pure chain-of-thought",
+        "Because ReAct removes intermediate reasoning steps entirely and only ever executes actions that are verifiable",
+        "Because ReAct forces the model to reach the final answer in fewer steps, and fewer steps always means fewer mistakes made, an effect measured only by comparing the final answer's length, without ever evaluating its factual accuracy",
         "Because each reasoning step can be grounded in information retrieved from the environment, so the model corrects its trajectory with external facts instead of reasoning sealed inside its parametric knowledge"
       ],
       "correct_index": 3,
@@ -499,16 +499,16 @@
       "question_es": "Un bucle ReAct acumula esta traza. ¿Qué debe ocurrir inmediatamente después de la última línea?\\n\\n```text\\nThought 1: Necesito la poblacion de Nicosia.\\nAction 1: search[\"poblacion de Nicosia\"]\\n```",
       "question_en": "A ReAct loop has accumulated this trace. What must happen immediately after the last line?",
       "options_es": [
-        "El modelo continúa generando y escribe él mismo `Observation 1:` con lo que recuerde sobre Nicosia",
+        "El modelo sigue generando texto por su cuenta y escribe él mismo `Observation 1:` con lo que recuerda vagamente sobre Nicosia",
         "El bucle detiene la generación en la Action, ejecuta `search` de verdad, y añade a la traza `Observation 1:` con el resultado real antes de volver a llamar al modelo",
-        "El bucle emite directamente `Thought 2:` y deja la acción pendiente para el final",
-        "El bucle devuelve la respuesta al usuario, porque la acción ya expresa la intención del modelo"
+        "El bucle emite directamente `Thought 2:` y deja la ejecución real de la búsqueda pendiente hasta el final de toda la traza",
+        "El bucle devuelve de inmediato la respuesta final al usuario, porque la acción ya expresa por sí sola la intención completa del modelo, dando por completada la tarea en cuanto el modelo expresa una intención de acción suficientemente clara"
       ],
       "options_en": [
-        "The model keeps generating and writes `Observation 1:` itself with whatever it recalls about Nicosia",
+        "The model keeps generating text on its own and writes `Observation 1:` itself with whatever it vaguely recalls about Nicosia",
         "The loop stops generation at the Action, actually executes `search`, and appends `Observation 1:` with the real result before calling the model again",
-        "The loop emits `Thought 2:` directly and leaves the action pending until the end",
-        "The loop returns the answer to the user, because the action already expresses the model's intent"
+        "The loop emits `Thought 2:` directly and leaves the search action's real execution pending until the end of the whole trace",
+        "The loop immediately returns the final answer to the user, because the action alone already expresses the model's full intent, considering the task complete as soon as the model expresses a sufficiently clear intention to act"
       ],
       "correct_index": 1,
       "explanation_es": "La implementación correcta usa una secuencia de parada en `Observation` (o el equivalente estructurado de la API) para cortar la generación justo tras la acción. Si no se corta, el modelo alucina su propia observación con toda naturalidad y la traza parece impecable mientras los hechos son inventados: es el error más frecuente al escribir un bucle ReAct a mano y el más difícil de ver en los registros, porque el formato sigue siendo válido. Saltar a `Thought 2` o responder sin observación pierden el anclaje que justifica usar ReAct.",
@@ -529,16 +529,16 @@
       "question_es": "Un agente ReAct basado en texto falla el 6 % de las veces porque el modelo emite la acción con un formato que el parser no entiende (comillas mal cerradas, nombre de herramienta con espacios). ¿Cuál es la mejora más robusta?",
       "question_en": "A text-based ReAct agent fails 6 % of the time because the model emits actions in a format the parser cannot read (unbalanced quotes, tool names with spaces). What is the most robust improvement?",
       "options_es": [
-        "Aumentar el número máximo de iteraciones para que el agente tenga más intentos",
+        "Aumentar el número máximo de iteraciones permitidas, de modo que el agente disponga de muchos más intentos antes de tener que rendirse",
         "Delegar la acción al mecanismo estructurado de tool use de la API, que devuelve la llamada ya validada contra un esquema, y reservar el texto libre solo para el Thought; si hay que seguir parseando, devolver el error de formato como Observation para que el modelo se corrija",
-        "Reescribir el parser con expresiones regulares cada vez más permisivas hasta que acepte todas las variantes observadas",
-        "Bajar la temperatura a 0, que elimina por completo los errores de formato"
+        "Reescribir el parser una y otra vez con expresiones regulares cada vez más permisivas, hasta cubrir todas y cada una de las variantes observadas en producción, incorporando además una tabla de excepciones manuales para cada nuevo caso límite que aparezca durante las pruebas de integración continua",
+        "Fijar la temperatura de muestreo en cero, lo que elimina por completo cualquier error de formato posible en el texto que el modelo genera"
       ],
       "options_en": [
-        "Increase the maximum iteration count so the agent gets more attempts",
+        "Increase the maximum number of allowed iterations, so the agent has many more attempts before it has to give up",
         "Delegate the action to the API's structured tool-use mechanism, which returns the call already validated against a schema, and keep free text only for the Thought; if parsing must remain, return the format error as an Observation so the model self-corrects",
-        "Rewrite the parser with ever more permissive regular expressions until it accepts every observed variant",
-        "Set temperature to 0, which fully eliminates formatting errors"
+        "Rewrite the parser again and again with ever more permissive regular expressions, until every single variant observed in production is covered, also adding a table of manual exceptions for every new edge case that shows up during continuous-integration testing",
+        "Set the sampling temperature to zero, which completely eliminates any possible formatting error in the text the model generates"
       ],
       "correct_index": 1,
       "explanation_es": "El formato ReAct original es texto porque en 2022 no existían APIs de tool use; hoy el esquema estructurado traslada la validación al proveedor y elimina toda una clase de fallos. Ampliar iteraciones solo multiplica el coste de un error que se repite; los parsers cada vez más permisivos acaban aceptando llamadas ambiguas y fallando más adelante con datos equivocados, que es peor que fallar pronto; y la temperatura 0 reduce la variabilidad pero no garantiza formato válido, porque el modo del modelo también puede ser incorrecto.",
@@ -585,16 +585,16 @@
       "question_es": "Un equipo quiere usar el razonamiento visible de un agente ReAct como explicación auditable de sus decisiones ante un regulador. ¿Qué advertencia técnica corresponde hacer?",
       "question_en": "A team wants to use a ReAct agent's visible reasoning as an auditable explanation of its decisions for a regulator. What technical caveat applies?",
       "options_es": [
-        "Ninguna: el texto del Thought es por construcción el proceso causal que produjo la acción",
+        "Ninguna: el texto del Thought es, por construcción del propio modelo, exactamente el proceso causal interno que produjo la acción que se tomó",
         "Que el razonamiento generado es una racionalización plausible en lenguaje natural, no una garantía de ser el proceso causal subyacente, por lo que la auditoría debe apoyarse además en las acciones y observaciones registradas, que sí son hechos verificables",
-        "Que el problema es solo de idioma y se resuelve generando siempre los Thought en inglés",
-        "Que basta con fijar la semilla del muestreo para que el razonamiento sea reproducible y por tanto válido como explicación"
+        "Que el problema es puramente lingüístico y se resuelve por completo generando siempre los Thought redactados en idioma inglés",
+        "Que basta con fijar la semilla del muestreo para que el razonamiento se vuelva reproducible y, por tanto, válido como una explicación auditable, de la misma manera en que fijar la semilla ya garantiza la reproducibilidad exacta de cualquier modelo de aprendizaje por refuerzo"
       ],
       "options_en": [
-        "None: the Thought text is by construction the causal process that produced the action",
+        "None: the Thought text is, by the model's own construction, exactly the internal causal process that produced the action that was taken",
         "That generated reasoning is a plausible natural-language rationalisation, not a guarantee of being the underlying causal process, so the audit must also rest on the logged actions and observations, which are verifiable facts",
-        "That the problem is merely linguistic and is solved by always generating Thoughts in English",
-        "That fixing the sampling seed makes the reasoning reproducible and therefore valid as an explanation"
+        "That the problem is purely linguistic and is fully solved by always generating the Thoughts written in English",
+        "That fixing the sampling seed is enough to make the reasoning reproducible and therefore valid as an auditable explanation, in the same way that fixing the seed already guarantees exact reproducibility for any reinforcement-learning model"
       ],
       "correct_index": 1,
       "explanation_es": "La traza de razonamiento es tokens generados, no un registro de la computación interna; puede ser fluida y convincente y aun así no reflejar por qué el modelo eligió esa acción. La parte auditable de verdad es la trayectoria de acciones y observaciones: qué herramienta se llamó, con qué argumentos y qué devolvió, todo trazable contra los sistemas reales. La opción de la semilla es especialmente tentadora porque confunde reproducibilidad con fidelidad: repetir la misma racionalización no la hace verdadera. El marco del NIST pide precisamente distinguir entre explicabilidad y evidencia registrada.",
@@ -617,15 +617,15 @@
       "question_en": "What characterises the 'parallelisation' pattern in systems with several LLMs?",
       "options_es": [
         "Varias llamadas al modelo se ejecutan simultáneamente y sus salidas se agregan de forma programática: o bien cada una atiende una parte independiente de la tarea, o bien todas atacan la misma tarea y se combinan sus resultados",
-        "Varios agentes se turnan para editar el mismo documento hasta llegar a un consenso",
-        "El sistema ejecuta el mismo prompt en varios proveedores y se queda con el más barato",
-        "Un agente principal delega en otro solo cuando se queda sin contexto disponible"
+        "Varios agentes se turnan para ir editando el mismo documento compartido hasta que finalmente logran llegar a un consenso conjunto",
+        "El sistema ejecuta el mismo prompt en varios proveedores de modelos distintos y se queda únicamente con el resultado más barato",
+        "Un agente principal delega tareas en otro agente solamente cuando se queda sin contexto disponible para poder continuar trabajando, un umbral que se calcula automáticamente restando el tamaño del prompt del sistema a la ventana total de contexto disponible"
       ],
       "options_en": [
         "Several model calls run simultaneously and their outputs are aggregated programmatically: either each handles an independent part of the task, or all attack the same task and their results are combined",
-        "Several agents take turns editing the same document until they reach consensus",
-        "The system runs the same prompt across several providers and keeps the cheapest",
-        "A main agent delegates to another only when it runs out of available context"
+        "Several agents take turns editing the same shared document until they finally manage to reach a joint consensus",
+        "The system runs the same prompt across several different model providers and keeps only the cheapest result",
+        "A lead agent delegates tasks to another agent only once it runs out of available context to keep working, a threshold automatically computed by subtracting the system prompt's size from the total available context window"
       ],
       "correct_index": 0,
       "explanation_es": "La paralelización tiene dos variantes: repartir subtareas independientes entre llamadas, y lanzar la misma tarea varias veces para agregar las respuestas. Ambas requieren que las subtareas no dependan unas de otras, que es la condición que distingue este patrón de una cadena secuencial. Los distractores describen delegación por límite de contexto, colaboración iterativa sobre un estado compartido y arbitraje de proveedores: son mecanismos reales, pero ninguno es paralelización en el sentido del patrón.",
@@ -646,16 +646,16 @@
       "question_es": "Antes de aprobar una arquitectura multi-agente para una funcionalidad de producto, ¿qué comprobación económica es imprescindible?",
       "question_en": "Before approving a multi-agent architecture for a product feature, which economic check is essential?",
       "options_es": [
-        "Que todos los subagentes usen el mismo proveedor, para negociar un descuento por volumen",
+        "Que todos los subagentes empleados usen el mismo proveedor de modelos, para poder negociar así un descuento por volumen",
         "Que el valor de la tarea justifique el consumo de tokens, porque un sistema multi-agente puede gastar un orden de magnitud más que una conversación normal al multiplicar contextos, razonamientos y coordinación entre subagentes",
-        "Que el número de subagentes sea potencia de dos, para repartir la carga de forma uniforme",
-        "Que el coste de infraestructura de los contenedores supere al coste de inferencia, señal de que la arquitectura está bien dimensionada"
+        "Que el número total de subagentes desplegados sea siempre una potencia exacta de dos, para repartir la carga de forma uniforme",
+        "Que el costo de infraestructura de los contenedores llegue a superar al costo de inferencia del modelo, señal de buen dimensionamiento, una proporción que los proveedores de nube recomiendan mantener para justificar la inversión en más contenedores dedicados"
       ],
       "options_en": [
-        "That all subagents use the same provider, to negotiate a volume discount",
+        "That all the subagents used share the same model provider, in order to negotiate a volume discount that way",
         "That the task's value justifies the token spend, because a multi-agent system can burn an order of magnitude more than a normal conversation once you multiply contexts, reasoning and inter-agent coordination",
-        "That the number of subagents is a power of two, so load splits evenly",
-        "That container infrastructure cost exceeds inference cost, a sign the architecture is well sized"
+        "That the total number of deployed subagents always be an exact power of two, so the load splits evenly",
+        "That the containers' infrastructure cost come to exceed the model's inference cost, a sign of good sizing, a ratio cloud providers recommend maintaining to justify investing in more dedicated containers"
       ],
       "correct_index": 1,
       "explanation_es": "Anthropic reportó que su sistema de investigación multi-agente consumía en torno a quince veces los tokens de un chat corriente. Eso acota su terreno útil: tareas valiosas, de exploración amplia y paralelizables, donde ese gasto se recupera. El error habitual es adoptar multi-agente por elegancia arquitectónica y descubrir el coste unitario ya en producción. Los otros distractores aplican intuiciones de sistemas distribuidos clásicos —simetría de particiones, descuentos, relación entre costes— que no gobiernan el precio por token.",
@@ -721,15 +721,15 @@
       "question_es": "Tres subagentes de investigación devuelven en gran medida las mismas fuentes y dejan sin cubrir un área del encargo. ¿Cuál es la causa más probable y su corrección?",
       "question_en": "Three research subagents come back with largely the same sources and leave one area of the assignment uncovered. What is the most likely cause and its fix?",
       "options_es": [
-        "El modelo de los subagentes es demasiado pequeño; hay que escalar a un modelo mayor en cada trabajador",
-        "Los subagentes se están comunicando entre sí y se contagian; hay que aislarlos en procesos distintos",
-        "El número de subagentes es insuficiente; con diez el solapamiento desaparece estadísticamente",
+        "El contexto compartido entre subagentes se ha corrompido por un token especial mal escapado en la plantilla de encargo; conviene limpiar el historial de cada subagente y validar el formato de sus mensajes antes de lanzar la siguiente ronda de búsquedas",
+        "La temperatura de muestreo de los tres subagentes está fijada demasiado baja para una tarea abierta de investigación; subirla introduce variación suficiente para que cada uno explore fuentes distintas sin tocar cómo se reparte el encargo entre ellos",
+        "El agregador final no dispone de ventana de contexto suficiente para leer los tres informes completos de una sola vez; conviene resumir cada informe por separado antes de combinarlos, para no perder ninguna de las fuentes que citan",
         "El orquestador delegó con encargos solapados o poco específicos; la corrección es que asigne a cada subagente un objetivo delimitado, con fuentes o subpreguntas distintas y un formato de entrega concreto, y que verifique la cobertura al agregar"
       ],
       "options_en": [
-        "The subagents' model is too small; each worker should be scaled up to a larger model",
-        "The subagents are talking to each other and contaminating one another; they must be isolated in separate processes",
-        "There are too few subagents; with ten, overlap disappears statistically",
+        "The shared context between subagents got corrupted by a badly escaped special token in the assignment template; the fix is to clear each subagent's history and validate its message format before the next round of searches",
+        "The three subagents' sampling temperature is set too low for an open-ended research task; raising it introduces enough variation for each one to explore different sources without touching how the assignment is split among them",
+        "The final aggregator lacks enough context window to read all three full reports at once; each report should be summarized separately before merging them, so none of the sources they cite get dropped",
         "The orchestrator delegated with overlapping or under-specified assignments; the fix is for it to give each subagent a bounded objective with distinct sources or subquestions and a concrete delivery format, and to verify coverage when aggregating"
       ],
       "correct_index": 3,
@@ -752,15 +752,15 @@
       "question_en": "Why does evaluating a multi-agent system require more than comparing the final answer against a reference answer?",
       "options_es": [
         "Porque trayectorias muy distintas pueden llegar a una respuesta final aceptable, y solo evaluando la trayectoria (qué subagentes se lanzaron, qué herramientas usaron, si hubo trabajo duplicado, coste y latencia) se detectan las ineficiencias y los fallos que aún no han cambiado el resultado",
-        "Porque los sistemas multi-agente no producen una respuesta final única, sino siempre un conjunto de respuestas parciales",
-        "Porque las métricas de exactitud no se pueden calcular cuando intervienen varios modelos",
-        "Porque la respuesta final la produce un agente distinto en cada ejecución y por tanto no es comparable"
+        "Porque los sistemas multi-agente delegan la redacción de la respuesta final a un subagente distinto en cada ejecución, así que el estilo y el formato cambian entre corridas y la comparación textual literal contra la referencia deja de ser fiable en la práctica incluso si el contenido de fondo es idénticamente el mismo.",
+        "Porque las métricas de exactitud exigen una única cadena de razonamiento lineal, y un sistema multi-agente produce varias cadenas paralelas que se ejecutan en distintos subagentes y no pueden fusionarse en una sola puntuación numérica coherente al final",
+        "Porque la respuesta de referencia se redacta siempre con un formato más breve que el que produce el orquestador al combinar los hallazgos de varios subagentes, y comparar formatos de longitud distinta penaliza al sistema aunque el contenido sea correcto"
       ],
       "options_en": [
         "Because very different trajectories can reach an acceptable final answer, and only by evaluating the trajectory (which subagents were spawned, which tools they used, whether work was duplicated, cost and latency) do you catch inefficiencies and failures that have not yet changed the result",
-        "Because multi-agent systems never produce a single final answer, only a set of partial ones",
-        "Because accuracy metrics cannot be computed when several models are involved",
-        "Because a different agent produces the final answer on each run, so it is not comparable"
+        "Because multi-agent systems delegate the final write-up to a different subagent on every run, so the style and format shift across executions and literal textual comparison against the reference stops being reliable in practice even if the underlying content is exactly identical.",
+        "Because accuracy metrics require a single linear reasoning chain, and a multi-agent system produces several parallel chains, run inside different subagents, that cannot be merged into one coherent numeric score at the end",
+        "Because the reference answer is always written in a shorter format than what the orchestrator produces when it combines several subagents' findings, and comparing formats of different length penalizes the system even when the content is correct"
       ],
       "correct_index": 0,
       "explanation_es": "Un sistema puede acertar la respuesta gastando el triple de lo necesario, repitiendo búsquedas o ignorando una fuente crítica que en la siguiente consulta sí habría cambiado el resultado. Esos fallos son invisibles para una métrica de resultado final y visibles en la traza. Por eso la evaluación combina juicio sobre el resultado con inspección de trayectoria y métricas operativas. Los distractores dan por imposible lo que sí se hace en la práctica: los sistemas multi-agente sí entregan una respuesta final y la exactitud sí se mide sobre ella; lo que ocurre es que no basta.",
@@ -807,15 +807,15 @@
       "question_es": "Un sistema multi-agente de larga duración falla en el subagente 7 de 9 tras 25 minutos de trabajo. ¿Qué diseño evita rehacerlo todo desde el principio?",
       "question_en": "A long-running multi-agent system fails at subagent 7 of 9 after 25 minutes of work. What design avoids redoing everything from scratch?",
       "options_es": [
-        "Envolver la ejecución completa en una transacción de base de datos y revertirla ante cualquier error",
-        "Subir el número máximo de reintentos globales del sistema a un valor alto",
-        "Ejecutar todos los subagentes en un único proceso con memoria compartida, para que el estado no se pierda si uno falla",
+        "Guardar únicamente el resultado del último subagente completado y descartar los seis anteriores, para no sobrecargar el almacenamiento con estados intermedios que en teoría ya no se van a volver a consultar tras el fallo del subagente séptimo sin dejar rastro alguno de la causa.",
+        "Configurar el orquestador para que lance los nueve subagentes en paralelo desde el minuto cero, de modo que un fallo tardío en uno solo no dependa de que los demás hayan terminado antes, aunque encarezca mucho el pico de cómputo simultáneo",
+        "Ejecutar todos los subagentes dentro de un único proceso con memoria compartida en RAM, replicando cada resultado parcial en dos hilos distintos por si uno de ellos se detiene inesperadamente a mitad de camino en su tarea",
         "Persistir el estado de la ejecución de forma duradera (encargos, resultados parciales y estado de cada subagente) para poder reanudar desde el último punto válido, con reintentos idempotentes por subagente y degradación elegante cuando uno no se recupera"
       ],
       "options_en": [
-        "Wrapping the whole run in a database transaction and rolling it back on any error",
-        "Raising the system's global maximum retry count to a high value",
-        "Running every subagent in a single process with shared memory, so state is not lost if one fails",
+        "Keeping only the last completed subagent's result and discarding the previous six, so intermediate state that in theory will never be queried again after the seventh subagent's failure does not pile up in storage without leaving any trace of the cause.",
+        "Configuring the orchestrator to launch all nine subagents in parallel from minute zero, so a late failure in just one of them does not depend on the others having finished first, even though it spikes simultaneous compute cost",
+        "Running every subagent inside a single process with shared RAM, replicating each partial result across two separate threads in case one of them stops unexpectedly halfway through its task",
         "Persisting run state durably (assignments, partial results and each subagent's status) so the run can resume from the last valid point, with idempotent per-subagent retries and graceful degradation when one cannot recover"
       ],
       "correct_index": 3,

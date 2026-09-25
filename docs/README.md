@@ -23,7 +23,7 @@ Frontend: React + Capacitor.
 | Plan de distribución masiva ES + EN (canales, cadencia, herramientas $0, KPIs) | **`DISTRIBUCION.md`** |
 | Los 6 segmentos de usuario (Estudiante, Career-switcher, Developer Senior, Profesor, Empresa, Developer Web3/Solana) con personas, flujos y créditos por segmento | **`SEGMENTOS.md`** |
 | Competencia directa e indirecta: precios verificados con URL y fecha, lógica de negocio del mercado y qué se adopta (§A, 2026-09-24) | **`COMPETENCIA.md`** |
-| Spec del marketplace de instructores: revenue share 80/20 (ADR-41), quality gate, moderación | **`MARKETPLACE.md`** |
+| Spec del marketplace de instructores: revenue share 80/20 (ADR-45), quality gate, moderación | **`MARKETPLACE.md`** |
 | Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
 | Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
 | Qué se construyó de verdad en los 12 primeros días, qué estaba marcado `DONE` sin estarlo, qué bloquea (nada de ello código) y qué objetivo es alcanzable | **`BALANCE-12-DIAS.md`** |

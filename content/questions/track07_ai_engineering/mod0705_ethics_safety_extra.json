@@ -8,15 +8,15 @@
       "question_es": "¿Qué es un 'Model Card' en el contexto de la publicación responsable de modelos de ML?",
       "question_en": "What is a 'Model Card' in the context of responsible ML model release?",
       "options_es": [
-        "El nombre técnico interno asignado a cada checkpoint del modelo",
-        "Un archivo binario que contiene los pesos entrenados del modelo",
-        "Una tarjeta de crédito usada para pagar el cómputo de entrenamiento",
+        "El puntero de memoria que el runtime asigna internamente a cada capa del modelo una vez cargado en la GPU disponible, liberado automáticamente cuando finaliza el proceso de inferencia",
+        "Un archivo de configuración en formato YAML que define los hiperparámetros usados durante el entrenamiento",
+        "Una tarjeta de acceso físico requerida para entrar al centro de datos donde se entrenó el modelo",
         "Un documento estandarizado que reporta el uso previsto del modelo, su rendimiento por subgrupos, sus limitaciones y consideraciones éticas"
       ],
       "options_en": [
-        "The internal technical name assigned to each model checkpoint",
-        "A binary file containing the model's trained weights",
-        "A credit card used to pay for training compute",
+        "The memory pointer the runtime internally assigns to each layer of the model once loaded onto the available GPU, automatically freed once the inference process finishes",
+        "A YAML-format configuration file that defines the hyperparameters used during training",
+        "A physical access card required to enter the data center where the model was trained",
         "A standardized document reporting the model's intended use, performance across subgroups, limitations, and ethical considerations"
       ],
       "correct_index": 3,
@@ -64,15 +64,15 @@
       "question_es": "¿En qué consiste un 'ataque de inferencia de pertenencia' (membership inference attack) contra un modelo de ML?",
       "question_en": "What does a 'membership inference attack' against an ML model consist of?",
       "options_es": [
-        "Generar entradas adversariales que engañan al modelo en inferencia",
-        "Robar directamente los pesos entrenados del modelo",
-        "Modificar las etiquetas del conjunto de entrenamiento para sesgar el modelo",
+        "Comprobar sistemáticamente si la salida del modelo cambia al añadir ruido gaussiano a cada entrada de prueba",
+        "Cifrar los pesos del modelo con una clave privada para que no puedan copiarse sin autorización expresa",
+        "Sustituir las etiquetas de un subconjunto del dataset de entrenamiento por clases incorrectas de forma deliberada",
         "Determinar si un registro específico formó parte del conjunto de entrenamiento del modelo"
       ],
       "options_en": [
-        "Generating adversarial inputs that fool the model at inference time",
-        "Directly stealing the model's trained weights",
-        "Modifying the training set's labels to bias the model",
+        "Systematically checking whether the model's output changes when Gaussian noise is added to each test input",
+        "Encrypting the model's weights with a private key so they cannot be copied without explicit authorization",
+        "Deliberately replacing the labels of a subset of the training dataset with incorrect classes",
         "Determining whether a specific record was part of the model's training data"
       ],
       "correct_index": 3,
@@ -93,13 +93,13 @@
       "question_es": "¿Qué técnica usa retroalimentación humana para ajustar un LLM base de modo que sus respuestas sigan mejor las instrucciones del usuario, y es la base de modelos como InstructGPT/ChatGPT?",
       "question_en": "What technique uses human feedback to fine-tune a base LLM so its responses better follow user instructions, and underlies models like InstructGPT/ChatGPT?",
       "options_es": [
-        "PCA (Principal Component Analysis)",
-        "BPE (Byte-Pair Encoding)",
+        "PCA (Análisis de Componentes Principales), usado para reducir dimensionalidad",
+        "BPE (Codificación por Pares de Bytes)",
         "RLHF (Reinforcement Learning from Human Feedback)",
-        "K-Fold Cross-Validation"
+        "Validación cruzada de K iteraciones (K-Fold)"
       ],
       "options_en": [
-        "PCA (Principal Component Analysis)",
+        "PCA (Principal Component Analysis), used for dimensionality reduction",
         "BPE (Byte-Pair Encoding)",
         "RLHF (Reinforcement Learning from Human Feedback)",
         "K-Fold Cross-Validation"
@@ -122,16 +122,16 @@
       "question_es": "¿Qué es un 'ejemplo adversarial' (adversarial example) en Machine Learning?",
       "question_en": "What is an 'adversarial example' in Machine Learning?",
       "options_es": [
-        "Un ejemplo usado exclusivamente durante la validación cruzada",
-        "Un dato de entrenamiento etiquetado incorrectamente por error humano",
+        "Un ejemplo reservado exclusivamente para calcular la métrica de validación cruzada durante el desarrollo del modelo",
+        "Un dato de entrenamiento con una etiqueta incorrecta debido a un fallo humano durante el proceso de anotación manual",
         "Una entrada con perturbaciones pequeñas, a menudo imperceptibles, diseñadas deliberadamente para hacer que el modelo la clasifique mal",
-        "Una muestra sintética generada para aumentar el tamaño del dataset (data augmentation)"
+        "Una muestra sintética creada mediante técnicas de aumento de datos, como recorte o rotación, para ampliar artificialmente el tamaño del conjunto de entrenamiento"
       ],
       "options_en": [
-        "An example used exclusively during cross-validation",
-        "A training example mislabeled by human error",
+        "An example reserved exclusively for computing the cross-validation metric during model development",
+        "A training example with an incorrect label due to a human mistake during the manual annotation process",
         "An input with small, often imperceptible perturbations deliberately crafted to make the model misclassify it",
-        "A synthetic sample generated to enlarge the dataset (data augmentation)"
+        "A synthetic sample created through data-augmentation techniques, such as cropping or rotation, to artificially enlarge the size of the training set"
       ],
       "correct_index": 2,
       "explanation_es": "Los ejemplos adversariales se construyen añadiendo una perturbación cuidadosamente calculada (a menudo invisible para un humano) a una entrada válida, de forma que el modelo la clasifique de forma incorrecta con alta confianza, revelando la fragilidad de muchos modelos frente a manipulaciones dirigidas.",

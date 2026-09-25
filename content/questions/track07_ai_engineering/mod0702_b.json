@@ -8,16 +8,16 @@
       "question_es": "En el artículo original de RAG (Lewis et al., 2020) se proponen dos variantes: RAG-Sequence y RAG-Token. ¿En qué se diferencian?",
       "question_en": "The original RAG paper (Lewis et al., 2020) proposes two variants: RAG-Sequence and RAG-Token. How do they differ?",
       "options_es": [
-        "RAG-Sequence recupera documentos y RAG-Token recupera tokens sueltos de un vocabulario externo",
+        "RAG-Sequence recupera usando un índice denso y RAG-Token recupera usando un índice léxico sobre el mismo corpus documental, de modo que ambas variantes acaban compartiendo la misma fase de generación token a token",
         "RAG-Sequence condiciona toda la respuesta al mismo documento recuperado, mientras que RAG-Token puede apoyarse en un documento distinto para cada token generado",
-        "RAG-Sequence usa búsqueda léxica (BM25) y RAG-Token usa búsqueda densa con embeddings",
-        "RAG-Sequence genera la respuesta completa de una vez y RAG-Token la genera token a token; el resto de la arquitectura es idéntico"
+        "RAG-Sequence recupera un único documento por consulta y RAG-Token recupera siempre el corpus completo entero",
+        "RAG-Sequence se entrena de forma supervisada con etiquetas humanas y RAG-Token se entrena de forma no supervisada"
       ],
       "options_en": [
-        "RAG-Sequence retrieves documents while RAG-Token retrieves individual tokens from an external vocabulary",
+        "RAG-Sequence retrieves using a dense index and RAG-Token retrieves using a lexical index over the same document corpus, so both variants end up sharing exactly the same token-by-token generation phase",
         "RAG-Sequence conditions the whole answer on the same retrieved document, whereas RAG-Token can draw on a different document for each generated token",
-        "RAG-Sequence uses lexical search (BM25) while RAG-Token uses dense embedding search",
-        "RAG-Sequence produces the full answer in one shot and RAG-Token produces it token by token; the rest of the architecture is identical"
+        "RAG-Sequence retrieves a single document per query and RAG-Token always retrieves the entire whole corpus",
+        "RAG-Sequence is trained in a supervised way with human labels and RAG-Token is trained in an unsupervised way"
       ],
       "correct_index": 1,
       "explanation_es": "La diferencia está en dónde se marginaliza sobre los documentos recuperados. RAG-Sequence marginaliza a nivel de secuencia: se fija un documento latente y se puntúa la respuesta completa con él. RAG-Token marginaliza en cada paso de decodificación, así que una respuesta puede combinar hechos de varios documentos. La opción D es la trampa más frecuente: todo decodificador autorregresivo genera token a token, así que esa no puede ser la distinción. La opción B confunde las variantes con el tipo de recuperador, que en ambas es DPR (denso).",
@@ -38,15 +38,15 @@
       "question_es": "Un equipo tiene un asistente interno con RAG. El modelo encuentra los documentos correctos, pero responde en un tono informal y no respeta el formato de informe que exige la empresa. ¿Cuál es el diagnóstico correcto?",
       "question_en": "A team runs an internal assistant with RAG. The model finds the right documents, but answers in a casual tone and ignores the report format the company requires. What is the correct diagnosis?",
       "options_es": [
-        "Es una alucinación clásica: hay que aumentar el número de documentos recuperados (top_k) para forzar respuestas más precisas",
-        "El índice vectorial está mal construido y hay que reindexar todo el corpus con otro modelo de embeddings",
-        "Los chunks son demasiado grandes y por eso el modelo pierde el formato; hay que reducir chunk_size",
+        "Es una alucinación clásica del sistema: conviene subir la temperatura para que el modelo cite mejor las fuentes recuperadas, porque una temperatura más baja obliga al modelo a ceñirse estrictamente al lenguaje técnico del documento fuente",
+        "El modelo de embeddings elegido para el índice es incorrecto y hay que sustituirlo por uno entrenado en otro idioma",
+        "Los chunks recuperados son demasiado pequeños y por eso el tono se pierde por el camino; conviene subir chunk_size",
         "Es un problema de comportamiento y estilo, no de conocimiento: RAG inyecta información, no cambia cómo se comporta el modelo; se corrige con instrucciones en el prompt del sistema o con fine-tuning"
       ],
       "options_en": [
-        "This is a classic hallucination: increase the number of retrieved documents (top_k) to force more precise answers",
-        "The vector index is badly built and the whole corpus must be reindexed with a different embedding model",
-        "The chunks are too large and that is why the model loses the format; reduce chunk_size",
+        "This is a classic hallucination of the system: raise the temperature so the model cites the retrieved sources better, because a lower temperature forces the model to stick strictly to the source document's technical language",
+        "The embedding model chosen for the index is the wrong one and must be replaced with one trained in another language",
+        "The retrieved chunks are too small and that is why the tone gets lost along the way; chunk_size should be raised",
         "It is a behaviour and style problem, not a knowledge problem: RAG injects information, it does not change how the model behaves; fix it with system-prompt instructions or fine-tuning"
       ],
       "correct_index": 3,
@@ -68,15 +68,15 @@
       "question_es": "En la fase de generación de un RAG, el modelo a veces responde con datos que no están en los pasajes recuperados. ¿Cuál es la medida más directa para reducir esas respuestas no fundamentadas?",
       "question_en": "In the generation stage of a RAG system, the model sometimes answers with facts that are not in the retrieved passages. What is the most direct measure to reduce those ungrounded answers?",
       "options_es": [
-        "Bajar la temperatura a 0, porque con temperatura 0 el modelo solo puede repetir el texto del contexto",
-        "Subir top_k a 50 documentos, porque con más contexto la probabilidad de que falte el dato baja a cero",
-        "Cambiar a un modelo con ventana de contexto mayor, porque las respuestas no fundamentadas se deben siempre a truncamiento",
+        "Bajar top_k a un solo documento, porque con un único pasaje el modelo ya no puede combinar información de fuera del contexto",
+        "Aumentar el valor de max_tokens, porque una respuesta más larga reduce por sí sola la probabilidad de inventar datos",
+        "Reindexar el corpus con chunks más pequeños, porque las respuestas no fundamentadas se deben siempre al tamaño elegido del chunk, y ampliar la ventana no cambia en nada la instrucción que recibe el modelo sobre qué hacer con ese contexto",
         "Instruir explícitamente al modelo a responder solo a partir de los pasajes proporcionados, citar el fragmento usado y declarar que no lo sabe cuando el contexto no contenga la respuesta"
       ],
       "options_en": [
-        "Set temperature to 0, because at temperature 0 the model can only repeat text from the context",
-        "Raise top_k to 50 documents, because with more context the chance of a missing fact drops to zero",
-        "Switch to a model with a larger context window, because ungrounded answers are always caused by truncation",
+        "Lower top_k to a single document, because with only one passage the model can no longer mix in information from outside the context",
+        "Increase the max_tokens value, because a longer answer on its own reduces the chance of inventing facts",
+        "Reindex the corpus with smaller chunks, because ungrounded answers are always caused by the chosen chunk size, and widening the window does nothing to change the instruction the model receives about what to do with that context",
         "Explicitly instruct the model to answer only from the provided passages, cite the fragment it used, and state that it does not know when the context does not contain the answer"
       ],
       "correct_index": 3,
@@ -171,16 +171,16 @@
       "question_es": "Un servicio web construye su índice así al arrancar y lo consulta en cada petición:\\n\\n    # ingest.py, ejecutado una vez como script aparte\\n    db = Chroma.from_documents(docs, embeddings)\\n\\n    # api.py, el proceso que atiende las peticiones\\n    db = Chroma(embedding_function=embeddings)\\n    hits = db.similarity_search(pregunta, k=4)\\n\\nEl LLM responde con fluidez pero inventa las políticas internas. ¿Qué está ocurriendo?",
       "question_en": "A web service builds its index like this at start-up and queries it on every request:\\n\\n    # ingest.py, run once as a separate script\\n    db = Chroma.from_documents(docs, embeddings)\\n\\n    # api.py, the process that serves requests\\n    db = Chroma(embedding_function=embeddings)\\n    hits = db.similarity_search(question, k=4)\\n\\nThe LLM answers fluently but invents the internal policies. What is happening?",
       "options_es": [
-        "similarity_search necesita el argumento filter para devolver resultados; sin él siempre devuelve una lista vacía",
-        "El valor k=4 es demasiado bajo y por eso la recuperación falla; con k=20 el problema desaparece",
+        "similarity_search exige que se le pasen explícitamente los embeddings ya calculados o de lo contrario siempre lanza una excepción, y sin ese argumento la llamada debería fallar de inmediato con un error explícito antes de llegar al LLM",
+        "El valor k=4 provoca que Chroma aplique un muestreo aleatorio sobre la colección en vez de una búsqueda real por similitud",
         "Sin persist_directory, Chroma crea un cliente en memoria: el índice de ingest.py murió con ese proceso, api.py consulta una colección vacía, hits llega vacío y el modelo responde solo con su memoria paramétrica",
-        "embedding_function solo sirve para indexar; para consultar hay que pasar los vectores de la pregunta ya calculados a mano"
+        "embedding_function solo se usa al consultar la colección; para indexar hay que precalcular los vectores manualmente antes"
       ],
       "options_en": [
-        "similarity_search requires the filter argument to return anything; without it, it always returns an empty list",
-        "k=4 is too low and that is why retrieval fails; with k=20 the problem disappears",
+        "similarity_search requires the already-computed embeddings to be passed explicitly, or it always raises an exception instead, and without that argument the call should fail immediately with an explicit error before ever reaching the LLM",
+        "The value k=4 causes Chroma to apply random sampling over the collection instead of a real similarity search",
         "Without persist_directory, Chroma creates an in-memory client: the index from ingest.py died with that process, api.py queries an empty collection, hits comes back empty, and the model answers purely from its parametric memory",
-        "embedding_function is only used for indexing; to query you must pass the manually precomputed question vectors"
+        "embedding_function is only used when querying the collection; to index, the vectors must be manually precomputed beforehand"
       ],
       "correct_index": 2,
       "explanation_es": "Es el fallo de RAG más frecuente en el paso de script a servicio: el índice se construyó en un proceso efímero y sin directorio de persistencia, así que api.py abre una colección vacía. El síntoma engaña porque el sistema no falla ruidosamente: similarity_search devuelve [], el prompt se arma con un bloque de contexto vacío y el LLM, sin instrucción de abstenerse, responde con lo que 'sabe'. La lección operativa es registrar cuántos pasajes se recuperaron y alertar cuando sean cero, en vez de confiar en que la respuesta se vea bien.",
@@ -202,15 +202,15 @@
       "question_es": "En un índice HNSW, ¿qué efecto tiene subir el parámetro ef_search (hnsw.ef_search en pgvector) en tiempo de consulta?",
       "question_en": "In an HNSW index, what is the effect of raising the ef_search parameter (hnsw.ef_search in pgvector) at query time?",
       "options_es": [
-        "Cambia la métrica de distancia usada en la búsqueda de L2 a coseno",
-        "Reconstruye el índice con más conexiones por nodo, por lo que exige un REINDEX y más espacio en disco",
-        "Aumenta el número de filas que devuelve la consulta, equivalente a subir el LIMIT",
+        "Cambia en tiempo de consulta la métrica de distancia usada por el índice, pasando de coseno a producto interno, de modo que dos consultas idénticas devuelven un orden de resultados distinto según el valor elegido",
+        "Reconstruye por completo el grafo del índice, añadiendo más conexiones por nodo directamente en el disco",
+        "Actúa como un LIMIT adicional que simplemente recorta las filas ya ordenadas que la consulta devuelve al final",
         "Amplía la lista dinámica de candidatos explorados durante la búsqueda: sube el recall y también la latencia, sin tocar el índice ya construido"
       ],
       "options_en": [
-        "It changes the distance metric used during search from L2 to cosine",
-        "It rebuilds the index with more connections per node, so it requires a REINDEX and more disk space",
-        "It increases the number of rows the query returns, equivalent to raising the LIMIT",
+        "It changes, at query time, the distance metric the index uses, switching from cosine to inner product, so two identical queries return a different result order depending on the chosen value",
+        "It fully rebuilds the index graph, adding more connections per node directly on disk",
+        "It acts as an extra LIMIT that simply trims the already-ranked rows the query returns at the end",
         "It widens the dynamic candidate list explored during search: recall goes up and so does latency, with no change to the already-built index"
       ],
       "correct_index": 3,
@@ -234,15 +234,15 @@
       "question_en": "In pgvector a column was indexed with `vector_cosine_ops` but the queries were written with the `<->` operator. What happens?",
       "options_es": [
         "`<->` es distancia euclídea (L2) y el índice está construido para distancia coseno, así que el planificador no puede usarlo: la consulta hace un escaneo secuencial exacto, se vuelve lenta y además ordena por otra métrica que la prevista",
-        "PostgreSQL rechaza la consulta con un error de tipo, porque el operador y la clase de operadores no coinciden",
-        "No pasa nada: `<->`, `<=>` y `<#>` son sinónimos y cualquiera de ellos aprovecha cualquier índice vectorial",
-        "El índice se usa igualmente, pero los resultados salen en orden inverso"
+        "PostgreSQL detecta internamente el desajuste entre operador y clase de operadores y reescribe la consulta para usar `<=>`",
+        "No pasa nada de particular: pgvector normaliza internamente cualquier operador a la métrica que use el índice construido",
+        "El índice se sigue usando exactamente igual, pero el planificador invierte el orden ascendente a descendente de los resultados, porque el motor calcula la distancia con el signo cambiado antes de aplicar el ordenamiento final de las filas"
       ],
       "options_en": [
         "`<->` is Euclidean (L2) distance while the index was built for cosine distance, so the planner cannot use it: the query falls back to an exact sequential scan, gets slow, and also ranks by a different metric than intended",
-        "PostgreSQL rejects the query with a type error, because the operator and the operator class do not match",
-        "Nothing: `<->`, `<=>` and `<#>` are synonyms and any of them can use any vector index",
-        "The index is still used, but results come back in reverse order"
+        "PostgreSQL internally detects the mismatch between operator and operator class and rewrites the query to use `<=>` instead",
+        "Nothing in particular happens: pgvector internally normalises any operator to whichever metric the built index uses",
+        "The index is still used exactly the same, but the planner flips the results from ascending to descending order, because the engine computes the distance with the sign flipped before applying the final row ordering"
       ],
       "correct_index": 0,
       "explanation_es": "Cada clase de operadores en pgvector sirve a un operador concreto: `vector_l2_ops` a `<->`, `vector_cosine_ops` a `<=>` y `vector_ip_ops` a `<#>`. Si no coinciden, el índice simplemente no es elegible. El fallo es especialmente traicionero porque es silencioso: no hay error (descartando la opción A), los resultados siguen siendo correctos para L2 y el único indicio es una latencia que crece con el número de filas; la opción D describe la otra confusión frecuente, la de suponer que el problema es de signo. Con vectores normalizados el orden L2 y el coseno coinciden, lo que puede ocultar el error en desarrollo y hacerlo aparecer en producción.",
@@ -265,15 +265,15 @@
       "question_en": "A team filters results with the rule 'discard any passage with cosine similarity below 0.75', a threshold that worked well with their previous embedding model. After switching models, almost everything passes the filter. Why?",
       "options_es": [
         "Los valores absolutos de similitud no son comparables entre modelos: cada espacio de embeddings tiene su propia distribución de similitudes, así que un umbral fijo debe recalibrarse con datos etiquetados cada vez que se cambia de modelo",
-        "El modelo nuevo tiene más dimensiones, y la similitud coseno crece siempre con la dimensionalidad",
-        "El modelo nuevo produce vectores sin normalizar, y la similitud coseno no está definida para vectores sin normalizar",
-        "La similitud coseno se degrada con el tamaño del índice, así que el umbral debe subir a medida que crece el corpus"
+        "El modelo nuevo genera vectores con muchas más dimensiones, y a mayor dimensionalidad la similitud coseno tiende siempre hacia 1, un artefacto puramente geométrico ligado al conteo de ejes que no depende en absoluto de cómo se entrenó cada modelo concreto ni de la calidad de sus vectores",
+        "El modelo nuevo produce vectores de números enteros en lugar de flotantes, lo que invalida por completo la fórmula del coseno",
+        "La similitud coseno depende del orden en que se insertaron los vectores en el índice, así que cambia con cada reindexado"
       ],
       "options_en": [
         "Absolute similarity values are not comparable across models: each embedding space has its own similarity distribution, so a fixed threshold must be recalibrated against labelled data whenever the model changes",
-        "The new model has more dimensions, and cosine similarity always grows with dimensionality",
-        "The new model produces unnormalised vectors, and cosine similarity is undefined for unnormalised vectors",
-        "Cosine similarity degrades as the index grows, so the threshold must rise as the corpus gets bigger"
+        "The new model produces vectors with many more dimensions, and cosine similarity always trends toward 1 as dimensionality grows, a purely geometric artefact tied to the axis count that has nothing to do with how each particular model was trained or the quality of its vectors",
+        "The new model outputs integer-valued vectors instead of floats, which completely invalidates the cosine formula",
+        "Cosine similarity depends on the order in which vectors were inserted into the index, so it shifts with every reindex"
       ],
       "correct_index": 0,
       "explanation_es": "Un 0.75 no significa '75 % de parecido' ni nada absoluto: es una posición dentro de la distribución de similitudes que produce ese modelo concreto. Algunos modelos comprimen casi todos los pares en el rango 0.7-0.95 y otros los reparten entre 0.1 y 0.9, de modo que el mismo número separa bien en uno y no separa nada en el otro. La forma correcta de fijar el umbral es medirlo sobre un conjunto de consultas con relevancia etiquetada. La opción A confunde la normalización (que afecta al cálculo, no a la comparabilidad) y la opción B repite el mito de que más dimensiones implican más similitud.",
@@ -294,16 +294,16 @@
       "question_es": "Se pide a una base vectorial los 10 vecinos más cercanos restringidos a `tenant_id = 42`, un tenant que representa el 0.1 % del corpus. La consulta devuelve a veces 2 resultados y a veces ninguno. ¿Cuál es la causa más probable?",
       "question_en": "A vector database is asked for the 10 nearest neighbours restricted to `tenant_id = 42`, a tenant that accounts for 0.1 % of the corpus. The query sometimes returns 2 results and sometimes none. What is the most likely cause?",
       "options_es": [
-        "El índice ANN está corrupto y hay que reconstruirlo desde cero",
+        "El índice ANN está corrupto simplemente porque ese tenant representa menos del 1% del corpus, y hay que reconstruirlo entero",
         "Se está aplicando post-filtrado: el índice recupera primero los 10 vecinos globales y después descarta los que no cumplen el filtro; con un tenant tan minoritario casi ninguno sobrevive. La solución es pre-filtrado o filtrado durante el recorrido del grafo",
-        "La similitud coseno no admite filtros por metadatos, así que el filtro se ignora y luego se descartan todos los resultados",
-        "Los embeddings de ese tenant se generaron con otra versión del modelo y por eso quedan fuera del espacio"
+        "La similitud coseno solo admite filtros por metadatos cuando el índice usa distancia euclídea (L2), nunca con distancia coseno, así que cualquier filtro por tenant queda simplemente descartado en silencio antes de ejecutar la búsqueda",
+        "Los embeddings de ese tenant nunca llegaron a generarse porque el servicio de ingesta lo excluyó por un error de configuración"
       ],
       "options_en": [
-        "The ANN index is corrupted and must be rebuilt from scratch",
+        "The ANN index is corrupted simply because that tenant accounts for under 1% of the corpus, and it must be rebuilt entirely",
         "Post-filtering is in effect: the index first retrieves the global top-10 neighbours and then drops those failing the filter; with such a tiny tenant almost none survive. The fix is pre-filtering or filtering during the graph traversal",
-        "Cosine similarity does not support metadata filters, so the filter is ignored and then every result is discarded",
-        "That tenant's embeddings were generated with a different model version and therefore fall outside the space"
+        "Cosine similarity only supports metadata filters when the index uses Euclidean (L2) distance, never with cosine distance, so any tenant filter is simply discarded silently before the search ever runs",
+        "That tenant's embeddings were never generated at all because the ingestion service mistakenly excluded it due to a config error"
       ],
       "correct_index": 1,
       "explanation_es": "Es el problema clásico de filtros muy selectivos sobre índices ANN. El post-filtrado busca primero y filtra después, así que el número de resultados que sobreviven depende de la selectividad del filtro y puede caer a cero pese a que existan miles de candidatos válidos. El síntoma delata la causa: si el índice estuviera corrupto (opción A) fallarían también las consultas sin filtro, y si los vectores fueran de otro modelo (opción B) los resultados serían irrelevantes, no escasos. La opción C es falsa: todas las bases vectoriales de producción soportan filtros; la pregunta es cuándo los aplican.",
@@ -372,16 +372,16 @@
       "question_es": "Se indexó el corpus con un modelo y, al migrar el servicio, la consulta se embebió con otro:\\n\\n    # indexación, hace tres meses\\n    doc_vecs = model_a.encode(chunks)      # 768 dimensiones\\n    index.add(doc_vecs)\\n\\n    # consulta, tras la migración\\n    q_vec = model_b.encode([pregunta])     # también 768 dimensiones\\n    D, I = index.search(q_vec, k=5)\\n\\nNo salta ninguna excepción. ¿Qué resultado cabe esperar?",
       "question_en": "The corpus was indexed with one model and, after a service migration, the query was embedded with another:\\n\\n    # indexing, three months ago\\n    doc_vecs = model_a.encode(chunks)      # 768 dimensions\\n    index.add(doc_vecs)\\n\\n    # query, after the migration\\n    q_vec = model_b.encode([question])     # also 768 dimensions\\n    D, I = index.search(q_vec, k=5)\\n\\nNo exception is raised. What result should be expected?",
       "options_es": [
-        "Los resultados son correctos porque ambos modelos codifican el mismo idioma y la similitud coseno es independiente del modelo",
-        "FAISS detecta la incompatibilidad y devuelve I lleno de -1",
+        "Los resultados obtenidos son correctos porque FAISS normaliza automáticamente vectores de modelos distintos antes de compararlos entre sí, porque ambos modelos fueron entrenados sobre corpus con una distribución estadística prácticamente idéntica",
+        "FAISS compara las versiones de los modelos guardadas en los metadatos del índice y descarta la consulta entera si no coinciden",
         "La búsqueda se ejecuta y devuelve 5 vecinos, pero esencialmente arbitrarios: cada modelo define su propio espacio y las dimensiones de uno no son comparables con las del otro, aunque el número de dimensiones coincida",
-        "La búsqueda falla por un error de dimensiones en tiempo de ejecución"
+        "La búsqueda falla de inmediato con un error de tipo porque model_a y model_b usan estructuras internas de vector distintas"
       ],
       "options_en": [
-        "The results are correct because both models encode the same language and cosine similarity is model-independent",
-        "FAISS detects the incompatibility and returns I filled with -1",
+        "The results obtained are correct because FAISS automatically normalises vectors from different models before comparing them against each other, because both models were trained on corpora with an almost identical statistical distribution",
+        "FAISS compares the model versions stored in the index's metadata and discards the entire query if they do not match",
         "The search runs and returns 5 neighbours, but essentially arbitrary ones: each model defines its own space and one model's dimensions are not comparable with another's, even when the dimension count matches",
-        "The search fails with a runtime dimension mismatch error"
+        "The search fails immediately with a type error because model_a and model_b use different internal vector structures"
       ],
       "correct_index": 2,
       "explanation_es": "La coincidencia de dimensionalidad es justo lo que hace peligroso este error: FAISS solo valida que el vector tenga d componentes, así que no hay excepción (descartando la opción D) ni señal alguna (opción B). Pero la dimensión 42 de model_a y la dimensión 42 de model_b no codifican el mismo concepto, porque cada entrenamiento fija ejes distintos; el resultado es una recuperación con calidad de ruido que solo se detecta evaluando. La opción C es la creencia errónea de fondo: la similitud coseno es independiente del modelo como fórmula, pero solo tiene sentido dentro de un único espacio. Cambiar de modelo de embeddings obliga siempre a reindexar el corpus completo.",
@@ -404,15 +404,15 @@
       "question_en": "What exactly does LangChain's RecursiveCharacterTextSplitter do, and why is it recommended as the default for generic text?",
       "options_es": [
         "Intenta cortar por una lista ordenada de separadores (párrafo, salto de línea, espacio, carácter) y solo pasa al siguiente cuando el fragmento sigue siendo demasiado grande, de modo que conserva la unidad semántica mayor que quepa",
-        "Llama recursivamente al LLM para que resuma cada fragmento hasta que quepa en el tamaño objetivo",
-        "Divide el documento en dos mitades una y otra vez, como una búsqueda binaria, hasta que cada fragmento baje de chunk_size",
-        "Analiza el árbol sintáctico del texto y corta en los límites de las cláusulas gramaticales"
+        "Pide al LLM que reescriba cada párrafo en una versión progresivamente más corta hasta alcanzar el tamaño objetivo pedido",
+        "Corta el documento exactamente por la mitad de manera repetida, como una búsqueda binaria, sin mirar dónde caen las palabras, sin tener en cuenta en ningún momento si ese punto de corte cae en mitad de una palabra o de una frase",
+        "Etiqueta cada palabra del texto con su función gramatical y corta únicamente en los límites entre cláusulas sintácticas"
       ],
       "options_en": [
         "It tries an ordered list of separators (paragraph, newline, space, character) and only moves to the next one when the fragment is still too large, so it preserves the largest semantic unit that fits",
-        "It recursively calls the LLM to summarise each fragment until it fits the target size",
-        "It splits the document in half over and over, like a binary search, until each fragment falls below chunk_size",
-        "It parses the text's syntactic tree and cuts at grammatical clause boundaries"
+        "It asks the LLM to rewrite each paragraph into a progressively shorter version until it reaches the requested target size",
+        "It repeatedly cuts the document exactly in half, like a binary search, without checking where the words fall, without ever taking into account whether that cut point falls in the middle of a word or a sentence",
+        "It tags every word in the text with its grammatical role and cuts only at the boundaries between syntactic clauses"
       ],
       "correct_index": 0,
       "explanation_es": "La recursión del nombre se refiere a la lista de separadores, no al texto ni al modelo. Por defecto prueba [\"\\n\\n\", \"\\n\", \" \", \"\"]: si el trozo entre párrafos ya cabe, se queda ahí; si no, baja al salto de línea, y así hasta cortar por carácter en el peor caso. Las opciones A y C son las dos lecturas equivocadas más comunes de la palabra 'recursive': ni resume (eso costaría una llamada al LLM por fragmento) ni parte por la mitad a ciegas. La opción D describe un splitter sintáctico, que existe pero es otra herramienta y mucho más lenta.",
@@ -464,15 +464,15 @@
       "question_en": "Parent-document retrieval (ParentDocumentRetriever) resolves a tension inherent to chunking. Which one, and how?",
       "options_es": [
         "Que los chunks pequeños se emparejan mejor con la consulta pero dan poco contexto, mientras que los grandes dan contexto pero diluyen el embedding: indexa y busca sobre fragmentos pequeños, y entrega al LLM el fragmento padre más amplio que los contiene",
-        "Que las consultas son ambiguas: reformula la pregunta con el documento padre como guía antes de buscar",
-        "Que los documentos se actualizan: versiona el padre para poder reindexar solo los hijos afectados",
-        "Que el corpus crece sin límite: comprime los chunks hijos y guarda solo el padre, ahorrando espacio en el índice"
+        "Que el índice crece sin ningún control: purga de forma automática los documentos padre más antiguos que ya no se consultan, de modo que cada versión antigua del padre se conserva indefinidamente junto con sus hijos asociados",
+        "Que los embeddings quedan obsoletos con el tiempo: reentrena el modelo de embeddings directamente sobre el documento padre",
+        "Que la latencia de consulta resulta demasiado alta: cachea el documento padre completo en memoria RAM para acelerarla"
       ],
       "options_en": [
         "That small chunks match the query better but carry little context, while large ones carry context but dilute the embedding: it indexes and searches over small fragments, then hands the LLM the wider parent fragment that contains them",
-        "That queries are ambiguous: it rewrites the question using the parent document as a guide before searching",
-        "That documents get updated: it versions the parent so only the affected children need reindexing",
-        "That the corpus grows without bound: it compresses the child chunks and stores only the parent, saving index space"
+        "That the index grows with no control at all: it automatically purges the oldest parent documents that are no longer queried, so every old version of the parent is kept indefinitely alongside its associated children",
+        "That embeddings become stale over time: it retrains the embedding model directly on the parent document",
+        "That query latency ends up too high: it caches the entire parent document in RAM to speed things up"
       ],
       "correct_index": 0,
       "explanation_es": "Es el compromiso central del chunking y no se puede resolver eligiendo un solo tamaño, porque la recuperación y la generación quieren tamaños opuestos: un embedding de una frase es preciso, uno de tres páginas es un promedio borroso, pero la frase sola no permite responder. La solución es desacoplar la unidad de búsqueda de la unidad de contexto. Las opciones A, B y C describen problemas reales de un sistema RAG (coste de almacenamiento, consultas ambiguas, actualización incremental) que tienen otras soluciones, y por eso resultan plausibles a quien conoce la técnica solo de nombre.",
@@ -493,16 +493,16 @@
       "question_es": "Un RAG sobre informes financieros en PDF responde bien a preguntas narrativas y falla sistemáticamente en las cifras que aparecen en tablas. ¿Cuál es la explicación más probable en la etapa de chunking?",
       "question_en": "A RAG over financial PDF reports answers narrative questions well and consistently fails on figures that live in tables. What is the most likely explanation at the chunking stage?",
       "options_es": [
-        "Los modelos de embeddings no pueden representar números, así que cualquier cifra queda fuera del espacio vectorial",
+        "Los modelos de embeddings truncan por diseño cualquier token puramente numérico antes de vectorizarlo, perdiendo la cifra, tratando cualquier secuencia de dígitos como un símbolo fuera de vocabulario que se descarta sin más",
         "La extracción de texto aplana la tabla a una secuencia lineal de celdas y el troceado por tamaño fijo la parte, separando los números de sus cabeceras de fila y columna: el chunk resultante contiene cifras sin la etiqueta que les da sentido",
-        "Los PDF cifran las tablas como imágenes por definición, de modo que ningún extractor de texto puede leerlas",
-        "El problema es del LLM: los modelos de lenguaje no saben leer tablas aunque estén completas en el contexto"
+        "Los extractores de texto de PDF descartan por diseño cualquier contenido que se encuentre dentro de una tabla",
+        "El modelo de embeddings es incapaz de procesar texto que mezcle dígitos junto a palabras en la misma cadena"
       ],
       "options_en": [
-        "Embedding models cannot represent numbers, so any figure falls outside the vector space",
+        "Embedding models truncate, by design, any purely numeric token before vectorising it, losing the figure, treating any sequence of digits as an out-of-vocabulary symbol that gets discarded outright",
         "Text extraction flattens the table into a linear sequence of cells and fixed-size splitting cuts through it, separating the numbers from their row and column headers: the resulting chunk holds figures without the labels that give them meaning",
-        "PDFs encode tables as images by definition, so no text extractor can read them",
-        "The problem is the LLM: language models cannot read tables even when the table arrives complete in the context"
+        "PDF text extractors discard, by design, any content that is found inside a table",
+        "The embedding model is unable to process text that mixes digits together with words in the same string"
       ],
       "correct_index": 1,
       "explanation_es": "Una tabla es una estructura bidimensional cuyo significado vive en la intersección de fila y columna; al convertirla en texto plano y cortarla por número de caracteres se pierde esa relación y el chunk queda con números huérfanos que además se parecen entre sí como embeddings. La solución práctica es usar un extractor consciente de la estructura, mantener la tabla como una unidad indivisible y repetir las cabeceras en cada fragmento. La opción C es falsa como afirmación general (muchos PDF llevan las tablas como texto) aunque describe un caso real que exigiría OCR, y la opción D es la excusa cómoda: con la tabla íntegra en el contexto los modelos actuales sí la interpretan, lo que confirma que el fallo está aguas arriba.",
@@ -524,15 +524,15 @@
       "question_es": "Al trocear manuales corporativos, cada página arrastra un pie de 60 palabras con el aviso legal. Ahora, para muchas consultas, los 5 pasajes recuperados son casi idénticos entre sí. ¿Cuál es la causa y el remedio?",
       "question_en": "When chunking corporate manuals, every page carries a 60-word legal disclaimer in the footer. Now, for many queries, the 5 retrieved passages are nearly identical to each other. What is the cause and the remedy?",
       "options_es": [
-        "El índice tiene duplicados por un error de ingesta; basta con volver a indexar el corpus desde cero",
-        "La base vectorial devuelve resultados repetidos cuando el corpus supera el millón de vectores; hay que particionar el índice",
-        "El valor de chunk_overlap es demasiado alto y por eso los pasajes se solapan; bajándolo a cero desaparece el problema",
+        "El índice tiene vectores duplicados por un fallo puntual del cliente de la base vectorial; basta con actualizar esa librería, un fallo que no tiene relación alguna con el contenido repetido que arrastra cada página del manual",
+        "El modelo de embeddings pierde precisión en cuanto se supera el millón de vectores indexados; hay que fragmentar el índice",
+        "El chunk_size elegido es demasiado pequeño y por eso el pie de página legal termina ocupando chunks enteros él solo",
         "El texto repetido domina cada chunk y hace que cientos de fragmentos tengan embeddings casi iguales: hay que eliminar cabeceras y pies en el preprocesado, y deduplicar antes de armar el prompt"
       ],
       "options_en": [
-        "The index has duplicates from an ingestion bug; simply reindex the corpus from scratch",
-        "The vector database returns repeated results once the corpus exceeds a million vectors; the index must be partitioned",
-        "chunk_overlap is set too high and that is why passages overlap; lowering it to zero makes the problem go away",
+        "The index has duplicate vectors from a one-off bug in the vector database client; simply updating that library fixes it, a bug that has nothing to do with the repeated content each page of the manual carries",
+        "The embedding model loses precision once it passes a million indexed vectors; the index must be sharded into partitions",
+        "The chosen chunk_size is too small and that is why the legal footer ends up occupying whole chunks all by itself",
         "The repeated text dominates each chunk and makes hundreds of fragments have nearly identical embeddings: strip headers and footers in preprocessing, and deduplicate before assembling the prompt"
       ],
       "correct_index": 3,
@@ -629,16 +629,16 @@
       "question_es": "Un pipeline recupera 100 candidatos con búsqueda vectorial y luego los re-ordena con un cross-encoder para quedarse con 5. ¿Por qué no se aplica el cross-encoder directamente sobre todo el corpus, que daría mejor ranking?",
       "question_en": "A pipeline retrieves 100 candidates with vector search and then re-ranks them with a cross-encoder to keep 5. Why not apply the cross-encoder directly to the whole corpus, which would rank better?",
       "options_es": [
-        "Porque los cross-encoders solo aceptan lotes de como máximo 100 pares por limitación de la biblioteca",
-        "Porque un cross-encoder aplicado a muchos documentos pierde precisión al saturarse su ventana de atención",
+        "Porque la biblioteca del cross-encoder rechaza directamente cualquier lote que supere los 100 pares por petición",
+        "Porque un cross-encoder pierde precisión de forma medible en cuanto compara más de unos pocos cientos de documentos a la vez",
         "Porque el cross-encoder no produce vectores precalculables: exige una pasada completa del modelo por cada par consulta-documento en tiempo de consulta, así que su coste crece linealmente con el corpus y sería inviable en latencia",
-        "Porque el cross-encoder devuelve puntuaciones no comparables si se aplica a más de unos pocos cientos de documentos"
+        "Porque las puntuaciones que devuelve el cross-encoder dejan de ser comparables entre sí si se calculan fuera de un mismo lote, de modo que un ranking de cinco documentos ya no se puede comparar de forma fiable con otro de cincuenta"
       ],
       "options_en": [
-        "Because cross-encoders only accept batches of at most 100 pairs due to a library limitation",
-        "Because a cross-encoder applied to many documents loses precision as its attention window saturates",
+        "Because the cross-encoder library directly rejects any batch exceeding 100 pairs per single request",
+        "Because a cross-encoder measurably loses precision once it compares more than a few hundred documents at once",
         "Because a cross-encoder produces nothing precomputable: it requires a full model pass for every query-document pair at query time, so its cost grows linearly with the corpus and would be unviable in latency terms",
-        "Because the cross-encoder returns non-comparable scores when applied to more than a few hundred documents"
+        "Because the scores the cross-encoder returns stop being comparable with each other once computed outside the same batch, so a ranking of five documents can no longer be reliably compared with one of fifty"
       ],
       "correct_index": 2,
       "explanation_es": "La asimetría es económica, no de calidad. El bi-encoder codifica cada documento una sola vez, offline, y en consulta solo compara vectores con un índice ANN: coste sublineal. El cross-encoder mira consulta y documento juntos, así que no hay nada que guardar y hay que ejecutar el modelo N veces en el momento de la consulta; sobre un millón de documentos son un millón de inferencias por pregunta. De ahí la cascada: el recuperador barato garantiza recall sobre 100 candidatos y el caro, preciso, ordena solo esos. Las opciones A, B y C inventan límites técnicos que no existen; el límite real es el presupuesto de latencia y de cómputo.",
@@ -659,15 +659,15 @@
       "question_es": "Para combinar resultados densos y BM25, un equipo suma directamente `0.5 * score_coseno + 0.5 * score_bm25`. Los resultados quedan dominados por la rama léxica. ¿Cuál es la razón de fondo?",
       "question_en": "To combine dense and BM25 results, a team directly sums `0.5 * cosine_score + 0.5 * bm25_score`. Results end up dominated by the lexical branch. What is the underlying reason?",
       "options_es": [
-        "La búsqueda densa devuelve menos candidatos que BM25, y por eso la media favorece al léxico",
-        "BM25 es intrínsecamente mejor que la búsqueda densa, así que el resultado observado es el correcto y no hay nada que corregir",
-        "El peso 0.5 es demasiado alto para BM25; con 0.3 y 0.7 el problema queda resuelto de forma general",
+        "BM25 devuelve sistemáticamente más candidatos que la búsqueda densa, y la media aritmética favorece al lado con más candidatos",
+        "BM25 es siempre intrínsecamente más preciso que la búsqueda densa en cualquier dominio, así que el resultado observado es el correcto, una conclusión que se mantendría igual sin importar qué fórmula de combinación se use para fusionar ambas puntuaciones",
+        "El peso 0.5 provoca un desbordamiento numérico silencioso en el cálculo, y ese error termina favoreciendo siempre a BM25",
         "Las dos puntuaciones viven en escalas distintas y sin acotar en común: el coseno se mueve aproximadamente en [0, 1] mientras que BM25 no tiene cota superior y puede valer 30 o 50, así que la suma ponderada la decide siempre BM25; hay que normalizar las puntuaciones o fusionar por rangos, como hace RRF"
       ],
       "options_en": [
-        "Dense search returns fewer candidates than BM25, and that is why the average favours the lexical side",
-        "BM25 is intrinsically better than dense search, so the observed outcome is correct and nothing needs fixing",
-        "The 0.5 weight is too high for BM25; 0.3 and 0.7 resolves the problem in general",
+        "BM25 systematically returns more candidates than dense search, and the arithmetic mean favours the side with more candidates",
+        "BM25 is always intrinsically more precise than dense search in any domain, so the observed outcome is the correct one, a conclusion that would hold regardless of which combination formula is used to fuse the two scores",
+        "The 0.5 weight causes a silent numeric overflow in the calculation, and that error ends up always favouring BM25",
         "The two scores live on different, non-commensurate scales: cosine moves roughly within [0, 1] while BM25 has no upper bound and can reach 30 or 50, so the weighted sum is always decided by BM25; scores must be normalised, or fused by rank as RRF does"
       ],
       "correct_index": 3,
@@ -689,15 +689,15 @@
       "question_es": "En BM25, ¿qué controla el parámetro `b` y qué efecto tiene ponerlo a 0?",
       "question_en": "In BM25, what does the `b` parameter control, and what is the effect of setting it to 0?",
       "options_es": [
-        "Controla el peso del IDF; con b=0 todos los términos pesan igual, sin importar su rareza",
-        "Controla el número mínimo de términos de la consulta que deben aparecer; con b=0 basta con que aparezca uno",
-        "Controla la saturación de la frecuencia del término; con b=0 la puntuación crece linealmente con cada aparición",
+        "Controla exclusivamente el peso del término de frecuencia inversa de documento (IDF) dentro de la puntuación final de BM25, de modo que poner b a 0 tendría el mismo efecto que eliminar por completo esa penalización por rareza",
+        "Controla el número mínimo de términos de la consulta que deben coincidir de forma exacta con el documento evaluado",
+        "Controla la saturación de la frecuencia del término dentro de un mismo documento a medida que este se repite",
         "Controla la normalización por longitud del documento; con b=0 se desactiva, de modo que los documentos largos dejan de ser penalizados y tienden a dominar el ranking por acumular más apariciones del término"
       ],
       "options_en": [
-        "It controls the weight of IDF; with b=0 every term weighs the same regardless of rarity",
-        "It controls the minimum number of query terms that must appear; with b=0 a single one suffices",
-        "It controls term-frequency saturation; with b=0 the score grows linearly with each occurrence",
+        "It exclusively controls the weight of the inverse document frequency (IDF) term within BM25's final score, so setting b to 0 would have the same effect as removing that rarity penalty altogether",
+        "It controls the minimum number of query terms that must match the evaluated document exactly",
+        "It controls the saturation of term frequency within a single document as the term keeps repeating",
         "It controls document-length normalisation; with b=0 it is switched off, so long documents stop being penalised and tend to dominate the ranking by accumulating more occurrences of the term"
       ],
       "correct_index": 3,
@@ -719,16 +719,16 @@
       "question_es": "¿Qué problema resuelve seleccionar los pasajes con Maximal Marginal Relevance (MMR, `search_type=\"mmr\"`) en lugar de tomar sin más el top-k por similitud?",
       "question_en": "What problem does selecting passages with Maximal Marginal Relevance (MMR, `search_type=\"mmr\"`) solve, compared with simply taking the top-k by similarity?",
       "options_es": [
-        "Que la búsqueda por similitud es lenta: MMR acelera la consulta reduciendo el número de comparaciones",
-        "Que los embeddings no están normalizados: MMR los normaliza antes de comparar",
+        "Que el índice vectorial tarda demasiado en responder a cada consulta: MMR paraleliza la búsqueda entre varios nodos del clúster",
+        "Que los embeddings recuperados llegan sin normalizar desde el índice: MMR los reescala antes de poder compararlos entre sí",
         "Que el top-k puro suele devolver pasajes casi redundantes entre sí; MMR penaliza la similitud de cada candidato con los ya seleccionados y devuelve un conjunto que cubre más aspectos de la consulta con el mismo presupuesto de contexto",
-        "Que la consulta puede estar mal formulada: MMR la reescribe en varias variantes antes de buscar"
+        "Que el usuario suele formular consultas ambiguas: MMR genera varias variantes reformuladas de la pregunta antes de cada búsqueda, produciendo así varias formulaciones que se buscan por separado y cuyos resultados se combinan al final"
       ],
       "options_en": [
-        "That similarity search is slow: MMR speeds up the query by reducing the number of comparisons",
-        "That embeddings are not normalised: MMR normalises them before comparing",
+        "That the vector index takes too long to answer each query: MMR parallelises the search across several nodes of the cluster",
+        "That the retrieved embeddings arrive unnormalised from the index: MMR rescales them before they can be compared with each other",
         "That a pure top-k tends to return passages that are near-redundant with one another; MMR penalises each candidate's similarity to those already selected and returns a set covering more aspects of the query within the same context budget",
-        "That the query may be poorly phrased: MMR rewrites it into several variants before searching"
+        "That the user tends to phrase ambiguous queries: MMR generates several reformulated variants of the question before each search, producing several separate formulations that are searched independently and whose results are merged at the end"
       ],
       "correct_index": 2,
       "explanation_es": "El top-k por similitud optimiza cada pasaje por separado, no el conjunto, así que si el corpus contiene cinco redacciones parecidas del mismo párrafo las devuelve las cinco y el prompt gasta todo su presupuesto en un único hecho. MMR puntúa cada candidato como una mezcla entre relevancia frente a la consulta y disimilitud frente a lo ya elegido, con un parámetro lambda que gradúa el equilibrio. La opción A invierte la realidad: MMR añade cómputo, no lo ahorra, porque compara los candidatos entre sí. La opción D describe la expansión de consultas o multi-query, que es una técnica distinta aplicada antes de la búsqueda.",
@@ -820,16 +820,16 @@
       "question_es": "Se fusionan dos listas con Reciprocal Rank Fusion, `score(d) = suma sobre listas de 1 / (k + rango(d))` con k=60 y rangos que empiezan en 1.\\n\\n    A: rango 1 en la lista densa, rango 50 en la léxica\\n    B: rango 5 en la lista densa, rango 6 en la léxica\\n\\n¿Cuál queda por delante y qué principio ilustra?",
       "question_en": "Two lists are fused with Reciprocal Rank Fusion, `score(d) = sum over lists of 1 / (k + rank(d))` with k=60 and ranks starting at 1.\\n\\n    A: rank 1 in the dense list, rank 50 in the lexical list\\n    B: rank 5 in the dense list, rank 6 in the lexical list\\n\\nWhich one comes out on top, and what principle does it illustrate?",
       "options_es": [
-        "A, porque ocupar el primer puesto en una lista garantiza el primer puesto tras la fusión sea cual sea la otra posición",
+        "A, porque ocupar el primer puesto en cualquiera de las dos listas fija de forma automática el primer puesto tras la fusión, sin que importe la posición que ese mismo documento ocupe en la otra lista, y esa regla no cambia aunque se modifique la constante k",
         "B: A obtiene 1/61 + 1/110 ≈ 0.0255 y B obtiene 1/65 + 1/66 ≈ 0.0305; la constante k aplana las diferencias en las primeras posiciones, de modo que el acuerdo entre ambos recuperadores pesa más que un primer puesto aislado",
-        "B es imposible de determinar sin conocer las puntuaciones originales de similitud de cada lista",
-        "Empatan, porque RRF solo cuenta en cuántas listas aparece cada documento y ambos aparecen en las dos"
+        "B, pero solo puede calcularse normalizando antes las puntuaciones brutas de similitud coseno y de BM25 a una escala común de 0 a 1, y promediando después esos valores normalizados con el mismo peso para cada uno de los dos recuperadores",
+        "Empatan, porque RRF asigna idéntico peso a cualquier posición dentro de una lista y solo cuenta en cuántas listas distintas aparece cada documento, sin distinguir nunca si el rango concreto es el primero o el número cincuenta"
       ],
       "options_en": [
-        "A, because holding the top spot in one list guarantees the top spot after fusion, whatever the other position is",
+        "A, because holding the top spot in either list automatically fixes the top spot after fusion, no matter what position that document holds in the other list, and this rule stays the same even if the constant k is changed",
         "B: A scores 1/61 + 1/110 ≈ 0.0255 and B scores 1/65 + 1/66 ≈ 0.0305; the constant k flattens differences among the top positions, so agreement between the two retrievers outweighs an isolated first place",
-        "B cannot be determined without knowing each list's original similarity scores",
-        "They tie, because RRF only counts in how many lists each document appears and both appear in both"
+        "B, but it can only be computed by first normalizing the raw cosine-similarity and BM25 scores onto a common 0-to-1 scale, then averaging those normalized values with equal weight for each of the two retrievers",
+        "They tie, because RRF gives identical weight to any position within a list and only counts how many distinct lists each document appears in, never distinguishing whether the actual rank is first or fiftieth"
       ],
       "correct_index": 1,
       "explanation_es": "La constante k=60 es la pieza clave: hace que 1/61 y 1/65 se diferencien apenas, mientras que la caída hasta el puesto 50 sí se nota. Por eso un documento respaldado por ambos recuperadores en posiciones decentes supera a uno que solo convence a uno de ellos. La opción A es la intuición equivocada más común: se supone que el primer puesto es inatacable, cuando RRF está diseñado precisamente para que no lo sea. La opción C confunde RRF con la fusión por puntuaciones: RRF trabaja solo con rangos, y esa es su virtud, porque evita el problema de escalas incomparables entre coseno y BM25.",

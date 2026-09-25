@@ -529,7 +529,7 @@ la plataforma; no vende exposición a ella.
 | Pago en USDC liquidado en fiat (LATAM) | ✅ tras H.19 | ❌ | ❌ | ❌ | ❌ |
 | Credenciales verificables (Open Badges 3.0) | ✅ S29 | ❌ | ❌ | ❌ | ❌ |
 | Token / cripto propia | ❌ a propósito (ADR-33) | ❌ | ❌ | ❌ | ❌ |
-| Precio base (2026-09-18, **no verificado**; ver §A.1) | $14.99 (ADR-21, sin publicar) | ~~$49~~ $59/mes · $399/año | $39 | ~~$29~~ $49/mes · $249/año | $20 |
+| Precio base (2026-09-18, **no verificado** salvo Whetzy; ver §A.1) | Pro $14.99 (ADR-41; publicado en la landing, cobro sin abrir) | ~~$49~~ $59/mes · $399/año | $39 | ~~$29~~ $49/mes · $249/año | $20 |
 | Empleabilidad | Alta | Alta | Media | Media | Media |
 
 ---
@@ -547,4 +547,4 @@ Para cada competidor del §1, navegar el free tier y documentar:
 - [ ] Anotar: qué emoción genera el diseño (confianza / excitación / aburrimiento)
 - [ ] Anotar: qué haría Whetzy diferente en esa misma pantalla
 
-Guardar en: `docs/competencia-screenshots/` (carpeta gitignoreada, solo local)
+Guardar en: `docs/archive/competencia-screenshots-2026-09-19/` (histórico, ADR-48; la captura vigente es §A)

@@ -8,16 +8,16 @@
       "question_es": "¿Cuál es el objetivo principal de un sistema RAG (Retrieval-Augmented Generation)?",
       "question_en": "What is the main goal of a RAG (Retrieval-Augmented Generation) system?",
       "options_es": [
-        "Reemplazar por completo el LLM con un motor de búsqueda tradicional",
+        "Sustituir por completo el modelo de lenguaje con un motor de búsqueda tradicional basado únicamente en coincidencia de palabras clave, reduciendo así la latencia total del sistema al tiempo de un simple lookup sobre un índice invertido",
         "Anclar la generación del LLM en documentos externos recuperados, reduciendo alucinaciones y aportando conocimiento actualizado o específico de dominio",
-        "Entrenar un LLM completamente nuevo para cada dominio",
-        "Reducir el número de parámetros del modelo"
+        "Entrenar desde cero un modelo de lenguaje completamente distinto para cada nuevo dominio de conocimiento que se quiera cubrir",
+        "Disminuir el número total de parámetros que componen la arquitectura del modelo de lenguaje empleado en el sistema"
       ],
       "options_en": [
-        "To fully replace the LLM with a traditional search engine",
+        "To fully replace the language model with a traditional search engine based purely on keyword matching, thereby reducing the system's total latency to the time of a simple lookup over an inverted index",
         "To ground the LLM's generation in retrieved external documents, reducing hallucinations and providing up-to-date or domain-specific knowledge",
-        "To train a brand-new LLM for every domain",
-        "To reduce the model's number of parameters"
+        "To train a brand-new, completely different language model from scratch for every new knowledge domain that needs covering",
+        "To decrease the total number of parameters making up the language model's architecture used in the system"
       ],
       "correct_index": 1,
       "explanation_es": "RAG combina un componente de recuperación (retrieval), que busca pasajes relevantes en una base de conocimiento externa, con un LLM que genera la respuesta condicionado a esos pasajes. Esto permite incorporar información actualizada o privada sin necesidad de reentrenar el modelo.",
@@ -63,16 +63,16 @@
       "question_es": "¿Qué mide la similitud coseno (cosine similarity) entre dos vectores de embeddings?",
       "question_en": "What does cosine similarity measure between two embedding vectors?",
       "options_es": [
-        "La distancia euclidiana exacta entre ambos vectores",
+        "La distancia euclidiana exacta que separa a ambos vectores dentro del espacio de embeddings de alta dimensión, medida en la misma unidad que usan las coordenadas originales del vector de embedding",
         "El coseno del ángulo entre ambos vectores, capturando su similitud direccional independientemente de su magnitud",
-        "El número de dimensiones que ambos vectores tienen en común",
-        "La diferencia entre las normas (longitudes) de los dos vectores"
+        "La cantidad de dimensiones que ambos vectores comparten de forma exacta dentro de su representación numérica",
+        "La diferencia numérica entre las normas, es decir las longitudes, de los dos vectores que se están comparando"
       ],
       "options_en": [
-        "The exact Euclidean distance between the two vectors",
+        "The exact Euclidean distance separating the two vectors inside the high-dimensional embedding space, measured in the same unit the embedding vector's original coordinates use",
         "The cosine of the angle between the two vectors, capturing directional similarity regardless of magnitude",
-        "The number of dimensions the two vectors share",
-        "The difference between the norms (lengths) of the two vectors"
+        "The number of dimensions the two vectors share exactly within their numeric representation",
+        "The numeric difference between the norms, that is the lengths, of the two vectors being compared"
       ],
       "correct_index": 1,
       "explanation_es": "La similitud coseno se calcula como `cos(θ) = (a·b) / (||a|| ||b||)`: el producto punto normalizado por las normas de ambos vectores. Va de -1 a 1, y captura si dos embeddings apuntan en direcciones similares sin que la magnitud absoluta del vector influya, algo muy usado para comparar embeddings semánticos.",
@@ -92,16 +92,16 @@
       "question_es": "¿Qué tipo de estructura de índice usan bases de datos vectoriales como FAISS para acelerar la búsqueda aproximada del vecino más cercano (ANN) en espacios de alta dimensión?",
       "question_en": "What kind of index structure do vector databases like FAISS use to speed up approximate nearest neighbor (ANN) search in high-dimensional spaces?",
       "options_es": [
-        "Únicamente tablas hash de tipo diccionario Python",
+        "Únicamente tablas hash de tipo diccionario, como las que ofrece de forma nativa un intérprete de Python",
         "Índices de búsqueda aproximada como IVF o grafos HNSW, en lugar de una búsqueda exhaustiva",
-        "Índices B-tree como los de una base de datos relacional tradicional",
-        "Listas enlazadas simples recorridas de forma secuencial"
+        "Índices B-tree tomados directamente del diseño de una base de datos relacional tradicional cualquiera",
+        "Listas enlazadas simples que se recorren siempre de forma estrictamente secuencial, elemento a elemento"
       ],
       "options_en": [
-        "Only Python dictionary-style hash tables",
+        "Only Python-dictionary-style hash tables, the kind a Python interpreter offers natively",
         "Approximate search indexes like IVF or HNSW graphs, instead of exhaustive search",
-        "B-tree indexes like those in a traditional relational database",
-        "Simple linked lists traversed sequentially"
+        "B-tree indexes borrowed directly from the design of any traditional relational database",
+        "Simple linked lists that are always traversed in strictly sequential order, one element at a time"
       ],
       "correct_index": 1,
       "explanation_es": "Buscar el vecino más cercano exacto entre millones de vectores de alta dimensión es costoso. Estructuras como IVF (inverted file index) o grafos HNSW (Hierarchical Navigable Small World) permiten una búsqueda aproximada mucho más rápida, sacrificando algo de exactitud por velocidad.",
@@ -121,16 +121,16 @@
       "question_es": "¿Por qué se suele usar un 'chunk_overlap' (solapamiento entre fragmentos) al dividir documentos largos en chunks para un sistema RAG?",
       "question_en": "Why is a 'chunk_overlap' between fragments commonly used when splitting long documents into chunks for a RAG system?",
       "options_es": [
-        "Porque es obligatorio en toda base de datos vectorial",
-        "Para reducir el número total de chunks generados",
+        "Porque toda base de datos vectorial lo exige como requisito obligatorio de instalación desde el primer día",
+        "Para reducir el número total de chunks que hace falta generar e indexar en la base de datos vectorial",
         "Para evitar perder contexto o información que quede justo en el límite entre dos chunks consecutivos",
-        "Para eliminar la necesidad de generar embeddings para cada chunk"
+        "Para eliminar por completo la necesidad de calcular un embedding para cada uno de los chunks generados"
       ],
       "options_en": [
-        "Because it is mandatory in every vector database",
-        "To reduce the total number of chunks generated",
+        "Because every vector database requires it as a mandatory installation setting from day one",
+        "To reduce the total number of chunks that need to be generated and indexed in the vector database",
         "To avoid losing context or information that falls right at the boundary between two consecutive chunks",
-        "To eliminate the need to generate embeddings for each chunk"
+        "To completely eliminate the need to compute an embedding for each of the generated chunks"
       ],
       "correct_index": 2,
       "explanation_es": "Si un fragmento de texto relevante queda dividido justo en el corte entre dos chunks, ninguno de los dos por separado podría contener el contexto completo. Un pequeño solapamiento (por ejemplo, 10-20% del tamaño del chunk) reduce el riesgo de perder esa continuidad.",
@@ -150,16 +150,16 @@
       "question_es": "¿Cuál es el propósito de una etapa de re-ranking después de la recuperación inicial en un pipeline RAG?",
       "question_en": "What is the purpose of a re-ranking stage after the initial retrieval in a RAG pipeline?",
       "options_es": [
-        "Generar la respuesta final del LLM directamente a partir de los documentos",
+        "Generar directamente la respuesta final del modelo de lenguaje a partir de los documentos ya recuperados, sin que sea necesario pasar antes por ninguna etapa previa de recuperación de documentos",
         "Reordenar los candidatos recuperados usando un modelo más preciso (p. ej. un cross-encoder) para mejorar la relevancia final",
-        "Reducir a la mitad el número de documentos indexados",
-        "Sustituir la necesidad de generar embeddings"
+        "Reducir a la mitad el número total de documentos que permanecen indexados dentro de la base vectorial",
+        "Sustituir por completo la necesidad de generar embeddings durante la etapa inicial de indexación"
       ],
       "options_en": [
-        "To generate the LLM's final answer directly from the documents",
+        "To generate the language model's final answer directly from the already retrieved documents, without needing to go through any prior document-retrieval stage first",
         "To reorder the retrieved candidates using a more accurate model (e.g. a cross-encoder) to improve final relevance",
-        "To cut the number of indexed documents in half",
-        "To eliminate the need to generate embeddings"
+        "To cut in half the total number of documents that remain indexed inside the vector store",
+        "To completely replace the need to generate embeddings during the initial indexing stage"
       ],
       "correct_index": 1,
       "explanation_es": "La recuperación inicial (p. ej. con embeddings y búsqueda aproximada) prioriza velocidad sobre un conjunto grande de documentos. El re-ranking aplica después un modelo más costoso pero más preciso (como un cross-encoder que procesa la consulta y cada documento juntos) solo sobre los candidatos ya reducidos, mejorando el orden final de relevancia.",

@@ -33,29 +33,31 @@ Cada minuto que inviertes va a la pregunta que más te hace avanzar. Nunca te
 mentimos sobre lo que dominas. Cuando no sabes, te explicamos con fuente.
 
 ### Modelo de negocio
-Freemium: **Gratis / Pro $14.99 / Pro Max $19.99** al mes, y **Creador $99.99** para
-publicar bootcamps con reparto 80/20 (ADR-41, dueño 2026-09-24). Anual, tarifa regional
-y qué añade Pro Max: H.35.
-Web con Stripe; nativo con RevenueCat. Mercado verificado: `COMPETENCIA.md` §A.
-Entidad legal: autónomo griego → IKE al llegar a €2K MRR. Cancelar en dos toques.
+Freemium: **Gratis · Pro $14,99 · Pro Max $19,99** al mes, y **Creador $99,99** para publicar
+bootcamps con reparto 80/20 (ADR-45, decisión del dueño del 2026-09-24 posterior a ADR-43,
+cuya fila de precios enmienda). La landing los muestra; el **cobro no está abierto** hasta
+H.19. Anual, tarifa regional y qué añade Pro Max: H.38. Web con Merchant of Record
+(Paddle / Lemon Squeezy, hipótesis ADR-43) o Stripe, tras `PaymentProvider`; nativo con
+RevenueCat (17.14). Entidad y jurisdicción: **sin decidir** (H.29; la premisa griega de
+ADR-16 queda suspendida). Cancelar en dos toques.
 
 ### Decisiones cerradas — no se reabren
 - **NO** voz. **NO** OCR. Cuando aparezca la tentación, no.
 - Groq + `qwen/qwen3.8-27b` tras la abstracción `LLMProvider`. Cambiar de
   proveedor es config, no refactor.
 - Catálogo: **`docs/CATALOGO_MAESTRO.md`** — **todos los tracks de la industria**
-  (28 del mapa + 14 de §2.0, y los que 37.1 confirme) con **≥ 50 cursos por track** y
-  ~55 certificaciones (ADR-46), sobre un corpus abierto descargado y verificado en
-  `corpus/` (fuera del repo). Hoy 18 tracks / 49 cursos / 5 certificaciones
-  (`check_docs.py`). Es la única lista; cuando otro doc la contradiga, manda el
-  catálogo. **La puerta 37.0 va antes que cualquier pregunta nueva.** No hay atajos.
+  (28 del mapa + 14 de §2.0, y los que 35.1 confirme) con **≥ 50 cursos por track** y
+  ~55 certificaciones (ADR-42), sobre un corpus abierto descargado y verificado en
+  `corpus/` (fuera del repo). Las cifras de hoy (tracks, cursos = módulos, preguntas)
+  viven solo en `frontend/src/lib/catalog.ts`, vigiladas por `check_docs.py` [4]. El
+  catálogo es la única lista; cuando otro doc lo contradiga, manda el catálogo. **La puerta 35.0 va antes que cualquier pregunta nueva.** No hay atajos.
 - Contenido redactado nativo en ES y EN — no traducido. Toda pregunta cita fuente.
 - **Fuentes solo gratuitas y legales** (ADR-11, catálogo §2.1): reutilizar solo
   MIT / Apache / BSD / CC BY / CC0 / PSF / dominio público; CC BY-SA espera H.LIC;
   lo CC BY-NC y lo propietario se lee y se cita. Sin libros de pago, sin PDFs piratas.
 - Registro obligatorio. Sin modo invitado. **Social login antes de tiendas** (ADR-13):
   GitHub + Google en web → **Sign in with Apple, obligatorio por App Store 4.8** en
-  cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 7.6.
+  cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 17.14.
 - Herramientas externas (`claude-webkit`, `banana-claude`, `editor-pro-max`) solo
   fuera de la app; `notebooklm-mcp` no se instala (ADR-12).
 - Molde por track (catálogo §2): **20 skills · 300 Q · 3 niveles · 20 lecciones ·
@@ -359,7 +361,7 @@ git commit -m "<fase>.<id>: <qué cambió>
 <evidencia en 1-3 líneas>
 
 Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
-git push origin master
+git push -u origin <tu-rama>        # nunca master: lo fusiona el dueño (ADR-41)
 ```
 
 ### 6. Actualizar el ledger

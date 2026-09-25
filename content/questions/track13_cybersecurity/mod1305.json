@@ -7,16 +7,16 @@
     "question_es": "¿Cuáles son las fases principales del ciclo de respuesta a incidentes?",
     "question_en": "What are the main phases of the incident response lifecycle?",
     "options_es": [
-      "Preparación y Recuperación únicamente",
-      "Solo Identificación y Contención",
+      "Preparación, Contención y Recuperación únicamente, sin fases intermedias de análisis forense",
+      "Identificación, Erradicación y Lecciones Aprendidas únicamente, en ese orden",
       "Preparación, Identificación, Contención, Erradicación, Recuperación, Lecciones Aprendidas",
-      "No hay fases definidas"
+      "Detección, Notificación y Cierre del incidente, sin documentación posterior"
     ],
     "options_en": [
-      "Only Preparation and Recovery",
-      "Only Identification and Containment",
+      "Preparation, Containment, and Recovery only, without intermediate forensic analysis phases",
+      "Identification, Eradication, and Lessons Learned only, in that order",
       "Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned",
-      "There are no defined phases"
+      "Detection, Notification, and Closure of the incident, without later documentation"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -34,16 +34,16 @@
     "question_es": "¿Qué es la cadena de custodia en forensia digital?",
     "question_en": "What is chain of custody in digital forensics?",
     "options_es": [
-      "El proceso de eliminar evidencia",
+      "El proceso de cifrar por completo la evidencia digital antes de guardarla en el laboratorio",
       "Un registro documentado de quién manejó la evidencia y cuándo, para mantener su integridad",
-      "Un método de cifrado",
-      "Una técnica de compresión"
+      "Un método usado para comprimir los grandes volúmenes de evidencia digital recolectada",
+      "Una técnica pensada para acelerar el análisis de los discos duros que fueron incautados"
     ],
     "options_en": [
-      "The process of deleting evidence",
+      "The process of fully encrypting digital evidence before it is stored in the lab",
       "A documented record of who handled the evidence and when, to maintain its integrity",
-      "An encryption method",
-      "A compression technique"
+      "A method used to compress the large volumes of digital evidence that were collected",
+      "A technique meant to speed up the analysis of hard drives that were seized"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -62,15 +62,15 @@
     "question_en": "What is the difference between volatile and non-volatile evidence in forensics?",
     "options_es": [
       "Volátil desaparece al apagar (RAM, cache); no-volátil persiste (disco duro, SSD)",
-      "Ambas son lo mismo",
-      "Volátil es más importante que no-volátil",
-      "No hay diferencia importante"
+      "Volátil se refiere a archivos cifrados; no-volátil a archivos sin cifrar",
+      "Volátil es evidencia recolectada con orden judicial previa; no-volátil se recolecta sin ella",
+      "Volátil se copia con write blocker; no-volátil no requiere preservación"
     ],
     "options_en": [
       "Volatile disappears on shutdown (RAM, cache); non-volatile persists (hard drive, SSD)",
-      "Both are the same",
-      "Volatile is more important than non-volatile",
-      "There is no important difference"
+      "Volatile refers to encrypted files; non-volatile refers to unencrypted files",
+      "Volatile is evidence collected under a prior warrant; non-volatile is collected without one",
+      "Volatile is copied with a write blocker; non-volatile needs no preservation"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -88,16 +88,16 @@
     "question_es": "¿Qué es el image forense o imágenes de disco en investigación forense?",
     "question_en": "What is forensic imaging or disk imaging in forensic investigation?",
     "options_es": [
-      "Codificar un disco",
-      "Tomar fotografías de un disco",
+      "Codificar el contenido completo de un disco en un formato comprimido y totalmente reversible",
+      "Tomar capturas de pantalla periódicas del contenido visible que muestra el disco duro mientras se analiza",
       "Una copia completa y exacta de los datos de un dispositivo, bit por bit, preservando toda la información",
-      "Borrar datos de un disco"
+      "Borrar de forma segura los datos residuales de un disco antes de que vuelva a usarse en producción"
     ],
     "options_en": [
-      "Encoding a disk",
-      "Taking photographs of a disk",
+      "Encoding a disk's entire content into a fully reversible, compressed format",
+      "Taking periodic screenshots of the visible content shown by the hard drive while it is being analyzed",
       "A complete and exact copy of a device's data, bit by bit, preserving all information",
-      "Erasing data from a disk"
+      "Securely erasing a disk's residual data before it gets reused back in production"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -115,16 +115,16 @@
     "question_es": "¿Qué es la contención en respuesta a incidentes?",
     "question_en": "What is containment in incident response?",
     "options_es": [
-      "Eliminar completamente la amenaza",
+      "Eliminar por completo la amenaza y todo rastro que haya dejado en la red",
       "El proceso de limitar el alcance y el daño de un incidente de seguridad",
-      "Investigar la causa del incidente",
-      "Notificar a los usuarios"
+      "Investigar la causa raíz del incidente para evitar que se repita",
+      "Notificar a los usuarios afectados sobre la exposición de sus datos"
     ],
     "options_en": [
-      "Completely eliminate the threat",
+      "Completely eliminating the threat and every trace it left on the network",
       "The process of limiting the scope and damage of a security incident",
-      "Investigate the cause of the incident",
-      "Notify users"
+      "Investigating the root cause of the incident to prevent recurrence",
+      "Notifying affected users about the exposure of their data"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -142,15 +142,15 @@
     "question_es": "¿Cuál es la orden correcto para capturar evidencia forense volátil?",
     "question_en": "What is the correct order for capturing volatile forensic evidence?",
     "options_es": [
-      "RAM primero, luego la red",
-      "El orden no importa",
-      "Memoria del disco antes que RAM",
+      "RAM primero, luego la caché del procesador y por último la tabla de rutas de la red",
+      "El orden no importa siempre que todo se copie dentro de las primeras veinticuatro horas",
+      "Memoria del disco antes que la RAM, porque el contenido del disco cambia con mayor rapidez",
       "Registros de procesos, conexiones de red, memoria del sistema (RAM), variables de entorno"
     ],
     "options_en": [
-      "RAM first, then network",
-      "Order does not matter",
-      "Disk memory before RAM",
+      "RAM first, then the processor's cache, and finally the network's routing table",
+      "Order does not matter as long as everything gets copied within the first twenty-four hours",
+      "Disk memory before RAM, because the disk's contents change at a much faster rate",
       "Process listings, network connections, system memory (RAM), environment variables"
     ],
     "correct_index": 3,
@@ -169,16 +169,16 @@
     "question_es": "¿Qué es file carving en forensia digital?",
     "question_en": "What is file carving in digital forensics?",
     "options_es": [
-      "Cifrar archivos",
+      "Cifrar cada archivo usando su extensión original como parte de la clave de cifrado que se genera",
       "El proceso de recuperar archivos eliminados buscando sus patrones característicos (magic bytes) en datos no asignados",
-      "Crear nuevos archivos en un sistema",
-      "Comprimir archivos"
+      "Crear archivos completamente nuevos en un sistema, replicando con total exactitud su estructura previa completa y original",
+      "Comprimir archivos agrupando únicamente los bloques de datos que todavía siguen asignados en el disco"
     ],
     "options_en": [
-      "Encrypting files",
+      "Encrypting each file using its original extension as part of the encryption key that gets generated",
       "The process of recovering deleted files by searching for their characteristic patterns (magic bytes) in unallocated data",
-      "Creating new files on a system",
-      "Compressing files"
+      "Creating brand new files on a system by exactly replicating its full, original previous structure in every detail",
+      "Compressing files by grouping only the data blocks that remain allocated on the disk"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -197,15 +197,15 @@
     "question_en": "What is the purpose of using a write blocker in forensic investigation?",
     "options_es": [
       "Prevenir que cualquier dato sea escrito en el dispositivo original, manteniendo la integridad de la evidencia",
-      "Acelerar la copia de datos",
-      "Cifrar el dispositivo",
-      "Eliminar datos de forma segura"
+      "Acelerar la copia de datos evitando por completo la verificación de los bloques dañados del disco",
+      "Cifrar el dispositivo original para que únicamente el investigador autorizado pueda llegar a leerlo más tarde",
+      "Eliminar de forma segura y permanente los datos temporales guardados en el dispositivo original"
     ],
     "options_en": [
       "Prevent any data from being written to the original device, maintaining evidence integrity",
-      "Speed up data copying",
-      "Encrypt the device",
-      "Safely delete data"
+      "Speeding up data copying by entirely skipping verification of the disk's damaged blocks",
+      "Encrypting the original device so that only the authorized investigator can ever get around to reading it later",
+      "Securely and permanently deleting the temporary data stored on the original device"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -223,15 +223,15 @@
     "question_es": "¿Qué es memory forensics y por qué es importante?",
     "question_en": "What is memory forensics and why is it important?",
     "options_es": [
-      "No tiene importancia",
-      "Analizar solo el disco duro",
-      "Una técnica de compresión",
+      "No tiene ninguna importancia porque el disco duro conserva exactamente la misma información completa siempre",
+      "Analizar solamente el disco duro del equipo, ya que la memoria RAM se pierde por completo al apagar",
+      "Una técnica que comprime toda la memoria RAM disponible para poder archivarla mucho más rápido",
       "Análisis de la memoria RAM para recuperar procesos en ejecución, conexiones de red, y código inyectado"
     ],
     "options_en": [
-      "It has no importance",
-      "Analyze only the hard drive",
-      "A compression technique",
+      "It has no importance whatsoever because the hard drive always keeps exactly the same complete information",
+      "Analyzing only the machine's hard drive, since RAM memory is completely lost once it shuts down",
+      "A technique that compresses all of the available RAM so it can be archived much faster",
       "Analysis of RAM memory to recover running processes, network connections, and injected code"
     ],
     "correct_index": 3,
@@ -250,16 +250,16 @@
     "question_es": "¿Cuál es la diferencia entre contención corta y contención larga en respuesta a incidentes?",
     "question_en": "What is the difference between short-term and long-term containment in incident response?",
     "options_es": [
-      "Son lo mismo",
-      "Larga es más importante que corta",
+      "Son lo mismo; ambos términos describen exactamente el mismo procedimiento",
+      "Larga se aplica siempre primero y corta se usa solo si aquella falla",
       "Corta limita inmediato; larga implementa soluciones permanentes",
-      "No hay diferencia"
+      "No hay diferencia relevante entre aislar un sistema y reconstruirlo"
     ],
     "options_en": [
-      "They are the same",
-      "Long-term is more important than short-term",
+      "They are the same; both terms describe exactly the same procedure",
+      "Long-term is always applied first and short-term only if that fails",
       "Short-term limits immediate damage; long-term implements permanent solutions",
-      "There is no difference"
+      "There is no relevant difference between isolating a system and rebuilding it"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -304,15 +304,15 @@
     "question_es": "¿Cuáles son los componentes de un artefacto de malware que un forense debe analizar?",
     "question_en": "What are the components of a malware artifact that a forensic analyst should analyze?",
     "options_es": [
-      "Los artefactos no son importantes",
-      "Solo el código fuente",
-      "Apenas el nombre del archivo",
+      "Los artefactos dejan por completo de ser importantes una vez que el propio malware ya fue removido totalmente del sistema afectado",
+      "Solo el código fuente original del malware, únicamente si el atacante decide revelarlo de forma completamente voluntaria",
+      "Apenas el nombre del archivo infectado y la fecha exacta en la que fue creado dentro del disco",
       "Comportamiento del malware, persistencia (registros, cron), conexiones de red, archivos modificados, técnicas de ofuscación"
     ],
     "options_en": [
-      "Artifacts are not important",
-      "Only the source code",
-      "Just the filename",
+      "Artifacts stop mattering completely once the malware itself has already been fully removed from the affected system",
+      "Only the malware's original source code, and only if the attacker chooses to reveal it in a completely voluntary way",
+      "Just the infected file's name and the exact date it was created on the disk",
       "Malware behavior, persistence (registry, cron), network connections, modified files, obfuscation techniques"
     ],
     "correct_index": 3,
@@ -332,15 +332,15 @@
     "question_en": "What is the difference between live forensic analysis and disk imaging in terms of information recovered?",
     "options_es": [
       "Live captura datos volátiles en tiempo real; imaging captura datos persistentes pero pierde evidencia volátil",
-      "Son lo mismo",
-      "Imaging es mejor que live analysis",
-      "Live analysis no es válido legalmente"
+      "Son exactamente lo mismo; ambas técnicas capturan siempre idéntica información completa del sistema que se está analizando",
+      "Imaging siempre resulta mejor porque preserva incluso la memoria volátil del sistema en vivo",
+      "Live analysis carece por completo de validez legal frente a cualquier proceso judicial posterior"
     ],
     "options_en": [
       "Live captures volatile data in real-time; imaging captures persistent data but loses volatile evidence",
-      "They are the same",
-      "Imaging is better than live analysis",
-      "Live analysis is not legally valid"
+      "They are exactly the same; both techniques always capture identical, complete information from the system being analyzed",
+      "Imaging is always better because it preserves even the live system's volatile memory",
+      "Live analysis has absolutely no legal validity in any later judicial process whatsoever"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -386,15 +386,15 @@
     "question_en": "What are the key principles for preserving the integrity of forensic evidence during an investigation?",
     "options_es": [
       "Cadena de custodia documentada, Write blockers, Hashing (MD5/SHA256), análisis en copias en lugar de originales",
-      "No hay principios especiales",
-      "Modificar los datos es aceptable",
-      "La integridad no es importante"
+      "No existen principios especiales; basta con copiar el disco por cualquier medio que esté disponible",
+      "Modificar los datos originales es perfectamente aceptable si el cambio se documenta después con suficiente detalle",
+      "La integridad no es relevante mientras el valor de hash final termine coincidiendo al concluir todo"
     ],
     "options_en": [
       "Documented chain of custody, Write blockers, Hashing (MD5/SHA256), analysis on copies instead of originals",
-      "There are no special principles",
-      "Modifying data is acceptable",
-      "Integrity is not important"
+      "There are no special principles at all; copying the disk by any available means is enough",
+      "Modifying the original data is perfectly acceptable if the change gets documented afterward in sufficient detail",
+      "Integrity is not relevant as long as the final hash value ends up matching once everything concludes"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -439,15 +439,15 @@
     "question_es": "¿Cuál es el propósito del CVSS (Common Vulnerability Scoring System)?",
     "question_en": "What is the purpose of CVSS (Common Vulnerability Scoring System)?",
     "options_es": [
-      "Listar todas las vulnerabilidades",
-      "Comprimirdo datos",
-      "Encriptar datos",
+      "Listar de forma exhaustiva absolutamente todas las vulnerabilidades conocidas hasta el día de hoy",
+      "Comprimir toda la información técnica de cada vulnerabilidad que haya sido reportada oficialmente",
+      "Cifrar los reportes de vulnerabilidades antes de que lleguen a ser publicados de forma pública",
       "Proporcionar una puntuación numérica estandarizada de la severidad de una vulnerabilidad (0-10)"
     ],
     "options_en": [
-      "List all vulnerabilities",
-      "Compress data",
-      "Encrypt data",
+      "Exhaustively listing absolutely every vulnerability that has been known as of today",
+      "Compressing all of the technical information for every vulnerability that was officially reported",
+      "Encrypting vulnerability reports before they end up being published publicly",
       "Provide a standardized numerical score for the severity of a vulnerability (0-10)"
     ],
     "correct_index": 3,
@@ -466,16 +466,16 @@
     "question_es": "¿Qué es una vulnerabilidad de día cero (zero-day)?",
     "question_en": "What is a zero-day vulnerability?",
     "options_es": [
-      "Una vulnerabilidad en software antiguo",
+      "Una vulnerabilidad descubierta en un software que ya fue descontinuado",
       "Una vulnerabilidad desconocida por el proveedor, sin parche disponible",
-      "Una vulnerabilidad vieja",
-      "Una vulnerabilidad que está siendo parcheada"
+      "Una vulnerabilidad vieja que sigue sin corregirse por falta de recursos",
+      "Una vulnerabilidad que ya cuenta con un parche pero no se ha instalado"
     ],
     "options_en": [
-      "A vulnerability in old software",
+      "A vulnerability discovered in software that has already been discontinued",
       "A vulnerability unknown to the vendor, with no patch available",
-      "An old vulnerability",
-      "A vulnerability being patched"
+      "An old vulnerability that remains unfixed for lack of resources",
+      "A vulnerability that already has a patch that has not been installed"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -493,16 +493,16 @@
     "question_es": "¿Qué es NVD (National Vulnerability Database)?",
     "question_en": "What is NVD (National Vulnerability Database)?",
     "options_es": [
-      "Un protocolo de red",
+      "Un protocolo de red que negocia claves de sesión entre distintos proveedores de hardware",
       "Una base de datos mantenida por NIST que contiene información sobre vulnerabilidades CVE",
-      "Un servicio de almacenamiento en la nube",
-      "Una herramienta de hacking"
+      "Un servicio de almacenamiento en la nube certificado específicamente por agencias federales",
+      "Una herramienta de hacking que el gobierno distribuye de forma completamente gratuita"
     ],
     "options_en": [
-      "A network protocol",
+      "A network protocol that negotiates session keys between different hardware vendors",
       "A database maintained by NIST that contains information about CVE vulnerabilities",
-      "A cloud storage service",
-      "A hacking tool"
+      "A cloud storage service specifically certified by federal government agencies",
+      "A hacking tool that the government distributes completely free of charge"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -682,16 +682,16 @@
     "question_es": "¿Cuál es el proceso de responsabilidad de CVSS (cvss.nist.gov) para calcular una puntuación?",
     "question_en": "What is the process of responsibility in CVSS scoring?",
     "options_es": [
-      "Solo NIST es responsable",
+      "Solo NIST es responsable de todo el proceso, desde el reporte hasta el parche",
       "MITRE mantiene CVE, NIST calcula CVSS, vendors y análistas contribuyen datos",
-      "Solo MITRE es responsable",
-      "No hay responsabilidad clara"
+      "Solo MITRE es responsable de calcular la puntuación final de severidad",
+      "No hay responsabilidad clara; cada proveedor calcula su propio CVSS"
     ],
     "options_en": [
-      "Only NIST is responsible",
+      "Only NIST is responsible for the whole process, from report to patch",
       "MITRE maintains CVE, NIST calculates CVSS, vendors and analysts contribute data",
-      "Only MITRE is responsible",
-      "There is no clear responsibility"
+      "Only MITRE is responsible for calculating the final severity score",
+      "There is no clear responsibility; each vendor calculates its own CVSS"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -709,16 +709,16 @@
     "question_es": "¿Cuál es el impacto de una vulnerabilidad de cadena de suministro (supply chain) en la gestión de vulnerabilidades?",
     "question_en": "What is the impact of a supply chain vulnerability on vulnerability management?",
     "options_es": [
-      "Es fácil de remediar",
-      "No afecta a las organizaciones",
+      "Es fácil de remediar porque siempre involucra únicamente a un solo proveedor externo que ya está perfectamente identificado",
+      "No afecta en absoluto a las organizaciones que evitan comprar software de terceros externos",
       "Vulnerabilidades en componentes de terceros afectan a miles de organizaciones; requiere rastreo de dependencias",
-      "Solo afecta a fabricantes"
+      "Solo afecta a los fabricantes originales del componente, jamás llega a afectar a sus clientes"
     ],
     "options_en": [
-      "It is easy to remediate",
-      "It does not affect organizations",
+      "It is always easy to remediate because it involves only a single external vendor that is already perfectly identified",
+      "It does not affect at all the organizations that avoid buying third-party external software",
       "Vulnerabilities in third-party components affect thousands of organizations; requires dependency tracking",
-      "Only affects manufacturers"
+      "It only affects the component's original manufacturer, never reaching its actual customers"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -736,16 +736,16 @@
     "question_es": "¿Cuál es la estrategia correcta para priorizar remediación de vulnerabilidades en una organización?",
     "question_en": "What is the correct strategy for prioritizing vulnerability remediation in an organization?",
     "options_es": [
-      "Remediar alfabéticamente",
-      "Solo por CVSS score",
+      "Remediar siguiendo estrictamente el orden alfabético del nombre de cada vulnerabilidad reportada",
+      "Priorizar únicamente por la puntuación numérica del CVSS, sin considerar absolutamente ningún otro contexto adicional",
       "Combinar CVSS score con criticidad del sistema, exposición a internet, compensating controls, y contexto del negocio",
-      "Remediar aleatoriamente"
+      "Remediar de manera completamente aleatoria para repartir la carga de trabajo entre los equipos"
     ],
     "options_en": [
-      "Remediate alphabetically",
-      "Only by CVSS score",
+      "Remediating by strictly following the alphabetical order of each reported vulnerability's name",
+      "Prioritizing only by the CVSS numerical score, without considering absolutely any other additional context at all",
       "Combine CVSS score with system criticality, internet exposure, compensating controls, and business context",
-      "Remediate randomly"
+      "Remediating in a completely random order to spread the workload across the teams involved"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -764,15 +764,15 @@
     "question_en": "What is the relationship between MITRE ATT&CK framework and vulnerability management?",
     "options_es": [
       "ATT&CK describe cómo los atacantes explotan vulnerabilidades; ayuda a entender contexto de amenaza",
-      "No hay relación",
-      "ATT&CK solo es para forensia",
-      "No es relevante para vulnerabilidades"
+      "No existe ninguna relación; ATT&CK únicamente cataloga malware, nunca cataloga vulnerabilidades",
+      "ATT&CK solo se utiliza en investigaciones forenses que ocurren después del incidente",
+      "No resulta relevante para vulnerabilidades porque se centra exclusivamente en ataques de phishing dirigido"
     ],
     "options_en": [
       "ATT&CK describes how attackers exploit vulnerabilities; helps understand threat context",
-      "There is no relationship",
-      "ATT&CK is only for forensics",
-      "It is not relevant to vulnerabilities"
+      "There is no relation at all; ATT&CK only catalogs malware, never vulnerabilities themselves",
+      "ATT&CK is only used in forensic investigations that take place after the incident",
+      "It is not relevant to vulnerabilities because it focuses exclusively on targeted phishing attacks instead"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -791,15 +791,15 @@
     "question_en": "What is the challenge of managing vulnerabilities in DevOps/CI-CD environments?",
     "options_es": [
       "Velocidad de deployments vs. tiempo para parchear; requiere automatización de escaneo en el pipeline",
-      "No hay desafíos",
-      "DevOps elimina vulnerabilidades",
-      "Los parches no son necesarios"
+      "No existen desafíos porque los contenedores siempre terminan actualizándose completamente por sí mismos solos",
+      "DevOps elimina las vulnerabilidades desde el propio diseño inicial de toda la arquitectura",
+      "Los parches dejan de ser necesarios si el pipeline reconstruye la imagen completa cada vez"
     ],
     "options_en": [
       "Speed of deployments vs. time to patch; requires automation of scanning in the pipeline",
-      "There are no challenges",
-      "DevOps eliminates vulnerabilities",
-      "Patches are not necessary"
+      "There are no challenges because containers always end up updating themselves completely on their own",
+      "DevOps eliminates vulnerabilities starting from the architecture's own initial design",
+      "Patches stop being necessary if the pipeline rebuilds the entire image every single time"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1072,15 +1072,15 @@
     "question_es": "¿Cuál es la función principal de un SIEM en una infraestructura de seguridad?",
     "question_en": "What is the primary function of a SIEM in a security infrastructure?",
     "options_es": [
-      "Gestionar exclusivamente las contraseñas de usuario",
-      "Crear copias de seguridad de todos los datos de la empresa",
-      "Ejecutar antivirus en todos los endpoints",
+      "Gestionar de forma exclusiva las contraseñas de todos los usuarios y su rotación periódica",
+      "Crear copias de seguridad automáticas de absolutamente todos los datos corporativos de la empresa entera",
+      "Ejecutar el software antivirus en cada uno de los equipos de toda la organización completa",
       "Agregar, correlacionar y analizar eventos de seguridad desde múltiples fuentes para detectar amenazas"
     ],
     "options_en": [
-      "Exclusively manage user passwords",
-      "Create backups of all company data",
-      "Execute antivirus on all endpoints",
+      "Exclusively managing every user's passwords and how often each one gets rotated",
+      "Creating automatic backups of absolutely every piece of corporate data the entire company holds",
+      "Running antivirus software on every single machine across the entire organization",
       "Aggregate, correlate, and analyze security events from multiple sources to detect threats"
     ],
     "correct_index": 3,
@@ -1154,15 +1154,15 @@
     "question_en": "What is the purpose of correlation rules in a SIEM?",
     "options_es": [
       "Identificar patrones y relaciones entre múltiples eventos para detectar amenazas complejas",
-      "Asignar direcciones IP automáticamente a nuevos dispositivos",
-      "Crear reportes mensuales de uso de ancho de banda",
-      "Sincronizar la hora en todos los servidores de la red"
+      "Asignar direcciones IP de forma completamente automática a cada dispositivo recién conectado",
+      "Generar reportes mensuales detallados sobre el consumo de ancho de banda de la empresa",
+      "Sincronizar el reloj del sistema en absolutamente todos los servidores de la infraestructura"
     ],
     "options_en": [
       "Identify patterns and relationships between multiple events to detect complex threats",
-      "Automatically assign IP addresses to new devices",
-      "Create monthly bandwidth usage reports",
-      "Synchronize time across all network servers"
+      "Automatically assigning IP addresses to every single newly connected device",
+      "Generating detailed monthly reports on the company's overall bandwidth consumption",
+      "Synchronizing the system clock across absolutely every server in the infrastructure"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1180,16 +1180,16 @@
     "question_es": "¿Qué es una alerta en un sistema SIEM?",
     "question_en": "What is an alert in a SIEM system?",
     "options_es": [
-      "Una copia física de todos los logs de la semana anterior",
-      "Un correo electrónico enviado al gerente cada viernes",
+      "Una copia física impresa de absolutamente todos los registros que fueron generados durante la semana anterior completa y entera",
+      "Un correo electrónico que el sistema envía al gerente cada viernes por pura costumbre del equipo",
       "Una notificación generada automáticamente cuando se detecta un evento que coincide con criterios de seguridad predefinidos",
-      "Una lista de empleados con acceso a la sala de servidores"
+      "Un listado completo de todos los empleados con acceso autorizado a la sala de servidores central"
     ],
     "options_en": [
-      "A physical copy of all logs from the previous week",
-      "An email sent to the manager every Friday",
+      "A printed physical copy of absolutely every log that was generated during the entire previous week without any exception",
+      "An email that the system sends to the manager every Friday purely out of the team's habit",
       "An automatic notification generated when an event matching predefined security criteria is detected",
-      "A list of employees with access to the server room"
+      "A complete list of every employee with authorized access to the central server room"
     ],
     "correct_index": 2,
     "correct_answer_es": null,
@@ -1234,16 +1234,16 @@
     "question_es": "¿Cuál es el propósito principal de la retención de logs en un SIEM?",
     "question_en": "What is the primary purpose of log retention in a SIEM?",
     "options_es": [
-      "Aumentar el almacenamiento disponible en los servidores",
+      "Aumentar de forma progresiva y constante el espacio de almacenamiento disponible en cada servidor corporativo",
       "Permitir investigaciones forenses, auditorías de cumplimiento y análisis histórico de eventos de seguridad",
-      "Reducir el tiempo de carga de las aplicaciones web",
-      "Facilitar la comunicación entre departamentos de TI"
+      "Reducir el tiempo de carga de todas las aplicaciones web que utiliza el negocio a diario",
+      "Facilitar la comunicación diaria entre los distintos departamentos de tecnología de la empresa"
     ],
     "options_en": [
-      "Increase available storage on servers",
+      "Progressively and constantly increasing the storage space available on each corporate server",
       "Enable forensic investigations, compliance audits, and historical analysis of security events",
-      "Reduce web application load times",
-      "Facilitate communication between IT departments"
+      "Reducing the load time of every web application the business relies on daily",
+      "Facilitating daily communication between the company's different technology departments"
     ],
     "correct_index": 1,
     "correct_answer_es": null,
@@ -1369,15 +1369,15 @@
     "question_es": "¿Qué técnica avanzada de análisis puede usar un SIEM para detectar ataques sofisticados que una regla simple no podría identificar?",
     "question_en": "What advanced analysis technique can a SIEM use to detect sophisticated attacks that a simple rule could not identify?",
     "options_es": [
-      "Registrar el nombre de usuario del administrador de la red",
-      "Contar el número de líneas de código en aplicaciones",
-      "Medir la temperatura de los servidores físicos",
+      "Registrar el nombre de usuario de cada administrador que gestiona los equipos de la red corporativa",
+      "Contar el número total de líneas de código presentes en todas y cada una de las aplicaciones instaladas actualmente en la red",
+      "Medir de forma continua la temperatura de todos los servidores físicos ubicados en el centro de datos",
       "Análisis de secuencia de eventos, máquinas de estado y machine learning para identificar patrones anómálos nunca vistos antes"
     ],
     "options_en": [
-      "Recording the name of the network administrator",
-      "Counting lines of code in applications",
-      "Measuring the temperature of physical servers",
+      "Recording the username of every administrator who manages the corporate network's equipment",
+      "Counting the total number of lines of code present in each and every application currently installed across the network",
+      "Continuously measuring the temperature of every physical server located in the data center",
       "Event sequence analysis, state machines, and machine learning to identify anomalous patterns never seen before"
     ],
     "correct_index": 3,
@@ -1397,15 +1397,15 @@
     "question_en": "How does a SIEM address integration with other security tools to improve visibility?",
     "options_es": [
       "Mediante conectores y API que permiten recibir datos de firewalls, antivirus, sistemas de detección de intrusiones, proxies y otras fuentes heterogéneas",
-      "Los SIEMs funcionan completamente de forma aislada sin integración",
-      "Solo pueden recibir datos de otros productos del mismo fabricante",
-      "La integración requiere reescribir todo el código de los sistemas existentes"
+      "Los SIEM operan siempre de forma completamente aislada, sin ningún tipo de integración con ninguna herramienta externa de ninguna clase o tipo posible",
+      "Solo pueden recibir datos provenientes de otros productos fabricados por esa misma compañía proveedora específica",
+      "La integración exige reescribir por completo el código fuente de todos los sistemas de seguridad ya existentes"
     ],
     "options_en": [
       "Through connectors and APIs that allow receiving data from firewalls, antivirus, intrusion detection systems, proxies, and other heterogeneous sources",
-      "SIEMs operate completely in isolation without integration",
-      "They can only receive data from other products of the same manufacturer",
-      "Integration requires rewriting all existing system code"
+      "SIEMs always operate in complete isolation, with absolutely no integration of any kind or type with any outside tool whatsoever",
+      "They can only receive data coming from other products made by that very same specific vendor company",
+      "Integration requires completely rewriting the source code of every existing security system already in place"
     ],
     "correct_index": 0,
     "correct_answer_es": null,
@@ -1450,15 +1450,15 @@
     "question_es": "¿Qué es el análisis de amenaza persistente avanzada (APT) mediante SIEM y cómo se diferencia de la detección de amenazas comunes?",
     "question_en": "What is Advanced Persistent Threat (APT) analysis through SIEM and how does it differ from common threat detection?",
     "options_es": [
-      "Las APT son más fáciles de detectar que las amenazas comunes",
-      "No hay diferencia entre APT y amenazas comunes",
-      "Los SIEMs no pueden detectar APTs de ninguna manera",
+      "Las APT resultan siempre mucho más fáciles de detectar que las amenazas comunes y oportunistas que enfrentan a diario las organizaciones más pequeñas",
+      "No existe ninguna diferencia real entre una campaña APT organizada y una amenaza común oportunista de corta duración",
+      "Los SIEM son completamente incapaces de detectar APTs bajo cualquier circunstancia posible, sin importar cómo estén configurados, qué reglas tengan activas ni cuántos años de datos históricos conserven almacenados",
       "APT implica análisis prolongado de eventos correlacionados para identificar campañas organizadas que permanecen en la red durante meses, con objetivo específico, mientras que las amenazas comunes son ataques oportunistas y rápidos"
     ],
     "options_en": [
-      "APTs are easier to detect than common threats",
-      "There is no difference between APT and common threats",
-      "SIEMs cannot detect APTs in any way",
+      "APTs always turn out to be much easier to detect than the common, opportunistic threats that smaller organizations face on a daily basis",
+      "There is no real difference between an organized APT campaign and a short-lived, common opportunistic threat",
+      "SIEMs are completely incapable of detecting APTs under any possible circumstance, no matter how they are configured, which rules are active, or how many years of historical data they keep stored",
       "APT involves prolonged analysis of correlated events to identify organized campaigns that remain in the network for months with a specific objective, while common threats are opportunistic and quick attacks"
     ],
     "correct_index": 3,
@@ -1555,328 +1555,328 @@
     "expected_time_ms": 30000
   },
   {
-    "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130102",
     "id": "q130502067",
-    "correct_index": 1,
     "skill_id": "sk130102",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 30000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130102",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
     "type": "mcq",
-    "source": "OWASP — https://owasp.org/"
+    "difficulty_tier": "medium",
+    "question_es": "Tu organización implementa un programa de gestión de riesgos. Al comunicar a la junta directiva que después de implementar controles, el riesgo residual es 'alto', algunos miembros quieren terminar todas las operaciones afectadas. ¿Cuál es la explicación correcta del riesgo residual?",
+    "question_en": "Your organization implements a risk management program. When communicating to the board that after implementing controls residual risk is 'high', some members want to shut down affected operations. What is the correct explanation of residual risk?",
+    "options_es": [
+      "El riesgo residual es normal tras mitigación; la junta debe aceptarlo o invertir más recursos en controles adicionales",
+      "El riesgo residual es inadmisible y toda operación afectada debe cerrarse de inmediato hoy mismo, sin ninguna excepción posible",
+      "El riesgo residual solo aparece cuando no se implementó ningún control adecuado desde el inicio",
+      "El riesgo residual demuestra que los controles implementados no funcionan en absoluto ni sirven"
+    ],
+    "options_en": [
+      "Residual risk is normal after mitigation; the board must accept it or invest more in additional controls",
+      "Residual risk is unacceptable and every affected operation must shut down immediately today, with no possible exception",
+      "Residual risk only appears when no adequate controls were implemented from the very start",
+      "Residual risk proves that the implemented controls do not work at all and serve no purpose"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Riesgo residual = riesgo que permanece DESPUÉS de aplicar controles. Es inevitable en cualquier operación real. La junta debe decidir si acepta este nivel o invierte más en reducirlo; cerrar todas las operaciones sería económicamente inviable.",
+    "explanation_en": "Residual risk = risk remaining AFTER applying controls. It's inevitable in any real operation. The board must decide whether to accept this level or invest more to reduce it; closing all operations would be economically unfeasible.",
+    "source": "NIST SP 800-30 Rev. 1 — https://csrc.nist.gov/pubs/sp/800/30/r1/final",
+    "expected_time_ms": 30000
   },
   {
-    "difficulty_tier": "hard",
-    "question_es": "Pregunta de sk130103",
     "id": "q130503068",
-    "correct_index": 2,
     "skill_id": "sk130103",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 40000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130103",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
     "type": "mcq",
-    "source": "MITRE — https://attack.mitre.org/"
+    "difficulty_tier": "hard",
+    "question_es": "Finanzas recibe un correo desde la dirección real del CEO, con SPF y DKIM válidos, pidiendo una transferencia urgente. El CEO dice no haberlo enviado. ¿Qué vector es el más probable?",
+    "question_en": "Finance receives an email from the CEO's real address, passing SPF and DKIM, asking for an urgent transfer. The CEO says they did not send it. What is the most likely vector?",
+    "options_es": [
+      "Un dominio parecido (typosquatting) que copia visualmente el de la compañía",
+      "Suplantación del remitente sin firma válida, algo que SPF no detecta",
+      "Un correo reenviado por error desde la carpeta de correo no deseado",
+      "Compromiso de la cuenta de correo del CEO (BEC con cuenta tomada)"
+    ],
+    "options_en": [
+      "A lookalike (typosquatted) domain that visually mimics the company's",
+      "Unsigned sender spoofing with no valid signature, which SPF fails to catch",
+      "A message forwarded by mistake from the junk mail folder",
+      "Compromise of the CEO's mailbox (BEC via account takeover)"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Si SPF y DKIM validan para el dominio real, el mensaje salió de la infraestructura legítima: lo más probable es que alguien controle la cuenta del CEO. Un dominio parecido no pasaría por la dirección real.",
+    "explanation_en": "If SPF and DKIM pass for the real domain, the message left legitimate infrastructure, so someone most likely controls the CEO's account. A lookalike domain would not use the real address.",
+    "source": "NIST Cybersecurity Framework 2.0 — https://www.nist.gov/cyberframework",
+    "expected_time_ms": 40000
   },
   {
-    "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130104",
     "id": "q130504069",
-    "correct_index": 3,
     "skill_id": "sk130104",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 50000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130104",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
     "type": "mcq",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
-  },
-  {
-    "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130201",
-    "id": "q130501070",
-    "correct_index": 0,
-    "skill_id": "sk130201",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 20000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130201",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
-    "type": "mcq",
-    "source": "OWASP — https://owasp.org/"
-  },
-  {
-    "difficulty_tier": "hard",
-    "question_es": "Pregunta de sk130202",
-    "id": "q130502071",
-    "correct_index": 1,
-    "skill_id": "sk130202",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 30000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130202",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
-    "type": "mcq",
-    "source": "MITRE — https://attack.mitre.org/"
-  },
-  {
     "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130203",
-    "id": "q130503072",
-    "correct_index": 2,
-    "skill_id": "sk130203",
+    "question_es": "¿Cuál es la diferencia principal entre una 'Auditoría de Seguridad' y una 'Evaluación de Vulnerabilidades'?",
+    "question_en": "What is the main difference between a 'Security Audit' and a 'Vulnerability Assessment'?",
     "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
+      "Son exactamente lo mismo, solo nombres diferentes",
+      "Una auditoría solo verifica permisos de archivos en sistemas de ficheros",
+      "Una auditoría es más cara y toma más tiempo que una evaluación",
+      "Una evaluación de vulnerabilidades busca defectos técnicos específicos; una auditoría examina políticas, procesos y controles en su conjunto"
     ],
-    "correct_answer_en": null,
-    "expected_time_ms": 40000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130203",
     "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
+      "They are exactly the same, just different names",
+      "An audit only verifies file permissions on filesystems",
+      "An audit is more expensive and time-consuming than an assessment",
+      "Vulnerability assessment finds specific technical flaws; audit examines policies, processes, and controls holistically"
     ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
-    "type": "mcq",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
-  },
-  {
-    "difficulty_tier": "hard",
-    "question_es": "Pregunta de sk130301",
-    "id": "q130501074",
-    "correct_index": 0,
-    "skill_id": "sk130301",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 20000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130301",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
-    "type": "mcq",
-    "source": "MITRE — https://attack.mitre.org/"
-  },
-  {
-    "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130302",
-    "id": "q130502075",
-    "correct_index": 1,
-    "skill_id": "sk130302",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 30000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130302",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
-    "type": "mcq",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
-  },
-  {
-    "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130303",
-    "id": "q130503076",
-    "correct_index": 2,
-    "skill_id": "sk130303",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 40000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130303",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
-    "type": "mcq",
-    "source": "OWASP — https://owasp.org/"
-  },
-  {
-    "difficulty_tier": "hard",
-    "question_es": "Pregunta de sk130304",
-    "id": "q130504077",
     "correct_index": 3,
-    "skill_id": "sk130304",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 50000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130304",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
     "correct_answer_es": null,
-    "type": "mcq",
-    "source": "MITRE — https://attack.mitre.org/"
+    "correct_answer_en": null,
+    "explanation_es": "Evaluación de vulnerabilidades: herramientas y técnicas para hallar defectos (puertos abiertos, software obsoleto, etc.). Auditoría de seguridad: revisión integral de políticas, procesos, logs, y conformidad con marcos como NIST o ISO 27001.",
+    "explanation_en": "Vulnerability assessment: tools and techniques to find flaws (open ports, outdated software, etc.). Security audit: comprehensive review of policies, processes, logs, and compliance with frameworks like NIST or ISO 27001.",
+    "source": "NIST Cybersecurity Framework 2.0 — https://www.nist.gov/cyberframework",
+    "expected_time_ms": 20000
   },
   {
-    "difficulty_tier": "easy",
-    "question_es": "Pregunta de sk130401",
-    "id": "q130501078",
-    "correct_index": 0,
-    "skill_id": "sk130401",
-    "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "correct_answer_en": null,
-    "expected_time_ms": 20000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130401",
-    "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ],
-    "explanation_en": "Correct explanation",
-    "correct_answer_es": null,
+    "id": "q130501070",
+    "skill_id": "sk130201",
     "type": "mcq",
-    "source": "NIST SP 800-53 — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
-  },
-  {
     "difficulty_tier": "medium",
-    "question_es": "Pregunta de sk130402",
-    "id": "q130502079",
-    "correct_index": 1,
-    "skill_id": "sk130402",
+    "question_es": "Un IV (Vector de Inicialización) en CBC se reutiliza entre múltiples mensajes cifrados con la misma clave. ¿Cuál es el riesgo principal?",
+    "question_en": "An IV (Initialization Vector) in CBC is reused across multiple messages encrypted with the same key. What is the primary risk?",
     "options_es": [
-      "A",
-      "B",
-      "C",
-      "D"
+      "El IV debe permanecer secreto en todo momento; reutilizarlo con la misma clave termina exponiéndolo públicamente ante cualquier observador de la red",
+      "El IV no influye en absoluto en la seguridad de CBC; el modo funciona exactamente igual sin definir ninguno",
+      "Reutilizar IV con la misma clave causa que dos mensajes con bloques iniciales idénticos produzcan ciphertexts idénticos, revelando estructura",
+      "Los IVs deben ser siempre números secuenciales 1, 2, 3 para que los bloques cifrados mantengan su orden correcto"
     ],
-    "correct_answer_en": null,
-    "expected_time_ms": 30000,
-    "explanation_es": "Explicacion correcta",
-    "question_en": "Question for sk130402",
     "options_en": [
-      "A",
-      "B",
-      "C",
-      "D"
+      "The IV must remain secret at all times; reusing it with the same key ends up exposing it publicly to any observer on the network",
+      "The IV has no effect on CBC's security whatsoever; the mode works exactly the same without ever defining one",
+      "Reusing IV with same key causes messages with identical initial blocks to produce identical ciphertexts, revealing structure",
+      "IVs must always be sequential numbers 1, 2, 3 so the encrypted blocks keep their correct order"
     ],
-    "explanation_en": "Correct explanation",
+    "correct_index": 2,
     "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "El IV en CBC no necesita ser secreto (puede ser público), pero SÍ debe ser único por mensaje. Reutilizar IV causa que P1[0] ⊕ IV ⊕ E(K, P1[0]) sea idéntico en dos mensajes con mismos primeros bloques. Ataque de patrón.",
+    "explanation_en": "IV in CBC doesn't need to be secret (can be public), but MUST be unique per message. Reusing IV causes P1[0] ⊕ IV ⊕ E(K, P1[0]) to be identical across messages with same first blocks. Pattern attack.",
+    "source": "NIST FIPS 197 (AES) — https://csrc.nist.gov/pubs/fips/197/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130502071",
+    "skill_id": "sk130202",
     "type": "mcq",
-    "source": "OWASP — https://owasp.org/"
+    "difficulty_tier": "hard",
+    "question_es": "Un atacante realiza un ataque Man-in-the-Middle (MITM) contra Diffie-Hellman clásico insertándose entre Alice y Bob. El atacante intercepta g^a (de Alice) y envía su propio g^x fingiendo ser Alice. ¿Qué se establece como resultado?",
+    "question_en": "An attacker performs a Man-in-the-Middle (MITM) attack on classic Diffie-Hellman by inserting himself between Alice and Bob. The attacker intercepts g^a (from Alice) and sends his own g^x pretending to be Alice. What is established as a result?",
+    "options_es": [
+      "Una clave compartida segura entre Alice y Bob sin interferencia",
+      "El ataque es imposible en DH porque la matemática lo previene",
+      "Alice y Bob derivan claves distintas: Alice con el atacante (basada en g^a y g^x), y Bob con el atacante (basada en g^b y g^x)",
+      "La clave compartida resultante es (g^(a+b)) mod p, que es infranqueable"
+    ],
+    "options_en": [
+      "A secure shared key between Alice and Bob without interference",
+      "Attack is impossible in DH because mathematics prevents it",
+      "Alice and Bob derive DIFFERENT keys: Alice with attacker (based on g^a and g^x), and Bob with attacker (based on g^b and g^x)",
+      "Resulting shared key is (g^(a+b)) mod p, which is unbreakable"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "DH clásico NO autentica identidad. El atacante negocia claves separadas con cada parte: k1 = g^(a*x) con Alice y k2 = g^(b*x) con Bob. El atacante cifra/descifra intercambiando mensajes. Solución: autenticación digital o TLS.",
+    "explanation_en": "Classic DH does NOT authenticate identity. Attacker negotiates separate keys with each party: k1 = g^(a*x) with Alice and k2 = g^(b*x) with Bob. Attacker encrypts/decrypts by relaying messages. Solution: digital authentication or TLS.",
+    "source": "NIST SP 800-57 Part 1 Rev. 5 — https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q130503072",
+    "skill_id": "sk130203",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el propósito de HMAC (Hash-based Message Authentication Code) en criptografía?",
+    "question_en": "What is the purpose of HMAC (Hash-based Message Authentication Code) in cryptography?",
+    "options_es": [
+      "Reemplazar por completo a las firmas digitales asimétricas en cualquier aplicación web moderna",
+      "Generar un hash reversible del mensaje que permita recuperar todo el contenido original completo",
+      "Autenticar que un mensaje no fue modificado y que proviene de alguien con la clave secreta",
+      "Cifrar mensajes de forma simétrica utilizando siempre y en todo caso una única clave compartida"
+    ],
+    "options_en": [
+      "Completely replacing asymmetric digital signatures in any modern web application",
+      "Generating a reversible hash of the message that allows recovering all of the original content",
+      "Authenticate that a message was not modified and comes from someone with the secret key",
+      "Encrypting messages symmetrically by always using one single shared key in every case"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "HMAC = Hash(key + mensaje). Solo quien conoce la clave puede reproducir el HMAC correcto. Si HMAC no coincide, el mensaje fue modificado o la clave es errónea. Proporciona integridad + autenticación, no encriptación.",
+    "explanation_en": "HMAC = Hash(key + message). Only those knowing the key can reproduce the correct HMAC. If HMAC doesn't match, message was altered or key is wrong. Provides integrity + authentication, not encryption.",
+    "source": "Python docs: hmac — https://docs.python.org/3/library/hmac.html",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130501074",
+    "skill_id": "sk130301",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "Al optimizar reglas de firewall para rendimiento, ¿por qué debe ponerse la regla de mayor frecuencia de coincidencia antes de las menos frecuentes, y qué métrica es más crítica que el throughput?",
+    "question_en": "When optimizing firewall rules for performance, why should the highest-hit rule be placed before less-frequent ones, and what metric is more critical than throughput?",
+    "options_es": [
+      "Evita que los routers del borde generen bucles de retroalimentación dentro de la red interna",
+      "Permite comprimir los paquetes justo en la interfaz de salida configurada del firewall perimetral",
+      "Garantiza que las conexiones cifradas no se evalúen dos veces seguidas bajo ninguna circunstancia",
+      "Minimiza búsquedas innecesarias y evaluaciones de reglas, priorizando la latencia de decisión"
+    ],
+    "options_en": [
+      "Prevents edge routers from generating feedback loops throughout the internal network",
+      "Allows packets to be compressed right at the perimeter firewall's configured outbound interface",
+      "Ensures encrypted connections are never evaluated twice in a row under any circumstance",
+      "Minimizes unnecessary lookups and rule evaluations, prioritizing decision latency"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Las reglas más frecuentes al inicio reducen el número de comparaciones en promedio, disminuyendo latencia. La latencia de decisión es crítica en firewalls: importa más que el throughput total porque afecta a cada flujo.",
+    "explanation_en": "Most-frequent rules at the front reduce average comparisons, decreasing latency. Decision latency is critical in firewalls: it matters more than total throughput because it affects each flow.",
+    "source": "NIST SP 800-41 Rev. 1 (firewalls) — https://csrc.nist.gov/pubs/sp/800/41/r1/final",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q130502075",
+    "skill_id": "sk130302",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "En Snort, ¿qué componente de una regla de detección especifica qué tráfico de red es relevante para la inspección?",
+    "question_en": "In Snort, what component of a detection rule specifies which network traffic is relevant for inspection?",
+    "options_es": [
+      "Las opciones de cabecera (protocolo, dirección, puertos) definen el flujo objetivo",
+      "El número de retransmisiones indica si es tráfico importante",
+      "La hora del día en que se procesa la regla define la relevancia",
+      "El payload del paquete determina automáticamente toda relevancia"
+    ],
+    "options_en": [
+      "Header options (protocol, direction, ports) define the target flow",
+      "The number of retransmissions indicates whether traffic is important",
+      "The time of day when the rule is processed defines relevance",
+      "The packet payload automatically determines all relevance"
+    ],
+    "correct_index": 0,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Una regla Snort comienza con protocolo (tcp/udp/icmp), dirección (->/<->), puertos origen y destino. Esto filtra qué tráfico se inspecciona con patrones más profundos.",
+    "explanation_en": "A Snort rule begins with protocol (tcp/udp/icmp), direction (->/<->), source and destination ports. This filters which traffic is inspected with deeper patterns.",
+    "source": "NIST SP 800-94 (IDPS) — https://csrc.nist.gov/pubs/sp/800/94/final",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130503076",
+    "skill_id": "sk130303",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "Un empleado se conecta a una red WiFi pública no confiable sin VPN. ¿Cuál es el riesgo principal contra sus comunicaciones de correo electrónico incluso si el cliente usa SMTP sobre TLS?",
+    "question_en": "An employee connects to an untrusted public WiFi network without a VPN. What is the principal risk to their email communications even if the client uses SMTP over TLS?",
+    "options_es": [
+      "La contraseña queda cifrada por TLS, así que resulta totalmente segura frente a cualquier intento de sniffing en la red",
+      "El WiFi público bloquea de forma completamente automática cualquier tráfico de correo saliente",
+      "El atacante en la red puede realizar MITM en TLS si no valida el certificado del servidor correctamente",
+      "SMTP sobre TLS es invulnerable por diseño; no existe absolutamente ningún riesgo para el correo"
+    ],
+    "options_en": [
+      "The password is encrypted by TLS, so it is completely safe against any kind of sniffing attempt on the network",
+      "Public WiFi completely and automatically blocks any outgoing email traffic on the network",
+      "An attacker on the network can perform MITM on TLS if the client does not properly validate the server certificate",
+      "SMTP over TLS is invulnerable by design; there is absolutely no risk to email whatsoever"
+    ],
+    "correct_index": 2,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Aunque SMTP/TLS cifra el canal, un MITM en una red pública puede presentar un certificado falsificado. Si el cliente no valida el CN (Common Name) o tiene validación débil, se establece una conexión falsa. Una VPN previene esto encapsulando la conexión entera.",
+    "explanation_en": "Although SMTP/TLS encrypts the channel, an MITM on public WiFi can present a forged certificate. If the client does not validate the CN (Common Name) or has weak validation, a false connection is established. A VPN prevents this by encapsulating the entire connection.",
+    "source": "NIST SP 800-77 Rev. 1 (IPsec VPN) — https://csrc.nist.gov/pubs/sp/800/77/r1/final",
+    "expected_time_ms": 30000
+  },
+  {
+    "id": "q130504077",
+    "skill_id": "sk130304",
+    "type": "mcq",
+    "difficulty_tier": "hard",
+    "question_es": "Un atacante captura el handshake de una red WPA2-Personal. ¿Por qué la solidez de la frase de paso decide si podrá entrar?",
+    "question_en": "An attacker captures the handshake of a WPA2-Personal network. Why does passphrase strength decide whether they get in?",
+    "options_es": [
+      "El handshake lleva incluida la frase de paso codificada por completo en texto claro y legible",
+      "Con el handshake puede probar contraseñas offline, sin límite de intentos ni contacto con el punto de acceso",
+      "WPA2 bloquea por completo la red entera tras tres intentos fallidos consecutivos de conexión al punto de acceso",
+      "El punto de acceso cambia la frase de paso de forma automática justo después de cada captura"
+    ],
+    "options_en": [
+      "The handshake carries the passphrase fully encoded in plain, easily readable text",
+      "With the handshake they can test passwords offline, with no attempt limit and no contact with the access point",
+      "WPA2 completely locks the entire network after three consecutive failed connection attempts to the access point",
+      "The access point automatically changes the passphrase right after every single capture"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "WPA2-PSK deriva las claves de la frase de paso, y el handshake basta para comprobar candidatas sin conexión. Una frase corta o de diccionario cae con GPU; WPA3-SAE elimina ese ataque offline.",
+    "explanation_en": "WPA2-PSK derives its keys from the passphrase, and the handshake is enough to check candidates offline. A short or dictionary passphrase falls to GPUs; WPA3-SAE removes that offline attack.",
+    "source": "NIST SP 800-153 (WLAN) — https://csrc.nist.gov/pubs/sp/800/153/final",
+    "expected_time_ms": 40000
+  },
+  {
+    "id": "q130501078",
+    "skill_id": "sk130401",
+    "type": "mcq",
+    "difficulty_tier": "easy",
+    "question_es": "¿Cuál es el principal beneficio de seguridad de usar un ORM (Object-Relational Mapping) en lugar de concatenar SQL directo?",
+    "question_en": "What is the main security benefit of using an ORM (Object-Relational Mapping) instead of concatenating raw SQL?",
+    "options_es": [
+      "Los ORM previenen todos los ataques de inyección posibles, sin ninguna excepción",
+      "El ORM ejecuta las consultas de forma más rápida que el SQL escrito a mano",
+      "Los ORM solo funcionan con motores MySQL y no con ningún otro gestor",
+      "El ORM usa prepared statements por defecto, separando datos de código SQL"
+    ],
+    "options_en": [
+      "ORMs prevent every possible injection attack, without any exception at all",
+      "The ORM runs queries faster than SQL that was written by hand",
+      "ORMs only work with MySQL engines and with no other database system",
+      "ORMs use prepared statements by default, separating data from SQL code"
+    ],
+    "correct_index": 3,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "Un ORM mapea objetos a SQL mediante prepared statements, donde parámetros se envían separados de la query. Esto previene inyección SQL por defecto. Sin embargo, algunos ORMs permiten raw SQL si se usa explícitamente.",
+    "explanation_en": "An ORM maps objects to SQL using prepared statements, where parameters are sent separately from the query. This prevents SQL injection by default. However, some ORMs allow raw SQL if used explicitly.",
+    "source": "OWASP Top 10 — https://owasp.org/www-project-top-ten/",
+    "expected_time_ms": 20000
+  },
+  {
+    "id": "q130502079",
+    "skill_id": "sk130402",
+    "type": "mcq",
+    "difficulty_tier": "medium",
+    "question_es": "¿Cuál es el riesgo de usar localStorage en un navegador para almacenar tokens de sesión, comparado con cookies HttpOnly?",
+    "question_en": "What is the risk of using localStorage in a browser to store session tokens compared to HttpOnly cookies?",
+    "options_es": [
+      "Las cookies resultan siempre vulnerables a ataques de tipo XSS por su propio diseño interno",
+      "LocalStorage es accesible a scripts XSS; HttpOnly cookies no pueden ser leídas por JavaScript",
+      "LocalStorage es más seguro que las cookies porque el navegador lo aísla completamente del resto",
+      "No existe ninguna diferencia de seguridad relevante entre ambos mecanismos de almacenamiento"
+    ],
+    "options_en": [
+      "Cookies are always vulnerable to XSS attacks because of their own internal design",
+      "LocalStorage is accessible to XSS scripts; HttpOnly cookies cannot be read by JavaScript",
+      "LocalStorage is more secure than cookies because the browser fully isolates it from the rest",
+      "There is no relevant security difference at all between these two storage mechanisms"
+    ],
+    "correct_index": 1,
+    "correct_answer_es": null,
+    "correct_answer_en": null,
+    "explanation_es": "localStorage es accesible a cualquier JavaScript en la página (incluyendo malicioso inyectado por XSS). HttpOnly es una bandera que impide acceso desde JavaScript, mitigando robo de token por XSS.",
+    "explanation_en": "localStorage is accessible to any JavaScript on the page (including malicious injected by XSS). HttpOnly is a flag that prevents JavaScript access, mitigating token theft via XSS.",
+    "source": "NIST SP 800-63B — https://pages.nist.gov/800-63-3/sp800-63b.html",
+    "expected_time_ms": 30000
   },
   {
     "id": "q130502_fx012",

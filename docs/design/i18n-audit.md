@@ -1,5 +1,9 @@
 # i18n Audit & Parity Report (Serie 23.1)
 
+> **Histórico (2026-09-19).** Desde entonces `docs/legal/` tiene versiones `.es.md` (7 a
+> fecha 2026-09-25, `ls docs/legal/*.es.md`); la fila «Legal Documents: only English» ya no
+> es cierta. Re-ejecutar el auditor antes de citar cualquier porcentaje de este informe.
+
 **Date**: 2026-09-19  
 **Status**: PASS (66.67% average parity; UI and Email translations complete)  
 **Threshold**: 95%  

@@ -91,15 +91,15 @@
       "question_es": "¿Cómo funciona el patrón Circuit Breaker para evitar fallos en cascada?",
       "question_en": "How does the Circuit Breaker pattern work to prevent cascading failures?",
       "options_es": [
-        "Aumenta automáticamente los recursos del servidor que falla",
-        "Reintenta indefinidamente cada petición fallida hasta que tenga éxito",
-        "Cierra permanentemente la conexión de red tras el primer error",
+        "Añade réplicas nuevas de forma automática al servidor que está fallando, hasta que su carga vuelve a estabilizarse por completo sola, aprovisionando esa capacidad adicional desde un grupo de servidores de reserva que el propio breaker mantiene siempre listo",
+        "Reintenta cada petición fallida con un backoff exponencial cada vez mayor, hasta que finalmente consigue tener éxito sin fallar más",
+        "Cierra la conexión TCP de forma permanente en cuanto registra el primer error devuelto por el servicio dependiente al que llama",
         "Tras detectar una tasa de fallos que supera un umbral al llamar a un servicio, el circuito se \"abre\" y las siguientes llamadas fallan rápido sin intentar la llamada real, dando tiempo al servicio dependido a recuperarse"
       ],
       "options_en": [
-        "It automatically increases the resources of the failing server",
-        "It retries every failed request indefinitely until it succeeds",
-        "It permanently closes the network connection after the first error",
+        "It automatically adds new replicas to the failing server, until its load level fully stabilises again entirely on its own accord, provisioning that extra capacity from a pool of standby servers the breaker itself always keeps ready to go",
+        "It retries every failed request with an ever-growing exponential backoff, until it eventually manages to succeed without failing again",
+        "It permanently closes the TCP connection as soon as it logs the first error returned by the dependent service it is calling",
         "After detecting a failure rate above a threshold when calling a service, the circuit \"opens\" and subsequent calls fail fast without attempting the real call, giving the dependency time to recover"
       ],
       "correct_index": 3,
@@ -121,15 +121,15 @@
       "question_en": "What are the three classic pillars of observability?",
       "options_es": [
         "Logs, métricas (metrics) y trazas (traces)",
-        "CPU, memoria y disco",
-        "Frontend, backend y base de datos",
-        "Desarrollo, staging y producción"
+        "CPU, red y almacenamiento en disco",
+        "Cliente, servidor y proxy intermedio, tres puntos que un ingeniero de guardia debe revisar primero ante cualquier incidente de red en producción",
+        "Commit, merge y release del código"
       ],
       "options_en": [
         "Logs, metrics, and traces",
-        "CPU, memory, and disk",
-        "Frontend, backend, and database",
-        "Development, staging, and production"
+        "CPU, network, and storage",
+        "Client, server, and proxy, three points an on-call engineer should check first whenever a network incident hits production",
+        "Commit, merge, and release"
       ],
       "correct_index": 0,
       "explanation_es": "Los tres pilares clásicos de la observabilidad son los logs (eventos discretos con contexto), las métricas (valores numéricos agregados en el tiempo) y las trazas distribuidas (el recorrido de una petición a través de múltiples servicios), que juntos permiten diagnosticar el comportamiento de un sistema.",

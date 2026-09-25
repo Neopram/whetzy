@@ -8,16 +8,16 @@
       "question_es": "Una tabla particionada por rango de 'tenant_id' tiene un shard con 10 veces más carga que el resto, porque una sola cuenta corporativa concentra casi todo el tráfico de escritura. ¿Qué describe mejor la situación y su remedio?",
       "question_en": "A table range-partitioned by 'tenant_id' has one shard carrying 10x the load of the rest, because a single corporate account concentrates almost all the write traffic. What best describes the situation and its fix?",
       "options_es": [
-        "Es un problema de replicación: basta con subir el factor de replicación de ese shard a 5",
+        "Es un problema de índices: falta un índice compuesto sobre 'tenant_id' junto con la fecha de escritura de cada fila del shard afectado",
         "Es un hot spot por carga sesgada: como toda la carga cae en una única clave, hay que descomponerla añadiéndole un prefijo o sufijo aleatorio para repartirla en N subclaves, asumiendo que las lecturas tendrán que consultar las N",
-        "Cambiar a particionado por hash lo elimina, porque el hash distribuye uniformemente cualquier carga",
-        "Añadir más shards lo resuelve solo, porque el rebalanceo reparte la clave caliente entre los nodos nuevos"
+        "Cambiar a particionado por rango de fecha lo elimina, porque distribuye la carga a lo largo del tiempo en vez de concentrarla por cuenta, algo que además reduce de forma permanente la probabilidad de que ese mismo shard vuelva a concentrar tráfico en el futuro",
+        "Subir el nivel de aislamiento de las transacciones a SERIALIZABLE en ese shard concreto reparte automáticamente su carga hacia los demás"
       ],
       "options_en": [
-        "It is a replication problem: just raise that shard's replication factor to 5",
+        "It is an indexing problem: a composite index on 'tenant_id' plus each row's write date is what is missing on the affected shard",
         "It is a hot spot from a skewed workload: since all the load lands on one key, you must decompose that key by adding a random prefix or suffix to spread it over N subkeys, accepting that reads must now query all N",
-        "Switching to hash partitioning removes it, because hashing distributes any workload evenly",
-        "Adding more shards fixes it on its own, because rebalancing spreads the hot key across the new nodes"
+        "Switching to date-range partitioning removes it, because it spreads the load out over time instead of concentrating it by account, something that also permanently lowers the odds of that very same shard concentrating traffic again in the future",
+        "Raising that specific shard's transaction isolation to SERIALIZABLE automatically spreads its load out evenly across the other shards"
       ],
       "correct_index": 1,
       "explanation_es": "La respuesta correcta es la única que ataca la causa: la unidad de reparto es la clave, y una sola clave caliente no se puede repartir sin modificarla. La opción del hash es la trampa más frecuente y por eso la eligen tantos ingenieros: el hash reparte bien un conjunto amplio de claves, pero una clave concreta siempre produce el mismo hash y por tanto cae siempre en la misma partición. Añadir shards (opción 2) mueve particiones enteras, nunca parte de una clave. Y subir el factor de replicación (opción 1) escala lecturas, pero copia las mismas escrituras calientes a más nodos: empeora el problema en lugar de aliviarlo.",
@@ -38,16 +38,16 @@
       "question_es": "Un equipo cambia el particionado por rango de 'timestamp' a particionado por hash de 'timestamp', para evitar que toda la escritura del día caiga en una sola partición. ¿Qué pierden con ese cambio?",
       "question_en": "A team switches from range-partitioning on 'timestamp' to hash-partitioning on 'timestamp', so that a whole day's writes no longer land on a single partition. What do they lose with that change?",
       "options_es": [
-        "Pierden la tolerancia a fallos, porque las particiones por hash no se pueden replicar",
+        "Pierden la posibilidad de replicar esas particiones, porque el particionado por hash impide calcular checksums de forma consistente entre nodos, un efecto que en la práctica obliga a desactivar la replicación en todas las particiones del clúster entero",
         "Pierden las consultas por rango eficientes: 'dame los eventos entre dos fechas' deja de ser la lectura de un tramo contiguo y pasa a tener que consultar todas las particiones",
-        "Pierden los índices secundarios, que solo existen sobre particionado por rango",
-        "No pierden nada relevante: el hash preserva el orden de las claves dentro de cada partición y entre particiones"
+        "Pierden la capacidad de comprimir las particiones resultantes, ya que el hash aumenta de forma notable la entropía de los datos guardados",
+        "Pierden la posibilidad de crear claves primarias compuestas sobre el propio campo 'timestamp' una vez que se le aplica el hash"
       ],
       "options_en": [
-        "They lose fault tolerance, because hash partitions cannot be replicated",
+        "They lose the ability to replicate those partitions, because hash partitioning prevents computing consistent checksums across the nodes, an effect that in practice forces disabling replication across every single partition of the whole cluster",
         "They lose efficient range queries: 'give me the events between two dates' stops being a contiguous scan and now has to query every partition",
-        "They lose secondary indexes, which only exist on range partitioning",
-        "They lose nothing relevant: hashing preserves key ordering inside each partition and across partitions"
+        "They lose the ability to compress the resulting partitions, since hashing noticeably increases the entropy of the data being stored",
+        "They lose the ability to create composite primary keys on the original 'timestamp' field once the hash function has been applied to it"
       ],
       "correct_index": 1,
       "explanation_es": "Es el compromiso central del particionado: el rango preserva el orden y por eso permite barridos contiguos, pero concentra la carga en el extremo activo del rango; el hash destruye el orden y por eso reparte bien, pero convierte cualquier consulta por rango en un scatter/gather. La opción 4 es tentadora porque el hash sí conserva el orden dentro de una partición en algunos motores (clave compuesta), pero nunca entre particiones, que es lo que necesita la consulta por fechas. Las opciones 1 y 3 confunden el particionado con la replicación y con el indexado: son mecanismos ortogonales y ambos funcionan con hash.",
@@ -143,16 +143,16 @@
       "question_es": "¿Cuál de estas afirmaciones sobre la elección de la clave de partición (shard key) en un sistema ya en producción es correcta?",
       "question_en": "Which of these statements about choosing the partition key (shard key) in a system already in production is correct?",
       "options_es": [
-        "Es una decisión reversible y barata: basta con cambiar la función de partición en el código de la aplicación",
-        "Da igual cuál se elija mientras la función de hash reparta de forma uniforme",
+        "Es una decisión reversible y barata: basta con cambiar la función de partición dentro del código de la aplicación en el próximo despliegue, un cambio que en la mayoría de equipos se agenda como una tarea más del sprint sin pedir aprobación previa de nadie",
+        "Da igual cuál se elija mientras la función de hash reparta los datos de forma perfectamente uniforme entre todos los nodos del clúster",
         "Es una de las decisiones más caras de revertir: cambiarla obliga a reescribir y mover el conjunto de datos completo, y además determina qué consultas podrán resolverse dentro de una sola partición y cuáles no",
-        "Debe coincidir obligatoriamente con la clave primaria, porque los motores no permiten otra cosa"
+        "Debe coincidir obligatoriamente con la columna de fecha de creación, porque es la columna más consultada de todo el sistema en producción"
       ],
       "options_en": [
-        "It is a cheap, reversible decision: you just change the partition function in the application code",
-        "It does not matter which key you pick as long as the hash function distributes evenly",
+        "It is a cheap, reversible decision: you just change the partition function inside the application's own code on the next deploy, a change most teams schedule as just another sprint task without asking anyone for prior approval at all",
+        "It does not matter which key you pick as long as the hash function distributes the data perfectly evenly across all nodes of the cluster",
         "It is one of the most expensive decisions to reverse: changing it forces a rewrite and physical move of the entire dataset, and it also determines which queries can be answered inside a single partition and which cannot",
-        "It must match the primary key, because engines do not allow anything else"
+        "It must match the creation-date column, because that is by far the most frequently queried column across the whole system in production"
       ],
       "correct_index": 2,
       "explanation_es": "La clave de partición decide dos cosas a la vez: cómo se reparten los datos y qué consultas son baratas. Cambiarla no es un cambio de código, es una migración de datos completa con doble escritura o ventana de parada, y por eso se trata como una decisión de arquitectura, no de implementación. La opción 2 es la trampa real: la uniformidad resuelve los hot spots pero no la localidad, y un reparto perfectamente uniforme que obligue a consultar las 64 particiones en cada petición de usuario es peor que un reparto algo desigual que las resuelva en una. La opción 1 subestima el coste porque solo mira el lado del código; la 4 confunde clave de partición con clave primaria, que en la mayoría de motores puede ser un par (clave de partición, clave de ordenación).",
@@ -204,15 +204,15 @@
       "question_en": "A catalogue is partitioned by 'product_id'. A local secondary index on 'color' is added inside each partition. What does that mean for the query 'give me all red products'?",
       "options_es": [
         "Habrá que hacer scatter/gather: preguntar a TODAS las particiones y unir los resultados, de forma que la latencia p99 de la consulta la marca la partición más lenta de todas",
-        "La consulta fallará, porque no se pueden crear índices secundarios sobre datos particionados",
-        "La consulta será barata en todas las particiones, porque un índice local es global por definición",
-        "La consulta irá a una única partición: la que contenga el término 'rojo'"
+        "La consulta fallará, porque un índice secundario no puede crearse nunca sobre datos que ya están particionados por otra columna",
+        "La consulta será barata en todas las particiones, porque un índice local se replica automáticamente hacia las demás particiones del catálogo, así que el motor nunca necesita consultar ninguna otra partición distinta para resolver esa misma búsqueda por color",
+        "La consulta irá a una única partición: la que el motor elige aplicando el hash del propio término de búsqueda 'rojo' sobre la clave"
       ],
       "options_en": [
         "It requires scatter/gather: query EVERY partition and merge the results, so the query's p99 latency is set by the slowest partition of them all",
-        "The query will fail, because secondary indexes cannot exist over partitioned data",
-        "The query will be cheap across all partitions, because a local index is global by definition",
-        "The query will go to a single partition: the one holding the term 'red'"
+        "The query will fail, because a secondary index can never be created over data that is already partitioned by another column",
+        "The query will be cheap across all partitions, because a local index is automatically replicated over to the catalogue's other partitions, so the engine never needs to check any other different partition to resolve that very same colour search",
+        "The query will go to a single partition: the one the engine picks by hashing the search term 'red' itself against the key"
       ],
       "correct_index": 0,
       "explanation_es": "Un índice secundario local (particionado por documento) solo conoce los documentos de su propia partición, así que el motor no sabe de antemano dónde están los productos rojos y debe preguntar a todas. La opción 1 es la más tentadora porque describe correctamente la OTRA estrategia, el índice particionado por término (global): ahí el término 'rojo' vive en una sola partición y la lectura es barata, pero cada escritura de un producto pasa a tocar varias particiones y deja de ser una operación local, normalmente con actualización asíncrona del índice. Ese es el intercambio real: índice local = escrituras baratas y lecturas con scatter/gather; índice global por término = lecturas baratas y escrituras distribuidas. La opción 3 es autocontradictoria y la 2 simplemente es falsa.",
@@ -233,15 +233,15 @@
       "question_es": "Un servicio de checkout llama de forma síncrona y obligatoria a cuatro servicios, cada uno con 99.9% de disponibilidad. ¿Cuál es aproximadamente el techo de disponibilidad del checkout?",
       "question_en": "A checkout service makes mandatory synchronous calls to four services, each with 99.9% availability. What is the approximate availability ceiling of the checkout?",
       "options_es": [
-        "99.9%: la disponibilidad la marca la dependencia menos disponible",
-        "99.975%: se promedia la disponibilidad de las cuatro dependencias",
-        "100%: al estar distribuido en varios servicios, el sistema es tolerante a fallos por diseño",
+        "99.9%: la disponibilidad total del checkout coincide siempre con la de su dependencia individual más disponible de las cuatro, ya que el resto de dependencias se consideran secundarias frente al cuello de botella principal del sistema entero",
+        "99.975%: se toma la media aritmética simple de la disponibilidad de las cuatro dependencias que intervienen en el proceso",
+        "100%: al repartir la carga entre cuatro servicios distintos, cada uno absorbe solo una parte del tráfico total de checkout",
         "Aproximadamente 99.6%: las disponibilidades de dependencias obligatorias en serie se multiplican, así que cada salto síncrono resta"
       ],
       "options_en": [
-        "99.9%: availability is set by the least available dependency",
-        "99.975%: you average the availability of the four dependencies",
-        "100%: being distributed across several services makes the system fault tolerant by design",
+        "99.9%: the checkout's overall availability always matches that of its single most available dependency out of the four, since the rest of the dependencies are considered secondary next to the whole system's main bottleneck",
+        "99.975%: you take the simple arithmetic mean of the availability across the four dependencies involved in the whole process",
+        "100%: by spreading the load across four separate services, each one only absorbs part of the checkout's total traffic volume",
         "Around 99.6%: the availabilities of mandatory synchronous dependencies multiply, so every synchronous hop subtracts"
       ],
       "correct_index": 3,
@@ -339,15 +339,15 @@
       "question_en": "In Kubernetes, a team configures their API's 'livenessProbe' to return an error if the database is unreachable. During a database outage, what happens?",
       "options_es": [
         "Kubernetes reinicia todos los pods en bucle: la liveness probe solo debe comprobar si el proceso está sano, y las dependencias externas van en la readiness probe",
-        "Kubernetes deja de enviar tráfico a los pods y los mantiene intactos hasta que la base de datos vuelva",
-        "No ocurre nada: las liveness probes solo se evalúan durante el arranque del contenedor",
-        "Kubernetes escala automáticamente el Deployment para compensar la latencia añadida de la base de datos"
+        "Kubernetes deja de enviar tráfico nuevo a los pods afectados y los reinicia uno a uno cada pocos segundos de forma continuada",
+        "No ocurre nada: las liveness probes solo se evalúan la primera vez que arranca el contenedor entero, y nunca vuelven a ejecutarse",
+        "Kubernetes escala automáticamente el Deployment para absorber la latencia adicional que la base de datos introduce durante la caída, ajustando el número de réplicas del Deployment en tiempo real según la latencia media que reporta la base de datos"
       ],
       "options_en": [
         "Kubernetes restarts every pod in a loop: the liveness probe should only check whether the process itself is healthy, and external dependencies belong in the readiness probe",
-        "Kubernetes stops sending traffic to the pods and keeps them intact until the database is back",
-        "Nothing happens: liveness probes are only evaluated during container startup",
-        "Kubernetes automatically scales the Deployment to compensate for the database's added latency"
+        "Kubernetes stops sending new traffic to the affected pods and restarts them one by one every few seconds in a continuous loop",
+        "Nothing happens: liveness probes are only ever evaluated the first time the whole container starts, and never run again afterwards",
+        "Kubernetes automatically scales the Deployment to absorb the extra latency the database introduces for as long as it is down, adjusting the Deployment's replica count in real time according to the average latency the database reports"
       ],
       "correct_index": 0,
       "explanation_es": "Un fallo de liveness hace que el kubelet mate y reinicie el contenedor; un fallo de readiness solo lo saca de los endpoints del Service. Al meter una dependencia compartida en la liveness, una incidencia de la base de datos se convierte en un CrashLoopBackOff simultáneo de toda la flota, que además perderá cachés calientes y bombardeará a la base de datos con reconexiones justo cuando está recuperándose. La opción 1 es la trampa central, porque describe exactamente el comportamiento de la readiness probe, que es donde mucha gente cree que está configurando la liveness. La opción 3 describe la startupProbe. La opción 4 atribuye a las probes una función de autoescalado que corresponde al HPA y que no reacciona a ellas.",
@@ -424,15 +424,15 @@
       "question_es": "El cliente de pagos recibe un timeout al llamar a 'POST /charges' y reintenta automáticamente. ¿Cuál es el riesgo real y cómo se elimina?",
       "question_en": "The payments client gets a timeout calling 'POST /charges' and retries automatically. What is the real risk and how is it eliminated?",
       "options_es": [
-        "Se elimina reintentando una sola vez, porque un único reintento nunca puede duplicar el efecto",
-        "No hay riesgo: un timeout significa que la petición no llegó a procesarse en el servidor",
-        "El riesgo es de latencia, y se elimina bajando el timeout del cliente a 100 ms",
+        "Se elimina reintentando exactamente dos veces, porque dos intentos consecutivos nunca pueden llegar a coincidir en el mismo servidor, ya que el propio protocolo TCP subyacente garantiza la entrega exactamente una vez de cada petición HTTP enviada",
+        "No hay riesgo real: un timeout siempre significa que el servidor rechazó la petición nada más recibirla en su puerta de entrada",
+        "El riesgo es de seguridad de la conexión, y se elimina cifrando el canal completo entre el cliente y el servicio de pagos remoto",
         "El timeout no dice si el cargo llegó a aplicarse: el reintento puede duplicar el cobro. Se elimina haciendo la operación idempotente, con una clave de idempotencia que el servidor guarda y usa para deduplicar"
       ],
       "options_en": [
-        "It is eliminated by retrying only once, because a single retry can never duplicate the effect",
-        "There is no risk: a timeout means the request never got processed on the server",
-        "The risk is latency, and it is eliminated by lowering the client timeout to 100 ms",
+        "It is eliminated by retrying exactly twice, because two consecutive attempts can never both end up landing on the very same server, since the underlying TCP protocol itself guarantees exactly-once delivery of every HTTP request that is sent",
+        "There is no real risk: a timeout always means the server rejected the request the very moment it arrived at its entry point",
+        "The risk is one of connection security, and it is eliminated by encrypting the whole channel to the remote payments service",
         "The timeout does not tell you whether the charge was applied: the retry can double-charge. It is eliminated by making the operation idempotent, with an idempotency key the server stores and uses to deduplicate"
       ],
       "correct_index": 3,
@@ -530,15 +530,15 @@
       "question_en": "A service saturates at peak hours. An engineer proposes greatly increasing the size of the incoming request queue 'so we do not drop any'. What actually happens under sustained overload?",
       "options_es": [
         "La espera crece hasta que las respuestas llegan cuando el cliente ya ha abandonado por timeout: el servidor consume todos sus recursos produciendo trabajo que nadie recoge. Ante sobrecarga sostenida hay que descartar carga (load shedding) y responder 429/503 rápido",
-        "No cambia nada medible: el tamaño de la cola no influye en el comportamiento del servicio",
-        "La latencia baja, porque una cola más larga absorbe los picos indefinidamente",
-        "El servicio se vuelve tolerante a fallos, porque la cola persiste las peticiones frente a un reinicio"
+        "No cambia nada medible: el tamaño de la cola de peticiones es completamente independiente del comportamiento observado del servicio en producción, porque las colas modernas gestionan su propia memoria de forma completamente independiente del ritmo de llegada de peticiones",
+        "La latencia baja de forma sostenida, porque una cola más larga absorbe cualquier pico de tráfico entrante sin ningún límite real posible",
+        "El servicio se vuelve tolerante a fallos, porque la cola persiste las peticiones pendientes frente a un reinicio del proceso entero del sistema"
       ],
       "options_en": [
         "Waiting time grows until responses arrive after the client has already timed out: the server burns all its resources producing work nobody collects. Under sustained overload you must shed load and return 429/503 quickly",
-        "Nothing measurable changes: queue size does not affect the service's behaviour",
-        "Latency drops, because a longer queue absorbs the spikes indefinitely",
-        "The service becomes fault tolerant, because the queue persists requests across a restart"
+        "Nothing measurable changes: the request queue's size is completely independent of the service's observed behaviour in production, because modern queues manage their own memory completely independently of the rate at which requests arrive",
+        "Latency drops sustainably, because a longer queue absorbs any spike of incoming traffic without any real limit possible on it",
+        "The service becomes fault tolerant, because the queue persists the pending requests across a restart of the whole system's process"
       ],
       "correct_index": 0,
       "explanation_es": "Una cola solo sirve para absorber ráfagas transitorias; si la tasa de llegada supera a la de servicio de forma sostenida, la cola crece sin límite y con ella la latencia, hasta que cada respuesta se entrega a un cliente que ya se rindió. Es trabajo perdido que además desplaza al trabajo útil. La opción 1 es la trampa real, porque es cierta para ráfagas cortas y muchos ingenieros generalizan esa experiencia a la sobrecarga sostenida. La opción 4 confunde una cola en memoria con una cola de mensajes durable. La receta del libro de SRE es la contraria a la intuición: colas acotadas, descartar pronto la carga que no se va a poder servir a tiempo, y priorizar por criticidad para que lo que se descarte sea lo menos importante.",
@@ -620,15 +620,15 @@
       "question_en": "A circuit breaker configured as 'open after 20 consecutive failures' behaves badly on an endpoint receiving 2 requests per minute. What is the problem and the fix?",
       "options_es": [
         "Que con ese volumen tardaría diez minutos en abrirse: el umbral debe expresarse como tasa de fallos dentro de una ventana temporal deslizante con un mínimo de muestras, aceptando que con poco tráfico el breaker decide con menos señal",
-        "Que 20 es un umbral demasiado bajo, y subirlo a 200 corrige el comportamiento",
-        "Que el breaker necesita tráfico constante para medir latencia, así que hay que enviarle peticiones sintéticas cada segundo",
-        "Que los breakers no funcionan con tráfico bajo, así que hay que quitarlos de esos endpoints"
+        "Que 20 es un umbral demasiado bajo para ese endpoint concreto, y subirlo a 200 fallos consecutivos corrige el comportamiento observado en producción, dando así al breaker un margen mayor de observación antes de decidir que el servicio dependiente ha dejado de responder",
+        "Que el breaker necesita tráfico constante para poder medir la latencia, así que hay que enviarle peticiones sintéticas cada segundo del día",
+        "Que los circuit breakers sencillamente no funcionan bien con tráfico bajo, así que deben retirarse por completo de esos endpoints concretos"
       ],
       "options_en": [
         "That at that volume it would take ten minutes to open: the threshold should be expressed as a failure rate within a sliding time window with a minimum sample size, accepting that at low traffic the breaker decides on less evidence",
-        "That 20 is too low a threshold, and raising it to 200 fixes the behaviour",
-        "That the breaker needs constant traffic to measure latency, so you must send synthetic requests every second",
-        "That breakers do not work at low traffic, so they should be removed from such endpoints"
+        "That 20 is too low a threshold for that particular endpoint, and raising it to 200 consecutive failures fixes the behaviour observed in production, giving the breaker a wider observation window before it decides the dependent service has stopped responding",
+        "That the breaker needs constant traffic in order to measure latency, so synthetic requests must be sent to it every single second of the day",
+        "That circuit breakers simply do not work well at low traffic, so they should be removed entirely from those particular endpoints affected"
       ],
       "correct_index": 0,
       "explanation_es": "Un umbral basado en un recuento absoluto ata el tiempo de reacción del breaker al volumen de tráfico: con 2 peticiones por minuto, 20 fallos consecutivos son diez minutos de llamadas colgadas antes de que el breaker haga nada. Las implementaciones maduras (el bliki de Fowler y el diseño de Hystrix que describe) usan porcentaje de error sobre una ventana deslizante más un volumen mínimo de peticiones, que desacopla el umbral del tráfico y a la vez evita abrir el circuito por un único fallo aislado. La opción 2 es la reacción instintiva y va en la dirección contraria: subir el recuento empeora exactamente el problema que hay que resolver. La opción 3 describe el health checking activo, que es una técnica real pero que no arregla la semántica del umbral y además añade carga. La opción 1 tira la herramienta en vez de configurarla.",
@@ -650,15 +650,15 @@
       "question_en": "To debug more easily, a team adds a 'user_id' label to a Prometheus metric in a system with 2 million users. What happens?",
       "options_es": [
         "Explosión de cardinalidad: cada combinación única de etiqueta y valor crea una serie temporal nueva, así que se generan millones de series y el servidor de métricas se degrada o se queda sin memoria",
-        "No ocurre nada: las etiquetas no cuestan almacenamiento, solo se guarda el valor agregado de la métrica",
-        "Prometheus agrupa automáticamente los valores poco frecuentes en una categoría 'otros' para limitar el número de series",
-        "La métrica pasa a comportarse como un log, que es precisamente la forma correcta de depurar por usuario"
+        "No ocurre nada relevante: Prometheus almacena únicamente el valor agregado más reciente de cada métrica que llega a registrarse",
+        "Prometheus agrupa automáticamente los valores poco frecuentes en una categoría 'otros' para acotar el número total de series creadas",
+        "La métrica pasa a comportarse como una traza distribuida, que es precisamente la forma correcta de seguir a un usuario concreto en el sistema, propagando automáticamente ese mismo identificador hacia cualquier otro sistema externo de monitorización conectado"
       ],
       "options_en": [
         "Cardinality explosion: every unique label/value combination creates a new time series, so millions of series are generated and the metrics server degrades or runs out of memory",
-        "Nothing happens: labels cost no storage, only the metric's aggregated value is stored",
-        "Prometheus automatically groups infrequent values into an 'other' bucket to cap the number of series",
-        "The metric starts behaving like a log, which is in fact the right way to debug per user"
+        "Nothing relevant happens: Prometheus stores only the most recent aggregated value of each metric that ends up being registered",
+        "Prometheus automatically groups infrequent values into an 'other' bucket to cap the total number of series that get created",
+        "The metric starts behaving like a distributed trace, which is precisely the right way to follow one specific user through the system, automatically propagating that same identifier out to any other connected external monitoring system"
       ],
       "correct_index": 0,
       "explanation_es": "En Prometheus la unidad de almacenamiento es la serie temporal, y la identidad de una serie es el nombre de la métrica más el conjunto completo de sus etiquetas: dos millones de valores de 'user_id' son dos millones de series, cada una con su propio flujo de muestras en memoria e índice. La opción 3 es la más peligrosa porque suena a comportamiento sensato de un sistema maduro, pero Prometheus no hace nada parecido: no existe agrupación automática ni límite implícito, solo se cae. La opción 4 acierta en la intuición de que el detalle por usuario pertenece a logs y trazas, pero se equivoca en el mecanismo: añadir una etiqueta no convierte una métrica en un log. La regla práctica es que las etiquetas deben tener cardinalidad acotada y conocida (código de estado, método, región), y que los identificadores de alta cardinalidad van en trazas, logs o exemplars.",
@@ -679,16 +679,16 @@
       "question_es": "El panel muestra una latencia media de 120 ms y el equipo concluye que la experiencia es buena, pero soporte sigue recibiendo quejas de lentitud. ¿Cuál es la explicación más probable?",
       "question_en": "The dashboard shows a mean latency of 120 ms and the team concludes the experience is fine, yet support keeps receiving complaints about slowness. What is the most likely explanation?",
       "options_es": [
-        "La media está mal calculada y basta con recalcularla en ventanas por hora",
+        "La media está mal calculada y basta con recalcularla agregando los datos por minuto en lugar de por hora completa del panel",
         "La media esconde la cola de la distribución: hay que mirar percentiles altos (p95, p99) sobre un histograma, porque una minoría de peticiones muy lentas afecta a muchos usuarios reales sin mover apenas la media",
-        "El problema está en la red del cliente y por definición no puede observarse desde el servidor",
-        "Los usuarios exageran: 120 ms es imperceptible para una persona"
+        "El problema está en la red del propio cliente y, por definición, nunca puede llegar a observarse desde el lado del servidor central, ya que las redes domésticas actuales introducen variaciones de latencia mucho mayores que cualquier servidor de la nube",
+        "Los usuarios exageran la molestia que sienten: una latencia media de 120 ms resulta imperceptible para cualquier persona normal"
       ],
       "options_en": [
-        "The mean is miscalculated and simply needs recomputing in hourly windows",
+        "The mean is miscalculated and simply needs recomputing by aggregating the data per minute instead of over a full hourly window",
         "The mean hides the tail of the distribution: you need high percentiles (p95, p99) over a histogram, because a minority of very slow requests affects many real users while barely moving the mean",
-        "The problem is in the client's network and by definition cannot be observed from the server",
-        "Users are exaggerating: 120 ms is imperceptible to a human"
+        "The problem is in the client's own network and, by definition, can never be observed from the central server side at all, since today's home networks introduce far larger latency swings than any cloud server ever does",
+        "Users are exaggerating the annoyance they feel: a mean latency of 120 ms is imperceptible to any ordinary human being"
       ],
       "correct_index": 1,
       "explanation_es": "La media es un resumen malísimo de una distribución con cola larga: un 1% de peticiones a 8 segundos apenas mueve una media de 120 ms, pero es una de cada cien pantallas que el usuario percibe como rota. Y el efecto se amplifica cuando una página compone varias llamadas, porque la probabilidad de tocar al menos una petición lenta crece con el número de llamadas. La opción 2 es el reflejo desestimatorio que hace que estas incidencias se cierren sin investigar. La opción 3 renuncia demasiado pronto: la latencia del servidor se mide en el servidor y la percibida se instrumenta en el cliente, ambas son observables. Un apunte que suspende muchas entrevistas: los percentiles no se pueden promediar entre instancias; hay que agregar los histogramas y calcular el percentil sobre el agregado.",
@@ -754,16 +754,16 @@
       "question_es": "Un equipo migra de logs de texto libre a logs estructurados en JSON que incluyen 'trace_id' en cada línea. ¿Cuál es el beneficio principal en un sistema distribuido?",
       "question_en": "A team migrates from free-text logs to structured JSON logs that include a 'trace_id' on every line. What is the main benefit in a distributed system?",
       "options_es": [
-        "Que los logs ocupan bastante menos espacio en disco que el texto plano",
-        "Que sustituyen a las métricas: con logs estructurados ya no hacen falta contadores ni histogramas",
+        "Que los logs ocupan bastante menos espacio en disco que el texto plano equivalente, una vez convertidos al formato JSON estructurado",
+        "Que sustituyen por completo a las métricas: con logs estructurados en JSON ya no hacen falta contadores ni histogramas de ningún tipo",
         "Que permiten consultar y agregar por campos y, sobre todo, reconstruir el recorrido completo de una petición uniendo las líneas emitidas por todos los servicios que la atendieron a través de su 'trace_id'",
-        "Que garantizan la observabilidad por sí solos, porque los otros dos pilares se derivan automáticamente de los logs"
+        "Que garantizan la observabilidad por sí solos, porque las trazas se derivan de forma automática a partir de los propios logs guardados, igual que ocurre de forma automática con las métricas de negocio que se derivan del mismo pipeline de ingesta"
       ],
       "options_en": [
-        "That logs take up considerably less disk space than plain text",
-        "That they replace metrics: with structured logs you no longer need counters or histograms",
+        "That the logs take up considerably less disk space than the equivalent plain text, once converted into the structured JSON format",
+        "That they fully replace metrics: with structured JSON logs you no longer need counters or histograms of any kind whatsoever",
         "That they can be queried and aggregated by field and, above all, let you reconstruct a request's full path by joining the lines emitted by every service that handled it via its 'trace_id'",
-        "That they guarantee observability on their own, because the other two pillars derive automatically from logs"
+        "That they guarantee observability all on their own, because traces are automatically derived straight from the logs that get stored, the same way it automatically happens with the business metrics derived from that very same ingestion pipeline"
       ],
       "correct_index": 2,
       "explanation_es": "Sin identificador de correlación, un log distribuido es un montón de líneas de servicios distintos que nadie puede coser; con 'trace_id' pasa a ser una narración por petición, que es lo que de verdad se necesita a las tres de la mañana. Las opciones 3 y 4 son la sobrecorrección típica de los equipos que acaban de descubrir el logging estructurado: los logs son caros de agregar a escala y responden mal a 'cuál es el p99 ahora mismo', pregunta que una métrica contesta en milisegundos sobre datos preagregados. La opción 1 es falsa en la dirección opuesta: el JSON repite las claves en cada línea y suele ocupar más, no menos; el beneficio es de consulta, no de almacenamiento.",
@@ -840,16 +840,16 @@
       "question_es": "El SLO es 99.9% mensual. El equipo quiere que la alerta avise a tiempo de que el presupuesto de error se está consumiendo demasiado deprisa, sin despertar a nadie por un pico de dos minutos. ¿Qué configuración lo consigue?",
       "question_en": "The SLO is 99.9% monthly. The team wants an alert that warns in time that the error budget is burning too fast, without paging anyone for a two-minute spike. Which configuration achieves that?",
       "options_es": [
-        "Alertar cuando el presupuesto de error del mes se haya agotado por completo",
-        "Alertar cada vez que una petición devuelva un código 5xx",
+        "Alertar en cuanto el presupuesto de error de todo el mes se haya agotado por completo y sin ningún margen restante para reaccionar, un umbral tan lejano que para cuando salta la alerta el SLO ya lleva roto varios días sin que nadie se haya enterado",
+        "Alertar cada vez que una única petición individual devuelva un código de estado 5xx de vuelta al cliente que la envió originalmente",
         "Alertas multiventana sobre la tasa de consumo del presupuesto (burn rate): una ventana larga confirma que el consumo es sostenido y una ventana corta comprueba que el problema sigue activo ahora mismo",
-        "Alertar cuando la CPU de los pods supere el 90% durante cinco minutos"
+        "Alertar cuando la CPU de los pods se mantenga por encima del 90% de forma sostenida durante cinco minutos consecutivos y seguidos"
       ],
       "options_en": [
-        "Alerting when the month's error budget has been fully exhausted",
-        "Alerting every time a request returns a 5xx status code",
+        "Alerting as soon as the whole month's error budget has been fully exhausted, with no margin left over at all to react to it, a threshold so far off that by the time it fires the SLO has already been broken for days without anyone noticing",
+        "Alerting every single time one individual request returns a 5xx status code back to the client that originally sent it out",
         "Multiwindow alerts on the error budget burn rate: a long window confirms the burn is sustained and a short window checks the problem is still active right now",
-        "Alerting when pod CPU exceeds 90% for five minutes"
+        "Alerting when pod CPU sustains above 90% continuously for five consecutive minutes in a row without ever dropping below it"
       ],
       "correct_index": 2,
       "explanation_es": "La tasa de consumo expresa cuántas veces más rápido se está gastando el presupuesto de lo que el SLO permite: una tasa de 1 lo agota justo al final del mes, una de 14.4 lo agota en dos días. Se alerta con varias parejas de umbral y ventana (por ejemplo 14.4 sobre una hora para una página urgente, 6 sobre seis horas para un ticket), y cada pareja lleva además una ventana corta para que la alerta se resuelva sola cuando el consumo se detiene: sin esa ventana corta, la ventana larga mantiene la alarma activa mucho después de que el incidente termine. La opción 3 es la más tentadora porque parece la aplicación literal del concepto de presupuesto, pero llega por definición tarde: cuando el presupuesto está agotado el SLO ya se ha incumplido, y la alerta debía servir para evitarlo. La opción 2 es ruido puro y la 4 es una alerta por causa, no por síntoma.",

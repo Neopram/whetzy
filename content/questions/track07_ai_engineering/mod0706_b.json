@@ -8,16 +8,16 @@
       "question_es": "¿Qué distingue al framework G-Eval (Liu et al., 2023) de métricas automáticas clásicas como BLEU?",
       "question_en": "What distinguishes the G-Eval framework (Liu et al., 2023) from classic automatic evaluation metrics like BLEU?",
       "options_es": [
-        "Mide el tamaño en GB del modelo que generó el texto",
+        "Cuantifica el tamaño en gigabytes del modelo que generó el texto evaluado, sin analizar el contenido en sí",
         "Solicita a un LLM que evalúe el texto generado siguiendo una rúbrica con pasos de razonamiento encadenado explícito (chain-of-thought), haciendo la evaluación adaptable y menos dependiente de textos de referencia",
-        "Calcula el solapamiento de n-gramas usando un modelo neuronal en lugar de coincidencia exacta de cadenas",
-        "Es idéntico a BLEU pero se ejecuta sobre GPUs"
+        "Calcula el solapamiento de n-gramas entre el texto generado y la referencia usando embeddings neuronales preentrenados en lugar de coincidencia exacta de cadenas, exactamente igual que hace ROUGE al manejar sinónimos y variantes morfológicas",
+        "Es funcionalmente idéntico a BLEU pero se ejecuta sobre GPUs para acelerar el cálculo de las puntuaciones"
       ],
       "options_en": [
-        "It measures the size in GB of the model that generated the text",
+        "It quantifies the size in gigabytes of the model that generated the evaluated text, without analyzing the content itself",
         "It prompts an LLM to evaluate the generated text by following a rubric with explicit chain-of-thought reasoning steps, making evaluation adaptive and less dependent on reference texts",
-        "It computes n-gram overlap using a neural language model instead of exact string matching",
-        "It is identical to BLEU but runs on GPUs"
+        "It computes n-gram overlap between the generated text and the reference using pretrained neural embeddings instead of exact string matching, exactly the way ROUGE handles synonyms and morphological variants",
+        "It is functionally identical to BLEU but runs on GPUs to speed up score computation"
       ],
       "correct_index": 1,
       "explanation_es": "G-Eval construye un prompt que incluye la tarea, los criterios de evaluación en forma de rúbrica y un bloque de 'pasos de evaluación' (chain-of-thought). Un LLM sigue esos pasos y asigna una puntuación numérica. Esto supera las métricas léxicas porque captura coherencia, relevancia y exactitud semántica sin necesidad de una referencia humana, aunque hereda los sesgos del LLM juez.",
@@ -65,15 +65,15 @@
       "question_es": "TruthfulQA (Lin et al., 2021) fue diseñado específicamente para medir qué capacidad de los LLMs?",
       "question_en": "TruthfulQA (Lin et al., 2021) was specifically designed to measure which LLM capability?",
       "options_es": [
-        "La velocidad de inferencia en preguntas de opción múltiple",
-        "La precisión en generación de código sobre pruebas unitarias",
-        "La cobertura multilingüe del modelo",
+        "La capacidad del modelo para resolver acertijos de lógica formal dentro de un límite de tiempo estricto",
+        "La habilidad del modelo para generar código fuente que compile sin errores de sintaxis en varios lenguajes de programación distintos, verificado mediante un conjunto de pruebas unitarias",
+        "La proporción de idiomas distintos que el modelo es capaz de traducir correctamente sin apoyo externo",
         "La tendencia de los LLMs a responder de forma veraz preguntas para las que existen falsas creencias populares en su corpus de entrenamiento"
       ],
       "options_en": [
-        "The speed of inference on multiple-choice questions",
-        "Code generation accuracy on unit tests",
-        "The multilingual coverage of the model",
+        "The model's ability to solve formal logic puzzles within a strict time limit",
+        "The model's ability to generate source code that compiles without syntax errors across several distinct programming languages, verified using a set of unit tests",
+        "The proportion of distinct languages the model can correctly translate without external support",
         "The tendency of LLMs to answer truthfully questions for which popular false beliefs exist in their training corpus"
       ],
       "correct_index": 3,
@@ -119,16 +119,16 @@
       "question_es": "En Chatbot Arena (LMSYS), los modelos se comparan con puntuaciones Elo derivadas de preferencias humanas ciegas. ¿Cuál es la principal ventaja de este enfoque sobre los leaderboards de benchmarks tradicionales?",
       "question_en": "In Chatbot Arena (LMSYS), models are compared using Elo ratings derived from blind human preferences. What is the main advantage of this approach over traditional benchmark leaderboards?",
       "options_es": [
-        "Es más barato que ejecutar cualquier métrica automática",
-        "Evalúa únicamente tareas de código, que son objetivamente verificables",
+        "Sustituye por completo la necesidad de cualquier benchmark automático de razonamiento, ya que las preferencias humanas por sí solas bastan para certificar tanto la capacidad matemática como la capacidad de programación del modelo",
+        "Solo compara la latencia de respuesta entre modelos bajo condiciones de carga simulada en un entorno controlado",
         "Captura preferencias reales de usuarios sobre prompts abiertos y diversos, y es más difícil de manipular que los benchmarks de conjunto fijo, ya que el conjunto de pruebas se renueva continuamente con conversaciones reales",
-        "Elimina toda subjetividad humana del proceso de evaluación"
+        "Garantiza puntuaciones idénticas para cualquier par de modelos evaluados, independientemente de las preferencias registradas"
       ],
       "options_en": [
-        "It is cheaper than running any automated metric",
-        "It tests only code generation tasks, which are objectively verifiable",
+        "It completely replaces the need for any automated reasoning benchmark, since human preferences alone are enough to certify both the model's mathematical ability and its coding ability",
+        "It only compares response latency between models under simulated load conditions in a controlled environment",
         "It captures real user preferences on diverse open-ended prompts and is harder to game than fixed-set benchmarks, since the test set is continuously refreshed by real conversations",
-        "It eliminates all human subjectivity from the evaluation process"
+        "It guarantees identical scores for any pair of models evaluated, regardless of the recorded preferences"
       ],
       "correct_index": 2,
       "explanation_es": "Los benchmarks fijos como MMLU pueden ser contaminados si el modelo ve esas preguntas durante el entrenamiento. Chatbot Arena usa un flujo continuo de preguntas de usuarios reales, lo que hace muy difícil el overfitting al benchmark. Además, las preferencias Elo reflejan lo que los usuarios realmente valoran en un diálogo abierto, algo que los MCQ de conocimiento factual no capturan.",
@@ -150,16 +150,16 @@
       "question_es": "Un informe de evaluación comparativa muestra: modelo_A gana 35 %, modelo_B gana 45 %, empates 20 %. ¿Cuál es la conclusión mejor respaldada por estos datos?",
       "question_en": "A comparative evaluation report shows: model_A wins 35%, model_B wins 45%, ties 20%. Which conclusion is best supported by this data?",
       "options_es": [
-        "El modelo A es significativamente mejor que el modelo B",
+        "Los empates deben repartirse por igual entre ambos modelos antes de poder sacar cualquier conclusión válida",
         "El modelo B supera al modelo A en la mayoría de los pares comparados en los que se prefiere uno sobre el otro",
-        "La evaluación es inválida porque los empates no están permitidos",
-        "Aún no se ha realizado ninguna evaluación"
+        "Un margen de solo diez puntos porcentuales entre ambos modelos nunca es estadísticamente relevante ni interpretable",
+        "Los resultados solo son válidos si el experimento se repite exactamente con el mismo conjunto de prompts usado originalmente"
       ],
       "options_en": [
-        "Model A is significantly better than Model B",
+        "Ties must be split evenly between both models before any valid conclusion can be drawn",
         "Model B outperforms Model A in the majority of compared pairs where one model is preferred over the other",
-        "The evaluation is invalid because ties are not allowed",
-        "No evaluation has been conducted yet"
+        "A margin of only ten percentage points between the two models is never statistically relevant or interpretable",
+        "The results are only valid if the experiment is repeated with the exact same set of prompts originally used"
       ],
       "correct_index": 1,
       "explanation_es": "De las comparaciones con preferencia definida (35+45=80%), el modelo B gana el 56% (45/80) y el modelo A el 44% (35/80). Los empates (20%) son comparaciones en que los evaluadores no observaron diferencia relevante. La conclusión correcta es que B supera a A entre los pares en que se expresó preferencia, sin que pueda afirmarse nada sobre los pares en empate.",
@@ -180,15 +180,15 @@
       "question_es": "MT-Bench se diferencia de benchmarks de turno único como MMLU en que:",
       "question_en": "MT-Bench differs from single-turn benchmarks like MMLU in that it:",
       "options_es": [
-        "Usa únicamente métricas de n-gramas para la evaluación",
-        "Mide solo la memoria factual sobre preguntas de ciencias",
-        "Requiere que el modelo escriba exclusivamente código",
+        "Calcula únicamente la perplejidad promedio de cada turno de la conversación, sin considerar en absoluto el contenido semántico, la relevancia ni la coherencia entre los distintos turnos de la respuesta dada",
+        "Limita la evaluación a preguntas de aritmética de un solo paso resueltas en un único turno de interacción",
+        "Puntúa exclusivamente la corrección sintáctica del código generado, ignorando cualquier interacción conversacional",
         "Evalúa modelos en conversaciones de múltiples turnos con preguntas de seguimiento, poniendo a prueba la coherencia y el seguimiento de instrucciones a lo largo de varios intercambios"
       ],
       "options_en": [
-        "It uses only n-gram metrics for evaluation",
-        "It measures only factual recall on science questions",
-        "It requires the model to write code exclusively",
+        "It only computes the average perplexity of each conversation turn, without considering at all the semantic content, relevance, or coherence across the different turns of the response given",
+        "It limits evaluation to single-step arithmetic questions solved in a single turn of interaction",
+        "It scores exclusively the syntactic correctness of generated code, ignoring any conversational interaction",
         "It evaluates models across multi-turn conversations with follow-up questions, testing coherence and instruction following over multiple exchanges"
       ],
       "correct_index": 3,
@@ -211,15 +211,15 @@
       "question_es": "¿Cómo pueden utilizarse los modelos de Inferencia de Lenguaje Natural (NLI) para detectar alucinaciones en las salidas de LLMs?",
       "question_en": "How can Natural Language Inference (NLI) models be used to detect hallucinations in LLM outputs?",
       "options_es": [
-        "Generando nuevos documentos que contradigan la salida del LLM",
-        "Ajustando fino el LLM para que rechace cualquier pregunta sobre la que no esté seguro",
-        "Pasando la salida del LLM por un corrector ortográfico para detectar errores gramaticales",
+        "Reescribiendo la salida completa del LLM con un modelo de traducción automática hacia otro idioma y comparando el resultado con el texto original para detectar errores gramaticales sutiles introducidos durante la reescritura",
+        "Calculando la perplejidad de la salida bajo el propio LLM que la generó y marcando como sospechosos los tokens de baja probabilidad",
+        "Contando el número de entidades nombradas que aparecen en la salida del LLM y comparándolo con un umbral fijo predefinido",
         "Clasificando si las afirmaciones del LLM son implicadas (entailment), neutrales o contradichas (contradiction) por el documento fuente, y marcando las contradichas como posibles alucinaciones"
       ],
       "options_en": [
-        "By generating new documents that contradict the LLM output",
-        "By fine-tuning the LLM to refuse any question it is uncertain about",
-        "By running the LLM output through a spell-checker to detect grammatical errors",
+        "By rewriting the LLM's full output with a machine-translation model into another language and comparing the result to the original text to detect subtle grammatical errors introduced during the rewrite",
+        "By computing the perplexity of the output under the same LLM that generated it and flagging low-probability tokens as suspicious",
+        "By counting the number of named entities that appear in the LLM output and comparing it against a fixed predefined threshold",
         "By classifying whether the LLM's claims are entailed (consistent), neutral, or contradicted by the source document—flagging contradicted claims as potential hallucinations"
       ],
       "correct_index": 3,
@@ -269,15 +269,15 @@
       "question_es": "En la técnica Chain-of-Verification (CoVe, Dhuliawala et al., 2023), ¿cuál es el paso clave que reduce las alucinaciones?",
       "question_en": "In the Chain-of-Verification (CoVe) technique (Dhuliawala et al., 2023), what is the key step that reduces hallucinations?",
       "options_es": [
-        "Un modelo NLI especializado reescribe cada oración de la salida",
-        "El modelo se re-entrena con datos verificados después de cada paso de generación",
-        "Siempre se llama a un motor de búsqueda externo antes de que el LLM genere cualquier token",
+        "Un motor de búsqueda web sustituye por completo al LLM en la generación de la respuesta final, sin que este intervenga en ningún momento del proceso de redacción ni de la verificación posterior",
+        "Se calcula la similitud coseno entre los embeddings de la pregunta original y de la respuesta que el modelo produjo",
+        "El texto generado se traduce a otro idioma y se retraduce al original para detectar inconsistencias léxicas introducidas",
         "El modelo genera preguntas de verificación sobre su propio borrador de respuesta, las responde de forma independiente y revisa la respuesta si detecta inconsistencias"
       ],
       "options_en": [
-        "A specialized NLI model classifies and rewrites every sentence of the output",
-        "The model is retrained on verified data after each generation step",
-        "An external search engine is always called before the LLM generates any token",
+        "A web search engine entirely replaces the LLM in generating the final answer, with the LLM playing no role at any point in the drafting process or the later verification",
+        "The cosine similarity between the embeddings of the original question and the model's generated answer is computed",
+        "The generated text is translated into another language and back to detect lexical inconsistencies introduced along the way",
         "The model generates verification questions about its own draft response, independently answers them, and revises the response if it detects inconsistencies"
       ],
       "correct_index": 3,
@@ -323,15 +323,15 @@
       "question_es": "Un sistema RAG recupera un pasaje muy relevante que responde correctamente la pregunta del usuario. El LLM aun así genera una respuesta alucinada. ¿Cuál es la causa más probable?",
       "question_en": "A RAG system retrieves a highly relevant passage that correctly answers the user's question. The LLM still produces a hallucinated response. What is the most likely cause?",
       "options_es": [
-        "El parámetro temperature estaba fijado a 0",
-        "El modelo de embeddings no estaba ajustado fino",
-        "La base de datos vectorial tenía menos de un millón de documentos",
+        "El sistema de recuperación indexó el pasaje usando un algoritmo de compresión sin pérdida antes de almacenarlo en la base de datos vectorial, lo que redujo levemente su tamaño en disco",
+        "El pasaje recuperado se almacenó en un formato de archivo distinto al usado originalmente en el corpus fuente",
+        "El reranker asignó al pasaje una puntuación de similitud coseno superior a 0.9 respecto al embedding de la consulta",
         "El LLM no atendió correctamente al pasaje recuperado o no supo sintetizarlo, recurriendo en su lugar a su memoria paramétrica que contiene información contradictoria u obsoleta"
       ],
       "options_en": [
-        "The temperature parameter was set to 0",
-        "The embedding model was not fine-tuned",
-        "The vector database had fewer than one million documents",
+        "The retrieval system indexed the passage using a lossless compression algorithm before storing it inside the vector database, which slightly reduced its size on disk",
+        "The retrieved passage was stored in a file format different from the one originally used in the source corpus",
+        "The reranker assigned the passage a cosine similarity score above 0.9 relative to the query embedding",
         "The LLM failed to properly attend to or correctly synthesize the retrieved passage, falling back on its parametric memory which contains conflicting or outdated information"
       ],
       "correct_index": 3,
@@ -382,16 +382,16 @@
       "question_es": "FActScore (Min et al., 2023) evalúa las biografías generadas por LLMs mediante:",
       "question_en": "FActScore (Min et al., 2023) evaluates LLM-generated biographies by:",
       "options_es": [
-        "Pedir a anotadores humanos que lean el texto completo y lo valoren en una escala de 1 a 10",
+        "Pedir a un grupo de anotadores humanos que comparen el texto generado con una biografía de referencia, palabra por palabra y frase por frase, asignando al final una nota conjunta de similitud global",
         "Descomponiendo el texto generado en hechos atómicos individuales y verificando cada hecho de forma independiente contra una fuente de conocimiento, calculando la fracción de hechos respaldados",
-        "Calculando la puntuación BLEU contra artículos de Wikipedia",
-        "Midiendo la perplejidad del texto generado bajo un LLM de referencia"
+        "Midiendo la longitud promedio de las oraciones generadas y comparándola contra un umbral fijo predefinido por el sistema",
+        "Contando cuántas veces aparece el nombre del sujeto biografiado dentro del texto que el modelo produjo"
       ],
       "options_en": [
-        "Asking human annotators to read the full text and rate it on a 1–10 scale",
+        "Asking a group of human annotators to compare the generated text against a reference biography, word by word and sentence by sentence, jointly assigning a final overall similarity score",
         "Decomposing the generated text into individual atomic facts and verifying each fact independently against a knowledge source, then computing the fraction of supported facts",
-        "Computing the BLEU score against Wikipedia passages",
-        "Measuring perplexity of the generated text under a reference LLM"
+        "Measuring the average sentence length of the generated text and comparing it against a fixed threshold set by the system",
+        "Counting how many times the biography's subject's name appears within the model's generated text"
       ],
       "correct_index": 1,
       "explanation_es": "FActScore atomiza el texto (p. ej., 'Nació en 1965', 'Estudió en Harvard', 'Ganó el premio X') y verifica cada átomo contra Wikipedia u otra fuente. Finalmente, el score es el porcentaje de átomos respaldados. Esta granularidad permite identificar exactamente qué hechos específicos son alucinados, no solo si el texto 'en general' es verdadero. Es una métrica de precisión factual a nivel de afirmación.",
@@ -414,15 +414,15 @@
       "question_en": "What is the key difference between reference-based and reference-free LLM-as-judge evaluation?",
       "options_es": [
         "En la evaluación basada en referencia, el juez compara la salida del modelo con una respuesta de referencia correcta (gold answer); en la evaluación sin referencia, el juez evalúa la salida por sus propios méritos (coherencia, relevancia) sin una respuesta correcta predefinida",
-        "La evaluación basada en referencia siempre es más rápida de ejecutar que la evaluación sin referencia",
-        "La evaluación sin referencia requiere ajustar fino el modelo juez sobre un conjunto de datos etiquetados",
-        "La evaluación basada en referencia solo funciona para tareas de clasificación, no para generación abierta"
+        "La evaluación sin referencia siempre requiere un número considerablemente mayor de llamadas a la API del juez que la evaluación basada en referencia, sin ninguna excepción posible, sin importar el tamaño del conjunto evaluado, el dominio de la tarea ni el idioma del texto",
+        "La evaluación sin referencia exige ajustar fino previamente el modelo juez con un conjunto de datos etiquetados manualmente",
+        "La evaluación basada en referencia solo puede aplicarse a tareas de clasificación y nunca a la generación abierta de texto"
       ],
       "options_en": [
         "In reference-based evaluation, the judge compares the model's output against a gold-standard reference answer; in reference-free evaluation, the judge assesses the output on its own merits (coherence, relevance) without a predefined correct answer",
-        "Reference-based evaluation is always faster to run than reference-free evaluation",
-        "Reference-free evaluation requires fine-tuning the judge model on a labeled dataset",
-        "Reference-based evaluation only works for classification tasks, not for open-ended generation"
+        "Reference-free evaluation always requires a considerably greater number of calls to the judge API than reference-based evaluation, with no exception whatsoever, regardless of the size of the evaluated set, the task's domain, or the text's language",
+        "Reference-free evaluation requires first fine-tuning the judge model on a manually labeled dataset",
+        "Reference-based evaluation can only be applied to classification tasks and never to open-ended text generation"
       ],
       "correct_index": 0,
       "explanation_es": "La evaluación basada en referencia (reference-based) es útil cuando existe una respuesta correcta conocida, como en QA factual o traducción. La evaluación sin referencia (reference-free) es necesaria cuando el espacio de respuestas válidas es amplio o cuando no existe una respuesta de referencia (chatbot de atención al cliente, brainstorming). La mayoría de despliegues de producción de LLMs usan evaluación sin referencia porque no hay respuestas gold disponibles para cada consulta de usuario.",
@@ -470,16 +470,16 @@
       "question_es": "En el framework G-Eval, ¿qué función cumple el prompt de chain-of-thought (CoT) durante el proceso de evaluación?",
       "question_en": "In the G-Eval framework, what role does the chain-of-thought (CoT) prompt play during the evaluation process?",
       "options_es": [
-        "Obliga al LLM juez a producir únicamente veredictos binarios de aprobado/rechazado",
+        "Obliga al LLM juez a producir la puntuación final únicamente en un formato JSON estricto y predefinido de antemano, sin incluir ninguna explicación adicional del razonamiento ni de los criterios seguidos",
         "Instruye al LLM juez para que razone paso a paso a través de criterios de evaluación explícitos antes de asignar una puntuación, mejorando la calibración y reduciendo la puntuación arbitraria",
-        "Impide que el LLM acceda a su conocimiento paramétrico durante la puntuación",
-        "Comprime el texto evaluado para que quepa dentro de la ventana de contexto"
+        "Reduce la longitud máxima de contexto que el juez puede procesar durante cada evaluación individual",
+        "Traduce automáticamente el texto evaluado al inglés antes de que el juez le asigne una puntuación final"
       ],
       "options_en": [
-        "It forces the judge LLM to output only binary pass/fail verdicts",
+        "It forces the judge LLM to output the final score only in a strict, predefined JSON format, with no additional explanation of the reasoning or the criteria followed included",
         "It instructs the judge LLM to reason step by step through explicit evaluation criteria before assigning a score, improving calibration and reducing arbitrary scoring",
-        "It prevents the LLM from accessing its parametric knowledge during scoring",
-        "It compresses the evaluated text so it fits within the context window"
+        "It reduces the maximum context length the judge can process during each individual evaluation",
+        "It automatically translates the evaluated text into English before the judge assigns it a final score"
       ],
       "correct_index": 1,
       "explanation_es": "En G-Eval, el prompt incluye un bloque 'Evaluation Steps' con instrucciones como '1. Leer la respuesta. 2. Verificar si cada afirmación está respaldada por el contexto. 3. Identificar afirmaciones sin soporte.' El LLM juez sigue estos pasos explícitamente antes de emitir una puntuación. Esto imita el proceso deliberativo de un evaluador humano entrenado y reduce la varianza entre ejecuciones del mismo prompt.",
@@ -524,16 +524,16 @@
       "question_es": "Prometheus (Kim et al., 2023) es notable entre los modelos juez de LLMs porque:",
       "question_en": "Prometheus (Kim et al., 2023) is notable among LLM judge models because:",
       "options_es": [
-        "Fue el primer LLM en alcanzar precisión de nivel humano en MMLU",
-        "Solo evalúa corrección de código usando pruebas unitarias",
+        "Fue el primer modelo de lenguaje en superar a GPT-4 en benchmarks de programación competitiva de nivel avanzado",
+        "Solo puede evaluar traducciones automáticas usando puntuaciones BLEU calculadas internamente sobre pares de oraciones alineadas entre el idioma de origen y el de destino, sin considerar el significado global del texto",
         "Es un modelo más pequeño de código abierto, ajustado fino específicamente para feedback y puntuación usando rúbricas detalladas, diseñado como alternativa reproducible y accesible a jueces propietarios como GPT-4",
-        "Usa solapamiento de n-gramas para producir puntuaciones sin llamar a ningún LLM"
+        "Requiere una GPU con al menos 80 GB de memoria dedicada para poder ejecutarse en cualquier tarea de evaluación"
       ],
       "options_en": [
-        "It was the first LLM to achieve human-level accuracy on MMLU",
-        "It only evaluates code correctness using unit tests",
+        "It was the first language model to surpass GPT-4 on advanced competitive-programming benchmarks",
+        "It can only evaluate machine translations using BLEU scores computed internally over sentence pairs aligned between the source and target language, without considering the text's overall meaning",
         "It is a smaller, open-source model specifically fine-tuned for feedback and scoring using detailed rubrics, designed as a reproducible and accessible alternative to proprietary judges like GPT-4",
-        "It uses n-gram overlap to produce evaluation scores without calling any LLM"
+        "It requires a GPU with at least 80 GB of dedicated memory to run on any evaluation task"
       ],
       "correct_index": 2,
       "explanation_es": "Prometheus aborda el problema de reproducibilidad y coste de los jueces LLM propietarios. Al ser de código abierto y estar ajustado fino sobre datos de evaluación con rúbricas explícitas (Feedback Collection), permite que los equipos de investigación repliquen evaluaciones sin depender de la API de OpenAI. Se ha demostrado que su correlación con GPT-4 es alta en dimensiones como coherencia y relevancia, aunque con menor rendimiento en tareas de conocimiento muy especializado.",
@@ -582,16 +582,16 @@
       "question_es": "En una rúbrica de evaluación de LLMs con múltiples criterios (p. ej., puntuando por separado precisión, completitud y concisión), ¿por qué es generalmente mejor puntuar cada dimensión de forma independiente en lugar de pedir una única puntuación global?",
       "question_en": "In a multi-criteria LLM evaluation rubric (scoring separately for accuracy, completeness, and conciseness), why is it generally better to score each dimension independently rather than requesting a single overall score?",
       "options_es": [
-        "Reduce el número total de llamadas a la API del LLM necesarias",
+        "Obliga al modelo evaluado a generar respuestas notablemente más cortas para cada una de las dimensiones puntuadas",
         "Descomponer la evaluación en dimensiones separadas obliga al juez a razonar sobre cada aspecto explícitamente, reduce los sesgos de anclaje y proporciona información diagnóstica procesable sobre modos de fallo específicos",
-        "Permite al modelo dar puntuaciones globales más bajas, haciendo la evaluación más conservadora",
-        "Las rúbricas de puntuación única están prohibidas por el Marco de Gestión de Riesgos de IA del NIST"
+        "Elimina por completo la necesidad de definir criterios de evaluación explícitos para cada dimensión considerada, dejando la puntuación final enteramente a discreción del juez, sin ninguna guía adicional ni rúbrica de referencia",
+        "Reduce el costo de cómputo fusionando todas las dimensiones evaluadas en un único vector de embedding"
       ],
       "options_en": [
-        "It reduces the total number of LLM API calls needed",
+        "It forces the evaluated model to generate noticeably shorter responses for each scored dimension",
         "Decomposing evaluation into separate dimensions forces the judge to reason about each aspect explicitly, reduces anchoring biases, and provides actionable diagnostic information about specific failure modes",
-        "It allows the model to give lower overall scores, making the evaluation more conservative",
-        "Single-score rubrics are prohibited by the NIST AI Risk Management Framework"
+        "It completely eliminates the need to define explicit evaluation criteria for each dimension considered, leaving the final score entirely up to the judge's discretion, with no further guidance or reference rubric at all",
+        "It reduces compute cost by merging all evaluated dimensions into a single embedding vector"
       ],
       "correct_index": 1,
       "explanation_es": "Una puntuación global única es ambigua: no revela si una respuesta pobre lo es por inexacta, incompleta o por ser demasiado larga. Con dimensiones separadas, el equipo puede priorizar mejoras: si la precisión es alta pero la concisión baja, la acción es diferente que si ambas son bajas. Además, los sesgos de anclaje (dejarse llevar por la impresión general) se reducen cuando el juez tiene que argumentar cada dimensión por separado.",
@@ -614,15 +614,15 @@
       "question_en": "Why do small language models (e.g., 7B parameter models) generally perform poorly as LLM judges when scoring complex open-ended responses?",
       "options_es": [
         "Carecen de suficiente capacidad para seguir instrucciones complejas, calibración y conocimiento del mundo para evaluar de forma fiable dimensiones como la corrección factual, la coherencia o la utilidad en dominios diversos",
-        "Son demasiado lentos para evaluar respuestas en un presupuesto de tiempo razonable",
-        "Solo pueden procesar preguntas en su idioma de preentrenamiento y fallan en la evaluación multilingüe",
-        "Su ventana de contexto es demasiado pequeña para leer cualquier respuesta de más de una oración"
+        "Porque su arquitectura, al tener muchas menos capas y parámetros entrenables, carece de los mecanismos de atención necesarios para procesar entradas de texto largas sin que su rendimiento general se degrade de forma notable en cualquier dominio",
+        "Porque fueron entrenados exclusivamente con datos sintéticos generados por otro modelo más grande",
+        "Porque no pueden ejecutarse en hardware que carezca de una unidad de procesamiento gráfico dedicada"
       ],
       "options_en": [
         "They lack sufficient instruction-following ability, calibration, and world knowledge to reliably assess complex dimensions such as factual correctness, coherence, or helpfulness across diverse domains",
-        "Small models are too slow to evaluate responses within a reasonable time budget",
-        "They can only process questions in their pretraining language and fail on multilingual evaluation",
-        "Their context window is too small to read any response longer than one sentence"
+        "Because their architecture, having far fewer layers and trainable parameters, lacks the attention mechanisms needed to process long text inputs without their overall performance degrading noticeably across any domain",
+        "Because they were trained exclusively on synthetic data generated by another, larger model",
+        "Because they cannot run on hardware lacking a dedicated graphics processing unit"
       ],
       "correct_index": 0,
       "explanation_es": "Los modelos pequeños tienden a producir puntuaciones menos calibradas (p. ej., usando siempre 7/10 sin discriminar) y a tener dificultades para seguir rúbricas complejas de múltiples criterios. También les falta conocimiento factual en dominios especializados para detectar errores. Por eso estudios como el de Zheng et al. (MT-Bench) recomiendan GPT-4 u otros modelos grandes como jueces. Los modelos medianos ajustados fino (Prometheus, JudgeLM) son mejores alternativas accesibles que los pequeños genéricos.",
@@ -644,15 +644,15 @@
       "question_es": "¿Para qué se usa principalmente LangSmith en el desarrollo de aplicaciones LLM?",
       "question_en": "What is LangSmith primarily used for in LLM application development?",
       "options_es": [
-        "Entrenar y ajustar fino grandes modelos de lenguaje desde cero",
-        "Desplegar servicios LLM en contenedores a clústeres de Kubernetes",
-        "Gestionar índices de bases de datos vectoriales para pipelines RAG",
+        "Cuantizar los pesos de modelos ya preentrenados mediante poda estructurada para reducir su tamaño final en disco tras el entrenamiento",
+        "Orquestar el autoescalado de pods de inferencia dentro de un clúster de Kubernetes según la carga entrante",
+        "Construir y actualizar índices HNSW para permitir búsquedas de similitud rápidas en bases de datos vectoriales",
         "Trazar, depurar y monitorizar cadenas y agentes LLM —capturando entradas, salidas, latencias y errores en cada paso del pipeline"
       ],
       "options_en": [
-        "Training and fine-tuning large language models from scratch",
-        "Deploying containerized LLM services to Kubernetes clusters",
-        "Managing vector database indexes for RAG pipelines",
+        "Quantizing the weights of already pretrained models via structured pruning to reduce their final disk size after training",
+        "Orchestrating the autoscaling of inference pods within a Kubernetes cluster based on incoming load",
+        "Building and updating HNSW indexes to enable fast similarity search in vector databases",
         "Tracing, debugging, and monitoring LLM chains and agents—capturing inputs, outputs, latencies, and errors at each step of the pipeline"
       ],
       "correct_index": 3,
@@ -699,15 +699,15 @@
       "question_en": "How does MLflow experiment tracking differ from production observability tools like LangSmith or Arize?",
       "options_es": [
         "MLflow se centra en la fase de desarrollo —registrando parámetros, métricas y artefactos durante el entrenamiento y la experimentación—, mientras que las herramientas de observabilidad de producción monitorizan el tráfico en vivo, la latencia y la calidad de las respuestas en sistemas desplegados en tiempo real",
-        "MLflow solo funciona con modelos PyTorch; las herramientas de observabilidad funcionan con todos los proveedores de LLMs",
-        "MLflow registra interacciones de usuarios en tiempo real en producción; las herramientas de observabilidad rastrean experimentos offline",
-        "Son funcionalmente idénticos y siempre se pueden sustituir el uno por el otro"
+        "MLflow solo admite modelos entrenados con PyTorch, mientras que las herramientas de observabilidad de producción funcionan de forma agnóstica al framework empleado",
+        "MLflow captura en tiempo real todo el tráfico de usuarios reales en producción y genera alertas de calidad automáticas para el equipo de ingeniería, mientras que las herramientas de observabilidad solo registran experimentos ejecutados sin conexión durante la fase temprana de desarrollo del modelo, antes de cualquier despliegue",
+        "Ambas herramientas comparten exactamente el mismo esquema de almacenamiento y pueden sustituirse entre sí sin ninguna configuración adicional"
       ],
       "options_en": [
         "MLflow focuses on the development phase—logging parameters, metrics, and artifacts during training and experimentation—while production observability tools monitor live traffic, latency, and response quality in real-time deployed systems",
-        "MLflow only works with PyTorch models; observability tools work with all LLM providers",
-        "MLflow tracks real-time user interactions in production; observability tools track offline experiments",
-        "They are functionally identical and can always be substituted for each other"
+        "MLflow only supports models trained with PyTorch, while production observability tools work agnostically regardless of the framework used",
+        "MLflow captures all live real-user traffic in production in real time and generates automatic quality alerts for the engineering team, while observability tools only log experiments run offline during the model's early development phase, before any deployment",
+        "Both tools share exactly the same storage schema and can be substituted for each other with no additional configuration"
       ],
       "correct_index": 0,
       "explanation_es": "MLflow fue diseñado para el ciclo de vida del desarrollo de modelos: rastrear hiperparámetros, métricas de entrenamiento, versiones de modelos y artefactos en experimentos offline. LangSmith, Arize y Phoenix están diseñados para lo que ocurre después del despliegue: rastrear solicitudes individuales de usuarios, detectar degradación de la calidad con el tiempo, monitorizar el coste de tokens y alertar sobre anomalías en producción. Hay cierto solapamiento (MLflow también tiene funcionalidades de evaluación), pero los casos de uso primarios son distintos.",
@@ -757,15 +757,15 @@
       "question_en": "Why is monitoring token usage (input + output tokens) per request a critical concern in production LLM systems?",
       "options_es": [
         "El uso de tokens impulsa directamente el coste de la API y la latencia; picos inesperados pueden causar sobrecostes, violaciones del SLA e indicar inyección de prompts o bucles de agentes descontrolados",
-        "El número de tokens determina la velocidad de la caché de CPU en la infraestructura de servicio",
-        "El uso de tokens debe reportarse a la base de datos de cumplimiento de la Ley de IA de la UE para cada llamada LLM",
-        "Un alto uso de tokens siempre indica que el modelo está alucinando"
+        "El recuento de tokens determina directamente el tamaño de la caché L2 del procesador que ejecuta el servicio del modelo",
+        "El uso de tokens de cada solicitud individual debe registrarse en el índice bursátil de la empresa que opera el modelo desplegado, junto con su cotización diaria, para cumplir con la normativa financiera vigente",
+        "Un uso elevado de tokens en una solicitud indica siempre que el modelo ha alcanzado su máxima precisión posible en esa tarea"
       ],
       "options_en": [
         "Token usage directly drives API cost and latency; unexpected spikes can cause budget overruns, SLA violations, and may indicate prompt injection or runaway agent loops",
-        "Token count determines the speed of the CPU cache in the serving infrastructure",
-        "Token usage must be reported to the EU AI Act compliance database for every LLM call",
-        "High token usage always signals that the model is hallucinating"
+        "Token count directly determines the size of the L2 cache of the processor running the model's serving infrastructure",
+        "Each individual request's token usage must be logged in the stock index of the company operating the deployed model, together with its daily quote, to comply with current financial regulations",
+        "High token usage on a request always indicates the model has reached its maximum possible accuracy on that task"
       ],
       "correct_index": 0,
       "explanation_es": "Los LLMs de API cobran por token (entrada y salida). Un aumento repentino en el número de tokens por solicitud puede indicar: (1) prompt injection (un usuario inyecta instrucciones largas en el prompt); (2) bucles de agente descontrolados que generan contextos cada vez más largos; (3) cambios en los patrones de uso que disparan el presupuesto. Monitorizar este KPI con alertas permite detener estas situaciones antes de que generen costes prohibitivos o fallen los servicios.",
@@ -787,16 +787,16 @@
       "question_es": "Una traza distribuida de una consulta RAG muestra los siguientes spans: embed_query=12ms, vector_search=320ms, rerank=550ms, llm_call=1800ms. ¿Cuál es la conclusión más correcta?",
       "question_en": "A distributed trace of a RAG query shows the following spans: embed_query=12ms, vector_search=320ms, rerank=550ms, llm_call=1800ms. What is the most correct conclusion?",
       "options_es": [
-        "La búsqueda vectorial es el cuello de botella dominante y debe optimizarse primero",
+        "El paso de embed_query es el cuello de botella dominante de todo el sistema porque se ejecuta antes que los demás pasos del pipeline de recuperación y bloquea por completo el resto del proceso hasta terminar",
         "La llamada al LLM representa la mayor parte de la latencia total y es el objetivo de optimización principal si se necesita reducir el tiempo de respuesta extremo a extremo",
-        "El paso de re-ranking es innecesario y debe eliminarse",
-        "El paso de embedding es el más costoso y debe almacenarse en caché"
+        "El paso de re-ranking debe duplicarse ejecutándolo dos veces seguidas para mejorar aún más la precisión final de la búsqueda",
+        "El paso de vector_search es el más costoso de todo el pipeline y por tanto debe eliminarse por completo"
       ],
       "options_en": [
-        "The vector search is the dominant bottleneck and should be optimized first",
+        "The embed_query step is the dominant bottleneck of the whole system because it runs before every other step of the retrieval pipeline and completely blocks the rest of the process until it finishes",
         "The LLM call accounts for the majority of total latency and is the primary optimization target if end-to-end response time needs to be reduced",
-        "The reranking step is unnecessary and should be removed",
-        "The embedding step is the most expensive and should be cached"
+        "The reranking step should be duplicated by running it twice in a row to further improve the final search accuracy",
+        "The vector_search step is the most expensive of the entire pipeline and should therefore be removed entirely"
       ],
       "correct_index": 1,
       "explanation_es": "La latencia total es 12+320+550+1800=2682ms. La llamada al LLM aporta 1800/2682=67% de la latencia total, lo que la convierte en el cuello de botella dominante. Las optimizaciones típicas incluyen: usar un modelo más rápido (Haiku vs Sonnet), reducir el número de tokens de entrada, usar streaming para mejorar la latencia percibida, o implementar caché semántica para consultas frecuentes. La búsqueda vectorial (320ms) y el re-ranking (550ms) son secundarios.",
@@ -842,16 +842,16 @@
       "question_es": "Las plataformas de observabilidad de ML como Arize AI y Phoenix (Arize) están diseñadas específicamente para abordar qué desafío en los sistemas de IA en producción?",
       "question_en": "ML observability platforms such as Arize AI and Phoenix (Arize) are specifically designed to address which challenge in production AI systems?",
       "options_es": [
-        "Reemplazar las bases de datos vectoriales con alternativas en memoria más rápidas",
-        "Proporcionar una interfaz de arrastrar y soltar para el ajuste fino de LLMs sin código",
+        "Sustituir por completo los pipelines de integración y despliegue continuo usados para poner modelos en producción, automatizando cada etapa del ciclo de vida del modelo desde el entrenamiento inicial hasta el monitoreo continuo posterior",
+        "Ofrecer un editor visual de arrastrar y soltar para escribir prompts sin necesidad de escribir código alguno",
         "Monitorizar el rendimiento de los modelos desplegados a lo largo del tiempo, detectar deriva de datos, deriva de embeddings y degradación de la calidad de las respuestas, y habilitar el análisis de causa raíz de regresiones en producción",
-        "Generar automáticamente prompts de evaluación para nuevas tareas de LLMs"
+        "Comprimir los embeddings ya almacenados para reducir el costo de almacenamiento en disco de la base vectorial"
       ],
       "options_en": [
-        "Replacing vector databases with faster in-memory alternatives",
-        "Providing a drag-and-drop interface for fine-tuning LLMs without code",
+        "Completely replacing the continuous integration and deployment pipelines used to put models into production, automating every stage of the model's lifecycle from initial training through ongoing monitoring afterward",
+        "Offering a drag-and-drop visual editor for writing prompts without needing to write any code",
         "Monitoring deployed model performance over time, detecting data drift, embedding drift, and response quality degradation, and enabling root-cause analysis of regressions in production",
-        "Automatically generating evaluation prompts for new LLM tasks"
+        "Compressing already stored embeddings to reduce the on-disk storage cost of the vector database"
       ],
       "correct_index": 2,
       "explanation_es": "Arize y Phoenix son plataformas de observabilidad especializadas para ML/LLMs. Permiten: (1) rastrear distribuciones de embeddings de entrada a lo largo del tiempo para detectar deriva de datos (data drift); (2) monitorizar métricas de calidad de respuesta LLM (faithfulness, relevancia, toxicidad); (3) analizar trazas completas de agentes y pipelines RAG con filtros y dashboards. Phoenix es la versión open-source de Arize, lo que la hace accesible para equipos con presupuesto limitado.",

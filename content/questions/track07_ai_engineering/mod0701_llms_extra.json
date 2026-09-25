@@ -8,16 +8,16 @@
       "question_es": "¿Qué mecanismo permite a un Transformer relacionar cada token de una secuencia con todos los demás tokens en paralelo, sin recurrencia?",
       "question_en": "Which mechanism allows a Transformer to relate every token in a sequence to every other token in parallel, without recurrence?",
       "options_es": [
-        "La convolución 1D",
-        "El max pooling",
+        "La normalización por lotes (batch normalization) aplicada tras cada capa oculta",
+        "La codificación posicional sinusoidal sumada a los embeddings de entrada",
         "El self-attention (auto-atención)",
-        "El batch normalization"
+        "El dropout aplicado sistemáticamente tras la capa feed-forward de cada bloque"
       ],
       "options_en": [
-        "1D convolution",
-        "Max pooling",
+        "Batch normalization applied after each hidden layer",
+        "Sinusoidal positional encoding added to the input embeddings",
         "Self-attention",
-        "Batch normalization"
+        "Dropout applied systematically after each block's feed-forward layer"
       ],
       "correct_index": 2,
       "explanation_es": "El self-attention calcula, para cada token, una combinación ponderada de todos los demás tokens de la secuencia (usando queries, keys y values), permitiendo capturar dependencias de largo alcance sin procesar la secuencia paso a paso como una RNN.",
@@ -62,16 +62,16 @@
       "question_es": "¿Por qué los LLMs modernos usan tokenización por subpalabras (como BPE) en lugar de tokenizar por palabras completas?",
       "question_en": "Why do modern LLMs use subword tokenization (like BPE) instead of tokenizing by whole words?",
       "options_es": [
-        "Elimina por completo la necesidad de un vocabulario fijo",
-        "Hace que el modelo procese siempre exactamente una palabra por token",
+        "Elimina por completo la necesidad de aprender una matriz de embeddings, ya que cada byte se usa directamente como entrada, de modo que la capa de entrada del Transformer recibe directamente el valor numérico del byte",
+        "Garantiza que cada palabra completa ocupe siempre exactamente un único token, sin ninguna excepción posible",
         "Permite manejar palabras raras o fuera de vocabulario dividiéndolas en subunidades conocidas, manteniendo un vocabulario de tamaño manejable",
-        "Solo funciona para el idioma inglés"
+        "Es una técnica diseñada específicamente para lenguas que usan un alfabeto no latino, como el japonés o el árabe"
       ],
       "options_en": [
-        "It completely eliminates the need for a fixed vocabulary",
-        "It makes the model always process exactly one word per token",
+        "It completely removes the need to learn an embedding matrix, since each byte is used directly as input, so that the Transformer's input layer receives the byte's raw numeric value directly",
+        "It guarantees every complete word always occupies exactly one single token, with no possible exception",
         "It handles rare or out-of-vocabulary words by splitting them into known subunits, keeping the vocabulary size manageable",
-        "It only works for the English language"
+        "It is a technique designed specifically for languages using a non-Latin alphabet, such as Japanese or Arabic"
       ],
       "correct_index": 2,
       "explanation_es": "Tokenizar por palabra completa obliga a un vocabulario enorme (o a tratar cualquier palabra desconocida como un token especial 'desconocido'). Byte-Pair Encoding (BPE) construye un vocabulario de subpalabras frecuentes, de modo que palabras raras o nunca vistas se pueden componer a partir de fragmentos conocidos.",
@@ -92,15 +92,15 @@
       "question_en": "What is 'few-shot prompting'?",
       "options_es": [
         "Incluir en el prompt unos pocos ejemplos de entrada-salida para guiar el formato o comportamiento de la respuesta del modelo",
-        "Entrenar el modelo desde cero con muy pocos ejemplos",
-        "Hacer al modelo la misma pregunta varias veces seguidas",
-        "Usar un prompt de una sola palabra"
+        "Ajustar los pesos del modelo mediante backpropagation usando esos pocos ejemplos como conjunto de entrenamiento completo, de modo que, tras esa llamada, el modelo recuerda esos ejemplos también en conversaciones futuras",
+        "Repetir la misma consulta con distintos valores de temperature hasta obtener por azar la respuesta deseada",
+        "Reducir el prompt a la mínima cantidad de tokens posible sin llegar a perder la pregunta original del usuario"
       ],
       "options_en": [
         "Including a few input-output examples in the prompt to guide the model's response format or behavior",
-        "Training the model from scratch with very few examples",
-        "Asking the model the same question multiple times in a row",
-        "Using a one-word prompt"
+        "Adjusting the model's weights via backpropagation using those few examples as the entire training set, so that, after that call, the model remembers those examples in future conversations too",
+        "Repeating the same query with different temperature values until randomly getting the desired answer",
+        "Reducing the prompt to the smallest possible number of tokens without losing the user's original question"
       ],
       "correct_index": 0,
       "explanation_es": "En few-shot prompting se incluyen dentro del propio prompt algunos ejemplos representativos de entrada y salida deseada, sin actualizar los pesos del modelo (a diferencia del fine-tuning); el modelo infiere el patrón a partir de esos ejemplos ('in-context learning').",
@@ -146,15 +146,15 @@
       "question_en": "What does the 'chain-of-thought prompting' technique consist of?",
       "options_es": [
         "Pedir al modelo que produzca pasos de razonamiento intermedios antes de dar la respuesta final",
-        "Encadenar varias llamadas independientes a distintos modelos",
-        "Reducir el prompt a una sola instrucción muy breve",
-        "Pedir al modelo que resuma la conversación completa"
+        "Dividir una tarea compleja en varias llamadas independientes que se envían a modelos distintos entrenados por separado",
+        "Sustituir todo el prompt original por una única palabra clave que resuma de forma comprimida la tarea completa",
+        "Pedir al modelo que condense el historial completo de la conversación en un único párrafo antes de responder"
       ],
       "options_en": [
         "Asking the model to produce intermediate reasoning steps before giving the final answer",
-        "Chaining several independent calls to different models",
-        "Reducing the prompt to a single very short instruction",
-        "Asking the model to summarize the whole conversation"
+        "Splitting a complex task into several independent calls sent to different models trained separately",
+        "Replacing the entire original prompt with a single keyword that compresses the whole task into it",
+        "Asking the model to condense the entire conversation history into a single paragraph before answering"
       ],
       "correct_index": 0,
       "explanation_es": "Chain-of-thought (CoT) prompting induce al modelo a 'pensar en voz alta', generando una secuencia de pasos de razonamiento intermedios antes de la respuesta final. Esto mejora notablemente el desempeño en tareas que requieren razonamiento aritmético, lógico o de sentido común.",
@@ -175,15 +175,15 @@
       "question_en": "If the `temperature` parameter is reduced to a value close to 0 in an LLM's generation, what effect does it have on the outputs?",
       "options_es": [
         "Las salidas se vuelven más deterministas y menos diversas, favoreciendo casi siempre el token más probable",
-        "Las salidas se vuelven completamente aleatorias",
-        "El modelo deja de respetar el límite de tokens (max_tokens)",
-        "El costo por token de la llamada a la API aumenta"
+        "Las salidas dejan de depender por completo del prompt recibido y el modelo responde siempre lo mismo sin importar la entrada",
+        "El modelo empieza a ignorar sistemáticamente el límite de tokens fijado mediante el parámetro max_tokens",
+        "El precio cobrado por token en esa llamada sube porque el muestreo determinista exige más cómputo del servidor"
       ],
       "options_en": [
         "Outputs become more deterministic and less diverse, almost always favoring the most probable token",
-        "Outputs become completely random",
-        "The model stops respecting the max_tokens limit",
-        "The per-token cost of the API call increases"
+        "Outputs stop depending on the received prompt entirely, and the model always answers the same regardless of the input",
+        "The model starts systematically ignoring the token limit set through the max_tokens parameter",
+        "The per-token price charged for that call rises because deterministic sampling requires more server compute"
       ],
       "correct_index": 0,
       "explanation_es": "`temperature` reescala los logits antes de aplicar softmax al elegir el siguiente token. Con `temperature` cercana a 0 la distribución se vuelve casi un argmax (comportamiento casi greedy y determinista); valores más altos aplanan la distribución, aumentando la aleatoriedad y diversidad de las salidas.",

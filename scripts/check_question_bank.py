@@ -21,11 +21,14 @@ CI. Run it after changing the bank:
 from __future__ import annotations
 
 import json
+import re
+import sys
 from collections import Counter, defaultdict
 from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 CONTENT = ROOT / "content" / "questions"
 
 # Below this many questions, position counts are noise rather than a pattern.
@@ -40,6 +43,12 @@ IDENTICAL_STEM_MIN_CHARS = 15
 # pero un track entero al 95 % son distractores de relleno, no alternativas.
 ONE_WORD_OPTION_MAX_SHARE = 0.80
 EXEC_NEEDS_CODE = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
+# Relleno de generador (37.14): 61 preguntas de track13 llegaron a producción
+# como «Pregunta de sk130102» con opciones A/B/C/D y «Explicacion correcta».
+# Pasaban todo lo demás: ids únicos, ES y EN, fuente y posiciones repartidas.
+PLACEHOLDER_STEM = re.compile(r"^\s*(pregunta (de|para|sobre)|question (for|about|on)) sk\d+", re.I)
+PLACEHOLDER_EXPLANATIONS = {"explicacion correcta", "explicación correcta", "correct explanation"}
+PLACEHOLDER_OPTIONS = [list("ABCD"), list("abcd")]
 
 # --- El tipo de pregunta es un conjunto cerrado -------------------------
 #
@@ -309,6 +318,15 @@ def main() -> int:
                 f"{path.name} {qid}: question_es y question_en son identicas - sin traducir"
             )
 
+        placeholder = (
+            PLACEHOLDER_STEM.match(stem_es) or PLACEHOLDER_STEM.match(stem_en)
+            or [str(o).strip() for o in (q.get("options_es") or [])] in PLACEHOLDER_OPTIONS
+            or (q.get("explanation_es") or "").strip().lower() in PLACEHOLDER_EXPLANATIONS
+            or (q.get("explanation_en") or "").strip().lower() in PLACEHOLDER_EXPLANATIONS
+        )
+        if placeholder:
+            problems.append(f"{path.name} {qid}: relleno de generador, no una pregunta ({stem_es[:40]!r})")
+
         # Un ejecutable sin codigo no se puede ejecutar: o lleva un bloque ``` en
         # el enunciado (fill_blank_exec, fix_bug) o trae code_es/code_en
         # (sql_exec). Sin una de las dos, el runtime no tiene que correr.
@@ -544,6 +562,13 @@ def main() -> int:
             "(* above). This is authoring work, not a mechanical fix; the exempt "
             "tracks are listed with their reasons and are out of the denominator"
         )
+
+    # 37.0 / ADR-46: diversidad semántica con trinquete (scripts/question_diversity.py).
+    import question_diversity as qd
+
+    urls = qd.indexed_urls()
+    for msg in qd.check(qd.load(CONTENT), qd.load_baseline(), urls):
+        problems.append(f"[diversidad] {msg}")
 
     # Warnings are real findings that this tool is the wrong place to fail on:
     # they need authoring work, not a mechanical fix, so blocking CI on them

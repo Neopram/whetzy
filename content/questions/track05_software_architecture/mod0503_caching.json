@@ -8,16 +8,16 @@
       "question_es": "¿Cuál es el objetivo principal de una cache?",
       "question_en": "What is the primary goal of a cache?",
       "options_es": [
-        "Cifrar los datos sensibles",
-        "Hacer copias de seguridad permanentes",
+        "Cifrar los datos sensibles antes de enviarlos a través de la red para protegerlos de posibles interceptaciones no deseadas, una operación que no tiene relación alguna con la velocidad de acceso a los datos",
+        "Realizar copias de seguridad permanentes de todo el sistema de archivos en un almacenamiento externo seguro",
         "Almacenar temporalmente datos de acceso frecuente o costoso de obtener, en un medio más rápido, para reducir latencia y carga sobre el origen",
-        "Eliminar la necesidad de una base de datos"
+        "Eliminar por completo la necesidad de mantener una base de datos relacional dentro del sistema completo"
       ],
       "options_en": [
-        "Encrypting sensitive data",
-        "Making permanent backups",
+        "Encrypting sensitive data before sending it across the network to protect it from unwanted possible interception, an operation that has no relation at all to the speed of access to the data",
+        "Making permanent backups of the entire file system onto a separate, secure external storage medium",
         "Temporarily storing frequently accessed or expensive-to-fetch data in a faster medium, to reduce latency and load on the origin",
-        "Eliminating the need for a database"
+        "Eliminating entirely the need to maintain a relational database anywhere inside the whole system"
       ],
       "correct_index": 2,
       "explanation_es": "Una cache guarda copias de datos costosos de recalcular u obtener (una query pesada, una llamada a otro servicio) en un almacén rápido (memoria), de modo que peticiones futuras se sirvan desde ahí. Reduce latencia y descarga el origen. Es temporal y derivada: no es la fuente de verdad, por lo que debe tolerarse su pérdida.",
@@ -66,16 +66,16 @@
       "question_es": "¿Cuál es la diferencia entre las estrategias de escritura 'write-through' y 'write-back' (write-behind)?",
       "question_en": "What is the difference between the 'write-through' and 'write-back' (write-behind) write strategies?",
       "options_es": [
-        "No hay diferencia",
-        "Write-through nunca toca el origen",
+        "No existe ninguna diferencia real entre ambas estrategias de escritura, solo cambia el nombre comercial que reciben según el proveedor de la cache utilizada, una distinción puramente de marketing que ningun ingeniero necesita llegar a conocer nunca",
+        "Write-through nunca llega a persistir el dato en el origen definitivo, se queda para siempre solo guardado dentro de la propia cache en memoria, una limitación que en la práctica anula cualquier beneficio de usar cache",
         "Write-through escribe en cache y origen de forma síncrona (consistente pero más lento); write-back escribe primero en cache y persiste al origen de forma asíncrona (más rápido, pero riesgo de pérdida si la cache cae antes de persistir)",
-        "Write-back solo funciona con datos de solo lectura"
+        "Write-back únicamente puede aplicarse a datos que son estrictamente de solo lectura dentro del sistema, nunca a datos que cambian con frecuencia, una restricción pensada para evitar corromper datos que cambian a menudo"
       ],
       "options_en": [
-        "There is no difference",
-        "Write-through never touches the origin",
+        "There is no real difference at all between the two write strategies, only the commercial name they receive changes depending on the cache vendor used, a purely marketing distinction that no engineer really needs to know about",
+        "Write-through never once persists the data to the definitive origin, it stays forever only stored inside the cache itself in memory, a limitation that in practice cancels out any benefit of caching at all",
         "Write-through writes to cache and origin synchronously (consistent but slower); write-back writes to the cache first and persists to the origin asynchronously (faster, but risk of loss if the cache fails before persisting)",
-        "Write-back only works with read-only data"
+        "Write-back can only ever be applied to data that is strictly read-only inside the system, never to data that changes frequently, a restriction meant to avoid corrupting data that changes often"
       ],
       "correct_index": 2,
       "explanation_es": "Write-through mantiene cache y origen sincronizados en cada escritura (la escritura no termina hasta persistir en ambos): más consistente pero con mayor latencia de escritura. Write-back confirma la escritura en la cache y persiste al origen después, de forma asíncrona: menor latencia y más rendimiento, a costa de arriesgar pérdida de datos si la cache falla antes de volcarlos.",
@@ -96,16 +96,16 @@
       "question_es": "¿Qué es el 'cache stampede' (o 'thundering herd') y cómo se mitiga?",
       "question_en": "What is a 'cache stampede' (or 'thundering herd') and how is it mitigated?",
       "options_es": [
-        "Un ataque de denegación de servicio contra la cache",
-        "Cuando la cache se llena de datos inútiles",
+        "Un ataque de denegación de servicio distribuido dirigido de forma específica contra la capa de cache del sistema, saturando sus conexiones disponibles, un vector de ataque que se mitiga habitualmente limitando las peticiones por segundo",
+        "El momento exacto en que la cache se llena por completo de entradas que nunca fueron solicitadas antes por ningun cliente conectado, un problema que solo aparece en sistemas con muy poco tráfico real",
         "Cuando una entrada popular expira y muchas peticiones concurrentes fallan a la vez, golpeando todas el origen simultáneamente; se mitiga con locks/'single-flight', expiración escalonada (jitter) o recálculo anticipado",
-        "Un error de sintaxis en la clave de cache"
+        "Un simple error de sintaxis al construir la clave que identifica cada entrada dentro de la cache, provocando colisiones entre claves, un fallo que se corrige simplemente reiniciando el proceso del broker"
       ],
       "options_en": [
-        "A denial-of-service attack against the cache",
-        "When the cache fills with useless data",
+        "A distributed denial-of-service attack aimed specifically at the system's caching layer, saturating its available connections, an attack vector that is usually mitigated by limiting requests per second",
+        "The exact moment the cache fills up entirely with entries that were never once requested by any connected client, a problem that only shows up in systems with very little real traffic",
         "When a popular entry expires and many concurrent requests miss at once, all hitting the origin simultaneously; mitigated with locks/'single-flight', staggered expiration (jitter), or early recomputation",
-        "A syntax error in the cache key"
+        "A simple syntax error when building the key that identifies each entry inside the cache, causing collisions between keys, a bug that gets fixed simply by restarting the broker process"
       ],
       "correct_index": 2,
       "explanation_es": "El cache stampede ocurre cuando expira una clave muy solicitada y una avalancha de peticiones simultáneas la encuentra vacía, cayendo todas sobre el origen a la vez y pudiendo tumbarlo. Mitigaciones: un lock para que solo una petición recalculue mientras las demás esperan ('single-flight'), añadir jitter a los TTL para que no expiren todas a la vez, o refrescar la entrada antes de que caduque.",
@@ -174,16 +174,16 @@
       "question_es": "¿Qué es Redis?",
       "question_en": "What is Redis?",
       "options_es": [
-        "Un sistema de control de versiones",
+        "Un sistema de control de versiones distribuido, usado principalmente para gestionar el historial del código fuente de un proyecto entero, con soporte para ramas, fusiones y etiquetas gestionadas de forma completamente local",
         "Un almacén de estructuras de datos en memoria, usado como cache, base de datos clave-valor y broker de mensajes, muy rápido por operar principalmente en RAM",
-        "Un lenguaje de programación",
-        "Un servidor web"
+        "Un lenguaje de programación interpretado, orientado sobre todo a escribir scripts sencillos de administración",
+        "Un servidor web que sirve contenido estatico directamente desde el disco duro sin ningun procesamiento previo"
       ],
       "options_en": [
-        "A version control system",
+        "A distributed version control system, mainly used to manage a whole project's entire source code history over time, with support for branches, merges and tags managed completely locally",
         "An in-memory data structure store, used as a cache, key-value database, and message broker, very fast because it operates primarily in RAM",
-        "A programming language",
-        "A web server"
+        "An interpreted programming language, mostly geared toward writing simple day-to-day administration scripts",
+        "A web server that serves static content straight from the hard disk with no processing done beforehand"
       ],
       "correct_index": 1,
       "explanation_es": "Redis (REmote DIctionary Server) guarda los datos en memoria, lo que le da latencias de sub-milisegundo. Soporta estructuras ricas (strings, listas, hashes, sets, sorted sets, streams) y se usa como cache, base clave-valor, cola/broker y para rankings, contadores y sesiones. Ofrece persistencia opcional (RDB/AOF) para no perder todo ante un reinicio.",
@@ -229,15 +229,15 @@
       "question_es": "¿Qué estructura de datos de Redis es la más adecuada para implementar un ranking (leaderboard) ordenado por puntuación?",
       "question_en": "Which Redis data structure is best suited to implement a leaderboard ordered by score?",
       "options_es": [
-        "List",
-        "String",
-        "Hash",
+        "Hash Map con expiracion por campo",
+        "Bitmap con contador atomico",
+        "HyperLogLog probabilistico",
         "Sorted Set (ZSET)"
       ],
       "options_en": [
-        "List",
-        "String",
-        "Hash",
+        "Hash map with per-field expiration",
+        "Bitmap with an atomic counter",
+        "Probabilistic HyperLogLog",
         "Sorted Set (ZSET)"
       ],
       "correct_index": 3,
@@ -259,16 +259,16 @@
       "question_es": "Redis es (en su modelo tradicional de ejecución de comandos) esencialmente 'single-threaded'. ¿Qué implicación tiene esto?",
       "question_en": "Redis is (in its traditional command-execution model) essentially 'single-threaded'. What implication does this have?",
       "options_es": [
-        "Que es lentísimo",
+        "Que Redis reparte cada comando entrante en un hilo de sistema operativo distinto, así que dos comandos nunca compiten por los mismos datos aunque el planificador del SO decida el orden",
         "Que los comandos se ejecutan uno a uno de forma atómica (sin condiciones de carrera entre comandos), pero un comando costoso (p. ej. `KEYS *` en una BD enorme) puede bloquear al resto",
-        "Que no puede atender a más de un cliente",
-        "Que necesita obligatoriamente varias CPUs"
+        "Que Redis solo admite una conexión de cliente a la vez y rechaza cualquier segunda conexión hasta que la primera se cierre",
+        "Que Redis reparte los comandos entre tantos hilos como núcleos tenga la máquina, y por eso escala su throughput linealmente con el número de CPUs"
       ],
       "options_en": [
-        "That it is extremely slow",
+        "That Redis dispatches each incoming command onto a separate operating-system thread, so two commands never compete for the same data no matter what order the OS scheduler picks",
         "That commands run one at a time atomically (no race conditions between commands), but an expensive command (e.g. `KEYS *` on a huge DB) can block the rest",
-        "That it can't serve more than one client",
-        "That it mandatorily needs multiple CPUs"
+        "That Redis only accepts one client connection at a time and refuses any second connection until the first one closes",
+        "That Redis spreads commands across as many threads as the machine has cores, so its throughput scales linearly with the number of CPUs"
       ],
       "correct_index": 1,
       "explanation_es": "Al ejecutar comandos en un solo hilo, Redis los procesa secuencialmente: cada comando es atómico y no hay carreras entre comandos, lo que simplifica el razonamiento. La contrapartida es que un comando lento y bloqueante (como `KEYS *`, o un script Lua pesado) detiene el procesamiento de todos los demás. Por eso se evitan operaciones O(n) grandes en producción (se prefiere `SCAN`).",
@@ -338,15 +338,15 @@
       "question_en": "What is 'cache invalidation'?",
       "options_es": [
         "El proceso de eliminar o marcar como obsoletas las entradas de la cache cuando los datos subyacentes cambian, para no seguir sirviendo información desactualizada",
-        "Borrar la base de datos",
-        "Cifrar las entradas de la cache",
-        "Aumentar el tamaño de la cache"
+        "El proceso de fusionar los índices de la base de datos con la estructura interna de la cache para que ambas compartan exactamente el mismo formato de almacenamiento en disco",
+        "El mecanismo que cifra cada entrada de la cache con una clave distinta por usuario antes de escribirla en memoria compartida",
+        "La técnica de precalentar la cache cargando en memoria todo el contenido de la base de datos justo antes de arrancar la aplicación"
       ],
       "options_en": [
         "The process of removing or marking cache entries as stale when the underlying data changes, to stop serving outdated information",
-        "Deleting the database",
-        "Encrypting cache entries",
-        "Increasing the cache size"
+        "The process of merging the database indexes with the cache's internal structure so both share exactly the same on-disk storage format",
+        "The mechanism that encrypts each cache entry with a per-user key before writing it into shared memory",
+        "The technique of pre-warming the cache by loading the database's entire content into memory right before the app starts"
       ],
       "correct_index": 0,
       "explanation_es": "Invalidar la cache es retirar o marcar como caducadas las entradas cuyos datos de origen han cambiado, para que la próxima lectura obtenga el valor fresco en lugar del obsoleto. Es difícil porque hay que saber qué entradas se ven afectadas por un cambio y hacerlo de forma consistente y a tiempo, equilibrando frescura y rendimiento.",
@@ -367,15 +367,15 @@
       "question_en": "What is a TTL (Time To Live) applied to a cache entry?",
       "options_es": [
         "La duración tras la cual la entrada se considera caducada y se elimina o se refresca, una forma simple de invalidación basada en tiempo",
-        "El tiempo que tarda en crearse la entrada",
-        "El tamaño máximo de la entrada",
-        "El número de veces que se puede leer"
+        "El intervalo mínimo que debe transcurrir entre dos escrituras consecutivas sobre la misma clave antes de que la cache acepte la siguiente",
+        "El número máximo de bytes que puede ocupar la entrada antes de que la cache la comprima de forma automática",
+        "La cantidad de réplicas que deben confirmar la escritura antes de que la entrada se considere válida"
       ],
       "options_en": [
         "The duration after which the entry is considered expired and is removed or refreshed, a simple time-based form of invalidation",
-        "The time it takes to create the entry",
-        "The maximum size of the entry",
-        "The number of times it can be read"
+        "The minimum interval that must pass between two consecutive writes to the same key before the cache accepts the next one",
+        "The maximum number of bytes the entry may occupy before the cache automatically compresses it",
+        "The number of replicas that must acknowledge the write before the entry is considered valid"
       ],
       "correct_index": 0,
       "explanation_es": "El TTL es la vida útil de una entrada: al expirar, se elimina o se recarga del origen. Es la forma más simple de invalidación (basada en tiempo): no requiere detectar cambios, solo aceptar que el dato puede estar obsoleto como máximo durante el TTL. Un TTL corto da más frescura pero menos aciertos; uno largo, lo contrario.",
@@ -421,16 +421,16 @@
       "question_es": "En un sistema con múltiples réplicas de cache o instancias, invalidar una entrada en solo una de ellas puede causar:",
       "question_en": "In a system with multiple cache replicas or instances, invalidating an entry in only one of them can cause:",
       "options_es": [
-        "Que la cache sea más rápida",
+        "Un aumento inmediato del rendimiento global, porque cada réplica libera memoria exactamente al mismo tiempo que las demás sin ninguna coordinación adicional entre ellas",
         "Inconsistencia: otras réplicas siguen sirviendo el valor viejo; hace falta propagar la invalidación (p. ej. vía pub/sub) o usar una cache compartida",
-        "Que se borre la base de datos",
-        "Que el TTL desaparezca"
+        "Una corrupción irreversible del esquema de la base de datos que obliga a restaurar todo desde una copia de seguridad reciente",
+        "La desactivación automática del TTL en todas las réplicas restantes hasta el próximo reinicio completo del clúster"
       ],
       "options_en": [
-        "The cache to be faster",
+        "An immediate boost to overall performance, because every replica frees memory at exactly the same time as the others with no extra coordination between them",
         "Inconsistency: other replicas keep serving the old value; you need to propagate the invalidation (e.g. via pub/sub) or use a shared cache",
-        "The database to be deleted",
-        "The TTL to disappear"
+        "An irreversible corruption of the database schema that forces a full restore from a recent backup",
+        "The automatic disabling of the TTL on every remaining replica until the cluster's next full restart"
       ],
       "correct_index": 1,
       "explanation_es": "Con caches locales por instancia, invalidar en una no afecta a las demás, que seguirían devolviendo el valor obsoleto. Soluciones: usar una cache central compartida (p. ej. un clúster Redis) para tener una sola copia, o propagar los eventos de invalidación a todas las instancias (por ejemplo, mediante un canal pub/sub que todas escuchen).",
@@ -499,16 +499,16 @@
       "question_es": "¿Qué es una CDN (Content Delivery Network)?",
       "question_en": "What is a CDN (Content Delivery Network)?",
       "options_es": [
-        "Una base de datos central única",
+        "Un protocolo de cifrado punto a punto que sustituye por completo a TLS para proteger el tráfico entre el navegador y el servidor de origen, comprimiendo además cada respuesta",
         "Una red distribuida de servidores geográficamente cercanos a los usuarios que cachean y sirven contenido (imágenes, JS, CSS, vídeo) desde el 'edge', reduciendo latencia",
-        "Un lenguaje de marcado",
-        "Un antivirus"
+        "Un servicio de nombres de dominio (DNS) que traduce nombres legibles en direcciones IP para el enrutamiento del tráfico de red",
+        "Un sistema de colas de mensajes que desacopla productores y consumidores dentro de un mismo centro de datos físico"
       ],
       "options_en": [
-        "A single central database",
+        "A point-to-point encryption protocol that fully replaces TLS to protect traffic between the browser and the origin server, also compressing every response",
         "A distributed network of servers geographically close to users that cache and serve content (images, JS, CSS, video) from the 'edge', reducing latency",
-        "A markup language",
-        "An antivirus"
+        "A domain name system (DNS) that translates human-readable names into IP addresses for routing network traffic",
+        "A message queueing system that decouples producers and consumers within a single physical data center"
       ],
       "correct_index": 1,
       "explanation_es": "Una CDN distribuye copias del contenido en muchos 'puntos de presencia' (PoPs) repartidos por el mundo. Cuando un usuario pide un recurso, lo sirve el servidor edge más cercano en lugar del servidor de origen lejano, reduciendo la latencia y descargando el origen. Es ideal para contenido estático y cacheable, y también acelera contenido dinámico con técnicas edge.",

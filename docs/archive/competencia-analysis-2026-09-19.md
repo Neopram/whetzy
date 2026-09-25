@@ -1,3 +1,5 @@
+> **Archivado 2026-09-25 (ADR-44).** Superado por `docs/COMPETENCIA.md` §A (precios re-descargados con URL y fecha). Contiene afirmaciones falsas hoy, p. ej. «$14.99 < todos los competidores»: Mimo cobra $9.99 y Codecademy $14.99 pagando el año (COMPETENCIA §A.1–§A.2). No manda.
+
 # SERIE 24.0 — Análisis de Competencia Exhaustivo (8 Plataformas)
 
 **Documento final.** Actualizado: 2026-09-19  

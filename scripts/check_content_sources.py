@@ -42,7 +42,9 @@ def load_questions(track_filter: str | None) -> list[dict]:
         if track_filter and track_filter not in str(path):
             continue
         data = json.loads(path.read_text(encoding="utf-8"))
-        questions.extend(data.get("questions", data if isinstance(data, list) else []))
+        # Hay ficheros con lista suelta y con {"questions": [...]}: `.get` sobre
+        # una lista revienta (como ya documenta check_question_bank.py).
+        questions.extend(data if isinstance(data, list) else data.get("questions", []))
     return questions
 
 

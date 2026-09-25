@@ -134,6 +134,60 @@ razón (ADR-9), como Linux.
 
 `track40` ya existe (ISC2 CC, certificación); por eso la numeración salta.
 
+### 2.0.1 Inventario de la industria frente al catálogo (35.1, 2026-09-25)
+
+Fuentes descargadas por la sesión, sin registrarse. La hora es la de la descarga (UTC).
+Los recuentos se reproducen con el comando indicado; no se copian a mano en otros docs.
+
+| Fuente | URL | Descarga | Estado | Qué se leyó |
+|---|---|---|---|---|
+| roadmap.sh | https://roadmap.sh | 2026-09-25T00:39:21Z | 200 | slugs de roadmap (`grep -oE 'href="/[a-z0-9-]+"'`, sin navegación) |
+| Stack Overflow Survey 2025 | https://survey.stackoverflow.co/2025/technology | 2026-09-25T00:39:56Z | 200 | lenguajes y frameworks por nombre |
+| ISC2 | https://www.isc2.org/certifications | 2026-09-25T00:39:21Z | 200 | CISSP, CCSP, CSSLP, CGRC… |
+| Linux Foundation | https://training.linuxfoundation.org/certification-catalog/ | 2026-09-25T00:39:21Z | 200 | KCNA, CKA, CKAD, CKS, CGOA… |
+| CompTIA | https://www.comptia.org/certifications | 2026-09-25T00:39:21Z | 200 | catálogo de certificaciones |
+
+Microsoft Learn y Google Cloud no se pudieron leer enteros (páginas que cargan por JS):
+sus certificaciones siguen en §3, con la fuente de su fila.
+
+**Área → track** (roadmap.sh como índice, contrastado con la encuesta y los catálogos):
+
+| Área de la industria (slug de roadmap.sh) | Track de Whetzy |
+|---|---|
+| python, python-data-analysis | track01–03, track21 |
+| ai-engineer, ai-agents, prompt-engineering, machine-learning, ai-data-scientist, ai-product-builder, claude-code, vibe-coding | track06, track07 |
+| mlops | track41 |
+| frontend, html, css, javascript, react, vue, angular, nextjs, design-system, frontend-performance-best-practices | track14 |
+| typescript | track38 |
+| backend, nodejs, django, api-design, graphql, backend-performance-best-practices, full-stack | track28 (+ track14) |
+| java, spring-boot, kotlin, scala | track33 (JVM; Scala se absorbe aquí) |
+| aspnet-core | track34 |
+| golang · rust · c, cpp | track35 · track36 · track37 |
+| android, ios, swift-ui, flutter, react-native | track31 |
+| devops, docker, kubernetes, terraform, cloudflare | track18, track19 (CGOA/GitOps de Linux Foundation → track19) |
+| linux, shell-bash | track15 |
+| aws, aws-best-practices | track08, track10, track11 |
+| cyber-security, api-security-best-practices, devsecops, ai-red-teaming | track13, track24, track25 (CSSLP de ISC2 → track13 + track29) |
+| data-analyst, bi-analyst, power-bi · data-engineer | track21 · track20 |
+| sql, postgresql-dba · mongodb, redis, elasticsearch | track12 · track27 |
+| datastructures-and-algorithms, leetcode, computer-science | track16, track45 |
+| system-design, software-architect, software-design-architecture | track05 |
+| qa, code-review, code-review-best-practices | track29, track04 |
+| git-github | track26 |
+| network-engineer | track17 |
+| blockchain | track32, track42 |
+| game-developer, server-side-game-developer | track43 |
+| product-manager | track30 (parcial: Agile y producto) |
+| **php, laravel, wordpress** | **SIN TRACK** → propuesto `track48` PHP (Laravel, WordPress) |
+| **ruby, ruby-on-rails** | **SIN TRACK** → propuesto `track49` Ruby (Rails) |
+| **r-programming** | **SIN TRACK** → propuesto `track50` R para datos |
+| ux-design, product-design · technical-writer, devrel · engineering-manager · seo | sin track, **una sola fuente** (roadmap.sh): no se proponen todavía |
+
+**Propuestos** (≥ 2 fuentes: roadmap.sh + Stack Overflow Survey 2025, donde PHP, Ruby, R,
+Laravel, Ruby on Rails y WordPress aparecen por nombre): `track48` PHP, `track49` Ruby,
+`track50` R. Se añaden a la meta de ADR-42 cuando el dueño no los vete. Las fuentes libres
+de cada uno se buscan con el pipeline de 35.3 antes de escribir una sola pregunta (35.0).
+
 ### 2.1 Biblioteca de fuentes libres por área (ADR-11 — solo gratis y legal)
 
 Tres marcas, y solo la primera permite reutilizar texto:
@@ -301,9 +355,9 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
 
 | Capa | Hoy | Objetivo | Cómo se verifica |
 |---|---|---|---|
-| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 281/301 → 301/301 (18.0) | 1/skill en los 27 tracks | `test_lessons.py` (ratchet `MIN_LESSONS`) |
+| Lección por skill (150-300 palabras ES+EN, ejemplo ejecutado) | 281/301 → 301/301 (18.0) | 1/skill en todos los tracks (meta: 28 + 14 de §2.0 y los que 35.1 confirme, ADR-42) | `test_lessons.py` (ratchet `MIN_LESSONS`) |
 | Ejemplo resuelto + problema de completar (fading) | solo la lección | 1 secuencia por skill | test de estructura |
-| Práctica adaptativa (quiz) | ✅ 5.024 Q | ≥ 15 Q/skill en 27 tracks (≈ 8.100 Q) | `check_question_bank.py` |
+| Práctica adaptativa (quiz) | ✅ 5.024 Q | ≥ 15 Q/skill en todos los tracks (meta ADR-42: ≥ 50 cursos × ≥ 42 tracks) | `check_question_bank.py` |
 | **Proyectos multi-paso con tests en runtime** | **0** | 10 por track ejecutable (`exercism/*` MIT como semilla) — tipo `project` + `ProjectScreen` | e2e 1 proyecto por runtime |
 | Examen de nivel + certificado verificable | ✅ 17.2 (spec e2e sin correr) | igual | `track-exam.spec.ts` |
 | Simulacro de certificación en formato real | ✅ 4 (3 mal) | 55 | `test_certification_blueprints.py` sin xfail |
@@ -331,7 +385,7 @@ Programas de afiliado (estrategia v3, Parte II): Python Institute, CompTIA, ISC2
   decide si escala. Sin piloto verificado en navegador, no se autora en masa.
 - **Post-producción (19.10):** `Hainrixz/editor-pro-max` (MIT) sobre Remotion —
   títulos, subtítulos ES/EN con Whisper, export para redes. Remotion es gratuita
-  para individuos y empresas de ≤ 3 personas; si la IKE crece, se paga o se cambia.
+  para individuos y empresas de ≤ 3 personas; si la entidad (sin decidir, H.29; ADR-43 suspende la premisa griega) crece, se paga o se cambia.
 
 ---
 
@@ -424,7 +478,7 @@ existe: no se cuenta, no se anota, no se despliega.
 | **Educative** | **2.200+ cursos · 330+ proyectos · 330+ Cloud Labs · 3 M usuarios** | **verificado en vivo 2026-09-18** (educative.io, sesión logueada; teardown §11.3) |
 | **Whetzy** | **15 tracks · 43 cursos · 5.715 Q** | `check_docs.py` |
 
-Lectura honesta: con 27 tracks × 3 niveles ≈ 80 cursos, Whetzy queda en la liga
+Lectura honesta *(histórica, 2026-09-16; meta actual ADR-42: ≥ 50 cursos × ≥ 42 tracks)*: con 27 tracks × 3 niveles ≈ 80 cursos, Whetzy queda en la liga
 de **Boot.dev / Sololearn / Mimo** — que son exactamente las apps que monetizan
 catálogos pequeños con motor y móvil — y **no** en la de Platzi/Udemy, que viven de
 creadores externos y años. La tesis defendible sigue siendo la de §8.4 del
@@ -437,8 +491,10 @@ auditado + ejecución en navegador), no «abarcar todo».
 
 - **Marketplace de creadores** (estrategia v3, Parte III-IV): **no hasta ≥ 100
   usuarios activos verificados.** Con 0 usuarios es una sala vacía; ninguna de
-  las apps de la liga objetivo tiene uno. La fase 10 del ledger queda en 10.1-10.3
-  (schema, contenido, simulacro); 10.4 espera Stripe live (H.4) *y* usuarios.
+  las apps de la liga objetivo tiene uno. El marketplace es la **serie 28** (se
+  construye entera; no se abre al público antes de ≥ 100 usuarios activos, ADR-43).
+  Precio del plan Creador y reparto 80/20: ADR-45. La antigua «fase 10» (10.1-10.3,
+  simulacro de certificación) no es el marketplace.
 - **Shell real en navegador (v86)**: imagen Alpine ≈ 20 MB en móvil, línea roja 8.
   Linux se enseña con `fill_blank` de comandos + salida real ilustrativa (ADR-9).
 - **Vídeo filmado**: no hay cámara ni presentador. Manim o nada.
@@ -482,7 +538,7 @@ La frase literal del estudio:
 
 Whetzy es exactamente eso. El estudio confirma que el gap existe y que los incumbentes (Platzi, EDteam, Desafío Latam, KeepCoding) están agregando "chatbot/AI-tutor overlays on top of video/cohort content — not genuine adaptive engines."
 
-**Lo que esto significa para el catálogo:** El motor BKT+FSRS+Elo+DKT no es una ventaja técnica abstracta — es la diferenciación que el mercado de $350B no tiene en español. Cerrar el catálogo a 2,700 cursos convierte esa diferenciación en un producto inalcanzable para los incumbentes en el corto plazo.
+**Lo que esto significa para el catálogo:** El motor BKT+FSRS+Elo+DKT no es una ventaja técnica abstracta — es la diferenciación que el mercado de $350B no tiene en español. Cerrar el catálogo a ≥ 50 cursos × ≥ 42 tracks (ADR-42; antes «2,700 cursos», ADR-25) convierte esa diferenciación en un producto inalcanzable para los incumbentes en el corto plazo.
 
 ### 11.2 Benchmarks del mercado (verificados en el estudio)
 
@@ -540,7 +596,7 @@ El estudio advierte explícitamente:
 
 Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es la puntuación en cada dimensión:
 
-| Dimensión | Peso | Hoy (44/100) | Al 100% técnico (~66) | Con ADR-25 (2,700 cursos) | Con usuarios |
+| Dimensión | Peso | Hoy (44/100) | Al 100% técnico (~66) | Con ADR-25 (histórico: 2,700 cursos; meta actual ADR-42: ≥ 50 cursos × ≥ 42 tracks) | Con usuarios |
 |---|---|---|---|---|---|
 | Distribución | 0.34 | 0 | 0 | 0 | Variable |
 | Motor adaptativo | 0.14 | 12 | 14 | 14 | 14 |
@@ -574,7 +630,7 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 | Credenciales verificables (Open Badges 3.0) | ❌ | ❌ | ❌ | ❌ | **✅ 29.10 (ADR-37)** |
 | Token / cripto propia | ❌ | ❌ | ❌ | ❌ | **❌ a propósito (ADR-33)** |
 | B2B ready | ✅ | ✅ | ❌ | ✅ | **✅ (Serie 22)** |
-| Precio base (verificado 2026-09-24 salvo DataCamp/Educative; COMPETENCIA §A) | $49/mo · $249/año | ~$39/mo (sin verificar) | $59/mo · $399/año | ~$20/mo (sin verificar) | **$14.99/mo (ADR-21, sin publicar)** |
+| Precio base (verificado 2026-09-24 salvo DataCamp/Educative; COMPETENCIA §A) | $49/mo · $249/año | ~$39/mo (sin verificar) | $59/mo · $399/año | ~$20/mo (sin verificar) | **Pro $14.99/mo (ADR-45; cobro sin abrir, H.19)** |
 | Empleabilidad real | Bajo (70% no termina) | Medio | Alto | Medio | **sin dato hasta H.10 (objetivo ADR-32: completion > 50 %)** |
 
 **Whetzy con ADR-25 completo es técnicamente superior en todas las dimensiones relevantes para el nicho Python→AI Engineer en español.** La única ventaja que los incumbentes mantienen es brand recognition — y eso se construye con distribución, no con código.

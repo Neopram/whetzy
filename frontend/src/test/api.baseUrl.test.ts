@@ -27,6 +27,10 @@ const FORBIDDEN = [
   { re: /['"`]\/api\/v1\/[a-z]/, why: "literal '/api/v1/<recurso>' (usa API_BASE_URL)" },
   { re: /localhost:8000/, why: 'origen de desarrollo codificado' },
   { re: /VITE_API_BASE\b/, why: 'variable VITE_API_BASE, que no existe (es VITE_API_URL)' },
+  // 2026-09-25, verificador de 30.7: DeleteAccountScreen resolvía la API por su
+  // cuenta (`VITE_API_URL || '/api/v1'`) y ninguna regla de arriba lo veía.
+  { re: /import\.meta\.env\.VITE_API_URL/, why: 'lee VITE_API_URL por su cuenta (importa API_BASE_URL)' },
+  { re: /['"`]\/api\/v1['"`]/, why: "respaldo relativo '/api/v1' (importa API_BASE_URL)" },
 ];
 
 describe('origen de la API', () => {

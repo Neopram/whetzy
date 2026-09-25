@@ -136,7 +136,7 @@ never rewrites history.
 
 ## Invariants (never break)
 
-- Railway deploy is **automatic** from `master` (verified 2026-09-16, ledger H.16): `git push origin master` runs migrations + `content_loader` in production. Push only with `pytest tests/content` and `check_question_bank.py` green.
+- Railway deploy is **automatic** from `master` (verified 2026-09-16, ledger H.16): a commit reaching `master` — merged by the owner, ADR-45 — runs migrations + `content_loader` in production. Push only with `pytest tests/content` and `check_question_bank.py` green.
 - Cloudflare Pages is **Git-connected**: a push to `master` builds and publishes to production (verified 2026-09-24); other branches get previews. Manual `npx wrangler pages deploy dist --project-name whetzy --branch main` from `frontend/` still works (RUNBOOK §1). `node scripts/check-deployed.mjs` must PASS after every deploy.
 - Auth is email + password today; social login lands in Serie 19 (GitHub/Google web → Sign in with Apple → Google native), and Sign in with Apple is mandatory before any App Store submission once another OAuth exists (ADR-13).
 - Alembic migrations via `alembic revision --autogenerate`, **never** `Base.metadata.create_all` in production.

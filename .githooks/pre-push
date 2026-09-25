@@ -62,9 +62,11 @@ fi
 # de comprobar de mas cuesta segundos; hacia el lado de menos cuesta produccion.
 CAMBIOS=""
 TODO=1
+SHA_EMPUJADO=""
 while read -r _lref lsha _rref rsha; do
   [ -z "${lsha:-}" ] && continue
   case "$lsha" in *[!0]*) ;; *) continue ;; esac   # borrado de rama
+  SHA_EMPUJADO="$lsha"
   case "$rsha" in
     *[!0]*) CAMBIOS="$CAMBIOS$(git diff --name-only "$rsha" "$lsha" 2>/dev/null)
 "; TODO=0 ;;
@@ -73,6 +75,30 @@ while read -r _lref lsha _rref rsha; do
   esac
 done
 [ -z "$(printf '%s' "$CAMBIOS" | tr -d '[:space:]')" ] && TODO=1
+
+# --- Se prueba el commit, no el disco (35.9) --------------------------------
+# `a021e92` subió el test del pipeline del corpus SIN el pipeline: la regla
+# `corpus/` de .gitignore ignoraba `scripts/corpus/` y el hook pasó porque los
+# ficheros estaban en disco. Si el árbol de trabajo no es exactamente el commit
+# que se empuja (cambios sin commitear, ficheros nuevos o ignorados en rutas de
+# código), las guardas corren sobre un worktree de ese SHA, fuera del proyecto.
+arbol_es_el_commit() {
+  git diff --quiet "$1" -- 2>/dev/null || return 1
+  [ -z "$(git ls-files --others --exclude-standard | head -1)" ] || return 1
+  [ -z "$(git ls-files --others --ignored --exclude-standard --directory \
+          -- backend/app backend/tests scripts content 2>/dev/null \
+          | grep -Ev '__pycache__|\.pyc$|\.egg-info|_cache/' | head -1)" ]
+}
+if [ -n "$SHA_EMPUJADO" ] && ! arbol_es_el_commit "$SHA_EMPUJADO"; then
+  WT="$CACHE/wt-nivel1"
+  git worktree remove --force "$WT" >/dev/null 2>&1; rm -rf "$WT"
+  if ! git worktree add --detach "$WT" "$SHA_EMPUJADO" >/dev/null 2>&1; then
+    rojo "No pude crear un worktree de ${SHA_EMPUJADO:0:7}; push cancelado."; exit 1
+  fi
+  trap 'git -C "$RAIZ" worktree remove --force "$WT" >/dev/null 2>&1' EXIT
+  gris "  el árbol de trabajo no es el commit empujado: la puerta corre sobre un worktree de ${SHA_EMPUJADO:0:7}"
+  cd "$WT" || exit 1
+fi
 
 toca() { [ "$TODO" = "1" ] && return 0; printf '%s' "$CAMBIOS" | grep -qE "$1"; }
 
@@ -108,6 +134,8 @@ paso "guardas de esquema y contrato" \
         tests/test_indices_modelos.py \
         tests/test_contrato_frontend.py \
         tests/test_despliegue_pages.py \
+        tests/test_diversidad_banco.py \
+        tests/test_corpus_pipeline.py \
         tests/test_motores_cerrados.py \
         tests/unit/test_placement_params.py \
         -q ${PYTEST_CACHE_OPT[*]} --no-header"
@@ -135,7 +163,8 @@ fi
 echo
 if [ -x "$RAIZ/scripts/ci_local.sh" ] || [ -f "$RAIZ/scripts/ci_local.sh" ]; then
   printf 'CORRIENDO desde %s\n' "$(date '+%H:%M')" > "$BITACORA/estado"
-  nohup bash "$RAIZ/scripts/ci_local.sh" > "$BITACORA/ultima.log" 2>&1 < /dev/null &
+  nohup bash "$RAIZ/scripts/ci_local.sh" ${SHA_EMPUJADO:+--sha "$SHA_EMPUJADO"} \
+    > "$BITACORA/ultima.log" 2>&1 < /dev/null &
   disown 2>/dev/null || true
   gris "  nivel 2 (suite entera, mypy, contenido, frontend) corriendo al fondo."
   gris "  su veredicto sale en el proximo push, o con: bash scripts/ci_local.sh --estado"
