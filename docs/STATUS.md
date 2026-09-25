@@ -957,6 +957,14 @@ Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `
 
 **Incidente:** el verificador adversario (Haiku) borró ediciones sin commitear mientras informaba «no files modified». Los verificadores no deben compartir árbol de trabajo con una edición en curso: próxima vez, `isolation: "worktree"`.
 
+## 2026-09-25 — CI corrió por primera vez en un PR (#7) y sacó un fallo de contenido
+
+**Novedad para H.13/H.17:** el job `backend` de GitHub Actions **se ejecutó** en https://github.com/Neopram/whetzy/pull/7 (`1 failed, 20526 passed, 2 skipped, 15 xfailed in 1312 s`, cobertura 80,81 %). No está verificado si la facturación se corrigió o fue un run suelto; el próximo push lo dirá.
+
+**Fallo:** `test_every_reference_solution_matches_correct_answer` — `q060304ex011` imprime `0.802` en el CI (Python 3.12) y la respuesta decía `0.803`. **Causa medida:** `sum()` en 3.12 usa suma compensada (Neumaier) y da exactamente `0.8025` → `round(…, 3)` = `0.802`; en 3.11 la suma ingenua da `0.8025000000000001` → `0.803`. El fix anterior (`bfc165e`) eligió el valor de 3.11; Pyodide 0.26.2 (`frontend/package.json:40`) es 3.12, así que **el alumno real también obtenía 0.802 y se le marcaba mal**. **Corrección:** datos sin empate, `[0.80, 0.83, 0.78, 0.81]` → `0.805` en las dos versiones (test local 3.11 `1 passed`; Neumaier reproducido a mano: `0.805`). `check_question_bank` PASS.
+
+**Lección para 35.0:** la guarda de diversidad debe ejecutar los `*_exec` con el mismo intérprete que el alumno (Pyodide = 3.12) o, como mínimo, rechazar redondeos que dependan del último dígito binario.
+
 ## 2026-09-25 — Integración de las dos sesiones del 2026-09-24 y FASE 1 (concordancia) del prompt de control total (rama `claude/trusting-franklin-2wwmmr`)
 
 **Punto de partida medido:**
@@ -998,3 +1006,11 @@ Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `
 - el CI de GitHub del merge;
 - si Dependabot llega a ejecutarse (facturación de Actions, H.13/H.17);
 - el verificador adversario de las filas 24/28/29 recalificadas: no se marcó ninguna DONE, solo se describió su estado.
+
+**Añadido al integrar `115a695` (la otra sesión, 00:15 UTC):** arregló la misma pregunta
+`q060304ex011` con otros datos (0,805). Se conserva la versión de `master` (`77b9127`,
+0,81, datos `[0.80, 0.82, 0.78, 0.84]`): ya estaba en producción y el CI de `master` salió
+verde con ella (runs 492 y 493). Matiz a su entrada: el CI de GitHub **ya había corrido** en
+los pushes a `master` del 2026-09-24 (runs 488–493, en rojo hasta `77b9127` y en verde
+después), no por primera vez en el PR #7.
+
