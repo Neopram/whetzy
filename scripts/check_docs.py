@@ -203,7 +203,50 @@ else:
         )
 
 
-print("\n[5] API docs vs OpenAPI spec — check_api_docs.py (20.3)")
+print("\n[5a] ARCHITECTURE.md figures (31.0)")
+ARCH_MD = ROOT / "docs" / "ARCHITECTURE.md"
+if ARCH_MD.exists():
+    arch_text = ARCH_MD.read_text(encoding="utf-8")
+    arch_pairs = [
+        (r"(\d[\d.,]*)\s*questions", "ARCHITECTURE questions", real_questions),
+        (r"(\d[\d.,]*)\s*tracks", "ARCHITECTURE tracks", real_tracks),
+        (r"(\d[\d.,]*)\s*skills", "ARCHITECTURE skills", real_skills),
+        (r"(\d[\d.,]*)\s*lessons", "ARCHITECTURE lessons", real_lessons),
+        (r"(\d[\d.,]*)\s*glossary terms", "ARCHITECTURE glossary", real_terms),
+    ]
+    for pattern, label, real in arch_pairs:
+        m = re.search(pattern, arch_text)
+        if m:
+            doc_val = _num(m.group(1))
+            check(f"{label}: code={real} doc={doc_val}", doc_val == real, f"off by {real - doc_val}")
+        else:
+            check(label, False, "not found in ARCHITECTURE.md")
+else:
+    check("ARCHITECTURE.md exists", False, "file not found")
+
+
+print("\n[5b] CATALOGO_MAESTRO.md figures (31.0)")
+CATALOG_MD = ROOT / "docs" / "CATALOGO_MAESTRO.md"
+if CATALOG_MD.exists():
+    cat_text = CATALOG_MD.read_text(encoding="utf-8")
+    cat_pairs = [
+        (r"Tracks\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO tracks", real_tracks),
+        (r"Skills\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO skills", real_skills),
+        (r"Preguntas\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO questions", real_questions),
+        (r"Glosario\s*\|\s*\*\*(\d[\d.,]*)\*\*", "CATALOGO glossary", real_terms),
+    ]
+    for pattern, label, real in cat_pairs:
+        m = re.search(pattern, cat_text)
+        if m:
+            doc_val = _num(m.group(1))
+            check(f"{label}: code={real} doc={doc_val}", doc_val == real, f"off by {real - doc_val}")
+        else:
+            check(label, False, "not found in CATALOGO_MAESTRO.md §1")
+else:
+    check("CATALOGO_MAESTRO.md exists", False, "file not found")
+
+
+print("\n[5c] API docs vs OpenAPI spec — check_api_docs.py (20.3)")
 try:
     api_check = subprocess.run(
         [sys.executable, str(Path(__file__).parent / "check_api_docs.py")],

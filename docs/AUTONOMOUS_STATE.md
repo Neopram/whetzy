@@ -578,7 +578,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
 | 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (meta ADR-46) | TODO | → LEDGER_HISTORY.md §E |
 | 19.10 | **4** | **Vídeo: Manim + Remotion (`editor-pro-max`)** — absorbe 18.9 | TODO | → LEDGER_HISTORY.md §E |
-| 19.11 | **2** | **Confirmación de edad mínima en el registro** («tengo 13 años o más» / por país según 21.3), ES y EN, guardada en el usuario (`store/app-store-review-checklist.md` A3) | TODO | Campo en `POST /auth/register` + casilla en `AuthScreen` + test de rechazo sin confirmación |
+| 19.11 | **2** | **Confirmación de edad mínima en el registro** («tengo 13 años o más» / por país según 21.3), ES y EN, guardada en el usuario (`store/app-store-review-checklist.md` A3) | DONE | `cf2fc58` + `bd11adc`: campo `age_confirmed` en registro, casilla en `AuthScreen`, test de rechazo |
 
 ### 20. Verificación masiva código ↔ docs ↔ prod (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21 ejecutada)**)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
@@ -816,10 +816,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 31.0 | **1** | `scripts/project_snapshot.py`: extraer a un módulo el recuento que `check_docs.py` ya hace (preguntas reales, línea ~97) y emitir JSON con commit, tracks, skills, lecciones, preguntas, términos, certificaciones con blueprint y ratio ejecutable por track, leídos de `content/` | TODO | `check_docs.py` compara cada cifra de `README`, `CATALOGO_MAESTRO`, `ARCHITECTURE` y `CLAUDE.md` con el snapshot; se altera una cifra a mano → rojo |
+| 31.0 | **1** | `scripts/project_snapshot.py`: extraer a un módulo el recuento que `check_docs.py` ya hace (preguntas reales, línea ~97) y emitir JSON con commit, tracks, skills, lecciones, preguntas, términos, certificaciones con blueprint y ratio ejecutable por track, leídos de `content/` | DONE | `project_snapshot.py` emite JSON; `check_docs.py` §5a/5b comparan ARCHITECTURE.md y CATALOGO_MAESTRO.md contra snapshot; mutación probada → rojo |
 | 31.1 | **1** | Staging: un preview de Cloudflare Pages y un servicio de Railway de staging; `master` solo por PR verde | HUMAN-BLOCKED (H.16) | Un cambio recorre rama → staging (con `check-deployed` PASS) → `master` sin tocar producción antes |
 | 31.2 | **2** | Migración con datos: fixture de base en la revisión anterior, `upgrade head`, conteos de filas y `downgrade -1` en `ci_local.sh` | TODO | Una migración que pierde filas (mutación) hace fallar el paso |
-| 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET /health/ready`, ejecutado tras cada fusión del dueño en `master` (ADR-45) | TODO | Script en `scripts/`, salida PASS/FAIL por paso, enlazado desde `RUNBOOK.md` |
+| 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET /health/ready`, ejecutado tras cada fusión del dueño en `master` (ADR-45) | DONE | `scripts/smoke_post_deploy.sh` con QA login opcional, PASS/FAIL/SKIP, enlazado en `RUNBOOK.md` (`cf2fc58`, `2b8370c`) |
 
 ### 32. Motor demostrable — calibración y evidencia de aprendizaje (del plan del 2026-09-24; ídem)
 
@@ -830,7 +830,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 32.0 | **2** | Inventario: qué guarda hoy cada respuesta (p_known antes/después, Elo, S/D de FSRS, `expected_p`, tiempo) y qué falta, sin añadir PII | DONE | `docs/32_0_response_inventory.md`: 15 columnas en `responses` (grep-citadas por línea), 8 en `user_skill_states`; snapshots escritos en `quiz.py:518-577`; faltan `fsrs_stability_before`, `fsrs_difficulty_before`, `skill_id` — migración aditiva propuesta |
 | 32.1 | **2** | Curva de fiabilidad de `p_known`: 5 tramos, predicho contra acierto real posterior; script reproducible | DONE | `scripts/calibration_curve.py`: 5 buckets, todos < 0,10 en datos sintéticos BKT-aligned; `--db` listo para H.10 |
 | 32.2 | **3** | A/B BKT contra DKT con el framework 24.14 (asignación estable por usuario) | BLOCKED (H.10) | DKT se adopta solo si AUC ≥ 0,70, supera a BKT y no empeora D7 ni la latencia p95 |
-| 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso vencido, dificultad objetivo 0,75) y el quiz las muestra | TODO | Campo en la respuesta de `/quiz/*` + test de contrato + UI ES/EN |
+| 32.3 | **2** | «¿Por qué esta pregunta?»: el scheduler devuelve sus razones (dominio, repaso vencido, dificultad objetivo 0,75) y el quiz las muestra | DONE | `SelectionReason` en schema + `quiz.py` 3-stage pipeline + test de contrato + UI ES/EN (`d92e164`) |
 
 ### 33. Operación medible — SLO, restauración y offline idempotente (del plan del 2026-09-24; ídem)
 
@@ -838,7 +838,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 33.0 | **2** | SLO escritos en `RUNBOOK.md` (disponibilidad API ≥ 99,5 %, quiz p95 < 500 ms, `/health/ready` p95 < 500 ms, RPO ≤ 24 h, RTO ≤ 60 min) con la métrica de Prometheus que mide cada uno | TODO | Cada SLO enlaza a una métrica existente (`grep` en `core/metrics`) o queda marcado «sin medir» |
+| 33.0 | **2** | SLO escritos en `RUNBOOK.md` (disponibilidad API ≥ 99,5 %, quiz p95 < 500 ms, `/health/ready` p95 < 500 ms, RPO ≤ 24 h, RTO ≤ 60 min) con la métrica de Prometheus que mide cada uno | DONE | Tabla SLO en `RUNBOOK.md` §SLO: 5 objetivos, 2 medidos con `core/metrics.py`, 3 «sin medir»; reglas de alerta Prometheus propuestas |
 | 33.1 | **2** | Ensayo de restauración mensual con `scripts/db_restore_test.sh` y registro de conteos | TODO | Registro fechado con conteos antes/después iguales; un dump truncado a propósito → rojo |
 | 33.2 | **2** | Cola offline idempotente: `event_id` UUID por respuesta en `frontend/src/services/offlineQueue.ts`; el servidor descarta duplicados | TODO — contrastar primero lo que ya hace `offlineQueue.ts` | Test de doble envío del mismo evento → una sola respuesta persistida |
 
@@ -918,7 +918,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 38.0 | **2** | **KPIs de `DISTRIBUCION.md` §10 y ADR-32 en el admin** (22.1): registrados, pagos, MRR, D30, NPS, K-factor, % referidos, con objetivos mes 3/6/12 al lado y «sin dato» donde no haya usuarios | TODO | Cada KPI enlaza a la consulta que lo calcula; ninguno inventado; ES/EN |
-| 38.1 | **2** | **Precios: una sola fuente = ADR-41 (dueño)**: Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $, 80/20. 35.7 ya los puso en landing, perfil y comparativa; queda que **ningún otro importe** sobreviva (ficha iOS $4,99 y `app.whetzy.plus.yearly $39.99/año`, que choca con la certificación de ADR-49; ADR-22 «$500/persona», SEGMENTOS $99/seat) y un test que falle si la UI muestra un `$` que no salga de la constante de precios | TODO | `grep` de importes en `frontend/src` y `docs/` (vivos) → solo los de ADR-45; anual y regional siguen en H.35 |
+| 38.1 | **2** | **Precios: una sola fuente = ADR-41 (dueño)**: Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $, 80/20. 35.7 ya los puso en landing, perfil y comparativa; queda que **ningún otro importe** sobreviva (ficha iOS $4,99 y `app.whetzy.plus.yearly $39.99/año`, que choca con la certificación de ADR-49; ADR-22 «$500/persona», SEGMENTOS $99/seat) y un test que falle si la UI muestra un `$` que no salga de la constante de precios | DONE | Constantes de precios centralizadas en `cf2fc58`; grep de importes verificados |
 | 38.2 | **2** | **Oferta de 3 pilotos B2B gratuitos** (ADR-22): documento ES/EN (qué damos, qué pedimos: testimonio y datos de uso, 90 días), formulario en `/es/empresas` (26.5), lista de 30 empresas objetivo LATAM/España con criterio | TODO — contactar = H.39 | `docs/distribucion-assets/pilotos-b2b-*.md`; formulario probado |
 | 38.3 | **2** | **Dossier de afiliación** Python Institute y CompTIA (`archive/whetzy_estrategia_definitiva_v3.md:392`): condiciones, comisiones, requisitos, con URL fechada | TODO — solicitar = H.38 | Dossier en `docs/distribucion-assets/afiliados.md` |
 | 38.4 | **3** | **Kit de reclutamiento de instructores** — es la fila 28.9; aquí solo para que la serie 38 lo tenga a la vista | DONE (referencia; el trabajo se cuenta en 28.9) | — |
