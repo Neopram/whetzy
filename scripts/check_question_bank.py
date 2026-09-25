@@ -21,11 +21,13 @@ CI. Run it after changing the bank:
 from __future__ import annotations
 
 import json
+import sys
 from collections import Counter, defaultdict
 from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 CONTENT = ROOT / "content" / "questions"
 
 # Below this many questions, position counts are noise rather than a pattern.
@@ -544,6 +546,13 @@ def main() -> int:
             "(* above). This is authoring work, not a mechanical fix; the exempt "
             "tracks are listed with their reasons and are out of the denominator"
         )
+
+    # 35.0 / ADR-42: diversidad semántica con trinquete (scripts/question_diversity.py).
+    import question_diversity as qd
+
+    urls = qd.indexed_urls()
+    for msg in qd.check(qd.load(CONTENT), qd.load_baseline(), urls):
+        problems.append(f"[diversidad] {msg}")
 
     # Warnings are real findings that this tool is the wrong place to fail on:
     # they need authoring work, not a mechanical fix, so blocking CI on them
