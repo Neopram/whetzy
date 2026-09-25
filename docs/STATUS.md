@@ -1014,3 +1014,36 @@ verde con ella (runs 492 y 493). Matiz a su entrada: el CI de GitHub **ya había
 los pushes a `master` del 2026-09-24 (runs 488–493, en rojo hasta `77b9127` y en verde
 después), no por primera vez en el PR #7.
 
+
+## 2026-09-25 (madrugada) — FASE 2 del prompt de control total: serie 30, 34 PRI 0 y 35.0–35.3 (rama `claude/trusting-franklin-2wwmmr`, PR https://github.com/Neopram/whetzy/pull/8)
+
+**DONE, con verificador adversario en worktree aislado:**
+- **30.1:** guarda [7] de `check_legal_facts.py` contra testimonios y cifras inventados en landing e i18n. El verificador encontró que «1.2 M learners» con espacio la evadía; ahora se compara sin espacios ni puntuación.
+- **34.0:** `BASELINE = {}`, mutado → rojo.
+- **34.10:** e2e `success` en CI de GitHub en los runs 36065947667, 36068853358 y 36069832138, leídos por la API.
+- **35.0:** guarda de diversidad **con trinquete**.
+  - Medido antes de fijar umbrales:
+    - 6 tracks vivos pasan del 40 % de opciones de una palabra;
+    - track13 tiene 87,9 % de enunciados distintos;
+    - el 62 % del banco no lleva URL de fuente.
+  - Resultado: track24/25 → rojo, track12 → verde.
+  - Hallazgos a filas nuevas: 35.14 y 35.15.
+
+**PARCIAL con evidencia:**
+- **30.0 y 30.8:** producción medida solo en lectura.
+  - Login con credenciales falsas → 401 del backend con CORS; antes daba 405.
+  - `/glossary/track12` → 36 términos.
+  - El 200 del login real lo confirma el dueño: no se crea cuenta de QA en producción.
+- **35.2:** curso = módulo; `CATALOG_COURSES = 92`, mutado → rojo.
+- **35.3:** pipeline `scripts/corpus/`, dry-run con TheAlgorithms/Python (MIT), `cpython` `Doc/tutorial` (PSF-2.0) y Gutenberg #1661 (PD-US).
+  - `robots.txt` sin licencia → rechazada con motivo.
+  - Corregidos dos falsos negativos al verlos: la PSF menciona «GPL-compatible» y Gutenberg declara la licencia en el pie.
+- **35.1:** inventario en `CATALOGO_MAESTRO` §2.0.1, con 5 fuentes descargadas por la sesión (URL y hora). Propuestos PHP, Ruby y R (`track48`–`track50`).
+
+**Errores de esta tanda, contados:**
+- `a021e92` subió el test del pipeline **sin el pipeline**: la regla `corpus/` de `.gitignore` ignoraba también `scripts/corpus/`, y el hook pasó porque prueba el árbol de trabajo (anotado en 37.9). Arreglado en `cbd3675` y comprobado en un worktree limpio.
+- El primer inventario de 35.1 (subagente) traía resúmenes, no páginas: no se usó sin re-descargar.
+
+**Otra sesión en paralelo:** `clever-edison` (Fable 5.1) subió `115a695` a las 00:15 UTC con otro arreglo de `q060304ex011`. Se integró en `4d36b9a` conservando la versión de `master`. Estaba parada esperando un permiso del dueño. El cerrojo `.session.lock` es local a cada contenedor y **no** evita dos sesiones en contenedores distintos.
+
+**Sigue:** 35.4 (descarga por área), 35.5 (generador), verificador de 35.2/35.3, y la cola del dueño: login de dueño, H.38 y fusionar el PR #8.
