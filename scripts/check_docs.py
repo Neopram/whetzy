@@ -267,6 +267,53 @@ check(
     f"{_ledger_size:,} bytes ({_ledger_size / 1024:.1f} KB)",
 )
 
+print("\n[9] ECONOMIA <> credits.json (29.2)")
+import json as _json
+
+_credits_path = ROOT / "content" / "economy" / "credits.json"
+_economia_path = ROOT / "docs" / "ECONOMIA.md"
+if _credits_path.exists() and _economia_path.exists():
+    _cj = _json.loads(_credits_path.read_text(encoding="utf-8"))
+    _eco_text = _economia_path.read_text(encoding="utf-8")
+    _cj_val = _cj.get("credit_value_usd")
+    _cj_cap = _cj.get("monthly_cap_learning")
+    _cj_exp = _cj.get("expiration_days")
+    _cj_ref = _cj.get("monthly_cap_referrals")
+
+    _eco_val_m = re.search(r"1\s*cr[eé]dito\s*[≈~]\s*\$?([\d.,]+)", _eco_text)
+    _eco_val = float(_eco_val_m.group(1).replace(",", ".")) if _eco_val_m else None
+    check(
+        f"credit_value_usd: credits.json={_cj_val} == ECONOMIA.md={_eco_val}",
+        _eco_val is not None and float(_cj_val) == _eco_val,
+        f"credits.json={_cj_val}, ECONOMIA.md={_eco_val}",
+    )
+
+    _eco_cap_m = re.search(r"([\d.]+)\s*cr[eé]ditos?/mes", _eco_text)
+    _eco_cap = int(_eco_cap_m.group(1).replace(".", "")) if _eco_cap_m else None
+    check(
+        f"monthly_cap_learning: credits.json={_cj_cap} == ECONOMIA.md={_eco_cap}",
+        _eco_cap is not None and int(_cj_cap) == _eco_cap,
+        f"credits.json={_cj_cap}, ECONOMIA.md={_eco_cap}",
+    )
+
+    _eco_exp_m = re.search(r"(\d+)\s*d[ií]as", _eco_text[_eco_text.find("Caducidad"):] if "Caducidad" in _eco_text else "")
+    _eco_exp = int(_eco_exp_m.group(1)) if _eco_exp_m else None
+    check(
+        f"expiration_days: credits.json={_cj_exp} == ECONOMIA.md={_eco_exp}",
+        _eco_exp is not None and int(_cj_exp) == _eco_exp,
+        f"credits.json={_cj_exp}, ECONOMIA.md={_eco_exp}",
+    )
+
+    _eco_ref_m = re.search(r"(\d+)\s*activaciones?/mes", _eco_text)
+    _eco_ref = int(_eco_ref_m.group(1)) if _eco_ref_m else None
+    check(
+        f"monthly_cap_referrals: credits.json={_cj_ref} == ECONOMIA.md={_eco_ref}",
+        _eco_ref is not None and int(_cj_ref) == _eco_ref,
+        f"credits.json={_cj_ref}, ECONOMIA.md={_eco_ref}",
+    )
+else:
+    check("ECONOMIA.md or credits.json exists", False, "file(s) missing")
+
 print()
 if errors:
     head = f"{len(errors)} check(s) FAILED:"
