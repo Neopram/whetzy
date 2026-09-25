@@ -5,7 +5,7 @@ import uuid
 from dataclasses import asdict
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -135,8 +135,9 @@ async def activate_referral(
 
 
 @router.get("/prices")
-async def get_credit_prices() -> dict[str, object]:
+async def get_credit_prices(response: Response) -> dict[str, object]:
     """Public endpoint: credit value mapping."""
+    response.headers["Cache-Control"] = "public, max-age=3600, stale-while-revalidate=86400"
     return {
         "credit_value_usd": 0.01,
         "grifos": [
