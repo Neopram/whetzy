@@ -13,6 +13,11 @@ Métricas por track (ADR-42):
 * ``exec_without_code``   `*_exec` sin código en el enunciado ni en `code_*`  = 0
 * ``source_not_indexed``  preguntas cuya URL de `source` no está en
                           `content/sources/index.json`                       = 0
+* ``longest_correct_ratio`` preguntas de opciones cuya correcta es la única
+                          opción más larga                                   ≤ 0,40
+
+La última se añadió el 2026-09-25 (35.16): en el banco vivo, elegir siempre la
+opción más larga acierta el 66,9 % (el azar da ~25 %) y el 98 % en track11.
 
 **Trinquete**, como la guarda `.tsx`↔`.module.css`: medido el 2026-09-25, el banco
 vivo no cumple todo ADR-42. Seis tracks superan el 40 % de opciones de una
@@ -56,6 +61,7 @@ BASELINE = Path(__file__).resolve().parent / "question_diversity_baseline.json"
 
 MIN_DISTINCT = 0.90
 MAX_ONE_WORD = 0.40
+MAX_LONGEST_CORRECT = 0.40
 _EPS = 1e-9
 _URL = re.compile(r"https?://[^\s)\]>\"']+")
 
@@ -66,6 +72,14 @@ def _norm(text: str | None) -> str:
 
 def _has_code(q: dict[str, Any]) -> bool:
     return bool(q.get("code_es") or q.get("code_en")) or "```" in (q.get("question_es") or "")
+
+
+def _correct_is_longest(q: dict[str, Any]) -> bool:
+    """La correcta es la opción más larga y ninguna otra la iguala: la pista que
+    deja elegir sin saber la respuesta."""
+    lengths = [len(str(o)) for o in q["options_es"]]
+    ci = int(q["correct_index"])
+    return 0 <= ci < len(lengths) and lengths[ci] == max(lengths) and lengths.count(max(lengths)) == 1
 
 
 def indexed_urls(index_path: Path = INDEX) -> list[str]:
@@ -104,12 +118,15 @@ def metrics(questions: list[dict[str, Any]], urls: list[str]) -> dict[str, float
     options = [o for q in questions for o in (q.get("options_es") or [])]
     one_word = sum(1 for o in options if len(str(o).split()) <= 1)
     execs = [q for q in questions if str(q.get("type", "")).endswith("_exec")]
+    keyed = [q for q in questions if len(q.get("options_es") or []) >= 3 and q.get("correct_index") is not None]
+    longest = sum(1 for q in keyed if _correct_is_longest(q))
     return {
         "n": n,
         "distinct_ratio": round(len(stems) / n, 4) if n else 1.0,
         "one_word_ratio": round(one_word / len(options), 4) if options else 0.0,
         "exec_without_code": sum(1 for q in execs if not _has_code(q)),
         "source_not_indexed": sum(1 for q in questions if not _source_indexed(q, urls)),
+        "longest_correct_ratio": round(longest / len(keyed), 4) if keyed else 0.0,
     }
 
 
@@ -131,6 +148,11 @@ def check(
                 problems.append(f"{track}: {m['exec_without_code']} preguntas *_exec sin código")
             if m["source_not_indexed"]:
                 problems.append(f"{track}: {m['source_not_indexed']} preguntas sin fuente en content/sources/index.json")
+            if m["longest_correct_ratio"] > MAX_LONGEST_CORRECT:
+                problems.append(
+                    f"{track}: la correcta es la opción más larga en el {m['longest_correct_ratio']:.1%} "
+                    f"> {MAX_LONGEST_CORRECT:.0%} (35.16)"
+                )
             continue
         floor = min(MIN_DISTINCT, float(base["distinct_ratio"]))
         if m["distinct_ratio"] < floor - _EPS:
@@ -144,6 +166,13 @@ def check(
             problems.append(
                 f"{track}: preguntas sin fuente indexada {m['source_not_indexed']} > base {base['source_not_indexed']} "
                 "(las preguntas nuevas citan una fuente de content/sources/index.json)"
+            )
+        # Una base anterior a 35.16 no trae la clave: se trata como el techo nuevo.
+        top = max(MAX_LONGEST_CORRECT, float(base.get("longest_correct_ratio", MAX_LONGEST_CORRECT)))
+        if m["longest_correct_ratio"] > top + _EPS:
+            problems.append(
+                f"{track}: la correcta es la opción más larga en el {m['longest_correct_ratio']:.1%}, "
+                f"empeora (base {top:.1%}; 35.16)"
             )
     return problems
 
