@@ -17,7 +17,9 @@ from app.core.security import get_current_user
 from app.models.admin import GDPRRequest
 from app.models.auth import AuditLog, LoginAttempt
 from app.models.content import Question, Skill
+from app.models.duel import Duel
 from app.models.economy import CreditLedger, Referral
+from app.models.question_report import QuestionReport
 from app.models.session import Response, StudySession
 from app.models.user import User
 
@@ -900,3 +902,169 @@ async def get_kpi_dashboard(
     }
 
     return {"segment": segment, "generated_at": now.isoformat(), "kpis": kpis}
+
+
+# --- 22.1 gap closers: engagement, reports, deploy info -----------------
+
+
+@router.get("/metrics/engagement", dependencies=[Depends(require_admin)])
+async def get_metrics_engagement(
+    range_days: int = Query(default=7, ge=1, le=365),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    cutoff = datetime.now(UTC) - timedelta(days=range_days)
+
+    sess_q = select(func.count(StudySession.id)).where(StudySession.started_at >= cutoff)
+    resp_q = select(func.count(Response.id)).where(Response.created_at >= cutoff)
+    correct_q = select(func.count(Response.id)).where(
+        Response.created_at >= cutoff, Response.correct.is_(True)
+    )
+    duel_q = select(func.count(Duel.id)).where(Duel.created_at >= cutoff)
+    duel_completed_q = select(func.count(Duel.id)).where(
+        Duel.created_at >= cutoff, Duel.status == "completed"
+    )
+
+    if segment != "all":
+        sess_q = sess_q.select_from(StudySession).join(User).where(User.language == segment)
+        resp_q = (
+            resp_q.select_from(Response)
+            .join(StudySession)
+            .join(User, User.id == StudySession.user_id)
+            .where(User.language == segment)
+        )
+        correct_q = (
+            correct_q.select_from(Response)
+            .join(StudySession)
+            .join(User, User.id == StudySession.user_id)
+            .where(User.language == segment)
+        )
+        duel_q = (
+            duel_q.select_from(Duel)
+            .join(User, User.id == Duel.challenger_id)
+            .where(User.language == segment)
+        )
+        duel_completed_q = (
+            duel_completed_q.select_from(Duel)
+            .join(User, User.id == Duel.challenger_id)
+            .where(User.language == segment)
+        )
+
+    sessions = (await db.execute(sess_q)).scalar() or 0
+    total_resp = (await db.execute(resp_q)).scalar() or 0
+    correct_resp = (await db.execute(correct_q)).scalar() or 0
+    duels_total = (await db.execute(duel_q)).scalar() or 0
+    duels_completed = (await db.execute(duel_completed_q)).scalar() or 0
+
+    accuracy = round(correct_resp / total_resp * 100, 2) if total_resp > 0 else 0
+
+    d30_cutoff = datetime.now(UTC) - timedelta(days=30)
+    d7_cutoff = datetime.now(UTC) - timedelta(days=7)
+    eligible_q = select(func.count(User.id)).where(User.created_at <= d30_cutoff)
+    retained_q = (
+        select(func.count(func.distinct(StudySession.user_id)))
+        .where(
+            StudySession.started_at >= d7_cutoff,
+            StudySession.user_id.in_(select(User.id).where(User.created_at <= d30_cutoff)),
+        )
+    )
+    if segment != "all":
+        eligible_q = eligible_q.where(User.language == segment)
+        retained_q = retained_q.where(
+            StudySession.user_id.in_(
+                select(User.id).where(User.created_at <= d30_cutoff, User.language == segment)
+            )
+        )
+    eligible = (await db.execute(eligible_q)).scalar() or 0
+    retained = (await db.execute(retained_q)).scalar() or 0
+    retention_d30 = round(retained / eligible * 100, 2) if eligible > 0 else 0
+
+    top_skills_q = (
+        select(Skill.id, Skill.name_es, func.count(Response.id).label("attempts"))
+        .select_from(Response)
+        .join(Question, Question.id == Response.question_id)
+        .join(Skill, Skill.id == Question.skill_id)
+        .where(Response.created_at >= cutoff)
+        .group_by(Skill.id, Skill.name_es)
+        .order_by(desc("attempts"))
+        .limit(10)
+    )
+    rows = (await db.execute(top_skills_q)).all()
+    top_skills = [{"skill_id": r[0], "name_es": r[1], "attempts": r[2]} for r in rows]
+
+    return {
+        "range_days": range_days,
+        "segment": segment,
+        "quiz_sessions": sessions,
+        "total_responses": total_resp,
+        "correct_responses": correct_resp,
+        "accuracy_pct": accuracy,
+        "retention_d30": retention_d30,
+        "duels_total": duels_total,
+        "duels_completed": duels_completed,
+        "top_skills": top_skills,
+    }
+
+
+@router.get("/metrics/reports", dependencies=[Depends(require_admin)])
+async def get_metrics_reports(
+    range_days: int = Query(default=30, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    cutoff = datetime.now(UTC) - timedelta(days=range_days)
+
+    total_q = select(func.count(QuestionReport.id)).where(QuestionReport.created_at >= cutoff)
+    total = (await db.execute(total_q)).scalar() or 0
+
+    by_reason_q = (
+        select(QuestionReport.reason, func.count(QuestionReport.id).label("count"))
+        .where(QuestionReport.created_at >= cutoff)
+        .group_by(QuestionReport.reason)
+        .order_by(desc("count"))
+    )
+    by_reason = {r[0]: r[1] for r in (await db.execute(by_reason_q)).all()}
+
+    most_reported_q = (
+        select(QuestionReport.question_id, func.count(QuestionReport.id).label("count"))
+        .where(QuestionReport.created_at >= cutoff)
+        .group_by(QuestionReport.question_id)
+        .order_by(desc("count"))
+        .limit(10)
+    )
+    most_reported = [
+        {"question_id": r[0], "reports": r[1]}
+        for r in (await db.execute(most_reported_q)).all()
+    ]
+
+    return {
+        "range_days": range_days,
+        "total_reports": total,
+        "by_reason": by_reason,
+        "most_reported": most_reported,
+    }
+
+
+@router.get("/ops/deploy-info", dependencies=[Depends(require_admin)])
+async def get_deploy_info() -> dict[str, Any]:
+    import importlib
+    import os
+    import pathlib
+
+    alembic_head = "unknown"
+    versions_dir = pathlib.Path(__file__).resolve().parents[4] / "alembic" / "versions"
+    if versions_dir.is_dir():
+        files = sorted(versions_dir.glob("*.py"), key=lambda p: p.name, reverse=True)
+        if files:
+            alembic_head = files[0].stem
+
+    app_version = getattr(importlib.import_module("app"), "__version__", "unknown")
+    start_time = os.environ.get("APP_START_TIME", "unknown")
+    railway_deployment = os.environ.get("RAILWAY_DEPLOYMENT_ID", "unknown")
+
+    return {
+        "alembic_head": alembic_head,
+        "app_version": app_version,
+        "railway_deployment_id": railway_deployment,
+        "app_start_time": start_time,
+        "python_version": os.sys.version,
+    }

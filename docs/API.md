@@ -305,11 +305,14 @@ POST /admin/gdpr/deletions/{user_id}/cancel → cancel deletion request
 GET  /admin/metrics/funnel               → conversion funnel metrics
 GET  /admin/metrics/ttfq                 → time-to-first-question metrics
 GET  /admin/metrics/users                → user engagement metrics
+GET  /admin/metrics/engagement           → quiz sessions, accuracy, retention D30, duels, top skills 🔒 admin
+GET  /admin/metrics/reports              → question reports summary by reason + most reported 🔒 admin
 ```
 
 ### Operations
 ```
 GET  /admin/ops/database                 → database health & stats
+GET  /admin/ops/deploy-info              → Alembic head, app version, Railway deployment 🔒 admin
 GET  /admin/ops/errors                   → recent error logs
 GET  /admin/ops/health                   → system health status
 GET  /admin/ops/tutor-usage              → per-user and per-day tutor explanation counts 🔒 admin
@@ -360,8 +363,8 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-108 paths (104 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **111 method+path endpoints** total.
+111 paths (107 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **114 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
 
 

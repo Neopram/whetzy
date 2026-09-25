@@ -366,3 +366,57 @@ async def test_kpi_dashboard_returns_all_kpis(client: AsyncClient, owner: User) 
 async def test_kpi_dashboard_requires_owner(client: AsyncClient) -> None:
     response = await client.get("/api/v1/admin/kpi/dashboard")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+# --- 22.1 gap closers ---------------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_admin_engagement_metrics(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/metrics/engagement?range_days=7",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "quiz_sessions" in data
+    assert "accuracy_pct" in data
+    assert "retention_d30" in data
+    assert "duels_total" in data
+    assert "top_skills" in data
+    assert data["range_days"] == 7
+
+
+@pytest.mark.asyncio
+async def test_admin_engagement_with_segment(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/metrics/engagement?range_days=30&segment=es",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["segment"] == "es"
+
+
+@pytest.mark.asyncio
+async def test_admin_reports_metrics(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/metrics/reports?range_days=30",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "total_reports" in data
+    assert "by_reason" in data
+    assert "most_reported" in data
+
+
+@pytest.mark.asyncio
+async def test_admin_deploy_info(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/ops/deploy-info",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "alembic_head" in data
+    assert "python_version" in data
