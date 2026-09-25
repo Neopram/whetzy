@@ -9,7 +9,8 @@
 #     que no hubo forma de saber que pregunta fallo. Aqui todo queda en
 #     .ci-local/, con su fecha, para poder mirarlo despues.
 #
-# Uso: bash scripts/ci_local.sh            (corre todo)
+# Uso: bash scripts/ci_local.sh            (corre todo, sobre un worktree de HEAD)
+#      bash scripts/ci_local.sh --sha X    (sobre un worktree del commit X; el hook)
 #      bash scripts/ci_local.sh --estado   (que paso la ultima vez)
 set -uo pipefail
 
@@ -72,7 +73,41 @@ fi
 echo $$ > "$CERROJO"
 trap 'rm -f "$CERROJO" "$BITACORA/paso.winpid"' EXIT
 
-SHA="$(git rev-parse --short HEAD 2>/dev/null || echo '?')"
+# --- Se prueba un commit, no el disco (37.9) ---------------------------------
+# El 2026-09-24 el contrato frontend↔backend dio rojo porque `api.ts` ganó una
+# ruta a mitad de la suite: el nivel 2 leía el árbol de trabajo mientras se
+# editaba. Ahora corre sobre un worktree del SHA (el empujado, que le pasa el
+# hook con --sha; HEAD si se lanza a mano), fuera del proyecto. node_modules se
+# enlaza desde el árbol principal: reinstalarlo costaría minutos por push.
+_sha_pedido="HEAD"
+[ "${1:-}" = "--sha" ] && [ -n "${2:-}" ] && _sha_pedido="$2"
+SHA_COMPLETO="$(git rev-parse --verify "$_sha_pedido^{commit}" 2>/dev/null)" || {
+  echo "ROJO"$'\n'"$(date '+%Y-%m-%d %H:%M') · no existe el commit $_sha_pedido" > "$BITACORA/estado"; exit 1; }
+ARBOL="$CACHE/wt-nivel2"
+NM="$ARBOL/frontend/node_modules"
+# El enlace se quita ANTES de borrar el worktree: un borrado recursivo que lo
+# siguiera vaciaría el node_modules del árbol principal. En Windows es una
+# junction (el `ln -s` de Git Bash copia), y `rmdir` la quita sin tocar el destino.
+soltar_arbol() {
+  if [ -L "$NM" ]; then rm -f "$NM"
+  elif [ -e "$NM" ] && command -v cygpath >/dev/null 2>&1; then cmd //c rmdir "$(cygpath -w "$NM")" >/dev/null 2>&1
+  fi
+  git -C "$RAIZ" worktree remove --force "$ARBOL" >/dev/null 2>&1
+  git -C "$RAIZ" worktree prune >/dev/null 2>&1
+}
+soltar_arbol; rm -rf "$ARBOL"
+git worktree add --detach "$ARBOL" "$SHA_COMPLETO" >/dev/null 2>&1 || {
+  echo "ROJO"$'\n'"$(date '+%Y-%m-%d %H:%M') · no pude crear el worktree" > "$BITACORA/estado"; exit 1; }
+if [ -d "$RAIZ/frontend/node_modules" ]; then
+  if command -v cygpath >/dev/null 2>&1; then
+    cmd //c mklink /J "$(cygpath -w "$NM")" "$(cygpath -w "$RAIZ/frontend/node_modules")" >/dev/null
+  else
+    ln -s "$RAIZ/frontend/node_modules" "$NM"
+  fi
+fi
+trap 'rm -f "$CERROJO" "$BITACORA/paso.winpid"; soltar_arbol' EXIT
+
+SHA="$(git rev-parse --short "$SHA_COMPLETO")"
 INICIO="$(date '+%Y-%m-%d %H:%M')"
 printf 'CORRIENDO desde %s (%s)\n' "$INICIO" "$SHA" > "$BITACORA/estado"
 
@@ -131,19 +166,19 @@ correr() {  # correr <nombre> <dir> <comando...>
 # ya tienen su propio paso; sin esto corrian dos veces. Y ojo al leer el porcentaje de
 # pytest con el contenido dentro: es el 95% de la CUENTA y una fraccion del TIEMPO, asi
 # que parece colgarse en el 96% cuando lo que pasa es que empiezan los de integracion.
-correr "backend: suite entera" "$RAIZ/backend" \
+correr "backend: suite entera" "$ARBOL/backend" \
   python -m pytest tests/ --ignore=tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
-correr "backend: contenido"    "$RAIZ/backend" \
+correr "backend: contenido"    "$ARBOL/backend" \
   python -m pytest tests/content -q -p no:randomly --tb=short $CACHE_PYTEST
 # `python -m mypy` y no `mypy`: el binario del PATH puede ser otro entorno sin
 # las dependencias del proyecto (2026-09-24: un mypy de uv sin pydantic dio
 # cientos de «Class cannot subclass BaseModel» falsos; con el intérprete del
 # proyecto, 0 errores en 117 ficheros).
-correr "backend: mypy --strict" "$RAIZ/backend" \
+correr "backend: mypy --strict" "$ARBOL/backend" \
   python -m mypy app --strict --ignore-missing-imports
 
-if [ -d "$RAIZ/frontend/node_modules" ]; then
-  correr "frontend: tipos"  "$RAIZ/frontend" npx tsc -b
+if [ -d "$ARBOL/frontend/node_modules" ]; then
+  correr "frontend: tipos"  "$ARBOL/frontend" npx tsc -b
   # oxlint se comprueba ANTES de usarlo. Si no arranca, el paso se salta con
   # [--] en vez de contar como rojo: un paso permanentemente rojo por una
   # herramienta rota localmente enseña a ignorar la puerta entera, que es peor
@@ -153,14 +188,14 @@ if [ -d "$RAIZ/frontend/node_modules" ]; then
   # arreglo subiendo node con nvm, NO reinstalando: probado que con node
   # 20.19 y el mismo lockfile arranca. En CI no ocurre: `node-version: "20"`
   # resuelve a la ultima 20.x.
-  if ( cd "$RAIZ/frontend" && npx oxlint --version >/dev/null 2>&1 ); then
-    correr "frontend: oxlint" "$RAIZ/frontend" npx oxlint --deny-warnings
+  if ( cd "$ARBOL/frontend" && npx oxlint --version >/dev/null 2>&1 ); then
+    correr "frontend: oxlint" "$ARBOL/frontend" npx oxlint --deny-warnings
   else
     titulo "frontend: oxlint"
     echo "[--] oxlint no arranca aqui (mira si node cumple el engine que pide)."
     echo "[--] No cuenta como rojo. En CI si corre."
   fi
-  correr "frontend: vitest" "$RAIZ/frontend" npm run -s test
+  correr "frontend: vitest" "$ARBOL/frontend" npm run -s test
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
