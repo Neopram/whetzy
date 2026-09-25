@@ -26,7 +26,7 @@ from app.models.economy import (
     ReferralCode,
 )
 from app.models.email_verification import EmailVerificationToken
-from app.models.exam import CertificationPurchase, MockExamAttempt
+from app.models.exam import Certificate, CertificationPurchase, MockExamAttempt
 from app.models.experiment import Experiment, ExperimentAssignment
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.instructor import (
@@ -58,6 +58,7 @@ __all__ = [
     "Base",
     "Campaign",
     "CampaignClick",
+    "Certificate",
     "CertificationPurchase",
     "CreditExpenseCap",
     "CreditLedger",

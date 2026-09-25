@@ -47,7 +47,7 @@ def require_owner(user: User = Depends(get_current_user)) -> User:
 @router.get("/metrics/users", dependencies=[Depends(require_admin)])
 async def get_metrics_users(
     range_days: int = Query(default=7, ge=1, le=365),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     cutoff = datetime.now(UTC) - timedelta(days=range_days)
@@ -90,7 +90,7 @@ async def get_metrics_users(
 
 @router.get("/metrics/funnel", dependencies=[Depends(require_admin)])
 async def get_metrics_funnel(
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Conversion funnel (signup -> active 7d -> active 1d) by language segment.
@@ -143,7 +143,7 @@ async def get_metrics_funnel(
 
 @router.get("/metrics/ttfq", dependencies=[Depends(require_admin)])
 async def get_metrics_ttfq(
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Time-to-first-question (signup to first study session) percentiles by segment."""
@@ -268,7 +268,7 @@ async def get_security_ip_analysis(
 
 @router.get("/content/gaps", dependencies=[Depends(require_admin)])
 async def get_content_gaps(
-    language: str = Query(default="es", regex="^(es|en)$"),
+    language: str = Query(default="es", pattern="^(es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     skills = await db.execute(select(Skill))
@@ -290,7 +290,7 @@ async def get_content_gaps(
 
 @router.get("/content/parity", dependencies=[Depends(require_admin)])
 async def get_content_parity(
-    segment: str = Query(default="questions", regex="^(questions|lessons)$"),
+    segment: str = Query(default="questions", pattern="^(questions|lessons)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Verify parity between ES and EN content (all questions should have both versions)."""
@@ -328,7 +328,7 @@ async def get_ops_health(
 
 @router.get("/ops/errors", dependencies=[Depends(require_admin)])
 async def get_ops_errors(
-    window: str = Query(default="1h", regex="^(1h|24h)$"),
+    window: str = Query(default="1h", pattern="^(1h|24h)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     hours = 1 if window == "1h" else 24
@@ -373,7 +373,7 @@ async def get_ops_database(
 
 @router.get("/gdpr/exports", dependencies=[Depends(require_owner)])
 async def get_gdpr_exports(
-    status: str = Query(default="pending", regex="^(pending|completed)$"),
+    status: str = Query(default="pending", pattern="^(pending|completed)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
@@ -404,7 +404,7 @@ async def get_gdpr_exports(
 
 @router.get("/gdpr/deletions", dependencies=[Depends(require_owner)])
 async def get_gdpr_deletions(
-    status: str = Query(default="pending", regex="^(pending|completed|cancelled)$"),
+    status: str = Query(default="pending", pattern="^(pending|completed|cancelled)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
@@ -489,7 +489,7 @@ def _segment_filter(query: Any, segment: str) -> Any:
 @router.get("/revenue/mrr", dependencies=[Depends(require_owner)])
 async def get_revenue_mrr(
     month: str = Query(default=None),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Monthly recurring revenue, optionally filtered by language segment.
@@ -527,7 +527,7 @@ async def get_revenue_mrr(
 @router.get("/revenue/conversions", dependencies=[Depends(require_owner)])
 async def get_revenue_conversions(
     range_days: int = Query(default=7, ge=1, le=365),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Registered users vs. those who ended up paying, in the same window."""
@@ -561,8 +561,8 @@ async def get_revenue_conversions(
 
 @router.get("/revenue/churn", dependencies=[Depends(require_owner)])
 async def get_revenue_churn(
-    window: str = Query(default="30d", regex="^(7d|30d|90d)$"),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    window: str = Query(default="30d", pattern="^(7d|30d|90d)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     """Cancelled subscriptions in the window over the paying base at its start."""
@@ -602,7 +602,7 @@ async def get_revenue_churn(
 @router.get("/economy/credits", dependencies=[Depends(require_admin)])
 async def get_economy_credits(
     user_id: uuid.UUID | None = Query(default=None),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
@@ -638,8 +638,8 @@ async def get_economy_credits(
 
 @router.get("/economy/referrals", dependencies=[Depends(require_admin)])
 async def get_economy_referrals(
-    status: str = Query(default="all", regex="^(all|pending|completed)$"),
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    status: str = Query(default="all", pattern="^(all|pending|completed)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
@@ -673,7 +673,7 @@ async def get_economy_referrals(
 
 @router.get("/economy/k-factor", dependencies=[Depends(require_admin)])
 async def get_economy_k_factor(
-    segment: str = Query(default="all", regex="^(all|es|en)$"),
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
     query_total = select(func.count(User.id))

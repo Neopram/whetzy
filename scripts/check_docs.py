@@ -27,25 +27,21 @@ checker solo podía terminar bien — cualquier fallo real moría en el print.
 
 from __future__ import annotations
 
-import json
 import os
 import re
 import subprocess
 import sys
 from pathlib import Path
 
+# project_snapshot.py is the single source of truth for project figures (31.0)
+from project_snapshot import snapshot
+
 ROOT = Path(__file__).parent.parent
 BACKEND = ROOT / "backend"
-CONTENT = ROOT / "content"
 DOCS_STATE = ROOT / "docs" / "AUTONOMOUS_STATE.md"
 CLAUDE_MD = ROOT / "CLAUDE.md"
-# Las cifras del catalogo se movieron a un modulo propio para que la landing
-# y /evidence no puedan discrepar: una sola copia, este guardia la vigila.
 EVIDENCE_TSX = ROOT / "frontend" / "src" / "lib" / "catalog.ts"
 
-# La consola de Windows no es UTF-8. Reconfigurar es lo que evita que el
-# checker muera al imprimir su propio fallo; el fallback ASCII cubre el caso
-# de un stream que no se puede reconfigurar (pipes de CI antiguos).
 _UNICODE_OK = True
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
@@ -73,54 +69,17 @@ def check(label: str, ok: bool, detail: str = "") -> None:
 
 
 # ---------------------------------------------------------------------------
-# Verdad canónica
+# Verdad canónica — single source via project_snapshot (31.0)
 # ---------------------------------------------------------------------------
 
-curriculum = json.loads((CONTENT / "curriculum" / "tracks.json").read_text(encoding="utf-8"))
-_tracks = curriculum["tracks"] if isinstance(curriculum, dict) else curriculum
-
-real_tracks = len(_tracks)
-real_skill_ids: set[str] = set()
-for _t in _tracks:
-    for _m in _t.get("modules", []):
-        for _s in _m.get("skills", []):
-            real_skill_ids.add(_s["id"] if isinstance(_s, dict) else _s)
-real_skills = len(real_skill_ids)
-
-# Un "curso" es un MODULO del molde (ADR-46 §2, fila 37.2): 4 skills, 60
-# preguntas, 4 lecciones. Hasta el 2026-09-25 era «track x nivel» (17.4), que
-# daba 49 y no era la unidad que se construye ni la que mide la meta de
-# ≥ 50 cursos por track.
-real_courses = sum(len(t.get("modules", [])) for t in _tracks)
-
-real_questions = 0
-for qfile in sorted((CONTENT / "questions").rglob("*.json")):
-    payload = json.loads(qfile.read_text(encoding="utf-8"))
-    items = payload if isinstance(payload, list) else payload.get("questions", [])
-    real_questions += len(items)
-
-lesson_skill_ids: set[str] = set()
-for lfile in sorted((CONTENT / "lessons").rglob("*.json")):
-    lesson = json.loads(lfile.read_text(encoding="utf-8"))
-    if lesson.get("skill_id"):
-        lesson_skill_ids.add(lesson["skill_id"])
-real_lessons = len(lesson_skill_ids)
-
-real_terms = 0
-for gfile in sorted((CONTENT / "glossary").rglob("*.json")):
-    payload = json.loads(gfile.read_text(encoding="utf-8"))
-    if isinstance(payload, list):
-        real_terms += len(payload)
-    else:
-        real_terms += len(payload.get("terms", payload.get("entries", [])))
-
-real_migrations = len(
-    [
-        p
-        for p in (BACKEND / "alembic" / "versions").glob("*.py")
-        if re.search(r"^revision(?::\s*str)?\s*=", p.read_text(encoding="utf-8"), re.M)
-    ]
-)
+_snap = snapshot()
+real_tracks = _snap["tracks"]
+real_skills = _snap["skills"]
+real_courses = _snap["courses"]
+real_questions = _snap["questions"]
+real_lessons = _snap["lessons"]
+real_terms = _snap["glossary_terms"]
+real_migrations = _snap["migrations"]
 
 # ---------------------------------------------------------------------------
 # Lado del doc: fila `Contenido` de la tabla de invariantes
@@ -155,17 +114,7 @@ def _from_row(row: str, pattern: str, label: str) -> int | None:
 
 print("\n[1] Alembic")
 try:
-    result = subprocess.run(
-        [sys.executable, "-m", "alembic", "heads"],
-        cwd=BACKEND,
-        capture_output=True,
-        text=True,
-        timeout=60,
-    )
-    # Los revision ids de este repo no son hex (`q7r8s9t0u1v2`): el regex
-    # `[0-9a-f]{12}` de la version anterior no podia casar ni uno.
-    heads = re.findall(r"^([0-9a-z_]{6,})\s*\(head\)", result.stdout, re.M)
-    real_head = heads[-1] if heads else "unknown"
+    real_head = _snap["alembic_head"]
 
     m = re.search(r"HEAD actual:\s*`([0-9a-z_]+)`", claude_text)
     claude_head = m.group(1) if m else "not_found"
@@ -308,6 +257,15 @@ try:
         check("Legal facts (afirmaciones + borrador + codificacion + frontmatter + paridad)", True, "")
 except Exception as e:
     check("Legal facts (afirmaciones + borrador + codificacion + frontmatter + paridad)", False, str(e))
+
+print("\n[8] Ledger size guard (20.10)")
+_ledger_size = DOCS_STATE.stat().st_size
+_MAX_LEDGER = 61440
+check(
+    f"AUTONOMOUS_STATE.md size: {_ledger_size:,} bytes <= {_MAX_LEDGER:,}",
+    _ledger_size <= _MAX_LEDGER,
+    f"{_ledger_size:,} bytes ({_ledger_size / 1024:.1f} KB)",
+)
 
 print()
 if errors:
