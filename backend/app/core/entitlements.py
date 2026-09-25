@@ -2,7 +2,7 @@
 
 Tier hierarchy: free < plus < pro < creator
 
-Nombres de cara al usuario (ADR-45, dueño 2026-09-24): ``plus`` = **Pro**
+Nombres de cara al usuario (ADR-41, dueño 2026-09-24): ``plus`` = **Pro**
 ($14.99/mes), ``pro`` = **Pro Max** ($19.99/mes), ``creator`` = **Creador**
 ($99.99/mes: todo lo de Pro Max + publicar bootcamps en el marketplace, con
 80/20 de cada venta). Los ids internos no cambian: están en la base de datos

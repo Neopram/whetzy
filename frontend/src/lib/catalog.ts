@@ -7,6 +7,6 @@
  *  17.12 y lo que repitio la serie 24.2: no lo hagas, importa de aqui.
  */
 export const CATALOG_TRACKS = 18;
-/** Curso = módulo del molde (ADR-42, 35.2); antes «track × nivel» (49). */
+/** Curso = módulo del molde (ADR-46, 37.2); antes «track × nivel» (49). */
 export const CATALOG_COURSES = 92;
 export const CATALOG_QUESTIONS = 6305;

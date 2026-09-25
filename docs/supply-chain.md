@@ -124,7 +124,7 @@ All security checks run in GitHub Actions before deployment:
 **Not true today:** a commit reaching `master` deploys (Railway and Cloudflare Pages) whether
 or not these checks ran — GitHub CI does not run (H.13/H.17). What stands in between is the
 local gate (`.githooks/pre-push` level 1, blocking; `scripts/ci_local.sh` level 2, not
-blocking) and the owner merging by hand (ADR-41).
+blocking) and the owner merging by hand (ADR-45).
 
 ## Monitoring & Response
 

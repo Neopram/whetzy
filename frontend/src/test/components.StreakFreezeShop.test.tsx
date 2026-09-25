@@ -1,5 +1,5 @@
 /**
- * Tests de src/components/home/StreakFreezeShop.tsx (ledger 37.3).
+ * Tests de src/components/home/StreakFreezeShop.tsx (ledger 35.3).
  *
  * Lo que importa es el dinero de juego: un intento = un id; un reintento tras
  * un fallo de red reutiliza el id (el backend no cobra dos veces); un 409 cierra

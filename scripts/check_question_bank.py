@@ -43,7 +43,7 @@ IDENTICAL_STEM_MIN_CHARS = 15
 # pero un track entero al 95 % son distractores de relleno, no alternativas.
 ONE_WORD_OPTION_MAX_SHARE = 0.80
 EXEC_NEEDS_CODE = {"fill_blank_exec", "fix_bug", "sql_exec", "js_exec"}
-# Relleno de generador (35.14): 61 preguntas de track13 llegaron a producción
+# Relleno de generador (37.14): 61 preguntas de track13 llegaron a producción
 # como «Pregunta de sk130102» con opciones A/B/C/D y «Explicacion correcta».
 # Pasaban todo lo demás: ids únicos, ES y EN, fuente y posiciones repartidas.
 PLACEHOLDER_STEM = re.compile(r"^\s*(pregunta (de|para|sobre)|question (for|about|on)) sk\d+", re.I)
@@ -563,7 +563,7 @@ def main() -> int:
             "tracks are listed with their reasons and are out of the denominator"
         )
 
-    # 35.0 / ADR-42: diversidad semántica con trinquete (scripts/question_diversity.py).
+    # 37.0 / ADR-46: diversidad semántica con trinquete (scripts/question_diversity.py).
     import question_diversity as qd
 
     urls = qd.indexed_urls()

@@ -273,7 +273,7 @@ INVENTED = {
     "1.2m learners": "cifra de usuarios inventada (hay cero usuarios reales)",
     "14-day streak club": "afirmacion sin datos",
     "240+ tracks": "cifra de catalogo inventada (sale de lib/catalog.ts)",
-    "mock interviews": "funcion que no existe (descartada en ADR-43)",
+    "mock interviews": "funcion que no existe (descartada en ADR-47)",
 }
 landing_ok = True
 for path in LANDING_FILES:

@@ -243,4 +243,4 @@ Para que nadie lo dé por hecho más adelante:
   nuevos y `check_docs.py`.
 - **No midió nada con usuarios**, porque no hay.
 
-[^adr41]: Nota del 2026-09-25: este informe es de una fecha en que las sesiones hacían push a `master`. Desde ADR-41 (2026-09-24) solo el dueño fusiona en `master`; las sesiones trabajan en rama + PR. El cuerpo del informe no se reescribe.
+[^adr41]: Nota del 2026-09-25: este informe es de una fecha en que las sesiones hacían push a `master`. Desde ADR-45 (2026-09-24) solo el dueño fusiona en `master`; las sesiones trabajan en rama + PR. El cuerpo del informe no se reescribe.

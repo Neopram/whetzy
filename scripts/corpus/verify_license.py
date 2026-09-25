@@ -1,10 +1,10 @@
 """Lee la licencia de una fuente descargada y decide si se puede reutilizar.
 
-Reglas (ADR-11, ADR-43):
+Reglas (ADR-11, ADR-47):
 * **Se acepta** para reutilizar: MIT, Apache-2.0, BSD, PSF-2.0, CC BY, CC0,
   Unlicense y dominio público (incluido Project Gutenberg en EE. UU.).
 * **Se rechaza** con motivo: NonCommercial (CC BY-NC), ShareAlike (CC BY-SA,
-  ADR-43 «no»), GPL/LGPL/AGPL (copyleft: se cita, no se copia), propietario, y
+  ADR-47 «no»), GPL/LGPL/AGPL (copyleft: se cita, no se copia), propietario, y
   cualquier fuente **sin fichero de licencia ni marca reconocible**.
 
 La licencia que manda es el fichero del commit descargado, no la tabla del
@@ -36,7 +36,7 @@ PRIORITY_ACCEPT = [
 # CC BY-NC-SA contiene también «Creative Commons Attribution».
 REJECT = [
     (re.compile(r"non-?commercial|\bCC[- ]BY[- ]NC\b", re.IGNORECASE), "NonCommercial (CC BY-NC): se cita, no se reutiliza (ADR-11)"),
-    (re.compile(r"share-?alike|\bCC[- ]BY[- ]SA\b", re.IGNORECASE), "ShareAlike (CC BY-SA): no se reutiliza (ADR-43, H.LIC = no)"),
+    (re.compile(r"share-?alike|\bCC[- ]BY[- ]SA\b", re.IGNORECASE), "ShareAlike (CC BY-SA): no se reutiliza (ADR-47, H.LIC = no)"),
     (re.compile(r"GNU (AFFERO |LESSER )?GENERAL PUBLIC LICENSE|\bA?L?GPL-?\d", re.IGNORECASE), "copyleft GPL/LGPL/AGPL: se cita, no se copia (ADR-11)"),
 ]
 # «All rights reserved» aparece también en cabeceras de licencias libres
@@ -82,7 +82,7 @@ def _license_text(raw: Path) -> tuple[str | None, str | None]:
 
 def classify(text: str | None, where: str | None = None) -> Verdict:
     if not text:
-        return Verdict(False, None, "sin fichero LICENSE/COPYING ni marca de licencia: rechazada (ADR-42)", None)
+        return Verdict(False, None, "sin fichero LICENSE/COPYING ni marca de licencia: rechazada (ADR-46)", None)
     for rx, spdx in PRIORITY_ACCEPT:
         m = rx.search(text)
         if m:
@@ -99,7 +99,7 @@ def classify(text: str | None, where: str | None = None) -> Verdict:
     if m:
         return Verdict(False, None, PROPRIETARY[1], m.group(0))
     if where and where.endswith("(cabecera y pie)"):
-        return Verdict(False, None, "sin fichero LICENSE ni marca de licencia en cabecera o pie: rechazada (ADR-42)", None)
+        return Verdict(False, None, "sin fichero LICENSE ni marca de licencia en cabecera o pie: rechazada (ADR-46)", None)
     return Verdict(False, None, "licencia no reconocida: rechazada hasta leerla a mano", None)
 
 

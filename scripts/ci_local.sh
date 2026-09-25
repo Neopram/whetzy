@@ -73,7 +73,7 @@ fi
 echo $$ > "$CERROJO"
 trap 'rm -f "$CERROJO" "$BITACORA/paso.winpid"' EXIT
 
-# --- Se prueba un commit, no el disco (37.9) ---------------------------------
+# --- Se prueba un commit, no el disco (35.9) ---------------------------------
 # El 2026-09-24 el contrato frontend↔backend dio rojo porque `api.ts` ganó una
 # ruta a mitad de la suite: el nivel 2 leía el árbol de trabajo mientras se
 # editaba. Ahora corre sobre un worktree del SHA (el empujado, que le pasa el

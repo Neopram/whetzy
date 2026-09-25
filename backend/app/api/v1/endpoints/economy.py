@@ -172,7 +172,7 @@ async def buy_streak_freeze(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> StreakFreezeBuyResponse:
-    """Compra un comodín de racha con créditos (37.3). 409 con el motivo si un
+    """Compra un comodín de racha con créditos (35.3). 409 con el motivo si un
     tope o el saldo lo impiden; el mismo `request_id` nunca cobra dos veces."""
     try:
         q, replayed = await streak_shop.buy(db, current_user, body.request_id)

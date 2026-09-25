@@ -25,7 +25,7 @@ npm run build          # NO usar `vite build` directamente — scripts pre/post-
 ```
 
 **Corrección 2026-09-24:** el proyecto de Cloudflare Pages (`whetzy`) **sí está conectado
-a Git**. Un commit en `master` (fusión del dueño, ADR-41) construye y publica en producción; las demás ramas generan
+a Git**. Un commit en `master` (fusión del dueño, ADR-45) construye y publica en producción; las demás ramas generan
 un preview. La subida directa con wrangler sigue funcionando (primera vez por máquina:
 `npx wrangler login`):
 
@@ -68,10 +68,10 @@ npm run check:deployed https://whetzy.pages.dev
 ## 2. Backend (Railway)
 
 **El deploy es AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16):
-cada commit que llega a `master` (una fusión del dueño, ADR-41) reconstruye la imagen y
+cada commit que llega a `master` (una fusión del dueño, ADR-45) reconstruye la imagen y
 `start.sh` ejecuta `alembic upgrade head` → `content_loader` → `bootstrap_owner` → seed de
 gamificación → gunicorn. Cada despliegue provoca ~1 min de 502/503 para quien esté dentro
-(medido 2026-09-24, fila 37.8).
+(medido 2026-09-24, fila 35.8).
 
 ### Antes de pedir la fusión de un PR a `master`
 ```bash

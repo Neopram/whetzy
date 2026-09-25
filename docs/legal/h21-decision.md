@@ -57,7 +57,7 @@ Nada de la versión 1.0 es vinculante. Lo único cierto hoy:
 - La revisión profesional (**H.20**) sigue **abierta**.
 - La única ruta de cobro que funciona sin sociedad es **IAP puro** (Apple/Google como
   merchant of record), que es la fila **17.14** del ledger (la antigua 7.6, que
-  hasta el 2026-09-24 no tenía fila viva; ADR-43 le devolvió una).
+  hasta el 2026-09-24 no tenía fila viva; ADR-47 le devolvió una).
 
 ## Qué debe hacer el dueño
 

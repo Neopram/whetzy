@@ -22,7 +22,7 @@ function newRequestId(): string {
 type Phase = 'idle' | 'confirm' | 'buying' | 'done' | 'error';
 
 /** Comodines de racha: cuántos tienes, por qué no puedes comprar (si no puedes)
- *  y la compra con créditos en dos toques (37.3). */
+ *  y la compra con créditos en dos toques (35.3). */
 export function StreakFreezeShop() {
   const { t } = useTranslation();
   const updateUser = useAppStore((s) => s.updateUser);

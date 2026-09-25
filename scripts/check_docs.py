@@ -87,7 +87,7 @@ for _t in _tracks:
             real_skill_ids.add(_s["id"] if isinstance(_s, dict) else _s)
 real_skills = len(real_skill_ids)
 
-# Un "curso" es un MODULO del molde (ADR-42 §2, fila 35.2): 4 skills, 60
+# Un "curso" es un MODULO del molde (ADR-46 §2, fila 37.2): 4 skills, 60
 # preguntas, 4 lecciones. Hasta el 2026-09-25 era «track x nivel» (17.4), que
 # daba 49 y no era la unidad que se construye ni la que mide la meta de
 # ≥ 50 cursos por track.

@@ -384,7 +384,7 @@ def _level_from_xp(total_xp: int) -> int:
     return max(1, total_xp // 500 + 1)
 
 
-# Racha amable (COMPETENCIA.md §A.4, ledger 37.3): cada semana ISO nueva devuelve
+# Racha amable (COMPETENCIA.md §A.4, ledger 35.3): cada semana ISO nueva devuelve
 # un comodín gratis si no queda ninguno. No se acumulan (los comprados sí se
 # conservan): el comodín cubre un despiste, no compra semanas enteras. Perder la
 # racha nunca toca el dominio (BKT), que vive aparte.
@@ -552,7 +552,7 @@ async def submit_answer(
     user.level = _level_from_xp(user.total_xp)
     _update_streak(user, now)
 
-    # Fuera de las ligas (37.4) no se crea ni se suma entrada de liga.
+    # Fuera de las ligas (35.4) no se crea ni se suma entrada de liga.
     league_entry = None if user.leagues_opt_out else await get_or_create_current_entry(db, user)
     if league_entry is not None:
         league_entry.xp_earned += xp

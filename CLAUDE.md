@@ -11,8 +11,8 @@ qué hacer; el ledger lo sabe.
 - Alcance del producto (tracks, certificaciones, fuentes, volúmenes, puerta de calidad): `docs/CATALOGO_MAESTRO.md`
 - Estado narrativo e histórico: `docs/STATUS.md` (registro por sesión; no se reescribe hacia atrás)
 - Prompt operativo: `docs/ORCHESTRATOR.md`
-- Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §13, captura en vivo 2026-09-24, sin re-puntuar; §12 = ADR-42) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
-- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, **ADR-41 rama + PR y `master` solo por el dueño, ADR-42 catálogo total ≥ 50 cursos/track sobre corpus abierto, ADR-43 valores por defecto de la cola humana, ADR-44 un plan = una fila, ADR-45 precios del dueño (Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $, reparto 80/20), que enmienda la fila de precios de ADR-43**)
+- Posición competitiva con pesos fijos: `docs/competitive-teardown.md` (última: §13 ADR-46; §12 captura en vivo, sin re-puntuar) y mercado verificado con URL y fecha en `docs/COMPETENCIA.md` §A
+- Decisiones irreversibles: `docs/DECISIONS.md` (ADR-11 fuentes, ADR-12 herramientas, ADR-13 social login, ADR-40 memoria en el repo, ADR-41 precios del dueño, **ADR-45 rama + PR y `master` solo por el dueño, ADR-46 catálogo total ≥ 50 cursos/track sobre corpus abierto, ADR-47 valores por defecto de la cola humana, ADR-48 un plan = una fila**)
 - Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md`
 - Auditoría externa más reciente (producción medida en vivo, CI, coste de contexto): `docs/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
@@ -21,12 +21,12 @@ qué hacer; el ledger lo sabe.
 
 ## Invariantes
 
-- **`master` lo fusiona el dueño a mano (ADR-41, 2026-09-24).** La sesión trabaja en su rama,
+- **`master` lo fusiona el dueño a mano (ADR-45, 2026-09-24).** La sesión trabaja en su rama,
   abre un PR por oleada con evidencia y capturas, y **nunca** hace `git push origin master` ni
   fusiona. Cloudflare Pages publica un preview por rama (`<rama>.whetzy.pages.dev`).
-- **Corpus abierto fuera del repo (ADR-42):** `corpus/` está en `.gitignore`; al repo solo entra
+- **Corpus abierto fuera del repo (ADR-46):** `corpus/` está en `.gitignore`; al repo solo entra
   `content/sources/index.json` y contenido original ES/EN con fuente. Ninguna pregunta nueva
-  hasta que la guarda 35.0 esté en verde.
+  hasta que la guarda 37.0 esté en verde.
 - **Puerta local antes de cada push** (2026-09-20). `git push origin master` despliega a
   producción y hasta esa fecha no había **nada** en medio: cero hooks de git, y el
   `.github/workflows/ci.yml` —que está bien escrito— **no se ha ejecutado nunca** por
@@ -45,9 +45,9 @@ qué hacer; el ledger lo sabe.
   `%LOCALAPPDATA%/whetzy-cache`, que es lo que hacen el hook y `ci_local.sh`. Por lo
   mismo, **escribir ficheros del proyecto desde Python falla con «Bad file
   descriptor»**: escribe al scratchpad y luego `cp`
-- Backend prod: `https://api-production-9751.up.railway.app` — **deploy AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16): cada commit que llega a `master` (una fusión del dueño, ADR-41) despliega backend, migraciones y `content_loader`, con ~1 min de 502/503 durante el cambio (medido 2026-09-24, fila 37.8). Antes de cada push de rama: `pytest tests/content` y `check_question_bank.py` verdes
+- Backend prod: `https://api-production-9751.up.railway.app` — **deploy AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16): cada commit que llega a `master` (una fusión del dueño, ADR-45) despliega backend, migraciones y `content_loader`, con ~1 min de 502/503 durante el cambio (medido 2026-09-24, fila 35.8). Antes de cada push de rama: `pytest tests/content` y `check_question_bank.py` verdes
 - Frontend prod: `https://whetzy.com` — **Cloudflare Pages está conectado a Git** y **`master` publica solo a producción** (verificado 2026-09-24: tras el push de `5be177f`, `whetzy.com/landing/` sirve el hero nuevo pre-renderizado; cada otra rama genera un preview y un check `Cloudflare Pages` en el PR). El panel corre `npx tsc -b && npx vite build`; el prerender va dentro de `vite build` y la API sale del fichero, no del panel. Deploy manual también posible con `npx wrangler pages deploy dist --project-name whetzy --branch main` desde `frontend/` (sin `--branch main` va a Preview). `whetzy.com/health` devuelve el SPA; el health real es el del backend. **Tras cada deploy, `node scripts/check-deployed.mjs` en PASS** o no está hecho (incidente de login 2026-09-24, serie 30). La API sale de `frontend/.env.production` (`https://api-production-9751.up.railway.app/api/v1`)
-- Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA **no** se reutiliza (ADR-43, valor por defecto de H.LIC); CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
+- Fuentes de contenido: **solo gratuitas y legales** (ADR-11) — reutilizar MIT/Apache/BSD/CC BY/CC0/PSF/dominio público; CC BY-SA **no** se reutiliza (ADR-47, valor por defecto de H.LIC); CC BY-NC y propietario se cita, nunca se copia. Biblioteca: `docs/CATALOGO_MAESTRO.md` §2.1
 - Social login: si existe cualquier OAuth, **Sign in with Apple es obligatorio** antes de enviar a App Store (4.8, ADR-13)
 - DB local: Docker `:5433`, `neurium` / `neurium_dev` / db `neurium`
 - Alembic: nunca `create_all`. Toda migración por `alembic revision`. HEAD actual: `20260925_leagues_opt_out` (32 migraciones)
@@ -58,7 +58,7 @@ qué hacer; el ledger lo sabe.
 
 Hilo principal: el que fije `settings.json` (Sonnet 4.6). **Sesiones autónomas programadas: sin
 Opus ni Fable** (ADR-14, propuesta del dueño 2026-09-18); **una sesión interactiva usa el
-modelo con el que el dueño la arranca** (ADR-43). Subagentes: **Haiku por
+modelo con el que el dueño la arranca** (ADR-47). Subagentes: **Haiku por
 defecto** — inventarios, lecturas masivas, diffs doc↔código, verificación adversaria y
 **autoría de contenido por fichero** (siempre con la puerta de calidad de
 `CATALOGO_MAESTRO.md` §7); Sonnet solo cuando la tarea escribe en la lista de ficheros de

@@ -15,8 +15,8 @@ Frontend: React + Capacitor.
 | Saber qué fuentes se pueden usar (solo gratuitas y legales) y cómo | **`CATALOGO_MAESTRO.md` §2.1** + `DECISIONS.md` ADR-11 |
 | Desplegar (Cloudflare y Railway, ambos automáticos desde `master`), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
 | Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
-| Ver la posición frente a la competencia, con pesos fijos (última: §13, captura en vivo 2026-09-24, sin re-puntuar; §12 = ADR-42) | `competitive-teardown.md` |
-| Arrancar una sesión con control total (rama + PR, sin `master`; ADR-41) | **`PROMPT_CONTROL_TOTAL.md`** |
+| Ver la posición frente a la competencia, con pesos fijos (última: §13 ADR-46; §12 captura en vivo 2026-09-24, sin re-puntuar) | `competitive-teardown.md` |
+| Arrancar una sesión con control total (rama + PR, sin `master`; ADR-45) | **`PROMPT_CONTROL_TOTAL.md`** |
 | Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
 | Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
 | Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
@@ -33,7 +33,7 @@ Esos son los **diecinueve documentos vivos** (más `store/`). `analisis-estrateg
 `legal/` (raíz) no mandan sobre el código. Todo lo demás está en
 `archive/` — incluida la estrategia v3 del dueño, superada por el catálogo, y desde el
 2026-09-24 los planes paralelos `EXECUTION_PLAN_25-29`, `ROADMAP_25-29`, `*-PLANNING`,
-`SERIE*_STATUS/SUMMARY` y `VERIFICATION_CHECKLIST_FINAL` (ADR-44) — y **no
+`SERIE*_STATUS/SUMMARY` y `VERIFICATION_CHECKLIST_FINAL` (ADR-48) — y **no
 manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo. Un plan que
 no sea una fila de `AUTONOMOUS_STATE.md` no es un plan.
 
@@ -71,9 +71,8 @@ banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
 | Frontend | https://whetzy.com |
 | OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
 
-`master` **despliega los dos** al recibir un commit: el backend en Railway (verificado
-2026-09-16) y el frontend en Cloudflare Pages, conectado a Git (verificado 2026-09-24:
-tras `5be177f`, `whetzy.com/landing/` sirve el hero nuevo; cada rama tiene preview).
-**Por eso `master` solo lo fusiona el dueño a mano (ADR-41)**; la sesión trabaja en
-rama + PR. Wrangler a mano sigue valiendo (RUNBOOK §1). Después de cada fusión,
-`node frontend/scripts/check-deployed.mjs` en PASS.
+`git push origin master` **despliega los dos**: el backend en Railway (verificado
+2026-09-16) y el frontend en Cloudflare Pages, que está conectado a Git (verificado
+2026-09-24: tras `5be177f`, `whetzy.com/landing/` sirve el hero nuevo). Wrangler a mano
+sigue valiendo (RUNBOOK §1). Después, `node frontend/scripts/check-deployed.mjs` en PASS.
+**Por eso `master` solo lo fusiona el dueño a mano (ADR-45)**: la sesión trabaja en rama + PR.

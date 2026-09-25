@@ -1,4 +1,4 @@
-"""Pipeline del corpus (ledger 35.3): licencia, limpieza e índice, sin red.
+"""Pipeline del corpus (ledger 37.3): licencia, limpieza e índice, sin red.
 
 Cada caso monta una fuente falsa en `tmp_path` con la forma que deja
 `fetch.py` (`<corpus>/<nombre>/raw/…`) y pasa por el resto del pipeline.

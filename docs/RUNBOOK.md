@@ -23,7 +23,7 @@ First time per machine requires `npx wrangler login` (opens browser OAuth). The 
 
 ## Deploy to Railway (backend)
 
-**Deploy is AUTOMATIC** — Railway deploys from `master` automatically (verified 2026-09-16, H.16). After a commit reaches `master` (the owner merges, ADR-41), Railway runs migrations and content_loader without manual intervention.
+**Deploy is AUTOMATIC** — Railway deploys from `master` automatically (verified 2026-09-16, H.16). After a commit reaches `master` (the owner merges, ADR-45), Railway runs migrations and content_loader without manual intervention.
 
 To monitor deployment:
 1. Check Railway dashboard for build status

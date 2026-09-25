@@ -63,7 +63,7 @@ ADR-16 queda suspendida). Cancelar en dos toques.
 - Molde por track (catálogo §2): **20 skills · 300 Q · 3 niveles · 20 lecciones ·
   ≥ 36 términos · ≥ 15 % ejecutable** donde el navegador ejecute (Python, SQL, JS)
   o exento con razón (ADR-9). Un track por debajo del molde no existe.
-- Marca: paleta **Obsidian** (serie 34, ADR-43): oscuro por defecto, cian `#06B6D4`
+- Marca: paleta **Obsidian** (serie 34, ADR-47): oscuro por defecto, cian `#06B6D4`
   primario, el verde **solo** para éxito, claro solo en `[data-theme="light"]`;
   logo de triángulo neural.
 - Monolito FastAPI mientras un solo equipo lo mantenga.
@@ -71,7 +71,7 @@ ADR-16 queda suspendida). Cancelar en dos toques.
   dominio** (catálogo §3). Carril 1 sigue mandando mientras no haya usuarios:
   **PCEP** (track01, $59, la cuña) — blueprint corregido en 18.1.
   **Marketplace de creadores: se construye entero (serie 28) pero no se abre al
-  público antes de ≥ 100 usuarios activos verificados** (catálogo §9, ADR-43).
+  público antes de ≥ 100 usuarios activos verificados** (catálogo §9, ADR-47).
 - Presupuesto no es estrategia. Si el cupo semanal obliga a racionar, se anota
   como límite de la sesión — nunca se presenta «una tarea por sesión» como plan.
 
@@ -170,8 +170,8 @@ literal, y devuelve ≤ 300 palabras más la salida de sus comandos.
 ### Sin preguntar
 Escribir, refactorizar, borrar código propio · crear y correr tests · migraciones
 Alembic **en local** · `git commit` / `git push` a **la rama de la sesión** y abrir o
-actualizar **su PR** (ADR-41) · descargar, verificar y limpiar corpus abierto en
-`corpus/` (ADR-42) · instalar dependencias
+actualizar **su PR** (ADR-45) · descargar, verificar y limpiar corpus abierto en
+`corpus/` (ADR-46) · instalar dependencias
 del proyecto · levantar dev servers y ejercitar la app en el Browser pane ·
 reorganizar docs · borrar código muerto **tras** grep que pruebe cero referencias ·
 linters, type checkers, formatters y sus fixes · gestionar el scheduled task
@@ -179,15 +179,15 @@ linters, type checkers, formatters y sus fixes · gestionar el scheduled task
 
 **`git push origin master` DESPLIEGA** backend, migraciones, `content_loader` y, desde
 el 2026-09-24, el frontend. **Por eso ninguna sesión hace push a `master` ni fusiona:
-`master` lo fusiona el dueño a mano tras ver el preview (ADR-41).** Antes de cada push
+`master` lo fusiona el dueño a mano tras ver el preview (ADR-45).** Antes de cada push
 a la rama: `pytest tests/content`, `check_question_bank.py` y `check_docs.py` verdes;
 migraciones solo aditivas con `downgrade` probado; **nunca un track a medias** (el
 schema equivocado de track12 llegó a producción y `start.sh` se tragó el error del
-loader). La sesión no raciona: trabaja hasta que el límite la detenga (ADR-41 §4).
+loader). La sesión no raciona: trabaja hasta que el límite la detenga (ADR-45 §4).
 
 ### Detente y escribe en `HUMAN-BLOCKED`
 Operaciones destructivas sobre la **DB de producción** · `git push origin master` o
-fusionar un PR (ADR-41) · desconectar o cambiar el auto-deploy de Railway · claves
+fusionar un PR (ADR-45) · desconectar o cambiar el auto-deploy de Railway · claves
 live de Stripe o cualquier gasto · crear cuentas en servicios, aunque sean gratis · submisión a
 stores · DNS o dominio · datos de usuarios reales · rotar o exponer secretos ·
 tocar `~/.claude/settings.json` · reabrir una decisión cerrada.
@@ -465,7 +465,7 @@ cadena corre en la nube, con la app cerrada.
 Continuidad → pre-flight → mirada de dueño → `python scripts/ledger.py next` →
 loop sin cierre voluntario en la rama de la sesión, PR abierto desde el primer commit →
 cuando no quede nada ejecutable, informar como dueño: ¿se puede lanzar?
-Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md` (ADR-41).
+Prompt de arranque con control total: `docs/PROMPT_CONTROL_TOTAL.md` (ADR-45).
 Escéptico con el ledger, honesto con la evidencia, tacaño con Opus, fiel a las
 líneas rojas.
 ```

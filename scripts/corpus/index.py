@@ -30,7 +30,7 @@ def entry_for(meta: dict[str, Any], aliases: list[str] | None = None) -> dict[st
         "mark": "reusar",
         "verified_date": str(meta["license_checked_at"])[:10],
         "sha": meta.get("sha"),
-        "notes": f"Licencia leída en {meta.get('license_file')} por scripts/corpus (35.3): «{meta.get('license_evidence')}»",
+        "notes": f"Licencia leída en {meta.get('license_file')} por scripts/corpus (37.3): «{meta.get('license_evidence')}»",
         # URL donde se publica ESTE mismo contenido (p. ej. docs.python.org/3 para
         # el `Doc/` de cpython). Las preguntas citan la URL publicada, no el repo.
         **({"aliases": sorted({a.rstrip("/") for a in aliases})} if aliases else {}),

@@ -32,7 +32,7 @@ async def start_quiz(
     # El repaso espaciado (FSRS) es el motor, no un extra: gratis para todos. La
     # landing lo promete y Home lo ofrece con «Repasar»; hasta el 2026-09-24 ese
     # botón devolvía 403 a cualquiera sin plan, es decir, a todo el mundo.
-    # El modo examen sigue siendo de Pro (ADR-45).
+    # El modo examen sigue siendo de Pro (ADR-41).
     if payload.mode == "exam" and not user_meets_tier(current_user, "plus") and not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

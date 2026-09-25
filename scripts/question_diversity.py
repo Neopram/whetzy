@@ -1,12 +1,12 @@
-"""Guarda de diversidad del banco de preguntas (ledger 35.0, ADR-42).
+"""Guarda de diversidad del banco de preguntas (ledger 37.0, ADR-46).
 
 Por qué existe: el primer intento de la serie 25 (2026-09-19) generó 800
 preguntas para track24/25 con **14 enunciados distintos por track** (3,5 %),
 opciones de una sola palabra en el 94 % de los casos y 131 `*_exec` sin código.
 Pasaron `check_question_bank.py` porque este solo miraba forma, no contenido.
-ADR-42 exige esta guarda antes de escribir una sola pregunta nueva.
+ADR-46 exige esta guarda antes de escribir una sola pregunta nueva.
 
-Métricas por track (ADR-42):
+Métricas por track (ADR-46):
 
 * ``distinct_ratio``      enunciados distintos (ES, normalizados) / total   ≥ 0,90
 * ``one_word_ratio``      opciones de una sola palabra / opciones           ≤ 0,40
@@ -16,18 +16,18 @@ Métricas por track (ADR-42):
 * ``longest_correct_ratio`` preguntas de opciones cuya correcta es la única
                           opción más larga                                   ≤ 0,40
 
-La última se añadió el 2026-09-25 (35.16): en el banco vivo, elegir siempre la
+La última se añadió el 2026-09-25 (37.16): en el banco vivo, elegir siempre la
 opción más larga acierta el 66,9 % (el azar da ~25 %) y el 98 % en track11.
 
 **Trinquete**, como la guarda `.tsx`↔`.module.css`: medido el 2026-09-25, el banco
-vivo no cumple todo ADR-42. Seis tracks superan el 40 % de opciones de una
+vivo no cumple todo ADR-46. Seis tracks superan el 40 % de opciones de una
 palabra, track13 tiene un 87,9 % de enunciados distintos, y `index.json` tiene 10
 entradas frente a 6.305 preguntas: el 62 % no lleva ninguna URL. Aplicar los
 umbrales tal cual pondría en rojo todo el banco, y una puerta siempre roja se
 acaba saltando. Por eso:
 
 * un track **sin línea base** (uno nuevo, o track24/25 si salen de la
-  cuarentena) cumple ADR-42 **al pie de la letra**;
+  cuarentena) cumple ADR-46 **al pie de la letra**;
 * un track **con línea base** no puede empeorar ninguna métrica respecto a su
   base. En la práctica, cada pregunta nueva tiene que ser distinta, traer código
   si es `*_exec` y citar una fuente indexada.
@@ -84,7 +84,7 @@ def _correct_is_longest(q: dict[str, Any]) -> bool:
 
 def indexed_urls(index_path: Path = INDEX) -> list[str]:
     data = json.loads(index_path.read_text(encoding="utf-8"))
-    # `aliases`: la URL donde se publica la misma fuente verificada (35.4).
+    # `aliases`: la URL donde se publica la misma fuente verificada (37.4).
     return [str(u).rstrip("/") for s in data for u in [s["url"], *s.get("aliases", [])]]
 
 
@@ -141,9 +141,9 @@ def check(
         base = baseline.get(track)
         if base is None:
             if m["distinct_ratio"] < MIN_DISTINCT:
-                problems.append(f"{track}: enunciados distintos {m['distinct_ratio']:.1%} < {MIN_DISTINCT:.0%} (ADR-42)")
+                problems.append(f"{track}: enunciados distintos {m['distinct_ratio']:.1%} < {MIN_DISTINCT:.0%} (ADR-46)")
             if m["one_word_ratio"] > MAX_ONE_WORD:
-                problems.append(f"{track}: opciones de una palabra {m['one_word_ratio']:.1%} > {MAX_ONE_WORD:.0%} (ADR-42)")
+                problems.append(f"{track}: opciones de una palabra {m['one_word_ratio']:.1%} > {MAX_ONE_WORD:.0%} (ADR-46)")
             if m["exec_without_code"]:
                 problems.append(f"{track}: {m['exec_without_code']} preguntas *_exec sin código")
             if m["source_not_indexed"]:
@@ -151,7 +151,7 @@ def check(
             if m["longest_correct_ratio"] > MAX_LONGEST_CORRECT:
                 problems.append(
                     f"{track}: la correcta es la opción más larga en el {m['longest_correct_ratio']:.1%} "
-                    f"> {MAX_LONGEST_CORRECT:.0%} (35.16)"
+                    f"> {MAX_LONGEST_CORRECT:.0%} (37.16)"
                 )
             continue
         floor = min(MIN_DISTINCT, float(base["distinct_ratio"]))
@@ -167,12 +167,12 @@ def check(
                 f"{track}: preguntas sin fuente indexada {m['source_not_indexed']} > base {base['source_not_indexed']} "
                 "(las preguntas nuevas citan una fuente de content/sources/index.json)"
             )
-        # Una base anterior a 35.16 no trae la clave: se trata como el techo nuevo.
+        # Una base anterior a 37.16 no trae la clave: se trata como el techo nuevo.
         top = max(MAX_LONGEST_CORRECT, float(base.get("longest_correct_ratio", MAX_LONGEST_CORRECT)))
         if m["longest_correct_ratio"] > top + _EPS:
             problems.append(
                 f"{track}: la correcta es la opción más larga en el {m['longest_correct_ratio']:.1%}, "
-                f"empeora (base {top:.1%}; 35.16)"
+                f"empeora (base {top:.1%}; 37.16)"
             )
     return problems
 
@@ -200,7 +200,7 @@ def main(argv: list[str] | None = None) -> int:
         for p in problems:
             print(f"  {p}")
         return 1
-    print(f"[diversidad] PASS - {len(by_track)} tracks sin empeorar (ADR-42, 35.0)")
+    print(f"[diversidad] PASS - {len(by_track)} tracks sin empeorar (ADR-46, 37.0)")
     return 0
 
 

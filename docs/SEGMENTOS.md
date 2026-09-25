@@ -36,7 +36,7 @@ distribución (Series 26-27) deben hablarle a cada segmento en su idioma.
 
 ### Plan y precio
 - **Gratis:** todo el contenido, el motor adaptativo y el repaso espaciado (ADR-41; la propuesta del 2026-09-18 de limitarlo a Python básico no se aplicó nunca)
-- **Pro $14.99/mo:** tutor con IA (ADR-45)
+- **Pro $14.99/mo:** tutor con IA (ADR-41)
 - **Gancho de conversión:** Completion del primer módulo → unlock del siguiente = paywall suave
 
 ### Flujo en la app
@@ -77,9 +77,9 @@ Landing → Registro (30s) → Diagnóstico 10 preguntas (3 min)
 > Completion rate > 70% — no eres tú, era el método."
 
 ### Plan y precio
-- **Pro Max $19.99/mo** (antes «Premium»; lo que añade sobre Pro lo decide el dueño, H.38 / ADR-45)
+- **Pro Max $19.99/mo** (antes «Premium»; lo que añade sobre Pro lo decide el dueño, H.35 / ADR-41)
 - **Certificaciones $49/año:** PCEP, AWS CLF, ISC2 CC como primeras credenciales
-- **Gancho de conversión:** Ver la "ruta de empleabilidad" completa → solo en Pro Max (propuesta, pendiente de H.38)
+- **Gancho de conversión:** Ver la "ruta de empleabilidad" completa → solo en Pro Max (propuesta, pendiente de H.35)
 
 ### Flujo en la app
 ```
@@ -117,7 +117,7 @@ Landing (sección career-switcher) → "¿Cuánto tiempo tienes por día?"
 > a LLMs, RAG y arquitecturas de AI. Sin repetir lo que ya sabes."
 
 ### Plan y precio
-- **Pro $14.99/mo:** tutor con IA (ADR-45). *Propuesta del 2026-09-18, no aplicada: poner los tracks 6-7 y cloud tras Pro; hoy todo el contenido es gratis.*
+- **Pro $14.99/mo:** tutor con IA (ADR-41). *Propuesta del 2026-09-18, no aplicada: poner los tracks 6-7 y cloud tras Pro; hoy todo el contenido es gratis.*
 - **Bootcamps async $99:** Implementación práctica de sistemas AI en producción
 - **Gancho de conversión:** Assessment que demuestra que el motor lo detecta → "impresionante"
 
@@ -154,13 +154,13 @@ Landing (sección "Ya sé programar") → Assessment express 15 preguntas
 4. "Mis alumnos no terminan los cursos — no es motivador"
 
 ### Propuesta de valor Whetzy
-> "Tu contenido + nuestro motor adaptativo. Revenue share 80/20 (ADR-45).
+> "Tu contenido + nuestro motor adaptativo. Revenue share 80/20 (ADR-41).
 > Tus alumnos terminan porque el motor personaliza el camino.
 > Tú cobras más porque el producto entrega más."
 
 ### Plan y precio
-- **Plan Creador 99,99 $/mes (ADR-45)** para publicar; se exige cuando abra el cobro (`CREATOR_PLAN_REQUIRED`)
-- **Revenue share:** 80 % creador / 20 % Whetzy por cada venta, tras la comisión del procesador de pagos (ADR-45)
+- **Plan Creador 99,99 $/mes (ADR-41)** para publicar; se exige cuando abra el cobro (`CREATOR_PLAN_REQUIRED`)
+- **Revenue share:** 80 % creador / 20 % Whetzy por cada venta, tras la comisión del procesador de pagos (ADR-41)
 - **Quality gate:** Todo contenido pasa §7 antes de publicarse (garantía de calidad)
 - **Incentivo extra:** Instructores top → badge verificado → más visibilidad en marketplace
 
@@ -253,7 +253,7 @@ Demo personalizada (30 min, Calendly) → Contrato piloto gratuito
 
 ### Plan y precio
 - **Free tier:** módulo 1 de track32 + glosario Solana
-- **Pro $14.99/mo:** tutor con IA (ADR-45). *Propuesta del 2026-09-18, no aplicada: track32 completo + proyectos tras Pro.*
+- **Pro $14.99/mo:** tutor con IA (ADR-41). *Propuesta del 2026-09-18, no aplicada: track32 completo + proyectos tras Pro.*
 - **Gancho de conversión:** el proyecto final es un bounty real de Superteam Earn
 
 ### Flujo en la app
@@ -278,8 +278,8 @@ que aprende una plataforma; los créditos y referidos son los mismos que para lo
 
 ## Resumen de monetización por segmento
 
-> Precios individuales y de Creador: ADR-45 (dueño, 2026-09-24). B2B: hipótesis interna de
-> ADR-43. **«LTV estimado» y «% usuarios esperado» son hipótesis sin datos** (cero usuarios de
+> Precios individuales y de Creador: ADR-41 (dueño, 2026-09-24). B2B: hipótesis interna de
+> ADR-47. **«LTV estimado» y «% usuarios esperado» son hipótesis sin datos** (cero usuarios de
 > pago; H.10): no se citan como cifra.
 
 | Segmento | Plan | Precio | LTV estimado (hipótesis) | % usuarios esperado (hipótesis) |
@@ -287,8 +287,8 @@ que aprende una plataforma; los créditos y referidos son los mismos que para lo
 | Estudiante | Free → Pro | $0 → $14.99/mo | $90-180/yr | 60% del total |
 | Career Switcher | Pro Max + Certs | $19.99/mo + $49 | $290/yr | 20% |
 | Developer Senior | Pro + Bootcamp | $14.99/mo + $99 | $280/yr | 10% |
-| Profesor | Creador | $99.99/mo + 20 % por venta para Whetzy, tras la comisión del procesador (ADR-45) | N/A | 5% |
-| Empresa | B2B seats | $99/asiento/año, mínimo 10 (hipótesis ADR-43, sin publicar) | $990/empresa | 5% |
+| Profesor | Creador | $99.99/mo + 20 % por venta para Whetzy, tras la comisión del procesador (ADR-41) | N/A | 5% |
+| Empresa | B2B seats | $99/asiento/año, mínimo 10 (hipótesis ADR-47, sin publicar) | $990/empresa | 5% |
 | Web3 / Solana | Free → Pro | $0 → $14.99/mo | $180/yr | dentro del 60 % de estudiantes/devs; se mide aparte |
 
 ---

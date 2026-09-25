@@ -13,9 +13,9 @@
 > o la borra. Un número sin comando ni URL es un bug de este doc.
 >
 > Última medición: 2026-09-18 (sesión **bg**, 20.2). Estado del banco: ver `## 1`.
-> **Objetivo desde el 2026-09-24 (ADR-42):** cubrir **todos los tracks de la industria** con **≥ 50 cursos por track**
+> **Objetivo desde el 2026-09-24 (ADR-46):** cubrir **todos los tracks de la industria** con **≥ 50 cursos por track**
 > (curso = módulo: 4 skills · 60 Q · 4 lecciones · ≥ 8 términos), sobre un corpus abierto descargado, verificado y limpiado
-> fuera del repo (`corpus/`). Sustituye la meta de ADR-25. Ejecución: Serie 35 del ledger; la puerta 35.0 va antes que cualquier pregunta nueva.
+> fuera del repo (`corpus/`). Sustituye la meta de ADR-25. Ejecución: Serie 37 del ledger; la puerta 37.0 va antes que cualquier pregunta nueva.
 > Política de fuentes desde el 2026-09-18 (ADR-11): **solo gratuitas y legales** — ver §2.1.
 
 ---
@@ -71,7 +71,7 @@ compran libros para parafrasearlos y los PDFs pirateados no entran ni como cita.
 camino con cualquier fuente es el mismo: leer → escribir lección/pregunta original en
 ES y EN → citar. Los hechos son libres; la redacción no.
 
-**Meta por track (ADR-42): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 6.305; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
+**Meta por track (ADR-46): 50 cursos = 50 módulos = 200 skills · 3.000 Q · 200 lecciones · ≥ 400 términos.** El molde de 20 skills · 300 Q es el **mínimo de entrada** (un track por debajo no existe); la meta es diez veces más y se persigue sin fecha, un bloque = un PR verde. Aritmética honesta: 42 tracks × 3.000 Q ≈ 126.000 preguntas; hoy 6.305; a las 518 Q verificadas por sesión que midió 18.4 (`bec734c`) son ≈ 240 sesiones de contenido.
 
 | # | Área | Track | Id | Estado | Fuentes con licencia | Runtime | Certs asociadas (→ §3) |
 |---|---|---|---|---|---|---|---|
@@ -106,16 +106,16 @@ ES y EN → citar. Los hechos son libres; la redacción no.
 
 **Cobertura hoy: 16 de 28 filas (57 %).** 8 tracks completados + track13/24/25 Seguridad (scaffolding + 500 Q mock cada uno, 25.0) + track14 Frontend JS (stub, 12 Q) + track15/16/17 (18.4). Faltan **12**: Docker/K8s (18), IaC+CI/CD (19), Data Eng (20), Data Science (21), Azure (22), GCP (23), Git (26), NoSQL (27), Backend (28), QA (29), Agile (30), Móvil (31), **Solana/Web3 (32, ADR-38)**.
 
-### 2.0 Ampliación a toda la industria (ADR-42) — 14 tracks más, ids `track33`+
+### 2.0 Ampliación a toda la industria (ADR-46) — 14 tracks más, ids `track33`+
 
 Áreas con demanda medible en la industria (encuesta anual de Stack Overflow, roadmap.sh,
 catálogos de certificación) que el mapa de 28 no cubría. **Cada fila entra al mapa
-solo cuando 35.1 la confirme con URL y fecha**; hasta entonces es propuesta. Licencias
-de las fuentes: se comprueban en 35.3 leyendo `LICENSE` (nada aquí se da por libre sin
+solo cuando 37.1 la confirme con URL y fecha**; hasta entonces es propuesta. Licencias
+de las fuentes: se comprueban en 37.3 leyendo `LICENSE` (nada aquí se da por libre sin
 leerlo). Runtime: solo Python, SQL y JS ejecutan en el navegador; el resto va exento con
 razón (ADR-9), como Linux.
 
-| # | Área | Track | Id | Fuentes candidatas (licencia a comprobar en 35.3) | Runtime | Certs asociadas |
+| # | Área | Track | Id | Fuentes candidatas (licencia a comprobar en 37.3) | Runtime | Certs asociadas |
 |---|---|---|---|---|---|---|
 | 29 | Lenguajes | Java / JVM (Kotlin backend) | track33 | OpenJDK docs (GPL+CE → cita), `TheAlgorithms/Java` MIT, Spring guides Apache-2 | exento | OCA/OCP (cita) |
 | 30 | Lenguajes | C# / .NET | track34 | `dotnet/docs` CC BY 4.0, `TheAlgorithms/C-Sharp` MIT | exento | AZ-204 (con track22) |
@@ -586,11 +586,11 @@ El estudio advierte explícitamente:
 
 > *"If Platzi, DataCamp, or a well-funded entrant ships genuinely adaptive Spanish content at scale, the window narrows quickly — monitor Platzi's Leap integration and any DataCamp Spanish localization."*
 
-**Acción en el ledger:** fila **35.12** (monitoreo trimestral; hasta el 2026-09-24 este párrafo apuntaba a una fila que no existía). Si Platzi anuncia motor adaptativo real o DataCamp anuncia localización al español con motor, escalar a HUMAN-BLOCKED para decisión del dueño sobre aceleración o pivot a nicho de ciberseguridad.
+**Acción en el ledger:** fila **37.12** (monitoreo trimestral; hasta el 2026-09-24 este párrafo apuntaba a una fila que no existía). Si Platzi anuncia motor adaptativo real o DataCamp anuncia localización al español con motor, escalar a HUMAN-BLOCKED para decisión del dueño sobre aceleración o pivot a nicho de ciberseguridad.
 
 ---
 
-## 12. Proyección competitiva cuando Whetzy llegue a ADR-42 (≥ 50 cursos × ≥ 42 tracks; antes ADR-25)
+## 12. Proyección competitiva cuando Whetzy llegue a ADR-46 (≥ 50 cursos × ≥ 42 tracks; antes ADR-25)
 
 ### 12.1 Score competitivo proyectado
 
@@ -609,7 +609,7 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 | Accesibilidad | 0.05 | 3 | 5 | 5 | 5 |
 | **Total sin distribución** | | **44** | **~60** | **~66** | **~66** |
 
-> **Corregido el 2026-09-24:** la tabla anterior sumaba 49 en la columna «Hoy» donde decía 44, y proyectaba «~79 con 1K usuarios» y «~85 con 10K» sin ninguna aritmética detrás (para 85 haría falta Distribución = 100). Se retiran. Con los pesos de `competitive-teardown.md` §7.1 y las notas de §11: hoy **44**; con el backlog técnico cerrado y sin usuarios **≈ 61**; con tiendas, social login y cohorte beta **≈ 66**; y el catálogo completo de ADR-42 (Contenido 55 → 85) añade **+4,2** → **≈ 70**. Por encima de eso solo mueve Distribución, que pesa 0,34 y no se construye.
+> **Corregido el 2026-09-24:** la tabla anterior sumaba 49 en la columna «Hoy» donde decía 44, y proyectaba «~79 con 1K usuarios» y «~85 con 10K» sin ninguna aritmética detrás (para 85 haría falta Distribución = 100). Se retiran. Con los pesos de `competitive-teardown.md` §7.1 y las notas de §11: hoy **44**; con el backlog técnico cerrado y sin usuarios **≈ 61**; con tiendas, social login y cohorte beta **≈ 66**; y el catálogo completo de ADR-46 (Contenido 55 → 85) añade **+4,2** → **≈ 70**. Por encima de eso solo mueve Distribución, que pesa 0,34 y no se construye.
 
 **La única variable que mueve el marcador más allá de 66 es la distribución.** ADR-25 cierra la dimensión de contenido al máximo posible, pero no toca distribución. El dueño la activa con la campaña (YouTube, B2B, comunidades Python en español).
 
@@ -619,7 +619,7 @@ Los pesos fijos del `competitive-teardown.md` §7.1 no cambian. Lo que cambia es
 |---|---|---|---|---|---|
 | Motor adaptativo | ❌ video/cohort | ✅ Optima (EN/AR) | ❌ lineal | Parcial | **✅ BKT+FSRS+Elo+DKT** |
 | Español nativo | ✅ | ❌ | ❌ | ❌ | **✅ + EN separado** |
-| Cursos/contenido | 1,900 | 730 | ~50 | ~500 | **≥ 50 por track × ≥ 42 tracks (ADR-42)** |
+| Cursos/contenido | 1,900 | 730 | ~50 | ~500 | **≥ 50 por track × ≥ 42 tracks (ADR-46)** |
 | Certificaciones | ❌ | ❌ | ❌ | ❌ | **✅ 55+** |
 | Ciberseguridad | ❌ | ❌ | ❌ | Parcial | **✅ 3 tracks** |
 | Cloud (AWS/Azure/GCP) | ❌ | ❌ | ❌ | ❌ | **✅ 6 tracks** |

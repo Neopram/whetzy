@@ -1,6 +1,6 @@
 """Descarga una fuente al corpus: `git` (clon superficial) o `http` (un fichero).
 
-Torrents: solo cuando sean el canal oficial de un corpus legal (ADR-42). No se
+Torrents: solo cuando sean el canal oficial de un corpus legal (ADR-46). No se
 implementan aquí hasta que haga falta uno; `fetch.py` rechaza `kind=torrent`
 con ese motivo en vez de fingir que lo soporta.
 
@@ -60,7 +60,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--corpus", type=Path, default=CORPUS)
     a = ap.parse_args(argv)
     if a.kind == "torrent":
-        print("[fetch] torrent: sin implementar; solo se admitirá como canal oficial de un corpus legal (ADR-42)")
+        print("[fetch] torrent: sin implementar; solo se admitirá como canal oficial de un corpus legal (ADR-46)")
         return 2
     dest = source_dir(a.name, a.corpus)
     content = dest / "raw"

@@ -125,31 +125,31 @@ premisas:
 
 La decisión sigue en pie; lo que cambia es la lectura. **$14.99 mensual queda por
 debajo de todos los de catálogo verificados** ($29.99 / $49 / $30 / $59), y es igual
-a lo que cobran al mes pagando el año. Falta, y es decisión del dueño (H.38):
+a lo que cobran al mes pagando el año. Falta, y es decisión del dueño (H.35):
 - el precio anual;
 - si hay tarifa regional;
 - qué entra en el plan gratuito.
 
-**Actualización 2026-09-24 (ADR-45):** el dueño fijó los mensuales:
+**Actualización 2026-09-24 (ADR-41):** el dueño fijó los mensuales:
 - Pro, 14,99 $;
 - Pro Max, 19,99 $;
 - Creador, 99,99 $ (80/20 por venta).
 
-Son los que muestran la landing y la comparativa. Siguen pendientes (H.38) el anual, la
+Son los que muestran la landing y la comparativa. Siguen pendientes (H.35) el anual, la
 tarifa regional y qué añade Pro Max.
 
 ### A.4 Lo que se adopta, y lo que no
 
 | Idea | Origen | Decisión | Ledger |
 |---|---|---|---|
-| Comparativa pública fechada y con fuente | (propia, contra la landing inventada de antes) | **Hecho**: 4 filas, 3 competidores | 37.1 |
-| Diagnóstico visible de «salta lo que ya sabes» | Educative | Adoptar: el *placement* ya existe; hacerlo visible en cada track | 37.2 |
-| Racha amable: comodines gratis y «perder la racha no borra lo aprendido» | Duolingo (freeze), contra Mimo (reparación de pago) | Adoptar | 37.3 |
+| Comparativa pública fechada y con fuente | (propia, contra la landing inventada de antes) | **Hecho**: 4 filas, 3 competidores | 35.1 |
+| Diagnóstico visible de «salta lo que ya sabes» | Educative | Adoptar: el *placement* ya existe; hacerlo visible en cada track | 35.2 |
+| Racha amable: comodines gratis y «perder la racha no borra lo aprendido» | Duolingo (freeze), contra Mimo (reparación de pago) | Adoptar | 35.3 |
 | Corazones o vidas | Sololearn, Duolingo | **No**: el error alimenta al motor, no se cobra | — |
-| Ligas | Duolingo, Sololearn | Solo *opt-in* visible | 37.4 |
-| Tarifa regional, anual en cuotas | Boot.dev, DataCamp, EDteam, Platzi | Propuesta al dueño | H.38 |
-| *Readiness* por dominio ponderado por el exam guide, en ES | hueco reportado (A.2) | Producto estrella de las rutas cloud y seguridad | 37.5 |
-| Open Badges 3.0 con verificación pública | hueco reportado (A.2) | Ya en ECONOMIA.md (S29); priorizar tras 37.5 | — |
+| Ligas | Duolingo, Sololearn | Solo *opt-in* visible | 35.4 |
+| Tarifa regional, anual en cuotas | Boot.dev, DataCamp, EDteam, Platzi | Propuesta al dueño | H.35 |
+| *Readiness* por dominio ponderado por el exam guide, en ES | hueco reportado (A.2) | Producto estrella de las rutas cloud y seguridad | 35.5 |
+| Open Badges 3.0 con verificación pública | hueco reportado (A.2) | Ya en ECONOMIA.md (S29); priorizar tras 35.5 | — |
 | Cuentas atrás y «70 % OFF» permanentes | Coderhouse, Henry | **No** | — |
 
 ---
@@ -529,7 +529,7 @@ la plataforma; no vende exposición a ella.
 | Pago en USDC liquidado en fiat (LATAM) | ✅ tras H.19 | ❌ | ❌ | ❌ | ❌ |
 | Credenciales verificables (Open Badges 3.0) | ✅ S29 | ❌ | ❌ | ❌ | ❌ |
 | Token / cripto propia | ❌ a propósito (ADR-33) | ❌ | ❌ | ❌ | ❌ |
-| Precio base (2026-09-18, **no verificado** salvo Whetzy; ver §A.1) | Pro $14.99 (ADR-45; publicado en la landing, cobro sin abrir) | ~~$49~~ $59/mes · $399/año | $39 | ~~$29~~ $49/mes · $249/año | $20 |
+| Precio base (2026-09-18, **no verificado** salvo Whetzy; ver §A.1) | Pro $14.99 (ADR-41; publicado en la landing, cobro sin abrir) | ~~$49~~ $59/mes · $399/año | $39 | ~~$29~~ $49/mes · $249/año | $20 |
 | Empleabilidad | Alta | Alta | Media | Media | Media |
 
 ---
@@ -547,4 +547,4 @@ Para cada competidor del §1, navegar el free tier y documentar:
 - [ ] Anotar: qué emoción genera el diseño (confianza / excitación / aburrimiento)
 - [ ] Anotar: qué haría Whetzy diferente en esa misma pantalla
 
-Guardar en: `docs/archive/competencia-screenshots-2026-09-19/` (histórico, ADR-44; la captura vigente es §A)
+Guardar en: `docs/archive/competencia-screenshots-2026-09-19/` (histórico, ADR-48; la captura vigente es §A)

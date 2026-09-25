@@ -154,7 +154,7 @@ Reglas de escritura del ledger tras verificar:
   `PROPUESTA` — entonces se anota y se pregunta en `HUMAN-BLOCKED`.
 - Todo commit de verificación: `verify(<ID>): <qué se probó> — <resultado>` y toca
   **solo** los ficheros de esa fila. `git commit -- <rutas>` explícitas, nunca `git add -A`.
-- **Un commit en `master` despliega** (H.16), y **solo el dueño fusiona** (ADR-41): la
+- **Un commit en `master` despliega** (H.16), y **solo el dueño fusiona** (ADR-45): la
   sesión acumula sus commits de verificación en su rama y hace **push de la rama**
   (nunca de `master`) al cerrar cada oleada, con las cuatro guardias en verde (`pytest tests/content`,
   `check_question_bank.py`, `check_docs.py`, `npm run build`). Un push de docs

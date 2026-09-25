@@ -1,4 +1,4 @@
-"""Ligas opcionales (ledger 37.4): salir, no aparecer, no sumar, volver."""
+"""Ligas opcionales (ledger 35.4): salir, no aparecer, no sumar, volver."""
 
 from __future__ import annotations
 

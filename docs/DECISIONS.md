@@ -279,7 +279,7 @@ posponer toda la preparación (las abstracciones cuestan casi nada y evitan rees
 
 ## ADR-16 — Rail de pagos y entidad: decidir con datos, no con prisa (ACEPTADA 2026-09-18)
 
-> **Enmendada por ADR-43 el 2026-09-24:** la premisa griega queda suspendida; valor por defecto Merchant of Record + IAP tras `PaymentProvider`; entidad y jurisdicción sin decidir (H.29).
+> **Enmendada por ADR-47 el 2026-09-24:** la premisa griega queda suspendida; valor por defecto Merchant of Record + IAP tras `PaymentProvider`; entidad y jurisdicción sin decidir (H.29).
 
 **Decisión:** Antes de activar cobros se ejecutan 21.1 (entidad/fiscalidad) y 21.2
 (rail de pagos). Opciones sobre la mesa: (a) Stripe como particular en Grecia (H.4),
@@ -366,7 +366,7 @@ el cierre (demasiado tarde: ya se construyó encima).
 ---
 ## ADR-21 — Precio Pro $14.99/mes (2026-09-18)
 
-> **Enmendada por ADR-43 el 2026-09-24** (hipótesis Pro $9,99 / Plus $19,99, ninguno publicado) **y por ADR-45 el mismo día, más tarde** (decisión del dueño: Pro $14,99, Pro Max $19,99, Creador $99,99; publicados en la landing, cobro sin abrir). Manda ADR-45.
+> **Enmendada por ADR-47 el 2026-09-24** (hipótesis Pro $9,99 / Plus $19,99, ninguno publicado) **y por ADR-41 el mismo día, más tarde** (decisión del dueño: Pro $14,99, Pro Max $19,99, Creador $99,99; publicados en la landing, cobro sin abrir). Manda ADR-41.
 
 **Decisión:** Pro = $14.99/mes (no $9.99). Premium = $19.99 sin cambio.
 
@@ -382,13 +382,13 @@ el cierre (demasiado tarde: ya se construyó encima).
 members» y «$10M ARR» no se han podido comprobar en fuente primaria y no deben
 citarse. La conclusión aguanta mejor que antes: $14.99 mensual está por debajo de
 todos los de catálogo verificados. Quedan abiertos el precio anual, la tarifa
-regional y el corte gratis/Pro (H.38; antes H.35 en master, renumerada al integrar). ORCHESTRATOR.md decía $9.99; corregido el mismo día.
+regional y el corte gratis/Pro (H.35). ORCHESTRATOR.md decía $9.99; corregido el mismo día.
 
 ---
 
 ## ADR-22 — B2B antes que escalar B2C (2026-09-18)
 
-> **Enmendada por ADR-43 el 2026-09-24:** B2B $99 por asiento y año, mínimo 10, como hipótesis interna sin publicar; 3 pilotos gratuitos (36.2, H.36).
+> **Enmendada por ADR-47 el 2026-09-24:** B2B $99 por asiento y año, mínimo 10, como hipótesis interna sin publicar; 3 pilotos gratuitos (38.2, H.39).
 
 **Decisión:** Prioridad de venta: contratos B2B piloto (upskilling Python/AI para empresas) antes de invertir en adquisición B2C masiva.
 
@@ -422,7 +422,7 @@ regional y el corte gratis/Pro (H.38; antes H.35 en master, renumerada al integr
 
 ## ADR-25 — Meta de contenido: 100 cursos × 27 tracks (2026-09-18)
 
-> **Enmendada por ADR-42 el 2026-09-24:** la meta es ≥ 50 cursos por track en todos los tracks de la industria (28 + 14 de `CATALOGO_MAESTRO.md` §2.0 y los que 35.1 confirme), sobre corpus abierto, con la guarda de diversidad 35.0 antes de cualquier pregunta nueva.
+> **Enmendada por ADR-46 el 2026-09-24:** la meta es ≥ 50 cursos por track en todos los tracks de la industria (28 + 14 de `CATALOGO_MAESTRO.md` §2.0 y los que 37.1 confirme), sobre corpus abierto, con la guarda de diversidad 37.0 antes de cualquier pregunta nueva.
 
 **Decisión:** La meta de contenido a largo plazo es 100 cursos por track × 27 tracks = 2,700 cursos adaptativos, con glosario máximo por área.
 
@@ -771,7 +771,54 @@ sesión encima de la mesa).
 
 ---
 
-## ADR-41 — Control total de la sesión: rama + PR; `master` lo fusiona el dueño a mano (ACEPTADA 2026-09-24)
+## ADR-41 — Precios y reparto del marketplace: Pro 14,99 $, Pro Max 19,99 $, Creador 99,99 $, 80/20 por venta (DUEÑO, 2026-09-24)
+
+**Origen.** Decisión del dueño en la sesión interactiva del 2026-09-24. Son sus
+palabras, transcritas por voz y citadas tal cual: «Los precios serán de 14.99 dólares el
+Pro y el Pro Max será de 19.99. En cuanto a la creación para el segmento de educadores y
+profesionales que quieran crear sus bootcamps será 99.99 mensual.» Y del reparto: «de la
+cantidad de dinero por el que venda el bootcamp el creador le quedará el 20% a la tienda
+Wetsy». Se lee como: **el creador se queda el 80 % y Whetzy el 20 %** de cada venta.
+
+**Decisión.**
+
+| Plan (nombre de cara al usuario) | Tier en código | Precio | Qué da hoy, en código |
+|---|---|---|---|
+| Gratis | `free` / `NULL` | 0 $ | Todo el contenido, el motor adaptativo **y el repaso espaciado** |
+| **Pro** | `plus` | **14,99 $/mes** | Tutor con IA (`require_tier("plus")`) y el modo examen del quiz |
+| **Pro Max** | `pro` | **19,99 $/mes** | Todo Pro. **Lo que añade sobre Pro no está definido**: queda para H.35 |
+| **Creador** | `creator` | **99,99 $/mes** | Todo Pro Max + publicar bootcamps en el marketplace |
+
+- **Reparto del marketplace: 80 % creador / 20 % Whetzy** (antes 70/30).
+  - Se aplica, como el 70/30 anterior, **sobre lo que queda tras la comisión de Paddle
+    (7,5 %)**.
+  - Después, `PaymentService` retiene un 22 % al creador (supuesto de H.29).
+  - Resultado para una venta de 100 $: el creador recibe **57,72 $ netos** y Whetzy retiene
+    34,78 $. Esa cifra incluye la retención, que no es ingreso de Whetzy.
+  - Si la intención es «80 % del precio de venta», hay que cambiar el orden del cálculo;
+    lo decide el dueño (H.35).
+- **Los ids de tier no cambian** (`plus`, `pro`): están en la base de datos y en Stripe.
+  Solo cambian los nombres que ve el usuario.
+- **Publicar exige el plan Creador**, detrás de `CREATOR_PLAN_REQUIRED`.
+  - Está **apagado** hasta que abra el cobro (H.19/H.29). Exigir un plan que nadie puede
+    comprar cerraría el marketplace.
+  - El dueño y los admins quedan fuera de la regla.
+- **El repaso sale del muro de pago.** `POST /quiz/start` con `mode=review` devolvía 403 a
+  todo usuario sin plan, es decir, a todos. Sin embargo, la landing prometía «repasos
+  programados» gratis y Home ofrece «Repasar». Es el motor (FSRS), no un extra.
+
+**Pendiente del dueño (H.35):**
+- precio anual;
+- tarifa regional;
+- qué añade Pro Max sobre Pro;
+- si el 80 % es sobre el precio de venta o tras la comisión.
+
+**Supera a ADR-21** en los nombres (Pro/Premium → Pro/Pro Max). Los importes mensuales son
+los mismos.
+
+---
+
+## ADR-45 — Control total de la sesión: rama + PR; `master` lo fusiona el dueño a mano (ACEPTADA 2026-09-24; era «ADR-41» en el PR #7 hasta que `master` ocupó ese número con los precios del dueño)
 
 **Aceptada por el dueño** el 2026-09-24 («lo hago manualmente»), en la sesión interactiva
 que preparó el prompt de control total (`docs/PROMPT_CONTROL_TOTAL.md`).
@@ -805,7 +852,7 @@ queda que el dueño active la protección de rama en GitHub. `ORCHESTRATOR.md`
 
 ---
 
-## ADR-42 — Catálogo total: todos los tracks de la industria, ≥ 50 cursos por track, sobre un corpus abierto descargado y verificado (ACEPTADA 2026-09-24)
+## ADR-46 — Catálogo total: todos los tracks de la industria, ≥ 50 cursos por track, sobre un corpus abierto descargado y verificado (ACEPTADA 2026-09-24)
 
 **Aceptada por el dueño** el 2026-09-24. Sustituye la meta de ADR-25 (100 cursos × 27/28
 tracks), que nunca definió qué era un «curso» y cuyo primer intento (serie 25, 2026-09-19)
@@ -815,11 +862,11 @@ no pasó la puerta de calidad: 800 preguntas con 14 enunciados distintos por tra
 1. **Alcance:** cubrir **todos los tracks que existen en la industria** del software y la
    informática, no solo los 28 del mapa de 2026-09-16. La lista vive en
    `CATALOGO_MAESTRO.md` §2 (28 actuales) y **§2.0** (ampliación, 14 tracks más; se amplía
-   cuando el inventario 35.1 encuentre un área sin track).
+   cuando el inventario 37.1 encuentre un área sin track).
 2. **Curso = módulo del molde** (catálogo §2): **4 skills · 60 preguntas · 4 lecciones ·
    ≥ 8 términos · ≥ 15 % ejecutable donde el navegador ejecute** (Python, SQL, JS) o
    exento con razón (ADR-9). Es la unidad que ya existe en `tracks.json`; no se inventa
-   otra. `check_docs.py` sigue contando «cursos = track × nivel» hasta que 35.2 cambie el
+   otra. `check_docs.py` sigue contando «cursos = track × nivel» hasta que 37.2 cambie el
    recuento a módulos en el mismo commit que la web.
 3. **Meta:** **≥ 50 cursos por track** = 200 skills · 3.000 Q · 200 lecciones · ≥ 400
    términos por track. Con 42 tracks: ≈ 126.000 preguntas. Hoy: 6.305. A la velocidad
@@ -838,20 +885,18 @@ no pasó la puerta de calidad: 800 preguntas con 14 enunciados distintos por tra
 5. **El corpus vive fuera del repo**: `corpus/` (gitignored) o un volumen local; el repo
    solo recibe `content/sources/index.json` y el contenido **original** derivado, ES y EN
    nativos, con la fuente citada por pregunta y lección.
-6. **Puerta de calidad antes que volumen:** nada de la serie 35 escribe preguntas hasta
-   que exista la **guarda de diversidad semántica** (35.0): enunciados distintos ≥ 90 %
+6. **Puerta de calidad antes que volumen:** nada de la serie 37 escribe preguntas hasta
+   que exista la **guarda de diversidad semántica** (37.0): enunciados distintos ≥ 90 %
    por track, opciones de una palabra ≤ 40 %, cero ejecutables sin código, distractores
    defendibles. Se muta a propósito y se ve en rojo antes de fiarse (CLAUDE.md, estilo).
 
-**Consecuencias:** serie 25 se subordina a 35.0 y se reabre; nace la serie 35 (catálogo
+**Consecuencias:** serie 25 se subordina a 37.0 y se reabre; nace la serie 37 (catálogo
 total + corpus) con su propio orden; `CATALOGO_MAESTRO.md` cambia de objetivo y corrige la
 proyección competitiva de §12 (su tabla sumaba 49 donde decía 44).
 
 ---
 
-## ADR-43 — Valores por defecto de la cola humana y de los precios, para que la sesión no se detenga (ACEPTADA 2026-09-24)
-
-> **Fila «Precios» y descarte de «Creator Pro» enmendados por ADR-45 el 2026-09-24** (decisión del dueño posterior; ADR-43 vale «mientras él no lo vete»). El resto de la tabla sigue vigente.
+## ADR-47 — Valores por defecto de la cola humana, para que la sesión no se detenga (ACEPTADA 2026-09-24; numerada 47 el 2026-09-25 porque `master` ya tenía ADR-41…44 ocupadas por decisiones paralelas del dueño)
 
 **Aceptada por el dueño** el 2026-09-24 («eso lo dejo para el final»): las decisiones que
 solo él puede tomar quedan en `HUMAN-BLOCKED`, pero cada una lleva un **valor por
@@ -862,8 +907,8 @@ publica nada.
 |---|---|---|
 | H.LIC / H.22 (CC BY-SA) | **No.** Se cita y enlaza, no se reutiliza. | El banco de preguntas es el activo; heredar copyleft lo regala. NIST, MITRE, RFC y docs Apache/MIT bastan. |
 | H.19 / H.29 (rail y entidad) | **Merchant of Record** (Paddle o Lemon Squeezy) en web + IAP (RevenueCat) en tiendas, tras una abstracción `PaymentProvider`; **entidad y jurisdicción sin decidir**: la premisa griega de ADR-16 queda **suspendida**, no se escribe «autónomo griego» en ningún doc vivo. | MoR cobra IVA por nosotros y no exige sociedad; el dueño elige después sin rehacer código. |
-| Precios (ADR-21 enmendada) | **Hipótesis de trabajo interna: Free · Pro $9,99 · Plus $19,99 al mes; B2B $99 por asiento y año, mínimo 10.** **Ningún precio se publica** (landing, Perfil, tienda) hasta H.19. | Tres documentos daban cuatro precios distintos ($4,99, $9,99, $14,99, $19,99; B2B $99 y $500). Una sola hipótesis y cero publicación. |
-| H.23 (abrir distribución) | **Sí.** Se redacta todo (artículos, guiones, landings, PRs a listas). Solo **publicar bajo una cuenta nueva** sigue siendo del dueño. | Lo redactado no caduca; crear cuentas sí es acto del dueño (ADR-41 §3). |
+| Precios | **Los fijó el dueño en ADR-41 (2026-09-24): Pro 14,99 $ · Pro Max 19,99 $ · Creador 99,99 $, reparto 80/20; se publican (35.7).** Esta ADR no añade hipótesis propia. Quedan en H.35: anual, tarifa regional, qué añade Pro Max y si el 80 % es sobre venta o tras comisión. **B2B: $99 por asiento y año, mínimo 10** (hipótesis; ADR-22 decía $500/persona). | Tres documentos daban cuatro precios; la decisión del dueño los sustituye a todos. |
+| H.23 (abrir distribución) | **Sí.** Se redacta todo (artículos, guiones, landings, PRs a listas). Solo **publicar bajo una cuenta nueva** sigue siendo del dueño. | Lo redactado no caduca; crear cuentas sí es acto del dueño (ADR-45 §3). |
 | H.24 / marketplace | **Se construye entero (serie 28); no se abre al público antes de ≥ 100 usuarios activos** (catálogo §9). | Sala vacía. |
 | H.26 (economía) | **Se acepta la tabla de `ECONOMIA.md` §2.2–§2.3 como hipótesis**; la serie 29 sigue en código; ninguna recompensa con importe hasta que haya ingresos. | Igual que los precios. |
 | H.27 (cNFT) | **No.** Solo Open Badges 3.0. | €0 y sin wallet. |
@@ -888,7 +933,7 @@ son la única fuente**.
 
 ---
 
-## ADR-44 — Documentos de planificación paralelos se archivan; el ledger es el único plan (ACEPTADA 2026-09-24)
+## ADR-48 — Documentos de planificación paralelos se archivan; el ledger es el único plan (ACEPTADA 2026-09-24)
 
 **Decisión:** `EXECUTION_PLAN_25-29.md`, `ROADMAP_25-29.md`, `26/28/29-PLANNING.md`,
 `28-INTEGRATION.md`, `SERIE29_STATUS.md`, `SERIES_22_4_7_SUMMARY.md`,
@@ -900,52 +945,3 @@ declaraban «ALL GATES OPEN» con H.29 abierta y daban tres mínimos de payout d
 **Regla:** un plan que no sea una fila del ledger no es un plan; si merece existir, se
 convierte en fila. Los cuatro HTML duplicados de `analisis-estrategico/` con un carácter
 invisible (U+F00D) en el nombre se borran: eran copias anteriores de los mismos ficheros.
-
----
-
-## ADR-45 — Precios y reparto del marketplace: Pro 14,99 $, Pro Max 19,99 $, Creador 99,99 $, 80/20 por venta (DUEÑO, 2026-09-24)
-
-> **Numeración.** Se escribió como «ADR-41» en `master` (commit `f8d812d`, 23:19 UTC) sin saber que otra sesión, en la rama `claude/clever-edison-4bzr2v`, ya había usado ADR-41…44 (commit `bed6bdd`, 22:20 UTC). Al integrar ambas ramas se renumera a **ADR-45**; el contenido no cambia. Es **posterior** a ADR-43 y **enmienda su fila «Precios»**: ADR-43 da valores por defecto «mientras él no lo vete», y el dueño fijó los precios después. También enmienda «Creator Pro como plan aparte» (descartado en ADR-43): el dueño definió el plan Creador.
-
-**Origen.** Decisión del dueño en la sesión interactiva del 2026-09-24. Son sus
-palabras, transcritas por voz y citadas tal cual: «Los precios serán de 14.99 dólares el
-Pro y el Pro Max será de 19.99. En cuanto a la creación para el segmento de educadores y
-profesionales que quieran crear sus bootcamps será 99.99 mensual.» Y del reparto: «de la
-cantidad de dinero por el que venda el bootcamp el creador le quedará el 20% a la tienda
-Wetsy». Se lee como: **el creador se queda el 80 % y Whetzy el 20 %** de cada venta.
-
-**Decisión.**
-
-| Plan (nombre de cara al usuario) | Tier en código | Precio | Qué da hoy, en código |
-|---|---|---|---|
-| Gratis | `free` / `NULL` | 0 $ | Todo el contenido, el motor adaptativo **y el repaso espaciado** |
-| **Pro** | `plus` | **14,99 $/mes** | Tutor con IA (`require_tier("plus")`) y el modo examen del quiz |
-| **Pro Max** | `pro` | **19,99 $/mes** | Todo Pro. **Lo que añade sobre Pro no está definido**: queda para H.38 |
-| **Creador** | `creator` | **99,99 $/mes** | Todo Pro Max + publicar bootcamps en el marketplace |
-
-- **Reparto del marketplace: 80 % creador / 20 % Whetzy** (antes 70/30).
-  - Se aplica, como el 70/30 anterior, **sobre lo que queda tras la comisión de Paddle
-    (7,5 %)**.
-  - Después, `PaymentService` retiene un 22 % al creador (supuesto de H.29).
-  - Resultado para una venta de 100 $: el creador recibe **57,72 $ netos** y Whetzy retiene
-    34,78 $. Esa cifra incluye la retención, que no es ingreso de Whetzy.
-  - Si la intención es «80 % del precio de venta», hay que cambiar el orden del cálculo;
-    lo decide el dueño (H.38).
-- **Los ids de tier no cambian** (`plus`, `pro`): están en la base de datos y en Stripe.
-  Solo cambian los nombres que ve el usuario.
-- **Publicar exige el plan Creador**, detrás de `CREATOR_PLAN_REQUIRED`.
-  - Está **apagado** hasta que abra el cobro (H.19/H.29). Exigir un plan que nadie puede
-    comprar cerraría el marketplace.
-  - El dueño y los admins quedan fuera de la regla.
-- **El repaso sale del muro de pago.** `POST /quiz/start` con `mode=review` devolvía 403 a
-  todo usuario sin plan, es decir, a todos. Sin embargo, la landing prometía «repasos
-  programados» gratis y Home ofrece «Repasar». Es el motor (FSRS), no un extra.
-
-**Pendiente del dueño (H.38):**
-- precio anual;
-- tarifa regional;
-- qué añade Pro Max sobre Pro;
-- si el 80 % es sobre el precio de venta o tras la comisión.
-
-**Supera a ADR-21** en los nombres (Pro/Premium → Pro/Pro Max). Los importes mensuales son
-los mismos.

@@ -1,4 +1,4 @@
-"""Ninguna pregunta del banco es relleno de generador (ledger 35.14).
+"""Ninguna pregunta del banco es relleno de generador (ledger 37.14).
 
 61 preguntas de track13 llegaron a producción como «Pregunta de sk130102» con
 opciones A/B/C/D y «Explicacion correcta». Pasaban el resto de la puerta: ids

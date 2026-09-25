@@ -1,4 +1,4 @@
-"""Comprar comodines de racha con créditos (ledger 37.3, `services/streak_shop.py`)."""
+"""Comprar comodines de racha con créditos (ledger 35.3, `services/streak_shop.py`)."""
 
 from __future__ import annotations
 

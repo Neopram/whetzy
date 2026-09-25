@@ -8,7 +8,7 @@
 
 ## 0. Por qué un marketplace
 
-Whetzy construye contenido con Haiku + fuentes [reusar]. Eso cubre todos los tracks (meta ADR-42: 28 + 14 de §2.0 y los que 35.1 confirme)
+Whetzy construye contenido con Haiku + fuentes [reusar]. Eso cubre todos los tracks (meta ADR-46: 28 + 14 de §2.0 y los que 37.1 confirme)
 del catálogo oficial. Pero hay conocimiento especializado que un instructor humano
 puede aportar mejor que un modelo: casos reales de empresa, nichos muy específicos,
 cursos de herramientas nuevas del mercado.
@@ -38,18 +38,18 @@ Udemy tiene marketplace pero sin motor adaptativo y con revenue share de 25-37%.
 
 | Quién | % por venta en marketplace | Condición |
 |---|---|---|
-| Instructor | 80% (ADR-45) | Curso en catálogo activo, quality gate pasado, plan Creador ($99.99/mes) cuando abra el cobro |
-| Whetzy | 20% (ADR-45) | Cubre infraestructura, motor, pagos, soporte |
+| Instructor | 80% (ADR-41) | Curso en catálogo activo, quality gate pasado, plan Creador ($99.99/mes) cuando abra el cobro |
+| Whetzy | 20% (ADR-41) | Cubre infraestructura, motor, pagos, soporte |
 
 El reparto se aplica **sobre lo que queda tras la comisión del procesador de pagos**, y
-`PaymentService` retiene después un 22 % al creador (supuesto de H.29, pendiente de H.38):
+`PaymentService` retiene después un 22 % al creador (supuesto de H.29, pendiente de H.35):
 en una venta de $100 el creador recibe $57,72 netos (`tests/services/test_payment_split.py`).
 
 **Comparativa con competidores:**
 - Udemy: 25-37% para instructor (revenue share cae si Udemy pone el curso en promoción)
 - Teachable: 0% comisión pero cobra $99+/mes por plataforma
 - Gumroad: 10% flat
-- **Whetzy (ADR-45): 80 % para el creador sobre lo que queda tras la comisión del procesador de pagos, con el plan Creador a 99,99 $/mes.** Honestamente, eso se parece a Teachable: plan mensual + reparto, no «sin cargos»
+- **Whetzy (ADR-41): 80 % para el creador sobre lo que queda tras la comisión del procesador de pagos, con el plan Creador a 99,99 $/mes.** Honestamente, eso se parece a Teachable: plan mensual + reparto, no «sin cargos»
 
 **Pago:** Mensual, el día 15, mínimo $50 acumulado. **Rail elegido por el instructor**
 (ADR-36): Stripe Connect donde exista; **USDC en Solana** (fee ≈ $0,001, liquidado

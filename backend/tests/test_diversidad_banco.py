@@ -1,4 +1,4 @@
-"""Guarda de diversidad del banco (ledger 35.0, ADR-42): `scripts/question_diversity.py`.
+"""Guarda de diversidad del banco (ledger 37.0, ADR-46): `scripts/question_diversity.py`.
 
 Criterio de la fila: la guarda pone en rojo track24/25 de la cuarentena (14
 enunciados distintos de 400) y deja en verde track12. Además, cada una de las
@@ -145,7 +145,7 @@ def test_los_alias_del_indice_cuentan_como_fuente(tmp_path, live) -> None:
 
 
 def test_mutacion_la_correcta_es_la_mas_larga(live, baseline, urls) -> None:
-    # 35.16: una tanda que siempre alarga la correcta tiene que ponerse roja.
+    # 37.16: una tanda que siempre alarga la correcta tiene que ponerse roja.
     qs = _track12(live)
     for i in range(200):
         q = copy.deepcopy(qs[0])
@@ -174,7 +174,7 @@ def test_la_mas_larga_empatada_no_cuenta() -> None:
 
 
 def test_track_nuevo_sesgado_en_rojo(live, urls) -> None:
-    # Sintético a propósito: el ejemplo real (track11, 98 %) se arregló en 35.16.
+    # Sintético a propósito: el ejemplo real (track11, 98 %) se arregló en 37.16.
     sesgadas = []
     for i, q in enumerate(_track12(live)):
         q = dict(q, question_es=f"Enunciado sintético {i}", correct_index=0)

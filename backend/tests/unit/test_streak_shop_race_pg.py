@@ -1,4 +1,4 @@
-"""Carrera real contra Postgres: el bloqueo de fila de `streak_shop.buy` (37.3).
+"""Carrera real contra Postgres: el bloqueo de fila de `streak_shop.buy` (35.3).
 
 SQLite (la base de la suite) no tiene `FOR UPDATE` ni conexiones concurrentes,
 así que este test solo corre si `WHETZY_PG_TEST_URL` apunta a un Postgres de

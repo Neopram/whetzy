@@ -1,4 +1,4 @@
-"""Rutas y utilidades compartidas del pipeline de corpus (35.3)."""
+"""Rutas y utilidades compartidas del pipeline de corpus (37.3)."""
 
 from __future__ import annotations
 

@@ -36,7 +36,7 @@ Entre esa fecha y el 18-sep el proyecto avanzó ~10 series. Afirmaciones que hoy
 | «Accesibilidad WCAG pendiente» | 9.2 **DONE** (axe); 9.7 audit con lector real `HUMAN-BLOCKED` |
 | «Legal básico pendiente» | 9.4 **DONE** pero `legal/*.md` aún dice «Learning Engine» y lista planes que no existen → Serie 20/21 |
 | «1.253 preguntas» | 5.024+ preguntas · 12+ tracks · 301 skills (fila `Contenido` del ledger) |
-| «Marketplace de certificaciones = Fase 10 pendiente» | La «fase 10» ya no existe como plan: 10.1–10.3 **DONE** (schema, 300 Q AWS CP, simulacro). El marketplace es la **serie 28**; no se abre antes de ≥ 100 usuarios activos (ADR-43); plan Creador y 80/20 en ADR-45 |
+| «Marketplace de certificaciones = Fase 10 pendiente» | La «fase 10» ya no existe como plan: 10.1–10.3 **DONE** (schema, 300 Q AWS CP, simulacro). El marketplace es la **serie 28**; no se abre antes de ≥ 100 usuarios activos (ADR-47); plan Creador y 80/20 en ADR-41 |
 
 Lo que **sigue siendo válido**: el marco competitivo (distribución 34 %, techo ≈ 66
 sin usuarios), las proyecciones de ingresos por escala (dependen de conversión, no

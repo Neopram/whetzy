@@ -41,7 +41,7 @@ class LeagueStandingsResponse(BaseModel):
     standings: list[LeagueStandingEntry]
     promotion_zone: int
     demotion_zone: int
-    # False = el usuario salió de las ligas (37.4): standings vacío.
+    # False = el usuario salió de las ligas (35.4): standings vacío.
     participating: bool = True
 
 
