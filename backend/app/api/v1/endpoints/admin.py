@@ -699,6 +699,65 @@ async def get_economy_k_factor(
         "segment": segment,
     }
 
+# ── Tutor usage (22.16 / 38.6) ────────────────────────────────────────────
+
+@router.get("/ops/tutor-usage", dependencies=[Depends(require_admin)])
+async def get_tutor_usage(
+    days: int = Query(default=7, ge=1, le=90),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    from app.models.tutor_usage import TutorUsage
+
+    cutoff = (datetime.now(UTC) - timedelta(days=days)).date()
+
+    rows = (
+        await db.execute(
+            select(
+                TutorUsage.user_id,
+                User.email,
+                User.subscription_tier,
+                func.sum(TutorUsage.explanations).label("total"),
+                func.count(TutorUsage.day).label("active_days"),
+            )
+            .join(User, User.id == TutorUsage.user_id)
+            .where(TutorUsage.day >= cutoff)
+            .group_by(TutorUsage.user_id, User.email, User.subscription_tier)
+            .order_by(desc("total"))
+        )
+    ).all()
+
+    daily = (
+        await db.execute(
+            select(
+                TutorUsage.day,
+                func.sum(TutorUsage.explanations).label("total"),
+                func.count(TutorUsage.user_id.distinct()).label("users"),
+            )
+            .where(TutorUsage.day >= cutoff)
+            .group_by(TutorUsage.day)
+            .order_by(TutorUsage.day)
+        )
+    ).all()
+
+    return {
+        "days": days,
+        "per_user": [
+            {
+                "user_id": str(r.user_id),
+                "email": r.email,
+                "tier": r.subscription_tier,
+                "total_explanations": r.total,
+                "active_days": r.active_days,
+            }
+            for r in rows
+        ],
+        "per_day": [
+            {"day": str(r.day), "total": r.total, "users": r.users}
+            for r in daily
+        ],
+    }
+
+
 # ── Correo (H.30) ─────────────────────────────────────────────────────────
 
 @router.get("/email/status")

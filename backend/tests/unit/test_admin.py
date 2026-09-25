@@ -313,3 +313,30 @@ async def test_admin_revenue_never_claims_live_without_a_live_key(
         ).json()
         assert data["stripe_mode"] in ("unconfigured", "test")
         assert data["status"] == "test_mode"
+
+
+@pytest.mark.asyncio
+async def test_admin_tutor_usage(
+    client: AsyncClient, owner: User, db_session
+) -> None:
+    """Tutor usage endpoint returns per-user and per-day data (22.16)."""
+    from datetime import date
+
+    from app.models.tutor_usage import TutorUsage
+
+    today = date.today()
+    row = TutorUsage(user_id=owner.id, day=today, explanations=5)
+    db_session.add(row)
+    await db_session.commit()
+
+    resp = await client.get(
+        "/api/v1/admin/ops/tutor-usage?days=7",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert resp.status_code == status.HTTP_200_OK
+    data = resp.json()
+    assert data["days"] == 7
+    assert len(data["per_user"]) >= 1
+    assert data["per_user"][0]["total_explanations"] == 5
+    assert len(data["per_day"]) >= 1
+    assert data["per_day"][0]["total"] == 5
