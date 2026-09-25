@@ -42,24 +42,32 @@ MIN_QUESTIONS_FOR_DOMAIN_VERDICT = 10
 # the "_generic" entry. Keys are lowercase cert_provider values.
 _SCORING_NOTES: dict[str, tuple[str, str]] = {
     "aws": (
-        "El examen real se puntua en una escala de 100 a 1.000 y se aprueba con 700, "
-        "calculada por AWS sobre 50 preguntas puntuadas mezcladas con 15 sin puntuar que "
-        "no se identifican. Este simulacro te da el porcentaje bruto de aciertos: no lo "
-        "convertimos a esa escala porque no tenemos con que hacerlo, y un numero inventado "
-        "que parece oficial es peor que ninguno.",
-        "The real exam is reported as a scaled score from 100 to 1,000, passing at 700, "
-        "computed by AWS over 50 scored questions mixed with 15 unscored ones that are not "
-        "identified. This mock gives you the raw percentage correct: we do not convert it to "
-        "that scale because we have no basis to, and an invented number that looks official "
-        "is worse than none.",
+        (
+            "El examen real se puntua en una escala de 100 a 1.000 y se aprueba con 700, "
+            "calculada por AWS sobre 50 preguntas puntuadas mezcladas con 15 sin puntuar que "
+            "no se identifican. Este simulacro te da el porcentaje bruto de aciertos: no lo "
+            "convertimos a esa escala porque no tenemos con que hacerlo, y un numero inventado "
+            "que parece oficial es peor que ninguno."
+        ),
+        (
+            "The real exam is reported as a scaled score from 100 to 1,000, passing at 700, "
+            "computed by AWS over 50 scored questions mixed with 15 unscored ones that are not "
+            "identified. This mock gives you the raw percentage correct: we do not convert it to "
+            "that scale because we have no basis to, and an invented number that looks official "
+            "is worse than none."
+        ),
     ),
     "_generic": (
-        "El examen real tiene su propio modelo de puntuacion con un umbral de aprobado "
-        "publicado por el proveedor. Este simulacro te da el porcentaje bruto de aciertos: "
-        "no lo convertimos en la escala del proveedor porque no tenemos con que hacerlo.",
-        "The real exam has its own scoring model with a passing threshold published by the "
-        "provider. This mock gives you the raw percentage correct: we do not convert it to "
-        "the provider's scale because we have no basis to do so.",
+        (
+            "El examen real tiene su propio modelo de puntuacion con un umbral de aprobado "
+            "publicado por el proveedor. Este simulacro te da el porcentaje bruto de aciertos: "
+            "no lo convertimos en la escala del proveedor porque no tenemos con que hacerlo."
+        ),
+        (
+            "The real exam has its own scoring model with a passing threshold published by the "
+            "provider. This mock gives you the raw percentage correct: we do not convert it to "
+            "the provider's scale because we have no basis to do so."
+        ),
     ),
 }
 
