@@ -57,7 +57,7 @@ ADR-16 queda suspendida). Cancelar en dos toques.
   lo CC BY-NC y lo propietario se lee y se cita. Sin libros de pago, sin PDFs piratas.
 - Registro obligatorio. Sin modo invitado. **Social login antes de tiendas** (ADR-13):
   GitHub + Google en web → **Sign in with Apple, obligatorio por App Store 4.8** en
-  cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 7.6.
+  cuanto exista otro OAuth → Google nativo en Android. Ninguna submission sin 19.1 + 19.2 + 17.14.
 - Herramientas externas (`claude-webkit`, `banana-claude`, `editor-pro-max`) solo
   fuera de la app; `notebooklm-mcp` no se instala (ADR-12).
 - Molde por track (catálogo §2): **20 skills · 300 Q · 3 niveles · 20 lecciones ·
@@ -361,7 +361,7 @@ git commit -m "<fase>.<id>: <qué cambió>
 <evidencia en 1-3 líneas>
 
 Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
-git push origin master
+git push -u origin <tu-rama>        # nunca master: lo fusiona el dueño (ADR-41)
 ```
 
 ### 6. Actualizar el ledger

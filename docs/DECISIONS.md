@@ -279,6 +279,8 @@ posponer toda la preparación (las abstracciones cuestan casi nada y evitan rees
 
 ## ADR-16 — Rail de pagos y entidad: decidir con datos, no con prisa (ACEPTADA 2026-09-18)
 
+> **Enmendada por ADR-43 el 2026-09-24:** la premisa griega queda suspendida; valor por defecto Merchant of Record + IAP tras `PaymentProvider`; entidad y jurisdicción sin decidir (H.29).
+
 **Decisión:** Antes de activar cobros se ejecutan 21.1 (entidad/fiscalidad) y 21.2
 (rail de pagos). Opciones sobre la mesa: (a) Stripe como particular en Grecia (H.4),
 (b) *Merchant of Record* (Paddle / Lemon Squeezy: ellos liquidan IVA UE/OSS, sales tax
@@ -364,6 +366,8 @@ el cierre (demasiado tarde: ya se construyó encima).
 ---
 ## ADR-21 — Precio Pro $14.99/mes (2026-09-18)
 
+> **Enmendada por ADR-43 el 2026-09-24** (hipótesis Pro $9,99 / Plus $19,99, ninguno publicado) **y por ADR-45 el mismo día, más tarde** (decisión del dueño: Pro $14,99, Pro Max $19,99, Creador $99,99; publicados en la landing, cobro sin abrir). Manda ADR-45.
+
 **Decisión:** Pro = $14.99/mes (no $9.99). Premium = $19.99 sin cambio.
 
 **Razón:** El mercado aguanta $14.99 (Boot.dev cobra $49/mes, TryHackMe $10.50/mes annual, Codecademy $24.99/mes). A $9.99 el LTV anual es $120; a $14.99 es $180 — 50 % más sin perder conversión medible. El break-even baja de ~1,200 usuarios pagos a ~800.
@@ -383,6 +387,8 @@ regional y el corte gratis/Pro (H.38; antes H.35 en master, renumerada al integr
 ---
 
 ## ADR-22 — B2B antes que escalar B2C (2026-09-18)
+
+> **Enmendada por ADR-43 el 2026-09-24:** B2B $99 por asiento y año, mínimo 10, como hipótesis interna sin publicar; 3 pilotos gratuitos (36.2, H.36).
 
 **Decisión:** Prioridad de venta: contratos B2B piloto (upskilling Python/AI para empresas) antes de invertir en adquisición B2C masiva.
 
@@ -415,6 +421,8 @@ regional y el corte gratis/Pro (H.38; antes H.35 en master, renumerada al integr
 ---
 
 ## ADR-25 — Meta de contenido: 100 cursos × 27 tracks (2026-09-18)
+
+> **Enmendada por ADR-42 el 2026-09-24:** la meta es ≥ 50 cursos por track en todos los tracks de la industria (28 + 14 de `CATALOGO_MAESTRO.md` §2.0 y los que 35.1 confirme), sobre corpus abierto, con la guarda de diversidad 35.0 antes de cualquier pregunta nueva.
 
 **Decisión:** La meta de contenido a largo plazo es 100 cursos por track × 27 tracks = 2,700 cursos adaptativos, con glosario máximo por área.
 
@@ -842,6 +850,8 @@ proyección competitiva de §12 (su tabla sumaba 49 donde decía 44).
 ---
 
 ## ADR-43 — Valores por defecto de la cola humana y de los precios, para que la sesión no se detenga (ACEPTADA 2026-09-24)
+
+> **Fila «Precios» y descarte de «Creator Pro» enmendados por ADR-45 el 2026-09-24** (decisión del dueño posterior; ADR-43 vale «mientras él no lo vete»). El resto de la tabla sigue vigente.
 
 **Aceptada por el dueño** el 2026-09-24 («eso lo dejo para el final»): las decisiones que
 solo él puede tomar quedan en `HUMAN-BLOCKED`, pero cada una lleva un **valor por

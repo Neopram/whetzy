@@ -117,7 +117,7 @@ Landing (sección career-switcher) → "¿Cuánto tiempo tienes por día?"
 > a LLMs, RAG y arquitecturas de AI. Sin repetir lo que ya sabes."
 
 ### Plan y precio
-- **Pro $14.99/mo:** Tracks 6-7 (IA/ML/LLMs) + cloud (AWS/Azure/GCP)
+- **Pro $14.99/mo:** tutor con IA (ADR-45). *Propuesta del 2026-09-18, no aplicada: poner los tracks 6-7 y cloud tras Pro; hoy todo el contenido es gratis.*
 - **Bootcamps async $99:** Implementación práctica de sistemas AI en producción
 - **Gancho de conversión:** Assessment que demuestra que el motor lo detecta → "impresionante"
 
@@ -253,7 +253,7 @@ Demo personalizada (30 min, Calendly) → Contrato piloto gratuito
 
 ### Plan y precio
 - **Free tier:** módulo 1 de track32 + glosario Solana
-- **Pro $14.99/mo:** track32 completo + proyectos (bounties reescritos como ejercicio)
+- **Pro $14.99/mo:** tutor con IA (ADR-45). *Propuesta del 2026-09-18, no aplicada: track32 completo + proyectos tras Pro.*
 - **Gancho de conversión:** el proyecto final es un bounty real de Superteam Earn
 
 ### Flujo en la app
@@ -278,13 +278,17 @@ que aprende una plataforma; los créditos y referidos son los mismos que para lo
 
 ## Resumen de monetización por segmento
 
-| Segmento | Plan | Precio | LTV estimado | % usuarios esperado |
+> Precios individuales y de Creador: ADR-45 (dueño, 2026-09-24). B2B: hipótesis interna de
+> ADR-43. **«LTV estimado» y «% usuarios esperado» son hipótesis sin datos** (cero usuarios de
+> pago; H.10): no se citan como cifra.
+
+| Segmento | Plan | Precio | LTV estimado (hipótesis) | % usuarios esperado (hipótesis) |
 |---|---|---|---|---|
 | Estudiante | Free → Pro | $0 → $14.99/mo | $90-180/yr | 60% del total |
 | Career Switcher | Pro Max + Certs | $19.99/mo + $49 | $290/yr | 20% |
 | Developer Senior | Pro + Bootcamp | $14.99/mo + $99 | $280/yr | 10% |
-| Profesor | Revenue share | 30% comisión | N/A | 5% |
-| Empresa | B2B seats | $99-199/seat/yr | $990-1,990/empresa | 5% |
+| Profesor | Creador | $99.99/mo + 20 % por venta para Whetzy, tras la comisión del procesador (ADR-45) | N/A | 5% |
+| Empresa | B2B seats | $99/asiento/año, mínimo 10 (hipótesis ADR-43, sin publicar) | $990/empresa | 5% |
 | Web3 / Solana | Free → Pro | $0 → $14.99/mo | $180/yr | dentro del 60 % de estudiantes/devs; se mide aparte |
 
 ---

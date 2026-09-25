@@ -956,3 +956,45 @@ Ambos están en producción. **Cloudflare Pages publica solo desde `master`**: `
 - **35.5:** preparación por dominio en la landing con captura real.
 
 **Incidente:** el verificador adversario (Haiku) borró ediciones sin commitear mientras informaba «no files modified». Los verificadores no deben compartir árbol de trabajo con una edición en curso: próxima vez, `isolation: "worktree"`.
+
+## 2026-09-25 — Integración de las dos sesiones del 2026-09-24 y FASE 1 (concordancia) del prompt de control total (rama `claude/trusting-franklin-2wwmmr`)
+
+**Punto de partida medido:**
+- `claude/clever-edison-4bzr2v` (ADR-41…44, commit `bed6bdd` a las 22:20 UTC) estaba **sin fusionar** (`git branch -r --contains bed6bdd` sin `origin/master`).
+- `master` traía 12 commits de la otra sesión del mismo día, con precios del dueño escritos como «ADR-41» a las 23:19 UTC.
+- Choques: ADR-41, serie 35, H.35 y teardown §12, cada uno con dos significados.
+
+**Integración (merge `9854f2e`, sin reescribir ninguna de las dos ramas):**
+- Precios del dueño → **ADR-45**. Es posterior a ADR-43 y enmienda su fila «Precios»: ADR-43 vale «mientras él no lo vete».
+- Serie «competencia → producto» → **37**. Bloqueo de precio anual/regional → **H.38**. Teardown → **§13**.
+- Comentarios de código renumerados: 33 ficheros, solo comentarios.
+- Desde esta entrada, **ninguna sesión hace push a `master`** (ADR-41). Los pushes directos del 2026-09-24 los había autorizado el dueño en la conversación; se acaban aquí.
+
+**FASE 1, concordancia (commit `docs(concordancia)`):**
+- **a)** `14.99` ya no es residuo (ADR-45). Dos análisis viejos con «$14.99 < todos» (falso) pasan a `archive/`, y MARKETPLACE deja de decir 70/30.
+- **b)** premisa griega marcada como suspendida en 21.1, 21.2, H.19 y el catálogo.
+- **c)** «fase 10» → serie 28.
+- **d)** 7.6 → 17.14 en 7 ficheros. El «sin fila viva» de h21 se corrige.
+- **e/f)** 27 tracks y 2.700 cursos: ADR-42, o «histórico» en los recálculos.
+- **g)** paleta Obsidian.
+- **h)** frontend conectado a Git.
+- **i)** se crea `.github/dependabot.yml`, y supply-chain deja de afirmar que el CI bloquea despliegues.
+- **j/k)** capacity, postmortem, ab-framework e i18n-audit marcados como ejemplo o histórico.
+- **l)** «Fases 1–16 todas DONE 100 %» era falso: 10 filas vivas no DONE (`ledger.parse`).
+- **m)** cada «push a master» dice que fusiona el dueño; la auditoría externa lleva nota al pie.
+- **n)** nada que cambiar.
+- **o)** serie 24 fila a fila:
+  - `B2BPanel` no existe, así que 24.9 pasa a TODO;
+  - 17 de 47 `.module.css` tienen colores literales y `identidad.md` no existe (24.1);
+  - Home tiene 6 llamadas reales a la API (24.4);
+  - perfil público con «Simulated fetch» (24.8).
+- **p)** 28.x y 29.x contra su criterio:
+  - migraciones 28 y 29 bajadas y subidas en Postgres local sin error;
+  - `instructor_quality_gate.py` y `run_payouts.py` no existen;
+  - no hay aprobación de cursos;
+  - economía con 17 tests y 72 % de cobertura (el criterio pide ≥ 20 y ≥ 90 %).
+
+**Lo que no se verificó:**
+- el CI de GitHub del merge;
+- si Dependabot llega a ejecutarse (facturación de Actions, H.13/H.17);
+- el verificador adversario de las filas 24/28/29 recalificadas: no se marcó ninguna DONE, solo se describió su estado.

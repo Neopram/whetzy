@@ -26,9 +26,12 @@ asyncpg==0.30.0
 
 ### Automated Dependency Scanning
 
-**Dependabot** is enabled in GitHub settings (free tier):
-- Scans `requirements.txt` daily for known vulnerabilities
-- Opens pull requests automatically for patches
+**Dependabot** — configuration in `.github/dependabot.yml` (added 2026-09-25): weekly
+version updates for `backend/` (pip) and `frontend/` (npm), monthly for GitHub Actions,
+minor/patch grouped. *Not verified:* whether Dependabot security alerts are enabled in the
+repository settings (owner-only), and whether GitHub runs the jobs given the billing block
+on Actions (H.13/H.17). Until the 2026-09-25 file existed, this section claimed Dependabot
+was enabled; nothing in the repo configured it.
 - PR description includes CVE details and remediation guidance
 
 **Status**: Check `.github/dependabot.yml` for current configuration. Currently scoped to `backend/requirements.txt` and `frontend/package.json`.
@@ -118,7 +121,10 @@ All security checks run in GitHub Actions before deployment:
 3. **Tests** (pytest): Functional correctness and integration tests
 4. **Type Check** (mypy): Type safety for Python code
 
-No build is deployed to production unless all checks pass.
+**Not true today:** a commit reaching `master` deploys (Railway and Cloudflare Pages) whether
+or not these checks ran — GitHub CI does not run (H.13/H.17). What stands in between is the
+local gate (`.githooks/pre-push` level 1, blocking; `scripts/ci_local.sh` level 2, not
+blocking) and the owner merging by hand (ADR-41).
 
 ## Monitoring & Response
 

@@ -2,6 +2,10 @@
 
 Use this template within 4 hours (P1), 24 hours (P2), or 1 week (P3) of incident closure.
 
+> **Every figure, date, name (`@alice`) and user count below is a fictional example** to show
+> the level of detail expected. No such incident happened; Whetzy has zero real users
+> (2026-09-25).
+
 ---
 
 ## Incident Post-Mortem: [INCIDENT TITLE]

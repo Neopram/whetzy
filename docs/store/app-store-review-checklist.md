@@ -43,8 +43,8 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 
 | # | Guideline | Status | Evidence / Notes |
 |---|---|---|---|
-| **3.1.1** | **In-App Purchase (IAP)** | **❌ BLOCKER** | Whetzy currently uses Stripe (web checkout) for subscriptions. Apple requires all digital goods and subscriptions that unlock features *within the app* to use StoreKit/IAP. **Stripe web checkout = App Store rejection.** Fix: implement RevenueCat IAP (task 7.6) before iOS submission. |
-| 3.1.1.a | Reader app exception | ⚠️ | If Whetzy qualifies as a "reader app" (consuming previously purchased content), external payment link may be allowed via [StoreKit External Purchase](https://developer.apple.com/documentation/storekit/appstore/externalpurchaselinkconfiguration). Evaluate post-7.6. |
+| **3.1.1** | **In-App Purchase (IAP)** | **❌ BLOCKER** | Whetzy currently uses Stripe (web checkout) for subscriptions. Apple requires all digital goods and subscriptions that unlock features *within the app* to use StoreKit/IAP. **Stripe web checkout = App Store rejection.** Fix: implement RevenueCat IAP (task 17.14) before iOS submission. |
+| 3.1.1.a | Reader app exception | ⚠️ | If Whetzy qualifies as a "reader app" (consuming previously purchased content), external payment link may be allowed via [StoreKit External Purchase](https://developer.apple.com/documentation/storekit/appstore/externalpurchaselinkconfiguration). Evaluate post-17.14. |
 | 3.1.2 | Subscriptions | ❌ | Same as 3.1.1 — must use IAP for in-app subscription upsell |
 | 3.1.3 | Loot Boxes | N/A | No loot boxes; XP/badges earned through gameplay, not purchased |
 | 3.2.1 | Acceptable Business Models | ✅ | Freemium with subscription; no advertising; no data monetization |
@@ -92,7 +92,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 
 | ID | Issue | Fix |
 |---|---|---|
-| B1 | Stripe web checkout used for in-app subscription upsell (3.1.1) | Implement RevenueCat StoreKit IAP (task 7.6). Do not submit to App Store until 7.6 is DONE. |
+| B1 | Stripe web checkout used for in-app subscription upsell (3.1.1) | Implement RevenueCat StoreKit IAP (task 17.14). Do not submit to App Store until 17.14 is DONE. |
 
 ### ⚠️ Required Before Submission
 
@@ -134,4 +134,4 @@ When the human runs `npx cap add ios` on a Mac:
 - [ ] Enable Associated Domains for App Links (`applinks:whetzy.com`)
 - [ ] Archive → Validate → Upload to App Store Connect
 - [ ] Set correct age rating (4+)
-- [ ] Submit for review **only after** task 7.6 (RevenueCat IAP) is DONE
+- [ ] Submit for review **only after** task 17.14 (RevenueCat IAP) is DONE

@@ -144,11 +144,11 @@ Generar con Playwright (`npm run screenshots:ios`) o manualmente en simulador.
 
 ---
 
-## IAP (In-App Purchases) — RevenueCat (7.6)
+## IAP (In-App Purchases) — RevenueCat (17.14)
 
 | Product ID | Tipo | Precio sugerido |
 |---|---|---|
 | `app.whetzy.plus.monthly` | Auto-renovable | $4.99/mes |
 | `app.whetzy.plus.yearly` | Auto-renovable | $39.99/año |
 
-> 7.6 está HUMAN-BLOCKED (H.2 + H.5). Sin estos productos configurados en App Store Connect, Apple rechaza cualquier referencia a compras en la app.
+> 17.14 está HUMAN-BLOCKED (H.2 + H.5). Sin estos productos configurados en App Store Connect, Apple rechaza cualquier referencia a compras en la app.

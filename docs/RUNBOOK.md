@@ -23,7 +23,7 @@ First time per machine requires `npx wrangler login` (opens browser OAuth). The 
 
 ## Deploy to Railway (backend)
 
-**Deploy is AUTOMATIC** — Railway deploys from `master` automatically (verified 2026-09-16, H.16). After `git push origin master`, Railway runs migrations and content_loader without manual intervention.
+**Deploy is AUTOMATIC** — Railway deploys from `master` automatically (verified 2026-09-16, H.16). After a commit reaches `master` (the owner merges, ADR-41), Railway runs migrations and content_loader without manual intervention.
 
 To monitor deployment:
 1. Check Railway dashboard for build status
@@ -246,8 +246,8 @@ PGPASSWORD=neurium_dev ./scripts/db_restore.sh backups/<file>.dump neurium_recov
 ```
 
 **Before a production migration**: take a `pre_migration_<ts>.dump` first. Since
-`git push origin master` deploys and runs `alembic upgrade head` automatically, do
-the backup *before* the push. Store production backups off-machine; never commit them.
+a merge into `master` deploys and runs `alembic upgrade head` automatically, do
+the backup *before* the owner merges. Store production backups off-machine; never commit them.
 
 Recovery: pick the last clean dump (`ls -lht backups/`) → `createdb` an empty target →
 `db_restore.sh` → point `DATABASE_URL` at it → `GET /health/ready` → `db_restore_test.sh <dump>`

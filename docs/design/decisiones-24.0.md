@@ -46,10 +46,10 @@
 ## 3. Visual Anchors Únicos
 
 ### BKT Territory Map
-Skill landscape explorable: azul cielo (frontera) + verde (dominado 15%+) + naranja (parcial)
+Skill landscape explorable: cian `#06B6D4` (frontera; paleta Obsidian de la serie 34, ADR-43 — antes «azul cielo») + verde (dominado 15%+) + naranja (parcial)
 
 ### FSRS Repaso Timeline
-Calendario con próximos repasos como eventos; fechas próximas en azul cielo
+Calendario con próximos repasos como eventos; fechas próximas en cian `#06B6D4` (paleta Obsidian, ADR-43)
 
 ### Elo Level Badges
 Nivel como rank visual (icono + número + barra hacia siguiente nivel)

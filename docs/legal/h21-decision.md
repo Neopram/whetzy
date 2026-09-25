@@ -56,8 +56,8 @@ Nada de la versión 1.0 es vinculante. Lo único cierto hoy:
   (`[ENTIDAD LEGAL PENDIENTE — H.29]`), no como hechos.
 - La revisión profesional (**H.20**) sigue **abierta**.
 - La única ruta de cobro que funciona sin sociedad es **IAP puro** (Apple/Google como
-  merchant of record), que es la tarea **7.6** — hoy referenciada desde H.5 y 19.3
-  pero sin fila viva en el ledger.
+  merchant of record), que es la fila **17.14** del ledger (la antigua 7.6, que
+  hasta el 2026-09-24 no tenía fila viva; ADR-43 le devolvió una).
 
 ## Qué debe hacer el dueño
 

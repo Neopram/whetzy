@@ -25,7 +25,7 @@ npm run build          # NO usar `vite build` directamente — scripts pre/post-
 ```
 
 **Corrección 2026-09-24:** el proyecto de Cloudflare Pages (`whetzy`) **sí está conectado
-a Git**. Un push a `master` construye y publica en producción; las demás ramas generan
+a Git**. Un commit en `master` (fusión del dueño, ADR-41) construye y publica en producción; las demás ramas generan
 un preview. La subida directa con wrangler sigue funcionando (primera vez por máquina:
 `npx wrangler login`):
 
@@ -68,11 +68,12 @@ npm run check:deployed https://whetzy.pages.dev
 ## 2. Backend (Railway)
 
 **El deploy es AUTOMÁTICO desde `master`** (verificado 2026-09-16, ledger H.16):
-`git push origin master` reconstruye la imagen y `start.sh` ejecuta `alembic upgrade
-head` → `content_loader` → seed de gamificación → gunicorn. Cada push provoca ~60-90 s
-de 502 para quien esté dentro.
+cada commit que llega a `master` (una fusión del dueño, ADR-41) reconstruye la imagen y
+`start.sh` ejecuta `alembic upgrade head` → `content_loader` → `bootstrap_owner` → seed de
+gamificación → gunicorn. Cada despliegue provoca ~1 min de 502/503 para quien esté dentro
+(medido 2026-09-24, fila 37.8).
 
-### Antes de cualquier push a `master`
+### Antes de pedir la fusión de un PR a `master`
 ```bash
 cd backend && python -m pytest tests/content -q     # lecciones, ejecutables, blueprints
 python ../scripts/check_question_bank.py            # banco
@@ -155,7 +156,7 @@ npx cap open ios    # abre Xcode
 - [ ] `Info.plist`: NSCameraUsageDescription, NSPhotoLibraryUsageDescription (si aplica)
 - [ ] Iconos iOS 1024px (generados en `frontend/ios/App/App/Assets.xcassets/AppIcon.appiconset/`)
 - [ ] Screenshots 6.5" (iPhone 15 Pro Max) y 12.9" (iPad Pro) — H.9
-- [ ] RevenueCat 7.6 IAP configurado antes de submit (B1 — App Store Review blocker)
+- [ ] RevenueCat 17.14 IAP configurado antes de submit (B1 — App Store Review blocker)
 - [ ] TestFlight: mínimo 1 semana de beta antes de production
 
 ---
@@ -253,4 +254,4 @@ Ver [docs/store/ios/listing.md](store/ios/listing.md) para el listing completo E
 | **H.2** | Apple Developer Program ($99/año) **+ Services ID y clave `.p8` para Sign in with Apple** (obligatorio por 4.8 en cuanto exista otro OAuth — 19.2) | iOS build, App Store, 19.2 |
 | **H.3** | Google Play Console ($25) + crear keystore de firma | Android Play Store, 19.3 |
 | **H.14** | Mac propio/Codemagic/cloud builder para compilar iOS | App Store submission |
-| **H.5** | Completar H.2 + H.3 + H.14 + 7.6 (IAP) + **19.1 + 19.2 (social login con Apple)** → submit a tiendas | App en tiendas |
+| **H.5** | Completar H.2 + H.3 + H.14 + 17.14 (IAP) + **19.1 + 19.2 (social login con Apple)** → submit a tiendas | App en tiendas |

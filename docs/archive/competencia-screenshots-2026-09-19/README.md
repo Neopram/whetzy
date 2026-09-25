@@ -1,3 +1,5 @@
+> **Archivado 2026-09-25 (ADR-44).** Superado por `docs/COMPETENCIA.md` §A. «$14.99 < all competitors» es falso (Mimo $9.99; Codecademy $14.99 anual). No manda.
+
 # Serie 24.0 — Competitive Research Screenshots
 
 ## Overview

@@ -138,7 +138,7 @@ está registrado en ninguna fila**.
 
 ### 3.3 CI sigue ciego, y lleva así toda la serie
 
-`gh run list --limit 6`, los seis últimos pushes a `master`:
+`gh run list --limit 6`, los seis últimos pushes a `master`[^adr41]:
 
 ```
 failure  El service worker hacia invisibles los despliegues        4s
@@ -242,3 +242,5 @@ Para que nadie lo dé por hecho más adelante:
 - **No verificó la suite completa**, solo los 13 tests nuevos, `ruff` sobre los ficheros
   nuevos y `check_docs.py`.
 - **No midió nada con usuarios**, porque no hay.
+
+[^adr41]: Nota del 2026-09-25: este informe es de una fecha en que las sesiones hacían push a `master`. Desde ADR-41 (2026-09-24) solo el dueño fusiona en `master`; las sesiones trabajan en rama + PR. El cuerpo del informe no se reescribe.

@@ -52,7 +52,7 @@ In-browser sandboxed Python execution (Pyodide + SharedArrayBuffer + import-bloc
 ### GAP-1: No native IAP → iOS App Store blocker (HIGH)
 **Duolingo / DataCamp / Brilliant**: All have native IAP on iOS.  
 **Whetzy**: Stripe web checkout violates 3.1.1. App Store rejection is certain.  
-**Action**: 7.6 RevenueCat IAP — required before any iOS submission. No workaround.  
+**Action**: 17.14 RevenueCat IAP — required before any iOS submission. No workaround.  
 **Owner**: Human (Apple Dev account + device).
 
 ### GAP-2: No marketing site → zero organic acquisition (HIGH)
@@ -103,7 +103,7 @@ Local 4-worker uvicorn ≠ Railway free tier (single dyno, cold-start ~3s).
 ## 5. Strategic Summary
 
 Whetzy's defensible position is **adaptive depth + bilingual content + automated pipeline** — none of the three competitors have all three simultaneously. The critical path to the market is:
-1. **Close IAP blocker** (7.6) → enables iOS → enables App Store review.
+1. **Close IAP blocker** (17.14) → enables iOS → enables App Store review.
 2. **Marketing site** (9.8) → enables user acquisition before stores.
 3. **Surface AI tutor inline** → differentiates on first-use experience.
 
@@ -154,7 +154,7 @@ Each row maps a gap to the ledger task whose acceptance criterion is the *eviden
 | No users | 30-person beta: D1 ≥ 40 %, D7 ≥ 20 %, mean `p_known` gain ≥ +0.20 per practised skill | 11.8 (H.10) | Adaptive +15, Gamification 40 → 60 |
 | Backend down / unmeasured in prod | TTFQ < 60 s and p95 < 500 ms against `whetzy.com` | 11.6, 11.9 (H.1) | Distribution 0 → 15 |
 | No organic acquisition | Lighthouse SEO ≥ 95, sitemap, hreflang | 11.7 | Distribution +10 |
-| Not in stores | IAP + submission | 7.6, H.2–H.5 | Distribution +30 |
+| Not in stores | IAP + submission | 17.14, H.2–H.5 | Distribution +30 |
 
 Realistic ceiling with all of the above done and measured: **≈ 60–65 / 100** — parity on a narrower, better-served niche, not dominance. "Superar con creces a toda la competencia" is not a claim this document can make; it is a target the ledger can earn.
 
@@ -384,7 +384,7 @@ Propuesta: cursos de **texto interactivo, sin vídeo**, para desarrolladores con
 | Plan Business | Más adelante; sin usuarios es una sala vacía | catálogo §9 |
 | Cloud Labs reales | **No** — coste de servidor y contrario al diferenciador WASM sin servidor | no se construye |
 | AI Mock Interviews | **No ahora** — fuera del nicho (cert prep + Python) y LLM caro | fase ≥ 20 |
-| 2.200+ cursos | **No por volumen** — profundidad > amplitud; el techo del catálogo es 27 tracks / ≈ 80 cursos | catálogo §2 |
+| 2.200+ cursos | **No por volumen** — profundidad > amplitud; el techo del catálogo era 27 tracks / ≈ 80 cursos *(histórico; meta actual ADR-42: ≥ 50 cursos × ≥ 42 tracks)* | catálogo §2 |
 | Testimoniales FAANG | No inventar ninguno; prueba social solo con cifras de `/evidence` | 19.8 |
 
 ### 11.5 Qué falta para vender en cada canal
@@ -392,7 +392,7 @@ Propuesta: cursos de **texto interactivo, sin vídeo**, para desarrolladores con
 | Canal | Bloqueante | Acción |
 |---|---|---|
 | **Web** (`whetzy.com`, live desde hoy) | Social login ausente; sin prueba social; TTFQ sin medir en prod | 19.1 · 19.8 · 11.6 |
-| **App Store** | 3.1.1 IAP (7.6) · **4.8 Sign in with Apple (19.2)** · H.2 · H.14 (macOS) | Ninguna submission sin 7.6 + 19.1 + 19.2 |
+| **App Store** | 3.1.1 IAP (17.14) · **4.8 Sign in with Apple (19.2)** · H.2 · H.14 (macOS) | Ninguna submission sin 17.14 + 19.1 + 19.2 |
 | **Play Store** | Google Play Billing (19.3) · Google Sign-In (19.3) · H.3 | Educative **no está** en Play Store: el nicho «aprendizaje técnico ES/EN en Android» está vacío |
 
 ### 11.6 El techo, revisado
@@ -441,7 +441,7 @@ tracks mueve *Contenido* (peso 0,14) unos puntos como mucho; no toca *Distribuci
 |---|---|---|---|
 | Tracks / cursos | 15 / 43 (11 completos + 2 stubs) | 27 / ≈ 80 | Boot.dev · Sololearn · Mimo *(≈ 15-40 cursos, estimación sin verificar — 18.12)* |
 | Certificaciones | 4 (blueprints corregidos en 18.1) | ≈ 55 | Whizlabs · Tutorials Dojo · KodeKloud |
-| Lecciones | 342/342 skills | 1/skill en 27 tracks | Codecademy (texto) |
+| Lecciones | 342/342 skills | 1/skill en 27 tracks *(histórico; meta actual ADR-42)* | Codecademy (texto) |
 | Ejecución en navegador | Python + SQL + **JS Worker (18.3)** | Python + SQL + JS + shell (v86 descartado, ADR-9) | Brilliant (celdas), DataCamp (IDE) |
 | Proyectos | 0 | 10/track ejecutable | Exercism · Boot.dev |
 | Vídeo | 0 | explicadores Manim (piloto 18.9) | nadie de la liga objetivo; Platzi/Udemy son otra liga |

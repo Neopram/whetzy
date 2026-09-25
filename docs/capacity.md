@@ -26,11 +26,16 @@ User → Cloudflare (Cache, Rate Limiting, WAF)
 
 ## Database Capacity Planning
 
-### Current Baseline (2026-09-19)
+### Planning scenario (not a baseline)
+
+> **Correction 2026-09-25:** this table was titled «Current Baseline (2026-09-19)» and said
+> «~50k users — estimate from sign-ups». Whetzy has **zero real users**
+> (`AUDITORIA_EXTERNA_2026-09-19.md`), and the bank count lives in `CATALOGO_MAESTRO.md` §1
+> (guarded by `check_docs.py`). Read the rows below as a **sizing scenario**, not measurements.
 
 | Metric | Value | Notes |
 |--------|-------|-------|
-| Users | ~50k | Estimate from sign-ups |
+| Users | ~50k (scenario) | Hypothetical load for sizing; real users today: 0 |
 | Questions in bank | ~5,000 | See `docs/CATALOGO_MAESTRO.md` |
 | Quiz attempts per user/year | ~100 | 2–3 per week |
 | Database size | ~500MB | Users + questions + progress + analytics |

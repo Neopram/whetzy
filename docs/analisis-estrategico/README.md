@@ -26,7 +26,7 @@ Entre esa fecha y el 18-sep el proyecto avanzó ~10 series. Afirmaciones que hoy
 
 | Afirmación en el HTML | Realidad (ledger, 2026-09-18) |
 |---|---|
-| «Stripe / RevenueCat NO construidos» | 7.2 Stripe checkout+webhook **DONE** (test-mode); 7.3 entitlements **DONE**; 7.6 IAP `HUMAN-BLOCKED` (cuentas) |
+| «Stripe / RevenueCat NO construidos» | 7.2 Stripe checkout+webhook **DONE** (test-mode); 7.3 entitlements **DONE**; 17.14 IAP `HUMAN-BLOCKED` (cuentas) |
 | «Solo 3 ficheros de tests; test infra es la mayor deuda» | Q.1–Q.10 **DONE**: 24 unit + 28 integration + 16 e2e; cobertura backend 83 % (11.5) |
 | «`exec_correct` viene del cliente — hay que cerrarlo» | 2.3 **DONE**: validación server-side |
 | «Login social pendiente» | 19.1 GitHub+Google **DONE** (`48bd81c`); 19.2 Apple `HUMAN-BLOCKED` (H.2) |
@@ -36,7 +36,7 @@ Entre esa fecha y el 18-sep el proyecto avanzó ~10 series. Afirmaciones que hoy
 | «Accesibilidad WCAG pendiente» | 9.2 **DONE** (axe); 9.7 audit con lector real `HUMAN-BLOCKED` |
 | «Legal básico pendiente» | 9.4 **DONE** pero `legal/*.md` aún dice «Learning Engine» y lista planes que no existen → Serie 20/21 |
 | «1.253 preguntas» | 5.024+ preguntas · 12+ tracks · 301 skills (fila `Contenido` del ledger) |
-| «Marketplace de certificaciones = Fase 10 pendiente» | 10.1–10.3 **DONE** (schema, 300 Q AWS CP, simulacro); 10.4 espera Stripe live (H.4) y ≥ 100 usuarios (catálogo §9) |
+| «Marketplace de certificaciones = Fase 10 pendiente» | La «fase 10» ya no existe como plan: 10.1–10.3 **DONE** (schema, 300 Q AWS CP, simulacro). El marketplace es la **serie 28**; no se abre antes de ≥ 100 usuarios activos (ADR-43); plan Creador y 80/20 en ADR-45 |
 
 Lo que **sigue siendo válido**: el marco competitivo (distribución 34 %, techo ≈ 66
 sin usuarios), las proyecciones de ingresos por escala (dependen de conversión, no
