@@ -905,3 +905,11 @@ La imagen corriendo en `https://api-production-9751.up.railway.app` es la **pre-
 **Verificación:** `python scripts/ledger.py check` OK (210 filas, 36 bloqueos humanos, 10 invariantes). `check_docs.py`: [2]-[4], [6], [7] en verde; [1] y [5] fallan **por entorno** (sin `alembic` ni backend importable en el contenedor), igual que antes de tocar nada.
 
 **No hecho:** ningún código; ninguna pregunta nueva; ningún push a `master` (ADR-41). La serie 24 sigue sin recuento fila por fila (queda como PARCIAL «maqueta sin API»).
+
+## 2026-09-25 — CI corrió por primera vez en un PR (#7) y sacó un fallo de contenido
+
+**Novedad para H.13/H.17:** el job `backend` de GitHub Actions **se ejecutó** en https://github.com/Neopram/whetzy/pull/7 (`1 failed, 20526 passed, 2 skipped, 15 xfailed in 1312 s`, cobertura 80,81 %). No está verificado si la facturación se corrigió o fue un run suelto; el próximo push lo dirá.
+
+**Fallo:** `test_every_reference_solution_matches_correct_answer` — `q060304ex011` imprime `0.802` en el CI (Python 3.12) y la respuesta decía `0.803`. **Causa medida:** `sum()` en 3.12 usa suma compensada (Neumaier) y da exactamente `0.8025` → `round(…, 3)` = `0.802`; en 3.11 la suma ingenua da `0.8025000000000001` → `0.803`. El fix anterior (`bfc165e`) eligió el valor de 3.11; Pyodide 0.26.2 (`frontend/package.json:40`) es 3.12, así que **el alumno real también obtenía 0.802 y se le marcaba mal**. **Corrección:** datos sin empate, `[0.80, 0.83, 0.78, 0.81]` → `0.805` en las dos versiones (test local 3.11 `1 passed`; Neumaier reproducido a mano: `0.805`). `check_question_bank` PASS.
+
+**Lección para 35.0:** la guarda de diversidad debe ejecutar los `*_exec` con el mismo intérprete que el alumno (Pyodide = 3.12) o, como mínimo, rechazar redondeos que dependan del último dígito binario.
