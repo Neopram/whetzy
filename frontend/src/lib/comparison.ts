@@ -18,7 +18,7 @@ export interface ComparisonRow {
   others: ComparisonCell[];
 }
 
-// Whetzy: precios del dueño (ADR-41). El anual aún no está fijado.
+// Whetzy: precios del dueño (ADR-45). El anual aún no está fijado.
 const NO_YEARLY = { es: 'Sin anual aún', en: 'No yearly plan yet' };
 
 export const COMPARISON_CHECKED_ON = '2026-09-24';

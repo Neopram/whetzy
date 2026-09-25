@@ -60,7 +60,7 @@ class User(Base):
     stripe_customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True, index=True)
     stripe_subscription_id: Mapped[str | None] = mapped_column(String(64), nullable=True, unique=True)
     subscription_status: Mapped[str | None] = mapped_column(String(32), nullable=True)  # active|canceled|past_due|trialing
-    subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro|creator (ADR-41)
+    subscription_tier: Mapped[str | None] = mapped_column(String(16), nullable=True)  # plus|pro|creator (ADR-45)
     subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
 
@@ -70,7 +70,7 @@ class User(Base):
     onboarding_experience: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_goal: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     onboarding_weekly_time: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
-    # Ligas opcionales (35.4): fuera de la clasificación, sin sumar XP de liga
+    # Ligas opcionales (37.4): fuera de la clasificación, sin sumar XP de liga
     # y sin aparecer en la de nadie. El XP y el nivel propios siguen igual.
     leagues_opt_out: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false(), nullable=False

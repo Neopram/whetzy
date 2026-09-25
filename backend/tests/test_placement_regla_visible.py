@@ -1,4 +1,4 @@
-"""La regla de salto que ve el alumno es la que aplica el motor (ledger 35.2).
+"""La regla de salto que ve el alumno es la que aplica el motor (ledger 37.2).
 
 `PlacementScreen.tsx` explica «se da por sabido con ≥ X % de ≥ N preguntas»
 con números escritos en el cliente. Si alguien cambia el umbral en el motor y

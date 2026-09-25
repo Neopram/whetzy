@@ -179,12 +179,12 @@ class Settings(BaseSettings):
     STRIPE_WEBHOOK_SECRET: str = ""     # whsec_...
     STRIPE_PRICE_PLUS: str = ""         # price_... for the Plus plan
     STRIPE_PRICE_PRO: str = ""          # price_... for the Pro plan
-    STRIPE_PRICE_CREATOR: str = ""      # price_... for the Creator plan (ADR-41)
+    STRIPE_PRICE_CREATOR: str = ""      # price_... for the Creator plan (ADR-45)
     # Monthly list price per subscription tier, in USD (ADR-21).
     # The admin revenue panel multiplies these by the number of *active*
     # subscriptions found in the DB; they are settings, not magic numbers,
     # so a price change never means editing an endpoint.
-    # Confirmed by the owner 2026-09-24 (ADR-41): code tier ``plus`` is sold as
+    # Confirmed by the owner 2026-09-24 (ADR-45): code tier ``plus`` is sold as
     # "Pro" ($14.99), ``pro`` as "Pro Max" ($19.99), ``creator`` as "Creador"
     # ($99.99, publishes bootcamps; 80/20 on each sale).
     PLAN_PRICE_PLUS_USD: float = 14.99

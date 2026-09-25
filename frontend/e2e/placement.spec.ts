@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { registerUser, uniqueUsername } from './helpers';
 
 /**
- * Prueba de nivel hasta el resultado (ledger 35.2).
+ * Prueba de nivel hasta el resultado (ledger 37.2).
  *
  * Dos caminos, porque el servidor decide si hay módulos saltables y eso depende
  * de cuántas se aciertan:

@@ -3,7 +3,7 @@
 Verifies:
 - Tutor /explain returns 403 for free users, 200 (mocked) for Plus users
 - Quiz /start with mode="exam" returns 403 for free users
-- Quiz /start with mode="review" is free: spaced review is the engine (ADR-41)
+- Quiz /start with mode="review" is free: spaced review is the engine (ADR-45)
 - Quiz /start with mode="study" is always allowed (free tier)
 - Plus users can start exam + review sessions
 """

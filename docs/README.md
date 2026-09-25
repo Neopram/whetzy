@@ -15,23 +15,27 @@ Frontend: React + Capacitor.
 | Saber qué fuentes se pueden usar (solo gratuitas y legales) y cómo | **`CATALOGO_MAESTRO.md` §2.1** + `DECISIONS.md` ADR-11 |
 | Desplegar (Cloudflare y Railway, ambos automáticos desde `master`), migrar, backup/restore, diagnosticar | `RUNBOOK.md`, `RELEASE.md` |
 | Entender el sistema | `ARCHITECTURE.md`, `API.md`, `DECISIONS.md` |
-| Ver la posición frente a la competencia, con pesos fijos (última: §12, captura en vivo 2026-09-24, sin re-puntuar) | `competitive-teardown.md` |
+| Ver la posición frente a la competencia, con pesos fijos (última: §13, captura en vivo 2026-09-24, sin re-puntuar; §12 = ADR-42) | `competitive-teardown.md` |
+| Arrancar una sesión con control total (rama + PR, sin `master`; ADR-41) | **`PROMPT_CONTROL_TOTAL.md`** |
 | Historia narrativa por sesión | `STATUS.md`, `CHANGELOG.md` |
 | Tiendas (listing, privacidad, checklist de Apple 4.8 / 3.1.1) | `store/` |
 | Verificar cualquier afirmación, cerrar una tarea sin errores, correr la verificación masiva (Serie 20), elegir modelo y ahorrar tokens | **`PROTOCOLO_VERIFICACION.md`** |
 | Plan de distribución masiva ES + EN (canales, cadencia, herramientas $0, KPIs) | **`DISTRIBUCION.md`** |
 | Los 6 segmentos de usuario (Estudiante, Career-switcher, Developer Senior, Profesor, Empresa, Developer Web3/Solana) con personas, flujos y créditos por segmento | **`SEGMENTOS.md`** |
 | Competencia directa e indirecta: precios verificados con URL y fecha, lógica de negocio del mercado y qué se adopta (§A, 2026-09-24) | **`COMPETENCIA.md`** |
-| Spec del marketplace de instructores: revenue share 80/20 (ADR-41), quality gate, moderación | **`MARKETPLACE.md`** |
+| Spec del marketplace de instructores: revenue share 80/20 (ADR-45), quality gate, moderación | **`MARKETPLACE.md`** |
 | Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
 | Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
 | Qué se construyó de verdad en los 12 primeros días, qué estaba marcado `DONE` sin estarlo, qué bloquea (nada de ello código) y qué objetivo es alcanzable | **`BALANCE-12-DIAS.md`** |
 | Qué ve alguien que audita el sistema desde fuera sin fiarse de ningún doc: producción medida en vivo, CI, coste de contexto, y por qué no se usa NotebookLM ni Obsidian (ADR-40) | **`AUDITORIA_EXTERNA_2026-09-19.md`** |
 
-Esos son los **dieciocho documentos vivos** (más `store/`). `analisis-estrategico/` y
+Esos son los **diecinueve documentos vivos** (más `store/`). `analisis-estrategico/` y
 `legal/` (raíz) no mandan sobre el código. Todo lo demás está en
-`archive/` — incluida la estrategia v3 del dueño, superada por el catálogo — y **no
-manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo.
+`archive/` — incluida la estrategia v3 del dueño, superada por el catálogo, y desde el
+2026-09-24 los planes paralelos `EXECUTION_PLAN_25-29`, `ROADMAP_25-29`, `*-PLANNING`,
+`SERIE*_STATUS/SUMMARY` y `VERIFICATION_CHECKLIST_FINAL` (ADR-44) — y **no
+manda**: si algo de `archive/` contradice a un documento vivo, gana el vivo. Un plan que
+no sea una fila de `AUTONOMOUS_STATE.md` no es un plan.
 
 ## Arranque local
 
@@ -67,7 +71,9 @@ banco viven en la fila `Contenido` de `AUTONOMOUS_STATE.md` y en
 | Frontend | https://whetzy.com |
 | OpenAPI | https://api-production-9751.up.railway.app/api/v1/openapi.json |
 
-`git push origin master` **despliega los dos**: el backend en Railway (verificado
-2026-09-16) y el frontend en Cloudflare Pages, que está conectado a Git (verificado
-2026-09-24: tras `5be177f`, `whetzy.com/landing/` sirve el hero nuevo). Wrangler a mano
-sigue valiendo (RUNBOOK §1). Después, `node frontend/scripts/check-deployed.mjs` en PASS.
+`master` **despliega los dos** al recibir un commit: el backend en Railway (verificado
+2026-09-16) y el frontend en Cloudflare Pages, conectado a Git (verificado 2026-09-24:
+tras `5be177f`, `whetzy.com/landing/` sirve el hero nuevo; cada rama tiene preview).
+**Por eso `master` solo lo fusiona el dueño a mano (ADR-41)**; la sesión trabaja en
+rama + PR. Wrangler a mano sigue valiendo (RUNBOOK §1). Después de cada fusión,
+`node frontend/scripts/check-deployed.mjs` en PASS.

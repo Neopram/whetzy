@@ -1,4 +1,4 @@
-"""Plan Creador y precios del dueño (ADR-41, 2026-09-24).
+"""Plan Creador y precios del dueño (ADR-45, 2026-09-24).
 
 Pro ($14.99, tier ``plus``) < Pro Max ($19.99, ``pro``) < Creador ($99.99,
 ``creator``). El Creador publica bootcamps; de cada venta se queda el 80 %.

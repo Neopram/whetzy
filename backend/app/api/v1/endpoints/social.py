@@ -43,7 +43,7 @@ async def league_participation(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> LeagueStandingsResponse:
-    """Entrar o salir de las ligas (35.4). Salir no toca XP, nivel ni racha."""
+    """Entrar o salir de las ligas (37.4). Salir no toca XP, nivel ni racha."""
     standings = await gamification_service.set_league_participation(db, current_user, body.participate)
     if standings is None:
         raise HTTPException(

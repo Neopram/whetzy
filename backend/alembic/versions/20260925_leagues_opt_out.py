@@ -1,4 +1,4 @@
-"""Ligas opcionales: el usuario puede salir de la clasificación (35.4).
+"""Ligas opcionales: el usuario puede salir de la clasificación (37.4).
 
 Una columna booleana con default de servidor `false`: aditiva, sin backfill;
 quien ya existe sigue compitiendo como hasta ahora.

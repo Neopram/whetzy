@@ -202,7 +202,7 @@ export function PlacementScreen({ trackId }: Props) {
             <p className={styles.resultDesc}>
               {t('placement.canSkipCount', { count: saltables.length })}
             </p>
-            {/* El porqué del salto (35.2). Umbral y mínimo son los de
+            {/* El porqué del salto (37.2). Umbral y mínimo son los de
                 backend/app/services/engine/placement.py; los vigila
                 backend/tests/test_placement_regla_visible.py. */}
             <p className={styles.resultDesc}>{t('placement.skipRule', { pct: 70, min: 8 })}</p>

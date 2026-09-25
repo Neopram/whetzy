@@ -570,7 +570,7 @@ export interface LeagueStandingsResponse {
   standings: LeagueStandingEntry[];
   promotion_zone: number;
   demotion_zone: number;
-  /** false = salió de las ligas (35.4): `standings` viene vacío. */
+  /** false = salió de las ligas (37.4): `standings` viene vacío. */
   participating: boolean;
 }
 
@@ -605,7 +605,7 @@ export const tutor = {
   },
 };
 
-/** Comodín de racha (35.3). `blocked_by` es un código estable que la UI traduce. */
+/** Comodín de racha (37.3). `blocked_by` es un código estable que la UI traduce. */
 export type StreakFreezeBlock = 'insufficient_credits' | 'max_held' | 'weekly_limit';
 
 export interface StreakFreezeQuote {
@@ -1008,7 +1008,7 @@ export interface InstructorPayout {
 
 /** Marketplace de instructores (serie 28).
  *
- *  El reparto es 80/20 (ADR-41) tras la comisión de Paddle y la retención que fija
+ *  El reparto es 80/20 (ADR-45) tras la comisión de Paddle y la retención que fija
  *  H.29; ese cálculo vive en el backend a propósito, para que el cliente no
  *  pueda enseñar una cifra que no sea la que se va a pagar.
  */

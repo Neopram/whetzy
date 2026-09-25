@@ -133,7 +133,7 @@ async def create_course(
 ) -> CourseResponse:
     """Publica un curso nuevo del instructor autenticado.
 
-    Con ``CREATOR_PLAN_REQUIRED`` exige el plan Creador (ADR-41); el dueño y
+    Con ``CREATOR_PLAN_REQUIRED`` exige el plan Creador (ADR-45); el dueño y
     los admins quedan fuera de la regla para poder montar el catálogo propio.
     """
     if (
@@ -185,7 +185,7 @@ async def enroll_student(
     """Inscribe al usuario y acumula el reparto en el pago del mes (28.4-28.6).
 
     El desglose que devuelve es el de `PaymentService`: comision de Paddle,
-    80/20 (ADR-41) y retencion, con los parametros que fijo H.29. El importe es el
+    80/20 (ADR-45) y retencion, con los parametros que fijo H.29. El importe es el
     precio del curso; no se acepta en la peticion.
 
     Sin pasarela todavia (Paddle es HUMAN-BLOCKED), esto registra la

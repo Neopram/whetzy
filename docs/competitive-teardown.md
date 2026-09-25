@@ -403,6 +403,28 @@ Propuesta: cursos de **texto interactivo, sin vídeo**, para desarrolladores con
 
 ---
 
+## 12. Recálculo — 2026-09-24: ADR-42 y la corrección de la proyección del catálogo
+
+Mismos pesos de §7.1. **Sin evidencia nueva de mercado: el marcador sigue en ≈ 44.**
+Lo que cambia es la meta y una corrección.
+
+- **Meta (ADR-42):** todos los tracks de la industria (28 del mapa + 14 de
+  `CATALOGO_MAESTRO.md` §2.0) con ≥ 50 cursos por track, sobre un corpus abierto
+  descargado y verificado. Contenido pasaría de 55 a ≈ 85 cuando esté hecho y
+  verificado: **+4,2 puntos** (0,14 × 30). Ni un punto más: el catálogo no toca
+  Distribución.
+- **Corrección:** `CATALOGO_MAESTRO.md` §12.1 proyectaba «~79 con 1K usuarios» y «~85
+  con 10K» y su columna «Hoy» sumaba 49 donde decía 44. Se retira; queda la escalera de
+  §11.6 más el catálogo: **44 hoy → ≈ 61 (backlog técnico) → ≈ 66 (tiendas + social login
+  + cohorte) → ≈ 70 (catálogo ADR-42 completo)**.
+- **Lo que sí puede mover más de 4 puntos** sigue siendo lo de §11.6: usuarios (H.10),
+  tiendas (H.2/H.3/H.14/17.14) y distribución (series 26/27, abiertas por ADR-43 para
+  redactar; publicar sigue siendo del dueño).
+- **Riesgo de ventana:** la fila 35.12 hace el monitoreo trimestral que §11.4 del catálogo
+  prometía y nadie tenía asignado.
+
+---
+
 ## 9. Catálogo frente al mercado — 2026-09-16 (sesión au)
 
 El dueño preguntó si Whetzy puede «abarcar todo el mundo informático». La respuesta
@@ -431,7 +453,9 @@ se gana con agentes. Las cifras de la competencia de esta sección y de
 `CATALOGO_MAESTRO.md` §8 son **estimaciones de memoria** hasta que 18.12 las
 sustituya por URL + fecha; por eso no se usan para mover ningún número.
 
-## 12. Captura en vivo — 2026-09-24 (sin re-puntuar)
+## 13. Captura en vivo — 2026-09-24 (sin re-puntuar)
+
+> Escrita como «§12» en `master`; renumerada a §13 al integrar con la rama `claude/clever-edison-4bzr2v`, cuyo §12 (ADR-42) es anterior.
 
 **Qué cambia.** Por primera vez hay precios de la competencia con URL y fecha,
 re-descargados a mano: `COMPETENCIA.md` §A.1. Cubre Codecademy, Boot.dev, Platzi y
@@ -448,9 +472,9 @@ pendientes de una re-puntuación con producto medido (34.9):
 1. **Lo que diferencia a Whetzy ya está construido, pero no se ve.** Prueba de
    nivel, *readiness* por dominio ponderado y comodín de racha existen en el
    código. Los competidores que los anuncian (Educative, AWS, Duolingo) los
-   venden en su portada. Serie 35.
+   venden en su portada. Serie 37 (antes 35).
 2. **En precio, Whetzy aún no compite: no tiene precio.** La comparativa pública
-   lo dice («Aún sin precio») hasta H.35.
+   lo decía («Aún sin precio») hasta ADR-45, que fijó los mensuales; anual y tarifa regional siguen en H.38.
 3. **Hueco en español.** Ninguno de los preparadores de certificación observados
    muestra práctica ni *readiness* en español (informe de agente, §A.2, no
    reproducido).

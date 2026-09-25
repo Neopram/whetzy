@@ -25,7 +25,7 @@ class PaymentService:
     
     GRECIA_TAX_RATE = Decimal("0.22")  # 22%
     PADDLE_COMMISSION = Decimal("0.075")  # 7.5%
-    # ADR-41 (dueño, 2026-09-24): de cada venta de un bootcamp/curso, el
+    # ADR-45 (dueño, 2026-09-24): de cada venta de un bootcamp/curso, el
     # creador se queda el 80 % y Whetzy el 20 %. Se aplica sobre lo que queda
     # tras la comisión de Paddle, como antes el 70/30.
     INSTRUCTOR_SHARE = Decimal("0.80")
@@ -83,7 +83,7 @@ class PaymentService:
         # Net after Paddle commission goes to split
         after_paddle = gross - paddle_commission
         
-        # Instructor gets 80%, platform gets 20% (ADR-41)
+        # Instructor gets 80%, platform gets 20% (ADR-45)
         instructor_gross = after_paddle * PaymentService.INSTRUCTOR_SHARE
         platform_share = after_paddle * PaymentService.PLATFORM_SHARE
         

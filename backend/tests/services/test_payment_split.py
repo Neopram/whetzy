@@ -2,7 +2,7 @@
 
 Verifies:
 - Paddle commission: 7.5%
-- Split 80/20 (instructor/platform, ADR-41)
+- Split 80/20 (instructor/platform, ADR-45)
 - Tax withholding: 22% (Grecia)
 - Edge cases and decimal precision
 """
@@ -90,7 +90,7 @@ class TestPaymentSplit:
             assert abs(total - amount) <= 2, f"Split doesn't sum correctly for EUR {amount/100}: {total} vs {amount}"
 
     def test_instructor_gets_eighty_percent(self):
-        """Verify instructor gets 80% of net after Paddle commission (ADR-41)."""
+        """Verify instructor gets 80% of net after Paddle commission (ADR-45)."""
         result = PaymentService.calculate_instructor_payout(10000)
 
         # Net after Paddle commission

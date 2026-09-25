@@ -142,7 +142,7 @@ describe('LeagueScreen — league name localization', () => {
     });
   });
 
-  it('the league switch opts out in place and says what stays (35.4)', async () => {
+  it('the league switch opts out in place and says what stays (37.4)', async () => {
     await i18n.changeLanguage('es');
     currentMock.mockResolvedValue(standings('gold', 'Oro'));
     participationMock.mockResolvedValue({ ...standings('gold', 'Oro'), standings: [], participating: false });

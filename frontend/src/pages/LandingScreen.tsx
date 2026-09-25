@@ -271,7 +271,7 @@ export default function LandingScreen() {
         </div>
       </section>
 
-      {/* 35.5: la preparación por dominio, con una captura real (cuenta nueva,
+      {/* 37.5: la preparación por dominio, con una captura real (cuenta nueva,
           CLF-C02). Es lo que ningún preparador observado da en español
           (COMPETENCIA.md §A.2). */}
       <section id="readiness" className={styles.readinessSection}>

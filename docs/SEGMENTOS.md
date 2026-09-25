@@ -36,7 +36,7 @@ distribución (Series 26-27) deben hablarle a cada segmento en su idioma.
 
 ### Plan y precio
 - **Gratis:** todo el contenido, el motor adaptativo y el repaso espaciado (ADR-41; la propuesta del 2026-09-18 de limitarlo a Python básico no se aplicó nunca)
-- **Pro $14.99/mo:** tutor con IA (ADR-41)
+- **Pro $14.99/mo:** tutor con IA (ADR-45)
 - **Gancho de conversión:** Completion del primer módulo → unlock del siguiente = paywall suave
 
 ### Flujo en la app
@@ -77,9 +77,9 @@ Landing → Registro (30s) → Diagnóstico 10 preguntas (3 min)
 > Completion rate > 70% — no eres tú, era el método."
 
 ### Plan y precio
-- **Pro Max $19.99/mo** (antes «Premium»; lo que añade sobre Pro lo decide el dueño, H.35 / ADR-41)
+- **Pro Max $19.99/mo** (antes «Premium»; lo que añade sobre Pro lo decide el dueño, H.38 / ADR-45)
 - **Certificaciones $49/año:** PCEP, AWS CLF, ISC2 CC como primeras credenciales
-- **Gancho de conversión:** Ver la "ruta de empleabilidad" completa → solo en Pro Max (propuesta, pendiente de H.35)
+- **Gancho de conversión:** Ver la "ruta de empleabilidad" completa → solo en Pro Max (propuesta, pendiente de H.38)
 
 ### Flujo en la app
 ```
@@ -154,13 +154,13 @@ Landing (sección "Ya sé programar") → Assessment express 15 preguntas
 4. "Mis alumnos no terminan los cursos — no es motivador"
 
 ### Propuesta de valor Whetzy
-> "Tu contenido + nuestro motor adaptativo. Revenue share 80/20 (ADR-41).
+> "Tu contenido + nuestro motor adaptativo. Revenue share 80/20 (ADR-45).
 > Tus alumnos terminan porque el motor personaliza el camino.
 > Tú cobras más porque el producto entrega más."
 
 ### Plan y precio
-- **Plan Creador 99,99 $/mes (ADR-41)** para publicar; se exige cuando abra el cobro (`CREATOR_PLAN_REQUIRED`)
-- **Revenue share:** 80 % creador / 20 % Whetzy por cada venta, tras la comisión del procesador de pagos (ADR-41)
+- **Plan Creador 99,99 $/mes (ADR-45)** para publicar; se exige cuando abra el cobro (`CREATOR_PLAN_REQUIRED`)
+- **Revenue share:** 80 % creador / 20 % Whetzy por cada venta, tras la comisión del procesador de pagos (ADR-45)
 - **Quality gate:** Todo contenido pasa §7 antes de publicarse (garantía de calidad)
 - **Incentivo extra:** Instructores top → badge verificado → más visibilidad en marketplace
 

@@ -1,4 +1,4 @@
-"""Tienda de la racha: comprar comodines con créditos (ledger 35.3).
+"""Tienda de la racha: comprar comodines con créditos (ledger 37.3).
 
 La racha amable tiene dos fuentes de comodines:
 
