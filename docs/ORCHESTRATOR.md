@@ -48,9 +48,9 @@ ADR-16 queda suspendida). Cancelar en dos toques.
 - Catálogo: **`docs/CATALOGO_MAESTRO.md`** — **todos los tracks de la industria**
   (28 del mapa + 14 de §2.0, y los que 35.1 confirme) con **≥ 50 cursos por track** y
   ~55 certificaciones (ADR-42), sobre un corpus abierto descargado y verificado en
-  `corpus/` (fuera del repo). Hoy 18 tracks / 49 cursos / 5 certificaciones
-  (`check_docs.py`). Es la única lista; cuando otro doc la contradiga, manda el
-  catálogo. **La puerta 35.0 va antes que cualquier pregunta nueva.** No hay atajos.
+  `corpus/` (fuera del repo). Las cifras de hoy (tracks, cursos = módulos, preguntas)
+  viven solo en `frontend/src/lib/catalog.ts`, vigiladas por `check_docs.py` [4]. El
+  catálogo es la única lista; cuando otro doc lo contradiga, manda el catálogo. **La puerta 35.0 va antes que cualquier pregunta nueva.** No hay atajos.
 - Contenido redactado nativo en ES y EN — no traducido. Toda pregunta cita fuente.
 - **Fuentes solo gratuitas y legales** (ADR-11, catálogo §2.1): reutilizar solo
   MIT / Apache / BSD / CC BY / CC0 / PSF / dominio público; CC BY-SA espera H.LIC;

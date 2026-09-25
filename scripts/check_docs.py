@@ -87,12 +87,11 @@ for _t in _tracks:
             real_skill_ids.add(_s["id"] if isinstance(_s, dict) else _s)
 real_skills = len(real_skill_ids)
 
-# Un "curso" es un track x nivel (17.4): `tracks.json` da un `level` por
-# modulo, y el catalogo que ve el usuario agrupa por (track, level).
-real_courses = sum(
-    len({m.get("level") for m in t.get("modules", []) if m.get("level") is not None})
-    for t in _tracks
-)
+# Un "curso" es un MODULO del molde (ADR-42 §2, fila 35.2): 4 skills, 60
+# preguntas, 4 lecciones. Hasta el 2026-09-25 era «track x nivel» (17.4), que
+# daba 49 y no era la unidad que se construye ni la que mide la meta de
+# ≥ 50 cursos por track.
+real_courses = sum(len(t.get("modules", [])) for t in _tracks)
 
 real_questions = 0
 for qfile in sorted((CONTENT / "questions").rglob("*.json")):
