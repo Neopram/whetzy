@@ -8,7 +8,7 @@
       "question_es": "Un equipo parte su monolito en 12 servicios, pero mantiene un único repositorio, un único pipeline y un despliegue conjunto cada viernes. ¿Qué beneficio central de los microservicios han perdido por el camino?",
       "question_en": "A team splits its monolith into 12 services but keeps a single repository, a single pipeline and one joint release every Friday. Which core microservices benefit have they lost along the way?",
       "options_es": [
-        "Ninguno: repartir el codigo en 12 servicios ya aporta todos los beneficios",
+        "Ninguno: repartir el código en 12 servicios ya aporta todos los beneficios",
         "La posibilidad de escribir cada servicio en un lenguaje distinto",
         "La capacidad de desplegar y liberar cada servicio de forma independiente",
         "El aislamiento de fallos a nivel de proceso"
@@ -39,7 +39,7 @@
       "question_en": "What is the soundest criterion for deciding where to draw a microservice boundary?",
       "options_es": [
         "Un contexto delimitado (bounded context) del dominio, con su propio lenguaje y sus propias reglas de negocio",
-        "El numero de lineas de codigo: por encima de unas 500 conviene partirlo",
+        "El número de lineas de código: por encima de unas 500 conviene partirlo",
         "Una tabla de la base de datos por servicio",
         "Un servicio por desarrollador del equipo, para evitar conflictos de merge"
       ],
@@ -69,7 +69,7 @@
       "question_en": "Five services share an internal `common-domain` library holding their business entities and DTOs. What is the main architectural risk?",
       "options_es": [
         "Las librerias compartidas están prohibidas por completo en cualquier arquitectura de microservicios, sin ninguna excepción posible bajo ninguna circunstancia",
-        "Un cambio en la libreria obliga a recompilar y redesplegar los cinco servicios a la vez, reintroduciendo acoplamiento en el despliegue",
+        "Un cambio en la librería obliga a recompilar y redesplegar los cinco servicios a la vez, reintroduciendo acoplamiento en el despliegue",
         "La librería aumenta de forma notable el tamaño de la imagen del contenedor de cada uno de los cinco servicios",
         "Los cinco servicios dejaran de poder registrarse correctamente en el mecanismo de service discovery del sistema"
       ],
@@ -235,7 +235,7 @@
         "Que puede recibir el mismo mensaje varias veces y debe ser idempotente, por ejemplo registrando los ids de mensaje ya procesados",
         "Nada: 'al menos una vez' significa en la practica exactamente una vez",
         "Que debe desactivar los reintentos del broker para evitar duplicados",
-        "Que debe procesar los mensajes en un unico hilo, porque los duplicados vienen de la concurrencia"
+        "Que debe procesar los mensajes en un único hilo, porque los duplicados vienen de la concurrencia"
       ],
       "options_en": [
         "That it may receive the same message several times and must be idempotent, for example by recording the ids of already-processed messages",
@@ -262,10 +262,10 @@
       "question_es": "En una saga, ¿cuál es la diferencia entre coreografía y orquestación?",
       "question_en": "In a saga, what is the difference between choreography and orchestration?",
       "options_es": [
-        "La coreografía se implementa siempre con llamadas REST síncronas entre servicios y la orquestación siempre con colas de mensajes asíncronas dedicadas, y ninguna de las dos admite mensajería asíncrona bajo ningun concepto",
+        "La coreografía se implementa siempre con llamadas REST síncronas entre servicios y la orquestación siempre con colas de mensajes asíncronas dedicadas, y ninguna de las dos admite mensajería asíncrona bajo ningún concepto",
         "La orquestación aporta atomicidad ACID real entre los servicios implicados; la coreografía solo ofrece consistencia eventual entre ellos",
         "Ambas son exactamente la misma técnica: los nombres solo cambian según el proveedor de la herramienta de mensajería elegida",
-        "En coreografia cada servicio reacciona a los eventos de los demas sin coordinador central; en orquestacion un coordinador explicito indica a cada servicio que paso ejecutar"
+        "En coreografia cada servicio reacciona a los eventos de los demás sin coordinador central; en orquestación un coordinador explicito indica a cada servicio que paso ejecutar"
       ],
       "options_en": [
         "Choreography is always built on synchronous REST calls between services and orchestration always on dedicated asynchronous message queues, and neither of the two ever allows asynchronous messaging under any circumstance",
@@ -457,7 +457,7 @@
       "question_en": "The gateway validates the signature of a JWT with a 24-hour expiry on every request. A user logs out and, on top of that, their token leaks. What happens, and how is it normally handled?",
       "options_es": [
         "El servidor revoca de forma automática la firma criptográfica exacta de ese JWT en el instante del cierre de sesión, de modo que el gateway deja de validarlo desde ese momento en adelante",
-        "El gateway mantiene en memoria, sincronizada entre todas sus replicas, la lista completa de sesiones activas y rechaza el token justo en el instante del logout sin ningun retraso apreciable, una técnica que no escala bien cuando el número de usuarios activos crece mucho",
+        "El gateway mantiene en memoria, sincronizada entre todas sus replicas, la lista completa de sesiones activas y rechaza el token justo en el instante del logout sin ningún retraso apreciable, una técnica que no escala bien cuando el número de usuarios activos crece mucho",
         "El token sigue siendo valido hasta que caduque, porque la validación es sin estado; por eso se usan caducidades cortas con refresh tokens y, si hace falta revocar antes, una lista de revocación consultada en el gateway",
         "El propio JWT incluye un campo interno cifrado que se actualiza automáticamente en tiempo real cada vez que el usuario cierra su sesión desde cualquier dispositivo conectado"
       ],
@@ -488,7 +488,7 @@
       "options_es": [
         "Desplegar el cambio y avisar por correo a los consumidores de la API",
         "Duplicar el servicio de pedidos en dos despliegues permanentes, uno por tipo de cliente",
-        "Mantener una sola version y responder 400 a los clientes antiguos hasta que actualicen",
+        "Mantener una sola versión y responder 400 a los clientes antiguos hasta que actualicen",
         "Enrutar `/v1/pedidos` y `/v2/pedidos` a versiones distintas del servicio y mantener v1 mientras haya trafico, con una fecha de retirada anunciada"
       ],
       "options_en": [
@@ -627,7 +627,7 @@
         "Consistencia estricta siempre: devolver una instancia que ya no existe es el peor fallo posible",
         "Da igual: el registro no participa en el camino de las peticiones",
         "Disponibilidad: es preferible devolver una lista posiblemente desactualizada, que el cliente depura con timeouts y reintentos, antes que no poder resolver nada y tumbar todas las llamadas del sistema a la vez",
-        "Bloquear todas las peticiones hasta que la particion se resuelva, para no propagar datos obsoletos"
+        "Bloquear todas las peticiones hasta que la partición se resuelva, para no propagar datos obsoletos"
       ],
       "options_en": [
         "Strict consistency always: returning an instance that no longer exists is the worst possible failure",
@@ -656,7 +656,7 @@
       "options_es": [
         "La liveness probe: si falla, el pod deja de recibir tráfico nuevo pero permanece en ejecución sin reiniciarse nunca",
         "La readiness probe: mientras falla, el pod se retira de los Endpoints del Service, pero no se reinicia",
-        "La startup probe, que sustituye por completo a las demas sondas durante toda la vida útil restante del pod",
+        "La startup probe, que sustituye por completo a las demás sondas durante toda la vida útil restante del pod",
         "Ninguna de las tres: el Service reparte tráfico por igual entre todos los pods que llevan la etiqueta correcta"
       ],
       "options_en": [

@@ -10,8 +10,8 @@
       "options_es": [
         "En read-through es la propia cache (o su librería) quien consulta el origen y se rellena en el fallo; en cache-aside esa lógica vive en el código de la aplicación",
         "Read-through se limita a escribir en la base de datos original y cache-aside solo permite realizar lecturas puras del dato, una limitación que en la práctica descarta a cache-aside para cualquier flujo de escritura",
-        "Read-through no necesita usar ningun TTL en absoluto porque el dato se refresca solo en cada petición nueva que llega",
-        "Cache-aside solo puede funcionar con caches locales dentro del proceso, jamas con caches distribuidas, una restricción de diseño que ningun proveedor de cache ha superado todavía"
+        "Read-through no necesita usar ningún TTL en absoluto porque el dato se refresca solo en cada petición nueva que llega",
+        "Cache-aside solo puede funcionar con caches locales dentro del proceso, jamás con caches distribuidas, una restricción de diseño que ningún proveedor de cache ha superado todavía"
       ],
       "options_en": [
         "In read-through the cache itself (or its library) queries the origin and populates on a miss; in cache-aside that logic lives in the application code",
@@ -174,7 +174,7 @@
       "question_en": "A team adds a local in-process cache in front of the distributed cache (Redis) to save the network hop. Which architectural cost is almost always underestimated?",
       "options_es": [
         "El ratio global de aciertos de Redis sube considerablemente porque ahora también se cuentan como suyos los aciertos que resuelve la cache local, una métrica que los paneles de monitorización terminan mostrando de forma engañosa",
-        "La cache local en proceso no admite guardar objetos serializados de ningun tipo, solamente cadenas de texto simple y números enteros",
+        "La cache local en proceso no admite guardar objetos serializados de ningún tipo, solamente cadenas de texto simple y números enteros",
         "Redis deja por completo de poder desalojar sus propias claves antiguas mientras exista una cache local delante de el en cada replica",
         "Cada réplica del servicio tiene su propia copia, así que invalidar en Redis no basta y durante la ventana de propagación distintas instancias responden valores distintos al mismo usuario"
       ],

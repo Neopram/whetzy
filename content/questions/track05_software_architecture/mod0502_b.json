@@ -70,7 +70,7 @@
       "options_es": [
         "Se duplican los datos en cada consumidor, que trabajará con copias potencialmente desactualizadas y habrá que decidir cuánta obsolescencia es tolerable",
         "Deja de ser posible escalar de forma horizontal a los consumidores que están suscritos a ese mismo topic",
-        "Se pierde por completo la trazabilidad porque los eventos ya no pueden llevar ningun tipo de metadato adicional",
+        "Se pierde por completo la trazabilidad porque los eventos ya no pueden llevar ningún tipo de metadato adicional",
         "Los servicios quedan acoplados en el tiempo entre si: si el productor se cae, todos los consumidores dejan de funcionar también de inmediato, un efecto dominó que anula el desacoplamiento"
       ],
       "options_en": [
@@ -290,7 +290,7 @@
       "question_en": "A queue's depth grows steadily for hours and never drains during traffic troughs. What does that signal mean?",
       "options_es": [
         "El broker sufre una fuga de memoria interna que le impide llegar a entregar los mensajes ya acumulados en la cola a los consumidores, un fallo que normalmente se detecta enseguida por las alertas del propio broker",
-        "La cola está funcionando exactamente como se espera de ella: absorber picos de tráfico es su único proposito real, y por eso no requiere ninguna acción adicional por parte del equipo",
+        "La cola está funcionando exactamente como se espera de ella: absorber picos de tráfico es su único propósito real, y por eso no requiere ninguna acción adicional por parte del equipo",
         "La capacidad de consumo es inferior a la tasa de producción, así que la latencia de extremo a extremo crecerá sin límite hasta que se añadan consumidores o se reduzca la entrada",
         "Los mensajes se están duplicando por culpa de la semántica de entrega at-least-once que usa el sistema de mensajería"
       ],
@@ -456,7 +456,7 @@
       "question_en": "A topic emits a million events a day and one service only needs 2 % of them. What is the advantage of filtering at the broker (subscription filter) over filtering inside the consumer?",
       "options_es": [
         "Filtrar en el broker convierte de forma automática ese topic entero en una cola punto a punto tradicional",
-        "Filtrar en el consumidor garantiza el orden estricto de entrega de los mensajes, mientras que filtrar en el broker lo rompe, una garantía que ningun broker de mensajería real ofrece hoy en día",
+        "Filtrar en el consumidor garantiza el orden estricto de entrega de los mensajes, mientras que filtrar en el broker lo rompe, una garantía que ningún broker de mensajería real ofrece hoy en día",
         "El ahorro es solo de espacio en disco del broker; el consumidor sigue recibiendo igualmente el millón de eventos completo",
         "El broker no entrega ni cobra por lo que no coincide, así que se ahorra ancho de banda, invocaciones y el coste de despertar al consumidor un millón de veces"
       ],
@@ -515,10 +515,10 @@
       "question_es": "Este despachador pub/sub en memoria. ¿Qué imprime?\n```python\nsuscriptores = {}\n\ndef suscribir(tema, fn):\n    suscriptores.setdefault(tema, []).append(fn)\n\ndef publicar(tema, dato):\n    for fn in suscriptores.get(tema, []):\n        fn(dato)\n\nsuscribir(\"pedidos\", lambda d: print(\"facturacion:\", d))\nsuscribir(\"pedidos\", lambda d: print(\"almacen:\", d))\nsuscribir(\"envios\", lambda d: print(\"tracking:\", d))\n\npublicar(\"pedidos\", 42)\npublicar(\"clientes\", 99)\n```",
       "question_en": "This in-memory pub/sub dispatcher. What does it print?\n```python\nsuscriptores = {}\n\ndef suscribir(tema, fn):\n    suscriptores.setdefault(tema, []).append(fn)\n\ndef publicar(tema, dato):\n    for fn in suscriptores.get(tema, []):\n        fn(dato)\n\nsuscribir(\"pedidos\", lambda d: print(\"facturacion:\", d))\nsuscribir(\"pedidos\", lambda d: print(\"almacen:\", d))\nsuscribir(\"envios\", lambda d: print(\"tracking:\", d))\n\npublicar(\"pedidos\", 42)\npublicar(\"clientes\", 99)\n```",
       "options_es": [
-        "facturacion: 42",
-        "facturacion: 42\nalmacen: 42\ntracking: 42",
-        "facturacion: 42\nalmacen: 42",
-        "facturacion: 42\nalmacen: 42\nKeyError: 'clientes'"
+        "facturación: 42",
+        "facturación: 42\nalmacen: 42\ntracking: 42",
+        "facturación: 42\nalmacen: 42",
+        "facturación: 42\nalmacen: 42\nKeyError: 'clientes'"
       ],
       "options_en": [
         "facturacion: 42",
@@ -702,7 +702,7 @@
         "Eliminar del registro los eventos que tuvieron efectos externos antes de volver a reproducir el log entero",
         "Reproducir el registro completo a una velocidad bastante menor para no llegar a saturar los sistemas externos implicados, una solución que solo funciona si los sistemas externos aceptan reintentos sin limite",
         "Separar los efectos externos de la actualización del estado, de modo que la reproducción solo recalcule proyecciones y nunca dispare acciones hacia el exterior",
-        "Reproducir únicamente desde el último snapshot guardado, lo que evita por completo que ningun efecto se repita jamas"
+        "Reproducir únicamente desde el último snapshot guardado, lo que evita por completo que ningún efecto se repita jamás"
       ],
       "options_en": [
         "Removing from the log the events that had external effects before replaying the whole log again",

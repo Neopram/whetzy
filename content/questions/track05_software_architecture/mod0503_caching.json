@@ -66,7 +66,7 @@
       "question_es": "¿Cuál es la diferencia entre las estrategias de escritura 'write-through' y 'write-back' (write-behind)?",
       "question_en": "What is the difference between the 'write-through' and 'write-back' (write-behind) write strategies?",
       "options_es": [
-        "No existe ninguna diferencia real entre ambas estrategias de escritura, solo cambia el nombre comercial que reciben según el proveedor de la cache utilizada, una distinción puramente de marketing que ningun ingeniero necesita llegar a conocer nunca",
+        "No existe ninguna diferencia real entre ambas estrategias de escritura, solo cambia el nombre comercial que reciben según el proveedor de la cache utilizada, una distinción puramente de marketing que ningún ingeniero necesita llegar a conocer nunca",
         "Write-through nunca llega a persistir el dato en el origen definitivo, se queda para siempre solo guardado dentro de la propia cache en memoria, una limitación que en la práctica anula cualquier beneficio de usar cache",
         "Write-through escribe en cache y origen de forma síncrona (consistente pero más lento); write-back escribe primero en cache y persiste al origen de forma asíncrona (más rápido, pero riesgo de pérdida si la cache cae antes de persistir)",
         "Write-back únicamente puede aplicarse a datos que son estrictamente de solo lectura dentro del sistema, nunca a datos que cambian con frecuencia, una restricción pensada para evitar corromper datos que cambian a menudo"
@@ -97,7 +97,7 @@
       "question_en": "What is a 'cache stampede' (or 'thundering herd') and how is it mitigated?",
       "options_es": [
         "Un ataque de denegación de servicio distribuido dirigido de forma específica contra la capa de cache del sistema, saturando sus conexiones disponibles, un vector de ataque que se mitiga habitualmente limitando las peticiones por segundo",
-        "El momento exacto en que la cache se llena por completo de entradas que nunca fueron solicitadas antes por ningun cliente conectado, un problema que solo aparece en sistemas con muy poco tráfico real",
+        "El momento exacto en que la cache se llena por completo de entradas que nunca fueron solicitadas antes por ningún cliente conectado, un problema que solo aparece en sistemas con muy poco tráfico real",
         "Cuando una entrada popular expira y muchas peticiones concurrentes fallan a la vez, golpeando todas el origen simultáneamente; se mitiga con locks/'single-flight', expiración escalonada (jitter) o recálculo anticipado",
         "Un simple error de sintaxis al construir la clave que identifica cada entrada dentro de la cache, provocando colisiones entre claves, un fallo que se corrige simplemente reiniciando el proceso del broker"
       ],
@@ -177,7 +177,7 @@
         "Un sistema de control de versiones distribuido, usado principalmente para gestionar el historial del código fuente de un proyecto entero, con soporte para ramas, fusiones y etiquetas gestionadas de forma completamente local",
         "Un almacén de estructuras de datos en memoria, usado como cache, base de datos clave-valor y broker de mensajes, muy rápido por operar principalmente en RAM",
         "Un lenguaje de programación interpretado, orientado sobre todo a escribir scripts sencillos de administración",
-        "Un servidor web que sirve contenido estatico directamente desde el disco duro sin ningun procesamiento previo"
+        "Un servidor web que sirve contenido estático directamente desde el disco duro sin ningún procesamiento previo"
       ],
       "options_en": [
         "A distributed version control system, mainly used to manage a whole project's entire source code history over time, with support for branches, merges and tags managed completely locally",
@@ -230,7 +230,7 @@
       "question_en": "Which Redis data structure is best suited to implement a leaderboard ordered by score?",
       "options_es": [
         "Hash Map con expiracion por campo",
-        "Bitmap con contador atomico",
+        "Bitmap con contador atómico",
         "HyperLogLog probabilistico",
         "Sorted Set (ZSET)"
       ],
