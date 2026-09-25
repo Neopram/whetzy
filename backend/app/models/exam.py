@@ -5,7 +5,16 @@ from __future__ import annotations
 import uuid
 from datetime import datetime
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 
@@ -116,3 +125,32 @@ class Certificate(Base):
     # apart from one that was never issued, and "we revoked it" is information
     # the person checking deserves.
     revoked: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", nullable=False)
+
+
+class CertificationPurchase(Base):
+    """Derecho a presentarse al examen certificador de un track (38.7, ADR-49).
+
+    Pago único: una fila por (usuario, track) y los reintentos no vuelven a pasar
+    por caja. `price_usd` guarda lo que se pagó ese día; si el precio cambia, lo
+    comprado no cambia con él.
+    """
+
+    __tablename__ = "certification_purchases"
+    __table_args__ = (
+        UniqueConstraint("user_id", "track_id", name="uq_certification_purchases_user_track"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    track_id: Mapped[str] = mapped_column(
+        ForeignKey("tracks.id", ondelete="CASCADE"), nullable=False
+    )
+    price_usd: Mapped[float] = mapped_column(Float, nullable=False)
+    # "grant" (regalo del dueño o del admin) | el proveedor de pago cuando abra H.19
+    source: Mapped[str] = mapped_column(String(20), nullable=False)
+    external_ref: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )

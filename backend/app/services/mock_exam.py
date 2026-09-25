@@ -108,8 +108,14 @@ async def start_attempt(
     track_id: str,
     *,
     rng: random.Random | None = None,
+    kind: str = "certification",
+    pass_pct: float | None = None,
 ) -> MockExamAttempt:
-    """Draws a weighted question set and starts the clock."""
+    """Draws a weighted question set and starts the clock.
+
+    `kind`/`pass_pct` let the paid certifying exam (38.7) reuse the same
+    blueprint draw; the mock itself keeps no pass mark.
+    """
     track = await db.get(Track, track_id)
     if track is None or not track.is_certification:
         raise MockExamError(f"{track_id} is not a certification track")
@@ -146,6 +152,8 @@ async def start_attempt(
         id=uuid.uuid4(),
         user_id=user.id,
         track_id=track_id,
+        kind=kind,
+        pass_pct=pass_pct,
         question_ids=selected,
         duration_minutes=track.exam_duration_minutes,
         started_at=now,

@@ -26,7 +26,7 @@ from app.models.economy import (
     ReferralCode,
 )
 from app.models.email_verification import EmailVerificationToken
-from app.models.exam import MockExamAttempt
+from app.models.exam import CertificationPurchase, MockExamAttempt
 from app.models.experiment import Experiment, ExperimentAssignment
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.instructor import (
@@ -48,6 +48,7 @@ from app.models.payment import (
 from app.models.push_subscription import PushSubscription
 from app.models.question_report import QuestionReport
 from app.models.session import Response, StudySession
+from app.models.tutor_usage import TutorUsage
 from app.models.user import User, UserBadge, UserSkillState
 
 __all__ = [
@@ -57,6 +58,7 @@ __all__ = [
     "Base",
     "Campaign",
     "CampaignClick",
+    "CertificationPurchase",
     "CreditExpenseCap",
     "CreditLedger",
     "Domain",
@@ -97,6 +99,7 @@ __all__ = [
     "StripeCustomer",
     "StudySession",
     "Track",
+    "TutorUsage",
     "User",
     "User2FA",
     "UserBadge",

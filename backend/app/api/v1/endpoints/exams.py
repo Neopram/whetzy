@@ -17,6 +17,7 @@ from app.models.user import User, UserSkillState
 from app.schemas.content import QuestionPublic
 from app.schemas.exam import (
     CertificatePublic,
+    CertificationAccess,
     CertificationReadiness,
     DomainReadiness,
     MockExamStartRequest,
@@ -27,6 +28,7 @@ from app.schemas.exam import (
     TrackExamStartResponse,
     TrackExamSubmitResponse,
 )
+from app.services import certification as certification_service
 from app.services import mock_exam as mock_exam_service
 from app.services import quiz as quiz_service
 from app.services import track_exam as track_exam_service
@@ -55,7 +57,10 @@ async def start_mock_exam(
         attempt = await mock_exam_service.start_attempt(db, current_user, payload.track_id)
     except mock_exam_service.MockExamError as err:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, str(err)) from err
+    return await _serialise_mock_start(db, attempt)
 
+
+async def _serialise_mock_start(db: AsyncSession, attempt: MockExamAttempt) -> MockExamStartResponse:
     # `get_db` yields a session and never commits, so every endpoint that writes
     # commits for itself - see auth.py, which does it at each write. A flush
     # alone is not enough: on Postgres the transaction is discarded when the
@@ -101,6 +106,12 @@ async def submit_mock_exam(
     answers = {a.question_id: a.selected_index for a in payload.answers}
     report = await mock_exam_service.score_attempt(db, attempt, answers)
 
+    certificate_public = None
+    if attempt.kind == certification_service.KIND_CERTIFYING:
+        report = certification_service.add_verdict(report, attempt)
+        certificate = await track_exam_service.issue_certificate(db, attempt, report, expired=expired)
+        certificate_public = await _certificate_public(db, certificate) if certificate else None
+
     attempt.report = report
     attempt.submitted_at = datetime.now(UTC)
     attempt.status = "expired" if expired else "submitted"
@@ -111,6 +122,7 @@ async def submit_mock_exam(
         status=attempt.status,
         expired=expired,
         report=report,  # type: ignore[arg-type]
+        certificate=certificate_public,
     )
 
 
@@ -311,10 +323,11 @@ async def submit_track_exam(
     can have sat the same track more than once.
     """
     attempt = await _load_own_attempt(db, attempt_id, current_user)
-    if attempt.kind == "certification":
+    if attempt.kind in ("certification", certification_service.KIND_CERTIFYING):
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
-            "this is a certification mock - submit it to POST /exams/mock/{attempt_id}/submit",
+            "this is a certification mock or certifying exam - "
+            "submit it to POST /exams/mock/{attempt_id}/submit",
         )
     if attempt.status != "in_progress":
         raise HTTPException(status.HTTP_409_CONFLICT, f"attempt already {attempt.status}")
@@ -384,6 +397,7 @@ async def _certificate_public(db: AsyncSession, certificate: Certificate) -> Cer
         questions=certificate.questions,
         issued_at=certificate.issued_at,
         revoked=certificate.revoked,
+        is_certification=bool(track and track.is_certification),
     )
 
 
@@ -410,3 +424,35 @@ async def verify_certificate(
     if certificate is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "certificate not found")
     return await _certificate_public(db, certificate)
+
+
+# ── Paid certifying exam (38.7, ADR-49) ──────────────────────────────────────
+
+
+@router.get("/certification/{track_id}/access", response_model=CertificationAccess)
+async def get_certification_access(
+    track_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> CertificationAccess:
+    try:
+        data = await certification_service.access(db, current_user, track_id)
+    except mock_exam_service.MockExamError as err:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(err)) from err
+    return CertificationAccess(**data)
+
+
+@router.post("/certification/{track_id}/start", response_model=MockExamStartResponse, status_code=201)
+async def start_certifying_exam(
+    track_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> MockExamStartResponse:
+    """Starts the certifying exam; submit it to `POST /exams/mock/{attempt_id}/submit`."""
+    try:
+        attempt = await certification_service.start(db, current_user, track_id)
+    except certification_service.PaymentRequired as err:
+        raise HTTPException(status.HTTP_402_PAYMENT_REQUIRED, certification_service.PURCHASE_REQUIRED) from err
+    except mock_exam_service.MockExamError as err:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, str(err)) from err
+    return await _serialise_mock_start(db, attempt)

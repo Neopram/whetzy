@@ -61,6 +61,11 @@ class MockExamReport(BaseModel):
     scoring_note_en: str
     per_domain_caveat_es: str
     per_domain_caveat_en: str
+    # Only the paid certifying exam (38.7) declares a pass; the mock never does.
+    pass_pct: float | None = None
+    passed: bool | None = None
+    pass_note_es: str | None = None
+    pass_note_en: str | None = None
 
 
 class MockExamSubmitResponse(BaseModel):
@@ -68,6 +73,18 @@ class MockExamSubmitResponse(BaseModel):
     status: str
     expired: bool
     report: MockExamReport
+    # Present only when a certifying exam was passed on time.
+    certificate: CertificatePublic | None = None
+
+
+class CertificationAccess(BaseModel):
+    """Whether the learner can sit a track's certifying exam (38.7, ADR-49)."""
+
+    track_id: str
+    price_usd: float
+    paywall_enabled: bool
+    purchased: bool
+    can_start: bool
 
 
 # ── Certification readiness (18.1) ───────────────────────────────────────────
@@ -162,6 +179,9 @@ class CertificatePublic(BaseModel):
     questions: int
     issued_at: datetime
     revoked: bool
+    # A certification track's certificate is a "Whetzy preparation certificate"
+    # (ADR-49); the card titles it differently from a track-completion one.
+    is_certification: bool = False
 
 
 class TrackExamSubmitResponse(BaseModel):

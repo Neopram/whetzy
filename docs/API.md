@@ -89,7 +89,7 @@ GET  /duels/{duel_id}/result         → {status, winner_id, scores} 🔒
 ## Tutor endpoint
 
 ```
-POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒
+POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS`/day UTC; Pro Max unlimited (38.6)
   Body: {question_id, conversation_history?: [...]}
 ```
 
@@ -100,7 +100,7 @@ are blueprinted and in what passing earns.
 
 ```
 POST /exams/mock/start                      → certification mock (10.3), body {track_id}
-POST /exams/mock/{attempt_id}/submit        → per-domain report, no pass/fail
+POST /exams/mock/{attempt_id}/submit        → per-domain report; pass/fail + certificate only for a certifying sitting
 GET  /exams/mock/{attempt_id}               → rereads a graded attempt
 
 GET  /exams/track/{track_id}/blueprint      → questions, minutes, pass mark (before committing)
@@ -109,6 +109,8 @@ POST /exams/module/{module_id}/test-out/start → module test-out (17.2)
 POST /exams/track/{attempt_id}/submit       → per-skill report + verdict + certificate
 
 GET  /exams/certification/{track_id}/readiness → readiness score + domain gaps 🔒
+GET  /exams/certification/{track_id}/access    → price, paywall on/off, purchased, can_start (38.7) 🔒
+POST /exams/certification/{track_id}/start     → certifying exam: mock blueprint + Whetzy pass mark (38.7) 🔒
 GET  /exams/certificates/{code}             → PUBLIC, no auth
 ```
 
@@ -116,7 +118,8 @@ GET  /exams/certificates/{code}             → PUBLIC, no auth
 |---|---|
 | `POST /exams/track/{...}/submit` | The path parameter is the **attempt id**, not the track id |
 | `POST /exams/track/{track_id}/start` | 400 on a certification track — use `/exams/mock/start` instead |
-| `POST /exams/mock/{...}/submit` | Never reports a pass or a scaled score |
+| `POST /exams/mock/{...}/submit` | Never a scaled score. A plain mock has no pass; a certifying sitting (`kind=certifying`) adds `passed`, `pass_pct`, `pass_note_*` and, if passed on time, `certificate` |
+| `POST /exams/certification/{track_id}/start` | 402 `certification_purchase_required` only with `CERTIFICATION_PAYWALL=true` and no purchase; one purchase covers every retake (ADR-49) |
 | Certification mock `pass_pct` | `null` — only `track_final` and `test_out` carry a pass mark |
 | Late submission | Still graded but `status` becomes `expired` and earns **no** certificate |
 | `GET /exams/certificates/{code}` | **Unauthenticated**: the 128-bit code is the only key |
