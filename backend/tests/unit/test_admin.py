@@ -340,3 +340,29 @@ async def test_admin_tutor_usage(
     assert data["per_user"][0]["total_explanations"] == 5
     assert len(data["per_day"]) >= 1
     assert data["per_day"][0]["total"] == 5
+
+
+@pytest.mark.asyncio
+async def test_kpi_dashboard_returns_all_kpis(client: AsyncClient, owner: User) -> None:
+    response = await client.get(
+        "/api/v1/admin/kpi/dashboard",
+        headers={"Authorization": f"Bearer {owner.token}"},
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert "kpis" in data
+    assert "segment" in data
+    kpis = data["kpis"]
+    for key in ("registered", "paying", "mrr_usd", "retention_d30", "nps", "k_factor", "referral_pct"):
+        assert key in kpis, f"Missing KPI: {key}"
+        assert "value" in kpis[key]
+        assert "query" in kpis[key]
+        assert "objectives" in kpis[key]
+        obj = kpis[key]["objectives"]
+        assert "m3" in obj and "m6" in obj and "m12" in obj
+
+
+@pytest.mark.asyncio
+async def test_kpi_dashboard_requires_owner(client: AsyncClient) -> None:
+    response = await client.get("/api/v1/admin/kpi/dashboard")
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED

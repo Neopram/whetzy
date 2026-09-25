@@ -806,3 +806,97 @@ async def post_email_test(
             detail=f"No se pudo enviar: {exc}",
         ) from exc
     return {"sent": True, "provider": provider, "to": destino}
+
+
+# ── KPI dashboard (38.0) ────────────────────────────────────────────────────
+
+_KPI_OBJECTIVES = {
+    "registered":    {"m3": 500, "m6": 2_000, "m12": 10_000},
+    "paying":        {"m3": 25,  "m6": 200,   "m12": 1_000},
+    "mrr_usd":       {"m3": 375, "m6": 3_000, "m12": 15_000},
+    "retention_d30": {"m3": 5.0, "m6": 8.0,   "m12": 10.0},
+    "nps":           {"m3": None, "m6": None, "m12": None},
+    "k_factor":      {"m3": 0.1, "m6": 0.3,  "m12": 0.5},
+    "referral_pct":  {"m3": 5.0, "m6": 15.0, "m12": 25.0},
+}
+
+
+@router.get("/kpi/dashboard", dependencies=[Depends(require_owner)])
+async def get_kpi_dashboard(
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Consolidated KPI dashboard (38.0 / ADR-32).
+
+    Returns each KPI with its current value, the query source, and
+    M3/M6/M12 objectives. Uses "sin dato" where there is no data.
+    """
+    now = datetime.now(UTC)
+
+    total_q = select(func.count(User.id))
+    if segment != "all":
+        total_q = total_q.where(User.language == segment)
+    total = (await db.execute(total_q)).scalar() or 0
+
+    paying_q = select(func.count(User.id)).where(
+        User.subscription_status.in_(("active", "trialing"))
+    )
+    if segment != "all":
+        paying_q = paying_q.where(User.language == segment)
+    paying = (await db.execute(paying_q)).scalar() or 0
+
+    mrr_q = select(User.subscription_tier, func.count()).where(
+        User.subscription_status.in_(("active", "trialing"))
+    )
+    if segment != "all":
+        mrr_q = mrr_q.where(User.language == segment)
+    mrr_q = mrr_q.group_by(User.subscription_tier)
+    mrr_rows = (await db.execute(mrr_q)).all()
+    mrr = round(sum(_price_for(tier) * cnt for tier, cnt in mrr_rows), 2)
+
+    # D30 retention: users created >= 30 days ago who had a session in last 7 days.
+    d30_cutoff = now - timedelta(days=30)
+    eligible_q = select(func.count(User.id)).where(User.created_at <= d30_cutoff)
+    if segment != "all":
+        eligible_q = eligible_q.where(User.language == segment)
+    eligible = (await db.execute(eligible_q)).scalar() or 0
+
+    if eligible > 0:
+        retained_q = (
+            select(func.count(func.distinct(StudySession.user_id)))
+            .select_from(StudySession)
+            .join(User)
+            .where(User.created_at <= d30_cutoff, StudySession.started_at >= now - timedelta(days=7))
+        )
+        if segment != "all":
+            retained_q = retained_q.where(User.language == segment)
+        retained = (await db.execute(retained_q)).scalar() or 0
+        d30 = round(retained / eligible * 100, 2)
+    else:
+        d30 = "sin dato"
+
+    referral_q = select(func.count(Referral.id)).where(Referral.status == "completed")
+    if segment != "all":
+        referral_q = (
+            referral_q.select_from(Referral)
+            .join(User, User.id == Referral.referrer_id)
+            .where(User.language == segment)
+        )
+    completed_refs = (await db.execute(referral_q)).scalar() or 0
+    k_factor = round(completed_refs / total, 4) if total > 0 else "sin dato"
+    referral_pct = round(completed_refs / total * 100, 2) if total > 0 else "sin dato"
+
+    def _val_or_sin_dato(v: Any) -> Any:
+        return "sin dato" if total == 0 else v
+
+    kpis = {
+        "registered":    {"value": _val_or_sin_dato(total), "query": "SELECT count(*) FROM users", "objectives": _KPI_OBJECTIVES["registered"]},
+        "paying":        {"value": _val_or_sin_dato(paying), "query": "SELECT count(*) FROM users WHERE subscription_status IN ('active','trialing')", "objectives": _KPI_OBJECTIVES["paying"]},
+        "mrr_usd":       {"value": _val_or_sin_dato(mrr), "query": "SUM(tier_price) WHERE subscription_status IN ('active','trialing')", "objectives": _KPI_OBJECTIVES["mrr_usd"]},
+        "retention_d30": {"value": d30, "query": "users created>=30d ago with session in last 7d / total eligible", "objectives": _KPI_OBJECTIVES["retention_d30"]},
+        "nps":           {"value": "sin dato", "query": "no NPS survey model yet", "objectives": _KPI_OBJECTIVES["nps"]},
+        "k_factor":      {"value": k_factor, "query": "completed_referrals / total_users", "objectives": _KPI_OBJECTIVES["k_factor"]},
+        "referral_pct":  {"value": referral_pct, "query": "completed_referrals / total_users * 100", "objectives": _KPI_OBJECTIVES["referral_pct"]},
+    }
+
+    return {"segment": segment, "generated_at": now.isoformat(), "kpis": kpis}

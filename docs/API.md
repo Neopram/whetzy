@@ -315,6 +315,11 @@ GET  /admin/ops/health                   → system health status
 GET  /admin/ops/tutor-usage              → per-user and per-day tutor explanation counts 🔒 admin
 ```
 
+### KPI Dashboard
+```
+GET  /admin/kpi/dashboard                → consolidated KPIs with M3/M6/M12 objectives 🔒 owner
+```
+
 ### Revenue
 ```
 GET  /admin/revenue/churn                → churn analysis
