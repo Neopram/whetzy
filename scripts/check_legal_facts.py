@@ -287,9 +287,12 @@ for path in LANDING_FILES:
         # usuario no los ve. Se mira solo el código.
         text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
         text = "\n".join(ln for ln in text.splitlines() if not ln.lstrip().startswith("//"))
-    low = text.lower()
+    # Se compara sin espacios ni puntuación: «1.2 M learners», «1,2M-learners»
+    # o «Marina  Petrescu» no pueden colarse por el formato (hallazgo del
+    # verificador adversario, 2026-09-25).
+    squashed = re.sub(r"[\W_]+", "", text.lower())
     for needle, reason in INVENTED.items():
-        if needle in low:
+        if re.sub(r"[\W_]+", "", needle) in squashed:
             check(f"{path.name} contiene '{needle}'", False, reason)
             landing_ok = False
 if landing_ok:
