@@ -16,10 +16,10 @@ from app.models.economy import (
     Referral,
 )
 from app.services.economy import (
+    _SAFE_ALPHABET,
     CreditsService,
     PromoCodeService,
     ReferralService,
-    _SAFE_ALPHABET,
 )
 
 
