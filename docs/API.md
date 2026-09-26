@@ -288,7 +288,7 @@ POST /admin/email/test                   → {sent, provider, to} 🔒 owner —
 
 ### Economy & credits
 ```
-GET  /admin/economy/credits              → credit allocation summary
+GET  /admin/economy/credits              → credit summary (emitted/spent/expired, sink/source ratio, inflation alert) + ledger rows
 GET  /admin/economy/k-factor             → K-factor statistics
 GET  /admin/economy/referrals            → referral program analytics
 POST /admin/promo/batch ?code_type&credits&count&max_uses&language&campaign_id&expires_days → {count, codes[], csv} — genera lote de códigos promocionales; tipos: onboarding|campaign|reactivation|referral_bonus|instructor; alfabeto seguro sin 0OIL1

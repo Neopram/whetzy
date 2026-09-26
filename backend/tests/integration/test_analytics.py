@@ -47,6 +47,7 @@ async def test_register_fires_user_registered_event(client, db_session):
             "email": "analytics1@loadtest.whetzy.io",
             "password": "Test!1234",
             "display_name": "Ana",
+            "age_confirmed": True,
         },
         headers=_h(),
     )

@@ -612,20 +612,67 @@ async def get_revenue_churn(
 async def get_economy_credits(
     user_id: uuid.UUID | None = Query(default=None),
     segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    days: int = Query(default=30, ge=1, le=365),
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
+    cutoff = datetime.now(UTC) - timedelta(days=days)
+
+    def _segment_filter(q):  # type: ignore[no-untyped-def]
+        if segment != "all":
+            return q.select_from(CreditLedger).join(User).where(
+                User.language == segment, CreditLedger.created_at >= cutoff,
+            )
+        return q.where(CreditLedger.created_at >= cutoff)
+
+    emitted_q = _segment_filter(
+        select(func.coalesce(func.sum(CreditLedger.amount), 0)).where(CreditLedger.amount > 0)
+    )
+    spent_q = _segment_filter(
+        select(func.coalesce(func.sum(func.abs(CreditLedger.amount)), 0)).where(
+            CreditLedger.amount < 0, CreditLedger.reason != "expire",
+        )
+    )
+    expired_q = _segment_filter(
+        select(func.coalesce(func.sum(func.abs(CreditLedger.amount)), 0)).where(
+            CreditLedger.reason == "expire",
+        )
+    )
+    by_reason_q = _segment_filter(
+        select(CreditLedger.reason, func.sum(CreditLedger.amount).label("total"))
+    ).group_by(CreditLedger.reason)
+
+    emitted = (await db.execute(emitted_q)).scalar() or 0
+    spent = (await db.execute(spent_q)).scalar() or 0
+    expired = (await db.execute(expired_q)).scalar() or 0
+
+    sink_source_ratio = round(spent / emitted, 4) if emitted else 0.0
+    inflation_alert = emitted > spent * 3 and days >= 30
+
+    by_reason_rows = (await db.execute(by_reason_q)).all()
+    by_reason = {r.reason: int(r.total) for r in by_reason_rows}
+
     query = select(CreditLedger).order_by(desc(CreditLedger.created_at))
     if user_id:
         query = query.where(CreditLedger.user_id == user_id)
     if segment != "all":
         query = query.select_from(CreditLedger).join(User).where(User.language == segment)
-    
+
     result = await db.execute(query.limit(limit).offset(offset))
     ledger_entries = result.scalars().all()
-    
+
     return {
+        "summary": {
+            "days": days,
+            "emitted": int(emitted),
+            "spent": int(spent),
+            "expired": int(expired),
+            "net": int(emitted) - int(spent) - int(expired),
+            "sink_source_ratio": sink_source_ratio,
+            "inflation_alert": inflation_alert,
+            "by_reason": by_reason,
+        },
         "entries": [
             {
                 "id": str(e.id),
