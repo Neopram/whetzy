@@ -37,7 +37,13 @@ _EXENTAS = (
 def _rutas_del_router() -> set[str]:
     """Plantillas de ruta del router, con los parametros normalizados."""
     rutas = set()
+    # FastAPI >= 0.141 deja cada router incluido como un `_IncludedRouter` sin
+    # `path`; sus rutas, ya con el prefijo, salen de `effective_route_contexts()`.
+    planas = []
     for r in app.routes:
+        expandir = getattr(r, "effective_route_contexts", None)
+        planas.extend(expandir() if callable(expandir) else [r])
+    for r in planas:
         camino = getattr(r, "path", None)
         if not camino or not camino.startswith("/api/v1"):
             continue
