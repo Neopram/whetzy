@@ -61,4 +61,4 @@ competitive position (fixed weights, latest recalculation in §11) is
 `docs/competitive-teardown.md`. `docs/STATUS.md` is a historical per-session log.
 
 ## License
-Proprietary — © Whetzy.
+Code: proprietary, all rights reserved. Original educational content in `content/`: CC BY-NC-ND 4.0 (Terms of Service §3.1). Third-party material keeps its own licence (`content/sources/index.json`). Details in [`LICENSE`](LICENSE).

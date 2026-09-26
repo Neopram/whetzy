@@ -517,7 +517,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.12 | **3** | LLM de respaldo (ADR-50f) | TODO | Solo ante timeout/5xx; test con mock |
 | 39.13 | **3** | Emails de re-enganche (ADR-50g) | TODO | Flag apagado, baja en un clic, tests |
 | 39.14 | **3** | Plantilla de lección con formato (ADR-50d) | TODO | Sin tocar contenido; test y captura |
-| 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | TODO | En la raíz y citado en README |
+| 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | **DONE** | `LICENSE` (código propietario, contenido CC BY-NC-ND 4.0 como los Términos §3.1, terceros según índice) y README |
 | 39.16 | **1** | Pesos de dominio de track44–46 suman 95/95/96 | TODO | Contra el blueprint oficial (WebFetch) |
 | 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
 | 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | TODO | `npx vitest run` 0 fallos |

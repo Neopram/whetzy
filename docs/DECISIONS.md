@@ -1016,7 +1016,7 @@ dueño por su nombre.
 | b | Anuncios | No en la v1 (ATT de Apple, consentimiento, COPPA). Se revisa con ≥ 20K usuarios activos al mes. |
 | c | Precio por plataforma | El mismo en web, iOS y Android. |
 | d | Formato de lección (§25 de la evaluación) | En la **plantilla** de `LessonScreen` (secciones con icono accesible, `aria-hidden` en lo decorativo); no se reescribe el texto de las lecciones. |
-| e | LICENSE | Código y contenido original propietarios («All rights reserved»); el contenido de terceros conserva su licencia y su atribución según `content/sources/index.json`. |
+| e | LICENSE | Código propietario («All rights reserved»); contenido educativo original **CC BY-NC-ND 4.0**, porque es lo que ya publican los Términos (§3.1) y un LICENSE no puede contradecirlos; el material de terceros conserva su licencia según `content/sources/index.json`. Hecho: `LICENSE` en la raíz. |
 | f | LLM de respaldo | Proveedor compatible con OpenAI configurable por entorno; vacío = sin respaldo. |
 | g | Emails de re-enganche | 3, 7 y 30 días de inactividad, baja en un clic (CAN-SPAM), flag apagado. |
 | h | Certificaciones siguientes | Las 11 actuales ya incluyen Security+ (track42) y AZ-900/AI-900/DP-900 (track44–46). Siguientes, dentro de 37.10: **CCNA → LPIC-1 → CKA → GCP Associate Cloud Engineer**. |
