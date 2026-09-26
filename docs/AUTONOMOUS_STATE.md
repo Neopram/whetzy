@@ -521,7 +521,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 38.0 | **2** | **KPIs de `DISTRIBUCION.md` §10 y ADR-32 en el admin** (22.1): registrados, pagos, MRR, D30,… | **DONE** | **DONE** → §I |
 | 38.1 | **2** | **Precios: una sola fuente = ADR-41 (dueño)**: Pro 14,99 $ · Pro Max 19,99 $ ·… | **DONE** | **DONE** `cf2fc58` → §I |
-| 38.2 | **2** | **Oferta de 3 pilotos B2B gratuitos** (ADR-22): documento ES/EN (qué damos, qué pedimos: testimonio y datos de uso, 90… | | |
+| 38.2 | **2** | **Oferta de 3 pilotos B2B gratuitos** (ADR-22): documento ES/EN (qué damos, qué pedimos: testimonio y datos de uso, 90… | **DONE** — `content/legal/b2b_pilot_offer_{es,en}.md`: 3 pilotos 90d, 25 asientos Pro Max, a cambio de datos agregados + testimonio + llamada cierre; post-piloto $99/asiento/año mín 10 | |
 | 38.3 | **2** | **Dossier de afiliación** Python Institute y CompTIA (`archive/whetzy_estrategia_definitiva_v3.md:392`): condiciones,… | | |
 | 38.4 | **3** | **Kit de reclutamiento de instructores** — es la fila 28.9; aquí solo para que la serie 38 lo… | **DONE** | **DONE** → §I |
 | 38.5 | **3** | **Página `/evidence` como única prueba social** (19.8, 30.1): cifras del banco y del motor calculadas en build, cero… | **DONE** | **DONE**: EvidenceScreen.tsx + CSS module + ruta registrada en App.tsx → §I |
