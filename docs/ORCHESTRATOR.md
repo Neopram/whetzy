@@ -176,6 +176,8 @@ del proyecto · levantar dev servers y ejercitar la app en el Browser pane ·
 reorganizar docs · borrar código muerto **tras** grep que pruebe cero referencias ·
 linters, type checkers, formatters y sus fixes · gestionar el scheduled task
 `whetzy-orch-*` · añadir tareas al ledger cuando el criterio de dueño lo exija.
+**Conectores** (`CONECTORES.md` §1): lecturas (clase L) y escrituras privadas y
+reversibles (clase E, anotadas en el PR).
 
 **`git push origin master` DESPLIEGA** backend, migraciones, `content_loader` y, desde
 el 2026-09-24, el frontend. **Por eso ninguna sesión hace push a `master` ni fusiona:
@@ -190,7 +192,9 @@ Operaciones destructivas sobre la **DB de producción** · `git push origin mast
 fusionar un PR (ADR-45) · desconectar o cambiar el auto-deploy de Railway · claves
 live de Stripe o cualquier gasto · crear cuentas en servicios, aunque sean gratis · submisión a
 stores · DNS o dominio · datos de usuarios reales · rotar o exponer secretos ·
-tocar `~/.claude/settings.json` · reabrir una decisión cerrada.
+tocar `~/.claude/settings.json` · reabrir una decisión cerrada · cualquier acción de
+conector de clase H (`CONECTORES.md` §1: variables, redeploy o reinicio en Railway,
+publicar, escribir en el CRM, crear proyectos o recursos).
 
 **La regla:** reversible con `git revert` → hazlo. Si no → prepáralo, documéntalo,
 sigue con otra cosa. Entre dos diseños razonables: el más simple, a la bitácora,
@@ -251,6 +255,11 @@ gh run list --limit 5
 #    ningún usuario vea el código de hoy.
 (Invoke-WebRequest "https://whetzy.com/" -UseBasicParsing).Content -match 'canonical'
 ```
+
+Si la sesión tiene los conectores (`CONECTORES.md`), el paso 2 se completa con
+Railway: `get-status` (último deploy en `SUCCESS` y su hora) y `get-logs` con `filter`
+`owner`, `alembic` o `content_loader`. Con Sentry: `search_issues` de las últimas 24 h,
+si el proyecto existe (H.41). Es lectura y no sustituye al paso 5.
 
 Si el paso 5 sale en rojo, **arreglarlo es la tarea de la sesión**, por delante de
 cualquier cosa del backlog: un CI rojo significa que ninguna medición posterior

@@ -561,12 +561,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.30 | PRI 0 — el correo no sale de la maquina, y la pantalla dice … |
 | H.31 | PRI 0 — la landing de producción publica testimonios con nom… |
 | H.32 | **2** | H.32 | **RESUELTA** | **RESUELTA** `e40ba75` (2026-09-24) → §I |
-| H.33 | Variables del dueño en Railway (30.8) |
-| H.34 | Conector de Railway para Claude (verificación de 30.8 sin ad… |
+| H.33 | **RESUELTA 2026-09-26** — log Railway `b64e2a9a`/`f097361c`: `[owner] unchanged: admin@whetzy.com` (falta solo login `/admin` de 30.8) |
+| H.34 | **RESUELTA 2026-09-26** — conector Railway activo; permisos en `CONECTORES.md` |
 | H.35 | **2** | H.35 | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | H.38 | Afiliación con Python Institute y CompTIA (38.3) |
 | H.39 | 3 pilotos B2B gratuitos (38.2, ADR-22) |
 | H.40 | Reclutar 5 instructores fundadores (28.9) |
+| H.41 | **RESUELTA 2026-09-26** (aprobación en bloque, ADR-50k) — proyecto Sentry `whetzy-backend` + `SENTRY_DSN` en Railway; deploy `f097361c`: `Sentry initialised (env=production)` |
+| H.42 | **DECIDIDA 2026-09-26** (ADR-50j): analítica = PostHog; Mixpanel no se instrumenta |
 
 ## 5. Bitácora de decisiones
 

@@ -17,6 +17,7 @@ qué hacer; el ledger lo sabe.
 - Auditoría externa más reciente (producción medida en vivo, CI, coste de contexto): `docs/AUDITORIA_EXTERNA_2026-09-19.md`
 - Guardia docs-vs-código: `python scripts/check_docs.py` (debe pasar antes de cada commit que toque contenido o docs)
 - Protocolo de verificación (cada `DONE`, cada doc, modelos y tokens): `docs/PROTOCOLO_VERIFICACION.md`
+- Conectores (Railway, Sentry, PostHog, diseño, redes): cuenta, uso y qué se hace sin preguntar en `docs/CONECTORES.md`. Leer y escribir en privado, sí; producción, publicar, datos de personas, secretos o recursos nuevos, no (ADR-45)
 - Documentos vivos: los del índice `docs/README.md`; `docs/archive/` no manda
 
 ## Invariantes
