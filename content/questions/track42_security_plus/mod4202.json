@@ -7,21 +7,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario?",
       "question_en": "Does ransomware require user interaction?",
       "options_es": [
-        "A veces",
-        "Sí",
-        "Depende como concepto principal",
-        "No"
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución"
       ],
       "options_en": [
-        "Sometimes as the primary concept",
-        "Yes as the primary concept",
-        "Depends as the primary concept",
-        "No"
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Only on machines without antivirus, since it blocks any execution"
       ],
       "correct_index": 1,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420201_002",
@@ -49,16 +49,16 @@
       "question_es": "¿Cuál malware se autoreplica?",
       "question_en": "Which malware self-replicates?",
       "options_es": [
-        "Rootkit como concepto principal",
+        "Rootkit",
         "Software espía (spyware)",
-        "Troyano como concepto principal",
-        "Virus como concepto principal"
+        "Troyano",
+        "Virus"
       ],
       "options_en": [
-        "Rootkit as the primary concept",
-        "Spyware as the primary concept",
-        "Trojan as the primary concept",
-        "Virus as the primary concept"
+        "Rootkit",
+        "Spyware",
+        "Trojan",
+        "Virus"
       ],
       "correct_index": 3,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos.",
@@ -91,16 +91,16 @@
       "question_es": "¿El keylogger qué registra?",
       "question_en": "What does keylogger record?",
       "options_es": [
-        "Teclas como concepto principal",
-        "Archivos como concepto principal",
-        "Mouse como concepto principal",
-        "Red como concepto principal"
+        "Pulsaciones de teclas",
+        "Archivos, indexando su contenido para enviarlo a un servidor remoto",
+        "Movimientos del ratón y coordenadas de clic en pantalla",
+        "Paquetes de red capturados mediante un sniffer pasivo"
       ],
       "options_en": [
-        "Keys as the primary concept",
-        "Files as the primary concept",
-        "Mouse as the primary concept",
-        "Network as the primary concept"
+        "Keystrokes",
+        "Files, indexing their content to exfiltrate it to a remote server",
+        "Mouse movements and on-screen click coordinates",
+        "Network packets captured through a passive sniffer"
       ],
       "correct_index": 0,
       "explanation_es": "Un keylogger registra las pulsaciones de teclado del usuario, capturando así credenciales, números de tarjeta y otra información sensible que se escribe en el equipo comprometido. Opciones como 'Archivos' o 'Red' son incorrectas porque describen el objetivo de otras familias de malware (spyware orientado a ficheros o sniffers de red), no la conducta que define a un keylogger.",
@@ -133,16 +133,16 @@
       "question_es": "¿Objetivo de ransomware?",
       "question_en": "Ransomware goal?",
       "options_es": [
-        "Vigilancia como concepto principal",
-        "Destrucción como concepto principal",
-        "Datos como concepto principal",
-        "Dinero como concepto principal"
+        "Vigilancia, mediante el registro continuo de la pantalla de la víctima",
+        "Destrucción, borrando de forma irreversible los archivos cifrados",
+        "Datos, para revenderlos en foros clandestinos sin exigir ningún pago a la víctima",
+        "Dinero del rescate"
       ],
       "options_en": [
-        "Surveillance as the primary concept",
-        "Destruction as the primary concept",
-        "Data as the primary concept",
-        "Money as the primary concept"
+        "Surveillance, through continuous recording of the victim's screen",
+        "Destruction, irreversibly deleting the encrypted files",
+        "Data, to resell it on underground forums without demanding any payment from the victim",
+        "Ransom money"
       ],
       "correct_index": 3,
       "explanation_es": "El objetivo del ransomware es económico: cifra los archivos de la víctima y exige un pago (rescate) a cambio de la clave de descifrado, es decir, extorsión directa. La opción 'Datos' es la más tentadora pero es incorrecta porque robar o exfiltrar información es el objetivo típico del spyware o de una brecha de datos, no del ransomware, cuyo modelo de negocio es cobrar por restaurar el acceso.",
@@ -175,21 +175,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario en un entorno empresarial?",
       "question_en": "Does ransomware require user interaction in an enterprise environment?",
       "options_es": [
-        "A veces",
-        "Sí",
-        "No",
-        "Depende como concepto principal"
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución"
       ],
       "options_en": [
-        "Sometimes as the primary concept",
-        "Yes as the primary concept",
-        "No",
-        "Depends as the primary concept"
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Only on machines without antivirus, since it blocks any execution"
       ],
       "correct_index": 1,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa. Esto es en un entorno empresarial, donde el impacto se multiplica por el número de equipos afectados.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload. This is in an enterprise environment, where the impact multiplies across every affected endpoint.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420201_010",
@@ -218,15 +218,15 @@
       "question_en": "Which malware self-replicates in an enterprise environment?",
       "options_es": [
         "Software espía (spyware)",
-        "Virus como concepto principal",
-        "Rootkit como concepto principal",
-        "Troyano como concepto principal"
+        "Virus",
+        "Rootkit",
+        "Troyano"
       ],
       "options_en": [
-        "Spyware as the primary concept",
-        "Virus as the primary concept",
-        "Rootkit as the primary concept",
-        "Trojan as the primary concept"
+        "Spyware",
+        "Virus",
+        "Rootkit",
+        "Trojan"
       ],
       "correct_index": 1,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos. Esto es en un entorno empresarial, donde el impacto se multiplica por el número de equipos afectados.",
@@ -259,16 +259,16 @@
       "question_es": "¿El keylogger qué registra en un entorno empresarial?",
       "question_en": "What does keylogger record in an enterprise environment?",
       "options_es": [
-        "Teclas como concepto principal",
-        "Red como concepto principal",
-        "Mouse como concepto principal",
-        "Archivos como concepto principal"
+        "Pulsaciones de teclas",
+        "Paquetes de red capturados mediante un sniffer pasivo",
+        "Movimientos del ratón y coordenadas de clic en pantalla",
+        "Archivos, indexando su contenido para enviarlo a un servidor remoto"
       ],
       "options_en": [
-        "Keys as the primary concept",
-        "Network as the primary concept",
-        "Mouse as the primary concept",
-        "Files as the primary concept"
+        "Keystrokes",
+        "Network packets captured through a passive sniffer",
+        "Mouse movements and on-screen click coordinates",
+        "Files, indexing their content to exfiltrate it to a remote server"
       ],
       "correct_index": 0,
       "explanation_es": "Un keylogger registra las pulsaciones de teclado del usuario, capturando así credenciales, números de tarjeta y otra información sensible que se escribe en el equipo comprometido. Opciones como 'Archivos' o 'Red' son incorrectas porque describen el objetivo de otras familias de malware (spyware orientado a ficheros o sniffers de red), no la conducta que define a un keylogger. Esto es en un entorno empresarial, donde el impacto se multiplica por el número de equipos afectados.",
@@ -301,16 +301,16 @@
       "question_es": "¿Objetivo de ransomware en un entorno empresarial?",
       "question_en": "Ransomware goal in an enterprise environment?",
       "options_es": [
-        "Destrucción como concepto principal",
-        "Dinero como concepto principal",
-        "Vigilancia como concepto principal",
-        "Datos como concepto principal"
+        "Destrucción, borrando de forma irreversible los archivos cifrados",
+        "Dinero del rescate",
+        "Vigilancia, mediante el registro continuo de la pantalla de la víctima",
+        "Datos, para revenderlos en foros clandestinos sin exigir ningún pago a la víctima"
       ],
       "options_en": [
-        "Destruction as the primary concept",
-        "Money as the primary concept",
-        "Surveillance as the primary concept",
-        "Data as the primary concept"
+        "Destruction, irreversibly deleting the encrypted files",
+        "Ransom money",
+        "Surveillance, through continuous recording of the victim's screen",
+        "Data, to resell it on underground forums without demanding any payment from the victim"
       ],
       "correct_index": 1,
       "explanation_es": "El objetivo del ransomware es económico: cifra los archivos de la víctima y exige un pago (rescate) a cambio de la clave de descifrado, es decir, extorsión directa. La opción 'Datos' es la más tentadora pero es incorrecta porque robar o exfiltrar información es el objetivo típico del spyware o de una brecha de datos, no del ransomware, cuyo modelo de negocio es cobrar por restaurar el acceso. Esto es en un entorno empresarial, donde el impacto se multiplica por el número de equipos afectados.",
@@ -343,21 +343,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario según las mejores prácticas de seguridad?",
       "question_en": "Does ransomware require user interaction according to security best practices?",
       "options_es": [
-        "No",
-        "Depende como concepto principal",
-        "Sí",
-        "A veces"
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución"
       ],
       "options_en": [
-        "No",
-        "Depends as the primary concept",
-        "Yes as the primary concept",
-        "Sometimes as the primary concept"
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own",
+        "Only on machines without antivirus, since it blocks any execution"
       ],
       "correct_index": 2,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa. Esto es según las mejores prácticas de seguridad recogidas en los objetivos de Security+.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload. This is according to the security best practices captured in the Security+ objectives.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420202_003",
@@ -385,16 +385,16 @@
       "question_es": "¿Cuál malware se autoreplica según las mejores prácticas de seguridad?",
       "question_en": "Which malware self-replicates according to security best practices?",
       "options_es": [
-        "Virus como concepto principal",
-        "Troyano como concepto principal",
+        "Virus",
+        "Troyano",
         "Software espía (spyware)",
-        "Rootkit como concepto principal"
+        "Rootkit"
       ],
       "options_en": [
-        "Virus as the primary concept",
-        "Trojan as the primary concept",
-        "Spyware as the primary concept",
-        "Rootkit as the primary concept"
+        "Virus",
+        "Trojan",
+        "Spyware",
+        "Rootkit"
       ],
       "correct_index": 0,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos. Esto es según las mejores prácticas de seguridad recogidas en los objetivos de Security+.",
@@ -427,16 +427,16 @@
       "question_es": "¿El keylogger qué registra según las mejores prácticas de seguridad?",
       "question_en": "What does keylogger record according to security best practices?",
       "options_es": [
-        "Red como concepto principal",
-        "Teclas como concepto principal",
-        "Archivos como concepto principal",
-        "Mouse como concepto principal"
+        "Paquetes de red capturados mediante un sniffer pasivo",
+        "Pulsaciones de teclas",
+        "Archivos, indexando su contenido para enviarlo a un servidor remoto",
+        "Movimientos del ratón y coordenadas de clic en pantalla"
       ],
       "options_en": [
-        "Network as the primary concept",
-        "Keys as the primary concept",
-        "Files as the primary concept",
-        "Mouse as the primary concept"
+        "Network packets captured through a passive sniffer",
+        "Keystrokes",
+        "Files, indexing their content to exfiltrate it to a remote server",
+        "Mouse movements and on-screen click coordinates"
       ],
       "correct_index": 1,
       "explanation_es": "Un keylogger registra las pulsaciones de teclado del usuario, capturando así credenciales, números de tarjeta y otra información sensible que se escribe en el equipo comprometido. Opciones como 'Archivos' o 'Red' son incorrectas porque describen el objetivo de otras familias de malware (spyware orientado a ficheros o sniffers de red), no la conducta que define a un keylogger. Esto es según las mejores prácticas de seguridad recogidas en los objetivos de Security+.",
@@ -469,16 +469,16 @@
       "question_es": "¿Objetivo de ransomware según las mejores prácticas de seguridad?",
       "question_en": "Ransomware goal according to security best practices?",
       "options_es": [
-        "Vigilancia como concepto principal",
-        "Datos como concepto principal",
-        "Destrucción como concepto principal",
-        "Dinero como concepto principal"
+        "Vigilancia, mediante el registro continuo de la pantalla de la víctima",
+        "Datos, para revenderlos en foros clandestinos sin exigir ningún pago a la víctima",
+        "Destrucción, borrando de forma irreversible los archivos cifrados",
+        "Dinero del rescate"
       ],
       "options_en": [
-        "Surveillance as the primary concept",
-        "Data as the primary concept",
-        "Destruction as the primary concept",
-        "Money as the primary concept"
+        "Surveillance, through continuous recording of the victim's screen",
+        "Data, to resell it on underground forums without demanding any payment from the victim",
+        "Destruction, irreversibly deleting the encrypted files",
+        "Ransom money"
       ],
       "correct_index": 3,
       "explanation_es": "El objetivo del ransomware es económico: cifra los archivos de la víctima y exige un pago (rescate) a cambio de la clave de descifrado, es decir, extorsión directa. La opción 'Datos' es la más tentadora pero es incorrecta porque robar o exfiltrar información es el objetivo típico del spyware o de una brecha de datos, no del ransomware, cuyo modelo de negocio es cobrar por restaurar el acceso. Esto es según las mejores prácticas de seguridad recogidas en los objetivos de Security+.",
@@ -511,21 +511,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario en el contexto de la ciberseguridad?",
       "question_en": "Does ransomware require user interaction in the context of cybersecurity?",
       "options_es": [
-        "A veces",
-        "No",
-        "Depende como concepto principal",
-        "Sí"
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución",
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas"
       ],
       "options_en": [
-        "Sometimes as the primary concept",
-        "No",
-        "Depends as the primary concept",
-        "Yes as the primary concept"
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Only on machines without antivirus, since it blocks any execution",
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own"
       ],
       "correct_index": 3,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa. Esto es en el contexto general de la ciberseguridad, no solo en casos aislados.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload. This is in the general context of cybersecurity, not only in isolated cases.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420202_011",
@@ -553,16 +553,16 @@
       "question_es": "¿Cuál malware se autoreplica en el contexto de la ciberseguridad?",
       "question_en": "Which malware self-replicates in the context of cybersecurity?",
       "options_es": [
-        "Rootkit como concepto principal",
+        "Rootkit",
         "Software espía (spyware)",
-        "Virus como concepto principal",
-        "Troyano como concepto principal"
+        "Virus",
+        "Troyano"
       ],
       "options_en": [
-        "Rootkit as the primary concept",
-        "Spyware as the primary concept",
-        "Virus as the primary concept",
-        "Trojan as the primary concept"
+        "Rootkit",
+        "Spyware",
+        "Virus",
+        "Trojan"
       ],
       "correct_index": 2,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos. Esto es en el contexto general de la ciberseguridad, no solo en casos aislados.",
@@ -595,16 +595,16 @@
       "question_es": "¿El keylogger qué registra en el contexto de la ciberseguridad?",
       "question_en": "What does keylogger record in the context of cybersecurity?",
       "options_es": [
-        "Red como concepto principal",
-        "Teclas como concepto principal",
-        "Mouse como concepto principal",
-        "Archivos como concepto principal"
+        "Paquetes de red capturados mediante un sniffer pasivo",
+        "Pulsaciones de teclas",
+        "Movimientos del ratón y coordenadas de clic en pantalla",
+        "Archivos, indexando su contenido para enviarlo a un servidor remoto"
       ],
       "options_en": [
-        "Network as the primary concept",
-        "Keys as the primary concept",
-        "Mouse as the primary concept",
-        "Files as the primary concept"
+        "Network packets captured through a passive sniffer",
+        "Keystrokes",
+        "Mouse movements and on-screen click coordinates",
+        "Files, indexing their content to exfiltrate it to a remote server"
       ],
       "correct_index": 1,
       "explanation_es": "Un keylogger registra las pulsaciones de teclado del usuario, capturando así credenciales, números de tarjeta y otra información sensible que se escribe en el equipo comprometido. Opciones como 'Archivos' o 'Red' son incorrectas porque describen el objetivo de otras familias de malware (spyware orientado a ficheros o sniffers de red), no la conducta que define a un keylogger. Esto es en el contexto general de la ciberseguridad, no solo en casos aislados.",
@@ -637,16 +637,16 @@
       "question_es": "¿Objetivo de ransomware en el contexto de la ciberseguridad?",
       "question_en": "Ransomware goal in the context of cybersecurity?",
       "options_es": [
-        "Datos como concepto principal",
-        "Vigilancia como concepto principal",
-        "Destrucción como concepto principal",
-        "Dinero como concepto principal"
+        "Datos, para revenderlos en foros clandestinos sin exigir ningún pago a la víctima",
+        "Vigilancia, mediante el registro continuo de la pantalla de la víctima",
+        "Destrucción, borrando de forma irreversible los archivos cifrados",
+        "Dinero del rescate"
       ],
       "options_en": [
-        "Data as the primary concept",
-        "Surveillance as the primary concept",
-        "Destruction as the primary concept",
-        "Money as the primary concept"
+        "Data, to resell it on underground forums without demanding any payment from the victim",
+        "Surveillance, through continuous recording of the victim's screen",
+        "Destruction, irreversibly deleting the encrypted files",
+        "Ransom money"
       ],
       "correct_index": 3,
       "explanation_es": "El objetivo del ransomware es económico: cifra los archivos de la víctima y exige un pago (rescate) a cambio de la clave de descifrado, es decir, extorsión directa. La opción 'Datos' es la más tentadora pero es incorrecta porque robar o exfiltrar información es el objetivo típico del spyware o de una brecha de datos, no del ransomware, cuyo modelo de negocio es cobrar por restaurar el acceso. Esto es en el contexto general de la ciberseguridad, no solo en casos aislados.",
@@ -679,21 +679,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario para proteger la infraestructura?",
       "question_en": "Does ransomware require user interaction to protect infrastructure?",
       "options_es": [
-        "Depende como concepto principal",
-        "No",
-        "A veces",
-        "Sí"
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución",
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas"
       ],
       "options_en": [
-        "Depends as the primary concept",
-        "No",
-        "Sometimes as the primary concept",
-        "Yes as the primary concept"
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Only on machines without antivirus, since it blocks any execution",
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own"
       ],
       "correct_index": 3,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa. Esto es un dato relevante a la hora de proteger la infraestructura de una organización.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload. This is a fact relevant when protecting an organization's infrastructure.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420203_004",
@@ -721,16 +721,16 @@
       "question_es": "¿Cuál malware se autoreplica para proteger la infraestructura?",
       "question_en": "Which malware self-replicates to protect infrastructure?",
       "options_es": [
-        "Troyano como concepto principal",
+        "Troyano",
         "Software espía (spyware)",
-        "Virus como concepto principal",
-        "Rootkit como concepto principal"
+        "Virus",
+        "Rootkit"
       ],
       "options_en": [
-        "Trojan as the primary concept",
-        "Spyware as the primary concept",
-        "Virus as the primary concept",
-        "Rootkit as the primary concept"
+        "Trojan",
+        "Spyware",
+        "Virus",
+        "Rootkit"
       ],
       "correct_index": 2,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos. Esto es un dato relevante a la hora de proteger la infraestructura de una organización.",
@@ -763,16 +763,16 @@
       "question_es": "¿El keylogger qué registra para proteger la infraestructura?",
       "question_en": "What does keylogger record to protect infrastructure?",
       "options_es": [
-        "Teclas como concepto principal",
-        "Red como concepto principal",
-        "Mouse como concepto principal",
-        "Archivos como concepto principal"
+        "Pulsaciones de teclas",
+        "Paquetes de red capturados mediante un sniffer pasivo",
+        "Movimientos del ratón y coordenadas de clic en pantalla",
+        "Archivos, indexando su contenido para enviarlo a un servidor remoto"
       ],
       "options_en": [
-        "Keys as the primary concept",
-        "Network as the primary concept",
-        "Mouse as the primary concept",
-        "Files as the primary concept"
+        "Keystrokes",
+        "Network packets captured through a passive sniffer",
+        "Mouse movements and on-screen click coordinates",
+        "Files, indexing their content to exfiltrate it to a remote server"
       ],
       "correct_index": 0,
       "explanation_es": "Un keylogger registra las pulsaciones de teclado del usuario, capturando así credenciales, números de tarjeta y otra información sensible que se escribe en el equipo comprometido. Opciones como 'Archivos' o 'Red' son incorrectas porque describen el objetivo de otras familias de malware (spyware orientado a ficheros o sniffers de red), no la conducta que define a un keylogger. Esto es un dato relevante a la hora de proteger la infraestructura de una organización.",
@@ -805,16 +805,16 @@
       "question_es": "¿Objetivo de ransomware para proteger la infraestructura?",
       "question_en": "Ransomware goal to protect infrastructure?",
       "options_es": [
-        "Datos como concepto principal",
-        "Vigilancia como concepto principal",
-        "Dinero como concepto principal",
-        "Destrucción como concepto principal"
+        "Datos, para revenderlos en foros clandestinos sin exigir ningún pago a la víctima",
+        "Vigilancia, mediante el registro continuo de la pantalla de la víctima",
+        "Dinero del rescate",
+        "Destrucción, borrando de forma irreversible los archivos cifrados"
       ],
       "options_en": [
-        "Data as the primary concept",
-        "Surveillance as the primary concept",
-        "Money as the primary concept",
-        "Destruction as the primary concept"
+        "Data, to resell it on underground forums without demanding any payment from the victim",
+        "Surveillance, through continuous recording of the victim's screen",
+        "Ransom money",
+        "Destruction, irreversibly deleting the encrypted files"
       ],
       "correct_index": 2,
       "explanation_es": "El objetivo del ransomware es económico: cifra los archivos de la víctima y exige un pago (rescate) a cambio de la clave de descifrado, es decir, extorsión directa. La opción 'Datos' es la más tentadora pero es incorrecta porque robar o exfiltrar información es el objetivo típico del spyware o de una brecha de datos, no del ransomware, cuyo modelo de negocio es cobrar por restaurar el acceso. Esto es un dato relevante a la hora de proteger la infraestructura de una organización.",
@@ -847,21 +847,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario en la gestión de riesgos?",
       "question_en": "Does ransomware require user interaction in risk management?",
       "options_es": [
-        "No",
-        "Depende como concepto principal",
-        "A veces",
-        "Sí"
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución",
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas"
       ],
       "options_en": [
-        "No",
-        "Depends as the primary concept",
-        "Sometimes as the primary concept",
-        "Yes as the primary concept"
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Only on machines without antivirus, since it blocks any execution",
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own"
       ],
       "correct_index": 3,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa. Esto es un elemento que debe valorarse dentro de la gestión de riesgos.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload. This is an element that must be weighed as part of risk management.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420203_012",
@@ -889,16 +889,16 @@
       "question_es": "¿Cuál malware se autoreplica en la gestión de riesgos?",
       "question_en": "Which malware self-replicates in risk management?",
       "options_es": [
-        "Troyano como concepto principal",
+        "Troyano",
         "Software espía (spyware)",
-        "Virus como concepto principal",
-        "Rootkit como concepto principal"
+        "Virus",
+        "Rootkit"
       ],
       "options_en": [
-        "Trojan as the primary concept",
-        "Spyware as the primary concept",
-        "Virus as the primary concept",
-        "Rootkit as the primary concept"
+        "Trojan",
+        "Spyware",
+        "Virus",
+        "Rootkit"
       ],
       "correct_index": 2,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos. Esto es un elemento que debe valorarse dentro de la gestión de riesgos.",
@@ -931,16 +931,16 @@
       "question_es": "¿El keylogger qué registra en la gestión de riesgos?",
       "question_en": "What does keylogger record in risk management?",
       "options_es": [
-        "Teclas como concepto principal",
-        "Red como concepto principal",
-        "Mouse como concepto principal",
-        "Archivos como concepto principal"
+        "Pulsaciones de teclas",
+        "Paquetes de red capturados mediante un sniffer pasivo",
+        "Movimientos del ratón y coordenadas de clic en pantalla",
+        "Archivos, indexando su contenido para enviarlo a un servidor remoto"
       ],
       "options_en": [
-        "Keys as the primary concept",
-        "Network as the primary concept",
-        "Mouse as the primary concept",
-        "Files as the primary concept"
+        "Keystrokes",
+        "Network packets captured through a passive sniffer",
+        "Mouse movements and on-screen click coordinates",
+        "Files, indexing their content to exfiltrate it to a remote server"
       ],
       "correct_index": 0,
       "explanation_es": "Un keylogger registra las pulsaciones de teclado del usuario, capturando así credenciales, números de tarjeta y otra información sensible que se escribe en el equipo comprometido. Opciones como 'Archivos' o 'Red' son incorrectas porque describen el objetivo de otras familias de malware (spyware orientado a ficheros o sniffers de red), no la conducta que define a un keylogger. Esto es un elemento que debe valorarse dentro de la gestión de riesgos.",
@@ -973,16 +973,16 @@
       "question_es": "¿Objetivo de ransomware en la gestión de riesgos?",
       "question_en": "Ransomware goal in risk management?",
       "options_es": [
-        "Datos como concepto principal",
-        "Dinero como concepto principal",
-        "Destrucción como concepto principal",
-        "Vigilancia como concepto principal"
+        "Datos, para revenderlos en foros clandestinos sin exigir ningún pago a la víctima",
+        "Dinero del rescate",
+        "Destrucción, borrando de forma irreversible los archivos cifrados",
+        "Vigilancia, mediante el registro continuo de la pantalla de la víctima"
       ],
       "options_en": [
-        "Data as the primary concept",
-        "Money as the primary concept",
-        "Destruction as the primary concept",
-        "Surveillance as the primary concept"
+        "Data, to resell it on underground forums without demanding any payment from the victim",
+        "Ransom money",
+        "Destruction, irreversibly deleting the encrypted files",
+        "Surveillance, through continuous recording of the victim's screen"
       ],
       "correct_index": 1,
       "explanation_es": "El objetivo del ransomware es económico: cifra los archivos de la víctima y exige un pago (rescate) a cambio de la clave de descifrado, es decir, extorsión directa. La opción 'Datos' es la más tentadora pero es incorrecta porque robar o exfiltrar información es el objetivo típico del spyware o de una brecha de datos, no del ransomware, cuyo modelo de negocio es cobrar por restaurar el acceso. Esto es un elemento que debe valorarse dentro de la gestión de riesgos.",
@@ -1015,21 +1015,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario según el marco NIST?",
       "question_en": "Does ransomware require user interaction according to the NIST framework?",
       "options_es": [
-        "A veces",
-        "Depende como concepto principal",
-        "No",
-        "Sí"
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución",
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas"
       ],
       "options_en": [
-        "Sometimes as the primary concept",
-        "Depends as the primary concept",
-        "No",
-        "Yes as the primary concept"
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Only on machines without antivirus, since it blocks any execution",
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own"
       ],
       "correct_index": 3,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa. Esto es un hecho alineado con el marco NIST citado como referencia de la pregunta.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload. This is a fact aligned with the NIST framework cited as the question's reference.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420204_005",
@@ -1057,16 +1057,16 @@
       "question_es": "¿Cuál malware se autoreplica según el marco NIST?",
       "question_en": "Which malware self-replicates according to the NIST framework?",
       "options_es": [
-        "Virus como concepto principal",
+        "Virus",
         "Software espía (spyware)",
-        "Rootkit como concepto principal",
-        "Troyano como concepto principal"
+        "Rootkit",
+        "Troyano"
       ],
       "options_en": [
-        "Virus as the primary concept",
-        "Spyware as the primary concept",
-        "Rootkit as the primary concept",
-        "Trojan as the primary concept"
+        "Virus",
+        "Spyware",
+        "Rootkit",
+        "Trojan"
       ],
       "correct_index": 0,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos. Esto es un hecho alineado con el marco NIST citado como referencia de la pregunta.",
@@ -1099,16 +1099,16 @@
       "question_es": "¿El keylogger qué registra según el marco NIST?",
       "question_en": "What does keylogger record according to the NIST framework?",
       "options_es": [
-        "Teclas como concepto principal",
-        "Mouse como concepto principal",
-        "Archivos como concepto principal",
-        "Red como concepto principal"
+        "Pulsaciones de teclas",
+        "Movimientos del ratón y coordenadas de clic en pantalla",
+        "Archivos, indexando su contenido para enviarlo a un servidor remoto",
+        "Paquetes de red capturados mediante un sniffer pasivo"
       ],
       "options_en": [
-        "Keys as the primary concept",
-        "Mouse as the primary concept",
-        "Files as the primary concept",
-        "Network as the primary concept"
+        "Keystrokes",
+        "Mouse movements and on-screen click coordinates",
+        "Files, indexing their content to exfiltrate it to a remote server",
+        "Network packets captured through a passive sniffer"
       ],
       "correct_index": 0,
       "explanation_es": "Un keylogger registra las pulsaciones de teclado del usuario, capturando así credenciales, números de tarjeta y otra información sensible que se escribe en el equipo comprometido. Opciones como 'Archivos' o 'Red' son incorrectas porque describen el objetivo de otras familias de malware (spyware orientado a ficheros o sniffers de red), no la conducta que define a un keylogger. Esto es un hecho alineado con el marco NIST citado como referencia de la pregunta.",
@@ -1141,16 +1141,16 @@
       "question_es": "¿Objetivo de ransomware según el marco NIST?",
       "question_en": "Ransomware goal according to the NIST framework?",
       "options_es": [
-        "Datos como concepto principal",
-        "Dinero como concepto principal",
-        "Destrucción como concepto principal",
-        "Vigilancia como concepto principal"
+        "Datos, para revenderlos en foros clandestinos sin exigir ningún pago a la víctima",
+        "Dinero del rescate",
+        "Destrucción, borrando de forma irreversible los archivos cifrados",
+        "Vigilancia, mediante el registro continuo de la pantalla de la víctima"
       ],
       "options_en": [
-        "Data as the primary concept",
-        "Money as the primary concept",
-        "Destruction as the primary concept",
-        "Surveillance as the primary concept"
+        "Data, to resell it on underground forums without demanding any payment from the victim",
+        "Ransom money",
+        "Destruction, irreversibly deleting the encrypted files",
+        "Surveillance, through continuous recording of the victim's screen"
       ],
       "correct_index": 1,
       "explanation_es": "El objetivo del ransomware es económico: cifra los archivos de la víctima y exige un pago (rescate) a cambio de la clave de descifrado, es decir, extorsión directa. La opción 'Datos' es la más tentadora pero es incorrecta porque robar o exfiltrar información es el objetivo típico del spyware o de una brecha de datos, no del ransomware, cuyo modelo de negocio es cobrar por restaurar el acceso. Esto es un hecho alineado con el marco NIST citado como referencia de la pregunta.",
@@ -1183,21 +1183,21 @@
       "question_es": "¿El ransomware requiere intervención del usuario en la respuesta a incidentes?",
       "question_en": "Does ransomware require user interaction in incident response?",
       "options_es": [
-        "Sí",
-        "Depende como concepto principal",
-        "A veces",
-        "No"
+        "No siempre: suele requerir un clic, pero variantes gusano como WannaCry se propagan solas",
+        "Sí, siempre: sin que alguien ejecute el archivo no puede cifrar nada",
+        "No, nunca: todo ransomware se propaga solo explotando fallos de red",
+        "Solo en equipos sin antivirus, porque este bloquea cualquier ejecución"
       ],
       "options_en": [
-        "Yes as the primary concept",
-        "Depends as the primary concept",
-        "Sometimes as the primary concept",
-        "No"
+        "Not always: it usually needs a click, but worm-capable strains like WannaCry spread on their own",
+        "Yes, always: without someone running the file it cannot encrypt anything",
+        "No, never: all ransomware spreads by itself by exploiting network flaws",
+        "Only on machines without antivirus, since it blocks any execution"
       ],
       "correct_index": 0,
-      "explanation_es": "El ransomware necesita que la víctima ejecute el payload -abriendo un adjunto infectado, pulsando un enlace malicioso o instalando un programa falso-, por eso la formación del usuario es una de las defensas principales frente a este tipo de malware. La opción 'No' es incorrecta porque, a diferencia de un gusano que se propaga explotando una vulnerabilidad sin ninguna acción humana, la mayoría de las familias de ransomware dependen de ingeniería social para que el usuario active la carga maliciosa. Esto es un dato clave durante la respuesta a incidentes.",
-      "explanation_en": "Ransomware needs the victim to execute the payload - opening an infected attachment, clicking a malicious link, or running a fake installer - which is why user-awareness training is a core defense against this malware type. 'No' is wrong because, unlike a worm that self-propagates by exploiting a vulnerability with no human action, most ransomware families rely on social engineering to get the user to trigger the payload. This is a key fact during incident response.",
-      "source": "NIST SP 800-53 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final) / CompTIA Security+ Objectives"
+      "explanation_es": "La mayoría del ransomware entra porque alguien abre un adjunto, pulsa un enlace o ejecuta un instalador falso, pero no todo: WannaCry (2017) se propagó solo explotando la vulnerabilidad de SMBv1 MS17-010 (EternalBlue), sin intervención del usuario. Por eso «sí, siempre» es falso, y parchear los servicios expuestos importa tanto como formar al personal.",
+      "explanation_en": "Most ransomware gets in because someone opens an attachment, clicks a link or runs a fake installer, but not all of it: WannaCry (2017) spread on its own by exploiting the SMBv1 vulnerability MS17-010 (EternalBlue), with no user interaction. That is why \"yes, always\" is false, and patching exposed services matters as much as training staff.",
+      "source": "CISA — Indicators Associated With WannaCry Ransomware (https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware) / NIST SP 800-53 Rev. 5 (https://csrc.nist.gov/pubs/sp/800-53/r5/upd1/final)"
     },
     {
       "id": "q420204_013",
@@ -1225,16 +1225,16 @@
       "question_es": "¿Cuál malware se autoreplica en la respuesta a incidentes?",
       "question_en": "Which malware self-replicates in incident response?",
       "options_es": [
-        "Rootkit como concepto principal",
-        "Virus como concepto principal",
-        "Troyano como concepto principal",
+        "Rootkit",
+        "Virus",
+        "Troyano",
         "Software espía (spyware)"
       ],
       "options_en": [
-        "Rootkit as the primary concept",
-        "Virus as the primary concept",
-        "Trojan as the primary concept",
-        "Spyware as the primary concept"
+        "Rootkit",
+        "Virus",
+        "Trojan",
+        "Spyware"
       ],
       "correct_index": 1,
       "explanation_es": "El virus es el malware que se autoreplica: se adjunta a un archivo o programa anfitrión y se copia a sí mismo cada vez que ese anfitrión se ejecuta, propagándose sin depender de una vulnerabilidad de red. La opción troyano es la más tentadora pero es incorrecta porque un troyano se disfraza de software legítimo y necesita que el usuario lo ejecute cada vez; no se copia a sí mismo dentro de otros archivos. Esto es un dato clave durante la respuesta a incidentes.",
