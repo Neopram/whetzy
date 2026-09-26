@@ -25,7 +25,7 @@
 | Modelo LLM | `qwen/qwen3.8-27b` en Groq (llama-3.3-70b NO disponible) |
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
-| Alembic HEAD | `20260926_antifraud` (38 migraciones) |
+| Alembic HEAD | `20260926_bootcamps` (39 migraciones) |
 | Contenido | **6.305 preguntas** / 18 tracks / 378 skills / **378 lecciones (100 %)** / **622 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
@@ -58,7 +58,7 @@
 | 22 | Blindaje, admin y preparación para un millón | 7/14 | 50 % | 22.1 y 22.6 PARCIAL · 22.2, 22.4, 22.5, 22.7, 22.13 |
 | 21 | Legal y fiscal a coste cero | 1/6 | 17 % | 21.0 DONE · 21.5 PARCIAL (1/4) · 21.6 PARCIAL (2/4) · 21.3, 21.4, 21.8 · **21.1, 21.2 y… |
 | 20 | Verificación masiva código↔docs↔prod | 9/11 | 82 % | 20.7 (**REFUTADA 2026-09-19**: `verify_ci_local.ps1` moría en `pip install`;… |
-| 19 | Catálogo 27 tracks (histórico; meta actual ADR-46) + cert marketplace | 1/10 | 10 % | 19.2–19.10 |
+| 19 | Catálogo 27 tracks (histórico; meta actual ADR-46) + cert marketplace | 2/10 | 20 % | 19.2–19.10 |
 | 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 2/5 | 40 % | 18.3, 18.5 |
 | 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
 | ≤16 | Fases 1–16 | todas DONE | 100 % | — |
@@ -173,7 +173,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.1 | **1** | **Social login web: GitHub + Google (OAuth 2.0 por redirección)** | **DONE** | Backend: `GET /auth/oauth/{provider}/start`… |
 | 19.2 | **1** | **Sign in with Apple** — obligatorio por App Store Review 4.8 en cuanto exista 19.1 | HUMAN-BLOCKED (H.2) | Necesita… |
 | 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | |
-| 19.4 | **2** | **Bootcamps: secuencia de tracks con calendario y meta diaria** | TODO | → LEDGER_HISTORY.md §E |
+| 19.4 | **2** | **Bootcamps: secuencia de tracks con calendario y meta diaria** | DONE | Modelos + migración + API + seed data + 7 tests. `7768bc7` |
 | 19.5 | **2** | **Playground libre (Python · SQL · JS)** | TODO | → LEDGER_HISTORY.md §E |
 | 19.6 | **3** | **Proyectos multi-paso** | TODO | → LEDGER_HISTORY.md §E |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |

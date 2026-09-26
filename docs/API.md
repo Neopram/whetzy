@@ -137,6 +137,17 @@ GET  /glossary/{track_id}  → [{term_es, term_en, definition_es, definition_en}
 
 `track_id` is a string like `"track01"`. Unauthenticated.
 
+## Bootcamp endpoints
+
+```
+GET  /bootcamps                    → [{id, slug, name_es, name_en, description_es, description_en, duration_weeks, daily_goal_minutes, icon, color, order}]
+GET  /bootcamps/{slug}             → {…bootcamp, weeks: [{id, week_number, track_id, title_es, title_en}]}
+POST /bootcamps/{slug}/enroll      → {id, bootcamp_id, started_at, current_week, completed_at} 🔒  201 | 409 already enrolled
+GET  /bootcamps/{slug}/progress    → {id, bootcamp_id, started_at, current_week, completed_at} 🔒  404 if not enrolled
+```
+
+List and detail are unauthenticated; enroll and progress require login.
+
 ## Lessons endpoints
 
 ```
@@ -378,8 +389,8 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-116 paths (112 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **119 method+path endpoints** total.
+133 paths (129 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **137 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
 
 
