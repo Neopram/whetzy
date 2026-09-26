@@ -19,8 +19,8 @@
         "def class Name:"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La forma correcta es «class Nombre:»: en Python el cuerpo de una clase se abre con dos puntos y se delimita por indentación, no por llaves. «class Nombre {}» copia la sintaxis de lenguajes como C++ o Java, que Python no usa. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "The correct form is “class Name:”: in Python a class body opens with a colon and is delimited by indentation, not braces. “class Name {}” copies the syntax of languages like C++ or Java, which Python does not use. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -42,8 +42,8 @@
         "Destructor"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "__init__ es el constructor: se ejecuta automáticamente al crear una instancia y sirve para inicializar sus atributos. No es un «atributo», que es un dato asociado al objeto, no un método que se invoque al instanciar. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "__init__ is the constructor: it runs automatically when an instance is created and initializes its attributes. It is not an “attribute”, which is a piece of data on the object, not a method invoked at instantiation. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -65,8 +65,8 @@
         "inherit Parent to Child"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se hereda con «class Hijo(Padre):»: la clase base va entre paréntesis tras el nombre de la subclase. «class Hijo extends Padre:» usa la palabra clave «extends», propia de Java, que Python no reconoce como sintaxis. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "Inheritance uses “class Child(Parent):”: the base class goes in parentheses after the subclass name. “class Child extends Parent:” uses the keyword “extends”, borrowed from Java, which is not valid Python syntax. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -88,8 +88,8 @@
         "Special method"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "self es la referencia a instancia: se pasa automáticamente como primer parámetro de un método de instancia y permite acceder a sus atributos y demás métodos. No es una «variable global», que existiría independientemente del objeto y sería compartida por todo el módulo. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "self is the reference to instance: it is passed automatically as the first parameter of an instance method and gives access to that instance's attributes and other methods. It is not a “global variable”, which would exist independently of the object and be shared across the whole module. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -111,8 +111,8 @@
         "Define interface"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "super() accede a método padre: devuelve un proxy que permite llamar a los métodos de la clase base desde la subclase, típicamente dentro de __init__ o al sobrescribir un método. No «crea subclase de manera exclusiva y permanente»: super() no define clases nuevas, solo delega en las ya existentes. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "super() access parent method: it returns a proxy that lets you call the base class's methods from the subclass, typically inside __init__ or when overriding a method. It does not “create subclass exclusively and permanently”: super() never defines new classes, it only delegates to existing ones. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -134,8 +134,8 @@
         "Private method"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un método estático es un método sin self: se marca con @staticmethod y no recibe ni self ni cls, por lo que no puede tocar el estado de la instancia ni de la clase. Llamarlo «método heredado» confunde el concepto con la herencia, que es independiente de si un método es estático. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "A static method is a method without self: it is marked with @staticmethod and receives neither self nor cls, so it cannot touch instance or class state. Calling it an “inherited method” confuses the concept with inheritance, which is unrelated to whether a method is static. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -157,8 +157,8 @@
         "classmethod private"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La diferencia real es que «classmethod recibe cls, static no»: un método de clase recibe la clase como primer argumento implícito y puede usarla como fábrica alternativa, mientras que uno estático no recibe nada automáticamente. Afirmar que hay «sin diferencia de manera exclusiva y permanente» ignora justamente ese parámetro implícito. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "The real difference is that “classmethod gets cls, static no”: a class method receives the class itself as an implicit first argument and can use it as an alternative constructor, while a static method receives nothing automatically. Claiming there is “no difference exclusively and permanently” ignores exactly that implicit parameter. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -180,8 +180,8 @@
         "Multiple inheritance"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Polimorfismo es que métodos mismo nombre diferente implantación: distintas clases pueden responder al mismo mensaje (mismo nombre de método) con comportamientos distintos. Eso no es «encapsulación datos», que consiste en ocultar el estado interno de un objeto, un concepto independiente. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "Polymorphism means same method name different impl: different classes can respond to the same message (same method name) with different behavior. That is not “data encapsulation”, which is about hiding an object's internal state, an unrelated concept. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -203,8 +203,8 @@
         "Use @override"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se sobrescribe un método así: definir método con mismo nombre en la subclase, con la misma firma que en la clase padre; Python la usa en lugar de la heredada por resolución de método (MRO). No existe «usar override keyword» en Python: no hay una palabra reservada para marcar la sobrescritura. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "A method is overridden by: define method same name in the subclass, with the same signature as in the parent; Python then uses it instead of the inherited one via method resolution order (MRO). There is no “use override keyword” in Python: there is no reserved word to mark an override. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -226,8 +226,8 @@
         "Hide internal details"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Encapsulación consiste en ocultar detalles internos: se usan convenciones como el prefijo «_» o «__» para señalar qué atributos y métodos no forman parte de la interfaz pública. No es lo mismo que «usar polimorfismo», que trata de que un mismo nombre de método se comporte distinto según la clase. Esta regla no cambia según el contexto en que se use la clase.",
+      "explanation_en": "Encapsulation means hide internal details: conventions like a leading “_” or “__” mark which attributes and methods are not part of the public interface. It is not the same as “use polymorphism”, which is about the same method name behaving differently depending on the class. This rule does not change depending on the context the class is used in.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -249,8 +249,8 @@
         "define class Name"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La forma correcta es «class Nombre:»: en Python el cuerpo de una clase se abre con dos puntos y se delimita por indentación, no por llaves. «class Nombre {}» copia la sintaxis de lenguajes como C++ o Java, que Python no usa. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "The correct form is “class Name:”: in Python a class body opens with a colon and is delimited by indentation, not braces. “class Name {}” copies the syntax of languages like C++ or Java, which Python does not use. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -272,8 +272,8 @@
         "Constructor"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "__init__ es el constructor: se ejecuta automáticamente al crear una instancia y sirve para inicializar sus atributos. No es un «atributo», que es un dato asociado al objeto, no un método que se invoque al instanciar. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "__init__ is the constructor: it runs automatically when an instance is created and initializes its attributes. It is not an “attribute”, which is a piece of data on the object, not a method invoked at instantiation. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -295,8 +295,8 @@
         "class Child extends Parent:"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se hereda con «class Hijo(Padre):»: la clase base va entre paréntesis tras el nombre de la subclase. «class Hijo extends Padre:» usa la palabra clave «extends», propia de Java, que Python no reconoce como sintaxis. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "Inheritance uses “class Child(Parent):”: the base class goes in parentheses after the subclass name. “class Child extends Parent:” uses the keyword “extends”, borrowed from Java, which is not valid Python syntax. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -318,8 +318,8 @@
         "Reference to instance"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "self es la referencia a instancia: se pasa automáticamente como primer parámetro de un método de instancia y permite acceder a sus atributos y demás métodos. No es una «variable global», que existiría independientemente del objeto y sería compartida por todo el módulo. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "self is the reference to instance: it is passed automatically as the first parameter of an instance method and gives access to that instance's attributes and other methods. It is not a “global variable”, which would exist independently of the object and be shared across the whole module. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -341,8 +341,8 @@
         "Create subclass invariably and constantly"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "super() accede a método padre: devuelve un proxy que permite llamar a los métodos de la clase base desde la subclase, típicamente dentro de __init__ o al sobrescribir un método. No «crea subclase de forma invariable y constante»: super() no define clases nuevas, solo delega en las ya existentes. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "super() access parent method: it returns a proxy that lets you call the base class's methods from the subclass, typically inside __init__ or when overriding a method. It does not “create subclass invariably and constantly”: super() never defines new classes, it only delegates to existing ones. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -364,8 +364,8 @@
         "Final method"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un método estático es un método sin self: se marca con @staticmethod y no recibe ni self ni cls, por lo que no puede tocar el estado de la instancia ni de la clase. Llamarlo «método heredado» confunde el concepto con la herencia, que es independiente de si un método es estático. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "A static method is a method without self: it is marked with @staticmethod and receives neither self nor cls, so it cannot touch instance or class state. Calling it an “inherited method” confuses the concept with inheritance, which is unrelated to whether a method is static. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -387,8 +387,8 @@
         "static inherited"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La diferencia real es que «classmethod recibe cls, static no»: un método de clase recibe la clase como primer argumento implícito y puede usarla como fábrica alternativa, mientras que uno estático no recibe nada automáticamente. Afirmar que hay «sin diferencia en cualquier escenario de implementación» ignora justamente ese parámetro implícito. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "The real difference is that “classmethod gets cls, static no”: a class method receives the class itself as an implicit first argument and can use it as an alternative constructor, while a static method receives nothing automatically. Claiming there is “no difference in any implementation scenario” ignores exactly that implicit parameter. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -410,8 +410,8 @@
         "Data encapsulation"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Polimorfismo es que métodos mismo nombre diferente implantación: distintas clases pueden responder al mismo mensaje (mismo nombre de método) con comportamientos distintos. Eso no es «encapsulación datos», que consiste en ocultar el estado interno de un objeto, un concepto independiente. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "Polymorphism means same method name different impl: different classes can respond to the same message (same method name) with different behavior. That is not “data encapsulation”, which is about hiding an object's internal state, an unrelated concept. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -433,8 +433,8 @@
         "Define method same name"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se sobrescribe un método así: definir método con mismo nombre en la subclase, con la misma firma que en la clase padre; Python la usa en lugar de la heredada por resolución de método (MRO). No existe «usar override keyword» en Python: no hay una palabra reservada para marcar la sobrescritura. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "A method is overridden by: define method same name in the subclass, with the same signature as in the parent; Python then uses it instead of the inherited one via method resolution order (MRO). There is no “use override keyword” in Python: there is no reserved word to mark an override. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -456,8 +456,8 @@
         "Use polymorphism"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Encapsulación consiste en ocultar detalles internos: se usan convenciones como el prefijo «_» o «__» para señalar qué atributos y métodos no forman parte de la interfaz pública. No es lo mismo que «usar polimorfismo», que trata de que un mismo nombre de método se comporte distinto según la clase. Esto aplica igual en cualquier versión moderna de Python 3.",
+      "explanation_en": "Encapsulation means hide internal details: conventions like a leading “_” or “__” mark which attributes and methods are not part of the public interface. It is not the same as “use polymorphism”, which is about the same method name behaving differently depending on the class. This applies the same way in any modern Python 3 version.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -479,8 +479,8 @@
         "class Name {}"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La forma correcta es «class Nombre:»: en Python el cuerpo de una clase se abre con dos puntos y se delimita por indentación, no por llaves. «class Nombre {}» copia la sintaxis de lenguajes como C++ o Java, que Python no usa. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "The correct form is “class Name:”: in Python a class body opens with a colon and is delimited by indentation, not braces. “class Name {}” copies the syntax of languages like C++ or Java, which Python does not use. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -502,8 +502,8 @@
         "Constructor"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "__init__ es el constructor: se ejecuta automáticamente al crear una instancia y sirve para inicializar sus atributos. No es un «atributo», que es un dato asociado al objeto, no un método que se invoque al instanciar. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "__init__ is the constructor: it runs automatically when an instance is created and initializes its attributes. It is not an “attribute”, which is a piece of data on the object, not a method invoked at instantiation. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -525,8 +525,8 @@
         "class Child from Parent:"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se hereda con «class Hijo(Padre):»: la clase base va entre paréntesis tras el nombre de la subclase. «class Hijo extends Padre:» usa la palabra clave «extends», propia de Java, que Python no reconoce como sintaxis. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "Inheritance uses “class Child(Parent):”: the base class goes in parentheses after the subclass name. “class Child extends Parent:” uses the keyword “extends”, borrowed from Java, which is not valid Python syntax. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -548,8 +548,8 @@
         "Special method"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "self es la referencia a instancia: se pasa automáticamente como primer parámetro de un método de instancia y permite acceder a sus atributos y demás métodos. No es una «variable global», que existiría independientemente del objeto y sería compartida por todo el módulo. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "self is the reference to instance: it is passed automatically as the first parameter of an instance method and gives access to that instance's attributes and other methods. It is not a “global variable”, which would exist independently of the object and be shared across the whole module. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -571,8 +571,8 @@
         "Override method"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "super() accede a método padre: devuelve un proxy que permite llamar a los métodos de la clase base desde la subclase, típicamente dentro de __init__ o al sobrescribir un método. No «crea subclase según la documentación estándar del servicio»: super() no define clases nuevas, solo delega en las ya existentes. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "super() access parent method: it returns a proxy that lets you call the base class's methods from the subclass, typically inside __init__ or when overriding a method. It does not “create subclass according to standard service documentation”: super() never defines new classes, it only delegates to existing ones. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -594,8 +594,8 @@
         "Final method"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un método estático es un método sin self: se marca con @staticmethod y no recibe ni self ni cls, por lo que no puede tocar el estado de la instancia ni de la clase. Llamarlo «método heredado» confunde el concepto con la herencia, que es independiente de si un método es estático. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "A static method is a method without self: it is marked with @staticmethod and receives neither self nor cls, so it cannot touch instance or class state. Calling it an “inherited method” confuses the concept with inheritance, which is unrelated to whether a method is static. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -617,8 +617,8 @@
         "classmethod private"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La diferencia real es que «classmethod recibe cls, static no»: un método de clase recibe la clase como primer argumento implícito y puede usarla como fábrica alternativa, mientras que uno estático no recibe nada automáticamente. Afirmar que hay «sin diferencia en todos los casos posibles» ignora justamente ese parámetro implícito. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "The real difference is that “classmethod gets cls, static no”: a class method receives the class itself as an implicit first argument and can use it as an alternative constructor, while a static method receives nothing automatically. Claiming there is “no difference in all possible cases” ignores exactly that implicit parameter. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -640,8 +640,8 @@
         "Data encapsulation"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Polimorfismo es que métodos mismo nombre diferente implantación: distintas clases pueden responder al mismo mensaje (mismo nombre de método) con comportamientos distintos. Eso no es «encapsulación datos», que consiste en ocultar el estado interno de un objeto, un concepto independiente. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "Polymorphism means same method name different impl: different classes can respond to the same message (same method name) with different behavior. That is not “data encapsulation”, which is about hiding an object's internal state, an unrelated concept. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -663,8 +663,8 @@
         "Use @override"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se sobrescribe un método así: definir método con mismo nombre en la subclase, con la misma firma que en la clase padre; Python la usa en lugar de la heredada por resolución de método (MRO). No existe «usar override keyword» en Python: no hay una palabra reservada para marcar la sobrescritura. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "A method is overridden by: define method same name in the subclass, with the same signature as in the parent; Python then uses it instead of the inherited one via method resolution order (MRO). There is no “use override keyword” in Python: there is no reserved word to mark an override. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -686,8 +686,8 @@
         "Define interface"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Encapsulación consiste en ocultar detalles internos: se usan convenciones como el prefijo «_» o «__» para señalar qué atributos y métodos no forman parte de la interfaz pública. No es lo mismo que «usar polimorfismo», que trata de que un mismo nombre de método se comporte distinto según la clase. La regla es la misma se usen o no módulos de la biblioteca estándar.",
+      "explanation_en": "Encapsulation means hide internal details: conventions like a leading “_” or “__” mark which attributes and methods are not part of the public interface. It is not the same as “use polymorphism”, which is about the same method name behaving differently depending on the class. The rule is the same whether or not standard-library modules are involved.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -709,8 +709,8 @@
         "def class Name:"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La forma correcta es «class Nombre:»: en Python el cuerpo de una clase se abre con dos puntos y se delimita por indentación, no por llaves. «class Nombre {}» copia la sintaxis de lenguajes como C++ o Java, que Python no usa. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "The correct form is “class Name:”: in Python a class body opens with a colon and is delimited by indentation, not braces. “class Name {}” copies the syntax of languages like C++ or Java, which Python does not use. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -732,8 +732,8 @@
         "Destructor"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "__init__ es el constructor: se ejecuta automáticamente al crear una instancia y sirve para inicializar sus atributos. No es un «atributo», que es un dato asociado al objeto, no un método que se invoque al instanciar. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "__init__ is the constructor: it runs automatically when an instance is created and initializes its attributes. It is not an “attribute”, which is a piece of data on the object, not a method invoked at instantiation. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -755,8 +755,8 @@
         "class Child from Parent:"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se hereda con «class Hijo(Padre):»: la clase base va entre paréntesis tras el nombre de la subclase. «class Hijo extends Padre:» usa la palabra clave «extends», propia de Java, que Python no reconoce como sintaxis. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "Inheritance uses “class Child(Parent):”: the base class goes in parentheses after the subclass name. “class Child extends Parent:” uses the keyword “extends”, borrowed from Java, which is not valid Python syntax. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -778,8 +778,8 @@
         "Reference to instance"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "self es la referencia a instancia: se pasa automáticamente como primer parámetro de un método de instancia y permite acceder a sus atributos y demás métodos. No es una «variable global», que existiría independientemente del objeto y sería compartida por todo el módulo. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "self is the reference to instance: it is passed automatically as the first parameter of an instance method and gives access to that instance's attributes and other methods. It is not a “global variable”, which would exist independently of the object and be shared across the whole module. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -801,8 +801,8 @@
         "Override method"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "super() accede a método padre: devuelve un proxy que permite llamar a los métodos de la clase base desde la subclase, típicamente dentro de __init__ o al sobrescribir un método. No «crea subclase independientemente del contexto aplicado»: super() no define clases nuevas, solo delega en las ya existentes. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "super() access parent method: it returns a proxy that lets you call the base class's methods from the subclass, typically inside __init__ or when overriding a method. It does not “create subclass regardless of the applied context”: super() never defines new classes, it only delegates to existing ones. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -824,8 +824,8 @@
         "Method without self"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un método estático es un método sin self: se marca con @staticmethod y no recibe ni self ni cls, por lo que no puede tocar el estado de la instancia ni de la clase. Llamarlo «método heredado» confunde el concepto con la herencia, que es independiente de si un método es estático. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "A static method is a method without self: it is marked with @staticmethod and receives neither self nor cls, so it cannot touch instance or class state. Calling it an “inherited method” confuses the concept with inheritance, which is unrelated to whether a method is static. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -847,8 +847,8 @@
         "static inherited"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La diferencia real es que «classmethod recibe cls, static no»: un método de clase recibe la clase como primer argumento implícito y puede usarla como fábrica alternativa, mientras que uno estático no recibe nada automáticamente. Afirmar que hay «sin diferencia en todos los casos posibles» ignora justamente ese parámetro implícito. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "The real difference is that “classmethod gets cls, static no”: a class method receives the class itself as an implicit first argument and can use it as an alternative constructor, while a static method receives nothing automatically. Claiming there is “no difference in all possible cases” ignores exactly that implicit parameter. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -870,8 +870,8 @@
         "Class abstraction"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Polimorfismo es que métodos mismo nombre diferente implantación: distintas clases pueden responder al mismo mensaje (mismo nombre de método) con comportamientos distintos. Eso no es «encapsulación datos», que consiste en ocultar el estado interno de un objeto, un concepto independiente. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "Polymorphism means same method name different impl: different classes can respond to the same message (same method name) with different behavior. That is not “data encapsulation”, which is about hiding an object's internal state, an unrelated concept. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -893,8 +893,8 @@
         "Use @override"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se sobrescribe un método así: definir método con mismo nombre en la subclase, con la misma firma que en la clase padre; Python la usa en lugar de la heredada por resolución de método (MRO). No existe «usar override keyword» en Python: no hay una palabra reservada para marcar la sobrescritura. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "A method is overridden by: define method same name in the subclass, with the same signature as in the parent; Python then uses it instead of the inherited one via method resolution order (MRO). There is no “use override keyword” in Python: there is no reserved word to mark an override. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -916,8 +916,8 @@
         "Inherit classes according to standard service documentation"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Encapsulación consiste en ocultar detalles internos: se usan convenciones como el prefijo «_» o «__» para señalar qué atributos y métodos no forman parte de la interfaz pública. No es lo mismo que «usar polimorfismo», que trata de que un mismo nombre de método se comporte distinto según la clase. Esto no cambia si la clase envuelve listas, diccionarios u otras estructuras de datos.",
+      "explanation_en": "Encapsulation means hide internal details: conventions like a leading “_” or “__” mark which attributes and methods are not part of the public interface. It is not the same as “use polymorphism”, which is about the same method name behaving differently depending on the class. This does not change if the class wraps lists, dictionaries, or other data structures.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -939,8 +939,8 @@
         "class Name:"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La forma correcta es «class Nombre:»: en Python el cuerpo de una clase se abre con dos puntos y se delimita por indentación, no por llaves. «class Nombre {}» copia la sintaxis de lenguajes como C++ o Java, que Python no usa. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "The correct form is “class Name:”: in Python a class body opens with a colon and is delimited by indentation, not braces. “class Name {}” copies the syntax of languages like C++ or Java, which Python does not use. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -962,8 +962,8 @@
         "Destructor"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "__init__ es el constructor: se ejecuta automáticamente al crear una instancia y sirve para inicializar sus atributos. No es un «atributo», que es un dato asociado al objeto, no un método que se invoque al instanciar. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "__init__ is the constructor: it runs automatically when an instance is created and initializes its attributes. It is not an “attribute”, which is a piece of data on the object, not a method invoked at instantiation. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -985,8 +985,8 @@
         "class Child(Parent):"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se hereda con «class Hijo(Padre):»: la clase base va entre paréntesis tras el nombre de la subclase. «class Hijo extends Padre:» usa la palabra clave «extends», propia de Java, que Python no reconoce como sintaxis. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "Inheritance uses “class Child(Parent):”: the base class goes in parentheses after the subclass name. “class Child extends Parent:” uses the keyword “extends”, borrowed from Java, which is not valid Python syntax. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1008,8 +1008,8 @@
         "Reference to instance"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "self es la referencia a instancia: se pasa automáticamente como primer parámetro de un método de instancia y permite acceder a sus atributos y demás métodos. No es una «variable global», que existiría independientemente del objeto y sería compartida por todo el módulo. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "self is the reference to instance: it is passed automatically as the first parameter of an instance method and gives access to that instance's attributes and other methods. It is not a “global variable”, which would exist independently of the object and be shared across the whole module. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1031,8 +1031,8 @@
         "Define interface"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "super() accede a método padre: devuelve un proxy que permite llamar a los métodos de la clase base desde la subclase, típicamente dentro de __init__ o al sobrescribir un método. No «crea subclase de manera exclusiva y permanente»: super() no define clases nuevas, solo delega en las ya existentes. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "super() access parent method: it returns a proxy that lets you call the base class's methods from the subclass, typically inside __init__ or when overriding a method. It does not “create subclass exclusively and permanently”: super() never defines new classes, it only delegates to existing ones. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1054,8 +1054,8 @@
         "Final method"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un método estático es un método sin self: se marca con @staticmethod y no recibe ni self ni cls, por lo que no puede tocar el estado de la instancia ni de la clase. Llamarlo «método heredado» confunde el concepto con la herencia, que es independiente de si un método es estático. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "A static method is a method without self: it is marked with @staticmethod and receives neither self nor cls, so it cannot touch instance or class state. Calling it an “inherited method” confuses the concept with inheritance, which is unrelated to whether a method is static. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1077,8 +1077,8 @@
         "static inherited"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La diferencia real es que «classmethod recibe cls, static no»: un método de clase recibe la clase como primer argumento implícito y puede usarla como fábrica alternativa, mientras que uno estático no recibe nada automáticamente. Afirmar que hay «sin diferencia sin considerar otros factores relevantes» ignora justamente ese parámetro implícito. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "The real difference is that “classmethod gets cls, static no”: a class method receives the class itself as an implicit first argument and can use it as an alternative constructor, while a static method receives nothing automatically. Claiming there is “no difference without considering other relevant factors” ignores exactly that implicit parameter. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1100,8 +1100,8 @@
         "Class abstraction"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Polimorfismo es que métodos mismo nombre diferente implantación: distintas clases pueden responder al mismo mensaje (mismo nombre de método) con comportamientos distintos. Eso no es «encapsulación datos», que consiste en ocultar el estado interno de un objeto, un concepto independiente. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "Polymorphism means same method name different impl: different classes can respond to the same message (same method name) with different behavior. That is not “data encapsulation”, which is about hiding an object's internal state, an unrelated concept. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1123,8 +1123,8 @@
         "Call super()"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se sobrescribe un método así: definir método con mismo nombre en la subclase, con la misma firma que en la clase padre; Python la usa en lugar de la heredada por resolución de método (MRO). No existe «usar override keyword» en Python: no hay una palabra reservada para marcar la sobrescritura. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "A method is overridden by: define method same name in the subclass, with the same signature as in the parent; Python then uses it instead of the inherited one via method resolution order (MRO). There is no “use override keyword” in Python: there is no reserved word to mark an override. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1146,8 +1146,8 @@
         "Inherit classes exclusively and permanently"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Encapsulación consiste en ocultar detalles internos: se usan convenciones como el prefijo «_» o «__» para señalar qué atributos y métodos no forman parte de la interfaz pública. No es lo mismo que «usar polimorfismo», que trata de que un mismo nombre de método se comporte distinto según la clase. Es parte del modelo de objetos de Python, no una particularidad de un caso concreto.",
+      "explanation_en": "Encapsulation means hide internal details: conventions like a leading “_” or “__” mark which attributes and methods are not part of the public interface. It is not the same as “use polymorphism”, which is about the same method name behaving differently depending on the class. It is part of Python's object model, not a quirk of one specific case.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1169,8 +1169,8 @@
         "class Name:"
       ],
       "correct_index": 3,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La forma correcta es «class Nombre:»: en Python el cuerpo de una clase se abre con dos puntos y se delimita por indentación, no por llaves. «class Nombre {}» copia la sintaxis de lenguajes como C++ o Java, que Python no usa. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "The correct form is “class Name:”: in Python a class body opens with a colon and is delimited by indentation, not braces. “class Name {}” copies the syntax of languages like C++ or Java, which Python does not use. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1192,8 +1192,8 @@
         "Destructor"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "__init__ es el constructor: se ejecuta automáticamente al crear una instancia y sirve para inicializar sus atributos. No es un «atributo», que es un dato asociado al objeto, no un método que se invoque al instanciar. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "__init__ is the constructor: it runs automatically when an instance is created and initializes its attributes. It is not an “attribute”, which is a piece of data on the object, not a method invoked at instantiation. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1215,8 +1215,8 @@
         "class Child from Parent:"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se hereda con «class Hijo(Padre):»: la clase base va entre paréntesis tras el nombre de la subclase. «class Hijo extends Padre:» usa la palabra clave «extends», propia de Java, que Python no reconoce como sintaxis. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "Inheritance uses “class Child(Parent):”: the base class goes in parentheses after the subclass name. “class Child extends Parent:” uses the keyword “extends”, borrowed from Java, which is not valid Python syntax. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1238,8 +1238,8 @@
         "Global variable"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "self es la referencia a instancia: se pasa automáticamente como primer parámetro de un método de instancia y permite acceder a sus atributos y demás métodos. No es una «variable global», que existiría independientemente del objeto y sería compartida por todo el módulo. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "self is the reference to instance: it is passed automatically as the first parameter of an instance method and gives access to that instance's attributes and other methods. It is not a “global variable”, which would exist independently of the object and be shared across the whole module. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1261,8 +1261,8 @@
         "Define interface"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "super() accede a método padre: devuelve un proxy que permite llamar a los métodos de la clase base desde la subclase, típicamente dentro de __init__ o al sobrescribir un método. No «crea subclase en cualquier escenario de implementación»: super() no define clases nuevas, solo delega en las ya existentes. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "super() access parent method: it returns a proxy that lets you call the base class's methods from the subclass, typically inside __init__ or when overriding a method. It does not “create subclass in any implementation scenario”: super() never defines new classes, it only delegates to existing ones. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1284,8 +1284,8 @@
         "Private method"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Un método estático es un método sin self: se marca con @staticmethod y no recibe ni self ni cls, por lo que no puede tocar el estado de la instancia ni de la clase. Llamarlo «método heredado» confunde el concepto con la herencia, que es independiente de si un método es estático. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "A static method is a method without self: it is marked with @staticmethod and receives neither self nor cls, so it cannot touch instance or class state. Calling it an “inherited method” confuses the concept with inheritance, which is unrelated to whether a method is static. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1307,8 +1307,8 @@
         "static inherited"
       ],
       "correct_index": 0,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "La diferencia real es que «classmethod recibe cls, static no»: un método de clase recibe la clase como primer argumento implícito y puede usarla como fábrica alternativa, mientras que uno estático no recibe nada automáticamente. Afirmar que hay «sin diferencia sin excepciones ni variantes» ignora justamente ese parámetro implícito. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "The real difference is that “classmethod gets cls, static no”: a class method receives the class itself as an implicit first argument and can use it as an alternative constructor, while a static method receives nothing automatically. Claiming there is “no difference without exceptions or variants” ignores exactly that implicit parameter. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1330,8 +1330,8 @@
         "Class abstraction"
       ],
       "correct_index": 2,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Polimorfismo es que métodos mismo nombre diferente implantación: distintas clases pueden responder al mismo mensaje (mismo nombre de método) con comportamientos distintos. Eso no es «encapsulación datos», que consiste en ocultar el estado interno de un objeto, un concepto independiente. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "Polymorphism means same method name different impl: different classes can respond to the same message (same method name) with different behavior. That is not “data encapsulation”, which is about hiding an object's internal state, an unrelated concept. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1353,8 +1353,8 @@
         "Use @override"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Se sobrescribe un método así: definir método con mismo nombre en la subclase, con la misma firma que en la clase padre; Python la usa en lugar de la heredada por resolución de método (MRO). No existe «usar override keyword» en Python: no hay una palabra reservada para marcar la sobrescritura. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "A method is overridden by: define method same name in the subclass, with the same signature as in the parent; Python then uses it instead of the inherited one via method resolution order (MRO). There is no “use override keyword” in Python: there is no reserved word to mark an override. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1376,8 +1376,8 @@
         "Define interface"
       ],
       "correct_index": 1,
-      "explanation_es": "Respuesta correcta basada en documentación de Python.",
-      "explanation_en": "Correct answer based on Python documentation.",
+      "explanation_es": "Encapsulación consiste en ocultar detalles internos: se usan convenciones como el prefijo «_» o «__» para señalar qué atributos y métodos no forman parte de la interfaz pública. No es lo mismo que «usar polimorfismo», que trata de que un mismo nombre de método se comporte distinto según la clase. La presencia de bloques try/except no altera esta regla.",
+      "explanation_en": "Encapsulation means hide internal details: conventions like a leading “_” or “__” mark which attributes and methods are not part of the public interface. It is not the same as “use polymorphism”, which is about the same method name behaving differently depending on the class. Having try/except blocks around it does not change this rule.",
       "source": "https://docs.python.org/3/library/index.html"
     },
     {
@@ -1395,8 +1395,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Verdadero: por convención, todo método de instancia recibe self como primer parámetro para poder acceder a los atributos y demás métodos del objeto sobre el que se llama; el intérprete lo pasa automáticamente al invocar obj.metodo().",
+      "explanation_en": "True: by convention, every instance method takes self as its first parameter so it can reach the attributes and other methods of the object it is called on; the interpreter supplies it automatically when you call obj.method().",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1414,8 +1414,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Verdadero: __init__ solo inicializa la instancia ya creada por __new__ y Python exige que devuelva None; devolver cualquier otro valor desde __init__ lanza un TypeError en tiempo de ejecución.",
+      "explanation_en": "True: __init__ only initializes the instance that __new__ already created, and Python requires it to return None; returning anything else from __init__ raises a TypeError at run time.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1433,8 +1433,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Verdadero: a diferencia de Java, en Python una clase puede listar varias clases base separadas por comas, por ejemplo class C(A, B):, y el orden de resolución de métodos (MRO, algoritmo C3) decide qué implementación hereda cuando hay conflicto.",
+      "explanation_en": "True: unlike Java, in Python a class can list several base classes separated by commas, e.g. class C(A, B):, and the method resolution order (MRO, the C3 algorithm) decides which implementation wins when there is a conflict.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1452,8 +1452,8 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Falso: Python no tiene privacidad real. Los atributos con doble guion bajo solo sufren «name mangling» (se renombran a _Clase__nombre), pero siguen siendo accesibles desde fuera si se usa ese nombre completo; es una convención, no una restricción del intérprete.",
+      "explanation_en": "False: Python has no real privacy. Attributes with a leading double underscore only get “name mangling” (renamed to _Class__name), but they remain reachable from outside using that full name; it is a convention, not an enforced restriction.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1471,8 +1471,8 @@
         "False"
       ],
       "correct_index": 1,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Falso: ese es justamente el rasgo que define a un método estático, que se declara con @staticmethod para que Python no le inyecte ni self ni cls; recibir self es lo propio de un método de instancia normal.",
+      "explanation_en": "False: that is exactly the defining trait of a static method, declared with @staticmethod so Python injects neither self nor cls into it; receiving self is what an ordinary instance method does.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1490,8 +1490,8 @@
         "False"
       ],
       "correct_index": 0,
-      "explanation_es": "Verificar en documentación oficial de Python.",
-      "explanation_en": "Check Python official documentation.",
+      "explanation_es": "Verdadero: super() devuelve un objeto proxy vinculado al siguiente paso del orden de resolución de métodos (MRO), y llamar a un método sobre ese proxy ejecuta la implementación de la clase base correspondiente, típicamente dentro de __init__ o al sobrescribir un método.",
+      "explanation_en": "True: super() returns a proxy object bound to the next step in the method resolution order (MRO), and calling a method on that proxy runs the corresponding base-class implementation, typically inside __init__ or when overriding a method.",
       "source": "https://docs.python.org/3/"
     },
     {
@@ -1503,8 +1503,8 @@
       "code": "class A:\n  def __init__(self): self.x=1\na=A()\nprint(a.x)",
       "correct_answer_es": "1",
       "correct_answer_en": "1",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "El código ejecuta A().__init__, que asigna self.x = 1 a la instancia; a.x devuelve ese valor, así que print(a.x) imprime «1». No hay error porque __init__ define el atributo antes de que se lea (variante 1 de este mismo patrón en el banco).",
+      "explanation_en": "The code runs A().__init__, which assigns self.x = 1 on the instance; a.x returns that value, so print(a.x) prints “1”. There is no error because __init__ sets the attribute before it is read (variant 1 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "Error: TypeError",
@@ -1529,8 +1529,8 @@
       "code": "class A:\n  pass\na=A()\nprint(type(a).__name__)",
       "correct_answer_es": "A",
       "correct_answer_en": "A",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "A es una clase vacía (pass) y a = A() crea una instancia suya; type(a) es la clase A, y su atributo __name__ es la cadena «A», el nombre con el que se definió la clase (variante 1 de este mismo patrón en el banco).",
+      "explanation_en": "A is an empty class (pass) and a = A() creates an instance of it; type(a) is the class A, and its __name__ attribute is the string “A”, the name the class was defined with (variant 1 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "A",
@@ -1555,8 +1555,8 @@
       "code": "print(isinstance(1, int))",
       "correct_answer_es": "True",
       "correct_answer_en": "True",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "1 es un literal entero, por lo que isinstance(1, int) evalúa a True; en Python 3 no existe una distinción int/long que pudiera cambiar el resultado, así que no hay ambigüedad posible (variante 1 de este mismo patrón en el banco).",
+      "explanation_en": "1 is an integer literal, so isinstance(1, int) evaluates to True; Python 3 has no separate int/long distinction that could change the result, so there is no ambiguity (variant 1 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "True",
@@ -1581,8 +1581,8 @@
       "code": "print(hasattr([], 'append'))",
       "correct_answer_es": "True",
       "correct_answer_en": "True",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "[] es una lista, y append es un método definido en el tipo list, así que hasattr busca el atributo en la instancia y en su clase y lo encuentra: el resultado es True (variante 1 de este mismo patrón en el banco).",
+      "explanation_en": "[] is a list, and append is a method defined on the list type, so hasattr looks up the attribute on the instance and its class and finds it: the result is True (variant 1 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "True",
@@ -1607,8 +1607,8 @@
       "code": "d={}\nprint(len(d))",
       "correct_answer_es": "0",
       "correct_answer_en": "0",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "d = {} crea un diccionario vacío; len() cuenta sus pares clave-valor, y como no tiene ninguno, print(len(d)) imprime «0».",
+      "explanation_en": "d = {} creates an empty dictionary; len() counts its key-value pairs, and since it has none, print(len(d)) prints “0”.",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "1",
@@ -1633,8 +1633,8 @@
       "code": "class A:\n  def __init__(self): self.x=1\na=A()\nprint(a.x)",
       "correct_answer_es": "1",
       "correct_answer_en": "1",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "El código ejecuta A().__init__, que asigna self.x = 1 a la instancia; a.x devuelve ese valor, así que print(a.x) imprime «1». No hay error porque __init__ define el atributo antes de que se lea (variante 2 de este mismo patrón en el banco).",
+      "explanation_en": "The code runs A().__init__, which assigns self.x = 1 on the instance; a.x returns that value, so print(a.x) prints “1”. There is no error because __init__ sets the attribute before it is read (variant 2 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "0",
@@ -1659,8 +1659,8 @@
       "code": "class A:\n  pass\na=A()\nprint(type(a).__name__)",
       "correct_answer_es": "A",
       "correct_answer_en": "A",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "A es una clase vacía (pass) y a = A() crea una instancia suya; type(a) es la clase A, y su atributo __name__ es la cadena «A», el nombre con el que se definió la clase (variante 2 de este mismo patrón en el banco).",
+      "explanation_en": "A is an empty class (pass) and a = A() creates an instance of it; type(a) is the class A, and its __name__ attribute is the string “A”, the name the class was defined with (variant 2 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "[A]",
@@ -1685,8 +1685,8 @@
       "code": "print(isinstance(1, int))",
       "correct_answer_es": "True",
       "correct_answer_en": "True",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "1 es un literal entero, por lo que isinstance(1, int) evalúa a True; en Python 3 no existe una distinción int/long que pudiera cambiar el resultado, así que no hay ambigüedad posible (variante 2 de este mismo patrón en el banco).",
+      "explanation_en": "1 is an integer literal, so isinstance(1, int) evaluates to True; Python 3 has no separate int/long distinction that could change the result, so there is no ambiguity (variant 2 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "False",
@@ -1711,8 +1711,8 @@
       "code": "print(hasattr([], 'append'))",
       "correct_answer_es": "True",
       "correct_answer_en": "True",
-      "explanation_es": "Ejecuta el código paso a paso.",
-      "explanation_en": "Execute the code step by step.",
+      "explanation_es": "[] es una lista, y append es un método definido en el tipo list, así que hasattr busca el atributo en la instancia y en su clase y lo encuentra: el resultado es True (variante 2 de este mismo patrón en el banco).",
+      "explanation_en": "[] is a list, and append is a method defined on the list type, so hasattr looks up the attribute on the instance and its class and finds it: the result is True (variant 2 of this same pattern in the bank).",
       "source": "https://docs.python.org/3/",
       "options_es": [
         "Error",

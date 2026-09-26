@@ -80,7 +80,6 @@
 ### 14 — La cuña (dirección aprobada 2026-09-14)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 14.4 | 2 | **Micro-lecciones desde las fuentes** — cerrar la brecha de instrucción sin construir vídeo | DONE | TracksScreen: skills con p_known < 0.3 destacadas (fondo naranja, clickables → lección); botón Aprender apunta al skill más débil; tsc+vite limpios |
 | 14.7 | 3 | **PCEP** — primera certificación del carril 1 (decisión #25) | TODO | → LEDGER_HISTORY.md §E |
 | 14.8 | 4 | **Predictor beta-binomial de aprobado** con calibración pública | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E |
 | 14.9 | 4 | **Informe de dominio verificable** por URL | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E |
@@ -172,7 +171,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.1 | **1** | **Social login web: GitHub + Google (OAuth 2.0 por redirección)** | **DONE** | Backend: `GET /auth/oauth/{provider}/start`… |
 | 19.2 | **1** | **Sign in with Apple** — obligatorio por App Store Review 4.8 en cuanto exista 19.1 | HUMAN-BLOCKED (H.2) | Necesita… |
 | 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | |
-| 19.4 | **2** | **Bootcamps: secuencia de tracks con calendario y meta diaria** | DONE | Modelos + migración + API + seed data + 7 tests. `7768bc7` |
 | 19.5 | **2** | **Playground libre (Python · SQL · JS)** | **DONE** | PlaygroundScreen + playgroundDb (IndexedDB history) + Monaco editor + 3 runtimes + i18n ES/EN + Home shortcut. `d8427ae` |
 | 19.6 | **3** | **Proyectos multi-paso** | **DONE** | = 18.8. `0f61442` |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
@@ -218,7 +216,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de… | **DONE** | **DONE** (2026-09-25) → §I |
 | 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | |
 | 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **DONE** | **DONE** (2026-09-26) — 8/8: RateLimiter InMemory/Redis, pool asyncpg, capacity.md, k6, db_restore, job worker, Cache-Control en 6 GETs, paginación 13/15 (tracks/skills acotados); `cache.py` helper sin uso eliminado |
-| 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | DONE | RUNBOOK.md §Incident Management + `/status` page frontend |
 | 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
 | 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
 | 22.11 | **1** | **`AdminScreen.tsx` estaba 100 % en inglés** — títulos, pestañas, estados, mensajes de error y unidades eran cadenas… | **DONE** | **DONE** `13d8904` (2026-09-19) → §I |
@@ -353,7 +350,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | |
 | 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | |
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | |
-| 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | DONE | 4 admin endpoints: list/status courses + list/status payouts |
 | 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | |
 | 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | **DONE** — `content/legal/instructor_recruitment_kit_{es,en}.md`: oferta 70/30, badge fundador, visibilidad prioritaria, requisitos de calidad (puerta automática), hoja de ruta 3 fases, proceso de aplicación | |
@@ -378,7 +374,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | |
 | 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
 | 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran… | **DONE** — `content/legal/credits_terms_{es,en}.md`: 11 secciones (naturaleza, 3 reglas, cómo se ganan, caducidad FIFO 90d, referidos, códigos promo, antifraude, clawback, gasto, modificaciones, jurisdicción) | |
-| 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación… | DONE | `GET /admin/economy/scorecard` — 5 KPI con semáforo vs targets m3/m6/m12 |
 
 
 ### 30. Integridad del despliegue — incidente de login del 2026-09-24 (PRI 0)
@@ -503,14 +498,16 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader` con `KeyError: 'order'` (logs Railway) y lecciones fuera de esquema | **DONE** | #28 (`c5100e1`), `test_loader_schema.py` rojo sobre `ec97405`; deploy `b64e2a9a` SUCCESS |
-| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | PARCIAL: track26 (correcta más larga 15 %; revisión adversaria de las 300: 7 defectos corregidos) y track28 (11,7 %; 10 corregidos, 4 eran la correcta movida a otra ranura por el reescritor y 1 ya era falsa en el original) con 0 coletillas; trinquete `test_no_filler_options.py` (mutación en rojo); 29/30 en curso | 0 coletillas por grep; 37.16 ≤ 40 % con distractores reales; `test_no_new_file_is_a_pure_rotation` verde |
+| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | DONE | 0 coletillas por grep en 26/28/29/30; correcta más larga 15 / 11,7 / 23,7 / 33 % (37.16 ≤ 40 %); `test_no_new_file_is_a_pure_rotation` verde. Revisión adversaria de las 1.200: 7 + 10 + 16 + 4 arreglos; el reescritor movió claves en 28, 29 y todo `mod3002` (52, reparado por similitud con la clave original y revisado). Trinquete `test_no_filler_options.py` con mutación en rojo (2026-09-26) |
 | 39.2 | **1** | Fuentes inferidas en 146 lecciones normalizadas en #28 | TODO | Fuente comprobada por lección (WebFetch) o sustituida |
-| 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | TODO | 0 fallos sin bajar umbrales |
+| 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | PARCIAL: 680 el 2026-09-26 (tildes 31→0, rotación 1→0, lecciones de track28 y track29 al listón); quedan lecciones de tracks 14, 18-23, 26, 27, 30 y 41-46. Piloto Haiku descartado (7 de 10 lecciones con relleno o errores); autor Sonnet + revisión Sonnet + lectura propia | 0 fallos sin bajar umbrales |
 | 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | TODO | Tests con flag on/off, exenciones, paridad con `plans.ts` |
 | 39.5 | **2** | Gamification auditada de punta a punta | TODO | Playwright local con capturas: XP, racha, liga, insignia |
-| 39.6 | **2** | `audit_ai_traces.py` | TODO | Informe por fichero; mutación en rojo |
+| 39.6 | **2** | `audit_ai_traces.py` | DONE | `scripts/audit_ai_traces.py`: informe por fichero (explicación de plantilla, marcado de herramienta, voz de asistente) y trinquete `ai_traces_baseline.json`; `tests/content/test_ai_traces.py`, mutación en rojo (2026-09-26). Encontró 1.404 campos de explicación de plantilla → 39.29 |
 | 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | `scripts/check_originality.py` (Jaccard trigramas ≥ 0.8 + misma respuesta, por track) con trinquete `KNOWN`; `tests/content/test_originality.py`; mutación (pareja nueva) en rojo, restaurado verde (2026-09-26) |
 | 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | TODO | Cada pareja arreglada se quita de `KNOWN`; el test sigue verde |
+| 39.28 | **1** | Segunda familia de coletillas («como concepto principal» 982, «sin excepciones ni variantes» 296, «de manera exclusiva y permanente» 238 y sus versiones EN) en tracks 18-23, 27, 41-43 | TODO | Contadas en el trinquete de `test_no_filler_options.py`; bajar cada track a 0 con el mismo proceso que 39.1 (reescritura + revisión adversaria completa + comprobación de clave) |
+| 39.29 | **0** | 1.404 explicaciones de plantilla vistas por el alumno («Explicación no disponible.», «…documentación de Python.», «…principios de Azure.») en track41 (598), track42 (480), track44-46 (300), track23 `mod2301` (26) | PARCIAL: track41 y track42 a 0 (`9e1c00b`, este commit); en track42 además las claves V/F estaban al azar (127 de 153 incoherentes): 153 corregidas a mano, 110 copias reescritas, guarda nueva `test_tf_consistency.py` (mutación en rojo). Quedan 44-46 y 23 | Explicación real por pregunta, ES y EN, revisada; el trinquete de `audit_ai_traces.py` baja a 0 en cada fichero |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
@@ -519,13 +516,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.13 | **3** | Emails de re-enganche (ADR-50g) | TODO | Flag apagado, baja en un clic, tests |
 | 39.14 | **3** | Plantilla de lección con formato (ADR-50d) | TODO | Sin tocar contenido; test y captura |
 | 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | **DONE** | `LICENSE` (código propietario, contenido CC BY-NC-ND 4.0 como los Términos §3.1, terceros según índice) y README |
-| 39.16 | **1** | Pesos de dominio de track44–46 suman 95/95/96 | **DONE** | Puntos medios oficiales normalizados a 100 (Microsoft Learn, leídos 2026-09-26): AZ-900 28/39/33 (guía 20-07-2026), DP-900 29/24/18/29 (21-07-2026), AI-900 19×4/24 |
 | 39.25 | **1** | **MLA-C01 deja de ofrecerse en inglés el 28-09-2026**; MLA-C02 en beta desde el 29-09-2026 (código beta ME1-C02) — aws.amazon.com, leído 2026-09-26 | TODO | track43 migrado al blueprint MLA-C02 cuando AWS publique la guía; mientras, el nombre lo avisa |
 | 39.26 | **2** | **Security+ V8 hacia el 17-11-2026** (comptia.org, leído 2026-09-26) | TODO | track42 revisado contra el temario V8 al publicarse |
 | 39.24 | **1** | **AI-900 retirado por Microsoft el 30-06-2026**; la certificación Azure AI Fundamentals exige ahora **AI-901** (Conceptos 40–45 %, Microsoft Foundry 55–60 %, requiere Python) | TODO | track45 migrado al blueprint AI-901 (dominios, preguntas, lecciones); hasta entonces el nombre del track lo avisa |
-| 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
 | 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | DONE | `8489ab6`: `npx vitest run` 31 ficheros, 249/249 (re-ejecutado 2026-09-26 12:07 UTC) |
-| 39.19 | **2** | 115 rutas en local frente a 141 en producción | **DONE** | Sin diferencia: `openapi.json` local y de producción = 141 paths / 146 operaciones, idénticas (2026-09-26); «115» era el recuento filtrado del test de contrato |
 | 39.20 | **2** | PostHog en el frontend (ADR-50j) | **DECIDIDO: no** | La analítica ya es propia (`analytics_events` + embudo admin); PostHog en el navegador rompería la promesa de la landing y la CSP (ADR-50j revisada) |
 | 39.21 | **2** | Sentry en el frontend (ADR-50k) | **DECIDIDO: no** | Solo backend; privacidad y DPA ES/EN actualizados: Sentry activo desde 2026-09-26, UE, sin PII |
 | 39.22 | **2** | Backups: `backup_db.sh` + `restore_check.sh` + runbook | **DONE** | Ya existían (`db_backup.sh`, `db_restore*.sh`); estaban sin bit de ejecución; simulacro 2026-09-26 en verde sobre el catálogo completo; `backups/*.dump` ignorado. El backup programado en Railway sigue siendo del dueño |
