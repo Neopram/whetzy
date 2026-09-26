@@ -140,6 +140,14 @@ async def test_owner_has_no_quota(client, owner, bank, quota_on) -> None:
 
 
 @pytest.mark.asyncio
+async def test_admin_has_no_quota(db_session, user, quota_on) -> None:
+    user.is_admin = True
+    await db_session.commit()
+    assert content_quota.applies_to(user) is False
+    assert await content_quota.new_questions_left(db_session, user, "study") is None
+
+
+@pytest.mark.asyncio
 async def test_a_question_seen_before_today_is_not_new(db_session, user, bank, quota_on) -> None:
     yesterday = datetime.now(UTC) - timedelta(days=1)
     old = StudySession(user_id=user.id, mode="study", skill_id="skq1")
