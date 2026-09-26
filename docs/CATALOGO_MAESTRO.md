@@ -520,8 +520,8 @@ social login web antes que nada — es lo que convierte y lo que las tiendas exi
 **19.7** biblioteca de fuentes libres (alimenta cada bloque de la 18), **19.4** y
 **19.5** cuando haya sesión interactiva para la captura.
 
-Cada bloque de contenido corre como **Workflow paralelo** (autoría Haiku por
-fichero → verificador propio → QA Sonnet → `pytest tests/content` →
+Cada bloque de contenido corre como **Workflow paralelo** (autoría Sonnet por
+fichero → revisor y corrector Sonnet → `scripts/content_qa/` → `pytest tests/content` →
 `check_question_bank.py` → `check_docs.py` → commit). Un bloque = un commit
 verde. Nunca un track a medias en `master` otra vez.
 
