@@ -9,7 +9,8 @@ function detectLanguage(): string {
     const stored = localStorage.getItem('whetzy_lang');
     if (stored === 'en' || stored === 'es') return stored;
   } catch { /* private browsing */ }
-  const nav = navigator.language?.slice(0, 2) ?? '';
+  // Node 20 (Cloudflare Pages, .nvmrc) has no global `navigator` during the landing prerender.
+  const nav = typeof navigator === 'undefined' ? '' : navigator.language?.slice(0, 2) ?? '';
   return nav === 'en' ? 'en' : 'es';
 }
 

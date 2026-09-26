@@ -17,6 +17,10 @@
 > producto», es la **37** (no la 35) y su bloqueo de precio anual/regional es **H.38**.
 > (3) La FASE 1 la cerró la sesión del 2026-09-25 (entrada en `STATUS.md`); una sesión
 > nueva empieza en la FASE 2. (4) «docs/CLAUDE.md» significa `CLAUDE.md` en la raíz.
+>
+> **Nota v2.2 (2026-09-26).** Añade el paso 6 de la FASE 0 y una línea roja: los
+> conectores de claude.ai (Railway, Sentry, PostHog…) y lo que la sesión puede hacer con
+> ellos, según `docs/CONECTORES.md`.
 
 ---
 
@@ -48,6 +52,11 @@ cual; ninguna cifra a mano en un doc.
    (verificador adversario). Luego: python scripts/ledger.py next; show de las 3
    primeras; blocked y stats una vez. NO leas AUTONOMOUS_STATE.md entero.
 5. Cerrojo (§3): una sola sesión sobre el árbol. Si hay `.session.lock` vivo, para.
+6. Conectores: lee docs/CONECTORES.md §1 y §2. Si la sesión los tiene cargados, mide
+   producción por Railway (get-status; get-logs con filter owner|alembic|content_loader)
+   y, si existe el proyecto (H.41), los errores por Sentry (search_issues, 24 h). Solo
+   lectura. Si un conector no responde o su cuenta ya no es la de la tabla, actualiza
+   la fila con la fecha; no lo sortees.
 
 ══ FASE 1 — AUDITORÍA DE CONCORDANCIA DE LA SESIÓN DEL 2026-09-24 (primer PR) ═══════
 Esa sesión decidió ADR-45 (rama + PR; master solo lo fusiona el dueño), ADR-46 (todos
@@ -151,10 +160,13 @@ Fuentes solo gratuitas y legales (ADR-11; CC BY-SA no, ADR-47); nada pirata ni c
 cita. Ningún precio, testimonio, cifra de usuarios o «calibrado con datos reales»
 publicado, salvo los precios de ADR-41 (30.1/H.31/ADR-47). ES y EN nativos, nunca traducción. El motor, los datos y
 la API no se tocan desde una serie de UI. Cachés de herramientas fuera del proyecto.
-Subagentes Haiku por defecto; Sonnet solo en ficheros de riesgo (PROTOCOLO §2); el
+Subagentes Haiku 4.5 por defecto; Sonnet 5 solo en ficheros de riesgo (PROTOCOLO §2); en sesión arrancada por el dueño, hilo Opus 5.5 effort high (ADR-50); el
 hilo principal usa el modelo con el que el dueño te arrancó. Lo que exige gasto, claves
 live, DNS, DB de producción, tiendas, secretos, cuentas nuevas o reabrir una decisión:
 se prepara, va a HUMAN-BLOCKED con su valor por defecto (ADR-47) y se sigue.
+Conectores: clase L y E sin preguntar; clase H nunca desde una sesión autónoma (variables,
+redeploy o reinicio de Railway, leer valores de variables, publicar en redes, blog o email,
+escribir en el CRM, crear proyectos o recursos). Un conector no es un atajo a producción.
 
 ══ CIERRE DE CADA OLEADA ═════════════════════════════════════════════════════════════
 PR `serie N — <qué>` con: filas tocadas, comandos y salidas, capturas si hay UI, y lo

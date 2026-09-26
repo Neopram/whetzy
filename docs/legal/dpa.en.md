@@ -112,7 +112,7 @@ Other: Email legal@whetzy.com
 - Groq: AI tutor inference (qwen/qwen3.8-27b model)
 - Stripe: payments (currently test mode only, no live charges; the live account is pending — H.4)
 - Email provider: SMTP or Resend, depending on the EMAIL_PROVIDER variable
-- Sentry: error tracking (disabled; SENTRY_DSN empty by default)
+- Sentry: server-side error tracking, active since 2026-09-26 (EU region, de.sentry.io; `send_default_pii=False`; not used in the browser)
 
 ### 4.2 Sub-Processor Changes
 

@@ -105,7 +105,7 @@ No third-party advertisers, data brokers, or social media.
 - Groq — AI tutor inference (qwen/qwen3.8-27b model)
 - Stripe — payments (currently test mode only, no live charges)
 - Email provider — SMTP or Resend, depending on configuration
-- Sentry — error tracking (disabled by default)
+- Sentry — server-side error tracking, active since 2026-09-26; EU region (de.sentry.io); sent without personal data (`send_default_pii=False`); not used in the browser
 
 ---
 

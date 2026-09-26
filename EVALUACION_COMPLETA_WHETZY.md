@@ -1,5 +1,7 @@
 # Evaluación Integral Whetzy — Septiembre 2026
 
+> **Documento de análisis. No manda:** manda el ledger (`docs/AUTONOMOUS_STATE.md`, ADR-48) y las decisiones de **ADR-50** (`docs/DECISIONS.md`). Se midió sobre `master` `9ab4d24` (18 tracks); `master` tiene hoy 35 tracks. Cifras actuales: `python scripts/project_snapshot.py`. Las correcciones comprobadas están en la **§29**.
+
 **Sesión de análisis read-only.** Ninguna línea de código fue modificada.
 Todas las cifras exactas de impuestos, comisiones y umbrales están marcadas [Guessing] cuando provienen de memoria de entrenamiento y requieren verificación con un profesional antes de actuar.
 
@@ -35,6 +37,7 @@ Todas las cifras exactas de impuestos, comisiones y umbrales están marcadas [Gu
 26. [Lo que falta: ángulos ciegos del solo founder](#26-lo-que-falta-solo-founder)
 27. [Lógica del negocio vs competencia: veredicto](#27-l%C3%B3gica-vs-competencia-veredicto)
 28. [Plan de implementación definitivo con decisiones tomadas](#28-plan-de-implementaci%C3%B3n-con-decisiones)
+29. [Fe de erratas comprobada (2026-09-26)](#29-fe-de-erratas-comprobada-2026-09-26)
 
 ---
 
@@ -1323,6 +1326,29 @@ El rate limiting existe pero ¿está calibrado? Un script malicioso podría gene
 | **Total hasta lanzamiento (Fase 0-4)** | **~8 semanas** | **~$124 una vez** |
 
 ---
+
+## 29. Fe de erratas comprobada (2026-09-26)
+
+Cada punto se comprobó en el repo o en producción el 2026-09-26. Donde esta evaluación y este apartado discrepen, manda este apartado; donde discrepen este apartado y el código, manda el código.
+
+| Lo que dice la evaluación | Lo comprobado | Dónde |
+|---|---|---|
+| 18 tracks, 378 lecciones, 5 certificaciones | 35 tracks, 177 cursos, 723 skills, 723 lecciones, 10.989 preguntas, 11 certificaciones | `project_snapshot.py`; log de arranque de Railway `Content loaded: {'tracks': 35, 'questions': 10989, … 'lessons': 723}` |
+| «Cero gamification» | XP, racha, congelación de racha, ligas, insignias, misiones y tienda de rachas | `backend/app/models/user.py` (`total_xp`, `current_streak`); `services/gamification/service.py` (`get_current_standings`, `get_user_badges`, `get_today_missions`); `services/streak_shop.py` |
+| Faltan ToS y privacidad | 7 documentos × ES/EN: términos, privacidad, cookies, reembolsos, DPA, aviso de IA, disclaimers de marca | `docs/legal/` |
+| No existen `ios/` ni `android/` | `frontend/android/` existe; `ios/` no | árbol del repo |
+| Tutor Free = 20 explicaciones/día | Free **no** tiene tutor; Pro 20/día; Pro Max ilimitado | `tutor.py:40` `require_tier("plus")`; `config.py` `TUTOR_DAILY_LIMIT_PLUS` |
+| Planes «Plus» 9,99 / 19,99 / 39,99 y precio mayor en móvil | Pro 14,99 $ (`plus`), Pro Max 19,99 $ (`pro`), Creador 99,99 $; certificación 39,99 $ pago único; mismo precio en todas las plataformas | ADR-41, ADR-49, ADR-50c |
+| Ocultar el track 14 (1 lección) | Tiene 24 lecciones y ≥ 300 preguntas | `content/lessons/track14/` |
+| Fase 6: crear Git, Data Science, Docker, CI/CD, NoSQL, Backend, Testing | Existen: tracks 18–23 y 26–30 | `content/curriculum/tracks.json` |
+| Fase 7: griego e IKE | Premisa griega suspendida | ADR-47 |
+| «35–40 tracks cubren el 90 %» como meta | La meta es ADR-46: ≥ 50 cursos por track (≈ 126.000 preguntas) | ADR-46 |
+| Navegación, onboarding y placement por construir | `TracksScreen`, `OnboardingScreen` y `PlacementScreen` existen; placement solo del track01 | `frontend/src/pages/`, `content/exams/placement/` |
+| Email marketing por montar | `services/email.py` (Resend/SMTP) existe; falta el proveedor en producción (H.30) y las campañas (39.13) | ADR-50l |
+| Sin rate limiting calibrado | Hay `DEFAULT_RATE_LIMIT` y `AUTH_RATE_LIMIT`; falta el límite de gasto de Groq (39.11) | `backend/app/main.py` |
+| Sin monitorización | Sentry activo en el backend desde 2026-09-26 (`Sentry initialised (env=production)`); PostHog conectado sin eventos | ADR-50j/k, `docs/CONECTORES.md` |
+
+**Incidente del 2026-09-26.** Tras fusionar `ec97405`, producción no arrancó de 09:35 a 10:48 UTC: `content_loader` falló con `KeyError: 'order'` (dominios de examen de track41/44–46) y después con lecciones escritas en otro esquema. Arreglado en #28, con `test_loader_schema.py` que falla sobre `ec97405`. Pruebas: logs de Railway del deploy `620edcd3` (fallo en bucle) y `b64e2a9a` (arranque correcto).
 
 ## Veredicto ejecutivo (actualizado)
 

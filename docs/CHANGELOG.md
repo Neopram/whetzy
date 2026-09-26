@@ -5,6 +5,28 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-09-26 (noche, control total)
+
+**ES**
+
+- **Producción recuperada** (#28): el backend no arrancaba desde `ec97405` por contenido fuera del esquema del loader; test nuevo `test_loader_schema.py`.
+- **Deploy web recuperado** (#29 y siguientes): dependencias de dependabot revertidas (`@vitejs/plugin-react` 4.x, pyodide 0.26.2) y prerender compatible con Node 20.
+- **Sentry activo** en el backend (ADR-50k).
+- **Recuperar contraseña ya no finge**: sin proveedor de correo, la API responde 503 y la pantalla lo dice (H.30).
+- **ADR-50**: aprobación en bloque del dueño (Free, anuncios, precios, analítica PostHog, staging, protección de `master`).
+- **Conectores de Claude** documentados en `docs/CONECTORES.md`.
+
+**EN**
+
+- **Production restored** (#28): the backend failed to boot after `ec97405` because content did not match the loader schema; new `test_loader_schema.py`.
+- **Web deploy restored** (#29 onward): dependabot majors reverted and the prerender made Node 20 safe.
+- **Sentry live** on the backend (ADR-50k).
+- **Password reset stops pretending**: with no email provider, the API answers 503 and the page says so (H.30).
+- **ADR-50**: owner's blanket approval (Free tier, ads, pricing, PostHog analytics, staging, `master` protection).
+- **Claude connectors** documented in `docs/CONECTORES.md`.
+
+---
+
 ## [Unreleased] — 2026-09-18 (sesión bc)
 
 **ES**

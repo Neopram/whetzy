@@ -402,12 +402,27 @@ class ResendVerificationRequest(BaseModel):
     email: str
 
 
+def _require_outbound_email() -> None:
+    """H.30: in production with no provider, the `log` fallback sends nothing.
+
+    Answering 200 there told users a link was on its way when none ever would be.
+    The check depends only on server configuration, never on the email asked
+    for, so it reveals nothing about which accounts exist.
+    """
+    from app.core.config import settings
+    from app.services import email as email_svc
+
+    if settings.ENVIRONMENT == "production" and email_svc.resolve_provider() == "log":
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, detail="email_not_configured")
+
+
 @router.post("/resend-verification", status_code=status.HTTP_200_OK)
 async def resend_verification(
     payload: ResendVerificationRequest,
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Resend the email verification link (rate limited: max 1 pending token per user)."""
+    _require_outbound_email()
     result = await db.execute(select(User).where(User.email == payload.email))
     user = result.scalar_one_or_none()
 
@@ -445,6 +460,7 @@ async def forgot_password(
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, str]:
     """Request a password reset. Always returns 200 to prevent user enumeration."""
+    _require_outbound_email()
     result = await db.execute(select(User).where(User.email == payload.email))
     user = result.scalar_one_or_none()
 

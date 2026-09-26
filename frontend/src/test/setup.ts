@@ -58,7 +58,8 @@ Object.defineProperty(globalThis, 'Worker', {
   configurable: true,
 });
 
-if (typeof URL.createObjectURL !== 'function') {
-  URL.createObjectURL = () => 'blob:fake';
-  URL.revokeObjectURL = () => undefined;
-}
+// Siempre, no solo si falta: jsdom 30 trae su propio createObjectURL y revienta
+// (`reading '_buffer'`) con el Blob que construye useRuntime. El FakeWorker no
+// lee la URL, así que el doble basta.
+URL.createObjectURL = () => 'blob:fake';
+URL.revokeObjectURL = () => undefined;

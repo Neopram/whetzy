@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { API_BASE_URL } from '../services/api';
 import styles from './StatusPage.module.css';
 
-/** `API_BASE_URL` ends in `/api/v1`; the health check lives at the API's
+/** `API_BASE_URL` ends in the api/v1 path; the health check lives at the API's
  *  origin instead, so this strips exactly that suffix rather than assuming
  *  a fixed number of path segments. */
 const HEALTH_URL = `${API_BASE_URL.replace(/\/api\/v1\/?$/, '')}/health/ready`;

@@ -2000,3 +2000,42 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 
 <!-- L536 original -->
 | 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks `is_certification` no emiten certificado (`track_exam.py:214`). Construir: (a) derecho de compra por usuario × track de certificación (tabla + migración Alembic); (b) examen certificador con el blueprint oficial (reusa `mock_exam`), que al aprobar emite un certificado verificable «Certificado Whetzy de preparación para …»; (c) reintentos sin nuevo pago; (d) `CERTIFICATION_PAYWALL` apagado hasta H.19 (con el flag apagado, el examen certificador queda abierto a todos, como hoy el final de track); (e) precio en la constante única de precios (38.1), ES/EN; nunca «certificación oficial» | DONE 2026-09-25 rama `claude/trusting-franklin-2wwmmr` commit `843015e` — cobrar de verdad = H.19/H.29 | Tests: sin compra y con el flag encendido → 402; con compra → examen y certificado; un suspenso y un reintento no piden pago; el certificado se verifica por `/exams/certificates/{code}`; los certificados de tracks de aprendizaje siguen gratis; grep: ninguna pantalla dice «certificación oficial» |
+
+## §L — Filas DONE retiradas de §2 el 2026-09-26 (guarda de tamaño 20.10)
+
+> Copiadas tal cual desde `AUTONOMOUS_STATE.md` §2 para dejar sitio a la serie 39. El detalle de cada una sigue en §I.
+
+| ID | PRI | Tarea | Estado | Evidencia |
+|---|---|---|---|---|
+| 17.2 | **1** | **Examen final de track + certificado + «test-out»** | DONE (76c1897, sesión autónoma) |… | **DONE** | **DONE** → §I |
+| 20.9 | **2** | **Coherencia final**: README/CLAUDE/ORCHESTRATOR/DECISIONS/CATALOGO/teardown sin contradicciones entre sí ni con el… | **DONE** | **DONE** → §I |
+| 22.3 | **2** | **Auth hardening**: lockout progresivo tras N fallos, refresh tokens con rotación y revocación, sesiones por dispositivo… | **DONE** | **DONE** → §I |
+| 22.4 | **2** | **Cadena de suministro a €0**: Dependabot (config), `gitleaks` en pre-commit y en `verify_ci_local.ps1`, `bandit` +… | **DONE** | **DONE** → §I |
+| 22.13 | **2** | **Test con presupuesto de tiempo absoluto que falla con la máquina cargada**:… | **DONE** | **DONE** → §I |
+| 22.16 | **2** | **Cuota de tokens por usuario en `/tutor`** (`ARCHITECTURE.md` riesgos): contador en… | **DONE** | **DONE** → §I |
+| 24.5 | **0** | **Sesión adaptativa con BKT visual**: barra de dominio en vivo, «por qué esta pregunta», feedback explicativo (no solo… | **DONE** | **DONE** → §I |
+| 24.10 | **3** | **Panel de instructor** (UI de `MARKETPLACE.md` §4) con datos de prueba hasta Serie 28 |… | **DONE** | **DONE** → §I |
+| 24.11 | **3** | **Marketplace UI**: catálogo con filtros, ratings, preview de primera lección; mock hasta… | **DONE** | **DONE** → §I |
+| 24.12 | **2** | **Mobile polish**: Capacitor Android, safe areas, gestos, estado offline básico, rendimiento… | **DONE** | **DONE** → §I |
+| 24.13 | **2** | **Tres vídeos demo, ES y EN nativos**: producto 2 min, motor 5 min, short 60s | DONE… | **DONE** | **DONE** → §I |
+| 24.14 | **3** | **Framework A/B**: tabla experiments, asignación estable por usuario, flag en frontend |… | **DONE** | **DONE** → §I |
+| 29.4 | **2** | **Códigos de cinco tipos** (`ECONOMIA.md` §4): generación de lotes (CSV), alfabeto sin `0 O 1… | **DONE** | **DONE** → §I |
+| 30.1 | **0** | **La landing en producción publica testimonios y cifras inventados.** El chunk `LandingScreen-*.js` servido hoy contiene… | **DONE** | **DONE** → §I |
+| 30.3 | **1** | **Guarda de repo para la configuración de Pages.** Un test (en `pytest tests/content` o en el pre-push) que falle si… | **DONE** | **DONE** → §I |
+| 30.6 | **1** | **La puerta local no puerta en Linux/macOS.** `.githooks/pre-push` está en git como `100644` (sin bit de ejecución): git… | **DONE** | **DONE** → §I |
+| 31.0 | **1** | `scripts/project_snapshot.py`: extraer a un módulo el recuento que `check_docs.py` ya hace… | **DONE** | **DONE** → §I |
+| 32.0 | **2** | Inventario: qué guarda hoy cada respuesta (p_known antes/después, Elo, S/D de FSRS,… | **DONE** | **DONE** → §I |
+| 32.1 | **2** | Curva de fiabilidad de `p_known`: 5 tramos, predicho contra acierto real posterior; script… | **DONE** | **DONE** → §I |
+| 33.0 | **2** | SLO escritos en `RUNBOOK.md` (disponibilidad API ≥ 99,5 %, quiz p95 < 500 ms, `/health/ready`… | **DONE** | **DONE** → §I |
+| 33.2 | **2** | Cola offline idempotente: `event_id` UUID por respuesta en… | **DONE** | **DONE** → §I |
+| 34.0 | **0** | **Guarda de contrato `.tsx` ↔ `.module.css`** (`src/test/cssModules.contract.test.ts`) en modo trinquete: la deuda de hoy… | **DONE** | **DONE** → §I |
+| 34.10 | **0** | **La suite e2e está roja desde el 2026-09-19 y nadie lo vio** (CI ciego por facturación y, después, sin… | **DONE** | **DONE** → §I |
+| 35.2 | **1** | **«Salta lo que ya sabes», explicado**: tras la prueba de nivel, enseñar qué módulos se marcaron como dominados y por qué… | **DONE** | **DONE** → §I |
+| 35.3 | **1** | **Racha amable**: 1 comodín gratis por semana ISO (sin acumular; los comprados se conservan), visible en Home, y «perder… | **DONE** | **DONE** → §I |
+| 35.5 | **1** | ***Readiness* por dominio como producto estrella de las rutas cloud y seguridad**, en ES y EN: visible desde Tracks y la… | **DONE** | **DONE** → §I |
+| 35.7 | **1** | **Precios del dueño en producto** (ADR-41): landing con 4 planes, perfil, comparativa; tier `creator` (rango sobre `pro`),… | **DONE** | **DONE** → §I |
+| 37.0 | **1** | **Guarda de diversidad semántica** en `scripts/check_question_bank.py`: por track, enunciados distintos ≥ 90 %, opciones… | **DONE** | **DONE** → §I |
+| 37.2 | **1** | **Recuento por módulos**: `check_docs.py` y `lib/catalog.ts` pasan de «curso = track × nivel» a «curso = módulo» en el… | **DONE** | **DONE** → §I |
+| 37.3 | **1** | **Pipeline de corpus** `scripts/corpus/`: `fetch.py` (git/dump/torrent oficial), `verify_license.py` (lee… | **DONE** | **DONE** → §I |
+| 38.0 | **2** | **KPIs de `DISTRIBUCION.md` §10 y ADR-32 en el admin** (22.1): registrados, pagos, MRR, D30,… | **DONE** | **DONE** → §I |
+| 38.4 | **3** | **Kit de reclutamiento de instructores** — es la fila 28.9; aquí solo para que la serie 38 lo… | **DONE** | **DONE** → §I |

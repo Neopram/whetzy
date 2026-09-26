@@ -9,14 +9,14 @@
       "options_es": [
         "Eliminar permanentemente cambios no comprometidos",
         "Guardar temporalmente cambios no comprometidos sin hacer commit",
-        "Crear una nueva rama basada en cambios actuales",
-        "Revertir el repositorio al último commit según la documentación oficial"
+        "Crear una nueva rama de git basada en los cambios del directorio de trabajo actual",
+        "Revertir el repositorio al último commit"
       ],
       "options_en": [
         "Permanently delete uncommitted changes",
         "Temporarily save uncommitted changes without committing",
-        "Create a new branch based on current changes",
-        "Revert the repository to the last commit under normal conditions"
+        "Create a new git branch based on the changes in the current working directory",
+        "Revert the repository to the last commit"
       ],
       "correct_index": 1,
       "explanation_es": "git stash guarda temporalmente tus cambios no confirmados en una pila, permitiéndote cambiar de rama o limpiar tu directorio de trabajo sin perder el trabajo.",
@@ -30,15 +30,15 @@
       "question_es": "¿Cuál es la diferencia entre 'git stash pop' y 'git stash apply'?",
       "question_en": "What is the difference between 'git stash pop' and 'git stash apply'?",
       "options_es": [
-        "No hay diferencia, son sinónimos",
-        "pop aplica y elimina el stash; apply solo aplica pero lo mantiene",
         "apply aplica y elimina el stash; pop solo aplica pero lo mantiene",
+        "pop aplica y elimina el stash; apply solo aplica pero lo mantiene",
+        "No hay diferencia, son sinónimos",
         "pop se usa solo en ramas, apply en todas partes"
       ],
       "options_en": [
-        "There is no difference, they are synonymous",
-        "pop applies and removes the stash; apply only applies but keeps it",
         "apply applies and removes the stash; pop only applies but keeps it",
+        "pop applies and removes the stash; apply only applies but keeps it",
+        "There is no difference, they are synonymous",
         "pop is used only in branches, apply everywhere"
       ],
       "correct_index": 1,
@@ -124,13 +124,13 @@
       "options_es": [
         "Git rechaza la operación automáticamente",
         "Los cambios pueden causar conflictos que necesitas resolver",
-        "Los cambios se aplican sin problemas en cualquier rama",
+        "Los cambios se aplican siempre sin problemas sin importar el contenido de la rama destino",
         "El stash se copia a la nueva rama"
       ],
       "options_en": [
         "Git automatically rejects the operation",
         "Changes may cause conflicts that you need to resolve",
-        "Changes are applied without issues in any branch",
+        "The changes always apply without issues regardless of the destination branch's content",
         "The stash is copied to the new branch"
       ],
       "correct_index": 1,
@@ -168,15 +168,15 @@
       "question_es": "¿Qué parámetro se usa para incluir archivos sin seguimiento en el stash?",
       "question_en": "What parameter is used to include untracked files in the stash?",
       "options_es": [
-        "-i o --include-untracked",
         "-a o --all",
         "-n o --new",
+        "-i o --include-untracked",
         "-u o --untracked"
       ],
       "options_en": [
-        "-i or --include-untracked",
         "-a or --all",
         "-n or --new",
+        "-i or --include-untracked",
         "-u or --untracked"
       ],
       "correct_index": 3,
@@ -192,14 +192,14 @@
       "question_en": "How do you examine the contents of a stash without applying it?",
       "options_es": [
         "git stash view stash@{n}",
-        "git stash inspect stash@{n}",
         "git stash diff stash@{n}",
+        "git stash inspect stash@{n}",
         "git stash show stash@{n} -p"
       ],
       "options_en": [
         "git stash view stash@{n}",
-        "git stash inspect stash@{n}",
         "git stash diff stash@{n}",
+        "git stash inspect stash@{n}",
         "git stash show stash@{n} -p"
       ],
       "correct_index": 3,
@@ -215,13 +215,13 @@
       "question_en": "What does 'git stash clear' do?",
       "options_es": [
         "Elimina solo el stash más reciente",
-        "Limpia conflictos pendientes en stashes",
+        "Limpia todos los conflictos de fusión pendientes registrados en los stashes guardados",
         "Elimina todos los stashes del repositorio",
         "Reinicia el contador de stashes"
       ],
       "options_en": [
         "Deletes only the most recent stash",
-        "Cleans up pending conflicts in stashes",
+        "Clears every pending merge conflict recorded inside the saved stashes",
         "Deletes all stashes from the repository",
         "Resets the stash counter"
       ],
@@ -237,15 +237,15 @@
       "question_es": "¿Cuál es el resultado de 'git stash apply' en caso de conflictos?",
       "question_en": "What is the result of 'git stash apply' in case of conflicts?",
       "options_es": [
-        "Git aborta la operación automáticamente",
+        "Git aborta automáticamente toda la operación de aplicación del stash sin aplicar cambios",
+        "Git resuelve conflictos automáticamente",
         "Git crea una rama nueva para el merge",
-        "Git resuelve conflictos automáticamente en entornos de producción",
         "Git marca los conflictos y los deja para que los resuelvas"
       ],
       "options_en": [
-        "Git automatically aborts the operation",
+        "Git automatically aborts the entire stash-apply operation without applying any changes",
+        "Git resolves conflicts automatically",
         "Git creates a new branch for the merge",
-        "Git resolves conflicts automatically as a general rule",
         "Git marks conflicts and leaves them for you to resolve"
       ],
       "correct_index": 3,
@@ -261,14 +261,14 @@
       "question_en": "How do you apply a stash while reindexing the original staging area?",
       "options_es": [
         "git stash pop --keep-index",
-        "git stash apply --stage",
         "git stash restore --index",
+        "git stash apply --stage",
         "git stash apply --index"
       ],
       "options_en": [
         "git stash pop --keep-index",
-        "git stash apply --stage",
         "git stash restore --index",
+        "git stash apply --stage",
         "git stash apply --index"
       ],
       "correct_index": 3,
@@ -285,14 +285,14 @@
       "options_es": [
         "git stash branch nueva-rama stash@{n}",
         "git stash commit stash@{n}",
-        "git stash merge stash@{n}",
-        "git stash checkout stash@{n} de manera estándar"
+        "git stash pop --index stash@{n} anterior",
+        "git stash checkout stash@{n}"
       ],
       "options_en": [
         "git stash branch new-branch stash@{n}",
         "git stash commit stash@{n}",
-        "git stash merge stash@{n}",
-        "git stash checkout stash@{n} as a standard approach"
+        "git stash pop --index stash@{n} beforehand",
+        "git stash checkout stash@{n}"
       ],
       "correct_index": 0,
       "explanation_es": "git stash branch crea una nueva rama y aplica el stash en ella, haciendo un commit automáticamente si es exitoso. Útil para separar cambios stashed.",
@@ -308,13 +308,13 @@
       "options_es": [
         "Cuando necesitas hacer un commit permanente",
         "Cuando quieres cambiar de rama sin perder cambios temporales",
-        "Cuando quieres eliminar archivos del repositorio",
+        "Cuando quieres eliminar archivos rastreados del repositorio de manera permanente",
         "Cuando necesitas revertir todo el repositorio"
       ],
       "options_en": [
         "When you need to make a permanent commit",
         "When you want to switch branches without losing temporary changes",
-        "When you want to remove files from the repository",
+        "When you want to permanently delete tracked files from the repository",
         "When you need to revert the entire repository"
       ],
       "correct_index": 1,
@@ -329,15 +329,15 @@
       "question_es": "¿Qué sucede si intentas hacer stash en un repositorio vacío?",
       "question_en": "What happens if you try to stash in an empty repository?",
       "options_es": [
-        "Se crea automáticamente un stash vacío",
-        "Crea un commit inicial automático",
+        "Se crea automáticamente un stash vacío sin ningún cambio registrado dentro",
         "Se inicializa el repositorio de nuevo",
+        "Crea un commit inicial automático",
         "Git muestra un error porque no hay cambios para stashear"
       ],
       "options_en": [
-        "An empty stash is automatically created",
-        "An initial commit is automatically created",
+        "An empty stash is automatically created with no changes recorded inside it",
         "The repository is reinitialized",
+        "An initial commit is automatically created",
         "Git shows an error because there are no changes to stash"
       ],
       "correct_index": 3,
@@ -352,15 +352,15 @@
       "question_es": "¿Qué es git cherry-pick?",
       "question_en": "What is git cherry-pick?",
       "options_es": [
+        "Un comando para eliminar commits específicos",
+        "Un método automático para fusionar dos ramas completas sin generar conflictos",
         "Una forma de crear backups de commits",
-        "Un comando para eliminar commits específicos de forma general según la documentación oficial",
-        "Un método para fusionar ramas automáticamente",
         "Una técnica para aplicar commits específicos de una rama a otra"
       ],
       "options_en": [
+        "A command to delete specific commits",
+        "An automatic method to merge two entire branches without generating conflicts",
         "A way to create backups of commits",
-        "A command to delete specific commits in production environments in production environments",
-        "A method to automatically merge branches",
         "A technique to apply specific commits from one branch to another"
       ],
       "correct_index": 3,
@@ -376,15 +376,15 @@
       "question_en": "What is the basic syntax of git cherry-pick?",
       "options_es": [
         "git cherry-pick hash-del-commit",
-        "git cherry-pick --branch rama",
+        "git cherry-pick rama-nombre",
         "git cherry-pick commit --from rama",
-        "git cherry-pick rama-nombre"
+        "git cherry-pick --branch rama"
       ],
       "options_en": [
         "git cherry-pick commit-hash",
-        "git cherry-pick --branch branch",
+        "git cherry-pick branch-name",
         "git cherry-pick commit --from branch",
-        "git cherry-pick branch-name"
+        "git cherry-pick --branch branch"
       ],
       "correct_index": 0,
       "explanation_es": "git cherry-pick utiliza el hash SHA del commit que deseas aplicar. Puede ser un hash corto o completo.",
@@ -395,24 +395,24 @@
       "id": "q260114_003",
       "skill_id": "sk260114",
       "type": "multiple_choice",
-      "question_es": "¿Cómo se hacen cherry-pick de múltiples commits consecutivos?",
-      "question_en": "How do you cherry-pick multiple consecutive commits?",
+      "question_es": "¿Qué comando aplica de una vez los commits consecutivos desde hash1 (incluido) hasta hash2?",
+      "question_en": "Which command applies, in one go, the consecutive commits from hash1 (inclusive) through hash2?",
       "options_es": [
-        "git cherry-pick hash1 hash2 hash3",
         "git cherry-pick hash1..hash2",
-        "git cherry-pick hash1^..hash2",
-        "Ambos A y C funcionan"
+        "git cherry-pick hash1...hash2",
+        "git cherry-pick --range hash1 hash2",
+        "git cherry-pick hash1^..hash2"
       ],
       "options_en": [
-        "git cherry-pick hash1 hash2 hash3",
         "git cherry-pick hash1..hash2",
-        "git cherry-pick hash1^..hash2",
-        "Both A and C work"
+        "git cherry-pick hash1...hash2",
+        "git cherry-pick --range hash1 hash2",
+        "git cherry-pick hash1^..hash2"
       ],
       "correct_index": 3,
-      "explanation_es": "Puedes listar múltiples hashes directamente (A) o usar rango. Con hash1..hash2, se aplican commits entre hash1 (exclusivo) y hash2. Con hash1^..hash2 (C), se incluye hash1.",
-      "explanation_en": "You can list multiple hashes directly (A) or use a range. With hash1..hash2, commits between hash1 (exclusive) and hash2 are applied. With hash1^..hash2 (C), hash1 is included.",
-      "source": "https://git-scm.com/doc"
+      "explanation_es": "Un rango A..B excluye A, así que hash1..hash2 se salta el propio hash1; hash1^..hash2 empieza en el padre de hash1 y por eso lo incluye. La sintaxis de tres puntos es una diferencia simétrica, no un rango lineal, y --range no es una opción de cherry-pick. Listar los hashes uno a uno también funciona, pero no es un rango.",
+      "explanation_en": "A range A..B excludes A, so hash1..hash2 skips hash1 itself; hash1^..hash2 starts at hash1's parent and therefore includes it. Three-dot syntax is a symmetric difference, not a linear range, and --range is not a cherry-pick option. Listing hashes one by one also works, but it is not a range.",
+      "source": "https://git-scm.com/docs/git-cherry-pick"
     },
     {
       "id": "q260114_004",
@@ -422,14 +422,14 @@
       "question_en": "What happens to the commit hash after a cherry-pick?",
       "options_es": [
         "El hash permanece igual",
-        "El hash se fusiona con el commit anterior",
         "Se genera un hash aleatorio",
+        "El hash se combina matemáticamente con el hash del commit anterior en la rama",
         "El hash cambia porque se crea un nuevo commit"
       ],
       "options_en": [
         "The hash remains the same",
-        "The hash is merged with the previous commit",
         "A random hash is generated",
+        "The hash is mathematically combined with the previous commit's hash on the branch",
         "The hash changes because a new commit is created"
       ],
       "correct_index": 3,
@@ -444,13 +444,13 @@
       "question_es": "¿Cómo se maneja un conflicto durante cherry-pick?",
       "question_en": "How do you handle a conflict during cherry-pick?",
       "options_es": [
-        "Se deja el directorio en estado de conflicto para resolverlo manualmente",
+        "El directorio queda en conflicto para resolverlo manualmente",
         "Git aborta automáticamente el cherry-pick",
         "Git fusiona automáticamente favoreciendo los cambios incoming",
         "Se debe hacer un cherry-pick de nuevo"
       ],
       "options_en": [
-        "The directory is left in a conflict state for manual resolution",
+        "The working directory is left in conflict for you to resolve manually",
         "Git automatically aborts the cherry-pick",
         "Git automatically merges favoring incoming changes",
         "You must cherry-pick again"
@@ -467,16 +467,16 @@
       "question_es": "¿Cuál es el comando para abortar un cherry-pick en progreso?",
       "question_en": "What is the command to abort an in-progress cherry-pick?",
       "options_es": [
-        "git revert cherry-pick",
         "git cherry-pick --cancel",
+        "git reset HEAD",
         "git cherry-pick --abort",
-        "git reset HEAD"
+        "git revert cherry-pick"
       ],
       "options_en": [
-        "git revert cherry-pick",
         "git cherry-pick --cancel",
+        "git reset HEAD",
         "git cherry-pick --abort",
-        "git reset HEAD"
+        "git revert cherry-pick"
       ],
       "correct_index": 2,
       "explanation_es": "git cherry-pick --abort cancela la operación de cherry-pick en progreso y restaura el repositorio a su estado anterior.",
@@ -490,14 +490,14 @@
       "question_es": "¿Qué hace el parámetro --no-commit en cherry-pick?",
       "question_en": "What does the --no-commit parameter do in cherry-pick?",
       "options_es": [
+        "Previene que el cherry-pick modifique cualquier archivo del directorio de trabajo",
         "Descarta los cambios sin crear commit",
-        "Previene que el cherry-pick modifique archivos",
         "Aplica los cambios pero no crea un commit automático",
         "Crea múltiples commits automáticamente"
       ],
       "options_en": [
+        "Prevents cherry-pick from modifying any file in the working directory at all",
         "Discards changes without creating a commit",
-        "Prevents cherry-pick from modifying files",
         "Applies changes but does not create an automatic commit",
         "Creates multiple commits automatically"
       ],
@@ -513,15 +513,15 @@
       "question_es": "¿Qué parámetro permite editar el mensaje de commit durante cherry-pick?",
       "question_en": "What parameter allows you to edit the commit message during cherry-pick?",
       "options_es": [
-        "--modify",
         "--message",
         "--amend",
+        "--modify",
         "--edit"
       ],
       "options_en": [
-        "--modify",
         "--message",
         "--amend",
+        "--modify",
         "--edit"
       ],
       "correct_index": 3,
@@ -536,16 +536,16 @@
       "question_es": "¿Cuál es la diferencia entre cherry-pick y rebase?",
       "question_en": "What is the difference between cherry-pick and rebase?",
       "options_es": [
-        "No hay diferencia, son sinónimos en la práctica",
+        "No hay diferencia, son sinónimos",
         "Rebase es más seguro que cherry-pick",
         "Cherry-pick crea nuevas ramas automáticamente",
-        "Cherry-pick aplica commits específicos; rebase reaplicaría todos los commits de una rama"
+        "Cherry-pick aplica commits sueltos; rebase reaplica toda la rama"
       ],
       "options_en": [
         "There is no difference, they are synonymous",
-        "Rebase is safer than cherry-pick in practice",
+        "Rebase is safer than cherry-pick",
         "Cherry-pick automatically creates new branches",
-        "Cherry-pick applies specific commits; rebase would reapply all commits from a branch"
+        "Cherry-pick applies loose commits; rebase reapplies the whole branch"
       ],
       "correct_index": 3,
       "explanation_es": "Cherry-pick selecciona commits específicos de cualquier lugar. Rebase reaplicaría toda una secuencia de commits en la rama actual, reorganizando el historial.",
@@ -561,13 +561,13 @@
       "options_es": [
         "git cherry-pick --resume",
         "git cherry-pick --continue",
-        "git commit --cherry-pick",
+        "git commit --continue --cherry-pick",
         "git cherry-pick --apply"
       ],
       "options_en": [
         "git cherry-pick --resume",
         "git cherry-pick --continue",
-        "git commit --cherry-pick",
+        "git commit --continue --cherry-pick",
         "git cherry-pick --apply"
       ],
       "correct_index": 1,
@@ -579,24 +579,24 @@
       "id": "q260114_011",
       "skill_id": "sk260114",
       "type": "multiple_choice",
-      "question_es": "¿Cómo se cherry-pickea un rango de commits usando notación?",
-      "question_en": "How do you cherry-pick a range of commits using notation?",
+      "question_es": "Con git cherry-pick A..B, ¿qué commits se aplican?",
+      "question_en": "With git cherry-pick A..B, which commits are applied?",
       "options_es": [
-        "git cherry-pick A..B (A exclusivo)",
-        "git cherry-pick A^..B (A inclusivo)",
-        "git cherry-pick A...B (siempre inclusivo)",
-        "A y B son correctas"
+        "Desde A hasta B, ambos incluidos",
+        "Solo A y B, sin los intermedios",
+        "Los de A o B que no comparten ambos",
+        "Los posteriores a A hasta B, sin incluir A"
       ],
       "options_en": [
-        "git cherry-pick A..B (A exclusive)",
-        "git cherry-pick A^..B (A inclusive)",
-        "git cherry-pick A...B (always inclusive)",
-        "A and B are both correct"
+        "From A to B, both included",
+        "Only A and B, not those in between",
+        "Those in A or B but not in both",
+        "Those after A up to B, excluding A"
       ],
       "correct_index": 3,
-      "explanation_es": "Ambas notaciones funcionan. A..B excluye A pero incluye B. A^..B explícitamente incluye A (el padre de A coma a A). Elige según necesites.",
-      "explanation_en": "Both notations work. A..B excludes A but includes B. A^..B explicitly includes A (A's parent up through A). Choose based on your needs.",
-      "source": "https://git-scm.com/doc"
+      "explanation_es": "A..B significa «alcanzable desde B pero no desde A», así que A queda fuera y B dentro. Para incluir A se usa A^..B. Los «de A o B que no comparten» describen la diferencia simétrica A...B.",
+      "explanation_en": "A..B means \"reachable from B but not from A\", so A is excluded and B included. To include A use A^..B. \"In A or B but not both\" describes the symmetric difference A...B.",
+      "source": "https://git-scm.com/docs/git-cherry-pick"
     },
     {
       "id": "q260114_012",
@@ -605,16 +605,16 @@
       "question_es": "¿Qué preserva cherry-pick sobre la autoría del commit?",
       "question_en": "What does cherry-pick preserve about commit authorship?",
       "options_es": [
-        "Cambia el autor a quien ejecuta cherry-pick",
+        "Cambia el autor original al usuario que ejecuta el comando cherry-pick",
         "Preserva el autor original pero cambia la fecha",
         "Crea un co-autor automático",
-        "No preserva información de autoría como regla general"
+        "No preserva información de autoría"
       ],
       "options_en": [
-        "Changes the author to whoever executes cherry-pick",
+        "Changes the original author to the user who runs the cherry-pick command",
         "Preserves the original author but changes the date",
         "Automatically creates a co-author",
-        "Preserves no authorship information in common practice"
+        "Preserves no authorship information"
       ],
       "correct_index": 1,
       "explanation_es": "Cherry-pick conserva el autor original del commit pero actualiza la fecha de commit (committer date) a la actual.",
@@ -631,13 +631,13 @@
         "Nunca es problemático",
         "Cuando cambias de rama",
         "Cuando aplicas los mismos commits múltiples veces",
-        "Cuando hay archivos con espacios en el nombre"
+        "Cuando hay archivos con espacios o caracteres especiales en el nombre"
       ],
       "options_en": [
         "It's never problematic",
         "When you change branches",
         "When you apply the same commits multiple times",
-        "When there are files with spaces in the name"
+        "When there are files with spaces or special characters in their name"
       ],
       "correct_index": 2,
       "explanation_es": "Cherry-pick múltiples veces del mismo commit puede causar duplicados o confusión en el historial. Es mejor usar rebase o merge para esto.",
@@ -651,15 +651,15 @@
       "question_es": "¿Qué hace git cherry-pick -n en lugar de solo git cherry-pick?",
       "question_en": "What does git cherry-pick -n do instead of just git cherry-pick?",
       "options_es": [
-        "No aplica cambios, solo lista qué pasaría",
         "Cancela el cherry-pick",
         "Crea un commit pero no lo guarda",
+        "No aplica cambios, solo lista qué pasaría",
         "Aplica cambios sin crear un commit"
       ],
       "options_en": [
-        "Doesn't apply changes, only lists what would happen",
         "Cancels the cherry-pick",
         "Creates a commit but doesn't save it",
+        "Doesn't apply changes, only lists what would happen",
         "Applies changes without creating a commit"
       ],
       "correct_index": 3,
@@ -674,15 +674,15 @@
       "question_es": "¿Es posible cherry-pickear un merge commit?",
       "question_en": "Is it possible to cherry-pick a merge commit?",
       "options_es": [
+        "No, nunca es posible",
+        "Sí, automáticamente sigue cada uno de los dos padres del merge sin configuración adicional",
         "Solo en ramas protegidas",
-        "No, nunca es posible en este contexto",
-        "Sí, automáticamente sigue ambos padres",
         "Sí, pero requiere especificar qué padre seguir con -m"
       ],
       "options_en": [
+        "No, it's never possible",
+        "Yes, it automatically follows each of the merge's two parents with no extra configuration",
         "Only in protected branches",
-        "No, it's never possible by default",
-        "Yes, it automatically follows both parents",
         "Yes, but requires specifying which parent to follow with -m"
       ],
       "correct_index": 3,
@@ -698,15 +698,15 @@
       "question_en": "What is git bisect?",
       "options_es": [
         "Una herramienta de búsqueda binaria para encontrar el commit que introdujo un bug",
-        "Un comando para dividir ramas en este contexto",
+        "Un comando para dividir ramas",
         "Un método para hacer backups de repositorios",
-        "Una forma de optimizar el almacenamiento de git"
+        "Una forma avanzada de comprimir y optimizar el almacenamiento interno de los objetos y packs de git"
       ],
       "options_en": [
         "A binary search tool to find the commit that introduced a bug",
-        "A command to split branches in practice",
+        "A command to split branches",
         "A method to back up repositories",
-        "A way to optimize git storage"
+        "An advanced way to compress and optimize the internal storage of git's objects and pack files"
       ],
       "correct_index": 0,
       "explanation_es": "git bisect usa búsqueda binaria para localizar el commit exacto que causó un problema. Reduce dramáticamente el tiempo necesario para encontrar bugs.",
@@ -720,15 +720,15 @@
       "question_es": "¿Cómo se inicia un bisect?",
       "question_en": "How do you start a bisect?",
       "options_es": [
-        "git start-bisect",
         "git bisect begin",
         "git bisect init",
+        "git start-bisect",
         "git bisect start"
       ],
       "options_en": [
-        "git start-bisect",
         "git bisect begin",
         "git bisect init",
+        "git start-bisect",
         "git bisect start"
       ],
       "correct_index": 3,
@@ -746,13 +746,13 @@
         "Marcar como bueno, marcar como malo, verificar estado",
         "Solo marcar commits malos",
         "Iniciar, marcar puntos de referencia buenos y malos, marcar cada commit",
-        "Iniciar, ejecutar pruebas automáticas, terminar"
+        "Iniciar bisect, ejecutar un script de pruebas automáticas en cada commit, y terminar"
       ],
       "options_en": [
         "Mark good, mark bad, check status",
-        "Only mark bad commits by default",
+        "Only mark bad commits",
         "Start, mark reference points good and bad, mark each commit",
-        "Start, run automatic tests, end"
+        "Start bisect, run an automated test script against each commit, and then finish"
       ],
       "correct_index": 2,
       "explanation_es": "El proceso es: 1) git bisect start, 2) git bisect bad <commit> (el que tiene el bug), 3) git bisect good <commit> (versión sin bug), luego marcar cada uno como bueno/malo.",
@@ -766,15 +766,15 @@
       "question_es": "¿Cuántas iteraciones necesita bisect para encontrar 1 bug en 1000 commits?",
       "question_en": "How many iterations does bisect need to find 1 bug in 1000 commits?",
       "options_es": [
-        "Exactamente 10 iteraciones siempre",
         "Aproximadamente 500 iteraciones",
         "Aproximadamente 1000 iteraciones",
+        "Exactamente 10 iteraciones siempre",
         "Aproximadamente 10 iteraciones (log2 1000)"
       ],
       "options_en": [
-        "Exactly 10 iterations always",
         "Approximately 500 iterations",
         "Approximately 1000 iterations",
+        "Exactly 10 iterations always",
         "Approximately 10 iterations (log2 1000)"
       ],
       "correct_index": 3,
@@ -813,14 +813,14 @@
       "question_en": "What does git bisect skip do?",
       "options_es": [
         "Salta al siguiente commit sin verificar",
-        "Crea un commit de prueba en el caso más común como práctica recomendada",
         "Finaliza la sesión de bisect",
+        "Crea un commit de prueba",
         "Marca un commit como no verificable y continúa"
       ],
       "options_en": [
         "Skips to the next commit without checking",
-        "Creates a test commit in production environments under normal conditions",
         "Ends the bisect session",
+        "Creates a test commit",
         "Marks a commit as unverifiable and continues"
       ],
       "correct_index": 3,
@@ -837,13 +837,13 @@
       "options_es": [
         "Ejecuta manualmente pruebas en cada commit",
         "Automatiza bisect ejecutando un script de prueba en cada commit",
-        "Corre bisect en paralelo en este contexto",
+        "Corre bisect en paralelo",
         "Ejecuta git bisect más rápido"
       ],
       "options_en": [
         "Manually runs tests on each commit",
         "Automates bisect by running a test script on each commit",
-        "Runs bisect in parallel typically",
+        "Runs bisect in parallel",
         "Executes git bisect faster"
       ],
       "correct_index": 1,
@@ -928,13 +928,13 @@
       "question_en": "What happens if you specify two bad commits in bisect?",
       "options_es": [
         "Git rechaza la operación",
-        "Git busca entre ambos commits",
+        "Git busca entre los dos commits indicados",
         "Se toma el más reciente como referencia",
         "Bisect se detiene inmediatamente"
       ],
       "options_en": [
         "Git rejects the operation",
-        "Git searches between both commits",
+        "Git searches across the two commits given",
         "The most recent one is taken as reference",
         "Bisect stops immediately"
       ],
@@ -950,14 +950,14 @@
       "question_es": "¿Cómo marcas el commit actual como bueno durante bisect?",
       "question_en": "How do you mark the current commit as good during bisect?",
       "options_es": [
-        "git good",
         "git bisect mark-good",
+        "git good",
         "git bisect ok",
         "git bisect good"
       ],
       "options_en": [
-        "git good",
         "git bisect mark-good",
+        "git good",
         "git bisect ok",
         "git bisect good"
       ],
@@ -975,13 +975,13 @@
       "options_es": [
         "Es más lento pero más seguro",
         "Automatiza el proceso completamente sin intervención humana",
-        "Consume menos memoria de forma estándar para la mayoría de proyectos",
+        "Consume menos memoria",
         "Funciona solo con repositorios grandes"
       ],
       "options_en": [
         "It's slower but more secure",
         "Completely automates the process without human intervention",
-        "Uses less memory in practice as a standard approach",
+        "Uses less memory",
         "Works only with large repositories"
       ],
       "correct_index": 1,
@@ -1043,14 +1043,14 @@
       "question_en": "What is git reflog?",
       "options_es": [
         "Un registro de cambios en referencias (HEAD, ramas) del repositorio",
-        "Un archivo de configuración de git en entornos de producción en la práctica habitual",
         "Un registro de cambios en archivos",
-        "Un comando para fusionar ramas como regla general"
+        "Un archivo de configuración de git",
+        "Un comando para fusionar ramas"
       ],
       "options_en": [
         "A record of changes to references (HEAD, branches) in the repository",
-        "A git configuration file as a general guideline within this paradigm",
-        "A record of file changes in real environments",
+        "A record of file changes",
+        "A git configuration file",
         "A command to merge branches"
       ],
       "correct_index": 0,
@@ -1065,20 +1065,20 @@
       "question_es": "¿Cómo ves el reflog?",
       "question_en": "How do you view the reflog?",
       "options_es": [
+        "git log --oneline",
+        "git branch -vv",
         "git reflog show",
-        "git log --reflog en este contexto",
-        "A y C son correctas",
-        "git reflog"
+        "git status -s"
       ],
       "options_en": [
+        "git log --oneline",
+        "git branch -vv",
         "git reflog show",
-        "git log --reflog as a standard approach",
-        "Both A and C are correct",
-        "git reflog"
+        "git status -s"
       ],
       "correct_index": 2,
-      "explanation_es": "Ambos 'git reflog' (A) y 'git reflog show' (C) muestran el historial de referencias. Son formas equivalentes de ver los cambios del HEAD.",
-      "explanation_en": "Both 'git reflog' (A) and 'git reflog show' (C) display the reference history. They are equivalent ways to view HEAD changes.",
+      "explanation_es": "git reflog show (o simplemente git reflog) muestra el historial de referencias del HEAD; los otros comandos listados muestran el log de commits, el seguimiento de ramas o el estado del directorio de trabajo, no el reflog.",
+      "explanation_en": "git reflog show (or simply git reflog) displays the reference history of HEAD; the other commands listed show the commit log, branch tracking info, or working directory status, not the reflog.",
       "source": "https://git-scm.com/doc"
     },
     {
@@ -1089,14 +1089,14 @@
       "question_en": "How do you recover a lost commit using reflog?",
       "options_es": [
         "Ejecutas git reflog recover",
-        "No se puede recuperar desde reflog",
         "Usas git reflog restore automáticamente",
+        "No se puede recuperar desde reflog",
         "Encuentras el hash en reflog y haces git checkout hash"
       ],
       "options_en": [
         "Execute git reflog recover",
-        "Cannot be recovered from reflog",
         "Use git reflog restore automatically",
+        "Cannot be recovered from reflog",
         "Find the hash in reflog and run git checkout hash"
       ],
       "correct_index": 3,
@@ -1111,20 +1111,20 @@
       "question_es": "¿Cuánto tiempo mantiene git reflog los registros?",
       "question_en": "How long does git reflog keep records?",
       "options_es": [
+        "30 días si no se cambia la configuración",
         "Indefinidamente",
-        "30 días por defecto",
-        "90 días por defecto",
+        "90 días si no se cambia la configuración",
         "Solo en la sesión actual"
       ],
       "options_en": [
+        "30 days unless the configuration is changed",
         "Indefinitely",
-        "30 days by default",
-        "90 days by default",
+        "90 days unless the configuration is changed",
         "Only in the current session"
       ],
       "correct_index": 2,
-      "explanation_es": "Git reflog mantiene registros por defecto 90 días antes de hacer garbage collection. Esto puede configurarse con 'gc.reflogExpire'.",
-      "explanation_en": "Git reflog keeps records for 90 days by default before garbage collection. This can be configured with 'gc.reflogExpire'.",
+      "explanation_es": "Git reflog mantiene registros 90 días si no se cambia la configuración, antes de hacer garbage collection. Esto puede ajustarse con 'gc.reflogExpire'.",
+      "explanation_en": "Git reflog keeps records for 90 days unless the configuration is changed, before garbage collection runs. This can be adjusted with 'gc.reflogExpire'.",
       "source": "https://git-scm.com/doc"
     },
     {
@@ -1157,14 +1157,14 @@
       "question_es": "¿Dónde se guardan los hooks de git?",
       "question_en": "Where are git hooks stored?",
       "options_es": [
-        ".github/hooks/ directorio",
         ".hooks/ en la raíz del proyecto",
+        ".github/hooks/ directorio",
         ".gitignore contiene los hooks",
         ".git/hooks/ directorio"
       ],
       "options_en": [
-        ".github/hooks/ directory",
         ".hooks/ at the project root",
+        ".github/hooks/ directory",
         ".gitignore contains the hooks",
         ".git/hooks/ directory"
       ],
@@ -1180,14 +1180,14 @@
       "question_es": "¿Qué sucede si un pre-commit hook retorna un error (código no-0)?",
       "question_en": "What happens if a pre-commit hook returns an error (non-0 code)?",
       "options_es": [
-        "Se muestra una advertencia pero continúa",
         "El commit se ejecuta de todas formas",
+        "Se muestra una advertencia pero continúa",
         "El commit se aborta automáticamente",
         "Se crea un nuevo commit automático"
       ],
       "options_en": [
-        "A warning is shown but continues",
         "The commit executes anyway",
+        "A warning is shown but continues",
         "The commit is automatically aborted",
         "A new commit is automatically created"
       ],
@@ -1206,13 +1206,13 @@
         "pre-commit, post-commit, prepare-commit-msg",
         "pre-push, post-push, push-check",
         "pre-receive, post-receive, update",
-        "Todos los anteriores son client-side"
+        "pre-commit, post-commit y prepare-commit-msg son server-side"
       ],
       "options_en": [
         "pre-commit, post-commit, prepare-commit-msg",
         "pre-push, post-push, push-check",
         "pre-receive, post-receive, update",
-        "All of the above are client-side"
+        "pre-commit, post-commit, and prepare-commit-msg are server-side"
       ],
       "correct_index": 2,
       "explanation_es": "pre-receive, post-receive y update son hooks server-side que se ejecutan en el servidor durante operaciones push. Los client-side se ejecutan localmente.",
@@ -1226,15 +1226,15 @@
       "question_es": "¿Cuál es el propósito del hook pre-receive?",
       "question_en": "What is the purpose of the pre-receive hook?",
       "options_es": [
-        "Ejecutar linting local",
         "Notificar después de que se escriben cambios",
         "Preparar el mensaje de commit",
+        "Ejecutar linting local",
         "Validar cambios antes de que se escriban en el servidor"
       ],
       "options_en": [
-        "Run local linting in practice",
         "Notify after changes are written",
         "Prepare the commit message",
+        "Run local linting",
         "Validate changes before they are written to the server"
       ],
       "correct_index": 3,
@@ -1272,15 +1272,15 @@
       "question_es": "¿Qué información recibe el hook pre-receive en stdin?",
       "question_en": "What information does the pre-receive hook receive in stdin?",
       "options_es": [
-        "La lista de archivos modificados",
         "Solo el hash del nuevo commit",
         "El mensaje de commit",
+        "La lista de archivos modificados",
         "Líneas de 'oldrev newrev refname' para cada ref"
       ],
       "options_en": [
-        "The list of modified files",
         "Only the hash of the new commit",
         "The commit message",
+        "The list of modified files",
         "Lines of 'oldrev newrev refname' for each ref"
       ],
       "correct_index": 3,
@@ -1295,14 +1295,14 @@
       "question_es": "¿Qué hace el hook post-commit?",
       "question_en": "What does the post-commit hook do?",
       "options_es": [
-        "Impide que se cree un commit según la especificación",
         "Valida el commit antes de crearlo",
+        "Impide que se cree un commit",
         "Se ejecuta después de que el commit se crea exitosamente",
         "Modifica el mensaje del commit"
       ],
       "options_en": [
-        "Prevents a commit from being created",
         "Validates the commit before creating it",
+        "Prevents a commit from being created",
         "Runs after the commit is successfully created",
         "Modifies the commit message"
       ],
@@ -1320,13 +1320,13 @@
       "options_es": [
         "Cliente=local (pre-commit), Servidor=remoto (pre-receive)",
         "Son lo mismo, solo diferente nombre",
-        "Cliente=fast, Servidor=slow en el caso más común de manera estándar",
+        "Cliente=fast, Servidor=slow",
         "No hay diferencia en su función"
       ],
       "options_en": [
         "Client=local (pre-commit), Server=remote (pre-receive)",
         "They're the same, just different names",
-        "Client=fast, Server=slow in the most common case as a general rule",
+        "Client=fast, Server=slow",
         "No difference in their function"
       ],
       "correct_index": 0,
@@ -1341,15 +1341,15 @@
       "question_es": "¿Cuál es la mejor práctica al escribir scripts de hooks?",
       "question_en": "What is the best practice when writing hook scripts?",
       "options_es": [
-        "No deben retornar códigos de error en condiciones normales",
         "Pueden ser lentos sin problemas",
         "Deben modificar el historial de git",
+        "No deben retornar códigos de error",
         "Deben ser rápidos y no bloquear operaciones"
       ],
       "options_en": [
-        "They should not return error codes as a standard approach",
         "They can be slow without problems",
         "They should modify git history",
+        "They should not return error codes",
         "They should be fast and not block operations"
       ],
       "correct_index": 3,
@@ -1365,13 +1365,13 @@
       "question_en": "Why are server-side hooks important for security?",
       "options_es": [
         "Porque el cliente puede ser comprometido o tener --no-verify",
-        "Porque son más rápidos de manera estándar dentro de este paradigma",
+        "Porque son más rápidos",
         "Porque no requieren configuración",
         "Porque funcionan con todos los clientes git"
       ],
       "options_en": [
         "Because the client can be compromised or have --no-verify",
-        "Because they're faster in production environments in common practice",
+        "Because they're faster",
         "Because they don't require configuration",
         "Because they work with all git clients"
       ],

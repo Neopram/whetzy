@@ -21,7 +21,12 @@ export function ForgotPasswordPage({ onBack }: Props) {
       await auth.requestPasswordReset(email.trim());
       setSubmitted(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error');
+      const msg = err instanceof Error ? err.message : 'Error';
+      setError(
+        msg === 'email_not_configured'
+          ? 'El envío de correos no está disponible ahora mismo, así que no podemos mandarte el enlace. Escríbenos a soporte para recuperar tu cuenta.'
+          : msg,
+      );
     } finally {
       setLoading(false);
     }
@@ -30,8 +35,8 @@ export function ForgotPasswordPage({ onBack }: Props) {
   if (submitted) {
     return (
       <div className={styles.screen}>
-        <h2>✓ Email enviado</h2>
-        <p>Revisa: {email}</p>
+        <h2>Revisa tu correo</h2>
+        <p>Si {email} tiene una cuenta, te llegará un enlace para restablecer la contraseña.</p>
         <button className={styles.submit} onClick={onBack}>Volver</button>
       </div>
     );

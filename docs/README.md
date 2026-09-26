@@ -27,9 +27,10 @@ Frontend: React + Capacitor.
 | Economía cerrada: créditos, referidos, códigos autogenerados, USDC como rail, credenciales verificables — y por qué **no hay token** (ADR-33) | **`ECONOMIA.md`** |
 | Análisis de negocio de la sesión bf (competencia, ingresos, coste) — **no normativo**, con errata | `analisis-estrategico/` |
 | Qué se construyó de verdad en los 12 primeros días, qué estaba marcado `DONE` sin estarlo, qué bloquea (nada de ello código) y qué objetivo es alcanzable | **`BALANCE-12-DIAS.md`** |
+| Qué servicios externos (Railway, Sentry, PostHog, diseño, redes…) puede tocar una sesión de Claude, a qué cuenta apunta cada uno y qué hace sin preguntar | **`CONECTORES.md`** |
 | Qué ve alguien que audita el sistema desde fuera sin fiarse de ningún doc: producción medida en vivo, CI, coste de contexto, y por qué no se usa NotebookLM ni Obsidian (ADR-40) | **`AUDITORIA_EXTERNA_2026-09-19.md`** |
 
-Esos son los **diecinueve documentos vivos** (más `store/`). `analisis-estrategico/` y
+Esos son los **veinte documentos vivos** (más `store/`). `analisis-estrategico/` y
 `legal/` (raíz) no mandan sobre el código. Todo lo demás está en
 `archive/` — incluida la estrategia v3 del dueño, superada por el catálogo, y desde el
 2026-09-24 los planes paralelos `EXECUTION_PLAN_25-29`, `ROADMAP_25-29`, `*-PLANNING`,
