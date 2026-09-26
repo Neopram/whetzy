@@ -26,7 +26,7 @@
 | Fuentes de contenido | **Solo gratuitas y legales** (ADR-11): reutilizable = MIT / Apache-2 / BSD / CC BY / CC0 / PSF / dominio público;… |
 | Railway deploy | **AUTOMÁTICO DESDE `master` — el invariante anterior («MANUAL, sin webhook GitHub») es FALSO y llevaba meses ahí.**… |
 | Alembic HEAD | `20260926_eu_withdrawal` (42 migraciones) |
-| Contenido | **6.648 preguntas** / 18 tracks / 401 skills / **401 lecciones (100 %)** / **656 términos glosario**. Tracks 09/10/11 =… |
+| Contenido | **7.689 preguntas** / 24 tracks / 503 skills / **503 lecciones (100 %)** / **818 términos glosario**. Tracks 09/10/11 =… |
 
 ### Gotchas verificados
 
@@ -158,7 +158,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 18.3 | **1** | **Runtime JS real + track Frontend (track14)** | **DONE** | **DONE** (2026-09-26) 221c3af — 6 mod, 24 skills, 355 Q (54 js_exec, 15.2%), 24 lessons, 40 gloss |
 | 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE… | **DONE** | **DONE** (2026-09-18) → §I |
-| 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | TODO | → LEDGER_HISTORY.md §E |
+| 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | **DONE** | **DONE** (2026-09-26) — 6 cert tracks (track41–46): 741 Q total (300+300+165+90+90+96), 503 lessons, 20 Security+ lessons, source index updated, diversity guards PASS, `check_question_bank.py` + `check_docs.py` green |
 | 18.6 | **3** | **DevOps y Cloud: Docker/K8s (18), IaC+CI/CD (19), Azure (22), GCP (23)** | TODO | → LEDGER_HISTORY.md §E |
 | 18.7 | **3** | **Datos: Data Engineering (20), Data Science (21), NoSQL (27)** | TODO | → LEDGER_HISTORY.md §E |
 | 18.8 | **3** | **Proyectos multi-paso con tests en runtime** | **DONE** | Backend: Project+Step+Submission models, migración `20260926_projects`, API 5 endpoints, 3 tests. Frontend: ProjectScreen + Home shortcut + i18n ES/EN. `0f61442` |
