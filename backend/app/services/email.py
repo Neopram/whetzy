@@ -129,6 +129,36 @@ border-radius:6px;text-decoration:none;">Reset password</a></p>
 <p>Thank you for using <strong>Whetzy</strong>.</p>""",
         },
     },
+    "reactivation": {
+        "es": {
+            "subject": "Te extrañamos en Whetzy, {name} — tienes un regalo",
+            "html": """\
+<h2>Hola, {name}!</h2>
+<p>Hace un tiempo que no practicas en <strong>Whetzy</strong>. Sabemos que la
+constancia es lo más difícil, así que te dejamos un código con créditos gratis
+para que retomes sin excusas:</p>
+<p style="text-align:center;font-size:24px;font-weight:bold;
+letter-spacing:2px;color:#6366f1;">{code}</p>
+<p>El código expira en <strong>72 horas</strong>. Canjéalo en Ajustes → Canjear código.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Volver a Whetzy</a></p>
+<p>Si prefieres no recibir este tipo de correos, ignóralo.</p>""",
+        },
+        "en": {
+            "subject": "We miss you at Whetzy, {name} — here's a gift",
+            "html": """\
+<h2>Hi, {name}!</h2>
+<p>It's been a while since you practiced on <strong>Whetzy</strong>. We know
+consistency is the hardest part, so here's a free credit code to help you
+get back on track:</p>
+<p style="text-align:center;font-size:24px;font-weight:bold;
+letter-spacing:2px;color:#6366f1;">{code}</p>
+<p>This code expires in <strong>72 hours</strong>. Redeem it in Settings → Redeem code.</p>
+<p><a href="{base_url}" style="background:#6366f1;color:#fff;padding:10px 20px;
+border-radius:6px;text-decoration:none;">Back to Whetzy</a></p>
+<p>If you'd rather not receive these emails, just ignore this one.</p>""",
+        },
+    },
     "support_resolved": {
         "es": {
             "subject": "Tu ticket de soporte {ticket_id} ha sido resuelto",
@@ -367,4 +397,11 @@ def send_support_resolved(to: str, name: str, ticket_id: str, resolution: str, l
     """Send support ticket resolution email."""
     subject_line, html = _render("support_resolved", lang, name=name, ticket_id=ticket_id, resolution=resolution)
     _dispatch(to, subject_line, html)
+
+
+def send_reactivation(to: str, name: str, code: str, lang: str = "es") -> None:
+    from app.core.config import settings
+
+    subject, html = _render("reactivation", lang, name=name, code=code, base_url=settings.FRONTEND_BASE_URL)
+    _dispatch(to, subject, html)
 

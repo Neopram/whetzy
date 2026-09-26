@@ -361,7 +361,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 28.0 | **4** | Schema DB: `instructor_profiles`, `marketplace_courses`,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.1 | **4** | API: CRUD cursos instructor, upload contenido JSON, preview; **código de… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
-| 28.2 | **4** | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | **TODO** — Verificado… | |
+| 28.2 | **4** | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | **DONE** — `scripts/instructor_quality_gate.py` valida preguntas/skill≥15, ejecutables≥15%, glosario≥36/track, lecciones con contenido, licencias válidas | |
 | 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | |
 | 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | |
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | |
@@ -386,7 +386,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.4 | **2** | **Códigos de cinco tipos** (`ECONOMIA.md` §4): generación de lotes (CSV), alfabeto sin `0 O 1… | **DONE** | **DONE** → §I |
 | 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **DONE** | **DONE**: AntiFraudService wired into economy endpoints — `check_email_verified` + `is_disposable_email` guard on promo redeem; full `validate_activation` pipeline on referral activate (email, disposable, self-referral, device/IP, velocity); 77 tests pass → §I |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | **DONE**: 3 endpoints — `/economy/credits` con summary (emitted/spent/expired, sink_source_ratio, inflation_alert, by_reason) + rows; `/economy/referrals`; `/economy/k-factor` → §I |
-| 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | | |
+| 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | **DONE** — `reactivation_check` job handler: consulta `User.last_active < 14d`, genera código 72h vía `PromoCodeService`, envía email ES/EN con plantilla `reactivation` | |
 | 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | **DONE** | **DONE**: WalletScreen con balance card, earn/spend lists, referral code + clipboard, promo redeem form; economy API methods; 22 i18n keys ES/EN; lazy route + profile nav → `66925f8` |
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | |
 | 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
