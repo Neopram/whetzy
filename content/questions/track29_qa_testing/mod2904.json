@@ -8,14 +8,14 @@
       "question_en": "What is the primary purpose of the `page.goto()` method in Playwright?",
       "options_es": [
         "Simular un clic en un elemento",
-        "Extraer texto de un elemento",
         "Esperar a que un elemento sea visible",
+        "Extraer texto de un elemento",
         "Navegar a una URL especificada"
       ],
       "options_en": [
         "Simulate a click on an element",
-        "Extract text from an element",
         "Wait for an element to be visible",
+        "Extract text from an element",
         "Navigate to a specified URL"
       ],
       "correct_index": 3,
@@ -31,14 +31,14 @@
       "question_en": "What Playwright feature allows tests to automatically wait for elements to be ready?",
       "options_es": [
         "Browser pooling",
-        "Async rendering",
         "Lazy loading",
+        "Async rendering",
         "Auto-waiting"
       ],
       "options_en": [
         "Browser pooling",
-        "Async rendering",
         "Lazy loading",
+        "Async rendering",
         "Auto-waiting"
       ],
       "correct_index": 3,
@@ -53,16 +53,16 @@
       "question_es": "¿Cuál es la diferencia principal entre un `Page` y un `BrowserContext` en Playwright?",
       "question_en": "What is the main difference between a `Page` and a `BrowserContext` in Playwright?",
       "options_es": [
-        "Page es más rápido que BrowserContext",
-        "BrowserContext es un contenedor para múltiples Pages con estado aislado",
-        "Page no puede ejecutar JavaScript por convención",
-        "BrowserContext solo funciona con Firefox"
+        "Page es más veloz que un BrowserContext",
+        "BrowserContext aísla el estado de sus Pages",
+        "Page no ejecuta JavaScript en la pestaña",
+        "BrowserContext solo funciona con el motor Firefox"
       ],
       "options_en": [
-        "Page is faster than BrowserContext",
-        "BrowserContext is a container for multiple Pages with isolated state",
-        "Page cannot execute JavaScript in real environments",
-        "BrowserContext only works with Firefox"
+        "Page runs faster than a BrowserContext",
+        "BrowserContext isolates the state of its Pages",
+        "Page cannot execute JavaScript in the tab",
+        "BrowserContext only works with the Firefox engine"
       ],
       "correct_index": 1,
       "explanation_es": "Un BrowserContext es una instancia aislada del navegador que puede contener múltiples Pages. Cada context tiene su propia cookie, localStorage y sesión, lo que permite pruebas paralelas e independientes.",
@@ -77,14 +77,14 @@
       "question_en": "What method is used to find elements in Playwright using CSS selectors?",
       "options_es": [
         "page.find_element()",
-        "page.get_element()",
         "page.query_selector()",
+        "page.get_element()",
         "page.locator()"
       ],
       "options_en": [
         "page.find_element()",
-        "page.get_element()",
         "page.query_selector()",
+        "page.get_element()",
         "page.locator()"
       ],
       "correct_index": 3,
@@ -99,16 +99,16 @@
       "question_es": "¿Cuál es el beneficio principal de usar Locators en lugar de selectores directos?",
       "question_en": "What is the main benefit of using Locators instead of direct selectors?",
       "options_es": [
-        "Los Locators son más rápidos",
-        "Los Locators solo funcionan en Chrome",
-        "Los Locators incluyen esperas automáticas y re-queries",
-        "Los Locators no requieren navegador"
+        "Los Locators consumen menos memoria en el proceso",
+        "Los Locators no abren un navegador real",
+        "Los Locators esperan y reintentan solos",
+        "Los Locators solo sirven en modo headless"
       ],
       "options_en": [
-        "Locators are faster",
-        "Locators only work in Chrome",
-        "Locators include automatic waits and re-queries",
-        "Locators don't require a browser"
+        "Locators use less memory in the process",
+        "Locators don't open a real browser",
+        "Locators wait and retry on their own",
+        "Locators only work in headless mode"
       ],
       "correct_index": 2,
       "explanation_es": "Los Locators incluyen auto-waiting y capacidad de re-query. Si un elemento no está encontrado, Playwright reintentar automáticamente, mejorando la confiabilidad de los tests.",
@@ -145,20 +145,20 @@
       "question_es": "¿Cuál de los siguientes es un evento que puede ser interceptado en Playwright?",
       "question_en": "Which of the following is an event that can be intercepted in Playwright?",
       "options_es": [
-        "Todas las anteriores",
-        "page.on('error')",
-        "page.on('response')",
-        "page.on('request')"
+        "page.on('request')",
+        "page.on('validate')",
+        "page.on('reload')",
+        "page.on('submit')"
       ],
       "options_en": [
-        "All of the above",
-        "page.on('error')",
-        "page.on('response')",
-        "page.on('request')"
+        "page.on('request')",
+        "page.on('validate')",
+        "page.on('reload')",
+        "page.on('submit')"
       ],
       "correct_index": 0,
-      "explanation_es": "Playwright permite interceptar múltiples eventos, incluyendo errores, requests, responses y más. Esto es útil para monitoreo y validación en los tests.",
-      "explanation_en": "Playwright allows intercepting multiple events, including errors, requests, responses, and more. This is useful for monitoring and validation in tests.",
+      "explanation_es": "En Playwright no existen los eventos `validate`, `reload` ni `submit`; `page.on('request')` sí existe y notifica cada petición de red que dispara la página.",
+      "explanation_en": "Playwright has no `validate`, `reload`, or `submit` events; `page.on('request')` does exist and fires for every network request the page makes.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -215,14 +215,14 @@
       "question_en": "What is the correct way to type text into an input field in Playwright?",
       "options_es": [
         "locator.type_text('texto')",
-        "locator.write('texto')",
         "locator.type('texto')",
+        "locator.write('texto')",
         "locator.fill('texto')"
       ],
       "options_en": [
         "locator.type_text('text')",
-        "locator.write('text')",
         "locator.type('text')",
+        "locator.write('text')",
         "locator.fill('text')"
       ],
       "correct_index": 3,
@@ -237,16 +237,16 @@
       "question_es": "¿Qué método se utiliza para esperar explícitamente a un elemento en Playwright?",
       "question_en": "What method is used to explicitly wait for an element in Playwright?",
       "options_es": [
-        "locator.wait()",
-        "locator.wait_for()",
+        "locator.wait_for_element()",
+        "locator.wait_until_visible()",
         "page.wait_for_selector()",
-        "page.wait()"
+        "page.pause_until_ready()"
       ],
       "options_en": [
-        "locator.wait()",
-        "locator.wait_for()",
+        "locator.wait_for_element()",
+        "locator.wait_until_visible()",
         "page.wait_for_selector()",
-        "page.wait()"
+        "page.pause_until_ready()"
       ],
       "correct_index": 2,
       "explanation_es": "`page.wait_for_selector()` espera a que un elemento correspondiente al selector esté presente en el DOM. Aunque Playwright tiene auto-waiting, a veces es necesario esperar explícitamente.",
@@ -260,20 +260,20 @@
       "question_es": "¿Cuál de los siguientes es un selector válido en Playwright?",
       "question_en": "Which of the following is a valid selector in Playwright?",
       "options_es": [
-        "css=#submit-btn",
-        "Todas las anteriores",
-        "text=Click me",
-        "xpath=//button[@id='submit']"
+        "json=#submit-btn-selector",
+        "xpath=//button[@id='submit']",
+        "attr=submit-btn-name",
+        "regex=submit-btn-pattern"
       ],
       "options_en": [
-        "css=#submit-btn",
-        "All of the above",
-        "text=Click me",
-        "xpath=//button[@id='submit']"
+        "json=#submit-btn-selector",
+        "xpath=//button[@id='submit']",
+        "attr=submit-btn-name",
+        "regex=submit-btn-pattern"
       ],
       "correct_index": 1,
-      "explanation_es": "Playwright soporta múltiples tipos de selectores: CSS, XPath, texto y más. El prefijo especifica el tipo de selector a utilizar.",
-      "explanation_en": "Playwright supports multiple selector types: CSS, XPath, text, and more. The prefix specifies the type of selector to use.",
+      "explanation_es": "Playwright no define los prefijos `json=`, `attr=` ni `regex=` como motores de selección; `xpath=` sí es un motor de selección válido y reconocido por Playwright.",
+      "explanation_en": "Playwright does not define `json=`, `attr=`, or `regex=` as selector engines; `xpath=` is a valid selector engine recognized by Playwright.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -283,16 +283,16 @@
       "question_es": "¿Cuál es la ventaja de usar `page.wait_for_load_state()` en lugar de sleep()?",
       "question_en": "What is the advantage of using `page.wait_for_load_state()` instead of sleep()?",
       "options_es": [
-        "Espera solo el tiempo necesario, no un tiempo fijo",
-        "No requiere parámetros",
-        "Es más rápido como regla general",
-        "Funciona en todos los navegadores"
+        "Espera la condición real, no un plazo fijo",
+        "Consume menos CPU en cada ejecución",
+        "No acepta ningún argumento de configuración",
+        "Solo está disponible en el motor Chromium"
       ],
       "options_en": [
-        "It waits only as long as necessary, not a fixed time",
-        "It doesn't require parameters",
-        "It's faster in this context",
-        "It works in all browsers"
+        "It waits for the real condition, not a fixed delay",
+        "It uses less CPU on every run",
+        "It accepts no configuration argument at all",
+        "It is only available in the Chromium engine"
       ],
       "correct_index": 0,
       "explanation_es": "`page.wait_for_load_state()` espera a que la página alcance un estado específico (como 'networkidle'), en lugar de dormir un tiempo fijo, lo que hace los tests más confiables.",
@@ -306,14 +306,14 @@
       "question_es": "¿Cómo se accede al contenido de un iframe en Playwright?",
       "question_en": "How do you access content inside an iframe in Playwright?",
       "options_es": [
-        "page.get_frame()",
         "page.iframe()",
+        "page.get_frame()",
         "page.frame()",
         "page.access_frame()"
       ],
       "options_en": [
-        "page.get_frame()",
         "page.iframe()",
+        "page.get_frame()",
         "page.frame()",
         "page.access_frame()"
       ],
@@ -329,14 +329,14 @@
       "question_es": "¿Qué método se utiliza para obtener el HTML de un elemento en Playwright?",
       "question_en": "What method is used to get the HTML content of an element in Playwright?",
       "options_es": [
-        "locator.inner_html()",
         "locator.get_html()",
+        "locator.inner_html()",
         "locator.html()",
         "locator.content()"
       ],
       "options_en": [
-        "locator.inner_html()",
         "locator.get_html()",
+        "locator.inner_html()",
         "locator.html()",
         "locator.content()"
       ],
@@ -354,14 +354,14 @@
       "options_es": [
         "Browser",
         "WebDriver",
-        "Locator",
-        "Session en este contexto"
+        "Element",
+        "Session"
       ],
       "options_en": [
         "Browser",
         "WebDriver",
-        "Locator",
-        "Session as a general rule"
+        "Element",
+        "Session"
       ],
       "correct_index": 1,
       "explanation_es": "La clase `WebDriver` es la interfaz principal en Selenium. Representa una sesión del navegador y se utiliza para interactuar con él.",
@@ -375,16 +375,16 @@
       "question_es": "¿Cuál es el método correcto para encontrar un elemento por ID en Selenium?",
       "question_en": "What is the correct method to find an element by ID in Selenium?",
       "options_es": [
-        "driver.find_element_by_id('id') en el caso más común",
-        "driver.find_element(By.ID, 'id')",
         "driver.get_element_by_id('id')",
-        "driver.locate(id='id')"
+        "driver.find_element(By.ID, 'id')",
+        "driver.locate(id='id')",
+        "driver.find_by_id('id')"
       ],
       "options_en": [
-        "driver.find_element_by_id('id') as a general guideline",
-        "driver.find_element(By.ID, 'id')",
         "driver.get_element_by_id('id')",
-        "driver.locate(id='id')"
+        "driver.find_element(By.ID, 'id')",
+        "driver.locate(id='id')",
+        "driver.find_by_id('id')"
       ],
       "correct_index": 1,
       "explanation_es": "El método `driver.find_element(By.ID, 'id')` es la forma moderna de encontrar elementos por ID en Selenium. La versión 4 usa el parámetro `By` explícitamente.",
@@ -398,16 +398,16 @@
       "question_es": "¿Cuál es la diferencia entre `find_element()` y `find_elements()` en Selenium?",
       "question_en": "What is the difference between `find_element()` and `find_elements()` in Selenium?",
       "options_es": [
-        "No hay diferencia en la práctica",
-        "`find_element()` funciona con selectores CSS",
-        "`find_elements()` es más rápido",
-        "`find_element()` retorna un elemento, `find_elements()` retorna una lista"
+        "No hay ninguna diferencia real entre ambos métodos",
+        "`find_elements()` va siempre más rápido",
+        "`find_element()` solo admite selectores CSS",
+        "`find_element()` retorna un único elemento"
       ],
       "options_en": [
-        "There is no difference as a general rule",
-        "`find_element()` works with CSS selectors",
-        "`find_elements()` is faster",
-        "`find_element()` returns an element, `find_elements()` returns a list"
+        "There is no real difference between the two methods",
+        "`find_elements()` always runs faster",
+        "`find_element()` only supports CSS selectors",
+        "`find_element()` returns a single element"
       ],
       "correct_index": 3,
       "explanation_es": "`find_element()` retorna el primer elemento encontrado (o lanza una excepción si no encuentra ninguno). `find_elements()` retorna una lista de todos los elementos coincidentes.",
@@ -421,15 +421,15 @@
       "question_es": "¿Cuál es la clase utilizada para especificar estrategias de espera en Selenium?",
       "question_en": "What class is used to specify wait strategies in Selenium?",
       "options_es": [
-        "Wait habitualmente",
-        "WaitFor",
         "Waiter",
+        "WaitFor",
+        "Pauser",
         "WebDriverWait"
       ],
       "options_en": [
-        "Wait in this context",
-        "WaitFor",
         "Waiter",
+        "WaitFor",
+        "Pauser",
         "WebDriverWait"
       ],
       "correct_index": 3,
@@ -444,20 +444,20 @@
       "question_es": "¿Cómo se espera a que un elemento sea clickeable en Selenium?",
       "question_en": "How do you wait for an element to be clickable in Selenium?",
       "options_es": [
-        "wait.until(EC.is_clickable((By.ID, 'id')))",
-        "wait.until(EC.clickable((By.ID, 'id')))",
+        "wait.until(EC.presence_of_element_located((By.ID, 'id')))",
+        "wait.until(EC.visibility_of_element_located((By.ID, 'id')))",
         "wait.until(EC.element_to_be_clickable((By.ID, 'id')))",
-        "wait.wait_clickable((By.ID, 'id'))"
+        "wait.wait_until_clickable((By.ID, 'id'))"
       ],
       "options_en": [
-        "wait.until(EC.is_clickable((By.ID, 'id')))",
-        "wait.until(EC.clickable((By.ID, 'id')))",
+        "wait.until(EC.presence_of_element_located((By.ID, 'id')))",
+        "wait.until(EC.visibility_of_element_located((By.ID, 'id')))",
         "wait.until(EC.element_to_be_clickable((By.ID, 'id')))",
-        "wait.wait_clickable((By.ID, 'id'))"
+        "wait.wait_until_clickable((By.ID, 'id'))"
       ],
       "correct_index": 2,
-      "explanation_es": "La condición `element_to_be_clickable()` espera a que el elemento esté visible y habilitado. Es la forma correcta de asegurar que un elemento puede ser clickeado.",
-      "explanation_en": "The `element_to_be_clickable()` condition waits for the element to be visible and enabled. It's the correct way to ensure an element can be clicked.",
+      "explanation_es": "`element_to_be_clickable()` es la única condición aquí que exige visibilidad y estado habilitado a la vez; las otras solo comprueban presencia o visibilidad, y la última no existe en Selenium.",
+      "explanation_en": "`element_to_be_clickable()` is the only condition here that requires both visibility and enabled state; the others only check presence or visibility, and the last one doesn't exist in Selenium.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -491,14 +491,14 @@
       "question_en": "What is the class for performing advanced actions in Selenium like moving the mouse?",
       "options_es": [
         "MouseActions",
-        "AdvancedActions",
         "ActionChain",
+        "AdvancedActions",
         "Actions"
       ],
       "options_en": [
         "MouseActions",
-        "AdvancedActions",
         "ActionChain",
+        "AdvancedActions",
         "Actions"
       ],
       "correct_index": 3,
@@ -514,15 +514,15 @@
       "question_en": "How do you type text into a field in Selenium?",
       "options_es": [
         "element.send_keys('texto')",
-        "element.type('texto')",
         "element.write('texto')",
-        "driver.type_text('texto')"
+        "element.type('texto')",
+        "driver.write_into(element)"
       ],
       "options_en": [
         "element.send_keys('text')",
-        "element.type('text')",
         "element.write('text')",
-        "driver.type_text('text')"
+        "element.type('text')",
+        "driver.write_into(element)"
       ],
       "correct_index": 0,
       "explanation_es": "`element.send_keys()` se utiliza para escribir texto en un elemento en Selenium. También se puede usar para enviar teclas especiales.",
@@ -561,14 +561,14 @@
       "options_es": [
         "driver.switch_window('window_id')",
         "driver.switch_to.window(window_handle)",
-        "driver.change_window(handle)",
-        "driver.select_window(id)"
+        "driver.change_active_window(handle)",
+        "driver.switch_to_window_handle(handle)"
       ],
       "options_en": [
         "driver.switch_window('window_id')",
         "driver.switch_to.window(window_handle)",
-        "driver.change_window(handle)",
-        "driver.select_window(id)"
+        "driver.change_active_window(handle)",
+        "driver.switch_to_window_handle(handle)"
       ],
       "correct_index": 1,
       "explanation_es": "`driver.switch_to.window()` se utiliza para cambiar a una ventana o pestaña específica usando su handle. `driver.window_handles` proporciona una lista de todos los handles.",
@@ -583,19 +583,19 @@
       "question_en": "What is the correct way to switch to an iframe in Selenium?",
       "options_es": [
         "driver.switch_to.iframe(0)",
-        "driver.switch_to.frame('name')",
-        "driver.switch_to.frame(element)",
-        "Todas las anteriores"
+        "driver.switch_to.select_frame(0)",
+        "driver.switch_to.enter_frame(element)",
+        "driver.switch_to.frame(0)"
       ],
       "options_en": [
         "driver.switch_to.iframe(0)",
-        "driver.switch_to.frame('name')",
-        "driver.switch_to.frame(element)",
-        "All of the above"
+        "driver.switch_to.select_frame(0)",
+        "driver.switch_to.enter_frame(element)",
+        "driver.switch_to.frame(0)"
       ],
       "correct_index": 3,
-      "explanation_es": "`driver.switch_to.frame()` acepta múltiples parámetros: índice, nombre de iframe o elemento WebElement. Todos son válidos dependiendo del contexto.",
-      "explanation_en": "`driver.switch_to.frame()` accepts multiple parameters: index, iframe name, or WebElement. All are valid depending on the context.",
+      "explanation_es": "Selenium expone `switch_to.frame()` (que acepta índice, nombre o WebElement), pero no expone `switch_to.iframe()`, `select_frame()` ni `enter_frame()`, que no existen en la API.",
+      "explanation_en": "Selenium exposes `switch_to.frame()` (which accepts an index, a name, or a WebElement), but it does not expose `switch_to.iframe()`, `select_frame()`, or `enter_frame()`, which don't exist in the API.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -605,20 +605,20 @@
       "question_es": "¿Cómo se cambia de un iframe al contenido principal en Selenium?",
       "question_en": "How do you switch from an iframe back to the main content in Selenium?",
       "options_es": [
-        "driver.reset_frame()",
-        "driver.switch_to.main()",
+        "driver.switch_to.parent_frame_only()",
+        "driver.switch_to.parent()",
         "driver.switch_to.default_content()",
-        "driver.switch_to.parent()"
+        "driver.reset_current_frame()"
       ],
       "options_en": [
-        "driver.reset_frame()",
-        "driver.switch_to.main()",
+        "driver.switch_to.parent_frame_only()",
+        "driver.switch_to.parent()",
         "driver.switch_to.default_content()",
-        "driver.switch_to.parent()"
+        "driver.reset_current_frame()"
       ],
       "correct_index": 2,
-      "explanation_es": "`driver.switch_to.default_content()` cambia el contexto de vuelta al contenido principal de la página desde cualquier iframe.",
-      "explanation_en": "`driver.switch_to.default_content()` switches the context back to the main page content from any iframe.",
+      "explanation_es": "`default_content()` vuelve directamente al documento raíz. `parent_frame_only()`, `parent()` y `reset_current_frame()` no existen en Selenium (el método real `parent_frame()` sube solo un nivel).",
+      "explanation_en": "`default_content()` returns straight to the root document. `parent_frame_only()`, `parent()` and `reset_current_frame()` don't exist in Selenium (the real `parent_frame()` method only goes up one level).",
       "source": "https://docs.pytest.org"
     },
     {
@@ -631,13 +631,13 @@
         "5 segundos",
         "0 segundos",
         "10 segundos",
-        "Variable según el navegador"
+        "30 segundos"
       ],
       "options_en": [
         "5 seconds",
         "0 seconds",
         "10 seconds",
-        "Varies by browser"
+        "30 seconds"
       ],
       "correct_index": 1,
       "explanation_es": "Por defecto, no hay espera implícita (0 segundos). La espera implícita debe configurarse explícitamente usando `driver.implicitly_wait()` si se necesita.",
@@ -652,15 +652,15 @@
       "question_en": "How do you close the browser in Selenium?",
       "options_es": [
         "driver.quit()",
-        "driver.exit()",
+        "driver.close()",
         "driver.close_browser()",
-        "driver.close()"
+        "driver.exit()"
       ],
       "options_en": [
         "driver.quit()",
-        "driver.exit()",
+        "driver.close()",
         "driver.close_browser()",
-        "driver.close()"
+        "driver.exit()"
       ],
       "correct_index": 0,
       "explanation_es": "`driver.quit()` cierra todas las ventanas y termina la sesión. `driver.close()` solo cierra la ventana actual. `quit()` es lo preferido para limpiar al final de los tests.",
@@ -674,14 +674,14 @@
       "question_es": "¿Qué método obtiene el atributo de un elemento en Selenium?",
       "question_en": "What method gets an attribute of an element in Selenium?",
       "options_es": [
-        "element.attr('name')",
         "element.attribute('name')",
+        "element.attr('name')",
         "element.get_attribute('name')",
         "driver.get_attribute(element, 'name')"
       ],
       "options_en": [
-        "element.attr('name')",
         "element.attribute('name')",
+        "element.attr('name')",
         "element.get_attribute('name')",
         "driver.get_attribute(element, 'name')"
       ],
@@ -697,16 +697,16 @@
       "question_es": "¿Cuál es el propósito principal del Page Object Model?",
       "question_en": "What is the main purpose of the Page Object Model?",
       "options_es": [
-        "Aumentar la velocidad de los tests",
-        "Reducir el número de navegadores",
-        "Eliminar la necesidad de esperas",
-        "Crear una abstracción de elementos y acciones de página"
+        "Acelerar la ejecución de los tests",
+        "Reducir cuántos navegadores hacen falta",
+        "Quitar la necesidad de esperar elementos",
+        "Encapsular elementos y acciones de una página"
       ],
       "options_en": [
-        "Increase test speed typically",
-        "Reduce the number of browsers",
-        "Eliminate the need for waits",
-        "Create an abstraction of page elements and actions"
+        "Speed up test execution",
+        "Reduce how many browsers are needed",
+        "Remove the need to wait for elements",
+        "Encapsulate a page's elements and actions"
       ],
       "correct_index": 3,
       "explanation_es": "El Page Object Model encapsula elementos y acciones de una página en una clase, mejorando la mantenibilidad y reutilización del código de tests.",
@@ -722,14 +722,14 @@
       "options_es": [
         "No requiere cambios cuando cambiar los selectores",
         "Cambios en selectores se hacen en un único lugar",
-        "Mejora la seguridad",
-        "Reduce memoria"
+        "Mejora la seguridad de las credenciales guardadas",
+        "Reduce el consumo de memoria durante la ejecución"
       ],
       "options_en": [
         "No changes needed when selectors change",
         "Changes to selectors are made in one place",
-        "Improves security",
-        "Reduces memory"
+        "Improves the security of stored credentials",
+        "Reduces memory usage during execution"
       ],
       "correct_index": 1,
       "explanation_es": "Cuando un selector cambia, solo se actualiza en la clase Page Object. Los tests que usan esa página no necesitan cambios, reduciendo el mantenimiento.",
@@ -743,15 +743,15 @@
       "question_es": "¿Cómo se estructura típicamente una clase Page Object?",
       "question_en": "How is a Page Object class typically structured?",
       "options_es": [
-        "Solo métodos como regla general",
-        "Funciones globales",
-        "Solo atributos como práctica recomendada de manera estándar",
+        "Solo métodos, sin atributos propios de la clase",
+        "Solo atributos públicos, sin ningún comportamiento",
+        "Funciones sueltas fuera de cualquier clase",
         "Locators como atributos, acciones como métodos"
       ],
       "options_en": [
-        "Only methods by default",
-        "Global functions",
-        "Only attributes in common practice under normal conditions",
+        "Methods only, with no attributes of their own",
+        "Only public attributes with no behavior",
+        "Loose functions outside of any class",
         "Locators as attributes, actions as methods"
       ],
       "correct_index": 3,
@@ -767,15 +767,15 @@
       "question_en": "What should the constructor of a Page Object class contain?",
       "options_es": [
         "Búsqueda de todos los elementos",
-        "Datos de test",
+        "Validaciones de la página",
         "La instancia del driver",
-        "Validaciones de la página"
+        "Datos de entrada usados por el test"
       ],
       "options_en": [
         "Search for all elements",
-        "Test data",
+        "Page validations",
         "The driver instance",
-        "Page validations"
+        "Test input data"
       ],
       "correct_index": 2,
       "explanation_es": "El constructor típicamente recibe la instancia del driver y la almacena como atributo de instancia para usar en los métodos de la clase.",
@@ -789,16 +789,16 @@
       "question_es": "¿Cuál es la mejor práctica para nombrar métodos en una Page Object?",
       "question_en": "What is the best practice for naming methods in a Page Object?",
       "options_es": [
-        "Nombres cortos como 'click'",
+        "Nombres cortos y genéricos como 'click'",
         "Nombres técnicos como 'find_and_click'",
-        "Nombres descriptivos de acciones de usuario como 'login_user'",
-        "Nombres aleatorios habitualmente"
+        "Nombres de una acción como 'login_user'",
+        "Nombres arbitrarios como 'do_action'"
       ],
       "options_en": [
-        "Short names like 'click'",
+        "Short, generic names like 'click'",
         "Technical names like 'find_and_click'",
-        "Descriptive user action names like 'login_user'",
-        "Random names by convention"
+        "Names for one action like 'login_user'",
+        "Arbitrary names like 'do_action'"
       ],
       "correct_index": 2,
       "explanation_es": "Los métodos deben nombrar acciones de usuario o negocio, no acciones técnicas. Esto hace los tests más legibles y enfocados en el comportamiento esperado.",
@@ -812,16 +812,16 @@
       "question_es": "¿Debería una Page Object validar el contenido de la página?",
       "question_en": "Should a Page Object validate page content?",
       "options_es": [
-        "No, solo interactuar",
-        "Sí, siempre por convención según la documentación oficial para la mayoría de proyectos",
-        "Sí, pero no con assertions, con métodos que devuelven datos",
-        "Depende del framework"
+        "No, solo debe interactuar con la página",
+        "Sí, siempre debe incluir assertions en la clase",
+        "Sí, con métodos que devuelven datos al test",
+        "Solo si el framework de tests lo exige"
       ],
       "options_en": [
-        "No, only interact",
-        "Yes, always in real environments in this context in production environments",
-        "Yes, but not with assertions, with methods that return data",
-        "Depends on the framework"
+        "No, it should only interact with the page",
+        "Yes, it must always include assertions in the class",
+        "Yes, with methods that return data to the test",
+        "Only if the test framework requires it"
       ],
       "correct_index": 2,
       "explanation_es": "Una Page Object puede incluir métodos que devuelvan datos para que los tests verifiquen. No debería contener assertions; es responsabilidad del test.",
@@ -835,20 +835,20 @@
       "question_es": "¿Cómo se manejan múltiples páginas en un proyecto con POM?",
       "question_en": "How are multiple pages handled in a POM project?",
       "options_es": [
-        "b y c son correctas",
-        "Una clase Page Object por página",
-        "Una sola clase Page Object",
-        "Page Objects heredadas de una clase base"
+        "Una clase Page Object distinta por cada página",
+        "Una única clase Page Object para todo el sitio",
+        "Todo el código de UI dentro de los propios tests",
+        "Page Objects generados en tiempo de ejecución"
       ],
       "options_en": [
-        "b and c are correct",
-        "One Page Object class per page",
-        "One Page Object class",
-        "Page Objects inheriting from a base class"
+        "A separate Page Object class per page",
+        "A single Page Object class for the whole site",
+        "All UI code kept inside the tests themselves",
+        "Page Objects generated at runtime"
       ],
       "correct_index": 0,
-      "explanation_es": "Generalmente, se crea una clase Page Object para cada página o componente. Es común usar una clase base que contenga funcionalidad común a todas las páginas.",
-      "explanation_en": "Generally, one Page Object class is created for each page or component. It's common to use a base class containing functionality common to all pages.",
+      "explanation_es": "La práctica habitual es una clase Page Object por página, a menudo heredando de una clase base con métodos comunes.",
+      "explanation_en": "The usual practice is one Page Object class per page, often inheriting from a base class with shared methods.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -858,20 +858,20 @@
       "question_es": "¿Cuál es el beneficio de heredar Page Objects de una clase base?",
       "question_en": "What is the benefit of inheriting Page Objects from a base class?",
       "options_es": [
-        "Reutilizar código común",
-        "Facilitar mantenimiento",
-        "Todas las anteriores",
-        "Mejorar legibilidad"
+        "Duplicar la lógica de acceso a cada página",
+        "Obligar a repetir el mismo locator en cada clase",
+        "Reutilizar en la base métodos comunes a todas las páginas",
+        "Impedir que las subclases sobrescriban métodos"
       ],
       "options_en": [
-        "Reuse common code",
-        "Ease maintenance",
-        "All of the above",
-        "Improve readability"
+        "Duplicating access logic in every page",
+        "Forcing the same locator to be repeated in every class",
+        "Reusing methods common to all pages from the base class",
+        "Preventing subclasses from overriding methods"
       ],
       "correct_index": 2,
-      "explanation_es": "Una clase base puede contener métodos comunes como 'ir a URL', 'cerrar ventana', etc. Esto reduce duplicación y mejora la mantenibilidad.",
-      "explanation_en": "A base class can contain common methods like 'go to URL', 'close window', etc. This reduces duplication and improves maintainability.",
+      "explanation_es": "Una clase base evita repetir en cada Page Object métodos compartidos, como navegar o cerrar la ventana.",
+      "explanation_en": "A base class avoids repeating shared methods, like navigating or closing the window, in every Page Object.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -881,16 +881,16 @@
       "question_es": "¿Cómo se manejan los flujos de navegación entre páginas en POM?",
       "question_en": "How are navigation flows between pages handled in POM?",
       "options_es": [
-        "En una clase de utilidad",
-        "En el test directamente",
-        "Los métodos retornan la siguiente Page Object",
-        "No se manejan en POM por convención"
+        "Directamente dentro del cuerpo del test",
+        "Mediante una clase de utilidades aparte",
+        "Un método devuelve la Page Object siguiente",
+        "Con un router externo al framework de tests"
       ],
       "options_en": [
-        "In a utility class typically",
-        "In the test directly",
-        "Methods return the next Page Object",
-        "Not handled in POM"
+        "Directly inside the test body",
+        "Through a separate utility class",
+        "A method returns the next Page Object",
+        "With a router external to the test framework"
       ],
       "correct_index": 2,
       "explanation_es": "Una buena práctica es que los métodos que causan navegación retornen la siguiente Page Object. Esto permite encadenar acciones de forma fluida.",
@@ -904,16 +904,16 @@
       "question_es": "¿Dónde deberían ubicarse los locadores en una Page Object?",
       "question_en": "Where should locators be placed in a Page Object?",
       "options_es": [
-        "Dentro de los métodos",
-        "Como atributos privados de clase",
-        "En un archivo separado",
-        "En el constructor en el caso más común"
+        "Repetidos dentro de cada método",
+        "Como atributos privados de la clase",
+        "En un fichero de configuración aparte",
+        "Solo dentro del constructor"
       ],
       "options_en": [
-        "Inside methods",
+        "Repeated inside every method",
         "As private class attributes",
-        "In a separate file",
-        "In the constructor as a general guideline"
+        "In a separate configuration file",
+        "Only inside the constructor"
       ],
       "correct_index": 1,
       "explanation_es": "Los locadores deberían ser atributos privados o protegidos de la clase para mantenerlos separados de la lógica de acciones. Esto facilita el mantenimiento.",
@@ -927,16 +927,16 @@
       "question_es": "¿Cuál es la ventaja de usar tipos de retorno explícitos en métodos POM?",
       "question_en": "What is the advantage of using explicit return types in POM methods?",
       "options_es": [
-        "Proporciona claridad sobre qué esperar del método",
-        "Mejora la velocidad según la especificación",
-        "Reduce el tamaño del código",
-        "Elimina la necesidad de waits"
+        "Aclara el valor que devuelve el método",
+        "Hace que el código corra más rápido",
+        "Reduce las líneas de código del método",
+        "Evita tener que esperar al elemento"
       ],
       "options_en": [
-        "Provides clarity about what to expect from the method",
-        "Improves speed in real environments",
-        "Reduces code size",
-        "Eliminates the need for waits"
+        "It clarifies the value the method returns",
+        "It makes the code run faster",
+        "It reduces the method's lines of code",
+        "It avoids having to wait for the element"
       ],
       "correct_index": 0,
       "explanation_es": "Tipos de retorno explícitos documentan lo que el método devuelve, mejorando la legibilidad y facilitando el uso correcto en los tests.",
@@ -950,16 +950,16 @@
       "question_es": "¿Cuál es la mejor práctica para manejar esperas en una Page Object?",
       "question_en": "What is the best practice for handling waits in a Page Object?",
       "options_es": [
-        "Encapsularlas en métodos de la Page Object",
-        "No usar esperas en entornos reales",
-        "Dejarlas en los tests",
-        "Usar solo esperas implícitas"
+        "Encapsularlas dentro de los métodos de la Page Object",
+        "Eliminar toda espera del código de test",
+        "Dejarlas escritas directamente en cada test",
+        "Usar únicamente el wait implícito del driver"
       ],
       "options_en": [
-        "Encapsulate them in Page Object methods",
-        "Don't use waits typically",
-        "Leave them in tests",
-        "Use only implicit waits"
+        "Encapsulating them inside the Page Object's methods",
+        "Removing all waits from the test code",
+        "Leaving them written directly in each test",
+        "Using only the driver's implicit wait"
       ],
       "correct_index": 0,
       "explanation_es": "Las esperas deben encapsularse dentro de los métodos de la Page Object para que los tests sean más limpios y las esperas sean transparentes.",
@@ -974,14 +974,14 @@
       "question_en": "What is a Page Factory?",
       "options_es": [
         "Una clase que crea instancias de páginas",
-        "Un framework de tests",
         "Una herramienta que genera Page Objects automáticamente",
+        "Un framework de automatización de pruebas",
         "Un patrón de inicialización de elementos en Selenium"
       ],
       "options_en": [
         "A class that creates page instances",
-        "A test framework",
         "A tool that generates Page Objects automatically",
+        "A test automation framework",
         "An element initialization pattern in Selenium"
       ],
       "correct_index": 3,
@@ -996,16 +996,16 @@
       "question_es": "¿Cuál es el principio SOLID más importante en POM?",
       "question_en": "Which SOLID principle is most important in POM?",
       "options_es": [
-        "Liskov Substitution",
-        "Open/Closed",
-        "Single Responsibility",
-        "Dependency Inversion en este contexto"
+        "Abierto a extensión, cerrado a modificación",
+        "Las subclases deben sustituir a su clase base",
+        "Responsabilidad única por clase y método",
+        "Depender de abstracciones, no de detalles"
       ],
       "options_en": [
-        "Liskov Substitution",
-        "Open/Closed",
-        "Single Responsibility",
-        "Dependency Inversion according to official documentation"
+        "Open for extension, closed for modification",
+        "Subclasses must be substitutable for their base class",
+        "Single responsibility per class and method",
+        "Depend on abstractions, not on concrete details"
       ],
       "correct_index": 2,
       "explanation_es": "Single Responsibility es crucial en POM. Cada Page Object debe representar una sola página y cada método debe hacer una sola cosa.",
@@ -1019,16 +1019,16 @@
       "question_es": "¿Cómo se prueban los Page Objects?",
       "question_en": "How are Page Objects tested?",
       "options_es": [
-        "No se prueban",
-        "Se prueban durante la ejecución de tests de UI",
-        "Se prueban a través de tests de integración",
-        "Se prueban con unit tests directamente"
+        "No se validan nunca en el proyecto",
+        "Indirectamente, en los tests de UI",
+        "Con mocks que sustituyen al driver",
+        "Con unit tests aislados del navegador"
       ],
       "options_en": [
-        "They are not tested",
-        "They are tested during UI test execution",
-        "They are tested through integration tests",
-        "They are tested with unit tests directly"
+        "They are never validated in the project",
+        "Indirectly, through the UI tests",
+        "With mocks that replace the driver",
+        "With unit tests isolated from the browser"
       ],
       "correct_index": 1,
       "explanation_es": "Los Page Objects se validan indirectamente a través de los tests de UI. También pueden añadirse métodos de validación que aseguren que estamos en la página correcta.",
@@ -1042,16 +1042,16 @@
       "question_es": "¿Cuál es el propósito principal de las pruebas de regresión visual?",
       "question_en": "What is the main purpose of visual regression testing?",
       "options_es": [
-        "Verificar que el código compile",
-        "Verificar el rendimiento",
+        "Verificar que el código compila bien",
         "Aumentar la cobertura de código",
-        "Detectar cambios inesperados en la interfaz visual"
+        "Medir el rendimiento de la página",
+        "Detectar un cambio visual no intencionado"
       ],
       "options_en": [
-        "Verify that code compiles",
-        "Verify performance as a general rule",
+        "Verify that the code compiles correctly",
         "Increase code coverage",
-        "Detect unexpected changes in the visual interface"
+        "Measure page performance",
+        "Detect an unintended visual change"
       ],
       "correct_index": 3,
       "explanation_es": "Las pruebas de regresión visual detectan cambios no deseados en el aspecto visual de la aplicación comparando screenshots.",
@@ -1065,16 +1065,16 @@
       "question_es": "¿Cuál es la diferencia entre una línea base y una screenshot de prueba?",
       "question_en": "What is the difference between a baseline and a test screenshot?",
       "options_es": [
-        "No hay diferencia de forma estándar",
-        "La prueba es más precisa",
-        "La línea base es la referencia, la prueba es la captura actual",
-        "La línea base es más rápida"
+        "No existe ninguna diferencia entre ambas",
+        "La línea base se genera más rápido",
+        "La línea base es la referencia esperada",
+        "La captura de prueba es siempre más nítida"
       ],
       "options_en": [
-        "There is no difference by convention",
-        "The test is more accurate",
-        "The baseline is the reference, the test is the current capture",
-        "The baseline is faster"
+        "There is no difference between the two",
+        "The baseline is generated faster",
+        "The baseline is the expected reference",
+        "The test capture is always sharper"
       ],
       "correct_index": 2,
       "explanation_es": "La línea base (baseline) es la screenshot de referencia esperada. La screenshot de prueba es la captura actual. Se comparan para detectar diferencias.",
@@ -1088,16 +1088,16 @@
       "question_es": "¿Qué técnica se utiliza para comparar dos screenshots en visual testing?",
       "question_en": "What technique is used to compare two screenshots in visual testing?",
       "options_es": [
-        "Diferencia de píxeles (pixel-by-pixel)",
-        "Análisis de contenido HTML",
-        "Comparación de hash en condiciones normales",
-        "Inspección manual"
+        "Comparar diferencias píxel a píxel",
+        "Comparar el hash del archivo completo",
+        "Analizar el árbol HTML resultante",
+        "Revisar la captura a simple vista"
       ],
       "options_en": [
-        "Pixel difference (pixel-by-pixel)",
-        "HTML content analysis",
-        "Hash comparison by default as a general guideline",
-        "Manual inspection"
+        "Comparing differences pixel by pixel",
+        "Comparing the whole file's hash",
+        "Analyzing the resulting HTML tree",
+        "Reviewing the capture by eye"
       ],
       "correct_index": 0,
       "explanation_es": "La comparación pixel a pixel es la técnica estándar. Las herramientas calculan la diferencia de píxeles entre la línea base y la screenshot actual.",
@@ -1111,20 +1111,20 @@
       "question_es": "¿Cuál es un desafío común en visual regression testing?",
       "question_en": "What is a common challenge in visual regression testing?",
       "options_es": [
-        "Cambios de fuente anti-aliasing entre navegadores",
-        "Variaciones de colores por el navegador",
-        "Todas las anteriores",
-        "Diferencias en el renderizado del sistema operativo"
+        "El anti-aliasing es igual en todos los navegadores",
+        "El sistema operativo no afecta al renderizado",
+        "Diferencias de render entre navegadores y sistemas",
+        "El color se renderiza igual en cualquier motor"
       ],
       "options_en": [
-        "Font anti-aliasing changes between browsers",
-        "Color variations by browser",
-        "All of the above",
-        "Differences in OS rendering"
+        "Anti-aliasing looks identical across all browsers",
+        "The operating system has no effect on rendering",
+        "Rendering differences between browsers and systems",
+        "Color renders identically in every engine"
       ],
       "correct_index": 2,
-      "explanation_es": "Los desafíos comunes incluyen diferencias entre navegadores, sistemas operativos, resoluciones y otras variables de renderizado que pueden causar falsos positivos.",
-      "explanation_en": "Common challenges include differences between browsers, operating systems, resolutions, and other rendering variables that can cause false positives.",
+      "explanation_es": "El desafío real es que fuentes, sistema operativo y color SÍ varían entre entornos; las otras opciones afirman justo lo contrario de lo que ocurre en la práctica.",
+      "explanation_en": "The real challenge is that fonts, OS, and color DO vary across environments; the other options claim the exact opposite of what actually happens.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -1134,16 +1134,16 @@
       "question_es": "¿Cómo se manejan los elementos dinámicos en visual regression testing?",
       "question_en": "How are dynamic elements handled in visual regression testing?",
       "options_es": [
-        "Se ignoran completamente en este contexto como práctica recomendada",
-        "Se capturan sin cambios",
-        "Se ocultan o se excluyen de la comparación",
-        "Se validan manualmente"
+        "Se dejan completamente sin tratar",
+        "Se capturan igual que el resto",
+        "Se ocultan o quedan fuera de la comparación",
+        "Se revisan a mano en cada ejecución"
       ],
       "options_en": [
-        "They are completely ignored as a general guideline as a recommended practice",
-        "They are captured without changes",
-        "They are hidden or excluded from comparison",
-        "They are validated manually"
+        "They are left completely untreated",
+        "They are captured just like everything else",
+        "They are hidden or left out of the comparison",
+        "They are checked by hand on every run"
       ],
       "correct_index": 2,
       "explanation_es": "Los elementos dinámicos como timestamps o contadores se ocultan o excluyen de las screenshots para evitar falsos positivos.",
@@ -1157,16 +1157,16 @@
       "question_es": "¿Cuál es la mejor práctica para crear líneas base en visual testing?",
       "question_en": "What is the best practice for creating baselines in visual testing?",
       "options_es": [
-        "Una sola línea base para todo",
-        "Crear una por navegador y resolución",
-        "Crear una por plataforma",
-        "Crear una por usuario"
+        "Una única línea base para todo el proyecto",
+        "Una línea base por navegador y resolución",
+        "Una línea base solo por sistema operativo",
+        "Una línea base distinta por cada usuario"
       ],
       "options_en": [
-        "One baseline for everything",
-        "Create one per browser and resolution",
-        "Create one per platform",
-        "Create one per user"
+        "A single baseline for the whole project",
+        "One baseline per browser and resolution",
+        "One baseline only per operating system",
+        "A separate baseline for each user"
       ],
       "correct_index": 1,
       "explanation_es": "Se deben crear líneas base separadas para cada combinación de navegador y resolución para evitar falsos positivos por diferencias de renderizado.",
@@ -1180,20 +1180,20 @@
       "question_es": "¿Qué herramienta es común para visual regression testing con Playwright?",
       "question_en": "What is a common tool for visual regression testing with Playwright?",
       "options_es": [
-        "Applitools",
-        "Todas las anteriores",
-        "PixelMatch",
-        "Percy por convención"
+        "Postman (pruebas de API)",
+        "PixelMatch (comparación de imágenes)",
+        "JMeter (pruebas de carga)",
+        "Selenium Grid (orquestación de navegadores)"
       ],
       "options_en": [
-        "Applitools",
-        "All of the above",
-        "PixelMatch",
-        "Percy according to spec"
+        "Postman (API testing)",
+        "PixelMatch (image comparison)",
+        "JMeter (load testing)",
+        "Selenium Grid (browser orchestration)"
       ],
       "correct_index": 1,
-      "explanation_es": "Existen múltiples herramientas: Applitools y Percy son servicios en la nube populares; PixelMatch es una librería de código abierto.",
-      "explanation_en": "Multiple tools exist: Applitools and Percy are popular cloud services; PixelMatch is an open-source library.",
+      "explanation_es": "Postman, JMeter y Selenium Grid resuelven otros problemas (API, carga, orquestación); PixelMatch es la librería que compara imágenes píxel a píxel para regresión visual.",
+      "explanation_en": "Postman, JMeter, and Selenium Grid solve other problems (API, load, orchestration); PixelMatch is the library that compares images pixel by pixel for visual regression.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -1205,14 +1205,14 @@
       "options_es": [
         "0% - Coincidencia perfecta",
         "Varía según el caso de uso",
-        "5-10% - Cambios moderados",
-        "1-2% - Variaciones menores"
+        "1-2% - Variaciones menores",
+        "5-10% - Cambios moderados"
       ],
       "options_en": [
         "0% - Perfect match",
         "Varies by use case",
-        "5-10% - Moderate changes",
-        "1-2% - Minor variations"
+        "1-2% - Minor variations",
+        "5-10% - Moderate changes"
       ],
       "correct_index": 1,
       "explanation_es": "El umbral de tolerancia depende del proyecto. Algunos requieren coincidencia perfecta, otros permiten variaciones menores para anti-aliasing o rendering.",
@@ -1226,15 +1226,15 @@
       "question_es": "¿Cómo se captura una screenshot de solo una parte de la página?",
       "question_en": "How do you capture a screenshot of only part of a page?",
       "options_es": [
-        "driver.capture_region()",
         "page.screenshot(full_page=False)",
         "page.region_screenshot()",
+        "driver.capture_region()",
         "element.screenshot()"
       ],
       "options_en": [
-        "driver.capture_region()",
         "page.screenshot(full_page=False)",
         "page.region_screenshot()",
+        "driver.capture_region()",
         "element.screenshot()"
       ],
       "correct_index": 3,
@@ -1272,20 +1272,20 @@
       "question_es": "¿Cómo se actualizan las líneas base cuando los cambios visuales son correctos?",
       "question_en": "How are baselines updated when visual changes are correct?",
       "options_es": [
-        "Manualmente reemplazando el archivo",
-        "Automáticamente por la herramienta",
-        "Usando un comando específico",
-        "Todas las anteriores"
+        "Sobrescribiendo el archivo a mano",
+        "Editando manualmente los píxeles de la imagen",
+        "Renombrando la carpeta de referencia",
+        "Con el comando de actualización de la herramienta"
       ],
       "options_en": [
-        "By manually replacing the file",
-        "Automatically by the tool",
-        "Using a specific command",
-        "All of the above"
+        "By manually overwriting the file",
+        "By manually editing the image's pixels",
+        "By renaming the reference folder",
+        "With the tool's baseline-update command"
       ],
       "correct_index": 3,
-      "explanation_es": "Existen múltiples métodos según la herramienta: reemplazo manual, actualización automática o comandos especiales.",
-      "explanation_en": "Multiple methods exist depending on the tool: manual replacement, automatic update, or special commands.",
+      "explanation_es": "La mayoría de herramientas ofrecen un comando dedicado (por ejemplo `--update-snapshots`) para regenerar líneas base; editar píxeles a mano o renombrar carpetas no actualiza nada.",
+      "explanation_en": "Most tools offer a dedicated command (e.g. `--update-snapshots`) to regenerate baselines; hand-editing pixels or renaming folders updates nothing.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -1295,16 +1295,16 @@
       "question_es": "¿Qué es una 'clipping' en el contexto de visual regression testing?",
       "question_en": "What is 'clipping' in the context of visual regression testing?",
       "options_es": [
-        "Cortar la pantalla antes de capturar",
-        "Comprimir la imagen",
-        "Excluir áreas específicas de la comparación",
-        "Zoom en un área como regla general"
+        "Recortar la ventana antes de capturar",
+        "Comprimir la imagen resultante",
+        "Excluir una región de la comparación",
+        "Ampliar el zoom sobre un área"
       ],
       "options_en": [
-        "Cut the screen before capturing",
-        "Compress the image",
-        "Exclude specific areas from comparison",
-        "Zoom in on an area"
+        "Trimming the window before capturing",
+        "Compressing the resulting image",
+        "Excluding one region from the comparison",
+        "Zooming in on an area"
       ],
       "correct_index": 2,
       "explanation_es": "Clipping permite excluir regiones específicas de la captura, útil para ignorar elementos dinámicos o no relevantes.",
@@ -1318,20 +1318,20 @@
       "question_es": "¿Cuál es la ventaja de usar visual testing en CI/CD?",
       "question_en": "What is the advantage of using visual testing in CI/CD?",
       "options_es": [
-        "Detecta regresos sin intervención manual",
-        "Más rápido que pruebas manuales",
-        "Automatiza validación visual",
-        "Todas las anteriores"
+        "Sustituye por completo a las pruebas manuales",
+        "Elimina la necesidad de líneas base",
+        "Solo funciona en el entorno local del desarrollador",
+        "Detecta regresiones en cada build sin ayuda manual"
       ],
       "options_en": [
-        "Detects regressions without manual intervention",
-        "Faster than manual testing",
-        "Automates visual validation",
-        "All of the above"
+        "It fully replaces manual testing",
+        "It removes the need for baselines",
+        "It only works on the developer's local machine",
+        "It catches regressions on every build without manual help"
       ],
       "correct_index": 3,
-      "explanation_es": "Visual testing en CI/CD automatiza la validación, acelera el proceso de QA y detecta problemas rápidamente sin intervención manual.",
-      "explanation_en": "Visual testing in CI/CD automates validation, accelerates QA, and detects issues quickly without manual intervention.",
+      "explanation_es": "Visual testing en CI/CD sigue necesitando líneas base y complementa, no sustituye, a las pruebas manuales; su ventaja real es detectar regresiones en cada build sin revisión humana.",
+      "explanation_en": "Visual testing in CI/CD still needs baselines and complements, rather than replaces, manual testing; its real advantage is catching regressions on every build without human review.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -1341,20 +1341,20 @@
       "question_es": "¿Cómo se pueden evitar falsos positivos en visual testing?",
       "question_en": "How can false positives be avoided in visual testing?",
       "options_es": [
-        "Usando umbrales de tolerancia altos",
-        "Ocultando elementos dinámicos",
-        "Ejecutando en navegadores consistentes",
-        "Todas las anteriores"
+        "Subiendo el umbral de tolerancia al máximo",
+        "Ignorando por completo los resultados fallidos",
+        "Ejecutando cada vez en un navegador distinto",
+        "Ocultando los elementos dinámicos de la captura"
       ],
       "options_en": [
-        "Using high tolerance thresholds",
-        "Hiding dynamic elements",
-        "Running in consistent browsers",
-        "All of the above"
+        "Raising the tolerance threshold to the maximum",
+        "Ignoring failed results entirely",
+        "Running in a different browser every time",
+        "Hiding dynamic elements from the capture"
       ],
       "correct_index": 3,
-      "explanation_es": "Se evitan falsos positivos combinando múltiples técnicas: umbrales apropiados, exclusión de elementos dinámicos y entornos consistentes.",
-      "explanation_en": "False positives are avoided by combining multiple techniques: appropriate thresholds, excluding dynamic elements, and consistent environments.",
+      "explanation_es": "Ocultar elementos dinámicos evita falsos positivos reales; subir el umbral al máximo o ignorar fallos oculta problemas en vez de evitarlos, y cambiar de navegador cada vez los provoca.",
+      "explanation_en": "Hiding dynamic elements actually prevents false positives; maxing out the threshold or ignoring failures hides problems instead of preventing them, and switching browsers each run causes them.",
       "source": "https://docs.pytest.org"
     },
     {
@@ -1364,16 +1364,16 @@
       "question_es": "¿Cuál es el impacto del tamaño de pantalla en visual regression testing?",
       "question_en": "What is the impact of screen size on visual regression testing?",
       "options_es": [
-        "No tiene impacto habitualmente",
-        "Cada resolución puede necesitar una línea base diferente",
-        "Solo importa la resolución del monitor",
-        "Solo afecta a sitios responsive"
+        "No influye nada en el resultado",
+        "Cada resolución puede necesitar su propia línea base",
+        "Solo afecta a los sitios responsive",
+        "Solo importa la resolución del monitor del tester"
       ],
       "options_en": [
-        "It has no impact",
-        "Each resolution may need a different baseline",
-        "Only the monitor resolution matters",
-        "Only affects responsive sites"
+        "It has no influence on the result",
+        "Each resolution may need its own baseline",
+        "It only affects responsive sites",
+        "Only the tester's monitor resolution matters"
       ],
       "correct_index": 1,
       "explanation_es": "El tamaño de pantalla afecta el renderizado visual. Se recomiendan líneas base separadas para diferentes resoluciones y dispositivos.",
