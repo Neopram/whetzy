@@ -174,6 +174,8 @@ correr "backend: contenido"    "$ARBOL/backend" \
 # las dependencias del proyecto (2026-09-24: un mypy de uv sin pydantic dio
 # cientos de «Class cannot subclass BaseModel» falsos; con el intérprete del
 # proyecto, 0 errores en 117 ficheros).
+correr "backend: migración con datos" "$ARBOL/backend" \
+  python ../scripts/test_migration_data.py
 correr "backend: mypy --strict" "$ARBOL/backend" \
   python -m mypy app --strict --ignore-missing-imports
 
