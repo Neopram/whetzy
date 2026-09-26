@@ -16,7 +16,6 @@ from app.models.analytics import AnalyticsEvent
 from app.models.antifraud import DeviceFingerprint, FraudReviewQueue
 from app.models.auth import AuditLog, LoginAttempt, RefreshToken, User2FA, UserSession
 from app.models.bootcamp import Bootcamp, BootcampEnrollment, BootcampWeek
-from app.models.project import Project, ProjectStep, ProjectSubmission
 from app.models.campaign import Campaign, CampaignClick
 from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
 from app.models.duel import Duel
@@ -48,6 +47,7 @@ from app.models.payment import (
     PaymentWebhook,
     StripeCustomer,
 )
+from app.models.project import Project, ProjectStep, ProjectSubmission
 from app.models.push_subscription import PushSubscription
 from app.models.question_report import QuestionReport
 from app.models.session import Response, StudySession
@@ -92,12 +92,12 @@ __all__ = [
     "OAuthAccount",
     "OAuthState",
     "PaddleSubscription",
-    "Project",
-    "ProjectStep",
-    "ProjectSubmission",
     "PasswordResetToken",
     "PaymentRailConfig",
     "PaymentWebhook",
+    "Project",
+    "ProjectStep",
+    "ProjectSubmission",
     "PromoCode",
     "PromoCodeRedemption",
     "PushSubscription",

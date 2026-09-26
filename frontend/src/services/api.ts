@@ -1130,7 +1130,8 @@ export const projects = {
     if (trackId) params.set('track_id', trackId);
     if (runtime) params.set('runtime', runtime);
     const qs = params.toString();
-    return request<ProjectRead[]>(`/projects${qs ? `?${qs}` : ''}`);
+    const path = '/projects' + (qs ? '?' + qs : '');
+    return request<ProjectRead[]>(path);
   },
 
   async get(slug: string) {
