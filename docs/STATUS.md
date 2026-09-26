@@ -1111,3 +1111,26 @@ renumeradas **una vez** con un script (comentarios de código y docs; 0 cambios 
 - **Lección de autoría:** los tres lotes Haiku de distractores se rechazaron (relleno,
   correctas duplicadas, frases cortadas) y sus informes decían lo contrario. Con Sonnet y un
   validador en el scratchpad, sí. El autoinforme de un subagente no es evidencia.
+
+## 2026-09-26 — Conectores de Claude y orden de la cola humana (rama `claude/youthful-allen-i8k7zb`)
+
+**Hecho:** `docs/CONECTORES.md` (19 conectores activos, cuenta medida, clases L/E/H);
+H.33 y H.34 resueltas con el conector de Railway (`[owner] unchanged: admin@whetzy.com`);
+H.41 (Sentry sin proyecto) y H.42 (elegir PostHog o Mixpanel) nuevas. El pre-push estaba
+rojo para toda rama desde el bump a FastAPI 0.141.1 (`018618d`): el test de contrato
+contaba 1 ruta; arreglado en el test (la API de producción servía 141 rutas).
+
+**Orden recomendado de la cola humana para el dueño** (gravedad, luego filas del ledger
+que nombran cada H; ese recuento es una aproximación de cuánto desbloquea):
+
+1. **Producción rota o seguridad:** H.31 (retirar testimonios y «1.2M learners» de la
+   landing) · H.30 (proveedor de correo en Railway) · H.12 (rotar `GROQ_API_KEY`) ·
+   H.13/H.17 (GitHub Actions con límite de gasto a $0) · H.15 (proxy de `vite` apunta a
+   producción) · H.41 (proyecto en Sentry + `SENTRY_DSN`).
+2. **Lo que más desbloquea:** H.23 (17 filas: series 26 y 27) · H.10 (5 filas: cohorte
+   de 30) · H.29 → H.19 → H.20 (8 filas: jurisdicción, rail de pagos, revisión legal) ·
+   H.2 + H.3 + H.14 + H.5 (tiendas: 17.14, 19.2) · H.16 (staging, 30.2 y 31.1).
+3. **Una fila cada una:** H.42, H.35, H.4, H.25, H.26, H.27 · H.22 · H.38, H.39, H.40,
+   H.28, H.24 · H.6, H.7, H.18, H.8, H.9.
+
+Primero el bloque 1; después H.23 y H.29, que juntas desbloquean 20 filas.
