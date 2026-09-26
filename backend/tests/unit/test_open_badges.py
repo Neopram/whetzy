@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -21,18 +21,18 @@ def _ob_key(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("app.core.config.settings.OB_SIGNING_PRIVATE_KEY", pem)
 
 
-CERT_KWARGS = dict(
-    code="abc123deadbeef",
-    username="alice",
-    track_id="track01",
-    track_name_en="Python Fundamentals",
-    track_name_es="Fundamentos de Python",
-    score_pct=85.0,
-    questions=40,
-    issued_at=datetime(2026, 9, 26, 12, 0, 0, tzinfo=timezone.utc),
-    revoked=False,
-    is_certification=False,
-)
+CERT_KWARGS = {
+    "code": "abc123deadbeef",
+    "username": "alice",
+    "track_id": "track01",
+    "track_name_en": "Python Fundamentals",
+    "track_name_es": "Fundamentos de Python",
+    "score_pct": 85.0,
+    "questions": 40,
+    "issued_at": datetime(2026, 9, 26, 12, 0, 0, tzinfo=UTC),
+    "revoked": False,
+    "is_certification": False,
+}
 
 
 def test_build_credential_structure():

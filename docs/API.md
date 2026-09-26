@@ -112,6 +112,8 @@ GET  /exams/certification/{track_id}/readiness → readiness score + domain gaps
 GET  /exams/certification/{track_id}/access    → price, paywall on/off, purchased, can_start (38.7) 🔒
 POST /exams/certification/{track_id}/start     → certifying exam: mock blueprint + Whetzy pass mark (38.7) 🔒
 GET  /exams/certificates/{code}             → PUBLIC, no auth
+GET  /exams/certificates/{code}/badge      → Open Badges 3.0 JSON-LD (29.10), PUBLIC
+GET  /exams/certificates/{code}/qr         → QR code PNG for verification URL (29.10), PUBLIC
 ```
 
 | Endpoint | Gotcha |
@@ -123,6 +125,8 @@ GET  /exams/certificates/{code}             → PUBLIC, no auth
 | Certification mock `pass_pct` | `null` — only `track_final` and `test_out` carry a pass mark |
 | Late submission | Still graded but `status` becomes `expired` and earns **no** certificate |
 | `GET /exams/certificates/{code}` | **Unauthenticated**: the 128-bit code is the only key |
+| `GET /exams/certificates/{code}/badge` | Returns `application/ld+json`; signed with Ed25519 only when `OB_SIGNING_PRIVATE_KEY` is set |
+| `GET /exams/certificates/{code}/qr` | Returns `image/png`; encodes `whetzy.com/verify/{code}` |
 | Certificate uniqueness | One per (user, track); re-sitting returns the same code |
 
 ## Glossary endpoints

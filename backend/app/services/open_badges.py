@@ -12,9 +12,10 @@ from __future__ import annotations
 
 import base64
 import io
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
+import cryptography.exceptions
 import qrcode  # type: ignore[import-untyped]
 from cryptography.hazmat.primitives.asymmetric.ed25519 import (
     Ed25519PrivateKey,
@@ -51,7 +52,6 @@ def _public_key_multibase(pub: Ed25519PublicKey) -> str:
     raw = pub.public_bytes(Encoding.Raw, PublicFormat.Raw)
     # Multicodec ed25519-pub prefix 0xed01 + raw 32 bytes, then base58btc with 'z' prefix
     mc = b"\xed\x01" + raw
-    import hashlib
     alphabet = b"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     n = int.from_bytes(mc, "big")
     result = bytearray()
@@ -94,7 +94,7 @@ def build_credential(
             "name": "Whetzy",
             "url": settings.FRONTEND_BASE_URL,
         },
-        "validFrom": issued_at.astimezone(timezone.utc).isoformat(),
+        "validFrom": issued_at.astimezone(UTC).isoformat(),
         "name": f"Whetzy {achievement_type}: {track_name_en}",
         "credentialSubject": {
             "type": ["AchievementSubject"],
@@ -132,8 +132,8 @@ def sign_credential(credential: dict[str, Any]) -> dict[str, Any]:
     if private_key is None:
         return credential
 
-    import json
     import copy
+    import json
 
     signed = copy.deepcopy(credential)
 
@@ -146,7 +146,7 @@ def sign_credential(credential: dict[str, Any]) -> dict[str, Any]:
     signed["proof"] = {
         "type": "DataIntegrityProof",
         "cryptosuite": "eddsa-jcs-2022",
-        "created": datetime.now(timezone.utc).isoformat(),
+        "created": datetime.now(UTC).isoformat(),
         "verificationMethod": vm_id,
         "proofPurpose": "assertionMethod",
         "proofValue": "z" + base64.b64encode(signature).decode(),
@@ -197,8 +197,8 @@ def verify_proof(credential: dict[str, Any]) -> bool:
         return False
     signature = base64.b64decode(sig_b64[1:])
 
-    import json
     import copy
+    import json
 
     unsigned = copy.deepcopy(credential)
     unsigned.pop("proof", None)
@@ -210,7 +210,7 @@ def verify_proof(credential: dict[str, Any]) -> bool:
     try:
         pub.verify(signature, canonical)
         return True
-    except Exception:
+    except (ValueError, TypeError, cryptography.exceptions.InvalidSignature):
         return False
 
 
