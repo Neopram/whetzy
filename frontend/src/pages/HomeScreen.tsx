@@ -243,6 +243,26 @@ export function HomeScreen() {
         </Card>
       </motion.div>
 
+      {/* Projects shortcut */}
+      <motion.div variants={listItemVariants}>
+        <Card className={styles.playgroundCard}>
+          <span style={{ fontSize: '1.5rem' }}>🏗️</span>
+          <div style={{ flex: 1 }}>
+            <p className={styles.missionTitle}>{t('project.title')}</p>
+            <p style={{ fontSize: 'var(--le-fs-xs)', color: 'var(--le-text-secondary)' }}>
+              {t('project.step')}-by-{t('project.step').toLowerCase()}
+            </p>
+          </div>
+          <motion.button
+            className={styles.btnReview}
+            onClick={() => useAppStore.getState().setScreen('projects')}
+            whileTap={{ scale: 0.94 }}
+          >
+            →
+          </motion.button>
+        </Card>
+      </motion.div>
+
       {/* Territorio: cada skill practicada con su dominio real (BKT). La idea
           es de 24.4; el numero, a diferencia de entonces, sale del motor. */}
       {(skills.data?.length ?? 0) > 0 && (

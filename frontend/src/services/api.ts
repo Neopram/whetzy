@@ -1083,4 +1083,72 @@ export const instructor = {
   },
 };
 
+// ── Projects (18.8 / 19.6) ────────────────────────────────────────────
 
+export interface ProjectStepRead {
+  id: string;
+  step_number: number;
+  title_es: string;
+  title_en: string;
+  instructions_es: string;
+  instructions_en: string;
+  starter_code: string;
+  test_code: string;
+}
+
+export interface ProjectRead {
+  id: string;
+  slug: string;
+  track_id: string;
+  runtime: 'python' | 'sql' | 'js';
+  name_es: string;
+  name_en: string;
+  description_es: string;
+  description_en: string;
+  difficulty: number;
+  source_url: string;
+  source_license: string;
+  order: number;
+}
+
+export interface ProjectDetail extends ProjectRead {
+  steps: ProjectStepRead[];
+}
+
+export interface ProjectSubmissionRead {
+  id: string;
+  project_id: string;
+  current_step: number;
+  completed: boolean;
+  started_at: string;
+  completed_at: string | null;
+}
+
+export const projects = {
+  async list(trackId?: string, runtime?: string) {
+    const params = new URLSearchParams();
+    if (trackId) params.set('track_id', trackId);
+    if (runtime) params.set('runtime', runtime);
+    const qs = params.toString();
+    return request<ProjectRead[]>(`/projects${qs ? `?${qs}` : ''}`);
+  },
+
+  async get(slug: string) {
+    return request<ProjectDetail>(`/projects/${slug}`);
+  },
+
+  async start(slug: string) {
+    return request<ProjectSubmissionRead>(`/projects/${slug}/start`, { method: 'POST' });
+  },
+
+  async progress(slug: string) {
+    return request<ProjectSubmissionRead>(`/projects/${slug}/progress`);
+  },
+
+  async submitStep(slug: string, stepNumber: number, passed: boolean) {
+    return request<ProjectSubmissionRead>(`/projects/${slug}/submit-step`, {
+      method: 'POST',
+      body: JSON.stringify({ step_number: stepNumber, passed }),
+    });
+  },
+};
