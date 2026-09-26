@@ -216,7 +216,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 22.0 | **0** | **REGRESIÓN P0 — el backend de producción estuvo 2 h 30 min en 502.** `alembic upgrade head` moría en `u1v2w3x4y5z6`: la… | **DONE** | **DONE** `414e2f6` (2026-09-19) → §I |
 | 22.10 | **0** | **`POST /auth/login` devolvía 500 con `created_at` naive** (`check_lockout` restaba un datetime sin zona de… | **DONE** | **DONE** `e9161d7` (2026-09-19) → §I |
-| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle… | **PARCIAL** | **PARCIAL** (2026-09-19) → §I |
+| 22.1 | **1** | **Admin sub-app `/admin`** (solo rol `owner`; code-split, fuera del bundle… | **DONE** | **DONE** `7016b9a` (2026-09-26) — 11/11 del criterio: engagement (D30, quiz, accuracy, duels, top skills), tutor-usage, reports, deploy-info (alembic head, deploy), rate-limit-hits `7016b9a`, password_change audit `7016b9a`; 42 tests |
 | 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de… | **DONE** | **DONE** (2026-09-25) → §I |
 | 22.3 | **2** | **Auth hardening**: lockout progresivo tras N fallos, refresh tokens con rotación y revocación, sesiones por dispositivo… | **DONE** | **DONE** → §I |
 | 22.4 | **2** | **Cadena de suministro a €0**: Dependabot (config), `gitleaks` en pre-commit y en `verify_ci_local.ps1`, `bandit` +… | **DONE** | **DONE** → §I |
