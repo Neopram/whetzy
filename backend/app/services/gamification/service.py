@@ -262,6 +262,14 @@ async def get_today_missions(db: AsyncSession, user: User) -> list[UserMissionRe
     ]
 
 
+# Criterios de insignia que `award_badges` sabe calcular. Un criterio del seed que
+# no esté aquí es una insignia imposible; `test_gamification` lo vigila.
+BADGE_CRITERIA_TYPES = frozenset(
+    {"streak", "total_xp", "level", "questions_answered", "skills_mastered", "perfect_session"}
+)
+PERFECT_SESSION_MIN_ANSWERS = 10
+
+
 async def award_badges(db: AsyncSession, user: User) -> list[str]:
     """Grant any badges whose criteria the user now satisfies. Idempotent —
     a UNIQUE (user_id, badge_id) constraint plus an earned-set guard prevents
@@ -269,6 +277,9 @@ async def award_badges(db: AsyncSession, user: User) -> list[str]:
     badges = (await db.execute(select(Badge))).scalars().all()
     if not badges:
         return []
+    # La sesión de la app no hace autoflush: sin esto las estadísticas de abajo leen
+    # la base sin la respuesta que se acaba de contar (la sesión 10/10 sale 9/9).
+    await db.flush()
 
     earned_result = await db.execute(
         select(UserBadge.badge_id).where(UserBadge.user_id == user.id)
@@ -291,12 +302,25 @@ async def award_badges(db: AsyncSession, user: User) -> list[str]:
         )
     ).scalar_one() or 0
 
+    # «Sesión perfecta 10/10»: al menos 10 respuestas y todas correctas en una misma
+    # sesión. Faltaba y la insignia «Perfeccionista» no se concedía nunca (39.5).
+    perfect_sessions = (
+        await db.execute(
+            select(func.count(StudySession.id)).where(
+                StudySession.user_id == user.id,
+                StudySession.questions_answered >= PERFECT_SESSION_MIN_ANSWERS,
+                StudySession.correct_count == StudySession.questions_answered,
+            )
+        )
+    ).scalar_one() or 0
+
     stat_for = {
         "streak": user.current_streak,
         "total_xp": user.total_xp,
         "level": user.level,
         "questions_answered": int(total_questions),
         "skills_mastered": int(skills_mastered),
+        "perfect_session": int(perfect_sessions),
     }
 
     newly: list[str] = []

@@ -38,6 +38,9 @@ export async function registerUser(page: Page, opts: { username: string; display
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(email);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
+  // Casilla de edad (COPPA, 21.3): sin ella el registro no sale del formulario y
+  // todos los specs que registran un usuario se quedaban esperando el onboarding.
+  await page.getByLabel('Confirmo que tengo 13 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
   await suppressOnboarding(page);
