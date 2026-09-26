@@ -15,6 +15,7 @@ from app.models.admin import GDPRRequest
 from app.models.analytics import AnalyticsEvent
 from app.models.antifraud import DeviceFingerprint, FraudReviewQueue
 from app.models.auth import AuditLog, LoginAttempt, RefreshToken, User2FA, UserSession
+from app.models.bootcamp import Bootcamp, BootcampEnrollment, BootcampWeek
 from app.models.campaign import Campaign, CampaignClick
 from app.models.content import Domain, GlossaryTerm, Module, Question, Skill, Track
 from app.models.duel import Duel
@@ -57,6 +58,9 @@ __all__ = [
     "AuditLog",
     "Badge",
     "Base",
+    "Bootcamp",
+    "BootcampEnrollment",
+    "BootcampWeek",
     "Campaign",
     "CampaignClick",
     "Certificate",

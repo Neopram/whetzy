@@ -10,6 +10,7 @@ from app.api.v1.endpoints import (
     auth,
     auth_hardening,
     billing,
+    bootcamp,
     content,
     duels,
     economy,
@@ -57,3 +58,4 @@ api_router.include_router(instructor_marketplace.router, prefix="/instructor", t
 api_router.include_router(economy.router, prefix="/economy", tags=["economy"])
 api_router.include_router(experiments.router, prefix="/experiments", tags=["experiments"])
 api_router.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
+api_router.include_router(bootcamp.router, prefix="/bootcamps", tags=["bootcamps"])
