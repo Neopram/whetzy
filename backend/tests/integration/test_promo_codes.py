@@ -17,6 +17,7 @@ BATCH_URL = "/api/v1/admin/promo/batch"
 
 
 async def _user(db: AsyncSession, **kw: object) -> User:
+    kw.setdefault("email_verified", True)
     u = User(
         id=uuid.uuid4(),
         email=f"promo-{uuid.uuid4().hex[:8]}@whetzy.test",
@@ -59,6 +60,31 @@ async def test_native_client_rejected(client: AsyncClient, db_session, promo):
         )
         assert resp.status_code == 403, f"Platform {platform} should be rejected"
         assert "web app" in resp.json()["detail"]
+
+
+async def test_unverified_email_rejected(client: AsyncClient, db_session, promo):
+    user = await _user(db_session, is_premium=True, subscription_status="active", email_verified=False)
+    resp = await client.post(
+        REDEEM_URL,
+        json={"code": "TESTCODE"},
+        headers=_h(user),
+    )
+    assert resp.status_code == 403
+    assert resp.json()["detail"] == "email_not_verified"
+
+
+async def test_disposable_email_rejected(client: AsyncClient, db_session, promo):
+    user = await _user(db_session, is_premium=True, subscription_status="active")
+    user.email = "test@mailinator.com"
+    user.email_verified = True
+    await db_session.commit()
+    resp = await client.post(
+        REDEEM_URL,
+        json={"code": "TESTCODE"},
+        headers=_h(user),
+    )
+    assert resp.status_code == 403
+    assert resp.json()["detail"] == "disposable_email"
 
 
 async def test_web_client_allowed(client: AsyncClient, db_session, promo):

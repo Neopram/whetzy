@@ -257,7 +257,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.5 | **0** | **Sesión adaptativa con BKT visual**: barra de dominio en vivo, «por qué esta pregunta», feedback explicativo (no solo… | **DONE** | **DONE** → §I |
 | 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
-| 24.7 | **2** | **Panel de certificación**: readiness por dominio (18.1), simulacros (comprables con créditos), certificado… | | |
+| 24.7 | **2** | **Panel de certificación**: readiness por dominio (18.1), simulacros (comprables con créditos), certificado… | **DONE** | **DONE**: ReadinessScreen + MockExamScreen + CertificateScreen + CertificateCard + tests + API endpoints + i18n ES/EN → §I |
 | 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.9 | **2** | **Panel B2B** (`SEGMENTOS.md` segmento 5): progreso por empleado, tiempo, certificaciones, comparativa anónima, import… | | |
 | 24.10 | **3** | **Panel de instructor** (UI de `MARKETPLACE.md` §4) con datos de prueba hasta Serie 28 |… | **DONE** | **DONE** → §I |
@@ -384,7 +384,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.2 | **1** | **Tabla de grifos y sumideros** versionada en `content/economy/credits.json`… | **DONE** | **DONE** (2026-09-25) → §I |
 | 29.3 | **2** | **Referidos**: código permanente por usuario, enlace `/r/<código>` que fija… | **DONE** | **DONE** `89eb7a7`: modelo+endpoint+frontend /r/ ruta+servicio con ladder de créditos → §I |
 | 29.4 | **2** | **Códigos de cinco tipos** (`ECONOMIA.md` §4): generación de lotes (CSV), alfabeto sin `0 O 1… | **DONE** | **DONE** → §I |
-| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **PARCIAL** | **PARCIAL** (2026-09-26) → §I |
+| 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **DONE** | **DONE**: AntiFraudService wired into economy endpoints — `check_email_verified` + `is_disposable_email` guard on promo redeem; full `validate_activation` pipeline on referral activate (email, disposable, self-referral, device/IP, velocity); 77 tests pass → §I |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | **DONE**: 3 endpoints — `/economy/credits` con summary (emitted/spent/expired, sink_source_ratio, inflation_alert, by_reason) + rows; `/economy/referrals`; `/economy/k-factor` → §I |
 | 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | | |
 | 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | | |
@@ -482,7 +482,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 35.5 | **1** | ***Readiness* por dominio como producto estrella de las rutas cloud y seguridad**, en ES y EN: visible desde Tracks y la… | **DONE** | **DONE** → §I |
 | 35.6 | **2** | **Refresco trimestral de §A.1**: re-descargar las páginas de precios, cambiar cifras y `COMPARISON_CHECKED_ON` | TODO —… | |
 | 35.7 | **1** | **Precios del dueño en producto** (ADR-41): landing con 4 planes, perfil, comparativa; tier `creator` (rango sobre `pro`),… | **DONE** | **DONE** → §I |
-| 35.8 | **2** | **Cada deploy de Railway deja ~1 min de 502/503.** Medido 2026-09-24: tras los pushes `a6a5a91` y `f2ea9cb`, `/health` dio… | | |
+| 35.8 | **2** | **Cada deploy de Railway deja ~1 min de 502/503.** Medido 2026-09-24: tras los pushes `a6a5a91` y `f2ea9cb`, `/health` dio… | **DONE** | **DONE**: railway.toml healthcheckPath=/health 120s + lifespan shutdown handler con close_db() → §I |
 | 35.9 | **2** | **El nivel 2 de la puerta (`ci_local.sh`) corre sobre el árbol… | **PARCIAL** | **PARCIAL** `a021e92` (2026-09-24) → §I |
 
 
@@ -524,7 +524,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 38.2 | **2** | **Oferta de 3 pilotos B2B gratuitos** (ADR-22): documento ES/EN (qué damos, qué pedimos: testimonio y datos de uso, 90… | | |
 | 38.3 | **2** | **Dossier de afiliación** Python Institute y CompTIA (`archive/whetzy_estrategia_definitiva_v3.md:392`): condiciones,… | | |
 | 38.4 | **3** | **Kit de reclutamiento de instructores** — es la fila 28.9; aquí solo para que la serie 38 lo… | **DONE** | **DONE** → §I |
-| 38.5 | **3** | **Página `/evidence` como única prueba social** (19.8, 30.1): cifras del banco y del motor calculadas en build, cero… | | |
+| 38.5 | **3** | **Página `/evidence` como única prueba social** (19.8, 30.1): cifras del banco y del motor calculadas en build, cero… | **DONE** | **DONE**: EvidenceScreen.tsx + CSS module + ruta registrada en App.tsx → §I |
 | 38.6 | **2** | **Pro Max = tutor IA ilimitado; Pro con cupo diario** (ADR-49). `POST… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
 | 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
 

@@ -7,13 +7,16 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from pydantic import BaseModel
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_db
 from app.core.rate_limiter import InMemoryRateLimiter
 from app.core.security import get_current_user
+from app.models.economy import ReferralCode
 from app.models.user import User
 from app.services import streak_shop
+from app.services.antifraud import AntiFraudService
 from app.services.economy import CreditsService, PromoCodeService, ReferralService
 
 _promo_limiter = InMemoryRateLimiter()
@@ -109,6 +112,18 @@ async def redeem_promo_code(
             detail="Promo codes can only be redeemed from the web app",
         )
 
+    if not await AntiFraudService.check_email_verified(db, current_user.id):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="email_not_verified",
+        )
+
+    if AntiFraudService.is_disposable_email(current_user.email or ""):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="disposable_email",
+        )
+
     if not await _promo_limiter.is_allowed(
         f"promo:{current_user.id}", limit=5, window_seconds=600
     ):
@@ -134,21 +149,46 @@ async def redeem_promo_code(
 @router.post("/referral/activate")
 async def activate_referral(
     request: ReferralActivateRequest,
+    http_request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, object]:
     """Register referral during onboarding."""
     if not request.referral_code:
         return {"activated": False, "message": "No referral code provided"}
-    
+
+    ref_result = await db.execute(
+        select(ReferralCode).where(ReferralCode.code == request.referral_code)
+    )
+    ref_code_obj = ref_result.scalar()
+    if not ref_code_obj:
+        return {"activated": False, "message": "Invalid referral code"}
+
+    device_fp = http_request.headers.get("X-Device-Fingerprint")
+    ip_addr = http_request.headers.get("X-Forwarded-For", http_request.client.host if http_request.client else "")
+
+    allowed, reason = await AntiFraudService.validate_activation(
+        db,
+        referred_user_id=current_user.id,
+        referred_email=current_user.email or "",
+        referrer_id=ref_code_obj.user_id,
+        device_fingerprint=device_fp,
+        ip_address=ip_addr or None,
+    )
+    if not allowed:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=reason,
+        )
+
     referrer_id = await ReferralService.register_referral(
         db, request.referral_code, current_user.id
     )
     await db.commit()
-    
+
     if not referrer_id:
         return {"activated": False, "message": "Invalid referral code"}
-    
+
     return {"activated": True, "referrer_id": str(referrer_id)}
 
 
