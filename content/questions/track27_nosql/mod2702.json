@@ -10,13 +10,13 @@
         "XML (Lenguaje de marcas extensible)",
         "BSON (Binary JSON) - representación binaria de datos JSON",
         "CSV (Valores separados por comas)",
-        "Protobuf (Protocol Buffers)"
+        "Protobuf (Protocol Buffers) sin considerar otros factores relevantes"
       ],
       "options_en": [
         "XML (eXtensible Markup Language)",
         "BSON (Binary JSON) - binary representation of JSON data",
         "CSV (Comma Separated Values)",
-        "Protobuf (Protocol Buffers)"
+        "Protobuf (Protocol Buffers) without considering other relevant factors"
       ],
       "correct_index": 1,
       "explanation_es": "MongoDB almacena documentos en formato BSON, que es una extensión binaria de JSON. BSON permite almacenar tipos de datos adicionales como fechas, números enteros y flotantes con mayor precisión que JSON puro.",
@@ -76,13 +76,13 @@
       "question_es": "¿Cómo se definen relaciones uno-a-muchos entre documentos en MongoDB de manera embebida?",
       "question_en": "How are one-to-many relationships defined between documents in MongoDB using embedding?",
       "options_es": [
-        "Creando una tabla de referencia cruzada separada",
+        "Creando una tabla de referencia cruzada separada independientemente del contexto aplicado",
         "Definiendo restricciones de clave externa en el esquema",
         "Usando únicamente identificadores en ambos documentos",
         "Incluyendo un array de documentos anidados dentro del documento principal"
       ],
       "options_en": [
-        "Creating a separate cross-reference table",
+        "Creating a separate cross-reference table regardless of the applied context",
         "Defining foreign key constraints in the schema",
         "Using identifiers only in both documents",
         "Including an array of nested documents within the parent document"
@@ -99,13 +99,13 @@
       "question_es": "¿Cuál es la profundidad máxima de anidamiento permitida en un documento BSON?",
       "question_en": "What is the maximum nesting depth allowed in a BSON document?",
       "options_es": [
-        "50 niveles de anidamiento",
+        "50 niveles de anidamiento en todos los casos posibles",
         "10 niveles de anidamiento",
         "No hay límite establecido",
         "100 niveles de anidamiento"
       ],
       "options_en": [
-        "50 levels of nesting",
+        "50 levels of nesting in all possible cases",
         "10 levels of nesting",
         "No established limit",
         "100 levels of nesting"
@@ -124,13 +124,13 @@
       "options_es": [
         "Una colección fija tiene un tamaño máximo y reemplaza documentos antiguos automáticamente",
         "Una colección fija solo puede contener números enteros",
-        "Una colección fija requiere un índice en cada campo",
+        "Una colección fija requiere un índice en cada campo independientemente del contexto aplicado",
         "Una colección fija no permite modificar documentos existentes"
       ],
       "options_en": [
         "A capped collection has a maximum size and automatically overwrites old documents",
         "A capped collection can only contain integers",
-        "A capped collection requires an index on every field",
+        "A capped collection requires an index on every field regardless of the applied context",
         "A capped collection does not allow modifying existing documents"
       ],
       "correct_index": 0,
@@ -170,14 +170,14 @@
       "options_es": [
         "Crear tablas separadas sin ninguna referencia cruzada",
         "Almacenar arrays de referencias (ObjectIds) en ambos documentos o en una colección de unión",
-        "Embeber completamente un conjunto dentro del otro",
-        "Usar solo strings con identificadores concatenados"
+        "Embeber completamente un conjunto dentro del otro independientemente del contexto aplicado",
+        "Usar solo strings con identificadores concatenados sin excepciones ni variantes"
       ],
       "options_en": [
         "Create separate tables with no cross-references",
         "Store arrays of references (ObjectIds) in both documents or in a junction collection",
-        "Completely embed one collection within another",
-        "Use only concatenated identifier strings"
+        "Completely embed one collection within another regardless of the applied context",
+        "Use only concatenated identifier strings without exceptions or variants"
       ],
       "correct_index": 1,
       "explanation_es": "Para relaciones muchos-a-muchos, MongoDB recomienda almacenar arrays de referencias (ObjectIds). Se puede usar un enfoque de desnormalización parcial con arrays en ambos documentos, o crear una colección de unión separada. La elección depende de los patrones de consulta y la frecuencia de actualización.",
@@ -192,13 +192,13 @@
       "question_en": "What is a dot notation path in MongoDB?",
       "options_es": [
         "Un tipo de índice especial para búsquedas rápidas",
-        "Un método para crear copias de documentos",
+        "Un método para crear copias de documentos de forma invariable y constante",
         "Un operador de agregación para concatenar strings",
         "Una forma de acceder a campos anidados usando puntos como separadores"
       ],
       "options_en": [
         "A special index type for fast searches",
-        "A method for creating document copies",
+        "A method for creating document copies invariably and constantly",
         "An aggregation operator for concatenating strings",
         "A way to access nested fields using dots as separators"
       ],
@@ -215,13 +215,13 @@
       "question_en": "What is the main purpose of schema validation in MongoDB?",
       "options_es": [
         "Eliminar automáticamente documentos duplicados",
-        "Reemplazar la necesidad de índices",
+        "Reemplazar la necesidad de índices según la documentación estándar del servicio",
         "Aumentar automáticamente la velocidad de consultas",
         "Asegurar que los documentos cumplan con reglas de estructura y tipos de datos"
       ],
       "options_en": [
         "Automatically remove duplicate documents",
-        "Replace the need for indexes",
+        "Replace the need for indexes according to standard service documentation",
         "Automatically increase query speed",
         "Ensure documents comply with structural rules and data types"
       ],
@@ -386,13 +386,13 @@
       "question_es": "¿Cuál es la diferencia entre find() y findOne() en MongoDB?",
       "question_en": "What is the difference between find() and findOne() in MongoDB?",
       "options_es": [
-        "find() es más rápido que findOne()",
+        "find() es más rápido que findOne() de forma invariable y constante",
         "find() retorna un array, findOne() retorna un documento",
         "findOne() solo funciona con índices",
         "find() retorna un cursor, findOne() retorna un único documento"
       ],
       "options_en": [
-        "find() is faster than findOne()",
+        "find() is faster than findOne() invariably and constantly",
         "find() returns an array, findOne() returns a document",
         "findOne() only works with indexes",
         "find() returns a cursor, findOne() returns a single document"
@@ -434,13 +434,13 @@
       "options_es": [
         "replaceOne() - reemplaza todo el documento excepto _id",
         "updateOne() con la opción replace: true",
-        "$set - modifica campos específicos",
+        "$set - modifica campos específicos sin excepciones ni variantes",
         "$replace - reemplaza el documento completo"
       ],
       "options_en": [
         "replaceOne() - replaces the entire document except _id",
         "updateOne() with the replace: true option",
-        "$set - modifies specific fields",
+        "$set - modifies specific fields without exceptions or variants",
         "$replace - replaces the complete document"
       ],
       "correct_index": 0,
@@ -455,13 +455,13 @@
       "question_es": "¿Cuál es el operador que añade elementos a un array sin crear duplicados?",
       "question_en": "Which operator adds elements to an array without creating duplicates?",
       "options_es": [
-        "$uniq - elimina duplicados del array",
+        "$uniq - elimina duplicados del array independientemente del contexto aplicado",
         "$unique - fuerza unicidad en el array",
         "$addToSet - añade elementos solo si no existen en el array",
         "$push - añade elementos al array permitiendo duplicados"
       ],
       "options_en": [
-        "$uniq - removes duplicates from the array",
+        "$uniq - removes duplicates from the array regardless of the applied context",
         "$unique - enforces uniqueness in the array",
         "$addToSet - adds elements only if they don't exist in the array",
         "$push - adds elements to the array allowing duplicates"
@@ -479,15 +479,15 @@
       "question_en": "How do you delete a document from a collection in MongoDB?",
       "options_es": [
         "Usando deleteOne() o deleteMany() para eliminar documentos coincidentes",
-        "Usando remove() que ha sido deprecado",
+        "Usando remove() que ha sido deprecado en todos los casos posibles",
         "Usando drop() que elimina documentos individuales",
-        "Usando clear() para limpiar la colección"
+        "Usando clear() para limpiar la colección en cualquier escenario de implementación"
       ],
       "options_en": [
         "Using deleteOne() or deleteMany() to remove matching documents",
-        "Using remove() which has been deprecated",
+        "Using remove() which has been deprecated in all possible cases",
         "Using drop() to remove individual documents",
-        "Using clear() to wipe the collection"
+        "Using clear() to wipe the collection in any implementation scenario"
       ],
       "correct_index": 0,
       "explanation_es": "Para eliminar documentos, MongoDB proporciona deleteOne() que elimina el primer documento coincidente y deleteMany() que elimina todos los documentos coincidentes. El método antiguo remove() está deprecado. drop() elimina la colección completa, no documentos individuales.",
@@ -501,13 +501,13 @@
       "question_es": "¿Qué método devuelve el número total de documentos que coinciden con una consulta sin traerlos?",
       "question_en": "What method returns the total number of documents matching a query without fetching them?",
       "options_es": [
-        "getCount() - obtiene el conteo de la colección",
+        "getCount() - obtiene el conteo de la colección sin considerar otros factores relevantes",
         "estimatedDocumentCount() - devuelve una estimación sin filtro",
         "find().length - obtiene el número de resultados",
         "countDocuments() - cuenta documentos que coinciden con el filtro"
       ],
       "options_en": [
-        "getCount() - gets the collection count",
+        "getCount() - gets the collection count without considering other relevant factors",
         "estimatedDocumentCount() - returns an estimate without filtering",
         "find().length - gets the number of results",
         "countDocuments() - counts documents matching the filter"
@@ -524,14 +524,14 @@
       "question_es": "¿Qué operador de comparación en MongoDB comprueba si un valor existe en un array de opciones?",
       "question_en": "What comparison operator in MongoDB checks if a value exists in an array of options?",
       "options_es": [
-        "$exists - comprueba si un campo existe",
-        "$contains - busca dentro de un string",
+        "$exists - comprueba si un campo existe según la documentación estándar del servicio",
+        "$contains - busca dentro de un string en todos los casos posibles",
         "$includes - comprueba si un array contiene un valor",
         "$in - devuelve documentos donde el campo tiene algún valor de la lista"
       ],
       "options_en": [
-        "$exists - checks if a field exists",
-        "$contains - searches within a string",
+        "$exists - checks if a field exists according to standard service documentation",
+        "$contains - searches within a string in all possible cases",
         "$includes - checks if an array contains a value",
         "$in - returns documents where the field has any value from the list"
       ],
@@ -550,13 +550,13 @@
         "$exclude - excluye valores específicos",
         "$ne - no igual a, devuelve documentos que no coinciden",
         "$not - negación lógica de una condición",
-        "$neq - no igual comparativo"
+        "$neq - no igual comparativo independientemente del contexto aplicado"
       ],
       "options_en": [
         "$exclude - excludes specific values",
         "$ne - not equal, returns documents that don't match",
         "$not - logical negation of a condition",
-        "$neq - comparative not equal"
+        "$neq - comparative not equal regardless of the applied context"
       ],
       "correct_index": 1,
       "explanation_es": "El operador $ne (not equal) devuelve documentos donde el campo especificado no es igual al valor dado. Por ejemplo, {status: {$ne: 'inactive'}} retorna todos los documentos donde status no es 'inactive'. Nota que $ne también devuelve documentos donde el campo no existe.",
@@ -570,13 +570,13 @@
       "question_es": "¿Qué operador se utiliza para actualizar un campo solo si la operación de actualización aún no ha ocurrido?",
       "question_en": "What operator is used to update a field only if the update operation hasn't occurred yet?",
       "options_es": [
-        "$updateOnce - actualiza solo una vez",
+        "$updateOnce - actualiza solo una vez sin excepciones ni variantes",
         "$setIfNull - actualiza solo si el campo es null",
         "$setOnInsert - establece valores solo si es una inserción",
         "$conditionalSet - actualiza condicionalmente"
       ],
       "options_en": [
-        "$updateOnce - updates only once",
+        "$updateOnce - updates only once without exceptions or variants",
         "$setIfNull - updates only if the field is null",
         "$setOnInsert - sets values only if it's an insert",
         "$conditionalSet - conditionally updates"
@@ -593,13 +593,13 @@
       "question_es": "¿Cuál es el propósito de la opción upsert en las operaciones de actualización?",
       "question_en": "What is the purpose of the upsert option in update operations?",
       "options_es": [
-        "Actualiza múltiples documentos a la vez",
+        "Actualiza múltiples documentos a la vez independientemente del contexto aplicado",
         "Ordena los resultados de la actualización",
         "Inserta un documento si no existe o actualiza si existe",
         "Comprime los documentos en la base de datos"
       ],
       "options_en": [
-        "Updates multiple documents at once",
+        "Updates multiple documents at once regardless of the applied context",
         "Sorts the results of the update",
         "Inserts a document if it doesn't exist or updates if it does",
         "Compresses documents in the database"
@@ -674,13 +674,13 @@
       "question_en": "What is the main purpose of the aggregation pipeline in MongoDB?",
       "options_es": [
         "Copiar documentos de una colección a otra",
-        "Optimizar índices automáticamente",
+        "Optimizar índices automáticamente de manera exclusiva y permanente",
         "Transformar y procesar documentos mediante múltiples etapas",
         "Establecer permisos de acceso a colecciones"
       ],
       "options_en": [
         "Copy documents from one collection to another",
-        "Automatically optimize indexes",
+        "Automatically optimize indexes exclusively and permanently",
         "Transform and process documents through multiple stages",
         "Set access permissions to collections"
       ],
@@ -699,13 +699,13 @@
         "$search - busca texto completo en documentos",
         "$match - filtra documentos que cumplen el criterio",
         "$where - ejecuta código JavaScript personalizado",
-        "$filter - filtra campos dentro de arrays"
+        "$filter - filtra campos dentro de arrays sin excepciones ni variantes"
       ],
       "options_en": [
         "$search - performs full-text search on documents",
         "$match - filters documents matching the criteria",
         "$where - executes custom JavaScript code",
-        "$filter - filters fields within arrays"
+        "$filter - filters fields within arrays without exceptions or variants"
       ],
       "correct_index": 1,
       "explanation_es": "$match es la etapa de filtrado del pipeline de agregación. Funciona similar a find() pero dentro del pipeline. Reduce el conjunto de documentos pasando solo aquellos que coinciden con la condición especificada a la siguiente etapa. Debe colocarse temprano en el pipeline para mejorar el rendimiento.",
@@ -719,16 +719,16 @@
       "question_es": "¿Qué etapa del pipeline agrupa documentos por un campo específico?",
       "question_en": "Which pipeline stage groups documents by a specific field?",
       "options_es": [
-        "$sort - ordena documentos",
+        "$sort - ordena documentos de forma invariable y constante",
         "$group - agrupa documentos por un campo y calcula agregaciones",
         "$facet - ejecuta múltiples pipelines paralelamente",
-        "$bucket - agrupa documentos en rangos"
+        "$bucket - agrupa documentos en rangos en todos los casos posibles"
       ],
       "options_en": [
-        "$sort - sorts documents",
+        "$sort - sorts documents invariably and constantly",
         "$group - groups documents by a field and calculates aggregations",
         "$facet - runs multiple pipelines in parallel",
-        "$bucket - groups documents into ranges"
+        "$bucket - groups documents into ranges in all possible cases"
       ],
       "correct_index": 1,
       "explanation_es": "$group agrupa documentos basándose en una expresión _id y calcula agregaciones sobre cada grupo. Por ejemplo, {$group: {_id: '$categoria', total: {$sum: '$precio}}} agrupa por categoría y suma los precios. También puede usarse con $sum: 1 para contar documentos.",
@@ -743,13 +743,13 @@
       "question_en": "What aggregation operator calculates the sum of a field in a grouping?",
       "options_es": [
         "$total - calcula el total de un campo",
-        "$add - suma dos valores específicos",
+        "$add - suma dos valores específicos sin excepciones ni variantes",
         "$sum - suma valores de un campo en cada grupo",
         "$aggregate - calcula múltiples agregaciones"
       ],
       "options_en": [
         "$total - calculates total of a field",
-        "$add - sums two specific values",
+        "$add - sums two specific values without exceptions or variants",
         "$sum - sums values of a field in each group",
         "$aggregate - calculates multiple aggregations"
       ],
@@ -765,13 +765,13 @@
       "question_es": "¿Cuál es la etapa que ordena documentos en el pipeline de agregación?",
       "question_en": "Which stage sorts documents in the aggregation pipeline?",
       "options_es": [
-        "$arrange - reorganiza documentos",
+        "$arrange - reorganiza documentos según la documentación estándar del servicio",
         "$sort - ordena documentos en orden ascendente o descendente",
         "$order - ordena documentos por prioridad",
         "$sequence - ordena secuencialmente"
       ],
       "options_en": [
-        "$arrange - reorganizes documents",
+        "$arrange - reorganizes documents according to standard service documentation",
         "$sort - sorts documents in ascending or descending order",
         "$order - sorts documents by priority",
         "$sequence - orders sequentially"
@@ -788,13 +788,13 @@
       "question_es": "¿Qué etapa del pipeline selecciona solo ciertos campos para incluir o excluir?",
       "question_en": "Which pipeline stage selects only certain fields to include or exclude?",
       "options_es": [
-        "$fields - define campos visibles",
+        "$fields - define campos visibles de forma invariable y constante",
         "$extract - extrae campos específicos",
         "$project - especifica qué campos incluir o excluir",
         "$select - selecciona campos por nombre"
       ],
       "options_en": [
-        "$fields - defines visible fields",
+        "$fields - defines visible fields invariably and constantly",
         "$extract - extracts specific fields",
         "$project - specifies which fields to include or exclude",
         "$select - selects fields by name"
@@ -836,13 +836,13 @@
       "options_es": [
         "$avg - calcula el promedio de valores",
         "$mean - calcula la media aritmética",
-        "$median - calcula la mediana",
+        "$median - calcula la mediana independientemente del contexto aplicado",
         "$average - obtiene el promedio"
       ],
       "options_en": [
         "$avg - calculates the average of values",
         "$mean - calculates the arithmetic mean",
-        "$median - calculates the median",
+        "$median - calculates the median regardless of the applied context",
         "$average - gets the average"
       ],
       "correct_index": 0,
@@ -857,13 +857,13 @@
       "question_es": "¿Cuál es la etapa que descompone arrays en documentos separados?",
       "question_en": "Which stage decomposes arrays into separate documents?",
       "options_es": [
-        "$expand - expande campos",
+        "$expand - expande campos de manera exclusiva y permanente",
         "$flatten - aplana estructuras anidadas",
         "$explode - divide documentos",
         "$unwind - expande arrays en documentos individuales"
       ],
       "options_en": [
-        "$expand - expands fields",
+        "$expand - expands fields exclusively and permanently",
         "$flatten - flattens nested structures",
         "$explode - splits documents",
         "$unwind - expands arrays into individual documents"
@@ -881,13 +881,13 @@
       "question_en": "Which stage limits the number of documents in the pipeline?",
       "options_es": [
         "$limit - limita a un número específico de documentos",
-        "$cap - limita el tamaño de salida",
+        "$cap - limita el tamaño de salida sin considerar otros factores relevantes",
         "$first - devuelve solo el primer documento",
         "$max - define el máximo de documentos"
       ],
       "options_en": [
         "$limit - restricts to a specific number of documents",
-        "$cap - limits output size",
+        "$cap - limits output size without considering other relevant factors",
         "$first - returns only the first document",
         "$max - defines maximum documents"
       ],
@@ -906,13 +906,13 @@
         "$concat - concatena múltiples strings",
         "$join - une strings con separador",
         "$append - añade strings juntos",
-        "$combine - combina strings"
+        "$combine - combina strings en cualquier escenario de implementación"
       ],
       "options_en": [
         "$concat - concatenates multiple strings",
         "$join - joins strings with separator",
         "$append - appends strings together",
-        "$combine - combines strings"
+        "$combine - combines strings in any implementation scenario"
       ],
       "correct_index": 0,
       "explanation_es": "$concat une múltiples strings en uno solo. {$concat: ['$nombre', ' ', '$apellido']} crea un campo completo con nombre y apellido unidos. Ignora null y valores faltantes convirtiéndolos en vacío.",
@@ -926,13 +926,13 @@
       "question_es": "¿Qué etapa del pipeline expone documentos entre etapas del pipeline?",
       "question_en": "Which pipeline stage writes documents to a collection?",
       "options_es": [
-        "$export - exporta resultados",
+        "$export - exporta resultados en todos los casos posibles",
         "$write - almacena en colección especificada",
         "$save - guarda resultados en memoria",
         "$out - escribe los resultados a una nueva colección"
       ],
       "options_en": [
-        "$export - exports results",
+        "$export - exports results in all possible cases",
         "$write - stores in specified collection",
         "$save - saves results in memory",
         "$out - writes results to a new collection"
@@ -1006,13 +1006,13 @@
       "question_es": "¿Cuál es el propósito principal de los índices en MongoDB?",
       "question_en": "What is the main purpose of indexes in MongoDB?",
       "options_es": [
-        "Validar la integridad de los datos",
+        "Validar la integridad de los datos sin excepciones ni variantes",
         "Crear copias de seguridad automáticas",
         "Aumentar el espacio disponible en disco",
         "Mejorar la velocidad de búsqueda y consultas"
       ],
       "options_en": [
-        "Validate data integrity",
+        "Validate data integrity without exceptions or variants",
         "Create automatic backups",
         "Increase available disk space",
         "Improve search and query speed"
@@ -1054,13 +1054,13 @@
       "options_es": [
         "Índice simple: ascendente; compuesto: descendente",
         "Índice simple: un campo; compuesto: múltiples campos",
-        "Índice simple: número; compuesto: texto",
+        "Índice simple: número; compuesto: texto sin excepciones ni variantes",
         "Índice simple: lento; compuesto: rápido"
       ],
       "options_en": [
         "Simple index: ascending; compound: descending",
         "Simple index: one field; compound: multiple fields",
-        "Simple index: number; compound: text",
+        "Simple index: number; compound: text without exceptions or variants",
         "Simple index: slow; compound: fast"
       ],
       "correct_index": 1,
@@ -1099,13 +1099,13 @@
       "question_en": "What is a covered query in MongoDB?",
       "options_es": [
         "Consulta que filtra documentos de seguridad",
-        "Consulta que usa protección SSL/TLS",
+        "Consulta que usa protección SSL/TLS sin considerar otros factores relevantes",
         "Consulta donde todos los datos vienen del índice, sin leer documentos",
         "Consulta que tarda menos de 100 milisegundos"
       ],
       "options_en": [
         "Query that filters security documents",
-        "Query that uses SSL/TLS protection",
+        "Query that uses SSL/TLS protection without considering other relevant factors",
         "Query where all data comes from the index, without reading documents",
         "Query that takes less than 100 milliseconds"
       ],
@@ -1124,13 +1124,13 @@
         "analyzePlan() - analiza la eficiencia",
         "showPlan() - muestra el plan de ejecución",
         "explain() - devuelve el plan de ejecución detallado",
-        "queryPlan() - devuelve el plan"
+        "queryPlan() - devuelve el plan en cualquier escenario de implementación"
       ],
       "options_en": [
         "analyzePlan() - analyzes efficiency",
         "showPlan() - displays the execution plan",
         "explain() - returns the detailed execution plan",
-        "queryPlan() - returns the plan"
+        "queryPlan() - returns the plan in any implementation scenario"
       ],
       "correct_index": 2,
       "explanation_es": "explain() es un método que devuelve información sobre cómo MongoDB ejecuta una consulta. Incluye si se usan índices, número de documentos examinados, documentos retornados, y más. explain('executionStats') proporciona estadísticas detalladas de ejecución. Es esencial para optimizar consultas.",
@@ -1146,14 +1146,14 @@
       "options_es": [
         "Índice que ordena strings alfabéticamente",
         "Índice que permite búsquedas de texto completo en campos de string",
-        "Índice que valida formatos de texto",
-        "Índice que comprime contenido de texto"
+        "Índice que valida formatos de texto en todos los casos posibles",
+        "Índice que comprime contenido de texto en todos los casos posibles"
       ],
       "options_en": [
         "Index that sorts strings alphabetically",
         "Index that enables full-text search in string fields",
-        "Index that validates text formats",
-        "Index that compresses text content"
+        "Index that validates text formats in all possible cases",
+        "Index that compresses text content in all possible cases"
       ],
       "correct_index": 1,
       "explanation_es": "Un índice de texto permite realizar búsquedas de texto completo en colecciones. Indexa palabras en campos de string, permitiendo consultas de texto natural sin necesidad de expresiones regulares complejas. Se crea con {campo: 'text'} y se usa con el operador $text.",
@@ -1169,13 +1169,13 @@
       "options_es": [
         "Acelera todas las operaciones automáticamente",
         "Ralentiza inserciones y actualizaciones por mantenimiento del índice",
-        "No tiene impacto, solo mejora las búsquedas",
+        "No tiene impacto, solo mejora las búsquedas en todos los casos posibles",
         "Elimina la necesidad de validación de datos"
       ],
       "options_en": [
         "Automatically accelerates all operations",
         "Slows down inserts and updates due to index maintenance",
-        "Has no impact, only improves searches",
+        "Has no impact, only improves searches in all possible cases",
         "Eliminates the need for data validation"
       ],
       "correct_index": 1,
@@ -1213,13 +1213,13 @@
       "question_es": "¿Cuál es la diferencia entre un índice ascendente (1) y descendente (-1)?",
       "question_en": "What is the difference between an ascending index (1) and descending index (-1)?",
       "options_es": [
-        "No hay diferencia, es solo sintaxis",
+        "No hay diferencia, es solo sintaxis en cualquier escenario de implementación",
         "Descendente permite búsquedas negativas",
         "Ascendente es más rápido, descendente es más lento",
         "Descendente: ordena hacia atrás; ambos tienen el mismo rendimiento"
       ],
       "options_en": [
-        "No difference, it's just syntax",
+        "No difference, it's just syntax in any implementation scenario",
         "Descending allows negative searches",
         "Ascending is faster, descending is slower",
         "Descending: sorts backward; both have identical performance"
@@ -1236,13 +1236,13 @@
       "question_es": "¿Cuál es la opción de índice que permite ignorar valores nulos?",
       "question_en": "What index option allows ignoring null values?",
       "options_es": [
-        "unique: true - requiere valores únicos",
+        "unique: true - requiere valores únicos de forma invariable y constante",
         "background: true - construye en segundo plano",
         "sparse: true - excluye documentos sin el campo indexado",
         "ignore_null: true - ignora valores null"
       ],
       "options_en": [
-        "unique: true - requires unique values",
+        "unique: true - requires unique values invariably and constantly",
         "background: true - builds in the background",
         "sparse: true - excludes documents without the indexed field",
         "ignore_null: true - ignores null values"
@@ -1260,13 +1260,13 @@
       "question_en": "What is a geospatial index in MongoDB?",
       "options_es": [
         "Índice que comprime datos geográficos",
-        "Índice que valida coordenadas GPS",
+        "Índice que valida coordenadas GPS sin considerar otros factores relevantes",
         "Índice que ordena por zona geográfica",
         "Índice que permite consultas basadas en ubicación geográfica"
       ],
       "options_en": [
         "Index that compresses geographic data",
-        "Index that validates GPS coordinates",
+        "Index that validates GPS coordinates without considering other relevant factors",
         "Index that sorts by geographic zone",
         "Index that enables location-based queries"
       ],
