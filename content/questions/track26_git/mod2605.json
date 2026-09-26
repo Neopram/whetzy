@@ -7,16 +7,16 @@
       "question_es": "En GitFlow, ¿cuál es el propósito principal de la rama 'develop'?",
       "question_en": "In GitFlow, what is the primary purpose of the 'develop' branch?",
       "options_es": [
-        "Servir como rama de integración para features completadas",
-        "Mantener solo código de producción estable",
-        "Aislar hotfixes críticos",
-        "Ejecutar pruebas automatizadas exclusivamente"
+        "Integrar los features ya completados",
+        "Alojar únicamente código de producción estable",
+        "Aislar exclusivamente los hotfixes críticos",
+        "Ejecutar únicamente pruebas automatizadas"
       ],
       "options_en": [
-        "Serve as integration branch for completed features",
-        "Maintain only stable production code",
-        "Isolate critical hotfixes",
-        "Run automated tests exclusively"
+        "Integrate already-completed features",
+        "Host only stable production-ready code",
+        "Isolate only critical hotfix work",
+        "Run only the automated test suite"
       ],
       "correct_index": 0,
       "explanation_es": "La rama 'develop' en GitFlow actúa como rama de integración donde se combinan las features completadas. Es el punto de partida para nuevas features y el origen de release branches.",
@@ -31,15 +31,15 @@
       "question_en": "In GitFlow, feature branches are typically created from which branch?",
       "options_es": [
         "master",
-        "release",
+        "hotfix",
         "develop",
-        "hotfix"
+        "release"
       ],
       "options_en": [
         "master",
-        "release",
+        "hotfix",
         "develop",
-        "hotfix"
+        "release"
       ],
       "correct_index": 2,
       "explanation_es": "Las ramas de feature se crean desde la rama 'develop' y se fusionan de vuelta a 'develop' cuando se completan. Esto permite que múltiples features se desarrollen en paralelo.",
@@ -53,16 +53,16 @@
       "question_es": "¿Cuál es el propósito de una rama 'release' en GitFlow?",
       "question_en": "What is the purpose of a 'release' branch in GitFlow?",
       "options_es": [
-        "Mantener correcciones de bugs de versiones antiguas",
-        "Aislar cambios de última hora para una versión próxima a lanzarse",
-        "Desarrollar nuevas features antes del merge a develop",
-        "Ejecutar integración continua de todas las ramas según la documentación oficial"
+        "Mantener las correcciones de versiones ya publicadas",
+        "Aislar los ajustes finales antes de un lanzamiento",
+        "Desarrollar features nuevas para la próxima versión",
+        "Ejecutar integración continua para todas las ramas"
       ],
       "options_en": [
-        "Maintain bug fixes for old versions",
-        "Isolate last-minute changes for an upcoming release",
-        "Develop new features before merge to develop",
-        "Run continuous integration for all branches for most projects"
+        "Maintain fixes for already-published versions",
+        "Isolate final tweaks before a release ships",
+        "Develop brand-new features for the next version",
+        "Run continuous integration across every branch"
       ],
       "correct_index": 1,
       "explanation_es": "Una rama 'release' se crea desde 'develop' cuando se aproxima un lanzamiento. Permite correcciones de bugs y ajustes de última hora sin bloquear el desarrollo de nuevas features.",
@@ -76,15 +76,15 @@
       "question_es": "En GitFlow, ¿a dónde se fusiona una rama 'release' completada?",
       "question_en": "In GitFlow, where is a completed 'release' branch merged?",
       "options_es": [
-        "A feature branches activas",
-        "Solo a master",
-        "Solo a develop dentro de este paradigma",
+        "Únicamente a la rama master de producción",
+        "Únicamente de vuelta a develop",
+        "A las ramas feature que sigan activas",
         "A master y de vuelta a develop"
       ],
       "options_en": [
-        "To active feature branches",
-        "Only to master in real environments",
-        "Only to develop in production environments",
+        "Only to the production master branch",
+        "Only back to the develop branch",
+        "To whichever feature branches are still active",
         "To both master and back to develop"
       ],
       "correct_index": 3,
@@ -100,14 +100,14 @@
       "question_en": "In GitFlow, hotfix branches are created from which branch?",
       "options_es": [
         "master",
-        "release",
         "develop",
+        "release",
         "feature"
       ],
       "options_en": [
         "master",
-        "release",
         "develop",
+        "release",
         "feature"
       ],
       "correct_index": 0,
@@ -123,15 +123,15 @@
       "question_en": "What is the typical naming convention for feature branches in GitFlow?",
       "options_es": [
         "feature/descripción-corta",
-        "feat-v1.0 en la práctica",
-        "f_descripción en la práctica habitual",
-        "feature_001"
+        "feature_v1_final_final2",
+        "featureLoginSinSepararPalabras",
+        "rama-para-el-login-nuevo"
       ],
       "options_en": [
         "feature/short-description",
-        "feat-v1.0 in real environments",
-        "f_description as a general rule",
-        "feature_001"
+        "feature_v1_final_final2",
+        "featureLoginWithNoWordSeparation",
+        "branch-for-the-new-login"
       ],
       "correct_index": 0,
       "explanation_es": "La convención estándar es 'feature/descripción-corta' donde la descripción es clara y concisa. Esto mejora la legibilidad y la organización de las ramas.",
@@ -145,16 +145,16 @@
       "question_es": "¿Qué problema puede surgir si una rama 'develop' se mantiene demasiado tiempo sin fusionar a 'master'?",
       "question_en": "What problem can arise if a 'develop' branch is kept for too long without merging to 'master'?",
       "options_es": [
-        "Imposibilidad de crear nuevas features",
-        "Pérdida automática de commits por convención de forma general dentro de este paradigma",
-        "Desviación significativa entre develop y master causando conflictos",
-        "Reducción de la velocidad de CI/CD"
+        "Pérdida silenciosa de commits antiguos",
+        "Reducción de la velocidad de CI/CD en cada integración",
+        "Divergencia fuerte entre develop y master",
+        "Imposibilidad de crear nuevas features"
       ],
       "options_en": [
-        "Inability to create new features",
-        "Automatic loss of commits as a standard approach in the most common case",
-        "Significant divergence between develop and master causing conflicts",
-        "Reduction in CI/CD speed in practice"
+        "Silent loss of already-merged commits",
+        "Reduction in CI/CD pipeline speed",
+        "Sharp divergence between develop and master",
+        "Inability to start new feature branches"
       ],
       "correct_index": 2,
       "explanation_es": "Si develop y master se desvían demasiado, los merges posteriores pueden causar conflictos complejos. Es importante mantener releases regulares para sincronizar el código.",
@@ -168,16 +168,16 @@
       "question_es": "En GitFlow, ¿cuándo se crea típicamente una rama 'release'?",
       "question_en": "In GitFlow, when is a 'release' branch typically created?",
       "options_es": [
-        "Después de cada commit a master de forma estándar como regla general",
-        "Al inicio de cada semana de desarrollo",
-        "Cuando se detecta un bug crítico",
-        "Cuando develop tiene todas las features planeadas para la versión"
+        "Al comienzo de cada sprint semanal de trabajo",
+        "Inmediatamente después de cada commit hecho a master",
+        "Tan pronto se detecta cualquier bug crítico en producción",
+        "Cuando develop reúne todas las features planeadas"
       ],
       "options_en": [
-        "After each commit to master within this paradigm",
-        "At the start of each development week",
-        "When a critical bug is detected",
-        "When develop has all planned features for the version"
+        "At the start of every weekly work sprint",
+        "Immediately after every single commit made to master",
+        "As soon as any critical bug is found in production",
+        "When develop holds all features planned for release"
       ],
       "correct_index": 3,
       "explanation_es": "Una rama release se crea cuando 'develop' contiene todas las features planeadas para una versión y está listo para ser liberado. Esto marca el inicio de la fase de preparación del lanzamiento.",
@@ -191,16 +191,16 @@
       "question_es": "¿Cuál es la diferencia principal entre una rama 'release' y una rama 'hotfix' en GitFlow?",
       "question_en": "What is the main difference between a 'release' and a 'hotfix' branch in GitFlow?",
       "options_es": [
-        "No hay diferencia, son sinónimos",
         "Release es para features nuevas, hotfix es para bugs",
         "Release se usa siempre, hotfix solo en emergencias",
-        "Release sale de develop, hotfix de master"
+        "No hay ninguna diferencia real, son términos sinónimos",
+        "Una release nace de develop; un hotfix nace de master"
       ],
       "options_en": [
-        "There is no difference, they are synonymous",
         "Release is for new features, hotfix for bugs",
         "Release is always used, hotfix only in emergencies",
-        "Release comes from develop, hotfix from master"
+        "There genuinely is no meaningful difference, they're synonyms",
+        "A release comes from develop; a hotfix comes from master"
       ],
       "correct_index": 3,
       "explanation_es": "La principal diferencia es el origen: release proviene de develop (para versiones planeadas) mientras que hotfix proviene de master (para correcciones críticas urgentes en producción).",
@@ -214,16 +214,16 @@
       "question_es": "¿Cuál es la ventaja de usar una rama 'develop' separada en GitFlow?",
       "question_en": "What is the advantage of using a separate 'develop' branch in GitFlow?",
       "options_es": [
-        "Reducir el número total de commits",
-        "Facilitar la ejecución de tests manuales solamente",
-        "Eliminar la necesidad de code reviews",
-        "Mantener master completamente estable y solo con código de producción"
+        "Reducir el número total de commits del repositorio",
+        "Eliminar por completo la necesidad de revisiones",
+        "Limitar todas las pruebas del proyecto a solo ejecución manual",
+        "Mantener master estable con solo código de producción"
       ],
       "options_en": [
-        "Reduce the total number of commits",
-        "Make manual testing the only option",
-        "Eliminate the need for code reviews",
-        "Keep master completely stable with only production code"
+        "Reduce the total number of repository commits",
+        "Eliminate the need for any code reviews",
+        "Restrict testing to manual execution only",
+        "Keep master stable with only production-ready code"
       ],
       "correct_index": 3,
       "explanation_es": "La rama 'develop' como rama de integración permite que 'master' permanezca estable y contenga solo código verificado y listo para producción, mejorando la confiabilidad.",
@@ -237,16 +237,16 @@
       "question_es": "En GitFlow, ¿qué sucede típicamente después de que se fusiona una rama 'release' a 'master'?",
       "question_en": "In GitFlow, what typically happens after a 'release' branch is merged to 'master'?",
       "options_es": [
-        "Se crea inmediatamente una nueva release",
-        "Se fusiona release también a develop",
-        "Se etiqueta master con un número de versión y se elimina la rama release",
-        "Se espera una semana antes de cualquier acción en este contexto en la práctica habitual"
+        "Se crea de inmediato otra rama release nueva",
+        "Únicamente se fusiona la rama release de vuelta a develop, sin más pasos",
+        "Se etiqueta master con la versión y se borra la rama release",
+        "Se espera una semana completa antes de actuar"
       ],
       "options_en": [
-        "A new release is immediately created",
-        "Release is also merged to develop by default",
-        "Master is tagged with a version number and the release branch is deleted",
-        "Wait a week before taking any action as a standard approach as a general rule"
+        "A brand-new release branch is created right away",
+        "The release is merged back to develop only",
+        "Master is tagged with the version and the release branch is deleted",
+        "The team waits a full week before acting"
       ],
       "correct_index": 2,
       "explanation_es": "Después de fusionar release a master, se crea un tag (etiqueta) con el número de versión (ej: v1.0.0) y se elimina la rama release. Luego se fusiona a develop.",
@@ -260,16 +260,16 @@
       "question_es": "¿Cuál es el propósito de fusionar un hotfix de vuelta a 'develop' después de aplicarlo a 'master'?",
       "question_en": "What is the purpose of merging a hotfix back to 'develop' after applying it to 'master'?",
       "options_es": [
-        "Validar que el fix fue correcto",
-        "Asegurar que el fix se incluya en futuras versiones",
-        "Crear una copia de seguridad del código en el caso más común",
-        "Reducir el número de commits en master"
+        "Crea una copia de respaldo del código ya corregido antes del deploy",
+        "Garantiza que la corrección llegue a futuras versiones",
+        "Confirma que la corrección funciona sin errores",
+        "Reduce la cantidad de commits que recibe master"
       ],
       "options_en": [
-        "Validate that the fix was correct",
-        "Ensure the fix is included in future releases",
-        "Create a backup of the code as a general guideline",
-        "Reduce the number of commits in master"
+        "Creates a backup copy of the fixed code",
+        "Ensures the fix carries over into future releases",
+        "Confirms the fix works without introducing errors",
+        "Reduces how many commits land on master"
       ],
       "correct_index": 1,
       "explanation_es": "Fusionar el hotfix a 'develop' garantiza que la corrección se incluya en futuras versiones y evita que el mismo bug reaparezca en releases posteriores.",
@@ -283,16 +283,16 @@
       "question_es": "¿Qué puede suceder si se crea una rama 'feature' desde 'master' en lugar de desde 'develop' en GitFlow?",
       "question_en": "What can happen if a 'feature' branch is created from 'master' instead of 'develop' in GitFlow?",
       "options_es": [
-        "La feature puede incluir código de producción no destinado a nuevas features",
-        "No hay diferencia, ambas opciones son equivalentes",
-        "Se acelera automáticamente el desarrollo",
-        "Se previenen todos los conflictos de merge como práctica recomendada para la mayoría de proyectos"
+        "Puede arrastrar código de producción ya publicado",
+        "No existe diferencia, ambas opciones son iguales",
+        "Acelera automáticamente el ritmo de desarrollo",
+        "Evita por completo cualquier conflicto de fusión futuro"
       ],
       "options_en": [
-        "The feature may include production code not intended for new features",
-        "There is no difference, both options are equivalent",
-        "Development is automatically accelerated",
-        "All merge conflicts are prevented within this paradigm in the most common case"
+        "May pull in production code not meant for new work",
+        "There is no difference, both options are equal",
+        "Automatically speeds up the pace of development",
+        "Completely prevents every merge conflict"
       ],
       "correct_index": 0,
       "explanation_es": "Crear una feature desde master es problemático porque introduce código de producción establecido en una línea de desarrollo que debería estar basada en código integrado pero no necesariamente liberado.",
@@ -306,16 +306,16 @@
       "question_es": "¿Cuál es el punto crítico en GitFlow donde se asegura que solo código de producción entra a 'master'?",
       "question_en": "What is the critical checkpoint in GitFlow that ensures only production-ready code enters 'master'?",
       "options_es": [
-        "La rama feature al fusionarse a develop",
-        "Los commits directos a master por convención",
-        "La rama release cuando se fusiona a master después de pruebas",
-        "Los hotfixes cuando se aplican"
+        "La rama feature cuando se fusiona a develop",
+        "Los hotfixes en el momento en que se aplican",
+        "La rama release, tras pruebas, al fusionarse a master",
+        "Los commits realizados directamente sobre la rama master"
       ],
       "options_en": [
-        "The feature branch when merged to develop",
-        "Direct commits to master",
-        "The release branch when merged to master after testing",
-        "Hotfixes when applied typically"
+        "The feature branch when it merges into develop",
+        "Hotfixes at the moment they get applied",
+        "The release branch, once tested, merging into master",
+        "Commits made directly onto the master branch"
       ],
       "correct_index": 2,
       "explanation_es": "El punto crítico es la rama 'release' que pasa por pruebas exhaustivas antes de fusionarse a 'master', garantizando que solo código verificado llegue a producción.",
@@ -329,16 +329,16 @@
       "question_es": "¿Por qué GitFlow prefiere tener ramas 'develop' y 'master' separadas en lugar de una sola rama 'main'?",
       "question_en": "Why does GitFlow prefer to have separate 'develop' and 'master' branches instead of a single 'main' branch?",
       "options_es": [
-        "Para eliminar la necesidad de etiquetas de versión",
-        "Para reducir la complejidad del repositorio",
-        "Para simplificar el proceso de merge por convención",
-        "Para distinguir entre código integrado listo para release y código verificado en producción"
+        "Reducir la complejidad general del repositorio",
+        "Simplificar el proceso completo de fusión",
+        "Eliminar por completo la necesidad de usar etiquetas de versión semántica",
+        "Distinguir el código integrado del verificado en producción"
       ],
       "options_en": [
-        "To eliminate the need for version tags",
-        "To reduce repository complexity",
-        "To simplify the merge process by convention",
-        "To distinguish between integrated code ready for release and verified production code"
+        "Reduce the overall complexity of the repository",
+        "Simplify the entire branch-merging process",
+        "Eliminate the need for version tags entirely",
+        "Distinguish integrated code from production-verified code"
       ],
       "correct_index": 3,
       "explanation_es": "La separación permite que 'develop' acumule features terminadas listas para la siguiente release, mientras que 'master' permanece estable con solo versiones verificadas en producción.",
@@ -352,16 +352,16 @@
       "question_es": "¿Cuál es la característica fundamental del desarrollo basado en trunk en Trunk-based Development?",
       "question_en": "What is the fundamental characteristic of trunk-based development?",
       "options_es": [
-        "Ramas de corta duración que se fusionan frecuentemente a la rama principal",
-        "Múltiples ramas de desarrollo paralelas permanentes",
-        "Ramas de larga duración aisladas para cada feature",
-        "Sin branches, solo commits directos a master como regla general de manera estándar"
+        "Ramas cortas que se integran seguido a la principal",
+        "Ramas largas y aisladas para cada feature",
+        "Varias ramas paralelas y permanentes que nunca se cierran",
+        "Sin ramas, solo commits directos a master"
       ],
       "options_en": [
-        "Short-lived branches frequently merged to main",
-        "Multiple permanent parallel development branches",
-        "Long-lived isolated branches for each feature",
-        "No branches, only direct commits to master as a recommended practice in production environments"
+        "Short-lived branches merged often into main",
+        "Long, isolated branches for each feature",
+        "Several permanent parallel development branches",
+        "No branches, only direct commits to master"
       ],
       "correct_index": 0,
       "explanation_es": "Trunk-based Development enfatiza ramas de corta duración (horas/días) que se fusionan frecuentemente a la rama principal (trunk) para reducir conflictos y facilitar la integración continua.",
@@ -375,16 +375,16 @@
       "question_es": "¿Cuál es la duración típica de una rama en Trunk-based Development?",
       "question_en": "What is the typical lifetime of a branch in trunk-based development?",
       "options_es": [
-        "Horas a pocos días",
-        "Semanas o meses",
-        "Una vez creada, nunca se elimina",
-        "Un día exactamente"
+        "Horas hasta pocos días",
+        "Semanas e incluso meses",
+        "Nunca se elimina tras crearse",
+        "Exactamente veinticuatro horas"
       ],
       "options_en": [
         "Hours to a few days",
-        "Weeks or months",
-        "Once created, never deleted",
-        "Exactly one day"
+        "Weeks or even months",
+        "Never deleted once created",
+        "Exactly twenty-four hours"
       ],
       "correct_index": 0,
       "explanation_es": "Las ramas en TBD son de corta duración, típicamente horas hasta pocos días, permitiendo fusiones frecuentes y reduciendo la complejidad de gestionar divergencias.",
@@ -398,16 +398,16 @@
       "question_es": "¿Qué son 'feature flags' en el contexto de Trunk-based Development?",
       "question_en": "What are 'feature flags' in trunk-based development?",
       "options_es": [
-        "Comentarios en el código que indican features",
-        "Ramas adicionales para cada feature en condiciones normales en entornos de producción",
-        "Etiquetas de git para marcar versiones",
-        "Mecanismos para activar/desactivar features sin redeployment de código"
+        "Ramas extra creadas para cada feature nueva",
+        "Etiquetas de git que se usan para marcar versiones publicadas",
+        "Comentarios en código que describen features",
+        "Interruptores que activan o apagan features sin redeploy"
       ],
       "options_en": [
-        "Comments in code indicating features",
-        "Additional branches for each feature for most projects as a standard approach",
-        "Git tags to mark versions in real environments",
-        "Mechanisms to enable/disable features without code redeployment"
+        "Extra branches created for each new feature",
+        "Git tags used to mark release versions",
+        "Code comments that describe pending features",
+        "Switches that turn features on or off without a redeploy"
       ],
       "correct_index": 3,
       "explanation_es": "Los feature flags permiten que código incompleto o experimental se integre en trunk pero permanezca desactivado en producción hasta que esté listo, facilitando una integración segura.",
@@ -421,16 +421,16 @@
       "question_es": "¿Cuál es una ventaja clave de Trunk-based Development sobre GitFlow?",
       "question_en": "What is a key advantage of trunk-based development over GitFlow?",
       "options_es": [
-        "Mejor control de versiones",
         "Mayor aislamiento de features incompletas",
-        "Procesos de release más complejos en este contexto",
-        "Menos conflictos de merge debido a ramas cortas"
+        "Procesos de release mucho más complejos",
+        "Mejor control de versiones históricas",
+        "Menos conflictos gracias a ramas cortas"
       ],
       "options_en": [
-        "Better version control",
-        "Better isolation of incomplete features",
-        "More complex release processes in the most common case",
-        "Fewer merge conflicts due to short branches"
+        "Greater isolation of incomplete features",
+        "Much more complex release processes",
+        "Better control over historical versions",
+        "Fewer conflicts thanks to short-lived branches"
       ],
       "correct_index": 3,
       "explanation_es": "Al mantener ramas cortas y hacer fusiones frecuentes, TBD reduce significativamente los conflictos de merge que pueden surgir en modelos con ramas de larga duración.",
@@ -444,16 +444,16 @@
       "question_es": "¿Cómo manejan los equipos que usan Trunk-based Development las features incompletas?",
       "question_en": "How do teams using trunk-based development handle incomplete features?",
       "options_es": [
-        "Usan feature flags para desactivarlas hasta que estén listas",
-        "Retrasan los merges hasta que estén 100% completas",
-        "Mantienen ramas permanentes de features en condiciones normales",
-        "Crean versiones separadas del código"
+        "Las desactivan con feature flags hasta terminarlas",
+        "Mantienen ramas de feature permanentes",
+        "Retrasan el merge hasta que el trabajo llegue al cien por ciento",
+        "Crean versiones separadas del mismo código"
       ],
       "options_en": [
-        "Use feature flags to disable them until ready",
-        "Delay merges until 100% complete",
-        "Maintain permanent feature branches as a standard approach",
-        "Create separate code versions"
+        "Disable them with feature flags until they're finished",
+        "Keep permanent feature branches around",
+        "Delay merging until reaching one hundred percent",
+        "Create separate versions of the same code"
       ],
       "correct_index": 0,
       "explanation_es": "Con feature flags, el código incompleto se fusiona a trunk pero permanece desactivado en producción, permitiendo que otros desarrolladores vean cambios inmediatamente.",
@@ -467,16 +467,16 @@
       "question_es": "¿Qué requisito es crítico para practicar Trunk-based Development exitosamente?",
       "question_en": "What is critical for successfully practicing trunk-based development?",
       "options_es": [
-        "Pruebas automatizadas y CI/CD robustos",
-        "Cambios manuales en producción en entornos de producción",
-        "Code reviews muy lentos",
-        "Tener muchas ramas de desarrollo"
+        "Contar con pruebas automatizadas y CI/CD sólidos",
+        "Tener muchas ramas de desarrollo abiertas",
+        "Revisiones de código que tardan semanas en completarse",
+        "Cambios manuales aplicados en producción"
       ],
       "options_en": [
-        "Robust automated testing and CI/CD",
-        "Manual changes to production in this context",
-        "Very slow code reviews",
-        "Having many development branches"
+        "Solid automated testing and a mature CI/CD setup",
+        "Keeping many development branches open",
+        "Extremely slow code review turnaround",
+        "Manual changes applied straight to production"
       ],
       "correct_index": 0,
       "explanation_es": "TBD requiere confianza en pruebas automatizadas y pipelines CI/CD para detectar problemas rápidamente después de cada merge a trunk.",
@@ -490,16 +490,16 @@
       "question_es": "En Trunk-based Development, ¿cómo se maneja típicamente el control de versiones?",
       "question_en": "In trunk-based development, how is version control typically handled?",
       "options_es": [
-        "Con ramas release de larga duración",
-        "Con tags etiquetados del código estable en trunk para crear releases",
-        "Cada rama tiene su propia versión en este contexto",
-        "Las versiones se generan manualmente"
+        "Ramas de release que duran mucho tiempo",
+        "Etiquetar código estable de trunk para crear releases",
+        "Cada rama mantiene su propio número de versión interno",
+        "Las versiones se generan a mano cada vez"
       ],
       "options_en": [
-        "With long-lived release branches",
-        "With tagged stable code on trunk to create releases",
-        "Each branch has its own version",
-        "Versions are generated manually"
+        "Long-lived release branches kept around",
+        "Tag stable points on trunk to cut releases",
+        "Each branch keeps its own version number",
+        "Versions are generated by hand each time"
       ],
       "correct_index": 1,
       "explanation_es": "En TBD, el control de versiones se logra etiquetando puntos estables en trunk con números de versión, permitiendo releases sin ramas dedicadas.",
@@ -513,16 +513,16 @@
       "question_es": "¿Cuál es el riesgo principal de fusionar código incompleto a trunk sin feature flags?",
       "question_en": "What is the main risk of merging incomplete code to trunk without feature flags?",
       "options_es": [
-        "Perder commits anteriores de forma estándar",
-        "Romper la estabilidad de trunk y afectar otros desarrolladores",
-        "Aumentar el tamaño del repositorio",
-        "Conflictos de ramificación"
+        "Perder commits que ya se habían hecho",
+        "Desestabiliza trunk y afecta a otros desarrolladores",
+        "Aumenta demasiado el tamaño histórico del repositorio",
+        "Genera conflictos al crear nuevas ramas"
       ],
       "options_en": [
-        "Losing previous commits",
-        "Breaking trunk stability and affecting other developers",
-        "Increasing repository size",
-        "Branching conflicts in this context"
+        "Losing commits that were already made",
+        "Destabilizes trunk and affects other developers",
+        "Bloats the repository size too much",
+        "Creates conflicts when branching out"
       ],
       "correct_index": 1,
       "explanation_es": "Sin feature flags, código incompleto o defectuoso puede desestabilizar trunk, afectando a todos los desarrolladores y rompiendo CI/CD.",
@@ -536,16 +536,16 @@
       "question_es": "¿Qué técnica complementa a Trunk-based Development para permitir cambios seguros?",
       "question_en": "What technique complements trunk-based development to enable safe changes?",
       "options_es": [
-        "Release branches permanentes",
-        "Webhooks de GitHub",
-        "Feature flags con test A/B",
-        "Branches infinitas"
+        "Ramas de release que se mantienen fijas",
+        "Webhooks configurados desde GitHub",
+        "Feature flags combinados con pruebas A/B",
+        "Ramas que nunca llegan a cerrarse ni fusionarse"
       ],
       "options_en": [
-        "Permanent release branches",
-        "GitHub webhooks",
-        "Feature flags with A/B testing",
-        "Infinite branches"
+        "Release branches kept in place permanently",
+        "Webhooks configured from GitHub",
+        "Feature flags combined with A/B testing",
+        "Branches that never get closed"
       ],
       "correct_index": 2,
       "explanation_es": "Los feature flags con capacidad de test A/B permiten evaluar cambios en producción de forma segura, validando features antes de una activación completa.",
@@ -559,16 +559,16 @@
       "question_es": "¿Cómo afecta Trunk-based Development al proceso de integración continua?",
       "question_en": "How does trunk-based development affect the continuous integration process?",
       "options_es": [
-        "Lo hace más frecuente y confiable con cambios pequeños",
-        "Requiere herramientas especiales",
-        "Lo elimina completamente en el caso más común de manera estándar",
-        "Lo hace más lento debido a conflictos"
+        "Más frecuente y confiable con cambios pequeños",
+        "Más lento por culpa de conflictos constantes de merge",
+        "Elimina por completo la integración continua",
+        "Exige herramientas de pago muy especiales"
       ],
       "options_en": [
-        "Makes it more frequent and reliable with small changes",
-        "Requires special tools",
-        "Eliminates it entirely by convention in production environments as a standard approach",
-        "Makes it slower due to conflicts"
+        "More frequent and reliable via small changes",
+        "Slower because of frequent conflicts",
+        "Removes continuous integration altogether",
+        "Requires very special paid tooling"
       ],
       "correct_index": 0,
       "explanation_es": "TBD acelera CI al integrar cambios pequeños frecuentemente, reduciendo conflictos y permitiendo feedback rápido del pipeline.",
@@ -582,16 +582,16 @@
       "question_es": "¿Qué tipo de equipo se beneficia más de Trunk-based Development?",
       "question_en": "What type of team benefits most from trunk-based development?",
       "options_es": [
-        "Equipos con poca experiencia en git",
-        "Equipos pequeños o medianos con CI/CD maduro y comunicación frecuente",
-        "Equipos de gran tamaño que liberan infrecuentemente",
-        "Equipos que trabajan en paralelo en features aisladas"
+        "Equipos con muy poca experiencia previa usando Git",
+        "Equipos pequeños o medianos con CI/CD maduro",
+        "Equipos grandes que liberan con poca frecuencia",
+        "Equipos que trabajan aislados en features paralelas"
       ],
       "options_en": [
-        "Teams with little git experience",
-        "Small to medium teams with mature CI/CD and frequent communication",
-        "Large teams that release infrequently",
-        "Teams working in parallel on isolated features"
+        "Teams with very little prior experience using Git",
+        "Small or mid-size teams with mature CI/CD",
+        "Large teams that release only rarely",
+        "Teams working in isolation on parallel features"
       ],
       "correct_index": 1,
       "explanation_es": "TBD funciona mejor con equipos que tienen buena comunicación, CI/CD robusto y pueden hacer deploys frecuentes sin coordinación compleja.",
@@ -605,16 +605,16 @@
       "question_es": "¿Cuál es el impacto de Trunk-based Development en la frecuencia de deployments?",
       "question_en": "What is the impact of trunk-based development on deployment frequency?",
       "options_es": [
-        "Aumenta significativamente la frecuencia posible de deployments",
-        "Reduce la frecuencia de deployments",
-        "No tiene impacto habitualmente",
-        "Solo funciona con deployments semanales"
+        "Aumenta bastante la frecuencia posible de deploys",
+        "Reduce la frecuencia con la que se despliega",
+        "No genera ningún impacto real en la frecuencia de deploys",
+        "Solo funciona con deploys semanales fijos"
       ],
       "options_en": [
-        "Significantly increases possible deployment frequency",
-        "Reduces deployment frequency",
-        "Has no impact by default",
-        "Only works with weekly deployments"
+        "Significantly raises how often deploys can happen",
+        "Reduces how often deployments can occur",
+        "Has no impact on deployments at all",
+        "Only works with fixed weekly deploys"
       ],
       "correct_index": 0,
       "explanation_es": "Al mantener trunk siempre listo, TBD permite deployments tan frecuentes como sea necesario, desde varias veces al día hasta deployments continuos.",
@@ -628,16 +628,16 @@
       "question_es": "¿Cómo se maneja un bug descubierto en producción en Trunk-based Development?",
       "question_en": "How is a bug discovered in production handled in trunk-based development?",
       "options_es": [
-        "Se revierte trunk completamente como regla general como práctica recomendada",
-        "Se crea una rama hotfix de larga duración",
-        "Se espera al siguiente release en la práctica",
-        "Se arregla en una rama corta, se fusiona a trunk y se despliega"
+        "Se crea una rama hotfix separada de larga duración",
+        "Se espera hasta el siguiente release planeado",
+        "Se revierte trunk por completo de inmediato",
+        "Se arregla en rama corta, se fusiona y despliega"
       ],
       "options_en": [
-        "Completely revert trunk within this paradigm as a general rule",
-        "Create a long-lived hotfix branch",
-        "Wait for next release in practice",
-        "Fix in a short branch, merge to trunk and deploy"
+        "A long-lived hotfix branch is created",
+        "It waits for the next planned release",
+        "Trunk is reverted completely right away",
+        "Fixed on a short branch, merged and deployed"
       ],
       "correct_index": 3,
       "explanation_es": "Con TBD, los bugs se arreglan en ramas cortas, se fusionan a trunk, se validan por CI/CD y se despliegan rápidamente sin esperar a un release.",
@@ -651,16 +651,16 @@
       "question_es": "¿Cuál es la diferencia principal entre feature flags y ramas en Trunk-based Development?",
       "question_en": "What is the main difference between feature flags and branches in trunk-based development?",
       "options_es": [
-        "Los feature flags son permanentes, las ramas son temporales como regla general para la mayoría de proyectos",
-        "Los feature flags controlan comportamiento en runtime, las ramas organizan código",
-        "No hay diferencia en la práctica",
-        "Los feature flags solo funcionan con master"
+        "Los flags son permanentes, las ramas temporales",
+        "Los flags controlan comportamiento en runtime",
+        "En realidad no existe ninguna diferencia",
+        "Los flags solo pueden usarse junto a master"
       ],
       "options_en": [
-        "Feature flags are permanent, branches are temporary in common practice under normal conditions",
-        "Feature flags control behavior at runtime, branches organize code",
-        "There is no difference",
-        "Feature flags only work with master"
+        "Flags are permanent while branches are not",
+        "Flags govern behavior at runtime, not code layout",
+        "In reality there is no difference at all",
+        "Flags only work alongside the master branch"
       ],
       "correct_index": 1,
       "explanation_es": "Las ramas organizan el trabajo de desarrollo, mientras que los feature flags permiten controlar qué características están activas en runtime en cualquier entorno.",
@@ -674,16 +674,16 @@
       "question_es": "¿Por qué Trunk-based Development requiere code reviews más rápidos que GitFlow?",
       "question_en": "Why does trunk-based development require faster code reviews than GitFlow?",
       "options_es": [
-        "Porque hay más código para revisar en condiciones normales como regla general como práctica recomendada",
-        "Los reviews deben ser más lentos",
-        "No hay diferencia en velocidad en entornos reales",
-        "Porque los cambios son más pequeños y las ramas son cortas, bloqueando al desarrollador"
+        "Porque hay mucho más código pendiente de revisar",
+        "Los reviews deberían volverse más lentos",
+        "No existe ninguna diferencia en velocidad",
+        "Cambios pequeños y ramas cortas bloquean al autor"
       ],
       "options_en": [
-        "Because there is more code to review in production environments under normal conditions as a standard approach",
-        "Reviews must be slower according to spec",
-        "There is no speed difference",
-        "Because changes are smaller and branches are short, blocking the developer"
+        "Because there is far more code to review",
+        "Reviews are supposed to become slower",
+        "There is no difference in speed at all",
+        "Small changes and short branches block the author"
       ],
       "correct_index": 3,
       "explanation_es": "Con ramas de horas/días, un review lento bloquea al desarrollador. El trabajo en pequeños cambios hace que reviews rápidos sean factibles y necesarios.",
@@ -697,16 +697,16 @@
       "question_es": "¿Cuál es el propósito principal de un Pull Request en un proceso de code review?",
       "question_en": "What is the primary purpose of a Pull Request in a code review process?",
       "options_es": [
-        "Solicitar automáticamente un merge del código",
-        "Registrar todas las versiones del código de manera estándar como regla general",
-        "Crear una copia del repositorio por convención",
-        "Proponer cambios, solicitar feedback y permitir discusión antes de integrar"
+        "Solicitar de forma automática un merge del código",
+        "Crear una copia completa del repositorio",
+        "Registrar todas las versiones anteriores del código",
+        "Proponer cambios y discutirlos antes de integrarlos"
       ],
       "options_en": [
-        "Automatically request a merge of the code",
-        "Record all code versions according to spec according to official documentation in this context",
-        "Create a copy of the repository",
-        "Propose changes, request feedback, and allow discussion before integration"
+        "Automatically request a code merge",
+        "Create a full copy of the repository",
+        "Record every previous version of the code",
+        "Propose changes and discuss them before merging"
       ],
       "correct_index": 3,
       "explanation_es": "Un PR es un mecanismo para proponer cambios de código, facilitar la discusión y obtener aprobación de revisores antes de fusionar al código principal.",
@@ -720,16 +720,16 @@
       "question_es": "¿Qué información debe incluir siempre un buen Pull Request?",
       "question_en": "What information should a good pull request always include?",
       "options_es": [
-        "Solo el código modificado como regla general",
-        "Un enlace a una página web aleatoria",
-        "Únicamente el nombre del autor",
-        "Descripción clara, contexto, cambios principales y por qué se hacen"
+        "Únicamente el bloque de código que fue modificado",
+        "Un enlace a una página web sin relación",
+        "Solamente el nombre de quien lo escribió",
+        "Descripción clara, contexto y motivo del cambio"
       ],
       "options_en": [
-        "Only the modified code in real environments",
-        "Link to a random web page",
-        "Only the author's name",
-        "Clear description, context, main changes and why"
+        "Only the code that was modified",
+        "A link to some unrelated web page",
+        "Only the name of whoever wrote it",
+        "Clear description, context, and reason for change"
       ],
       "correct_index": 3,
       "explanation_es": "Un buen PR debe incluir una descripción clara, contexto del cambio, lista de cambios principales y justificación para facilitar la revisión.",
@@ -743,16 +743,16 @@
       "question_es": "¿Cuál es la mejor práctica para el tamaño de un Pull Request?",
       "question_en": "What is the best practice for pull request size?",
       "options_es": [
-        "Incluir todos los cambios posibles en un solo PR",
-        "No hay límite de tamaño",
-        "Mantenerlo pequeño y enfocado en un objetivo claro",
-        "Entre 500 y 1000 líneas de código"
+        "Incluir todos los cambios posibles a la vez",
+        "Entre quinientas y mil líneas de código",
+        "Pequeño y enfocado en un único objetivo",
+        "No existe ningún límite fijado de tamaño"
       ],
       "options_en": [
-        "Include all possible changes in one PR",
-        "There is no size limit",
-        "Keep it small and focused on one clear objective",
-        "Between 500 and 1000 lines of code"
+        "Cram in every possible change at once",
+        "Somewhere between five hundred and a thousand lines",
+        "Small and focused on one clear goal",
+        "There is no fixed size limit at all"
       ],
       "correct_index": 2,
       "explanation_es": "PRs pequeños son más fáciles de revisar, más rápidos de mergear y tienen menos conflictos. Un PR debe abordar una única preocupación o feature pequeña.",
@@ -766,16 +766,16 @@
       "question_es": "¿Cuál es la mejor práctica para comentarios de code review?",
       "question_en": "What is the best practice for code review comments?",
       "options_es": [
-        "Ser crítico y directo sin explicación",
+        "Directo y crítico sin dar ninguna explicación",
+        "Comentar únicamente cuando aparece algún bug crítico",
         "No escribir más de una palabra por comentario",
-        "Comentar solo sobre bugs",
-        "Ser constructivo, específico y ofrecer sugerencias mejoras"
+        "Constructivo, específico y con sugerencias claras"
       ],
       "options_en": [
-        "Be critical and direct without explanation",
-        "Write no more than one word per comment",
-        "Comment only on bugs",
-        "Be constructive, specific, and offer improvement suggestions"
+        "Direct and critical without any explanation",
+        "Comment only when there is a bug",
+        "Never write more than one word per comment",
+        "Constructive, specific, and offers clear suggestions"
       ],
       "correct_index": 3,
       "explanation_es": "Los comentarios efectivos son constructivos, específicos, explican el por qué y ofrecen sugerencias concretas de mejora.",
@@ -789,16 +789,16 @@
       "question_es": "¿Qué debe hacer un revisor si encuentra un error crítico en el código durante la revisión?",
       "question_en": "What should a reviewer do if they find a critical error in the code during review?",
       "options_es": [
-        "Ignorarlo y aprobar de todas formas en condiciones normales dentro de este paradigma",
-        "Hacer commits directos en la rama del PR",
-        "Rechazar el PR con una explicación clara y solicitar correcciones",
-        "Esperar a que otro revisor lo encuentre"
+        "Ignorarlo por completo y aprobarlo igual",
+        "Hacer commits directos sobre la rama del PR",
+        "Rechazar el PR y pedir que se corrija",
+        "Esperar a que otro revisor lo descubra"
       ],
       "options_en": [
-        "Ignore it and approve anyway in production environments under normal conditions",
-        "Make direct commits to the PR branch",
-        "Reject the PR with clear explanation and request corrections",
-        "Wait for another reviewer to find it"
+        "Ignore it completely and approve anyway",
+        "Push commits directly onto the PR's branch",
+        "Reject the PR and request a fix",
+        "Wait for another reviewer to catch it"
       ],
       "correct_index": 2,
       "explanation_es": "Un revisor debe rechazar el PR con una explicación clara del problema crítico, permitiendo que el autor corrija antes del merge.",
@@ -812,16 +812,16 @@
       "question_es": "¿Cuál es el propósito de requerir un cierto número de aprobaciones antes de mergear un PR?",
       "question_en": "What is the purpose of requiring a certain number of approvals before merging a PR?",
       "options_es": [
-        "Asegurar que múltiples revisores han validado el código",
-        "Garantizar que solo jefes de proyecto aprueban",
-        "Complicar el proceso sin beneficio en condiciones normales",
-        "Ralentizar el desarrollo"
+        "Asegurar que varios revisores validaron el código",
+        "Frenar innecesariamente el avance del equipo",
+        "Complicar el flujo de trabajo sin ningún beneficio",
+        "Garantizar que solo un líder técnico aprueba"
       ],
       "options_en": [
-        "Ensure multiple reviewers have validated the code",
-        "Guarantee only project leads approve",
-        "Complicate the process without benefit as a general guideline",
-        "Slow down development"
+        "Ensure multiple reviewers validated the code",
+        "Needlessly slow down the team's progress",
+        "Complicate the workflow with no real benefit",
+        "Guarantee that only a tech lead approves"
       ],
       "correct_index": 0,
       "explanation_es": "Requerir múltiples aprobaciones aumenta la calidad al tener diversos puntos de vista sobre el código, reduciendo bugs y problemas de diseño.",
@@ -835,16 +835,16 @@
       "question_es": "¿Cómo deben reaccionar los autores ante comentarios críticos en un PR?",
       "question_en": "How should PR authors react to critical comments?",
       "options_es": [
-        "Verlos como feedback constructivo y discutir o implementar cambios",
-        "Ignorarlos y mergear de todas formas",
-        "Rechazar la revisión en la práctica como regla general como regla general",
-        "Revertir todos sus cambios"
+        "Tomarlos como feedback y discutir los cambios",
+        "Ignorarlos por completo y fusionar igual",
+        "Rechazar por completo toda la revisión ya recibida",
+        "Revertir todos los cambios ya realizados"
       ],
       "options_en": [
-        "View them as constructive feedback and discuss or implement changes",
-        "Ignore them and merge anyway",
-        "Reject the review by default as a general guideline in common practice",
-        "Revert all changes"
+        "Take them as feedback and discuss the changes",
+        "Ignore them entirely and merge anyway",
+        "Reject the whole review outright",
+        "Revert every change already made"
       ],
       "correct_index": 0,
       "explanation_es": "Los comentarios críticos deben verse como oportunidades de mejora. Los autores deben estar abiertos a discutir y implementar cambios sugeridos.",
@@ -858,16 +858,16 @@
       "question_es": "¿Cuál es el beneficio de solicitar cambios en lugar de solo hacer sugerencias en un PR?",
       "question_en": "What is the benefit of requesting changes vs. only making suggestions in a PR?",
       "options_es": [
-        "No hay diferencia en entornos reales",
-        "Los cambios solicitados deben ser resueltos antes del merge, mejorando la calidad",
-        "Las sugerencias son más educativas",
-        "Los cambios solicitados asustan a los desarrolladores"
+        "No existe diferencia entre ambas opciones",
+        "Bloquean el merge hasta que se resuelvan",
+        "Las sugerencias resultan más educativas",
+        "Asustan más a los desarrolladores junior"
       ],
       "options_en": [
-        "There is no difference by default",
-        "Requested changes must be resolved before merge, improving quality",
-        "Suggestions are more educational",
-        "Requested changes scare developers"
+        "There is no difference between the two",
+        "They block the merge until resolved",
+        "Suggestions are simply more educational",
+        "They scare junior developers more"
       ],
       "correct_index": 1,
       "explanation_es": "Los cambios solicitados bloquean el merge hasta resolverse, asegurando que problemas identificados sean corregidos antes de integrar.",
@@ -881,16 +881,16 @@
       "question_es": "¿Qué es una 'approval workflow' en el contexto de PRs?",
       "question_en": "What is an 'approval workflow' in the context of PRs?",
       "options_es": [
-        "El proceso de crear una rama nueva",
-        "Un conjunto de reglas que definen quién puede aprobar, cuántas aprobaciones se necesitan y bajo qué condiciones",
-        "Un tipo de bug en el código en este contexto para la mayoría de proyectos de manera estándar en el caso más común",
-        "Un merge automático sin revisión"
+        "El proceso completo de abrir una nueva rama en el repositorio",
+        "Reglas sobre quién y cuántas aprobaciones hacen falta",
+        "Un tipo de error frecuente en el código",
+        "Un merge automático que salta la revisión"
       ],
       "options_en": [
-        "The process of creating a new branch",
-        "A set of rules defining who can approve, how many approvals are needed, and under what conditions",
-        "A type of bug in code in this context under normal conditions in the most common case under normal conditions",
-        "Automatic merge without review"
+        "The process of opening a new branch",
+        "Rules on who can approve and how many are needed",
+        "A common type of bug found in code",
+        "An automatic merge that skips review"
       ],
       "correct_index": 1,
       "explanation_es": "Un approval workflow es un conjunto de reglas configuradas para controlar el proceso de aprobación, como quién puede revisar y cuántas aprobaciones son necesarias.",
@@ -904,16 +904,16 @@
       "question_es": "¿Cuál es la mejor práctica para dar feedback negativo en un code review?",
       "question_en": "What is the best practice for giving negative feedback in code review?",
       "options_es": [
-        "Ser ofensivo para motivar cambios",
-        "Usar términos técnicos complejos sin explicación",
-        "Separar la crítica del código de la persona, ser respetuoso y constructivo",
-        "Evitar comentar problemas de forma estándar en la práctica habitual como práctica recomendada"
+        "Ser ofensivo para forzar los cambios",
+        "Evitar mencionar cualquier problema encontrado",
+        "Separar la crítica del código de la persona",
+        "Usar jerga técnica compleja sin explicarla"
       ],
       "options_en": [
-        "Be offensive to motivate changes",
-        "Use complex technical terms without explanation",
-        "Separate code criticism from the person, be respectful and constructive",
-        "Avoid commenting on problems in practice as a general rule under normal conditions"
+        "Be offensive to force the changes",
+        "Avoid mentioning any problem found",
+        "Separate criticism of the code from the person",
+        "Use complex jargon without explaining it"
       ],
       "correct_index": 2,
       "explanation_es": "El feedback negativo debe ser respetuoso y enfocado en el código, no en la persona, explicando claramente el problema y cómo mejorarlo.",
@@ -927,16 +927,16 @@
       "question_es": "¿Cómo debe manejarse un desacuerdo técnico entre el autor y el revisor en un PR?",
       "question_en": "How should a technical disagreement between author and reviewer in a PR be handled?",
       "options_es": [
-        "Discutir constructivamente, documentar la decisión y escalar si es necesario",
-        "El revisor siempre tiene razón",
-        "El autor cancela el PR",
-        "Se ignora y se mergea según la especificación"
+        "Discutir, documentar la decisión y escalar si hace falta",
+        "El revisor siempre tiene la razón final en cualquier disputa",
+        "El autor cancela por completo el PR",
+        "Se ignora la discusión y se fusiona"
       ],
       "options_en": [
-        "Discuss constructively, document the decision and escalate if needed",
-        "The reviewer is always right",
-        "Author cancels the PR",
-        "Ignore it and merge by convention"
+        "Discuss it, document the decision, escalate if needed",
+        "The reviewer's opinion always wins",
+        "The author cancels the PR entirely",
+        "The disagreement is ignored and merged"
       ],
       "correct_index": 0,
       "explanation_es": "Los desacuerdos deben resolverse mediante discusión constructiva. Si persisten, se documenta la decisión y se escala a un líder técnico si es necesario.",
@@ -950,16 +950,16 @@
       "question_es": "¿Cuál es la importancia de completar la review en un tiempo razonable?",
       "question_en": "What is the importance of completing a review in a reasonable timeframe?",
       "options_es": [
-        "No es importante, los PRs pueden esperar indefinidamente",
-        "Evita bloqueos de desarrollo y mantiene momentum del equipo",
-        "Solo importa si hay deadline",
-        "Los revisores no tienen responsabilidad en timing como regla general"
+        "No importa, los PR pueden esperar sin límite",
+        "Evita bloqueos y mantiene el ritmo del equipo",
+        "Solo importa cuando hay una fecha límite",
+        "Los revisores no tienen responsabilidad alguna"
       ],
       "options_en": [
-        "Not important, PRs can wait indefinitely",
-        "Prevents development blockers and maintains team momentum",
-        "Only matters if there is a deadline",
-        "Reviewers have no responsibility for timing as a general rule"
+        "Doesn't matter, PRs can wait forever",
+        "Avoids blockers and keeps team momentum",
+        "Only matters when there's a deadline",
+        "Reviewers bear no responsibility at all"
       ],
       "correct_index": 1,
       "explanation_es": "Reviews rápidas evitan que desarrolladores queden bloqueados esperando feedback, mantienen el momentum del equipo y mejoran la productividad.",
@@ -973,16 +973,16 @@
       "question_es": "¿Qué debe revisar un code reviewer además del código?",
       "question_en": "What should a code reviewer examine beyond the code itself?",
       "options_es": [
-        "Solo el código es importante",
-        "Tests, documentación, cambios de esquema, impacto en performance",
-        "Solo comentarios en el código",
-        "Únicamente cambios grandes en entornos reales"
+        "Únicamente el código es lo importante",
+        "Tests, documentación, esquema y rendimiento",
+        "Solamente los comentarios dentro del código",
+        "Exclusivamente los cambios de gran tamaño"
       ],
       "options_en": [
-        "Only code matters in real environments",
-        "Tests, documentation, schema changes, performance impact",
-        "Only code comments",
-        "Only large changes"
+        "Only the raw code itself matters",
+        "Tests, docs, schema changes, and performance",
+        "Only the comments left in the code",
+        "Only changes that are very large"
       ],
       "correct_index": 1,
       "explanation_es": "Un buen review abarca código, tests, documentación, cambios de esquema y consideraciones de performance para asegurar calidad integral.",
@@ -996,15 +996,15 @@
       "question_es": "¿Cuál es la ventaja de tener revisores de diferentes especialidades en un PR?",
       "question_en": "What is the advantage of having reviewers from different specialties on a PR?",
       "options_es": [
-        "No hay ventaja en la práctica",
-        "Proporciona múltiples perspectivas: calidad, seguridad, performance, etc.",
-        "Ralentiza el proceso innecesariamente",
-        "Solo la especialidad del autor importa"
+        "No aporta ninguna ventaja concreta para el proyecto",
+        "Aporta miradas distintas de calidad y seguridad",
+        "Ralentiza el proceso sin necesidad alguna",
+        "Solo importa la especialidad del autor"
       ],
       "options_en": [
-        "No advantage by convention",
-        "Provides multiple perspectives: quality, security, performance, etc.",
-        "Unnecessarily slows the process",
+        "It provides no concrete advantage",
+        "Brings varied views on quality and security",
+        "Slows the process down needlessly",
         "Only the author's specialty matters"
       ],
       "correct_index": 1,
@@ -1019,16 +1019,16 @@
       "question_es": "¿Cómo debe documentarse un PR después de ser mergeado?",
       "question_en": "How should a PR be documented after being merged?",
       "options_es": [
-        "Guardar referencias en el historial de commits y actualizar documentación del proyecto si es necesario",
-        "No necesita documentación después del merge",
-        "Eliminar toda referencia al PR en este contexto",
-        "Solo en un archivo separado externo como regla general en la práctica habitual como regla general en la práctica habitual"
+        "Queda en el historial y se actualiza la documentación",
+        "No requiere documentación tras el merge",
+        "Se elimina toda referencia al PR mergeado",
+        "Solo se guarda en un archivo externo completamente separado"
       ],
       "options_en": [
-        "Save references in commit history and update project documentation if needed",
-        "No documentation needed after merge",
-        "Delete all PR references according to spec",
-        "Only in a separate external file in the most common case as a general rule in production environments in production environments"
+        "It stays in history and docs get updated",
+        "No documentation is needed after merge",
+        "Every reference to the PR gets deleted",
+        "Only in a separate external file"
       ],
       "correct_index": 0,
       "explanation_es": "Después del merge, el PR debe quedar referenciado en el historial y la documentación del proyecto debe actualizarse para reflejar cambios significativos.",
@@ -1042,16 +1042,16 @@
       "question_es": "¿Cuál es el propósito principal de la integración continua (CI) en un pipeline de desarrollo?",
       "question_en": "What is the primary purpose of continuous integration (CI) in a development pipeline?",
       "options_es": [
-        "Ejecutar tests manualmente en los viernes como regla general en el caso más común como regla general",
-        "Automatizar pruebas y builds después de cada cambio para detectar problemas rápidamente",
-        "Hacer copias de seguridad del código por convención",
-        "Generar reportes de rendimiento anuales"
+        "Ejecutar pruebas manuales solo los viernes",
+        "Automatizar pruebas y builds tras cada cambio",
+        "Hacer copias de seguridad del código fuente",
+        "Generar reportes de rendimiento del sistema cada año"
       ],
       "options_en": [
-        "Run tests manually on Fridays in common practice according to official documentation in this context",
-        "Automate testing and builds after each change to detect issues quickly",
-        "Back up code in this context",
-        "Generate annual performance reports"
+        "Run manual tests only on Fridays",
+        "Automate tests and builds after every change",
+        "Make backups of the source code",
+        "Generate performance reports once a year"
       ],
       "correct_index": 1,
       "explanation_es": "CI automatiza pruebas y builds en cada commit, permitiendo detección inmediata de problemas y manteniendo la calidad del código base.",
@@ -1065,16 +1065,16 @@
       "question_es": "¿Cuál es el propósito principal de la entrega continua (CD) en un pipeline de desarrollo?",
       "question_en": "What is the primary purpose of continuous delivery (CD) in a development pipeline?",
       "options_es": [
-        "Mantener código listo para producción y permitir deploys a demanda",
-        "Automatizar deploys a producción inmediatamente después de cada cambio",
-        "Enviar código por correo a los clientes",
-        "Hacer pruebas manuales semanales"
+        "Mantener código listo y desplegar cuando convenga",
+        "Desplegar a producción justo tras cada cambio",
+        "Enviar el código por correo a los clientes",
+        "Hacer todas las pruebas manuales una vez por semana"
       ],
       "options_en": [
-        "Keep code ready for production and allow on-demand deployment",
-        "Automatically deploy to production after each change",
-        "Email code to customers by convention",
-        "Do manual weekly testing"
+        "Keep code ready and deploy whenever needed",
+        "Deploy to production right after every change",
+        "Email the code over to customers",
+        "Do manual testing once a week"
       ],
       "correct_index": 0,
       "explanation_es": "CD mantiene el código en estado listo para producción, permitiendo que la organización decida cuándo hacer deploys automáticamente sin intervención manual.",
@@ -1088,16 +1088,16 @@
       "question_es": "¿Qué tipos de pruebas se ejecutan típicamente en un pipeline CI?",
       "question_en": "What types of tests are typically run in a CI pipeline?",
       "options_es": [
-        "Solo tests de humo rápidos como regla general",
-        "Pruebas manuales exclusivamente",
-        "No se ejecutan pruebas automáticas para la mayoría de proyectos",
-        "Unit tests, integration tests, linting y análisis estático"
+        "Solo pruebas de humo rápidas y superficiales",
+        "Únicamente pruebas manuales realizadas por QA",
+        "Ninguna prueba automática llega a ejecutarse nunca",
+        "Unit tests, integration tests y análisis estático"
       ],
       "options_en": [
-        "Only quick smoke tests",
-        "Manual testing only in real environments",
-        "No automated tests run within this paradigm",
-        "Unit tests, integration tests, linting and static analysis"
+        "Just quick, shallow smoke tests",
+        "Only manual testing done by QA",
+        "No automated tests ever run",
+        "Unit tests, integration tests, and static analysis"
       ],
       "correct_index": 3,
       "explanation_es": "Un pipeline CI robusto ejecuta múltiples tipos de tests: unit tests (validar funciones individuales), integration tests (validar interacciones), linting y análisis estático.",
@@ -1111,16 +1111,16 @@
       "question_es": "¿Cuál es el propósito de proteger la rama 'main' o 'master' en un repositorio?",
       "question_en": "What is the purpose of protecting the 'main' or 'master' branch in a repository?",
       "options_es": [
-        "Dificultar el acceso innecesariamente",
-        "Crear una rama de respaldo",
-        "Obligar a todos los usuarios a usar otro repositorio",
-        "Prevenir commits directos y requerir PRs con reviews antes de mergear"
+        "Dificultar el acceso al repositorio sin razón",
+        "Crear una rama adicional exclusivamente de respaldo",
+        "Forzar a usar otro repositorio distinto",
+        "Evitar commits directos y exigir PR con revisión"
       ],
       "options_en": [
-        "Make access unnecessarily difficult",
-        "Create a backup branch as a general rule",
-        "Force all users to use another repository",
-        "Prevent direct commits and require PRs with reviews before merging"
+        "Make repo access harder for no reason",
+        "Create an extra backup branch",
+        "Force everyone onto a different repository",
+        "Block direct commits and require reviewed PRs"
       ],
       "correct_index": 3,
       "explanation_es": "Proteger la rama principal previene cambios accidentales, requiere que todo código pase por reviews y pase tests, manteniendo la estabilidad.",
@@ -1134,16 +1134,16 @@
       "question_es": "¿Qué es la 'branch protection' y qué reglas típicamente la componen?",
       "question_en": "What is 'branch protection' and what rules typically comprise it?",
       "options_es": [
-        "Un nombre diferente para Git en entornos de producción según la documentación oficial en la práctica habitual",
-        "Un tipo de password por convención",
-        "Una herramienta de respaldo",
-        "Conjunto de reglas que requieren reviews, tests pasando y protegen contra merges no autorizados"
+        "Otro nombre distinto para referirse a Git",
+        "Una herramienta pensada para hacer respaldos",
+        "Un tipo particular de contraseña realmente muy segura",
+        "Reglas que exigen revisiones y tests aprobados"
       ],
       "options_en": [
-        "A different name for Git in the most common case in production environments in the most common case",
-        "A type of password",
-        "A backup tool in real environments",
-        "Set of rules requiring reviews, passing tests and protecting against unauthorized merges"
+        "Just another name for Git itself",
+        "A tool meant for making backups",
+        "A particular kind of secure password",
+        "Rules requiring approved reviews and passing tests"
       ],
       "correct_index": 3,
       "explanation_es": "Branch protection incluye reglas como requerir reviews, pasar CI/CD checks, resolver conversaciones y proteger contra force pushes.",
@@ -1157,16 +1157,16 @@
       "question_es": "¿Cuál es el propósito de ejecutar tests en cada push a una rama?",
       "question_en": "What is the purpose of running tests on every push to a branch?",
       "options_es": [
-        "Ralentizar el desarrollo",
-        "Hacer que los desarrolladores se depriman para la mayoría de proyectos",
-        "Detectar problemas tempranamente antes de que se fusionen a main",
-        "Los tests no deben ejecutarse automáticamente"
+        "Ralentizar el avance general del desarrollo",
+        "Distraer innecesariamente a los desarrolladores",
+        "Detectar problemas antes de fusionar a main",
+        "Los tests jamás deben correr automáticamente"
       ],
       "options_en": [
-        "Slow down development",
-        "Make developers sad under normal conditions",
-        "Detect problems early before merging to main",
-        "Tests should not run automatically"
+        "Slow down overall development progress",
+        "Needlessly distract the developers",
+        "Catch problems before merging into main",
+        "Tests should never run automatically"
       ],
       "correct_index": 2,
       "explanation_es": "Ejecutar tests en cada push proporciona feedback inmediato, permitiendo detectar problemas en la rama de feature antes de que afecten a main.",
@@ -1180,16 +1180,16 @@
       "question_es": "¿Qué significa 'require status checks to pass' en branch protection?",
       "question_en": "What does 'require status checks to pass' in branch protection mean?",
       "options_es": [
-        "Un PR no puede ser mergeado hasta que todos los checks (tests, builds, etc.) pasen",
+        "El PR no se fusiona hasta que todo pase",
         "Los desarrolladores deben estar de buen humor",
-        "Los checks no importan según la especificación",
-        "Solo revisar manualmente sin automatización"
+        "Los checks configurados no importan realmente",
+        "Solo revisar a mano, sin automatización"
       ],
       "options_en": [
-        "A PR cannot be merged until all checks (tests, builds, etc.) pass",
+        "The PR can't merge until every check passes",
         "Developers must be in a good mood",
-        "Checks do not matter in practice",
-        "Only manually review without automation"
+        "The configured checks don't really matter",
+        "Only review by hand, no automation"
       ],
       "correct_index": 0,
       "explanation_es": "Esta regla requiere que todos los checks automatizados (CI/CD pipeline) pasen exitosamente antes de permitir un merge, asegurando código de calidad.",
@@ -1203,16 +1203,16 @@
       "question_es": "¿Cuál es el impacto de no tener CI/CD automatizado?",
       "question_en": "What is the impact of not having automated CI/CD?",
       "options_es": [
-        "Ningún impacto negativo como regla general",
-        "Bugs llegan a producción, testing manual es lento y propenso a errores",
-        "Menos código que escribir",
-        "Mayor velocidad de desarrollo"
+        "No genera ningún impacto negativo notable en el equipo",
+        "Bugs llegan a producción y el testing manual es lento",
+        "Hay menos código que escribir en total",
+        "El desarrollo avanza mucho más rápido"
       ],
       "options_en": [
-        "No negative impact in practice",
-        "Bugs reach production, manual testing is slow and error-prone",
-        "Less code to write",
-        "Faster development speed"
+        "Causes no noticeable negative impact",
+        "Bugs reach production and manual testing is slow",
+        "There is less code to write overall",
+        "Development moves much faster overall"
       ],
       "correct_index": 1,
       "explanation_es": "Sin CI/CD, el testing manual es lento e incompleto, buggy code llega a producción, y deploys son arriesgados y poco frecuentes.",
@@ -1226,16 +1226,16 @@
       "question_es": "¿Cómo pueden configurarse webhooks para ejecutar CI/CD en respuesta a eventos de Git?",
       "question_en": "How can webhooks be configured to trigger CI/CD in response to Git events?",
       "options_es": [
-        "Los webhooks no se usan en CI/CD",
-        "Solo usar polling cada hora",
-        "Configurar el repositorio para enviar notificaciones HTTP a un servicio CI/CD cuando ocurren eventos",
-        "Ejecutar tests sin eventos en este contexto en este contexto como práctica recomendada para la mayoría de proyectos"
+        "Los webhooks nunca llegan a usarse en pipelines de CI/CD",
+        "Solo consultando el repositorio cada hora",
+        "El repo envía notificaciones HTTP al ocurrir eventos",
+        "Ejecutando pruebas sin depender de eventos"
       ],
       "options_en": [
-        "Webhooks are not used in CI/CD",
-        "Only poll every hour in this context",
-        "Configure the repository to send HTTP notifications to a CI/CD service when events occur",
-        "Run tests without events as a general guideline within this paradigm for most projects"
+        "Webhooks are never used in CI/CD pipelines",
+        "Only by polling the repository every hour",
+        "The repo sends HTTP notifications when events occur",
+        "Running tests without relying on events"
       ],
       "correct_index": 2,
       "explanation_es": "Los webhooks permiten que eventos de Git (push, PR) notifiquen automáticamente al servicio CI/CD para ejecutar el pipeline inmediatamente.",
@@ -1249,16 +1249,16 @@
       "question_es": "¿Cuál es el objetivo principal de una 'deployment pipeline'?",
       "question_en": "What is the primary goal of a 'deployment pipeline'?",
       "options_es": [
-        "Prevenir que el código llegue a producción",
-        "Hacer que los deploys sean más complicados habitualmente para la mayoría de proyectos de forma general",
-        "Automatizar la entrega de código desde desarrollo hasta producción de forma segura y consistente",
-        "Reemplazar todo testing manual con uno automático"
+        "Hacer que los despliegues sean más complicados",
+        "Impedir que el código llegue a producción",
+        "Entregar código a producción de forma segura",
+        "Reemplazar todas las pruebas manuales existentes"
       ],
       "options_en": [
-        "Prevent code from reaching production",
-        "Make deployments more complicated in this context in production environments for most projects",
-        "Automate safe and consistent code delivery from development to production",
-        "Replace all manual testing with automatic"
+        "Make deployments more complicated overall",
+        "Prevent code from ever reaching production",
+        "Deliver code to production safely and consistently",
+        "Replace every existing manual test"
       ],
       "correct_index": 2,
       "explanation_es": "Una deployment pipeline automatiza los pasos desde que código se commitea hasta que llega a producción, garantizando consistencia y reduciendo riesgos.",
@@ -1272,16 +1272,16 @@
       "question_es": "¿Qué es un 'deployment stage' en una pipeline de CI/CD?",
       "question_en": "What is a 'deployment stage' in a CI/CD pipeline?",
       "options_es": [
-        "Un tipo de bug en este contexto",
-        "Un comentario en el código",
-        "Una rama de Git",
-        "Un paso en el proceso de desarrollo donde código se compila y se publica en un entorno"
+        "Un comentario cualquiera dejado dentro del código fuente",
+        "Una rama más dentro del repositorio Git",
+        "Un tipo particular de error de sintaxis",
+        "Un paso donde el código se compila y publica"
       ],
       "options_en": [
-        "A type of bug",
-        "A comment in code",
-        "A Git branch in real environments",
-        "A step in the deployment process where code is compiled and published to an environment"
+        "A comment left inside the code",
+        "Just another branch in the Git repo",
+        "A particular kind of syntax error",
+        "A step where code is built and published"
       ],
       "correct_index": 3,
       "explanation_es": "Un stage es una fase de la pipeline, ej: build, test, deploy a staging, deploy a producción. Cada stage tiene su propia lógica y puede tener gates.",
@@ -1295,16 +1295,16 @@
       "question_es": "¿Cuál es la importancia de tener un entorno 'staging' antes de producción?",
       "question_en": "What is the importance of having a 'staging' environment before production?",
       "options_es": [
-        "Permite validar cambios en un entorno idéntico a producción antes de releases",
-        "No es importante, pasar directo a producción en condiciones normales en el caso más común",
-        "Staging es más lento que producción según la especificación",
-        "Duplica innecesariamente el trabajo"
+        "Valida cambios en un entorno igual a producción",
+        "No es importante, se salta directo a producción",
+        "Staging resulta más lento que producción",
+        "Duplica trabajo de manera innecesaria"
       ],
       "options_en": [
-        "Allows validating changes in an environment identical to production before releases",
-        "Not important, go straight to production in common practice as a general rule",
-        "Staging is slower than production",
-        "Unnecessarily duplicates work in this context"
+        "Validates changes in a production-like environment",
+        "Not important, skip straight to production",
+        "Staging is slower than production itself",
+        "Needlessly duplicates existing work"
       ],
       "correct_index": 0,
       "explanation_es": "Staging es un entorno espejo de producción donde se validan cambios antes del deploy final, reduciendo riesgos y capturando problemas de última hora.",
@@ -1318,16 +1318,16 @@
       "question_es": "¿Cómo pueden automatizarse los deploys a producción en una pipeline CI/CD?",
       "question_en": "How can production deployments be automated in a CI/CD pipeline?",
       "options_es": [
-        "Los deploys siempre deben ser manuales",
-        "Configurar triggers automáticos después de aprobar en staging",
-        "Nunca automatizar deploys de forma estándar",
-        "Solo deployments no supervisados de manera estándar según la documentación oficial"
+        "Los despliegues siempre deben ser manuales",
+        "Triggers automáticos tras aprobar en staging",
+        "Jamás automatizar ningún tipo de despliegue",
+        "Solo con despliegues que nadie llega a supervisar"
       ],
       "options_en": [
-        "Deployments must always be manual",
-        "Configure automatic triggers after staging approval",
-        "Never automate deployments",
-        "Only unsupervised deployments under normal conditions in common practice"
+        "Deployments must always be done manually",
+        "Automatic triggers once staging is approved",
+        "Never automate any kind of deployment",
+        "Only with deployments nobody supervises"
       ],
       "correct_index": 1,
       "explanation_es": "Los deploys a producción pueden automatizarse con gates, como requerir aprobación manual o que pasen validaciones específicas, balanceando velocidad y seguridad.",
@@ -1341,16 +1341,16 @@
       "question_es": "¿Cuál es el beneficio de una 'blue-green deployment' en producción?",
       "question_en": "What is the benefit of a 'blue-green deployment' in production?",
       "options_es": [
-        "Solo es un nombre bonito",
-        "Ralentiza los deploys según la especificación",
-        "Permite cambiar entre dos versiones idénticas del aplicativo sin downtime",
-        "Reduce el espacio en disco"
+        "Solamente es un nombre llamativo y bonito",
+        "Reduce de forma notable el espacio ocupado en disco duro",
+        "Cambiar entre dos versiones idénticas sin downtime",
+        "Ralentiza el proceso de despliegue"
       ],
       "options_en": [
-        "Just a pretty name by default",
-        "Slows down deployments",
-        "Allows switching between two identical versions of the app without downtime",
-        "Reduces disk space"
+        "It's just a catchy, pretty name",
+        "Reduces the disk space used",
+        "Switch between two identical versions, zero downtime",
+        "Slows down the deployment process"
       ],
       "correct_index": 2,
       "explanation_es": "Blue-green permite mantener dos entornos idénticos en producción y cambiar entre ellos sin downtime, permitiendo rollbacks rápidos si hay problemas.",
@@ -1364,16 +1364,16 @@
       "question_es": "¿Cómo impacta CI/CD en la cultura y velocidad de desarrollo de un equipo?",
       "question_en": "How does CI/CD impact team development culture and speed?",
       "options_es": [
-        "No tiene impacto en la cultura",
-        "Acelera feedback, permite deploys frecuentes, y fomenta confianza en automatización",
-        "Ralentiza todo el proceso de forma estándar",
-        "Solo importa para equipos grandes"
+        "No tiene ningún impacto real sobre la cultura del equipo",
+        "Acelera el feedback y permite deploys frecuentes",
+        "Ralentiza por completo todo el proceso",
+        "Solo resulta relevante para equipos grandes"
       ],
       "options_en": [
-        "Has no impact on culture",
-        "Accelerates feedback, enables frequent deploys, and builds confidence in automation",
-        "Slows everything down in practice",
-        "Only matters for large teams"
+        "Has no impact on culture whatsoever",
+        "Speeds up feedback and enables frequent deploys",
+        "Slows the entire process down completely",
+        "Only matters for very large teams"
       ],
       "correct_index": 1,
       "explanation_es": "CI/CD transforma la cultura al permitir que equipos se enfoquen en features y confianza en la automatización, acelerando releases y mejorando confiabilidad.",

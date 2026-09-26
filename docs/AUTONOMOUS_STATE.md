@@ -503,7 +503,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader` con `KeyError: 'order'` (logs Railway) y lecciones fuera de esquema | **DONE** | #28 (`c5100e1`), `test_loader_schema.py` rojo sobre `ec97405`; deploy `b64e2a9a` SUCCESS |
-| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | TODO | 0 coletillas por grep; 37.16 ≤ 40 % con distractores reales; `test_no_new_file_is_a_pure_rotation` verde |
+| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | PARCIAL: track26 hecho (0 coletillas, correcta más larga 15 %, revisión adversaria de las 300: 6 defectos corregidos); trinquete `test_no_filler_options.py` (mutación en rojo); 28/29/30 en curso | 0 coletillas por grep; 37.16 ≤ 40 % con distractores reales; `test_no_new_file_is_a_pure_rotation` verde |
 | 39.2 | **1** | Fuentes inferidas en 146 lecciones normalizadas en #28 | TODO | Fuente comprobada por lección (WebFetch) o sustituida |
 | 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | TODO | 0 fallos sin bajar umbrales |
 | 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | TODO | Tests con flag on/off, exenciones, paridad con `plans.ts` |
@@ -524,7 +524,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.26 | **2** | **Security+ V8 hacia el 17-11-2026** (comptia.org, leído 2026-09-26) | TODO | track42 revisado contra el temario V8 al publicarse |
 | 39.24 | **1** | **AI-900 retirado por Microsoft el 30-06-2026**; la certificación Azure AI Fundamentals exige ahora **AI-901** (Conceptos 40–45 %, Microsoft Foundry 55–60 %, requiere Python) | TODO | track45 migrado al blueprint AI-901 (dominios, preguntas, lecciones); hasta entonces el nombre del track lo avisa |
 | 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
-| 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | TODO | `npx vitest run` 0 fallos |
+| 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | DONE | `8489ab6`: `npx vitest run` 31 ficheros, 249/249 (re-ejecutado 2026-09-26 12:07 UTC) |
 | 39.19 | **2** | 115 rutas en local frente a 141 en producción | **DONE** | Sin diferencia: `openapi.json` local y de producción = 141 paths / 146 operaciones, idénticas (2026-09-26); «115» era el recuento filtrado del test de contrato |
 | 39.20 | **2** | PostHog en el frontend (ADR-50j) | **DECIDIDO: no** | La analítica ya es propia (`analytics_events` + embudo admin); PostHog en el navegador rompería la promesa de la landing y la CSP (ADR-50j revisada) |
 | 39.21 | **2** | Sentry en el frontend (ADR-50k) | **DECIDIDO: no** | Solo backend; privacidad y DPA ES/EN actualizados: Sentry activo desde 2026-09-26, UE, sin PII |
