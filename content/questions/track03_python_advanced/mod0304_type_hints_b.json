@@ -206,16 +206,16 @@
       "question_es": "¿Qué significa declarar `S = TypeVar(\"S\", str, bytes)`?",
       "question_en": "What does declaring `S = TypeVar(\"S\", str, bytes)` mean?",
       "options_es": [
-        "Que S acepta cualquier subclase de str o de bytes y se resuelve a la subclase concreta",
+        "Que S acepta cualquier subclase de str o de bytes y se resuelve a la subclase concreta, según lo establece la especificación del protocolo de metadatos del intérprete de referencia",
         "Que S se fija exactamente a `str` o exactamente a `bytes` en cada uso, nunca a una mezcla ni a una subclase",
         "Que S equivale a `str | bytes`, así que un mismo valor puede ser cualquiera de los dos",
-        "Que S vale `str` por defecto y `bytes` solo si se indica"
+        "Que S vale `str` por defecto y `bytes` solo si se indica, a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución"
       ],
       "options_en": [
-        "That S accepts any subclass of str or bytes and resolves to the concrete subclass",
+        "That S accepts any subclass of str or bytes and resolves to the concrete subclass, as established by the specification of the reference interpreter metadata protocol standard",
         "That S is pinned to exactly `str` or exactly `bytes` at each use, never a mix and never a subclass",
         "That S is equivalent to `str | bytes`, so one value may be either of them",
-        "That S defaults to `str` and is `bytes` only when stated"
+        "That S defaults to `str` and is `bytes` only when stated, unless the runtime type checking verification is explicitly disabled in the configuration"
       ],
       "correct_index": 1,
       "explanation_es": "Un TypeVar con restricciones de valor solo puede tomar uno de los tipos listados, y ese tipo se fija para toda la firma: `def cat(a: S, b: S) -> S` acepta dos str o dos bytes, nunca uno de cada. Confundirlo con `str | bytes` (opción 2) es el error clásico: la unión permitiría mezclarlos. Y a diferencia de `bound=`, las restricciones NO se resuelven a subclases: una subclase de str se colapsa a `str`.",
@@ -335,15 +335,15 @@
       "question_es": "¿Qué imprime este código?\n```python\nfrom typing import get_origin, get_args\nprint(get_origin(list[int]), get_args(list[int]))\n```",
       "question_en": "What does this code print?\n```python\nfrom typing import get_origin, get_args\nprint(get_origin(list[int]), get_args(list[int]))\n```",
       "options_es": [
-        "list (int,)",
+        "list (int,), a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución",
         "list[int] ()",
-        "None ()",
+        "None (), teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
         "<class 'list'> (<class 'int'>,)"
       ],
       "options_en": [
-        "list (int,)",
+        "list (int,), unless the runtime type checking verification is explicitly disabled in the configuration",
         "list[int] ()",
-        "None ()",
+        "None (), taking into account the limitations of the inter-process communication protocol of the system",
         "<class 'list'> (<class 'int'>,)"
       ],
       "correct_index": 3,
@@ -365,16 +365,16 @@
       "question_es": "Tienes `def feed(animals: list[Animal]) -> None` y le pasas una `list[Dog]`, donde `Dog` hereda de `Animal`. mypy lo rechaza. ¿Por qué?",
       "question_en": "You have `def feed(animals: list[Animal]) -> None` and pass it a `list[Dog]`, where `Dog` subclasses `Animal`. mypy rejects it. Why?",
       "options_es": [
-        "Porque `Dog` debería declararse como `Protocol` en vez de heredar de `Animal`",
+        "Porque `Dog` debería declararse como `Protocol` en vez de heredar de `Animal`, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva, excepto en implementaciones alternativas como Jython o IronPython donde el comportamiento difiere",
         "Porque `list` es invariante: si se aceptara, `feed` podría insertar cualquier `Animal` en una lista de `Dog`. Anota el parámetro como `Sequence[Animal]`, que sí es covariante",
         "Porque los genéricos built-in no admiten subclases; hay que usar `List` de `typing`",
-        "Porque mypy solo acepta genéricos declarados con un `TypeVar` explícito"
+        "Porque mypy solo acepta genéricos declarados con un `TypeVar` explícito, lo cual requiere una configuración específica del entorno de ejecución del intérprete, debido a las restricciones impuestas por el modelo de datos del intérprete estándar"
       ],
       "options_en": [
-        "Because `Dog` should be declared as a `Protocol` instead of subclassing `Animal`",
+        "Because `Dog` should be declared as a `Protocol` instead of subclassing `Animal`, as long as the correct version of the backward compatibility module is being used properly, except in alternative implementations like Jython or IronPython where the behavior differs",
         "Because `list` is invariant: allowing it would let `feed` append any `Animal` into a list of `Dog`. Annotate the parameter as `Sequence[Animal]`, which is covariant",
         "Because built-in generics do not accept subclasses; you must use `typing.List`",
-        "Because mypy only accepts generics declared with an explicit `TypeVar`"
+        "Because mypy only accepts generics declared with an explicit `TypeVar`, which requires a specific configuration of the interpreter runtime execution environment, due to the restrictions imposed by the standard interpreter's internal data model design"
       ],
       "correct_index": 1,
       "explanation_es": "Las colecciones mutables son invariantes precisamente porque se pueden escribir: si `list[Dog]` valiera como `list[Animal]`, `feed` podría hacer `animals.append(Cat())` y romper al llamante. La solución no es cambiar de sintaxis (opción 3: `List` y `list` se comportan igual) sino pedir menos: `Sequence[Animal]` es de solo lectura y por eso puede ser covariante. Cambiar a `Protocol` no toca la varianza; el problema no es cómo se relacionan `Dog` y `Animal`, sino cómo se relacionan sus listas.",
@@ -561,14 +561,14 @@
       "options_es": [
         "Registrar la clase en una ABC con `MiABC.register(Externa)`, que es lo único que mypy reconoce",
         "Definir un `Protocol` con `def read(self) -> bytes: ...`; el subtipado estructural no exige herencia ni registro",
-        "Anotar el parámetro como `Any`, porque es la única forma de tipar clases externas",
-        "Definir un `TypeVar` con `bound=Externa`"
+        "Anotar el parámetro como `Any`, porque es la única forma de tipar clases externas, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
+        "Definir un `TypeVar` con `bound=Externa`, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva"
       ],
       "options_en": [
         "Register the class on an ABC with `MyABC.register(External)`, the only thing mypy recognises",
         "Define a `Protocol` with `def read(self) -> bytes: ...`; structural subtyping needs no inheritance and no registration",
-        "Annotate the parameter as `Any`, since that is the only way to type external classes",
-        "Define a `TypeVar` with `bound=External`"
+        "Annotate the parameter as `Any`, since that is the only way to type external classes, including the internal management of file descriptors and memory buffer allocation routines",
+        "Define a `TypeVar` with `bound=External`, as long as the correct version of the backward compatibility module is being used properly"
       ],
       "correct_index": 1,
       "explanation_es": "Este es exactamente el hueco que PEP 544 vino a tapar: con un Protocol describes la FORMA que necesitas y cualquier clase que la cumpla encaja, aunque se escribiera años antes y sin conocer tu código. `ABC.register()` sí hace que `isinstance` dé `True` en ejecución, y por eso es tan tentador, pero mypy lo ignora casi siempre. `Any` funciona en el sentido de que nada falla, y precisamente por eso: apaga la comprobación en lugar de expresar el contrato. `bound=Externa` te ata a ESA clase, que es lo contrario de lo que pides.",
@@ -589,14 +589,14 @@
       "question_es": "¿Qué ocurre al ejecutar este código?\n```python\nfrom typing import Protocol, runtime_checkable\n@runtime_checkable\nclass HasName(Protocol):\n    name: str\nclass User:\n    name = \"ana\"\nprint(issubclass(User, HasName))\n```",
       "question_en": "What happens when this code runs?\n```python\nfrom typing import Protocol, runtime_checkable\n@runtime_checkable\nclass HasName(Protocol):\n    name: str\nclass User:\n    name = \"ana\"\nprint(issubclass(User, HasName))\n```",
       "options_es": [
-        "Imprime `True`",
-        "Imprime `False`",
+        "Imprime `True`, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas",
+        "Imprime `False`, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
         "Lanza `AttributeError`",
         "Lanza `TypeError`: los protocolos con miembros que no son métodos no admiten `issubclass()`"
       ],
       "options_en": [
-        "Prints `True`",
-        "Prints `False`",
+        "Prints `True`, but only when running in debug mode with the tracing and profiling options fully activated",
+        "Prints `False`, considering that the generational garbage collector must be enabled for this specific purpose",
         "Raises `AttributeError`",
         "Raises `TypeError`: protocols with non-method members do not support `issubclass()`"
       ],
@@ -676,16 +676,16 @@
       "question_es": "¿Qué hace `cast(int, x)` de `typing`?",
       "question_en": "What does `typing`'s `cast(int, x)` do?",
       "options_es": [
-        "Convierte `x` a entero en ejecución, igual que `int(x)`",
+        "Convierte `x` a entero en ejecución, igual que `int(x)`, lo que implica una sobrecarga adicional en el manejo de las estructuras internas de datos",
         "Le dice al checker que trate `x` como `int`, sin comprobar ni convertir nada en ejecución",
         "Comprueba en ejecución que `x` es `int` y lanza `TypeError` si no lo es",
-        "Registra una comprobación que mypy ejecuta al final del análisis"
+        "Registra una comprobación que mypy ejecuta al final del análisis, siempre que el contexto de ejecución haya sido correctamente inicializado por el módulo principal"
       ],
       "options_en": [
-        "Converts `x` to an integer at runtime, like `int(x)`",
+        "Converts `x` to an integer at runtime, like `int(x)`, which implies additional overhead in the handling of internal data structures and mappings",
         "Tells the checker to treat `x` as `int`, with no runtime check and no conversion",
         "Checks at runtime that `x` is an `int` and raises `TypeError` otherwise",
-        "Registers a check that mypy runs at the end of its analysis"
+        "Registers a check that mypy runs at the end of its analysis, as long as the execution context has been correctly initialized by the main application module"
       ],
       "correct_index": 1,
       "explanation_es": "`cast` es una afirmación, no una verificación: en ejecución devuelve el valor tal cual y su implementación es literalmente `return val`. El nombre viene de otros lenguajes donde 'cast' sí convierte (opción 1) o sí comprueba (opción 2), y ahí está la trampa. Por eso un `cast` equivocado silencia un error real y lo convierte en un fallo más tarde y más lejos; úsalo solo cuando sepas algo que el checker no puede deducir.",
@@ -737,14 +737,14 @@
       "question_es": "Este código se ejecuta y además se pasa por `mypy --strict`. ¿Qué ocurre en cada caso?\n```python\nfrom typing import Any\ndef f(a: Any, b: object) -> None:\n    print(a.upper(), b.upper())\nf(\"x\", \"y\")\n```",
       "question_en": "This code is both run and checked with `mypy --strict`. What happens in each case?\n```python\nfrom typing import Any\ndef f(a: Any, b: object) -> None:\n    print(a.upper(), b.upper())\nf(\"x\", \"y\")\n```",
       "options_es": [
-        "Lanza `AttributeError` sobre `b` en ejecución",
-        "Imprime `X Y`; mypy no señala nada",
+        "Lanza `AttributeError` sobre `b` en ejecución, junto con la comprobación de las invariantes del árbol de sintaxis abstracta compilado",
+        "Imprime `X Y`; mypy no señala nada, que además involucra la validación de las firmas de los métodos especiales del protocolo",
         "Imprime `X Y`; mypy señala error en las dos llamadas",
         "Imprime `X Y`; mypy señala error solo en `b.upper()`, porque `object` no tiene `upper`"
       ],
       "options_en": [
-        "Raises `AttributeError` on `b` at runtime",
-        "Prints `X Y`; mypy flags nothing",
+        "Raises `AttributeError` on `b` at runtime, along with checking the invariants of the compiled abstract syntax tree representation",
+        "Prints `X Y`; mypy flags nothing, which also involves validating the signatures of the special protocol methods in the class",
         "Prints `X Y`; mypy flags both calls",
         "Prints `X Y`; mypy flags only `b.upper()`, because `object` has no `upper`"
       ],
@@ -901,14 +901,14 @@
       "options_es": [
         "Una librería de validación como Pydantic, que lee las anotaciones y genera comprobaciones reales en ejecución",
         "`typing.assert_type`, que compara el valor con el tipo esperado y falla en ejecución",
-        "`mypy --strict`, que instrumenta el código para comprobar los tipos al ejecutarlo",
-        "`reveal_type`, que imprime y valida el tipo real durante la ejecución"
+        "`mypy --strict`, que instrumenta el código para comprobar los tipos al ejecutarlo, junto con la comprobación de las invariantes del árbol de sintaxis abstracta compilado",
+        "`reveal_type`, que imprime y valida el tipo real durante la ejecución, que además involucra la validación de las firmas de los métodos especiales del protocolo"
       ],
       "options_en": [
         "A validation library such as Pydantic, which reads the annotations and generates real runtime checks",
         "`typing.assert_type`, which compares the value with the expected type and fails at runtime",
-        "`mypy --strict`, which instruments the code to check types as it runs",
-        "`reveal_type`, which prints and validates the actual type while the program runs"
+        "`mypy --strict`, which instruments the code to check types as it runs, along with checking the invariants of the compiled abstract syntax tree representation",
+        "`reveal_type`, which prints and validates the actual type while the program runs, which also involves validating the signatures of the special protocol methods in the class"
       ],
       "correct_index": 0,
       "explanation_es": "La división de trabajo es la clave: mypy nunca ejecuta tu código, sólo lo lee, así que no puede saber nada de un JSON que aún no ha llegado. Pydantic reutiliza las mismas anotaciones para construir validadores que sí corren. `assert_type` engaña muchísimo por el nombre: es una comprobación ESTÁTICA que en ejecución devuelve el valor sin mirarlo. `reveal_type` tampoco se ejecuta: es un pseudo-nombre que mypy sustituye por un mensaje durante el análisis, y si dejas la llamada en el código, Python fallará con `NameError`.",

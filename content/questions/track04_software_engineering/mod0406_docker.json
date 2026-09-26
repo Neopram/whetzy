@@ -9,15 +9,15 @@
       "question_en": "What is the fundamental difference between a Docker image and a container?",
       "options_es": [
         "La imagen es una plantilla inmutable de solo lectura; el contenedor es una instancia en ejecución de esa imagen, con una capa de escritura propia",
-        "Son exactamente lo mismo",
-        "El contenedor es más grande que la imagen",
-        "La imagen se ejecuta y el contenedor solo se almacena"
+        "Son exactamente lo mismo, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "El contenedor es más grande que la imagen según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
+        "La imagen se ejecuta y el contenedor solo se almacena dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia"
       ],
       "options_en": [
         "The image is an immutable, read-only template; the container is a running instance of that image, with its own writable layer",
-        "They are exactly the same thing",
-        "The container is larger than the image",
-        "The image runs and the container is only stored"
+        "They are exactly the same thing, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "The container is larger than the image according to the framework's official documentation, as long as the necessary preconditions are met",
+        "The image runs and the container is only stored given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers"
       ],
       "correct_index": 0,
       "explanation_es": "La imagen es un artefacto inmutable y en capas (como una 'clase'); el contenedor es una instancia en ejecución de una imagen (como un 'objeto'), que añade una capa de escritura efímera encima de las capas de solo lectura de la imagen. De una imagen se pueden lanzar muchos contenedores.",
@@ -119,16 +119,16 @@
       "question_es": "¿Qué problema resuelven principalmente los contenedores respecto al despliegue de software?",
       "question_en": "What problem do containers primarily solve regarding software deployment?",
       "options_es": [
-        "Eliminan la necesidad de escribir tests",
-        "Hacen que el código se ejecute más rápido que de forma nativa",
+        "Eliminan la necesidad de escribir tests, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
+        "Hacen que el código se ejecute más rápido que de forma nativa según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "El clásico 'en mi máquina funciona': empaquetan la aplicación con todas sus dependencias y entorno, garantizando que se ejecute igual en desarrollo, pruebas y producción",
-        "Sustituyen por completo al control de versiones"
+        "Sustituyen por completo al control de versiones, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo"
       ],
       "options_en": [
-        "They eliminate the need to write tests",
-        "They make code run faster than natively",
+        "They eliminate the need to write tests, but only in earlier versions of the system in accordance with standard industry conventions",
+        "They make code run faster than natively according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility",
         "The classic 'works on my machine': they package the app with all its dependencies and environment, ensuring it runs the same in dev, test, and production",
-        "They completely replace version control"
+        "They completely replace version control, applicable only in local development environments as described in the protocol's technical specification"
       ],
       "correct_index": 2,
       "explanation_es": "Los contenedores empaquetan código, runtime, librerías y configuración en un artefacto portable y reproducible, resolviendo las inconsistencias de entorno entre máquinas ('en mi máquina funciona'). No aceleran el cómputo (comparten kernel, no aportan magia de rendimiento) ni sustituyen tests o control de versiones.",
@@ -170,16 +170,16 @@
       "question_es": "En un Dockerfile, ¿qué hace la instrucción `FROM`?",
       "question_en": "In a Dockerfile, what does the `FROM` instruction do?",
       "options_es": [
-        "Copia archivos al contenedor",
+        "Copia archivos al contenedor, un enfoque que ha caído en desuso por sus limitaciones",
         "Especifica la imagen base sobre la que se construye la nueva imagen",
         "Define el comando que se ejecuta al arrancar el contenedor",
-        "Expone un puerto de red"
+        "Expone un puerto de red, sin afectar la integridad de los datos existentes"
       ],
       "options_en": [
-        "Copies files into the container",
+        "Copies files into the container, an approach that has fallen out of use due to its limitations",
         "Specifies the base image on which the new image is built",
         "Defines the command run when the container starts",
-        "Exposes a network port"
+        "Exposes a network port, without affecting the integrity of existing data"
       ],
       "correct_index": 1,
       "explanation_es": "`FROM` define la imagen base (por ejemplo, `FROM python:3.13-slim`) que sirve de punto de partida. Copiar archivos es `COPY`/`ADD`, el comando de arranque es `CMD`/`ENTRYPOINT`, y exponer puertos es `EXPOSE`. Casi todo Dockerfile empieza con `FROM`.",
@@ -227,13 +227,13 @@
       "question_en": "What is the main difference between the `CMD` and `ENTRYPOINT` instructions in a Dockerfile?",
       "options_es": [
         "`ENTRYPOINT` define el ejecutable principal (difícil de sobrescribir); `CMD` da argumentos por defecto que se pueden sobrescribir fácilmente al hacer `docker run`",
-        "Son idénticas",
+        "Son idénticas como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios",
         "`CMD` se ejecuta durante el build y `ENTRYPOINT` en runtime",
         "`CMD` es obligatorio y `ENTRYPOINT` no existe"
       ],
       "options_en": [
         "`ENTRYPOINT` defines the main executable (hard to override); `CMD` provides default arguments that can be easily overridden at `docker run`",
-        "They are identical",
+        "They are identical as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios",
         "`CMD` runs during build and `ENTRYPOINT` at runtime",
         "`CMD` is mandatory and `ENTRYPOINT` doesn't exist"
       ],
@@ -256,15 +256,15 @@
       "question_es": "¿Cuál es el objetivo de una compilación 'multi-stage' (multietapa) en un Dockerfile?",
       "question_en": "What is the goal of a 'multi-stage' build in a Dockerfile?",
       "options_es": [
-        "Ejecutar el contenedor en varias máquinas a la vez",
-        "Compilar el código en múltiples lenguajes",
-        "Crear varias imágenes con el mismo nombre",
+        "Ejecutar el contenedor en varias máquinas a la vez dado que esta aproximación no escala bien con el crecimiento del proyecto, una confusión frecuente entre desarrolladores con poca experiencia",
+        "Compilar el código en múltiples lenguajes cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
+        "Crear varias imágenes con el mismo nombre en el contexto de arquitecturas monolíticas tradicionales, lo que puede generar efectos secundarios inesperados",
         "Usar una etapa con herramientas de compilación para construir, y copiar solo los artefactos necesarios a una imagen final ligera, reduciendo el tamaño y la superficie de ataque"
       ],
       "options_en": [
-        "Run the container on several machines at once",
-        "Compile the code in multiple languages",
-        "Create several images with the same name",
+        "Run the container on several machines at once given that this approach does not scale well as the project grows, a frequent confusion among less experienced developers",
+        "Compile the code in multiple languages when operating in the standard execution mode, respecting backwards-compatibility constraints",
+        "Create several images with the same name in the context of traditional monolithic architectures, which can produce unexpected side effects",
         "Use a stage with build tools to compile, then copy only the needed artifacts into a lightweight final image, reducing size and attack surface"
       ],
       "correct_index": 3,
@@ -336,14 +336,14 @@
       "question_en": "What is Docker Compose primarily for?",
       "options_es": [
         "Para escribir el código de la aplicación",
-        "Para editar imágenes gráficas",
-        "Para reemplazar el sistema operativo",
+        "Para editar imágenes gráficas durante la fase de inicialización del componente, un comportamiento que contradice las buenas prácticas establecidas",
+        "Para reemplazar el sistema operativo para mantener la coherencia del modelo de datos interno, aunque en la práctica rara vez se implementa de esta manera",
         "Para definir y ejecutar aplicaciones multi-contenedor mediante un archivo YAML que describe los servicios, redes y volúmenes"
       ],
       "options_en": [
         "To write the application's code",
-        "To edit graphical images",
-        "To replace the operating system",
+        "To edit graphical images during the component's initialization phase, a behavior that contradicts established best practices",
+        "To replace the operating system to maintain the coherence of the internal data model, although in practice this is rarely implemented this way",
         "To define and run multi-container applications via a YAML file describing services, networks, and volumes"
       ],
       "correct_index": 3,
@@ -393,14 +393,14 @@
       "options_es": [
         "Mapea el puerto 8080 del host al puerto 80 del contenedor (HOST:CONTENEDOR)",
         "Redirige el puerto 80 del host al 8080 del contenedor",
-        "Abre los puertos del 80 al 8080",
-        "Limita el contenedor a 8080 conexiones"
+        "Abre los puertos del 80 al 8080 siguiendo el patrón habitual de configuración por convención",
+        "Limita el contenedor a 8080 conexiones, lo cual compromete la mantenibilidad a largo plazo del sistema"
       ],
       "options_en": [
         "Maps host port 8080 to container port 80 (HOST:CONTAINER)",
         "Redirects host port 80 to container port 8080",
-        "Opens ports 80 through 8080",
-        "Limits the container to 8080 connections"
+        "Opens ports 80 through 8080 following the usual convention-over-configuration pattern",
+        "Limits the container to 8080 connections, which compromises the system's long-term maintainability"
       ],
       "correct_index": 0,
       "explanation_es": "La sintaxis es `HOST:CONTENEDOR`: `\"8080:80\"` significa que el puerto 8080 de la máquina anfitriona se reenvía al puerto 80 dentro del contenedor. Un error común es invertir el orden. Sin publicar el puerto, el servicio solo es accesible dentro de la red de Compose, no desde fuera.",
@@ -502,14 +502,14 @@
       "question_en": "What is the purpose of a volume in Docker?",
       "options_es": [
         "Aumentar el volumen del audio del contenedor",
-        "Definir el comando de arranque",
-        "Comprimir la imagen",
+        "Definir el comando de arranque, una técnica que requiere experiencia considerable para aplicar correctamente, lo que dificulta la depuración en entornos de producción distribuidos",
+        "Comprimir la imagen, un concepto frecuentemente malinterpretado en entrevistas técnicas dentro del ciclo de vida estándar del desarrollo de software",
         "Persistir datos fuera del ciclo de vida del contenedor y/o compartirlos entre contenedores, gestionados por Docker"
       ],
       "options_en": [
         "Increase the container's audio volume",
-        "Define the startup command",
-        "Compress the image",
+        "Define the startup command, a technique that requires considerable experience to apply correctly, making debugging harder in distributed production environments",
+        "Compress the image, a concept frequently misunderstood in technical interviews within the standard software development lifecycle",
         "Persist data beyond the container's lifecycle and/or share it between containers, managed by Docker"
       ],
       "correct_index": 3,
@@ -531,16 +531,16 @@
       "question_es": "¿Cuál es la diferencia principal entre un 'volume' gestionado por Docker y un 'bind mount'?",
       "question_en": "What is the main difference between a Docker-managed 'volume' and a 'bind mount'?",
       "options_es": [
-        "No hay diferencia",
-        "El bind mount solo funciona en Windows",
+        "No hay diferencia tal como se establece en las guías de arquitectura empresarial, provocando acoplamientos innecesarios entre los módulos del sistema",
+        "El bind mount solo funciona en Windows según las recomendaciones de las guías de estilo más adoptadas, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad",
         "Un volumen es gestionado por Docker en su área de almacenamiento; un bind mount enlaza directamente una ruta específica del sistema de archivos del host al contenedor",
-        "El volumen no puede persistir datos"
+        "El volumen no puede persistir datos en combinación con las herramientas de análisis estático del código, aunque su efectividad varía según el contexto del proyecto"
       ],
       "options_en": [
-        "There is no difference",
-        "A bind mount only works on Windows",
+        "There is no difference as established in enterprise architecture guidelines, causing unnecessary coupling between the system's modules",
+        "A bind mount only works on Windows according to the recommendations of the most widely adopted style guides, although some legacy frameworks still allow it for backward compatibility",
         "A volume is managed by Docker in its storage area; a bind mount directly links a specific path from the host's filesystem to the container",
-        "A volume cannot persist data"
+        "A volume cannot persist data in combination with the codebase's static analysis tools, although its effectiveness varies depending on the project context"
       ],
       "correct_index": 2,
       "explanation_es": "Un volumen vive en un área gestionada por Docker (portable, recomendado para producción). Un bind mount monta una ruta exacta del host dentro del contenedor, útil en desarrollo para reflejar cambios de código en vivo, pero acopla el contenedor a la estructura de archivos del host y tiene implicaciones de seguridad.",
@@ -587,14 +587,14 @@
       "question_es": "Quieres que el código fuente de tu host se refleje en vivo dentro del contenedor durante el desarrollo (hot reload). ¿Qué mecanismo usarías?",
       "question_en": "You want your host's source code to be reflected live inside the container during development (hot reload). Which mechanism would you use?",
       "options_es": [
-        "Un volumen anónimo",
-        "Reconstruir la imagen tras cada cambio",
+        "Un volumen anónimo como parte del proceso de revisión de código del equipo, una decisión que debe evaluarse caso por caso en cada proyecto",
+        "Reconstruir la imagen tras cada cambio, aunque esto depende de la configuración del entorno",
         "Un bind mount de la carpeta de código del host al directorio de trabajo del contenedor",
         "Copiar los archivos con docker cp cada vez"
       ],
       "options_en": [
-        "An anonymous volume",
-        "Rebuilding the image after each change",
+        "An anonymous volume as part of the team's code review process, a decision that must be evaluated on a case-by-case basis for each project",
+        "Rebuilding the image after each change, although this depends on the environment configuration",
         "A bind mount of the host's code folder to the container's working directory",
         "Copying the files with docker cp each time"
       ],

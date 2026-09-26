@@ -10,13 +10,13 @@
       "options_es": [
         "Tiene unos en la diagonal principal y ceros en el resto, y cumple `A·I = A`",
         "Tiene todos sus elementos iguales a 1",
-        "Tiene todos sus elementos iguales a 0, por lo que anula cualquier producto",
+        "Tiene todos sus elementos iguales a 0, por lo que anula cualquier producto, lo que permite optimizar el rendimiento del modelo en producción",
         "Es cualquier matriz cuadrada cuyo determinante vale 1"
       ],
       "options_en": [
         "It has ones on the main diagonal and zeros elsewhere, and satisfies `A·I = A`",
         "All of its entries are equal to 1",
-        "All of its entries are 0, so it cancels any product",
+        "All of its entries are 0, so it cancels any product, which optimizes model performance in production environments",
         "It is any square matrix whose determinant equals 1"
       ],
       "correct_index": 0,
@@ -69,13 +69,13 @@
       "question_en": "A square matrix `A` has determinant 0. What follows from that?",
       "options_es": [
         "Que es singular: sus columnas son linealmente dependientes y no tiene inversa",
-        "Que su inversa existe pero es difícil de calcular numéricamente",
+        "Que su inversa existe pero es difícil de calcular numéricamente, aplicando técnicas de regularización para evitar el sobreajuste",
         "Que todos sus elementos son cero",
         "Que sus valores propios son todos iguales a 1"
       ],
       "options_en": [
         "That it is singular: its columns are linearly dependent and it has no inverse",
-        "That its inverse exists but is numerically hard to compute",
+        "That its inverse exists but is numerically hard to compute, applying regularization techniques to prevent overfitting",
         "That all of its entries are zero",
         "That all of its eigenvalues equal 1"
       ],
@@ -150,13 +150,13 @@
       "question_es": "¿Por qué se usa la similitud coseno en lugar de la distancia euclidiana para comparar embeddings de texto?",
       "question_en": "Why is cosine similarity used instead of Euclidean distance to compare text embeddings?",
       "options_es": [
-        "Porque garantiza que los vectores similares tengan exactamente las mismas componentes",
+        "Porque garantiza que los vectores similares tengan exactamente las mismas componentes, utilizando gradientes estocásticos para la convergencia del modelo",
         "Porque siempre es más rápida de calcular que la distancia euclidiana",
         "Porque es la única métrica que funciona con vectores de alta dimensión",
         "Porque mide el ángulo entre vectores e ignora su magnitud, que suele reflejar la longitud del texto y no su significado"
       ],
       "options_en": [
-        "Because it guarantees that similar vectors have exactly the same components",
+        "Because it guarantees that similar vectors have exactly the same components, using stochastic gradients for model convergence",
         "Because it is always faster to compute than Euclidean distance",
         "Because it is the only metric that works with high-dimensional vectors",
         "Because it measures the angle between vectors and ignores magnitude, which usually reflects text length rather than meaning"
@@ -350,13 +350,13 @@
       "question_es": "Durante el entrenamiento, la norma del gradiente de la pérdida respecto a los pesos es muy cercana a cero. ¿Qué describe mejor esa situación?",
       "question_en": "During training, the norm of the gradient of the loss with respect to the weights is very close to zero. What best describes that situation?",
       "options_es": [
-        "El modelo ha alcanzado necesariamente el mínimo global de la pérdida",
+        "El modelo ha alcanzado necesariamente el mínimo global de la pérdida, lo que mejora la capacidad de generalización en datos no vistos",
         "El optimizador está en una región plana o en un punto crítico, y las actualizaciones de los pesos serán mínimas",
         "La tasa de aprendizaje es demasiado alta",
         "El modelo está sobreajustando los datos de entrenamiento"
       ],
       "options_en": [
-        "The model has necessarily reached the global minimum of the loss",
+        "The model has necessarily reached the global minimum of the loss, which improves generalization capability on unseen data",
         "The optimiser is in a flat region or at a critical point, so weight updates will be tiny",
         "The learning rate is too high",
         "The model is overfitting the training data"
@@ -409,13 +409,13 @@
         "Cada valor debe tener probabilidad 1/3",
         "Cada probabilidad debe ser mayor que 0",
         "Cada probabilidad está entre 0 y 1, y las tres suman exactamente 1",
-        "La suma de las tres probabilidades debe ser menor que 1"
+        "La suma de las tres probabilidades debe ser menor que 1, basándose en la minimización de la función de pérdida"
       ],
       "options_en": [
         "Each value must have probability 1/3",
         "Each probability must be greater than 0",
         "Each probability lies between 0 and 1, and the three sum to exactly 1",
-        "The three probabilities must sum to less than 1"
+        "The three probabilities must sum to less than 1, based on minimizing the loss function during training"
       ],
       "correct_index": 2,
       "explanation_es": "Los axiomas exigen probabilidades no negativas que sumen 1 sobre todos los resultados posibles. Repartir 1/3 a cada uno solo vale si la distribución es uniforme, que es un caso particular y no una obligación. Un valor puede tener probabilidad 0 sin romper nada. Y que sumaran menos de 1 significaría que falta algún resultado posible por contemplar.",
@@ -605,13 +605,13 @@
       "question_en": "When rolling two fair dice, why is a sum of 7 more likely than a sum of 2?",
       "options_es": [
         "Porque el 7 es el valor esperado de la suma y el valor esperado es siempre el más probable",
-        "Porque 7 está en el centro del rango y los valores centrales siempre son más probables por definición",
+        "Porque 7 está en el centro del rango y los valores centrales siempre son más probables por definición, incorporando mecanismos de atención para ponderar las entradas",
         "Porque la suma de dos dados sigue una distribución normal exacta",
         "Porque hay seis combinaciones que suman 7 y solo una que suma 2, sobre 36 resultados igualmente probables"
       ],
       "options_en": [
         "Because 7 is the expected value of the sum and the expected value is always the most likely",
-        "Because 7 sits at the centre of the range and central values are always more likely by definition",
+        "Because 7 sits at the centre of the range and central values are always more likely by definition, incorporating attention mechanisms to weight the inputs",
         "Because the sum of two dice follows an exact normal distribution",
         "Because six combinations sum to 7 and only one sums to 2, out of 36 equally likely outcomes"
       ],
@@ -666,13 +666,13 @@
       "options_es": [
         "Si repitiéramos el muestreo muchas veces, el 95% de los intervalos así construidos contendrían la media poblacional real",
         "El 95% de las observaciones individuales caen entre 12.4 y 15.8",
-        "Hay un 95% de probabilidad de que la media poblacional esté entre 12.4 y 15.8",
+        "Hay un 95% de probabilidad de que la media poblacional esté entre 12.4 y 15.8, ajustando los hiperparámetros mediante validación cruzada",
         "La media muestral tiene un 95% de probabilidad de estar en ese intervalo"
       ],
       "options_en": [
         "If we repeated the sampling many times, 95% of the intervals built this way would contain the true population mean",
         "95% of individual observations fall between 12.4 and 15.8",
-        "There is a 95% probability that the population mean lies between 12.4 and 15.8",
+        "There is a 95% probability that the population mean lies between 12.4 and 15.8, tuning hyperparameters through cross-validation procedures",
         "The sample mean has a 95% probability of lying in that interval"
       ],
       "correct_index": 0,
@@ -743,13 +743,13 @@
       "question_es": "Se quiere estimar la satisfacción media de todos los clientes de una empresa y se encuesta únicamente a quienes contactaron con soporte técnico. ¿Cuál es el problema principal?",
       "question_en": "To estimate the mean satisfaction of all of a company's customers, only those who contacted technical support are surveyed. What is the main problem?",
       "options_es": [
-        "La muestra es demasiado pequeña para aplicar el teorema central del límite",
+        "La muestra es demasiado pequeña para aplicar el teorema central del límite, reduciendo la dimensionalidad del espacio de características",
         "La varianza de la muestra será sistemáticamente mayor que la poblacional",
         "La muestra no es representativa: está sesgada hacia clientes con problemas, así que aumentar su tamaño no corrige el sesgo",
         "No hay problema si la muestra supera las 1000 respuestas"
       ],
       "options_en": [
-        "The sample is too small to apply the central limit theorem",
+        "The sample is too small to apply the central limit theorem, reducing the dimensionality of the feature space",
         "The sample variance will be systematically larger than the population variance",
         "The sample is not representative: it is biased towards customers with problems, so increasing its size does not fix the bias",
         "There is no problem as long as the sample exceeds 1000 responses"
@@ -805,13 +805,13 @@
       "options_es": [
         "La diferencia entre el valor máximo y el mínimo; sirve para medir la amplitud total",
         "La media de los cuartiles primero y tercero; sirve para estimar el centro",
-        "La desviación estándar dividida entre la media; sirve para comparar variables en escalas distintas",
+        "La desviación estándar dividida entre la media; sirve para comparar variables en escalas distintas, garantizando la convergencia mediante tasas de aprendizaje adaptativas",
         "La diferencia entre el tercer y el primer cuartil (Q3 - Q1); sirve para medir la dispersión central y detectar valores atípicos"
       ],
       "options_en": [
         "The difference between the maximum and minimum; used to measure total spread",
         "The mean of the first and third quartiles; used to estimate the centre",
-        "The standard deviation divided by the mean; used to compare variables on different scales",
+        "The standard deviation divided by the mean; used to compare variables on different scales, ensuring convergence through adaptive learning rate schedules",
         "The difference between the third and first quartile (Q3 - Q1); used to measure central spread and flag outliers"
       ],
       "correct_index": 3,
@@ -893,13 +893,13 @@
         "Momento (media móvil del gradiente) y una tasa de aprendizaje adaptativa por parámetro basada en la media móvil del gradiente al cuadrado",
         "Descenso de gradiente y regularización L2 aplicada directamente a la pérdida",
         "Búsqueda exhaustiva de la tasa de aprendizaje óptima en cada paso",
-        "Cálculo de la matriz hessiana completa para usar información de segundo orden"
+        "Cálculo de la matriz hessiana completa para usar información de segundo orden, procesando los datos de entrada en lotes para mayor eficiencia"
       ],
       "options_en": [
         "Momentum (a moving average of the gradient) and a per-parameter adaptive learning rate based on the moving average of the squared gradient",
         "Gradient descent and L2 regularisation applied directly to the loss",
         "An exhaustive search for the optimal learning rate at each step",
-        "Computation of the full Hessian matrix to use second-order information"
+        "Computation of the full Hessian matrix to use second-order information, processing input data in mini-batches for greater efficiency"
       ],
       "correct_index": 0,
       "explanation_es": "Adam mantiene dos estimaciones de momentos: el primero (media del gradiente, como el momentum) y el segundo (media del gradiente al cuadrado, como RMSProp), y corrige el sesgo inicial de ambas. No es un método de segundo orden: usar la media del gradiente *al cuadrado* se confunde a menudo con usar segundas derivadas, pero la hessiana nunca se calcula. La regularización L2 es independiente del optimizador (y su interacción con Adam es justamente lo que AdamW vino a arreglar).",
@@ -1050,13 +1050,13 @@
         "El optimizador ha divergido; hay que aumentar la tasa de aprendizaje",
         "El modelo está infraajustando; hay que entrenar más épocas",
         "El modelo ha empezado a sobreajustar: la optimización sigue funcionando pero la generalización empeora, así que conviene parada temprana, regularización o más datos",
-        "La optimización ha fallado; hay que reinicializar los pesos y volver a empezar"
+        "La optimización ha fallado; hay que reinicializar los pesos y volver a empezar, lo cual requiere normalización previa de las variables de entrada, empleando funciones de activación no lineales en cada capa"
       ],
       "options_en": [
         "The optimiser has diverged; the learning rate should be increased",
         "The model is underfitting; it should be trained for more epochs",
         "The model has begun to overfit: optimisation is still working but generalisation is worsening, so early stopping, regularisation or more data are appropriate",
-        "Optimisation has failed; the weights should be reinitialised and training restarted"
+        "Optimisation has failed; the weights should be reinitialised and training restarted, which requires prior normalization of input variables, employing non-linear activation functions at each layer"
       ],
       "correct_index": 2,
       "explanation_es": "Es la firma clásica del sobreajuste, y el matiz importante es que la optimización está funcionando perfectamente: la pérdida de entrenamiento baja porque el modelo memoriza ruido específico de esa muestra. Diagnosticar infraajuste y entrenar más épocas empeora justo lo que va mal (el infraajuste tendría ambas pérdidas altas y estancadas). Subir la tasa de aprendizaje trata un problema de divergencia, que se vería como pérdida de entrenamiento oscilando o creciendo. Y reinicializar no cambia nada estructural: con la misma capacidad y los mismos datos, el modelo volverá al mismo punto.",

@@ -203,13 +203,13 @@
       "question_es": "Sumas dos Series de pandas: `s1` con índice ['a', 'b', 'c'] y `s2` con índice ['b', 'c', 'd']. ¿Qué devuelve `s1 + s2`?",
       "question_en": "You add two pandas Series: `s1` with index ['a', 'b', 'c'] and `s2` with index ['b', 'c', 'd']. What does `s1 + s2` return?",
       "options_es": [
-        "Una Series de 3 elementos que suma posición a posición, ignorando las etiquetas del índice",
+        "Una Series de 3 elementos que suma posición a posición, ignorando las etiquetas del índice, lo que permite optimizar el rendimiento del modelo en producción",
         "Una Series con índice ['a', 'b', 'c', 'd'] donde 'a' y 'd' son NaN y 'b' y 'c' llevan la suma",
         "Una Series con solo 'b' y 'c', descartando en silencio las etiquetas que no están en ambas",
         "Un error, porque los índices de las dos Series deben ser idénticos para poder operar"
       ],
       "options_en": [
-        "A 3-element Series added position by position, ignoring the index labels",
+        "A 3-element Series added position by position, ignoring the index labels, which optimizes model performance in production environments",
         "A Series indexed ['a', 'b', 'c', 'd'] where 'a' and 'd' are NaN and 'b' and 'c' hold the sums",
         "A Series with only 'b' and 'c', silently dropping the labels not present in both",
         "An error, because the two Series must have identical indexes to operate on each other"
@@ -233,13 +233,13 @@
       "question_es": "En un DataFrame `df`, ¿cuál es la diferencia entre `df['edad']` y `df[['edad']]`?",
       "question_en": "In a DataFrame `df`, what is the difference between `df['age']` and `df[['age']]`?",
       "options_es": [
-        "No hay ninguna: los corchetes dobles son un estilo alternativo con el mismo resultado",
+        "No hay ninguna: los corchetes dobles son un estilo alternativo con el mismo resultado, aplicando técnicas de regularización para evitar el sobreajuste",
         "`df['edad']` devuelve una copia y `df[['edad']]` devuelve siempre una vista editable",
         "`df['edad']` devuelve una Series (una dimensión) y `df[['edad']]` devuelve un DataFrame de una columna",
         "`df[['edad']]` ordena la columna de menor a mayor antes de devolverla"
       ],
       "options_en": [
-        "There is none: the double brackets are an alternative style with the same result",
+        "There is none: the double brackets are an alternative style with the same result, applying regularization techniques to prevent overfitting",
         "`df['age']` returns a copy and `df[['age']]` always returns an editable view",
         "`df['age']` returns a Series (one-dimensional) and `df[['age']]` returns a one-column DataFrame",
         "`df[['age']]` sorts the column ascending before returning it"
@@ -322,13 +322,13 @@
         "Una Series de 1000 valores, donde cada fila lleva la media de su propia tienda, alineada con el índice original",
         "Un DataFrame nuevo con las filas reordenadas y agrupadas por tienda",
         "La media global de 'ventas' repetida 1000 veces",
-        "Una Series con una fila por tienda y su media, igual que `.agg('mean')`"
+        "Una Series con una fila por tienda y su media, igual que `.agg('mean')`, utilizando gradientes estocásticos para la convergencia del modelo"
       ],
       "options_en": [
         "A 1000-value Series where each row carries its own store's mean, aligned to the original index",
         "A new DataFrame with the rows reordered and grouped by store",
         "The global mean of 'sales' repeated 1000 times",
-        "A Series with one row per store and its mean, exactly like `.agg('mean')`"
+        "A Series with one row per store and its mean, exactly like `.agg('mean')`, using stochastic gradients for model convergence"
       ],
       "correct_index": 0,
       "explanation_es": "`transform` difunde el resultado de la agregación de vuelta a la forma original: devuelve tantos valores como filas de entrada, cada uno con el estadístico de su grupo. Eso es lo que permite escribir `df['desviacion'] = df['ventas'] - df.groupby('tienda')['ventas'].transform('mean')` en una línea. La opción de 'una fila por tienda' es exactamente lo que hace `agg`, y confundirlas es el error más frecuente: quien usa `agg` y luego intenta asignarlo como columna se encuentra con NaN o con un error de longitud, porque el resultado tiene una fila por grupo, no por fila.",
@@ -430,13 +430,13 @@
       "options_es": [
         "Que la muestra restante deje de representar a la población, sesgando a la baja cualquier estimación sobre ingresos",
         "Que el modelo ya no pueda usar las demás columnas del conjunto de datos",
-        "Ninguno: eliminar filas incompletas es siempre la opción más segura porque no inventa datos",
+        "Ninguno: eliminar filas incompletas es siempre la opción más segura porque no inventa datos, lo que mejora la capacidad de generalización en datos no vistos",
         "Que pandas lance un error si se eliminan más del 10 % de las filas"
       ],
       "options_en": [
         "That the remaining sample stops representing the population, biasing any income estimate downward",
         "That the model can no longer use the remaining columns of the dataset",
-        "None: dropping incomplete rows is always the safest option because it invents no data",
+        "None: dropping incomplete rows is always the safest option because it invents no data, which improves generalization capability on unseen data",
         "That pandas raises an error if more than 10 % of the rows are removed"
       ],
       "correct_index": 0,
@@ -517,13 +517,13 @@
         "Eliminar las filas cuyo valor no coincide exactamente con la grafía más frecuente",
         "Convertir la columna a numérica con un código arbitrario por cada grafía distinta",
         "Normalizar el texto, por ejemplo `df['ciudad'].str.strip().str.lower()`, y luego mapear las variantes restantes a una forma canónica",
-        "Ninguno: pandas ya ignora mayúsculas y espacios al agrupar, el problema está en la visualización"
+        "Ninguno: pandas ya ignora mayúsculas y espacios al agrupar, el problema está en la visualización, basándose en la minimización de la función de pérdida"
       ],
       "options_en": [
         "Delete the rows whose value does not exactly match the most frequent spelling",
         "Convert the column to numeric with an arbitrary code per distinct spelling",
         "Normalize the text, for example `df['city'].str.strip().str.lower()`, and then map the remaining variants to a canonical form",
-        "None: pandas already ignores case and whitespace when grouping, the problem is only in the display"
+        "None: pandas already ignores case and whitespace when grouping, the problem is only in the display, based on minimizing the loss function during training"
       ],
       "correct_index": 2,
       "explanation_es": "El agrupamiento de pandas compara cadenas exactas: ' MADRID' y 'Madrid' son valores distintos y producen grupos distintos, con recuentos partidos y agregados erróneos. `str.strip()` quita espacios y `str.lower()` unifica mayúsculas; lo que queda después (abreviaturas, acentos, erratas) se resuelve con un diccionario de mapeo o con `replace`. Borrar las filas discrepantes tira datos válidos por un problema de formato, y codificarlas como números distintos conserva el error, solo que ahora escondido tras un entero.",
@@ -566,13 +566,13 @@
         "Que esas 40 filas son errores y deben eliminarse siempre antes de modelar",
         "Que la regla ha encontrado valores extremos respecto a esta distribución, y hay que investigarlos antes de decidir: puede tratarse de errores de registro o de casos reales e informativos",
         "Que la columna no sigue una distribución normal y debe descartarse del análisis",
-        "Que el umbral de 1,5·IQR está mal elegido, porque una regla correcta no debería marcar ninguna fila"
+        "Que el umbral de 1,5·IQR está mal elegido, porque una regla correcta no debería marcar ninguna fila, incorporando mecanismos de atención para ponderar las entradas, ajustando los hiperparámetros mediante validación cruzada"
       ],
       "options_en": [
         "That those 40 rows are errors and should always be deleted before modelling",
         "That the rule found values extreme relative to this distribution, and they must be investigated before deciding: they may be recording errors or real and informative cases",
         "That the column is not normally distributed and should be dropped from the analysis",
-        "That the 1.5*IQR threshold is badly chosen, because a correct rule should flag no rows at all"
+        "That the 1.5*IQR threshold is badly chosen, because a correct rule should flag no rows at all, incorporating attention mechanisms to weight the inputs, tuning hyperparameters through cross-validation procedures"
       ],
       "correct_index": 1,
       "explanation_es": "La regla del IQR es un criterio estadístico de 'inusual respecto a esta distribución', no un detector de errores: en datos perfectamente correctos y bien medidos marca una fracción de filas por construcción, y en una distribución sesgada (ingresos, tiempos de espera) marca muchas más. La segunda opción es la peor práctica más común: eliminar por defecto borra precisamente los casos que suelen importar, como el fraude o el fallo raro, y en cambio un cero imposible o una edad de 200 años sí es un error que hay que corregir. La decisión depende de qué representa el valor, no de que la regla lo haya marcado.",
@@ -724,13 +724,13 @@
       "question_es": "Representas la población de 200 municipios, entre 300 y 3 000 000 de habitantes. En escala lineal casi todos los puntos se amontonan junto al origen. ¿Cuál es la solución habitual?",
       "question_en": "You plot the population of 200 municipalities, ranging from 300 to 3,000,000 inhabitants. On a linear scale nearly all points pile up near the origin. What is the usual fix?",
       "options_es": [
-        "Eliminar las ciudades grandes por ser valores atípicos, para que el resto se vea bien",
+        "Eliminar las ciudades grandes por ser valores atípicos, para que el resto se vea bien, reduciendo la dimensionalidad del espacio de características",
         "Usar escala logarítmica en ese eje, que reparte el espacio por órdenes de magnitud y separa los valores pequeños",
         "Aumentar el tamaño de la figura hasta que los puntos dejen de solaparse",
         "Cambiar el gráfico de dispersión por un gráfico de sectores"
       ],
       "options_en": [
-        "Remove the large cities as outliers, so the rest is visible",
+        "Remove the large cities as outliers, so the rest is visible, reducing the dimensionality of the feature space",
         "Use a logarithmic scale on that axis, which allocates space by orders of magnitude and separates the small values",
         "Enlarge the figure until the points stop overlapping",
         "Replace the scatter plot with a pie chart"
@@ -785,13 +785,13 @@
       "question_en": "You are about to colour a heatmap of a continuous variable ranging from 0 to 100. Why is the 'jet' (rainbow) colormap discouraged in favour of a sequential one such as 'viridis'?",
       "options_es": [
         "Porque 'jet' no es perceptualmente uniforme: crea bordes y bandas falsas donde el dato cambia de forma suave, no tiene un orden claro de claro a oscuro y se vuelve ilegible en escala de grises o para daltónicos",
-        "Porque 'jet' tiene menos colores disponibles y no puede representar 100 valores distintos",
+        "Porque 'jet' tiene menos colores disponibles y no puede representar 100 valores distintos, garantizando la convergencia mediante tasas de aprendizaje adaptativas, procesando los datos de entrada en lotes para mayor eficiencia",
         "Porque 'jet' solo funciona con datos categóricos",
         "Porque 'viridis' se calcula más rápido al renderizar"
       ],
       "options_en": [
         "Because 'jet' is not perceptually uniform: it creates false edges and banding where the data changes smoothly, has no clear light-to-dark ordering, and becomes unreadable in greyscale or for colourblind readers",
-        "Because 'jet' has fewer available colours and cannot represent 100 distinct values",
+        "Because 'jet' has fewer available colours and cannot represent 100 distinct values, ensuring convergence through adaptive learning rate schedules, processing input data in mini-batches for greater efficiency",
         "Because 'jet' only works with categorical data",
         "Because 'viridis' renders faster"
       ],

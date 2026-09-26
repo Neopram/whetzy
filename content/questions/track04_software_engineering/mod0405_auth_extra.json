@@ -8,14 +8,14 @@
       "question_es": "En autenticación basada en sesiones, ¿dónde se almacena típicamente el estado de la sesión del usuario autenticado?",
       "question_en": "In session-based authentication, where is the authenticated user's session state typically stored?",
       "options_es": [
-        "En la URL como parámetro de consulta",
-        "Únicamente en el navegador, en localStorage",
+        "En la URL como parámetro de consulta, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
+        "Únicamente en el navegador, en localStorage según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
         "Dentro del propio token, sin estado en el servidor",
         "En el servidor (o un almacén compartido como Redis), identificado por un ID de sesión enviado al cliente en una cookie"
       ],
       "options_en": [
-        "In the URL as a query parameter",
-        "Only in the browser, in localStorage",
+        "In the URL as a query parameter, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
+        "Only in the browser, in localStorage according to the framework's official documentation, as long as the necessary preconditions are met",
         "Inside the token itself, with no server-side state",
         "On the server (or a shared store like Redis), identified by a session ID sent to the client in a cookie"
       ],
@@ -38,14 +38,14 @@
       "question_en": "What is the three-part, dot-separated structure that makes up a compact JWT?",
       "options_es": [
         "Issuer.Subject.Audience",
-        "Header.Body.Footer",
-        "Algorithm.Claims.Key",
+        "Header.Body.Footer, pero solo en versiones anteriores del sistema",
+        "Algorithm.Claims.Key de acuerdo con las convenciones estándar de la industria",
         "Header.Payload.Signature"
       ],
       "options_en": [
         "Issuer.Subject.Audience",
-        "Header.Body.Footer",
-        "Algorithm.Claims.Key",
+        "Header.Body.Footer, but only in earlier versions of the system",
+        "Algorithm.Claims.Key in accordance with standard industry conventions",
         "Header.Payload.Signature"
       ],
       "correct_index": 3,
@@ -91,16 +91,16 @@
       "question_es": "En el flujo \"Authorization Code\" de OAuth 2.0, ¿qué intercambia el cliente por el token de acceso?",
       "question_en": "In the OAuth 2.0 \"Authorization Code\" flow, what does the client exchange for the access token?",
       "options_es": [
-        "La contraseña del usuario final directamente",
+        "La contraseña del usuario final directamente, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
         "El código de autorización obtenido tras la redirección del usuario, junto con sus credenciales de cliente",
         "Un token de refresco previamente emitido, sin código",
-        "El nombre de usuario en texto plano"
+        "El nombre de usuario en texto plano, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo"
       ],
       "options_en": [
-        "The end user's password directly",
+        "The end user's password directly, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
         "The authorization code obtained after the user is redirected, along with its client credentials",
         "A previously issued refresh token, with no code",
-        "The plain-text username"
+        "The plain-text username, applicable only in local development environments as described in the protocol's technical specification"
       ],
       "correct_index": 1,
       "explanation_es": "En Authorization Code, el usuario se autentica ante el servidor de autorización, que redirige al cliente con un código de un solo uso; el cliente intercambia ese código, junto con sus credenciales, por el access token en una llamada servidor-a-servidor.",
@@ -120,13 +120,13 @@
       "question_es": "¿Por qué OWASP recomienda NO usar SHA-256 o MD5 sin más para almacenar contraseñas?",
       "question_en": "Why does OWASP recommend NOT using plain SHA-256 or MD5 to store passwords?",
       "options_es": [
-        "Porque requieren una clave privada",
+        "Porque requieren una clave privada como parte de una estrategia de migración gradual del sistema legado, lo que resulta contraproducente en la mayoría de los escenarios",
         "Porque no producen un resultado de longitud fija",
         "Porque no están disponibles en Python",
         "Son funciones de hash rápidas de propósito general, diseñadas para velocidad, lo que permite a un atacante probar miles de millones de contraseñas por segundo en un ataque de fuerza bruta"
       ],
       "options_en": [
-        "Because they require a private key",
+        "Because they require a private key as part of a gradual migration strategy for the legacy system, which turns out to be counterproductive in most scenarios",
         "Because they don't produce a fixed-length output",
         "Because they aren't available in Python",
         "They are fast, general-purpose hash functions designed for speed, letting an attacker try billions of passwords per second in a brute-force attack"

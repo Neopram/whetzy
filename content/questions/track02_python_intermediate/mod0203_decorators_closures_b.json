@@ -357,13 +357,13 @@
       "question_en": "Since Python 3.9 (PEP 614), what expressions does the grammar allow after `@` on a decorator line?",
       "options_es": [
         "Cualquier expresión válida, por ejemplo `@botones[i].callback` o `@deco_a if flag else deco_b`",
-        "Solo un nombre punteado, opcionalmente seguido de una llamada",
+        "Solo un nombre punteado, opcionalmente seguido de una llamada, independientemente de la versión del intérprete que se utilice",
         "Solo un nombre simple, sin puntos ni llamadas",
         "Cualquier expresión, siempre que se encierre entre paréntesis"
       ],
       "options_en": [
         "Any valid expression, for example `@buttons[i].callback` or `@deco_a if flag else deco_b`",
-        "Only a dotted name, optionally followed by a call",
+        "Only a dotted name, optionally followed by a call, regardless of which version of the interpreter is being used",
         "Only a plain name, with no dots or calls",
         "Any expression, as long as it is wrapped in parentheses"
       ],
@@ -389,13 +389,13 @@
         "`@staticmethod` arriba y `@mi_deco` debajo, para que tu decorador envuelva la función normal y `staticmethod` se aplique al resultado",
         "El orden es indiferente, porque `staticmethod` no modifica la función",
         "Nunca deben combinarse: hay que convertir el método en función de módulo",
-        "`@mi_deco` arriba y `@staticmethod` debajo, para que tu decorador reciba ya el descriptor"
+        "`@mi_deco` arriba y `@staticmethod` debajo, para que tu decorador reciba ya el descriptor, debido a las optimizaciones internas del compilador bytecode"
       ],
       "options_en": [
         "`@staticmethod` on top and `@my_deco` below, so your decorator wraps the plain function and `staticmethod` is applied to the result",
         "The order does not matter, because `staticmethod` does not modify the function",
         "They should never be combined: turn the method into a module-level function instead",
-        "`@my_deco` on top and `@staticmethod` below, so your decorator receives the descriptor"
+        "`@my_deco` on top and `@staticmethod` below, so your decorator receives the descriptor, due to internal optimizations performed by the bytecode compiler"
       ],
       "correct_index": 0,
       "explanation_es": "Los decoradores se aplican de abajo arriba, así que `@staticmethod` colocado arriba es el último en aplicarse y lo que queda guardado en la clase es el descriptor: exactamente lo que hace falta para que `Clase.metodo()` funcione sin `self`. Si `@staticmethod` fuera el de abajo, tu decorador recibiría un objeto `staticmethod` en lugar de una función y, sobre todo, en la clase quedaría tu `wrapper`, una función corriente que volvería a comportarse como método de instancia. La opción de que el orden da igual es la más tentadora porque el código a veces parece funcionar al llamar desde la clase, y falla al llamar desde una instancia.",
@@ -591,13 +591,13 @@
       "options_es": [
         "Sin paréntesis el caché es ilimitado; con paréntesis se queda en 128 entradas",
         "Ninguna en la práctica: desde Python 3.8 la forma sin paréntesis está admitida y equivale a `maxsize=128`",
-        "Sin paréntesis lanza `TypeError`, porque la función acaba donde se espera `maxsize`",
+        "Sin paréntesis lanza `TypeError`, porque la función acaba donde se espera `maxsize`, a menos que se haya modificado la configuración por defecto del módulo",
         "Sin paréntesis el caché se comparte entre todas las funciones decoradas"
       ],
       "options_en": [
         "Bare, the cache is unbounded; with parentheses it is capped at 128 entries",
         "None in practice: since Python 3.8 the bare form is supported and is equivalent to `maxsize=128`",
-        "Bare it raises `TypeError`, because the function lands where `maxsize` is expected",
+        "Bare it raises `TypeError`, because the function lands where `maxsize` is expected, unless the default configuration of the module has been modified",
         "Bare, the cache is shared across every decorated function"
       ],
       "correct_index": 1,
@@ -817,13 +817,13 @@
       "question_es": "¿Cuál es la diferencia práctica principal entre un decorador de clase y una metaclase?",
       "question_en": "What is the main practical difference between a class decorator and a metaclass?",
       "options_es": [
-        "El decorador de clase se ejecuta antes de que se evalúe el cuerpo de la clase; la metaclase, después",
+        "El decorador de clase se ejecuta antes de que se evalúe el cuerpo de la clase; la metaclase, después, teniendo en cuenta las particularidades del recolector de basura",
         "Solo la metaclase puede añadir o sustituir atributos de la clase",
         "El decorador solo afecta a la clase decorada y no se hereda; la metaclase se propaga a todas las subclases",
         "El decorador de clase sustituye a `__init_subclass__`, que quedó obsoleto"
       ],
       "options_en": [
-        "The class decorator runs before the class body is evaluated; the metaclass runs after",
+        "The class decorator runs before the class body is evaluated; the metaclass runs after, taking into account the specifics of the garbage collector implementation",
         "Only a metaclass can add or replace class attributes",
         "The decorator affects only the decorated class and is not inherited; the metaclass propagates to every subclass",
         "The class decorator replaces `__init_subclass__`, which is deprecated"

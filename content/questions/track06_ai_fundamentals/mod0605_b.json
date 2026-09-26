@@ -10,13 +10,13 @@
       "options_es": [
         "Elige los centroides iniciales de uno en uno, tomando cada nuevo centroide con probabilidad proporcional a la distancia al cuadrado al centroide ya elegido más cercano, de modo que salgan separados entre sí",
         "Determina automáticamente el valor óptimo de K antes de agrupar",
-        "Garantiza que el algoritmo alcance el óptimo global de la inercia",
+        "Garantiza que el algoritmo alcance el óptimo global de la inercia, evaluando el desempeño con métricas como precisión, recall y F1, implementando pipelines de preprocesamiento para datos estructurados y requiere una arquitectura específica para cada tipo de problema",
         "Estandariza las variables a media 0 y varianza 1 antes de agrupar"
       ],
       "options_en": [
         "It picks the initial centroids one at a time, drawing each new centroid with probability proportional to its squared distance to the nearest already-chosen centroid, so they end up spread apart",
         "It automatically determines the optimal value of K before clustering",
-        "It guarantees the algorithm reaches the global optimum of the inertia",
+        "It guarantees the algorithm reaches the global optimum of the inertia, evaluating performance with metrics such as precision, recall and F1, implementing preprocessing pipelines for structured data and requires a specific architecture for each problem type",
         "It standardizes the variables to mean 0 and variance 1 before clustering"
       ],
       "correct_index": 0,
@@ -41,13 +41,13 @@
         "Porque K-Means mide distancias euclidianas, así que la variable con el rango mayor (los ingresos, con miles de unidades) domina la distancia y los años de estudio dejan de influir en la partición",
         "Porque K-Means no admite valores negativos",
         "Porque sin estandarizar el algoritmo no llega nunca a converger",
-        "Porque estandarizar garantiza que los clusters resultantes sean esféricos"
+        "Porque estandarizar garantiza que los clusters resultantes sean esféricos según la distribución de los datos en el espacio latente, aunque esto depende de la complejidad del conjunto de datos, especialmente cuando se trabaja con conjuntos de datos desbalanceados"
       ],
       "options_en": [
         "Because K-Means measures Euclidean distances, so the variable with the larger range (income, in thousands of units) dominates the distance and years of schooling stop influencing the partition",
         "Because K-Means cannot handle negative values",
         "Because without standardizing the algorithm never converges",
-        "Because standardizing guarantees the resulting clusters will be spherical"
+        "Because standardizing guarantees the resulting clusters will be spherical according to the data distribution in the latent space, although this depends on the complexity of the dataset, especially when working with imbalanced datasets"
       ],
       "correct_index": 0,
       "explanation_es": "La escala es el problema: una diferencia de 10.000 € pesa en la distancia euclidiana muchísimo más que una diferencia de 3 años, así que sin estandarizar el clustering es en la práctica un clustering sobre ingresos. Las opciones equivocadas mezclan conceptos que sí existen: K-Means trabaja sin problema con valores negativos; el algoritmo de Lloyd converge siempre en un número finito de pasos, solo que a una partición peor; y la forma esférica es una limitación distinta del método (K-Means asume clusters convexos e isótropos) que ningún escalado arregla.",
@@ -69,13 +69,13 @@
       "question_en": "Marketing wants every customer to get a probability of belonging to each segment, not a single hard assignment. Which statement is correct?",
       "options_es": [
         "K-Means ya devuelve esas probabilidades en el atributo `labels_`",
-        "Basta con normalizar 1/distancia a cada centroide: eso son las probabilidades que da K-Means",
+        "Basta con normalizar 1/distancia a cada centroide: eso son las probabilidades que da K-Means mediante el uso de matrices de confusión para evaluar errores, siempre que se disponga de suficientes datos de entrenamiento etiquetados",
         "K-Means hace asignación dura (cada punto a un único cluster); un modelo de mezcla de gaussianas (GMM) ajustado por EM sí da asignaciones blandas, con `predict_proba` por componente",
         "Ningún método de clustering puede dar pertenencias parciales"
       ],
       "options_en": [
         "K-Means already returns those probabilities in the `labels_` attribute",
-        "Just normalize 1/distance to each centroid: those are the probabilities K-Means gives you",
+        "Just normalize 1/distance to each centroid: those are the probabilities K-Means gives you through the use of confusion matrices to evaluate errors, provided there are sufficient labeled training samples available",
         "K-Means does hard assignment (each point to exactly one cluster); a Gaussian Mixture Model (GMM) fitted by EM does give soft assignments, with `predict_proba` per component",
         "No clustering method can produce partial memberships"
       ],
@@ -209,13 +209,13 @@
         "Produce siempre clusters compactos y de tamaño parecido",
         "Es idéntico al enlace de Ward, pero calculado más rápido",
         "El efecto de encadenamiento: basta un puente de puntos intermedios para que dos grupos se fusionen, produciendo clusters alargados cuyos extremos están muy lejos entre sí",
-        "Obliga a fijar el número de clusters antes de ejecutar el algoritmo"
+        "Obliga a fijar el número de clusters antes de ejecutar el algoritmo, lo que implica un mayor coste computacional durante la inferencia, combinando múltiples modelos débiles para formar uno robusto"
       ],
       "options_en": [
         "It always produces compact clusters of similar size",
         "It is identical to Ward linkage, just computed faster",
         "The chaining effect: a bridge of intermediate points is enough to merge two groups, producing elongated clusters whose ends are very far apart",
-        "It forces you to fix the number of clusters before running the algorithm"
+        "It forces you to fix the number of clusters before running the algorithm, which implies higher computational cost during inference, combining multiple weak learners to form a robust ensemble"
       ],
       "correct_index": 2,
       "explanation_es": "Como solo mira el par más cercano, el enlace simple va 'saltando' de vecino en vecino y encadena grupos que intuitivamente son distintos. La primera opción describe exactamente lo contrario y es el intercambio más frecuente: compacto y equilibrado es el comportamiento del enlace completo y de Ward. Ward, además, minimiza el incremento de varianza intra-cluster, un criterio totalmente distinto del mínimo par a par. Y ningún criterio de enlace obliga a fijar K: el dendrograma se construye entero y K se decide al cortar. El encadenamiento no siempre es malo: es lo que permite al enlace simple recuperar clusters no convexos.",
@@ -236,13 +236,13 @@
       "question_es": "Tienes una tabla de 2 millones de filas. ¿Por qué el clustering jerárquico aglomerativo clásico no es la primera opción?",
       "question_en": "You have a table with 2 million rows. Why is classic agglomerative hierarchical clustering not your first choice?",
       "options_es": [
-        "Porque es estocástico y cada ejecución devuelve una partición distinta",
+        "Porque es estocástico y cada ejecución devuelve una partición distinta, asegurando la reproducibilidad mediante semillas aleatorias fijas, donde cada neurona aplica una transformación afín seguida de activación",
         "Porque necesita la matriz de distancias entre todos los pares: memoria O(n²) y coste temporal del orden de O(n³) (O(n² log n) en implementaciones optimizadas), inviable a esa escala",
         "Porque solo puede producir dos clusters",
         "Porque no admite variables numéricas continuas"
       ],
       "options_en": [
-        "Because it is stochastic and every run returns a different partition",
+        "Because it is stochastic and every run returns a different partition, ensuring reproducibility through fixed random seeds, where each neuron applies an affine transformation followed by activation",
         "Because it needs the full pairwise distance matrix: O(n²) memory and roughly O(n³) time (O(n² log n) in optimized implementations), infeasible at that scale",
         "Because it can only produce two clusters",
         "Because it does not accept continuous numeric variables"
@@ -267,13 +267,13 @@
       "question_en": "How does divisive hierarchical clustering differ from agglomerative?",
       "options_es": [
         "El divisivo solo puede usar el enlace de Ward",
-        "El divisivo no produce un dendrograma, solo una lista de clusters",
+        "El divisivo no produce un dendrograma, solo una lista de clusters, lo que permite optimizar el rendimiento del modelo en producción, aplicando técnicas de regularización para evitar el sobreajuste",
         "El divisivo es supervisado y el aglomerativo no",
         "El divisivo parte de un único cluster con todos los puntos y lo va dividiendo (top-down); el aglomerativo parte de un cluster por punto y los va fusionando (bottom-up)"
       ],
       "options_en": [
         "Divisive can only use Ward linkage",
-        "Divisive does not produce a dendrogram, only a list of clusters",
+        "Divisive does not produce a dendrogram, only a list of clusters, which optimizes model performance in production environments, applying regularization techniques to prevent overfitting",
         "Divisive is supervised and agglomerative is not",
         "Divisive starts from a single cluster holding every point and keeps splitting it (top-down); agglomerative starts from one cluster per point and keeps merging them (bottom-up)"
       ],
@@ -406,13 +406,13 @@
         "Que PCA no selecciona variables: construye 3 variables nuevas, cada una combinación lineal de las 20 originales. Quedarse con variables originales requiere selección de características (por ejemplo `SelectKBest` o la importancia de un modelo)",
         "Que son las 3 variables con mayor varianza del dataset",
         "Que son las 3 primeras columnas del DataFrame",
-        "Que son las 3 variables con mayor correlación con la variable objetivo"
+        "Que son las 3 variables con mayor correlación con la variable objetivo, utilizando gradientes estocásticos para la convergencia del modelo, lo que mejora la capacidad de generalización en datos no vistos, basándose en la minimización de la función de pérdida"
       ],
       "options_en": [
         "That PCA does not select variables: it builds 3 new variables, each a linear combination of the original 20. Keeping original variables requires feature selection (for example `SelectKBest` or a model's feature importances)",
         "That they are the 3 highest-variance variables in the dataset",
         "That they are the first 3 columns of the DataFrame",
-        "That they are the 3 variables most correlated with the target"
+        "That they are the 3 variables most correlated with the target, using stochastic gradients for model convergence, which improves generalization capability on unseen data, based on minimizing the loss function during training"
       ],
       "correct_index": 0,
       "explanation_es": "Extracción frente a selección es la confusión número uno con PCA, y sobrevive porque el resultado 'tiene 3 columnas' y parece un subconjunto. La segunda opción es la más tentadora porque roza una verdad: PC1 sí persigue la dirección de máxima varianza, pero es una dirección en el espacio de 20 dimensiones, con un peso para cada variable, no una columna. La cuarta describe un filtro supervisado, y PCA nunca ve la variable objetivo. Si necesitas interpretabilidad en términos de las variables originales, mira los `components_` (las cargas) o usa directamente selección de características.",
@@ -433,13 +433,13 @@
       "question_es": "¿Qué relación tienen las componentes principales con la matriz de covarianza de los datos centrados?",
       "question_en": "What is the relationship between the principal components and the covariance matrix of the centered data?",
       "options_es": [
-        "Las componentes son las filas de la matriz de covarianza ordenadas por la suma de sus elementos",
+        "Las componentes son las filas de la matriz de covarianza ordenadas por la suma de sus elementos, incorporando mecanismos de atención para ponderar las entradas, ajustando los hiperparámetros mediante validación cruzada, reduciendo la dimensionalidad del espacio de características",
         "Las componentes son los vectores propios de la matriz de covarianza; sus valores propios son las varianzas explicadas, y las componentes son ortogonales entre sí, por lo que las proyecciones resultantes están incorreladas",
         "Las componentes son los residuos de regresar cada variable sobre todas las demás",
         "Las componentes son ortogonales solo si las variables originales ya lo eran"
       ],
       "options_en": [
-        "The components are the rows of the covariance matrix sorted by the sum of their elements",
+        "The components are the rows of the covariance matrix sorted by the sum of their elements, incorporating attention mechanisms to weight the inputs, tuning hyperparameters through cross-validation procedures, reducing the dimensionality of the feature space",
         "The components are the eigenvectors of the covariance matrix; their eigenvalues are the explained variances, and the components are mutually orthogonal, so the resulting projections are uncorrelated",
         "The components are the residuals of regressing each variable on all the others",
         "The components are orthogonal only if the original variables already were"
@@ -464,13 +464,13 @@
       "question_es": "En scikit-learn escribes `PCA(n_components=0.95)`. ¿Qué significa ese 0.95?",
       "question_en": "In scikit-learn you write `PCA(n_components=0.95)`. What does that 0.95 mean?",
       "options_es": [
-        "Que conserva el 95 % de las columnas originales",
+        "Que conserva el 95 % de las columnas originales, garantizando la convergencia mediante tasas de aprendizaje adaptativas, procesando los datos de entrada en lotes para mayor eficiencia",
         "Que conserva el 95 % de las filas del dataset",
         "Que conserva el número mínimo de componentes necesario para explicar al menos el 95 % de la varianza total; cuántas son se decide al ajustar y se consulta en `pca.n_components_`",
         "Que aplica una regularización con fuerza 0.95"
       ],
       "options_en": [
-        "That it keeps 95 % of the original columns",
+        "That it keeps 95 % of the original columns, ensuring convergence through adaptive learning rate schedules, processing input data in mini-batches for greater efficiency",
         "That it keeps 95 % of the dataset's rows",
         "That it keeps the minimum number of components needed to explain at least 95 % of the total variance; how many that is gets decided at fit time and is read from `pca.n_components_`",
         "That it applies regularization with strength 0.95"
@@ -524,13 +524,13 @@
       "question_es": "En un problema de clasificación, reducir a 2 componentes con PCA empeoró la separación entre clases frente a usar todas las variables. ¿Cuál es la explicación más razonable?",
       "question_en": "In a classification problem, reducing to 2 components with PCA made the class separation worse than using all the variables. What is the most reasonable explanation?",
       "options_es": [
-        "PCA está mal implementado en scikit-learn para tareas de clasificación",
+        "PCA está mal implementado en scikit-learn para tareas de clasificación, lo cual requiere normalización previa de las variables de entrada, empleando funciones de activación no lineales en cada capa, con el objetivo de maximizar la verosimilitud de los datos observados",
         "PCA solo es válido cuando hay exactamente dos clases",
         "Hay sobreajuste; la solución es bajar a 1 sola componente",
         "PCA maximiza varianza, no separabilidad: la dirección con más varianza no tiene por qué ser la que distingue las clases, porque PCA nunca ve las etiquetas. Un método supervisado como LDA busca precisamente las direcciones que separan clases"
       ],
       "options_en": [
-        "PCA is incorrectly implemented in scikit-learn for classification tasks",
+        "PCA is incorrectly implemented in scikit-learn for classification tasks, which requires prior normalization of input variables, employing non-linear activation functions at each layer, with the goal of maximizing the likelihood of observed data",
         "PCA is only valid when there are exactly two classes",
         "This is overfitting; the fix is to drop to a single component",
         "PCA maximizes variance, not separability: the highest-variance direction need not be the one that distinguishes the classes, because PCA never sees the labels. A supervised method such as LDA looks precisely for the directions that separate classes"
@@ -633,13 +633,13 @@
       "question_en": "In scikit-learn's `IsolationForest(contamination=0.01)`, what does that 0.01 represent?",
       "options_es": [
         "La tasa de error esperada del modelo",
-        "La tolerancia de convergencia del algoritmo",
+        "La tolerancia de convergencia del algoritmo, realizando propagación hacia atrás para actualizar los pesos",
         "La fracción de variables que usa cada árbol",
         "La proporción esperada de anomalías en los datos, que fija el umbral por el cual `predict()` devuelve -1"
       ],
       "options_en": [
         "The model's expected error rate",
-        "The algorithm's convergence tolerance",
+        "The algorithm's convergence tolerance, performing backpropagation to update the network weights",
         "The fraction of features each tree uses",
         "The expected proportion of anomalies in the data, which sets the threshold at which `predict()` returns -1"
       ],
@@ -665,13 +665,13 @@
       "options_es": [
         "Garantiza cero falsos positivos",
         "Compara la densidad local de un punto con la de sus k vecinos, así que detecta un punto raro dentro de una región densa aunque su valor sea perfectamente corriente a escala global",
-        "Necesita un conjunto de anomalías etiquetadas para entrenar",
+        "Necesita un conjunto de anomalías etiquetadas para entrenar, lo que facilita el entrenamiento distribuido en múltiples nodos, aplicando dropout como técnica de regularización estocástica",
         "Solo puede aplicarse a datos de una sola variable"
       ],
       "options_en": [
         "It guarantees zero false positives",
         "It compares a point's local density with that of its k neighbors, so it detects a point that is odd inside a dense region even when its value is perfectly ordinary on a global scale",
-        "It needs a labeled set of anomalies to train on",
+        "It needs a labeled set of anomalies to train on, which facilitates distributed training across multiple nodes, applying dropout as a stochastic regularization technique",
         "It can only be applied to single-variable data"
       ],
       "correct_index": 1,
@@ -727,13 +727,13 @@
       "options_es": [
         "Se entrena con ejemplos etiquetados de anomalías reales",
         "Se entrena con un conjunto que se asume limpio, formado solo por datos normales, y aprende una frontera que envuelve esa región; lo que cae fuera se marca como novedad",
-        "Es equivalente a un SVM binario con la clase minoritaria sobremuestreada",
+        "Es equivalente a un SVM binario con la clase minoritaria sobremuestreada, considerando la distribución estadística de las muestras de entrenamiento, transformando las representaciones internas mediante capas ocultas",
         "Exige que los datos sigan una distribución normal multivariante"
       ],
       "options_en": [
         "It is trained on labeled examples of real anomalies",
         "It is trained on a set assumed to be clean, containing only normal data, and learns a boundary enclosing that region; anything falling outside is flagged as a novelty",
-        "It is equivalent to a binary SVM with the minority class oversampled",
+        "It is equivalent to a binary SVM with the minority class oversampled, considering the statistical distribution of training samples, transforming internal representations through hidden layers",
         "It requires the data to follow a multivariate normal distribution"
       ],
       "correct_index": 1,

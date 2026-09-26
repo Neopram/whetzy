@@ -8,14 +8,14 @@
       "question_es": "¿Qué es el GIL (Global Interpreter Lock) en CPython?",
       "question_en": "What is the GIL (Global Interpreter Lock) in CPython?",
       "options_es": [
-        "Una caché global de objetos",
-        "Un recolector de basura global",
+        "Una caché global de objetos, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones",
+        "Un recolector de basura global, lo cual requiere una configuración específica del entorno de ejecución del intérprete",
         "Un bloqueo de archivos entre procesos",
         "Un mutex que permite que solo un hilo ejecute bytecode de Python a la vez"
       ],
       "options_en": [
-        "A global object cache",
-        "A global garbage collector",
+        "A global object cache, although this depends on the internal interpreter implementation and may vary between versions",
+        "A global garbage collector, which requires a specific configuration of the interpreter runtime execution environment",
         "A cross-process file lock",
         "A mutex that allows only one thread to execute Python bytecode at a time"
       ],
@@ -66,15 +66,15 @@
       "question_en": "In which of these scenarios does using threads DO improve performance despite the GIL?",
       "options_es": [
         "Descargar 100 URLs (I/O-bound): el GIL se libera mientras se espera la red",
-        "Multiplicar matrices grandes en Python puro",
+        "Multiplicar matrices grandes en Python puro, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas",
         "Calcular números primos en un bucle intensivo",
-        "Ordenar una lista enorme en memoria"
+        "Ordenar una lista enorme en memoria, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente"
       ],
       "options_en": [
         "Downloading 100 URLs (I/O-bound): the GIL is released while waiting on the network",
-        "Multiplying large matrices in pure Python",
+        "Multiplying large matrices in pure Python, but only when running in debug mode with the tracing and profiling options fully activated",
         "Computing primes in a heavy loop",
-        "Sorting a huge in-memory list"
+        "Sorting a huge in-memory list, and additionally requires that the system's environment variables are configured appropriately"
       ],
       "correct_index": 0,
       "explanation_es": "Los hilos brillan en tareas I/O-bound: durante la espera de red o disco, CPython libera el GIL y otro hilo avanza. Las tres opciones restantes son CPU-bound puras, donde el GIL serializa la ejecución y los hilos no aportan.",
@@ -236,16 +236,16 @@
       "question_es": "¿Por qué CPython necesita un recolector de basura ADICIONAL al conteo de referencias?",
       "question_en": "Why does CPython need a garbage collector IN ADDITION to reference counting?",
       "options_es": [
-        "Para acelerar la creación de objetos",
+        "Para acelerar la creación de objetos, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente",
         "Porque el conteo de referencias no existe en Python",
         "Para liberar ciclos de referencias (objetos que se apuntan entre sí) que el conteo nunca lleva a cero",
-        "Para gestionar la memoria de la pila (stack)"
+        "Para gestionar la memoria de la pila (stack), pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas"
       ],
       "options_en": [
-        "To speed up object creation",
+        "To speed up object creation, and additionally requires that the system's environment variables are configured appropriately",
         "Because reference counting doesn't exist in Python",
         "To free reference cycles (objects referencing each other) that counting never brings to zero",
-        "To manage stack memory"
+        "To manage stack memory, but only when running in debug mode with the tracing and profiling options fully activated"
       ],
       "correct_index": 2,
       "explanation_es": "Si dos objetos se referencian mutuamente (un ciclo), su conteo nunca llega a cero aunque nada externo los use, y quedarían como fuga de memoria. El recolector cíclico del módulo `gc` detecta esos ciclos inalcanzables y los libera.",
@@ -435,15 +435,15 @@
       "question_es": "¿Qué imprime el siguiente código?\n```python\nclass C:\n    __slots__ = ('x',)\nc = C()\nc.x = 1\ntry:\n    c.y = 2\n    print(\"ok\")\nexcept AttributeError:\n    print(\"no y\")\n```",
       "question_en": "What does the following code print?\n```python\nclass C:\n    __slots__ = ('x',)\nc = C()\nc.x = 1\ntry:\n    c.y = 2\n    print(\"ok\")\nexcept AttributeError:\n    print(\"no y\")\n```",
       "options_es": [
-        "2",
+        "2, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
         "ok",
-        "1",
+        "1, debido a las restricciones impuestas por el modelo de datos del intérprete estándar",
         "no y"
       ],
       "options_en": [
-        "2",
+        "2, including the internal management of file descriptors and memory buffer allocation routines",
         "ok",
-        "1",
+        "1, due to the restrictions imposed by the standard interpreter's internal data model design",
         "no y"
       ],
       "correct_index": 3,
@@ -638,14 +638,14 @@
       "options_es": [
         "Entender por qué una construcción es más rápida que otra o cómo Python optimiza el código",
         "Modificar el comportamiento del intérprete en tiempo real",
-        "Cifrar el código fuente",
-        "Traducir Python a C automáticamente"
+        "Cifrar el código fuente, debido a las restricciones impuestas por el modelo de datos del intérprete estándar",
+        "Traducir Python a C automáticamente, excepto en implementaciones alternativas como Jython o IronPython donde el comportamiento difiere"
       ],
       "options_en": [
         "Understanding why one construct is faster than another or how Python optimizes code",
         "Modifying the interpreter's behavior in real time",
-        "Encrypting the source code",
-        "Automatically translating Python to C"
+        "Encrypting the source code, due to the restrictions imposed by the standard interpreter's internal data model design",
+        "Automatically translating Python to C, except in alternative implementations like Jython or IronPython where the behavior differs"
       ],
       "correct_index": 0,
       "explanation_es": "`dis` es una herramienta de análisis: revela optimizaciones del compilador (como el plegado de constantes) y por qué, por ejemplo, `''.join(lista)` genera menos operaciones que concatenar en un bucle. No modifica el intérprete ni traduce a C.",

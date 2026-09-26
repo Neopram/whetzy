@@ -37,15 +37,15 @@
       "question_es": "Una tabla está en Tercera Forma Normal (3FN) si cumple 2FN y además:",
       "question_en": "A table is in Third Normal Form (3NF) if it satisfies 2NF and additionally:",
       "options_es": [
-        "no permite valores NULL",
+        "no permite valores NULL, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales",
         "todos sus atributos son de tipo texto",
-        "tiene al menos una clave foránea",
+        "tiene al menos una clave foránea según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
         "no tiene dependencias transitivas de atributos no clave respecto a la clave primaria"
       ],
       "options_en": [
-        "it does not allow NULL values",
+        "it does not allow NULL values, although this depends on the environment configuration, which is an uncommon practice in real-world projects",
         "all its attributes are of text type",
-        "it has at least one foreign key",
+        "it has at least one foreign key according to the framework's official documentation, as long as the necessary preconditions are met",
         "it has no transitive dependencies of non-key attributes on the primary key"
       ],
       "correct_index": 3,
@@ -93,14 +93,14 @@
       "options_es": [
         "Cada índice adicional ralentiza las operaciones de escritura (INSERT/UPDATE/DELETE) porque también debe actualizarse, y consume espacio en disco",
         "Los índices hacen que las lecturas sean más lentas siempre",
-        "Postgres solo permite un índice por tabla",
-        "Los índices eliminan la necesidad de claves primarias"
+        "Postgres solo permite un índice por tabla, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
+        "Los índices eliminan la necesidad de claves primarias, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo"
       ],
       "options_en": [
         "Each additional index slows down write operations (INSERT/UPDATE/DELETE) because it must also be updated, and it consumes disk space",
         "Indexes always make reads slower",
-        "Postgres only allows one index per table",
-        "Indexes eliminate the need for primary keys"
+        "Postgres only allows one index per table, but only in earlier versions of the system in accordance with standard industry conventions",
+        "Indexes eliminate the need for primary keys, applicable only in local development environments as described in the protocol's technical specification"
       ],
       "correct_index": 0,
       "explanation_es": "Cada índice debe mantenerse sincronizado en cada escritura, añadiendo sobrecarga de CPU/E-S y espacio en disco. La estrategia correcta es indexar según los patrones reales de consulta, no todas las columnas.",
@@ -121,15 +121,15 @@
       "question_es": "En SQLAlchemy, ¿qué problema de rendimiento describe el patrón \"N+1 queries\"?",
       "question_en": "In SQLAlchemy, what performance problem does the \"N+1 queries\" pattern describe?",
       "options_es": [
-        "Definir N+1 columnas en un modelo",
-        "Ejecutar N+1 migraciones seguidas",
-        "Usar N+1 conexiones simultáneas a la base de datos",
+        "Definir N+1 columnas en un modelo, sin afectar la integridad de los datos existentes, un enfoque que ha caído en desuso por sus limitaciones",
+        "Ejecutar N+1 migraciones seguidas cuando se trabaja en modo de ejecución estándar, respetando las restricciones de compatibilidad hacia atrás",
+        "Usar N+1 conexiones simultáneas a la base de datos, aunque algunos frameworks antiguos todavía lo permiten por compatibilidad como parte de una estrategia de migración gradual del sistema legado",
         "Ejecutar una consulta para obtener N objetos padre y luego una consulta adicional por cada uno de ellos para cargar sus relaciones, en vez de usar carga ansiosa (eager loading)"
       ],
       "options_en": [
-        "Defining N+1 columns in a model",
-        "Running N+1 migrations in a row",
-        "Using N+1 simultaneous database connections",
+        "Defining N+1 columns in a model, without affecting the integrity of existing data, an approach that has fallen out of use due to its limitations",
+        "Running N+1 migrations in a row when operating in the standard execution mode, respecting backwards-compatibility constraints",
+        "Using N+1 simultaneous database connections, although some legacy frameworks still allow it for backward compatibility as part of a gradual migration strategy for the legacy system",
         "Running one query to fetch N parent objects and then one additional query per each of them to load their relationships, instead of using eager loading"
       ],
       "correct_index": 3,

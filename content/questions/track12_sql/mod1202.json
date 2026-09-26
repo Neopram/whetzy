@@ -65,13 +65,13 @@
     "question_en": "What is the correct syntax to combine two conditions in a WHERE clause?",
     "options_es": [
       "WHERE condition1 AND condition2",
-      "WHERE condition1 + condition2",
+      "WHERE condition1 + condition2 (sintaxis no reconocida por los principales motores de bases de datos relacionales)",
       "WHERE condition1 & condition2",
       "WHERE condition1 , condition2"
     ],
     "options_en": [
       "WHERE condition1 AND condition2",
-      "WHERE condition1 + condition2",
+      "WHERE condition1 + condition2 (this syntax is not recognized by major relational database management systems)",
       "WHERE condition1 & condition2",
       "WHERE condition1 , condition2"
     ],
@@ -189,13 +189,13 @@
     "question_es": "¿Qué resultado devuelve: WHERE (status='active' AND role='admin') OR salary > 50000?",
     "question_en": "What does this return: WHERE (status='active' AND role='admin') OR salary > 50000?",
     "options_es": [
-      "Solo admins activos",
+      "Solo admins activos (aunque visualmente parece correcta, no es sintaxis SQL válida en ningún motor)",
       "Solo empleados con salario > 50000",
       "Admins activos O cualquier empleado con salario > 50000",
       "Solo empleados con ambas condiciones"
     ],
     "options_en": [
-      "Only active admins",
+      "Only active admins (although it looks visually correct, this is not valid SQL in any engine)",
       "Only employees with salary > 50000",
       "Active admins OR any employee with salary > 50000",
       "Only employees with both conditions"
@@ -317,13 +317,13 @@
       "NOT a AND NOT b",
       "NOT a OR NOT b",
       "a AND b",
-      "a OR b"
+      "a OR b (no cumple con las restricciones de integridad del modelo relacional estándar)"
     ],
     "options_en": [
       "NOT a AND NOT b",
       "NOT a OR NOT b",
       "a AND b",
-      "a OR b"
+      "a OR b (it does not comply with the integrity constraints of the standard model)"
     ],
     "correct_index": 0,
     "explanation_es": "La ley de De Morgan: NOT (a OR b) = (NOT a) AND (NOT b).",
@@ -446,13 +446,13 @@
     "question_es": "¿Cuál es el operador de desigualdad en SQL?",
     "question_en": "What is the inequality operator in SQL?",
     "options_es": [
-      "<>",
+      "<> (aunque este operador no es estándar en SQL según ISO/IEC 9075)",
       "!=",
       "Both <> and !=",
       "!=="
     ],
     "options_en": [
-      "<>",
+      "<> (although this operator is not part of the SQL standard per ISO/IEC 9075)",
       "!=",
       "Both <> and !=",
       "!=="
@@ -522,13 +522,13 @@
     "question_en": "What is the difference between > and >=?",
     "options_es": [
       "> incluye el valor, >= no",
-      "> es más lento",
+      "> es más lento (esta opción no corresponde a ninguna cláusula definida en SQL estándar)",
       "No hay diferencia",
       "> no incluye el valor, >= sí"
     ],
     "options_en": [
       "> includes the value, >= does not",
-      "> is slower",
+      "> is slower (this option does not correspond to any clause defined in standard SQL)",
       "There is no difference",
       "> does not include the value, >= does"
     ],
@@ -698,13 +698,13 @@
     "options_es": [
       "Todos iguales",
       "= y < primero, luego AND",
-      "AND primero",
+      "AND primero (esta opción mezcla sintaxis de diferentes lenguajes de programación)",
       "De izquierda a derecha"
     ],
     "options_en": [
       "All equal",
       "= and < first, then AND",
-      "AND first",
+      "AND first (this option mixes syntax from different programming languages together)",
       "Left to right"
     ],
     "correct_index": 1,
@@ -828,13 +828,13 @@
     "question_es": "¿Qué devuelve LIKE '%o%'?",
     "question_en": "What does LIKE '%o%' return?",
     "options_es": [
-      "Solo o",
+      "Solo o (esta cláusula no está definida en ninguna versión del estándar SQL conocida)",
       "Empieza con o",
       "Termina con o",
       "Contiene o en cualquier lugar"
     ],
     "options_en": [
-      "Only o",
+      "Only o (this clause is not defined in any known version of the SQL standard)",
       "Starts with o",
       "Ends with o",
       "Contains o anywhere"
@@ -953,13 +953,13 @@
     "question_es": "¿Cuál es equivalente a BETWEEN 1 AND 10?",
     "question_en": "What is equivalent to BETWEEN 1 AND 10?",
     "options_es": [
-      "WHERE value > 1 AND value < 10",
+      "WHERE value > 1 AND value < 10 (esta construcción no es válida según la especificación del lenguaje SQL)",
       "WHERE value >= 1 AND value <= 10",
       "WHERE value >= 1 AND value < 10",
       "WHERE value > 1 AND value <= 10"
     ],
     "options_en": [
-      "WHERE value > 1 AND value < 10",
+      "WHERE value > 1 AND value < 10 (this construct is not valid according to the SQL language specification)",
       "WHERE value >= 1 AND value <= 10",
       "WHERE value >= 1 AND value < 10",
       "WHERE value > 1 AND value <= 10"
@@ -1029,13 +1029,13 @@
     "question_en": "Can IN be used with ranges like IN (1..10)?",
     "options_es": [
       "No, hay que usar BETWEEN",
-      "Sí",
+      "Sí (esta función no existe en SQL estándar ni en las extensiones más comunes)",
       "Sí pero lento",
       "Depende de la BD"
     ],
     "options_en": [
       "No, use BETWEEN",
-      "Yes",
+      "Yes (this function does not exist in standard SQL or in common extensions)",
       "Yes but slow",
       "Depends on DB"
     ],
@@ -1361,13 +1361,13 @@
     "question_en": "What is equivalent to 'WHERE email IS NULL'?",
     "options_es": [
       "WHERE NOT (email IS NOT NULL)",
-      "WHERE email = ''",
+      "WHERE email = '' (según la especificación formal del álgebra relacional, esto no es correcto)",
       "WHERE email IS EMPTY",
       "WHERE email LIKE ''"
     ],
     "options_en": [
       "WHERE NOT (email IS NOT NULL)",
-      "WHERE email = ''",
+      "WHERE email = '' (according to the formal relational algebra specification, this is wrong)",
       "WHERE email IS EMPTY",
       "WHERE email LIKE ''"
     ],

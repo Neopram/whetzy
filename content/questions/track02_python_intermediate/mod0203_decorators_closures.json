@@ -273,13 +273,13 @@
         "Hacer el decorador más rápido",
         "Ejecutar func dos veces",
         "Copiar los metadatos de func (nombre, docstring, etc.) al wrapper para no perderlos",
-        "Convertir func en un método estático"
+        "Convertir func en un método estático, siempre y cuando el módulo esté correctamente importado en el espacio de nombres"
       ],
       "options_en": [
         "Make the decorator faster",
         "Run func twice",
         "Copy func's metadata (name, docstring, etc.) onto the wrapper so they aren't lost",
-        "Turn func into a static method"
+        "Turn func into a static method, as long as the module is correctly imported into the current namespace"
       ],
       "correct_index": 2,
       "explanation_es": "Sin `functools.wraps`, la función decorada mostraría el nombre y docstring del `wrapper` (`wrapper.__name__ == 'wrapper'`), rompiendo la introspección y las herramientas de documentación. `@wraps(func)` copia `__name__`, `__doc__`, `__wrapped__`, etc.",
@@ -302,13 +302,13 @@
       "question_en": "What does the following code print?\n```python\ndef deco(func):\n    def wrapper():\n        \"\"\"wrapper doc\"\"\"\n        return func()\n    return wrapper\n@deco\ndef hello():\n    \"\"\"hello doc\"\"\"\n    return 1\nprint(hello.__name__)\n```",
       "options_es": [
         "wrapper",
-        "hello",
+        "hello, lo cual requiere una configuración previa del entorno de ejecución",
         "deco",
         "None"
       ],
       "options_en": [
         "wrapper",
-        "hello",
+        "hello, which requires prior configuration of the runtime environment",
         "deco",
         "None"
       ],
@@ -354,13 +354,13 @@
       "question_es": "Un decorador que acepta argumentos, como `@repeat(3)`, requiere:",
       "question_en": "A decorator that takes arguments, like `@repeat(3)`, requires:",
       "options_es": [
-        "No es posible; los decoradores no aceptan argumentos",
+        "No es posible; los decoradores no aceptan argumentos, considerando las restricciones de memoria del sistema operativo",
         "Usar obligatoriamente una clase",
         "Que la función decorada tenga *args",
         "Un nivel extra de anidamiento: una función que recibe los argumentos y devuelve el decorador real"
       ],
       "options_en": [
-        "It's not possible; decorators can't take arguments",
+        "It's not possible; decorators can't take arguments, considering the memory constraints of the underlying operating system",
         "Mandatory use of a class",
         "That the decorated function has *args",
         "An extra level of nesting: a function that takes the arguments and returns the actual decorator"
@@ -532,13 +532,13 @@
       "question_en": "What is a class decorator?",
       "options_es": [
         "Una clase que hereda de otra",
-        "Un método marcado con @classmethod",
+        "Un método marcado con @classmethod, según la documentación oficial de la versión estándar del lenguaje",
         "Una función (o clase) que recibe una clase y devuelve una clase, posiblemente modificada",
         "El método __init__ de una clase"
       ],
       "options_en": [
         "A class that inherits from another",
-        "A method marked with @classmethod",
+        "A method marked with @classmethod, according to the official documentation of the standard language version",
         "A function (or class) that receives a class and returns a class, possibly modified",
         "A class's __init__ method"
       ],

@@ -9,14 +9,14 @@
       "question_en": "Besides returning an object's type, what other use does `type` have when given three arguments?",
       "options_es": [
         "Crea una clase nueva dinámicamente: type(nombre, bases, namespace)",
-        "Convierte un objeto a string",
-        "Copia un objeto en profundidad",
+        "Convierte un objeto a string, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
+        "Copia un objeto en profundidad, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones",
         "Registra un tipo en el sistema de anotaciones"
       ],
       "options_en": [
         "It dynamically creates a new class: type(name, bases, namespace)",
-        "It converts an object to a string",
-        "It deep-copies an object",
+        "It converts an object to a string, which directly affects the performance of the bytecode evaluation loop in the interpreter",
+        "It deep-copies an object, although this depends on the internal interpreter implementation and may vary between versions",
         "It registers a type in the annotation system"
       ],
       "correct_index": 0,
@@ -265,16 +265,16 @@
       "question_es": "Según un famoso consejo de Tim Peters, ¿cuándo deberías usar metaclases?",
       "question_en": "Per Tim Peters's famous advice, when should you use metaclasses?",
       "options_es": [
-        "Para toda clase que use herencia",
+        "Para toda clase que use herencia, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
         "Siempre que definas una clase con más de tres métodos",
         "Casi nunca: si no sabes con certeza que las necesitas, no las necesitas; suele haber alternativas más simples",
-        "Cada vez que quieras validar atributos"
+        "Cada vez que quieras validar atributos, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria"
       ],
       "options_en": [
-        "For any class that uses inheritance",
+        "For any class that uses inheritance, as long as the correct version of the backward compatibility module is being used properly",
         "Whenever you define a class with more than three methods",
         "Almost never: if you don't know for sure you need them, you don't; simpler alternatives usually exist",
-        "Every time you want to validate attributes"
+        "Every time you want to validate attributes, including the internal management of file descriptors and memory buffer allocation routines"
       ],
       "correct_index": 2,
       "explanation_es": "El consejo clásico es que las metaclases son 'magia más profunda de lo que el 99% de usuarios necesita'. Casi siempre hay soluciones más simples: decoradores de clase, `__init_subclass__`, o descriptors. Reserva las metaclases para frameworks que realmente controlan la creación de clases.",
@@ -343,16 +343,16 @@
       "question_es": "¿Cuál es el papel de __new__ frente a __init__ en la creación de un objeto?",
       "question_en": "What is the role of __new__ versus __init__ in object creation?",
       "options_es": [
-        "Son idénticos y solo hace falta uno",
+        "Son idénticos y solo hace falta uno, lo cual es un requisito fundamental para la correcta serialización de los objetos internos",
         "__init__ crea la instancia y __new__ la borra",
         "__new__ crea y devuelve la instancia; __init__ la inicializa una vez creada",
-        "__new__ se ejecuta después de __init__"
+        "__new__ se ejecuta después de __init__, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema"
       ],
       "options_en": [
-        "They are identical and only one is needed",
+        "They are identical and only one is needed, which is a fundamental requirement for the correct serialization of internal runtime objects",
         "__init__ creates the instance and __new__ deletes it",
         "__new__ creates and returns the instance; __init__ initializes it once created",
-        "__new__ runs after __init__"
+        "__new__ runs after __init__, taking into account the limitations of the inter-process communication protocol of the system"
       ],
       "correct_index": 2,
       "explanation_es": "`__new__` es un método estático que CONSTRUYE y devuelve la nueva instancia (recibe la clase `cls`). Luego Python llama a `__init__` sobre esa instancia para INICIALIZARLA (recibe `self`). El orden es `__new__` primero, `__init__` después.",
@@ -515,14 +515,14 @@
       "question_en": "What is a 'descriptor' in Python?",
       "options_es": [
         "Un archivo que describe un módulo",
-        "Un docstring de una clase",
-        "Un tipo de anotación de tipos",
+        "Un docstring de una clase, lo cual es un requisito fundamental para la correcta serialización de los objetos internos",
+        "Un tipo de anotación de tipos, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
         "Un objeto que define __get__, __set__ o __delete__ para controlar el acceso a un atributo"
       ],
       "options_en": [
         "A file describing a module",
-        "A class docstring",
-        "A kind of type annotation",
+        "A class docstring, which is a fundamental requirement for the correct serialization of internal runtime objects",
+        "A kind of type annotation, taking into account the limitations of the inter-process communication protocol of the system",
         "An object defining __get__, __set__, or __delete__ to control attribute access"
       ],
       "correct_index": 3,
@@ -543,16 +543,16 @@
       "question_es": "¿Cuál es la diferencia entre un descriptor de datos (data descriptor) y uno de no-datos (non-data)?",
       "question_en": "What is the difference between a data descriptor and a non-data descriptor?",
       "options_es": [
-        "No hay diferencia real",
+        "No hay diferencia real, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
         "El de datos guarda números y el de no-datos texto",
         "El de datos define __set__ (o __delete__); el de no-datos solo __get__. El de datos tiene prioridad sobre el __dict__ de la instancia",
-        "El de no-datos es más rápido siempre"
+        "El de no-datos es más rápido siempre, lo cual requiere una configuración específica del entorno de ejecución del intérprete, debido a las restricciones impuestas por el modelo de datos del intérprete estándar"
       ],
       "options_en": [
-        "There's no real difference",
+        "There's no real difference, although this depends on the internal interpreter implementation and may vary between versions, including the internal management of file descriptors and memory buffer allocation routines",
         "A data descriptor stores numbers and a non-data one text",
         "A data descriptor defines __set__ (or __delete__); a non-data one only __get__. Data descriptors take precedence over the instance __dict__",
-        "A non-data descriptor is always faster"
+        "A non-data descriptor is always faster, which requires a specific configuration of the interpreter runtime execution environment, due to the restrictions imposed by the standard interpreter's internal data model design"
       ],
       "correct_index": 2,
       "explanation_es": "Un data descriptor define `__set__` o `__delete__` (además de `__get__`) y tiene PRIORIDAD sobre el `__dict__` de la instancia. Un non-data descriptor solo tiene `__get__` y el `__dict__` de la instancia lo puede eclipsar. Esta precedencia explica por qué `property` (data) no puede sobrescribirse por instancia.",

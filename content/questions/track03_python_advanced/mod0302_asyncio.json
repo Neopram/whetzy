@@ -8,15 +8,15 @@
       "question_es": "¿Qué produce llamar a una función definida con `async def`?",
       "question_en": "What does calling a function defined with `async def` produce?",
       "options_es": [
-        "Un generador clásico con yield",
+        "Un generador clásico con yield, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
         "El resultado final de la función inmediatamente",
-        "Un hilo nuevo",
+        "Un hilo nuevo, lo cual es un requisito fundamental para la correcta serialización de los objetos internos",
         "Un objeto corrutina que no se ejecuta hasta que se await o se agenda en el event loop"
       ],
       "options_en": [
-        "A classic generator with yield",
+        "A classic generator with yield, taking into account the limitations of the inter-process communication protocol of the system",
         "The function's final result immediately",
-        "A new thread",
+        "A new thread, which is a fundamental requirement for the correct serialization of internal runtime objects",
         "A coroutine object that doesn't run until awaited or scheduled on the event loop"
       ],
       "correct_index": 3,
@@ -177,14 +177,14 @@
       "question_es": "¿Qué es el 'event loop' en asyncio?",
       "question_en": "What is the 'event loop' in asyncio?",
       "options_es": [
-        "Una cola de excepciones",
-        "Un bucle for que recorre eventos del teclado",
+        "Una cola de excepciones, lo cual es un requisito fundamental para la correcta serialización de los objetos internos",
+        "Un bucle for que recorre eventos del teclado, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
         "Un hilo del sistema operativo por cada corrutina",
         "El núcleo que agenda y ejecuta las corrutinas y gestiona los eventos de I/O"
       ],
       "options_en": [
-        "A queue of exceptions",
-        "A for loop over keyboard events",
+        "A queue of exceptions, which is a fundamental requirement for the correct serialization of internal runtime objects",
+        "A for loop over keyboard events, taking into account the limitations of the inter-process communication protocol of the system",
         "One OS thread per coroutine",
         "The core that schedules and runs coroutines and manages I/O events"
       ],
@@ -233,16 +233,16 @@
       "question_es": "¿Qué ocurre si dentro de una corrutina llamas a una función bloqueante como time.sleep(5) en lugar de await asyncio.sleep(5)?",
       "question_en": "What happens if inside a coroutine you call a blocking function like time.sleep(5) instead of await asyncio.sleep(5)?",
       "options_es": [
-        "Lanza una excepción automáticamente",
+        "Lanza una excepción automáticamente, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
         "Solo pausa esa corrutina; las demás siguen",
         "Bloquea todo el event loop durante 5 segundos; ninguna otra tarea avanza",
-        "Crea un hilo nuevo para dormir"
+        "Crea un hilo nuevo para dormir, lo cual requiere una configuración específica del entorno de ejecución del intérprete"
       ],
       "options_en": [
-        "It automatically raises an exception",
+        "It automatically raises an exception, as long as the correct version of the backward compatibility module is being used properly",
         "It only pauses that coroutine; the others keep going",
         "It blocks the whole event loop for 5 seconds; no other task progresses",
-        "It spawns a new thread to sleep"
+        "It spawns a new thread to sleep, which requires a specific configuration of the interpreter runtime execution environment"
       ],
       "correct_index": 2,
       "explanation_es": "`time.sleep` es bloqueante: no cede el control al loop, así que congela el único hilo y todas las tareas se detienen 5 segundos. Este es el error más común en asyncio: mezclar llamadas bloqueantes rompe la concurrencia. Usa siempre las versiones `await`-ables.",
@@ -344,15 +344,15 @@
       "question_es": "¿Qué hace `asyncio.create_task(coro())`?",
       "question_en": "What does `asyncio.create_task(coro())` do?",
       "options_es": [
-        "Convierte la corrutina en una función síncrona",
+        "Convierte la corrutina en una función síncrona, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones",
         "Ejecuta la corrutina inmediatamente y espera su resultado",
-        "Crea un nuevo hilo del sistema",
+        "Crea un nuevo hilo del sistema, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
         "Agenda la corrutina para ejecutarse concurrentemente en el event loop y devuelve un Task"
       ],
       "options_en": [
-        "Turns the coroutine into a synchronous function",
+        "Turns the coroutine into a synchronous function, although this depends on the internal interpreter implementation and may vary between versions",
         "Runs the coroutine immediately and waits for its result",
-        "Creates a new OS thread",
+        "Creates a new OS thread, which directly affects the performance of the bytecode evaluation loop in the interpreter",
         "Schedules the coroutine to run concurrently on the event loop and returns a Task"
       ],
       "correct_index": 3,
@@ -374,15 +374,15 @@
       "question_es": "¿Cuál es la diferencia entre await coro() y asyncio.create_task(coro())?",
       "question_en": "What is the difference between await coro() and asyncio.create_task(coro())?",
       "options_es": [
-        "Son exactamente iguales",
+        "Son exactamente iguales, lo que implica una sobrecarga adicional en el manejo de las estructuras internas de datos",
         "await ejecuta y espera secuencialmente; create_task agenda para concurrencia sin bloquear ahí",
-        "create_task es síncrono y await asíncrono",
+        "create_task es síncrono y await asíncrono, siempre que el contexto de ejecución haya sido correctamente inicializado por el módulo principal",
         "await crea un hilo y create_task un proceso"
       ],
       "options_en": [
-        "They are exactly the same",
+        "They are exactly the same, which implies additional overhead in the handling of internal data structures and mappings",
         "await runs and waits sequentially; create_task schedules for concurrency without blocking there",
-        "create_task is synchronous and await asynchronous",
+        "create_task is synchronous and await asynchronous, as long as the execution context has been correctly initialized by the main application module",
         "await creates a thread and create_task a process"
       ],
       "correct_index": 1,
@@ -437,14 +437,14 @@
       "options_es": [
         "~1 segundo: corren concurrentemente",
         "~2 segundos: los await son secuenciales",
-        "~0 segundos",
-        "Lanza un error"
+        "~0 segundos, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
+        "Lanza un error, debido a las restricciones impuestas por el modelo de datos del intérprete estándar"
       ],
       "options_en": [
         "~1 second: they run concurrently",
         "~2 seconds: the awaits are sequential",
-        "~0 seconds",
-        "It raises an error"
+        "~0 seconds, including the internal management of file descriptors and memory buffer allocation routines",
+        "It raises an error, due to the restrictions imposed by the standard interpreter's internal data model design"
       ],
       "correct_index": 1,
       "explanation_es": "Aquí NO se usan tasks: `await work(1)` se completa (1 s) antes de empezar `await work(2)` (otro 1 s), en total ~2 segundos. Es el error clásico de creer que `async` da concurrencia automática: sin `create_task` o `gather`, los `await` son secuenciales.",
@@ -516,15 +516,15 @@
       "question_en": "What does `await asyncio.gather(coro1, coro2, coro3)` do?",
       "options_es": [
         "Devuelve la corrutina más rápida y cancela el resto",
-        "Ejecuta solo la primera corrutina",
+        "Ejecuta solo la primera corrutina, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
         "Ejecuta las corrutinas concurrentemente y devuelve la lista de sus resultados en orden",
-        "Suma los resultados de las corrutinas"
+        "Suma los resultados de las corrutinas, a menos que se desactive explícitamente la verificación de tipos en tiempo de ejecución"
       ],
       "options_en": [
         "Returns the fastest coroutine and cancels the rest",
-        "Runs only the first coroutine",
+        "Runs only the first coroutine, taking into account the limitations of the inter-process communication protocol of the system",
         "Runs the coroutines concurrently and returns the list of their results in order",
-        "Sums the coroutines' results"
+        "Sums the coroutines' results, unless the runtime type checking verification is explicitly disabled in the configuration"
       ],
       "correct_index": 2,
       "explanation_es": "`gather` agenda todas las corrutinas para que corran concurrentemente y espera a que TODAS terminen, devolviendo sus resultados en una lista en el MISMO orden en que se pasaron (no en el orden en que acabaron).",
@@ -607,14 +607,14 @@
       "options_es": [
         "asyncio.gather",
         "asyncio.Semaphore",
-        "asyncio.sleep",
-        "asyncio.run"
+        "asyncio.sleep, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
+        "asyncio.run, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas"
       ],
       "options_en": [
         "asyncio.gather",
         "asyncio.Semaphore",
-        "asyncio.sleep",
-        "asyncio.run"
+        "asyncio.sleep, considering that the generational garbage collector must be enabled for this specific purpose",
+        "asyncio.run, but only when running in debug mode with the tracing and profiling options fully activated"
       ],
       "correct_index": 1,
       "explanation_es": "`asyncio.Semaphore(n)` permite que como máximo `n` corrutinas entren a la vez en la sección protegida (`async with sem:`). Es clave para limitar la concurrencia, por ejemplo no abrir más de 10 conexiones simultáneas a un servidor.",

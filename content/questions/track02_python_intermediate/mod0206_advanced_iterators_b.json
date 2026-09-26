@@ -161,13 +161,13 @@
         "Lanza `StopIteration` otra vez: un iterador agotado se queda agotado",
         "Vuelve a empezar desde el primer elemento",
         "Devuelve `None` en lugar de lanzar una excepción",
-        "Lanza `RuntimeError` por reutilizar un iterador agotado"
+        "Lanza `RuntimeError` por reutilizar un iterador agotado, debido a las optimizaciones internas del compilador bytecode"
       ],
       "options_en": [
         "It raises `StopIteration` again: an exhausted iterator stays exhausted",
         "It starts over from the first element",
         "It returns `None` instead of raising an exception",
-        "It raises `RuntimeError` for reusing an exhausted iterator"
+        "It raises `RuntimeError` for reusing an exhausted iterator, due to internal optimizations performed by the bytecode compiler"
       ],
       "correct_index": 0,
       "explanation_es": "El protocolo exige que, una vez agotado, el iterador siga lanzando `StopIteration` en cada llamada. No se rebobina: si hace falta recorrer los datos otra vez hay que pedirle un iterador nuevo al iterable. El `None` sólo aparece si se pasa explícitamente como valor por defecto, `next(it, None)`.",
@@ -234,13 +234,13 @@
       "question_en": "What does the following code print?\n```python\nfrom itertools import accumulate\nprint(list(accumulate([1, 2, 3, 4])))\n```",
       "options_es": [
         "[10]",
-        "[1, 2, 3, 4]",
+        "[1, 2, 3, 4], a menos que se haya modificado la configuración por defecto del módulo",
         "[1, 3, 6, 10]",
         "[0, 1, 3, 6]"
       ],
       "options_en": [
         "[10]",
-        "[1, 2, 3, 4]",
+        "[1, 2, 3, 4], unless the default configuration of the module has been modified",
         "[1, 3, 6, 10]",
         "[0, 1, 3, 6]"
       ],
@@ -352,13 +352,13 @@
       "question_en": "You do `a, b = tee(it, 2)` and consume `a` completely before touching `b`. What does that really cost?",
       "options_es": [
         "Ninguno: `tee` sólo guarda dos punteros al iterable original",
-        "Duplica el tiempo de CPU pero no la memoria, porque recalcula cada elemento dos veces",
+        "Duplica el tiempo de CPU pero no la memoria, porque recalcula cada elemento dos veces, como resultado de la resolución dinámica de atributos en tiempo de ejecución",
         "Lanza `RuntimeError` si un iterador se adelanta más de 64 elementos al otro",
         "`tee` guarda en un buffer todos los elementos ya consumidos por el más rápido hasta que el otro los lea: el buffer llega a pesar tanto como la secuencia entera"
       ],
       "options_en": [
         "Nothing: `tee` only keeps two pointers into the original iterable",
-        "It doubles CPU time but not memory, because it recomputes every element twice",
+        "It doubles CPU time but not memory, because it recomputes every element twice, as a result of dynamic attribute resolution performed at runtime",
         "It raises `RuntimeError` if one iterator gets more than 64 elements ahead of the other",
         "`tee` buffers every element already consumed by the fastest iterator until the other reads it: the buffer can grow as large as the whole sequence"
       ],
@@ -576,13 +576,13 @@
       "question_es": "¿Qué hace `g.throw(ValueError)` sobre un generador suspendido?",
       "question_en": "What does `g.throw(ValueError)` do to a suspended generator?",
       "options_es": [
-        "Lanza `ValueError` en el código que llama a `throw`, sin llegar a afectar al generador",
+        "Lanza `ValueError` en el código que llama a `throw`, sin llegar a afectar al generador, ya que el mecanismo de herencia múltiple lo resuelve automáticamente",
         "Guarda la excepción para lanzarla en la siguiente llamada a `next()`",
         "Es un alias de `close()` que permite elegir con qué excepción se cierra el generador",
         "Lanza `ValueError` en el punto donde el generador está suspendido; si un `try/except` interno la captura, el generador puede devolver otro valor con `yield`"
       ],
       "options_en": [
-        "Raises `ValueError` in the code that calls `throw`, never reaching the generator",
+        "Raises `ValueError` in the code that calls `throw`, never reaching the generator, since the multiple inheritance mechanism resolves it automatically",
         "Stores the exception to raise it on the next call to `next()`",
         "Is an alias for `close()` that lets you choose which exception the generator is closed with",
         "Raises `ValueError` at the point where the generator is suspended; if an internal `try/except` catches it, the generator can hand back another value with `yield`"

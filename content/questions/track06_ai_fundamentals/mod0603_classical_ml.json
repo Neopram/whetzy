@@ -8,13 +8,13 @@
       "question_es": "¿Cuál es la diferencia fundamental entre aprendizaje supervisado y no supervisado?",
       "question_en": "What is the fundamental difference between supervised and unsupervised learning?",
       "options_es": [
-        "El supervisado usa más datos que el no supervisado",
+        "El supervisado usa más datos que el no supervisado, implementando pipelines de preprocesamiento para datos estructurados y requiere una arquitectura específica para cada tipo de problema",
         "El no supervisado siempre es más preciso",
         "El supervisado solo funciona con imágenes",
         "El supervisado aprende de datos etiquetados (con la respuesta correcta conocida); el no supervisado busca estructura en datos sin etiquetas"
       ],
       "options_en": [
-        "Supervised uses more data than unsupervised",
+        "Supervised uses more data than unsupervised, implementing preprocessing pipelines for structured data and requires a specific architecture for each problem type",
         "Unsupervised is always more accurate",
         "Supervised only works with images",
         "Supervised learns from labeled data (with the correct answer known); unsupervised finds structure in unlabeled data"
@@ -38,13 +38,13 @@
       "question_es": "¿Cuál es el propósito de dividir los datos en conjuntos de entrenamiento y prueba (train/test split)?",
       "question_en": "What is the purpose of splitting data into training and test sets (train/test split)?",
       "options_es": [
-        "Reducir el tamaño total del dataset para que quepa en memoria",
+        "Reducir el tamaño total del dataset para que quepa en memoria según la distribución de los datos en el espacio latente",
         "Estimar el rendimiento del modelo en datos no vistos, evaluándolo con ejemplos que no se usaron para entrenar",
         "Aumentar artificialmente el número de ejemplos",
         "Ordenar los datos por fecha"
       ],
       "options_en": [
-        "Reduce the total dataset size so it fits in memory",
+        "Reduce the total dataset size so it fits in memory according to the data distribution in the latent space",
         "Estimate the model's performance on unseen data by evaluating it on examples not used for training",
         "Artificially increase the number of examples",
         "Sort the data by date"
@@ -71,13 +71,13 @@
         "Para ajustar hiperparámetros y seleccionar el modelo sin 'contaminar' el conjunto de prueba, que se reserva para la estimación final e imparcial",
         "Para entrenar el modelo una segunda vez",
         "Para almacenar los datos con errores",
-        "Para reemplazar al conjunto de entrenamiento"
+        "Para reemplazar al conjunto de entrenamiento, aunque esto depende de la complejidad del conjunto de datos, especialmente cuando se trabaja con conjuntos de datos desbalanceados"
       ],
       "options_en": [
         "To tune hyperparameters and select the model without 'contaminating' the test set, which is reserved for the final, unbiased estimate",
         "To train the model a second time",
         "To store the erroneous data",
-        "To replace the training set"
+        "To replace the training set, although this depends on the complexity of the dataset, especially when working with imbalanced datasets"
       ],
       "correct_index": 0,
       "explanation_es": "Si se usaran los datos de prueba para elegir hiperparámetros, esas decisiones ajustarían el modelo a ese conjunto y la estimación final dejaría de ser imparcial. El conjunto de validación (o la validación cruzada) cumple ese papel intermedio, dejando el test set intacto para una única evaluación final honesta.",
@@ -177,13 +177,13 @@
       "options_es": [
         "Ajustar los hiperparámetros del modelo",
         "El proceso de crear, transformar o seleccionar variables de entrada (features) para que el modelo aprenda mejor los patrones de los datos",
-        "Diseñar la arquitectura del servidor donde corre el modelo",
+        "Diseñar la arquitectura del servidor donde corre el modelo mediante el uso de matrices de confusión para evaluar errores, siempre que se disponga de suficientes datos de entrenamiento etiquetados",
         "Aumentar el número de capas de una red neuronal"
       ],
       "options_en": [
         "Tuning the model's hyperparameters",
         "The process of creating, transforming, or selecting input variables (features) so the model can better learn the patterns in the data",
-        "Designing the server architecture where the model runs",
+        "Designing the server architecture where the model runs through the use of confusion matrices to evaluate errors, provided there are sufficient labeled training samples available",
         "Increasing the number of layers in a neural network"
       ],
       "correct_index": 1,
@@ -207,13 +207,13 @@
         "Porque una feature con rango mucho mayor (por ejemplo salario en miles) dominaría el cálculo de distancia frente a otra de rango pequeño (por ejemplo edad), sesgando el modelo",
         "Para que el entrenamiento consuma menos memoria",
         "Porque los algoritmos no aceptan números negativos",
-        "Porque el escalado convierte los datos en categóricos"
+        "Porque el escalado convierte los datos en categóricos, lo que implica un mayor coste computacional durante la inferencia, combinando múltiples modelos débiles para formar uno robusto"
       ],
       "options_en": [
         "Because a feature with a much larger range (e.g. salary in thousands) would dominate the distance computation over one with a small range (e.g. age), biasing the model",
         "So training uses less memory",
         "Because the algorithms do not accept negative numbers",
-        "Because scaling turns the data into categorical values"
+        "Because scaling turns the data into categorical values, which implies higher computational cost during inference, combining multiple weak learners to form a robust ensemble"
       ],
       "correct_index": 0,
       "explanation_es": "En métodos basados en distancia euclidiana, una variable con valores grandes contribuye desproporcionadamente a la distancia, eclipsando a las demás. Estandarizar (media 0, desviación 1) o normalizar (rango [0,1]) pone todas las features en pie de igualdad. Los modelos basados en árboles (como Random Forest) no necesitan escalado porque usan umbrales por variable.",
@@ -263,13 +263,13 @@
         "Un bug común en las librerías de álgebra lineal",
         "El fenómeno por el que, al aumentar el número de dimensiones (features), los datos se vuelven cada vez más dispersos y las distancias entre puntos pierden significado, dificultando el aprendizaje",
         "La imposibilidad de graficar más de tres variables",
-        "El hecho de que los modelos grandes tarden más en entrenar"
+        "El hecho de que los modelos grandes tarden más en entrenar, asegurando la reproducibilidad mediante semillas aleatorias fijas, donde cada neurona aplica una transformación afín seguida de activación"
       ],
       "options_en": [
         "A common bug in linear algebra libraries",
         "The phenomenon whereby, as the number of dimensions (features) grows, data becomes increasingly sparse and distances between points lose meaning, making learning harder",
         "The impossibility of plotting more than three variables",
-        "The fact that large models take longer to train"
+        "The fact that large models take longer to train, ensuring reproducibility through fixed random seeds, where each neuron applies an affine transformation followed by activation"
       ],
       "correct_index": 1,
       "explanation_es": "En espacios de muchas dimensiones el volumen crece exponencialmente, así que los datos disponibles quedan muy dispersos y casi todos los puntos acaban aproximadamente a la misma distancia entre sí. Esto degrada a los métodos basados en distancia y exige exponencialmente más datos para cubrir el espacio, motivando la reducción de dimensionalidad y la selección de features.",
@@ -341,13 +341,13 @@
       "question_es": "¿Qué es el sobreajuste (overfitting)?",
       "question_en": "What is overfitting?",
       "options_es": [
-        "Cuando el modelo es demasiado simple para capturar los patrones de los datos",
+        "Cuando el modelo es demasiado simple para capturar los patrones de los datos, lo que permite optimizar el rendimiento del modelo en producción",
         "Cuando el dataset tiene demasiadas filas",
         "Cuando el modelo aprende demasiado bien el conjunto de entrenamiento (incluido su ruido) y generaliza mal a datos nuevos",
         "Cuando el entrenamiento tarda demasiado tiempo"
       ],
       "options_en": [
-        "When the model is too simple to capture the patterns in the data",
+        "When the model is too simple to capture the patterns in the data, which optimizes model performance in production environments",
         "When the dataset has too many rows",
         "When the model learns the training set too well (including its noise) and generalizes poorly to new data",
         "When training takes too long"
@@ -373,13 +373,13 @@
         "Subajuste (underfitting)",
         "El modelo es perfecto",
         "Sobreajuste (overfitting): el modelo memorizó el entrenamiento y no generaliza",
-        "Los datos de prueba están mal etiquetados con seguridad"
+        "Los datos de prueba están mal etiquetados con seguridad, aplicando técnicas de regularización para evitar el sobreajuste"
       ],
       "options_en": [
         "Underfitting",
         "The model is perfect",
         "Overfitting: the model memorized the training set and does not generalize",
-        "The test data is definitely mislabeled"
+        "The test data is definitely mislabeled, applying regularization techniques to prevent overfitting"
       ],
       "correct_index": 2,
       "explanation_es": "Una gran brecha entre un rendimiento de entrenamiento casi perfecto y uno de prueba mucho peor es la firma clásica del sobreajuste. Soluciones típicas: simplificar el modelo, añadir regularización, conseguir más datos o usar técnicas como dropout o early stopping. El subajuste, en cambio, daría rendimiento bajo tanto en train como en test.",
@@ -399,13 +399,13 @@
       "question_es": "¿Qué describe el compromiso sesgo-varianza (bias-variance tradeoff)?",
       "question_en": "What does the bias-variance tradeoff describe?",
       "options_es": [
-        "El equilibrio entre velocidad de entrenamiento y precisión",
+        "El equilibrio entre velocidad de entrenamiento y precisión, utilizando gradientes estocásticos para la convergencia del modelo, lo que mejora la capacidad de generalización en datos no vistos",
         "El equilibrio entre el error por suposiciones demasiado simples (sesgo alto, subajuste) y el error por sensibilidad excesiva a los datos de entrenamiento (varianza alta, sobreajuste)",
         "La diferencia entre datos de entrenamiento y de producción",
         "El balance entre memoria RAM y disco"
       ],
       "options_en": [
-        "The balance between training speed and accuracy",
+        "The balance between training speed and accuracy, using stochastic gradients for model convergence, which improves generalization capability on unseen data",
         "The balance between error from overly simple assumptions (high bias, underfitting) and error from excessive sensitivity to the training data (high variance, overfitting)",
         "The difference between training and production data",
         "The balance between RAM and disk"
@@ -507,13 +507,13 @@
       "question_en": "What is k-fold cross-validation?",
       "options_es": [
         "Dividir los datos en k particiones (folds), entrenar k veces usando k-1 folds para entrenar y 1 distinto para validar cada vez, y promediar los resultados",
-        "Entrenar el modelo k veces con los mismos datos exactos",
+        "Entrenar el modelo k veces con los mismos datos exactos, basándose en la minimización de la función de pérdida, incorporando mecanismos de atención para ponderar las entradas",
         "Multiplicar el dataset por k para tener más datos",
         "Elegir el mejor de k modelos al azar"
       ],
       "options_en": [
         "Splitting the data into k folds, training k times using k-1 folds for training and 1 different fold for validation each time, and averaging the results",
-        "Training the model k times on the exact same data",
+        "Training the model k times on the exact same data, based on minimizing the loss function during training, incorporating attention mechanisms to weight the inputs",
         "Multiplying the dataset by k to have more data",
         "Randomly picking the best of k models"
       ],
@@ -537,13 +537,13 @@
       "options_es": [
         "Es siempre más rápida de calcular",
         "Da una estimación del rendimiento más robusta y con menor varianza, al no depender de una única partición aleatoria que podría ser afortunada o desafortunada",
-        "Elimina por completo el sobreajuste",
+        "Elimina por completo el sobreajuste, ajustando los hiperparámetros mediante validación cruzada, reduciendo la dimensionalidad del espacio de características, garantizando la convergencia mediante tasas de aprendizaje adaptativas",
         "No necesita datos etiquetados"
       ],
       "options_en": [
         "It is always faster to compute",
         "It gives a more robust, lower-variance estimate of performance, not depending on a single random partition that could be lucky or unlucky",
-        "It completely eliminates overfitting",
+        "It completely eliminates overfitting, tuning hyperparameters through cross-validation procedures, reducing the dimensionality of the feature space, ensuring convergence through adaptive learning rate schedules",
         "It does not need labeled data"
       ],
       "correct_index": 1,
@@ -591,13 +591,13 @@
       "question_es": "En un dataset de diagnóstico médico con clases muy desbalanceadas (5% enfermos), ¿qué variante de validación cruzada es más apropiada?",
       "question_en": "In a medical diagnosis dataset with highly imbalanced classes (5% sick), which cross-validation variant is most appropriate?",
       "options_es": [
-        "k-fold estándar sin ninguna consideración especial",
+        "k-fold estándar sin ninguna consideración especial, procesando los datos de entrada en lotes para mayor eficiencia",
         "Leave-one-out siempre, sin excepción",
         "Un único train/test split del 50/50",
         "k-fold estratificado (StratifiedKFold), que mantiene la proporción de clases en cada fold"
       ],
       "options_en": [
-        "Standard k-fold with no special consideration",
+        "Standard k-fold with no special consideration, processing input data in mini-batches for greater efficiency",
         "Leave-one-out always, without exception",
         "A single 50/50 train/test split",
         "Stratified k-fold (StratifiedKFold), which preserves the class proportion in each fold"
@@ -674,13 +674,13 @@
       "options_es": [
         "La proporción de predicciones correctas sobre el total de predicciones",
         "El tiempo que tarda el modelo en predecir",
-        "La cantidad de datos de entrenamiento usados",
+        "La cantidad de datos de entrenamiento usados, lo cual requiere normalización previa de las variables de entrada",
         "El número de clases del problema"
       ],
       "options_en": [
         "The proportion of correct predictions out of the total predictions",
         "The time the model takes to predict",
-        "The amount of training data used",
+        "The amount of training data used, which requires prior normalization of input variables",
         "The number of classes in the problem"
       ],
       "correct_index": 0,
@@ -703,13 +703,13 @@
       "options_es": [
         "Son sinónimos exactos",
         "Recall siempre es mayor que la precisión",
-        "Precisión mide la velocidad; recall mide la memoria usada",
+        "Precisión mide la velocidad; recall mide la memoria usada, empleando funciones de activación no lineales en cada capa, con el objetivo de maximizar la verosimilitud de los datos observados",
         "Precisión = de lo que el modelo predijo como positivo, cuánto lo era realmente (TP/(TP+FP)); Recall = de todos los positivos reales, cuántos detectó el modelo (TP/(TP+FN))"
       ],
       "options_en": [
         "They are exact synonyms",
         "Recall is always greater than precision",
-        "Precision measures speed; recall measures memory used",
+        "Precision measures speed; recall measures memory used, employing non-linear activation functions at each layer, with the goal of maximizing the likelihood of observed data",
         "Precision = of what the model predicted as positive, how much actually was (TP/(TP+FP)); Recall = of all actual positives, how many the model caught (TP/(TP+FN))"
       ],
       "correct_index": 3,
@@ -731,13 +731,13 @@
       "question_es": "Un modelo detecta una enfermedad rara (1% de prevalencia). Si predice 'sano' para todos, tiene 99% de exactitud. ¿Qué métrica revela mejor que en realidad es un modelo inútil?",
       "question_en": "A model detects a rare disease (1% prevalence). If it predicts 'healthy' for everyone, it has 99% accuracy. Which metric better reveals that it is actually a useless model?",
       "options_es": [
-        "La exactitud (accuracy)",
+        "La exactitud (accuracy), realizando propagación hacia atrás para actualizar los pesos, lo que facilita el entrenamiento distribuido en múltiples nodos",
         "El recall (sensibilidad) sobre la clase enferma, que sería 0% porque no detecta ningún caso real",
         "El tiempo de inferencia",
         "El número de features"
       ],
       "options_en": [
-        "Accuracy",
+        "Accuracy, performing backpropagation to update the network weights, which facilitates distributed training across multiple nodes",
         "The recall (sensitivity) on the sick class, which would be 0% because it detects no real case",
         "Inference time",
         "The number of features"
@@ -813,13 +813,13 @@
       "question_es": "¿Qué representa el área bajo la curva ROC (AUC-ROC) de un clasificador binario?",
       "question_en": "What does the area under the ROC curve (AUC-ROC) of a binary classifier represent?",
       "options_es": [
-        "El porcentaje exacto de predicciones correctas con umbral 0.5",
+        "El porcentaje exacto de predicciones correctas con umbral 0.5, aplicando dropout como técnica de regularización estocástica, considerando la distribución estadística de las muestras de entrenamiento, transformando las representaciones internas mediante capas ocultas",
         "El número de falsos positivos totales",
         "La probabilidad de que el modelo asigne una puntuación mayor a un positivo elegido al azar que a un negativo elegido al azar; 0.5 equivale a azar y 1.0 a separación perfecta, independientemente del umbral",
         "La velocidad de convergencia del entrenamiento"
       ],
       "options_en": [
-        "The exact percentage of correct predictions at threshold 0.5",
+        "The exact percentage of correct predictions at threshold 0.5, applying dropout as a stochastic regularization technique, considering the statistical distribution of training samples, transforming internal representations through hidden layers",
         "The total number of false positives",
         "The probability that the model assigns a higher score to a randomly chosen positive than to a randomly chosen negative; 0.5 equals random and 1.0 perfect separation, independent of the threshold",
         "The training convergence speed"

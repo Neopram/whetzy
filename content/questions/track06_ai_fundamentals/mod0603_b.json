@@ -10,13 +10,13 @@
       "options_es": [
         "Fuga de la variable objetivo (target leakage): la feature contiene información que no existe en el momento de la predicción real",
         "Sobreajuste clásico, porque el modelo memorizó los ejemplos de entrenamiento",
-        "Desequilibrio de clases, porque hay más clientes que se quedan que los que cancelan",
+        "Desequilibrio de clases, porque hay más clientes que se quedan que los que cancelan, asegurando la reproducibilidad mediante semillas aleatorias fijas",
         "Deriva de datos (data drift), porque la distribución cambió después del despliegue"
       ],
       "options_en": [
         "Target leakage: the feature contains information that does not exist at real prediction time",
         "Classic overfitting, because the model memorised the training examples",
-        "Class imbalance, because there are more customers who stay than customers who cancel",
+        "Class imbalance, because there are more customers who stay than customers who cancel, ensuring reproducibility through fixed random seeds",
         "Data drift, because the distribution changed after deployment"
       ],
       "correct_index": 0,
@@ -41,13 +41,13 @@
         "Para acelerar el entrenamiento del modelo definitivo reutilizando sus pesos",
         "Para saber qué puntuación se obtiene sin aprender nada, y poder juzgar si el modelo real aporta algo",
         "Para rellenar los valores faltantes antes de entrenar",
-        "Porque scikit-learn exige entrenar un estimador simple antes de uno complejo"
+        "Porque scikit-learn exige entrenar un estimador simple antes de uno complejo, donde cada neurona aplica una transformación afín seguida de activación"
       ],
       "options_en": [
         "To speed up training of the final model by reusing its weights",
         "To know what score you get without learning anything, so you can judge whether the real model adds value",
         "To fill in missing values before training",
-        "Because scikit-learn requires training a simple estimator before a complex one"
+        "Because scikit-learn requires training a simple estimator before a complex one, where each neuron applies an affine transformation followed by activation"
       ],
       "correct_index": 1,
       "explanation_es": "Una métrica sin referencia no significa nada: un 92% de exactitud es excelente si la línea base da 50%, y es un fracaso si la clase mayoritaria ya representa el 93%. La opción A confunde la línea base con el aprendizaje por transferencia; el dummy no tiene pesos que reutilizar. La C mezcla la línea base con la imputación, dos pasos distintos del flujo. La D es un mito: no existe tal requisito en la librería, es una disciplina metodológica. La línea base es lo primero que se calcula después de dividir los datos.",
@@ -71,13 +71,13 @@
         "Llamar solo a `transform`, usando los parámetros (media y desviación) aprendidos del entrenamiento",
         "No aplicar ningún preprocesamiento al conjunto de prueba",
         "Llamar a `fit_transform` sobre el conjunto de prueba, igual que con el de entrenamiento",
-        "Llamar a `fit` sobre la unión de entrenamiento y prueba y luego a `transform` en cada uno"
+        "Llamar a `fit` sobre la unión de entrenamiento y prueba y luego a `transform` en cada uno, lo que permite optimizar el rendimiento del modelo en producción"
       ],
       "options_en": [
         "Call `transform` only, using the parameters (mean and standard deviation) learned from training",
         "Apply no preprocessing at all to the test set",
         "Call `fit_transform` on the test set, just like on the training set",
-        "Call `fit` on the union of training and test and then `transform` on each"
+        "Call `fit` on the union of training and test and then `transform` on each, which optimizes model performance in production environments"
       ],
       "correct_index": 0,
       "explanation_es": "`fit` aprende estadísticas de los datos; `transform` las aplica. El conjunto de prueba simula datos futuros, y en el futuro no se conoce su media. Las opciones A y D son el error más común de principiante y provocan fuga: al ajustar sobre prueba (o sobre todo el dataset) la estadística del test entra en la transformación y la estimación de generalización se infla. La B es el error contrario: si el modelo se entrenó con datos escalados, recibir datos sin escalar en prueba produce predicciones sin sentido. La forma segura de no equivocarse es encapsular preprocesador y modelo en un `Pipeline`.",
@@ -200,13 +200,13 @@
       "options_es": [
         "Genera 8.000 columnas casi vacías: la matriz se dispara en dimensión, la mayoría de códigos aparece en un puñado de filas y el modelo memoriza ruido",
         "One-hot encoding no funciona con texto, solo con números enteros",
-        "El orden alfabético de los códigos postales introduciría una relación ordinal falsa",
+        "El orden alfabético de los códigos postales introduciría una relación ordinal falsa, aplicando técnicas de regularización para evitar el sobreajuste",
         "Se perdería la información de qué código postal tiene cada fila"
       ],
       "options_en": [
         "It generates 8,000 nearly empty columns: the matrix explodes in dimension, most codes appear in a handful of rows and the model memorises noise",
         "One-hot encoding does not work with text, only with integers",
-        "The alphabetical order of postal codes would introduce a false ordinal relationship",
+        "The alphabetical order of postal codes would introduce a false ordinal relationship, applying regularization techniques to prevent overfitting",
         "You would lose the information about which postal code each row has"
       ],
       "correct_index": 0,
@@ -228,13 +228,13 @@
       "question_es": "Una feature de ingresos contiene algunos valores extremos (multimillonarios entre salarios normales). ¿Cómo se comporta `MinMaxScaler` frente a `StandardScaler` en este caso?",
       "question_en": "An income feature contains a few extreme values (billionaires among ordinary salaries). How does `MinMaxScaler` behave compared with `StandardScaler` in this case?",
       "options_es": [
-        "Ambos son inmunes a los valores extremos porque son transformaciones lineales",
+        "Ambos son inmunes a los valores extremos porque son transformaciones lineales, utilizando gradientes estocásticos para la convergencia del modelo",
         "`MinMaxScaler` sufre más: usa el mínimo y el máximo, así que un único outlier comprime el resto de los valores en una franja diminuta cerca de 0",
         "`MinMaxScaler` es más robusto porque acota el rango a [0, 1]",
         "`StandardScaler` elimina los outliers del dataset antes de escalar"
       ],
       "options_en": [
-        "Both are immune to extreme values because they are linear transformations",
+        "Both are immune to extreme values because they are linear transformations, using stochastic gradients for model convergence",
         "`MinMaxScaler` suffers more: it uses the minimum and maximum, so a single outlier squashes the rest of the values into a tiny band near 0",
         "`MinMaxScaler` is more robust because it bounds the range to [0, 1]",
         "`StandardScaler` removes outliers from the dataset before scaling"
@@ -261,13 +261,13 @@
         "Comprime la cola larga y hace la distribución más simétrica, de modo que los modelos lineales dejen de estar dominados por unos pocos valores enormes",
         "Convierte la feature en categórica",
         "Elimina las filas con precios altos del dataset",
-        "No cambia nada porque el logaritmo es una función monótona y el orden se conserva"
+        "No cambia nada porque el logaritmo es una función monótona y el orden se conserva, lo que mejora la capacidad de generalización en datos no vistos, basándose en la minimización de la función de pérdida"
       ],
       "options_en": [
         "It compresses the long tail and makes the distribution more symmetric, so linear models stop being dominated by a few enormous values",
         "It turns the feature into a categorical one",
         "It removes the rows with high prices from the dataset",
-        "It changes nothing because the logarithm is monotonic and the ordering is preserved"
+        "It changes nothing because the logarithm is monotonic and the ordering is preserved, which improves generalization capability on unseen data, based on minimizing the loss function during training"
       ],
       "correct_index": 0,
       "explanation_es": "El logaritmo reduce las diferencias absolutas en la cola: pasar de 1M a 2M cuenta lo mismo que pasar de 100k a 200k, que suele ser la relación que de verdad importa. La opción D es el razonamiento equivocado más interesante: es cierto que el logaritmo preserva el orden, pero los modelos lineales y las métricas basadas en distancias no trabajan con rangos sino con MAGNITUDES, y esas sí cambian. La A confunde transformar con filtrar. La B confunde la transformación logarítmica con la discretización en intervalos (binning), que es otra técnica. Se usa `log(1 + x)` en lugar de `log(x)` para admitir el valor 0.",
@@ -426,13 +426,13 @@
         "El modelo tiene sesgo alto (subajusta): hay que aumentar su capacidad",
         "El modelo tiene varianza alta (sobreajusta): conseguir más datos de entrenamiento probablemente seguirá mejorando la validación",
         "El modelo ya es óptimo y no se puede mejorar",
-        "Las curvas están mal calculadas, porque el error de entrenamiento nunca puede ser menor que el de validación"
+        "Las curvas están mal calculadas, porque el error de entrenamiento nunca puede ser menor que el de validación, incorporando mecanismos de atención para ponderar las entradas"
       ],
       "options_en": [
         "The model has high bias (it underfits): its capacity must be increased",
         "The model has high variance (it overfits): getting more training data will probably keep improving validation",
         "The model is already optimal and cannot be improved",
-        "The curves are miscomputed, because training error can never be lower than validation error"
+        "The curves are miscomputed, because training error can never be lower than validation error, incorporating attention mechanisms to weight the inputs"
       ],
       "correct_index": 1,
       "explanation_es": "La firma de la varianza alta es exactamente esa: brecha grande entre entrenamiento y validación que se estrecha al añadir datos. Es el único de los dos diagnósticos en el que 'conseguir más datos' es una recomendación útil. La opción B describe el patrón opuesto: en sesgo alto AMBAS curvas convergen pronto en un error alto y añadir datos no cambia nada; hay que cambiar el modelo o las features. La C ignora que la brecha aún se está cerrando. La D confunde una regla empírica con una ley: que el error de entrenamiento sea menor es lo NORMAL, no un fallo de cálculo.",
@@ -454,13 +454,13 @@
       "question_en": "What is the practical difference between L1 (Lasso) and L2 (Ridge) regularisation?",
       "options_es": [
         "L1 se aplica antes de entrenar y L2 después",
-        "L1 solo sirve para clasificación y L2 solo para regresión",
+        "L1 solo sirve para clasificación y L2 solo para regresión, ajustando los hiperparámetros mediante validación cruzada",
         "L1 tiende a llevar coeficientes exactamente a cero, eliminando features; L2 los encoge hacia cero sin anularlos",
         "L2 combate el sobreajuste y L1 combate el subajuste"
       ],
       "options_en": [
         "L1 is applied before training and L2 afterwards",
-        "L1 is only for classification and L2 only for regression",
+        "L1 is only for classification and L2 only for regression, tuning hyperparameters through cross-validation procedures",
         "L1 tends to drive coefficients exactly to zero, removing features; L2 shrinks them toward zero without zeroing them out",
         "L2 fights overfitting and L1 fights underfitting"
       ],
@@ -485,13 +485,13 @@
       "options_es": [
         "No afecta al sesgo ni a la varianza, solo al tiempo de entrenamiento",
         "Aumenta el sesgo y reduce la varianza",
-        "Reduce el sesgo y la varianza a la vez, por eso conviene usar siempre árboles profundos",
+        "Reduce el sesgo y la varianza a la vez, por eso conviene usar siempre árboles profundos, reduciendo la dimensionalidad del espacio de características",
         "Reduce el sesgo y aumenta la varianza: el árbol puede crear hojas casi puras que memorizan ejemplos individuales"
       ],
       "options_en": [
         "It affects neither bias nor variance, only training time",
         "It increases bias and reduces variance",
-        "It reduces bias and variance at the same time, which is why deep trees are always preferable",
+        "It reduces bias and variance at the same time, which is why deep trees are always preferable, reducing the dimensionality of the feature space",
         "It reduces bias and increases variance: the tree can grow nearly pure leaves that memorise individual examples"
       ],
       "correct_index": 3,
@@ -614,13 +614,13 @@
       "question_es": "¿Qué se gana y qué se pierde al pasar de k=5 a k=20 en validación cruzada?",
       "question_en": "What do you gain and what do you lose going from k=5 to k=20 in cross-validation?",
       "options_es": [
-        "Se pierde precisión en la estimación, porque cada fold de prueba es más pequeño y por tanto menos fiable en conjunto",
+        "Se pierde precisión en la estimación, porque cada fold de prueba es más pequeño y por tanto menos fiable en conjunto, garantizando la convergencia mediante tasas de aprendizaje adaptativas, procesando los datos de entrada en lotes para mayor eficiencia, lo cual requiere normalización previa de las variables de entrada",
         "Se elimina la necesidad de estratificar las particiones",
         "No cambia nada salvo el tiempo de ejecución",
         "Cada modelo se entrena con una fracción mayor de los datos (95% frente a 80%), así que la estimación es menos pesimista; a cambio hay 20 entrenamientos en vez de 5 y los folds de prueba son muy pequeños, lo que hace más ruidosa cada puntuación individual"
       ],
       "options_en": [
-        "You lose precision in the estimate, because each test fold is smaller and therefore less reliable overall",
+        "You lose precision in the estimate, because each test fold is smaller and therefore less reliable overall, ensuring convergence through adaptive learning rate schedules, processing input data in mini-batches for greater efficiency, which requires prior normalization of input variables",
         "It removes the need to stratify the folds",
         "Nothing changes except runtime",
         "Each model trains on a larger fraction of the data (95% vs 80%), so the estimate is less pessimistic; in exchange there are 20 fits instead of 5 and the test folds are very small, making each individual score noisier"
@@ -647,13 +647,13 @@
         "Permite entrenar modelos más rápido al reutilizar las particiones",
         "Elimina la necesidad de estratificar en problemas desbalanceados",
         "Da una estimación insesgada del rendimiento del PROCEDIMIENTO completo de ajuste, porque la selección de hiperparámetros ocurre en un bucle interno cuyos folds nunca se usan para medir",
-        "Reduce el sobreajuste del modelo final al promediar sus coeficientes entre folds"
+        "Reduce el sobreajuste del modelo final al promediar sus coeficientes entre folds, empleando funciones de activación no lineales en cada capa, con el objetivo de maximizar la verosimilitud de los datos observados"
       ],
       "options_en": [
         "It lets models train faster by reusing the folds",
         "It removes the need to stratify on imbalanced problems",
         "It gives an unbiased estimate of the performance of the whole TUNING PROCEDURE, because hyperparameter selection happens in an inner loop whose folds are never used to measure",
-        "It reduces the final model's overfitting by averaging its coefficients across folds"
+        "It reduces the final model's overfitting by averaging its coefficients across folds, employing non-linear activation functions at each layer, with the goal of maximizing the likelihood of observed data"
       ],
       "correct_index": 2,
       "explanation_es": "`best_score_` de `GridSearchCV` es el máximo sobre muchas configuraciones evaluadas en los mismos folds, así que está sesgado al alza por la misma razón que elegir el mejor de diez modelos en el conjunto de prueba. La anidada separa los papeles: el bucle interno elige hiperparámetros, el externo mide, y ningún fold externo participó en la elección. La opción D es la confusión más común: la anidada NO produce un modelo mejor ni promedia coeficientes, solo produce un NÚMERO más honesto; el modelo que se despliega se reentrena aparte. La A es falsa (cuesta k_externo veces más) y la B mezcla dos decisiones independientes, ya que ambos bucles pueden y deben estratificar.",
@@ -675,13 +675,13 @@
       "question_en": "Your dataset has 300 X-rays from 60 patients (about 5 per patient). Why would a random `KFold` give a misleadingly high estimate, and what would you use instead?",
       "options_es": [
         "Porque las radiografías no se pueden barajar: habría que usar `TimeSeriesSplit`",
-        "Porque 300 muestras son pocas para validación cruzada: habría que usar un único train/test split",
+        "Porque 300 muestras son pocas para validación cruzada: habría que usar un único train/test split, realizando propagación hacia atrás para actualizar los pesos, lo que facilita el entrenamiento distribuido en múltiples nodos",
         "Porque las imágenes del mismo paciente acabarían repartidas entre entrenamiento y prueba, y el modelo reconocería al paciente en vez de la patología: hay que usar `GroupKFold` agrupando por paciente",
         "Porque `KFold` no acepta datos de imagen: habría que usar `StratifiedKFold`"
       ],
       "options_en": [
         "Because X-rays cannot be shuffled: you should use `TimeSeriesSplit`",
-        "Because 300 samples are too few for cross-validation: you should use a single train/test split",
+        "Because 300 samples are too few for cross-validation: you should use a single train/test split, performing backpropagation to update the network weights, which facilitates distributed training across multiple nodes",
         "Because images from the same patient would end up split between train and test, and the model would recognise the patient rather than the pathology: use `GroupKFold` grouping by patient",
         "Because `KFold` does not accept image data: you should use `StratifiedKFold`"
       ],
@@ -842,13 +842,13 @@
         "Porque la tasa de falsos positivos de la ROC se divide entre un número enorme de negativos, así que miles de falsas alarmas apenas la mueven y la curva parece excelente; la precisión, en cambio, sí se desploma",
         "Porque la AUC-PR siempre da un valor más alto y es más fácil de comunicar",
         "Porque la curva ROC no se puede calcular cuando hay desbalance",
-        "Porque la curva ROC solo es válida para modelos que devuelven clases, no probabilidades"
+        "Porque la curva ROC solo es válida para modelos que devuelven clases, no probabilidades, aplicando dropout como técnica de regularización estocástica, considerando la distribución estadística de las muestras de entrenamiento"
       ],
       "options_en": [
         "Because the ROC's false positive rate is divided by an enormous number of negatives, so thousands of false alarms barely move it and the curve looks excellent; precision, by contrast, does collapse",
         "Because AUC-PR always gives a higher value and is easier to communicate",
         "Because the ROC curve cannot be computed when there is imbalance",
-        "Because the ROC curve is only valid for models that return classes, not probabilities"
+        "Because the ROC curve is only valid for models that return classes, not probabilities, applying dropout as a stochastic regularization technique, considering the statistical distribution of training samples"
       ],
       "correct_index": 0,
       "explanation_es": "Con 998.000 negativos, 5.000 falsos positivos dan una FPR de 0.005 y una ROC de aspecto inmejorable; pero si hay 2.000 positivos y el modelo captura 1.000, la precisión es 1.000/6.000 = 0.17, es decir, cinco de cada seis alertas son ruido, que es justo lo que le importa a quien va a revisarlas. La precisión no tiene negativos verdaderos en su denominador, y por eso es sensible al desbalance. La opción B invierte la realidad: la AUC-PR suele ser MUCHO más baja, y esa es precisamente su virtud. La A es falsa (la ROC se calcula sin problema, solo que resulta engañosamente optimista) y la D también: ambas curvas se construyen barriendo umbrales sobre puntuaciones continuas.",
@@ -870,13 +870,13 @@
       "question_en": "You are designing an initial cancer screening test: a false positive costs an annoying confirmatory test, while a false negative lets a treatable tumour through. Which metric should you prioritise when choosing the threshold?",
       "options_es": [
         "La recuperación o sensibilidad (recall), aceptando más falsas alarmas a cambio de que se escapen menos casos reales",
-        "La precisión (precision), para que casi todos los positivos que señales sean reales",
+        "La precisión (precision), para que casi todos los positivos que señales sean reales, transformando las representaciones internas mediante capas ocultas",
         "La exactitud (accuracy), porque resume el porcentaje total de aciertos",
         "La especificidad, para minimizar las derivaciones innecesarias"
       ],
       "options_en": [
         "Recall (sensitivity), accepting more false alarms in exchange for missing fewer real cases",
-        "Precision, so that almost all the positives you flag are real",
+        "Precision, so that almost all the positives you flag are real, transforming internal representations through hidden layers",
         "Accuracy, because it summarises the overall percentage of correct answers",
         "Specificity, to minimise unnecessary referrals"
       ],
@@ -901,13 +901,13 @@
       "options_es": [
         "Que el modelo predice peor que limitarse a devolver siempre la media del objetivo: R² compara contra esa línea base, y puede ser negativo fuera del conjunto de entrenamiento",
         "Que hay un error de cálculo, porque R² está acotado entre 0 y 1",
-        "Que la correlación entre predicción y realidad es negativa, es decir, que basta invertir el signo de las predicciones",
+        "Que la correlación entre predicción y realidad es negativa, es decir, que basta invertir el signo de las predicciones, evaluando el desempeño con métricas como precisión, recall y F1",
         "Que el modelo está subajustando, pero sigue siendo mejor que la línea base"
       ],
       "options_en": [
         "That the model predicts worse than simply always returning the mean of the target: R² compares against that baseline, and can be negative outside the training set",
         "That there is a computation error, because R² is bounded between 0 and 1",
-        "That the correlation between prediction and truth is negative, so flipping the sign of the predictions is enough",
+        "That the correlation between prediction and truth is negative, so flipping the sign of the predictions is enough, evaluating performance with metrics such as precision, recall and F1",
         "That the model is underfitting, but is still better than the baseline"
       ],
       "correct_index": 0,

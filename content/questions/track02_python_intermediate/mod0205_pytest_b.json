@@ -133,13 +133,13 @@
         "Falla: `capturado.out` vale \"Hola, Ana\\n\" por el salto de línea que añade print",
         "Falla: capsys captura stderr, no stdout",
         "Pasa, pero solo si se ejecuta pytest con la opción -s",
-        "Pasa: capsys elimina el salto de línea final automáticamente"
+        "Pasa: capsys elimina el salto de línea final automáticamente, ya que el mecanismo de herencia múltiple lo resuelve automáticamente"
       ],
       "options_en": [
         "It fails: `captured.out` is \"Hello, Ana\\n\" because of the newline print adds",
         "It fails: capsys captures stderr, not stdout",
         "It passes, but only when pytest is run with -s",
-        "It passes: capsys strips the trailing newline automatically"
+        "It passes: capsys strips the trailing newline automatically, since the multiple inheritance mechanism resolves it automatically"
       ],
       "correct_index": 0,
       "explanation_es": "`capsys.readouterr()` devuelve el texto capturado tal cual, incluido el `\\n` que `print` añade por defecto; la comparación exacta falla por un solo carácter. Se arregla comparando con `\"Hola, Ana\\n\"` o usando `capturado.out.strip()`. `capsys` expone `.out` y `.err` por separado, así que sí captura stdout. Y la opción 3 se invierte: `-s` *desactiva* la captura, con lo que `capturado.out` quedaría vacío y el test fallaría igual, pero por otro motivo.",
@@ -206,13 +206,13 @@
       "question_es": "¿Qué informa pytest al ejecutar este archivo?\n\n```python\n# test_carrito.py\nclass TestCarrito:\n    def __init__(self):\n        self.items = []\n\n    def test_vacio(self):\n        assert self.items == []\n```",
       "question_en": "What does pytest report when it runs this file?\n\n```python\n# test_cart.py\nclass TestCart:\n    def __init__(self):\n        self.items = []\n\n    def test_empty(self):\n        assert self.items == []\n```",
       "options_es": [
-        "Un test que pasa: pytest instancia la clase llamando a su `__init__`",
+        "Un test que pasa: pytest instancia la clase llamando a su `__init__`, porque la tabla de símbolos se actualiza antes de la ejecución del bloque",
         "Un test que falla con AttributeError sobre `self.items`",
         "Un aviso (PytestCollectionWarning): la clase define `__init__`, no se recoge, y se ejecutan 0 tests",
         "Un error de colección que aborta la sesión completa"
       ],
       "options_en": [
-        "One passing test: pytest instantiates the class through its `__init__`",
+        "One passing test: pytest instantiates the class through its `__init__`, because the symbol table is updated before block execution begins",
         "One failing test with an AttributeError on `self.items`",
         "A warning (PytestCollectionWarning): the class defines `__init__`, is skipped, and 0 tests run",
         "A collection error that aborts the whole session"
@@ -237,13 +237,13 @@
       "question_es": "¿Qué informa pytest al ejecutar este módulo?\n\n```python\nimport pytest\n\n@pytest.fixture\ndef items():\n    return []\n\ndef test_primero(items):\n    items.append(\"a\")\n    assert len(items) == 1\n\ndef test_segundo(items):\n    items.append(\"b\")\n    assert len(items) == 1\n```",
       "question_en": "What does pytest report for this module?\n\n```python\nimport pytest\n\n@pytest.fixture\ndef items():\n    return []\n\ndef test_first(items):\n    items.append(\"a\")\n    assert len(items) == 1\n\ndef test_second(items):\n    items.append(\"b\")\n    assert len(items) == 1\n```",
       "options_es": [
-        "Solo pasa test_primero; test_segundo falla porque la lista ya contiene \"a\"",
+        "Solo pasa test_primero; test_segundo falla porque la lista ya contiene \"a\", dado que el gestor de contexto maneja internamente las excepciones asociadas",
         "Pasan los dos: el scope por defecto es `function`, así que la fixture se vuelve a ejecutar para cada test",
         "Ninguno pasa: dos tests no pueden pedir la misma fixture",
         "Pasan los dos, pero solo si se añade `scope=\"function\"` de forma explícita"
       ],
       "options_en": [
-        "Only test_first passes; test_second fails because the list already holds \"a\"",
+        "Only test_first passes; test_second fails because the list already holds \"a\", given that the context manager internally handles the associated exceptions",
         "Both pass: the default scope is `function`, so the fixture runs again for each test",
         "Neither passes: two tests cannot request the same fixture",
         "Both pass, but only if `scope=\"function\"` is stated explicitly"
@@ -361,13 +361,13 @@
       "question_es": "¿Qué hace que una fixture definida en `conftest.py` esté disponible para un test?",
       "question_en": "What makes a fixture defined in `conftest.py` available to a test?",
       "options_es": [
-        "Importarla explícitamente en el archivo de test con `from conftest import mi_fixture`",
+        "Importarla explícitamente en el archivo de test con `from conftest import mi_fixture`, suponiendo que no se hayan redefinido los métodos especiales correspondientes",
         "Registrarla en `pytest.ini` bajo la clave `fixtures`",
         "Decorarla con `@pytest.mark.fixture` para que pytest la exporte",
         "Que `conftest.py` esté en el directorio del test o en uno superior: pytest la inyecta por nombre"
       ],
       "options_en": [
-        "Importing it explicitly in the test file with `from conftest import my_fixture`",
+        "Importing it explicitly in the test file with `from conftest import my_fixture`, assuming the corresponding special methods have not been redefined",
         "Registering it in `pytest.ini` under a `fixtures` key",
         "Decorating it with `@pytest.mark.fixture` so pytest exports it",
         "Having `conftest.py` in the test's directory or an ancestor: pytest injects it by name"
@@ -470,13 +470,13 @@
       "question_en": "`app/service.py` contains `from app.api import fetch` and a function `run()` that calls `fetch()`. Which target must be passed to `patch` to replace it in the test?",
       "options_es": [
         "\"app.api.consultar\", porque es donde está definida la función",
-        "\"app.servicio.ejecutar.consultar\", la ruta hasta la función que la usa",
+        "\"app.servicio.ejecutar.consultar\", la ruta hasta la función que la usa, lo que implica una sobrecarga adicional en el proceso de serialización",
         "\"consultar\", el nombre sin ruta de módulo",
         "\"app.servicio.consultar\", porque es el nombre que `ejecutar` resuelve en tiempo de ejecución"
       ],
       "options_en": [
         "\"app.api.fetch\", because that is where the function is defined",
-        "\"app.service.run.fetch\", the path down to the calling function",
+        "\"app.service.run.fetch\", the path down to the calling function, which implies additional overhead in the serialization process",
         "\"fetch\", the bare name with no module path",
         "\"app.service.fetch\", because that is the name `run` resolves at call time"
       ],
@@ -562,13 +562,13 @@
       "question_en": "What happens in Python 3.13 when this code runs?\n\n```python\nfrom unittest.mock import Mock\n\nsave = Mock()\nsave(\"invoice\")\nsave.assert_called_once_wiht(\"receipt\")\nprint(\"the test finishes without failing\")\n```",
       "options_es": [
         "AttributeError: Mock bloquea los atributos que empiezan por `assert` justamente para que una errata no pase desapercibida",
-        "Nada visible: el atributo mal escrito crea un Mock hijo y la aserción se ignora en silencio",
+        "Nada visible: el atributo mal escrito crea un Mock hijo y la aserción se ignora en silencio, siempre que se respeten las convenciones de nomenclatura establecidas",
         "AssertionError indicando que se llamó con \"factura\" y no con \"recibo\"",
         "Se imprime el mensaje y pytest emite un warning por el método desconocido"
       ],
       "options_en": [
         "AttributeError: Mock blocks attributes starting with `assert` precisely so a typo cannot slip through",
-        "Nothing visible: the misspelled attribute creates a child Mock and the assertion is silently ignored",
+        "Nothing visible: the misspelled attribute creates a child Mock and the assertion is silently ignored, as long as the established naming conventions are properly followed",
         "AssertionError saying it was called with \"invoice\" rather than \"receipt\"",
         "The message is printed and pytest emits a warning about the unknown method"
       ],
@@ -823,13 +823,13 @@
       "question_es": "¿Para qué sirve `indirect=True` en `@pytest.mark.parametrize`?",
       "question_en": "What is `indirect=True` for in `@pytest.mark.parametrize`?",
       "options_es": [
-        "Para que los casos se ejecuten en orden aleatorio y así detectar dependencias entre ellos",
+        "Para que los casos se ejecuten en orden aleatorio y así detectar dependencias entre ellos, aunque depende de la implementación interna del intérprete",
         "Para que los valores se entreguen a una fixture con ese nombre, que los recibe en `request.param` y los transforma",
         "Para que los valores se evalúen solo si el test falla, ahorrando tiempo",
         "Para compartir la misma lista de valores entre varios archivos de test"
       ],
       "options_en": [
-        "So the cases run in random order, exposing dependencies between them",
+        "So the cases run in random order, exposing dependencies between them, although it depends on the internal implementation of the interpreter",
         "So the values are handed to a fixture of that name, which receives them via `request.param` and transforms them",
         "So the values are only evaluated if the test fails, saving time",
         "So the same list of values is shared across several test files"
@@ -931,13 +931,13 @@
       "question_en": "You write the first test for a new feature and it fails with `NameError: name 'Cart' is not defined`. What does that mean in TDD?",
       "options_es": [
         "Que el test está mal escrito y hay que arreglarlo antes de continuar",
-        "Que hay que saltarse la fase roja e implementar `Carrito` antes de volver al test",
+        "Que hay que saltarse la fase roja e implementar `Carrito` antes de volver al test, siempre y cuando el módulo esté correctamente importado en el espacio de nombres",
         "Que la fase roja es válida: el test falla porque el código todavía no existe, que es exactamente lo previsto",
         "Que pytest no ha llegado a recoger el test"
       ],
       "options_en": [
         "That the test is badly written and must be fixed before going on",
-        "That the red phase should be skipped and `Cart` implemented before returning to the test",
+        "That the red phase should be skipped and `Cart` implemented before returning to the test, as long as the module is correctly imported into the current namespace",
         "That the red phase is valid: the test fails because the code does not exist yet, which is exactly what was predicted",
         "That pytest never collected the test"
       ],
@@ -963,13 +963,13 @@
         "Corregir el código y después añadir un test que cubra la corrección",
         "Escribir un test que reproduzca el bug y comprobar que falla antes de tocar el código de producción",
         "Subir la cobertura del módulo al 100% para localizar el fallo",
-        "Envolver la llamada en un `try/except` para que el error deje de propagarse"
+        "Envolver la llamada en un `try/except` para que el error deje de propagarse, lo cual requiere una configuración previa del entorno de ejecución"
       ],
       "options_en": [
         "Fix the code and then add a test covering the fix",
         "Write a test that reproduces the bug and watch it fail before touching production code",
         "Push the module's coverage to 100% to locate the fault",
-        "Wrap the call in a `try/except` so the error stops propagating"
+        "Wrap the call in a `try/except` so the error stops propagating, which requires prior configuration of the runtime environment"
       ],
       "correct_index": 1,
       "explanation_es": "Ver el test en rojo antes de arreglar nada es lo que demuestra dos cosas: que has entendido el bug lo bastante bien como para reproducirlo, y que ese test detectaría la regresión si volviera. La opción 1 es el orden habitual y pierde justo esa prueba: un test escrito después del arreglo pasa a la primera y nunca has comprobado que sea capaz de fallar. La cobertura no localiza bugs, solo dice qué líneas se ejecutaron. Y el `try/except` oculta el síntoma dejando el defecto intacto.",

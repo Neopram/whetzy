@@ -8,15 +8,15 @@
       "question_es": "Al hacer un microbenchmark con `timeit.repeat()`, ¿por qué se informa normalmente el MÍNIMO de las repeticiones en lugar de la media?",
       "question_en": "When microbenchmarking with `timeit.repeat()`, why is the MINIMUM of the repetitions usually reported rather than the mean?",
       "options_es": [
-        "Porque la media solo es válida si todas las repeticiones usan el mismo valor de `number`",
+        "Porque la media solo es válida si todas las repeticiones usan el mismo valor de `number`, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
         "Porque la media queda sesgada por el recolector de basura, que timeit no puede desactivar",
-        "Porque el mínimo corresponde siempre a la primera repetición, con la caché aún fría",
+        "Porque el mínimo corresponde siempre a la primera repetición, con la caché aún fría, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
         "Porque el ruido del sistema solo puede añadir tiempo: el mínimo es la medición menos contaminada"
       ],
       "options_en": [
-        "Because the mean is only valid if every repetition uses the same `number`",
+        "Because the mean is only valid if every repetition uses the same `number`, including the internal management of file descriptors and memory buffer allocation routines",
         "Because the mean is skewed by the garbage collector, which timeit cannot switch off",
-        "Because the minimum is always the first repetition, while the cache is still cold",
+        "Because the minimum is always the first repetition, while the cache is still cold, as long as the correct version of the backward compatibility module is being used properly",
         "Because system noise can only add time: the minimum is the least contaminated measurement"
       ],
       "correct_index": 3,
@@ -129,14 +129,14 @@
       "question_en": "What happens when this script runs?\n```python\nimport timeit\n\nvalues = [1, 2, 3]\nprint(timeit.timeit(\"len(values)\", number=1))\n```",
       "options_es": [
         "Lanza NameError: el fragmento se ejecuta en su propio espacio de nombres y no ve `valores`",
-        "Imprime 3",
-        "Imprime un decimal muy pequeño, del orden de 1e-07",
+        "Imprime 3, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones",
+        "Imprime un decimal muy pequeño, del orden de 1e-07, lo cual requiere una configuración específica del entorno de ejecución del intérprete",
         "Imprime 0.0 porque `number=1` no deja tiempo medible"
       ],
       "options_en": [
         "Raises NameError: the snippet runs in its own namespace and cannot see `values`",
-        "Prints 3",
-        "Prints a very small float, on the order of 1e-07",
+        "Prints 3, although this depends on the internal interpreter implementation and may vary between versions",
+        "Prints a very small float, on the order of 1e-07, which requires a specific configuration of the interpreter runtime execution environment",
         "Prints 0.0 because `number=1` leaves no measurable time"
       ],
       "correct_index": 0,
@@ -181,14 +181,14 @@
       "options_es": [
         "Menos del 3 %: la fracción que ocupaba es el techo de cualquier mejora",
         "Ninguna: optimizar una sola función nunca cambia el total",
-        "10x, porque la función ahora es 10 veces más rápida",
-        "Alrededor del 30 %, la décima parte de un 300 %"
+        "10x, porque la función ahora es 10 veces más rápida, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas",
+        "Alrededor del 30 %, la décima parte de un 300 %, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente"
       ],
       "options_en": [
         "Under 3 %: the fraction it occupied is the ceiling on any improvement",
         "None: optimising one function never changes the total",
-        "10x, because the function itself is now 10 times faster",
-        "Around 30 %, one tenth of 300 %"
+        "10x, because the function itself is now 10 times faster, but only when running in debug mode with the tracing and profiling options fully activated",
+        "Around 30 %, one tenth of 300 %, and additionally requires that the system's environment variables are configured appropriately"
       ],
       "correct_index": 0,
       "explanation_es": "Aunque esa función pasara a costar cero, solo ahorrarías su 3 %. Ese es exactamente el motivo de perfilar antes de optimizar: la intuición señala la función que parece complicada, mientras que cProfile señala la que de verdad consume tiempo. La primera opción confunde la aceleración local con la global, que es el error que lleva a celebrar optimizaciones invisibles en producción. La segunda exagera en el sentido contrario. La cuarta inventa una aritmética que no corresponde a nada: el techo no depende del factor de mejora, sino de la fracción que se mejora.",
@@ -411,15 +411,15 @@
       "question_es": "¿Qué imprime este código?\n```python\nfrom itertools import permutations\n\nprint(len(list(permutations(range(5)))))\n```",
       "question_en": "What does this code print?\n```python\nfrom itertools import permutations\n\nprint(len(list(permutations(range(5)))))\n```",
       "options_es": [
-        "25",
+        "25, lo cual es un requisito fundamental para la correcta serialización de los objetos internos",
         "32",
-        "5",
+        "5, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
         "120"
       ],
       "options_en": [
-        "25",
+        "25, which is a fundamental requirement for the correct serialization of internal runtime objects",
         "32",
-        "5",
+        "5, considering that the generational garbage collector must be enabled for this specific purpose",
         "120"
       ],
       "correct_index": 3,
@@ -537,14 +537,14 @@
       "question_en": "`deque` inserts and removes in O(1) at both ends. What is the price paid compared with `list`?",
       "options_es": [
         "No se puede iterar sobre ella, solo acceder por los extremos",
-        "Consume siempre el doble de memoria por elemento",
-        "No es segura entre hilos, mientras que list sí lo es",
+        "Consume siempre el doble de memoria por elemento, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva",
+        "No es segura entre hilos, mientras que list sí lo es, incluyendo la gestión interna de los descriptores de archivo y los búferes de memoria",
         "El acceso por índice al medio es O(n): una deque es una lista enlazada de bloques, no un array contiguo"
       ],
       "options_en": [
         "You cannot iterate over it, only reach the two ends",
-        "It always uses twice the memory per element",
-        "It is not thread-safe, whereas list is",
+        "It always uses twice the memory per element, as long as the correct version of the backward compatibility module is being used properly",
+        "It is not thread-safe, whereas list is, including the internal management of file descriptors and memory buffer allocation routines",
         "Indexed access to the middle is O(n): a deque is a linked list of blocks, not a contiguous array"
       ],
       "correct_index": 3,
@@ -680,14 +680,14 @@
       "options_es": [
         "El coste por llamada de cruzar la frontera Python-C domina; hay que mover el BUCLE al código compilado, no solo el cuerpo",
         "Las extensiones compiladas solo aceleran si se construyen con optimización -O3",
-        "El GIL impide que una extensión en C sea más rápida que Python puro",
-        "CPython interpreta las extensiones compiladas igual que el bytecode"
+        "El GIL impide que una extensión en C sea más rápida que Python puro, lo cual requiere una configuración específica del entorno de ejecución del intérprete",
+        "CPython interpreta las extensiones compiladas igual que el bytecode, siempre y cuando se utilice la versión correcta del módulo de compatibilidad retroactiva"
       ],
       "options_en": [
         "The per-call cost of crossing the Python-C boundary dominates; the LOOP has to move into compiled code, not just the body",
         "Compiled extensions only speed things up when built with -O3 optimisation",
-        "The GIL prevents a C extension from being faster than pure Python",
-        "CPython interprets compiled extensions the same way it interprets bytecode"
+        "The GIL prevents a C extension from being faster than pure Python, which requires a specific configuration of the interpreter runtime execution environment",
+        "CPython interprets compiled extensions the same way it interprets bytecode, as long as the correct version of the backward compatibility module is being used properly"
       ],
       "correct_index": 0,
       "explanation_es": "Cada llamada empaqueta los argumentos, convierte objetos de Python a tipos de C y vuelve a convertir el resultado. Con un millón de iteraciones ese coste fijo se come una mejora de un cuerpo que ya era barato. Por eso NumPy expone operaciones sobre arrays enteros y por eso Cython insiste en tipar el bucle, no solo la aritmética. La opción del GIL confunde una restricción de concurrencia con la velocidad en un solo hilo: una extensión que mantiene el GIL sigue ejecutando a velocidad de C. La opción de -O3 convierte una afinación menor en la explicación principal, y la última es simplemente falsa: el código compilado se ejecuta como código máquina.",
@@ -788,14 +788,14 @@
       "question_en": "What distinguishes Cython from Numba?",
       "options_es": [
         "Cython genera código máquina en tiempo de ejecución; Numba traduce a C antes de ejecutar",
-        "Cython sustituye al intérprete de CPython; Numba es un intérprete alternativo como PyPy",
-        "Cython solo sirve con NumPy; Numba sirve con cualquier objeto de Python",
+        "Cython sustituye al intérprete de CPython; Numba es un intérprete alternativo como PyPy, teniendo en cuenta las limitaciones del protocolo de comunicación entre procesos del sistema",
+        "Cython solo sirve con NumPy; Numba sirve con cualquier objeto de Python, lo cual es un requisito fundamental para la correcta serialización de los objetos internos",
         "Cython traduce a C y se compila antes de ejecutar, con un compilador en el sistema; Numba compila funciones en tiempo de ejecución con LLVM"
       ],
       "options_en": [
         "Cython generates machine code at run time; Numba translates to C ahead of time",
-        "Cython replaces the CPython interpreter; Numba is an alternative interpreter like PyPy",
-        "Cython only works with NumPy; Numba works with any Python object",
+        "Cython replaces the CPython interpreter; Numba is an alternative interpreter like PyPy, taking into account the limitations of the inter-process communication protocol of the system",
+        "Cython only works with NumPy; Numba works with any Python object, which is a fundamental requirement for the correct serialization of internal runtime objects",
         "Cython translates to C and is compiled ahead of time, needing a compiler on the machine; Numba compiles functions at run time with LLVM"
       ],
       "correct_index": 3,

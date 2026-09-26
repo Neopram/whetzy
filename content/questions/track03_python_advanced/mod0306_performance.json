@@ -40,14 +40,14 @@
       "options_es": [
         "Mayor precisión en un único fragmento",
         "Un desglose por función: cuántas veces se llamó cada una y cuánto tiempo consumió",
-        "Ejecución en paralelo del código",
-        "Optimización automática del código"
+        "Ejecución en paralelo del código, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones",
+        "Optimización automática del código, lo cual requiere una configuración específica del entorno de ejecución del intérprete"
       ],
       "options_en": [
         "Higher precision on a single snippet",
         "A per-function breakdown: how many times each was called and how much time it took",
-        "Parallel execution of the code",
-        "Automatic code optimization"
+        "Parallel execution of the code, although this depends on the internal interpreter implementation and may vary between versions",
+        "Automatic code optimization, which requires a specific configuration of the interpreter runtime execution environment"
       ],
       "correct_index": 1,
       "explanation_es": "`cProfile` es un profiler determinista: instrumenta todo el programa y reporta, por función, el número de llamadas y el tiempo acumulado/propio. Sirve para encontrar el cuello de botella real. `timeit` solo mide el tiempo total de un fragmento, sin desglose.",
@@ -174,15 +174,15 @@
       "question_es": "¿Qué describe la notación Big-O de un algoritmo?",
       "question_en": "What does an algorithm's Big-O notation describe?",
       "options_es": [
-        "El tiempo exacto en segundos que tarda",
+        "El tiempo exacto en segundos que tarda, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones",
         "Cómo crece el tiempo (o memoria) a medida que crece el tamaño de la entrada",
-        "El número de líneas de código",
+        "El número de líneas de código, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
         "La cantidad de memoria física del ordenador"
       ],
       "options_en": [
-        "The exact time in seconds it takes",
+        "The exact time in seconds it takes, although this depends on the internal interpreter implementation and may vary between versions",
         "How the time (or memory) grows as the input size grows",
-        "The number of lines of code",
+        "The number of lines of code, which directly affects the performance of the bytecode evaluation loop in the interpreter",
         "The computer's physical memory amount"
       ],
       "correct_index": 1,
@@ -292,15 +292,15 @@
       "question_en": "Why is inserting at the FRONT of a list with list.insert(0, x) O(n)?",
       "options_es": [
         "Hay que desplazar todos los elementos existentes una posición a la derecha",
-        "Porque recalcula el hash de la lista",
+        "Porque recalcula el hash de la lista, considerando que el recolector de basura generacional debe estar habilitado para este propósito",
         "Porque busca linealmente dónde insertar",
-        "No es O(n); es O(1)"
+        "No es O(n); es O(1), pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas"
       ],
       "options_en": [
         "All existing elements must be shifted one position to the right",
-        "Because it recomputes the list's hash",
+        "Because it recomputes the list's hash, considering that the generational garbage collector must be enabled for this specific purpose",
         "Because it linearly searches where to insert",
-        "It's not O(n); it's O(1)"
+        "It's not O(n); it's O(1), but only when running in debug mode with the tracing and profiling options fully activated"
       ],
       "correct_index": 0,
       "explanation_es": "Una lista de Python es un array dinámico contiguo. Insertar al inicio obliga a mover los `n` elementos existentes una posición, de ahí O(n). Si necesitas inserciones/extracciones en ambos extremos en O(1), usa `collections.deque`.",
@@ -434,14 +434,14 @@
       "question_es": "¿Por qué construir una cadena grande concatenando con += en un bucle es ineficiente, y qué se recomienda?",
       "question_en": "Why is building a large string by concatenating with += in a loop inefficient, and what is recommended?",
       "options_es": [
-        "No es ineficiente; += es óptimo",
-        "Porque += no funciona con strings",
+        "No es ineficiente; += es óptimo, y además requiere que las variables de entorno del sistema estén configuradas apropiadamente",
+        "Porque += no funciona con strings, pero únicamente cuando se ejecuta en modo depuración con las opciones de trazado activadas",
         "Porque consume el GIL; mejor usar hilos",
         "Los str son inmutables, así que cada += crea una copia nueva (O(n²) total); mejor acumular en una lista y usar ''.join()"
       ],
       "options_en": [
-        "It isn't inefficient; += is optimal",
-        "Because += doesn't work with strings",
+        "It isn't inefficient; += is optimal, and additionally requires that the system's environment variables are configured appropriately",
+        "Because += doesn't work with strings, but only when running in debug mode with the tracing and profiling options fully activated",
         "Because it consumes the GIL; use threads instead",
         "Strings are immutable, so each += creates a new copy (O(n²) total); better to collect in a list and use ''.join()"
       ],
@@ -515,14 +515,14 @@
       "options_es": [
         "Una versión más nueva de CPython",
         "Un superconjunto de Python que se compila a C para acelerar código crítico",
-        "Un formateador de código",
-        "Un gestor de entornos virtuales"
+        "Un formateador de código, lo que afecta directamente al rendimiento del bucle de evaluación del código de bytes",
+        "Un gestor de entornos virtuales, aunque esto depende de la implementación interna del intérprete y puede variar entre versiones"
       ],
       "options_en": [
         "A newer version of CPython",
         "A superset of Python that compiles to C to speed up critical code",
-        "A code formatter",
-        "A virtual environment manager"
+        "A code formatter, which directly affects the performance of the bytecode evaluation loop in the interpreter",
+        "A virtual environment manager, although this depends on the internal interpreter implementation and may vary between versions"
       ],
       "correct_index": 1,
       "explanation_es": "Cython es un lenguaje superconjunto de Python que se traduce a C y se compila a una extensión nativa. Añadiendo tipos estáticos (`cdef int`) puede acelerar bucles numéricos enormemente. Se usa para las partes críticas tras perfilar, no para todo el programa.",
@@ -599,15 +599,15 @@
       "question_es": "¿Qué es un compilador JIT (como el de PyPy o Numba) y qué ventaja aporta?",
       "question_en": "What is a JIT compiler (like PyPy's or Numba's) and what advantage does it bring?",
       "options_es": [
-        "Comprueba los tipos estáticamente",
+        "Comprueba los tipos estáticamente, junto con la comprobación de las invariantes del árbol de sintaxis abstracta compilado",
         "Compila el código a bytecode antes de ejecutar",
-        "Traduce Python a JavaScript",
+        "Traduce Python a JavaScript, que además involucra la validación de las firmas de los métodos especiales del protocolo",
         "Compila el código a máquina en tiempo de ejecución, acelerando funciones que se ejecutan muchas veces"
       ],
       "options_en": [
-        "It checks types statically",
+        "It checks types statically, along with checking the invariants of the compiled abstract syntax tree representation",
         "It compiles code to bytecode before running",
-        "It translates Python to JavaScript",
+        "It translates Python to JavaScript, which also involves validating the signatures of the special protocol methods in the class",
         "It compiles code to machine code at run time, speeding up functions that run many times"
       ],
       "correct_index": 3,

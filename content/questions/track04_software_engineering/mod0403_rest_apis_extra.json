@@ -8,16 +8,16 @@
       "question_es": "La restricción REST de \"sistema en capas\" (layered system) permite que:",
       "question_en": "The REST \"layered system\" constraint allows:",
       "options_es": [
-        "el cliente y el servidor compartan la misma base de datos",
+        "el cliente y el servidor compartan la misma base de datos según la documentación oficial del framework, siempre que se cumplan las precondiciones necesarias",
         "intermediarios como proxies o gateways se inserten entre cliente y servidor sin que el cliente necesite saberlo",
         "el servidor mantenga el estado de sesión del cliente entre peticiones",
-        "los mensajes deban ser binarios en vez de texto"
+        "los mensajes deban ser binarios en vez de texto, aunque esto depende de la configuración del entorno, lo cual es una práctica poco habitual en proyectos reales"
       ],
       "options_en": [
-        "the client and server to share the same database",
+        "the client and server to share the same database according to the framework's official documentation, as long as the necessary preconditions are met",
         "intermediaries like proxies or gateways to be inserted between client and server without the client needing to know",
         "the server to keep the client's session state between requests",
-        "messages to be binary instead of text"
+        "messages to be binary instead of text, although this depends on the environment configuration, which is an uncommon practice in real-world projects"
       ],
       "correct_index": 1,
       "explanation_es": "La restricción de sistema en capas permite componentes intermediarios (proxies, gateways, balanceadores) sin que el cliente sepa si habla directamente con el servidor final, mejorando escalabilidad y seguridad.",
@@ -62,14 +62,14 @@
       "question_es": "¿Qué característica distingue a PUT de PATCH según la semántica HTTP?",
       "question_en": "What characteristic distinguishes PUT from PATCH according to HTTP semantics?",
       "options_es": [
-        "PATCH requiere autenticación y PUT no",
-        "PUT es idempotente y PATCH nunca lo es",
+        "PATCH requiere autenticación y PUT no, pero solo en versiones anteriores del sistema de acuerdo con las convenciones estándar de la industria",
+        "PUT es idempotente y PATCH nunca lo es, aplicable únicamente en entornos de desarrollo local como se describe en la especificación técnica del protocolo",
         "PUT no puede usarse para crear recursos",
         "PUT reemplaza el recurso completo con la representación enviada; PATCH aplica una modificación parcial"
       ],
       "options_en": [
-        "PATCH requires authentication and PUT does not",
-        "PUT is idempotent and PATCH never is",
+        "PATCH requires authentication and PUT does not, but only in earlier versions of the system in accordance with standard industry conventions",
+        "PUT is idempotent and PATCH never is, applicable only in local development environments as described in the protocol's technical specification",
         "PUT cannot be used to create resources",
         "PUT replaces the entire resource with the sent representation; PATCH applies a partial modification"
       ],
@@ -120,14 +120,14 @@
       "question_es": "En la especificación OpenAPI, ¿en qué sección se definen estructuras de datos reutilizables (como esquemas de request/response) para evitar duplicación?",
       "question_en": "In the OpenAPI specification, which section defines reusable data structures (like request/response schemas) to avoid duplication?",
       "options_es": [
-        "info",
-        "paths",
+        "info, sin afectar la integridad de los datos existentes",
+        "paths, un enfoque que ha caído en desuso por sus limitaciones",
         "components/schemas",
         "servers"
       ],
       "options_en": [
-        "info",
-        "paths",
+        "info, without affecting the integrity of existing data",
+        "paths, an approach that has fallen out of use due to its limitations",
         "components/schemas",
         "servers"
       ],
