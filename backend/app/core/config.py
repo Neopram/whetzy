@@ -208,6 +208,13 @@ class Settings(BaseSettings):
     CERTIFICATION_PAYWALL: bool = False
     CERTIFICATION_PRICE_USD: float = 39.99
 
+    # --- Open Badges 3.0 / Verifiable Credentials (29.10, ADR-37) -----------
+    # Ed25519 private key in PEM format. Generate with:
+    #   python -c "from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey; from cryptography.hazmat.primitives.serialization import Encoding, PrivateFormat, NoEncryption; k=Ed25519PrivateKey.generate(); print(k.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()).decode())"
+    # Keep in env, never in the repo.
+    OB_SIGNING_PRIVATE_KEY: str = ""
+    OB_SIGNING_PUBLIC_KEY: str = ""  # auto-derived from private if empty
+
     STRIPE_SUCCESS_URL: str = "https://whetzy.com/billing/success"
     STRIPE_CANCEL_URL: str = "https://whetzy.com/billing/cancel"
 

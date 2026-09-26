@@ -194,6 +194,9 @@ function App() {
   if (path.startsWith(CERTIFICATE_PATH)) {
     return <StandaloneCertificate code={path.slice(CERTIFICATE_PATH.length)} />;
   }
+  if (path.startsWith('/verify/')) {
+    return <StandaloneCertificate code={path.slice(8)} />;
+  }
   if (path.startsWith('/u/')) {
     return <Screen><PublicProfileScreen handle={path.slice(3)} /></Screen>;
   }

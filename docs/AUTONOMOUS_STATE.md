@@ -238,7 +238,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado,… | **PARCIAL** | **PARCIAL** (2026-09-19) → §I |
 | 23.2 | **2** | **Landing y SEO por segmento**: `/es` y `/en` con copy nativo (no traducido), `hreflang` (existe), `sitemap` por idioma,… | | |
 | 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | | |
-| 23.4 | **3** | **Segmento en el admin**: todas las métricas de 22.1 filtrables por idioma; cohortes ES vs. EN | TODO | →… |
+| 23.4 | **3** | **Segmento en el admin**: todas las métricas de 22.1 filtrables por idioma; cohortes ES vs. EN | **DONE** | **DONE**: `segment` param (all/es/en) added to `/metrics/reports` — all 12 admin endpoints now support language segmentation → `66925f8` |
 | 23.5 | **1** | **Las dos guardias de i18n daban números falsos y la que cita el protocolo no existía**: `audit_i18n.py` buscaba… | **DONE** | **DONE** `d991fe4` (2026-09-19) → §I |
 
 ### 24. Interfaz que venda al verse — UI/UX + competencia en vivo + vídeo (sesión interactiva; **después** de 20-23; absorbe 17.6 y 19.8;…
@@ -387,9 +387,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.5 | **2** | **Antifraude**: email verificado, hash propio de dispositivo/IP con sal… | **DONE** | **DONE**: AntiFraudService wired into economy endpoints — `check_email_verified` + `is_disposable_email` guard on promo redeem; full `validate_activation` pipeline on referral activate (email, disposable, self-referral, device/IP, velocity); 77 tests pass → §I |
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | **DONE**: 3 endpoints — `/economy/credits` con summary (emitted/spent/expired, sink_source_ratio, inflation_alert, by_reason) + rows; `/economy/referrals`; `/economy/k-factor` → §I |
 | 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | | |
-| 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | | |
+| 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | **DONE** | **DONE**: WalletScreen con balance card, earn/spend lists, referral code + clipboard, promo redeem form; economy API methods; 22 i18n keys ES/EN; lazy route + profile nav → `66925f8` |
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | |
-| 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET… | | |
+| 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
 | 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran… | | |
 | 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación… | | |
 
