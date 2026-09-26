@@ -457,8 +457,9 @@ Ninguna autoría en masa entra en `master` sin pasar **las cinco**:
 5. **Sesgo de posición y opciones repetidas**: `check_question_bank.py` PASS
    (Haiku entrega el 100 % en la posición A si no se rebalancea).
 
-Modelo por tarea: **autoría → Haiku; verificación y código → Sonnet; el hilo
-principal el que fije `settings.json`**. Un bloque que no pasa la puerta no
+Modelo por tarea (enmienda a ADR-50, 2026-09-26): **autoría, revisión y corrección de
+contenido → Sonnet; lecturas e inventarios → Haiku; el hilo principal, el que fije
+`settings.json` o el que arranca el dueño**. Herramientas del lote: `scripts/content_qa/`. Un bloque que no pasa la puerta no
 existe: no se cuenta, no se anota, no se despliega.
 
 ---
