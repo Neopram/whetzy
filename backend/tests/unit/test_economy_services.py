@@ -494,6 +494,133 @@ def test_safe_alphabet_excludes_ambiguous_chars():
         assert ch not in _SAFE_ALPHABET
 
 
+# ── 29.3: Referral state machine ─────────────────────────────────────────────
+
+@pytest.mark.asyncio
+async def test_referral_pending_does_not_credit(db_session: AsyncSession):
+    """A pending referral should NOT grant credits to the referrer."""
+    referrer_id = uuid4()
+    referred_id = uuid4()
+
+    code = await ReferralService.get_or_create_referral_code(db_session, referrer_id)
+    await db_session.flush()
+    await ReferralService.register_referral(db_session, code, referred_id)
+    await db_session.flush()
+
+    # Run credit_matured_referrals — nothing should happen (still pending)
+    credited = await ReferralService.credit_matured_referrals(db_session, delay_days=0)
+    assert credited == 0
+
+    balance = await CreditsService.get_balance(db_session, referrer_id)
+    assert balance == 0
+
+
+@pytest.mark.asyncio
+async def test_referral_activated_not_yet_matured(db_session: AsyncSession):
+    """An activated referral within the delay window should NOT be credited."""
+    referrer_id = uuid4()
+    referred_id = uuid4()
+
+    code = await ReferralService.get_or_create_referral_code(db_session, referrer_id)
+    await db_session.flush()
+    await ReferralService.register_referral(db_session, code, referred_id)
+    await db_session.flush()
+    await ReferralService.activate_referral(db_session, referred_id)
+    await db_session.flush()
+
+    # 7-day delay not passed — should not credit
+    credited = await ReferralService.credit_matured_referrals(db_session, delay_days=7)
+    assert credited == 0
+
+
+@pytest.mark.asyncio
+async def test_referral_full_state_machine(db_session: AsyncSession):
+    """pending → activated → credited after delay."""
+    from datetime import UTC, datetime, timedelta
+
+    referrer_id = uuid4()
+    referred_id = uuid4()
+
+    code = await ReferralService.get_or_create_referral_code(db_session, referrer_id)
+    await db_session.flush()
+    await ReferralService.register_referral(db_session, code, referred_id)
+    await db_session.flush()
+    await ReferralService.activate_referral(db_session, referred_id)
+    await db_session.flush()
+
+    # Backdate activation to 8 days ago to simulate maturity
+    result = await db_session.execute(
+        select(Referral).where(Referral.referred_id == referred_id)
+    )
+    referral = result.scalar()
+    referral.activated_at = datetime.now(UTC) - timedelta(days=8)
+    await db_session.flush()
+
+    # Now credit_matured_referrals should grant credits
+    credited = await ReferralService.credit_matured_referrals(db_session, delay_days=7)
+    assert credited == 1
+
+    # Verify state is credited
+    result = await db_session.execute(
+        select(Referral).where(Referral.referred_id == referred_id)
+    )
+    referral = result.scalar()
+    assert referral.status == "credited"
+    assert referral.credited_at is not None
+
+    # Verify referrer received credits (ladder: 1st referral = 50 credits)
+    balance = await CreditsService.get_balance(db_session, referrer_id)
+    assert balance == 50
+
+
+@pytest.mark.asyncio
+async def test_referral_ladder_credits(db_session: AsyncSession):
+    """Escalera: 1st=50, 3rd=100, 10th=200, 25th=500."""
+    assert ReferralService._ladder_credits(1) == 50
+    assert ReferralService._ladder_credits(2) == 50
+    assert ReferralService._ladder_credits(3) == 100
+    assert ReferralService._ladder_credits(9) == 100
+    assert ReferralService._ladder_credits(10) == 200
+    assert ReferralService._ladder_credits(24) == 200
+    assert ReferralService._ladder_credits(25) == 500
+    assert ReferralService._ladder_credits(100) == 500
+
+
+@pytest.mark.asyncio
+async def test_referral_no_double_credit(db_session: AsyncSession):
+    """A credited referral should not be credited again."""
+    from datetime import UTC, datetime, timedelta
+
+    referrer_id = uuid4()
+    referred_id = uuid4()
+
+    code = await ReferralService.get_or_create_referral_code(db_session, referrer_id)
+    await db_session.flush()
+    await ReferralService.register_referral(db_session, code, referred_id)
+    await db_session.flush()
+    await ReferralService.activate_referral(db_session, referred_id)
+    await db_session.flush()
+
+    # Backdate
+    result = await db_session.execute(
+        select(Referral).where(Referral.referred_id == referred_id)
+    )
+    referral = result.scalar()
+    referral.activated_at = datetime.now(UTC) - timedelta(days=8)
+    await db_session.flush()
+
+    # First credit run
+    credited = await ReferralService.credit_matured_referrals(db_session, delay_days=7)
+    assert credited == 1
+
+    # Second credit run — should not credit again
+    credited = await ReferralService.credit_matured_referrals(db_session, delay_days=7)
+    assert credited == 0
+
+    balance = await CreditsService.get_balance(db_session, referrer_id)
+    assert balance == 50
+
+
 def test_generated_code_uses_safe_alphabet():
     for _ in range(100):
         code = PromoCodeService._generate_code()
