@@ -295,6 +295,7 @@ POST /admin/email/test                   → {sent, provider, to} 🔒 owner —
 GET  /admin/economy/credits              → credit summary (emitted/spent/expired, sink/source ratio, inflation alert) + ledger rows
 GET  /admin/economy/k-factor             → K-factor statistics
 GET  /admin/economy/referrals            → referral program analytics
+GET  /admin/economy/scorecard            → 5 KPI metrics vs m3/m6/m12 targets (ECONOMIA.md §7) 🔒 admin — ?segment=all|es|en &days=30
 POST /admin/promo/batch ?code_type&credits&count&max_uses&language&campaign_id&expires_days → {count, codes[], csv} — genera lote de códigos promocionales; tipos: onboarding|campaign|reactivation|referral_bonus|instructor; alfabeto seguro sin 0OIL1
 ```
 
@@ -369,8 +370,8 @@ GET  /              → {name, status, version}
 
 ## Route count
 
-111 paths (107 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
-Some paths have multiple HTTP methods, giving **114 method+path endpoints** total.
+112 paths (108 under `/api/v1/` + 4 root: `/`, `/health`, `/health/live`, `/health/ready`).
+Some paths have multiple HTTP methods, giving **115 method+path endpoints** total.
 Verified locally: `python -c "from app.main import app; spec=app.openapi(); print(sum(len(v) for v in spec['paths'].values()))"`.
 
 

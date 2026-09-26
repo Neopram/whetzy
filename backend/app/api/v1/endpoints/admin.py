@@ -755,6 +755,115 @@ async def get_economy_k_factor(
         "segment": segment,
     }
 
+# ── Economy scorecard (29.12, ECONOMIA.md §7) ─────────────────────────────
+
+
+SCORECARD_TARGETS = {
+    "referral_registration_pct": {"m3": 5, "m6": 15, "m12": 25},
+    "k_factor": {"m3": 0.1, "m6": 0.3, "m12": 0.5},
+    "fraud_pct": {"m3": 2, "m6": 2, "m12": 2},
+    "sink_source_ratio": {"m3": 0.6, "m6": 0.7, "m12": 0.8},
+    "promo_redemption_rate": {"m3": 10, "m6": 15, "m12": 20},
+}
+
+
+@router.get("/economy/scorecard", dependencies=[Depends(require_admin)])
+async def get_economy_scorecard(
+    segment: str = Query(default="all", pattern="^(all|es|en)$"),
+    days: int = Query(default=30, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Economy scorecard: 5 live metrics against month 3/6/12 targets (ECONOMIA.md §7)."""
+    from app.models.economy import PromoCode, PromoCodeRedemption
+
+    cutoff = datetime.now(UTC) - timedelta(days=days)
+
+    def _seg(q, user_col=User.id):  # type: ignore[no-untyped-def]
+        if segment != "all":
+            return q.join(User, User.id == user_col).where(User.language == segment)
+        return q
+
+    total_users_q = select(func.count(User.id)).where(User.created_at >= cutoff)
+    if segment != "all":
+        total_users_q = total_users_q.where(User.language == segment)
+    total_users = (await db.execute(total_users_q)).scalar() or 0
+
+    referred_q = select(func.count(Referral.id)).where(
+        Referral.status == "completed", Referral.created_at >= cutoff,
+    )
+    if segment != "all":
+        referred_q = referred_q.join(User, User.id == Referral.referred_id).where(User.language == segment)
+    referred_count = (await db.execute(referred_q)).scalar() or 0
+
+    referral_pct = round((referred_count / total_users * 100) if total_users else 0, 2)
+
+    k_q = select(func.count(Referral.id)).where(Referral.status == "completed")
+    if segment != "all":
+        k_q = k_q.join(User, User.id == Referral.referrer_id).where(User.language == segment)
+    k_completed = (await db.execute(k_q)).scalar() or 0
+
+    all_users_q = select(func.count(User.id))
+    if segment != "all":
+        all_users_q = all_users_q.where(User.language == segment)
+    all_users = (await db.execute(all_users_q)).scalar() or 0
+    k_factor = round((k_completed / all_users) if all_users else 0, 4)
+
+    from app.models.antifraud import FraudReviewQueue
+
+    fraud_q = select(func.count(FraudReviewQueue.id)).where(
+        FraudReviewQueue.created_at >= cutoff,
+    )
+    total_activations_q = select(func.count(Referral.id)).where(
+        Referral.created_at >= cutoff,
+    )
+    fraud_count = (await db.execute(fraud_q)).scalar() or 0
+    total_activations = (await db.execute(total_activations_q)).scalar() or 0
+    fraud_pct = round((fraud_count / total_activations * 100) if total_activations else 0, 2)
+
+    emitted_q = select(func.coalesce(func.sum(CreditLedger.amount), 0)).where(
+        CreditLedger.amount > 0, CreditLedger.created_at >= cutoff,
+    )
+    spent_q = select(func.coalesce(func.sum(func.abs(CreditLedger.amount)), 0)).where(
+        CreditLedger.amount < 0, CreditLedger.reason != "expire",
+        CreditLedger.created_at >= cutoff,
+    )
+    if segment != "all":
+        emitted_q = emitted_q.select_from(CreditLedger).join(User).where(User.language == segment)
+        spent_q = spent_q.select_from(CreditLedger).join(User).where(User.language == segment)
+    emitted = (await db.execute(emitted_q)).scalar() or 0
+    spent = (await db.execute(spent_q)).scalar() or 0
+    sink_source = round(spent / emitted, 4) if emitted else 0.0
+
+    total_promos_q = select(func.count(PromoCode.id)).where(PromoCode.created_at >= cutoff)
+    redeemed_promos_q = select(func.count(func.distinct(PromoCodeRedemption.promo_code_id))).where(
+        PromoCodeRedemption.created_at >= cutoff,
+    )
+    total_promos = (await db.execute(total_promos_q)).scalar() or 0
+    redeemed_promos = (await db.execute(redeemed_promos_q)).scalar() or 0
+    promo_rate = round((redeemed_promos / total_promos * 100) if total_promos else 0, 2)
+
+    def _status(key: str, value: float) -> str:
+        targets = SCORECARD_TARGETS[key]
+        if key == "fraud_pct":
+            return "green" if value <= targets["m3"] else "red"
+        return "green" if value >= targets["m3"] else "yellow" if value >= targets["m3"] * 0.5 else "red"
+
+    metrics = [
+        {"key": "referral_registration_pct", "value": referral_pct, "unit": "%", "status": _status("referral_registration_pct", referral_pct)},
+        {"key": "k_factor", "value": k_factor, "unit": "", "status": _status("k_factor", k_factor)},
+        {"key": "fraud_pct", "value": fraud_pct, "unit": "%", "status": _status("fraud_pct", fraud_pct)},
+        {"key": "sink_source_ratio", "value": sink_source, "unit": "", "status": _status("sink_source_ratio", sink_source)},
+        {"key": "promo_redemption_rate", "value": promo_rate, "unit": "%", "status": _status("promo_redemption_rate", promo_rate)},
+    ]
+
+    return {
+        "days": days,
+        "segment": segment,
+        "metrics": metrics,
+        "targets": SCORECARD_TARGETS,
+    }
+
+
 # ── Tutor usage (22.16 / 38.6) ────────────────────────────────────────────
 
 @router.get("/ops/tutor-usage", dependencies=[Depends(require_admin)])

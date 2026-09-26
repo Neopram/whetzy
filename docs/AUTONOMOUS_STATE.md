@@ -391,7 +391,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | |
 | 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
 | 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran… | | |
-| 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación… | | |
+| 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación… | DONE | `GET /admin/economy/scorecard` — 5 KPI con semáforo vs targets m3/m6/m12 |
 
 
 ### 30. Integridad del despliegue — incidente de login del 2026-09-24 (PRI 0)
