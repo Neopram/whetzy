@@ -59,7 +59,7 @@
 | 21 | Legal y fiscal a coste cero | 1/6 | 17 % | 21.0 DONE · 21.5 PARCIAL (1/4) · 21.6 PARCIAL (2/4) · 21.3, 21.4, 21.8 · **21.1, 21.2 y… |
 | 20 | Verificación masiva código↔docs↔prod | 9/11 | 82 % | 20.7 (**REFUTADA 2026-09-19**: `verify_ci_local.ps1` moría en `pip install`;… |
 | 19 | Catálogo 27 tracks (histórico; meta actual ADR-46) + cert marketplace | 2/10 | 20 % | 19.2–19.10 |
-| 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 2/5 | 40 % | 18.3, 18.5 |
+| 18 | Nuevos tracks (frontend, SQL, linux, algos, redes, certs) | 3/5 | 60 % | 18.5 |
 | 17 | Plataforma + engine + monetización | mayoría DONE | ~95 % | ver archive §B |
 | ≤16 | Fases 1–16 | todas DONE | 100 % | — |
 
@@ -156,7 +156,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 18. Techo de código — todo el catálogo, sin racionar (abierta 2026-09-16, sesión au)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 18.3 | **1** | **Runtime JS real + track Frontend (track14)** | TODO | → LEDGER_HISTORY.md §E |
+| 18.3 | **1** | **Runtime JS real + track Frontend (track14)** | **DONE** | **DONE** (2026-09-26) 221c3af — 6 mod, 24 skills, 355 Q (54 js_exec, 15.2%), 24 lessons, 40 gloss |
 | 18.4 | **2** | **Linux (track15) · Algoritmos (track16) · Redes (track17)** | **DONE… | **DONE** | **DONE** (2026-09-18) → §I |
 | 18.5 | **2** | **Certificaciones P1: PCAP, MLA-C01, AZ-900, AI-900, DP-900, Security+** | TODO | → LEDGER_HISTORY.md §E |
 | 18.6 | **3** | **DevOps y Cloud: Docker/K8s (18), IaC+CI/CD (19), Azure (22), GCP (23)** | TODO | → LEDGER_HISTORY.md §E |
