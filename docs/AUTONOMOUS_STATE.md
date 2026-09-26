@@ -519,7 +519,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.14 | **3** | Plantilla de lección con formato (ADR-50d) | TODO | Sin tocar contenido; test y captura |
 | 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | TODO | En la raíz y citado en README |
 | 39.16 | **1** | Pesos de dominio de track44–46 suman 95/95/96 | TODO | Contra el blueprint oficial (WebFetch) |
-| 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | TODO | Causa escrita; recuento igual o explicado |
+| 39.17 | **1** | Loader: `skipped: 286` y glosario 758 cargados / 1.044 contados | **DONE** | 286 términos sin `track_id` (tracks 18/20/21/23/27/44-46); arreglado; loader local `skipped: 0`, `glossary: 1044`; test rojo sobre master |
 | 39.18 | **1** | vitest: 4 fallos (`StatusPage` `/api/v1` relativo, `common.back`, `useRuntime` bajo jsdom) | TODO | `npx vitest run` 0 fallos |
 | 39.19 | **2** | 115 rutas en local frente a 141 en producción | TODO | `openapi.json` local vs prod comparados |
 | 39.20 | **2** | PostHog en el frontend (ADR-50j) | TODO | Clave vacía = no-op, consentimiento, CSP, landing y privacidad actualizadas |

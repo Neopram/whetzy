@@ -1019,7 +1019,7 @@ dueño por su nombre.
 | e | LICENSE | Código y contenido original propietarios («All rights reserved»); el contenido de terceros conserva su licencia y su atribución según `content/sources/index.json`. |
 | f | LLM de respaldo | Proveedor compatible con OpenAI configurable por entorno; vacío = sin respaldo. |
 | g | Emails de re-enganche | 3, 7 y 30 días de inactividad, baja en un clic (CAN-SPAM), flag apagado. |
-| h | Certificaciones siguientes | CCNA → CompTIA Security+ → AZ-900 → LPIC-1 → CKA → GCP ACE (dentro de 37.10), tras comprobar qué cubren hoy track43–46. |
+| h | Certificaciones siguientes | Las 11 actuales ya incluyen Security+ (track42) y AZ-900/AI-900/DP-900 (track44–46). Siguientes, dentro de 37.10: **CCNA → LPIC-1 → CKA → GCP Associate Cloud Engineer**. |
 | i | Idiomas | ES y EN. El siguiente, pt-BR, solo con revisión nativa. |
 | j | Analítica de producto (H.42) | **PostHog**; Mixpanel no se instrumenta. La landing promete «sin analítica de terceros»: la instrumentación va detrás de clave vacía y consentimiento, y la copia de la landing y la política de privacidad se actualizan en el mismo PR que la active. |
 | k | Errores (H.41) | **Sentry, ejecutado.** Proyecto `whetzy-backend` (org `whetzy`, región `de.sentry.io`) creado con el conector y `SENTRY_DSN` puesto en Railway. Deploy `f097361c` en `SUCCESS` con el log `Sentry initialised (env=production, traces_sample_rate=0.1)` (11:34 UTC). `send_default_pii=False`. El cambio de variable produjo ~20 s de 502 (11:34:31–11:34:41 UTC). El monitor de uptime de Sentry **no** se creó: puede consumir cuota de pago. |
