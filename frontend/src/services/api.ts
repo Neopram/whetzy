@@ -259,6 +259,8 @@ export interface QuizAnswerResponse {
   session_accuracy: number;
   next_question: QuestionPublic | null;
   next_selection_reason: SelectionReason | null;
+  /** Free daily quota used up (39.4): no next question until the next UTC day. */
+  quota_reached?: boolean;
 }
 
 export interface QuizEndResponse {

@@ -18,6 +18,7 @@ from app.schemas.session import (
     QuizStartResponse,
     ReviewDueResponse,
 )
+from app.services import content_quota
 from app.services import quiz as quiz_service
 
 router = APIRouter()
@@ -38,6 +39,8 @@ async def start_quiz(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"{payload.mode.capitalize()} mode requires a Plus subscription.",
         )
+    # Cupo Free de preguntas nuevas (39.4); repaso, placement y examen exentos.
+    await content_quota.enforce_new_questions(db, current_user, payload.mode)
     return await quiz_service.start_session(db, current_user, payload)
 
 

@@ -39,6 +39,7 @@ from app.schemas.session import (
     QuizStartResponse,
     SelectionReason,
 )
+from app.services import content_quota
 from app.services.ab_harness import get_cohort
 from app.services.engine import (
     BKTModel,
@@ -604,22 +605,31 @@ async def submit_answer(
     if league_entry is not None:
         league_entry.xp_earned += xp
 
+    # Cupo Free (39.4): con las preguntas nuevas del día gastadas no se sirve otra;
+    # el cliente ve `next_question: null` y cierra la sesión con sus resultados.
+    quota_reached = await content_quota.new_questions_left(db, user, session.mode) == 0
+
     # Pick the next question, avoiding an immediate repeat of the same item.
     # Same scope the session was opened with: passing None here is how
     # «Practicar» on one module drifted to other tracks from question two.
-    candidate_skill_ids, pool = await _candidate_skill_ids(
-        db, user, session.mode, session.track_id, session.skill_id
-    )
-    next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
-    next_skill_id = next_skill_id or question.skill_id
-    next_question, next_expected_p = await _select_question(
-        db, user, next_skill_id, exclude_question_ids={question.id}
-    )
+    next_question: Question | None = None
+    next_expected_p: float | None = None
+    strategy = None
+    pool = None
+    if not quota_reached:
+        candidate_skill_ids, pool = await _candidate_skill_ids(
+            db, user, session.mode, session.track_id, session.skill_id
+        )
+        next_skill_id, strategy = await _select_skill(db, user, candidate_skill_ids)
+        next_skill_id = next_skill_id or question.skill_id
+        next_question, next_expected_p = await _select_question(
+            db, user, next_skill_id, exclude_question_ids={question.id}
+        )
     next_question_public = await _to_question_public(next_question) if next_question else None
     next_reason: SelectionReason | None = None
     if next_question:
         next_reason = SelectionReason(
-            pool=pool,
+            pool=pool or "",
             skill_strategy=strategy,
             difficulty_target=TARGET_SUCCESS_PROBABILITY,
             expected_p=next_expected_p,
@@ -645,6 +655,7 @@ async def submit_answer(
         session_accuracy=round(session_accuracy, 4),
         next_question=next_question_public,
         next_selection_reason=next_reason,
+        quota_reached=quota_reached,
     )
 
 

@@ -38,6 +38,7 @@ from app.models.instructor import (
     InstructorPayout,
 )
 from app.models.job import Job
+from app.models.lesson_view import LessonView
 from app.models.oauth import OAuthAccount, OAuthState
 from app.models.password_reset import PasswordResetToken
 from app.models.payment import (
@@ -85,6 +86,7 @@ __all__ = [
     "Job",
     "League",
     "LeagueEntry",
+    "LessonView",
     "LoginAttempt",
     "Mission",
     "MockExamAttempt",

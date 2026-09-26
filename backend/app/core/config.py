@@ -215,6 +215,12 @@ class Settings(BaseSettings):
     # razón que CREATOR_PLAN_REQUIRED: exigir un pago imposible cierra el producto.
     CERTIFICATION_PAYWALL: bool = False
     CERTIFICATION_PRICE_USD: float = 39.99
+    # Plan Free (ADR-50a, 39.4): preguntas nuevas y lecciones por día UTC. Apagado
+    # hasta que abra el cobro (H.19/H.29), igual que los dos flags de arriba. El
+    # frontend muestra las cifras desde `src/lib/plans.ts` y un test exige que coincidan.
+    FREE_DAILY_QUOTA_ENABLED: bool = False
+    FREE_DAILY_NEW_QUESTIONS: int = 30
+    FREE_DAILY_LESSONS: int = 5
 
     # --- Open Badges 3.0 / Verifiable Credentials (29.10, ADR-37) -----------
     # Ed25519 private key in PEM format. Generate with:
