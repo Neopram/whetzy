@@ -171,7 +171,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 19.1 | **1** | **Social login web: GitHub + Google (OAuth 2.0 por redirección)** | **DONE** | Backend: `GET /auth/oauth/{provider}/start`… |
 | 19.2 | **1** | **Sign in with Apple** — obligatorio por App Store Review 4.8 en cuanto exista 19.1 | HUMAN-BLOCKED (H.2) | Necesita… |
 | 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | |
-| 19.4 | **2** | **Bootcamps: secuencia de tracks con calendario y meta diaria** | DONE | Modelos + migración + API + seed data + 7 tests. `7768bc7` |
 | 19.5 | **2** | **Playground libre (Python · SQL · JS)** | **DONE** | PlaygroundScreen + playgroundDb (IndexedDB history) + Monaco editor + 3 runtimes + i18n ES/EN + Home shortcut. `d8427ae` |
 | 19.6 | **3** | **Proyectos multi-paso** | **DONE** | = 18.8. `0f61442` |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
@@ -217,7 +216,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 22.2 | **1** | **Threat model STRIDE** documentado en `ARCHITECTURE.md` + cabeceras de… | **DONE** | **DONE** (2026-09-25) → §I |
 | 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | |
 | 22.6 | **2** | **Escala sin coste hoy** (ADR-19): interfaz… | **DONE** | **DONE** (2026-09-26) — 8/8: RateLimiter InMemory/Redis, pool asyncpg, capacity.md, k6, db_restore, job worker, Cache-Control en 6 GETs, paginación 13/15 (tracks/skills acotados); `cache.py` helper sin uso eliminado |
-| 22.7 | **3** | **Incidentes y estado**: runbook de incidentes (severidades, quién, qué, plantilla de postmortem), página de estado… | DONE | RUNBOOK.md §Incident Management + `/status` page frontend |
 | 22.8 | **1** | **Contrastar 22.1, 22.6 y 23.1 con lo que hay en `master`** (protocolo… | **DONE** | **DONE** `f36218f` (2026-09-19) → §I |
 | 22.9 | **1** | **Test de frontend rojo en `master`**: `src/test/hooks.useRuntime.test.tsx` falla con `ReferenceError: Worker is not… | **DONE** | **DONE** `7e1b8d4` (2026-09-19) → §I ||
 | 22.11 | **1** | **`AdminScreen.tsx` estaba 100 % en inglés** — títulos, pestañas, estados, mensajes de error y unidades eran cadenas… | **DONE** | **DONE** `13d8904` (2026-09-19) → §I |
@@ -352,7 +350,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | |
 | 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | |
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | |
-| 28.6 | **4** | Panel admin: aprobación de cursos, moderación, gestión de payouts | DONE | 4 admin endpoints: list/status courses + list/status payouts |
 | 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | |
 | 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | **DONE** — `content/legal/instructor_recruitment_kit_{es,en}.md`: oferta 70/30, badge fundador, visibilidad prioritaria, requisitos de calidad (puerta automática), hoja de ruta 3 fases, proceso de aplicación | |
@@ -506,10 +503,11 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | PARCIAL: 760 (2026-09-26); tildes 31→0 y rotación 1→0; quedan solo lecciones de tracks 14, 18-30, 41-46 (longitud, ejemplo con salida, lenguaje, fuente): trabajo de autoría | 0 fallos sin bajar umbrales |
 | 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | TODO | Tests con flag on/off, exenciones, paridad con `plans.ts` |
 | 39.5 | **2** | Gamification auditada de punta a punta | TODO | Playwright local con capturas: XP, racha, liga, insignia |
-| 39.6 | **2** | `audit_ai_traces.py` | TODO | Informe por fichero; mutación en rojo |
+| 39.6 | **2** | `audit_ai_traces.py` | DONE | `scripts/audit_ai_traces.py`: informe por fichero (explicación de plantilla, marcado de herramienta, voz de asistente) y trinquete `ai_traces_baseline.json`; `tests/content/test_ai_traces.py`, mutación en rojo (2026-09-26). Encontró 1.404 campos de explicación de plantilla → 39.29 |
 | 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | `scripts/check_originality.py` (Jaccard trigramas ≥ 0.8 + misma respuesta, por track) con trinquete `KNOWN`; `tests/content/test_originality.py`; mutación (pareja nueva) en rojo, restaurado verde (2026-09-26) |
 | 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | TODO | Cada pareja arreglada se quita de `KNOWN`; el test sigue verde |
 | 39.28 | **1** | Segunda familia de coletillas («como concepto principal» 982, «sin excepciones ni variantes» 296, «de manera exclusiva y permanente» 238 y sus versiones EN) en tracks 18-23, 27, 41-43 | TODO | Contadas en el trinquete de `test_no_filler_options.py`; bajar cada track a 0 con el mismo proceso que 39.1 (reescritura + revisión adversaria completa + comprobación de clave) |
+| 39.29 | **0** | 1.404 explicaciones de plantilla vistas por el alumno («Explicación no disponible.», «Respuesta correcta basada en documentación de Python.», «…según los principios de Azure.»): track41 (598), track42 (480), track44-46 (300), track23 `mod2301` (26) | TODO | Explicación real por pregunta, ES y EN, revisada; el trinquete de `audit_ai_traces.py` baja a 0 en cada fichero |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
