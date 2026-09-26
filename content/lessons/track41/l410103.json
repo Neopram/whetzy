@@ -2,12 +2,11 @@
   "id": "l410103",
   "skill_id": "sk410103",
   "language": "python",
-  "executable": false,
-  "title_es": "Instalar con pip",
-  "title_en": "Installing with pip",
-  "body_es": "pip es el gestor de paquetes de Python. Permite instalar, actualizar y desinstalar paquetes de PyPI.",
-  "body_en": "pip is Python's package manager. It allows installing, updating and uninstalling packages from PyPI.",
-  "example_code": "# pip install requests\n# pip install --upgrade pip\n# pip freeze > requirements.txt\n# pip install -r requirements.txt",
-  "example_output": "",
-  "source": "Python docs: https://docs.python.org/3/"
+  "title_es": "Paquetes y subpaquetes",
+  "title_en": "Packages and Subpackages",
+  "body_es": "Un paquete es un directorio que agrupa módulos relacionados y que Python reconoce como tal gracias al fichero __init__.py dentro de él; sin ese fichero (salvo que se use un paquete de espacio de nombres, una variante avanzada) el directorio es solo una carpeta y no algo importable. Los paquetes estructuran el espacio de nombres con nombres de módulo con puntos: A.B designa el submódulo B dentro del paquete A, y esa jerarquía puede anidarse en subpaquetes tantos niveles como haga falta, cada uno con su propio __init__.py. Por ejemplo, la biblioteca estándar organiza el envío de correo en el paquete email, con el subpaquete email.mime y dentro de él el módulo email.mime.text; import email.mime.text carga esa cadena completa y dentro de __init__.py se puede definir la lista __all__ para controlar qué se trae con from paquete import *. Si __all__ no existe, esa sintaxis solo importa lo que __init__.py ya haya definido o importado explícitamente, nunca todos los submódulos del directorio automáticamente. Un error común es crear paquete/submodulo.py y esperar que import paquete deje disponible paquete.submodulo: sin una importación explícita del submódulo, en el propio __init__.py o en el código que lo usa, el atributo no existe todavía y acceder a él lanza AttributeError aunque el fichero esté ahí, en disco, sin ningún error de sintaxis.",
+  "body_en": "A package is a directory that groups related modules together, and Python recognizes it as one because of the __init__.py file inside it; without that file (unless a namespace package, an advanced variant, is in play) the directory is just a folder, not something importable. Packages structure the module namespace using dotted module names: A.B names submodule B inside package A, and that hierarchy can nest into subpackages as many levels deep as needed, each with its own __init__.py. The standard library, for example, organizes email handling under the email package, with the email.mime subpackage and, inside it, the email.mime.text module; import email.mime.text loads that whole chain, and __init__.py can define an __all__ list to control exactly what from package import * brings in. When __all__ is absent, that syntax only imports whatever __init__.py already defined or explicitly imported itself, never every submodule in the directory automatically. A common mistake is creating package/submodule.py and expecting import package to make package.submodule available on its own: without an explicit import of that submodule, either inside __init__.py or in the code that uses it, the attribute simply does not exist yet, and reaching for it raises an AttributeError even though the file sits right there on disk with no syntax error at all.",
+  "example_code": "import email.mime.text\nfrom email.mime.text import MIMEText\n\nprint(email.mime.text.__name__)\nmsg = MIMEText('hello')\nprint(msg.get_content_type())\nprint(msg.get_content_maintype())",
+  "example_output": "email.mime.text\ntext/plain\ntext",
+  "source": "Python docs — The Python Tutorial: Packages (https://docs.python.org/3/tutorial/modules.html#packages)"
 }

@@ -1,13 +1,13 @@
 {
   "id": "l410104",
   "skill_id": "sk410104",
-  "language": "python",
-  "executable": true,
-  "title_es": "Espacios de nombres y alcance de módulos",
-  "title_en": "Module Namespaces and Scope",
-  "body_es": "Cada módulo tiene su propio espacio de nombres. Las variables definidas en un módulo no contaminan el global.",
-  "body_en": "Each module has its own namespace. Variables defined in a module don't pollute the global scope.",
-  "example_code": "import math\n\n# math.pi is in math's namespace\nprint(math.pi)\nprint(dir(math)[:3])",
-  "example_output": "3.141592653589793\n['__doc__', '__file__', '__loader__']",
-  "source": "Python docs: https://docs.python.org/3/"
+  "language": "shell",
+  "executable": false,
+  "title_es": "Gestión de paquetes con pip",
+  "title_en": "Package Management with pip",
+  "body_es": "pip es el gestor de paquetes que se distribuye con Python y descarga, instala y elimina paquetes publicados en el Índice de Paquetes de Python (PyPI). La forma recomendada de invocarlo es python3 -m pip install \"paquete\", que ejecuta el módulo pip con el mismo intérprete que va a usar el paquete, evitando instalarlo para una versión de Python distinta cuando hay varias en la máquina. Un especificador de versión se añade con operadores de comparación, como \"paquete==1.4\" para una versión exacta o \"paquete>=1,<2\" para un rango; pip install --upgrade paquete sustituye la versión instalada por la más reciente compatible con ese especificador. Cuando PyPI ofrece tanto el código fuente como una wheel, un paquete precompilado, pip prefiere la wheel porque instala más rápido, sobre todo si el paquete incluye extensiones compiladas en C. Para reproducir un entorno completo, pip install -r requirements.txt instala en orden cada paquete y versión listados en ese fichero, que normalmente se genera antes con pip freeze. Un error común es instalar paquetes con pip install fuera de un entorno virtual: los paquetes quedan en el Python global del sistema, comparten versión entre todos los proyectos y un --upgrade para un proyecto puede romper silenciosamente la versión que necesitaba otro proyecto distinto en la misma máquina.",
+  "body_en": "pip is the package manager that ships with Python, and it downloads, installs and removes packages published on the Python Package Index (PyPI). The recommended way to invoke it is python3 -m pip install \"package\", which runs the pip module with the exact interpreter that will use the package, avoiding an install against the wrong Python version when several are present on the machine. A version specifier is attached with comparison operators, such as \"package==1.4\" for an exact release or \"package>=1,<2\" for a range; pip install --upgrade package replaces whatever is installed with the newest release matching that specifier. When PyPI offers both a source distribution and a wheel, a prebuilt package, pip prefers the wheel because it installs faster, especially for packages bundling compiled C extensions. To reproduce a whole environment, pip install -r requirements.txt installs every package and pinned version listed in that file, in order, a file that is normally generated beforehand with pip freeze. A common mistake is running pip install outside a virtual environment: the packages land in the system's global Python, every project on the machine shares the same version, and an --upgrade meant for one project can silently break the version another unrelated project on that same machine still depends on.",
+  "example_code": "$ python3 -m pip install requests\nCollecting requests\n  Downloading requests-2.32.3-py3-none-any.whl (64 kB)\nInstalling collected packages: urllib3, idna, charset-normalizer, certifi, requests\nSuccessfully installed certifi-2026.7.22 charset-normalizer-3.5.1 idna-3.20 requests-2.32.3 urllib3-2.8.0\n\n$ python3 -m pip show requests\nName: requests\nVersion: 2.32.3\nSummary: Python HTTP for Humans.\n\n$ python3 -m pip freeze | grep requests\nrequests==2.32.3",
+  "example_output": "Collecting requests\n  Downloading requests-2.32.3-py3-none-any.whl (64 kB)\nInstalling collected packages: urllib3, idna, charset-normalizer, certifi, requests\nSuccessfully installed certifi-2026.7.22 charset-normalizer-3.5.1 idna-3.20 requests-2.32.3 urllib3-2.8.0\n\nName: requests\nVersion: 2.32.3\nSummary: Python HTTP for Humans.\n\nrequests==2.32.3",
+  "source": "Python Packaging User Guide — Installing Packages (https://packaging.python.org/en/latest/tutorials/installing-packages/)"
 }
