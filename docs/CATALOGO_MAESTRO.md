@@ -47,7 +47,7 @@ profundidad de producto*, no adquisición.
 | Lecciones | 656/643 | `pytest tests/content/test_lessons.py` |
 | Glosario | **1.044** | `check_docs.py` |
 | Ejecutables | 12 tracks no exentos ≥ 15 % (track16 44,9 %, track17/mod1703 36,7 %, track12 20 %, track13/40 15 %, track14 JS sandbox; track15 exento ADR-9; track41 PCAP Python exec; certs track42–46 exentos) | `check_question_bank.py` |
-| Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900**, **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
+| Certificaciones | **11** (CLF-C02, PCEP, SAA-C03, AIF-C01, ISC2 CC, **PCAP**, **Security+**, **MLA-C01**, **AZ-900**, **AI-900** (retirado por Microsoft el 30-06-2026; sustituto AI-901, fila 39.24), **DP-900**) | `pytest tests/content/test_certification_blueprints.py` |
 | Proyectos multi-paso | 0 | — |
 | Vídeos | 0 | — |
 
@@ -326,7 +326,7 @@ peso → «listo / no listo» con evidencia. Sin dumps. Sin adivinar pesos.
 | ISC2 | SSCP · CCSP · CISSP | track13/25 | ❌ | P3 |
 | CompTIA | **Security+ SY0-701** | track13 | ❌ (48 % de ofertas cyber, estrategia v3) | P1 |
 | CompTIA | Network+ · Linux+ · PenTest+ · CySA+ | track17/15/24 | ❌ | P2 |
-| Microsoft | AZ-900 · AI-900 · DP-900 | track22/06/12 | ❌ | P1 (fundamentals: 3 exámenes, un molde) |
+| Microsoft | AZ-900 · AI-900 → AI-901 · DP-900 | track44/45/46 | ✅ (AI-900 retirado 30-06-2026; migrar track45 a AI-901, 39.24) | P1 (fundamentals: 3 exámenes, un molde) |
 | Microsoft | AZ-104 · AZ-204 · AI-102 · DP-100 · DP-203 · AZ-305 | track22/07/21/20 | ❌ | P2 |
 | Google Cloud | Digital Leader · ACE · PCA · PDE · PMLE | track23/20/07 | ❌ | P2 |
 | CNCF | KCNA · CKA · CKAD · CKS | track18 | ❌ | P2 (CKA/CKAD son prácticos: solo teoría + escenario) |
