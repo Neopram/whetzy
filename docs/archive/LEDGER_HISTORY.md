@@ -2039,3 +2039,5 @@ Todo lo verificado solo en local se marca «local — CI bloqueado por H.13».
 | 37.3 | **1** | **Pipeline de corpus** `scripts/corpus/`: `fetch.py` (git/dump/torrent oficial), `verify_license.py` (lee… | **DONE** | **DONE** → §I |
 | 38.0 | **2** | **KPIs de `DISTRIBUCION.md` §10 y ADR-32 en el admin** (22.1): registrados, pagos, MRR, D30,… | **DONE** | **DONE** → §I |
 | 38.4 | **3** | **Kit de reclutamiento de instructores** — es la fila 28.9; aquí solo para que la serie 38 lo… | **DONE** | **DONE** → §I |
+| 14.4 | 2 | **Micro-lecciones desde las fuentes** — cerrar la brecha de instrucción sin construir vídeo | DONE | TracksScreen: skills con p_known < 0.3 destacadas (fondo naranja, clickables → lección); botón Aprender apunta al skill más débil; tsc+vite limpios |
+| 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación… | DONE | `GET /admin/economy/scorecard` — 5 KPI con semáforo vs targets m3/m6/m12 |

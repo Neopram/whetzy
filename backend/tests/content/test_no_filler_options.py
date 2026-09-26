@@ -30,9 +30,15 @@ FILLERS = (
     "as a recommended practice", "within this paradigm", "under normal conditions",
     "by default", "according to spec", "in practice", "typically", "by convention",
     "in real environments",
+    # Segunda familia, encontrada el 2026-09-26 en tracks 18-23, 27 y 42 (39.28).
+    "como concepto principal", "sin excepciones ni variantes",
+    "de manera exclusiva y permanente",
+    "as the main concept", "without exceptions or variants",
+    "exclusively and permanently",
 )
 
-# Medido el 2026-09-26 tras reescribir track26, track28 y track29 (0). Solo baja.
+# Medido el 2026-09-26 tras reescribir track26, 28, 29 y 30 (0) y añadir la segunda familia
+# de coletillas (39.28). Solo baja.
 BASELINE = {
     "track03_python_advanced": 1,
     "track04_software_engineering": 8,
@@ -44,11 +50,16 @@ BASELINE = {
     "track13_cybersecurity": 3,
     "track14_frontend": 110,
     "track16_algoritmos": 1,
-    "track22_azure": 1,
-    "track27_nosql": 3,
-    "track30_agile": 610,
-    "track42_security_plus": 66,
-    "track43_aws_mla": 23,
+    "track18_docker_k8s": 260,
+    "track19_iac_cicd": 203,
+    "track20_data_engineering": 71,
+    "track21_data_science": 304,
+    "track22_azure": 112,
+    "track23_gcp": 218,
+    "track27_nosql": 136,
+    "track41_pcap": 74,
+    "track42_security_plus": 463,
+    "track43_aws_mla": 43,
     "track44_azure_fundamentals": 34,
     "track45_azure_ai": 23,
     "track46_azure_data": 59,

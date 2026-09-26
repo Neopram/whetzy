@@ -80,7 +80,6 @@
 ### 14 — La cuña (dirección aprobada 2026-09-14)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 14.4 | 2 | **Micro-lecciones desde las fuentes** — cerrar la brecha de instrucción sin construir vídeo | DONE | TracksScreen: skills con p_known < 0.3 destacadas (fondo naranja, clickables → lección); botón Aprender apunta al skill más débil; tsc+vite limpios |
 | 14.7 | 3 | **PCEP** — primera certificación del carril 1 (decisión #25) | TODO | → LEDGER_HISTORY.md §E |
 | 14.8 | 4 | **Predictor beta-binomial de aprobado** con calibración pública | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E |
 | 14.9 | 4 | **Informe de dominio verificable** por URL | BLOCKED (11.8 · H.10) | → LEDGER_HISTORY.md §E |
@@ -378,7 +377,6 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | |
 | 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
 | 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran… | **DONE** — `content/legal/credits_terms_{es,en}.md`: 11 secciones (naturaleza, 3 reglas, cómo se ganan, caducidad FIFO 90d, referidos, códigos promo, antifraude, clawback, gasto, modificaciones, jurisdicción) | |
-| 29.12 | **3** | **Scorecard de la serie**: métricas `ECONOMIA.md` §7 visibles en admin con objetivos mes 3/6/12; **verificación… | DONE | `GET /admin/economy/scorecard` — 5 KPI con semáforo vs targets m3/m6/m12 |
 
 
 ### 30. Integridad del despliegue — incidente de login del 2026-09-24 (PRI 0)
@@ -503,7 +501,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 39.0 | **0** | **Producción caída 09:35–10:48 UTC tras `ec97405`**: `content_loader` con `KeyError: 'order'` (logs Railway) y lecciones fuera de esquema | **DONE** | #28 (`c5100e1`), `test_loader_schema.py` rojo sobre `ec97405`; deploy `b64e2a9a` SUCCESS |
-| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | PARCIAL: track26 (correcta más larga 15 %; revisión adversaria de las 300: 7 defectos corregidos) y track28 (11,7 %; 10 corregidos, 4 eran la correcta movida a otra ranura por el reescritor y 1 ya era falsa en el original) y track29 (23,7 %; 16 corregidos, 6 con la clave movida por el reescritor; `mod2903` deja de estar rotado: su clave original estaba asignada por posición y el test de rotación pasa) con 0 coletillas; trinquete `test_no_filler_options.py` (mutación en rojo); track30 en curso | 0 coletillas por grep; 37.16 ≤ 40 % con distractores reales; `test_no_new_file_is_a_pure_rotation` verde |
+| 39.1 | **0** | Coletillas de relleno en opciones incorrectas de tracks 26/28/29/30 y `mod2903` rotado | DONE | 0 coletillas por grep en 26/28/29/30; correcta más larga 15 / 11,7 / 23,7 / 33 % (37.16 ≤ 40 %); `test_no_new_file_is_a_pure_rotation` verde. Revisión adversaria de las 1.200: 7 + 10 + 16 + 4 arreglos; el reescritor movió claves en 28, 29 y todo `mod3002` (52, reparado por similitud con la clave original y revisado). Trinquete `test_no_filler_options.py` con mutación en rojo (2026-09-26) |
 | 39.2 | **1** | Fuentes inferidas en 146 lecciones normalizadas en #28 | TODO | Fuente comprobada por lección (WebFetch) o sustituida |
 | 39.3 | **1** | `tests/content` en verde (1.254 fallos en master, 792 tras #28) | PARCIAL: 760 (2026-09-26); tildes 31→0 y rotación 1→0; quedan solo lecciones de tracks 14, 18-30, 41-46 (longitud, ejemplo con salida, lenguaje, fuente): trabajo de autoría | 0 fallos sin bajar umbrales |
 | 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | TODO | Tests con flag on/off, exenciones, paridad con `plans.ts` |
@@ -511,6 +509,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.6 | **2** | `audit_ai_traces.py` | TODO | Informe por fichero; mutación en rojo |
 | 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | `scripts/check_originality.py` (Jaccard trigramas ≥ 0.8 + misma respuesta, por track) con trinquete `KNOWN`; `tests/content/test_originality.py`; mutación (pareja nueva) en rojo, restaurado verde (2026-09-26) |
 | 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | TODO | Cada pareja arreglada se quita de `KNOWN`; el test sigue verde |
+| 39.28 | **1** | Segunda familia de coletillas («como concepto principal» 982, «sin excepciones ni variantes» 296, «de manera exclusiva y permanente» 238 y sus versiones EN) en tracks 18-23, 27, 41-43 | TODO | Contadas en el trinquete de `test_no_filler_options.py`; bajar cada track a 0 con el mismo proceso que 39.1 (reescritura + revisión adversaria completa + comprobación de clave) |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
