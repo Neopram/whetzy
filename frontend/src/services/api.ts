@@ -643,6 +643,12 @@ export const economy = {
       body: JSON.stringify({ request_id: requestId }),
     });
   },
+  async activateReferral(referralCode: string) {
+    return request<{ activated: boolean; message?: string }>('/economy/referral/activate', {
+      method: 'POST',
+      body: JSON.stringify({ referral_code: referralCode }),
+    });
+  },
 };
 
 export const league = {

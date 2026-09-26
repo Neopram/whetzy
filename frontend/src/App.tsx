@@ -174,6 +174,17 @@ function App() {
     );
   }
 
+  if (path.startsWith('/r/')) {
+    const code = path.slice(3);
+    if (code) {
+      try { localStorage.setItem('whetzy_ref', code); } catch { /* private mode */ }
+      const lang = navigator.language?.startsWith('es') ? 'es' : 'en';
+      i18n.changeLanguage(lang);
+    }
+    window.location.assign('/register');
+    return null;
+  }
+
   if (path === '/auth' || path === '/login' || path === '/register') return <AuthRoute />;
   if (path in STANDALONE_DOC) return <StandalonePage path={path} />;
   // Both returns sit above every hook in this component, which is the only
