@@ -8,9 +8,12 @@ content-grounded fallback so the tutor endpoint always responds.
 
 from __future__ import annotations
 
+import logging
 from typing import Any, Protocol
 
 from app.core.config import settings
+
+logger = logging.getLogger("whetzy.llm")
 
 
 class LLMProvider(Protocol):
@@ -95,6 +98,81 @@ def _extract_grounding(user_prompt: str) -> str:
     return user_prompt.strip()
 
 
+class GuardedProvider:
+    """Primary LLM behind a daily call budget and an optional fallback (39.11, 39.12).
+
+    A Groq outage or an exhausted budget used to surface as a 500 from the tutor;
+    now the learner gets the next best answer: the fallback LLM if configured,
+    else the grounded context (NullProvider). The budget is per process and per
+    UTC day because Railway runs no Redis; with N workers the real ceiling is N×.
+    """
+
+    def __init__(
+        self,
+        primary: LLMProvider,
+        fallback: LLMProvider | None,
+        daily_limit: int,
+    ) -> None:
+        self._primary = primary
+        self._fallback = fallback
+        self._daily_limit = daily_limit
+        self._day: str | None = None
+        self._calls = 0
+        self.name = primary.name
+
+    def _take_budget(self) -> bool:
+        from datetime import UTC, datetime
+
+        today = datetime.now(UTC).date().isoformat()
+        if today != self._day:
+            self._day, self._calls = today, 0
+        if self._daily_limit and self._calls >= self._daily_limit:
+            return False
+        self._calls += 1
+        return True
+
+    async def complete_named(
+        self,
+        system: str,
+        user: str,
+        *,
+        max_tokens: int = 600,
+        history: list[dict[str, Any]] | None = None,
+    ) -> tuple[str, str]:
+        import httpx
+
+        if not self._take_budget():
+            logger.warning("llm_daily_budget_exhausted limit=%s", self._daily_limit)
+            text = await NullProvider().complete(system, user, max_tokens=max_tokens, history=history)
+            return text, NullProvider.name
+        chain = [self._primary] + ([self._fallback] if self._fallback else [])
+        for provider in chain:
+            try:
+                text = await provider.complete(system, user, max_tokens=max_tokens, history=history)
+                return text, provider.name
+            except (httpx.TimeoutException, httpx.TransportError) as exc:
+                logger.warning("llm_provider_unavailable provider=%s error=%s", provider.name, exc)
+            except httpx.HTTPStatusError as exc:
+                if exc.response.status_code < 500 and exc.response.status_code != 429:
+                    raise
+                logger.warning(
+                    "llm_provider_error provider=%s status=%s", provider.name, exc.response.status_code
+                )
+        text = await NullProvider().complete(system, user, max_tokens=max_tokens, history=history)
+        return text, NullProvider.name
+
+    async def complete(
+        self,
+        system: str,
+        user: str,
+        *,
+        max_tokens: int = 600,
+        history: list[dict[str, Any]] | None = None,
+    ) -> str:
+        text, _ = await self.complete_named(system, user, max_tokens=max_tokens, history=history)
+        return text
+
+
 _provider: LLMProvider | None = None
 
 
@@ -103,8 +181,16 @@ def get_provider() -> LLMProvider:
     if _provider is not None:
         return _provider
     if settings.GROQ_API_KEY:
-        _provider = GroqProvider(
-            settings.GROQ_API_KEY, settings.GROQ_MODEL, settings.GROQ_BASE_URL
+        fallback: LLMProvider | None = None
+        if settings.LLM_FALLBACK_BASE_URL and settings.LLM_FALLBACK_API_KEY and settings.LLM_FALLBACK_MODEL:
+            fallback = GroqProvider(
+                settings.LLM_FALLBACK_API_KEY, settings.LLM_FALLBACK_MODEL, settings.LLM_FALLBACK_BASE_URL
+            )
+            fallback.name = "fallback-llm"
+        _provider = GuardedProvider(
+            GroqProvider(settings.GROQ_API_KEY, settings.GROQ_MODEL, settings.GROQ_BASE_URL),
+            fallback,
+            settings.LLM_DAILY_CALL_LIMIT,
         )
     else:
         _provider = NullProvider()

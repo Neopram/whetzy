@@ -101,6 +101,12 @@ Tiene que existir `dist/landing/index.html` con `data-lcp="hero"`. Un `node_modu
 
 **Verificar un despliegue.** Conector Railway: `list-deployments` (último en `SUCCESS`) y `get-logs` con filtro `"[start]" OR "[owner]" OR "Content loaded" OR "Traceback"`; luego `node frontend/scripts/check-deployed.mjs` (desde `frontend/`).
 
+## LLM: techo diario y respaldo (39.11, 39.12)
+
+- `LLM_DAILY_CALL_LIMIT` (por defecto 2000): llamadas al LLM por día UTC **y por proceso** (Railway corre 2 workers de gunicorn y no hay Redis: el techo real es el doble). Al superarlo el tutor responde con el contexto de la pregunta y el log dice `llm_daily_budget_exhausted`. `0` = sin techo.
+- `LLM_FALLBACK_BASE_URL`, `LLM_FALLBACK_API_KEY`, `LLM_FALLBACK_MODEL`: proveedor compatible con OpenAI que entra si Groq da timeout, error de red, 5xx o 429. Vacíos = sin respaldo; entonces se responde con el contexto. Un 4xx distinto de 429 (clave mala, petición mal formada) **no** se esconde.
+- El campo `provider` de `POST /tutor/explain` dice quién respondió: `groq`, `fallback-llm` o `fallback` (contexto).
+
 ## DB migrations
 
 ```bash

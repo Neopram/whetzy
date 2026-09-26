@@ -120,6 +120,14 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str | None = None
     GROQ_MODEL: str = "qwen/qwen3.8-27b"
     GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
+    # 39.11: techo global de llamadas al LLM por día UTC y por proceso (sin Redis en
+    # Railway: con 2 workers el techo real es el doble). Al superarlo se responde con
+    # el contexto de la pregunta (NullProvider), no con un error. 0 = sin techo.
+    LLM_DAILY_CALL_LIMIT: int = 2000
+    # 39.12 (ADR-50f): proveedor de respaldo compatible con OpenAI. Vacío = sin respaldo.
+    LLM_FALLBACK_BASE_URL: str = ""
+    LLM_FALLBACK_API_KEY: str = ""
+    LLM_FALLBACK_MODEL: str = ""
 
     # --- Email (transaccional) -----------------------------------------------
     # auto = se usa lo que haya (RESEND_API_KEY, si no SMTP_USER+SMTP_PASSWORD,

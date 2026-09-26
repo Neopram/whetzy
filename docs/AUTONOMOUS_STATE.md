@@ -513,8 +513,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
-| 39.11 | **2** | Límite de gasto de Groq por usuario y global | TODO | 429 con test |
-| 39.12 | **3** | LLM de respaldo (ADR-50f) | TODO | Solo ante timeout/5xx; test con mock |
+| 39.11 | **2** | Límite de gasto de Groq por usuario y global | **DONE** | Por usuario ya existía (cupo Pro, ADR-49); global: `LLM_DAILY_CALL_LIMIT`=2000/día UTC por proceso → respuesta con el contexto, no error; `test_llm_guard.py` |
+| 39.12 | **3** | LLM de respaldo (ADR-50f) | **DONE** | `LLM_FALLBACK_*` (vacío = sin respaldo); timeout/5xx/429 → respaldo → contexto; 4xx no se esconde; tests |
 | 39.13 | **3** | Emails de re-enganche (ADR-50g) | TODO | Flag apagado, baja en un clic, tests |
 | 39.14 | **3** | Plantilla de lección con formato (ADR-50d) | TODO | Sin tocar contenido; test y captura |
 | 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | **DONE** | `LICENSE` (código propietario, contenido CC BY-NC-ND 4.0 como los Términos §3.1, terceros según índice) y README |
