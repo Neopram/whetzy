@@ -139,6 +139,13 @@ def test_estados_con_tilde_se_normalizan(tmp_path, mod):
     assert ledger.by_id("11.15").state == "REGRESION"
 
 
+def test_sinonimos_de_estado_del_ledger_real(mod):
+    """«ABIERTA» (series 24-38) y «DECIDIDO: no» (39.20) se leían como UNKNOWN."""
+    assert mod._state_of("ABIERTA") == "TODO"
+    assert mod._state_of("**DECIDIDO: no**") == "RESUELTA"
+    assert mod._state_of("Criterio abierta a revisión") == "UNKNOWN"
+
+
 def test_human_blocked_no_se_confunde_con_blocked(tmp_path, mod):
     """`BLOCKED` es sufijo de `HUMAN-BLOCKED`: el orden de comprobacion manda."""
     ledger = _ledger_from(tmp_path, FIVE_COLUMN, mod)

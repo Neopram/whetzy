@@ -107,7 +107,7 @@
 | 17.6 | **2** | **UI de clase mundial, medida** | TODO | → LEDGER_HISTORY.md §E |
 | 17.7 | **4** | **Vídeos explicativos generados desde código** | TODO | → LEDGER_HISTORY.md §E |
 | 17.10 | **3** | **Re-puntuar frente a la competencia con lo anterior hecho** | TODO | → LEDGER_HISTORY.md §E |
-| 17.14 | **1** | **Compras dentro de la app (la antigua 7.6, sin fila desde hace meses; `legal/h21-decision.md:58`)**: RevenueCat +… | | |
+| 17.14 | **1** | **Compras dentro de la app (la antigua 7.6, sin fila desde hace meses; `legal/h21-decision.md:58`)**: RevenueCat +… | | → §I (criterio archivado por 20.10) |
 
 **Verdad que condiciona toda la serie:** H.11 cerrado 2026-09-18 (frontend desplegado). Hasta que el dueño cierre **H.SEED** (cargar el…
 
@@ -164,7 +164,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 19.2 | **1** | **Sign in with Apple** — obligatorio por App Store Review 4.8 en cuanto exista 19.1 | HUMAN-BLOCKED (H.2) | Necesita… |
-| 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | |
+| 19.3 | **2** | **Android: Google Sign-In nativo + Google Play Billing vía RevenueCat** (absorbe la mitad Android de 17.14, la antigua… | | → §I (criterio archivado por 20.10) |
 | 19.7 | **2** | **Biblioteca de autoría con fuentes libres + RAG local** | TODO | → LEDGER_HISTORY.md §E |
 | 19.8 | **3** | **Landing y SEO de whetzy.com al nivel de Educative** | TODO | → LEDGER_HISTORY.md §E |
 | 19.9 | **3** | **Assets de tiendas e iconos de todos los tracks** (meta ADR-46) | TODO | → LEDGER_HISTORY.md §E |
@@ -178,22 +178,22 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 ### 21. Legal y fiscal a coste cero — investigación, borradores, gates humanos (abierta 2026-09-18, sesión bf — **H.20 SIGUE ABIERTO** — el…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; la entidad y la jurisdicción están sin decidir, H.29. Se conserva el enunciado… | | |
-| 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | |
+| 21.1 | **1** | *(Premisa griega **suspendida** por ADR-47; la entidad y la jurisdicción están sin decidir, H.29. Se conserva el enunciado… | | → §I (criterio archivado por 20.10) |
+| 21.2 | **1** | *(Premisa griega **suspendida** por ADR-47; valor por defecto: Merchant of Record + IAP. Enunciado original conservado… | | → §I (criterio archivado por 20.10) |
 | 21.5 | **2** | **AI Act, DSA, EAA**: obligaciones de *deployer* del tutor… | **PARCIAL** | **PARCIAL** `5f7bd7b` (2026-09-19) → §I |
 | 21.6 | **2** | **Propiedad intelectual**: búsqueda de marca «Whetzy» (EUIPO,… | **PARCIAL** | **PARCIAL** `8e7812a` (2026-09-19) → §I |
 
 ### 22. Blindaje, admin y preparación para un millón — todo a coste cero (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**;…
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | |
+| 22.5 | **2** | **Cloudflare free**: WAF managed rules, rate limiting rules por ruta (`/auth/*`, `/tutor/*`), Bot Fight Mode, cache rules… | | → §I (criterio archivado por 20.10) |
 
 ### 23. Dos segmentos, un producto — ES y EN sin mezclar (abierta 2026-09-18, sesión bf — **ABIERTA 2026-09-18 (H.21)**; ADR-17)
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 23.1 | **1** | **Auditoría E2E por idioma**: cada pantalla, email, push, PDF/certificado,… | **PARCIAL** | **PARCIAL** (2026-09-19) → §I |
-| 23.2 | **2** | **Landing y SEO por segmento**: `/es` y `/en` con copy nativo (no traducido), `hreflang` (existe), `sitemap` por idioma,… | | |
-| 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | | |
+| 23.2 | **2** | **Landing y SEO por segmento**: `/es` y `/en` con copy nativo (no traducido), `hreflang` (existe), `sitemap` por idioma,… | | → §I (criterio archivado por 20.10) |
+| 23.3 | **2** | **Tiendas, emails y soporte por idioma**: listings ES/EN en `store/`, plantillas de email por idioma (P.1) verificadas,… | | → §I (criterio archivado por 20.10) |
 | 23.4 | **3** | **Segmento en el admin**: todas las métricas de 22.1 filtrables por idioma; cohortes ES vs. EN | **DONE** | **DONE**: `segment` param (all/es/en) added to `/metrics/reports` — all 12 admin endpoints now support language segmentation → `66925f8` |
 | 23.5 | **1** | **Las dos guardias de i18n daban números falsos y la que cita el protocolo no existía**: `audit_i18n.py` buscaba… | **DONE** | **DONE** `d991fe4` (2026-09-19) → §I |
 
@@ -214,7 +214,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 24.7 | **2** | **Panel de certificación**: readiness por dominio (18.1), simulacros (comprables con créditos), certificado… | **DONE** | **DONE**: ReadinessScreen + MockExamScreen + CertificateScreen + CertificateCard + tests + API endpoints + i18n ES/EN → §I |
 | 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
-| 24.9 | **2** | **Panel B2B** (`SEGMENTOS.md` segmento 5): progreso por empleado, tiempo, certificaciones, comparativa anónima, import… | | |
+| 24.9 | **2** | **Panel B2B** (`SEGMENTOS.md` segmento 5): progreso por empleado, tiempo, certificaciones, comparativa anónima, import… | | → §I (criterio archivado por 20.10) |
 
 #### Dependencias
 
@@ -243,21 +243,21 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación | Deps |
 |---|---|---|---|---|---|
-| 25.0 | **3** | Infraestructura de generación: script `scripts/generate_track_content.py` que toma track_id + nivel + fuentes y produce… | | | |
-| 25.1 | **3** | Completar tracks 1-3 (Python básico/intermedio/avanzado) a 100 cursos por nivel usando PSF docs + exercism/python +… | | | |
-| 25.2 | **3** | Completar tracks 6-7 (IA/ML/LLMs) a 100 cursos usando ML-For-Beginners + HF course + fastai + openai/anthropic cookbooks |… | | |
-| 25.3 | **3** | Completar tracks 4-5 (Ingeniería + Arquitectura) a 100 cursos usando system-design-primer + aosabook +… | | | |
-| 25.4 | **3** | Completar tracks 12, 20, 21, 27 (SQL + Data Eng + DS + NoSQL) usando PostgreSQL docs + DuckDB + Kaggle Learn +… | | | |
-| 25.5 | **3** | Completar tracks 13, 24, 25 (Ciberseguridad fundamentos + Pentest + Seguridad cloud) usando NIST + MITRE ATT&CK +… | | | |
+| 25.0 | **3** | Infraestructura de generación: script `scripts/generate_track_content.py` que toma track_id + nivel + fuentes y produce… | | → §I (criterio archivado por 20.10) | |
+| 25.1 | **3** | Completar tracks 1-3 (Python básico/intermedio/avanzado) a 100 cursos por nivel usando PSF docs + exercism/python +… | | → §I (criterio archivado por 20.10) | |
+| 25.2 | **3** | Completar tracks 6-7 (IA/ML/LLMs) a 100 cursos usando ML-For-Beginners + HF course + fastai + openai/anthropic cookbooks… | | → §I (criterio archivado por 20.10) | |
+| 25.3 | **3** | Completar tracks 4-5 (Ingeniería + Arquitectura) a 100 cursos usando system-design-primer + aosabook +… | | → §I (criterio archivado por 20.10) | |
+| 25.4 | **3** | Completar tracks 12, 20, 21, 27 (SQL + Data Eng + DS + NoSQL) usando PostgreSQL docs + DuckDB + Kaggle Learn +… | | → §I (criterio archivado por 20.10) | |
+| 25.5 | **3** | Completar tracks 13, 24, 25 (Ciberseguridad fundamentos + Pentest + Seguridad cloud) usando NIST + MITRE ATT&CK +… | | → §I (criterio archivado por 20.10) | |
 | 25.6 | **3** | Completar tracks 8-11, 22-23 (AWS + Azure + GCP) usando AWS docs (cita) + Microsoft Learn CC BY + GCP docs CC BY | BLOCKED… | | |
-| 25.7 | **3** | Completar tracks 14, 28 (Frontend JS + Backend FastAPI/Node) usando lydiahallie + Web-Dev-For-Beginners + freeCodeCamp ES… | | | |
+| 25.7 | **3** | Completar tracks 14, 28 (Frontend JS + Backend FastAPI/Node) usando lydiahallie + Web-Dev-For-Beginners + freeCodeCamp ES… | | → §I (criterio archivado por 20.10) | |
 | 25.8 | **3** | Completar tracks 15, 17, 26 (Linux + Redes + Git) usando exercism/bash + Peterson/Davie CC BY + github/docs | BLOCKED… | | |
 | 25.9 | **3** | Completar tracks 16, 29, 30 (Algoritmos + QA + Agile) usando Erickson CC BY + pytest docs + Scrum Guide cita | BLOCKED… | | |
 | 25.10 | **3** | Completar tracks 18, 19 (Docker/K8s + IaC/CI/CD) usando Kubernetes docs CC BY + Docker docs + actions/* | BLOCKED (37.0)… | | |
 | 25.11 | **3** | Completar track 31 (Móvil) usando swift-book CC BY + android docs + flutter docs | BLOCKED (37.0) | track31 ≥ 900 Q,… | |
 | 25.12 | **3** | Glosario máximo: ≥ 100 términos por track × 28 tracks = 2,800+ términos totales, ES y EN nativos | BLOCKED |… | |
-| 25.14 | **3** | **track32 — Solana / Web3 developer** (ADR-38): 5 módulos × 4 skills, JS con `@solana/web3.js` en el Worker (18.3) +… | | | |
-| 25.13 | **3** | Scorecard ADR-25: verificar que los 28 tracks pasan §7 quality gate (≥ 15 % exec donde aplica, ≥ 144 términos, BKT… | | | |
+| 25.14 | **3** | **track32 — Solana / Web3 developer** (ADR-38): 5 módulos × 4 skills, JS con `@solana/web3.js` en el Worker (18.3) +… | | → §I (criterio archivado por 20.10) | |
+| 25.13 | **3** | Scorecard ADR-25: verificar que los 28 tracks pasan §7 quality gate (≥ 15 % exec donde aplica, ≥ 144 términos, BKT… | | → §I (criterio archivado por 20.10) | |
 
 **H.22 — Decisión del dueño:** ¿Aceptar [H.LIC] para OWASP CheatSheets/WSTG/ASVS (CC BY-SA 4.0) en tracks de seguridad? Si sí: contenido…
 
@@ -269,17 +269,17 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 26.0 | **4** | Canal YouTube ES creado: banner, descripción, links, 3 videos demo subidos (grabados en 24.13); **cada vídeo con su código… | | |
-| 26.1 | **4** | 5 artículos en Dev.to / Hashnode ES sobre el motor técnico (BKT, FSRS, gap de mercado) | TODO (redactar/construir;… | |
-| 26.2 | **4** | PR en `EbookFoundation/free-programming-books` agregando Whetzy en sección Python ES | TODO (redactar/construir; publicar… | |
-| 26.3 | **4** | Template de email para universidades LATAM + lista de 50 contactos | TODO (redactar/construir; publicar bajo cuenta nueva… | |
-| 26.4 | **4** | Página de landing para segmento career-switcher ES (dentro de whetzy.com/es/carrera) | TODO (redactar/construir; publicar… | |
-| 26.5 | **4** | Página de landing para segmento B2B ES (whetzy.com/es/empresas) | TODO (redactar/construir; publicar bajo cuenta nueva =… | |
-| 26.6 | **4** | Show HN post en español (Hacker News): preparación + activos | TODO (redactar/construir; publicar bajo cuenta nueva =… | |
+| 26.0 | **4** | Canal YouTube ES creado: banner, descripción, links, 3 videos demo subidos (grabados en 24.13); **cada vídeo con su código… | | → §I (criterio archivado por 20.10) |
+| 26.1 | **4** | 5 artículos en Dev.to / Hashnode ES sobre el motor técnico (BKT, FSRS, gap de mercado) | TODO (redactar/construir;… | → §I (criterio archivado por 20.10) |
+| 26.2 | **4** | PR en `EbookFoundation/free-programming-books` agregando Whetzy en sección Python ES | TODO (redactar/construir; publicar… | → §I (criterio archivado por 20.10) |
+| 26.3 | **4** | Template de email para universidades LATAM + lista de 50 contactos | TODO (redactar/construir; publicar bajo cuenta nueva… | → §I (criterio archivado por 20.10) |
+| 26.4 | **4** | Página de landing para segmento career-switcher ES (dentro de whetzy.com/es/carrera) | TODO (redactar/construir; publicar… | → §I (criterio archivado por 20.10) |
+| 26.5 | **4** | Página de landing para segmento B2B ES (whetzy.com/es/empresas) | TODO (redactar/construir; publicar bajo cuenta nueva =… | → §I (criterio archivado por 20.10) |
+| 26.6 | **4** | Show HN post en español (Hacker News): preparación + activos | TODO (redactar/construir; publicar bajo cuenta nueva =… | → §I (criterio archivado por 20.10) |
 | 26.7 | **4** | Perfiles en comunidades ES: Python Argentina Discord, Dev En Español, LatamDevs | HUMAN-BLOCKED (H.23: perfiles… | |
-| 26.8 | **4** | **Superteam LATAM (México, Argentina, Brasil) como canal** (ADR-38): presencia en sus Discord/eventos, 1 charla o taller… | | |
-| 26.9 | **3** | **Blog `/blog` ES/EN** (SEO orgánico, `archive/SPEC_WEB.md:152`): Markdown en `content/blog/`, prerender en `vite build`… | | |
-| 26.10 | **3** | **Newsletter** (`archive/EXECUTION_PLAN_25-29.md:87`): alta con doble opt-in vía Resend (H.30), ES o EN según usuario,… | | |
+| 26.8 | **4** | **Superteam LATAM (México, Argentina, Brasil) como canal** (ADR-38): presencia en sus Discord/eventos, 1 charla o taller… | | → §I (criterio archivado por 20.10) |
+| 26.9 | **3** | **Blog `/blog` ES/EN** (SEO orgánico, `archive/SPEC_WEB.md:152`): Markdown en `content/blog/`, prerender en `vite build`… | | → §I (criterio archivado por 20.10) |
+| 26.10 | **3** | **Newsletter** (`archive/EXECUTION_PLAN_25-29.md:87`): alta con doble opt-in vía Resend (H.30), ES o EN según usuario,… | | → §I (criterio archivado por 20.10) |
 
 ### 27. Distribución masiva EN (ADR-27; spec `DISTRIBUCION.md`)
 
@@ -289,17 +289,17 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 27.0 | **4** | Canal YouTube EN creado: banner, descripción, 3 videos EN (mismo contenido que 24.13 pero grabado en inglés nativo, no… | | |
-| 27.1 | **4** | Show HN EN: "I built an adaptive Python→AI learning engine in Spanish because no one else did" | TODO (redactar/construir;… | |
+| 27.0 | **4** | Canal YouTube EN creado: banner, descripción, 3 videos EN (mismo contenido que 24.13 pero grabado en inglés nativo, no… | | → §I (criterio archivado por 20.10) |
+| 27.1 | **4** | Show HN EN: "I built an adaptive Python→AI learning engine in Spanish because no one else did" | TODO (redactar/construir;… | → §I (criterio archivado por 20.10) |
 | 27.2 | **4** | 5 artículos en Dev.to / freeCodeCamp News EN sobre motor técnico | TODO (redactar/construir; publicar = H.23) | 5… |
-| 27.3 | **4** | PR en `jwasham/coding-interview-university` y `donnemartin/system-design-primer` READMEs | TODO (redactar/construir;… | |
-| 27.4 | **4** | Product Hunt preparación: assets, lista de 100 upvoters confirmados, tagline | TODO (redactar/construir; publicar = H.23)… | |
+| 27.3 | **4** | PR en `jwasham/coding-interview-university` y `donnemartin/system-design-primer` READMEs | TODO (redactar/construir;… | → §I (criterio archivado por 20.10) |
+| 27.4 | **4** | Product Hunt preparación: assets, lista de 100 upvoters confirmados, tagline | TODO (redactar/construir; publicar = H.23)… | → §I (criterio archivado por 20.10) |
 | 27.5 | **4** | Product Hunt lanzamiento | HUMAN-BLOCKED (H.23) | Top 5 del día en categoría Education |
 | 27.6 | **4** | Reddit strategy EN: 10 respuestas de valor en r/learnpython, r/cscareerquestions | HUMAN-BLOCKED (H.23: cuenta y karma… | |
 | 27.7 | **4** | Landing page segmento career-switcher EN (whetzy.com/en/career) | TODO (redactar/construir; publicar = H.23) | Lighthouse… |
 | 27.8 | **4** | Landing page segmento B2B EN (whetzy.com/en/enterprise) | TODO (redactar/construir; publicar = H.23) | Demo request form… |
-| 27.9 | **4** | **Superteam global / Solana developer communities EN** (ADR-38): Solana Stack Exchange y Discord oficial con respuestas de… | | |
-| 27.10 | **3** | **Comparativa honesta frente a Coursera/Udemy** (`DECISIONS.md` ADR-24, sin fila hasta hoy): página `/en/compare` y… | | |
+| 27.9 | **4** | **Superteam global / Solana developer communities EN** (ADR-38): Solana Stack Exchange y Discord oficial con respuestas de… | | → §I (criterio archivado por 20.10) |
+| 27.10 | **3** | **Comparativa honesta frente a Coursera/Udemy** (`DECISIONS.md` ADR-24, sin fila hasta hoy): página `/en/compare` y… | | → §I (criterio archivado por 20.10) |
 
 ### 28. Marketplace de instructores (ADR-29; spec `MARKETPLACE.md`)
 
@@ -312,11 +312,11 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 28.0 | **4** | Schema DB: `instructor_profiles`, `marketplace_courses`,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.1 | **4** | API: CRUD cursos instructor, upload contenido JSON, preview; **código de… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.2 | **4** | Quality gate pipeline para instructores: `scripts/instructor_quality_gate.py` corriendo en upload | **DONE** — `scripts/instructor_quality_gate.py` valida preguntas/skill≥15, ejecutables≥15%, glosario≥36/track, lecciones con contenido, licencias válidas | |
-| 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | |
-| 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | |
-| 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | |
+| 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por curso | **PARCIAL** — Verificado 2026-09-25 contra el… | → §I (criterio archivado por 20.10) |
+| 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de primera lección | **PARCIAL** — Verificado 2026-09-25… | → §I (criterio archivado por 20.10) |
+| 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | → §I (criterio archivado por 20.10) |
 | 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; **rail elegido por… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
-| 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | |
+| 28.8 | **3** | **UI del marketplace conectada**: `MarketplaceScreen` e `InstructorScreen` (hoy maquetas, 24.10/24.11) contra… | | → §I (criterio archivado por 20.10) |
 | 28.9 | **3** | **Kit de reclutamiento de instructores** (`MARKETPLACE.md:161-167`: 5 fundadores → 20 → 50+): oferta escrita ES/EN (70 %,… | **DONE** — `content/legal/instructor_recruitment_kit_{es,en}.md`: oferta 70/30, badge fundador, visibilidad prioritaria, requisitos de calidad (puerta automática), hoja de ruta 3 fases, proceso de aplicación | |
 
 ### 29. Economía cerrada y rails — créditos, referidos, códigos, USDC, credenciales verificables (ADR-33…37; spec `docs/ECONOMIA.md`)
@@ -336,8 +336,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 29.6 | **2** | **Admin** (en 22.1): economía (emitidos/gastados/caducados, ratio sumidero/grifo, alerta de inflación), referidos… | **DONE** | **DONE**: 3 endpoints — `/economy/credits` con summary (emitted/spent/expired, sink_source_ratio, inflation_alert, by_reason) + rows; `/economy/referrals`; `/economy/k-factor` → §I |
 | 29.7 | **3** | **Reactivación automática**: job (cola 22.6) que a los 14 días de inactividad emite código de 72 h y envía email **ES o EN… | **DONE** — `reactivation_check` job handler: consulta `User.last_active < 14d`, genera código 72h vía `PromoCodeService`, envía email ES/EN con plantilla `reactivation` | |
 | 29.8 | **3** | **UI**: wallet (saldo, lotes que caducan, historial), escalera de referidos con código y enlace, canje de códigos **solo… | **DONE** | **DONE**: WalletScreen con balance card, earn/spend lists, referral code + clipboard, promo redeem form; economy API methods; 22 i18n keys ES/EN; lazy route + profile nav → `66925f8` |
-| 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | |
-| 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
+| 29.9 | **3** | **USDC como rail** (ADR-36): si H.19 = Stripe → activar *Pay with Crypto* en **test mode** y documentar en 7.2; payouts de… | | → §I (criterio archivado por 20.10) |
+| 29.10 | **2** | **Credenciales verificables** (ADR-37): Open Badges 3.0 — JSON-LD firmado (clave en env, nunca versionada), `GET`… | **DONE** | **DONE**: `open_badges.py` service (Ed25519 DataIntegrityProof eddsa-jcs-2022, QR generation); `/certificates/{code}/badge` (JSON-LD), `/certificates/{code}/qr` (PNG); `/verify/{code}` frontend route; CertificateCard with QR + badge download; 8 unit tests pass |
 | 29.11 | **2** | **Cláusulas legales**: créditos (tres reglas §1), referidos, antifraude, caducidad, clawback — ES y EN nativos → entran… | **DONE** — `content/legal/credits_terms_{es,en}.md`: 11 secciones (naturaleza, 3 reglas, cómo se ganan, caducidad FIFO 90d, referidos, códigos promo, antifraude, clawback, gasto, modificaciones, jurisdicción) | |
 
 
@@ -350,7 +350,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 30.0 | **0** | **Login roto en producción.** Medido 2026-09-24: el bundle servido… | **PARCIAL** | **PARCIAL** (2026-09-24) → §I |
-| 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | |
+| 30.2 | **1** | **Se puede publicar sin puerta.** `ba686fc`, `50e73ea`, `46789fa`, `f8719b1`, `2efdfb7` y `8a0dce0` entraron en `master`… | | → §I (criterio archivado por 20.10) |
 | 30.4 | **1** | **`npm run build` estaba en rojo y nadie lo vio**: el prerender buscaba… | **PARCIAL** | **PARCIAL** `394c660` → §I |
 | 30.5 | **2** | El script `build` ya no corre `tsc -b` (lo quitó `8a0dce0`,… | **PARCIAL** | **PARCIAL** `8a0dce0` (2026-09-24) → §I |
 | 30.7 | **0** | **El mismo fallo que el login en cinco llamadas más.**… | **PARCIAL** | **PARCIAL** `4c63686` (2026-09-25) → §I |
@@ -364,7 +364,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 31.1 | **1** | Staging: un preview de Cloudflare Pages y un servicio de Railway de staging; `master` solo por PR verde | HUMAN-BLOCKED… | |
 | 31.2 | **2** | Migración con datos: fixture de base en la revisión anterior, `upgrade head`,… | **DONE** | **DONE** `d3290b8` → §I |
-| 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET… | **DONE** | **DONE** `cf2fc58` → §I |
+| 31.3 | **2** | Smoke post-deploy de backend: login con cuenta QA, `POST /quiz/start`, `GET`… | **DONE** | **DONE** `cf2fc58` → §I |
 
 ### 32. Motor demostrable — calibración y evidencia de aprendizaje (del plan del 2026-09-24; ídem)
 
@@ -398,11 +398,11 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
 | 34.3 | **1** | **Componentes base** al estilo de la landing: `Button`, `Card`, `Badge`, `Modal`,… | **PARCIAL** | **PARCIAL** → §I |
 | 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
-| 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **PARCIAL** — pantallas del… | |
+| 34.5 | **1** | **Aprendizaje**: Home, Tracks, Lesson y Quiz (con Monaco, WhyButton, GlossaryText, TermCard) | **PARCIAL** — pantallas del… | → §I (criterio archivado por 20.10) |
 | 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | **PARCIAL** `d11db88` → §I |
-| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | |
+| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** — pantallas del bloque revisadas… | → §I (criterio archivado por 20.10) |
 | 34.8 | **2** | **Regresión visual**: Playwright con capturas por ruta (ES/EN × móvil/escritorio)… | **PARCIAL** | **PARCIAL** → §I |
-| 34.9 | **2** | **Verificación y re-puntuación**: verificador adversario (protocolo §7) de 34.0–34.8 y fila nueva en el teardown… | | |
+| 34.9 | **2** | **Verificación y re-puntuación**: verificador adversario (protocolo §7) de 34.0–34.8 y fila nueva en el teardown… | | → §I (criterio archivado por 20.10) |
 
 ### 35. Lo que el mercado enseña: competencia verificada → producto (abierta 2026-09-24, a petición del dueño)
 
@@ -414,7 +414,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 35.1 | **1** | **Comparativa pública verificada en la landing**: solo cifras re-descargadas y fechadas, `null` = no comprobado | **DONE**… | |
 | 35.4 | **2** | **Ligas opt-in visible**: interruptor en la propia pantalla de ligas («totalmente opcional») | **DONE** — 2026-09-24:… | |
-| 35.6 | **2** | **Refresco trimestral de §A.1**: re-descargar las páginas de precios, cambiar cifras y `COMPARISON_CHECKED_ON` | TODO —… | |
+| 35.6 | **2** | **Refresco trimestral de §A.1**: re-descargar las páginas de precios, cambiar cifras y `COMPARISON_CHECKED_ON` | TODO —… | → §I (criterio archivado por 20.10) |
 | 35.8 | **2** | **Cada deploy de Railway deja ~1 min de 502/503.** Medido 2026-09-24: tras los pushes `a6a5a91` y `f2ea9cb`, `/health` dio… | **DONE** | **DONE**: railway.toml healthcheckPath=/health 120s + lifespan shutdown handler con close_db() → §I |
 | 35.9 | **2** | **El nivel 2 de la puerta (`ci_local.sh`) corre sobre el árbol… | **PARCIAL** | **PARCIAL** `a021e92` (2026-09-24) → §I |
 
@@ -430,15 +430,15 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 |---|---|---|---|---|
 | 37.1 | **1** | **Inventario de la industria vs catálogo**: contrastar… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.4 | **2** | **Descarga y verificación del corpus por área** (una subfila por área en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
-| 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | |
-| 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | |
-| 37.7 | **2** | **Tracks del mapa sin construir** (18-23, 26-27, 29-32) al molde mínimo primero (20 skills · 300 Q) y luego a 50 cursos —… | | |
-| 37.8 | **2** | **Tracks nuevos de §2.0** (Java/JVM, C#/.NET, Go, Rust, C/C++ y sistemas, TypeScript, SRE/observabilidad, MLOps,… | | |
+| 37.5 | **2** | **Generador desde corpus**: `scripts/generate_track_content.py` (absorbe 25.0) toma track + módulo + fragmentos del corpus… | | → §I (criterio archivado por 20.10) |
+| 37.6 | **2** | **Bloques de tracks existentes a 50 cursos** — orden: track01-03 → 12 → 06-07 → 04-05 → 13/24/25 (reescribiendo las 800… | | → §I (criterio archivado por 20.10) |
+| 37.7 | **2** | **Tracks del mapa sin construir** (18-23, 26-27, 29-32) al molde mínimo primero (20 skills · 300 Q) y luego a 50 cursos —… | | → §I (criterio archivado por 20.10) |
+| 37.8 | **2** | **Tracks nuevos de §2.0** (Java/JVM, C#/.NET, Go, Rust, C/C++ y sistemas, TypeScript, SRE/observabilidad, MLOps,… | | → §I (criterio archivado por 20.10) |
 | 37.9 | **2** | **Glosario ≥ 400 términos por track**, ES y EN nativos (absorbe 25.12) | BLOCKED (37.6) | `check_docs.py`: 0 términos sin… |
-| 37.10 | **2** | **Certificaciones: blueprints de las 55 del catálogo §3** con simulacro por dominio, pesos verificados contra la guía… | | |
+| 37.10 | **2** | **Certificaciones: blueprints de las 55 del catálogo §3** con simulacro por dominio, pesos verificados contra la guía… | | → §I (criterio archivado por 20.10) |
 | 37.11 | **3** | **Proyectos multi-paso**: 10 por track ejecutable (hoy 0; catálogo §1) | BLOCKED (37.6) | Cada proyecto con tests de… |
-| 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | |
-| 37.13 | **3** | **Scorecard ADR-46** (absorbe 25.13): tracks × cursos × 37.0 verde; re-puntuación de Contenido en el teardown con… | | |
+| 37.12 | **3** | **Monitoreo trimestral de competencia** (`CATALOGO_MAESTRO.md` §11.4 apuntaba a una fila que no existía; complementa… | | → §I (criterio archivado por 20.10) |
+| 37.13 | **3** | **Scorecard ADR-46** (absorbe 25.13): tracks × cursos × 37.0 verde; re-puntuación de Contenido en el teardown con… | | → §I (criterio archivado por 20.10) |
 | 37.14 | **1** | **track13 (ciberseguridad) tiene enunciados repetidos: 87,9 %… | **DONE** | **DONE** `fbf9baf` (2026-09-25) → §I |
 | 37.15 | **1** | **Fuentes sin indexar:** 3.906 de 6.305 preguntas (62 %) no llevan URL en… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 37.16 | **1** | **La correcta es la opción más larga.** Medido 2026-09-25 sobre… | **DONE** | **DONE** `46764ff` (2026-09-26): 8 tracks restantes (02-04, 06, 08, 10, 12, 17) corregidos; todos ≤22 %. Banco PASS, diversidad PASS, content 38062 passed → §I |
@@ -453,7 +453,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 38.2 | **2** | **Oferta de 3 pilotos B2B gratuitos** (ADR-22): documento ES/EN (qué damos, qué pedimos: testimonio y datos de uso, 90… | **DONE** — `content/legal/b2b_pilot_offer_{es,en}.md`: 3 pilotos 90d, 25 asientos Pro Max, a cambio de datos agregados + testimonio + llamada cierre; post-piloto $99/asiento/año mín 10 | |
 | 38.3 | **2** | **Dossier de afiliación** Python Institute y CompTIA (`archive/whetzy_estrategia_definitiva_v3.md:392`): condiciones,… | **DONE** — `content/legal/affiliation_dossier_{es,en}.md`: certs relevantes por proveedor, programa de afiliados, pasos para aplicar, modelo de ingresos estimado, integración técnica y acciones inmediatas | |
 | 38.5 | **3** | **Página `/evidence` como única prueba social** (19.8, 30.1): cifras del banco y del motor calculadas en build, cero… | **DONE** | **DONE**: EvidenceScreen.tsx + CSS module + ruta registrada en App.tsx → §I |
-| 38.6 | **2** | **Pro Max = tutor IA ilimitado; Pro con cupo diario** (ADR-49). `POST… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
+| 38.6 | **2** | **Pro Max = tutor IA ilimitado; Pro con cupo diario** (ADR-49). `POST`… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
 | 38.7 | **2** | **Certificación a 39,99 $ de pago único** (ADR-49). Hoy los tracks… | **DONE** | **DONE** `843015e` (2026-09-25) → §I |
 
 ### 39. Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobación en bloque (ADR-50)
