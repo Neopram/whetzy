@@ -8,7 +8,7 @@ import uuid
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -184,6 +184,8 @@ async def challenge(
 
 @router.get("/my", response_model=list[DuelSummary])
 async def my_duels(
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[DuelSummary]:
@@ -193,7 +195,8 @@ async def my_duels(
             or_(Duel.challenger_id == current_user.id, Duel.opponent_id == current_user.id)
         )
         .order_by(Duel.created_at.desc())
-        .limit(50)
+        .limit(limit)
+        .offset(offset)
     )
     duels = result.scalars().all()
 

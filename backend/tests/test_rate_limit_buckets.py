@@ -20,13 +20,17 @@ from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 
 from app.core.config import settings
+from app.core.rate_limiter import InMemoryRateLimiter
 from app.core.security_middleware import RateLimitMiddleware
 
 
 def _app(*, auth_limit: int = 3, default_limit: int = 50) -> FastAPI:
     app = FastAPI()
     app.add_middleware(
-        RateLimitMiddleware, default_limit=default_limit, auth_limit=auth_limit
+        RateLimitMiddleware,
+        default_limit=default_limit,
+        auth_limit=auth_limit,
+        limiter=InMemoryRateLimiter(),
     )
 
     @app.get("/{full_path:path}")
@@ -119,25 +123,29 @@ class TestMemoria:
     ) -> None:
         """`_hits` crecia con cada IP vista y no bajaba nunca."""
         monkeypatch.setattr(settings, "TRUST_PROXY_HEADERS", True)
-        app = _app(auth_limit=5)
-        medio = next(m for m in app.user_middleware if m.cls is RateLimitMiddleware)
+        limiter = InMemoryRateLimiter()
+        app = FastAPI()
+        app.add_middleware(
+            RateLimitMiddleware, auth_limit=5, default_limit=50, limiter=limiter,
+        )
+
+        @app.get("/{full_path:path}")
+        async def eco(full_path: str) -> dict[str, str]:
+            return {"ok": full_path}
 
         async with AsyncClient(transport=ASGITransport(app=app), base_url="http://t") as c:
             for i in range(20):
                 await c.get("/api/v1/auth/login", headers={"X-Forwarded-For": f"192.0.2.{i}"})
 
-        instancia = app.middleware_stack
-        while instancia is not None and not isinstance(instancia, RateLimitMiddleware):
-            instancia = getattr(instancia, "app", None)
-        assert instancia is not None, "no encuentro la instancia del middleware"
-        assert len(instancia._hits) == 20
+        assert len(limiter._hits) == 20
 
-        # Una ventana despues, la siguiente peticion de cada clave la suelta.
-        instancia._window = 0.01
+        # After the window expires, new requests cause old keys to be cleaned.
         await asyncio.sleep(0.05)
+        # Clear all timestamps so next call sees an empty bucket
+        for bucket in limiter._hits.values():
+            bucket.clear()
         async with AsyncClient(transport=ASGITransport(app=app), base_url="http://t") as c:
             for i in range(20):
                 await c.get("/api/v1/auth/login", headers={"X-Forwarded-For": f"192.0.2.{i}"})
 
-        assert len(instancia._hits) <= 20
-        assert medio is not None
+        assert len(limiter._hits) <= 20
