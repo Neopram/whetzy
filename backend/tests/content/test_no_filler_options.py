@@ -71,7 +71,6 @@ BASELINE = {
     "track27_nosql": 566,
     "track41_pcap": 252,
     "track42_security_plus": 693,
-    "track43_aws_mla": 200,
     "track44_azure_fundamentals": 106,
     "track45_azure_ai": 97,
     "track46_azure_data": 135,
