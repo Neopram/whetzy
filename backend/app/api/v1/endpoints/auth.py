@@ -363,6 +363,9 @@ async def change_password(
     # Invalidate all existing tokens by bumping the version (ASVS V3.3).
     current_user.jwt_version = current_user.jwt_version + 1
     await db.commit()
+    await log_audit_event(
+        current_user.id, "password_change", db=db,
+    )
     return {"message": "Password changed successfully. Please log in again with your new password."}
 
 

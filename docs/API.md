@@ -336,6 +336,7 @@ GET  /admin/revenue/mrr                  → monthly recurring revenue
 GET  /admin/security/auth-events         → authentication event log
 GET  /admin/security/ip-analysis         → IP reputation & geo analysis
 GET  /admin/security/lockouts            → account lockout events
+GET  /admin/security/rate-limit-hits     → rate-limit denial stats (22.1)
 ```
 ## Export endpoints
 

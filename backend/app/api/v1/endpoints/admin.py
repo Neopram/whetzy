@@ -268,6 +268,13 @@ async def get_security_ip_analysis(
     }
 
 
+@router.get("/security/rate-limit-hits", dependencies=[Depends(require_admin)])
+async def get_rate_limit_hits() -> dict[str, Any]:
+    from app.core.rate_limiter import get_rate_limit_stats
+
+    return get_rate_limit_stats().summary()
+
+
 @router.get("/content/gaps", dependencies=[Depends(require_admin)])
 async def get_content_gaps(
     language: str = Query(default="es", pattern="^(es|en)$"),

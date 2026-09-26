@@ -17,7 +17,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
 from app.core.config import settings
-from app.core.rate_limiter import RateLimiter, get_rate_limiter
+from app.core.rate_limiter import RateLimiter, get_rate_limit_stats, get_rate_limiter
 
 # ASVS V14.4: security headers. CSP is API-appropriate (no inline content served).
 _SECURITY_HEADERS = {
@@ -114,6 +114,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         key = f"{self._client_key(request)}:{key_suffix}"
 
         if not await self._limiter.is_allowed(key, limit, self._window):
+            get_rate_limit_stats().record_hit(self._client_key(request), key_suffix)
             return JSONResponse(
                 status_code=429,
                 content={"detail": "Too many requests. Please slow down."},
