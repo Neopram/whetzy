@@ -509,7 +509,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.4 | **2** | `content_quota` detrás de flag (ADR-50a) | TODO | Tests con flag on/off, exenciones, paridad con `plans.ts` |
 | 39.5 | **2** | Gamification auditada de punta a punta | TODO | Playwright local con capturas: XP, racha, liga, insignia |
 | 39.6 | **2** | `audit_ai_traces.py` | TODO | Informe por fichero; mutación en rojo |
-| 39.7 | **2** | Detector de originalidad / casi-duplicados | TODO | Umbral configurable; mutación en rojo |
+| 39.7 | **2** | Detector de originalidad / casi-duplicados | DONE | `scripts/check_originality.py` (Jaccard trigramas ≥ 0.8 + misma respuesta, por track) con trinquete `KNOWN`; `tests/content/test_originality.py`; mutación (pareja nueva) en rojo, restaurado verde (2026-09-26) |
+| 39.27 | **2** | Reescribir las 12 parejas casi-duplicadas anotadas en `KNOWN` (track01 ×3, track09 ×5, track41 ×4) | TODO | Cada pareja arreglada se quita de `KNOWN`; el test sigue verde |
 | 39.8 | **1** | Cerrar el índice de fuentes (37.15) | TODO | 0 % sin indexar o lista exacta de las imposibles |
 | 39.9 | **2** | Explicaciones de < 2 frases en tracks 13, 15, 16, 17 | TODO | 2–4 frases correctas, adversario |
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
